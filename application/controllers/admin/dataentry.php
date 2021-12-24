@@ -1122,7 +1122,7 @@ class dataentry extends Survey_Common_Action
                             $fname = prev($fnames);
                             $aDataentryoutput .= "</table>\n";
                             break;
-                        case Question::QT_F_ARRAY: // Array 
+                        case Question::QT_F_ARRAY: // Array
                         case Question::QT_H_ARRAY_COLUMN:
                         case Question::QT_1_ARRAY_DUAL:
                             $aDataentryoutput .= "<table class='table'>\n";
@@ -1246,11 +1246,11 @@ class dataentry extends Survey_Common_Action
                             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                             if ($idrow[$fname['fieldname']] != '') {
                                 $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']]);
-                                if($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
+                                if ($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
                                     $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']]);
                                 }
-                                if($datetimeobj) {
-                                    $thisdate = $datetimeobj->format($dateformatdetails['phpdate']." H:i");
+                                if ($datetimeobj) {
+                                    $thisdate = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i");
                                 }
                             }
                             $aDataentryoutput .= App()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
@@ -1262,21 +1262,21 @@ class dataentry extends Survey_Common_Action
                                 ),
                                 'pluginOptions' => array(
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                    'allowInputToggle' =>true,
+                                    'allowInputToggle' => true,
                                     'showClear' => true,
                                     'tooltips' => array(
-                                        'clear'=> gT('Clear selection'),
-                                        'prevMonth'=> gT('Previous month'),
-                                        'nextMonth'=> gT('Next month'),
-                                        'selectYear'=> gT('Select year'),
-                                        'prevYear'=> gT('Previous year'),
-                                        'nextYear'=> gT('Next year'),
-                                        'selectDecade'=> gT('Select decade'),
-                                        'prevDecade'=> gT('Previous decade'),
-                                        'nextDecade'=> gT('Next decade'),
-                                        'prevCentury'=> gT('Previous century'),
-                                        'nextCentury'=> gT('Next century'),
-                                        'selectTime'=> gT('Select time')
+                                        'clear' => gT('Clear selection'),
+                                        'prevMonth' => gT('Previous month'),
+                                        'nextMonth' => gT('Next month'),
+                                        'selectYear' => gT('Select year'),
+                                        'prevYear' => gT('Previous year'),
+                                        'nextYear' => gT('Next year'),
+                                        'selectDecade' => gT('Select decade'),
+                                        'prevDecade' => gT('Previous decade'),
+                                        'nextDecade' => gT('Next decade'),
+                                        'prevCentury' => gT('Previous century'),
+                                        'nextCentury' => gT('Next century'),
+                                        'selectTime' => gT('Select time')
                                     ),
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
                                 )
@@ -1285,7 +1285,7 @@ class dataentry extends Survey_Common_Action
                         case "startlanguage":
                         default:
                             $aDataentryoutput .= CHtml::textField(
-                                $fname['fieldname'], 
+                                $fname['fieldname'],
                                 $idrow[$fname['fieldname']],
                                 array('class' => 'form-control'),
                             );
@@ -1480,7 +1480,7 @@ class dataentry extends Survey_Common_Action
                         $oReponse->$fieldname = null;
                         break;
                     }
-                    if(empty($thisvalue)) {
+                    if (empty($thisvalue)) {
                         if (Survey::model()->findByPk($surveyid)->isDateStamp) {
                             $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                         } else {
@@ -1488,6 +1488,7 @@ class dataentry extends Survey_Common_Action
                         }
                         break;
                     }
+                    // No break with submitdate set and completed as Y
                 case 'startdate':
                 case 'datestamp':
                     if (empty($thisvalue)) {
@@ -1495,11 +1496,11 @@ class dataentry extends Survey_Common_Action
                         break;
                     }
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                    $datetimeobj = DateTime::createFromFormat('!'.$dateformatdetails['phpdate'] . " H:i", $thisvalue);
+                    $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'] . " H:i", $thisvalue);
                     if ($datetimeobj) {
                         $oReponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
-                        Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"),htmlentities($thisvalue),$fieldname), 'warning');
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities($thisvalue), $fieldname), 'warning');
                         /* We get here : we need a valid value : NOT NULL in db or completed != "N" */
                         $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                     }
