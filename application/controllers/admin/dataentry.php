@@ -14,33 +14,33 @@
 */
 /*
 * We need this later:
-*  
-1 - Array dual scale
-5 - 5 point choice
-A - Array (5 point choice)
-B - Array (10 point choice)
-C - Array (Yes/No/Uncertain)
-D - Date
-E - Array (Increase, Same, Decrease)
-F - Array
-G - Gender
-H - Array by Column
-I - Language Switch
-K - Multiple numerical input
-L - List (Radio)
-M - Multiple choice
-N - Numerical input
-O - List With Comment
-P - Multiple choice with comments
-Q - Multiple short text
-R - Ranking
-S - Short free text
-T - Long free text
-U - Huge free text
-X - Boilerplate Question
-Y - Yes/No
-! - List (Dropdown)
-| - File Upload Question
+*
+* 1 - Array dual scale
+*5 - 5 point choice
+*A - Array (5 point choice)
+*B - Array (10 point choice)
+*C - Array (Yes/No/Uncertain)
+*D - Date
+*E - Array (Increase, Same, Decrease)
+*F - Array
+*G - Gender
+*H - Array by Column
+*I - Language Switch
+*K - Multiple numerical input
+*L - List (Radio)
+*M - Multiple choice
+*N - Numerical input
+*O - List With Comment
+*P - Multiple choice with comments
+*Q - Multiple short text
+*R - Ranking
+*S - Short free text
+*T - Long free text
+*U - Huge free text
+*X - Boilerplate Question
+*Y - Yes/No
+*! - List (Dropdown)
+*| - File Upload Question
 
 */
 
