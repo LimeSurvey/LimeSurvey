@@ -73,34 +73,34 @@ class RenderListDropdown extends QuestionBaseRenderer
                 ), true);
         }
 
-        if ($this->optCategorySeparator !== false) {
-            return $this->getOptGroupRows($sOptions);
-        }
-
         if ($this->hasOther && $this->otherPosition == self::OTHER_POS_START) {
             $sOptions .= $this->getOtherOption();
             $this->otherRendered = true;
         }
 
-        foreach ($this->aAnswerOptions[0] as $oAnsweroption) {
-            $opt_select = $this->mSessionValue == $oAnsweroption->code ? SELECTED : '';
+        if ($this->optCategorySeparator !== false) {
+            $sOptions .= $this->getOptGroupRows($sOptions);
+        } else {
+            foreach ($this->aAnswerOptions[0] as $oAnsweroption) {
+                $opt_select = $this->mSessionValue == $oAnsweroption->code ? SELECTED : '';
 
-            $_prefix = $this->bPrefix ? ++$this->iRowNum . ') ' : '';
-            
-            $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
-                'name' => $this->sSGQA,
-                'value' => $oAnsweroption->code,
-                'opt_select' => $opt_select,
-                'answer' => $_prefix . $oAnsweroption->answerl10ns[$this->sLanguage]->answer,
-                ), true);
+                $_prefix = $this->bPrefix ? ++$this->iRowNum . ') ' : '';
+                
+                $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
+                    'name' => $this->sSGQA,
+                    'value' => $oAnsweroption->code,
+                    'opt_select' => $opt_select,
+                    'answer' => $_prefix . $oAnsweroption->answerl10ns[$this->sLanguage]->answer,
+                    ), true);
 
-            if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $oAnsweroption->code) {
-                $sOptions .= $this->getOtherOption();
-                $this->otherRendered = true;
+                if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $oAnsweroption->code) {
+                    $sOptions .= $this->getOtherOption();
+                    $this->otherRendered = true;
+                }
             }
-        }
 
-        $sOptions .= $this->getNoAnswerOption();
+            $sOptions .= $this->getNoAnswerOption();
+        }
 
         if ($this->hasOther && !$this->otherRendered) {
             $sOptions .= $this->getOtherOption();
@@ -109,8 +109,9 @@ class RenderListDropdown extends QuestionBaseRenderer
         return $sOptions;
     }
 
-    public function getOptGroupRows($sOptions)
+    public function getOptGroupRows()
     {
+        $sOptions = '';
         $defaultopts = [];
         $optgroups = [];
 
@@ -135,6 +136,10 @@ class RenderListDropdown extends QuestionBaseRenderer
                     'opt_select' => ($this->mSessionValue == $optionarray['code'] ? SELECTED : ''),
                     'answer' => flattenText($optionarray['answer'])
                     ), true);
+                if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $optionarray['code']) {
+                    $sOptGroupOptions .= $this->getOtherOption();
+                    $this->otherRendered = true;
+                }
             }
 
             $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/optgroup', array(
@@ -150,6 +155,10 @@ class RenderListDropdown extends QuestionBaseRenderer
                 'opt_select' => ($this->mSessionValue == $optionarray['code'] ? SELECTED : ''),
                 'answer' => flattenText($optionarray['answer'])
                 ), true);
+            if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $optionarray['code']) {
+                $sOptions .= $this->getOtherOption();
+                $this->otherRendered = true;
+            }
         }
         return $sOptions;
     }
