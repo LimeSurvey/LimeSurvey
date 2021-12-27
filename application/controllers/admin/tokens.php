@@ -1666,6 +1666,7 @@ class tokens extends Survey_Common_Action
 
         if (!Yii::app()->request->getPost('submit')) {
             $aData['showCloseButton'] = true;
+            $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
             $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
             $this->_renderWrappedTemplate('token', array('ldapform'), $aData);
         } else {
