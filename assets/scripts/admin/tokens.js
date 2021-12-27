@@ -208,6 +208,18 @@ function validateAdditionalAttributes() {
     return valid;
 }
 
+function validateEmptyTokenForm() {
+    if ($('#edittoken').find('[name="subaction"]').val() != 'inserttoken') {
+        return true;
+    }
+    var isFormEmpty = $('#email').val() == '' && $('#firstname').val() == '' && $('#lastname').val() == '';
+    if (isFormEmpty) {
+        $('#emptyTokenConfirmationModal').modal('show');
+        return false;
+    }
+    return true;
+}
+
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
@@ -282,7 +294,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
     $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', startEditToken);
 
-    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event){
+    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
+        var eventParams = params || {};
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();
@@ -290,6 +303,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         }
         if (!validateAdditionalAttributes()) {
             event.preventDefault();
+            return false;
+        }
+        if (!eventParams.confirm_empty_save && !validateEmptyTokenForm()) {
             return false;
         }
     });
@@ -301,6 +317,13 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         if (validateAdditionalAttributes()) {
             submitEditToken();
         }
+    });
+
+    /**
+     * Confirm save empty token
+     */
+    $("#save-empty-token").off('click.token-save').on('click.token-save', function() {
+        $('#edittoken').trigger('submit', {confirm_empty_save: true});
     });
 
 
