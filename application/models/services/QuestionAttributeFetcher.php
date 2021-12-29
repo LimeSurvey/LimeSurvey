@@ -159,5 +159,4 @@ class QuestionAttributeFetcher
     {
         $this->setOption('advancedOnly', $advancedOnly);
     }
-
 }
