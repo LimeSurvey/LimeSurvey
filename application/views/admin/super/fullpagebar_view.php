@@ -17,7 +17,8 @@
                 <!-- Install Plugin Zip -->
                 <?php if (
                     isset($fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']) &&
-                    !$fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']
+                    !$fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode'] &&
+                    !Yii::app()->getConfig('disablePluginUpload')
                 ) : ?>
                     <a
                         href=''

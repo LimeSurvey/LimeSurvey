@@ -804,6 +804,8 @@ $config['pluginCoreList'] = [
 
 $config['pluginWhitelist'] = [];
 
+$config['disablePluginUpload'] = false;
+
 /* replaced in generated application/config/security.php if exist */
 $config['encryptionkeypair'] = '';
 $config['encryptionpublickey'] = '';

@@ -514,6 +514,8 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function upload()
     {
+        $this->checkUploadEnabled();
+
         $this->checkUpdatePermission();
 
         // Redirect back if demo mode is set.
@@ -546,6 +548,8 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function uploadConfirm()
     {
+        $this->checkUploadEnabled();
+
         $this->checkUpdatePermission();
 
         /** @var PluginInstaller */
@@ -593,6 +597,8 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function installUploadedPlugin()
     {
+        $this->checkUploadEnabled();
+
         $this->checkUpdatePermission();
 
         /** @var LSHttpRequest */
@@ -745,6 +751,18 @@ class PluginManagerController extends Survey_Common_Action
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+    }
+
+    /**
+     * Blocks action if plugin upload is disabled.
+     * @return void
+     */
+    protected function checkUploadEnabled()
+    {
+        if (Yii::app()->getConfig('disablePluginUpload')) {
+            Yii::app()->setFlashMessage(gT('Plugin upload is disabled'), 'error');
             $this->getController()->redirect($this->getPluginManagerUrl());
         }
     }
