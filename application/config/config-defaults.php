@@ -788,7 +788,7 @@ $config['max_execution_time'] = 1200;
 // This is useful when developing a theme, so changes to XML files are immediately applied without the need to uninstall and reinstall the theme.
 $config['force_xmlsettings_for_survey_rendering'] = false;
 
-$config['usePluginWhitelist'] = false;
+$config['usePluginWhitelist'] = true;
 
 $config['pluginCoreList'] = [
     'AuditLog',

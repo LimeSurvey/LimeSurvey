@@ -565,6 +565,11 @@ class PluginManagerController extends Survey_Common_Action
                 $this->errorAndRedirect(gT('Could not read plugin configuration file.'));
             }
 
+            if (!$installer->isWhitelisted()) {
+                $installer->abort();
+                $this->errorAndRedirect(gT('The plugin is not in the plugin whitelist.'));
+            }
+
             if (!$config->isCompatible()) {
                 $installer->abort();
                 $this->errorAndRedirect(gT('The plugin is not compatible with your version of LimeSurvey.'));
