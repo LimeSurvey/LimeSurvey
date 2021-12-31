@@ -170,17 +170,11 @@ class OptoutController extends LSYii_Controller
                 } else {
                     $sMessage = gT('You have been already removed from this survey.');
                 }
-                if (!empty($oToken->participant_id)) {
-                    //Participant also exists in central db
-                    $oParticipant = Participant::model()->findByPk($oToken->participant_id);
-                    if ($oParticipant->blacklisted == "Y") {
-                        $sMessage .= "<br />";
-                        $sMessage .= gT("You have already been removed from the central participants list for this site");
-                    } else {
-                        $oParticipant->blacklisted = 'Y';
-                        $oParticipant->save();
-                        $sMessage .= "<br />";
-                        $sMessage .= gT("You have been removed from the central participants list for this site");
+                $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
+                $blacklistResult = $blacklistHandler->addToBlacklist($oToken);
+                if ($blacklistResult->isBlacklisted()) {
+                    foreach ($blacklistResult->getMessages() as $blacklistMessage) {
+                        $sMessage .= "<br>" . $blacklistMessage;
                     }
                 }
             }
