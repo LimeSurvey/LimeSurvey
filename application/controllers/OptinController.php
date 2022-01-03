@@ -28,7 +28,7 @@ class OptinController extends LSYii_Controller
     public $layout = 'bare';
     public $defaultAction = 'tokens';
 
-    function actiontokens($surveyid, $token, $langcode = '')
+    function actiontokens($surveyid, $token, $langcode = '', $global = false)
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
@@ -70,6 +70,16 @@ class OptinController extends LSYii_Controller
                     $sMessage = gT('You are already a participant of this survey.');
                 } else {
                     $sMessage = gT('You have been already removed from this survey.');
+                }
+                // If the $global param is true and 'allowunblacklist' is enabled, remove from the blacklist
+                if ($global && Yii::app()->getConfig('allowunblacklist')) {
+                    $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
+                    $blacklistResult = $blacklistHandler->removeFromBlacklist($token);
+                    if (!$blacklistResult->isBlacklisted()) {
+                        foreach ($blacklistResult->getMessages() as $blacklistMessage) {
+                            $sMessage .= "<br>" . $blacklistMessage;
+                        }
+                    }
                 }
             }
         }

@@ -92,6 +92,10 @@ class OptoutController extends LSYii_Controller
         $this->optoutToken(true);
     }
 
+    /**
+     * Marks a token as "blacklisted" (opted out) on a survey, and on the CPDB if $blacklistGlobally is true.
+     * @param bool $blacklistGlobally   if true, the participant will also be blacklisted on the CPDB
+     */
     private function optoutToken($blacklistGlobally = false)
     {
         $surveyId = Yii::app()->request->getQuery('surveyid');
@@ -103,7 +107,7 @@ class OptoutController extends LSYii_Controller
 
         // If there is no survey id, redirect back to the default public page
         if (!$surveyId) {
-            $this->redirect(array('/'));
+            $this->redirect(['/']);
         }
 
         // Make sure it's an integer (protect from SQL injects)
@@ -124,7 +128,7 @@ class OptoutController extends LSYii_Controller
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         } else {
             LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
-            $token = Token::model($surveyId)->findByAttributes(array('token' => $accessToken));
+            $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);
 
             if (!isset($token)) {
                 $message = gT('You are not a participant in this survey.');
