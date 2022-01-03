@@ -56,9 +56,9 @@ class QuestionAttributeFetcher
         }
 
         // Sort by category
-        uasort($allAttributes, 'categorySort');
+        $sortedAttributes = $questionAttributeHelper->sortAttributesByCategory($allAttributes);
 
-        return $allAttributes;
+        return $sortedAttributes;
     }
 
     /**
@@ -159,4 +159,5 @@ class QuestionAttributeFetcher
     {
         $this->setOption('advancedOnly', $advancedOnly);
     }
+
 }

@@ -634,6 +634,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $aTokenReplacements["OPTOUTURL"] = App()->getController()
             ->createAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         $this->addUrlsPlaceholders("OPTOUT");
+        $aTokenReplacements["GLOBALOPTOUTURL"] = App()->getController()
+            ->createAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $this->addUrlsPlaceholders("GLOBALOPTOUT");
         $aTokenReplacements["OPTINURL"] = App()->getController()
             ->createAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         $this->addUrlsPlaceholders("OPTIN");

@@ -2857,7 +2857,7 @@ function exprmgr_sumifop($args)
 }
 
 /**
- * Find the closest matching numerical input values in a list an replace it by the
+ * Find the closest matching Numerical input values in a list an replace it by the
  * corresponding value within another list
  *
  * @author Johannes Weberhofer, 2013

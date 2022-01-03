@@ -138,7 +138,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[N]]></type>
     <title><![CDATA[minVal]]></title>
-    <question><![CDATA[For numerical input, what is the <b>minimum</b> allowable value?]]></question>
+    <question><![CDATA[For Numerical input, what is the <b>minimum</b> allowable value?]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -156,7 +156,7 @@
     <gid><![CDATA[297]]></gid>
     <type><![CDATA[N]]></type>
     <title><![CDATA[maxVal]]></title>
-    <question><![CDATA[For numerical input, what is the <b>maximum</b> allowable value?]]></question>
+    <question><![CDATA[For Numerical input, what is the <b>maximum</b> allowable value?]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
