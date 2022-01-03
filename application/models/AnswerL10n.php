@@ -24,7 +24,6 @@
  */
 class AnswerL10n extends LSActiveRecord
 {
-
     /** @inheritdoc */
     public function tableName()
     {

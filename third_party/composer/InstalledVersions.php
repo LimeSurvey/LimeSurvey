@@ -20,6 +20,8 @@ use Composer\Semver\VersionParser;
 
 
 
+
+
 class InstalledVersions
 {
 private static $installed = array (
@@ -30,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'f372bde4157481d0fcd0438dd483033d8068ce48',
+    'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -42,7 +44,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'f372bde4157481d0fcd0438dd483033d8068ce48',
+      'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
     ),
     'paragonie/constant_time_encoding' => 
     array (
@@ -82,12 +84,12 @@ private static $installed = array (
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.11',
-      'version' => '3.0.11.0',
+      'pretty_version' => '3.0.12',
+      'version' => '3.0.12.0',
       'aliases' => 
       array (
       ),
-      'reference' => '6e794226a35159eb06f355efe59a0075a16551dd',
+      'reference' => '89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb',
     ),
     'symfony/polyfill-ctype' => 
     array (
@@ -143,7 +145,6 @@ $packages = array();
 foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
-
 
 if (1 === \count($packages)) {
 return $packages[0];
@@ -336,6 +337,7 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
+
 
 
 

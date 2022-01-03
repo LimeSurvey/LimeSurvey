@@ -2,7 +2,6 @@
 
 class UserRoleController extends LSBaseController
 {
-
     /**
      * Run filters
      *

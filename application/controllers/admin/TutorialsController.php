@@ -5,7 +5,7 @@
  * Current project stance is only to serve pregenerated tutorials bay LimeSurvey Company.
  * @TODO: Make this user editable
  */
-class TutorialsController extends Survey_Common_Action
+class TutorialsController extends SurveyCommonAction
 {
     /**
      * @return string[] action filters
@@ -91,7 +91,7 @@ class TutorialsController extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate(
+        $this->renderWrappedTemplate(
             null,
             array('tutorials/create'),
             array(
@@ -119,7 +119,7 @@ class TutorialsController extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate(
+        $this->renderWrappedTemplate(
             null,
             array('tutorials/update'),
             array(
@@ -162,7 +162,7 @@ class TutorialsController extends Survey_Common_Action
         $data = array();
         $data['model'] = Tutorial::model();
         //App()->getClientScript()->registerPackage('surveymenufunctions');
-        $this->_renderWrappedTemplate(null, array('tutorials/index'), $data);
+        $this->renderWrappedTemplate(null, array('tutorials/index'), $data);
     }
 
     /**

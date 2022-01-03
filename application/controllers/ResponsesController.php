@@ -10,7 +10,7 @@ class ResponsesController extends LSBaseController
      * @param $controller
      * @param $id
      */
-    function __construct($controller, $id)
+    public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
 
@@ -38,7 +38,7 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * this is part of _renderWrappedTemplate implement in old responses.php
+     * this is part of renderWrappedTemplate implement in old responses.php
      *
      * @param string $view
      * @return bool
@@ -393,7 +393,7 @@ class ResponsesController extends LSBaseController
         $displaymode = App()->request->getPost('displaymode', null);
 
         if ($displaymode !== null) {
-            $this->set_grid_display($displaymode);
+            $this->setGridDisplay($displaymode);
         }
 
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
@@ -869,7 +869,7 @@ class ResponsesController extends LSBaseController
      * @param string $displaymode
      * @return void
      */
-    public function set_grid_display($displaymode): void
+    public function setGridDisplay($displaymode): void
     {
         if ($displaymode === 'extended') {
             App()->user->setState('responsesGridSwitchDisplayState', 'extended');

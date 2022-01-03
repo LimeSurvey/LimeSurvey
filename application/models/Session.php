@@ -24,7 +24,6 @@
  */
 class Session extends CActiveRecord
 {
-
     /** @var mixed $dataBackup to reset $data after save */
     private $dataBackup = null;
 

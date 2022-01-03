@@ -35,7 +35,6 @@
  */
 class SurveyLink extends LSActiveRecord
 {
-
     /**
      * @inheritdoc
      * @return SurveyLink
@@ -106,7 +105,7 @@ class SurveyLink extends LSActiveRecord
      *
      * @return bool|CDbDataReader
      */
-    function deleteTokenLink($aTokenIds, $surveyId)
+    public function deleteTokenLink($aTokenIds, $surveyId)
     {
         $query = "DELETE FROM " . SurveyLink::tableName()
             . " WHERE token_id IN (" . implode(", ", $aTokenIds) . ") AND survey_id=:survey_id";

@@ -66,7 +66,7 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
             targetField.readOnly=true;
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
-            var editorurl = '".$this->createUrl('admin/htmleditor_pop/sa/index')."/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/".App()->language."';
+            var editorurl = '".$this->createUrl('admin/htmleditorpop/sa/index')."/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/".App()->language."';
             
             // Override language direction if 'data-contents-dir' attribute is set in the target field
             if (targetField.hasAttribute('data-contents-dir')) {

@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'f372bde4157481d0fcd0438dd483033d8068ce48',
+    'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'f372bde4157481d0fcd0438dd483033d8068ce48',
+      'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
     ),
     'paragonie/constant_time_encoding' => 
     array (
@@ -58,12 +58,12 @@
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.11',
-      'version' => '3.0.11.0',
+      'pretty_version' => '3.0.12',
+      'version' => '3.0.12.0',
       'aliases' => 
       array (
       ),
-      'reference' => '6e794226a35159eb06f355efe59a0075a16551dd',
+      'reference' => '89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb',
     ),
     'symfony/polyfill-ctype' => 
     array (

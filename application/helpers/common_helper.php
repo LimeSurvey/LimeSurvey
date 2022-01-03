@@ -1159,7 +1159,7 @@ function validateEmailAddresses($aEmailAddressList)
 
 /**
  * This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
- * It can be used for the generation of statistics. Derived from Statistics_userController
+ * It can be used for the generation of statistics. Derived from StatisticsUserController
  * @param int $iSurveyID Id of the Survey in question
  * @param array $aFilters an array which is the result of a query in Questions model
  * @param string $sLanguage

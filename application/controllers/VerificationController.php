@@ -21,7 +21,7 @@
  */
 class VerificationController extends LSYii_Controller
 {
-    function actionImage($sid)
+    public function actionImage($sid)
     {
         $iSurveyID = (int) $sid;
         Yii::app()->loadHelper('database');

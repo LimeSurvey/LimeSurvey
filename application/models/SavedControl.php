@@ -29,7 +29,6 @@
  */
 class SavedControl extends LSActiveRecord
 {
-
     /**
      * Set defaults
      * @inheritdoc

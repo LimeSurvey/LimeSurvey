@@ -2,7 +2,6 @@
 
 class SurveymenuEntryData extends CFormModel
 {
-
     public $rawData = null;
     public $render = null;
     public $link = "surveyAdministration/rendersidemenulink";
@@ -28,9 +27,9 @@ class SurveymenuEntryData extends CFormModel
             $this->rawData = [];
         } else {
             $this->rawData = $oData;
-            $this->_parseDataAttribute();
+            $this->parseDataAttribute();
         }
-        $this->_parseLink();
+        $this->parseLink();
     }
 
     public function createOptionJson($addSurveyID = false, $addQuestionGroupId = false, $addQuestionId = false)
@@ -73,24 +72,23 @@ class SurveymenuEntryData extends CFormModel
         return  Yii::app()->getController()->createUrl($this->link, $this->linkData);
     }
 
-    private function _parseDataAttribute()
+    private function parseDataAttribute()
     {
 
-        $this->isActive = $this->_recursiveIssetWithDefault($this->rawData, array('render', 'isActive'), 0, $this->isActive);
-        $this->linkExternal = $this->_recursiveIssetWithDefault($this->rawData, array('render', 'link', 'external'), 0, $this->linkExternal);
-        $this->pjaxed = $this->_recursiveIssetWithDefault($this->rawData, array('render', 'link', 'pjaxed'), 0, $this->pjaxed);
-        $alinkData = $this->_recursiveIssetWithDefault($this->rawData, array('render', 'link', 'data'), 0, $this->linkData);
+        $this->isActive = $this->recursiveIssetWithDefault($this->rawData, array('render', 'isActive'), 0, $this->isActive);
+        $this->linkExternal = $this->recursiveIssetWithDefault($this->rawData, array('render', 'link', 'external'), 0, $this->linkExternal);
+        $this->pjaxed = $this->recursiveIssetWithDefault($this->rawData, array('render', 'link', 'pjaxed'), 0, $this->pjaxed);
+        $alinkData = $this->recursiveIssetWithDefault($this->rawData, array('render', 'link', 'data'), 0, $this->linkData);
 
         foreach ($alinkData as $key => $value) {
             if (is_array($value)) {
-                $value = $this->_getValueForLinkData($value);
+                $value = $this->getValueForLinkData($value);
             }
             $this->linkData[$key] = $value;
         }
     }
 
-
-    private function _parseLink()
+    private function parseLink()
     {
 
         if (empty($this->menuEntry->menu_link)) {
@@ -108,7 +106,7 @@ class SurveymenuEntryData extends CFormModel
      * @param callable $fallback
      * @return mixed|null
      */
-    private function _recursiveIssetWithDefault($variable, $checkArray, $i = 0, $fallback = null)
+    private function recursiveIssetWithDefault($variable, $checkArray, $i = 0, $fallback = null)
     {
         $default = null;
         if (is_array($variable) && array_key_exists($checkArray[$i], $variable)) {
@@ -119,15 +117,14 @@ class SurveymenuEntryData extends CFormModel
         if (!isset($default)) {
                     return $fallback;
         } elseif (count($checkArray) > $i + 1) {
-                    return $this->_recursiveIssetWithDefault($default, $checkArray, $i + 1, $fallback);
+                    return $this->recursiveIssetWithDefault($default, $checkArray, $i + 1, $fallback);
         } else {
                     return $default;
         }
     }
 
-    private function _getValueForLinkData($getDataPair)
+    private function getValueForLinkData($getDataPair)
     {
-
         $oSurvey = Survey::model()->findByPk($this->surveyid);
         list($type, $attribute) = $getDataPair;
         $oTypeObject = null;

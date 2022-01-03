@@ -3,9 +3,8 @@
 /**
  * Mostly for Ajax actions
  */
-class NotificationController extends Survey_Common_Action
+class NotificationController extends SurveyCommonAction
 {
-
     /**
      * List all notifications for a user
      */
@@ -16,7 +15,7 @@ class NotificationController extends Survey_Common_Action
         $data = array();
         $data['model'] = Notification::model();
 
-        $this->_renderWrappedTemplate(null, array('notification/index'), $data);
+        $this->renderWrappedTemplate(null, array('notification/index'), $data);
     }
 
     /**

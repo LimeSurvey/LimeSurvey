@@ -27,7 +27,6 @@
  */
 class UserGroup extends LSActiveRecord
 {
-
     /** @var integer $member_count  */
     public $member_count = null;
 

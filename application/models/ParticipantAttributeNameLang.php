@@ -24,7 +24,6 @@
  */
 class ParticipantAttributeNameLang extends LSActiveRecord
 {
-
     /** @inheritdoc */
     public function primaryKey()
     {

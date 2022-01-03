@@ -18,7 +18,6 @@
  */
 class Tutorial extends LSActiveRecord
 {
-
     /**
      * @return string the associated database table name
      */

@@ -268,10 +268,10 @@ abstract class Token extends Dynamic
             $iTokenLength = $this->getSurveyTokenLength();
         }
 
-        $this->token = $this->_generateRandomToken($iTokenLength);
+        $this->token = $this->generateRandomToken($iTokenLength);
         $counter = 0;
         while (!$this->validate(array('token'))) {
-            $this->token = $this->_generateRandomToken($iTokenLength);
+            $this->token = $this->generateRandomToken($iTokenLength);
             $counter++;
             // This is extremely unlikely.
             if ($counter > 50) {
@@ -286,7 +286,7 @@ abstract class Token extends Dynamic
      * @param integer $iTokenLength
      * @return string
      */
-    private function _generateRandomToken($iTokenLength)
+    private function generateRandomToken($iTokenLength)
     {
         $token = Yii::app()->securityManager->generateRandomString($iTokenLength);
         if ($token === false) {
@@ -356,7 +356,7 @@ abstract class Token extends Dynamic
         foreach ($tkresult as $tkrow) {
             $bIsValidToken = false;
             while ($bIsValidToken == false && $invalidtokencount < 50) {
-                $newtoken = $this->_generateRandomToken($iTokenLength);
+                $newtoken = $this->generateRandomToken($iTokenLength);
                 if (!isset($existingtokens[$newtoken])) {
                     $existingtokens[$newtoken] = true;
                     $bIsValidToken = true;

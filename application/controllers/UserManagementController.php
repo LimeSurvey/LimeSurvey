@@ -6,7 +6,6 @@
  */
 class UserManagementController extends LSBaseController
 {
-
     /**
      * @return array
      **/

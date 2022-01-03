@@ -35,7 +35,6 @@
  */
 class Template extends LSActiveRecord
 {
-
     /** @var array $aAllTemplatesDir cache for the method getAllTemplatesDirectories */
     public static $aAllTemplatesDir = null;
 
