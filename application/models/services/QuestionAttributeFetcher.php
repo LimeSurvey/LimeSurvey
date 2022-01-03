@@ -5,7 +5,6 @@ namespace LimeSurvey\Models\Services;
 /**
  * Fetches question attribute definitions from the available providers
  */
-
 class QuestionAttributeFetcher
 {
     /** @var \Question the question where the attributes should apply */
@@ -159,5 +158,4 @@ class QuestionAttributeFetcher
     {
         $this->setOption('advancedOnly', $advancedOnly);
     }
-
 }
