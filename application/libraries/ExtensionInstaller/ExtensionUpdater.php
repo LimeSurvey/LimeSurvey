@@ -19,7 +19,7 @@ use ExtensionConfig;
 
 /**
  * @since 2018-09-26
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 abstract class ExtensionUpdater
 {

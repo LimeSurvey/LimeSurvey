@@ -534,7 +534,7 @@ class SurveyCommonAction extends CAction
      * @param array $aData
      *
      * @since 2014-09-30
-     * @author Olle Haerstedt
+     * @author LimeSurvey GmbH
      */
     protected function organizequestionbar($aData)
     {
