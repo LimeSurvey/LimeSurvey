@@ -225,8 +225,9 @@ class QuestionAttributeHelper
      * @param array<string,mixed> $a    First question attribute to compare
      * @param array<string,mixed> $b    Second question attribute to compare
      * @return int
+     * @todo No state used, so no OOP needed, move to function at some point.
      */
-    private function categorySort($a, $b)
+    protected function categorySort($a, $b)
     {
         $categoryOrders = $this->getCategoryOrders();
         $orderA = isset($categoryOrders[$a['category']]) ? $categoryOrders[$a['category']] : PHP_INT_MAX;
