@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.30 (build 211222) to 3.27.31 (build 220104) January 3, 2022
+-Fixed issue [security] #17793: Non filtred HTML shown for Question Attribute (#2184) (Denis Chenu)
+-Fixed issue [security] #17792: XSS in token browse (#2186) (Denis Chenu)
+-Fixed issue #17794: Language attribute are not shown in question summary (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 3.27.29 (build 211214) to 3.27.30 (build 211222) December 21, 2021
 -Fixed issue #17527: Validate before using updateAll (#2159) (Gabriel Jenik)
 #Updated translation: Polish by elissa
