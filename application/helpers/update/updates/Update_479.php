@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use LsDefaultDataSets;
+
 class Update_479 extends DatabaseUpdateBase
 {
     public function up()
