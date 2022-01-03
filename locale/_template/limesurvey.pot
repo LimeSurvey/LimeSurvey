@@ -1,15 +1,15 @@
 # LimeSurvey LANGUAGE FILE.
-# Copyright (C) 2021 LimeSurvey
+# Copyright (C) 2022 LimeSurvey
 # This file is distributed under the same license as the LimeSurvey package.
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-12-20 12:49:55+00:00\n"
+"POT-Creation-Date: 2022-01-03 12:50:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2022-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
@@ -25,9 +25,9 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1567
 #: application/controllers/admin/dataentry.php:1568
 #: application/controllers/admin/dataentry.php:1569
-#: application/controllers/admin/questions.php:187
-#: application/controllers/admin/questions.php:217
-#: application/controllers/admin/questions.php:240
+#: application/controllers/admin/questions.php:190
+#: application/controllers/admin/questions.php:220
+#: application/controllers/admin/questions.php:243
 #: application/controllers/survey/index.php:95
 #: application/controllers/survey/index.php:314
 #: application/controllers/survey/index.php:335
@@ -414,14 +414,14 @@ msgstr ""
 #: application/controllers/admin/questiongroups.php:127
 #: application/controllers/admin/questiongroups.php:166
 #: application/controllers/admin/questiongroups.php:309
-#: application/controllers/admin/questions.php:111
-#: application/controllers/admin/questions.php:157
-#: application/controllers/admin/questions.php:256
-#: application/controllers/admin/questions.php:400
-#: application/controllers/admin/questions.php:450
-#: application/controllers/admin/questions.php:664
-#: application/controllers/admin/questions.php:1036
-#: application/controllers/admin/questions.php:1171
+#: application/controllers/admin/questions.php:114
+#: application/controllers/admin/questions.php:160
+#: application/controllers/admin/questions.php:259
+#: application/controllers/admin/questions.php:403
+#: application/controllers/admin/questions.php:453
+#: application/controllers/admin/questions.php:667
+#: application/controllers/admin/questions.php:1039
+#: application/controllers/admin/questions.php:1174
 #: application/controllers/admin/quotas.php:146
 #: application/controllers/admin/quotas.php:365
 #: application/controllers/admin/quotas.php:419
@@ -1021,12 +1021,12 @@ msgstr ""
 #: application/controllers/admin/questiongroups.php:286
 #: application/controllers/admin/questiongroups.php:418
 #: application/controllers/admin/questiongroups.php:592
-#: application/controllers/admin/questions.php:273
-#: application/controllers/admin/questions.php:435
-#: application/controllers/admin/questions.php:648
-#: application/controllers/admin/questions.php:693
-#: application/controllers/admin/questions.php:1026
-#: application/controllers/admin/questions.php:1199
+#: application/controllers/admin/questions.php:276
+#: application/controllers/admin/questions.php:438
+#: application/controllers/admin/questions.php:651
+#: application/controllers/admin/questions.php:696
+#: application/controllers/admin/questions.php:1029
+#: application/controllers/admin/questions.php:1202
 #: application/controllers/admin/surveyadmin.php:184
 #: application/controllers/admin/surveyadmin.php:249
 #: application/controllers/admin/surveyadmin.php:578
@@ -1063,7 +1063,7 @@ msgstr ""
 #: application/controllers/admin/SurveymenuController.php:157
 #: application/controllers/admin/SurveymenuEntryController.php:195
 #: application/controllers/admin/export.php:927
-#: application/controllers/admin/questions.php:145
+#: application/controllers/admin/questions.php:148
 #: application/controllers/admin/surveyadmin.php:1390
 #: application/controllers/admin/themeoptions.php:43
 #: application/controllers/admin/themeoptions.php:67
@@ -2379,7 +2379,7 @@ msgstr ""
 #: application/controllers/admin/labels.php:144
 #: application/controllers/admin/participantsaction.php:789
 #: application/controllers/admin/questiongroups.php:59
-#: application/controllers/admin/questions.php:197
+#: application/controllers/admin/questions.php:200
 #: application/controllers/admin/surveyadmin.php:355
 #: application/controllers/admin/surveyadmin.php:1350
 #: application/controllers/admin/surveyadmin.php:2441
@@ -3054,7 +3054,7 @@ msgstr ""
 
 #: application/controllers/admin/labels.php:379
 #: application/controllers/admin/questiongroups.php:264
-#: application/controllers/admin/questions.php:1437
+#: application/controllers/admin/questions.php:1440
 #: application/controllers/admin/responses.php:551
 #: application/controllers/admin/responses.php:741
 #: application/controllers/admin/saved.php:91
@@ -3568,17 +3568,17 @@ msgid "Sorry, this file is too large. Only files up to %01.2f MB are allowed."
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:64
-#: application/controllers/admin/questions.php:202
+#: application/controllers/admin/questions.php:205
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:79
-#: application/controllers/admin/questions.php:228
+#: application/controllers/admin/questions.php:231
 msgid "Unknown file extension"
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:124
-#: application/controllers/admin/questions.php:154
+#: application/controllers/admin/questions.php:157
 #: application/controllers/admin/surveypermission.php:478
 #: application/models/Permission.php:760
 #: application/views/admin/dataentry/vvimport.php:120
@@ -3617,13 +3617,13 @@ msgid "You can now %sadd a question%s in this group."
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:256
-#: application/controllers/admin/questions.php:1429
+#: application/controllers/admin/questions.php:1432
 #: application/core/Survey_Common_Action.php:151
 msgid "Invalid question id"
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:261
-#: application/controllers/admin/questions.php:1434
+#: application/controllers/admin/questions.php:1437
 msgid "You are not authorized to delete questions."
 msgstr ""
 
@@ -3666,93 +3666,93 @@ msgstr ""
 msgid "Question group successfully saved."
 msgstr ""
 
-#: application/controllers/admin/questions.php:186
-#: application/controllers/admin/questions.php:216
-#: application/controllers/admin/questions.php:239
+#: application/controllers/admin/questions.php:189
+#: application/controllers/admin/questions.php:219
+#: application/controllers/admin/questions.php:242
 msgid "Return to question list"
 msgstr ""
 
-#: application/controllers/admin/questions.php:206
+#: application/controllers/admin/questions.php:209
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr ""
 
-#: application/controllers/admin/questions.php:355
+#: application/controllers/admin/questions.php:358
 #: application/views/admin/survey/Question/editdefaultvalues_view.php:44
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:68
 msgid "<No default value>"
 msgstr ""
 
-#: application/controllers/admin/questions.php:355
+#: application/controllers/admin/questions.php:358
 msgid "Checked"
 msgstr ""
 
-#: application/controllers/admin/questions.php:622
+#: application/controllers/admin/questions.php:625
 #: application/core/LsDefaultDataSets.php:806
 msgid "Edit answer options"
 msgstr ""
 
-#: application/controllers/admin/questions.php:858
+#: application/controllers/admin/questions.php:861
 #: application/core/LsDefaultDataSets.php:733
 msgid "Edit subquestions"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1037
-#: application/controllers/admin/questions.php:1188
+#: application/controllers/admin/questions.php:1040
+#: application/controllers/admin/questions.php:1191
 #: application/controllers/admin/surveyadmin.php:1748
 #: application/views/admin/survey/Question/editQuestion_view.php:78
 msgid "Add a new question"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1188
+#: application/controllers/admin/questions.php:1191
 #: application/views/admin/survey/Question/editQuestion_view.php:80
 #: application/views/admin/survey/Question/editQuestion_view.php:396
 msgid "Copy question"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1188
+#: application/controllers/admin/questions.php:1191
 #: application/models/Question.php:851
 #: application/views/admin/survey/Question/editQuestion_view.php:82
 msgid "Edit question"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1411
+#: application/controllers/admin/questions.php:1414
 #: application/controllers/admin/surveyadmin.php:76
 msgid "Deleted"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1455
+#: application/controllers/admin/questions.php:1458
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1467
+#: application/controllers/admin/questions.php:1470
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1836
+#: application/controllers/admin/questions.php:1839
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1836
+#: application/controllers/admin/questions.php:1839
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1839
+#: application/controllers/admin/questions.php:1842
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1839
+#: application/controllers/admin/questions.php:1842
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1845
+#: application/controllers/admin/questions.php:1848
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1847
+#: application/controllers/admin/questions.php:1850
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1849
+#: application/controllers/admin/questions.php:1852
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_change_survey_group.php:20
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_select_survey_theme.php:24
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:114
@@ -3762,7 +3762,7 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1946
+#: application/controllers/admin/questions.php:1949
 #: application/views/admin/super/_question_explorer.php:74
 msgid "You can't add questions while the survey is active."
 msgstr ""
