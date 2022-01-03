@@ -1393,33 +1393,33 @@ class conditionsaction extends Survey_Common_Action
                     );
 
                     switch ($rows['type']) {
-                        //Array 5 buttons
+                        // Array 5 buttons
                         case "A":
                             for ($i = 1; $i <= 5; $i++) {
                                 $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], $i, $i);
                             }
                             break;
-                        //Array 10 buttons
+                        // Array 10 buttons
                         case "B":
                             for ($i = 1; $i <= 10; $i++) {
                                 $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], $i, $i);
                             }
                             break;
-                        //Array Y/N/NA
+                        // Array Y/N/NA
                         case "C":
                             $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "Y", gT("Yes"));
                             $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "U", gT("Uncertain"));
                             $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "N", gT("No"));
                             break;
-                            //Array >/=/<
+                            // Array >/=/<
                         case "E":
                             $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "I", gT("Increase"));
                             $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "S", gT("Same"));
                             $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "D", gT("Decrease"));
                             break;
-                            //Array Flexible Row
+                            // Array Flexible Row
                         case "F":
-                            //Array Flexible Column
+                            // Array Flexible Column
                         case "H":
                             $fresult = Answer::model()->with(array(
                             'answerl10ns' => array(
@@ -1443,7 +1443,7 @@ class conditionsaction extends Survey_Common_Action
                         $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "", gT("No answer"));
                     }
                 } //foreach
-            } elseif ($rows['type'] == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $rows['type'] == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
+            } elseif ($rows['type'] == Question::QT_COLON_ARRAY_NUMBERS || $rows['type'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
                 // Multiflexi
                 // Get the Y-Axis
                 $fquery = "SELECT sq.*, q.other, l10ns.question
@@ -1493,7 +1493,7 @@ class conditionsaction extends Survey_Common_Action
                 }
                 unset($x_axis);
             } elseif ($rows['type'] == "1") {
-                //Multi Scale
+                //Dual scale
                 $aresult = Question::model()->with(array(
                             'questionl10ns' => array(
                                 'condition' => 'questionl10ns.language = :lang',
@@ -1543,7 +1543,7 @@ class conditionsaction extends Survey_Common_Action
                         $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#1", "", gT("No answer"));
                     }
                 } //foreach
-            } elseif ($rows['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION || $rows['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+            } elseif ($rows['type'] == Question::QT_K_MULTIPLE_NUMERICAL || $rows['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
                 //Multi shorttext/numerical
                 $aresult = Question::model()->with('questionl10ns')->findAllByAttributes(array(
                     "parent_qid" => $rows['qid']
@@ -1559,7 +1559,7 @@ class conditionsaction extends Survey_Common_Action
                         $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "", gT("No answer"));
                     }
                 } //foreach
-            } elseif ($rows['type'] == Question::QT_R_RANKING_STYLE) {
+            } elseif ($rows['type'] == Question::QT_R_RANKING) {
                 //Answer Ranking
                 $aresult = Answer::model()->with(array(
                             'answerl10ns' => array(
@@ -1625,7 +1625,7 @@ class conditionsaction extends Survey_Common_Action
                             $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], " ", gT("No answer"));
                         }
                         break;
-                    case Question::QT_G_GENDER_DROPDOWN: //Gender
+                    case Question::QT_G_GENDER: //Gender
                         $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], "F", gT("Female"));
                         $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'], "M", gT("Male"));
                         // Only Show No-Answer if question is not mandatory

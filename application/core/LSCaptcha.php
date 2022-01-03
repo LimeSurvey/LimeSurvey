@@ -3,7 +3,7 @@
 /**
  * CCaptcha class file.
  *
- * @author Markus Flür <markus.fluer@limesurvey.org>
+ * @author LimeSurvey GmbH <info@limesurvey.org>
  * @link http://www.limesurvey.org/
  * @copyright 2008-2018 LimeSurvey GmbH
  * @license GPLv3

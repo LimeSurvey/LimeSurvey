@@ -994,7 +994,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate']);
                 }
                 break;
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_K_MULTIPLE_NUMERICAL:
             case Question::QT_N_NUMERICAL:
                 // Fix the value : Value is stored as decimal in SQL
                 if ($sValue[0] === ".") {
@@ -1011,7 +1011,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:
             case Question::QT_O_LIST_WITH_COMMENT:
             case Question::QT_I_LANGUAGE:
-            case Question::QT_R_RANKING_STYLE:
+            case Question::QT_R_RANKING:
                 $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
@@ -1037,7 +1037,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                         $this_answer = gT("No answer", null, $sLanguage);
                 }
                 break;
-            case Question::QT_G_GENDER_DROPDOWN:
+            case Question::QT_G_GENDER:
                 switch ($sValue) {
                     case "M":
                         $this_answer = gT("Male", null, $sLanguage);
@@ -1062,7 +1062,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                         break;
                 }
                 break;
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
                 switch ($sValue) {
                     case "I":
                         $this_answer = gT("Increase", null, $sLanguage);
@@ -1075,9 +1075,9 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                         break;
                 }
                 break;
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW:
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
-            case Question::QT_1_ARRAY_MULTISCALE:
+            case Question::QT_F_ARRAY:
+            case Question::QT_H_ARRAY_COLUMN:
+            case Question::QT_1_ARRAY_DUAL:
                 if (isset($fields['scale_id'])) {
                     $iScaleID = $fields['scale_id'];
                 } else {
@@ -1177,8 +1177,8 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
             $sLanguage = $oSurvey->language;
         }
         switch ($flt['type']) {
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
-            case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
+            case Question::QT_K_MULTIPLE_NUMERICAL: // Multiple Numerical
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple short text
                 //get answers
                 $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
 
@@ -1188,12 +1188,12 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                     $allfields[] = $myfield2;
                 }
                 break;
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
-            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // ARRAY OF 10 POINT CHOICE QUESTIONS
+            case Question::QT_A_ARRAY_5_POINT: // Array of 5 point choice questions
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array of 10 point choice questions
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // ARRAY OF Increase/Same/Decrease QUESTIONS
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW: // FlEXIBLE ARRAY
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: // ARRAY (By Column)
+            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array of Increase/Same/Decrease questions
+            case Question::QT_F_ARRAY: // Array
+            case Question::QT_H_ARRAY_COLUMN: // Array (By Column)
                 //get answers
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
 
@@ -1210,8 +1210,8 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 $myfield = "T$myfield";
                 $allfields[] = $myfield;
                 break;
-            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
-            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
+            case Question::QT_SEMICOLON_ARRAY_TEXT:  // Array (Text)
+            case Question::QT_COLON_ARRAY_NUMBERS:  // Array (Numbers)
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
 
                 foreach ($result as $row) {
@@ -1222,7 +1222,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                     }
                 }
                 break;
-            case Question::QT_R_RANKING_STYLE: //RANKING
+            case Question::QT_R_RANKING: // Ranking
                 //get some answers
                 $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
                 //get number of answers
@@ -1236,9 +1236,9 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-            case Question::QT_X_BOILERPLATE_QUESTION:  //This is a boilerplate question and it has no business in this script
+            case Question::QT_X_TEXT_DISPLAY:  //This is a boilerplate question and it has no business in this script
                 break;
-            case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
+            case Question::QT_1_ARRAY_DUAL: // Dual scale
                 //get answers
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
                 //loop through answers
@@ -1484,7 +1484,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
-        if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING_STYLE && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
+        if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
             if (isset($fieldmap[$fieldname])) {
                 $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
             }
@@ -1631,7 +1631,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
             unset($answerset);
-        } elseif ($arow['type'] == Question::QT_1_ARRAY_MULTISCALE) {
+        } elseif ($arow['type'] == Question::QT_1_ARRAY_DUAL) {
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow) {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
@@ -1683,7 +1683,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     // TODO SQrelevance for different scales? $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                 }
             }
-        } elseif ($arow['type'] == Question::QT_R_RANKING_STYLE) {
+        } elseif ($arow['type'] == Question::QT_R_RANKING) {
             // Sub question by answer number OR attribute
             $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'])));
             $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
@@ -2049,16 +2049,6 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName, $lan
     } else {
         return '';
     }
-}
-
-
-function categorySort($a, $b)
-{
-    $result = strnatcasecmp($a['category'], $b['category']);
-    if ($result == 0) {
-        $result = $a['sortorder'] - $b['sortorder'];
-    }
-    return $result;
 }
 
 function questionTitleSort($a, $b)

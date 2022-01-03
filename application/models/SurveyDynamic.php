@@ -936,7 +936,7 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['answervalues'][1] = $sAnswerText;
         }
 
-        // array dual scale headers
+        // Array dual scale headers
         if (isset($attributes['dualscale_headerA']) && !empty($attributes['dualscale_headerA'][$sLanguage])) {
             $aQuestionAttributes['dualscale_header'][0] =  $attributes['dualscale_headerA'][$sLanguage];
         }

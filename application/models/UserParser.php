@@ -3,7 +3,7 @@
 /**
  * Importing class to get users from a CSV file
  *
- * @author Markus Flür <markus.fluer@limesurvey.org>
+ * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
  */
 class UserParser

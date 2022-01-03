@@ -21,7 +21,7 @@ use Exception;
  * Central Yii component to add and retrieve version fetcher strategies.
  *
  * @since 2018-09-26
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 class VersionFetcherServiceLocator
 {
