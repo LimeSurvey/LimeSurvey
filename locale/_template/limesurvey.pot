@@ -1,15 +1,15 @@
 # LimeSurvey LANGUAGE FILE.
-# Copyright (C) 2021 LimeSurvey
+# Copyright (C) 2022 LimeSurvey
 # This file is distributed under the same license as the LimeSurvey package.
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-12-20 16:40:15+00:00\n"
+"POT-Creation-Date: 2022-01-03 12:51:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2022-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
@@ -1421,7 +1421,7 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:137
 #: application/helpers/common_helper.php:1342
-#: application/helpers/common_helper.php:2875
+#: application/helpers/common_helper.php:2865
 #: application/models/SurveyLink.php:234 application/models/Token.php:96
 #: application/models/TokenDynamic.php:673
 #: application/views/admin/dataentry/caption_view.php:36
@@ -1429,7 +1429,7 @@ msgid "Access code"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:138
-#: application/helpers/common_helper.php:2855
+#: application/helpers/common_helper.php:2845
 #: application/models/Participant.php:256
 #: application/models/ParticipantShare.php:232 application/models/Token.php:92
 #: application/models/TokenDynamic.php:639
@@ -1442,7 +1442,7 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:139
-#: application/helpers/common_helper.php:2860
+#: application/helpers/common_helper.php:2850
 #: application/models/Participant.php:257
 #: application/models/ParticipantShare.php:227 application/models/Token.php:93
 #: application/models/TokenDynamic.php:647
@@ -2264,9 +2264,9 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1088
 #: application/controllers/admin/printablesurvey.php:285
 #: application/controllers/admin/printablesurvey.php:315
-#: application/controllers/admin/printablesurvey.php:835
-#: application/controllers/admin/printablesurvey.php:919
-#: application/controllers/admin/printablesurvey.php:932
+#: application/controllers/admin/printablesurvey.php:838
+#: application/controllers/admin/printablesurvey.php:923
+#: application/controllers/admin/printablesurvey.php:937
 #: application/controllers/admin/quotas.php:602
 #: application/controllers/admin/tokens.php:2259
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:204
@@ -2420,9 +2420,9 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1078
 #: application/controllers/admin/printablesurvey.php:282
 #: application/controllers/admin/printablesurvey.php:309
-#: application/controllers/admin/printablesurvey.php:834
-#: application/controllers/admin/printablesurvey.php:917
-#: application/controllers/admin/printablesurvey.php:930
+#: application/controllers/admin/printablesurvey.php:837
+#: application/controllers/admin/printablesurvey.php:921
+#: application/controllers/admin/printablesurvey.php:935
 #: application/controllers/admin/quotas.php:601
 #: application/controllers/admin/tokens.php:2257
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:173
@@ -3298,8 +3298,8 @@ msgstr ""
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:76
 #: application/helpers/common_helper.php:180
 #: application/helpers/common_helper.php:650
-#: application/helpers/common_helper.php:4410
-#: application/helpers/common_helper.php:4461
+#: application/helpers/common_helper.php:4400
+#: application/helpers/common_helper.php:4451
 #: application/helpers/qanda_helper.php:723
 #: application/helpers/qanda_helper.php:1318
 #: application/helpers/qanda_helper.php:3775
@@ -4572,8 +4572,8 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1411
 #: application/controllers/admin/dataentry.php:1083
 #: application/controllers/admin/printablesurvey.php:312
-#: application/controllers/admin/printablesurvey.php:918
-#: application/controllers/admin/printablesurvey.php:931
+#: application/controllers/admin/printablesurvey.php:922
+#: application/controllers/admin/printablesurvey.php:936
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:217
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:245
 #: application/helpers/admin/statistics_helper.php:1194
@@ -4589,8 +4589,8 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1416
 #: application/controllers/admin/printablesurvey.php:322
-#: application/controllers/admin/printablesurvey.php:947
-#: application/controllers/admin/printablesurvey.php:959
+#: application/controllers/admin/printablesurvey.php:952
+#: application/controllers/admin/printablesurvey.php:965
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:222
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:250
 #: application/helpers/admin/statistics_helper.php:1209
@@ -4606,8 +4606,8 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1417
 #: application/controllers/admin/printablesurvey.php:328
-#: application/controllers/admin/printablesurvey.php:948
-#: application/controllers/admin/printablesurvey.php:960
+#: application/controllers/admin/printablesurvey.php:953
+#: application/controllers/admin/printablesurvey.php:966
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:226
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:254
 #: application/helpers/admin/statistics_helper.php:1210
@@ -4623,8 +4623,8 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1418
 #: application/controllers/admin/printablesurvey.php:325
-#: application/controllers/admin/printablesurvey.php:949
-#: application/controllers/admin/printablesurvey.php:961
+#: application/controllers/admin/printablesurvey.php:954
+#: application/controllers/admin/printablesurvey.php:967
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:230
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:258
 #: application/helpers/admin/statistics_helper.php:1211
@@ -4921,8 +4921,8 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:871
 #: application/helpers/LayoutHelper.php:136
 #: application/helpers/common_helper.php:652
-#: application/helpers/common_helper.php:4412
-#: application/helpers/common_helper.php:4463
+#: application/helpers/common_helper.php:4402
+#: application/helpers/common_helper.php:4453
 #: application/helpers/questionHelper.php:1201
 #: application/views/admin/dataentry/content_view.php:250
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:23
@@ -5074,12 +5074,12 @@ msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2248
-#: application/controllers/admin/printablesurvey.php:1466
+#: application/controllers/admin/printablesurvey.php:1472
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:2257
-#: application/controllers/admin/printablesurvey.php:1479
+#: application/controllers/admin/printablesurvey.php:1485
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
 
@@ -5749,7 +5749,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:583
 #: application/controllers/admin/printablesurvey.php:601
 #: application/controllers/admin/printablesurvey.php:660
-#: application/controllers/admin/printablesurvey.php:833
+#: application/controllers/admin/printablesurvey.php:836
 #: application/controllers/admin/themes.php:1172
 msgid "Please choose *only one* of the following:"
 msgstr ""
@@ -5775,11 +5775,11 @@ msgstr ""
 msgid "Please choose *all* that apply:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:733
+#: application/controllers/admin/printablesurvey.php:734
 msgid "Please choose all that apply and provide a comment:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:748
+#: application/controllers/admin/printablesurvey.php:750
 #: application/core/QuestionTypes/ListDropdown/RenderListDropdown.php:31
 #: application/core/QuestionTypes/ListRadio/RenderListRadio.php:36
 #: application/core/QuestionTypes/MultipleChoice/RenderMultipleChoice.php:121
@@ -5796,37 +5796,37 @@ msgstr ""
 msgid "Other:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:769
+#: application/controllers/admin/printablesurvey.php:771
 msgid "Please write your answer(s) here:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:793
-#: application/controllers/admin/printablesurvey.php:800
-#: application/controllers/admin/printablesurvey.php:809
-#: application/controllers/admin/printablesurvey.php:827
+#: application/controllers/admin/printablesurvey.php:796
+#: application/controllers/admin/printablesurvey.php:803
+#: application/controllers/admin/printablesurvey.php:812
+#: application/controllers/admin/printablesurvey.php:830
 msgid "Please write your answer here:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:842
-#: application/controllers/admin/printablesurvey.php:885
-#: application/controllers/admin/printablesurvey.php:912
-#: application/controllers/admin/printablesurvey.php:942
-#: application/controllers/admin/printablesurvey.php:1083
-#: application/controllers/admin/printablesurvey.php:1150
-#: application/controllers/admin/printablesurvey.php:1243
+#: application/controllers/admin/printablesurvey.php:845
+#: application/controllers/admin/printablesurvey.php:888
+#: application/controllers/admin/printablesurvey.php:916
+#: application/controllers/admin/printablesurvey.php:947
+#: application/controllers/admin/printablesurvey.php:1088
+#: application/controllers/admin/printablesurvey.php:1155
+#: application/controllers/admin/printablesurvey.php:1249
 msgid "Please choose the appropriate response for each item:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1289
+#: application/controllers/admin/printablesurvey.php:1295
 #: tmp/runtime/twig_cache/dc/dc0c055c37596ced5cb2b8b6309d180fa3cd143d86826f7ed9a1a8ac09d7c6e6.php:118
 msgid "There are %s questions in this survey."
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1329
+#: application/controllers/admin/printablesurvey.php:1335
 msgid "Please choose at least %s items."
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1332
+#: application/controllers/admin/printablesurvey.php:1338
 msgid "Please choose no more than %s items."
 msgstr ""
 
@@ -7161,7 +7161,11 @@ msgstr ""
 msgid "Invalid email address."
 msgstr ""
 
-#: application/core/LSYii_ImageValidator.php:76
+#: application/core/LSYii_ImageValidator.php:78
+msgid "Fileinfo extension wasn't found. Couldn't validate the image format of the file is supported."
+msgstr ""
+
+#: application/core/LSYii_ImageValidator.php:81
 msgid "This file is not a supported image format - only the following ones are allowed: %s"
 msgstr ""
 
@@ -7641,7 +7645,7 @@ msgstr ""
 #: application/views/installer/dbconfig_view.php:101
 #: application/views/installer/license_view.php:16
 #: application/views/installer/populatedb_view.php:20
-#: application/views/installer/precheck_view.php:149
+#: application/views/installer/precheck_view.php:154
 #: application/views/survey/system/actionButton/movePrevious.php:11
 #: tmp/runtime/twig_cache/54/54767bc83fd1ad5e822f1da633ba14e882af32972d7a15147d5eb2477f0f4ecc.php:130
 #: tmp/runtime/twig_cache/d5/d503e1bd048930f4e5245735b4feaa9dfbc371848916c3c6b6ece1fa5978f9b9.php:72
@@ -7653,7 +7657,7 @@ msgstr ""
 #: application/views/admin/quotas/newanswertwo_view.php:43
 #: application/views/installer/dbconfig_view.php:106
 #: application/views/installer/optconfig_view.php:82
-#: application/views/installer/precheck_view.php:157
+#: application/views/installer/precheck_view.php:162
 #: application/views/survey/system/actionButton/moveNext.php:11
 #: tmp/runtime/twig_cache/d5/d503e1bd048930f4e5245735b4feaa9dfbc371848916c3c6b6ece1fa5978f9b9.php:143
 msgid "Next"
@@ -10408,11 +10412,11 @@ msgstr ""
 msgid "Survey response %d"
 msgstr ""
 
-#: application/helpers/admin/htmleditor_helper.php:200
+#: application/helpers/admin/htmleditor_helper.php:203
 msgid "Start HTML editor in a popup window"
 msgstr ""
 
-#: application/helpers/admin/htmleditor_helper.php:214
+#: application/helpers/admin/htmleditor_helper.php:217
 msgid "Open editor"
 msgstr ""
 
@@ -11012,11 +11016,11 @@ msgstr ""
 msgid "Question time"
 msgstr ""
 
-#: application/helpers/common_helper.php:2201
+#: application/helpers/common_helper.php:2191
 msgid "SMTP debug output:"
 msgstr ""
 
-#: application/helpers/common_helper.php:2865
+#: application/helpers/common_helper.php:2855
 #: application/models/Participant.php:258
 #: application/models/ParticipantShare.php:237
 #: application/models/SavedControl.php:186 application/models/Token.php:94
@@ -11027,181 +11031,181 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:2870 application/models/Token.php:95
+#: application/helpers/common_helper.php:2860 application/models/Token.php:95
 #: application/models/TokenDynamic.php:664
 msgid "Email status"
 msgstr ""
 
-#: application/helpers/common_helper.php:2880 application/models/Token.php:97
+#: application/helpers/common_helper.php:2870 application/models/Token.php:97
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:2885 application/models/Token.php:99
+#: application/helpers/common_helper.php:2875 application/models/Token.php:99
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2890 application/models/Token.php:100
+#: application/helpers/common_helper.php:2880 application/models/Token.php:100
 msgid "Last reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2895 application/models/Token.php:101
+#: application/helpers/common_helper.php:2885 application/models/Token.php:101
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:2900 application/models/Token.php:103
+#: application/helpers/common_helper.php:2890 application/models/Token.php:103
 #: application/models/TokenDynamic.php:724
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:4241
+#: application/helpers/common_helper.php:4231
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:4567
+#: application/helpers/common_helper.php:4557
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4568
+#: application/helpers/common_helper.php:4558
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:4569
+#: application/helpers/common_helper.php:4559
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4570
+#: application/helpers/common_helper.php:4560
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:4571
+#: application/helpers/common_helper.php:4561
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4572
+#: application/helpers/common_helper.php:4562
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4573
+#: application/helpers/common_helper.php:4563
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4574
+#: application/helpers/common_helper.php:4564
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4575
+#: application/helpers/common_helper.php:4565
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4576
+#: application/helpers/common_helper.php:4566
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4577
+#: application/helpers/common_helper.php:4567
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4578
+#: application/helpers/common_helper.php:4568
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4579
+#: application/helpers/common_helper.php:4569
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4580
+#: application/helpers/common_helper.php:4570
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4581
+#: application/helpers/common_helper.php:4571
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:4582
+#: application/helpers/common_helper.php:4572
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4583
+#: application/helpers/common_helper.php:4573
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4584
+#: application/helpers/common_helper.php:4574
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4585
+#: application/helpers/common_helper.php:4575
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:4586
+#: application/helpers/common_helper.php:4576
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:4587
+#: application/helpers/common_helper.php:4577
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4588
+#: application/helpers/common_helper.php:4578
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4589
+#: application/helpers/common_helper.php:4579
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4590
+#: application/helpers/common_helper.php:4580
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4591
+#: application/helpers/common_helper.php:4581
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4592
+#: application/helpers/common_helper.php:4582
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4593
+#: application/helpers/common_helper.php:4583
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4594
+#: application/helpers/common_helper.php:4584
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4595
+#: application/helpers/common_helper.php:4585
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4596
+#: application/helpers/common_helper.php:4586
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4597
+#: application/helpers/common_helper.php:4587
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4598
+#: application/helpers/common_helper.php:4588
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:4599
+#: application/helpers/common_helper.php:4589
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:4600
+#: application/helpers/common_helper.php:4590
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4601
+#: application/helpers/common_helper.php:4591
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4602
+#: application/helpers/common_helper.php:4592
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4606
+#: application/helpers/common_helper.php:4596
 msgid "(Automatic)"
 msgstr ""
 
@@ -14363,7 +14367,7 @@ msgid "Plugin error"
 msgstr ""
 
 #: application/libraries/PluginManager/PluginBase.php:486
-#: application/models/InstallerConfigForm.php:453
+#: application/models/InstallerConfigForm.php:458
 #: application/views/admin/checkintegrity/check_view.php:24
 #: application/views/admin/checkintegrity/check_view.php:73
 #: application/views/admin/checkintegrity/check_view.php:88
@@ -14524,83 +14528,83 @@ msgstr ""
 msgid "No XML config loaded"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:164
+#: application/models/InstallerConfigForm.php:167
 msgid "Either admin login name, password or email is empty"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:168
+#: application/models/InstallerConfigForm.php:171
 msgid "Passwords do not match!"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:176
+#: application/models/InstallerConfigForm.php:179
 msgid "Database type"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:177
+#: application/models/InstallerConfigForm.php:180
 msgid "Database location"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:178
+#: application/models/InstallerConfigForm.php:181
 msgid "Database name"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:179
+#: application/models/InstallerConfigForm.php:182
 msgid "Database user"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:180
+#: application/models/InstallerConfigForm.php:183
 msgid "Database password"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:181
+#: application/models/InstallerConfigForm.php:184
 msgid "Table prefix"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:182
+#: application/models/InstallerConfigForm.php:185
 msgid "MySQL database engine type"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:189
+#: application/models/InstallerConfigForm.php:192
 msgid "The type of your database management system"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:190
+#: application/models/InstallerConfigForm.php:193
 msgid "Set this to the IP/net location of your database server. In most cases \"localhost\" will work. You can force Unix socket with complete socket path."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:190
+#: application/models/InstallerConfigForm.php:193
 msgid "If your database is using a custom port attach it using a colon. Example: db.host.com:5431"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:191
+#: application/models/InstallerConfigForm.php:194
 msgid "If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:192
+#: application/models/InstallerConfigForm.php:195
 msgid "Your database server user name. In most cases \"root\" will work."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:193
+#: application/models/InstallerConfigForm.php:196
 msgid "Your database server password."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:194
+#: application/models/InstallerConfigForm.php:197
 msgid "If your database is shared, recommended prefix is \"lime_\" else you can leave this setting blank."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:279
+#: application/models/InstallerConfigForm.php:284
 msgid "The database engine type must be set for MySQL"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:292
+#: application/models/InstallerConfigForm.php:297
 msgid "You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:295
+#: application/models/InstallerConfigForm.php:300
 msgid "Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for LimeSurvey!"
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:452
+#: application/models/InstallerConfigForm.php:457
 msgid "Try again! Connection with database failed."
 msgstr ""
 
@@ -16310,7 +16314,7 @@ msgstr ""
 msgid "Here are your new credentials."
 msgstr ""
 
-#: application/models/services/QuestionAttributeFetcher.php:42
+#: application/models/services/QuestionAttributeFetcher.php:41
 msgid "No question specified."
 msgstr ""
 
@@ -16655,7 +16659,7 @@ msgstr ""
 #: application/views/admin/checkintegrity/fix_view.php:30
 #: application/views/admin/update/updater/steps/_check_local_errors.php:173
 #: application/views/admin/update/updater/steps/_fileSystem.php:42
-#: application/views/installer/precheck_view.php:152
+#: application/views/installer/precheck_view.php:157
 msgid "Check again"
 msgstr ""
 
@@ -16803,7 +16807,7 @@ msgstr ""
 
 #: application/views/admin/conditions/includes/navigator.php:13
 #: application/views/installer/precheck_view.php:25
-#: application/views/installer/precheck_view.php:108
+#: application/views/installer/precheck_view.php:113
 msgid "Current"
 msgstr ""
 
@@ -23085,58 +23089,62 @@ msgid "PHP mbstring library"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:68
-msgid "PHP zlib library"
+msgid "PHP fileinfo library"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:73
-msgid "PHP/PECL JSON library"
+msgid "PHP zlib library"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:78
+msgid "PHP/PECL JSON library"
+msgstr ""
+
 #: application/views/installer/precheck_view.php:83
 #: application/views/installer/precheck_view.php:88
+#: application/views/installer/precheck_view.php:93
 msgid "directory"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:79
 #: application/views/installer/precheck_view.php:84
 #: application/views/installer/precheck_view.php:89
+#: application/views/installer/precheck_view.php:94
 msgid "Found & writable"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:93
+#: application/views/installer/precheck_view.php:98
 msgid "Session writable"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:102
+#: application/views/installer/precheck_view.php:107
 msgid "Optional modules"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:107
+#: application/views/installer/precheck_view.php:112
 msgid "Recommended"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:113
+#: application/views/installer/precheck_view.php:118
 msgid "PHP GD library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:117
+#: application/views/installer/precheck_view.php:122
 msgid "The GD extension found doesn't support JPEG"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:124
+#: application/views/installer/precheck_view.php:129
 msgid "PHP LDAP library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:129
+#: application/views/installer/precheck_view.php:134
 msgid "PHP zip library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:134
+#: application/views/installer/precheck_view.php:139
 msgid "PHP imap library"
 msgstr ""
 
-#: application/views/installer/precheck_view.php:140
+#: application/views/installer/precheck_view.php:145
 msgid "PHP Sodium library [data encryption]"
 msgstr ""
 
