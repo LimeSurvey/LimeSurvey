@@ -230,8 +230,8 @@ class TokenDynamic extends LSActiveRecord
     public function findUninvitedIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
         $tokens = $this->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
-        $ids = array_map(function ($item) { 
-            return $item->tid; 
+        $ids = array_map(function ($item) {
+            return $item->tid;
         }, $tokens);
         return $ids;
     }
