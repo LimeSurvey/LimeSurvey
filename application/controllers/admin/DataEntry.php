@@ -14,7 +14,7 @@
 */
 /*
 * We need this later:
-*  
+*
 1 - Array dual scale
 5 - 5 point choice
 A - Array (5 point choice)
@@ -1121,7 +1121,7 @@ class DataEntry extends SurveyCommonAction
                             $fname = prev($fnames);
                             $aDataentryoutput .= "</table>\n";
                             break;
-                        case Question::QT_F_ARRAY: // Array 
+                        case Question::QT_F_ARRAY: // Array
                         case Question::QT_H_ARRAY_COLUMN:
                         case Question::QT_1_ARRAY_DUAL:
                             $aDataentryoutput .= "<table class='table'>\n";

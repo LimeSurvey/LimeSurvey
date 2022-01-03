@@ -48,7 +48,7 @@ class Statistics extends SurveyCommonAction
          *  C - Array (Yes/No/Uncertain)
          *  D - Date
          *  E - Array (Increase, Same, Decrease)
-         *  F - Array 
+         *  F - Array
          *  G - Gender
          *  H - Array by Column
          *  I - Language Switch
