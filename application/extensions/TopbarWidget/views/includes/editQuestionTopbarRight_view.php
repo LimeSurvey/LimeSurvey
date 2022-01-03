@@ -19,7 +19,7 @@
 
 <!-- Close -->
 <?php if(!empty($showCloseButton)): ?>
-    <a class="btn btn-default" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;"  tabindex="1">
+    <a class="btn btn-default" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
         <span class="fa fa-close"></span>
         <?php eT("Close");?>
     </a>
@@ -32,7 +32,6 @@
         class="btn btn-default"
         role="button"
         onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'overview');"
-        tabindex="1"
     >
         <i class="fa fa-check-square"></i>
         <?php eT("Save and close");?>
@@ -49,7 +48,6 @@
             data-save-with-ajax="true"
         <?php endif; ?>
         onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
-        tabindex="1"
     >
         <i class="fa fa-check"></i>
         <?php eT("Save");?>
