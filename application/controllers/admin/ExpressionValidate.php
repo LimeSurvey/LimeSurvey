@@ -197,6 +197,9 @@ class ExpressionValidate extends Survey_Common_Action
                 $aReplacement["OPTOUTURL"] = gT("URL for a respondent to opt-out of this survey");
                 $aReplacement["GLOBALOPTOUTURL"] = gT("URL for a respondent to opt-out of central participant list for this site");
                 $aReplacement["OPTINURL"] = gT("URL for a respondent to opt-in to this survey");
+                if (Yii::app()->getConfig('allowunblacklist')) {
+                    $aReplacement["GLOBALOPTINURL"] = gT("URL for a respondent to opt-in to the central participant list for this site");
+                }
                 $aReplacement["SURVEYURL"] = gT("Survey URL");
                 foreach ($aAttributes as $sAttribute => $aAttribute) {
                     $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);

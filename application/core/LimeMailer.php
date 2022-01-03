@@ -640,6 +640,11 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $aTokenReplacements["OPTINURL"] = App()->getController()
             ->createAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         $this->addUrlsPlaceholders("OPTIN");
+        if (Yii::app()->getConfig('allowunblacklist')) {
+            $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
+                ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+            $this->addUrlsPlaceholders("GLOBALOPTINURL");
+        }
         $aTokenReplacements["SURVEYURL"] = App()->getController()
             ->createAbsoluteUrl("/survey/index", array("sid" => $this->surveyId, "token" => $token,"lang" => $language));
         $this->addUrlsPlaceholders("SURVEY");

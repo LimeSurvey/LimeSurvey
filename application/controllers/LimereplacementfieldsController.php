@@ -319,6 +319,9 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['OPTOUTURL'] = gT("Participant - Opt-out URL");
             $replFields['GLOBALOPTOUTURL'] = gT("Participant - Central Participant Opt-out URL");
             $replFields['OPTINURL'] = gT("Participant - Opt-in URL");
+            if (Yii::app()->getConfig('allowunblacklist')) {
+                $replFields['GLOBALOPTINURL'] = gT("Participant - Central Participant Opt-in URL");
+            }
             $replFields['FIRSTNAME'] = gT("Participant - First name");
             $replFields['LASTNAME'] = gT("Participant - Last name");
             $replFields['SURVEYNAME'] = gT("Survey title");

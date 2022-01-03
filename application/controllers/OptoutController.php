@@ -26,18 +26,17 @@ if (!defined('BASEPATH')) {
 class OptoutController extends LSYii_Controller
 {
 
-        public $layout = 'bare';
-        public $defaultAction = 'tokens';
+    public $layout = 'bare';
+    public $defaultAction = 'tokens';
 
-
+    /**
+     * Display the confirmation for individual survey opt out
+     */
     function actiontokens()
     {
-
-
         $iSurveyID     = Yii::app()->request->getQuery('surveyid');
         $sLanguageCode = Yii::app()->request->getQuery('langcode');
         $sToken        = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
-        $oSurvey       = Survey::model()->findByPk($iSurveyID);
 
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
@@ -48,6 +47,7 @@ class OptoutController extends LSYii_Controller
         }
 
         $iSurveyID = (int) $iSurveyID; //Make sure it's an integer (protect from SQL injects)
+        $oSurvey       = Survey::model()->findByPk($iSurveyID);
         //Check that there is a SID
         // Get passed language from form, so that we dont lose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
@@ -75,6 +75,60 @@ class OptoutController extends LSYii_Controller
     }
 
     /**
+     * Display the confirmation for global opt out
+     */
+    function actionparticipants()
+    {
+        $surveyId = Yii::app()->request->getQuery('surveyid');
+        $languageCode = Yii::app()->request->getQuery('langcode');
+        $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
+
+        Yii::app()->loadHelper('database');
+        Yii::app()->loadHelper('sanitize');
+
+        //IF there is no survey id, redirect back to the default public page
+        if (!$surveyId) {
+            $this->redirect(array('/'));
+        }
+
+        $surveyId = (int) $surveyId; //Make sure it's an integer (protect from SQL injects)
+        $survey = Survey::model()->findByPk($surveyId);
+        //Check that there is a SID
+        // Get passed language from form, so that we dont lose this!
+        if (!isset($languageCode) || $languageCode == "" || !$languageCode) {
+            $baseLanguage = $survey->language;
+        } else {
+            $baseLanguage = sanitize_languagecode($languageCode);
+        }
+
+        Yii::app()->setLanguage($baseLanguage);
+
+        $surveyInfo = getSurveyInfo($surveyId, $baseLanguage);
+
+        if ($surveyInfo == false || !tableExists("{{tokens_{$surveyId}}}")) {
+            throw new CHttpException(404, "The survey does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
+        } else {
+            $oToken = Token::model($surveyId)->findByAttributes(array('token' => $accessToken));
+            $optedOutFromSurvey = substr($oToken->emailstatus, 0, strlen('OptOut')) == 'OptOut';
+
+            $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
+            $participant = $blacklistHandler->getCentralParticipantFromToken($oToken);
+
+            if (!empty($participant) && $participant->blacklisted != 'Y') {
+                $message = "<p>" . gT('Please confirm that you want to be removed from the central participants list for this site.') . "</p>";
+                $message .= '<p><a href="' . Yii::app()->createUrl('optout/removeparticipants', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken)) . '" class="btn btn-default btn-lg">' . gT("I confirm") . '</a><p>';
+            } elseif (!$optedOutFromSurvey) {
+                $message = "<p>" . gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.") . "</p>";
+                $message .= '<p><a href="' . Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken)) . '" class="btn btn-default btn-lg">' . gT("I confirm") . '</a><p>';
+            } else {
+                $message = "<p>" . gT('You have already been removed from the central participants list for this site.') . "</p>";
+            }
+
+            $this->renderHtml($message, $surveyInfo, $surveyId);
+        }
+    }
+
+    /**
      * This function is run when opting out of an individual survey participants table. The other function /optout/participants
      * opts the user out of ALL survey invitations from the system
      */
@@ -87,7 +141,7 @@ class OptoutController extends LSYii_Controller
      * This function is run when opting out of the participants system. The other function /optout/token
      * opts the user out of just a single token/survey invite list
      */
-    function actionparticipants()
+    function actionremoveparticipants()
     {
         $this->optoutToken(true);
     }
@@ -101,7 +155,7 @@ class OptoutController extends LSYii_Controller
         $surveyId = Yii::app()->request->getQuery('surveyid');
         $language = Yii::app()->request->getQuery('langcode');
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
-        $survey = Survey::model()->findByPk($surveyId);
+
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
@@ -112,6 +166,7 @@ class OptoutController extends LSYii_Controller
 
         // Make sure it's an integer (protect from SQL injects)
         $surveyId = (int) $surveyId;
+        $survey = Survey::model()->findByPk($surveyId);
 
         // Get passed language from form, so that we dont lose this!
         if (!isset($language) || $language == "" || !$language) {
@@ -140,11 +195,13 @@ class OptoutController extends LSYii_Controller
                 } else {
                     $message = gT('You have already been removed from this survey.');
                 }
-                $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
-                $blacklistResult = $blacklistHandler->addToBlacklist($token);
-                if ($blacklistResult->isBlacklisted()) {
-                    foreach ($blacklistResult->getMessages() as $blacklistMessage) {
-                        $message .= "<br>" . $blacklistMessage;
+                if ($blacklistGlobally) {
+                    $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
+                    $blacklistResult = $blacklistHandler->addToBlacklist($token);
+                    if ($blacklistResult->isBlacklisted()) {
+                        foreach ($blacklistResult->getMessages() as $blacklistMessage) {
+                            $message .= "<br>" . $blacklistMessage;
+                        }
                     }
                 }
             }

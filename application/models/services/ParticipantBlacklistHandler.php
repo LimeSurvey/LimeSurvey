@@ -49,7 +49,7 @@ class ParticipantBlacklistHandler
     public function removeFromBlacklist($token)
     {
         $participant = $this->getCentralParticipantFromToken($token);
-        if (empty($participant) || $participant->blacklisted == "Y") {
+        if (empty($participant) || $participant->blacklisted != "Y") {
             return new BlacklistResult(false, gT("You are not globally blacklisted on this site."));
         }
 
@@ -69,7 +69,7 @@ class ParticipantBlacklistHandler
      * @param \Token $token
      * @return \Participant|null
      */
-    private function getCentralParticipantFromToken($token)
+    public function getCentralParticipantFromToken($token)
     {
         $participant = null;
         // Try to match by participant ID
