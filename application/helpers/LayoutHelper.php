@@ -165,7 +165,7 @@ class LayoutHelper
      */
     protected function fetchExtraMenus(array $aData): array
     {
-        //todo this is different from Survey_Common_Action (no second parameter $this ...) correct usage?
+        //todo this is different from SurveyCommonAction (no second parameter $this ...) correct usage?
         $event = new PluginEvent('beforeAdminMenuRender');
 
         $event->set('data', $aData);
@@ -230,7 +230,7 @@ class LayoutHelper
     public function updatenotification()
     {
         /**
-         *  OLD $this was Survey_Common_Action ....
+         *  OLD $this was SurveyCommonAction ....
          *
          *  Never use Notification model for database update.
            TODO: Real fix: No database queries while doing database update, meaning

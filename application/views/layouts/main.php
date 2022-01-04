@@ -34,7 +34,7 @@ $layoutHelper->notifications();
 //The load indicator for pjax
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
 
-echo '<!-- Full page, started in Survey_Common_Action::render_wrapped_template() -->
+echo '<!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
       <div class="container-fluid full-page-wrapper" id="in_survey_common_action">';
 
 echo $content;

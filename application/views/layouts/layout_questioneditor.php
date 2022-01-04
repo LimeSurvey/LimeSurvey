@@ -27,7 +27,7 @@ echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style=
 // echo "<pre>".print_r($aData, true)."</pre>";
 
 //The container to hold the vuejs application
-echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_template() -->
+echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() -->
         <div id="vue-apps-main-container" '
     . 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12" '
     . '>';
