@@ -334,6 +334,9 @@ class participantsaction extends Survey_Common_Action
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
         $model = new Participant();
+        if (Yii::app()->getConfig('hideblacklisted') == "Y") {
+            $model->blacklisted = "Y";
+        }
         $request = Yii::app()->request;
         $participantParam = $request->getParam('Participant');
         if ($participantParam) {

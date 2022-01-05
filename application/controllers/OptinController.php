@@ -124,7 +124,7 @@ class OptinController extends LSYii_Controller
                 $participant = $blacklistHandler->getCentralParticipantFromToken($token);
                 $isBlacklisted = !empty($participant) && $participant->blacklisted == 'Y';
 
-                if (!Yii::app()->getConfig('allowunblacklist')) {
+                if (!Yii::app()->getConfig('allowunblacklist') == "Y") {
                     $message = "<p>" . gT('Removing yourself from the blacklist is currently disabled.') . "</p>";
                 } elseif ($isBlacklisted) {
                     $message = "<p>" . gT('Please confirm that you want to be added back to the central participants list for this site.') . "</p>";
@@ -192,7 +192,7 @@ class OptinController extends LSYii_Controller
                     $message = gT('You have been already removed from this survey.');
                 }
                 // If the $global param is true and 'allowunblacklist' is enabled, remove from the blacklist
-                if ($global && Yii::app()->getConfig('allowunblacklist')) {
+                if ($global && Yii::app()->getConfig('allowunblacklist') == "Y") {
                     $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
                     $blacklistResult = $blacklistHandler->removeFromBlacklist($token);
                     if (!$blacklistResult->isBlacklisted()) {

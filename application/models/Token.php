@@ -517,7 +517,7 @@ abstract class Token extends Dynamic
     public function onBeforeSave($event)
     {
         // Mark token as "OptOut" if globally blacklisted and 'blacklistnewsurveys' is enabled
-        if (Yii::app()->getConfig('blacklistnewsurveys') && $this->getIsNewRecord()) {
+        if (Yii::app()->getConfig('blacklistnewsurveys') == "Y" && $this->getIsNewRecord()) {
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             if ($blacklistHandler->isTokenBlacklisted($this)) {
                 $this->emailstatus = "OptOut";

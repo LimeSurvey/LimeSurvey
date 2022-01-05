@@ -26,9 +26,9 @@ class ParticipantBlacklistHandler
             $result = new BlacklistResult(true, gT("You have been removed from the central participants list for this site."));
 
             // Remove or blacklist participant in current surveys if needed
-            if (\Yii::app()->getConfig('deleteblacklisted')) {
+            if (\Yii::app()->getConfig('deleteblacklisted') == "Y") {
                 $surveyIds = $this->removeParticipantFromAllSurveys($participant);
-            } elseif (\Yii::app()->getConfig('blacklistallsurveys')) {
+            } elseif (\Yii::app()->getConfig('blacklistallsurveys') == "Y") {
                 $surveyIds = $this->optoutParticipantFromAllSurveys($participant);
             }
             if (!empty($surveyIds)) {
