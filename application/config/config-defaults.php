@@ -788,22 +788,17 @@ $config['max_execution_time'] = 1200;
 // This is useful when developing a theme, so changes to XML files are immediately applied without the need to uninstall and reinstall the theme.
 $config['force_xmlsettings_for_survey_rendering'] = false;
 
+/**
+ * When this setting is true, plugins that are not in the white list (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
+ * already installed plugins.
+ * Core plugins are not affected by this setting.
+ */
 $config['usePluginWhitelist'] = false;
 
-$config['pluginCoreList'] = [
-    'AuditLog',
-    'ExportR',
-    'ExportSTATAxml',
-    'ExportSPSSsav',
-    'extendedStartPage',
-    'oldUrlCompat',
-    'AuthLDAP',
-    'Authdb',
-    'Authwebserver'
-];
-
+// List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly whitelisted.
 $config['pluginWhitelist'] = [];
 
+// When this setting is true, the "Plugin Upload" feature is disabled.
 $config['disablePluginUpload'] = false;
 
 /* replaced in generated application/config/security.php if exist */

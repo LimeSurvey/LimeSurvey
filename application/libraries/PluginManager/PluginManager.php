@@ -646,10 +646,30 @@ class PluginManager extends \CApplicationComponent
     {
         if (App()->getConfig('usePluginWhitelist')) {
             $whiteList = App()->getConfig('pluginWhitelist');
-            $coreList = App()->getConfig('pluginCoreList');
+            $coreList = self::getPluginCoreList();
             $allowedPlugins =  array_merge($coreList, $whiteList);
             return array_search($pluginName, $allowedPlugins) !== false;
         }
         return true;
+    }
+
+    /**
+     * Return the core plugin list
+     * No way to update by php or DB
+     * @return string[]
+     */
+    private static function getPluginCoreList()
+    {
+        return [
+            'AuditLog',
+            'ExportR',
+            'ExportSTATAxml',
+            'ExportSPSSsav',
+            'extendedStartPage',
+            'oldUrlCompat',
+            'AuthLDAP',
+            'Authdb',
+            'Authwebserver'
+        ];
     }
 }
