@@ -432,8 +432,7 @@ class LSActiveRecord extends CActiveRecord
         }
 
         // encrypt attributes
-        $this->decryptEncryptAttributes('encrypt', $attributes);
-
+        $this->decryptEncryptAttributes('encrypt');
         // call save() method  without validation, validation is already done ( if needed )
         return $this->save(false, $attributes);
     }
@@ -441,15 +440,14 @@ class LSActiveRecord extends CActiveRecord
     /**
      * Encrypt/decrypt values
      * @param string $action 'decrypt' or 'encrypt' (or other function)
-     * @param null|string[] $attributes list of attributes that need to be saved. Defaults to null for all attributes.
      * @return void
      */
-    public function decryptEncryptAttributes($action = 'decrypt', $attributesFilter = null)
+    public function decryptEncryptAttributes($action = 'decrypt')
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
 
-        $attributes = $this->encryptAttributeValues($this->getAttributes($attributesFilter), true, false);
+        $attributes = $this->encryptAttributeValues($this->getAttributes(), true, false);
         $LEM = LimeExpressionManager::singleton();
         $updatedValues = $LEM->getUpdatedValues();
         foreach ($attributes as $key => $attribute) {

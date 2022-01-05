@@ -108,10 +108,9 @@ class ParticipantAttribute extends LSActiveRecord
      * @inheritdoc
      * But without filter on attributes (not same than activerecords) 
      * @param string $action
-     * @param null|string[] $attributes unused
      * @return void
      */
-    public function decryptEncryptAttributes($action = 'decrypt', $attributes = null)
+    public function decryptEncryptAttributes($action = 'decrypt')
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
