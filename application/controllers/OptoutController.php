@@ -224,6 +224,7 @@ class OptoutController extends LSYii_Controller
 
         $aSurveyInfo['include_content'] = 'optout';
         $aSurveyInfo['optin_message'] = $html;
+        $aSurveyInfo['aCompleted'] = true;  // Avoid showing the progress bar
         Template::model()->getInstance('', $iSurveyID);
 
         Yii::app()->twigRenderer->renderTemplateFromFile(

@@ -220,6 +220,7 @@ class OptinController extends LSYii_Controller
 
         $aSurveyInfo['include_content'] = 'optin';
         $aSurveyInfo['optin_message'] = $html;
+        $aSurveyInfo['aCompleted'] = true;  // Avoid showing the progress bar
         Template::getInstance('', $survey->primaryKey);
 
         Yii::app()->twigRenderer->renderTemplateFromFile(
