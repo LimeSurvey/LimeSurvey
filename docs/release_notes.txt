@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.7 (build 211221) to 5.2.8 (build 220103) January 3, 2022
+-Fixed issue [security] #17800: Non filtred HTML shown for Question Attribute (#2185) (Denis Chenu)
+-Fixed issue [security] #17795: XSS in token browse (#2187) (Denis Chenu)
+-Fixed issue #17790: KCFinder Image Browse Server not working due to incorrect cookieDomain (#2176) (Denis Chenu)
+-Fixed issue #17765: The order of subquestions is not correct when exporting to printable survey (Carsten Schmitz)
+-Fixed issue #17765: The order of subquestions is not correct when exporting to QueMXL/QueMXL PDF (Carsten Schmitz)
+-Fixed issue #17725: Unclear error message (#2171) (Gabriel Jenik)
+-Fixed issue #17711: Cannot export selected responses (only range) (#2179) (Gabriel Jenik)
+-Fixed issue #17799: Language attribute are not shown in question summary (Denis Chenu)
+
+
 Changes from 5.2.6 (build 211213) to 5.2.7 (build 211221) December 21, 2021
 -Fixed issue: Error shown when re-sending login data (Carsten Schmitz)
 -Fixed issue #17732: Direct access to response browsing break (#2167) (Gabriel Jenik)
