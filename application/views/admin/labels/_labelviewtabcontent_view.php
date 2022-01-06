@@ -44,7 +44,7 @@ $codeids = '';
 
                                 <td>
                                     <input type='hidden' class='hiddencode' value='<?php echo $row['code'] ?>' />
-                                    <input type='text'  class='codeval  form-control  ' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['code'] ?>'/>
+                                    <input type='text'  class='codeval  form-control  ' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='20' size='20' value='<?php echo $row['code'] ?>'/>
                                 </td>
 
                                 <td>
