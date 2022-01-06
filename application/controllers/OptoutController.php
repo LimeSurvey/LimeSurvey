@@ -116,7 +116,7 @@ class OptoutController extends LSYii_Controller
 
             if (!empty($participant) && $participant->blacklisted != 'Y') {
                 $message = "<p>" . gT('Please confirm that you want to be removed from the central participants list for this site.') . "</p>";
-                $message .= '<p><a href="' . Yii::app()->createUrl('optout/removeparticipants', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken)) . '" class="btn btn-default btn-lg">' . gT("I confirm") . '</a><p>';
+                $message .= '<p><a href="' . Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true)) . '" class="btn btn-default btn-lg">' . gT("I confirm") . '</a><p>';
             } elseif (!$optedOutFromSurvey) {
                 $message = "<p>" . gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.") . "</p>";
                 $message .= '<p><a href="' . Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken)) . '" class="btn btn-default btn-lg">' . gT("I confirm") . '</a><p>';
@@ -134,27 +134,10 @@ class OptoutController extends LSYii_Controller
      */
     function actionremovetokens()
     {
-        $this->optoutToken();
-    }
-
-    /**
-     * This function is run when opting out of the participants system. The other function /optout/token
-     * opts the user out of just a single token/survey invite list
-     */
-    function actionremoveparticipants()
-    {
-        $this->optoutToken(true);
-    }
-
-    /**
-     * Marks a token as "blacklisted" (opted out) on a survey, and on the CPDB if $blacklistGlobally is true.
-     * @param bool $blacklistGlobally   if true, the participant will also be blacklisted on the CPDB
-     */
-    private function optoutToken($blacklistGlobally = false)
-    {
         $surveyId = Yii::app()->request->getQuery('surveyid');
         $language = Yii::app()->request->getQuery('langcode');
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
+        $global = Yii::app()->request->getQuery('global');
 
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
@@ -195,7 +178,7 @@ class OptoutController extends LSYii_Controller
                 } else {
                     $message = gT('You have already been removed from this survey.');
                 }
-                if ($blacklistGlobally) {
+                if ($global) {
                     $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
                     $blacklistResult = $blacklistHandler->addToBlacklist($token);
                     if ($blacklistResult->isBlacklisted()) {
