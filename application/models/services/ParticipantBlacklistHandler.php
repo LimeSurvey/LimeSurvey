@@ -3,7 +3,7 @@
 namespace LimeSurvey\Models\Services;
 
 use InvalidArgumentException;
-use \LimeSurvey\Datavalueobjects\BlacklistResult;
+use LimeSurvey\Datavalueobjects\BlacklistResult;
 
 class ParticipantBlacklistHandler
 {
