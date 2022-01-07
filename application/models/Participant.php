@@ -24,7 +24,7 @@ use LimeSurvey\Exception\CPDBException;
  * @property string $lastname
  * @property string $email
  * @property string $language
- * @property integer $blacklisted
+ * @property string $blacklisted
  * @property integer $owner_uid
  * @property integer $created_by
  * @property string $created Date-time of creation
