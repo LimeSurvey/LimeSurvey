@@ -431,7 +431,7 @@ class index extends CAction
                 } else {
                     if (loadanswers()) {
                         Yii::app()->setConfig('move', 'reload');
-                        $move = "reload"; // veyRunTimeHelper use $move in $arg
+                        $move = "reload"; // SurveyRunTimeHelper use $move in $arg
                     } else {
                         $aLoadErrorMsg['matching'] = gT("There is no matching saved response.");
                     }
