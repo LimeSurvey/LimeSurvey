@@ -7,7 +7,6 @@
  */
 class UniqueNotification extends Notification
 {
-
     /**
      * Whether or not this message should be marked as unread ('new')
      * second time it's saved.

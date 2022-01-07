@@ -20,29 +20,31 @@ use Composer\Semver\VersionParser;
 
 
 
+
+
 class InstalledVersions
 {
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
+    'pretty_version' => 'dev-develop',
+    'version' => 'dev-develop',
     'aliases' => 
     array (
     ),
-    'reference' => '3330e4fe97b0c039bd31fb4c57af412f6dfdfc80',
+    'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
     'limesurvey/limesurvey' => 
     array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
+      'pretty_version' => 'dev-develop',
+      'version' => 'dev-develop',
       'aliases' => 
       array (
       ),
-      'reference' => '3330e4fe97b0c039bd31fb4c57af412f6dfdfc80',
+      'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
     ),
     'paragonie/constant_time_encoding' => 
     array (
@@ -82,12 +84,12 @@ private static $installed = array (
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.10',
-      'version' => '3.0.10.0',
+      'pretty_version' => '3.0.12',
+      'version' => '3.0.12.0',
       'aliases' => 
       array (
       ),
-      'reference' => '62fcc5a94ac83b1506f52d7558d828617fac9187',
+      'reference' => '89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb',
     ),
     'symfony/polyfill-ctype' => 
     array (
@@ -143,7 +145,6 @@ $packages = array();
 foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
-
 
 if (1 === \count($packages)) {
 return $packages[0];
@@ -336,6 +337,7 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
+
 
 
 

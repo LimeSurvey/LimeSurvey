@@ -1,8 +1,5 @@
 <?php
 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -25,14 +22,13 @@ if (!defined('BASEPATH')) {
  */
 class OptoutController extends LSYii_Controller
 {
-
     public $layout = 'bare';
     public $defaultAction = 'tokens';
 
     /**
      * Display the confirmation for individual survey opt out
      */
-    function actiontokens()
+    public function actiontokens()
     {
         $iSurveyID     = Yii::app()->request->getQuery('surveyid');
         $sLanguageCode = Yii::app()->request->getQuery('langcode');
@@ -77,7 +73,7 @@ class OptoutController extends LSYii_Controller
     /**
      * Display the confirmation for global opt out
      */
-    function actionparticipants()
+    public function actionparticipants()
     {
         $surveyId = Yii::app()->request->getQuery('surveyid');
         $languageCode = Yii::app()->request->getQuery('langcode');
@@ -132,7 +128,7 @@ class OptoutController extends LSYii_Controller
      * This function is run when opting out of an individual survey participants table. The other function /optout/participants
      * opts the user out of ALL survey invitations from the system
      */
-    function actionremovetokens()
+    public function actionremovetokens()
     {
         $surveyId = Yii::app()->request->getQuery('surveyid');
         $language = Yii::app()->request->getQuery('langcode');

@@ -16,35 +16,51 @@
  */
 class QuestionType extends StaticModel
 {
-    const QT_1_ARRAY_MULTISCALE = '1'; //ARRAY (Flexible Labels) multi scale
+    const QT_1_ARRAY_DUAL = '1'; // Array dual scale
     const QT_5_POINT_CHOICE = '5';
-    const QT_A_ARRAY_5_CHOICE_QUESTIONS = 'A'; // ARRAY OF 5 POINT CHOICE QUESTIONS
-    const QT_B_ARRAY_10_POINT = 'B'; // ARRAY OF 10 POINT CHOICE QUESTIONS
-    const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
+    const QT_A_ARRAY_5_POINT = 'A'; // Array of 5 point choice questions
+    const QT_B_ARRAY_10_POINT = 'B'; // Array of 10 point choice questions
+    const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF Yes\No\Uncertain questions
     const QT_D_DATE = 'D';
-    const QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS = 'E';
-    const QT_F_ARRAY_FLEXIBLE_ROW = 'F';
-    const QT_G_GENDER_DROPDOWN = 'G';
-    const QT_H_ARRAY_FLEXIBLE_COLUMN = 'H';
+    const QT_E_ARRAY_INC_SAME_DEC = 'E';
+    const QT_F_ARRAY = 'F';
+    const QT_G_GENDER = 'G';
+    const QT_H_ARRAY_COLUMN = 'H';
     const QT_I_LANGUAGE = 'I';
-    const QT_K_MULTIPLE_NUMERICAL_QUESTION = 'K';
+    const QT_K_MULTIPLE_NUMERICAL = 'K';
     const QT_L_LIST = 'L';
     const QT_M_MULTIPLE_CHOICE = 'M';
     const QT_N_NUMERICAL = 'N';
     const QT_O_LIST_WITH_COMMENT = 'O';
     const QT_P_MULTIPLE_CHOICE_WITH_COMMENTS = 'P';
     const QT_Q_MULTIPLE_SHORT_TEXT = 'Q';
-    const QT_R_RANKING_STYLE = 'R';
+    const QT_R_RANKING = 'R';
     const QT_S_SHORT_FREE_TEXT = 'S';
     const QT_T_LONG_FREE_TEXT = 'T';
     const QT_U_HUGE_FREE_TEXT = 'U';
-    const QT_X_BOILERPLATE_QUESTION = 'X';
+    const QT_X_TEXT_DISPLAY = 'X';
     const QT_Y_YES_NO_RADIO = 'Y';
     const QT_EXCLAMATION_LIST_DROPDOWN = '!';
     const QT_VERTICAL_FILE_UPLOAD = '|';
     const QT_ASTERISK_EQUATION = '*';
+    const QT_COLON_ARRAY_NUMBERS = ':';
+    const QT_SEMICOLON_ARRAY_TEXT = ';';
+
+    /*
+    * @deprecated The following constants are deprecated and will be removed in LimeSurvey 6 - please use the ones above.
+    */
+    const QT_1_ARRAY_MULTISCALE = '1'; //ARRAY (Flexible Labels) multi scale
+    const QT_A_ARRAY_5_CHOICE_QUESTIONS = 'A'; // ARRAY OF 5 POINT CHOICE QUESTIONS
+    const QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS = 'E';
+    const QT_F_ARRAY_FLEXIBLE_ROW = 'F';
+    const QT_G_GENDER_DROPDOWN = 'G';
+    const QT_H_ARRAY_FLEXIBLE_COLUMN = 'H';
+    const QT_K_MULTIPLE_NUMERICAL_QUESTION = 'K';
+    const QT_R_RANKING_STYLE = 'R';
+    const QT_X_BOILERPLATE_QUESTION = 'X';
     const QT_COLON_ARRAY_MULTI_FLEX_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT = ';';
+
 
     /** @var Question */
     public $question;
@@ -117,8 +133,8 @@ class QuestionType extends StaticModel
     public static function modelsAttributes($language = '')
     {
         return [
-            self::QT_1_ARRAY_MULTISCALE => [
-                'code' => self::QT_1_ARRAY_MULTISCALE,
+            self::QT_1_ARRAY_DUAL => [
+                'code' => self::QT_1_ARRAY_DUAL,
                 'description' => gT("Array dual scale", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
@@ -129,7 +145,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_5_POINT_CHOICE => [
                 'code' => self::QT_5_POINT_CHOICE,
-                'description' => gT("5 Point choice", "html", $language),
+                'description' => gT("5 point choice", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -137,9 +153,9 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => "choice-5-pt-radio"
             ],
-            self::QT_A_ARRAY_5_CHOICE_QUESTIONS => [
-                'code' => self::QT_A_ARRAY_5_CHOICE_QUESTIONS,
-                'description' => gT("Array (5 Point choice)", "html", $language),
+            self::QT_A_ARRAY_5_POINT => [
+                'code' => self::QT_A_ARRAY_5_POINT,
+                'description' => gT("Array (5 point choice)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -149,7 +165,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_B_ARRAY_10_POINT => [
                 'code' => self::QT_B_ARRAY_10_POINT,
-                'description' => gT("Array (10 Point choice)", "html", $language),
+                'description' => gT("Array (10 point choice)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -177,8 +193,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'date'
             ],
-            self::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS => [
-                'code' => self::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS,
+            self::QT_E_ARRAY_INC_SAME_DEC => [
+                'code' => self::QT_E_ARRAY_INC_SAME_DEC,
                 'description' => gT("Array (Increase/Same/Decrease)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
@@ -187,8 +203,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'array-increase-same-decrease'
             ],
-            self::QT_F_ARRAY_FLEXIBLE_ROW => [
-                'code' => self::QT_F_ARRAY_FLEXIBLE_ROW,
+            self::QT_F_ARRAY => [
+                'code' => self::QT_F_ARRAY,
                 'description' => gT("Array", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
@@ -197,8 +213,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 1,
                 'class' => 'array-flexible-row'
             ],
-            self::QT_G_GENDER_DROPDOWN => [
-                'code' => self::QT_G_GENDER_DROPDOWN,
+            self::QT_G_GENDER => [
+                'code' => self::QT_G_GENDER,
                 'description' => gT("Gender", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
@@ -207,8 +223,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'gender'
             ],
-            self::QT_H_ARRAY_FLEXIBLE_COLUMN => [
-                'code' => self::QT_H_ARRAY_FLEXIBLE_COLUMN,
+            self::QT_H_ARRAY_COLUMN => [
+                'code' => self::QT_H_ARRAY_COLUMN,
                 'description' => gT("Array by column", "html", $language),
                 'group' => gT('Arrays'),
                 'hasdefaultvalues' => 0,
@@ -227,8 +243,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'language'
             ],
-            self::QT_K_MULTIPLE_NUMERICAL_QUESTION => [
-                'code' => self::QT_K_MULTIPLE_NUMERICAL_QUESTION,
+            self::QT_K_MULTIPLE_NUMERICAL => [
+                'code' => self::QT_K_MULTIPLE_NUMERICAL,
                 'description' => gT("Multiple numerical input", "html", $language),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 1,
@@ -297,8 +313,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'multiple-short-txt'
             ],
-            self::QT_R_RANKING_STYLE => [
-                'code' => self::QT_R_RANKING_STYLE,
+            self::QT_R_RANKING => [
+                'code' => self::QT_R_RANKING,
                 'description' => gT("Ranking", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
@@ -337,8 +353,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'text-huge'
             ],
-            self::QT_X_BOILERPLATE_QUESTION => [
-                'code' => self::QT_X_BOILERPLATE_QUESTION,
+            self::QT_X_TEXT_DISPLAY => [
+                'code' => self::QT_X_TEXT_DISPLAY,
                 'description' => gT("Text display", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
@@ -367,8 +383,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 1,
                 'class' => 'list-dropdown'
             ],
-            self::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS => [
-                'code' => self::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
+            self::QT_COLON_ARRAY_NUMBERS => [
+                'code' => self::QT_COLON_ARRAY_NUMBERS,
                 'description' => gT("Array (Numbers)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
@@ -377,8 +393,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'array-multi-flexi'
             ],
-            self::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT => [
-                'code' => self::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+            self::QT_SEMICOLON_ARRAY_TEXT => [
+                'code' => self::QT_SEMICOLON_ARRAY_TEXT,
                 'description' => gT("Array (Texts)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
@@ -419,8 +435,8 @@ class QuestionType extends StaticModel
     {
         return [
             self::QT_I_LANGUAGE, self::QT_S_SHORT_FREE_TEXT, self::QT_U_HUGE_FREE_TEXT,
-            self::QT_Q_MULTIPLE_SHORT_TEXT, self::QT_T_LONG_FREE_TEXT, self::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
-            self::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
+            self::QT_Q_MULTIPLE_SHORT_TEXT, self::QT_T_LONG_FREE_TEXT, self::QT_SEMICOLON_ARRAY_TEXT,
+            self::QT_COLON_ARRAY_NUMBERS,
         ];
     }
 
@@ -432,8 +448,8 @@ class QuestionType extends StaticModel
     public static function charCodes()
     {
         return [
-            self::QT_5_POINT_CHOICE, self::QT_G_GENDER_DROPDOWN, self::QT_Y_YES_NO_RADIO,
-            self::QT_X_BOILERPLATE_QUESTION
+            self::QT_5_POINT_CHOICE, self::QT_G_GENDER, self::QT_Y_YES_NO_RADIO,
+            self::QT_X_TEXT_DISPLAY
         ];
     }
 

@@ -68,10 +68,8 @@ var onClickListAction =  function () {
     if(actionType == 'fill-session-and-redirect')
     {
         // postUrl is defined as a var in the View, if not the basic url is used
-        if(postUrl == undefined) {
-            var postUrl = $actionUrl;
-        } 
-        $(this).load(postUrl, {
+        var setSessionUrl = postUrl || $actionUrl;
+        $(this).load(setSessionUrl, {
             itemsid:$oCheckedItems},function(){
                 $(location).attr('href',$actionUrl);
             });

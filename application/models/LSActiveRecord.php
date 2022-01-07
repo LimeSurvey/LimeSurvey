@@ -227,7 +227,7 @@ class LSActiveRecord extends CActiveRecord
     public function updateAll($attributes, $condition = '', $params = array())
     {
         if (!empty($this->xssFilterAttributes)) {
-            $validator = new LSYii_Validators;
+            $validator = new LSYii_Validators();
             if ($validator->xssfilter) {
                 $attributeNames = array_keys($attributes);
                 $attributesToFilter = array_intersect($attributeNames, $this->xssFilterAttributes);

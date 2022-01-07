@@ -31,7 +31,6 @@ use ls\ajax\AjaxHelper;
  */
 class ParticipantShare extends LSActiveRecord
 {
-
     public $ownerName;
 
     /**

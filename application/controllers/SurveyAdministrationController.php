@@ -7,7 +7,6 @@ use LimeSurvey\Models\Services\FilterImportedResources;
  */
 class SurveyAdministrationController extends LSBaseController
 {
-
     /**
      * It's import to have the accessRules set (security issue).
      * Only logged in users should have access to actions. All other permissions
@@ -67,7 +66,7 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * This part comes from _renderWrappedTemplate
+     * This part comes from renderWrappedTemplate
      *
      * @param string $view
      * @return bool
@@ -2624,7 +2623,7 @@ class SurveyAdministrationController extends LSBaseController
             } else {
                 die('No permission');
             }
-        } elseif (!Permission::model()->hasGlobalPermission('templates','read') && !Permission::model()->hasTemplatePermission($template)) {
+        } elseif (!Permission::model()->hasGlobalPermission('templates', 'read') && !Permission::model()->hasTemplatePermission($template)) {
             if (!empty($bReturn)) {
                 $aResults[$iSurveyID]['title'] = $survey->correct_relation_defaultlanguage->surveyls_title;
                 $aResults[$iSurveyID]['result'] = false;

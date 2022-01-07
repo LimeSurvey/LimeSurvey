@@ -10,7 +10,7 @@ class ResponsesController extends LSBaseController
      * @param $controller
      * @param $id
      */
-    function __construct($controller, $id)
+    public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
 
@@ -38,7 +38,7 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * this is part of _renderWrappedTemplate implement in old responses.php
+     * this is part of renderWrappedTemplate implement in old responses.php
      *
      * @param string $view
      * @return bool
@@ -393,7 +393,7 @@ class ResponsesController extends LSBaseController
         $displaymode = App()->request->getPost('displaymode', null);
 
         if ($displaymode !== null) {
-            $this->set_grid_display($displaymode);
+            $this->setGridDisplay($displaymode);
         }
 
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
@@ -869,7 +869,7 @@ class ResponsesController extends LSBaseController
      * @param string $displaymode
      * @return void
      */
-    public function set_grid_display($displaymode): void
+    public function setGridDisplay($displaymode): void
     {
         if ($displaymode === 'extended') {
             App()->user->setState('responsesGridSwitchDisplayState', 'extended');
@@ -956,6 +956,12 @@ class ResponsesController extends LSBaseController
         }
 
         $thissurvey = getSurveyInfo($surveyId);
+
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
+        LimeExpressionManager::SetEMLanguage($thissurvey['oSurvey']->language);
+        LimeExpressionManager::SetSurveyId($surveyId);
+        LimeExpressionManager::StartProcessingPage(false, true);
 
         if (!$thissurvey) {
             App()->session['flashmessage'] = gT("Invalid survey ID");

@@ -19,7 +19,7 @@ if (!defined('BASEPATH')) {
 }
 
 /* Note: Class name must identical to folder name */
-class HelloWorld extends Survey_Common_Action
+class HelloWorld extends SurveyCommonAction
 {
       /**
        * Default action
@@ -41,8 +41,8 @@ class HelloWorld extends Survey_Common_Action
        */
       public function sayHello($sWho="World")
       {
-          // Call to Survey_Common_Action::_renderWrappedTemplate that will generate the "Layout"
-          $this->_renderWrappedTemplate('HelloWorld', 'index', array(
+          // Call to SurveyCommonAction::renderWrappedTemplate that will generate the "Layout"
+          $this->renderWrappedTemplate('HelloWorld', 'index', array(
               'sWho'=>$sWho,
             ));
       }
@@ -70,11 +70,11 @@ class HelloWorld extends Survey_Common_Action
         // Those datas will controll the behaviour of the survey "layout"
 
         // By providing a surveyid, we launch the survey "layout".
-        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/Survey_Common_Action.php#L328-L338
+        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/SurveyCommonAction.php#L328-L338
         $aData['surveyid'] = $surveyid;
 
         // By providing a "title_bar", we the green top bar with the breadcrumb.
-        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/Survey_Common_Action.php#L481-L486
+        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/SurveyCommonAction.php#L481-L486
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
 
         // By providing a module subaction, we launch the breadcrumb
@@ -84,8 +84,8 @@ class HelloWorld extends Survey_Common_Action
         // Our own datas for our view
         $aData['sWho'] = "root";
 
-        // Call to Survey_Common_Action::_renderWrappedTemplate that will generate the "Layout"
-        $this->_renderWrappedTemplate('HelloWorld', 'HelloWorldSurvey', $aData, false);
+        // Call to SurveyCommonAction::renderWrappedTemplate that will generate the "Layout"
+        $this->renderWrappedTemplate('HelloWorld', 'HelloWorldSurvey', $aData, false);
       }
 
 
@@ -106,11 +106,11 @@ class HelloWorld extends Survey_Common_Action
         // Those datas will controll the behaviour of the survey "layout"
 
         // By providing a surveyid, we launch the survey "layout".
-        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/Survey_Common_Action.php#L328-L338
+        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/SurveyCommonAction.php#L328-L338
         $aData['surveyid'] = $surveyid;
 
         // By providing a "title_bar", we the green top bar with the breadcrumb.
-        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/Survey_Common_Action.php#L481-L486
+        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/SurveyCommonAction.php#L481-L486
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
 
         // By providing a module subaction, we launch the breadcrumb
@@ -122,13 +122,13 @@ class HelloWorld extends Survey_Common_Action
         $aData['sWho'] = $sWho;
         $aData['sUserName'] = Yii::app()->user->name;
 
-        // Call to Survey_Common_Action::_renderWrappedTemplate that will generate the "Layout"
-        $this->_renderWrappedTemplate('HelloWorld', 'sayHelloUser', $aData, false);
+        // Call to SurveyCommonAction::renderWrappedTemplate that will generate the "Layout"
+        $this->renderWrappedTemplate('HelloWorld', 'sayHelloUser', $aData, false);
     }
 
 
     /**
-     * Override Survey_Common_Action::renderCentralContents
+     * Override SurveyCommonAction::renderCentralContents
      * If you don't understand what it does, just copy / paste it in your own admin module
      * We let it here just in case you're trying to do something different
      */

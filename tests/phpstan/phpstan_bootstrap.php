@@ -47,6 +47,7 @@ Yii::import('application.helpers.admin.export.*');
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
 Yii::import('application.helpers.update.update_helper', true);
+Yii::import('application.helpers.update.updatedb_helper', true);
 Yii::app()->loadLibrary('admin.pclzip');
 
 /** @var PluginManager */

@@ -32,7 +32,6 @@
  */
 class Permission extends LSActiveRecord
 {
-
     /* @var array[]|null The global base Permission LimeSurvey installation */
     protected static $aGlobalBasePermissions;
 

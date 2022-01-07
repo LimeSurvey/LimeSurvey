@@ -24,14 +24,13 @@
  */
 class OptinController extends LSYii_Controller
 {
-
     public $layout = 'bare';
     public $defaultAction = 'tokens';
 
     /**
      * Display the confirmation for individual survey opt in
      */
-    function actiontokens()
+    public function actiontokens()
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
@@ -82,7 +81,7 @@ class OptinController extends LSYii_Controller
     /**
      * Display the confirmation for global opt in
      */
-    function actionparticipants()
+    public function actionparticipants()
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
@@ -147,7 +146,7 @@ class OptinController extends LSYii_Controller
      * Add token back to the survey (remove 'OptOut' status) and/or add participant back to the CPDB (remove from blacklist).
      * The participant is only removed from the blacklist if the 'global' URL param is true and 'allowunblacklist' is enabled.
      */
-    function actionaddtokens()
+    public function actionaddtokens()
     {
         $surveyId = Yii::app()->request->getQuery('surveyid');
         $languageCode = Yii::app()->request->getQuery('langcode');

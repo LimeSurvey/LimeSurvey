@@ -22,7 +22,6 @@
  */
 class UserInGroup extends LSActiveRecord
 {
-
     /**
      * @inheritdoc
      * @return CActiveRecord

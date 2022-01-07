@@ -7,7 +7,7 @@ use InvalidArgumentException;
 
 /**
  * @since 2018-09-24
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 class PluginInstaller extends ExtensionInstaller
 {

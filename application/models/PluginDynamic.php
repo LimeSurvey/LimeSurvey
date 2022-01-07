@@ -5,10 +5,10 @@
  */
 class PluginDynamic extends LSActiveRecord
 {
-    private static $_models = array();
+    private static $models = array();
 
-    /** @var CActiveRecordMetaData $_md meta data*/
-    private $_md;
+    /** @var CActiveRecordMetaData $md meta data*/
+    private $md;
 
     /** @var null|string $tableName */
     protected $tableName;
@@ -45,12 +45,12 @@ class PluginDynamic extends LSActiveRecord
     public static function model($sTableName = null)
     {
         if (isset($sTableName)) {
-            if (!isset(self::$_models[$sTableName])) {
-                $model = self::$_models[$sTableName] = new PluginDynamic($sTableName, null);
-                $model->_md = new CActiveRecordMetaData($model);
+            if (!isset(self::$models[$sTableName])) {
+                $model = self::$models[$sTableName] = new PluginDynamic($sTableName, null);
+                $model->md = new CActiveRecordMetaData($model);
                 $model->attachBehaviors($model->behaviors());
             }
-            return self::$_models[$sTableName];
+            return self::$models[$sTableName];
         }
         return null;
     }
@@ -67,12 +67,12 @@ class PluginDynamic extends LSActiveRecord
      */
     public function getMetaData()
     {
-        if ($this->_md !== null) {
-            return $this->_md;
+        if ($this->md !== null) {
+            return $this->md;
         } else {
             /** @var CActiveRecordMetaData $md */
-            $md = self::model($this->tableName())->_md;
-            return $this->_md = $md;
+            $md = self::model($this->tableName())->md;
+            return $this->md = $md;
         }
     }
 }

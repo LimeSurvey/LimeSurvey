@@ -218,4 +218,63 @@ class QuestionAttributeHelper
 
         return $questionAttributesWithValues;
     }
+
+    /**
+     * Comparison function for sorting question attributes by category with uasort().
+     *
+     * @param array<string,mixed> $a    First question attribute to compare
+     * @param array<string,mixed> $b    Second question attribute to compare
+     * @return int
+     * @todo No state used, so no OOP needed, move to function at some point.
+     */
+    protected function categorySort($a, $b)
+    {
+        $categoryOrders = $this->getCategoryOrders();
+        $orderA = isset($categoryOrders[$a['category']]) ? $categoryOrders[$a['category']] : PHP_INT_MAX;
+        $orderB = isset($categoryOrders[$b['category']]) ? $categoryOrders[$b['category']] : PHP_INT_MAX;
+        if ($orderA == $orderB) {
+            $result = strnatcasecmp($a['category'], $b['category']);
+            if ($result == 0) {
+                $result = $a['sortorder'] - $b['sortorder'];
+            }
+        } else {
+            $result = $orderA - $orderB;
+        }
+        return $result;
+    }
+
+    /**
+     * Returns the array of categories with their assigned order.
+     * The array doesn't contain all the posible categories, only those with an order assigned.
+     *
+     * @return array<string,int>
+     */
+    public function getCategoryOrders()
+    {
+        $orders = [
+            'Logic' => 1,
+            'Display' => 2,
+            'Input' => 3,
+            'Other' => 4,
+            'Timer' => 5,
+            'Statistics' => 6,
+        ];
+        return $orders;
+    }
+
+    /**
+     * Sorts an array of question attributes by category.
+     * Sorting is based on a predefined list of orders (see QuestionAtributeHelper::getCategoryOrders()).
+     * Categories without a predefined order are considered less relevant.
+     * Categories with the same order are sorted alphabetically.
+     *
+     * @param array<string,array> $attributes
+     * @return array<string,array>
+     */
+    public function sortAttributesByCategory($attributes)
+    {
+        $attributesCopy = $attributes;
+        uasort($attributesCopy, [$this, 'categorySort']);
+        return $attributesCopy;
+    }
 }

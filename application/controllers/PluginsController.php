@@ -6,7 +6,6 @@
  */
 class PluginsController extends LSYii_Controller
 {
-
     /**
      * Launch the event newDirectRequest
      * @param $plugin : the target

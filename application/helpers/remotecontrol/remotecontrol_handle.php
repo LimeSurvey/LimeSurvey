@@ -3471,7 +3471,7 @@ class remotecontrol_handle
                 if (isset($participant['participant_id'])) {
                     $model->participant_id = $participant['participant_id'];
                 } else {
-                    $model->participant_id = Participant::gen_uuid();
+                    $model->participant_id = Participant::genUuid();
                 }
             }
 
