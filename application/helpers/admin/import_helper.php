@@ -1645,8 +1645,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             unset($insertdata['id']);
             // now translate any links
-            $insertdata['question'] = isset($insertdata['question']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']) : '';
-            $insertdata['help'] = isset($insertdata['help']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']) : '';
+            if ($bTranslateInsertansTags) {
+                $insertdata['question'] = isset($insertdata['question']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']) : '';
+                $insertdata['help'] = isset($insertdata['help']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']) : '';
+            }
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             } else {

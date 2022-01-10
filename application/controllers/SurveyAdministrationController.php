@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FilterImportedResources;
 
 /**
@@ -2183,7 +2184,9 @@ class SurveyAdministrationController extends LSBaseController
                     );
                 }
             } elseif ($action == 'copysurvey' && !$aData['bFailed']) {
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), (Yii::app()->request->getPost('copysurveytranslinksfields') == '1'));
+                $copyResources = Yii::app()->request->getPost('copysurveytranslinksfields') == '1';
+                $translateLinks = $copyResources;
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), $translateLinks);
                 if (isset($aExcludes['conditions'])) {
                     Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
@@ -2197,6 +2200,14 @@ class SurveyAdministrationController extends LSBaseController
 
                 if (!isset($aExcludes['permissions'])) {
                     Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
+                }
+
+                if (!empty($aImportResults['newsid']) && $copyResources) {
+                    $resourceCopier = new CopySurveyResources();
+                    [, $errorFilesInfo] = $resourceCopier->copyResources($iSurveyID, $aImportResults['newsid']);
+                    if (!empty($errorFilesInfo)) {
+                        $aImportResults['importwarnings'][] = gT("Some resources could not be copied from the source survey");
+                    }
                 }
             } else {
                 $aData['bFailed'] = true;
