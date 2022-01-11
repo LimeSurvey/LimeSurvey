@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
+    'reference' => '5e18b7e501f777c23634f16997fd0c3be4798b90',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
+      'reference' => '5e18b7e501f777c23634f16997fd0c3be4798b90',
     ),
     'paragonie/constant_time_encoding' => 
     array (
@@ -67,12 +67,12 @@
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.23.0',
-      'version' => '1.23.0.0',
+      'pretty_version' => 'v1.24.0',
+      'version' => '1.24.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '46cd95797e9df938fdd2b03693b5fca5e64b01ce',
+      'reference' => '30885182c981ab175d4d034db0f6f469898070ab',
     ),
     'tiamo/spss' => 
     array (

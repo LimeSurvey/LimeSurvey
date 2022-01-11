@@ -20,8 +20,6 @@ use Composer\Semver\VersionParser;
 
 
 
-
-
 class InstalledVersions
 {
 private static $installed = array (
@@ -32,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
+    'reference' => '5e18b7e501f777c23634f16997fd0c3be4798b90',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -44,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
+      'reference' => '5e18b7e501f777c23634f16997fd0c3be4798b90',
     ),
     'paragonie/constant_time_encoding' => 
     array (
@@ -93,12 +91,12 @@ private static $installed = array (
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.23.0',
-      'version' => '1.23.0.0',
+      'pretty_version' => 'v1.24.0',
+      'version' => '1.24.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '46cd95797e9df938fdd2b03693b5fca5e64b01ce',
+      'reference' => '30885182c981ab175d4d034db0f6f469898070ab',
     ),
     'tiamo/spss' => 
     array (
@@ -145,6 +143,7 @@ $packages = array();
 foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
+
 
 if (1 === \count($packages)) {
 return $packages[0];
@@ -337,7 +336,6 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
-
 
 
 
