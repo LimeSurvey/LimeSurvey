@@ -425,11 +425,16 @@ class index extends CAction
                 LimeExpressionManager::SetDirtyFlag();
                 buildsurveysession($surveyid);
 
-                if (loadanswers()) {
-                    Yii::app()->setConfig('move', 'reload');
-                    $move = "reload"; // veyRunTimeHelper use $move in $arg
+                // If no name and pass are set in the request, don't try to load an answer. Just show the loading form.
+                if (empty(Yii::app()->request->getParam('loadname')) && empty(Yii::app()->request->getParam('loadpass'))) {
+                    Yii::app()->setConfig('move', "loadall"); // Show loading form
                 } else {
-                    $aLoadErrorMsg['matching'] = gT("There is no matching saved response.");
+                    if (loadanswers()) {
+                        Yii::app()->setConfig('move', 'reload');
+                        $move = "reload"; // SurveyRunTimeHelper use $move in $arg
+                    } else {
+                        $aLoadErrorMsg['matching'] = gT("There is no matching saved response.");
+                    }
                 }
 
                 randomizationGroupsAndQuestions($surveyid);
