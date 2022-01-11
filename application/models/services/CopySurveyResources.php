@@ -81,5 +81,4 @@ class CopySurveyResources
         }
         return [$copiedFilesInfo, $errorFilesInfo];
     }
-
 }
