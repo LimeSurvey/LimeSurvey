@@ -83,9 +83,9 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
                 return;
             }
-            if ($this->get('is_default', null, null, $this->settings['is_default']['default'])) {
-                throw new CHttpException(401, 'Wrong credentials for LimeSurvey administration.');
-            }
+        }
+        if ($this->get('is_default', null, null, $this->settings['is_default']['default'])) {
+            throw new CHttpException(401, 'Wrong credentials for LimeSurvey administration.');
         }
     }
 
