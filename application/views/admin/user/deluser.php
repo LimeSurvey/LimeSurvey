@@ -25,7 +25,6 @@
             ?>
         </select>
         <input type="hidden" name="uid" value="<?php echo $postuserid; ?>" />
-        <input type="hidden" name="user" value="<?php echo $postuser; ?>" />
         <input type="hidden" name="action" value="finaldeluser" />
         <input type="submit" value="<?php eT("Delete User"); ?>" />
     </form>
