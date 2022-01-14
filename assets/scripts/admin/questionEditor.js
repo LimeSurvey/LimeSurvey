@@ -784,15 +784,20 @@ $(document).on('ready pjax:scriptcomplete', function () {
           throw 'abort';
         }
 
+        var currentIds = [];
         if (type === 'replace') {
           $table.find('tbody').find('tr').each((i, tableRow) => {
             $(tableRow).remove();
+          });
+        } else {
+          $table.find('tbody').find('tr').each((i, tableRow) => {
+            currentIds.push($(tableRow).data('common-id').split('_').shift());
           });
         }
 
         // Answer option IDs are generated randomly, so they repeat sometimes.
         // We keep track of the generated numbers to make sure they don't repeat.
-        var generatedIds = [];
+        var generatedIds = currentIds;
 
         // Loop the preview table and copy rows to destination (subquestions or answer options).
         $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
@@ -924,6 +929,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
     */
 
+    var currentIds = [];
     if ($closestTable.find('.code').length < 0) {
       $closestTable.find('.code-title').each(function () {
         codes.push($(this).text());
@@ -931,6 +937,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     } else {
       $closestTable.find('.code').each(function () {
         codes.push($(this).val());
+        currentIds.push($(this).closest('tr').data('common-id').split('_').shift());
       });
     }
 
@@ -964,7 +971,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     // Answer option IDs are generated randomly, so they repeat sometimes.
     // We keep track of the generated numbers to make sure they don't repeat.
-    var generatedIds = [];
+    var generatedIds = currentIds;
 
     // TODO: Document value
     // NB: splitCSV is added to string prototype in adminbasics.
