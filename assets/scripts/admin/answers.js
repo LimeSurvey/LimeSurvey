@@ -450,6 +450,7 @@ function lsbrowser(e)
 
     $('#labelsets').select2();
     $("#labelsetpreview").html('');
+    $('#longcodesalert').hide();
     //    e.preventDefault();
     var scale_id=window.LS.removechars($(this).attr('id'));
     var surveyid=$('input[name=sid]').val();
@@ -513,6 +514,7 @@ function lspreview(lid)
                 $tabbody=$('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>'),
                 count=0;
 
+            var hasInvalidCodes = false;
 
             console.ls.group('LanguageParsing');
             var i=0;
@@ -548,12 +550,20 @@ function lspreview(lid)
                     $listItem.append('<div class="col-md-1"></div>');
                     $listItem.attr('data-label', JSON.stringify(label));
                     $itemList.append($listItem);
-
+                    if (label.code.length > 5) {
+                        hasInvalidCodes = true;
+                    }
                 });
                 
                 console.ls.groupEnd('ParseLabels');
                 $bodyItem.append('<h4>'+labelSet.label_name+'</h4>');
                 $itemList.appendTo($bodyItem);
+
+                if (hasInvalidCodes) {
+                    $('#longcodesalert').show();
+                } else {
+                    $('#longcodesalert').hide();
+                }
                 
                 console.ls.groupEnd('ParseLabelSet');
             });
@@ -597,6 +607,9 @@ function transferlabels(type)
                     var $row = $(row)
                     var $tr = $row.eq(4);
                     var randId = 'new'+Math.floor(Math.random()*10000);
+
+                    // Make sure codes are limited to 5 characters
+                    label.code = label.code.substr(0, 5);
 
                     // $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/,randId));
                     // $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3-5}/,randId));
