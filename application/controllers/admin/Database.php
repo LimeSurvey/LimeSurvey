@@ -585,6 +585,7 @@ class Database extends SurveyCommonAction
                     $sURLDescription = Yii::app()->request->getPost('urldescrip_' . $langname, null);
                     $sURL = Yii::app()->request->getPost('url_' . $langname, null);
                     $short_title = Yii::app()->request->getPost('short_title_' . $langname, null);
+                    $alias = Yii::app()->request->getPost('alias_' . $langname, null);
                     $description = Yii::app()->request->getPost('description_' . $langname, null);
                     $welcome = Yii::app()->request->getPost('welcome_' . $langname, null);
                     $endtext = Yii::app()->request->getPost('endtext_' . $langname, null);
@@ -598,6 +599,9 @@ class Database extends SurveyCommonAction
                         // Fix bug with FCKEditor saving strange BR types
                         $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
                         $data['surveyls_title'] = $short_title;
+                    }
+                    if ($alias !== null) {
+                        $data['surveyls_alias'] = $alias;
                     }
                     if ($description !== null) {
                         // Fix bug with FCKEditor saving strange BR types

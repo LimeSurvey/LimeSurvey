@@ -102,6 +102,9 @@ class LSYii_Application extends CWebApplication
         if (!isset($aApplicationConfig['components']['assetManager']['basePath'])) {
             App()->getAssetManager()->setBasePath($this->config['tempdir'] . '/assets');
         }
+
+        // Load common helper
+        $this->loadHelper("common");
     }
 
     /* @inheritdoc */
@@ -514,5 +517,53 @@ class LSYii_Application extends CWebApplication
         }
 
         return $aApplicationConfig;
+    }
+
+    /**
+     * @inheritdoc
+     * Special handling for SEO friendly URLs
+        */
+    public function createController($route, $owner=null)
+    {
+        $controller = parent::createController($route, $owner);
+
+        // If no controller is found by standard ways, check if the route matches
+        // an existing survey's alias.
+        if (is_null($controller)) {
+            $controller = $this->createControllerFromShortUrl($route);
+        }
+
+        return $controller;
+    }
+
+    /**
+     * Create controller from short url if the route matches a survey alias.
+     * @param string $route the route of the request.
+     * @return array<mixed>|null
+     */
+    private function createControllerFromShortUrl($route)
+    {
+        // We can only determine Survey aliases if the column exists (we can't asume it does, because db update runs from the controller).
+        if ($this->getDb()->getSchema()->getTable('{{surveys_languagesettings}}')->getColumn('surveyls_alias')) {
+            $alias = explode("/", $route)[0];
+            $languageSettings = SurveyLanguageSetting::model()->with([
+                'survey' => [
+                    'select' => false,
+                    'joinType' => 'INNER JOIN',
+                ],
+            ])->findByAttributes(['surveyls_alias' => $alias]);
+            if (!empty($languageSettings)) {
+                // Override language
+                if (isset($_GET['lang'])) {
+                    $_GET['lang'] = $languageSettings->surveyls_language;
+                }
+                if (isset($_POST['lang'])) {
+                    $_POST['lang'] = $languageSettings->surveyls_language;
+                }
+                return $this->createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
+            }
+        }
+
+        return null;
     }
 }
