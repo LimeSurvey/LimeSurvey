@@ -32,7 +32,7 @@
                 <?php if (trim($grow['grelevance'])!='') { ?>
                     <tr>
                         <td><strong>
-                            <?php eT("Relevance:"); ?></strong>
+                            <?php eT("Condition:"); ?></strong>
                         </td>
                         <td>
                             <?php
