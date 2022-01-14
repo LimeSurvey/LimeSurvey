@@ -4096,14 +4096,14 @@ class LimeExpressionManager
     /**
      * Check the relevance status of all questions on or before the current group.
      * This generates needed JavaScript for dynamic relevance, and sets flags about which questions and groups are relevant
-     * @param string $onlyThisQseq
+     * @param string|null $onlyThisQseq
+     * @param integer|null $GroupSeq
      * @return void
      */
-    public function ProcessAllNeededRelevance($onlyThisQseq = null)
+    public function ProcessAllNeededRelevance($onlyThisQseq = null, $GroupSeq = null)
     {
         // TODO - in a running survey, only need to process the current Group.  For Admin mode, do we need to process all prior questions or not?
         //        $now = microtime(true);
-
         $grelComputed = [];  // so only process it once per group
         foreach ($this->questionSeq2relevance as $rel) {
             if (!is_null($onlyThisQseq) && $onlyThisQseq != $rel['qseq']) {
@@ -4111,9 +4111,11 @@ class LimeExpressionManager
             }
             $qid = $rel['qid'];
             $gseq = $rel['gseq'];
-            if ($this->allOnOnePage) {
-                ;   // process relevance for all questions
-            } elseif ($gseq != $this->currentGroupSeq) {
+            if(
+                $gseq != $this->currentGroupSeq // ONLY validate current group
+                && !$this->allOnOnePage // except if all in one page
+                && (is_null($GroupSeq) || $gseq > $GroupSeq)
+            ) {
                 continue;
             }
             $result = $this->_ProcessRelevance(
@@ -4125,7 +4127,6 @@ class LimeExpressionManager
                 $rel['hidden']
             );
             $_SESSION[$this->sessid]['relevanceStatus'][$qid] = $result;
-
             if (!isset($grelComputed[$gseq])) {
                 $this->_ProcessGroupRelevance($gseq);
                 $grelComputed[$gseq] = true;
@@ -5251,6 +5252,28 @@ class LimeExpressionManager
     }
 
     /**
+     * Set the relevance status to the $step
+     * @param int $seq - the sequential step
+     * @return void
+     */
+    public static function SetRelevanceTo($seq)
+    {
+        tracevar($seq);
+        $LEM =& LimeExpressionManager::singleton();
+        switch ($LEM->surveyMode) {
+            case 'survey':
+                $LEM->ProcessAllNeededRelevance();
+                break;
+            case 'group':
+                $LEM->ProcessAllNeededRelevance(null, $seq);
+                break;
+            case 'question':
+                $LEM->ProcessAllNeededRelevance(null, $seq);
+                break;
+        }
+    }
+
+    /**
      * Jump to a specific question or group sequence.  If jumping forward, it re-validates everything in between
      * @param int $seq - the sequential step
      * @param string|false $preview @see var $sPreviewMode
@@ -5263,7 +5286,6 @@ class LimeExpressionManager
     {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
-
         if (!$preview) {
             $preview = $LEM->sPreviewMode;
         }
@@ -5274,7 +5296,6 @@ class LimeExpressionManager
         if ($changeLang) {
             $LEM->setVariableAndTokenMappingsForExpressionManager($LEM->sid, true, $LEM->surveyOptions['anonymized']);
         }
-
         $LEM->ParseResultCache = [];    // to avoid running same test more than once for a given group
         $LEM->updatedValues = [];
         --$seq; // convert to 0-based numbering
@@ -5319,11 +5340,11 @@ class LimeExpressionManager
                     $updatedValues = [];
                 }
                 $message = '';
-                if (!$force && $LEM->currentGroupSeq != -1 && $seq > $LEM->currentGroupSeq) { // only re-validate if jumping forward
+                if ($LEM->currentGroupSeq != -1 && $seq > $LEM->currentGroupSeq) { // only re-validate if jumping forward
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
+                    if (!$force && !is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
                         // redisplay the current group, showing error
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
@@ -5408,13 +5429,13 @@ class LimeExpressionManager
                     $updatedValues = [];
                 }
                 $message = '';
-                if (!$force && $LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq) {
+                if ($LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq) {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq, $force);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues, $result['updatedValues']);
                     $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
                     $grel = $gRelInfo['result'];
-                    if ($grel && ($result['mandViolation'] || !$result['valid'])) {
+                    if (!$force && $grel && ($result['mandViolation'] || !$result['valid'])) {
                         // Redisplay the current question, qhowning error
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
@@ -5603,7 +5624,6 @@ class LimeExpressionManager
     public function _ValidateGroup($groupSeq, $force = false)
     {
         $LEM =& $this;
-
         if ($groupSeq < 0 || $groupSeq >= $LEM->numGroups) {
             return null;    // TODO - what is desired behavior?
         }
@@ -6742,6 +6762,7 @@ class LimeExpressionManager
      */
     public static function StartProcessingGroup($gseq = null, $anonymized = false, $surveyid = null, $forceRefresh = false)
     {
+        $msg = "- ";
         $LEM =& LimeExpressionManager::singleton();
         $LEM->em->StartProcessingGroup(
             isset($surveyid) ? $surveyid : null,
@@ -8767,9 +8788,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if (isset($args[1]) && $args[1] == 'NAOK') {
                     return 1;
                 }
-                $grel = (isset($_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq] : 1);   // true by default
-                $qrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$qid] : 0);
-                $sqrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
+                $grel =  1;
+                if(isset($_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq])) {
+                    $grel =  $_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq];
+                }
+                $qrel =  null;
+                if(isset($_SESSION[$this->sessid]['relevanceStatus'][$qid])) {
+                    $qrel =  $_SESSION[$this->sessid]['relevanceStatus'][$qid];
+                } else {
+                    // TODOACTUEL
+                }
+                $sqrel =  1; // true by default - only want false if a subquestion is really irrelevant
+                if(isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid])) {
+                    $sqrel =  $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid];
+                }
                 return ($grel && $qrel && $sqrel);
             // NB: No break needed
             case 'onlynum':
