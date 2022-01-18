@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-01-03 12:50:55+00:00\n"
+"POT-Creation-Date: 2022-01-18 09:43:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -240,9 +240,9 @@ msgstr ""
 
 #: application/controllers/InstallerController.php:632
 #: application/controllers/admin/surveypermission.php:579
-#: application/controllers/admin/useraction.php:317
-#: application/controllers/admin/useraction.php:392
-#: application/controllers/admin/useraction.php:403
+#: application/controllers/admin/useraction.php:314
+#: application/controllers/admin/useraction.php:389
+#: application/controllers/admin/useraction.php:400
 msgid "Success!"
 msgstr ""
 
@@ -1159,12 +1159,12 @@ msgstr ""
 #: application/controllers/admin/useraction.php:58
 #: application/controllers/admin/useraction.php:98
 #: application/controllers/admin/useraction.php:183
-#: application/controllers/admin/useraction.php:249
-#: application/controllers/admin/useraction.php:269
-#: application/controllers/admin/useraction.php:345
-#: application/controllers/admin/useraction.php:426
-#: application/controllers/admin/useraction.php:517
-#: application/controllers/admin/useraction.php:587
+#: application/controllers/admin/useraction.php:247
+#: application/controllers/admin/useraction.php:267
+#: application/controllers/admin/useraction.php:342
+#: application/controllers/admin/useraction.php:423
+#: application/controllers/admin/useraction.php:514
+#: application/controllers/admin/useraction.php:584
 msgid "You do not have permission to access this page."
 msgstr ""
 
@@ -1287,8 +1287,8 @@ msgstr ""
 #: application/controllers/admin/assessments.php:117
 #: application/views/admin/global_settings/_language.php:47
 #: application/views/admin/labels/_labelviewquickadd_view.php:13
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:84
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:140
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:84
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:146
 msgid "Add"
 msgstr ""
 
@@ -2582,7 +2582,7 @@ msgstr ""
 #: application/views/admin/user/editusers.php:132
 #: application/views/admin/user/modifyuser.php:62
 #: application/views/admin/user/setuserpermissions.php:82
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:186
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:192
 #: tmp/runtime/twig_cache/e5/e57c695bc6d714787c1464b1a5e95e6e6951541a6ef0b0600ad595bbba513188.php:56
 msgid "Save"
 msgstr ""
@@ -2693,8 +2693,8 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1747
 #: application/controllers/admin/useraction.php:139
 #: application/controllers/admin/useraction.php:141
-#: application/controllers/admin/useraction.php:392
-#: application/controllers/admin/useraction.php:403
+#: application/controllers/admin/useraction.php:389
+#: application/controllers/admin/useraction.php:400
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:369
 #: application/core/plugins/Authdb/Authdb.php:113
 #: application/libraries/Save.php:279
@@ -3025,7 +3025,7 @@ msgid "Uploaded label set file needs to have an .lsl extension."
 msgstr ""
 
 #: application/controllers/admin/labels.php:195
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:171
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:177
 msgid "New label set"
 msgstr ""
 
@@ -3234,7 +3234,7 @@ msgstr ""
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:220
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:226
 msgid "OK"
 msgstr ""
 
@@ -3859,7 +3859,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:187
 #: application/controllers/admin/useraction.php:154
-#: application/models/User.php:482
+#: application/models/User.php:477
 #: application/views/admin/authentication/forgotpassword.php:38
 #: application/views/admin/responses/listResponses_view.php:167
 #: application/views/admin/responses/listResponses_view.php:175
@@ -4187,7 +4187,7 @@ msgstr ""
 #: application/models/Surveymenu.php:244
 #: application/models/SurveymenuEntries.php:194
 #: application/models/SurveymenuEntries.php:207
-#: application/models/TokenDynamic.php:647 application/models/User.php:470
+#: application/models/TokenDynamic.php:647 application/models/User.php:465
 #: application/views/admin/emailtemplates/email_language_template_tab.php:80
 #: application/views/admin/labels/_labelviewtabcontent_view.php:21
 #: application/views/admin/pluginmanager/index.php:84
@@ -4297,10 +4297,10 @@ msgstr ""
 #: application/views/admin/update/updater/welcome/_updater_update.php:25
 #: application/views/admin/update/updater/welcome/_welcome.php:80
 #: application/views/admin/usergroup/usergroups_view.php:141
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:88
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:144
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:190
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:224
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:88
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:150
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:196
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:230
 msgid "Cancel"
 msgstr ""
 
@@ -4369,7 +4369,7 @@ msgstr ""
 #: application/controllers/admin/useraction.php:154
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:368
 #: application/core/plugins/Authdb/Authdb.php:112
-#: application/models/User.php:478
+#: application/models/User.php:473
 #: application/views/admin/user/modifyuser.php:24
 #: application/views/admin/usergroup/viewUserGroup_view.php:42
 msgid "Username"
@@ -4383,7 +4383,7 @@ msgid "User group"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:69
-#: application/models/User.php:486
+#: application/models/User.php:481
 #: application/views/admin/user/modifyuser.php:43
 msgid "Full name"
 msgstr ""
@@ -4455,7 +4455,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:681
 #: application/controllers/admin/tokens.php:2577
 #: application/controllers/admin/tokens.php:2618
-#: application/controllers/admin/useraction.php:810
+#: application/controllers/admin/useraction.php:807
 #: application/views/admin/authentication/message.php:35
 #: application/views/admin/participants/attributeMapCSV_view.php:80
 #: application/views/admin/participants/attributeMapToken_view.php:100
@@ -4576,7 +4576,7 @@ msgid "Deleting User"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:581
-#: application/controllers/admin/useraction.php:206
+#: application/controllers/admin/useraction.php:205
 msgid "Could not delete user. User was not supplied."
 msgstr ""
 
@@ -5468,95 +5468,95 @@ msgstr ""
 msgid "Set user permissions"
 msgstr ""
 
-#: application/controllers/admin/useraction.php:199
-#: application/controllers/admin/useraction.php:281
+#: application/controllers/admin/useraction.php:198
+#: application/controllers/admin/useraction.php:278
 msgid "Initial Superadmin cannot be deleted!"
 msgstr ""
 
-#: application/controllers/admin/useraction.php:308
+#: application/controllers/admin/useraction.php:305
 msgid "User '%s' was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:313
+#: application/controllers/admin/useraction.php:310
 msgid "All of the user's surveys were transferred to %s."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:381
-#: application/controllers/admin/useraction.php:408
-#: application/controllers/admin/useraction.php:413
+#: application/controllers/admin/useraction.php:378
+#: application/controllers/admin/useraction.php:405
+#: application/controllers/admin/useraction.php:410
 msgid "Could not modify user data."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:381
+#: application/controllers/admin/useraction.php:378
 msgid "Email address is not valid."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:392
+#: application/controllers/admin/useraction.php:389
 msgid "Unchanged"
 msgstr ""
 
-#: application/controllers/admin/useraction.php:433
+#: application/controllers/admin/useraction.php:430
 msgid "You are not allowed to edit your own user permissions."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:438
+#: application/controllers/admin/useraction.php:435
 msgid "The permissions of this superadmin cannot be updated!"
 msgstr ""
 
-#: application/controllers/admin/useraction.php:457
+#: application/controllers/admin/useraction.php:454
 msgid "Permissions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:460
+#: application/controllers/admin/useraction.php:457
 msgid "There was a problem updating the user permissions."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:482
+#: application/controllers/admin/useraction.php:479
 msgid "Note: You can only give limited permissions to other users because your own permissions are limited, too."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:581
+#: application/controllers/admin/useraction.php:578
 msgid "Template permissions were updated successfully."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:583
+#: application/controllers/admin/useraction.php:580
 msgid "Error while updating template permissions."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:611
+#: application/controllers/admin/useraction.php:608
 msgid "You can't change password if demo mode is active."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:621
+#: application/controllers/admin/useraction.php:618
 msgid "Your new password was not saved because the old password was wrong."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:626
+#: application/controllers/admin/useraction.php:623
 msgid "Your new password was not saved because it matches the old password."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:630
+#: application/controllers/admin/useraction.php:627
 msgid "Your new password was not saved because the passwords did not match."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:634
+#: application/controllers/admin/useraction.php:631
 msgid "The password can't be empty."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:657
+#: application/controllers/admin/useraction.php:654
 msgid "Your personal settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:660
+#: application/controllers/admin/useraction.php:657
 msgid "There was an error when saving your personal settings."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:674
+#: application/controllers/admin/useraction.php:671
 #: application/views/admin/participants/importCSV_view.php:60
 msgid "(Autodetect)"
 msgstr ""
 
-#: application/controllers/admin/useraction.php:735
+#: application/controllers/admin/useraction.php:732
 msgid "Could not save theme %s: %s"
 msgstr ""
 
@@ -5704,31 +5704,31 @@ msgstr ""
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
-#: application/controllers/survey/index.php:419
+#: application/controllers/survey/index.php:423
 msgid "There is no matching saved response."
 msgstr ""
 
-#: application/controllers/survey/index.php:469
+#: application/controllers/survey/index.php:474
 msgid "This invitation has already been used."
 msgstr ""
 
-#: application/controllers/survey/index.php:471
+#: application/controllers/survey/index.php:476
 msgid "This invitation has no uses left."
 msgstr ""
 
-#: application/controllers/survey/index.php:473
+#: application/controllers/survey/index.php:478
 msgid "This invitation is not valid yet."
 msgstr ""
 
-#: application/controllers/survey/index.php:475
+#: application/controllers/survey/index.php:480
 msgid "This invitation is not valid anymore."
 msgstr ""
 
-#: application/controllers/survey/index.php:478
+#: application/controllers/survey/index.php:483
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
-#: application/controllers/survey/index.php:482
+#: application/controllers/survey/index.php:487
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
@@ -12069,19 +12069,19 @@ msgstr ""
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2560
+#: application/helpers/update/updatedb_helper.php:2567
 msgid "An non-recoverable error happened during the update. Error details:"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2564
+#: application/helpers/update/updatedb_helper.php:2571
 msgid "File %s, line %s."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2607
+#: application/helpers/update/updatedb_helper.php:2614
 msgid "Database update"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2608
+#: application/helpers/update/updatedb_helper.php:2615
 msgid "The database has been updated from version %s to version %s."
 msgstr ""
 
@@ -12339,7 +12339,7 @@ msgstr ""
 
 #: application/models/Participant.php:246 application/models/Surveymenu.php:194
 #: application/models/SurveymenuEntries.php:205
-#: application/models/SurveysGroups.php:76 application/models/User.php:503
+#: application/models/SurveysGroups.php:76 application/models/User.php:498
 msgid "Created on"
 msgstr ""
 
@@ -12522,7 +12522,7 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/import_view.php:30
 #: application/views/admin/survey/copySurvey_view.php:47
 #: application/views/admin/survey/importSurvey_view.php:103
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:120
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:120
 msgid "Label sets"
 msgstr ""
 
@@ -13039,7 +13039,7 @@ msgstr ""
 
 #: application/models/Surveymenu.php:195
 #: application/models/SurveymenuEntries.php:206
-#: application/models/SurveysGroups.php:78 application/models/User.php:498
+#: application/models/SurveysGroups.php:78 application/models/User.php:493
 msgid "Created by"
 msgstr ""
 
@@ -13456,36 +13456,36 @@ msgstr ""
 msgid "View this participant in the central participants database"
 msgstr ""
 
-#: application/models/User.php:353 application/models/User.php:392
+#: application/models/User.php:352 application/models/User.php:389
 msgid "Edit this user"
 msgstr ""
 
-#: application/models/User.php:368 application/models/User.php:380
-#: application/models/User.php:418
+#: application/models/User.php:366 application/models/User.php:377
+#: application/models/User.php:414
 msgid "Delete this user"
 msgstr ""
 
-#: application/models/User.php:400
+#: application/models/User.php:397
 msgid "Set global permissions for this user"
 msgstr ""
 
-#: application/models/User.php:406
+#: application/models/User.php:403
 msgid "Set template permissions for this user"
 msgstr ""
 
-#: application/models/User.php:428
+#: application/models/User.php:423
 msgid "Do you want to delete this user?"
 msgstr ""
 
-#: application/models/User.php:438
+#: application/models/User.php:433
 msgid "Take ownership"
 msgstr ""
 
-#: application/models/User.php:474
+#: application/models/User.php:469
 msgid "User ID"
 msgstr ""
 
-#: application/models/User.php:492
+#: application/models/User.php:487
 msgid "No of surveys"
 msgstr ""
 
@@ -14292,7 +14292,7 @@ msgid "Renumber the new record."
 msgstr ""
 
 #: application/views/admin/dataentry/vvimport.php:54
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:178
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:184
 msgid "Replace the existing record."
 msgstr ""
 
@@ -15564,18 +15564,18 @@ msgid "Close editor"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewquickadd_view.php:6
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:64
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:64
 msgid "Enter your labels:"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewquickadd_view.php:9
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:72
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:72
 msgid "Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab."
 msgstr ""
 
 #: application/views/admin/labels/_labelviewquickadd_view.php:12
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:80
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:136
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:80
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:142
 msgid "Replace"
 msgstr ""
 
@@ -15779,7 +15779,7 @@ msgid "File"
 msgstr ""
 
 #: application/views/admin/labels/labelsets_view.php:16
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:113
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:113
 msgid "Label sets list"
 msgstr ""
 
@@ -17082,7 +17082,7 @@ msgid "Advanced"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:152
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:103
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:103
 msgid "Manage label sets"
 msgstr ""
 
@@ -17362,8 +17362,8 @@ msgid "Label set browser"
 msgstr ""
 
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:22
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:160
 #: tmp/runtime/twig_cache/70/704bf3d5ec5a941eadba716e1d3d208df83d6d588e33b51aeb02adef93241819.php:542
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:166
 msgid "Save as label set"
 msgstr ""
 
@@ -21255,7 +21255,7 @@ msgstr ""
 msgid "Transfer the surveys of this user to: "
 msgstr ""
 
-#: application/views/admin/user/deluser.php:30
+#: application/views/admin/user/deluser.php:29
 msgid "Delete User"
 msgstr ""
 
@@ -21954,10 +21954,6 @@ msgstr ""
 msgid "Restart this survey"
 msgstr ""
 
-#: tmp/runtime/twig_cache/2c/2cb67893aadcd1602fc4b6dfa385021587b16d4ae841877e57a8545e24301dee.php:206
-msgid "Replace label set?"
-msgstr ""
-
 #: tmp/runtime/twig_cache/2f/2f213733428de3d46896fcbaf701e2b0159533a37fd23982e8a4e0702a6fe0ac.php:270
 #: tmp/runtime/twig_cache/e6/e662477119548dbb512bc730fd62ecab6042545078d8c2b6b1b3f07cfe9d21e8.php:237
 #: tmp/runtime/twig_cache/f3/f3d91bb4d5a70779142f8b603ccef01fc85bf45fe4219c96577652fb4029db07.php:220
@@ -22091,6 +22087,14 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/a9/a9dfb7a189d97fcc1b371c64b69dfbc50bf7a290159bf1a5f80c63c5f861b489.php:109
 msgid "Change the language"
+msgstr ""
+
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:128
+msgid "Warning: Some answer codes will be truncated."
+msgstr ""
+
+#: tmp/runtime/twig_cache/ab/ab6fd3051f626f29a5f7c130fc7ee6528c48d0dfa495e2e110e9b65ff53c29cd.php:212
+msgid "Replace label set?"
 msgstr ""
 
 #: tmp/runtime/twig_cache/b1/b109e969d1cb41841db97c84f4166ca9cd12b44e40f83b85bce239e297263eb0.php:135
