@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.31 (build 220104) to 3.27.32 (build 220119) January 18, 2022
+-Fixed issue: Show full name of a deleted user correctly (#2128) (Vilius Šumskas)
+-Fixed issue #17802: Error shown when try to load a saved survey (#2196) (Gabriel Jenik)
+-Fixed issue #17773: Code name change while we updated from Edit Question screen (#2201) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
 Changes from 3.27.30 (build 211222) to 3.27.31 (build 220104) January 3, 2022
 -Fixed issue [security] #17793: Non filtred HTML shown for Question Attribute (#2184) (Denis Chenu)
 -Fixed issue [security] #17792: XSS in token browse (#2186) (Denis Chenu)
