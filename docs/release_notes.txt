@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.9 (build 220110) to 5.2.10 (build 220118) January 18, 2022
+-Fixed issue: No sql exception when gid parameter is empty on load view for question group (#2200) (Ahmed Galad's)
+-Fixed issue #17831: Database error when upgrading from 2.0.6 to 5.2.9 when using MSSQL (Carsten Schmitz)
+-Fixed issue #17815: Error 404 when we press the close button (#2204) (Gabriel Jenik)
+-Fixed issue #17802: Error shown when try to load a saved survey (#2197) (Gabriel Jenik)
+-Fixed issue #17801: No way to go to submit button in create group or question form with keyboard (#2195) (Gabriel Jenik)
+-Fixed issue #17791: 'Condition' vs. 'Relevance equation' (#2199) (Gabriel Jenik)
+-Fixed issue #17774: Dual scale answer texts are not exported correctly when using full text option (#2190) (Gabriel Jenik)
+-Fixed issue #17720: Wrong statistics with Other answers in single choice questions (#2203) (Gabriel Jenik)
+-Fixed issue #17618: Conversion failed when converting the nvarchar value 'NaN' to data type int (#2166) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
 Changes from 5.2.8 (build 220103) to 5.2.9 (build 220110) January 10, 2022
 -Fixed issue: Deactivate / Stop Survey Message Change (#2174) (Jessica Höck)
 -Fixed issue #17751: Date stamped throw php notice when data edit and debug (#2189) (Denis Chenu)
