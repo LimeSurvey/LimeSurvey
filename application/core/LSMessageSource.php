@@ -125,6 +125,7 @@ class LSMessageSource extends CMessageSource
         );
 
         if (isset($cache)) {
+            /* $key is set if $cache is set */
             $cache->set($key, serialize($messages), $this->cachingDuration);
         }
 

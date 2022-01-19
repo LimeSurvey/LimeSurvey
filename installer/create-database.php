@@ -1129,7 +1129,7 @@ function populateDatabase($oDB)
                 'category' => "string(35)",
                 'message' => "text",
             ],
-            $this->options
+            $options
         );
         $oDB->createCommand()->createTable(
             '{{message}}',
@@ -1138,7 +1138,7 @@ function populateDatabase($oDB)
                 'language' => "string(16)",
                 'translation' => "text",
             ],
-            $this->options
+            $options
         );
         $oDB->createCommand()->addPrimaryKey(
             '{{message_pk}}',
