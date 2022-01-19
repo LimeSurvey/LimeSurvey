@@ -25,8 +25,11 @@
             'flash' => $sAllowedExtensions,
             'images' => $sAllowedExtensions
         );
-        if (Yii::app()->getRequest()->enableCsrfValidation && !empty(Yii::app()->getRequest()->csrfCookie->domain)) {
-            $_SESSION['KCFINDER']['cookieDomain'] = Yii::app()->getRequest()->csrfCookie->domain;
+        if (!empty(App()->getSession()->cookieParams['domain'])) {
+            $_SESSION['KCFINDER']['cookieDomain'] = App()->getSession()->cookieParams['domain'];
+        }
+        if (App()->getRequest()->enableCsrfValidation && !empty(App()->getRequest()->csrfCookie['domain'])) {
+            $_SESSION['KCFINDER']['cookieDomain'] = Yii::app()->getRequest()->csrfCookie['domain'];
         }
 
         if (Yii::app()->getConfig('demoMode') === false &&
