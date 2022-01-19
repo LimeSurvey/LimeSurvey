@@ -62,7 +62,7 @@
 
                     <!-- Relevance Equation -->
                     <div class="form-group">
-                        <label class="control-label " id="relevance-group"><?php eT("Relevance equation:"); ?></label>
+                        <label class="control-label " id="relevance-group"><?php eT("Condition:"); ?></label>
                         <div class="input-group">
                           <div class="input-group-addon">{</div>
                             <?php  echo CHtml::textArea("questionGroup[grelevance]",$oQuestionGroup['grelevance'],array('class'=>'form-control','cols'=>'20','rows'=>'1','id'=>"grelevance")); ?>

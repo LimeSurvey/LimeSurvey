@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-01-03 12:51:03+00:00\n"
+"POT-Creation-Date: 2022-01-18 09:43:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,12 +20,12 @@ msgstr ""
 #: application/controllers/AdminController.php:98
 #: application/controllers/UserManagementController.php:941
 #: application/controllers/admin/dataentry.php:192
-#: application/controllers/admin/dataentry.php:1582
-#: application/controllers/admin/dataentry.php:1585
-#: application/controllers/admin/dataentry.php:1588
-#: application/controllers/admin/dataentry.php:1837
-#: application/controllers/admin/dataentry.php:1848
-#: application/controllers/admin/dataentry.php:1859
+#: application/controllers/admin/dataentry.php:1613
+#: application/controllers/admin/dataentry.php:1616
+#: application/controllers/admin/dataentry.php:1619
+#: application/controllers/admin/dataentry.php:1868
+#: application/controllers/admin/dataentry.php:1879
+#: application/controllers/admin/dataentry.php:1890
 #: application/controllers/survey/index.php:96
 #: application/controllers/survey/index.php:327
 #: application/controllers/survey/index.php:348
@@ -253,12 +253,12 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:1174
 #: application/controllers/QuestionAdministrationController.php:1225
 #: application/controllers/QuestionAdministrationController.php:1617
-#: application/controllers/QuestionGroupsAdministrationController.php:134
-#: application/controllers/QuestionGroupsAdministrationController.php:223
-#: application/controllers/QuestionGroupsAdministrationController.php:294
-#: application/controllers/QuestionGroupsAdministrationController.php:354
-#: application/controllers/QuestionGroupsAdministrationController.php:465
-#: application/controllers/QuestionGroupsAdministrationController.php:508
+#: application/controllers/QuestionGroupsAdministrationController.php:135
+#: application/controllers/QuestionGroupsAdministrationController.php:224
+#: application/controllers/QuestionGroupsAdministrationController.php:295
+#: application/controllers/QuestionGroupsAdministrationController.php:355
+#: application/controllers/QuestionGroupsAdministrationController.php:466
+#: application/controllers/QuestionGroupsAdministrationController.php:509
 #: application/controllers/ResponsesController.php:783
 #: application/controllers/SurveyAdministrationController.php:137
 #: application/controllers/SurveyAdministrationController.php:139
@@ -924,15 +924,14 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:388
 #: application/controllers/QuestionAdministrationController.php:393
 #: application/controllers/QuestionAdministrationController.php:1200
-#: application/controllers/QuestionGroupsAdministrationController.php:102
-#: application/controllers/QuestionGroupsAdministrationController.php:106
-#: application/controllers/QuestionGroupsAdministrationController.php:168
-#: application/controllers/QuestionGroupsAdministrationController.php:269
-#: application/controllers/QuestionGroupsAdministrationController.php:333
-#: application/controllers/QuestionGroupsAdministrationController.php:397
-#: application/controllers/QuestionGroupsAdministrationController.php:513
-#: application/controllers/QuestionGroupsAdministrationController.php:737
-#: application/controllers/QuestionGroupsAdministrationController.php:741
+#: application/controllers/QuestionGroupsAdministrationController.php:100
+#: application/controllers/QuestionGroupsAdministrationController.php:169
+#: application/controllers/QuestionGroupsAdministrationController.php:270
+#: application/controllers/QuestionGroupsAdministrationController.php:334
+#: application/controllers/QuestionGroupsAdministrationController.php:398
+#: application/controllers/QuestionGroupsAdministrationController.php:514
+#: application/controllers/QuestionGroupsAdministrationController.php:738
+#: application/controllers/QuestionGroupsAdministrationController.php:742
 #: application/controllers/SurveyAdministrationController.php:364
 #: application/controllers/SurveyAdministrationController.php:577
 #: application/controllers/SurveyAdministrationController.php:885
@@ -1091,7 +1090,7 @@ msgid "Import"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1108
-#: application/controllers/QuestionGroupsAdministrationController.php:424
+#: application/controllers/QuestionGroupsAdministrationController.php:425
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr ""
 
@@ -1100,7 +1099,7 @@ msgid "No GID (Group) has been provided. Cannot import question"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1136
-#: application/controllers/QuestionGroupsAdministrationController.php:443
+#: application/controllers/QuestionGroupsAdministrationController.php:444
 msgid "Unknown file extension"
 msgstr ""
 
@@ -1115,12 +1114,12 @@ msgid "Deleted"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1328
-#: application/controllers/QuestionGroupsAdministrationController.php:542
+#: application/controllers/QuestionGroupsAdministrationController.php:543
 msgid "You are not authorized to delete questions."
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:1331
-#: application/controllers/QuestionGroupsAdministrationController.php:545
+#: application/controllers/QuestionGroupsAdministrationController.php:546
 #: application/controllers/ResponsesController.php:539
 #: application/controllers/ResponsesController.php:731
 #: application/controllers/SurveysGroupsPermissionController.php:187
@@ -1287,7 +1286,11 @@ msgstr ""
 msgid "Could not save answer option"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:207
+#: application/controllers/QuestionGroupsAdministrationController.php:107
+msgid "Question group does not exists"
+msgstr ""
+
+#: application/controllers/QuestionGroupsAdministrationController.php:208
 #: application/controllers/SurveyAdministrationController.php:1934
 #: application/controllers/SurveyAdministrationController.php:3047
 #: application/views/admin/emailtemplates/emailtemplates_view.php:37
@@ -1302,11 +1305,11 @@ msgstr ""
 msgid "Base language"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:355
+#: application/controllers/QuestionGroupsAdministrationController.php:356
 msgid "Question groups in this survey"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:411
+#: application/controllers/QuestionGroupsAdministrationController.php:412
 #: application/controllers/SurveyAdministrationController.php:2119
 #: application/controllers/UserRoleController.php:326
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:197
@@ -1315,32 +1318,32 @@ msgstr ""
 msgid "Sorry, this file is too large. Only files up to %01.2f MB are allowed."
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:416
+#: application/controllers/QuestionGroupsAdministrationController.php:417
 msgid ""
 "An error occurred uploading your file.\n"
 "                     This may be caused by incorrect permissions for the application /tmp folder."
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:537
+#: application/controllers/QuestionGroupsAdministrationController.php:538
 msgid "Invalid question group id"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:559
-#: application/controllers/QuestionGroupsAdministrationController.php:571
+#: application/controllers/QuestionGroupsAdministrationController.php:560
+#: application/controllers/QuestionGroupsAdministrationController.php:572
 msgid "The question group was deleted."
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:559
-#: application/controllers/QuestionGroupsAdministrationController.php:573
+#: application/controllers/QuestionGroupsAdministrationController.php:560
+#: application/controllers/QuestionGroupsAdministrationController.php:574
 msgid "Group could not be deleted"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:824
+#: application/controllers/QuestionGroupsAdministrationController.php:825
 msgid "Question group successfully stored"
 msgstr ""
 
-#: application/controllers/QuestionGroupsAdministrationController.php:850
-#: application/controllers/QuestionGroupsAdministrationController.php:927
+#: application/controllers/QuestionGroupsAdministrationController.php:851
+#: application/controllers/QuestionGroupsAdministrationController.php:928
 msgid "You can't reorder in an active survey"
 msgstr ""
 
@@ -1636,7 +1639,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:954
 #: application/controllers/ResponsesController.php:967
 #: application/controllers/SurveyAdministrationController.php:2162
-#: application/controllers/admin/dataentry.php:1363
+#: application/controllers/admin/dataentry.php:1399
 #: application/controllers/admin/statistics.php:114
 #: application/controllers/admin/statistics.php:668
 #: application/core/Survey_Common_Action.php:656
@@ -2776,7 +2779,7 @@ msgstr ""
 #: application/controllers/UserGroupController.php:251
 #: application/controllers/UserGroupController.php:301
 #: application/controllers/admin/PluginManagerController.php:360
-#: application/controllers/admin/dataentry.php:1274
+#: application/controllers/admin/dataentry.php:1310
 #: application/controllers/admin/labels.php:222
 #: application/controllers/admin/labels.php:311
 #: application/controllers/admin/labels.php:442
@@ -4797,9 +4800,9 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:78
 #: application/controllers/admin/dataentry.php:79
 #: application/controllers/admin/dataentry.php:498
-#: application/controllers/admin/dataentry.php:1528
-#: application/controllers/admin/dataentry.php:2285
-#: application/controllers/admin/dataentry.php:2288
+#: application/controllers/admin/dataentry.php:1559
+#: application/controllers/admin/dataentry.php:2316
+#: application/controllers/admin/dataentry.php:2319
 #: application/extensions/TopbarWidget/views/includes/responsesTopbarLeft_view.php:22
 #: application/views/admin/dataentry/caption_view.php:5
 #: application/views/admin/dataentry/dataentry_header_view.php:3
@@ -4942,58 +4945,285 @@ msgstr ""
 msgid "Your Ranking"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1368
+#: application/controllers/admin/dataentry.php:1270
+#: application/core/QuestionTypes/Date/RenderDate.php:87
+#: application/extensions/SettingsWidget/SettingsWidget.php:624
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:29
+#: application/views/admin/dataentry/content_view.php:74
+#: application/views/admin/export/statistics_subviews/_question.php:278
+#: application/views/admin/export/statistics_subviews/_question.php:309
+#: application/views/admin/export/statistics_subviews/_question.php:340
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:21
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:55
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:90
+#: application/views/admin/participants/participantsPanel_view.php:42
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:41
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:74
+#: application/views/admin/token/dummytokenform.php:101
+#: application/views/admin/token/dummytokenform.php:131
+#: application/views/responses/modal_subviews/filterColumns.php:31
+msgid "Clear selection"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1271
+#: application/core/QuestionTypes/Date/RenderDate.php:88
+#: application/extensions/SettingsWidget/SettingsWidget.php:625
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:32
+#: application/views/admin/dataentry/content_view.php:75
+#: application/views/admin/export/statistics_subviews/_question.php:279
+#: application/views/admin/export/statistics_subviews/_question.php:310
+#: application/views/admin/export/statistics_subviews/_question.php:341
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:22
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:56
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:91
+#: application/views/admin/participants/participantsPanel_view.php:45
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:42
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:75
+#: application/views/admin/token/dummytokenform.php:102
+#: application/views/admin/token/dummytokenform.php:132
+msgid "Previous month"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1272
+#: application/core/QuestionTypes/Date/RenderDate.php:89
+#: application/extensions/SettingsWidget/SettingsWidget.php:626
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:33
+#: application/views/admin/dataentry/content_view.php:76
+#: application/views/admin/export/statistics_subviews/_question.php:280
+#: application/views/admin/export/statistics_subviews/_question.php:311
+#: application/views/admin/export/statistics_subviews/_question.php:342
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:23
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:57
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:92
+#: application/views/admin/participants/participantsPanel_view.php:46
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:43
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:76
+#: application/views/admin/token/dummytokenform.php:103
+#: application/views/admin/token/dummytokenform.php:133
+msgid "Next month"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1273
+#: application/core/QuestionTypes/Date/RenderDate.php:90
+#: application/extensions/SettingsWidget/SettingsWidget.php:627
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:34
+#: application/views/admin/dataentry/content_view.php:77
+#: application/views/admin/export/statistics_subviews/_question.php:281
+#: application/views/admin/export/statistics_subviews/_question.php:312
+#: application/views/admin/export/statistics_subviews/_question.php:343
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:24
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:58
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:93
+#: application/views/admin/participants/participantsPanel_view.php:47
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:44
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:77
+#: application/views/admin/token/dummytokenform.php:104
+#: application/views/admin/token/dummytokenform.php:134
+msgid "Select year"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1274
+#: application/core/QuestionTypes/Date/RenderDate.php:91
+#: application/extensions/SettingsWidget/SettingsWidget.php:628
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:35
+#: application/views/admin/dataentry/content_view.php:78
+#: application/views/admin/export/statistics_subviews/_question.php:282
+#: application/views/admin/export/statistics_subviews/_question.php:313
+#: application/views/admin/export/statistics_subviews/_question.php:344
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:25
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:59
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:94
+#: application/views/admin/participants/participantsPanel_view.php:48
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:45
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:78
+#: application/views/admin/token/dummytokenform.php:105
+#: application/views/admin/token/dummytokenform.php:135
+msgid "Previous year"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1275
+#: application/core/QuestionTypes/Date/RenderDate.php:92
+#: application/extensions/SettingsWidget/SettingsWidget.php:629
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:36
+#: application/views/admin/dataentry/content_view.php:79
+#: application/views/admin/export/statistics_subviews/_question.php:283
+#: application/views/admin/export/statistics_subviews/_question.php:314
+#: application/views/admin/export/statistics_subviews/_question.php:345
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:26
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:60
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:95
+#: application/views/admin/participants/participantsPanel_view.php:49
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:46
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:79
+#: application/views/admin/token/dummytokenform.php:106
+#: application/views/admin/token/dummytokenform.php:136
+msgid "Next year"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1276
+#: application/core/QuestionTypes/Date/RenderDate.php:93
+#: application/extensions/SettingsWidget/SettingsWidget.php:630
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:37
+#: application/views/admin/dataentry/content_view.php:80
+#: application/views/admin/export/statistics_subviews/_question.php:284
+#: application/views/admin/export/statistics_subviews/_question.php:315
+#: application/views/admin/export/statistics_subviews/_question.php:346
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:27
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:61
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:96
+#: application/views/admin/participants/participantsPanel_view.php:50
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:47
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:80
+#: application/views/admin/token/dummytokenform.php:107
+#: application/views/admin/token/dummytokenform.php:137
+msgid "Select decade"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1277
+#: application/core/QuestionTypes/Date/RenderDate.php:94
+#: application/extensions/SettingsWidget/SettingsWidget.php:631
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:38
+#: application/views/admin/dataentry/content_view.php:81
+#: application/views/admin/export/statistics_subviews/_question.php:285
+#: application/views/admin/export/statistics_subviews/_question.php:316
+#: application/views/admin/export/statistics_subviews/_question.php:347
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:28
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:62
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:97
+#: application/views/admin/participants/participantsPanel_view.php:51
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:48
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:81
+#: application/views/admin/token/dummytokenform.php:108
+#: application/views/admin/token/dummytokenform.php:138
+msgid "Previous decade"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1278
+#: application/core/QuestionTypes/Date/RenderDate.php:95
+#: application/extensions/SettingsWidget/SettingsWidget.php:632
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:39
+#: application/views/admin/dataentry/content_view.php:82
+#: application/views/admin/export/statistics_subviews/_question.php:286
+#: application/views/admin/export/statistics_subviews/_question.php:317
+#: application/views/admin/export/statistics_subviews/_question.php:348
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:29
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:63
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:98
+#: application/views/admin/participants/participantsPanel_view.php:52
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:49
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:82
+#: application/views/admin/token/dummytokenform.php:109
+#: application/views/admin/token/dummytokenform.php:139
+msgid "Next decade"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1279
+#: application/core/QuestionTypes/Date/RenderDate.php:96
+#: application/extensions/SettingsWidget/SettingsWidget.php:633
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:40
+#: application/views/admin/dataentry/content_view.php:83
+#: application/views/admin/export/statistics_subviews/_question.php:287
+#: application/views/admin/export/statistics_subviews/_question.php:318
+#: application/views/admin/export/statistics_subviews/_question.php:349
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:30
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:64
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:99
+#: application/views/admin/participants/participantsPanel_view.php:53
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:50
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:83
+#: application/views/admin/token/dummytokenform.php:110
+#: application/views/admin/token/dummytokenform.php:140
+msgid "Previous century"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1280
+#: application/core/QuestionTypes/Date/RenderDate.php:97
+#: application/extensions/SettingsWidget/SettingsWidget.php:634
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:41
+#: application/views/admin/dataentry/content_view.php:84
+#: application/views/admin/export/statistics_subviews/_question.php:288
+#: application/views/admin/export/statistics_subviews/_question.php:319
+#: application/views/admin/export/statistics_subviews/_question.php:350
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:31
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:65
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:100
+#: application/views/admin/participants/participantsPanel_view.php:54
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:51
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:84
+#: application/views/admin/token/dummytokenform.php:111
+#: application/views/admin/token/dummytokenform.php:141
+msgid "Next century"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1281
+#: application/core/QuestionTypes/Date/RenderDate.php:98
+#: application/extensions/SettingsWidget/SettingsWidget.php:635
+#: application/views/admin/dataentry/content_view.php:85
+#: application/views/admin/export/statistics_subviews/_question.php:289
+#: application/views/admin/export/statistics_subviews/_question.php:320
+#: application/views/admin/export/statistics_subviews/_question.php:351
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:32
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:66
+#: application/views/admin/export/statistics_subviews/_submissiondate.php:101
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:52
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:85
+#: application/views/admin/token/dummytokenform.php:112
+#: application/views/admin/token/dummytokenform.php:142
+msgid "Select time"
+msgstr ""
+
+#: application/controllers/admin/dataentry.php:1404
 msgid "Invalid ID"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1409
-#: application/controllers/admin/dataentry.php:1473
+#: application/controllers/admin/dataentry.php:1445
+#: application/controllers/admin/dataentry.php:1507
 msgid "Invalid datetime %s value for %s"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1420
-#: application/controllers/admin/dataentry.php:1440
+#: application/controllers/admin/dataentry.php:1456
+#: application/controllers/admin/dataentry.php:1476
 msgid "Invalid numeric value for %s"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1492
+#: application/controllers/admin/dataentry.php:1523
 msgid "The response record %s was updated."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1582
+#: application/controllers/admin/dataentry.php:1613
 #: application/libraries/Save.php:189
 msgid "You must supply a name for this saved session."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1585
+#: application/controllers/admin/dataentry.php:1616
 #: application/libraries/Save.php:192
 msgid "You must supply a password for this saved session."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1588
+#: application/controllers/admin/dataentry.php:1619
 #: application/libraries/Save.php:195
 msgid "Your passwords do not match."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1736
+#: application/controllers/admin/dataentry.php:1767
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1751
+#: application/controllers/admin/dataentry.php:1782
 msgid "A survey participant entry for the saved survey has been created too."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1760
+#: application/controllers/admin/dataentry.php:1791
 #: application/libraries/Save.php:278
 msgid "Saved Survey Details"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1761
+#: application/controllers/admin/dataentry.php:1792
 #: application/libraries/Save.php:279
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1763
+#: application/controllers/admin/dataentry.php:1794
 #: application/libraries/Save.php:281 application/models/Assessment.php:84
 #: application/models/ParticipantAttributeName.php:255
 #: application/models/Permissiontemplates.php:256
@@ -5009,7 +5239,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1764
+#: application/controllers/admin/dataentry.php:1795
 #: application/controllers/admin/useraction.php:153
 #: application/controllers/admin/useraction.php:155
 #: application/controllers/admin/useraction.php:420
@@ -5023,62 +5253,62 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1765
+#: application/controllers/admin/dataentry.php:1796
 #: application/libraries/Save.php:283
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1770
+#: application/controllers/admin/dataentry.php:1801
 msgid "An email has been sent with details about your saved survey"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1772
+#: application/controllers/admin/dataentry.php:1803
 msgid "Unable to send email about your saved survey (Error: %s)."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1838
+#: application/controllers/admin/dataentry.php:1869
 msgid "This is a closed-access survey, so you must supply a access code.  Please contact the administrator for assistance."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1849
+#: application/controllers/admin/dataentry.php:1880
 msgid "The access code have provided is not valid or has already been used."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1860
+#: application/controllers/admin/dataentry.php:1891
 msgid "There is already a recorded answer for this access code"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1873
+#: application/controllers/admin/dataentry.php:1904
 msgid "Follow the following link to update it"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1877
+#: application/controllers/admin/dataentry.php:1908
 #: application/extensions/TopbarWidget/views/includes/responseViewTopbarRight_view.php:6
 msgid "Edit this entry"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1890
+#: application/controllers/admin/dataentry.php:1921
 msgid "This surveys uses anonymized responses, so you can't update your response."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1983
+#: application/controllers/admin/dataentry.php:2014
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1986
+#: application/controllers/admin/dataentry.php:2017
 msgid "The answer(s) must meet these validation criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1992
+#: application/controllers/admin/dataentry.php:2023
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2248
+#: application/controllers/admin/dataentry.php:2279
 #: application/controllers/admin/printablesurvey.php:1472
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2257
+#: application/controllers/admin/dataentry.php:2288
 #: application/controllers/admin/printablesurvey.php:1485
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
@@ -7069,31 +7299,31 @@ msgstr ""
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
-#: application/controllers/survey/index.php:432
+#: application/controllers/survey/index.php:436
 msgid "There is no matching saved response."
 msgstr ""
 
-#: application/controllers/survey/index.php:482
+#: application/controllers/survey/index.php:487
 msgid "This invitation has already been used."
 msgstr ""
 
-#: application/controllers/survey/index.php:484
+#: application/controllers/survey/index.php:489
 msgid "This invitation has no uses left."
 msgstr ""
 
-#: application/controllers/survey/index.php:486
+#: application/controllers/survey/index.php:491
 msgid "This invitation is not valid yet."
 msgstr ""
 
-#: application/controllers/survey/index.php:488
+#: application/controllers/survey/index.php:493
 msgid "This invitation is not valid anymore."
 msgstr ""
 
-#: application/controllers/survey/index.php:491
+#: application/controllers/survey/index.php:496
 msgid "This is a controlled survey. You need a valid access code to participate."
 msgstr ""
 
-#: application/controllers/survey/index.php:495
+#: application/controllers/survey/index.php:500
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
@@ -8510,221 +8740,6 @@ msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:79
 msgid "December"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:87
-#: application/extensions/SettingsWidget/SettingsWidget.php:624
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:29
-#: application/views/admin/dataentry/content_view.php:74
-#: application/views/admin/export/statistics_subviews/_question.php:278
-#: application/views/admin/export/statistics_subviews/_question.php:309
-#: application/views/admin/export/statistics_subviews/_question.php:340
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:21
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:55
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:90
-#: application/views/admin/participants/participantsPanel_view.php:42
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:41
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:74
-#: application/views/admin/token/dummytokenform.php:101
-#: application/views/admin/token/dummytokenform.php:131
-#: application/views/responses/modal_subviews/filterColumns.php:31
-msgid "Clear selection"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:88
-#: application/extensions/SettingsWidget/SettingsWidget.php:625
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:32
-#: application/views/admin/dataentry/content_view.php:75
-#: application/views/admin/export/statistics_subviews/_question.php:279
-#: application/views/admin/export/statistics_subviews/_question.php:310
-#: application/views/admin/export/statistics_subviews/_question.php:341
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:22
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:56
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:91
-#: application/views/admin/participants/participantsPanel_view.php:45
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:42
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:75
-#: application/views/admin/token/dummytokenform.php:102
-#: application/views/admin/token/dummytokenform.php:132
-msgid "Previous month"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:89
-#: application/extensions/SettingsWidget/SettingsWidget.php:626
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:33
-#: application/views/admin/dataentry/content_view.php:76
-#: application/views/admin/export/statistics_subviews/_question.php:280
-#: application/views/admin/export/statistics_subviews/_question.php:311
-#: application/views/admin/export/statistics_subviews/_question.php:342
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:23
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:57
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:92
-#: application/views/admin/participants/participantsPanel_view.php:46
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:43
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:76
-#: application/views/admin/token/dummytokenform.php:103
-#: application/views/admin/token/dummytokenform.php:133
-msgid "Next month"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:90
-#: application/extensions/SettingsWidget/SettingsWidget.php:627
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:34
-#: application/views/admin/dataentry/content_view.php:77
-#: application/views/admin/export/statistics_subviews/_question.php:281
-#: application/views/admin/export/statistics_subviews/_question.php:312
-#: application/views/admin/export/statistics_subviews/_question.php:343
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:24
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:58
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:93
-#: application/views/admin/participants/participantsPanel_view.php:47
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:44
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:77
-#: application/views/admin/token/dummytokenform.php:104
-#: application/views/admin/token/dummytokenform.php:134
-msgid "Select year"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:91
-#: application/extensions/SettingsWidget/SettingsWidget.php:628
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:35
-#: application/views/admin/dataentry/content_view.php:78
-#: application/views/admin/export/statistics_subviews/_question.php:282
-#: application/views/admin/export/statistics_subviews/_question.php:313
-#: application/views/admin/export/statistics_subviews/_question.php:344
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:25
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:59
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:94
-#: application/views/admin/participants/participantsPanel_view.php:48
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:45
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:78
-#: application/views/admin/token/dummytokenform.php:105
-#: application/views/admin/token/dummytokenform.php:135
-msgid "Previous year"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:92
-#: application/extensions/SettingsWidget/SettingsWidget.php:629
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:36
-#: application/views/admin/dataentry/content_view.php:79
-#: application/views/admin/export/statistics_subviews/_question.php:283
-#: application/views/admin/export/statistics_subviews/_question.php:314
-#: application/views/admin/export/statistics_subviews/_question.php:345
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:26
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:60
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:95
-#: application/views/admin/participants/participantsPanel_view.php:49
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:46
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:79
-#: application/views/admin/token/dummytokenform.php:106
-#: application/views/admin/token/dummytokenform.php:136
-msgid "Next year"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:93
-#: application/extensions/SettingsWidget/SettingsWidget.php:630
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:37
-#: application/views/admin/dataentry/content_view.php:80
-#: application/views/admin/export/statistics_subviews/_question.php:284
-#: application/views/admin/export/statistics_subviews/_question.php:315
-#: application/views/admin/export/statistics_subviews/_question.php:346
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:27
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:61
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:96
-#: application/views/admin/participants/participantsPanel_view.php:50
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:47
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:80
-#: application/views/admin/token/dummytokenform.php:107
-#: application/views/admin/token/dummytokenform.php:137
-msgid "Select decade"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:94
-#: application/extensions/SettingsWidget/SettingsWidget.php:631
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:38
-#: application/views/admin/dataentry/content_view.php:81
-#: application/views/admin/export/statistics_subviews/_question.php:285
-#: application/views/admin/export/statistics_subviews/_question.php:316
-#: application/views/admin/export/statistics_subviews/_question.php:347
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:28
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:62
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:97
-#: application/views/admin/participants/participantsPanel_view.php:51
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:48
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:81
-#: application/views/admin/token/dummytokenform.php:108
-#: application/views/admin/token/dummytokenform.php:138
-msgid "Previous decade"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:95
-#: application/extensions/SettingsWidget/SettingsWidget.php:632
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:39
-#: application/views/admin/dataentry/content_view.php:82
-#: application/views/admin/export/statistics_subviews/_question.php:286
-#: application/views/admin/export/statistics_subviews/_question.php:317
-#: application/views/admin/export/statistics_subviews/_question.php:348
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:29
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:63
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:98
-#: application/views/admin/participants/participantsPanel_view.php:52
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:49
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:82
-#: application/views/admin/token/dummytokenform.php:109
-#: application/views/admin/token/dummytokenform.php:139
-msgid "Next decade"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:96
-#: application/extensions/SettingsWidget/SettingsWidget.php:633
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:40
-#: application/views/admin/dataentry/content_view.php:83
-#: application/views/admin/export/statistics_subviews/_question.php:287
-#: application/views/admin/export/statistics_subviews/_question.php:318
-#: application/views/admin/export/statistics_subviews/_question.php:349
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:30
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:64
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:99
-#: application/views/admin/participants/participantsPanel_view.php:53
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:50
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:83
-#: application/views/admin/token/dummytokenform.php:110
-#: application/views/admin/token/dummytokenform.php:140
-msgid "Previous century"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:97
-#: application/extensions/SettingsWidget/SettingsWidget.php:634
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:41
-#: application/views/admin/dataentry/content_view.php:84
-#: application/views/admin/export/statistics_subviews/_question.php:288
-#: application/views/admin/export/statistics_subviews/_question.php:319
-#: application/views/admin/export/statistics_subviews/_question.php:350
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:31
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:65
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:100
-#: application/views/admin/participants/participantsPanel_view.php:54
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:51
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:84
-#: application/views/admin/token/dummytokenform.php:111
-#: application/views/admin/token/dummytokenform.php:141
-msgid "Next century"
-msgstr ""
-
-#: application/core/QuestionTypes/Date/RenderDate.php:98
-#: application/extensions/SettingsWidget/SettingsWidget.php:635
-#: application/views/admin/dataentry/content_view.php:85
-#: application/views/admin/export/statistics_subviews/_question.php:289
-#: application/views/admin/export/statistics_subviews/_question.php:320
-#: application/views/admin/export/statistics_subviews/_question.php:351
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:32
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:66
-#: application/views/admin/export/statistics_subviews/_submissiondate.php:101
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:52
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:85
-#: application/views/admin/token/dummytokenform.php:112
-#: application/views/admin/token/dummytokenform.php:142
-msgid "Select time"
 msgstr ""
 
 #: application/core/QuestionTypes/ListWithComment/RenderListComment.php:78
@@ -23400,6 +23415,9 @@ msgid "Encrypted:"
 msgstr ""
 
 #: application/views/questionAdministration/summary.php:200
+#: application/views/questionGroupsAdministration/addGroup_view.php:76
+#: application/views/questionGroupsAdministration/editGroup_view.php:65
+#: application/views/questionGroupsAdministration/group_view.php:35
 msgid "Condition:"
 msgstr ""
 
@@ -23449,21 +23467,12 @@ msgstr ""
 msgid "Randomization group:"
 msgstr ""
 
-#: application/views/questionGroupsAdministration/addGroup_view.php:76
-#: application/views/questionGroupsAdministration/editGroup_view.php:65
-msgid "Relevance equation:"
-msgstr ""
-
 #: application/views/questionGroupsAdministration/addGroup_view.php:88
 msgid "Save question group"
 msgstr ""
 
 #: application/views/questionGroupsAdministration/editGroup_view.php:8
 msgid "Edit Group"
-msgstr ""
-
-#: application/views/questionGroupsAdministration/group_view.php:35
-msgid "Relevance:"
 msgstr ""
 
 #: application/views/questionGroupsAdministration/group_view.php:57
@@ -24034,11 +24043,11 @@ msgid "Target (sub-)question:"
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:10
-msgid "Warning: Please read this carefully before proceeding!"
+msgid "Attention: Please read the following carefully before stopping your survey."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:13
-msgid "There are two ways to stop a survey. Please read carefully about the two options below and choose the right one for you."
+msgid "There are two ways to stop a survey. Please read the Expiration and Deactivation points below before proceeding."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:18
@@ -24054,39 +24063,35 @@ msgid "No responses are lost."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:28
-msgid "No participant information lost."
+msgid "No participant information is lost."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:29
-msgid "Ability to change of questions, groups and parameters is still limited."
+msgid "The ability to change questions, groups and parameters is limited."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:30
-msgid "An expired survey is not accessible to participants (they only see a message that the survey has expired)."
+msgid "An expired survey cannot be accessed by participants.  A message will be displayed stating that the survey has expired."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:31
-msgid "It's still possible to perform statistics on responses using LimeSurvey."
+msgid "It is still possible to perform statistical analysis on responses."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:36
-msgid "All responses are not accessible anymore with LimeSurvey."
-msgstr ""
-
-#: application/views/surveyAdministration/deactivateSurvey_view.php:36
-msgid "Your response table will be renamed to:"
+msgid "Responses are no longer accessible. Your response table will be renamed to: %s_old_%d_%s"
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:37
-msgid "All participant information is lost."
+msgid "All participant information will be lost."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:38
-msgid "A deactivated survey is not accessible to participants (only a message appears that they are not permitted to see this survey)."
+msgid "A deactivated survey cannot be accessed by participants.  A message will be displayed stating that the survey has been closed."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:39
-msgid "All questions, groups and parameters are editable again."
+msgid "Questions, groups and parameters can be edited again."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:40
@@ -24094,7 +24099,7 @@ msgid "Export survey results"
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:41
-msgid "You should export your responses before deactivating."
+msgid "We highly recommend that you export your responses before deactivating your survey."
 msgstr ""
 
 #: application/views/surveyAdministration/deactivateSurvey_view.php:49
