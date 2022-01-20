@@ -14,23 +14,7 @@ class LSMessageSource extends CMessageSource
     public const CACHE_KEY_PREFIX = 'Yii.LSMessageSource.';
     public const MO_FILE_EXT = '.mo';
     public const PO_FILE_EXT = '.po';
-    /**
-     * @var string the ID of the database connection application component. Defaults to 'db'.
-     * @see CDbMessageSource::connectionID
-     */
-    public $connectionID = 'db';
-    /**
-     * @var string the name of the source message table. Defaults to 'SourceMessage'.
-     * The DB prefix is added automatically
-     * @see CDbMessageSource::sourceMessageTable
-     */
-    public $sourceMessageTable = 'sourcemessage';
-    /**
-     * @var string the name of the translated message table. Defaults to 'Message'.
-     * The DB prefix is added automatically
-     * @see CDbMessageSource::translatedMessageTable
-     */
-    public $translatedMessageTable = 'message';
+
     /**
      * @var integer the time in seconds that the messages can remain valid in cache.
      * @see CDbMessageSource::cachingDuration
@@ -66,11 +50,6 @@ class LSMessageSource extends CMessageSource
      * see CGettextMessageSource::catalog
      */
     public $catalog = 'messages';
-
-    /**
-     * Used as static for get DB
-     */
-    private $messagedb;
 
     /**
      * Loads the message translation for the specified language and category.
@@ -139,19 +118,7 @@ class LSMessageSource extends CMessageSource
      */
     public function getDbConnection()
     {
-        if ($this->messagedb === null) {
-            $this->messagedb = Yii::app()->getComponent($this->connectionID);
-            if (!$this->messagedb instanceof CDbConnection) {
-                throw new CException(
-                    Yii::t(
-                        'yii',
-                        'CDbMessageSource.connectionID is invalid. Please make sure "{id}" refers to a valid database application component.',
-                        array('{id}' => $this->connectionID)
-                    )
-                );
-            }
-        }
-        return $this->messagedb;
+        return App()->getDb();
     }
 
     /**
@@ -165,8 +132,8 @@ class LSMessageSource extends CMessageSource
         $command = $this->getDbConnection()->createCommand()
             ->select("t1.message AS message, t2.translation AS translation")
             ->from(array(
-                "{{{$this->sourceMessageTable}}} t1",
-                "{{{$this->translatedMessageTable}}} t2"
+                "sourcemessage t1",
+                "message t2"
             ))
             ->where(
                 't1.id=t2.id AND t1.category=:category AND t2.language=:language',
