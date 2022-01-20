@@ -132,8 +132,8 @@ class LSMessageSource extends CMessageSource
         $command = $this->getDbConnection()->createCommand()
             ->select("t1.message AS message, t2.translation AS translation")
             ->from(array(
-                "sourcemessage t1",
-                "message t2"
+                "{{sourcemessage}} t1",
+                "{{message}} t2"
             ))
             ->where(
                 't1.id=t2.id AND t1.category=:category AND t2.language=:language',
