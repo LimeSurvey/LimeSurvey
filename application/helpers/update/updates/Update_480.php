@@ -29,15 +29,5 @@ class Update_480 extends DatabaseUpdateBase
             '{{message}}',
             ['id', 'language']
         );
-        $this->db->createCommand()->addForeignKey(
-            '{{FK_Message_SourceMessage}}',
-            '{{message}}',
-            'id',
-            '{{sourcemessage}}',
-            'id',
-            'CASCADE',
-            'RESTRICT'
-        );
-        $this->db->createCommand()->update('{{settings_global}}', array( 'stg_value' => 480), "stg_name = 'DBVersion'");
     }
 }

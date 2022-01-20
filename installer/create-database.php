@@ -1145,15 +1145,6 @@ function populateDatabase($oDB)
             '{{message}}',
             ['id', 'language']
         );
-        $oDB->createCommand()->addForeignKey(
-            '{{FK_Message_SourceMessage}}',
-            '{{message}}',
-            'id',
-            '{{sourcemessage}}',
-            'id',
-            'CASCADE',
-            'RESTRICT'
-        );
 
         // Install default plugins.
         foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {
