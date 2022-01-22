@@ -1,4 +1,4 @@
--<?php
+<?php
 /** @var Question $oQuestion */
 ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
