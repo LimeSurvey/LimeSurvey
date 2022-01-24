@@ -168,7 +168,7 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createTable('{{labels}}', array(
             'id' =>  "pk",
             'lid' =>  "integer NOT NULL DEFAULT 0",
-            'code' =>  "string(5) NOT NULL default ''",
+            'code' =>  "string(20) NOT NULL default ''",
             'sortorder' =>  "integer NOT NULL",
             'assessment_value' =>  "integer NOT NULL default '0'",
         ), $options);

@@ -5050,6 +5050,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 479], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        // Allow label sets to contain full subquestion codes
+        if ($iOldDBVersion < 480) {
+            $oTransaction = $oDB->beginTransaction();
+            alterColumn('{{labels}}', 'code', "string(20)", false);
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 480], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
