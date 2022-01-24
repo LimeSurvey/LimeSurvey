@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.10 (build 220118) to 5.2.11 (build 220124) January 24, 2022
+-Fixed issue: SQL error when trying to import duplicate survey language settings (Carsten Schmitz)
+-Fixed issue: If no language is set the email body might be empty for invitations/reminders (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo, tigger
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.2.9 (build 220110) to 5.2.10 (build 220118) January 18, 2022
 -Fixed issue: No sql exception when gid parameter is empty on load view for question group (#2200) (Ahmed Galad's)
 -Fixed issue #17831: Database error when upgrading from 2.0.6 to 5.2.9 when using MSSQL (Carsten Schmitz)
