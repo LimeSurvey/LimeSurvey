@@ -85,6 +85,7 @@ class PluginManagerController extends Survey_Common_Action
             'scanFiles' => [
                 'url' => $scanFilesUrl,
             ],
+            'showUpload' => !Yii::app()->getConfig('demoMode') && !Yii::app()->getConfig('disablePluginUpload'),
         ];
 
         $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
