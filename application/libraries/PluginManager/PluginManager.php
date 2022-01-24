@@ -646,7 +646,7 @@ class PluginManager extends \CApplicationComponent
     {
         if (App()->getConfig('usePluginWhitelist')) {
             $whiteList = App()->getConfig('pluginWhitelist');
-            $coreList = self::getPluginCoreList();
+            $coreList = self::getCorePluginList();
             $allowedPlugins =  array_merge($coreList, $whiteList);
             return array_search($pluginName, $allowedPlugins) !== false;
         }
@@ -658,18 +658,27 @@ class PluginManager extends \CApplicationComponent
      * No way to update by php or DB
      * @return string[]
      */
-    private static function getPluginCoreList()
+    private static function getCorePluginList()
     {
         return [
             'AuditLog',
-            'ExportR',
-            'ExportSTATAxml',
-            'ExportSPSSsav',
-            'extendedStartPage',
-            'oldUrlCompat',
-            'AuthLDAP',
             'Authdb',
-            'Authwebserver'
+            'AuthLDAP',
+            'Authwebserver',
+            'ComfortUpdateChecker',
+            'customToken',
+            'ExportR',
+            'ExportSPSSsav',
+            'ExportSTATAxml',
+            'expressionFixedDbVar',
+            'expressionQuestionForAll',
+            'expressionQuestionHelp',
+            'mailSenderToFrom',
+            'oldUrlCompat',
+            'PasswordRequirement',
+            'statFunctions',
+            'TwoFactorAdminLogin',
+            'UpdateCheck'
         ];
     }
 }
