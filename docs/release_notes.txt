@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.32 (build 220119) to 3.27.33 (build 220125) January 24, 2022
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+
+
 Changes from 3.27.31 (build 220104) to 3.27.32 (build 220119) January 18, 2022
 -Fixed issue: Show full name of a deleted user correctly (#2128) (Vilius Šumskas)
 -Fixed issue #17802: Error shown when try to load a saved survey (#2196) (Gabriel Jenik)
