@@ -116,7 +116,16 @@ jobs:
         # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
         # unzip chromedriver_linux64.zip
 
-      - name: Set up Selenium with firefox
+      - name: Run unit tests
+        env:
+            XDEBUG_MODE: coverage
+        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
+
+      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
+        run: php tests/bin/check_coverage.php cov.xml 38
+        if: test -f cov.xml
+
+      - name: Set up Selenium with firefox (needed for integrity tests)
         run: |
           echo `which firefox`
           echo `firefox -v`
@@ -129,6 +138,11 @@ jobs:
           export MOZ_HEADLESS_HEIGHT=1024
           java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
 
+      - name: Run functional tests
+        env:
+            DOMAIN: localhost
+        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
+
       # Prepare the packages that need to be tested and update the nvm
       - name: Prepare the nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
@@ -140,19 +154,6 @@ jobs:
           nvm install ${{ matrix.nodeJS-versions }}
           nvm use ${{ matrix.nodeJS-versions }}
           node ./buildVueComponents.js -s adminbasics -p
-
-      - name: Run unit tests
-        env:
-            XDEBUG_MODE: coverage
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
-
-      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
-        run: test -f cov.xml && php tests/bin/check_coverage.php cov.xml 38
-
-      - name: Run functional tests
-        env:
-            DOMAIN: localhost
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
 
       - name: Run JS tests
         run: yarn --cwd ./assets/packages/adminbasics run test
