@@ -39,10 +39,10 @@ class RenderListRadio extends QuestionBaseRenderer
     /** @var string the code of the answer after which the 'Other' option should be placed (if $otherPosition == 3) */
     protected $answerBeforeOther;
 
-    const OTHER_POS_BEFORE_NOANSWER = 0;
-    const OTHER_POS_START = 1;
-    const OTHER_POS_END = 2;
-    const OTHER_POS_AFTER_OPTION = 3;
+    const OTHER_POS_BEFORE_NOANSWER = 'default';
+    const OTHER_POS_START = 'beginning';
+    const OTHER_POS_END = 'end';
+    const OTHER_POS_AFTER_OPTION = 'specific';
     
     public function __construct($aFieldArray, $bRenderDirect = false)
     {

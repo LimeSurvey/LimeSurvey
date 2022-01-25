@@ -539,7 +539,7 @@
    <row>
     <qid><![CDATA[8880]]></qid>
     <attribute><![CDATA[other_position]]></attribute>
-    <value><![CDATA[1]]></value>
+    <value><![CDATA[beginning]]></value>
     <language/>
    </row>
    <row>
@@ -689,7 +689,7 @@
    <row>
     <qid><![CDATA[8881]]></qid>
     <attribute><![CDATA[other_position]]></attribute>
-    <value><![CDATA[3]]></value>
+    <value><![CDATA[specific]]></value>
     <language/>
    </row>
    <row>
@@ -1115,7 +1115,7 @@
    <row>
     <qid><![CDATA[8882]]></qid>
     <attribute><![CDATA[other_position]]></attribute>
-    <value><![CDATA[2]]></value>
+    <value><![CDATA[end]]></value>
     <language/>
    </row>
    <row>
@@ -1265,7 +1265,7 @@
    <row>
     <qid><![CDATA[8883]]></qid>
     <attribute><![CDATA[other_position]]></attribute>
-    <value><![CDATA[0]]></value>
+    <value><![CDATA[default]]></value>
     <language/>
    </row>
    <row>

@@ -149,23 +149,23 @@
             <inputtype>singleselect</inputtype>
             <options>
                 <option>
-                    <value>1</value>
+                    <value>beginning</value>
                     <text>At beginning</text>
                 </option>
                 <option>
-                    <value>0</value>
+                    <value>default</value>
                     <text>Before No Answer</text>
                 </option>
                 <option>
-                    <value>2</value>
+                    <value>end</value>
                     <text>At end</text>
                 </option>
                 <option>
-                    <value>3</value>
+                    <value>specific</value>
                     <text>After specific answer option</text>
                 </option>
             </options>
-            <default>0</default>
+            <default>default</default>
             <help>Indicates where the &#039;Other&#039; option should be placed</help>
             <caption>Position for &#039;Other:&#039; option</caption>
             <readonly></readonly>
