@@ -146,7 +146,7 @@ jobs:
           # First run unit tests (no browser scripting)
           XDEBUG_MODE=coverage php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
           # Check test coverage of cov.xml exists (won't work on PHP 8 with current phpunit version)
-          [ -f cov.xml ] || php tests/bin/check_coverage.php cov.xml 20
+          [ -f cov.xml ] && php tests/bin/check_coverage.php cov.xml 20
           # Run functional tests
           DOMAIN=localhost php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
           # Run JS tests
