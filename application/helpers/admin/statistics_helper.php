@@ -1451,9 +1451,9 @@ class statistics_helper
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
-                            $column = substr($sResponseColumn, 0, strlen($sResponseColumn) - 5);
-                            if ($column == '-oth-' && !empty($oResponse->$sResponseColumn)) {
+                            $otherValueColumn = $al[2];
+                            $answerOptionColumn = substr($otherValueColumn, 0, strlen($otherValueColumn) - 5);
+                            if (!empty($oResponse->$answerOptionColumn) && $oResponse->$answerOptionColumn == '-oth-') {
                                 $row += 1;
                             }
                         }
@@ -2223,9 +2223,9 @@ class statistics_helper
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
-                            $column = substr($sResponseColumn, 0, strlen($sResponseColumn) - 5);
-                            if ($column == '-oth-' && !empty($oResponse->$sResponseColumn)) {
+                            $otherValueColumn = $al[2];
+                            $answerOptionColumn = substr($otherValueColumn, 0, strlen($otherValueColumn) - 5);
+                            if (!empty($oResponse->$answerOptionColumn) && $oResponse->$answerOptionColumn == '-oth-') {
                                 $row += 1;
                             }
                         }

@@ -1389,6 +1389,9 @@ class tokens extends Survey_Common_Action
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
                 foreach ($emresult as $emrow) {
+                    if (empty($emrow['language'])) {
+                        $emrow['language'] = $sBaseLanguage;
+                    }
                     $mail = \LimeMailer::getInstance();
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'], $bIsInvitation)) {
                         // The email has already been send this session, skip.
