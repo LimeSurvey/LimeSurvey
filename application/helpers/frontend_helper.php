@@ -424,10 +424,11 @@ function submittokens($quotaexit = false)
             $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {
                 /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+                $reData = array('thissurvey' => $thissurvey);
                 templatereplace(
                     "{SID}",
                     array(), /* No tempvars update */
-                    array('thissurvey' => $thissurvey) /* Be sure to use current survey */
+                    $reData /* Be sure to use current survey */
                 );
                 $mail = new \LimeMailer();
                 $mail->setSurvey($surveyid);
@@ -488,10 +489,11 @@ function sendSubmitNotifications($surveyid)
     }
     if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {
         /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+        $reData = array('thissurvey' => $thissurvey);
         templatereplace(
             "{SID}",
             array(), /* No tempvars update (except old Replacement like */
-            array('thissurvey' => $thissurvey) /* Be surre to use current survey */
+            $reData /* Be surre to use current survey */
         );
     }
     if (count($aEmailResponseTo)) {
