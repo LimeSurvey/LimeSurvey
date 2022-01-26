@@ -423,7 +423,12 @@ function submittokens($quotaexit = false)
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
             $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {
-                templatereplace("{SID}", $thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+                /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+                templatereplace(
+                    "{SID}",
+                    array(), /* No tempvars update */
+                    array('thissurvey' => $thissurvey) /* Be sure to use current survey */
+                );
                 $mail = new \LimeMailer();
                 $mail->setSurvey($surveyid);
                 $mail->setToken($token->token);
@@ -482,7 +487,12 @@ function sendSubmitNotifications($surveyid)
         }
     }
     if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {
-        templatereplace("{SID}", $thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+        /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+        templatereplace(
+            "{SID}",
+            array(), /* No tempvars update (except old Replacement like */
+            array('thissurvey' => $thissurvey) /* Be surre to use current survey */
+        );
     }
     if (count($aEmailResponseTo)) {
         // there was no token used so lets remove the token field from insertarray
