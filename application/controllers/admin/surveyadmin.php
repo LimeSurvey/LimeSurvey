@@ -90,7 +90,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
         $results = [];
 
-        $tableLabels = [gT('Survey ID'), gT('Survey Title'), gT('Status')];
+        $tableLabels = [gT('Survey ID'), gT('Survey title'), gT('Status')];
         foreach ($surveyIds as $surveyId) {
             if (Permission::model()->hasSurveyPermission($surveyId, 'survey', 'delete')) {
                 $survey                        = Survey::model()->findByPk($surveyId);
@@ -103,7 +103,7 @@ class SurveyAdmin extends Survey_Common_Action
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._selected_survey',
             [
                 'aResults'     => $results,
-                'successLabel' => gT('Seleted'),
+                'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels
             ]
         );
