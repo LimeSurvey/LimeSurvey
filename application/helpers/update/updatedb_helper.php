@@ -87,26 +87,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // NB: safeUp() wraps up() inside a transaction and also updates DBVersion.
             $update->safeUp();
         }
-        if ($iOldDBVersion < 478) {
-            $oTransaction = $oDB->beginTransaction();
-
-            //intentionally left blank to  sync db changes with LimeSurvey Cloud
-
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 478], "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
-        if ($iOldDBVersion < 479) {
-            $oTransaction = $oDB->beginTransaction();
-            $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
-            $oDB->createCommand()->update("{{question_themes}}", ['name' => 'bootstrap_buttons_multi'], "name='bootstrap_buttons' and extends='M'");
-            foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
-                unset($baseQuestionThemeEntry['visible']);
-                $oDB->createCommand()->update("{{question_themes}}", $baseQuestionThemeEntry, 'name=:themename', [':themename' => $baseQuestionThemeEntry['name']]);
-            }
-            unset($baseQuestionThemeEntries);
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 479], "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         // Activate schema caching
