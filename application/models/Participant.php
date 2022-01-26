@@ -13,7 +13,7 @@
  *
  */
 
-use LimeSurvey\Exception\CPDBException;
+use LimeSurvey\Exceptions\CPDBException;
 
 /**
  * This is the model class for table "{{participants}}".
