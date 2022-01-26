@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '96b84aef7933f0c92916fa2daf7bcc6d63994cc8',
+    'reference' => '0417917dc15116766d0143117d9176cf5aa60bc4',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '96b84aef7933f0c92916fa2daf7bcc6d63994cc8',
+      'reference' => '0417917dc15116766d0143117d9176cf5aa60bc4',
     ),
     'paragonie/constant_time_encoding' => 
     array (
