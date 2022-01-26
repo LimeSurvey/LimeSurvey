@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-01-26 16:37:54+00:00\n"
+"POT-Creation-Date: 2022-01-26 17:09:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3334,6 +3334,7 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:264
 #: application/controllers/admin/limereplacementfields.php:280
 #: application/controllers/admin/limereplacementfields.php:298
+#: application/controllers/admin/surveyadmin.php:93
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:15
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:13
 #: application/views/admin/token/massive_actions/_delete_results.php:11
@@ -4249,14 +4250,6 @@ msgstr ""
 msgid "User does not have valid permissions"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:89
-msgid "Invalid list of checked items"
-msgstr ""
-
-#: application/controllers/admin/surveyadmin.php:93
-msgid "Survey Title"
-msgstr ""
-
 #: application/controllers/admin/surveyadmin.php:93
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:51
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:16
@@ -4275,7 +4268,9 @@ msgid "Status"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:106
-msgid "Seleted"
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selected_survey.php:27
+#: application/views/admin/themeoptions/index.php:200
+msgid "Selected"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:141
@@ -7783,11 +7778,6 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_select_survey_theme.php:24
 msgid "This will update the survey theme for all selected active surveys."
-msgstr ""
-
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selected_survey.php:27
-#: application/views/admin/themeoptions/index.php:200
-msgid "Selected"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:15
