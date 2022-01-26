@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-01-24 10:15:54+00:00\n"
+"POT-Creation-Date: 2022-01-26 16:38:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7393,7 +7393,7 @@ msgid "Invalid email address."
 msgstr ""
 
 #: application/core/LSYii_ImageValidator.php:78
-msgid "Fileinfo extension wasn't found. Couldn't validate the image format of the file is supported."
+msgid "Fileinfo PHP extension is not installed. Couldn't validate the image format of the file."
 msgstr ""
 
 #: application/core/LSYii_ImageValidator.php:81
@@ -8981,22 +8981,6 @@ msgstr ""
 
 #: application/core/plugins/PasswordRequirement/PasswordRequirement.php:70
 msgid "The password does not reach the minimum length of %s characters"
-msgstr ""
-
-#: application/core/plugins/PasswordRequirement/PasswordRequirement.php:101
-msgid "Require at least one digit"
-msgstr ""
-
-#: application/core/plugins/PasswordRequirement/PasswordRequirement.php:106
-msgid "Require at least one uppercase letter"
-msgstr ""
-
-#: application/core/plugins/PasswordRequirement/PasswordRequirement.php:111
-msgid "Require at least one special character"
-msgstr ""
-
-#: application/core/plugins/PasswordRequirement/PasswordRequirement.php:116
-msgid "Minimum password length"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:165
@@ -24911,10 +24895,6 @@ msgstr ""
 msgid "Error: This question has no answers."
 msgstr ""
 
-#: tmp/runtime/twig_cache/0e/0e5034015c71c296f2db869dfad6481b6d71374ba076d54802c6f2d00a840bb0.php:141
-msgid "For further information please contact %s:"
-msgstr ""
-
 #: tmp/runtime/twig_cache/16/161feb7acb8e7612dd1a876dacef07d5e02030d9c9fcd57dcd4ec76b34e8ec86.php:33
 msgid "Show Policy"
 msgstr ""
@@ -25089,6 +25069,10 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/a8/a8fbce92f24599e93150c2f15bf3dbb56db77e13d225ea1b037f788558794dce.php:129
 msgid "Answer question"
+msgstr ""
+
+#: tmp/runtime/twig_cache/b4/b4563aca9044774f8bed5a68b17bca143a6616f6a76e21cec3a154307dafbc75.php:141
+msgid "For further information please contact %s:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/b7/b73a246ddd6f94b1a8607732438b9da563112156109bc17acfb45c01e9a41840.php:33
