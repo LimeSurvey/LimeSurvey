@@ -40,10 +40,10 @@ class ParticipantAttributeName extends LSActiveRecord
      * @inheritdoc
      * @return ParticipantAttributeName
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -695,7 +695,7 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
      * @param string $attribute_id
      * @return mixed
-     * @return ParticipantAttributeName
+     * @psalm-suppress ParamNameMismatch
      * TODO: Tonis: this is a bad name for this method - it overrides parent method doing totally different thing
      */
     public function getAttribute($attribute_id)

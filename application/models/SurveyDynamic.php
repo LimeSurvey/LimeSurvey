@@ -38,6 +38,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * @inheritdoc
      * @return SurveyDynamic
+     * @psalm-suppress ParamNameMismatch Ignore that $sid is $className in parent class
      */
     public static function model($sid = null)
     {

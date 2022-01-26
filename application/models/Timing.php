@@ -42,9 +42,11 @@ class Timing extends LSActiveRecord
     /**
      * We have a custom implementation here since the parents' implementation
      * does not create a new model for each table name.
+     *
      * @param int $iSurveyId
      * @return Response
      * @throws Exception
+     * @psalm-suppress ParamNameMismatch Ignore that $iSurveyId is $className in parent class
      */
     public static function model($iSurveyId = null)
     {

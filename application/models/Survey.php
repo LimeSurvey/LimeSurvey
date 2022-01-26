@@ -422,10 +422,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @inheritdoc
      * @return Survey
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var Survey $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 

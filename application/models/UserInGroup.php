@@ -26,9 +26,9 @@ class UserInGroup extends LSActiveRecord
      * @inheritdoc
      * @return CActiveRecord
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
-        return parent::model($class);
+        return parent::model($className);
     }
 
     /** @inheritdoc */
