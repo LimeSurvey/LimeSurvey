@@ -442,6 +442,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['id']['radixpoint'] = 1;
     $supportedLanguages['id']['momentjs'] = 'id';
 
+    // Inuktitut
+    $supportedLanguages['ike']['description'] = gT('Inuktitut');
+    $supportedLanguages['ike']['nativedescription'] = '&#x1403;&#x14C4;&#x1483;&#x144E;&#x1450;&#x1466;';
+    $supportedLanguages['ike']['rtl'] = false;
+    $supportedLanguages['ike']['dateformat'] = 5;
+    $supportedLanguages['ike']['radixpoint'] = 1;
+    $supportedLanguages['ike']['momentjs'] = null;
+
     // Irish
     $supportedLanguages['ie']['description'] = gT('Irish');
     $supportedLanguages['ie']['nativedescription'] = 'Gaeilge';
