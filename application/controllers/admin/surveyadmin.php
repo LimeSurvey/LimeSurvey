@@ -85,8 +85,8 @@ class SurveyAdmin extends Survey_Common_Action
     public function renderItemsSelected()
     {
         $surveyIds = json_decode(Yii::app()->request->getPost('$oCheckedItems'), true);
-        if(!is_array($surveyIds)) {
-            throw new CHttpException(400, gT('Invalid list of checked items'));
+        if (!is_array($surveyIds)) {
+            throw new CHttpException(400, 'Invalid list of checked items');
         }
         $results = [];
 
