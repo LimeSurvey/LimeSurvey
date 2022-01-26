@@ -54,7 +54,7 @@ class NoGreenBarTest extends TestBaseClassWeb
         sleep(1);
         self::ignoreAdminNotification();
         self::ignoreAdminNotification();
-        $savebutton = $web->findById('save-button');
+        $savebutton = $web->findById('save-and-close-button');
         $savebutton->click();
         sleep(1);
     }
