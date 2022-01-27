@@ -33,6 +33,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog ('Edit default answers')
  * @property string $relevance Questions relevane equation
  * @property string $modulename
+ * @property integer $same_script Whether the same script should be used for all languages
  *
  * @property Survey $survey
  * @property QuestionGroup $groups  //@TODO should be singular
@@ -152,6 +153,7 @@ class Question extends LSActiveRecord
             array('type', 'length', 'min' => 1, 'max' => 1),
             array('preg,relevance', 'safe'),
             array('modulename', 'length', 'max' => 255),
+            array('same_script', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
         // Always enforce unicity on Sub question code (DB issue).
         if ($this->parent_qid) {

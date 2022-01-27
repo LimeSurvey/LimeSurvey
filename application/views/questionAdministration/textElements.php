@@ -94,19 +94,24 @@
             <?php foreach($oSurvey->allLanguages as $lang): ?>
             <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
                 <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-12 text-right">
-                            <input 
-                                type="checkbox" 
-                                name="scriptForAllLanguages"
-                                id="selector--scriptForAllLanguages"
-                                v-model="scriptForAllLanugages"
-                            />&nbsp;
-                            <label for="selector--scriptForAllLanguages">
-                                <?= gT('Set for all languages'); ?>
-                            </label>
+                    <?php if ($lang == $oSurvey->language): ?>
+                        <div class="row">
+                            <div class="col-sm-12 text-right">
+                                <input
+                                    type="checkbox"
+                                    name="question[same_script]"
+                                    id="same_script"
+                                    value=1
+                                    <?php if($question->same_script): ?>
+                                        checked = 'checked'
+                                    <?php endif; ?>
+                                />&nbsp;
+                                <label for="same_script">
+                                    <?= gT('Set for all languages'); ?>
+                                </label>
+                            </div>
                         </div>
-                    </div> 
+                    <?php endif; ?>
 
                     <?= CHtml::textArea(
                         "questionI10N[$lang][script]",
