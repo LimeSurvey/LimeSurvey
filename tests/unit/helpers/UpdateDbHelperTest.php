@@ -69,8 +69,6 @@ class UpdateDbHelperTest extends TestBaseClass
      */
     public function testUpdateFrom153()
     {
-        $this->markTestSkipped();
-
         self::$testHelper->updateDbFromVersion(153);
 
         $db = \Yii::app()->getDb();
