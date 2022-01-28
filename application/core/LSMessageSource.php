@@ -44,24 +44,18 @@ class LSMessageSource extends CMessageSource
      * see CGettextMessageSource::useBigEndian
      */
     public $useBigEndian = false;
-    /**
-     * @var string the message catalog name. This is the name of the message file (without extension)
-     * that stores the translated messages. Defaults to 'messages'.
-     * see CGettextMessageSource::catalog
-     */
-    public $catalog = 'messages';
 
     /**
      * Loads the message translation for the specified language and category.
      * @see CGettextMessageSource::loadMessages
      * @see CDbMessageSource::loadMessages
-     * @param string $category the message category
+     * @param string $category the message category, unused in LimeSurvey core (always '')
      * @param string $language the target language
      * @return array the loaded messages
      */
     protected function loadMessages($category, $language)
     {
-        $messageFile = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $this->catalog;
+        $messageFile = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $language;
         if ($this->useMoFile) {
             $messageFile .= self::MO_FILE_EXT;
         } else {
@@ -123,7 +117,7 @@ class LSMessageSource extends CMessageSource
 
     /**
      * @see CDbMessageSource::loadMessagesFromDb
-     * @param string $category the message category
+     * @param string $category the message category, unused in LimeSurvey core (always '')
      * @param string $language the target language
      * @return array the messages loaded from database
      */

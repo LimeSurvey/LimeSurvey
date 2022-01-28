@@ -107,11 +107,11 @@ abstract class PluginBase implements iPlugin
             return;
         }
 
-        // Set plugin specific locale file to locale/<lang>/<lang>.mo
+        // Set plugin specific locale file to locale/<lang>/<lang>.mo, and DB replacement
         \Yii::app()->setComponent(
             get_class($this) . 'Messages',
             [
-                'class'            => 'LSCGettextMessageSource',
+                'class'            => 'LSMessageSource',
                 'cachingDuration'  => 3600,
                 'forceTranslation' => true,
                 'useMoFile'        => true,
