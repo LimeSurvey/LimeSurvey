@@ -497,11 +497,6 @@ abstract class Token extends Dynamic
         return $this->getDynamicId();
     }
 
-    public static function getEncryptedAttributes()
-    {
-        return self::$aEncryptedAttributes;
-    }
-
     public static function getDefaultEncryptionOptions()
     {
         $sEncrypted = 'N';

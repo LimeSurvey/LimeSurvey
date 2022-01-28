@@ -39,6 +39,7 @@
  *
  * @property array $standardCols
  * @property array $standardColsForGrid
+ * @property array $custom_attributes
  */
 class TokenDynamic extends LSActiveRecord
 {
@@ -755,7 +756,6 @@ class TokenDynamic extends LSActiveRecord
     public function getAttributesForGrid()
     {
         $aCustomAttributesCols = array();
-        //$aCustomAttributes = $this->custom_attributes;
 
         $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
         $aCustomAttributes = $oSurvey->tokenAttributes;
