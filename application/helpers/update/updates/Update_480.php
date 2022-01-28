@@ -7,7 +7,7 @@ class Update_480 extends DatabaseUpdateBase
     public function up()
     {
         $this->db->createCommand()->createTable(
-            '{{sourcemessage}}',
+            '{{source_message}}',
             [
                 'id' => "pk",
                 'category' => "string(35)",

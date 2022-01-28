@@ -1123,7 +1123,7 @@ function populateDatabase($oDB)
 
         // language tables: sourcemessage + message and constraint
         $oDB->createCommand()->createTable(
-            '{{sourcemessage}}',
+            '{{source_message}}',
             [
                 'id' => "pk",
                 'category' => "string(35)",
