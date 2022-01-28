@@ -171,38 +171,6 @@ class User extends LSActiveRecord
         $date = new DateTime($dateCreated);
         return $date->format($this->dateformat);
     }
-    /**
-     * Returns onetime password
-     *
-     * @access public
-     * @param string $username
-     * @return string
-     */
-    public function getOTPwd($username)
-    {
-        // TODO get this via $this instead of param
-        $this->getDb()->select('uid, users_name, password, one_time_pw, dateformat, full_name, htmleditormode');
-        $this->getDb()->where('users_name', $username);
-        $data = $this->getDb()->get('users', 1);
-
-        return $data;
-    }
-
-    /**
-     * Deletes onetime password
-     *
-     * @access public
-     * @param string $username
-     */
-    public function deleteOTPwd($username)
-    {
-        // TODO get this via $this instead of param
-        $data = array(
-            'one_time_pw' => ''
-        );
-        $this->getDb()->where('users_name', $username);
-        $this->getDb()->update('users', $data);
-    }
 
     /**
      * Creates new user
