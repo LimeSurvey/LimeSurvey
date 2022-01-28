@@ -40,18 +40,18 @@ function getDateFormatData($iDateFormat = 0, $sLanguageCode = 'en')
     // Bootstrap DateTimePicker uses capital letters, but
     // we still need small jsdate letters for dropdown client side.
     $aDateFormats = array(
-        1 => array('phpdate' => 'd.m.Y', 'jsdate' => 'DD.MM.YYYY', 'jsdate_original' => 'dd.mm.yyyy', 'dateformat' => gT('dd.mm.yyyy')),
-        2 => array('phpdate' => 'd-m-Y', 'jsdate' => 'DD-MM-YYYY', 'jsdate_original' => 'dd-mm-yyyy', 'dateformat' => gT('dd-mm-yyyy')),
-        3 => array('phpdate' => 'Y.m.d', 'jsdate' => 'YYYY.MM.DD', 'jsdate_original' => 'yyyy.mm.dd', 'dateformat' => gT('yyyy.mm.dd')),
-        4 => array('phpdate' => 'j.n.Y', 'jsdate' => 'D.M.YYYY', 'jsdate_original' => 'd.m.yyyy', 'dateformat' => gT('d.m.yyyy')),
-        5 => array('phpdate' => 'd/m/Y', 'jsdate' => 'DD/MM/YYYY', 'jsdate_original' => 'dd/mm/yyyy', 'dateformat' => gT('dd/mm/yyyy')),
-        6 => array('phpdate' => 'Y-m-d', 'jsdate' => 'YYYY-MM-DD', 'jsdate_original' => 'yyyy-mm-dd', 'dateformat' => gT('yyyy-mm-dd')),
-        7 => array('phpdate' => 'Y/m/d', 'jsdate' => 'YYYY/MM/DD', 'jsdate_original' => 'yyyy/mm/dd', 'dateformat' => gT('yyyy/mm/dd')),
-        8 => array('phpdate' => 'j/n/Y', 'jsdate' => 'D/M/YYYY', 'jsdate_original' => 'd/m/yyyy', 'dateformat' => gT('d/m/yyyy')),
-        9 => array('phpdate' => 'm-d-Y', 'jsdate' => 'MM-DD-YYYY', 'jsdate_original' => 'mm-dd-yyyy', 'dateformat' => gT('mm-dd-yyyy')),
-        10 => array('phpdate' => 'm.d.Y', 'jsdate' => 'MM.DD.YYYY', 'jsdate_original' => 'mm.dd.yyyy', 'dateformat' => gT('mm.dd.yyyy')),
-        11 => array('phpdate' => 'm/d/Y', 'jsdate' => 'MM/DD/YYYY', 'jsdate_original' => 'mm/dd/yyyy', 'dateformat' => gT('mm/dd/yyyy')),
-        12 => array('phpdate' => 'j-n-Y', 'jsdate' => 'D-M-YYYY', 'jsdate_original' => 'd-m-yyyy', 'dateformat' => gT('d-m-yyyy'))
+        1 => array('phpdate' => 'd.m.Y', 'jsdate' => 'DD.MM.YYYY', 'dateformat' => gT('dd.mm.yyyy')),
+        2 => array('phpdate' => 'd-m-Y', 'jsdate' => 'DD-MM-YYYY', 'dateformat' => gT('dd-mm-yyyy')),
+        3 => array('phpdate' => 'Y.m.d', 'jsdate' => 'YYYY.MM.DD', 'dateformat' => gT('yyyy.mm.dd')),
+        4 => array('phpdate' => 'j.n.Y', 'jsdate' => 'D.M.YYYY', 'dateformat' => gT('d.m.yyyy')),
+        5 => array('phpdate' => 'd/m/Y', 'jsdate' => 'DD/MM/YYYY', 'dateformat' => gT('dd/mm/yyyy')),
+        6 => array('phpdate' => 'Y-m-d', 'jsdate' => 'YYYY-MM-DD', 'dateformat' => gT('yyyy-mm-dd')),
+        7 => array('phpdate' => 'Y/m/d', 'jsdate' => 'YYYY/MM/DD', 'dateformat' => gT('yyyy/mm/dd')),
+        8 => array('phpdate' => 'j/n/Y', 'jsdate' => 'D/M/YYYY', 'dateformat' => gT('d/m/yyyy')),
+        9 => array('phpdate' => 'm-d-Y', 'jsdate' => 'MM-DD-YYYY', 'dateformat' => gT('mm-dd-yyyy')),
+        10 => array('phpdate' => 'm.d.Y', 'jsdate' => 'MM.DD.YYYY', 'dateformat' => gT('mm.dd.yyyy')),
+        11 => array('phpdate' => 'm/d/Y', 'jsdate' => 'MM/DD/YYYY', 'dateformat' => gT('mm/dd/yyyy')),
+        12 => array('phpdate' => 'j-n-Y', 'jsdate' => 'D-M-YYYY', 'dateformat' => gT('d-m-yyyy'))
     );
 
     if ($iDateFormat > 12 || $iDateFormat < 0) {
@@ -441,6 +441,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['id']['dateformat'] = 5;
     $supportedLanguages['id']['radixpoint'] = 1;
     $supportedLanguages['id']['momentjs'] = 'id';
+
+    // Inuktitut
+    $supportedLanguages['ike']['description'] = gT('Inuktitut');
+    $supportedLanguages['ike']['nativedescription'] = '&#x1403;&#x14C4;&#x1483;&#x144E;&#x1450;&#x1466;';
+    $supportedLanguages['ike']['rtl'] = false;
+    $supportedLanguages['ike']['dateformat'] = 5;
+    $supportedLanguages['ike']['radixpoint'] = 1;
+    $supportedLanguages['ike']['momentjs'] = null;
 
     // Irish
     $supportedLanguages['ie']['description'] = gT('Irish');
@@ -1115,7 +1123,6 @@ function getDateFormatDataForQID($aQidAttributes, $mThisSurvey, $language = '')
         $aDateFormatDetails['dateformat'] = trim($aQidAttributes['date_format']);
         $aDateFormatDetails['phpdate'] = getPHPDateFromDateFormat($aDateFormatDetails['dateformat']);
         $aDateFormatDetails['jsdate'] = getJSDateFromDateFormat($aDateFormatDetails['dateformat']);
-        $aDateFormatDetails['jsdate_original'] = $aDateFormatDetails['dateformat']; // In dropdown, this is fed to Date in Javascript, not Bootstrap
     } else {
         if (!is_array($mThisSurvey)) {
             $mThisSurvey = array('surveyls_dateformat' => getDateFormatForSID($mThisSurvey, $language));

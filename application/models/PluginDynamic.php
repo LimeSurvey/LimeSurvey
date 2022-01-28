@@ -39,18 +39,19 @@ class PluginDynamic extends LSActiveRecord
     /**
      * We have a custom implementation here since the parents' implementation
      * does not create a new model for each table name.
-     * @param string $sTableName
+     *
+     * @param string $className Table name
      * @return Plugin
      */
-    public static function model($sTableName = null)
+    public static function model($className = null)
     {
-        if (isset($sTableName)) {
-            if (!isset(self::$models[$sTableName])) {
-                $model = self::$models[$sTableName] = new PluginDynamic($sTableName, null);
+        if (isset($className)) {
+            if (!isset(self::$models[$className])) {
+                $model = self::$models[$className] = new PluginDynamic($className, null);
                 $model->md = new CActiveRecordMetaData($model);
                 $model->attachBehaviors($model->behaviors());
             }
-            return self::$models[$sTableName];
+            return self::$models[$className];
         }
         return null;
     }

@@ -27,6 +27,19 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
     private $sLabelWidth;
     private $sInputContainerWidth;
 
+    /** @var boolean indicates if the question has the 'Other' option enabled */
+    protected $hasOther;
+
+    /** @var int the position where the 'Other' option should be placed. Possible values: 0 (At end), 1 (At beginning), 3 (After specific subquestion)*/
+    protected $otherPosition;
+
+    /** @var string the title of the subquestion after which the 'Other' option should be placed (if $otherPosition == 3) */
+    protected $subquestionBeforeOther;
+
+    const OTHER_POS_END = 'end';
+    const OTHER_POS_START = 'beginning';
+    const OTHER_POS_AFTER_SUBQUESTION = 'specific';
+
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
@@ -68,6 +81,13 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
                 $this->sLabelWidth = 12 - $this->attributeInputContainerWidth;
             }
         }
+
+        $this->hasOther = $this->oQuestion->other == 'Y';
+        $this->otherPosition = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_position'), self::OTHER_POS_END);
+        $this->subquestionBeforeOther = '';
+        if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_SUBQUESTION) {
+            $this->subquestionBeforeOther = $this->getQuestionAttribute('other_position_code');
+        }
     }
 
     public function getMainView()
@@ -77,9 +97,16 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
     
     public function getRows()
     {
+        $otherAdded = false;
+
         $aRows = [];
         if ($this->getQuestionCount() == 0) {
             return $aRows;
+        }
+
+        if ($this->hasOther && $this->otherPosition == self::OTHER_POS_START) {
+            $aRows[] = $this->getOtherRow();
+            $otherAdded = true;
         }
 
         $checkconditionFunction = "checkconditions";
@@ -119,9 +146,13 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
                 'sInputContainerWidth' => $this->sInputContainerWidth,
                 'sLabelWidth'          => $this->sLabelWidth,
             );
+            if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_SUBQUESTION && $this->subquestionBeforeOther == $oQuestion->title) {
+                $aRows[] = $this->getOtherRow();
+                $otherAdded = true;
+            }
         }
 
-        if ($this->oQuestion->other == 'Y') {
+        if ($this->hasOther && !$otherAdded) {
             $aRows[] = $this->getOtherRow();
         }
 

@@ -1197,9 +1197,9 @@ class TemplateManifest extends TemplateConfiguration
      * @param $aSettings        array    array of local setting
      * @return array
      */
-    protected function removeFileFromPackage($sPackageName, $sType, $aSetting)
+    protected function removeFileFromPackage($sPackageName, $sType, $aSettings)
     {
-        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSetting);
+        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSettings);
     }
 
     /**
