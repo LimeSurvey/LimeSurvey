@@ -12,7 +12,7 @@ class Update_479 extends DatabaseUpdateBase
         $this->db->createCommand()->update("{{question_themes}}", ['name' => 'bootstrap_buttons_multi'], "name='bootstrap_buttons' and extends='M'");
         foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
             unset($baseQuestionThemeEntry['visible']);
-            $this->db->createCommand()->update("{{question_themes}}", $baseQuestionThemeEntry, 'name=:name', [':name' => $baseQuestionThemeEntry['name']]);
+            $this->db->createCommand()->update("{{question_themes}}", $baseQuestionThemeEntry, 'name=:themename', [':themename' => $baseQuestionThemeEntry['name']]);
         }
     }
 }

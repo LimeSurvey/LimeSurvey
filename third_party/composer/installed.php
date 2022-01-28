@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
+    'reference' => '0417917dc15116766d0143117d9176cf5aa60bc4',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -18,16 +18,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => '89c7dc7720f9f929905d0a06a4b05f00fe5d9388',
+      'reference' => '0417917dc15116766d0143117d9176cf5aa60bc4',
     ),
     'paragonie/constant_time_encoding' => 
     array (
-      'pretty_version' => 'v2.4.0',
-      'version' => '2.4.0.0',
+      'pretty_version' => 'v2.5.0',
+      'version' => '2.5.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c',
+      'reference' => '9229e15f2e6ba772f0c55dd6986c563b937170a8',
     ),
     'paragonie/random_compat' => 
     array (
@@ -67,12 +67,21 @@
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.23.0',
-      'version' => '1.23.0.0',
+      'pretty_version' => 'v1.24.0',
+      'version' => '1.24.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '46cd95797e9df938fdd2b03693b5fca5e64b01ce',
+      'reference' => '30885182c981ab175d4d034db0f6f469898070ab',
+    ),
+    'symfony/polyfill-mbstring' => 
+    array (
+      'pretty_version' => 'v1.24.0',
+      'version' => '1.24.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '0abb51d2f102e00a4eefcf46ba7fec406d245825',
     ),
     'tiamo/spss' => 
     array (

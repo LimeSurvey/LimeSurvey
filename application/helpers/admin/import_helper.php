@@ -1161,6 +1161,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 *
 * @param string $sFullFilePath  The full filepath of the uploaded file
 * @param string $sXMLdata
+* @todo Use transactions to prevent orphaned data and clean rollback on errors
 */
 function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
 {
@@ -1340,8 +1341,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $aColumns = SurveyLanguageSetting::model()->attributes;
         $insertdata = array_intersect_key($insertdata, $aColumns);
 
-        if (!SurveyLanguageSetting::model()->insertNewSurvey($insertdata)) {
-            throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid<br />");
+        $surveyLanguageSetting = new SurveyLanguageSetting();
+        $surveyLanguageSetting->setAttributes($insertdata, false);
+        try {
+            if (!$surveyLanguageSetting->save()) {
+                throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
+            }
+        } catch (CDbException $e) {
+            throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
         }
     }
 

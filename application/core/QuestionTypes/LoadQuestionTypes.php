@@ -2,6 +2,9 @@
 
 class LoadQuestionTypes
 {
+    /**
+     * @todo Configure autoloader in composer.json instead of this
+     */
     public static function loadAll()
     {
         Yii::import('questiontypes.5PointChoice.*');

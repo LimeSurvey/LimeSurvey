@@ -74,11 +74,11 @@ class LSYii_ImageValidator
             $result['check'] = true;
         } else {
             // If $checkImage is empty, it's most probably because fileinfo is missing. But we check it to be sure.
-            if (is_null($checkImage) && !function_exists('finfo_open')) { 
-                $result['uploadresult'] = gT("Fileinfo extension wasn't found. Couldn't validate the image format of the file is supported.");
+            if (is_null($checkImage) && !function_exists('finfo_open')) {
+                $result['uploadresult'] = gT("Fileinfo PHP extension is not installed. Couldn't validate the image format of the file.");
                 $result['check'] = false;
             } else {
-                $result['uploadresult'] = sprintf(gT("This file is not a supported image format - only the following ones are allowed: %s"),strtoupper(Yii::app()->getConfig('allowedthemeimageformats')));
+                $result['uploadresult'] = sprintf(gT("This file is not a supported image format - only the following ones are allowed: %s"), strtoupper(Yii::app()->getConfig('allowedthemeimageformats')));
                 $result['check'] = false;
             }
         }

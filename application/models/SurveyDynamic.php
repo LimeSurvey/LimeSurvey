@@ -38,6 +38,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * @inheritdoc
      * @return SurveyDynamic
+     * @psalm-suppress ParamNameMismatch Ignore that $sid is $className in parent class
      */
     public static function model($sid = null)
     {
@@ -912,15 +913,11 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['fileinfo'] = json_decode($aQuestionAttributes['answervalue'], true);
         }
 
-
         if ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "1") {
             $aAnswers = (
-                $oQuestion->parent_qid == 0
-                    ? $oQuestion->answers
-                    : ($oQuestion->parent != null
-                        ? $oQuestion->parent->answers
-                        : []
-                    )
+                $oQuestion->parent != null
+                ? $oQuestion->parent->answers
+                : []
             );
 
             foreach ($aAnswers as $key => $value) {

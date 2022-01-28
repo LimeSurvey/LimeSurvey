@@ -38,8 +38,10 @@
  * @property Permission[] $permissions
  * @property User $parentUser Parent user
  * @property string $parentUserName  Parent user's name
+ * @property string $last_login
+ * @property Permissiontemplates[] $roles
+ * @property UserGroup[] $groups
  */
-
 class User extends LSActiveRecord
 {
     /** @var int maximum time the validation_key is valid*/
@@ -61,10 +63,10 @@ class User extends LSActiveRecord
      * @inheritdoc
      * @return User
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -160,11 +162,14 @@ class User extends LSActiveRecord
         return $dateFormat['phpdate'];
     }
 
+    /**
+     * @todo Not used?
+     */
     public function getFormattedDateCreated()
     {
         $dateCreated = $this->created;
         $date = new DateTime($dateCreated);
-        return $date->format($this->dateFormat);
+        return $date->format($this->dateformat);
     }
     /**
      * Returns onetime password
@@ -176,9 +181,9 @@ class User extends LSActiveRecord
     public function getOTPwd($username)
     {
         // TODO get this via $this instead of param
-        $this->db->select('uid, users_name, password, one_time_pw, dateformat, full_name, htmleditormode');
-        $this->db->where('users_name', $username);
-        $data = $this->db->get('users', 1);
+        $this->getDb()->select('uid, users_name, password, one_time_pw, dateformat, full_name, htmleditormode');
+        $this->getDb()->where('users_name', $username);
+        $data = $this->getDb()->get('users', 1);
 
         return $data;
     }
@@ -195,8 +200,8 @@ class User extends LSActiveRecord
         $data = array(
             'one_time_pw' => ''
         );
-        $this->db->where('users_name', $username);
-        $this->db->update('users', $data);
+        $this->getDb()->where('users_name', $username);
+        $this->getDb()->update('users', $data);
     }
 
     /**
@@ -207,7 +212,7 @@ class User extends LSActiveRecord
      * @param string $new_pass
      * @param string $new_full_name
      * @param string $new_email
-     * @param string $parent_user
+     * @param int $parent_user
      * @return integer|boolean User ID if success
      */
     public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email)
@@ -425,7 +430,7 @@ class User extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        return $this->db->insert('users', $data);
+        return $this->getDb()->insert('users', $data);
     }
 
     /**
@@ -750,16 +755,18 @@ class User extends LSActiveRecord
         return join(', ', $list);
     }
 
+    /**
+     * @todo Not used?
+     */
     public function getLastloginFormatted()
     {
-
         $lastLogin = $this->last_login;
         if ($lastLogin == null) {
             return '---';
         }
 
         $date = new DateTime($lastLogin);
-        return $date->format($this->dateFormat) . ' ' . $date->format('H:i');
+        return $date->format($this->dateformat) . ' ' . $date->format('H:i');
     }
 
     public function getManagementCheckbox()

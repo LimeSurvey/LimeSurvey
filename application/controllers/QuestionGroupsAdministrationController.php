@@ -81,7 +81,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
      *
      * * @return void
      */
-    public function actionView($surveyid, $gid, $landOnSideMenuTab = 'structure', $mode = 'auto')
+    public function actionView(int $surveyid, int $gid, $landOnSideMenuTab = 'structure', $mode = 'auto')
     {
         if ($mode != 'overview' && SettingsUser::getUserSettingValue('noViewMode', App()->user->id)) {
             $this->redirect(
@@ -96,15 +96,16 @@ class QuestionGroupsAdministrationController extends LSBaseController
             );
         }
 
-        //check permissions for view and create groups ...
-        if ($gid === null) { //this is the case when new questiongroup should be created
-            if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
                 App()->user->setFlash('error', gT("Access denied"));
                 $this->redirect(App()->request->urlReferrer);
-            }
-        } elseif (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
-                App()->user->setFlash('error', gT("Access denied"));
-                $this->redirect(App()->request->urlReferrer);
+        }
+
+        //check if group with the gid exists
+        $questionGroup = QuestionGroup::model()->findByPk($gid);
+        if ($questionGroup === null) { //group does not exists ...
+            App()->user->setFlash('error', gT("Question group does not exists"));
+            $this->redirect(App()->request->urlReferrer);
         }
 
         $aData = array();
