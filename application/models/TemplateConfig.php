@@ -69,7 +69,8 @@ class TemplateConfig extends CActiveRecord
     /**  @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update */
     protected $apiVersion;
 
-    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive
+    /** 
+     * @var int? $iSurveyId The current Survey Id. It can be void. It's use only to retreive
      * the current template of a given survey
      */
     protected $iSurveyId = '';
@@ -347,7 +348,7 @@ class TemplateConfig extends CActiveRecord
      * Get the depends package
      * @uses self::@package
      * @param TemplateConfiguration $oTemplate
-     * @return stdClass[]
+     * @return string[]
      */
     protected function getDependsPackages($oTemplate)
     {
@@ -389,31 +390,6 @@ class TemplateConfig extends CActiveRecord
     // For list, so no "setConfiguration" before
 
     /**
-     * @todo document me
-     * @return array|mixed|string|null
-     */
-    public function getPreview()
-    {
-        if (empty($this->sPreviewImgTag)) {
-            if (is_a($this->template, 'Template')) {
-                $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
-                $previewPath         = Template::getTemplatePath($this->template->name) . '/' . $sTemplateFileFolder;
-
-                if ($previewPath && file_exists($previewPath . '/preview.png')) {
-                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder;
-                    $this->sPreviewImgTag = '<img src="' .
-                        $previewUrl .
-                        '/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
-                }
-            } else {
-                $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
-            }
-        }
-
-        return $this->sPreviewImgTag;
-    }
-
-    /**
      * @param string|null $sCustomMessage
      * @throws CException
      * @todo document me
@@ -431,7 +407,7 @@ class TemplateConfig extends CActiveRecord
             $sMessage .= $sCustomMessage;
         }
 
-        App()->clientScript->registerScript('error_' . $this->template_name, "throw Error(\"$sMessage\");");
+        App()->clientScript->registerScript('error_' . $this->sTemplateName, "throw Error(\"$sMessage\");");
     }
 
 

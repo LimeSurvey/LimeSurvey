@@ -1192,10 +1192,10 @@ class TemplateManifest extends TemplateConfiguration
      * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
      * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
      *
-     * @param string $sPackageName     string   name of the package to edit
-     * @param $sType            string   the type of settings to change (css or js)
-     * @param $aSettings        array    array of local setting
-     * @return array
+     * @param string $sPackageName name of the package to edit
+     * @param string $sType        the type of settings to change (css or js)
+     * @param array $aSettings     array of local setting
+     * @return void
      */
     protected function removeFileFromPackage($sPackageName, $sType, $aSettings)
     {
@@ -1254,7 +1254,7 @@ class TemplateManifest extends TemplateConfiguration
         } elseif (!empty($this->oMotherTemplate->oOptions)) {
             $this->oOptions = $this->oMotherTemplate->oOptions;
         } else {
-            $this->oOptions = "";
+            $this->oOptions = new stdClass();
         }
 
         // Not mandatory (use package dependances)
@@ -1337,6 +1337,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         $aAssetsToRemove = array();
         if (!empty($this->cssFramework->$sType)) {
+            /** @var array */
             $nodes = (array) $this->config->xpath('//cssframework/' . $sType . '[@replace]');
             if (!empty($nodes)) {
                 foreach ($nodes as $key => $node) {
