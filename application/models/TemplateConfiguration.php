@@ -12,7 +12,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-/*
+/**
  * This is the model class for table "{{template_configuration}}".
  *
  * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
@@ -34,11 +34,11 @@
  * @property string $packages_ltr
  * @property string $packages_rtl
  * @property string $packages_rtl
+ * @property Template $template
  *
  * @package       LimeSurvey
  * @subpackage    Backend
  */
-
 class TemplateConfiguration extends TemplateConfig
 {
     /**
