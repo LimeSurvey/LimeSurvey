@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.33 (build 220125) to 3.27.34 (build 220132) January 31, 2022
+-Fixed issue #17751: Date stamp throw PHP notice when edit data with debug (#2188) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+
+
 Changes from 3.27.32 (build 220119) to 3.27.33 (build 220125) January 24, 2022
 #Updated translation: Dutch by Han
 #Updated translation: Dutch (Informal) by Han
