@@ -272,7 +272,7 @@ class UploaderController extends SurveyController
                     $return = array(
                         "success" => true,
                         "size"    => $size,
-                        "name"    => rawurlencode(basename($filename)),
+                        "name"    => basename($filename),
                         "ext"     => $cleanExt,
                         "filename"      => $randfilename,
                         "msg"     => gT("The file has been successfully uploaded.")
