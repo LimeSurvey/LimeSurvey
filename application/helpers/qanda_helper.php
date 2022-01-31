@@ -1784,6 +1784,7 @@ function do_file_upload($ia)
         'coreClass' => $coreClass,
         'basename' => $ia[1],
         'uploadurl' => $uploadurl,
+        'scriptloc' => Yii::app()->getController()->createUrl('/uploader/index/mode/upload/'),
         'show_title' => $aQuestionAttributes['show_title'],
         'show_comment' => $aQuestionAttributes['show_comment'],
         'uploadButtonLabel' => ngT("Upload file|Upload files", $aQuestionAttributes['max_num_of_files'])

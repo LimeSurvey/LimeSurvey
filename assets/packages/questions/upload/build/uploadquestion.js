@@ -777,7 +777,7 @@
 
             if (this.isValueInArray(image_extensions, item.ext)) {
               imageOrPlaceholder = "image";
-              imageOrPlaceholderHtml = `<img src="${uploadurl}/filegetcontents/${decodeURIComponent(item.filename)}" class="uploaded" />`;
+              imageOrPlaceholderHtml = '<img src="'+ uploadurl +'/filegetcontents/'+ decodeURIComponent(item.filename) +'" class="uploaded" />';
             } else {
               imageOrPlaceholder = "placeholder";
               imageOrPlaceholderHtml = `<div class="upload-placeholder"></div>`;
