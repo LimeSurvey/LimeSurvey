@@ -140,9 +140,7 @@ class UploaderController extends SurveyController
                 // Try to create
                 mkdir($sTempUploadDir);
             }
-            $filename = $_FILES['uploadfile']['name'];
-            // Do we filter file name ? It's used on displaying only , but not save like that.
-            //$filename = sanitize_filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
+            $filename = sanitize_filename($_FILES['uploadfile']['name'], false, false, true);
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
             $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);

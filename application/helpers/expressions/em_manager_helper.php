@@ -8452,6 +8452,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                     // Move the (unmoved, temp) files from temp to files directory.
                                     // Check all possible file uploads
                                     for ($i = 0; $i < $iSize; $i++) {
+                                        $aFiles[$i]->name = sanitize_filename($aFiles[$i]->name, false, false, true);
                                         $aFiles[$i]->filename = get_absolute_path($aFiles[$i]->filename);
                                         if (file_exists($tmp . $aFiles[$i]->filename)) {
                                             $sDestinationFileName = 'fu_' . randomChars(15);
