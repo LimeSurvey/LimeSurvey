@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.11 (build 220124) to 5.2.12 (build 220131) January 31, 2022
+-Fixed issue: Password complexity for suggested passwords being too low (Carsten Schmitz)
+-Fixed issue #17851: Placeholder {name.NAOK} gets replaced with survey title (#2219) (Denis Chenu)
+-Fixed issue #17776: New security settings (#2198) (Gabriel Jenik)
+-Fixed issue #17518: Non-ascii characters in email addresses (#2193) (Gabriel Jenik)
+-Fixed issue #16423: PasswordRequirement settings saved but not loaded (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Iloko by c_schmitz
+#Updated translation: Hungarian by anikoken, arubicsek, debugz, dorion, kkd, vargazsoltivan
+#Updated translation: Hiligaynon by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Cebuano by c_schmitz
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.2.10 (build 220118) to 5.2.11 (build 220124) January 24, 2022
 -Fixed issue: SQL error when trying to import duplicate survey language settings (Carsten Schmitz)
 -Fixed issue: If no language is set the email body might be empty for invitations/reminders (Carsten Schmitz)

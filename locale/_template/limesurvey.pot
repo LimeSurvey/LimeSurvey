@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-01-28 17:37:15+00:00\n"
+"POT-Creation-Date: 2022-01-31 09:51:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -95,7 +95,7 @@ msgstr ""
 #: application/controllers/UserGroupController.php:304
 #: application/controllers/UserGroupController.php:499
 #: application/controllers/admin/PluginManagerController.php:78
-#: application/controllers/admin/PluginManagerController.php:155
+#: application/controllers/admin/PluginManagerController.php:156
 #: application/controllers/admin/SurveymenuController.php:399
 #: application/controllers/admin/SurveymenuEntryController.php:71
 #: application/controllers/admin/SurveysGroupsController.php:180
@@ -1008,13 +1008,13 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1112
 #: application/controllers/SurveyAdministrationController.php:1199
 #: application/controllers/admin/PluginManagerController.php:63
-#: application/controllers/admin/PluginManagerController.php:111
-#: application/controllers/admin/PluginManagerController.php:211
-#: application/controllers/admin/PluginManagerController.php:256
-#: application/controllers/admin/PluginManagerController.php:299
-#: application/controllers/admin/PluginManagerController.php:325
-#: application/controllers/admin/PluginManagerController.php:410
-#: application/controllers/admin/PluginManagerController.php:747
+#: application/controllers/admin/PluginManagerController.php:112
+#: application/controllers/admin/PluginManagerController.php:212
+#: application/controllers/admin/PluginManagerController.php:257
+#: application/controllers/admin/PluginManagerController.php:300
+#: application/controllers/admin/PluginManagerController.php:326
+#: application/controllers/admin/PluginManagerController.php:411
+#: application/controllers/admin/PluginManagerController.php:759
 #: application/controllers/admin/dataentry.php:254
 #: application/controllers/admin/participantsaction.php:59
 #: application/controllers/admin/participantsaction.php:2566
@@ -1946,7 +1946,7 @@ msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:601
 #: application/controllers/SurveyAdministrationController.php:1340
-#: application/controllers/admin/PluginManagerController.php:677
+#: application/controllers/admin/PluginManagerController.php:689
 #: application/controllers/admin/labels.php:70
 #: application/controllers/admin/themes.php:1373
 msgid "Incorrect permissions in your %s folder."
@@ -2141,7 +2141,7 @@ msgstr ""
 #: application/controllers/admin/themes.php:391
 #: application/core/Survey_Common_Action.php:1135
 #: application/helpers/SurveyRuntimeHelper.php:1423
-#: application/helpers/frontend_helper.php:2073
+#: application/helpers/frontend_helper.php:2085
 #: application/models/services/FilterImportedResources.php:69
 #: application/views/admin/participants/participantsPanel_view.php:19
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:12
@@ -2779,7 +2779,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:3204
 #: application/controllers/UserGroupController.php:251
 #: application/controllers/UserGroupController.php:301
-#: application/controllers/admin/PluginManagerController.php:360
+#: application/controllers/admin/PluginManagerController.php:361
 #: application/controllers/admin/dataentry.php:1310
 #: application/controllers/admin/labels.php:222
 #: application/controllers/admin/labels.php:311
@@ -2801,7 +2801,7 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_editAttribute.php:247
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:7
 #: application/views/admin/participants/viewAttribute_view.php:135
-#: application/views/admin/super/fullpagebar_view.php:130
+#: application/views/admin/super/fullpagebar_view.php:127
 #: application/views/admin/survey/Question/questionbar_view.php:201
 #: application/views/admin/survey/Question/questionbar_view.php:250
 #: application/views/admin/survey/organizeGroupsAndQuestions_view.php:59
@@ -3405,7 +3405,7 @@ msgstr ""
 #: application/views/admin/participants/attributeMapCSV_view.php:79
 #: application/views/admin/participants/attributeMapToken_view.php:99
 #: application/views/admin/participants/attributeMap_view.php:185
-#: application/views/admin/super/fullpagebar_view.php:105
+#: application/views/admin/super/fullpagebar_view.php:102
 #: application/views/admin/themes/templatesummary_view.php:41
 #: application/views/admin/themes/templatesummary_view.php:72
 #: application/views/admin/themes/templatesummary_view.php:102
@@ -3771,76 +3771,76 @@ msgstr ""
 msgid "Plugins"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:133
+#: application/controllers/admin/PluginManagerController.php:134
 msgid "Found %s plugins in file system"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:156
+#: application/controllers/admin/PluginManagerController.php:157
 msgid "Plugins - scanned files"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:183
+#: application/controllers/admin/PluginManagerController.php:184
 msgid "Plugin folder does not exist."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:188
+#: application/controllers/admin/PluginManagerController.php:189
 msgid "Plugin files cannot be deleted due to permissions problem."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:193
+#: application/controllers/admin/PluginManagerController.php:194
 msgid "Could not remove plugin files."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:196
+#: application/controllers/admin/PluginManagerController.php:197
 msgid "Plugin files successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:221
-#: application/controllers/admin/PluginManagerController.php:566
+#: application/controllers/admin/PluginManagerController.php:222
+#: application/controllers/admin/PluginManagerController.php:576
 msgid "The plugin is not compatible with your version of LimeSurvey."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:233
+#: application/controllers/admin/PluginManagerController.php:234
 msgid "Plugin was activated."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:239
+#: application/controllers/admin/PluginManagerController.php:240
 msgid "Failed to activate the plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:244
+#: application/controllers/admin/PluginManagerController.php:245
 msgid "Found no plugin, or plugin already active."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:269
+#: application/controllers/admin/PluginManagerController.php:270
 msgid "Plugin was deactivated."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:275
+#: application/controllers/admin/PluginManagerController.php:276
 msgid "Failed to deactivate the plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:280
+#: application/controllers/admin/PluginManagerController.php:281
 msgid "Found no plugin, or plugin not active."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:307
+#: application/controllers/admin/PluginManagerController.php:308
 msgid "Could not load plugin"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:312
+#: application/controllers/admin/PluginManagerController.php:313
 msgid "Found no configuration file for this plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:317
+#: application/controllers/admin/PluginManagerController.php:318
 msgid "The plugin was not found."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:334
+#: application/controllers/admin/PluginManagerController.php:335
 msgid "The plugin settings were saved."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:348
+#: application/controllers/admin/PluginManagerController.php:349
 #: application/controllers/admin/labels.php:320
 #: application/controllers/admin/labels.php:449
 #: application/core/plugins/TwoFactorAdminLogin/views/_partial/error.php:35
@@ -3855,8 +3855,8 @@ msgstr ""
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/unkown_modal_type.php:14
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:52
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:52
-#: application/helpers/replacements_helper.php:349
-#: application/helpers/replacements_helper.php:462
+#: application/helpers/replacements_helper.php:350
+#: application/helpers/replacements_helper.php:463
 #: application/models/TemplateConfig.php:746
 #: application/models/TemplateConfig.php:747
 #: application/views/admin/emailtemplates/email_language_template_tab.php:126
@@ -3876,8 +3876,8 @@ msgstr ""
 #: application/views/admin/super/footer.php:187
 #: application/views/admin/super/footer.php:206
 #: application/views/admin/super/footer.php:228
-#: application/views/admin/super/fullpagebar_view.php:85
-#: application/views/admin/super/fullpagebar_view.php:138
+#: application/views/admin/super/fullpagebar_view.php:82
+#: application/views/admin/super/fullpagebar_view.php:135
 #: application/views/admin/super/welcome.php:80
 #: application/views/admin/survey/Question/questionbar_view.php:214
 #: application/views/admin/survey/Question/questionbar_view.php:236
@@ -3911,7 +3911,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:354
+#: application/controllers/admin/PluginManagerController.php:355
 #: application/extensions/TopbarWidget/views/includes/copyQuestionTopbarRight_view.php:10
 #: application/extensions/TopbarWidget/views/includes/editGroupTopbarRight_view.php:20
 #: application/extensions/TopbarWidget/views/includes/editQuestionTopbarRight_view.php:37
@@ -3919,7 +3919,7 @@ msgstr ""
 #: application/extensions/TopbarWidget/views/includes/surveyTopbarRight_view.php:46
 #: application/views/admin/emailtemplates/emailtemplates_view.php:62
 #: application/views/admin/labels/labelsetsbar_view.php:138
-#: application/views/admin/super/fullpagebar_view.php:122
+#: application/views/admin/super/fullpagebar_view.php:119
 #: application/views/admin/survey/Question/questionbar_view.php:207
 #: application/views/admin/survey/Question/questionbar_view.php:255
 #: application/views/layouts/fullpagebar_view.php:113
@@ -3930,76 +3930,85 @@ msgstr ""
 msgid "Save and close"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:372
+#: application/controllers/admin/PluginManagerController.php:373
 msgid "Return to plugin list"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:375
+#: application/controllers/admin/PluginManagerController.php:376
 msgid "Plugin:"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:421
+#: application/controllers/admin/PluginManagerController.php:422
 msgid "Reset load error for plugin %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:423
+#: application/controllers/admin/PluginManagerController.php:424
 msgid "Could not update plugin %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:427
+#: application/controllers/admin/PluginManagerController.php:428
 msgid "Found no plugin with id %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:450
+#: application/controllers/admin/PluginManagerController.php:451
 msgid "Found no plugin with name %s"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:463
+#: application/controllers/admin/PluginManagerController.php:464
 msgid "Plugin was installed."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:495
+#: application/controllers/admin/PluginManagerController.php:496
 msgid "Found no plugin with id %d."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:503
+#: application/controllers/admin/PluginManagerController.php:504
 msgid "Plugin uninstalled."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:505
+#: application/controllers/admin/PluginManagerController.php:506
 msgid "Could not uninstall plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:529
+#: application/controllers/admin/PluginManagerController.php:532
 msgid "Could not fetch files."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:561
+#: application/controllers/admin/PluginManagerController.php:566
 msgid "Could not read plugin configuration file."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:613
+#: application/controllers/admin/PluginManagerController.php:571
+#: application/libraries/PluginManager/PluginManager.php:141
+msgid "The plugin is not in the plugin whitelist."
+msgstr ""
+
+#: application/controllers/admin/PluginManagerController.php:625
 msgid "The plugin was successfully updated. You might need to deactivate it and activate it again to apply changes."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:619
+#: application/controllers/admin/PluginManagerController.php:631
 msgid "The plugin was successfully installed. You need to activate it before you can use it."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:626
+#: application/controllers/admin/PluginManagerController.php:638
 msgid "The plugin could not be installed or updated:"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:646
+#: application/controllers/admin/PluginManagerController.php:658
 msgid "Installation aborted."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:688
+#: application/controllers/admin/PluginManagerController.php:700
 msgid "Plugin '%s' does already exist."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:704
+#: application/controllers/admin/PluginManagerController.php:716
 msgid "Demo mode: Uploading plugins is disabled."
+msgstr ""
+
+#: application/controllers/admin/PluginManagerController.php:771
+msgid "Plugin upload is disabled"
 msgstr ""
 
 #: application/controllers/admin/SurveymenuController.php:101
@@ -12090,81 +12099,81 @@ msgstr ""
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:526
+#: application/helpers/frontend_helper.php:538
 msgid "Basic admin notification could not be sent because of error: %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:540
+#: application/helpers/frontend_helper.php:552
 msgid "Detailed admin notification could not be sent because of error: %s"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:565
+#: application/helpers/frontend_helper.php:577
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:567
+#: application/helpers/frontend_helper.php:579
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:571
+#: application/helpers/frontend_helper.php:583
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:576
+#: application/helpers/frontend_helper.php:588
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:577
+#: application/helpers/frontend_helper.php:589
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:586
+#: application/helpers/frontend_helper.php:598
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:590
+#: application/helpers/frontend_helper.php:602
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:596
+#: application/helpers/frontend_helper.php:608
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:602
+#: application/helpers/frontend_helper.php:614
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1103
+#: application/helpers/frontend_helper.php:1115
 msgid "You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1116
+#: application/helpers/frontend_helper.php:1128
 msgid "The access code you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1275
-#: application/helpers/frontend_helper.php:1300
+#: application/helpers/frontend_helper.php:1287
+#: application/helpers/frontend_helper.php:1312
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1279
+#: application/helpers/frontend_helper.php:1291
 #: tmp/runtime/twig_cache/dc/dc0c055c37596ced5cb2b8b6309d180fa3cd143d86826f7ed9a1a8ac09d7c6e6.php:105
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1283
+#: application/helpers/frontend_helper.php:1295
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2072
+#: application/helpers/frontend_helper.php:2084
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2074
+#: application/helpers/frontend_helper.php:2086
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2075
+#: application/helpers/frontend_helper.php:2087
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -13622,8 +13631,8 @@ msgstr ""
 
 #: application/helpers/replacements_helper.php:154
 #: application/helpers/replacements_helper.php:156
-#: application/helpers/replacements_helper.php:397
-#: application/helpers/replacements_helper.php:399
+#: application/helpers/replacements_helper.php:398
+#: application/helpers/replacements_helper.php:400
 #: tmp/runtime/twig_cache/a6/a678173d865dabe109a7a2ee64096d37bcd878dd665e03a058c0080f4fb7c974.php:292
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
@@ -13649,17 +13658,17 @@ msgstr ""
 msgid "Note: Print will not include items on this page"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:305
+#: application/helpers/replacements_helper.php:306
 #: tmp/runtime/twig_cache/9f/9f094bf970938827ea2f2a0c289a2135db42c9d250e421152b7a552e99dbc57a.php:47
 msgid "Answers cleared"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:306
+#: application/helpers/replacements_helper.php:307
 #: tmp/runtime/twig_cache/aa/aa1e886828ad112ac72f25cc64f2c5bc18c25fe1d6f6d680f041e73ca6b80108.php:58
 msgid "Your assessment"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:424
+#: application/helpers/replacements_helper.php:425
 msgid "Unkown"
 msgstr ""
 
@@ -14398,7 +14407,7 @@ msgstr ""
 msgid "Extension is not compatible with your LimeSurvey version."
 msgstr ""
 
-#: application/libraries/PluginManager/PluginManager.php:142
+#: application/libraries/PluginManager/PluginManager.php:146
 msgid "Extension \"%s\" is already installed."
 msgstr ""
 
@@ -19713,44 +19722,44 @@ msgstr ""
 msgid "An error occurred."
 msgstr ""
 
-#: application/views/admin/super/fullpagebar_view.php:28
+#: application/views/admin/super/fullpagebar_view.php:25
 msgid "Install plugin by ZIP archive"
 msgstr ""
 
-#: application/views/admin/super/fullpagebar_view.php:31
+#: application/views/admin/super/fullpagebar_view.php:28
 #: application/views/layouts/fullpagebar_view.php:27
 msgid "Upload & install"
 msgstr ""
 
-#: application/views/admin/super/fullpagebar_view.php:41
+#: application/views/admin/super/fullpagebar_view.php:38
 msgid "Scan files for available plugins"
 msgstr ""
 
-#: application/views/admin/super/fullpagebar_view.php:45
+#: application/views/admin/super/fullpagebar_view.php:42
 msgid "Scan files"
 msgstr ""
 
-#: application/views/admin/super/fullpagebar_view.php:56
+#: application/views/admin/super/fullpagebar_view.php:53
 msgid "Add new menu"
 msgstr ""
 
-#: application/views/admin/super/fullpagebar_view.php:58
+#: application/views/admin/super/fullpagebar_view.php:55
 msgid "New menu"
 msgstr ""
 
-#: application/views/admin/super/fullpagebar_view.php:70
+#: application/views/admin/super/fullpagebar_view.php:67
 msgid "Add new menu entry"
 msgstr ""
 
-#: application/views/admin/super/fullpagebar_view.php:72
+#: application/views/admin/super/fullpagebar_view.php:69
 msgid "New menu entry"
 msgstr ""
 
-#: application/views/admin/super/fullpagebar_view.php:114
+#: application/views/admin/super/fullpagebar_view.php:111
 msgid "Reorder"
 msgstr ""
 
-#: application/views/admin/super/fullpagebar_view.php:146
+#: application/views/admin/super/fullpagebar_view.php:143
 #: application/views/layouts/fullpagebar_view.php:144
 msgid "Manage your key"
 msgstr ""
