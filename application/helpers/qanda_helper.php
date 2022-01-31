@@ -1782,6 +1782,7 @@ function do_file_upload($ia)
         'value' => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
         'filecountvalue' => $filecountvalue,
         'coreClass' => $coreClass,
+        'maxFiles' =>  $aQuestionAttributes['max_num_of_files'],
         'basename' => $ia[1],
         'uploadurl' => $uploadurl,
         'scriptloc' => Yii::app()->getController()->createUrl('/uploader/index/mode/upload/'),
