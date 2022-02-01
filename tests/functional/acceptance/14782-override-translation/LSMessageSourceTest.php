@@ -1,6 +1,7 @@
 <?php
 
 namespace ls\tests;
+
 use App;
 
 /**
@@ -29,15 +30,14 @@ class LSMessageSourceTest extends TestBaseClass
                 array(':message' => $sourcemessage)
             )->queryRow();
         $this->assertCount(1, $result, 'Unable to create source_message row in DB');
-        return;
-        App()->db->createCommand()->insert('{{message}}', array(
-            'id' => intval($result['id']),
-            'language' => 'de',
-            'translation' => $translatedmessage,
-        ));
-        $translatedGt = gT($sourcemessage, 'unescaped', 'de');
-        /* Delete added translation */
-        if(!empty($result['id'])) {
+        if (!empty($result['id'])) {
+            App()->db->createCommand()->insert('{{message}}', array(
+                'id' => intval($result['id']),
+                'language' => 'de',
+                'translation' => $translatedmessage,
+            ));
+            $translatedGt = gT($sourcemessage, 'unescaped', 'de');
+            /* Delete added translation */
             App()->db->createCommand()->delete(
                 '{{source_message}}',
                 'id = :id',
@@ -48,7 +48,7 @@ class LSMessageSourceTest extends TestBaseClass
                 'id = :id',
                 array(":id" => $result['id'])
             );
+            $this->assertEquals($translatedmessage, $translatedGt, 'Message translation by DB is broken');
         }
-        $this->assertEquals($translatedmessage, $translatedGt, 'Message translation by DB is broken');
-     }
+    }
 }
