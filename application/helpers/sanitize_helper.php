@@ -120,13 +120,11 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
 {
     // sanitize filename
     $filename = mb_ereg_replace(
-        '~
-        [<>:"/\\|?*]|
+        '[<>:"\\|?*]|
         [\x00-\x1F]|
         [\x7F\xA0\xAD]|
         [#\[\]@!$&\'()+,;=]|
-        [{}^\~`]
-        ~x',
+        [{}^\~`]',
         '-',
         $filename
     );
