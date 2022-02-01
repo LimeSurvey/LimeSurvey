@@ -1,12 +1,12 @@
 
 const appName = 'adminsidepanel';
 const outputDir = process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/';
-const entryPoint = ['./lib/surveysettings.js','./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
+const entryPoint = ['./lib/surveysettings.js','./src/adminsidepanelmain.js', './scss/adminsidepanelmain.scss'];
 
 const RtlCSS = require("../meta/LSRTLPlugin/LSRTLPlugin.js");
 
 
-module.exports = {
+export default {
     outputDir: outputDir,
     filenameHashing: false,
     runtimeCompiler: true,
@@ -14,7 +14,7 @@ module.exports = {
     configureWebpack: {
         entry: entryPoint,
         output: {
-            filename: () => {return 'js/'+appName+'.js'}
+            filename: () => {return 'js/adminsidepanel.js'}
         },
         externals: {
             LS: 'LS',
