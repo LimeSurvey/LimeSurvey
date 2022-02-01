@@ -139,7 +139,7 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
     // maximise filename length to 255 bytes http://serverfault.com/a/9548/44086
     $ext = pathinfo($filename, PATHINFO_EXTENSION);
     $filename = mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)) . ($ext ? '.' . $ext : '');
-    $filename = ($alphanumeric) ? mb_ereg_replace("/[^a-zA-Z0-9]/", "", $filename) : $filename;
+    $filename = ($alphanumeric) ? mb_ereg_replace("[^a-zA-Z0-9]", "", $filename) : $filename;
 
     if ($force_lowercase) {
         $filename = mb_strtolower($filename, 'UTF-8');
