@@ -1786,8 +1786,8 @@ function do_file_upload($ia)
         'basename' => $ia[1],
         'uploadurl' => $uploadurl,
         'scriptloc' => Yii::app()->getController()->createUrl('/uploader/index/mode/upload/'),
-        'show_title' => $aQuestionAttributes['show_title'],
-        'show_comment' => $aQuestionAttributes['show_comment'],
+        'showTitle' => $aQuestionAttributes['show_title'],
+        'showComment' => $aQuestionAttributes['show_comment'],
         'uploadButtonLabel' => ngT("Upload file|Upload files", $aQuestionAttributes['max_num_of_files'])
     );
     $answer = doRender('/survey/questions/answer/file_upload/answer', $fileuploadData, true);
