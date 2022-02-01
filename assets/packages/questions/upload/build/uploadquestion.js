@@ -783,9 +783,9 @@
               imageOrPlaceholderHtml = `<div class="upload-placeholder"></div>`;
             }
 
-            title = show_title != 0 ? item.title : '';
-            comment = show_comment != 0 ? item.comment : '';
-            name = item.name;
+            title = show_title != 0 ? escapeHtml(item.title) : '';
+            comment = show_comment != 0 ? escapeHtml(item.comment) : '';
+            name = escapeHtml(item.name);
             filepointer = iterator;
             const rowHtml = this.replaceWithObject(templateHtml, {
               imageOrPlaceholder,
@@ -808,7 +808,7 @@
         let outString = templateString;
 
         for (let key in objectWithReplacements) {
-          outString = outString.replace(new RegExp(`\{${key}\}`), objectWithReplacements[key]);
+          outString = outString.replace(new RegExp("\{"+key+"\}"), objectWithReplacements[key]);
         }
 
         return outString;
