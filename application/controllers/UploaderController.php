@@ -270,12 +270,12 @@ class UploaderController extends SurveyController
                 }
                 if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
                     $return = array(
-                        "success" => true,
-                        "size"    => $size,
-                        "name"    => basename($filename),
-                        "ext"     => $cleanExt,
-                        "filename"      => $randfilename,
-                        "msg"     => gT("The file has been successfully uploaded.")
+                        "success"  => true,
+                        "size"     => $size,
+                        "name"     => $filename,
+                        "ext"      => $cleanExt,
+                        "filename" => $randfilename,
+                        "msg"      => gT("The file has been successfully uploaded.")
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
