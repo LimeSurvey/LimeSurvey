@@ -7,17 +7,8 @@ namespace ls\tests;
  * @since 2022-02-02
  * @group copysurveyresources
  */
-class CopySurveyResourcesTest extends TestBaseClassWeb
+class CopySurveyResourcesTest extends TestBaseClass
 {
-    public static function setUpBeforeClass(): void
-    {
-        parent::setupBeforeClass();
-
-        // Permission to everything.
-        \Yii::app()->session['loginID'] = 1;
-
-    }
-
     /**
      * Copy survey resources
      */
