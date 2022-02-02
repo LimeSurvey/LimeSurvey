@@ -23,11 +23,9 @@ class CopySurveyResourcesTest extends TestBaseClass
         $basedestdir = \Yii::app()->getConfig('uploaddir') . "/surveys";
         $destdir = $basedestdir . "/$sourceSid/images/";
         if (!is_dir($destdir)) {
-            $dirCreated = mkdir($destdir, 777, true);
+            mkdir($destdir, 777, true);
         }
-        $this->assertTrue($dirCreated, "Couldn't create dir '$destdir'");
         $file = self::$dataFolder .'/file_upload/dalahorse.jpg';
-        $this->assertTrue(file_exists($file));
         copy($file, $destdir . "dalahorse.jpg");
         $this->assertTrue(file_exists($destdir . "dalahorse.jpg"));
 
