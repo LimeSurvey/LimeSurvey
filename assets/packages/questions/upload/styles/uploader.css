@@ -39,7 +39,13 @@ margin:0;
     }
 }
 
-
+.file-preview {
+    display: flex;
+    align-items: center;
+}
+.file-preview span {
+    margin-left: 1em;
+}
 
 .file-info label{
     float:left;
@@ -68,6 +74,7 @@ margin:0;
 }
 .upload-div{
     text-align: center;
+    margin-bottom: 0.5em;    
 }
 .uploadmsg {
     text-align: center;
