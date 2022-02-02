@@ -902,7 +902,7 @@ class LsDefaultDataSets
             'sid'               =>  null,
             'gsid'              =>  null,
             'uid'               =>  null,
-            'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
+            'files_css'         => '{"add":["css/base.css","css/theme.css","css/noTablesOnMobile.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
             'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/survey/vanilla/files/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
