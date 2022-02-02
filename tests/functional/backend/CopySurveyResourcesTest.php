@@ -6,6 +6,8 @@ use ls\tests\TestBaseClassWeb;
 
 /**
  * Tests the CopySurveyResources service class
+ * @since 2022-02-02
+ * @group copysurveyresources
  */
 class CopySurveyResourcesTest extends TestBaseClassWeb
 {
