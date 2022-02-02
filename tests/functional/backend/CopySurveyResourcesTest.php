@@ -3,34 +3,19 @@
 namespace ls\tests\controllers;
 
 use ls\tests\TestBaseClassWeb;
-/*use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\Remote\LocalFileDetector;
-use QuestionTheme;
-use QuestionAttribute;
-use ExtensionConfig;*/
 
 /**
- * Uses test data from tpartner: https://github.com/tpartner/LimeSurvey-Range-Slider-4x
+ * Tests the CopySurveyResources service class
  */
 class CopySurveyResourcesTest extends TestBaseClassWeb
 {
     public static function setUpBeforeClass(): void
     {
         parent::setupBeforeClass();
-        /*$username = getenv('ADMINUSERNAME');
-        if (!$username) {
-            $username = 'admin';
-        }
-
-        $password = getenv('PASSWORD');
-        if (!$password) {
-            $password = 'password';
-        }*/
 
         // Permission to everything.
         \Yii::app()->session['loginID'] = 1;
 
-        //self::adminLogin($username, $password);
     }
 
     /**
