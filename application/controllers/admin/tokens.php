@@ -2476,9 +2476,9 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']["token_menu"] = true;
 
         // Save Button
-        $aData['showSaveButton'] = true;
+        $aData['showSaveButton'] = false;
         // Save and Close Button
-        $aData['showSaveAndCloseButton'] = true;
+        $aData['showGreenSaveAndCloseButton'] = true;
         // White Close Button
         $aData['showWhiteCloseButton'] = true;
         $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);

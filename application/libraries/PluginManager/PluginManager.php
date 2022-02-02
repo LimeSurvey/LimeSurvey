@@ -137,6 +137,10 @@ class PluginManager extends \CApplicationComponent
         }
 
         $newName = (string) $extensionConfig->xml->metadata->name;
+        if (!$this->isWhitelisted($newName)) {
+            return [false, gT('The plugin is not in the plugin whitelist.')];
+        }
+
         $otherPlugin = Plugin::model()->findAllByAttributes(['name' => $newName]);
         if (!empty($otherPlugin)) {
             return [false, sprintf(gT('Extension "%s" is already installed.'), $newName)];
@@ -298,7 +302,7 @@ class PluginManager extends \CApplicationComponent
                             empty($plugin)
                             || ($includeInstalledPlugins && $plugin->load_error == 0)
                         ) {
-                            if (file_exists($file) && $this->_checkWhitelist($pluginName)) {
+                            if (file_exists($file) && $this->isWhitelisted($pluginName)) {
                                 try {
                                     $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
                                     // getPluginInfo returns false instead of an array when config is not found.
@@ -437,7 +441,7 @@ class PluginManager extends \CApplicationComponent
                 }
             } else {
                 if (!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName) {
-                    if ($this->getPluginInfo($pluginName) !== false) {
+                    if ($this->isWhitelisted($pluginName) && $this->getPluginInfo($pluginName) !== false) {
                         if (class_exists($pluginName)) {
                             $this->plugins[$id] = new $pluginName($this, $id);
                             if (method_exists($this->plugins[$id], 'init')) {
@@ -634,17 +638,47 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
+     * Returns true if the plugin name is whitelisted or the whitelist is disabled.
      * @param string $pluginName
      * @return boolean
      */
-    private function _checkWhitelist($pluginName)
+    public function isWhitelisted($pluginName)
     {
         if (App()->getConfig('usePluginWhitelist')) {
             $whiteList = App()->getConfig('pluginWhitelist');
-            $coreList = App()->getConfig('pluginCoreList');
+            $coreList = self::getCorePluginList();
             $allowedPlugins =  array_merge($coreList, $whiteList);
             return array_search($pluginName, $allowedPlugins) !== false;
         }
         return true;
+    }
+
+    /**
+     * Return the core plugin list
+     * No way to update by php or DB
+     * @return string[]
+     */
+    private static function getCorePluginList()
+    {
+        return [
+            'AuditLog',
+            'Authdb',
+            'AuthLDAP',
+            'Authwebserver',
+            'ComfortUpdateChecker',
+            'customToken',
+            'ExportR',
+            'ExportSPSSsav',
+            'ExportSTATAxml',
+            'expressionFixedDbVar',
+            'expressionQuestionForAll',
+            'expressionQuestionHelp',
+            'mailSenderToFrom',
+            'oldUrlCompat',
+            'PasswordRequirement',
+            'statFunctions',
+            'TwoFactorAdminLogin',
+            'UpdateCheck'
+        ];
     }
 }

@@ -301,6 +301,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $coreReplacements = getStandardsReplacementFields($thissurvey);
     }
 
+    /* This set tempVars in Expression, even if quetsion exist : replace value*/
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['ANSWERSCLEARED'] = gT("Answers cleared");
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
