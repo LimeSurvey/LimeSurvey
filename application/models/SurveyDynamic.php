@@ -324,30 +324,42 @@ class SurveyDynamic extends LSActiveRecord
 
         /* deletefiles button */
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
-            $buttons .= "<a
-            href='" . App()->createUrl("responses/deleteAttachments", ["surveyId" => self::$sid, "responseId" => $this->id]) . "'
-            class='btn btn-default btn-sm btn-deletefiles'
+            $buttons .= "
+            <span
+            data-toggle='modal'
+            data-target='#confirmation-modal'
+            data-btnclass='btn-danger'
+            data-post-url='" . App()->createUrl("responses/deleteAttachments") . "'
+            data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
+            data-btntext='" . gt("Delete") . "'
+            data-message='" . gt("Do you want to delete all files of this response?") . "'>
+            <button
             data-toggle='tooltip'
-            title='" . gt("Delete all files of this response") . "'
-            onclick='function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }'>
-                <i class='fa fa-paperclip text-danger'></i>
-            </a>";
+            class='btn btn-default btn-sm btn-deletefiles'
+            title='" . gt("Delete all files of this response") . "'>
+            <i class='fa fa-paperclip text-danger'></i>
+            </button>
+            </span>";
         }
 
         /* delete  button */
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $buttons .= "<button
-            class='btn btn-default btn-sm btn-delete'
+            $buttons .= "
+            <span
             data-toggle='modal'
             data-target='#confirmation-modal'
             data-btnclass='btn-danger'
             data-post-url='" . App()->createUrl("responses/deleteSingle") . "'
             data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
             data-btntext='" . gt("Delete") . "'
-            title='" . gt("Delete this response") . "'
             data-message='" . gt("Do you want to delete this response?") . "<br/>" . gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.") . "'>
-                <i class='fa fa-trash text-danger'></i>
-            </button>";
+            <button
+            data-toggle='tooltip'
+            class='btn btn-default btn-sm btn-delete'
+            title='" . gt("Delete this response") . "'>
+            <i class='fa fa-trash text-danger'></i>
+            </button>
+            </span>";
         }
         return $buttons;
     }
