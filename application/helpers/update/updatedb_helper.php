@@ -5050,6 +5050,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 479], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        /**
+         * Add missing noTablesOnMobile.css to vanilla configs again. It was done on 428, but the bug on LsDefaultDataSets remained
+         * causing problems on new installations.
+         */
+        if ($iOldDBVersion < 480) {
+            $oTransaction = $oDB->beginTransaction();
+            // Update vanilla config
+            $oDB->createCommand()->update(
+                '{{template_configuration}}',
+                [
+                    'files_css' => '{"add":["css/base.css","css/theme.css","css/custom.css","css/noTablesOnMobile.css"]}',
+                ],
+                "template_name = 'vanilla' AND files_css != 'inherit'"
+            );
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 480), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
