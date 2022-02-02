@@ -1,8 +1,6 @@
 <?php
 
-namespace ls\tests\controllers;
-
-use ls\tests\TestBaseClassWeb;
+namespace ls\tests;
 
 /**
  * Tests the CopySurveyResources service class
