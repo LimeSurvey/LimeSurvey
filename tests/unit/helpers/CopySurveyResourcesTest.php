@@ -25,7 +25,7 @@ class CopySurveyResourcesTest extends TestBaseClass
         if (!is_dir($destdir)) {
             mkdir($destdir, 777, true);
         }
-        $file = BASEPATH . '../tests/data/file_upload/dalahorse.jpg';
+        $file = self::$dataFolder .'/file_upload/dalahorse.jpg';
         copy($file, $destdir . "dalahorse.jpg");
         $this->assertTrue(file_exists($destdir . "dalahorse.jpg"));
 
