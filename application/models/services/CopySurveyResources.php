@@ -39,7 +39,7 @@ class CopySurveyResources
         $copiedFilesInfo = [];
         $errorFilesInfo = [];
 
-        if (file_exists($sourceDir)) {
+        if (is_dir($sourceDir)) {
             $directory = opendir($sourceDir);
             if (!$directory) {
                 $errorFilesInfo[] = [
