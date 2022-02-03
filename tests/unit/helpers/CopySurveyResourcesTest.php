@@ -20,14 +20,13 @@ class CopySurveyResourcesTest extends TestBaseClass
         $sourceSid = self::$testSurvey->sid;
 
         // Add resource
+        exec('sudo chmod -R 777 ' . \Yii::app()->getConfig('uploaddir')); // Add permisions to ./upload directory, neede for CI pipeline
         $basedestdir = \Yii::app()->getConfig('uploaddir') . "/surveys";
         $destdir = $basedestdir . "/$sourceSid/images/";
         if (!is_dir($destdir)) {
             $dirCreated = mkdir($destdir, 777, true);
-            $error = error_get_last();
-            $errorMsg = !empty($error) ? $error['message'] : '';
         }
-        $this->assertTrue($dirCreated, "Couldn't create dir '$destdir': $errorMsg");
+        $this->assertTrue($dirCreated, "Couldn't create dir '$destdir'");
         $file = self::$dataFolder .'/file_upload/dalahorse.jpg';
         $this->assertTrue(file_exists($file));
         copy($file, $destdir . "dalahorse.jpg");
