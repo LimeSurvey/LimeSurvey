@@ -632,8 +632,10 @@ class ResponsesController extends LSBaseController
                 $sDir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
                 $sRealUserPath = realpath($sFileRealName);
-                if ($sRealUserPath === false || strpos($sRealUserPath, $sDir) !== 0) {
-                    throw new CHttpException(403, "Disable for security reasons.");
+                if ($sRealUserPath === false) {
+                    throw new CHttpException(404, "File not found.");
+                } elseif (strpos($sRealUserPath, $sDir) !== 0) {
+                        throw new CHttpException(403, "File cannot be accessed.");
                 } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
                     if (is_null($mimeType)) {
