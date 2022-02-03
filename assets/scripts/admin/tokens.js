@@ -208,7 +208,11 @@ function validateAdditionalAttributes() {
     return valid;
 }
 
-function validateEmptyTokenForm() {
+/**
+ * Validates some form fields checking that at least one is not empty when creating a participant.
+ * @returns {boolean} false if all of the checked fields are empty and the subaction is inserttoken.
+ */
+function validateNotEmptyTokenForm() {
     if ($('#edittoken').find('[name="subaction"]').val() != 'inserttoken') {
         return true;
     }
@@ -305,7 +309,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             event.preventDefault();
             return false;
         }
-        if (!eventParams.confirm_empty_save && !validateEmptyTokenForm()) {
+        if (!eventParams.confirm_empty_save && !validateNotEmptyTokenForm()) {
             return false;
         }
     });
