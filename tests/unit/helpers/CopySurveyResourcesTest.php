@@ -33,7 +33,7 @@ class CopySurveyResourcesTest extends TestBaseClass
         $this->assertTrue(file_exists($destdir . "dalahorse.jpg"));
 
         // Copy survey
-        \Yii::app()->loadHelper('export');
+        \Yii::import('application.helpers.export_helper', true);
         \Yii::import('application.helpers.admin.import_helper', true);
         $sourceData = \surveyGetXMLData($sourceSid);
         $importResults = \XMLImportSurvey('', $sourceData);
