@@ -961,4 +961,16 @@ class User extends LSActiveRecord
 
         return $this->save();
     }
+
+    /**
+     * Get the decription to be used in list
+     * @return $string
+     */
+    public function getUserDescription()
+    {
+        if (empty($this->full_name)) {
+            return $this->users_name;
+        }
+        return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
+    }
 }
