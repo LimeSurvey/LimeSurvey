@@ -107,10 +107,12 @@
                                     <?php endif; ?>
                                 />&nbsp;
                                 <label for="same_script">
-                                    <?= gT('Set for all languages'); ?>
+                                    <?= gT('Use for all languages'); ?>
                                 </label>
                             </div>
                         </div>
+                    <?php else: ?>
+                        <div class="alert alert-warning same-script-alert" style="display: none;"><?= gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.') ?></div>
                     <?php endif; ?>
 
                     <?= CHtml::textArea(
