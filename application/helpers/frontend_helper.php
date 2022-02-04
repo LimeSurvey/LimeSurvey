@@ -644,9 +644,26 @@ function sendSubmitNotifications($surveyid)
         $sMessage = templatereplace($thissurvey['email_admin_notification'], $aReplacementVars, $redata, 'admin_notification', $thissurvey['anonymized'] == "Y", null, array(), true);
         $sSubject = templatereplace($thissurvey['email_admin_notification_subj'], $aReplacementVars, $redata, 'admin_notification_subj', ($thissurvey['anonymized'] == "Y"), null, array(), true);
         foreach ($aEmailNotificationTo as $sRecipient) {
-        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments)) {
-                if ($debug > 0) {
-                    echo '<br />Email could not be sent. Reason: '.CHtml::encode($maildebug).'<br/>';
+            $event = new PluginEvent('beforeEmail');
+            $event->set('survey', $surveyid);
+            $event->set('type', 'admin_notification');
+            $event->set('subject', $sSubject);
+            $event->set('to', $sRecipient);
+            $event->set('body', $sMessage);
+            $event->set('from', $sFrom);
+            $event->set('bounce', getBounceEmail($surveyid));
+            App()->getPluginManager()->dispatchEvent($event);
+            $sSubject = $event->get('subject');
+            $sMessage = $event->get('body');
+            $sRecipient = $event->get('to');
+            $sFrom = $event->get('from');
+            $sBounce = $event->get('bounce');
+
+            if ($event->get('send', true) != false) {
+                if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, $sBounce, $aRelevantAttachments)) {
+                    if ($debug > 0) {
+                        echo '<br />Email could not be sent. Reason: '.CHtml::encode($maildebug).'<br/>';
+                    }
                 }
             }
         }
@@ -670,9 +687,26 @@ function sendSubmitNotifications($surveyid)
         $sMessage = templatereplace($thissurvey['email_admin_responses'], $aReplacementVars, $redata, 'detailed_admin_notification', $thissurvey['anonymized'] == "Y", null, array(), true);
         $sSubject = templatereplace($thissurvey['email_admin_responses_subj'], $aReplacementVars, $redata, 'detailed_admin_notification_subj', $thissurvey['anonymized'] == "Y", null, array(), true);
         foreach ($aEmailResponseTo as $sRecipient) {
-        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments)) {
-                if ($debug > 0) {
-                    echo '<br />Email could not be sent. Reason: '.CHtml::encode($maildebug).'<br/>';
+            $event = new PluginEvent('beforeEmail');
+            $event->set('survey', $surveyid);
+            $event->set('type', 'admin_notification');
+            $event->set('subject', $sSubject);
+            $event->set('to', $sRecipient);
+            $event->set('body', $sMessage);
+            $event->set('from', $sFrom);
+            $event->set('bounce', getBounceEmail($surveyid));
+            App()->getPluginManager()->dispatchEvent($event);
+            $sSubject = $event->get('subject');
+            $sMessage = $event->get('body');
+            $sRecipient = $event->get('to');
+            $sFrom = $event->get('from');
+            $sBounce = $event->get('bounce');
+
+            if ($event->get('send', true) != false) {
+                if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, $sBounce, $aRelevantAttachments)) {
+                    if ($debug > 0) {
+                        echo '<br />Email could not be sent. Reason: '.CHtml::encode($maildebug).'<br/>';
+                    }
                 }
             }
         }
