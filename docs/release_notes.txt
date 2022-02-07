@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.34 (build 220132) to 3.27.35 (build 220208) February 7, 2022
+-Fixed issue #17790: KCFinder Image Browse Server not working due to incorrect cookieDomain (#2212) (Denis Chenu)
+#Updated translation: Japanese by nomoto
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.27.33 (build 220125) to 3.27.34 (build 220132) January 31, 2022
 -Fixed issue #17751: Date stamp throw PHP notice when edit data with debug (#2188) (Denis Chenu)
 #Updated translation: Polish by elissa
