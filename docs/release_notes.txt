@@ -34,6 +34,28 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.12 (build 220131) to 5.2.13 (build 220207) February 7, 2022
+-Fixed issue: [security] Possible XSS in file upload question type (Carsten Schmitz)
+-Fixed issue: Title & comment not shown for file upload question when navigating back and forth (Carsten Schmitz)
+-Fixed issue: File upload question type preview not working (Carsten Schmitz)
+-Fixed issue: File upload question type popup not showing correct title (Carsten Schmitz)
+-Fixed issue: Downloading a single file from response does not work on Winwdows (Carsten Schmitz)
+-Fixed issue: Deleting a single file from response does not work (Carsten Schmitz)
+-Fixed issue #17781: After creating a user, the modal for setting permission is too narrow (#2221) (Gabriel Jenik)
+-Fixed issue #17718: In file upload question type any file with non-alphanumeric multi-byte characters may not properly show (Carsten Schmitz)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.2.11 (build 220124) to 5.2.12 (build 220131) January 31, 2022
 -Fixed issue: Password complexity for suggested passwords being too low (Carsten Schmitz)
 -Fixed issue #17851: Placeholder {name.NAOK} gets replaced with survey title (#2219) (Denis Chenu)
