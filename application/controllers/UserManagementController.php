@@ -1188,6 +1188,7 @@ class UserManagementController extends LSBaseController
                     'success' => $success,
                     'message' => $sReturnMessage,
                     'href' => Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]),
+                    'modalsize' => 'modal-lg',
                 ];
             } else {
                 $data = [

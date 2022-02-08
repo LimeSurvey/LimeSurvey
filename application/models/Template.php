@@ -30,6 +30,7 @@
  * @property string $files_folder
  * @property string $description
  * @property string $last_update
+ * @property string $api_version
  * @property integer $owner_id
  * @property string $extends
  */
@@ -321,7 +322,7 @@ class Template extends LSActiveRecord
 
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
         if ($bForceXML || !is_a($oTemplateConfigurationModel, 'TemplateConfiguration') || !$oTemplateConfigurationModel->checkTemplate()) {
-            $oTemplateConfigurationModel = new TemplateManifest(null);
+            $oTemplateConfigurationModel = new TemplateManifest();
             $oTemplateConfigurationModel->setBasics($sTemplateName, $iSurveyId);
         }
 
@@ -482,7 +483,7 @@ class Template extends LSActiveRecord
      * @param int|string $iSurveyGroupId
      * @param boolean $bForceXML
      * @param boolean $last if you want to get the last instace without providing template name or sid
-     * @return TemplateConfiguration
+     * @return self
      */
     public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null, $abstractInstance = false, $last = false)
     {
@@ -512,7 +513,7 @@ class Template extends LSActiveRecord
     /**
      * Return last instance if it exists, else generate it or throw an exception depending on $bAutoGenerate.
      * @param boolean $bAutoGenerate : should the function try to generate an instance if it doesn't exist?
-     * @return TemplateConfiguration
+     * @return self
      */
     public static function getLastInstance($bAutoGenerate = true)
     {
