@@ -39,6 +39,7 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
+        \Survey::model()->resetCache();
     }
 
     /**
@@ -73,5 +74,6 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
+        \Survey::model()->resetCache();
     }
 }
