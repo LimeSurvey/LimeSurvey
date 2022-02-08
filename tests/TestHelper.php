@@ -39,6 +39,19 @@ class TestHelper extends TestCase
     }
 
     /**
+     * Reset existing cache (file by default)
+     */
+    public function resetCache()
+    {
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
+        if (method_exists(Yii::app()->cache, 'gc')) {
+            Yii::app()->cache->gc();
+        }
+    }
+
+    /**
      * @param string $title
      * @param int $surveyId
      * @return array
