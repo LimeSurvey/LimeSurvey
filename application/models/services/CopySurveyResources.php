@@ -10,6 +10,12 @@ namespace LimeSurvey\Models\Services;
  */
 class CopySurveyResources
 {
+    /** @var array<string,string> array of successfully copied files/dirs in the form ['filename' => ..., 'status' => ...] */
+    private $copiedFilesInfo = [];
+
+    /** @var array<string,string> array of failed files/dirs in the form ['filename' => ..., 'status' => ...] */
+    private $errorFilesInfo = [];
+
     /**
      * Copy resources from the source survey ($sourceSurveyId) to the target survey ($targetSurveyId)
      *
@@ -25,50 +31,31 @@ class CopySurveyResources
         $sourceDir = \Yii::app()->getConfig('uploaddir') . "/surveys/{$sourceSurveyId}/";
         $targetDir = \Yii::app()->getConfig('uploaddir') . "/surveys/{$targetSurveyId}/";
 
-        // Don't do anything if the source survey doesn't have a directory
-        if (!is_dir($sourceDir)) {
-            return [[], []];
+        // Only try to copy the resources if the source survey has a resources directory
+        if (is_dir($sourceDir)) {
+            $this->copyDirectory($sourceDir, $targetDir);
         }
 
-        return $this->copyDirectory($sourceDir, $targetDir);
+        return $this->getResult();
     }
 
     /**
-     * Copy $sourceDir to $targetDir and return [$copiedFilesInfo, $errorFilesInfo]
+     * Copy $sourceDir to $targetDir.
      * @param string $sourceDir
      * @param string $targetDir
-     *
-     * @return array An array of failed and copied files/directories
      */
-    private function copyDirectory($sourceDir, $targetDir): array
+    private function copyDirectory($sourceDir, $targetDir)
     {
-        $copiedFilesInfo = [];
-        $errorFilesInfo = [];
-
         if (is_dir($sourceDir)) {
             $directory = opendir($sourceDir);
             if (!$directory) {
-                $errorFilesInfo[] = [
-                    "filename" => $sourceDir,
-                    "status"   => gT("Could not open source dir - maybe a permission problem?")
-                ];
-                return [$copiedFilesInfo, $errorFilesInfo];
+                $this->addError($sourceDir, gT("Could not open source dir - maybe a permission problem?"));
+                return;
             }
 
-            // Create target dir if it doesn't exist
-            if (!is_dir($targetDir)) {
-                if (!mkdir($targetDir)) {
-                    $errorFilesInfo[] = [
-                        "filename" => $targetDir,
-                        "status"   => gT("Could not create directory")
-                    ];
-                    return [$copiedFilesInfo, $errorFilesInfo];
-                }
-            } else {
-                $errorFilesInfo[] = [
-                    "filename" => $targetDir,
-                    "status"   => gT("Destination dir already exists! Can contain more files than source dir.")
-                ];
+            // Create target dir if it doesn't exist, return if doesn't exist and cannot be created.
+            if (!$this->checkTargetDir($targetDir)) {
+                return;
             }
 
             // Copy source dir contents
@@ -76,31 +63,61 @@ class CopySurveyResources
                 if ($direntry !== "." && $direntry !== "..") {
                     if (is_file($sourceDir . "/" . $direntry)) {
                         if (!copy($sourceDir . "/" . $direntry, $targetDir . "/" . $direntry)) {
-                            $errorFilesInfo[] = [
-                                "filename" => $direntry,
-                                "status"   => gT("Copy failed")
-                            ];
+                            $this->addError($direntry, gT("Copy failed"));
                         } else {
-                            $copiedFilesInfo[] = [
-                                "filename" => $direntry,
-                                "status"   => gT("OK")
-                            ];
+                            $this->addSuccess($direntry, gT("OK"));
                         }
                     } elseif (is_dir($sourceDir . "/" . $direntry)) {
                         $subExtractdir = $sourceDir . "/" . $direntry;
                         $subDestdir = $targetDir . "/" . $direntry;
-                        list($subImportedFilesInfo, $subErrorFilesInfo) = $this->copyDirectory($subExtractdir, $subDestdir);
-                        $copiedFilesInfo = array_merge($copiedFilesInfo, $subImportedFilesInfo);
-                        $errorFilesInfo = array_merge($errorFilesInfo, $subErrorFilesInfo);
+                        $this->copyDirectory($subExtractdir, $subDestdir);
                     }
                 }
             }
         } else {
-            $errorFilesInfo[] = [
-                "filename" => $sourceDir,
-                "status"   => gT("Source dir not found.")
-            ];
+            $this->addError($sourceDir, gT("Source dir not found."));
         }
-        return [$copiedFilesInfo, $errorFilesInfo];
+    }
+
+    /**
+     * Creates the target directory if it doesn't exists
+     * @return boolean Returns true if the directory exists or was created.
+     */
+    private function checkTargetDir($targetDir)
+    {
+        if (!is_dir($targetDir)) {
+            if (!mkdir($targetDir)) {
+                $this->addError($targetDir, gT("Could not create directory"));
+                return false;
+            }
+        } else {
+            $this->addError($targetDir, gT("Destination dir already exists! Can contain more files than source dir."));
+        }
+        return true;
+    }
+
+    /**
+     * Returns the array of failed and copied files/directories
+     * @return array<array<string,string>>
+     */
+    private function getResult()
+    {
+        return [$this->copiedFilesInfo, $this->errorFilesInfo];
+    }
+
+    /**
+     * Adds the file to the copied files array
+     */
+    private function addSuccess($filename, $status)
+    {
+        $this->copiedFilesInfo[] = ["filename" => $filename, "status" => $status];
+    }
+
+    /**
+     * Adds the file to the failed files array
+     */
+    private function addError($filename, $status)
+    {
+        $this->errorFilesInfo[] = ["filename" => $filename, "status" => $status];
     }
 }
