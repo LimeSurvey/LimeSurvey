@@ -12,6 +12,7 @@
  * @property integer $active
  * @property string $permission
  * @property string $permission_grade
+ * @property string $settings
  *
  * The followings are the available model relations:
  * @property TutorialEntry[] $tutorialEntries

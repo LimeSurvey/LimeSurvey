@@ -387,13 +387,13 @@ abstract class Token extends Dynamic
     }
 
     /**
-     * @param int $surveyId
+     * @param int $id Survey id in this class
      * @param string $scenario
      * @return Token Description
      */
-    public static function create($surveyId, $scenario = 'insert')
+    public static function create($id, $scenario = 'insert')
     {
-        return parent::create($surveyId, $scenario);
+        return parent::create($id, $scenario);
     }
 
     public function relations()
@@ -495,11 +495,6 @@ abstract class Token extends Dynamic
     public function getSurveyId()
     {
         return $this->getDynamicId();
-    }
-
-    public static function getEncryptedAttributes()
-    {
-        return self::$aEncryptedAttributes;
     }
 
     public static function getDefaultEncryptionOptions()

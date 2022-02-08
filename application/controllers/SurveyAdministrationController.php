@@ -412,7 +412,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['pageTitle'] = gT("Create, import, or copy survey");
 
         $aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
-        $aData['fullpagebar']['white_closebutton']['url'] = 'admin/index'; // Close button
+        $aData['fullpagebar']['white_closebutton']['url'] = Yii::app()->createUrl('admin/index'); // Close button
 
         $this->aData = $aData;
 

@@ -13,7 +13,7 @@
  *
  */
 
-use LimeSurvey\Exception\CPDBException;
+use LimeSurvey\Exceptions\CPDBException;
 
 /**
  * This is the model class for table "{{participants}}".
@@ -56,10 +56,10 @@ class Participant extends LSActiveRecord
      * @inheritdoc
      * @return Participant
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 

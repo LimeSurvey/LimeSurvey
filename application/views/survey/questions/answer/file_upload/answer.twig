@@ -18,8 +18,8 @@
             href='{{uploadurl}}'
             data-toggle="modal"
             data-target="file-upload-modal-{{fileid}}"
-            data-showtitle="{{show_title}}"
-            data-showcomment="{{show_comment}}"
+            data-showtitle="{{showTitle}}"
+            data-showcomment="{{showComment}}"
             data-fieldname="{{basename}}"
         >
             <span class='fa fa-upload'></span>&nbsp;{{ uploadButtonLabel }}
@@ -88,9 +88,9 @@
     $(document).on("ready pjax:scriptcomplete", function(){
         var fieldname = "{{fileid}}",
             filecount = $("#"+fieldname+"_filecount").val(),
-            show_title = "{{showTitle}}",
-            show_comment = "{{showComment}}";
-        window.uploadQuestionController_{{ fileid }}.displayUploadedFiles( filecount, fieldname, show_title, show_comment);
+            showTitle = "{{showTitle}}",
+            showComment = "{{showComment}}";
+        window.uploadQuestionController_{{ fileid }}.displayUploadedFiles( filecount, fieldname, showTitle, showComment);
     });
 
     $(".basic_{{fileid}}").change(function() {

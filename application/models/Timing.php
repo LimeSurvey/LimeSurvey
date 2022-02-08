@@ -20,9 +20,11 @@ class Timing extends LSActiveRecord
      * @param int $iSurveyId
      * @param string $scenario
      */
-    public function __construct($iSurveyId, $scenario = 'insert')
+    public function __construct($iSurveyId, $scenario = null)
     {
-
+        if (is_null($scenario)) {
+            $scenario = 'insert';
+        }
         $survey = Survey::model()->findByPk($iSurveyId);
         if ($survey) {
             $this->surveyId = $iSurveyId;
@@ -42,9 +44,11 @@ class Timing extends LSActiveRecord
     /**
      * We have a custom implementation here since the parents' implementation
      * does not create a new model for each table name.
+     *
      * @param int $iSurveyId
      * @return Response
      * @throws Exception
+     * @psalm-suppress ParamNameMismatch Ignore that $iSurveyId is $className in parent class
      */
     public static function model($iSurveyId = null)
     {

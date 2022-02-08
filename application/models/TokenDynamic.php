@@ -39,6 +39,7 @@
  *
  * @property array $standardCols
  * @property array $standardColsForGrid
+ * @property array $custom_attributes
  */
 class TokenDynamic extends LSActiveRecord
 {
@@ -51,6 +52,8 @@ class TokenDynamic extends LSActiveRecord
     /**
      * @inheritdoc
      * @return TokenDynamic
+     * @param ?string $sid
+     * @psalm-suppress ParamNameMismatch Ignore that $sid is $className in parent class
      */
     public static function model($sid = null)
     {
@@ -589,7 +592,7 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getEmailFormated()
     {
-        if ($this->emailstatus == "bounced") {
+        if (substr($this->emailstatus, 0, 7) == "bounced") {
             return '<span class="text-warning"><strong> ' . CHtml::encode($this->email) . '</strong></span>';
         } else {
             return CHtml::encode($this->email);
@@ -601,7 +604,7 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getEmailstatusFormated()
     {
-        if ($this->emailstatus == "bounced") {
+        if (substr($this->emailstatus, 0, 7) == "bounced") {
             return '<span class="text-warning"><strong> ' . CHtml::encode($this->emailstatus) . '</strong></span>';
         } else {
             return CHtml::encode($this->emailstatus);
@@ -753,7 +756,6 @@ class TokenDynamic extends LSActiveRecord
     public function getAttributesForGrid()
     {
         $aCustomAttributesCols = array();
-        //$aCustomAttributes = $this->custom_attributes;
 
         $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
         $aCustomAttributes = $oSurvey->tokenAttributes;

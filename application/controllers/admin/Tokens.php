@@ -1399,6 +1399,9 @@ class Tokens extends SurveyCommonAction
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
                 foreach ($emresult as $emrow) {
+                    if (empty($emrow['language'])) {
+                        $emrow['language'] = $sBaseLanguage;
+                    }
                     $mail = \LimeMailer::getInstance();
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'], $bIsInvitation)) {
                         // The email has already been send this session, skip.
@@ -2483,9 +2486,9 @@ class Tokens extends SurveyCommonAction
         $aData['sidemenu']["token_menu"] = true;
 
         // Save Button
-        $aData['showSaveButton'] = true;
+        $aData['showSaveButton'] = false;
         // Save and Close Button
-        $aData['showSaveAndCloseButton'] = true;
+        $aData['showGreenSaveAndCloseButton'] = true;
         // White Close Button
         $aData['showWhiteCloseButton'] = true;
         $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
