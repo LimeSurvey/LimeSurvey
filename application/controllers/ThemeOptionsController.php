@@ -77,8 +77,11 @@ class ThemeOptionsController extends LSBaseController
      * Create a new model.
      * If creation is sucessful, the browser will be redirected to the 'view' page.
      *
+     * todo: function not in use (  new TemplateOptions(); there is no model class like this ..)
+     *
      * @return void
      */
+    /*
     public function actionCreate()
     {
         if (Permission::model()->hasGlobalPermission('template', 'update')) {
@@ -107,7 +110,7 @@ class ThemeOptionsController extends LSBaseController
                 $this->redirect(array("themeOptions"));
             }
         }
-    }
+    }*/
 
     /**
      * Resets all selected themes from massive action.
@@ -115,6 +118,7 @@ class ThemeOptionsController extends LSBaseController
      * @return void
      * @throws CException
      */
+    /*
     public function actionResetMultiple()
     {
         $aTemplates = json_decode(App()->request->getPost('sItems'));
@@ -124,7 +128,7 @@ class ThemeOptionsController extends LSBaseController
         if (Permission::model()->hasGlobalPermission('template', 'update')) {
             foreach ($aTemplates as $template) {
                 if ($gridid === 'questionthemes-grid') {
-                    /** @var QuestionTheme|null */
+                    /** @var QuestionTheme|null
                     $questionTheme = QuestionTheme::model()->findByPk($template);
                     $templatename = $questionTheme->name;
                     $templatefolder = $questionTheme->xml_path;
@@ -156,7 +160,7 @@ class ThemeOptionsController extends LSBaseController
             //todo: this message gets never visible for the user ...
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
-    }
+    }*/
 
     /**
      * Uninstalls all selected themes from massive action.
