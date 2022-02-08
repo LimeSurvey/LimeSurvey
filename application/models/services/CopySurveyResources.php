@@ -10,10 +10,10 @@ namespace LimeSurvey\Models\Services;
  */
 class CopySurveyResources
 {
-    /** @var array<string,string> array of successfully copied files/dirs in the form ['filename' => ..., 'status' => ...] */
+    /** @var array<array<string,string>> array of successfully copied files/dirs in the form ['filename' => ..., 'status' => ...] */
     private $copiedFilesInfo = [];
 
-    /** @var array<string,string> array of failed files/dirs in the form ['filename' => ..., 'status' => ...] */
+    /** @var array<array<string,string>> array of failed files/dirs in the form ['filename' => ..., 'status' => ...] */
     private $errorFilesInfo = [];
 
     /**
@@ -98,7 +98,7 @@ class CopySurveyResources
 
     /**
      * Returns the array of failed and copied files/directories
-     * @return array<array<string,string>>
+     * @return array<array<array<string,string>>>
      */
     private function getResult()
     {
@@ -107,6 +107,8 @@ class CopySurveyResources
 
     /**
      * Adds the file to the copied files array
+     * @param string $filename
+     * @param string $status
      */
     private function addSuccess($filename, $status)
     {
@@ -115,6 +117,8 @@ class CopySurveyResources
 
     /**
      * Adds the file to the failed files array
+     * @param string $filename
+     * @param string $status
      */
     private function addError($filename, $status)
     {
