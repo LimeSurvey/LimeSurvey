@@ -24,6 +24,12 @@ class CopySurveyResources
         $targetSurveyId = (int) $targetSurveyId;
         $sourceDir = \Yii::app()->getConfig('uploaddir') . "/surveys/{$sourceSurveyId}/";
         $targetDir = \Yii::app()->getConfig('uploaddir') . "/surveys/{$targetSurveyId}/";
+
+        // Don't do anything if the source survey doesn't have a directory
+        if (!is_dir($sourceDir)) {
+            return [[], []];
+        }
+
         return $this->copyDirectory($sourceDir, $targetDir);
     }
 
@@ -43,18 +49,29 @@ class CopySurveyResources
             $directory = opendir($sourceDir);
             if (!$directory) {
                 $errorFilesInfo[] = [
-                    "filename" => '',
-                    "status"   => gT("Source dir not found - maybe a permission problem?")
+                    "filename" => $sourceDir,
+                    "status"   => gT("Could not open source dir - maybe a permission problem?")
                 ];
                 return [$copiedFilesInfo, $errorFilesInfo];
             }
 
-            if (!is_dir($targetDir) && !mkdir($targetDir) && !is_dir($targetDir)) {
+            // Create target dir if it doesn't exist
+            if (!is_dir($targetDir)) {
+                if (!mkdir($targetDir)) {
+                    $errorFilesInfo[] = [
+                        "filename" => $targetDir,
+                        "status"   => gT("Could not create directory")
+                    ];
+                    return [$copiedFilesInfo, $errorFilesInfo];
+                }
+            } else {
                 $errorFilesInfo[] = [
                     "filename" => $targetDir,
-                    "status"   => gT("Could not create directory")
+                    "status"   => gT("Destination dir already exists! Can contain more files than source dir.")
                 ];
             }
+
+            // Copy source dir contents
             while ($direntry = readdir($directory)) {
                 if ($direntry !== "." && $direntry !== "..") {
                     if (is_file($sourceDir . "/" . $direntry)) {
@@ -78,6 +95,11 @@ class CopySurveyResources
                     }
                 }
             }
+        } else {
+            $errorFilesInfo[] = [
+                "filename" => $sourceDir,
+                "status"   => gT("Source dir not found.")
+            ];
         }
         return [$copiedFilesInfo, $errorFilesInfo];
     }
