@@ -4100,7 +4100,7 @@ class LimeExpressionManager
      * @param integer|null $GroupSeq
      * @return void
      */
-    public function ProcessAllNeededRelevance($onlyThisQseq = null, $GroupSeq = null)
+    public function ProcessAllNeededRelevance($onlyThisQseq = null, $groupSeq = null)
     {
         // TODO - in a running survey, only need to process the current Group.  For Admin mode, do we need to process all prior questions or not?
         //        $now = microtime(true);
@@ -4114,7 +4114,7 @@ class LimeExpressionManager
             if(
                 $gseq != $this->currentGroupSeq // ONLY validate current group
                 && !$this->allOnOnePage // except if all in one page
-                && (is_null($GroupSeq) || $gseq > $GroupSeq)
+                && (is_null($groupSeq) || $gseq > $groupSeq)
             ) {
                 continue;
             }
@@ -5258,7 +5258,6 @@ class LimeExpressionManager
      */
     public static function SetRelevanceTo($seq)
     {
-        tracevar($seq);
         $LEM =& LimeExpressionManager::singleton();
         switch ($LEM->surveyMode) {
             case 'survey':
@@ -6762,7 +6761,6 @@ class LimeExpressionManager
      */
     public static function StartProcessingGroup($gseq = null, $anonymized = false, $surveyid = null, $forceRefresh = false)
     {
-        $msg = "- ";
         $LEM =& LimeExpressionManager::singleton();
         $LEM->em->StartProcessingGroup(
             isset($surveyid) ? $surveyid : null,
@@ -8777,7 +8775,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                     return $shown;
                 }
-            // NB: No break needed
+                // NB: No break needed
             case 'relevanceStatus':
                 $gseq = (isset($var['gseq'])) ? $var['gseq'] : -1;
                 $qid = (isset($var['qid'])) ? $var['qid'] : -1;
@@ -8788,22 +8786,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if (isset($args[1]) && $args[1] == 'NAOK') {
                     return 1;
                 }
-                $grel =  1;
+                $grel = 1; // Group relevance true by default
                 if(isset($_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq])) {
                     $grel =  $_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq];
                 }
-                $qrel =  null;
+                $qrel = 0; // Question relevance false by default since EM creation. Update it must create a major API update
                 if(isset($_SESSION[$this->sessid]['relevanceStatus'][$qid])) {
                     $qrel =  $_SESSION[$this->sessid]['relevanceStatus'][$qid];
-                } else {
-                    // TODOACTUEL
                 }
-                $sqrel =  1; // true by default - only want false if a subquestion is really irrelevant
+                $sqrel = 1; // true by default - only want false if a subquestion is really irrelevant
                 if(isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid])) {
                     $sqrel =  $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid];
                 }
                 return ($grel && $qrel && $sqrel);
-            // NB: No break needed
+                // NB: No break needed
             case 'onlynum':
                 if (isset($args[1]) && ($args[1] == 'value' || $args[1] == 'valueNAOK')) {
                     return 1;
@@ -8827,7 +8823,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'scale_id':
             default:
                 return (isset($var[$attr])) ? $var[$attr] : $default;
-            // NB: No break needed
+                // NB: No break needed
         }
     }
 
