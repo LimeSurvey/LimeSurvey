@@ -828,7 +828,8 @@ class remotecontrol_handle
                     return array('status' => 'Cannot remove base language');
                 }
                 $aLanguages = $oSurvey->getAdditionalLanguages();
-                unset($aLanguages[$sLanguage]);
+                $iLanguageKey = array_search($sLanguage, $aLanguages, true)
+                unset($aLanguages[$iLanguageKey]);
                 $oSurvey->additional_languages = implode(' ', $aLanguages);
                 try {
                     $oSurvey->save(); // save the change to database
