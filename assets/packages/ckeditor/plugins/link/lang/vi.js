@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'vi', {
 	acccessKey: 'Phím hỗ trợ truy cập',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'vi', {
 	noAnchors: '(Không có điểm neo nào trong tài liệu)',
 	noEmail: 'Hãy đưa vào địa chỉ thư điện tử',
 	noUrl: 'Hãy đưa vào đường dẫn liên kết (URL)',
+	noTel: 'Please type the phone number', // MISSING
 	other: '<khác>',
+	phoneNumber: 'Phone number', // MISSING
 	popupDependent: 'Phụ thuộc (Netscape)',
 	popupFeatures: 'Đặc điểm của cửa sổ Popup',
 	popupFullScreen: 'Toàn màn hình (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'vi', {
 	toAnchor: 'Neo trong trang này',
 	toEmail: 'Thư điện tử',
 	toUrl: 'URL',
+	toPhone: 'Phone', // MISSING
 	toolbar: 'Chèn/Sửa liên kết',
 	type: 'Kiểu liên kết',
 	unlink: 'Xoá liên kết',

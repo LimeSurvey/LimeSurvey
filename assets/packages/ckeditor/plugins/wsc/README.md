@@ -1,6 +1,9 @@
 Imprortant!
 ------------
-WebSpellChecker Dialog plugin for CKEditor 4 is appoaching its end-of-life (EOL) in 2021. Find out more in our [blog post](https://webspellchecker.com/blog/2020/12/02/end-of-life-for-spell-checker-dialog-plugin-for-ckeditor-4/) about its termination schedule.
+Spell Checker “WSC” dialog plugin for CKEditor 4 **approached its end-of-life (EOL) on December 31, 2021**. Find out more in our [blog post](https://webspellchecker.com/blog/2020/12/02/end-of-life-for-spell-checker-dialog-plugin-for-ckeditor-4/) about its termination schedule.
+
+The effect of termination: the spell checking doesn't work, there is an incessant loading spinner on the dialog. Check [here](https://github.com/WebSpellChecker/ckeditor-plugin-wsc/issues/67) how to remove the plugin.
+
 
 WebSpellChecker Dialog plugin for CKEditor 4
 ===============================

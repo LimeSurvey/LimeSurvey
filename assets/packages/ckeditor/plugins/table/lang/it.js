@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'table', 'it', {
 	border: 'Dimensione bordo',
@@ -50,6 +50,7 @@ CKEDITOR.plugins.setLang( 'table', 'it', {
 	headersColumn: 'Prima Colonna',
 	headersNone: 'Nessuna',
 	headersRow: 'Prima Riga',
+	heightUnit: 'unità altezza',
 	invalidBorder: 'La dimensione del bordo dev\'essere un numero.',
 	invalidCellPadding: 'Il paging delle celle dev\'essere un numero',
 	invalidCellSpacing: 'La spaziatura tra le celle dev\'essere un numero.',

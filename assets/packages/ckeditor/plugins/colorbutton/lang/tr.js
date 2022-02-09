@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'colorbutton', 'tr', {
 	auto: 'Otomatik',
@@ -29,7 +29,7 @@ CKEDITOR.plugins.setLang( 'colorbutton', 'tr', {
 		'0FF': 'Ciyan',
 		'00F': 'Mavi',
 		EE82EE: 'Menekşe',
-		A9A9A9: 'Koyu Gri',
+		A9A9A9: 'Loş Gri',
 		FFA07A: 'Açık Sarımsı',
 		FFA500: 'Portakal',
 		FFFF00: 'Sarı',

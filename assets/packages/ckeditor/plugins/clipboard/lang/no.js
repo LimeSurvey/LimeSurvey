@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'clipboard', 'no', {
 	copy: 'Kopier',
@@ -8,5 +8,8 @@ CKEDITOR.plugins.setLang( 'clipboard', 'no', {
 	cut: 'Klipp ut',
 	cutError: 'Din nettlesers sikkerhetsinstillinger tillater ikke automatisk utklipping av tekst. Vennligst bruk snarveien (Ctrl/Cmd+X).',
 	paste: 'Lim inn',
-	pasteNotification: 'Your browser doesn\'t allow you to paste this way. Press %1 to paste.' // MISSING
+	pasteNotification: 'Trykk %1 for å lime inn. På grunn av manglende støtte i nettleseren din, kan du ikke lime inn via knapperaden eller kontekstmenyen.',
+	pasteArea: 'Innlimingsområde',
+	pasteMsg: 'Lim inn innholdet i området nedenfor og trykk OK.',
+	fileFormatNotSupportedNotification: 'This file format is not supported. You can try with one of the supported formats: ${formats}.' // MISSING
 } );
