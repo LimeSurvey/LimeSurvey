@@ -828,7 +828,7 @@ class remotecontrol_handle
                     return array('status' => 'Cannot remove base language');
                 }
                 $aLanguages = $oSurvey->getAdditionalLanguages();
-                $iLanguageKey = array_search($sLanguage, $aLanguages, true)
+                $iLanguageKey = array_search($sLanguage, $aLanguages, true);
                 unset($aLanguages[$iLanguageKey]);
                 $oSurvey->additional_languages = implode(' ', $aLanguages);
                 try {
