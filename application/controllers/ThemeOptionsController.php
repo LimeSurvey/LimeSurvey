@@ -170,14 +170,16 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionUninstallMultiple()
     {
-        $aTemplates = json_decode(App()->request->getPost('sItems'));
-        $gridid = App()->request->getPost('grididvalue'); //what is gridid ???
+        $aTemplates = json_decode(App()->request->getPost('sItems')); //array of ids
+
+        //can be 'themeoptions-grid' (for survey themes) or 'questionthemes-grid'
+        $gridid = App()->request->getPost('grididvalue');
         $aResults = array();
 
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             foreach ($aTemplates as $template) {
                 $templateID = (int) $template;
-                $model = $this->loadModel($templateID, $gridid);
+                $model = $this->loadModel($templateID, $gridid); //model is TemplateConfiguration or QuestionTheme
 
                 if ($gridid === 'questionthemes-grid') {
                     $aResults[$template]['title'] = $model->name;
@@ -235,7 +237,7 @@ class ThemeOptionsController extends LSBaseController
 
         foreach ($aTemplates as $template) {
             $aResults[$template]['title'] = '';
-            $model = $this->loadModel($template, $gridid);
+            $model = $this->loadModel((int)$template, $gridid);
 
             if ($gridid === 'questionthemes-grid') {
                 $aResults[$template]['title'] = $model->name;
@@ -495,8 +497,11 @@ class ThemeOptionsController extends LSBaseController
     /**
      * Manages all models.
      *
+     * todo: this actions is not in use (TemplateOptions does not exist)
+     *
      * @return void
      */
+    /*
     public function actionAdmin()
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
@@ -517,6 +522,7 @@ class ThemeOptionsController extends LSBaseController
             $this->redirect(array("/admin"));
         }
     }
+    */
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
@@ -544,6 +550,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Import or install the Theme Configuration into the database.
+     * for survey theme and question theme
      *
      * @throws Exception
      * @return void
@@ -646,20 +653,25 @@ class ThemeOptionsController extends LSBaseController
     /**
      * Performs the AJAX validation.
      *
+     * todo: this function is not in use (there is no class TemplateOptions ...)
+     *
      * @param TemplateOptions $model Model to be validated.
      *
      * @return void
      */
+    /*
     public function actionPerformAjaxValidation(TemplateOptions $model)
     {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'template-options-form') {
             echo CActiveForm::validate($model);
             App()->end();
         }
-    }
+    }*/
 
     /**
      * Preview Tag.
+     *
+     * todo: maybe this action should be moved to surveyAdministrationController (it's used in 'General settings')
      *
      * @return string | string[] | null
      * @throws CException
