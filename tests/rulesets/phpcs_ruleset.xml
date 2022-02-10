@@ -6,4 +6,13 @@
         <exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
         <exclude name="Generic.Files.LineLength"/>
     </rule>
+
+    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
+        <!-- Ignore funny class names for updates, like Update_123 -->
+        <exclude-pattern>application/helpers/update/updates/*</exclude-pattern>
+    </rule>
+
+    <!-- Ignore third-party libs -->
+    <exclude-pattern>application/helpers/Zend/*</exclude-pattern>
+    <exclude-pattern>application/helpers/adodb/*</exclude-pattern>
 </ruleset>

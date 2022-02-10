@@ -1,7 +1,7 @@
 <?php
 /**
  * Header of the application
- * Called from render_wrapped_template
+ * Called from renderWrappedTemplate
  */
 ?>
 <!DOCTYPE html>

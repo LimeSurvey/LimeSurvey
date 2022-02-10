@@ -14,7 +14,6 @@ use TemplateConfiguration;
  */
 class SurveyIntegrity
 {
-
     /** @var Survey */
     private $survey;
 

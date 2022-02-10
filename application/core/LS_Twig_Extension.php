@@ -287,20 +287,27 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function imageSrc($sImagePath, $default = false)
     {
-        // Reccurence on templates to find the file
-        $oTemplate = self::getTemplateForRessource($sImagePath);
-        $sUrlImgAsset =  $sImagePath;
-
-        if ($oTemplate) {
-            $sFullPath = $oTemplate->path . $sImagePath;
+        // If $sImagePath is a 'virtual' path, we must get the real path.
+        if (preg_match('/(image::\w+::)/', $sImagePath, $m)) {
+            $oTemplate =  Template::getLastInstance();
+            Yii::import('application.helpers.SurveyThemeHelper');
+            $sFullPath = SurveyThemeHelper::getRealThemeFilePath($sImagePath, $oTemplate->template_name, $oTemplate->sid);
         } else {
-            if (!is_file(Yii::app()->getConfig('rootdir') . '/' . $sImagePath)) {
-                if ($default) {
-                    return self::imageSrc($default);
-                }
-                return false;
+            // If it's not a virtual path, only paths relative to a theme (and within the theme) are allowed.
+            // Recurrence on templates to find the file
+            $oTemplate = self::getTemplateForRessource($sImagePath);
+            $sUrlImgAsset =  $sImagePath;
+
+            if ($oTemplate) {
+                $sFullPath = $oTemplate->path.$sImagePath;
             }
-            $sFullPath = Yii::app()->getConfig('rootdir') . '/' . $sImagePath;
+        }
+
+        if (empty($sFullPath)) {
+            if($default) {
+                return self::imageSrc($default);
+            }
+            return false;
         }
 
         // check if this is a true image

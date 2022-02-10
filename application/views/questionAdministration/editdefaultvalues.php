@@ -46,7 +46,7 @@
                                                     $answer           = $answer->attributes;
                                                     $answer['answer'] = $sAnswer;
                                                     ?>
-                                                    <option <? echo $answer['code'] == $opts['defaultvalue'] ? 'selected="selected"' : '' ?> value="<?php echo $answer['code'] ?>">
+                                                    <option <?php echo $answer['code'] == $opts['defaultvalue'] ? 'selected="selected"' : '' ?> value="<?php echo $answer['code'] ?>">
                                                         <?php echo $answer['answer'] ?>
                                                     </option>
                                                 <?php } ?>
@@ -84,7 +84,7 @@
                                         case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                                             $inputStyle = 'enum';
                                             break;
-                                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                                        case Question::QT_K_MULTIPLE_NUMERICAL:
                                         case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                                             $inputStyle = 'text';
                                             break;

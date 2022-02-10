@@ -2,7 +2,6 @@
 
 class AssessmentController extends LSBaseController
 {
-
     /**
      * It's import to have the accessRules set (security issue).
      * Only logged in users should have access to actions. All other permissions
@@ -29,7 +28,7 @@ class AssessmentController extends LSBaseController
 
 
     /**
-     * This part comes from _renderWrappedTemplate
+     * This part comes from renderWrappedTemplate
      *
      * @param string $view View
      *

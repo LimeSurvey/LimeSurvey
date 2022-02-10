@@ -56,7 +56,7 @@ class QuestionCreate extends Question
         if ($oQuestion == null) {
             throw new CException("Object creation failed, input array malformed or invalid");
         }
-        
+
         $l10n = [];
         foreach ($oSurvey->allLanguages as $sLanguage) {
             $l10n[$sLanguage] = new QuestionL10n();

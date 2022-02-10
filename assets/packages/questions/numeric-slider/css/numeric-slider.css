@@ -49,3 +49,35 @@ font-family: FontAwesome;
   .ls-input-group-reset{position:relative;margin-top:0}
   .btn-slider-reset{top:-1em;margin-top:0}
 }
+
+.slider-vertical .slider-min-max-container {
+  display: inline-block;
+  vertical-align: top;
+  height: 210px;
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.slider-vertical .slider-min-block {
+  position: absolute;
+  top: 0;
+  margin-top: -10px;
+}
+
+.slider-vertical .slider-max-block {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: -10px;
+}
+
+.slider-horizontal .slider-min-max-container {
+  width: 100%;
+}
+
+.slider-horizontal .slider-min-block {
+  float: left;
+}
+
+.slider-horizontal .slider-max-block {
+  float: right;
+}

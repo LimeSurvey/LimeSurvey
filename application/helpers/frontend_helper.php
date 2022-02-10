@@ -61,10 +61,6 @@ function loadanswers()
         $md5_code = md5($sLoadPass);
         $sha256_code = hash('sha256', $sLoadPass);
         if ($md5_code === $access_code || $sha256_code === $access_code || password_verify($sLoadPass, $access_code)) {
-            //A match has been found. Let's load the values!
-            //If this is from an email, build surveysession first
-            $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
-
             // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
             if (Yii::app()->request->getParam('loadall') === "reload") {
                 // We don't need to control if we have one, because we do the test before
@@ -78,7 +74,7 @@ function loadanswers()
             return false;
         }
     }
-    
+
     /* Decrypt loaded responses */
     $oResponses->decrypt();
     // Get if survey is been answered
@@ -93,7 +89,7 @@ function loadanswers()
                 $_SESSION['survey_' . $surveyid]['step'] = ($value > 1 ? $value : 1);
                 $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1;
             } else {
-                $_SESSION['survey_' . $surveyid]['maxstep'] = ($value > 1 ? $value : 1);
+                $_SESSION['survey_' . $surveyid]['maxstep'] = $_SESSION['survey_' . $surveyid]['totalsteps'];
             }
         } elseif ($column === "datestamp") {
             $_SESSION['survey_' . $surveyid]['datestamp'] = $value;
@@ -105,7 +101,7 @@ function loadanswers()
             if (in_array($column, $_SESSION['survey_' . $surveyid]['insertarray']) && isset($_SESSION['survey_' . $surveyid]['fieldmap'][$column])) {
                 if (
                     ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_N_NUMERICAL ||
-                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION ||
+                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL ||
                         $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) && $value == null
                 ) {
                     // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
@@ -123,6 +119,7 @@ function loadanswers()
             }  // if (in_array(
         }  // else
     } // foreach
+    $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
     return true;
 }
 
@@ -423,7 +420,13 @@ function submittokens($quotaexit = false)
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
             $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {
-                templatereplace("{SID}", $thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+                /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+                $reData = array('thissurvey' => $thissurvey);
+                templatereplace(
+                    "{SID}",
+                    array(), /* No tempvars update */
+                    $reData /* Be sure to use current survey */
+                );
                 $mail = new \LimeMailer();
                 $mail->setSurvey($surveyid);
                 $mail->setToken($token->token);
@@ -482,7 +485,13 @@ function sendSubmitNotifications($surveyid)
         }
     }
     if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {
-        templatereplace("{SID}", $thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+        /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+        $reData = array('thissurvey' => $thissurvey);
+        templatereplace(
+            "{SID}",
+            array(), /* No tempvars update (except old Replacement like */
+            $reData /* Be surre to use current survey */
+        );
     }
     if (count($aEmailResponseTo)) {
         // there was no token used so lets remove the token field from insertarray
@@ -669,9 +678,6 @@ function buildsurveysession($surveyid, $preview = false)
         breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, $thissurvey);
     }
 
-    //Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    //    usort($arows, 'groupOrderThenQuestionOrder');
-
     //3. SESSION VARIABLE - insertarray
     //An array containing information about used to insert the data into the db at the submit stage
     //4. SESSION VARIABLE - fieldarray
@@ -761,7 +767,7 @@ function prefillFromCommandLine($surveyid)
     $request = Yii::app()->getRequest();
     if (in_array($request->getRequestType(), ['GET', 'POST'])) {
         $getValues = array_diff_key($request->getQueryParams(), array_combine($reservedGetValues, $reservedGetValues));
-        if(!empty($getValues)) {
+        if (!empty($getValues)) {
             $qcode2sgqa = array();
             Yii::import('application.helpers.viewHelper');
             foreach ($_SESSION['survey_' . $surveyid]['fieldmap'] as $sgqa => $details) {
@@ -1125,7 +1131,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
             $aEnterTokenData['visibleToken'] = $clienttoken;
             $aEnterTokenData['token'] = $clienttoken;
             $renderToken = 'correct';
-            // Intentionally don't reset FailedLoginAttempt for this IP.  
+            // Intentionally don't reset FailedLoginAttempt for this IP.
             // FailedLoginAttempt::model()->deleteAttempts();
         }
     }
@@ -1189,7 +1195,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
-            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid"=>$surveyid], getForwardParameters(Yii::app()->getRequest())));
+            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid" => $surveyid], getForwardParameters(Yii::app()->getRequest())));
             $thissurvey['include_content']  = 'userforms';
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
@@ -1334,7 +1340,7 @@ function getNavigatorDatas()
 
     // Previous ?
     if (
-        $thissurvey['format'] != Question::QT_A_ARRAY_5_CHOICE_QUESTIONS && ($thissurvey['allowprev'] != "N")
+        $thissurvey['format'] != Question::QT_A_ARRAY_5_POINT && ($thissurvey['allowprev'] != "N")
         && $iSessionStep
         && !($iSessionStep == 1 && $thissurvey['showwelcome'] == 'N')
         && !Yii::app()->getConfig('previewmode')
@@ -1897,8 +1903,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('lastgroupname', '_WELCOME_SCREEN_', array('id' => 'lastgroupname')); //This is to ensure consistency with mandatory checks, and new group test
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('LEMpostKey', $_SESSION['survey_' . $surveyid]['LEMpostKey'], array('id' => 'LEMpostKey'));
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('thisstep', 0, array('id' => 'thisstep'));
-
-    if (!empty($_SESSION['survey_' . $surveyid]['token'])) {
+    if (!empty($_SESSION['survey_' . $surveyid]['token']) && $thissurvey['anonymized'] != "Y") {
         $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('token', $_SESSION['survey_' . $surveyid]['token'], array('id' => 'token'));
     }
 

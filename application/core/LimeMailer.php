@@ -634,6 +634,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $aTokenReplacements["OPTOUTURL"] = App()->getController()
             ->createAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         $this->addUrlsPlaceholders("OPTOUT");
+        $aTokenReplacements["GLOBALOPTOUTURL"] = App()->getController()
+            ->createAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $this->addUrlsPlaceholders("GLOBALOPTOUT");
         $aTokenReplacements["OPTINURL"] = App()->getController()
             ->createAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         $this->addUrlsPlaceholders("OPTIN");
@@ -764,17 +767,19 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (null === $patternselect) {
             $patternselect = static::$validator;
         }
-        if ($patternselect != 'php-idna') {
-            return parent::validateAddress($address, $patternselect);
+        if ($patternselect == 'php-idna') {
+            /**
+             * PHPMailer has support for IDN, but it relies on `intl` and `mbstring`.
+             * If we use 'idna_convert' as we did, we are not ensuring that PHPMailer
+             * can handle the address later. So instead of using 'idna_convert' we use
+             * PHPMailer's punyencodeAddress() method.
+             */
+            $mailer = new \PHPMailer\PHPMailer\PHPMailer(); // Can't use an instance of LimeMailer because of a recursion problem
+            $mailer->CharSet = static::CHARSET_UTF8;    // Use UTF-8 to keep it consistent with what 'idna_convert'. Maybe Yii::app()->getConfig("emailcharset") is better.
+            $address = $mailer->punyencodeAddress($address);
+            $patternselect = \PHPMailer\PHPMailer\PHPMailer::$validator;    // Set $patternselect to PHPMailer's default validator.
         }
-        require_once(APPPATH . 'third_party/idna-convert/idna_convert.class.php');
-        $oIdnConverter = new idna_convert();
-        $sEmailAddress = $oIdnConverter->encode($address);
-        $bResult = filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
-        if ($bResult !== false) {
-            return true;
-        }
-        return false;
+        return parent::validateAddress($address, $patternselect);
     }
 
     /**

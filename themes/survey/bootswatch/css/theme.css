@@ -489,7 +489,7 @@ only screen and (max-width: 760px),
         display: inline-block !important;
     }
 
-    /* Add some margin for multiple short text */
+    /* Add some margin for Multiple short text */
     .form-group.row {
         margin-bottom: 15px;
     }

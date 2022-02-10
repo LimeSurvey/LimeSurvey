@@ -27,23 +27,23 @@
 
 <!-- Save and close -->
 <?php if(!empty($showSaveAndCloseButton)): ?>
-    <a
+    <button
         id="save-and-close-button-create-question"
         class="btn btn-default"
-        role="button"
+        type="button"
         onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'overview');"
     >
         <i class="fa fa-check-square"></i>
         <?php eT("Save and close");?>
-    </a>
+    </button>
 <?php endif; ?>
 
 <!-- Save -->
 <?php if(!empty($showSaveButton)): ?>
-    <a
+    <button
         id="save-button-create-question"
         class="btn btn-success"
-        role="button"
+        type="button"
         <?php if ($oQuestion->qid !== 0): // Only enable Ajax save for edit question, not create question. ?>
             data-save-with-ajax="true"
         <?php endif; ?>
@@ -51,5 +51,5 @@
     >
         <i class="fa fa-check"></i>
         <?php eT("Save");?>
-    </a>
+    </button>
 <?php endif; ?>

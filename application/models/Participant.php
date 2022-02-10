@@ -13,14 +13,7 @@
  *
  */
 
-/**
- * Specific exception for our purpose
- * Used to spit out error messages if mapping attributes doesn't work.
- */
-class CPDBException extends Exception
-{
- 
-}
+use LimeSurvey\Exceptions\CPDBException;
 
 /**
  * This is the model class for table "{{participants}}".
@@ -63,10 +56,10 @@ class Participant extends LSActiveRecord
      * @inheritdoc
      * @return Participant
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -224,7 +217,7 @@ class Participant extends LSActiveRecord
             );
             $buttons .= vsprintf($raw_button_template, $infoData);
 
-           
+
             $infoData = array(
                 'action_participant_shareParticipant invisible',
                 '',
@@ -623,7 +616,7 @@ class Participant extends LSActiveRecord
      * Function for generation of unique id
      * @return string
      */
-    public static function gen_uuid()
+    public static function genUuid()
     {
         return sprintf(
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
@@ -1113,7 +1106,9 @@ class Participant extends LSActiveRecord
                         if (!empty($tokenAndId['participant_id']) && $surveyTableExists) {
                             /** @var Token $token */
                             $token = Token::model($aSurveyID)->find('participant_id = :pid', [':pid' => $tokenAndId['participant_id']]);
-                            $token->delete();
+                            if (!is_null($token)) {
+                                $token->delete();
+                            }
                         }
                         $iDeletedParticipants = $this->deleteParticipants($sParticipantsIDs, false);
                     }
@@ -1203,9 +1198,8 @@ class Participant extends LSActiveRecord
                     $lang = Yii::app()->session['adminlang'];
                     $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND {{survey_links}}.survey_id ' . $operator . ' :param)');
                     $command->params = array(':lang' => $lang, ':param' => $condition[2]);
-                }
-                //Search by quantity of linked surveys
-                elseif ($condition[0] == "surveys") {
+                } elseif ($condition[0] == "surveys") {
+                    //Search by quantity of linked surveys
                     $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM {{survey_links}})" : "";
                     $command->addCondition('participant_id IN (SELECT participant_id FROM {{survey_links}} GROUP BY participant_id HAVING count(*) ' . $operator . ' :param2 ORDER BY count(*))' . $addon);
                     $command->params = array(':param2' => $condition[2]);
@@ -1219,9 +1213,8 @@ class Participant extends LSActiveRecord
                     $uid = $userid[0];
                     $command->addCondition('owner_uid = :uid');
                     $command->params = array(':uid' => $uid['uid']);
-                }
-                //Searching for an attribute
-                elseif (is_numeric($condition[0])) {
+                } elseif (is_numeric($condition[0])) {
+                    //Searching for an attribute
                     $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value ' . $operator . ' :condition_2)');
                     $command->params = array(':condition_0' => $condition[0], ':condition_2' => $condition[2]);
                 } else {
@@ -1230,9 +1223,8 @@ class Participant extends LSActiveRecord
                 }
 
                 $i += 3;
-            }
-            //This section deals with subsequent filter conditions that have boolean joiner
-            elseif ($condition[$i] != '') {
+            } elseif ($condition[$i] != '') {
+                //This section deals with subsequent filter conditions that have boolean joiner
                 if (is_numeric($condition[$i + 3])) {
                     $condition[$i + 3] = intval($condition[$i + 3]);
                 }
@@ -1269,9 +1261,8 @@ class Participant extends LSActiveRecord
                     $lang = Yii::app()->session['adminlang'];
                     $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title ' . $operator . ' ' . $condition2name . '1 OR {{survey_links}}.survey_id ' . $operator . ' ' . $condition2name . '2))', $booloperator);
                     $command->params = array_merge($command->params, array(':lang' => $lang, $condition2name . '1' => $condition[$i + 3], $condition2name . '2' => $condition[$i + 3]));
-                }
-                //search by quantity of linked surveys
-                elseif ($condition[$i + 1] == "surveys") {
+                } elseif ($condition[$i + 1] == "surveys") {
+                    //search by quantity of linked surveys
                     $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM {{survey_links}})" : "";
                     $command->addCondition('participant_id IN (SELECT participant_id FROM {{survey_links}} GROUP BY participant_id HAVING count(*) ' . $operator . ' ' . $condition2name . ' ORDER BY count(*))' . $addon);
                     $command->params = array_merge($command->params, array($condition2name => $condition[$i + 3]));
@@ -1287,9 +1278,8 @@ class Participant extends LSActiveRecord
                         $uid[] = $row['uid'];
                     }
                     $command->addInCondition('owner_uid', $uid, $booloperator);
-                }
-                //Searching for an attribute
-                elseif (is_numeric($condition[$i + 1])) {
+                } elseif (is_numeric($condition[$i + 1])) {
+                    //Searching for an attribute
                     $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition1name . ' AND {{participant_attribute}}.value ' . $operator . ' ' . $condition2name . ')', $booloperator);
                     $command->params = array_merge($command->params, array($condition1name => $condition[$i + 1], $condition2name => $condition[$i + 3]));
                 } else {
@@ -1402,9 +1392,8 @@ class Participant extends LSActiveRecord
                     ->where('sl.survey_id ' . $operator . ' ' . $param)
                     ->group('sl.participant_id');
                 $command->addCondition('t.participant_id IN (' . $subQuery->getText() . ')', $booloperator);
-            }
-            //Search by quantity of linked surveys
-            elseif ($sFieldname == "surveys") {
+            } elseif ($sFieldname == "surveys") {
+                //Search by quantity of linked surveys
                 $subQuery = Yii::app()->db->createCommand()
                     ->select('sl.participant_id')
                     ->from('{{survey_links}} sl')
@@ -1415,9 +1404,8 @@ class Participant extends LSActiveRecord
                 $command->addCondition('full_name ' . $operator . ' ' . $param, $booloperator);
             } elseif ($sFieldname == "participant_id") {
                 $command->addCondition('t.participant_id ' . $operator . ' ' . $param, $booloperator);
-            }
-            //Searching for an attribute
-            elseif (is_numeric($sFieldname)) {
+            } elseif (is_numeric($sFieldname)) {
+                //Searching for an attribute
                 $command->addCondition('attribute' . $sFieldname . '.value ' . $operator . ' ' . $param, $booloperator);
             } else {
                 // Check if fieldname exists to prevent SQL injection
@@ -1455,7 +1443,7 @@ class Participant extends LSActiveRecord
      * @param string $participant_id
      * @return bool
      */
-    public function is_owner($participant_id)
+    public function isOwner($participant_id)
     {
         // Superadmins can edit all participants
         if (Permission::model()->hasGlobalPermission('superadmin')) {
@@ -1464,7 +1452,7 @@ class Participant extends LSActiveRecord
 
         $userid = Yii::app()->session['loginID'];
 
-        $is_owner = Yii::app()
+        $isOwner = Yii::app()
             ->db
             ->createCommand()
             ->select('count(*)')
@@ -1484,7 +1472,7 @@ class Participant extends LSActiveRecord
             ->bindParam(":userid", $userid, PDO::PARAM_INT)
             ->queryScalar();
 
-        if ($is_shared > 0 || $is_owner > 0) {
+        if ($is_shared > 0 || $isOwner > 0) {
             return true;
         } else {
             return false;
@@ -1961,7 +1949,7 @@ class Participant extends LSActiveRecord
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
         $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions);
-        $aAutoMapped=$survey->getCPDBMappings();
+        $aAutoMapped = $survey->getCPDBMappings();
 
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
@@ -2031,7 +2019,7 @@ class Participant extends LSActiveRecord
                 } /* If there isn't an existing entry, create one! */ else {
                     /* Create entry in participants table */
                     $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
-                    $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->gen_uuid();
+                    $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->genUuid();
 
                     $writearray = [
                         'participant_id' => $pid,
@@ -2210,7 +2198,7 @@ class Participant extends LSActiveRecord
         }
     }
 
-    /** 
+    /**
      * Get Language Options.
      **/
     public function getLanguageOptions()
@@ -2231,7 +2219,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Get Owner Options 
+     * Get Owner Options
      **/
     public function getOwnerOptions()
     {
@@ -2339,5 +2327,22 @@ class Participant extends LSActiveRecord
             }
         }
         return $checkedActions;
+    }
+
+    /**
+     * Returns the list of blacklisted participant IDs
+     * @return string[]
+     */
+    public function getBlacklistedParticipantIds()
+    {
+        $command = new CDbCriteria();
+        $command->condition = '';
+        $command->addCondition("blacklisted = 'Y'");
+
+        $oResult = $this->getCommandBuilder()
+            ->createFindCommand($this->getTableSchema(), $command)
+            ->select('participant_id')
+            ->queryColumn();
+        return $oResult;
     }
 }

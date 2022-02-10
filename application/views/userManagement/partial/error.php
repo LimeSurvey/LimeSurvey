@@ -3,7 +3,7 @@
  * Subview: Error messsage in the usermanagement panel
  * 
  * @package UserManagement
- * @author Markus Flür <markus.fluer@limesurvey.org>
+ * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
  */
 ?>

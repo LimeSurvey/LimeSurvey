@@ -254,8 +254,8 @@ $config['disablescriptwithxss'] = true;
 $config['usercontrolSameGroupPolicy'] = true;
 
 // ownerManageAllSurveysInGroup
-// If this option is set to true, then oner of a group
-// have all rights on surveys in is group
+// If this option is set to true, then owner of a group
+// has all permissions on surveys in that group
 $config['ownerManageAllSurveysInGroup'] = true;
 
 // demoMode
@@ -657,8 +657,9 @@ $config['InsertansUnsupportedtypes'] = array();
 $config['proxy_host_name'] = '';
 $config['proxy_host_port'] = 80;
 
-/** Forced superadmin rights, users in this array can not have superadmin total right disable.
- * Default use the user created at the installation.
+/** Forced superadmin permissions
+ * Users in this array can not have their superadmin permissions disabled
+ * Default is set to user ID 1, which is the user created at installation (site admin)
  * @var integer[]
  */
 $config['forcedsuperadmin'] = array(1);
@@ -787,21 +788,18 @@ $config['max_execution_time'] = 1200;
 // This is useful when developing a theme, so changes to XML files are immediately applied without the need to uninstall and reinstall the theme.
 $config['force_xmlsettings_for_survey_rendering'] = false;
 
+/**
+ * When this setting is true, plugins that are not in the white list (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
+ * already installed plugins.
+ * Core plugins are not affected by this setting.
+ */
 $config['usePluginWhitelist'] = false;
 
-$config['pluginCoreList'] = [
-    'AuditLog',
-    'ExportR',
-    'ExportSTATAxml',
-    'ExportSPSSsav',
-    'extendedStartPage',
-    'oldUrlCompat',
-    'AuthLDAP',
-    'Authdb',
-    'Authwebserver'
-];
-
+// List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly whitelisted.
 $config['pluginWhitelist'] = [];
+
+// When this setting is true, the "Plugin Upload" feature is disabled.
+$config['disablePluginUpload'] = false;
 
 /* replaced in generated application/config/security.php if exist */
 $config['encryptionkeypair'] = '';

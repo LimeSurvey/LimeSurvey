@@ -45,10 +45,10 @@ class LabelL10n extends LSActiveRecord
      * @inheritdoc
      * @return LabelL10n
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -71,7 +71,7 @@ class LabelL10n extends LSActiveRecord
             'label' => array(self::BELONGS_TO, 'Label', 'label_id')
         );
     }
-    
+
     public function defaultScope()
     {
         return array('index' => 'language');

@@ -190,21 +190,6 @@ return array(
         )
     ),
 
-    // jQuery Superfish
-    'jquery-superfish' => array(
-        'basePath' => 'third_party.jquery-superfish',
-        'js' => array(
-            'js/superfish.js',
-            'js/hoverIntent.js'
-        ),
-        'css' => array(
-            'css/superfish.css'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-
     // jQuery json
     'jquery-json' => array(
         'basePath' => 'third_party.jquery-json',
@@ -225,22 +210,6 @@ return array(
         'depends' => array(
             'jquery'
         )
-    ),
-
-    // qTip2
-    'qTip2' => array(
-        'basePath' => 'third_party.qTip2',
-        'position' => CClientScript::POS_BEGIN,
-        'js' => array(
-            'dist/jquery.qtip.min.js'
-        ),
-        'css' => array(
-            'dist/jquery.qtip.min.css'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-
     ),
 
     // jQuery Table Sorter

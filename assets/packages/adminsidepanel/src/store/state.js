@@ -25,6 +25,19 @@ export default  function(userid) {
         bottommenus: null,
         surveyActiveState: false,
         toggleKey: Math.floor(Math.random()*10000)+'--key',
-        allowOrganizer: true
+        allowOrganizer: true,
+        SideMenuData: {
+            'translate': {
+                'lockOrganizerTitle': 'Lock question organizer',
+                'unlockOrganizerTitle': 'Unlock question organizer',
+            },
+            'isActive': false,
+            'createQuestionGroupLink': '',
+            'createQuestionLink': '',
+            'buttonDisabledTooltipQuestions': '',
+            'buttonDisabledTooltipGroups': '',
+            'lockOrganizerTitle': 'Lock question organizer',
+            'unlockOrganizerTitle': 'Unlock question organizer',
+        },
     };
 };

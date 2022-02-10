@@ -129,7 +129,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = "integer";
                     break;
                 case Question::QT_N_NUMERICAL:
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                case Question::QT_K_MULTIPLE_NUMERICAL:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "decimal (30,10)");
                     break;
                 case Question::QT_S_SHORT_FREE_TEXT:
@@ -149,17 +149,17 @@ class SurveyActivator
                 case Question::QT_U_HUGE_FREE_TEXT:
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 case Question::QT_T_LONG_FREE_TEXT:
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+                case Question::QT_SEMICOLON_ARRAY_TEXT:
+                case Question::QT_COLON_ARRAY_NUMBERS:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_D_DATE:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "datetime");
                     break;
                 case Question::QT_5_POINT_CHOICE:
-                case Question::QT_G_GENDER_DROPDOWN:
+                case Question::QT_G_GENDER:
                 case Question::QT_Y_YES_NO_RADIO:
-                case Question::QT_X_BOILERPLATE_QUESTION:
+                case Question::QT_X_TEXT_DISPLAY:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(1)");
                     break;
                 case Question::QT_I_LANGUAGE:
@@ -189,7 +189,7 @@ class SurveyActivator
                 case Question::QT_ASTERISK_EQUATION:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
-                case Question::QT_R_RANKING_STYLE:
+                case Question::QT_R_RANKING:
                     /**
                      * See bug #09828: Ranking question : update allowed can broke Survey DB
                      * If max_subquestions is not set or is invalid : set it to actual answers numbers

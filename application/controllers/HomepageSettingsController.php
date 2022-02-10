@@ -62,8 +62,8 @@ class HomepageSettingsController extends LSBaseController
             'fullpagebar' => [
                 'boxbuttons' => true,
                 'returnbutton' => [
-                    'url'=>'admin/index',
-                    'text'=>gT('Back'),
+                    'url' => 'admin/index',
+                    'text' => gT('Back'),
                 ],
             ],
             'pageTitle' => gT('Dashboard'),

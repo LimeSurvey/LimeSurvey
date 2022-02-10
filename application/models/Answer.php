@@ -31,15 +31,15 @@ class Answer extends LSActiveRecord
     private $oldCode;
     private $oldQid;
     private $oldScaleId;
-    
+
     /**
      * @inheritdoc
      * @return static
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -68,7 +68,7 @@ class Answer extends LSActiveRecord
             ),
             'answerl10ns' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
             'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true)
-            
+
         );
     }
 
@@ -207,7 +207,7 @@ class Answer extends LSActiveRecord
      */
     public static function updateSortOrder($qid)
     {
-        $data = self::model()->findAllByAttributes(array('qid' => $qid), array('order' => 'sortorder asc'));
+        $data = self::model()->findAllByAttributes(array('qid' => $qid), array('order' => 'sortorder, code'));
         $position = 0;
 
         foreach ($data as $row) {
@@ -224,7 +224,7 @@ class Answer extends LSActiveRecord
      */
     public function getAnswersForStatistics($fields, $condition, $orderby)
     {
-        return Answer::model()->findAll($condition);
+        return Answer::model()->findAll(['condition' => $condition, 'order' => $orderby]);
     }
 
     /**
@@ -235,7 +235,7 @@ class Answer extends LSActiveRecord
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
-        $oAnswers = Answer::model()->with('answerl10ns')->findAll($condition);
+        $oAnswers = Answer::model()->with('answerl10ns')->findAll(['condition' => $condition,'order' => $orderby]);
         $arr = array();
         foreach ($oAnswers as $key => $answer) {
             $arr[$key] = array_merge($answer->attributes, current($answer->answerl10ns)->attributes);

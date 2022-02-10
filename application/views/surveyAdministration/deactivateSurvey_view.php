@@ -7,10 +7,10 @@
                         <?php eT("Stop this survey");  echo "<em>($surveyid)</em>" ; ?>
                     </h2>
                     <p class="lead text-warning">
-                        <?php eT("Warning: Please read this carefully before proceeding!"); ?>
+                        <?php eT("Attention: Please read the following carefully before stopping your survey."); ?>
                     </p>
                     <p>
-                        <?php eT("There are two ways to stop a survey. Please read carefully about the two options below and choose the right one for you."); ?>
+                        <?php eT("There are two ways to stop a survey. Please read the Expiration and Deactivation points below before proceeding."); ?>
                     </p>
                     <table id='deactivation' class="text-left">
                         <tr>
@@ -25,20 +25,20 @@
                             <td>
                                 <ul>
                                     <li><?php eT("No responses are lost.");?></li>
-                                    <li><?php eT("No participant information lost.");?></li>
-                                    <li><?php eT("Ability to change of questions, groups and parameters is still limited.");?></li>
-                                    <li><?php eT("An expired survey is not accessible to participants (they only see a message that the survey has expired).");?></li>
-                                    <li><?php eT("It's still possible to perform statistics on responses using LimeSurvey.");?></li>
+                                    <li><?php eT("No participant information is lost.");?></li>
+                                    <li><?php eT("The ability to change questions, groups and parameters is limited.");?></li>
+                                    <li><?php eT("An expired survey cannot be accessed by participants.  A message will be displayed stating that the survey has expired.");?></li>
+                                    <li><?php eT("It is still possible to perform statistical analysis on responses.");?></li>
                                 </ul>
                             </td>
                             <td>
                                 <ul>
-                                    <li><?php eT("All responses are not accessible anymore with LimeSurvey.");?> <?php echo gT("Your response table will be renamed to:")." {$dbprefix}old_".$surveyid."_{$date}"; ?></li>
-                                    <li><?php eT("All participant information is lost.");?></li>
-                                    <li><?php eT("A deactivated survey is not accessible to participants (only a message appears that they are not permitted to see this survey).");?></li>
-                                    <li><?php eT("All questions, groups and parameters are editable again.");?></li>
+                                    <li><?php printf(gT('Responses are no longer accessible. Your response table will be renamed to: %s_old_%d_%s'), $dbprefix, $surveyid, $date); ?></li>
+                                    <li><?php eT("All participant information will be lost.");?></li>
+                                    <li><?php eT("A deactivated survey cannot be accessed by participants.  A message will be displayed stating that the survey has been closed.");?></li>
+                                    <li><?php eT("Questions, groups and parameters can be edited again.");?></li>
                                     <li><a title='<?php eT("Export survey results") ?>' href='<?php echo $this->createUrl('admin/export/sa/exportresults/surveyid/'.$surveyid) ?>'>
-                                        <?php eT("You should export your responses before deactivating.");?>
+                                        <?php eT("We highly recommend that you export your responses before deactivating your survey.");?>
                                     </li>
                                 </ul>
                             </td>

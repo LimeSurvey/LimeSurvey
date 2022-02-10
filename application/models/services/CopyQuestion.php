@@ -13,7 +13,6 @@ use LimeSurvey\Datavalueobjects\CopyQuestionValues;
  */
 class CopyQuestion
 {
-
     /**
      * @var CopyQuestionValues values needed to copy a question (e.g. questioncode, questionGroupId ...)
      */

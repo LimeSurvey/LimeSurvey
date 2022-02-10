@@ -5,11 +5,11 @@
  */
 class Timing extends LSActiveRecord
 {
-    /** @var array $_models */
-    private static $_models = array();
+    /** @var array $models */
+    private static $models = array();
 
-    /** @var CActiveRecordMetaData $_md meta data*/
-    private $_md;
+    /** @var CActiveRecordMetaData $md meta data*/
+    private $md;
 
     /** @var int|null $surveyId */
     protected $surveyId;
@@ -20,9 +20,11 @@ class Timing extends LSActiveRecord
      * @param int $iSurveyId
      * @param string $scenario
      */
-    public function __construct($iSurveyId, $scenario = 'insert')
+    public function __construct($iSurveyId, $scenario = null)
     {
-
+        if (is_null($scenario)) {
+            $scenario = 'insert';
+        }
         $survey = Survey::model()->findByPk($iSurveyId);
         if ($survey) {
             $this->surveyId = $iSurveyId;
@@ -42,19 +44,21 @@ class Timing extends LSActiveRecord
     /**
      * We have a custom implementation here since the parents' implementation
      * does not create a new model for each table name.
+     *
      * @param int $iSurveyId
      * @return Response
      * @throws Exception
+     * @psalm-suppress ParamNameMismatch Ignore that $iSurveyId is $className in parent class
      */
     public static function model($iSurveyId = null)
     {
         if (is_numeric($iSurveyId)) {
-            if (!isset(self::$_models[$iSurveyId])) {
-                $model = self::$_models[$iSurveyId] = new self($iSurveyId, null);
-                $model->_md = new CActiveRecordMetaData($model);
+            if (!isset(self::$models[$iSurveyId])) {
+                $model = self::$models[$iSurveyId] = new self($iSurveyId, null);
+                $model->md = new CActiveRecordMetaData($model);
                 $model->attachBehaviors($model->behaviors());
             }
-            return self::$_models[$iSurveyId];
+            return self::$models[$iSurveyId];
         }
         throw new Exception('iSurveyId missing in static call.');
     }
@@ -80,12 +84,12 @@ class Timing extends LSActiveRecord
      */
     public function getMetaData()
     {
-        if (isset($this->_md)) {
-            return $this->_md;
+        if (isset($this->md)) {
+            return $this->md;
         } else {
             /** @var CActiveRecordMetaData $md */
-            $md = self::model($this->surveyId)->_md;
-            return $this->_md = $md;
+            $md = self::model($this->surveyId)->md;
+            return $this->md = $md;
         }
     }
 

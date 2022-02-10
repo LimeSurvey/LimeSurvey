@@ -64,8 +64,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
             SET cqid=$iNewQID,
             cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, $aSwitch['cfieldname']) . "'
             WHERE cqid=$iQuestionID";
-            // FIXME undefined function db_execute_assosc()
-            db_execute_assosc($sQuery);
+            Yii::app()->db->createCommand($sQuery)->query();
         }
     }
     //Now question_attributes
@@ -141,7 +140,7 @@ function checkQuestions($postsid, $iSurveyID)
     //  # "I" -> LANGUAGE SWITCH
     //  # ":" -> Array Multi Flexi Numbers
     //  # ";" -> Array Multi Flexi Text
-    //  # "1" -> MULTI SCALE
+    //  # "1" -> Dual scale
     $questionTypesMetaData = QuestionTheme::findQuestionMetaDataForAllTypes();
 
     $survey = Survey::model()->findByPk($iSurveyID);
@@ -202,7 +201,7 @@ function checkQuestions($postsid, $iSurveyID)
         ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
         ->andWhere("(SELECT count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0")
         ->andWhere("sid=:sid", [':sid' => $iSurveyID])
-        ->andWhere("type IN ('" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "', '" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "', '" . Question::QT_1_ARRAY_MULTISCALE . "')")
+        ->andWhere("type IN ('" . Question::QT_F_ARRAY . "', '" . Question::QT_H_ARRAY_COLUMN . "', '" . Question::QT_1_ARRAY_DUAL . "')")
         ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
@@ -216,7 +215,7 @@ function checkQuestions($postsid, $iSurveyID)
     ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
     ->andWhere("(Select count(*) from {{answers}} a where a.qid=q.qid and scale_id=1)=0")
     ->andWhere("sid=:sid", [':sid' => $iSurveyID])
-    ->andWhere("type='" . Question::QT_1_ARRAY_MULTISCALE . "'")
+    ->andWhere("type='" . Question::QT_1_ARRAY_DUAL . "'")
     ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
@@ -275,7 +274,7 @@ function checkQuestions($postsid, $iSurveyID)
     $fieldmap = createFieldMap($survey, 'full', true, false, $survey->language, $aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
         foreach ($aDuplicateQIDs as $iQID => $aDuplicate) {
-            $sFixLink = "[<a class='selector__fixConsistencyProblem' href='" . Yii::app()->getController()->createUrl("/surveyAdministration/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}") . "'>Click here to fix</a>]";
+            $sFixLink = "[<a class='selector__fixConsistencyProblem' href='" . Yii::app()->getController()->createUrl("/surveyAdministration/activate/iSurveyID/{$iSurveyID}/fixnumbering/{$iQID}") . "'>Click here to fix</a>]";
             $failedcheck[] = array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
     }

@@ -1141,7 +1141,7 @@ class LimeExpressionManager
                     $cascadedAFE = array_reverse($cascadedAFE);
 
                     $subqs = $qinfo['subqs'];
-                    if ($type == Question::QT_R_RANKING_STYLE) {
+                    if ($type == Question::QT_R_RANKING) {
                         $subqs = [];
                         foreach ($this->qans[$qinfo['qid']] as $k => $v) {
                             $_code = explode('~', $k);
@@ -1160,20 +1160,20 @@ class LimeExpressionManager
                         $af_names = [];
                         $afe_names = [];
                         switch ($type) {
-                            case Question::QT_1_ARRAY_MULTISCALE:   //Array (Flexible Labels) dual scale
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
-                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
-                            case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                            case Question::QT_1_ARRAY_DUAL: // Array dual scale
+                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                            case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                            case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
                             case Question::QT_L_LIST: //LIST drop-down/radio-button list
                             case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                            case Question::QT_R_RANKING_STYLE: //Ranking
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                            case Question::QT_R_RANKING: // Ranking
                                 //if ($this->sgqaNaming)
                                 //{
                                 foreach ($cascadedAF as $_caf) {
@@ -1183,7 +1183,7 @@ class LimeExpressionManager
                                         continue;
                                     }
                                     $fqid = $fqid[2];
-                                    if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING_STYLE) {
+                                    if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
                                         $rankables = [];
                                         foreach ($this->qans[$fqid] as $k => $v) {
                                             $rankable = explode('~', $k);
@@ -1198,10 +1198,10 @@ class LimeExpressionManager
                                         if (!isset($fsq['csuffix'])) {
                                             $fsq['csuffix'] = '';
                                         }
-                                        if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING_STYLE) {
+                                        if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
                                             // we know the suffix exists
                                             $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK == '" . (string)substr($sq['sqsuffix'], 1) . "')";
-                                        } elseif ($this->q2subqInfo[$fqid]['type'] == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox'] == '1') {
+                                        } elseif ($this->q2subqInfo[$fqid]['type'] == Question::QT_COLON_ARRAY_NUMBERS && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox'] == '1') {
                                             if ($fsq['sqsuffix'] == $sq['sqsuffix']) {
                                                 $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK=="1"';
                                             }
@@ -1222,7 +1222,7 @@ class LimeExpressionManager
                                         continue;
                                     }
                                     $fqid = $fqid[2];
-                                    if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING_STYLE) {
+                                    if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
                                         $rankables = [];
                                         foreach ($this->qans[$fqid] as $k => $v) {
                                             $rankable = explode('~', $k);
@@ -1234,10 +1234,10 @@ class LimeExpressionManager
                                     }
                                     $fsqs = [];
                                     foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq) {
-                                        if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING_STYLE) {
+                                        if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
                                             // we know the suffix exists
                                             $fsqs[] = '(' . $sgq . $fsq['csuffix'] . ".NAOK != '" . substr($sq['sqsuffix'], 1) . "')";
-                                        } elseif ($this->q2subqInfo[$fqid]['type'] == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox'] == '1') {
+                                        } elseif ($this->q2subqInfo[$fqid]['type'] == Question::QT_COLON_ARRAY_NUMBERS && isset($this->qattr[$fqid]['multiflexible_checkbox']) && $this->qattr[$fqid]['multiflexible_checkbox'] == '1') {
                                             if ($fsq['sqsuffix'] == $sq['sqsuffix']) {
                                                 $fsqs[] = $sgq . $fsq['csuffix'] . '.NAOK!="1"';
                                             }
@@ -1317,23 +1317,23 @@ class LimeExpressionManager
                     $last_rowdivid = $sq['rowdivid'];
                     $rowdivid = $sq['rowdivid'];
                     switch ($type) {
-                        case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale
+                        case Question::QT_1_ARRAY_DUAL: // Array dual scale
                             $rowdivid = $rowdivid . '#0';
                             break;
-                        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY Numbers
-                        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY Text
+                        case Question::QT_COLON_ARRAY_NUMBERS: // Array Numbers
+                        case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                             $aCsuffix = (explode('_', $sq['csuffix']));
                             $rowdivid = $rowdivid . '_' . $aCsuffix[1];
                             break;
-                        case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
-                        case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                        case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                        case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                        case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                        case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                             break;
                         default:
                             break;
@@ -1378,7 +1378,7 @@ class LimeExpressionManager
                         foreach ($subqs as $sq) {
                             $sq_name = ($this->sgqaNaming) ? $sq['rowdivid'] . ".NAOK" : $sq['varName'] . ".NAOK";
                             $sq_equs[] = '( is_numeric(' . $sq_name . ') || is_empty(' . $sq_name . ') )';// Leave mandatory to mandatory attribute
-                            if ($type == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION) {
+                            if ($type == Question::QT_K_MULTIPLE_NUMERICAL) {
                                 $subqValidSelector = $sq['jsVarName_on'];
                             } else {
                                 $subqValidSelector = "";
@@ -1396,7 +1396,7 @@ class LimeExpressionManager
                         ];
                     }
                     break;
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTI NUMERICAL QUESTION TYPE
+                case Question::QT_K_MULTIPLE_NUMERICAL: //MULTI NUMERICAL QUESTION TYPE
                     if ($hasSubqs) {
                         $subqs = $qinfo['subqs'];
                         $sq_equs = [];
@@ -1426,7 +1426,7 @@ class LimeExpressionManager
                         ];
                     }
                     break;
-                case Question::QT_R_RANKING_STYLE:
+                case Question::QT_R_RANKING:
                     if ($hasSubqs) {
                         $subqs = $qinfo['subqs'];
                         $sq_names = [];
@@ -1673,7 +1673,7 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                                 if ($this->sgqaNaming) {
                                     $sq_name = $sq['rowdivid'] . '.NAOK';
                                 } else {
@@ -1750,16 +1750,16 @@ class LimeExpressionManager
                                 continue;   // so don't make the excluded option irrelevant
                             }
                             switch ($type) {
-                                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
-                                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
-                                case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                                case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                                case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                                case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                                case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
                                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                                case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                                     if ($this->sgqaNaming) {
                                         $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
                                     } else {
@@ -1853,7 +1853,7 @@ class LimeExpressionManager
             if (isset($qattr['input_boxes']) && $qattr['input_boxes'] == 1) {
                 $input_boxes = 1;
                 switch ($type) {
-                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //Array Numbers
+                    case Question::QT_COLON_ARRAY_NUMBERS: // Array Numbers
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_equs = [];
@@ -1900,7 +1900,7 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_1_ARRAY_MULTISCALE:   //Array (Flexible Labels) dual scale
+                            case Question::QT_1_ARRAY_DUAL:   // Array dual scale
                                 if (substr($sq['varName'], -1, 1) == '0') {
                                     if ($this->sgqaNaming) {
                                         $base = $sq['rowdivid'] . "#";
@@ -1911,17 +1911,17 @@ class LimeExpressionManager
                                     }
                                 }
                                 break;
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
-                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
-                            case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                            case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                            case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                             case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-                            case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+                            case Question::QT_R_RANKING: // Ranking STYLE
                                 if ($this->sgqaNaming) {
                                     $sq_name = (string)substr($sq['jsVarName'], 4) . '.NAOK';
                                 } else {
@@ -1971,7 +1971,7 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_1_ARRAY_MULTISCALE:   //Array (Flexible Labels) dual scale
+                            case Question::QT_1_ARRAY_DUAL:   // Array dual scale
                                 if (substr($sq['varName'], -1, 1) == '0') {
                                     if ($this->sgqaNaming) {
                                         $base = $sq['rowdivid'] . "#";
@@ -1982,17 +1982,17 @@ class LimeExpressionManager
                                     }
                                 }
                                 break;
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
-                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
-                            case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                            case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                            case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                             case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-                            case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+                            case Question::QT_R_RANKING: // Ranking STYLE
                                 if ($this->sgqaNaming) {
                                     $sq_name = substr($sq['jsVarName'], 4) . '.NAOK';
                                 } else {
@@ -2032,7 +2032,7 @@ class LimeExpressionManager
                 $max_answers = '';
             }
             /* Specific for ranking : fix only the alert : test if needed (max_subquestions < count(answers) )*/
-            if ($type == Question::QT_R_RANKING_STYLE && (isset($qattr['max_subquestions']) && intval($qattr['max_subquestions']) > 0)) {
+            if ($type == Question::QT_R_RANKING && (isset($qattr['max_subquestions']) && intval($qattr['max_subquestions']) > 0)) {
                 $max_subquestions = intval($qattr['max_subquestions']);
                 // We don't have another answer count in EM ?
                 $answerCount = Answer::model()->count("qid=:qid", [":qid" => $questionNum]);
@@ -2044,7 +2044,7 @@ class LimeExpressionManager
                 }
             }
             // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
-            if ($type == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION && isset($qattr['slider_min']) && (!isset($qattr['min_num_value_n']) || trim($qattr['min_num_value_n']) == '')) {
+            if ($type == Question::QT_K_MULTIPLE_NUMERICAL && isset($qattr['slider_min']) && (!isset($qattr['min_num_value_n']) || trim($qattr['min_num_value_n']) == '')) {
                 $qattr['min_num_value_n'] = $qattr['slider_min'];
             }
             // min_num_value_n
@@ -2058,7 +2058,7 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                                 if ($this->sgqaNaming) {
                                     $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || ' . $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
                                 } else {
@@ -2104,7 +2104,7 @@ class LimeExpressionManager
             }
 
             // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
-            if ($type == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION && isset($qattr['slider_max']) && (!isset($qattr['max_num_value_n']) || trim($qattr['max_num_value_n']) == '')) {
+            if ($type == Question::QT_K_MULTIPLE_NUMERICAL && isset($qattr['slider_max']) && (!isset($qattr['max_num_value_n']) || trim($qattr['max_num_value_n']) == '')) {
                 $qattr['max_num_value_n'] = $qattr['slider_max'];
             }
             // max_num_value_n
@@ -2118,7 +2118,7 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                                 if ($this->sgqaNaming) {
                                     $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || ' . $sq['rowdivid'] . '.NAOK <= (' . $max_num_value_n . '))';
                                 } else {
@@ -2173,7 +2173,7 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                                 if ($this->sgqaNaming) {
                                     $sq_name = $sq['rowdivid'] . '.NAOK';
                                 } else {
@@ -2227,7 +2227,7 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                                 if ($this->sgqaNaming) {
                                     $sq_name = $sq['rowdivid'] . '.NAOK';
                                 } else {
@@ -2282,7 +2282,7 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_COLON_ARRAY_NUMBERS: //MULTIPLE NUMERICAL QUESTION
                                 if ($this->sgqaNaming) {
                                     $sgqa = (string)substr($sq['jsVarName'], 4);
                                     $sq_name = '(is_empty(' . $sgqa . '.NAOK) || ' . $sgqa . '.NAOK >= (' . $multiflexible_min . '))';
@@ -2331,7 +2331,7 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_COLON_ARRAY_NUMBERS: //MULTIPLE NUMERICAL QUESTION
                                 if ($this->sgqaNaming) {
                                     $sgqa = substr($sq['jsVarName'], 4);
                                     $sq_name = '(is_empty(' . $sgqa . '.NAOK) || ' . $sgqa . '.NAOK <= (' . $multiflexible_max . '))';
@@ -2439,7 +2439,7 @@ class LimeExpressionManager
                         $sq_eqn = null;
                         $subqValidSelector = '';
                         switch ($type) {
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
                                 $subqValidSelector = $sq['jsVarName_on'];
                             case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                                 $sq_name = ($this->sgqaNaming) ? $sq['rowdivid'] . ".NAOK" : $sq['varName'] . ".NAOK";
@@ -2529,7 +2529,7 @@ class LimeExpressionManager
                             ];
                         }
                         break;
-                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: // Array of text
+                    case Question::QT_SEMICOLON_ARRAY_TEXT: // Array of text
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_equs = [];
@@ -2658,13 +2658,13 @@ class LimeExpressionManager
                         $sgqa = substr($sq['jsVarName'], 4);
                         switch ($type) {
                             case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
-                            case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                            case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                             case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                            case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                            case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                                 if ($this->sgqaNaming) {
                                     $sq_name = '(if(is_empty(' . $sgqa . '.NAOK),0,!regexMatch("' . $preg . '", ' . $sgqa . '.NAOK)))';
                                 } else {
@@ -2675,10 +2675,10 @@ class LimeExpressionManager
                                 break;
                         }
                         switch ($type) {
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                                 if ($this->sgqaNaming) {
                                     $subqValidEqn = '(is_empty(' . $sgqa . '.NAOK) || regexMatch("' . $preg . '", ' . $sgqa . '.NAOK))';
                                 } else {
@@ -2734,24 +2734,24 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
-                            case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-                            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                            case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                            case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
+                            case Question::QT_H_ARRAY_COLUMN:
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                             case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                             case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                             case Question::QT_O_LIST_WITH_COMMENT:
                             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                            case Question::QT_R_RANKING_STYLE: //RANKING STYLE
-                            case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                            case Question::QT_R_RANKING: // Ranking STYLE
+                            case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                             case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                            case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                            case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                             case Question::QT_D_DATE: //DATE
                                 if ($this->sgqaNaming) {
                                     $sq_name = '!(' . preg_replace('/\bthis\b/', (string)substr($sq['jsVarName'], 4), $em_validation_q) . ')';
@@ -2820,14 +2820,14 @@ class LimeExpressionManager
                     foreach ($subqs as $sq) {
                         $sq_name = null;
                         switch ($type) {
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                             case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-                            case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                            case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                             case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                            case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                            case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                                 if ($this->sgqaNaming) {
                                     $sq_name = '!(' . preg_replace('/\bthis\b/', substr($sq['jsVarName'], 4), $em_validation_sq) . ')';
                                 } else {
@@ -2838,14 +2838,14 @@ class LimeExpressionManager
                                 break;
                         }
                         switch ($type) {
-                            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                             case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-                            case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                            case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                             case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                            case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                            case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                                 if ($this->sgqaNaming) {
                                     $subqValidEqn = '(' . preg_replace('/\bthis\b/', substr($sq['jsVarName'], 4), $em_validation_sq) . ')';
                                 } else {
@@ -2907,10 +2907,10 @@ class LimeExpressionManager
                 case Question::QT_N_NUMERICAL:
                     $qtips['default'] = $this->gT("Only numbers may be entered in this field.");
                     break;
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                case Question::QT_K_MULTIPLE_NUMERICAL:
                     $qtips['default'] = $this->gT("Only numbers may be entered in these fields.");
                     break;
-                case Question::QT_R_RANKING_STYLE:
+                case Question::QT_R_RANKING:
                     $qtips['default'] = $this->gT("All your answers must be different and you must rank in order.");
                     break;
                 default:
@@ -2941,7 +2941,7 @@ class LimeExpressionManager
 
             if ($input_boxes) {
                 switch ($type) {
-                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+                    case Question::QT_COLON_ARRAY_NUMBERS:
                         $qtips['input_boxes'] = $this->gT("Only numbers may be entered in these fields.");
                         break;
                     default:
@@ -2954,7 +2954,7 @@ class LimeExpressionManager
                 $_minA = (($min_answers == '') ? "''" : $min_answers);
                 $_maxA = (($max_answers == '') ? "''" : $max_answers);
                 /* different messages for text and checkbox questions */
-                if ($type == Question::QT_Q_MULTIPLE_SHORT_TEXT || $type == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION || $type == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT || $type == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS) {
+                if ($type == Question::QT_Q_MULTIPLE_SHORT_TEXT || $type == Question::QT_K_MULTIPLE_NUMERICAL || $type == Question::QT_SEMICOLON_ARRAY_TEXT || $type == Question::QT_COLON_ARRAY_NUMBERS) {
                     $_msgs = [
                         'atleast_m' => $this->gT("Please fill in at least %s answers"),
                         'atleast_1' => $this->gT("Please fill in at least one answer"),
@@ -3064,7 +3064,7 @@ class LimeExpressionManager
                         unset($qtips['default']);
                         $qtips['value_integer'] = $this->gT("Only an integer value may be entered in this field.");
                         break;
-                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                    case Question::QT_K_MULTIPLE_NUMERICAL:
                         unset($qtips['default']);
                         $qtips['value_integer'] = $this->gT("Only integer values may be entered in these fields.");
                         break;
@@ -3080,7 +3080,7 @@ class LimeExpressionManager
                         $qtips['numbers_only'] = $this->gT("Only numbers may be entered in this field.");
                         break;
                     case Question::QT_Q_MULTIPLE_SHORT_TEXT:
-                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
+                    case Question::QT_SEMICOLON_ARRAY_TEXT:
                         $qtips['numbers_only'] = $this->gT("Only numbers may be entered in these fields.");
                         break;
                     default:
@@ -3284,10 +3284,6 @@ class LimeExpressionManager
         $now = microtime(true);
         $this->em->SetSurveyMode($this->surveyMode);
         $survey = Survey::model()->findByPk($surveyid);
-        if (empty($this->surveyOptions)) {
-            /* Log it as error : this need some test */
-            Yii::log('setVariableAndTokenMappingsForExpressionManager with an empty surveyOptions.', 'error', 'application.LimeExpressionManager');
-        }
         // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
         $fieldmap = createFieldMap($survey, $style = 'full', $forceRefresh, false, $_SESSION['LEMlang']);
         $this->sid = $surveyid;
@@ -3355,12 +3351,12 @@ class LimeExpressionManager
             'Y' => $this->gT("Yes"),
             'N' => $this->gT("No"),
         ];
-        $presets['C'] = [   //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+        $presets['C'] = [   // Array (Yes/Uncertain/No)
             'Y' => $this->gT("Yes"),
             'N' => $this->gT("No"),
             'U' => $this->gT("Uncertain"),
         ];
-        $presets['E'] = [  //ARRAY (Increase/Same/Decrease) radio-buttons
+        $presets['E'] = [  // Array (Increase/Same/Decrease) radio-buttons
             'I' => $this->gT("Increase"),
             'S' => $this->gT("Same"),
             'D' => $this->gT("Decrease"),
@@ -3459,10 +3455,10 @@ class LimeExpressionManager
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                 case Question::QT_L_LIST: //LIST drop-down/radio-button list
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
-                case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale  // need scale
-                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
-                case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-                case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+                case Question::QT_1_ARRAY_DUAL: // Array dual scale  // need scale
+                case Question::QT_H_ARRAY_COLUMN: // Array (Flexible) - Column Format
+                case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
+                case Question::QT_R_RANKING: // Ranking STYLE
                     $ansArray = (isset($this->qans[$questionNum]) ? $this->qans[$questionNum] : null);
                     if ($other == 'Y' && ($type == Question::QT_L_LIST || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN)) {
                         if (preg_match('/other$/', $sgqa)) {
@@ -3478,32 +3474,32 @@ class LimeExpressionManager
                         }
                     }
                     break;
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                 case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                     $ansArray = null;
                     break;
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                 case Question::QT_D_DATE: //DATE
                 case Question::QT_ASTERISK_EQUATION: //Equation
                 case Question::QT_I_LANGUAGE: //Language Question
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
-                case Question::QT_X_BOILERPLATE_QUESTION: //BOILERPLATE QUESTION
+                case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
                     $ansArray = null;
                     break;
-                case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+                case Question::QT_G_GENDER: //GENDER drop-down list
                 case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
-                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
                     $ansArray = $presets[$type];
                     break;
             }
@@ -3513,8 +3509,8 @@ class LimeExpressionManager
                 default:
                     $subqtext = (isset($fielddata['subquestion']) ? $fielddata['subquestion'] : '');
                     break;
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                     $subqtext = (isset($fielddata['subquestion1']) ? $fielddata['subquestion1'] : '');
                     $ansList = [];
                     if (isset($fielddata['answerList'])) {
@@ -3535,15 +3531,15 @@ class LimeExpressionManager
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                 case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                 case Question::QT_D_DATE: //DATE
-                case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+                case Question::QT_G_GENDER: //GENDER drop-down list
                 case Question::QT_I_LANGUAGE: //Language Question
                 case Question::QT_L_LIST: //LIST drop-down/radio-button list
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
-                case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
-                case Question::QT_X_BOILERPLATE_QUESTION: //BOILERPLATE QUESTION
+                case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
+                case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
                 case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                 case Question::QT_ASTERISK_EQUATION: //Equation
@@ -3555,24 +3551,25 @@ class LimeExpressionManager
                     }
                     $question = $fielddata['question'];
                     break;
-                case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale
+                case Question::QT_1_ARRAY_DUAL: // Array dual scale
                     $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
                     $sqsuffix = '_' . $fielddata['aid'];
-                    $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];
+                    ;
                     $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     $rowdivid = substr($sgqa, 0, -2);
                     break;
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
-                case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it, but need rowdivid to process validations
+                case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
+                case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it, but need rowdivid to process validations
                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT                 // note does not have javatbd equivalent - so array filters don't work on it
-                case Question::QT_R_RANKING_STYLE: //RANKING STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text                 // note does not have javatbd equivalent - so array filters don't work on it
+                case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                     $csuffix = $fielddata['aid'];
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
@@ -3593,15 +3590,15 @@ class LimeExpressionManager
                     }
 
                     break;
-                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
+                case Question::QT_H_ARRAY_COLUMN:
                     $csuffix = $fielddata['aid'];
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
                     $sqsuffix = '_' . $fielddata['aid'];
                     $rowdivid = $sgqa; // Really bad name here because row are subquestion not row
                     break;
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                     $csuffix = $fielddata['aid'];
                     $sqsuffix = '_' . substr($fielddata['aid'], 0, (int)strpos($fielddata['aid'], '_'));
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
@@ -3618,15 +3615,15 @@ class LimeExpressionManager
             // $onlynum
             $onlynum = false; // the default
             switch ($type) {
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                     $onlynum = true;
                     break;
                 case Question::QT_ASTERISK_EQUATION: // Equation
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                     if (isset($qattr[$questionNum]['numbers_only']) && $qattr[$questionNum]['numbers_only'] == '1') {
                         $onlynum = true;
                     }
@@ -3647,18 +3644,18 @@ class LimeExpressionManager
             $jsVarName_on = '';
 
             switch ($type) {
-                case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+                case Question::QT_R_RANKING: // Ranking STYLE
                     $jsVarName_on = 'answer' . $sgqa;
                     $jsVarName = 'java' . $sgqa;
                     break;
                 case Question::QT_D_DATE: //DATE
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-                case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
-                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                case Question::QT_X_BOILERPLATE_QUESTION: //BOILERPLATE QUESTION
+                case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
                     $jsVarName_on = 'answer' . $sgqa;
                     $jsVarName = 'java' . $sgqa;
                     break;
@@ -3681,16 +3678,16 @@ class LimeExpressionManager
                     }
                     break;
                 case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
-                case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+                case Question::QT_G_GENDER: //GENDER drop-down list
                 case Question::QT_I_LANGUAGE: //Language Question
                 case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
                 case Question::QT_ASTERISK_EQUATION: //Equation
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
-                case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
+                case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
+                case Question::QT_H_ARRAY_COLUMN: // Array (Flexible) - Column Format
                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                     if ($type == Question::QT_O_LIST_WITH_COMMENT && preg_match('/_comment$/', $varName)) {
@@ -3700,14 +3697,15 @@ class LimeExpressionManager
                     }
                     $jsVarName = 'java' . $sgqa;
                     break;
-                case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale
+                case Question::QT_1_ARRAY_DUAL: // Array dual scale
                     $jsVarName = 'java' . str_replace('#', '_', $sgqa);
                     $jsVarName_on = $jsVarName;
                     break;
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                     $jsVarName = 'java' . $sgqa;
-                    $jsVarName_on = 'answer' . $sgqa;;
+                    $jsVarName_on = 'answer' . $sgqa;
+                    ;
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                     $jsVarName = $sgqa;
@@ -3812,7 +3810,7 @@ class LimeExpressionManager
             if (!isset($q2subqInfo[$questionNum])) {
                 /* Single question without subquestion */
                 /* Do same than single text question type : subqs is array with only THIS question */
-                /* Case with Question::QT_5_POINT_CHOICE.Question::QT_G_GENDER_DROPDOWN.Question::QT_I_LANGUAGE.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_ASTERISK_EQUATION */
+                /* Case with Question::QT_5_POINT_CHOICE.Question::QT_G_GENDER.Question::QT_I_LANGUAGE.Question::QT_X_TEXT_DISPLAY.Question::QT_Y_YES_NO_RADIO.Question::QT_ASTERISK_EQUATION */
                 $q2subqInfo[$questionNum] = [
                     'qid'         => $questionNum,
                     'qseq'        => $questionSeq,
@@ -4098,14 +4096,14 @@ class LimeExpressionManager
     /**
      * Check the relevance status of all questions on or before the current group.
      * This generates needed JavaScript for dynamic relevance, and sets flags about which questions and groups are relevant
-     * @param string $onlyThisQseq
+     * @param string|null $onlyThisQseq
+     * @param integer|null $GroupSeq
      * @return void
      */
-    public function ProcessAllNeededRelevance($onlyThisQseq = null)
+    public function ProcessAllNeededRelevance($onlyThisQseq = null, $groupSeq = null)
     {
         // TODO - in a running survey, only need to process the current Group.  For Admin mode, do we need to process all prior questions or not?
         //        $now = microtime(true);
-
         $grelComputed = [];  // so only process it once per group
         foreach ($this->questionSeq2relevance as $rel) {
             if (!is_null($onlyThisQseq) && $onlyThisQseq != $rel['qseq']) {
@@ -4113,9 +4111,11 @@ class LimeExpressionManager
             }
             $qid = $rel['qid'];
             $gseq = $rel['gseq'];
-            if ($this->allOnOnePage) {
-                ;   // process relevance for all questions
-            } elseif ($gseq != $this->currentGroupSeq) {
+            if(
+                $gseq != $this->currentGroupSeq // ONLY validate current group
+                && !$this->allOnOnePage // except if all in one page
+                && (is_null($groupSeq) || $gseq > $groupSeq)
+            ) {
                 continue;
             }
             $result = $this->_ProcessRelevance(
@@ -4127,7 +4127,6 @@ class LimeExpressionManager
                 $rel['hidden']
             );
             $_SESSION[$this->sessid]['relevanceStatus'][$qid] = $result;
-
             if (!isset($grelComputed[$gseq])) {
                 $this->_ProcessGroupRelevance($gseq);
                 $grelComputed[$gseq] = true;
@@ -4654,7 +4653,7 @@ class LimeExpressionManager
                         }
                         break;
                     case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                    case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                         if (trim($value) == "") {
                             $value = null;
                         } else {
@@ -5148,9 +5147,9 @@ class LimeExpressionManager
                         }
                         break;
                     case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                    case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                         if (trim($val) == '' || !is_numeric($val)) { // is_numeric error is done by EM : then show an error and same page again
-                            $val = null;  // since some databases can't store blanks in numerical inputs
+                            $val = null;  // since some databases can't store blanks in Numerical inputs
                         } elseif (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", $val)) { // DECIMAL(30,10)
                             // Here : we must ADD a message for the user and set the question "not valid" : show the same page + show with input-error class
                             $val = null;
@@ -5253,6 +5252,27 @@ class LimeExpressionManager
     }
 
     /**
+     * Set the relevance status to the $step
+     * @param int $seq - the sequential step
+     * @return void
+     */
+    public static function SetRelevanceTo($seq)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        switch ($LEM->surveyMode) {
+            case 'survey':
+                $LEM->ProcessAllNeededRelevance();
+                break;
+            case 'group':
+                $LEM->ProcessAllNeededRelevance(null, $seq);
+                break;
+            case 'question':
+                $LEM->ProcessAllNeededRelevance(null, $seq);
+                break;
+        }
+    }
+
+    /**
      * Jump to a specific question or group sequence.  If jumping forward, it re-validates everything in between
      * @param int $seq - the sequential step
      * @param string|false $preview @see var $sPreviewMode
@@ -5265,7 +5285,6 @@ class LimeExpressionManager
     {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
-
         if (!$preview) {
             $preview = $LEM->sPreviewMode;
         }
@@ -5276,7 +5295,6 @@ class LimeExpressionManager
         if ($changeLang) {
             $LEM->setVariableAndTokenMappingsForExpressionManager($LEM->sid, true, $LEM->surveyOptions['anonymized']);
         }
-
         $LEM->ParseResultCache = [];    // to avoid running same test more than once for a given group
         $LEM->updatedValues = [];
         --$seq; // convert to 0-based numbering
@@ -5321,11 +5339,11 @@ class LimeExpressionManager
                     $updatedValues = [];
                 }
                 $message = '';
-                if (!$force && $LEM->currentGroupSeq != -1 && $seq > $LEM->currentGroupSeq) { // only re-validate if jumping forward
+                if ($LEM->currentGroupSeq != -1 && $seq > $LEM->currentGroupSeq) { // only re-validate if jumping forward
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
+                    if (!$force && !is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
                         // redisplay the current group, showing error
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
@@ -5410,13 +5428,13 @@ class LimeExpressionManager
                     $updatedValues = [];
                 }
                 $message = '';
-                if (!$force && $LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq) {
+                if ($LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq) {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq, $force);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues, $result['updatedValues']);
                     $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
                     $grel = $gRelInfo['result'];
-                    if ($grel && ($result['mandViolation'] || !$result['valid'])) {
+                    if (!$force && $grel && ($result['mandViolation'] || !$result['valid'])) {
                         // Redisplay the current question, qhowning error
                         $message .= $LEM->_UpdateValuesInDatabase();
                         $LEM->runtimeTimings[] = [__METHOD__, (microtime(true) - $now)];
@@ -5605,7 +5623,6 @@ class LimeExpressionManager
     public function _ValidateGroup($groupSeq, $force = false)
     {
         $LEM =& $this;
-
         if ($groupSeq < 0 || $groupSeq >= $LEM->numGroups) {
             return null;    // TODO - what is desired behavior?
         }
@@ -5752,6 +5769,7 @@ class LimeExpressionManager
             'valid'         => $gvalid,
             'mandViolation' => $gmandViolation,
             'mandSoft'      => $gmandSoft,
+            'mandNonSoft'   => $gmandNonSoft,
             'show'          => (($grel && !$ghidden) ? true : false),
         ];
 
@@ -5838,7 +5856,7 @@ class LimeExpressionManager
             $irrelevantSQs = explode('|', $LEM->qid2code[$qid]);
         } else {
             // Check filter status to determine which subquestions are relevant
-            if ($qInfo['type'] == Question::QT_X_BOILERPLATE_QUESTION) {
+            if ($qInfo['type'] == Question::QT_X_TEXT_DISPLAY) {
                 $sgqas = [];   // Boilerplate questions can be ignored
             } else {
                 $sgqas = explode('|', $LEM->qid2code[$qid]);
@@ -5875,7 +5893,7 @@ class LimeExpressionManager
                     continue;
                 }
                 $foundSQrelevance = false;
-                if ($qInfo['type'] == Question::QT_R_RANKING_STYLE) {
+                if ($qInfo['type'] == Question::QT_R_RANKING) {
                     // Relevance of subquestion for ranking question depend of the count of relevance of answers.
                     $iCountRank = (isset($iCountRank) ? $iCountRank + 1 : 1);
                     // Relevant count is : Total answers less Unrelevant answers. subQrelInfo give only array with relevance equation, not this without any relevance.
@@ -5901,7 +5919,7 @@ class LimeExpressionManager
                 $foundSQrelevance = false;
                 foreach ($LEM->subQrelInfo[$qid] as $sq) {
                     switch ($sq['qtype']) {
-                        case Question::QT_1_ARRAY_MULTISCALE:   //Array (Flexible Labels) dual scale
+                        case Question::QT_1_ARRAY_DUAL:   // Array dual scale
                             if ($sgqa == ($sq['rowdivid'] . '#0') || $sgqa == ($sq['rowdivid'] . '#1')) {
                                 $foundSQrelevance = true;
                                 if (isset($LEM->ParseResultCache[$sq['eqn']])) {
@@ -5936,8 +5954,8 @@ class LimeExpressionManager
                                 }
                             }
                             break;
-                        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
-                        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
+                        case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                        case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
                             if (preg_match('/^' . $sq['rowdivid'] . '_/', $sgqa)) {
                                 $foundSQrelevance = true;
                                 if (isset($LEM->ParseResultCache[$sq['eqn']])) {
@@ -5972,16 +5990,16 @@ class LimeExpressionManager
                                 }
                             }
                         // No break : next part is for array text and array number too
-                        case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
-                        case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                        case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                        case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                        case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                             // Note, for M and P, Mandatory should mean that at least one answer was picked - not that all were checked
-                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+                        case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                             if ($sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment')) {     // to catch case 'P'
                                 $foundSQrelevance = true;
                                 if (isset($LEM->ParseResultCache[$sq['eqn']])) {
@@ -6135,19 +6153,19 @@ class LimeExpressionManager
                         );
                     }
                     break;
-                case Question::QT_X_BOILERPLATE_QUESTION:   // Boilerplate can never be mandatory
+                case Question::QT_X_TEXT_DISPLAY:   // Boilerplate can never be mandatory
                 case Question::QT_ASTERISK_EQUATION:   // Equation is auto-computed, so can't violate mandatory rules
                     break;
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+                case Question::QT_A_ARRAY_5_POINT:
                 case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
                 case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT:
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
-                case Question::QT_F_ARRAY_FLEXIBLE_ROW:
-                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
-                case Question::QT_1_ARRAY_MULTISCALE:
+                case Question::QT_K_MULTIPLE_NUMERICAL:
+                case Question::QT_E_ARRAY_INC_SAME_DEC:
+                case Question::QT_F_ARRAY:
+                case Question::QT_H_ARRAY_COLUMN:
+                case Question::QT_SEMICOLON_ARRAY_TEXT:
+                case Question::QT_1_ARRAY_DUAL:
                     // In general, if any relevant questions aren't answered, then it violates the mandatory rule
                     if (count($unansweredSQs) > 0) {
                         $qmandViolation = true; // TODO - what about 'other'?
@@ -6162,7 +6180,7 @@ class LimeExpressionManager
                         ]
                     );
                     break;
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+                case Question::QT_COLON_ARRAY_NUMBERS:
                     $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : [];
                     if (isset($qattr['multiflexible_checkbox']) && $qattr['multiflexible_checkbox'] == 1) {
                         // Need to check whether there is at least one checked box per row
@@ -6207,7 +6225,7 @@ class LimeExpressionManager
                         );
                     }
                     break;
-                case Question::QT_R_RANKING_STYLE:
+                case Question::QT_R_RANKING:
                     $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
                     // If min_answers or max_answers is set, we check that at least one answer is ranked.
                     // But, if no limit is set, then all answers must be ranked.
@@ -6275,7 +6293,7 @@ class LimeExpressionManager
                         }
                     }
                     break;
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+                case Question::QT_COLON_ARRAY_NUMBERS:
                     $anyUnanswered = false;
                     $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : [];
                     if (isset($qattr['multiflexible_checkbox']) && $qattr['multiflexible_checkbox'] == 1) {
@@ -7086,7 +7104,7 @@ class LimeExpressionManager
                         $relParts[] = "    }\n";
                     }
                     $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
-                    if ($arg['type'] != Question::QT_R_RANKING_STYLE) { // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
+                    if ($arg['type'] != Question::QT_R_RANKING) { // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
                         $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
                     }
                     $relParts[] = "  }\n  else {\n";
@@ -7114,7 +7132,7 @@ class LimeExpressionManager
                         }
                     }
                     $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
-                    if ($arg['type'] != Question::QT_R_RANKING_STYLE) { // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
+                    if ($arg['type'] != Question::QT_R_RANKING) { // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
                         $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
                     }
                     switch ($sq['qtype']) {
@@ -7128,7 +7146,7 @@ class LimeExpressionManager
                             $relParts[] = "      $('#answer" . $sq['sgqa'] . "').click();\n"; // trigger click : no need other think, and whole event happen
                             $relParts[] = "    }\n";
                             break;
-                        case Question::QT_R_RANKING_STYLE:
+                        case Question::QT_R_RANKING:
                             $listItem = substr($sq['rowdivid'], strlen($sq['sgqa']));
                             $relParts[] = " $('#question{$arg['qid']} .select-list select').each(function(){ \n";
                             $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
@@ -7371,13 +7389,16 @@ class LimeExpressionManager
                         $qrelgseqs[] = 'relChangeG' . $knownVar['gseq'];
                     }
                 }
+                /* If group of current question relevance updated: must check too. See mantis #14955 */
+                $qrelgseqs[] = 'relChangeG' . $arg['gseq'];
+                $qrelgseqs = array_unique($qrelgseqs);
                 $qrelQIDs = array_unique($qrelQIDs);
                 $aQuestionsWithDependencies = array_unique($aQuestionsWithDependencies);
                 if ($LEM->surveyMode == 'question') {
                     $qrelQIDs = [];  // in question-by-questin mode, should never test for dependencies on self or other questions.
                 }
                 if ($LEM->surveyMode != 'survey') {
-                    $qrelgseqs = [];  // in group by group or question by question mode, should never test for dependencies on self or other group.
+                    $qrelgseqs = [];  // javascript dependencies on groups only for survey mode
                 }
                 $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                 $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
@@ -7388,7 +7409,7 @@ class LimeExpressionManager
                 if (!empty($qrelQIDs) > 0) {
                     $aCheckNeeded[] = "!(" . implode(' || ', $qrelQIDs) . ")";
                 }
-                /* If one of group relevance used in function are updated in a previous function */
+                /* If one of group relevance used in function are updated in a previous function OR group of this question */
                 if (!empty($qrelgseqs) > 0) {
                     $aCheckNeeded[] = "!(" . implode(' || ', $qrelgseqs) . ")";
                 }
@@ -7905,7 +7926,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $i = 0;
         foreach (explode("\n", $tests) as $test) {
             $args = explode("~", $test);
-            $type = $args[1] == 'expr' ? Question::QT_ASTERISK_EQUATION : ($args[1] == 'message' ? Question::QT_X_BOILERPLATE_QUESTION : Question::QT_S_SHORT_FREE_TEXT);
+            $type = $args[1] == 'expr' ? Question::QT_ASTERISK_EQUATION : ($args[1] == 'message' ? Question::QT_X_TEXT_DISPLAY : Question::QT_S_SHORT_FREE_TEXT);
             $vars[$args[0]] = ['sgqa' => $args[0], 'code' => '', 'jsName' => 'java' . $args[0], 'jsName_on' => 'java' . $args[0], 'readWrite' => 'Y', 'type' => $type, 'relevanceStatus' => '1', 'gid' => 1, 'gseq' => 1, 'qseq' => $i, 'qid' => $i];
             $varSeq[] = $args[0];
             $testArgs[] = $args;
@@ -8450,6 +8471,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                     // Move the (unmoved, temp) files from temp to files directory.
                                     // Check all possible file uploads
                                     for ($i = 0; $i < $iSize; $i++) {
+                                        $aFiles[$i]->name = sanitize_filename($aFiles[$i]->name, false, false, true);
                                         $aFiles[$i]->filename = get_absolute_path($aFiles[$i]->filename);
                                         if (file_exists($tmp . $aFiles[$i]->filename)) {
                                             $sDestinationFileName = 'fu_' . randomChars(15);
@@ -8585,12 +8607,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     if (isset($_SESSION[$this->sessid][$sgqa])) {
                         $type = $var['type'];
                         switch ($type) {
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                            case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                            case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                             case Question::QT_D_DATE: //DATE
                             case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                            case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                            case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                                 return self::htmlSpecialCharsUserValue($_SESSION[$this->sessid][$sgqa]);
                             case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                             case Question::QT_L_LIST: //LIST drop-down/radio-button list
@@ -8619,10 +8641,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                     case Question::QT_L_LIST: //LIST drop-down/radio-button list
                     case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale  // need scale
-                    case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
-                    case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-                    case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+                    case Question::QT_1_ARRAY_DUAL: // Array dual scale  // need scale
+                    case Question::QT_H_ARRAY_COLUMN: // Array (Flexible) - Column Format
+                    case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
+                    case Question::QT_R_RANKING: // Ranking STYLE
                         if ($type == Question::QT_O_LIST_WITH_COMMENT && preg_match('/comment\.value/', $name)) {
                             $value = $code;
                         } elseif (($type == Question::QT_L_LIST || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other\.value/', $name)) {
@@ -8673,10 +8695,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                         case Question::QT_L_LIST: //LIST drop-down/radio-button list
                         case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale  // need scale
-                        case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
-                        case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-                        case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+                        case Question::QT_1_ARRAY_DUAL: // Array dual scale  // need scale
+                        case Question::QT_H_ARRAY_COLUMN: // Array (Flexible) - Column Format
+                        case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
+                        case Question::QT_R_RANKING: // Ranking STYLE
                             if ($type == Question::QT_O_LIST_WITH_COMMENT && preg_match('/comment$/', $name)) {
                                 $shown = $code;
                             } elseif (($type == Question::QT_L_LIST || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other$/', $name)) {
@@ -8699,9 +8721,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 }
                             }
                             break;
-                        case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-                        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
+                        case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                        case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                         case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                             $shown = $code;
                             break;
@@ -8715,16 +8737,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             }
                             break;
                         case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-                        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-                        case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+                        case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                        case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                        case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                         case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                        case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+                        case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                         case Question::QT_ASTERISK_EQUATION: //Equation
                         case Question::QT_I_LANGUAGE: //Language Question
                         case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
-                        case Question::QT_X_BOILERPLATE_QUESTION: //BOILERPLATE QUESTION
+                        case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
                             $shown = $code;
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
@@ -8735,10 +8757,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 $shown = $code; // This one return sgqa.code
                             }
                             break;
-                        case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+                        case Question::QT_G_GENDER: //GENDER drop-down list
                         case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
-                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                        case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
                             $ansArray = $var['ansArray'];
                             if (is_null($ansArray)) {
                                 $shown = $default;
@@ -8754,7 +8776,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                     return $shown;
                 }
-            // NB: No break needed
+                // NB: No break needed
             case 'relevanceStatus':
                 $gseq = (isset($var['gseq'])) ? $var['gseq'] : -1;
                 $qid = (isset($var['qid'])) ? $var['qid'] : -1;
@@ -8765,11 +8787,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if (isset($args[1]) && $args[1] == 'NAOK') {
                     return 1;
                 }
-                $grel = (isset($_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq] : 1);   // true by default
-                $qrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$qid] : 0);
-                $sqrel = (isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]) ? $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
+                $grel = 1; // Group relevance true by default
+                if(isset($_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq])) {
+                    $grel =  $_SESSION[$this->sessid]['relevanceStatus']['G' . $gseq];
+                }
+                $qrel = 0; // Question relevance false by default since EM creation. Update it must create a major API update
+                if(isset($_SESSION[$this->sessid]['relevanceStatus'][$qid])) {
+                    $qrel =  $_SESSION[$this->sessid]['relevanceStatus'][$qid];
+                }
+                $sqrel = 1; // true by default - only want false if a subquestion is really irrelevant
+                if(isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid])) {
+                    $sqrel =  $_SESSION[$this->sessid]['relevanceStatus'][$rowdivid];
+                }
                 return ($grel && $qrel && $sqrel);
-            // NB: No break needed
+                // NB: No break needed
             case 'onlynum':
                 if (isset($args[1]) && ($args[1] == 'value' || $args[1] == 'valueNAOK')) {
                     return 1;
@@ -8793,7 +8824,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'scale_id':
             default:
                 return (isset($var[$attr])) ? $var[$attr] : $default;
-            // NB: No break needed
+                // NB: No break needed
         }
     }
 
@@ -8895,6 +8926,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
         $LEM =& LimeExpressionManager::singleton();
         $LEM->sPreviewMode = 'logic';
+        // We set $LEM->em->resetErrorsAndWarningsOnEachPart = false because, if a string has more than one expression, error information could be lost
+        $LEM->em->resetErrorsAndWarningsOnEachPart = false;
         $aSurveyInfo = getSurveyInfo($sid, $_SESSION['LEMlang']);
         $aAttributesDefinitions = questionHelper::getAttributesDefinitions();
         /* All final survey string must be shown in survey language #12208 */
@@ -9284,7 +9317,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $rowdivid = $sgqa;
                 $varName = $LEM->knownVars[$sgqa]['qcode'];
                 switch ($q['info']['type']) {
-                    case Question::QT_1_ARRAY_MULTISCALE:
+                    case Question::QT_1_ARRAY_DUAL:
                         if (preg_match('/#1$/', $sgqa)) {
                             $rowdivid = null;   // so that doesn't show same message for second scale
                         } else {
@@ -9297,8 +9330,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             $rowdivid = null;
                         }
                         break;
-                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
-                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
+                    case Question::QT_COLON_ARRAY_NUMBERS:
+                    case Question::QT_SEMICOLON_ARRAY_TEXT:
                         $_rowdivid = $LEM->knownVars[$sgqa]['rowdivid'];
                         if (isset($sawThis[$qid . '~' . $_rowdivid])) {
                             $rowdivid = null;   // so don't show again
@@ -9377,7 +9410,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
                     $subQeqn = '';
                     $rowdivid = $sgqas[0] . $ansInfo[1];
-                    if ($q['info']['type'] == Question::QT_R_RANKING_STYLE) {
+                    if ($q['info']['type'] == Question::QT_R_RANKING) {
                         $rowdivid = $LEM->sid . 'X' . $gid . 'X' . $qid . $ansInfo[1];
                     }
                     if (isset($LEM->subQrelInfo[$qid][$rowdivid])) {

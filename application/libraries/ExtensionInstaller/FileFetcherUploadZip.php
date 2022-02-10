@@ -13,7 +13,7 @@ use RecursiveIteratorIterator;
  * Must work for all extension types: plugins, theme, question theme, etc.
  *
  * @since 2018-09-25
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 class FileFetcherUploadZip extends FileFetcher
 {

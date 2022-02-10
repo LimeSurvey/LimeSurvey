@@ -167,7 +167,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public $oOptionLabels;
     // used for twig files, same content as $oOptions, but in array format
     public $aOptions = array();
-    
+
     public $showInherited = 1;
 
     public $searched_value;
@@ -218,7 +218,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
-        
+
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
@@ -273,9 +273,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             // pgsql need casting, unsure for mssql
             if (Yii::app()->db->getDriverName() == 'pgsql') {
                 $oCriteria->addInCondition('CAST(stg_value as ' . App()->db->schema->getColumnType("integer") . ')', $aGroupId);
-            }
-            //mysql App()->db->schema->getColumnType("integer") give int(11), mssql seems to have issue if cast alpha to numeric
-            else {
+            } else {
+                //mysql App()->db->schema->getColumnType("integer") give int(11), mssql seems to have issue if cast alpha to numeric
                 $oCriteria->addInCondition('stg_value', $aGroupId);
             }
             SettingGlobal::model()->deleteAll($oCriteria);
@@ -423,10 +422,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @inheritdoc
      * @return Survey
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var Survey $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -718,7 +717,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $mappings = [];
         foreach ($this->getTokenAttributes() as $name => $attribute) {
             if ($attribute['cpdbmap'] != '') {
-                if (ParticipantAttributeName::model()->findByPk($attribute['cpdbmap'])){
+                if (ParticipantAttributeName::model()->findByPk($attribute['cpdbmap'])) {
                     $mappings[$attribute['cpdbmap']] = $name;
                 }
             }
@@ -864,7 +863,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 throw new CException("Unable to get a template name from group for survey {$this->sid}");
             }
         }
-        
+
         return $sTemplateName;
     }
 
@@ -1131,9 +1130,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // If the survey is not active, no date test is needed
         if ($this->active == 'N') {
             $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('Inactive') . '"><span class="fa fa-stop text-warning"></span><span class="sr-only">' . gT('Inactive') . '"</span></a>';
-        }
-        // If it's active, then we check if not expired
-        elseif ($this->expires != '' || $this->startdate != '') {
+        } elseif ($this->expires != '' || $this->startdate != '') {
+            // If it's active, then we check if not expired
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
             $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
@@ -1162,9 +1160,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             } else {
                 $running = $sIconRunning;
             }
-        }
-        // If it's active, and doesn't have expire date, it's running
-        else {
+        } else {
+            // If it's active, and doesn't have expire date, it's running
             $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('Active') . '"><span class="fa fa-play text-success"></span><span class="sr-only">' . gT('Active') . '"</span></a>';
             //$running = '<div class="survey-state"><span class="fa fa-play text-success"></span></div>';
         }
@@ -2055,7 +2052,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         return $dataSecurityNoticeLabel;
     }
-    
+
     /**
      * @param string $type Question->type
      * @param bool $includeSubquestions
@@ -2268,7 +2265,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return true;
         }
         /* Inherited by SurveysInGroup */
-        if (SurveysInGroup::model()->findByPk($this->gsid)->hasPermission('surveys', $sGlobalCRUD, $iUserID)) {
+        $sig = SurveysInGroup::model()->findByPk($this->gsid);
+        if ($sig && $sig->hasPermission('surveys', $sGlobalCRUD, $iUserID)) {
             return true;
         }
         return Permission::model()->hasPermission($this->getPrimaryKey(), 'survey', $sPermission, $sCRUD, $iUserID);

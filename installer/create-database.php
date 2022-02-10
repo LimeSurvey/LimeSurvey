@@ -119,7 +119,7 @@ function populateDatabase($oDB)
             'dvid' =>  "integer NOT NULL default '0'",
             'language' =>  "string(20) NOT NULL",
             'defaultvalue' =>  "text",
-        ));
+        ), $options);
         $oDB->createCommand()->createIndex('{{idx1_defaultvalue_ls}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], false);
 
         // expression_errors
@@ -331,7 +331,7 @@ function populateDatabase($oDB)
             'renewed_last' =>  "datetime NULL",
             'created_at' =>  "datetime NOT NULL",
             'created_by' =>  "int NOT NULL"
-        ]);
+        ], $options);
 
         $oDB->createCommand()->createIndex('{{idx1_name}}', '{{permissiontemplates}}', 'name', true);
 
@@ -1120,6 +1120,31 @@ function populateDatabase($oDB)
             'properties' => "text NOT NULL",
             'attributes' => "text NULL",
         ], $options);
+
+        // language tables: sourcemessage + message and constraint
+        $oDB->createCommand()->createTable(
+            '{{source_message}}',
+            [
+                'id' => "pk",
+                'category' => "string(35)",
+                'message' => "text",
+            ],
+            $options
+        );
+        $oDB->createCommand()->createTable(
+            '{{message}}',
+            [
+                'id' => "integer NOT NULL",
+                'language' => "string(16)",
+                'translation' => "text",
+            ],
+            $options
+        );
+        $oDB->createCommand()->addPrimaryKey(
+            '{{message_pk}}',
+            '{{message}}',
+            ['id', 'language']
+        );
 
         // Install default plugins.
         foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {

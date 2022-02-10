@@ -51,7 +51,7 @@ class TwigCommand extends CConsoleCommand
     public function actionGenerateTwigTmpFiles($sThemeDir = null, $bGenerateSurveyCache = true, $bGenerateQuestionsCache = true, $bGenerateAdminCache = true)
     {
         $this->aLogs = array();
-        $this->aLogs["action"] = "actionGenerateTwigTmpFiles $sThemeDir $bGenerateSurveyCache $bGenerateQuestionsCache $bGenerateAdminCache $bShowLogs";
+        $this->aLogs["action"] = "actionGenerateTwigTmpFiles $sThemeDir $bGenerateSurveyCache $bGenerateQuestionsCache $bGenerateAdminCache";
         if ($bGenerateSurveyCache) {
             $this->actionGenerateSurveyThemesCache($sThemeDir);
         }

@@ -11,6 +11,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
         '56823cacd97af379eceaf82ad00b928f' => __DIR__ . '/..' . '/phpseclib/bcmath_compat/lib/bcmath.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -28,6 +29,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         ),
         'S' => 
         array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
             'SPSS\\' => 5,
         ),
@@ -40,8 +42,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'LimeSurvey\\PluginManager\\' => 25,
             'LimeSurvey\\Models\\Services\\' => 27,
             'LimeSurvey\\Menu\\' => 16,
+            'LimeSurvey\\Helpers\\Update\\' => 26,
             'LimeSurvey\\Helpers\\' => 19,
             'LimeSurvey\\ExtensionInstaller\\' => 30,
+            'LimeSurvey\\Exceptions\\' => 22,
             'LimeSurvey\\Datavalueobjects\\' => 28,
         ),
     );
@@ -58,6 +62,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
@@ -84,6 +92,11 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/MenuObjects',
         ),
+        'LimeSurvey\\Helpers\\Update\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/helpers/update',
+            1 => __DIR__ . '/../..' . '/application/helpers/update/updates',
+        ),
         'LimeSurvey\\Helpers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/helpers',
@@ -91,6 +104,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'LimeSurvey\\ExtensionInstaller\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/ExtensionInstaller',
+        ),
+        'LimeSurvey\\Exceptions\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/exceptions',
         ),
         'LimeSurvey\\Datavalueobjects\\' => 
         array (
@@ -108,12 +125,17 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         ),
     );
 
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitddb1a145e450f862353420acc5153e40::$classMap;
 
         }, null, ClassLoader::class);
     }

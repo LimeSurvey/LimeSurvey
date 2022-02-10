@@ -80,7 +80,7 @@ function updateset($lid)
             }
         }
     }
-    
+
 
     // Update the label set itself
     $labelset->label_name = $postlabel_name;
@@ -162,12 +162,12 @@ function modlabelsetanswers($lid)
                         $strTemp = 'text_' . $data['langs'][0];
                     }
                     $title = $oLabelData[$strTemp];
-                    
+
                     $oLabelI10N = new LabelL10n();
                     $oLabelI10N->label_id = $oLabel->id;
                     $oLabelI10N->title = $title;
                     $oLabelI10N->language = $lang;
-    
+
                     if ($oLabelI10N->validate()) {
                         $oLabelI10N->save();
                     } else {

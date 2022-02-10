@@ -10,7 +10,7 @@ class ResponsesController extends LSBaseController
      * @param $controller
      * @param $id
      */
-    function __construct($controller, $id)
+    public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
 
@@ -38,7 +38,7 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * this is part of _renderWrappedTemplate implement in old responses.php
+     * this is part of renderWrappedTemplate implement in old responses.php
      *
      * @param string $view
      * @return bool
@@ -393,7 +393,7 @@ class ResponsesController extends LSBaseController
         $displaymode = App()->request->getPost('displaymode', null);
 
         if ($displaymode !== null) {
-            $this->set_grid_display($displaymode);
+            $this->setGridDisplay($displaymode);
         }
 
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
@@ -621,7 +621,7 @@ class ResponsesController extends LSBaseController
 
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             $oResponse = Response::model($surveyId)->findByPk($responseId);
-            if (is_null($oResponse)){
+            if (is_null($oResponse)) {
                 App()->user->setFlash('error', gT('Found no response with ID %d'), $responseId);
                 $this->redirect(["responses/browse", "surveyId" => $surveyId]);
             }
@@ -629,11 +629,13 @@ class ResponsesController extends LSBaseController
             if (isset($aQuestionFiles[$index])) {
                 $aFile = $aQuestionFiles[$index];
                 // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
-                $sDir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $surveyId . "/files/";
+                $sDir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
                 $sRealUserPath = realpath($sFileRealName);
-                if ($sRealUserPath === false || strpos($sRealUserPath, $sDir) !== 0) {
-                    throw new CHttpException(403, "Disable for security reasons.");
+                if ($sRealUserPath === false) {
+                    throw new CHttpException(404, "File not found.");
+                } elseif (strpos($sRealUserPath, $sDir) !== 0) {
+                        throw new CHttpException(403, "File cannot be accessed.");
                 } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
                     if (is_null($mimeType)) {
@@ -869,7 +871,7 @@ class ResponsesController extends LSBaseController
      * @param string $displaymode
      * @return void
      */
-    public function set_grid_display($displaymode): void
+    public function setGridDisplay($displaymode): void
     {
         if ($displaymode === 'extended') {
             App()->user->setState('responsesGridSwitchDisplayState', 'extended');
@@ -957,6 +959,12 @@ class ResponsesController extends LSBaseController
 
         $thissurvey = getSurveyInfo($surveyId);
 
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
+        LimeExpressionManager::SetEMLanguage($thissurvey['oSurvey']->language);
+        LimeExpressionManager::SetSurveyId($surveyId);
+        LimeExpressionManager::StartProcessingPage(false, true);
+
         if (!$thissurvey) {
             App()->session['flashmessage'] = gT("Invalid survey ID");
             $this->redirect(["admin/index"]);
@@ -1024,5 +1032,4 @@ class ResponsesController extends LSBaseController
 
         return ['numberOfErrors' => $errors, 'numberOfTimingErrors' => $timingErrors];
     }
-
 }

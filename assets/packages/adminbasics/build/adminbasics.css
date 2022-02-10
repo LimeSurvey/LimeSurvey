@@ -116,10 +116,6 @@
   display: none;
 }
 
-#cpdbatt {
-  min-height: 100px;
-}
-
 .draggable-container {
   min-height: 300px;
 }
@@ -224,6 +220,10 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 
 /* Existing attribute column in CSV CPDB import */
 .centralatt {
+  min-height: 100px;
+}
+
+#cpdbatt {
   min-height: 100px;
 }
 
@@ -342,7 +342,7 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 }
 
 .grid-view-ls.grid-view-loading {
-  background: url(/application/extensions/bootstrap/assets/img/loader.gif) no-repeat 100% 10px;
+  background: url(../img/loader.gif) no-repeat 100% 10px;
 }
 
 .grid-view-ls.grid-view-loading .table {
@@ -4634,4 +4634,10 @@ table.dataTable thead .sorting_desc:after {
 /** Surveys Grid View **/
 #survey-grid {
   overflow-x: visible;
+}
+
+/* Fix text alignment on RTL */
+html[dir="rtl"] .dropdown-menu,
+html[dir="rtl"] th {
+  text-align: initial;
 }

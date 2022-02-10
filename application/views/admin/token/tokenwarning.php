@@ -20,7 +20,7 @@
                             /** eT("If you initialise a survey participants table for this survey then this survey will only be accessible to users who provide an access code either manually or by URL."); **/
                             eT("If you switch to closed-access mode then this survey will only be accessible to users who provide an access code either manually or by URL."); ?>
                             <br /> <br />
-                            <?php eT("You can switch back to open-access mode at any time. Navigate to Settings --> Survey participants and click on the red 'Delete participants table' button from the top bar."); ?>
+                            <?php eT("You can switch back to open-access mode at any time. Navigate to Settings -> Survey participants and click on the red 'Delete participants table' button in the top bar."); ?>
                         <?php ?><br /><br />
                         <br /><br />
 

@@ -769,11 +769,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       arr.forEach(function(entry) {
         const lang = entry[0];
         const row = entry[1];
-        if (lang.length !== 2) {
-          alert('Internal error: lang must have exactly two characters, but is ' + lang);
-          throw 'abort';
-        }
-          /*
+        /*
         if (!(row instanceof HTMLElement)) {
           alert('Internal error: row is not an HTMLElement but a ' + (typeof row));
           throw 'abort';
@@ -788,11 +784,20 @@ $(document).on('ready pjax:scriptcomplete', function () {
           throw 'abort';
         }
 
+        var currentIds = [];
         if (type === 'replace') {
           $table.find('tbody').find('tr').each((i, tableRow) => {
             $(tableRow).remove();
           });
+        } else {
+          $table.find('tbody').find('tr').each((i, tableRow) => {
+            currentIds.push($(tableRow).data('common-id').split('_').shift());
+          });
         }
+
+        // Answer option IDs are generated randomly, so they repeat sometimes.
+        // We keep track of the generated numbers to make sure they don't repeat.
+        var generatedIds = currentIds;
 
         // Loop the preview table and copy rows to destination (subquestions or answer options).
         $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
@@ -816,7 +821,17 @@ $(document).on('ready pjax:scriptcomplete', function () {
             // Only define random ids the FIRST language we loop for.
             // Different translations still use the same question code in the input name.
             if (langIds[i] === undefined) {
-              langIds[i] = `new${Math.floor(Math.random() * 10000)}`;
+              var randId = `new${Math.floor(Math.random() * 99999)}`;
+              var tries = 1;
+              while (generatedIds.includes(randId)) {
+                if (tries > 100) {
+                  throw 'Couldn\'t generate a unique ID';
+                }
+                randId = `new${Math.floor(Math.random() * 99999)}`;
+                tries++;
+              }
+              generatedIds.push(randId);
+              langIds[i] = randId;
             }
 
             $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', langIds[i]));
@@ -914,6 +929,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
     */
 
+    var currentIds = [];
     if ($closestTable.find('.code').length < 0) {
       $closestTable.find('.code-title').each(function () {
         codes.push($(this).text());
@@ -921,6 +937,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     } else {
       $closestTable.find('.code').each(function () {
         codes.push($(this).val());
+        currentIds.push($(this).closest('tr').data('common-id').split('_').shift());
       });
     }
 
@@ -929,7 +946,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     // TODO: Doc answers
     const answers = {};
     const lsrows = $('#quickaddarea').val().split('\n');
-    const allrows = $closestTable.find('tr').length;
+    const allrows = $closestTable.find('tbody tr').length;
     const separatorchar = getSeparatorChar(lsrows);
 
     let numericSuffix = '';
@@ -952,24 +969,40 @@ $(document).on('ready pjax:scriptcomplete', function () {
       codeSigil.push(currentCharacter);
     }
 
+    // Answer option IDs are generated randomly, so they repeat sometimes.
+    // We keep track of the generated numbers to make sure they don't repeat.
+    var generatedIds = currentIds;
+
     // TODO: Document value
     // NB: splitCSV is added to string prototype in adminbasics.
     lsrows.forEach((value /*: string & {splitCSV: string => Array<string>} */, k /*: number */) => {
       const thisrow = value.splitCSV(separatorchar);
 
       if (thisrow.length <= languages.length) {
-        let qCode = (parseInt(k) + 1).toString();
+        let numericCode = (parseInt(k) + 1);
         if (lsreplace === false) {
-          qCode += (parseInt(allrows));
+          numericCode += (parseInt(allrows));
         }
-        while (qCode.toString().length < numericSuffix.length) {
+        let qCode = numericCode.toString();
+        while (qCode.length < numericSuffix.length) {
           qCode = `0${qCode}`;
         }
-        thisrow.unshift(codeSigil.join('') + qCode);
+        let prefix = codeSigil.slice(0, Math.max(0, 5 - qCode.length)).join('');
+        thisrow.unshift(prefix + qCode);
       } else {
         thisrow[0] = thisrow[0].replace(/[^A-Za-z0-9]/g, '').substr(0, 20);
       }
-      const quid = `new${Math.floor(Math.random() * 10000)}`;
+
+      var quid = `new${Math.floor(Math.random() * 99999)}`;
+      var tries = 1;
+      while (generatedIds.includes(quid)) {
+        if (tries > 100) {
+          throw 'Couldn\'t generate a unique ID';
+        }
+        quid = `new${Math.floor(Math.random() * 99999)}`;
+        tries++;
+      }
+      generatedIds.push(quid);
 
       // TODO: What's happening here?
       languages.forEach((language, x) => {
@@ -1424,7 +1457,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {boolean}
    * @todo Dual scale
    */
-  function checkSubquestionCodeUnique(table /*: HTMLElement */) /*: boolean */ {
+  function checkSubquestionCodeUnique(table /*: HTMLElement */, msg /*: string */) /*: boolean */ {
     const codeInputs = table.querySelectorAll('input.code');
     // Get all codes from code input node list.
     const codes = [...codeInputs].map((input) => {
@@ -1434,8 +1467,18 @@ $(document).on('ready pjax:scriptcomplete', function () {
         throw 'input is not an HTMLInputElement';
       }
     });
-    const uniqueCodes = codes.filter((value, index, self) => self.indexOf(value) === index);
-    return codes.length === uniqueCodes.length;
+    const duplicateCodes = codes.filter((value, index, self) => self.indexOf(value) !== index);
+    codeInputs.forEach((input, key) => {
+      if (input instanceof HTMLInputElement) {
+        const parent = $(input.parentElement);
+        if (duplicateCodes.includes(input.value)) {
+          parent.addClass('has-error');
+        } else {
+          parent.removeClass('has-error');
+        }
+      }
+    });
+    return duplicateCodes.length == 0;
   }
 
   /**
@@ -1452,14 +1495,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
         throw 'Found no table';
       }
 
+      var hasError = false;
+
       // Check uniqueness.
-      if (!checkSubquestionCodeUnique(table)) {
-        $(that.parentElement).addClass('has-error');
+      if (!checkSubquestionCodeUnique(table, msg)) {
         LS.LsGlobalNotifier.create(
           msg,
           'well-lg bg-danger text-center'
         );
-        return false;
+        hasError = true;
       }
 
       // Check too long subquestion code.
@@ -1474,11 +1518,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
             'Subquestion code is too long. Maximal number of characters is: 20.',
             'well-lg bg-danger text-center'
           );
-          return false;
+          hasError = true;
         }
       }
 
-      $(that.parentElement).removeClass('has-error');
+      if (hasError) {
+        return false;
+      }
+
+      $(that.parentElement).removeClass('has-error duplicate-code');
       return true;
     };
   }

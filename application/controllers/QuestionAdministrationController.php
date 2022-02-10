@@ -1,10 +1,10 @@
 <?php
+
 /**
  * Class QuestionAdministrationController
  */
 class QuestionAdministrationController extends LSBaseController
 {
-
     /**
      * It's import to have the accessRules set (security issue).
      * Only logged in users should have access to actions. All other permissions
@@ -30,7 +30,7 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * This part comes from _renderWrappedTemplate
+     * This part comes from renderWrappedTemplate
      *
      * @param string $view View
      *
@@ -227,13 +227,13 @@ class QuestionAdministrationController extends LSBaseController
 
         // Delete Button
         $this->aData['showDeleteButton'] = true;
-        
+
         $this->aData['sid'] = $question->sid;
         $this->aData['gid'] = $question->gid;
         $this->aData['qid'] = $question->qid;
 
         $this->aData['hasdefaultvalues'] = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
-        
+
         $generalSettings = $this->getGeneralOptions(
             $question->qid,
             $question->type,
@@ -1089,7 +1089,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
         $fatalerror = '';
-        
+
         // Check file size and redirect on error
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('questionAdministration/importView', array('surveyid' => $iSurveyID)));
@@ -1609,8 +1609,8 @@ class QuestionAdministrationController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyId);
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid' => $questionGroupId));
         $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
-        
-        //array elements for frontend (topbar etc.)
+
+        // Array elements for frontend (topbar etc.)
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyId . ")";
@@ -1647,7 +1647,7 @@ class QuestionAdministrationController extends LSBaseController
                     )
                 );
             }
-            
+
             $newQuestionL10n = Yii::app()->request->getParam('questionI10N');
             $copyQuestionTextValues = [];
             if (!empty($newQuestionL10n)) {
@@ -2014,7 +2014,7 @@ class QuestionAdministrationController extends LSBaseController
             $iQid = (int)$sQid;
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
             // These are the questions types that have no mandatory property - so ignore them
-            if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
+            if ($oQuestion->type != Question::QT_X_TEXT_DISPLAY && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $oQuestion->mandatory = $sMandatory;
                 $oQuestion->save();
             }
@@ -2433,8 +2433,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $iSurveyId = $aQuestionData['sid'];
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        // TODO: Don't read request from private methods.
-        $iQuestionGroupId = (int) App()->request->getParam('gid'); //the group id the question belongs to
+        $iQuestionGroupId = (int) $aQuestionData['gid'];
         $type = SettingsUser::getUserSettingValue(
             'preselectquestiontype',
             null,

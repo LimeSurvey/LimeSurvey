@@ -119,7 +119,7 @@
 
                     <!-- Show Survey logic file -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_form'); ?>">
+                        <a href="<?php echo $this->createUrl('admin/expressions/sa/surveyLogicForm'); ?>">
                             <?php eT("Show survey logic file");?>
                         </a>
                     </li>
@@ -290,7 +290,7 @@
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
-                            <?php eT("Survey Menu");?>
+                            <?php eT("Survey menus");?>
                         </a>
                     </li>
                 <?php endif;?>

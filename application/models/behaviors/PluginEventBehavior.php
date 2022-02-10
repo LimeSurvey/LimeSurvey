@@ -20,7 +20,7 @@ class PluginEventBehavior extends CModelBehavior
     public function afterDelete(CEvent $event)
     {
         $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Delete');
-        $this->_dispatchDynamic('after', 'Delete');
+        $this->dispatchDynamic('after', 'Delete');
         $this->dispatchPluginModelEvent('afterModelDelete');
     }
 
@@ -32,7 +32,7 @@ class PluginEventBehavior extends CModelBehavior
             return;
         }
         $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Save');
-        $this->_dispatchDynamic('after', 'Save');
+        $this->dispatchDynamic('after', 'Save');
         $this->dispatchPluginModelEvent('afterModelSave');
     }
 
@@ -40,7 +40,7 @@ class PluginEventBehavior extends CModelBehavior
     public function beforeDelete(CModelEvent $event)
     {
         $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Delete');
-        $this->_dispatchDynamic('before', 'Delete');
+        $this->dispatchDynamic('before', 'Delete');
         $this->dispatchPluginModelEvent('beforeModelDelete');
     }
 
@@ -53,7 +53,7 @@ class PluginEventBehavior extends CModelBehavior
             return;
         }
         $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Save');
-        $this->_dispatchDynamic('before', 'Save');
+        $this->dispatchDynamic('before', 'Save');
         $this->dispatchPluginModelEvent('beforeModelSave');
     }
 
@@ -64,7 +64,7 @@ class PluginEventBehavior extends CModelBehavior
      * @param string $what
      * @return PluginEvent the dispatched event
      */
-    private function _dispatchDynamic($when, $what)
+    private function dispatchDynamic($when, $what)
     {
         if (is_subclass_of($this->owner, 'Dynamic')) {
             $params = array(

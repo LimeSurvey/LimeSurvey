@@ -540,7 +540,8 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['hiddenInputs']         .= \CHtml::hiddenField('start_time', time(), array('id' => 'start_time'));
             $_SESSION[$this->LEMsessid]['LEMpostKey'] =  isset($_POST['LEMpostKeyPreset']) ? $_POST['LEMpostKeyPreset'] : mt_rand();
             $this->aSurveyInfo['hiddenInputs']         .= \CHtml::hiddenField('LEMpostKey', $_SESSION[$this->LEMsessid]['LEMpostKey'], array('id' => 'LEMpostKey'));
-            if (!empty($_SESSION[$this->LEMsessid]['token'])) {
+            /* Reset session with multiple tabs (show Token mismatch issue) , but only for not anonymous survey */
+            if (!empty($_SESSION[$this->LEMsessid]['token']) and $this->aSurveyInfo['anonymized'] != 'Y') {
                 $this->aSurveyInfo['hiddenInputs']     .= \CHtml::hiddenField('token', $_SESSION[$this->LEMsessid]['token'], array('id' => 'token'));
             }
         }
@@ -799,6 +800,16 @@ class SurveyRuntimeHelper
         //$_SESSION[$this->LEMsessid]['step'] can not be less than 0, fix it always #09772
         $_SESSION[$this->LEMsessid]['step'] = $_SESSION[$this->LEMsessid]['step'] < 0 ? 0 : $_SESSION[$this->LEMsessid]['step'];
         LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
+        if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])) {
+            /* Move to max step in all condition with force */
+            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step']) {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['maxstep']);
+                LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['maxstep'], false, false);
+            } else {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['step']);
+            }
+            unset($_SESSION[$this->LEMsessid]['LEMtokenResume']);
+        }
         LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
     }
 
@@ -910,14 +921,14 @@ class SurveyRuntimeHelper
         // retrieve datas from local variable
         if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])) {
             LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
-
-            // Do it only if needed : we don't need it if we don't have index
-            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step'] && $this->aSurveyInfo['questionindex']) {
+            /* Move to max step in all condition with force */
+            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step']) {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['maxstep']);
                 LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['maxstep'], false, false);
+            } else {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['step']);
             }
-
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false); // if late in the survey, will re-validate contents, which may be overkill
-
             unset($_SESSION[$this->LEMsessid]['LEMtokenResume']);
         } elseif (!$this->LEMskipReprocessing) {
             //Move current step ###########################################################################
@@ -1442,7 +1453,11 @@ class SurveyRuntimeHelper
 
         //Mandatory question(s) with unanswered answer
         if ($this->aStepInfo['mandViolation'] && $this->okToShowErrors) {
-            $aErrorsMandatory[] = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
+            if ($this->aStepInfo['mandNonSoft']) {
+                $aErrorsMandatory[] = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
+            } else {
+                $aErrorsMandatory[] = gT("One or more mandatory questions have not been answered. If possible, please complete them before continuing to the next page.");
+            }
         }
 
         // Question(s) with not valid answer(s)
