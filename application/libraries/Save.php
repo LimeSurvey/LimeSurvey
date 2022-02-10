@@ -287,13 +287,30 @@ class Save
                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload", $aParams);
                 $from     = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 
-                if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid))) {
-                    $emailsent = "Y";
-                } else {
+                $event = new PluginEvent('beforeSurveyEmail');
+                $event->set('survey', $surveyid);
+                $event->set('type', 'savesurveydetails');
+                $event->set('model', 'reminder');
+                $event->set('subject', $subject);
+                $event->set('to', $_POST['saveemail']);
+                $event->set('body', $message);
+                $event->set('from', $from);
+                $event->set('bounce', getBounceEmail($surveyid));
+                App()->getPluginManager()->dispatchEvent($event);
+                $subject = $event->get('subject');
+                $message = $event->get('body');
+                $to = $event->get('to');
+                $bounce = $event->get('bounce');
+                $from = $event->get('from');
+                if ($event->get('send', true) != false) {
+                    if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, $bounce)) {
+                        $emailsent = "Y";
+                    } else {
 
-                    $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
-                    if (trim($thissurvey['adminemail']) == '') {
-                        $errormsg .= gT('(Reason: Administrator email address empty)');
+                        $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
+                        if (trim($thissurvey['adminemail']) == '') {
+                            $errormsg .= gT('(Reason: Administrator email address empty)');
+                        }
                     }
                 }
             }
