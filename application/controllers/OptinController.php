@@ -63,6 +63,7 @@ class OptinController extends LSYii_Controller
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);
 
         $link = '';
+        $tokenAttributes = [];
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
@@ -72,9 +73,10 @@ class OptinController extends LSYii_Controller
                 $message = gT('Please confirm that you want to be added back to this survey by clicking the button below.') . '<br>' . gT("After confirmation you may start receiving invitations and reminders for this survey.");
                 $link = Yii::app()->createUrl('optin/addtokens', ['surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken]);
             }
+            $tokenAttributes = $token->getAttributes();
         }
 
-        $this->renderHtml($message, $survey, $link);
+        $this->renderHtml($message, $survey, $link, $tokenAttributes);
     }
 
     /**
@@ -113,6 +115,8 @@ class OptinController extends LSYii_Controller
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);
 
         $link = '';
+        $tokenAttributes = [];
+        $participantAttributes = [];
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
@@ -135,9 +139,14 @@ class OptinController extends LSYii_Controller
             } else {
                 $message = gT('You are already part of the central participants list for this site.');
             }
+
+            $tokenAttributes = $token->getAttributes();
+            if (!empty($participant)) {
+                $participantAttributes = $participant->getAttributes();
+            }
         }
 
-        $this->renderHtml($message, $survey, $link);
+        $this->renderHtml($message, $survey, $link, $tokenAttributes, $participantAttributes);
     }
 
     /**
@@ -176,6 +185,8 @@ class OptinController extends LSYii_Controller
         LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);
 
+        $tokenAttributes = [];
+        $participantAttributes = [];
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
@@ -197,11 +208,16 @@ class OptinController extends LSYii_Controller
                         $message .= "<br>" . $blacklistMessage;
                     }
                 }
+                $participant = $blacklistHandler->getCentralParticipantFromToken($token);
+                if (!empty($participant)) {
+                    $participantAttributes = $participant->getAttributes();
+                }
             }
+            $tokenAttributes = $token->getAttributes();
         }
 
 
-        $this->renderHtml($message, $survey);
+        $this->renderHtml($message, $survey, '', $tokenAttributes, $participantAttributes);
     }
 
     /**
@@ -210,9 +226,11 @@ class OptinController extends LSYii_Controller
      * @param string $message
      * @param Survey $survey
      * @param string $link
+     * @param array<string,mixed> $token
+     * @param array<string,mixed> $participant
      * @return void
      */
-    private function renderHtml($message, $survey, $link = '')
+    private function renderHtml($message, $survey, $link = '', $token = [], $participant = [])
     {
         $aSurveyInfo = getSurveyInfo($survey->primaryKey);
 
@@ -220,6 +238,8 @@ class OptinController extends LSYii_Controller
         $aSurveyInfo['optin_message'] = $message;
         $aSurveyInfo['optin_link'] = $link;
         $aSurveyInfo['aCompleted'] = true;  // Avoid showing the progress bar
+        $aSurveyInfo['token'] = $token;
+        $aSurveyInfo['participant'] = $participant;
         Template::getInstance('', $survey->primaryKey);
 
         Yii::app()->twigRenderer->renderTemplateFromFile(

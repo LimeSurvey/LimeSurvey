@@ -57,14 +57,20 @@ class OptoutController extends LSYii_Controller
         Yii::app()->setLanguage($sBaseLanguage);
 
         $link = '';
+        $tokenAttributes = [];
         $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $sToken));
-        if (substr($oToken->emailstatus, 0, strlen('OptOut')) == 'OptOut') {
-            $sMessage = gT('You have already been removed from this survey.');
+        if (!isset($oToken)) {
+            $sMessage = gT('You are not a participant of this survey.');
         } else {
-            $sMessage = gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.");
-            $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $iSurveyID, 'langcode' => $sBaseLanguage, 'token' => $sToken));
+            if (substr($oToken->emailstatus, 0, strlen('OptOut')) == 'OptOut') {
+                $sMessage = gT('You have already been removed from this survey.');
+            } else {
+                $sMessage = gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.");
+                $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $iSurveyID, 'langcode' => $sBaseLanguage, 'token' => $sToken));
+            }
+            $tokenAttributes = $oToken->getAttributes();
         }
-        $this->renderHtml($sMessage, $oSurvey, $link);
+        $this->renderHtml($sMessage, $oSurvey, $link, $tokenAttributes);
     }
 
     /**
@@ -99,23 +105,34 @@ class OptoutController extends LSYii_Controller
         Yii::app()->setLanguage($baseLanguage);
 
         $token = Token::model($surveyId)->findByAttributes(array('token' => $accessToken));
-        $optedOutFromSurvey = substr($token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
-
-        $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
-        $participant = $blacklistHandler->getCentralParticipantFromToken($token);
 
         $link = '';
-        if (!empty($participant) && $participant->blacklisted != 'Y') {
-            $message = gT('Please confirm that you want to be removed from the central participants list for this site.');
-            $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true));
-        } elseif (!$optedOutFromSurvey) {
-            $message = gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.");
-            $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken));
+        $tokenAttributes = [];
+        $participantAttributes = [];
+        if (!isset($token)) {
+            $message = gT('You are not a participant of this survey.');
         } else {
-            $message = gT('You have already been removed from the central participants list for this site.');
+            $optedOutFromSurvey = substr($token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
+
+            $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
+            $participant = $blacklistHandler->getCentralParticipantFromToken($token);
+
+            if (!empty($participant) && $participant->blacklisted != 'Y') {
+                $message = gT('Please confirm that you want to be removed from the central participants list for this site.');
+                $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true));
+            } elseif (!$optedOutFromSurvey) {
+                $message = gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.");
+                $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken));
+            } else {
+                $message = gT('You have already been removed from the central participants list for this site.');
+            }
+            $tokenAttributes = $token->getAttributes();
+            if (!empty($participant)) {
+                $participantAttributes = $participant->getAttributes();
+            }
         }
 
-        $this->renderHtml($message, $survey, $link);
+        $this->renderHtml($message, $survey, $link, $tokenAttributes, $participantAttributes);
     }
 
     /**
@@ -154,6 +171,8 @@ class OptoutController extends LSYii_Controller
         LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);
 
+        $tokenAttributes = [];
+        $participantAttributes = [];
         if (!isset($token)) {
             $message = gT('You are not a participant in this survey.');
         } else {
@@ -172,10 +191,15 @@ class OptoutController extends LSYii_Controller
                         $message .= "<br>" . $blacklistMessage;
                     }
                 }
+                $participant = $blacklistHandler->getCentralParticipantFromToken($token);
+                if (!empty($participant)) {
+                    $participantAttributes = $participant->getAttributes();
+                }
             }
+            $tokenAttributes = $token->getAttributes();
         }
 
-        $this->renderHtml($message, $survey);
+        $this->renderHtml($message, $survey, '', $tokenAttributes, $participantAttributes);
     }
 
     /**
@@ -184,9 +208,11 @@ class OptoutController extends LSYii_Controller
      * @param string $message
      * @param Survey $survey
      * @param string $link
+     * @param array<string,mixed> $token
+     * @param array<string,mixed> $participant
      * @return void
      */
-    private function renderHtml($message, $survey, $link = '')
+    private function renderHtml($message, $survey, $link = '', $token = [], $participant = [])
     {
         $aSurveyInfo = getSurveyInfo($survey->primaryKey);
 
@@ -194,6 +220,8 @@ class OptoutController extends LSYii_Controller
         $aSurveyInfo['optin_message'] = $message;
         $aSurveyInfo['optin_link'] = $link;
         $aSurveyInfo['aCompleted'] = true;  // Avoid showing the progress bar
+        $aSurveyInfo['token'] = $token;
+        $aSurveyInfo['participant'] = $participant;
         Template::model()->getInstance('', $survey->primaryKey);
 
         Yii::app()->twigRenderer->renderTemplateFromFile(
