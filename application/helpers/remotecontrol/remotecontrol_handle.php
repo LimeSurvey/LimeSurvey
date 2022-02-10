@@ -1454,7 +1454,7 @@ class remotecontrol_handle
 
                     return (int) $iQuestionID;
                 } catch (Exception $e) {
-                    return array('status' => 'Error');
+                    return array('status' => $e->getMessage());
                 }
             } else {
                             return array('status' => 'No permission');

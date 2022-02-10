@@ -61,10 +61,6 @@ function loadanswers()
         $md5_code = md5($sLoadPass);
         $sha256_code = hash('sha256', $sLoadPass);
         if ($md5_code === $access_code || $sha256_code === $access_code || password_verify($sLoadPass, $access_code)) {
-            //A match has been found. Let's load the values!
-            //If this is from an email, build surveysession first
-            $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
-
             // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
             if (Yii::app()->request->getParam('loadall') === "reload") {
                 // We don't need to control if we have one, because we do the test before
@@ -93,7 +89,7 @@ function loadanswers()
                 $_SESSION['survey_' . $surveyid]['step'] = ($value > 1 ? $value : 1);
                 $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1;
             } else {
-                $_SESSION['survey_' . $surveyid]['maxstep'] = ($value > 1 ? $value : 1);
+                $_SESSION['survey_' . $surveyid]['maxstep'] = $_SESSION['survey_' . $surveyid]['totalsteps'];
             }
         } elseif ($column === "datestamp") {
             $_SESSION['survey_' . $surveyid]['datestamp'] = $value;
@@ -123,6 +119,7 @@ function loadanswers()
             }  // if (in_array(
         }  // else
     } // foreach
+    $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
     return true;
 }
 
