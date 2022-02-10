@@ -98,7 +98,15 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")]]
             );
         }
-        $oUser = $userid === null ? new User() : User::model()->findByPk($userid);
+        if ($userid === null) {
+            $oUser = new User();
+        } else {
+            $oUser = User::model()->findByPk((int)$userid);
+            if ($oUser === null) {
+                App()->user->setFlash('error', gT("User does not exist"));
+                $this->redirect(App()->request->urlReferrer);
+            }
+        }
         $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
         return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword]);
     }
@@ -178,7 +186,8 @@ class UserManagementController extends LSBaseController
             $passwordSetByUser = Yii::app()->request->getParam('preset_password');
             if ($passwordSetByUser == 0) { //in this case admin has not set a password, email with link will be sent
                 $data = $this->createAdminUser($aUser);
-            } else { //in this case admin has set a password, no email will be send ...just create user with given credentials
+            } else {
+                //in this case admin has set a password, no email will be send ..just create user with given credentials
                 $data = $this->createAdminUser($aUser, false);
             }
 
@@ -212,17 +221,24 @@ class UserManagementController extends LSBaseController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $times = App()->request->getParam('times', 5);
-        $passwordSize = (int) App()->request->getParam('passwordsize', 5);
-        $passwordSize = $passwordSize < 8 || is_nan($passwordSize) ? 8 : $passwordSize;
-        $prefix = flattenText(App()->request->getParam('prefix', 'randuser_'));
-        $email = App()->request->getParam('email', User::model()->findByPk(App()->user->id)->email);
+        if (!App()->request->isPostRequest) {
+            //it has to be post request when inserting data to DB
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("Access denied.")], 'noButton' => true]
+            );
+        }
+        $times = App()->request->getPost('times', 5);
+        $minPwLength = \LimeSurvey\Models\Services\PasswordManagement::MIN_PASSWORD_LENGTH;
+        $passwordSize = (int) App()->request->getPost('passwordsize', $minPwLength);
+        $prefix = flattenText(App()->request->getPost('prefix', 'randuser_'));
+        $email = App()->request->getPost('email', User::model()->findByPk(App()->user->id)->email);
 
         $randomUsers = [];
 
         for (; $times > 0; $times--) {
             $name = $this->getRandomUsername($prefix);
-            $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
+            $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword($passwordSize);
             $oUser = new User();
             $oUser->users_name = $name;
             $oUser->full_name = $name;
@@ -378,8 +394,8 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $oRequest = Yii::app()->request;
-        $userId = $oRequest->getParam('userid');
+        $userId = Yii::app()->request->getParam('userid');
+        $userId = sanitize_int($userId);
         $oUser = User::model()->findByPk($userId);
 
         // Check permissions
@@ -465,9 +481,8 @@ class UserManagementController extends LSBaseController
             );
         }
         $aTemplateModels = Template::model()->findAll();
-        $oRequest = Yii::app()->request;
-        $userId = $oRequest->getParam('userid');
-        $oUser = User::model()->findByPk($userId);
+        $userId = Yii::app()->request->getParam('userid');
+        $oUser = User::model()->findByPk((int)$userId);
 
         $aTemplates = array_map(function ($oTemplate) use ($userId) {
             $oPermission = Permission::model()->findByAttributes(array('permission' => $oTemplate->folder, 'uid' => $userId, 'entity' => 'template'));
@@ -524,6 +539,15 @@ class UserManagementController extends LSBaseController
      */
     public function actionAddRole(): ?string
     {
+        //Permission check user should have permission to add/edit new user ('create' or 'update')
+        if (!(Permission::model()->hasGlobalPermission('users', 'create') ||
+            Permission::model()->hasGlobalPermission('users', 'update'))) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
         $userId = Yii::app()->request->getParam('userid');
         $oUser = User::model()->findByPk($userId);
         $aPermissionTemplates = Permissiontemplates::model()->findAll();
@@ -706,7 +730,7 @@ class UserManagementController extends LSBaseController
      * Export users with specific format (json or csv)
      *
      * @param string $outputFormat json or csv
-     * @param int $uid userId
+     * @param int $uid userId   if 0, all users will be exported
      * @return mixed
      * @throws CException
      */
@@ -724,6 +748,15 @@ class UserManagementController extends LSBaseController
             $oUsers = User::model()->findByPk($uid);
         } else {
             $oUsers = User::model()->findAll();
+        }
+
+        //test GET PARAM $ouputFormat
+        switch ($outputFormat) {
+            case 'csv':
+            case 'json':  //all good, both cases are ok
+                break;
+            default:
+                $outputFormat = 'csv';
         }
 
         $aUsers = array();
