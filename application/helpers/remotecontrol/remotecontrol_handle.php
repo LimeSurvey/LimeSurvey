@@ -1454,7 +1454,7 @@ class remotecontrol_handle
 
                     return (int) $iQuestionID;
                 } catch (Exception $e) {
-                    return array('status' => 'Error');
+                    return array('status' => $e->getMessage());
                 }
             } else {
                             return array('status' => 'No permission');
@@ -2184,12 +2184,12 @@ class remotecontrol_handle
                 $oCriteria = new CDbCriteria();
                 $oCriteria->order = 'tid';
                 $oCriteria->limit = $iLimit;
+                $oCriteria->compare('tid', '>=' . $iStart);
 
                 $aAttributeValues = array();
                 if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
-                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
-                    $oCriteria->compare('tid', '>=' . $iStart);
+                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].                    
                     foreach ($aConditions as $columnName => $valueOrTuple) {
                         if (is_array($valueOrTuple)) {
                             /** @var string[] List of operators allowed in query. */
