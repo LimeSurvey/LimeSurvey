@@ -2331,6 +2331,7 @@ class Tokens extends SurveyCommonAction
         if (!Yii::app()->request->getQuery('ok')) {
             $aData['sidemenu']['state'] = false;
             $aData['backupTableName']   = $newtableDisplay;
+
             $this->renderWrappedTemplate('token', 'deleteParticipantsTable', $aData);
         } else /* The user has confirmed they want to delete the tokens table */
         {
@@ -2352,6 +2353,7 @@ class Tokens extends SurveyCommonAction
             $aData['sidemenu']['state'] = false;
             $aData['backupTableName'] = $newtableDisplay;
             $this->renderWrappedTemplate('token', 'afterDeleteParticipantsTable', $aData);
+
             LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
         }
     }
