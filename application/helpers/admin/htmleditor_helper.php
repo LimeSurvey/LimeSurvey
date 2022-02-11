@@ -273,10 +273,8 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
         $sFakeBrowserURL = Yii::app()->getController()->createUrl('admin/survey/sa/fakebrowser');
         $sFileBrowserAvailable = ",filebrowserBrowseUrl:'{$sFakeBrowserURL}'
             ,filebrowserImageBrowseUrl:'{$sFakeBrowserURL}'
-            ,filebrowserFlashBrowseUrl:'{$sFakeBrowserURL}'
             ,filebrowserUploadUrl:'{$sFakeBrowserURL}'
-            ,filebrowserImageUploadUrl:'{$sFakeBrowserURL}'
-            ,filebrowserFlashUploadUrl:'{$sFakeBrowserURL}'";
+            ,filebrowserImageUploadUrl:'{$sFakeBrowserURL}'";
     }
 
     $loaderHTML = getLoaderHTML($fieldname);

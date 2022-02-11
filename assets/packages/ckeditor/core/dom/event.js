@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -28,7 +28,7 @@ CKEDITOR.dom.event.prototype = {
 	/**
 	 * Gets the key code associated to the event.
 	 *
-	 *		alert( event.getKey() ); // '65' is 'a' has been pressed
+	 *		alert( event.getKey() ); // '65' if 'a' has been pressed
 	 *
 	 * @returns {Number} The key code.
 	 */
@@ -206,3 +206,33 @@ CKEDITOR.EVENT_PHASE_AT_TARGET = 2;
  * @member CKEDITOR
  */
 CKEDITOR.EVENT_PHASE_BUBBLING = 3;
+
+/**
+ * Integration with browser's "Go back" and "Go forward" buttons using Native History API.
+ *
+ * @since 4.17.0
+ * @readonly
+ * @property {Number} [=1]
+ * @member CKEDITOR
+ */
+CKEDITOR.HISTORY_NATIVE = 1;
+
+/**
+ * Integration with browser's "Go back" and "Go forward" buttons using hash-based navigation.
+ *
+ * @since 4.17.0
+ * @readonly
+ * @property {Number} [=2]
+ * @member CKEDITOR
+ */
+CKEDITOR.HISTORY_HASH = 2;
+
+/**
+ * Switch off integration with browser's "Go back" and "Go forward" buttons.
+ *
+ * @since 4.17.0
+ * @readonly
+ * @property {Number} [=0]
+ * @member CKEDITOR
+ */
+CKEDITOR.HISTORY_OFF = 0;

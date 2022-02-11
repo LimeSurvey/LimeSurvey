@@ -1,8 +1,9 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'pastetext', 'nb', {
 	button: 'Lim inn som ren tekst',
-	pasteNotification: 'Nettleseren din lar deg ikke lime inn ren tekst på denne måten. Trykk %1 for å lime inn.'
+	pasteNotification: 'Trykk %1 for å lime inn. Nettleseren din støtter ikke å lime inn med knappen i verktøylinjen eller høyreklikkmenyen.',
+	title: 'Lim inn som ren tekst'
 } );

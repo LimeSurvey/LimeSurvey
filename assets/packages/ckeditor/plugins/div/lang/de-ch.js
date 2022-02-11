@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'div', 'de-ch', {
 	IdInputLabel: 'Kennung',
@@ -8,12 +8,12 @@ CKEDITOR.plugins.setLang( 'div', 'de-ch', {
 	cssClassInputLabel: 'Formatvorlagenklasse',
 	edit: 'Div bearbeiten',
 	inlineStyleInputLabel: 'Inline Stil',
-	langDirLTRLabel: 'Links nach Rechs (LTR)',
+	langDirLTRLabel: 'Links nach Rechts (LTR)',
 	langDirLabel: 'Sprachrichtung',
-	langDirRTLLabel: 'Rechs nach Links (RTL)',
+	langDirRTLLabel: 'Rechts nach Links (RTL)',
 	languageCodeInputLabel: 'Sprachcode',
 	remove: 'Div entfernen',
 	styleSelectLabel: 'Stil',
-	title: 'Div Container erzeugen',
-	toolbar: 'Div Container erzeugen'
+	title: 'Div-Container erzeugen',
+	toolbar: 'Div-Container erzeugen'
 } );
