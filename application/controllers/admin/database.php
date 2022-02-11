@@ -587,12 +587,14 @@ class database extends Survey_Common_Action
                     /* delete IS NULL too*/
                     QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
                     foreach ($aLanguages as $sLanguage) {
-                        // TODO sanitise XSS
                         $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                        $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
-                        if ($iInsertCount > 0) {
+                        $questionAttributes = QuestionAttribute::model()->findAll('attribute=:attribute AND qid=:qid AND language=:language', [':attribute' => $validAttribute['name'], ':qid' => $this->iQuestionID, ':language' => $sLanguage]);
+                        if (count($questionAttributes) > 0) {
                             if ($value != '') {
-                                QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
+                                foreach ($questionAttributes as $questionAttribute) {
+                                    $questionAttribute->value = $value;
+                                    $questionAttribute->save();
+                                }
                             } else {
                                 QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
                             }
@@ -1453,10 +1455,13 @@ class database extends Survey_Common_Action
                         if ($validAttribute['i18n']) {
                             foreach ($aLanguages as $sLanguage) {
                                 $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                                $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
-                                if (count($iInsertCount) > 0) {
+                                $questionAttributes = QuestionAttribute::model()->findAll('attribute=:attribute AND qid=:qid AND language=:language', [':attribute' => $validAttribute['name'], ':qid' => $this->iQuestionID, ':language' => $sLanguage]);
+                                if (count($questionAttributes) > 0) {
                                     if ($value != '') {
-                                        QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
+                                        foreach ($questionAttributes as $questionAttribute) {
+                                            $questionAttribute->value = $value;
+                                            $questionAttribute->save();
+                                        }
                                     } else {
                                         QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
                                     }
@@ -1479,10 +1484,13 @@ class database extends Survey_Common_Action
                                 }
                             };
 
-                            $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID));
-                            if (count($iInsertCount) > 0) {
+                            $questionAttributes = QuestionAttribute::model()->findAll('attribute=:attribute AND qid=:qid', [':attribute' => $validAttribute['name'], ':qid' => $this->iQuestionID]);
+                            if (count($questionAttributes) > 0) {
                                 if ($value != $validAttribute['default'] && trim($value) != "") {
-                                    QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
+                                    foreach ($questionAttributes as $questionAttribute) {
+                                        $questionAttribute->value = $value;
+                                        $questionAttribute->save();
+                                    }
                                 } else {
                                     QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
                                 }

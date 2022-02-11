@@ -143,7 +143,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{labels}}', array(
             'id' =>  "pk",
             'lid' =>  "integer NOT NULL DEFAULT 0",
-            'code' =>  "string(5) NOT NULL default ''",
+            'code' =>  "string(20) NOT NULL default ''",
             'title' =>  "text",
             'sortorder' =>  "integer NOT NULL",
             'language' =>  "string(20) NOT NULL DEFAULT 'en'",

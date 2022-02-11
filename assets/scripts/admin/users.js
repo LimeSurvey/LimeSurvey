@@ -21,14 +21,12 @@ function triggerRunAction(el){
 function runAction(el){
     var url = $(el).data('url'),
             action = $(el).data('action'),
-            user = $(el).data('user'),
             uid = $(el).data('uid');
         var form = $('<form></form>');
         form.attr('method','post');
         form.attr('action',url);
         form.append('<input type="hidden" name="uid" value="'+uid+'" />');
         form.append('<input type="hidden" name="action" value="'+action+'" />');
-        form.append('<input type="hidden" name="user" value="'+user+'" />');
         form.append('<input type="hidden" name="'+LS.data.csrfTokenName+'" value="'+LS.data.csrfToken+'" />');
         form.appendTo('body');
         form.submit();

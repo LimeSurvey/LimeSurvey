@@ -85,12 +85,12 @@ class SurveyAdmin extends Survey_Common_Action
     public function renderItemsSelected()
     {
         $surveyIds = json_decode(Yii::app()->request->getPost('$oCheckedItems'), true);
-        if(!is_array($surveyIds)) {
-            throw new CHttpException(400, gT('Invalid list of checked items'));
+        if (!is_array($surveyIds)) {
+            throw new CHttpException(400, 'Invalid list of checked items');
         }
         $results = [];
 
-        $tableLabels = [gT('Survey ID'), gT('Survey Title'), gT('Status')];
+        $tableLabels = [gT('Survey ID'), gT('Survey title'), gT('Status')];
         foreach ($surveyIds as $surveyId) {
             if (Permission::model()->hasSurveyPermission($surveyId, 'survey', 'delete')) {
                 $survey                        = Survey::model()->findByPk($surveyId);
@@ -103,7 +103,7 @@ class SurveyAdmin extends Survey_Common_Action
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._selected_survey',
             [
                 'aResults'     => $results,
-                'successLabel' => gT('Seleted'),
+                'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels
             ]
         );
