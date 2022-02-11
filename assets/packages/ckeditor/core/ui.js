@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -67,6 +67,7 @@ CKEDITOR.ui.prototype = {
 	 * Retrieves the created UI objects by name.
 	 *
 	 * @param {String} name The name of the UI definition.
+	 * @returns {Object} The UI object.
 	 */
 	get: function( name ) {
 		return this.instances[ name ];
@@ -169,7 +170,7 @@ CKEDITOR.event.implementOn( CKEDITOR.ui );
 
 /**
  * The element in the {@link CKEDITOR#document host page's document} that contains the editor content.
- * If the [fixed editor UI](#!/guide/dev_uitypes-section-fixed-user-interface) is used, then it will be set to
+ * If the {@glink features/uitypes#fixed-user-interface fixed editor UI} is used, then it will be set to
  * `editor.ui.space( 'contents' )` &mdash; i.e. the `<div>` which contains the editor `<iframe>` (in case of classic editor)
  * or {@link CKEDITOR.editable} (in case of inline editor). Otherwise it is set to the {@link CKEDITOR.editable} itself.
  *
@@ -179,7 +180,7 @@ CKEDITOR.event.implementOn( CKEDITOR.ui );
  *		var editor = CKEDITOR.instances.editor1;
  *		console.log( editor.ui.contentsElement.getName() ); // 'div'
  *
- * @since 4.5
+ * @since 4.5.0
  * @readonly
  * @property {CKEDITOR.dom.element} contentsElement
  */

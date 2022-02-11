@@ -417,6 +417,10 @@ class Index extends CAction
                 }
             }
 
+            if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
+                $aLoadErrorMsg['tooManyRetries'] = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
+            }
+
             if (empty($aLoadErrorMsg)) {
                 LimeExpressionManager::SetDirtyFlag();
                 buildsurveysession($surveyid);
@@ -436,7 +440,9 @@ class Index extends CAction
                 randomizationGroupsAndQuestions($surveyid);
                 initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
             }
+            usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"), Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
             if (count($aLoadErrorMsg)) {
+                FailedLoginAttempt::model()->addAttempt();
                 Yii::app()->setConfig('move', "loadall"); // Show loading form
             }
         }

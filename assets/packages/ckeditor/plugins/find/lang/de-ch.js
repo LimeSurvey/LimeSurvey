@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'find', 'de-ch', {
 	find: 'Suchen',
@@ -8,7 +8,7 @@ CKEDITOR.plugins.setLang( 'find', 'de-ch', {
 	findWhat: 'Suche nach:',
 	matchCase: 'Gross-/Kleinschreibung beachten',
 	matchCyclic: 'Zyklische Suche',
-	matchWord: 'Nur ganze Worte suchen',
+	matchWord: 'Nur ganze Wörter suchen',
 	notFoundMsg: 'Der angegebene Text wurde nicht gefunden.',
 	replace: 'Ersetzen',
 	replaceAll: 'Alle ersetzen',
