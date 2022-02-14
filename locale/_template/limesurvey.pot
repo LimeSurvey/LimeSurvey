@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-02-07 10:48:36+00:00\n"
+"POT-Creation-Date: 2022-02-14 10:21:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3447,7 +3447,7 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:1235
 #: application/extensions/LimeScript/LimeScript.php:27
 #: application/helpers/SurveyRuntimeHelper.php:1328
-#: application/helpers/frontend_helper.php:2217
+#: application/helpers/frontend_helper.php:2251
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
@@ -9781,73 +9781,73 @@ msgstr ""
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:702
+#: application/helpers/frontend_helper.php:736
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:704
+#: application/helpers/frontend_helper.php:738
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:708
+#: application/helpers/frontend_helper.php:742
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:713
+#: application/helpers/frontend_helper.php:747
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:714
+#: application/helpers/frontend_helper.php:748
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:722
+#: application/helpers/frontend_helper.php:756
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:725
+#: application/helpers/frontend_helper.php:759
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:728
+#: application/helpers/frontend_helper.php:762
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:730
+#: application/helpers/frontend_helper.php:764
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1242
+#: application/helpers/frontend_helper.php:1276
 msgid "You have exceeded the number of maximum token validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1255
+#: application/helpers/frontend_helper.php:1289
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1414
-#: application/helpers/frontend_helper.php:1439
+#: application/helpers/frontend_helper.php:1448
+#: application/helpers/frontend_helper.php:1473
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1418
+#: application/helpers/frontend_helper.php:1452
 #: tmp/runtime/twig_cache/b1/b109e969d1cb41841db97c84f4166ca9cd12b44e40f83b85bce239e297263eb0.php:128
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1422
+#: application/helpers/frontend_helper.php:1456
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2216
+#: application/helpers/frontend_helper.php:2250
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2218
+#: application/helpers/frontend_helper.php:2252
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2219
+#: application/helpers/frontend_helper.php:2253
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -12157,15 +12157,15 @@ msgstr ""
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr ""
 
-#: application/libraries/Save.php:294
+#: application/libraries/Save.php:310
 msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
 msgstr ""
 
-#: application/libraries/Save.php:296
+#: application/libraries/Save.php:312
 msgid "(Reason: Administrator email address empty)"
 msgstr ""
 
-#: application/libraries/Save.php:301
+#: application/libraries/Save.php:318
 msgid "Your survey was successfully saved."
 msgstr ""
 
@@ -21936,7 +21936,7 @@ msgstr ""
 #: application/views/survey/system/surveyIndex/questionIndexMenuLink.php:10
 #: tmp/runtime/twig_cache/22/222bff5320dd8e1a8dbd616dd65faa58b53e3681113397b4ae782e002dd81153.php:59
 #: tmp/runtime/twig_cache/39/39fa2a96be030f412e1a3dd32da0fa9d3b7470ea62731316786f89eb2069f983.php:85
-#: tmp/runtime/twig_cache/39/39fa2a96be030f412e1a3dd32da0fa9d3b7470ea62731316786f89eb2069f983.php:202
+#: tmp/runtime/twig_cache/39/39fa2a96be030f412e1a3dd32da0fa9d3b7470ea62731316786f89eb2069f983.php:200
 msgid "Question index"
 msgstr ""
 
@@ -21974,7 +21974,7 @@ msgstr ""
 msgid "A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations."
 msgstr ""
 
-#: tmp/runtime/twig_cache/39/39fa2a96be030f412e1a3dd32da0fa9d3b7470ea62731316786f89eb2069f983.php:325
+#: tmp/runtime/twig_cache/39/39fa2a96be030f412e1a3dd32da0fa9d3b7470ea62731316786f89eb2069f983.php:323
 msgid "Question by question mode not yet supported."
 msgstr ""
 
