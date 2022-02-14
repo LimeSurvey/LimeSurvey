@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.35 (build 220208) to 3.28.0 (build 220215) February 14, 2022
++New feature: Plugin event beforeSurveyEmail (Dan Guy)
++New feature: Plugin event beforeEmail (Dan Guy)
+-Fixed issue: Problem to download a file from response if server path is using symlinks (Carsten Schmitz)
+-Fixed issue #17586: Opening new browser tabs using question index lea… (#2224) (Gabriel Jenik)
+-* Fixed issue #17586: Opening new browser tabs using question index leads to inputted data being deleted (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by nomoto
+#Updated translation: Amharic by lucas_encuesta.biz
+
+
 Changes from 3.27.34 (build 220132) to 3.27.35 (build 220208) February 7, 2022
 -Fixed issue #17790: KCFinder Image Browse Server not working due to incorrect cookieDomain (#2212) (Denis Chenu)
 #Updated translation: Japanese by nomoto
