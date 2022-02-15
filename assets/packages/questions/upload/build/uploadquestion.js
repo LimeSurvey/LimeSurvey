@@ -1,7 +1,7 @@
 (function (factory) {
     typeof define === 'function' && define.amd ? define(factory) :
     factory();
-}((function () { 'use strict';
+})((function () { 'use strict';
 
     /**
      * AJAX Upload ( http://valums.com/ajax-upload/ )
@@ -777,15 +777,15 @@
 
             if (this.isValueInArray(image_extensions, item.ext)) {
               imageOrPlaceholder = "image";
-              imageOrPlaceholderHtml = '<img src="'+ uploadurl +'/filegetcontents/'+ decodeURIComponent(item.filename) +'" class="uploaded" />';
+              imageOrPlaceholderHtml = '<img src="' + uploadurl + '/filegetcontents/' + decodeURIComponent(item.filename) + '" class="uploaded" />';
             } else {
               imageOrPlaceholder = "placeholder";
-              imageOrPlaceholderHtml = `<div class="upload-placeholder"></div>`;
+              imageOrPlaceholderHtml = '<div class="upload-placeholder"></div>';
             }
 
-            title = show_title != 0 ? escapeHtml(item.title) : '';
-            comment = show_comment != 0 ? escapeHtml(item.comment) : '';
-            name = escapeHtml(item.name);
+            title = show_title != 0 ? item.title : '';
+            comment = show_comment != 0 ? item.comment : '';
+            name = item.name;
             filepointer = iterator;
             const rowHtml = this.replaceWithObject(templateHtml, {
               imageOrPlaceholder,
@@ -808,7 +808,7 @@
         let outString = templateString;
 
         for (let key in objectWithReplacements) {
-          outString = outString.replace(new RegExp("\{"+key+"\}"), objectWithReplacements[key]);
+          outString = outString.replace(new RegExp(`\{${key}\}`), objectWithReplacements[key]);
         }
 
         return outString;
@@ -835,7 +835,7 @@
         var i = iterator;
         var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico', 'heic');
         var previewblock = $('<li id="' + fieldname + '_li_' + i + '" class="previewblock file-element"></li>');
-        var previewContainer = $('<div class="file-preview form-group"></div>');
+        var previewContainer = $('<div class="file-preview"></div>');
 
         if (isValueInArray(image_extensions, item.ext.toLowerCase())) {
           previewContainer.append('<img src="' + options.uploadurl + '/filegetcontents/' + item.filename + '" class="uploaded" />');
@@ -865,6 +865,7 @@
         var previewDeleteBlock = $('<div class="form-group"></div>').append($('<a class="btn btn-danger"></a>').html('<span class="fa fa-trash"></span>&nbsp;' + options.uploadLang.deleteFile).on('click', function () {
           deletefile(fieldname, i);
         }).wrap('<div class="input-container text-center"></div>'));
+        $('<fieldset></fieldset>').append(previewTitleContainer).append(previewCommentContainer).append(previewDeleteBlock).wrap('<div class="file-info"></div>').appendTo(previewContainer);
         $('<input type="hidden" />').attr('id', fieldname + '_size_' + i).attr('value', item.size).appendTo(previewblock);
         $('<input type="hidden" />').attr('id', fieldname + '_name_' + i).attr('value', item.name).appendTo(previewblock);
         $('<input type="hidden" />').attr('id', fieldname + '_file_index_' + i).attr('value', i).appendTo(previewblock);
@@ -875,7 +876,6 @@
           previewblock.append(previewContainer);
           $('#field' + fieldname + '_listfiles').append(previewblock);
         }
-        $('<fieldset></fieldset>').append(previewTitleContainer).append(previewCommentContainer).append(previewDeleteBlock).wrap('<div class="file-info"></div>').appendTo(previewblock);
       };
 
       var doFileUpload = function () {
@@ -1107,4 +1107,4 @@
       return window.currentUploadHandler;
     };
 
-})));
+}));
