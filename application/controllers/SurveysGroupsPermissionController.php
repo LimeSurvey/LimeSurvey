@@ -298,7 +298,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $to user id
      * @return void
      */
-    public function actionViewUser(int $id, $to)
+    public function actionViewUser(int $id, int $to)
     {
         $oUser = User::model()->findByPk($to);
         if (empty($oUser)) {
@@ -319,7 +319,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $to group id
      * @return void
      */
-    public function actionViewUserGroup(int $id, $to)
+    public function actionViewUserGroup(int $id, int $to)
     {
         $oUserGroup = UserGroup::model()->findByPk($to);
         if (empty($oUserGroup)) {
@@ -409,7 +409,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $uid user id
      * @return void
      */
-    public function actionDeleteUser(int $id, $uid)
+    public function actionDeleteUser(int $id, int $uid)
     {
         $model = $this->loadModel($id);
         if (!$model->hasPermission('permission', 'delete')) {
