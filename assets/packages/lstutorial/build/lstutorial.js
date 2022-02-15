@@ -1,7 +1,7 @@
 (function (factory) {
   typeof define === 'function' && define.amd ? define(factory) :
   factory();
-}((function () { 'use strict';
+})((function () { 'use strict';
 
   function _typeof(obj) {
     "@babel/helpers - typeof";
@@ -2292,8 +2292,8 @@
     var getBasedUrls = /(\/index.php)?\?r=admin/.test(window.location.href),
         combineParams = function combineParams(params) {
       if (params === false) return '';
-      var returner = ( '/') + LS.ld.reduce(params, function (urlParams, value, key) {
-        return urlParams + ( (urlParams === '' ? '' : '/') + key + '/' + value);
+      var returner = ('/') + LS.ld.reduce(params, function (urlParams, value, key) {
+        return urlParams + ((urlParams === '' ? '' : '/') + key + '/' + value);
       }, '');
       return returner;
     },
@@ -2455,4 +2455,4 @@
     });
   });
 
-})));
+}));
