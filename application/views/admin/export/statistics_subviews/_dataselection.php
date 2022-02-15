@@ -56,7 +56,9 @@
                     }
             ?>
 
-            <div class='form-group'>
+            <div class='form-group' <?php if (count($survlangs) == 1) {
+                                        echo "style='display:none'";
+                                    } ?>>
                 <label for='statlang' class="col-lg-4 control-label" ><?php eT("Statistics report language:"); ?></label>
                 <div class='col-lg-8'>
                     <select name="statlang" id="statlang" class="form-control">

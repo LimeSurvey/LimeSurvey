@@ -30,7 +30,7 @@
             <br/><br/>
             <?php if (!empty($userloop)) { ?>
                 <div class="table-responsive">
-                    <table class='users tabletable-hover'>
+                    <table class='users table table-hover'>
                         <thead>
                         <tr>
                             <th><?php eT("Action"); ?></th>
@@ -60,9 +60,6 @@
                                             <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>'/>
                                             <?php echo CHtml::endForm() ?>
                                             <?php
-                                        } else {
-                                            ?>
-                                            <?php
                                         }
                                         ?>
                                     </div>
@@ -81,7 +78,7 @@
             <?php
             if (!empty($useradddialog)) {
                 ?>
-                <?php echo CHtml::form(["userGroup/AddUserToGroup/ugid/{$ugid}"], 'post'); ?>
+                <?php echo CHtml::form(["userGroup/AddUserToGroup"], 'post'); ?>
                 <table class='users'>
                     <tbody>
                     <tr>
@@ -89,6 +86,7 @@
                             <div class="row">
                                 <div class="col-lg-8">
                                     <?php echo CHtml::dropDownList('uid', '-1', $addableUsers, ['class' => "form-control col-lg-4"]); ?>
+                                    <input name='ugid' type='hidden' value='<?php echo $ugid; ?>'/>
                                 </div>
                                 <div class="col-lg-4">
                                     <input type='submit' value='<?php eT("Add user"); ?>' class="btn btn-default"/>
