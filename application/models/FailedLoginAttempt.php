@@ -20,6 +20,7 @@
  * @property string $ip Ip address
  * @property string $last_attempt
  * @property integer $number_attempts
+ * @property int $is_frontend  from frontend(=1) or from backend (=0)
  */
 class FailedLoginAttempt extends LSActiveRecord
 {
@@ -50,15 +51,20 @@ class FailedLoginAttempt extends LSActiveRecord
     }
 
     /**
-     * Deletes all the attempts by IP
+     * Deletes all the attempts by IP.
+     * Separation between backend and frontend
+     *
+     * @param  string $attemptType  The attempt type ('login' or 'token').
      *
      * @access public
      * @return void
      */
-    public function deleteAttempts()
+    public function deleteAttempts(string $attemptType = 'login')
     {
         $ip = substr(getIPAddress(), 0, 40);
-        $this->deleteAllByAttributes(array('ip' => $ip));
+
+        $is_frontend = ($attemptType === 'token') ? 1 : 0;
+        $this->deleteAllByAttributes(array('ip' => $ip, 'is_frontend' => $is_frontend));
     }
 
     /**
@@ -78,16 +84,21 @@ class FailedLoginAttempt extends LSActiveRecord
             return false;
         }
 
+        $is_frontend = ($attemptType === 'token') ? 1 : 0;
         $criteria = new CDbCriteria();
-        $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
-        $criteria->params = array(':attempts' => Yii::app()->getConfig('maxLoginAttempt'), ':ip' => $ip);
+        $criteria->condition = 'number_attempts > :attempts AND ip = :ip AND is_frontend = :is_frontend';
+        $criteria->params = array(
+            ':attempts' => Yii::app()->getConfig('maxLoginAttempt'),
+            ':ip' => $ip,
+            ':is_frontend' => $is_frontend
+        );
 
         $row = $this->find($criteria);
 
         if ($row != null) {
             $lastattempt = strtotime($row->last_attempt);
             if (time() > $lastattempt + Yii::app()->getConfig('timeOutTime')) {
-                $this->deleteAttempts();
+                $this->deleteAttempts($attemptType);
             } else {
                 $isLockedOut = true;
             }
@@ -96,28 +107,20 @@ class FailedLoginAttempt extends LSActiveRecord
     }
 
     /**
-     * This function removes obsolete login attempts
-     * TODO
-     */
-    public function cleanOutOldAttempts()
-    {
-        // this where select whole part
-        //$this->db->where('now() > (last_attempt+'.$this->config->item("timeOutTime").')');
-        //return $this->db->delete('failed_login_attempts');
-    }
-
-    /**
      * Records an failed login-attempt if IP is not already locked out
+     *
+     * @param string type can be 'backend' or 'frontend'
      *
      * @access public
      * @return true
      */
-    public function addAttempt()
+    public function addAttempt($type = 'backend')
     {
         if (!$this->isLockedOut()) {
             $timestamp = date("Y-m-d H:i:s");
             $ip = substr(getIPAddress(), 0, 40);
-            $row = $this->findByAttributes(array('ip' => $ip));
+            $is_frontend = ($type === 'frontend') ? 1 : 0;
+            $row = $this->findByAttributes(array('ip' => $ip, 'is_frontend' => $is_frontend));
 
             if ($row !== null) {
                 $row->number_attempts = $row->number_attempts + 1;
@@ -128,6 +131,7 @@ class FailedLoginAttempt extends LSActiveRecord
                 $record->ip = $ip;
                 $record->number_attempts = 1;
                 $record->last_attempt = $timestamp;
+                $record->is_frontend = $is_frontend;
                 $record->save();
             }
         }

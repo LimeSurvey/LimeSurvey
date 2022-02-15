@@ -142,6 +142,8 @@ function populateDatabase($oDB)
             'ip' =>  "string(40) NOT NULL",
             'last_attempt' =>  "string(20) NOT NULL",
             'number_attempts' =>  "integer NOT NULL",
+            'is_frontend' => "integer NOT NULL DEFAULT 0"
+
         ), $options);
 
 

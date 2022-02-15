@@ -1125,7 +1125,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
                 $errorMsg    = gT("The access code you have provided is either not valid, or has already been used.");
                 $FlashError .= $errorMsg;
                 $renderToken = 'main';
-                FailedLoginAttempt::model()->addAttempt();
+                FailedLoginAttempt::model()->addAttempt('frontend');
             }
         } else {
             $aEnterTokenData['visibleToken'] = $clienttoken;

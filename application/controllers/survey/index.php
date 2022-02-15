@@ -446,7 +446,7 @@ class index extends CAction
             }
             usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"), Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
             if (count($aLoadErrorMsg)) {
-                FailedLoginAttempt::model()->addAttempt();
+                FailedLoginAttempt::model()->addAttempt('frontend');
                 Yii::app()->setConfig('move', "loadall"); // Show loading form
             }
         }
