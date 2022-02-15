@@ -6,17 +6,11 @@
   function _typeof(obj) {
     "@babel/helpers - typeof";
 
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function (obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-
-    return _typeof(obj);
+    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+      return typeof obj;
+    } : function (obj) {
+      return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    }, _typeof(obj);
   }
 
   function _classCallCheck(instance, Constructor) {
@@ -38,6 +32,9 @@
   function _createClass(Constructor, protoProps, staticProps) {
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
+    Object.defineProperty(Constructor, "prototype", {
+      writable: false
+    });
     return Constructor;
   }
 
@@ -1365,7 +1362,7 @@
                 _this5._debug("Wait for element " + delayElementLog + ": found, showing step");
 
                 window.clearInterval(delayFunc);
-                delayFunc = (_readOnlyError("delayFunc"), null);
+                _readOnlyError("delayFunc");
                 return _this5._callOnPromiseDone(promise, showStepHelper);
               }
             }, 250); // Set timer to kill the setInterval call after max delay time expires
@@ -1790,7 +1787,7 @@
     }, {
       key: "_template",
       value: function _template(step, i) {
-        var template = this._isOrphan(step) && !LS.ld.isBoolean(step.orphan) ? template = (_readOnlyError("template"), step.orphan) : step.template;
+        var template = this._isOrphan(step) && !LS.ld.isBoolean(step.orphan) ? (step.orphan, _readOnlyError("template")) : step.template;
         var $template = $.isFunction(template) ? $(template(i, step)) : $(template);
         var $navigation = $template.find('.popover-navigation');
         var $prev = $navigation.find('[data-role="prev"]');
@@ -2107,7 +2104,7 @@
           };
 
           if (step.backdropPadding) {
-            elementData = (_readOnlyError("elementData"), this._applyBackdropPadding(step.backdropPadding, elementData));
+            this._applyBackdropPadding(step.backdropPadding, elementData), _readOnlyError("elementData");
           }
 
           var $backdropTop = $('<div class="tour-backdrop top"></div>');

@@ -116,6 +116,10 @@
   display: none;
 }
 
+#cpdbatt {
+  min-height: 100px;
+}
+
 .draggable-container {
   min-height: 300px;
 }
@@ -220,10 +224,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 
 /* Existing attribute column in CSV CPDB import */
 .centralatt {
-  min-height: 100px;
-}
-
-#cpdbatt {
   min-height: 100px;
 }
 
