@@ -176,15 +176,7 @@
                                 ));?>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class=" control-label"><?php eT("Reset to default settings:"); ?></label>
-                        <div>
-                            <?php echo CHtml::form(array("admin/export/sa/quexmlclear/surveyid/{$surveyid}/"), 'post');
-                                echo CHtml::htmlButton(gT('Reset now'),array('type'=>'submit','class'=>'btn btn-danger col-sm-6 col-xs-12'));?>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+               </div>
             </div>
             <div class="row">
                 <div class="col-sm-12 ">
@@ -194,6 +186,19 @@
             
         </div>
     </form>
+    <div class="row">
+        <div class="col-sm-6">
+
+            <div class="form-group row">
+                <label class=" control-label"><?php eT("Reset to default settings:"); ?></label>
+                <div>
+                    <?php echo CHtml::form(array("admin/export/sa/quexmlclear/surveyid/{$surveyid}/"), 'post');
+                        echo CHtml::htmlButton(gT('Reset now'),array('type'=>'submit','class'=>'btn btn-danger col-sm-6 col-xs-12'));?>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <?php
 App()->getClientScript()->registerScript('QueXMLExportBSSwitcher', "
