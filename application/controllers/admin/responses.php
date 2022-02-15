@@ -128,6 +128,15 @@ class responses extends Survey_Common_Action
 
             $quexmlpdf = new quexmlpdf();
 
+            //apply settings stored at last output
+            foreach ($quexmlpdf->_quexmlsettings() as $s) {
+                $setting = getGlobalSetting($s);
+                if ($setting !== null && trim($setting) !== '') {
+                    $method = str_replace("queXML", "set", $s);
+                    $quexmlpdf->$method($setting);
+                }
+            }
+
             // Setting the selected language for printout
             App()->setLanguage($sBrowseLanguage);
 
