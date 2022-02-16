@@ -15,6 +15,7 @@
     "@babel/core": "^7.17.4",
     "@babel/preset-env": "^7.5.5",
     "env-cmd": "^10.1.0",
+    "node-sass": "^7.0.1",
     "rollup": "^2.67.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.0.2",
