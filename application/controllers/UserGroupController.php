@@ -5,7 +5,6 @@
  **/
 class UserGroupController extends LSBaseController
 {
-
     /**
      * Run filters
      *

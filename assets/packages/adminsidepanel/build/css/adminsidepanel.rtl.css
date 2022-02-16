@@ -203,8 +203,8 @@
 
 .slide-fade-enter,
 .slide-fade-leave-to {
-  -webkit-transform: rotateY(90);
-  transform: rotateY(90);
+  -webkit-transform: rotateY(-90);
+  transform: rotateY(-90);
   -webkit-transform-origin: right;
   transform-origin: right;
   opacity: 0; }
@@ -217,8 +217,8 @@
 
 .slide-fade-down-enter,
 .slide-fade-down-leave-to {
-  -webkit-transform: rotateY(45);
-  transform: rotateY(45);
+  -webkit-transform: rotateY(-45);
+  transform: rotateY(-45);
   -webkit-transform-origin: right;
   transform-origin: right;
   opacity: 0; }
