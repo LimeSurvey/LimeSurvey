@@ -30,7 +30,7 @@
     "jest-localstorage-mock": "^2.4.0",
     "jest-transform-stub": "^2.0.0",
     "jest-watch-typeahead": "^0.6.1",
-    "node-sass": "^5.0.0",
+    "node-sass": "^7.0.0",
     "prettier-eslint": "^12.0.0",
     "rollup": "^2.40.0",
     "rollup-jest": "^1.1.1",
