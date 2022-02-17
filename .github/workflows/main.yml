@@ -140,7 +140,12 @@ jobs:
           nvm install ${{ matrix.nodeJS-versions }}
           nvm use ${{ matrix.nodeJS-versions }}
           node ./buildVueComponents.js -s adminbasics -p
-
+      
+      - name: Install adminbasics dependencies
+        run: |
+          # Install Dependencies assets for adminbasics
+          yarn --cwd ./assets/packages/admibasics
+          
       - name: Run the test script
         run: |
           DOMAIN=localhost ./third_party/bin/phpunit --testdox --stop-on-failure
