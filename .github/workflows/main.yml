@@ -144,7 +144,7 @@ jobs:
       - name: Install adminbasics dependencies
         run: |
           # Install Dependencies assets for adminbasics
-          yarn --cwd ./assets/packages/admibasics
+          yarn --cwd ./assets/packages/adminbasics
           
       - name: Run the test script
         run: |
