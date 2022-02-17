@@ -129,6 +129,19 @@
 </div>
 
 
+<div class="form-group">
+    <label class="control-label" for='tokenIpWhitelist'>
+        <?php eT("Reset failed login attempts of participants to make survey accessible again:"); ?>
+    </label>
+    <a
+            class='btn btn-large btn-warning'
+            type="button"
+            href='<?= \Yii::app()->createUrl('admin/globalsettings', array("sa"=>"resetFailedLoginParticipants")) ?>'
+            >
+        <?php eT("Reset token attempts");?>
+    </a>
+</div>
+
 <?php if (Yii::app()->getConfig("demoMode") == true) :?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
 <?php endif; ?>

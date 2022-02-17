@@ -24,8 +24,8 @@
  */
 class FailedLoginAttempt extends LSActiveRecord
 {
-    const TYPE_LOGIN = 'login';
-    const TYPE_TOKEN = 'token';
+    public const TYPE_LOGIN = 'login';
+    public const TYPE_TOKEN = 'token';
 
     /**
      * @inheritdoc
@@ -68,13 +68,13 @@ class FailedLoginAttempt extends LSActiveRecord
     }
 
     /**
-     * Check if an IP address is allowed to login or not
+     * Check if an IP address is allowed to log in or not
      *
      * @param string $attemptType  The attempt type ('login' or 'token'). Used to check the white lists.
      *
-     * @return boolean Returns true if the user is blocked
+     * @return bool Returns true if the user is blocked
      */
-    public function isLockedOut($attemptType = '')
+    public function isLockedOut(string $attemptType = ''): bool
     {
         $isLockedOut = false;
         $ip = substr(getIPAddress(), 0, 40);
@@ -107,19 +107,19 @@ class FailedLoginAttempt extends LSActiveRecord
     }
 
     /**
-     * Records an failed login-attempt if IP is not already locked out
+     * Records a failed login-attempt if IP is not already locked out
      *
-     * @param string type can be 'backend' or 'frontend'
+     * @param string attempt type ('login' or 'token')
      *
      * @access public
-     * @return true
+     * @return void
      */
-    public function addAttempt($type = 'backend')
+    public function addAttempt($attemptType = self::TYPE_LOGIN)
     {
-        if (!$this->isLockedOut()) {
+        if (!$this->isLockedOut($attemptType)) {
             $timestamp = date("Y-m-d H:i:s");
             $ip = substr(getIPAddress(), 0, 40);
-            $is_frontend = ($type === 'frontend') ? 1 : 0;
+            $is_frontend = ($attemptType === self::TYPE_TOKEN) ? 1 : 0;
             $row = $this->findByAttributes(array('ip' => $ip, 'is_frontend' => $is_frontend));
 
             if ($row !== null) {
@@ -135,7 +135,6 @@ class FailedLoginAttempt extends LSActiveRecord
                 $record->save();
             }
         }
-        return true;
     }
 
     /**

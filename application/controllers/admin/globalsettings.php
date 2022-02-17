@@ -613,6 +613,18 @@ class GlobalSettings extends Survey_Common_Action
     }
 
     /**
+     * Resets (deletes) failed login attempts for participants
+     *
+     * @return void
+     */
+    public function resetFailedLoginParticipants()
+    {
+        FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_TOKEN);
+        Yii::app()->setFlashMessage(gT("Failed login attempts of participants have been reset."), 'success');
+        $this->getController()->redirect(array("admin/globalsettings"));
+    }
+
+    /**
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction     Current action, the folder to fetch views from
