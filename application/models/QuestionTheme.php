@@ -33,6 +33,10 @@ use LimeSurvey\Helpers\questionHelper;
  */
 class QuestionTheme extends LSActiveRecord
 {
+    const THEME_TYPE_CORE = 'coreQuestion';
+    const THEME_TYPE_CUSTOM = 'customCoreTheme';
+    const THEME_TYPE_USER = 'customUserTheme';
+
     /**
      * @return string the associated database table name
      */
@@ -1086,5 +1090,43 @@ class QuestionTheme extends LSActiveRecord
         $questionTheme->question_type = $questionType;
         $questionTheme->settings = $settings;
         return $questionTheme;
+    }
+
+    /**
+     * Returns the type of question theme (coreQuestion, customCoreTheme, customUserTheme)
+     *
+     * coreQuestion = Themes shipped with Limesurvey that don't extend other theme
+     * customCoreTheme = Themes shipped with Limesurvey that extend other theme
+     * customUserTheme = User provided question themes
+     *
+     * @return string
+     */
+    public function getThemeType()
+    {
+        if ($this->core_theme) {
+            if (empty($this->extends)) {
+                return self::THEME_TYPE_CORE;
+            } else {
+                return self::THEME_TYPE_CUSTOM;
+            }
+        } else {
+            return self::THEME_TYPE_USER;
+        }
+    }
+
+    /**
+     * Returns the XML path relative to the path configured for the question theme type
+     * @return string
+     */
+    public function getRelativeXmlPath()
+    {
+        $type = $this->getThemeType();
+        $directories = self::getQuestionThemeDirectories();
+        $typeDirectory = $directories[$type];
+
+        // xml_path is supposed to contain the type directory, so we extract the rest of the path
+        $relativePath = substr($this->xml_path, strpos($this->xml_path, $typeDirectory) + strlen($typeDirectory));
+        $relativePath = ltrim($relativePath, "\\/");
+        return $relativePath;
     }
 }
