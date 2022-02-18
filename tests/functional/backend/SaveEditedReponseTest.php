@@ -78,7 +78,7 @@ class SaveEditedReponseTest extends TestBaseClassWeb
         $completedElement = $web->findElement(WebDriverBy::id('startlanguage'));
         $allOptions = $completedElement->findElement(WebDriverBy::tagName('option'));
         foreach ($allOptions as $option) {
-            if ($option->getAttribute('value') == 'de') {
+            if ($option->getAttribute('value') == 'en') {
                 $option->click();
             };
         }
