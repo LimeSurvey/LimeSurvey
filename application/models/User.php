@@ -966,7 +966,7 @@ class User extends LSActiveRecord
      * Get the decription to be used in list
      * @return $string
      */
-    public function getUserDescription()
+    public function getDisplayName()
     {
         if (empty($this->full_name)) {
             return $this->users_name;

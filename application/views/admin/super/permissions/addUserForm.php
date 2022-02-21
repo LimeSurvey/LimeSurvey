@@ -10,7 +10,7 @@
             CHtml::listData(
                 $oAddUserList,
                 'uid',
-                'UserDescription'
+                'DisplayName'
             ),
             array(
                 'empty' => gT("Please choose..."),
