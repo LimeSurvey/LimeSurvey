@@ -161,7 +161,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 
     // Catalan
     $supportedLanguages['ca-valencia']['description'] = gT('Valencian');
-    $supportedLanguages['ca-valencia']['nativedescription'] = 'Valenciano';
+    $supportedLanguages['ca-valencia']['nativedescription'] = 'Valenci&#224;';
     $supportedLanguages['ca-valencia']['rtl'] = false;
     $supportedLanguages['ca-valencia']['dateformat'] = 1;
     $supportedLanguages['ca-valencia']['radixpoint'] = 1;
