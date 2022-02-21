@@ -42,15 +42,11 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 
                     <div class="col-sm-12">
                         <!-- Data Selection -->
-                        <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('surveyid' => $surveyid, 'selectshow' => $selectshow, 'selecthide' => $selecthide, 'selectinc' => $selectinc, 'survlangs' => $survlangs, 'sStatisticsLanguage' => $sStatisticsLanguage)); ?>
-                        <!-- Response ID -->
-                        <?php $this->renderPartial('/admin/export/statistics_subviews/_responseid', array()); ?>
-                        <!-- Output format -->
-                        <?php $this->renderPartial('/admin/export/statistics_subviews/_outputformat', array()); ?>
+                        <?php $this->renderPartial('/admin/export/statistics_subviews/_mainoptions', array('error' => $error, 'surveyid' => $surveyid, 'selectshow' => $selectshow, 'selecthide' => $selecthide, 'selectinc' => $selectinc, 'survlangs' => $survlangs, 'sStatisticsLanguage' => $sStatisticsLanguage)); ?>
                         <!-- Output options -->
-                        <?php $this->renderPartial('/admin/export/statistics_subviews/_outputoptions', array('error' => $error, 'showtextinline' => $showtextinline, 'usegraph' => $usegraph, 'showtextinline' => $showtextinline)); ?>
-                        <!-- Submission date -->
-                        <?php $this->renderPartial('/admin/export/statistics_subviews/_submissiondate', array('datestamp' => $datestamp, 'dateformatdetails' => $dateformatdetails)); ?>
+                        <?php $this->renderPartial('/admin/export/statistics_subviews/_outputoptions', array()); ?>
+                        <!-- Filter -->
+                        <?php $this->renderPartial('/admin/export/statistics_subviews/_filter', array('datestamp' => $datestamp, 'dateformatdetails' => $dateformatdetails)); ?>
                     </div>
                 </div>
 

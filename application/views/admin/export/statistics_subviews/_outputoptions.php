@@ -5,47 +5,76 @@
         <div class='form-group'>
             <label for='showtextinline' class="control-label"><?php
                 eT("Show text responses inline:") ?></label>
-            <div class=''>
+            <div>
                 <?php
                 $sShowtextinline = (int)Yii::app()->request->getPost('showtextinline'); ?>
                 <?php
-                $this->widget(
-                    'yiiwheels.widgets.switch.WhSwitch',
-                    array(
-                        'name' => 'showtextinline',
-                        'id' => 'showtextinline',
-                        'value' => $sShowtextinline,
-                        'onLabel' => gT('On'),
-                        'offLabel' => gT('Off')
+                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                    'name' => 'showtextinline',
+                    'id' => 'showtextinline',
+                    'value' => $sShowtextinline,
+                    'selectOptions' => array(
+                        '1' => gT('On', 'unescaped'),
+                        '0' => gT('Off', 'unescaped'),
+                    ),
+                    'htmlOptions' => array(
+                        'class' => 'text-option-inherit'
                     )
-                ); ?>
+                ));
+                ?>
             </div>
         </div>
-
         <div class='form-group'>
-            <label for='usegraph' class="control-label"><?php
-                eT("Show graphs:"); ?></label>
-            <div class=''>
-                <?php
-                $sUsegraph = (int)Yii::app()->request->getPost('usegraph'); ?>
-                <?php
-                $this->widget(
-                    'yiiwheels.widgets.switch.WhSwitch',
-                    array(
-                        'name' => 'usegraph',
-                        'id' => 'usegraph',
-                        'value' => $sUsegraph,
-                        'onLabel' => gT('On'),
-                        'offLabel' => gT('Off')
-                    )
-                ); ?>
-            </div>
             <?php
-            if ($error != '') {
-                echo "<div id='grapherror' style='display:none'>$error<hr /></div>";
-            } ?>
+            $sNoncompleted = (int)Yii::app()->request->getPost('noncompleted'); ?>
+            <label class="control-label" id='noncompletedlbl' for='noncompleted' title='<?php
+            eT(
+                "Count stats for each question based only on the total number of responses for which the question was displayed"
+            ); ?>'><?php
+                eT("Subtotals based on displayed questions:"); ?></label>
+            <div>
+                <?php
+                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                    'name' => 'noncompleted',
+                    'id' => 'noncompleted',
+                    'value' => $sNoncompleted,
+                    'selectOptions' => array(
+                        '1' => gT('On', 'unescaped'),
+                        '0' => gT('Off', 'unescaped'),
+                    ),
+                    'htmlOptions' => array(
+                        'class' => 'text-option-inherit'
+                    )
+                ));
+                ?>
+            </div>
         </div>
-
+        <div class="form-group">
+            <label for='charttype' class="control-label">
+                <?php
+                eT('Chart type:'); ?>
+            </label>
+            <div class=''>
+                <select name="charttype" id='charttype' class="form-control">
+                    <option value="default" selected="selected"><?php
+                        eT("As defined in question settings"); ?></option>
+                    <option value="0"><?php
+                        eT('Bar chart'); ?></option>
+                    <option value="1"><?php
+                        eT('Pie chart'); ?></option>
+                    <option value="2"><?php
+                        eT('Radar chart'); ?></option>
+                    <option value="3"><?php
+                        eT('Line chart'); ?></option>
+                    <option value="4"><?php
+                        eT('Polar chart'); ?></option>
+                    <option value="5"><?php
+                        eT('Doughnut chart'); ?></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
         <div class='form-group'>
             <label for='stats_columns' class="control-label"><?php
                 eT("Number of columns:") ?></label>
@@ -69,9 +98,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-6 col-sm-12">
-
         <div class='form-group'>
             <label for='graph_labels' class="control-label"><?php
                 eT("Graph labels:") ?></label>
@@ -95,7 +121,6 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="alert alert-info alert-dismissible" role="alert">
                 <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>X</span>
@@ -107,31 +132,6 @@
                 eT("Using the chart type selector you can force the graph type for all selected questions."); ?>
             </div>
         </div>
-
-        <div class="form-group">
-            <label for='charttype' class="control-label">
-                <?php
-                eT('Chart type:'); ?>
-            </label>
-
-            <div class=''>
-                <select name="charttype" id='charttype' class="form-control">
-                    <option value="default" selected="selected"><?php
-                        eT("As defined in question settings"); ?></option>
-                    <option value="0"><?php
-                        eT('Bar chart'); ?></option>
-                    <option value="1"><?php
-                        eT('Pie chart'); ?></option>
-                    <option value="2"><?php
-                        eT('Radar chart'); ?></option>
-                    <option value="3"><?php
-                        eT('Line chart'); ?></option>
-                    <option value="4"><?php
-                        eT('Polar chart'); ?></option>
-                    <option value="5"><?php
-                        eT('Doughnut chart'); ?></option>
-                </select>
-            </div>
-        </div>
     </div>
 </div>
+<hr>
