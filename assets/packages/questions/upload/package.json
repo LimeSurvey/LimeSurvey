@@ -11,7 +11,7 @@
         "build": "yarn dev && yarn release"
     },
     "devDependencies": {
-        "@babel/core": "^7.6.2",
+        "@babel/core": "^7.17.4",
         "@babel/preset-env": "^7.6.2",
         "env-cmd": "^10.0.1",
         "eslint": "^8.9.0",
