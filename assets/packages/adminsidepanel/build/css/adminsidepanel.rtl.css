@@ -180,7 +180,7 @@
 
 .ls-ba .breadcrumb > li + li:before {
   padding: 0 5px;
-  content: "\F061";
+  content: "\f061";
   font: normal normal normal 18px/1 FontAwesome; }
 
 .fade-enter-active {
@@ -850,7 +850,7 @@ ol.breadcrumb.title-bar-breadcrumb {
 .ls-ba .breadcrumb > li + li:before {
   padding: 0 5px;
   color: #ccc;
-  content: "\F061";
+  content: "\f061";
   font: normal normal normal 18px/1 FontAwesome; }
 
 .ls-ba .pager li > a, .ls-ba .pager li > span {
