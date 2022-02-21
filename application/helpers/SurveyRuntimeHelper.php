@@ -800,6 +800,16 @@ class SurveyRuntimeHelper
         //$_SESSION[$this->LEMsessid]['step'] can not be less than 0, fix it always #09772
         $_SESSION[$this->LEMsessid]['step'] = $_SESSION[$this->LEMsessid]['step'] < 0 ? 0 : $_SESSION[$this->LEMsessid]['step'];
         LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
+        if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])) {
+            /* Move to max step in all condition with force */
+            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step']) {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['maxstep']);
+                LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['maxstep'], false, false);
+            } else {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['step']);
+            }
+            unset($_SESSION[$this->LEMsessid]['LEMtokenResume']);
+        }
         LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
     }
 
@@ -911,14 +921,14 @@ class SurveyRuntimeHelper
         // retrieve datas from local variable
         if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])) {
             LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
-
-            // Do it only if needed : we don't need it if we don't have index
-            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step'] && $this->aSurveyInfo['questionindex']) {
+            /* Move to max step in all condition with force */
+            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step']) {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['maxstep']);
                 LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['maxstep'], false, false);
+            } else {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['step']);
             }
-
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false); // if late in the survey, will re-validate contents, which may be overkill
-
             unset($_SESSION[$this->LEMsessid]['LEMtokenResume']);
         } elseif (!$this->LEMskipReprocessing) {
             //Move current step ###########################################################################

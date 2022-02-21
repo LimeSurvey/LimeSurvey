@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 CKEDITOR.plugins.add( 'table', {
@@ -18,9 +18,10 @@ CKEDITOR.plugins.add( 'table', {
 
 		editor.addCommand( 'table', new CKEDITOR.dialogCommand( 'table', {
 			context: 'table',
-			allowedContent: 'table{width,height}[align,border,cellpadding,cellspacing,summary];' +
+			allowedContent: 'table{width,height,border-collapse}[align,border,cellpadding,cellspacing,summary];' +
 				'caption tbody thead tfoot;' +
 				'th td tr[scope];' +
+				'td{border*,background-color,vertical-align,width,height}[colspan,rowspan];' +
 				( editor.plugins.dialogadvtab ? 'table' + editor.plugins.dialogadvtab.allowedContent() : '' ),
 			requiredContent: 'table',
 			contentTransformations: [
@@ -77,7 +78,7 @@ CKEDITOR.plugins.add( 'table', {
 					return;
 
 				// If the table's parent has only one child remove it as well (unless it's a table cell, or the editable element)
-				//(http://dev.ckeditor.com/ticket/5416, http://dev.ckeditor.com/ticket/6289, http://dev.ckeditor.com/ticket/12110)
+				//(https://dev.ckeditor.com/ticket/5416, https://dev.ckeditor.com/ticket/6289, https://dev.ckeditor.com/ticket/12110)
 				var parent = table.getParent(),
 					editable = editor.editable();
 

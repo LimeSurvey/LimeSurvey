@@ -374,7 +374,7 @@ class UploaderController extends SurveyController
                     . "sPreview : '" . $sPreview . "', "
                     . "questgrppreview : '" . $sPreview . "', "
                     . "uploadurl : '" . $this->createUrl('/uploader/index/mode/upload/') . "', "
-                    . "csrfToken: '" . ls_json_encode(Yii::app()->request->csrfToken) . "', "
+                    . "csrfToken: " . ls_json_encode(Yii::app()->request->csrfToken) . ", " // does not need quotes as json_encode already encodes
                     . "showpopups: '" . Yii::app()->getConfig("showpopups") . "', "
                     . "uploadLang: " . $sLangScript
                     . "});

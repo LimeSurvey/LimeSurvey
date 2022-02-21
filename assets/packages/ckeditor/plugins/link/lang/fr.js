@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'fr', {
 	acccessKey: 'Touche d\'accessibilité',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'fr', {
 	noAnchors: '(Aucune ancre disponible dans ce document)',
 	noEmail: 'Veuillez entrer l\'adresse électronique',
 	noUrl: 'Veuillez entrer l\'URL du lien',
+	noTel: 'Veuillez entrer le numéro de téléphone',
 	other: '<autre>',
+	phoneNumber: 'Numéro de téléphone',
 	popupDependent: 'Dépendante (Netscape)',
 	popupFeatures: 'Caractéristiques de la fenêtre surgissante',
 	popupFullScreen: 'Plein écran (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'fr', {
 	toAnchor: 'Ancre',
 	toEmail: 'Courriel',
 	toUrl: 'URL',
+	toPhone: 'Téléphone',
 	toolbar: 'Lien',
 	type: 'Type de lien',
 	unlink: 'Supprimer le lien',

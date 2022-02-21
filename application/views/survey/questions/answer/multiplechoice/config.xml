@@ -178,19 +178,6 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <attribute>
-            <name>input_size</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>integer</inputtype>
-            <default></default>
-            <help>Set the size of the input or textarea. The input will be displayed approximately this size in width.</help>
-            <caption>Text input box size</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->
         <attribute>

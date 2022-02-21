@@ -1287,6 +1287,12 @@ class dataentry extends Survey_Common_Action
                             );
                             break;
                         case "startlanguage":
+                            $slangs = $oSurvey->allLanguages;
+                            foreach ($slangs as $lang) {
+                                $LanguageList[$lang] = getLanguageNameFromCode($lang, false);
+                            }
+                            $aDataentryoutput .= CHtml::dropDownList($fname['fieldname'], $idrow[$fname['fieldname']], $LanguageList, array('class' => 'form-control'));
+                            break;
                         default:
                             $aDataentryoutput .= CHtml::textField(
                                 $fname['fieldname'],
