@@ -131,7 +131,8 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_urldescription', 'LSYii_Validators'),
             array('surveyls_urldescription', 'length', 'min' => 0, 'max' => 255),
             array('surveyls_alias', 'length', 'min' => 0, 'max' => 100),
-            array('surveyls_alias', 'match', 'allowEmpty' => true, 'pattern' => '[\w\d-]+'),
+            array('surveyls_alias', 'match', 'allowEmpty' => true, 'pattern' => '/[\w\d-]+/'),
+            array('surveyls_alias', 'unique', 'caseSensitive' => false, 'message' => gT('Survey alias must be unique.')),
 
             array('surveyls_dateformat', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '12', 'allowEmpty' => true),
             array('surveyls_numberformat', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),

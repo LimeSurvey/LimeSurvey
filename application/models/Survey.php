@@ -1865,6 +1865,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         Question::model()->deleteAll($criteria); // Must log count of deleted ?
     }
 
+    /**
+     * TODO: Not used anywhere. Deprecate it?
+     */
     public function getsSurveyUrl()
     {
         if ($this->sSurveyUrl == '') {
@@ -2288,5 +2291,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         );
         return $aSurveys;
+    }
+
+    public function getSurveyUrl($language = null, $preferShortUrl = true)
+    {
+        if (empty($language)) {
+            $language = $this->language;
+        }
+        if ($preferShortUrl && !empty($this->languagesettings[$language]->surveyls_alias)) {
+            $url = Yii::app()->getBaseUrl(true) . '/' . $this->languagesettings[$language]->surveyls_alias;
+        } else {
+            $url = Yii::app()->createAbsoluteUrl('survey/index', array('sid' => $this->sid, 'lang' => $language));
+        }
+        return $url;
     }
 }
