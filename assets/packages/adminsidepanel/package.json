@@ -14,7 +14,6 @@
     "@babel/polyfill": "^7.4.4",
     "core-js": "^2.6.5",
     "lodash": "^4.17.4",
-    "node-sass": "^4.0.0",
     "vue": "^2.6.10",
     "vue-localstorage": "^0.5.0",
     "vuex": "^2.3.1",
@@ -28,6 +27,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "rtlcss-webpack-plugin": "^4.0.3",
+    "sass": "^1.49.8",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
   },
