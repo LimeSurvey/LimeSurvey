@@ -204,14 +204,9 @@
 }
 .ls-ba .breadcrumb > li + li:before {
   padding: 0 5px;
-<<<<<<< HEAD
-  content: "\f061";
-  font: normal normal normal 18px/1 FontAwesome; }
-=======
   content: "\F061";
   font: normal normal normal 18px/1 FontAwesome;
 }
->>>>>>> master
 
 .fade-enter-active {
   transition: all 0.8s ease;
@@ -1003,15 +998,9 @@ footer.footer,
 .ls-ba .breadcrumb > li + li:before {
   padding: 0 5px;
   color: #ccc;
-<<<<<<< HEAD
-  content: "\f061";
-  font: normal normal normal 18px/1 FontAwesome; }
-
-=======
   content: "\F061";
   font: normal normal normal 18px/1 FontAwesome;
 }
->>>>>>> master
 .ls-ba .pager li > a, .ls-ba .pager li > span {
   border-radius: 4px;
   margin: 1px;
