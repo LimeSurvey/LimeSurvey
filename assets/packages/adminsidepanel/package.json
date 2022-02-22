@@ -37,7 +37,6 @@
     "jsdom": "^18.1.1",
     "jsdom-global": "^3.0.2",
     "lodash": "^4.17.4",
-    "node-sass": "^7.0.1",
     "vue": "^3.2.31",
     "vue-localstorage": "^0.6.2",
     "vue-template-compiler": "^2.5.21",
@@ -50,7 +49,8 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "rtlcss-webpack-plugin": "^4.0.3",
-    "sass-loader": "^7.1.0"
+    "sass": "^1.49.8",
+    "sass-loader": "^7.1.0",
   },
   "eslintConfig": {
     "root": true,
