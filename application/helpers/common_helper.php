@@ -4737,24 +4737,37 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
 }
 
 /**
-* This function tries to returns the 'real' IP address under all configurations
-* Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
-*/
+ * This function tries to returns the 'real' IP address under all configurations
+ * Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
+ *
+ * @return	string	Client's IP Address
+ */
 function getIPAddress()
 {
     $sIPAddress = '127.0.0.1';
-    if (!empty($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)!==false) {
+    if (!empty($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP) !== false) {
         //check IP address from share internet
         $sIPAddress = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)!==false) {
-        //Check IP address passed from proxy
-        $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } elseif (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)!==false) {
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        //Check IP Address passed from proxy
+        $vComma = strpos($_SERVER['HTTP_X_FORWARDED_FOR'], ',');
+        if (false === $vComma && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
+            // Single forward
+            $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            // Multitple forward
+            $aForwarded = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            if (false !== filter_var($aForwarded[0], FILTER_VALIDATE_IP)) {
+                $sIPAddress = $aForwarded[0];
+            }
+        }
+    } elseif (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
+        // Check IP Address from remote host
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
     }
+
     return $sIPAddress;
 }
-
 
 /**
 * This function tries to find out a valid language code for the language of the browser used
