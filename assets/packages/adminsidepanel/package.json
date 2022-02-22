@@ -27,6 +27,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "rtlcss-webpack-plugin": "^4.0.3",
+    "sass": "^1.49.8",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
   },
