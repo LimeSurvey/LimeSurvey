@@ -51,6 +51,9 @@ jobs:
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     name: Run Frontend Tests
     steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+        
       - name: Run Tests
         run: |
           cd ${{ github.workspace }}
