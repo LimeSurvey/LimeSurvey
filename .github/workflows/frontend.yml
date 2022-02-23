@@ -53,7 +53,22 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
-        
+      
+      - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
+        run: |
+          # Update
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+          source ~/.nvm/nvm.sh
+
+          # Install Node.js
+          nvm install ${{ matrix.nodeJS-versions }}
+          nvm use ${{ matrix.nodeJS-versions }}
+
+      - name: Install adminbasics
+        run: |
+          cd ${{ github.workspace }}
+          yarn --cwd ./assets/packages/adminbasics
+          
       - name: Run Tests
         run: |
           cd ${{ github.workspace }}
