@@ -33,9 +33,9 @@ jobs:
     steps:
       - name: Debug Step
         run: |
-          cd ${{ github.workspace }}/LimeSurvey
+          cd ${{ github.workspace }}
           ls
-          
+
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
           # Update
