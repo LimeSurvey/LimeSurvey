@@ -46,6 +46,9 @@ jobs:
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     name: Build Frontend Packages
     steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '10.16.3'
       - name: Build Packages
         run: node ./buildVueComponents.js -s adminbasics -p
     
