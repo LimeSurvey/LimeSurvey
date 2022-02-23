@@ -32,7 +32,7 @@ jobs:
     name: Build Frontend Packages
     steps:
       - name: Change directory to LimeSurvey application
-        run: cd ${{ github.workspace }}/LimeSurvey
+        run: cd ${{ github.workspace }}
 
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
