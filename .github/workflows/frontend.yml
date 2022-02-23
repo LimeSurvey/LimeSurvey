@@ -31,6 +31,11 @@ jobs:
         nodeJS-versions: ['10.16.3']
     name: Build Frontend Packages
     steps:
+      - name: Debug Step
+        run: |
+          cd ${{ github.workspace }}/LimeSurvey
+          ls
+          
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
           # Update
