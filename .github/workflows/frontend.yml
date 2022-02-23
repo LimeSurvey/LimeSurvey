@@ -31,6 +31,9 @@ jobs:
         nodeJS-versions: ['10.16.3']
     name: Build Frontend Packages
     steps:
+      - name: Show dir
+        run: ls
+        
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
           # Update
@@ -45,7 +48,7 @@ jobs:
         run: yarn --cwd ./assets/packages/adminbasics 
       
       - name: Build adminbasics
-        run: yarn --cwd ./assets/packages/admibasics build
+        run: yarn --cwd ./assets/packages/adminbasics build
     
   job_run_tests:
     needs: [job_build_packages]
