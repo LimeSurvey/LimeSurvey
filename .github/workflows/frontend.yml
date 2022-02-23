@@ -31,9 +31,6 @@ jobs:
         nodeJS-versions: ['10.16.3']
     name: Build Frontend Packages
     steps:
-      - name: Change directory to LimeSurvey application
-        run: cd ${{ github.workspace }}
-
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
           # Update
@@ -45,10 +42,14 @@ jobs:
           nvm use ${{ matrix.nodeJS-versions }}
 
       - name: Install adminbasics
-        run: yarn --cwd ./assets/packages/adminbasics 
+        run: |
+          cd ${{ github.workspace }}
+          yarn --cwd ./assets/packages/adminbasics 
       
       - name: Build adminbasics
-        run: yarn --cwd ./assets/packages/adminbasics build
+        run: |
+          cd ${{ github.workspace }}
+          yarn --cwd ./assets/packages/adminbasics build
     
   job_run_tests:
     needs: [job_build_packages]
