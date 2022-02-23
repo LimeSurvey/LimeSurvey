@@ -163,7 +163,7 @@ class Authentication extends Survey_Common_Action
             // which will call the plugin function newUserSession() (eg: Authdb::newUserSession() )
             // TODO: for sake of clarity, the plugin function should be renamed to authenticate().
             if ($identity->authenticate()) {
-                FailedLoginAttempt::model()->deleteAttempts();
+                FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_LOGIN);
                 App()->user->setState('plugin', $authMethod);
 
                 Yii::app()->session['just_logged_in'] = true;

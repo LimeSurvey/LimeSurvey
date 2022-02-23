@@ -63,41 +63,52 @@ class FailedLoginAttempt extends LSActiveRecord
     {
         $ip = substr(getIPAddress(), 0, 40);
 
-        $is_frontend = ($attemptType === 'token') ? 1 : 0;
-        $this->deleteAllByAttributes(array('ip' => $ip, 'is_frontend' => $is_frontend));
+        $this->deleteAllByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)));
     }
 
     /**
      * Check if an IP address is allowed to log in or not
      *
-     * @param string $attemptType  The attempt type ('login' or 'token'). Used to check the white lists.
+     * @param string $attemptType  The attempt type ('login' or 'token')
      *
      * @return bool Returns true if the user is blocked
      */
-    public function isLockedOut(string $attemptType = ''): bool
+    public function isLockedOut(string $attemptType): bool
     {
         $isLockedOut = false;
         $ip = substr(getIPAddress(), 0, 40);
 
         // Return false if IP is whitelisted
-        if (!empty($attemptType) && $this->isWhitelisted($ip, $attemptType)) {
+        if ($this->isWhitelisted($ip, $attemptType)) {
             return false;
         }
 
-        $is_frontend = ($attemptType === 'token') ? 1 : 0;
+        switch ($attemptType){
+            case FailedLoginAttempt::TYPE_LOGIN:
+                $timeOut = Yii::app()->getConfig('timeOutTime');
+                $maxLoginAttempt = Yii::app()->getConfig('maxLoginAttempt');
+                break;
+            case FailedLoginAttempt::TYPE_TOKEN:
+                $timeOut = Yii::app()->getConfig('timeOutParticipants');
+                $maxLoginAttempt = Yii::app()->getConfig('maxLoginAttemptParticipants');
+                break;
+            default:
+                throw new InvalidArgumentException(sprintf("Invalid attempt type: %s", $attemptType));
+        }
+
         $criteria = new CDbCriteria();
         $criteria->condition = 'number_attempts > :attempts AND ip = :ip AND is_frontend = :is_frontend';
         $criteria->params = array(
-            ':attempts' => Yii::app()->getConfig('maxLoginAttempt'),
+            ':attempts' => $maxLoginAttempt,
             ':ip' => $ip,
-            ':is_frontend' => $is_frontend
+            ':is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)
         );
 
         $row = $this->find($criteria);
 
         if ($row != null) {
             $lastattempt = strtotime($row->last_attempt);
-            if (time() > $lastattempt + Yii::app()->getConfig('timeOutTime')) {
+            if (time() > $lastattempt + $timeOut) {
                 $this->deleteAttempts($attemptType);
             } else {
                 $isLockedOut = true;
@@ -119,8 +130,7 @@ class FailedLoginAttempt extends LSActiveRecord
         if (!$this->isLockedOut($attemptType)) {
             $timestamp = date("Y-m-d H:i:s");
             $ip = substr(getIPAddress(), 0, 40);
-            $is_frontend = ($attemptType === self::TYPE_TOKEN) ? 1 : 0;
-            $row = $this->findByAttributes(array('ip' => $ip, 'is_frontend' => $is_frontend));
+            $row = $this->findByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === self::TYPE_TOKEN)));
 
             if ($row !== null) {
                 $row->number_attempts = $row->number_attempts + 1;
@@ -131,7 +141,7 @@ class FailedLoginAttempt extends LSActiveRecord
                 $record->ip = $ip;
                 $record->number_attempts = 1;
                 $record->last_attempt = $timestamp;
-                $record->is_frontend = $is_frontend;
+                $record->is_frontend = ($attemptType === self::TYPE_TOKEN);
                 $record->save();
             }
         }
@@ -146,7 +156,7 @@ class FailedLoginAttempt extends LSActiveRecord
      * @throws InvalidArgumentException if an invalid attempt type is specified
      * @return boolean
      */
-    private function isWhitelisted($ip, $attemptType)
+    private function isWhitelisted(string $ip, string $attemptType):bool
     {
         // Init
         if ($attemptType != self::TYPE_LOGIN && $attemptType != self::TYPE_TOKEN) {

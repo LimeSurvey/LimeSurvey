@@ -5053,7 +5053,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 480) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->addColumn('{{failed_login_attempts}}', 'is_frontend', "integer NOT NULL DEFAULT 0");
+            $oDB->createCommand()->addColumn('{{failed_login_attempts}}', 'is_frontend', "boolean NOT NULL DEFAULT FALSE");
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 480], "stg_name='DBVersion'");
             $oTransaction->commit();
