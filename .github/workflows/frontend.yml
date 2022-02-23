@@ -32,8 +32,8 @@ jobs:
     name: Build Frontend Packages
     steps:
       - name: Show dir
-        run: ls
-        
+        run: ls ${{ github.workspace }}
+
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
           # Update
