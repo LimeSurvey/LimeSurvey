@@ -32,10 +32,11 @@ jobs:
     name: Prepare the Frontend
     steps:
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
-        run:
+        run: |
           # Update
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
           source ~/.nvm/nvm.sh
+
           # Install Node.js
           nvm install ${{ matrix.nodeJS-versions }}
           nvm use ${{ matrix.nodeJS-versions }}
@@ -48,12 +49,12 @@ jobs:
       - name: Build Packages
         run: node ./buildVueComponents.js -s adminbasics -p
     
-    job_run_tests:
-      needs: [job_build_packages]
-      runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
-      name: Run Frontend Tests
-      steps:
-        - name: Run Tests
-          run: yarn --cwd ./assets/packages/adminbasics run test
+  job_run_tests:
+    needs: [job_build_packages]
+    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    name: Run Frontend Tests
+    steps:
+      - name: Run Tests
+        run: yarn --cwd ./assets/packages/adminbasics run test
   
     
