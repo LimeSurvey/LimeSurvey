@@ -21,28 +21,9 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
-  
-  job_prepare_frontend:
-    needs: [job_checkout_code]
-    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
-    strategy:
-      matrix:
-        # Specify what version of nodejs you want to test
-        nodeJS-versions: ['10.16.3']
-    name: Prepare the Frontend
-    steps:
-      - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
-        run: |
-          # Update
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-          source ~/.nvm/nvm.sh
-
-          # Install Node.js
-          nvm install ${{ matrix.nodeJS-versions }}
-          nvm use ${{ matrix.nodeJS-versions }}
           
   job_build_packages:
-    needs: [job_prepare_frontend]
+    needs: [job_checkout_code]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     strategy:
       matrix:
@@ -53,7 +34,15 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.nodeJS-versions }}
-          cache: 'node'
+      - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
+        run: |
+          # Update
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+          source ~/.nvm/nvm.sh
+
+          # Install Node.js
+          nvm install ${{ matrix.nodeJS-versions }}
+          nvm use ${{ matrix.nodeJS-versions }}
       - name: Build Packages
         run: node ./buildVueComponents.js -s adminbasics -p
     
