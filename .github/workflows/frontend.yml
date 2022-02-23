@@ -26,11 +26,6 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
 
-      - name: Debug Step
-        run: |
-          cd ${{ github.workspace }}
-          ls
-
       - name: Prepare nvm with Node ${{ matrix.nodeJS-versions }}
         run: |
           # Update
@@ -57,6 +52,8 @@ jobs:
     name: Run Frontend Tests
     steps:
       - name: Run Tests
-        run: yarn --cwd ./assets/packages/adminbasics run test
+        run: |
+          cd ${{ github.workspace }}
+          yarn --cwd ./assets/packages/adminbasics run test
   
     
