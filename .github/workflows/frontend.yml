@@ -49,6 +49,10 @@ jobs:
   job_run_tests:
     needs: [job_build_packages]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    strategy:
+      matrix:
+        # Specify what version of nodejs you want to test
+        nodeJS-versions: ['10.16.3']
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
@@ -68,7 +72,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           yarn --cwd ./assets/packages/adminbasics
-          
+
       - name: Run Tests
         run: |
           cd ${{ github.workspace }}
