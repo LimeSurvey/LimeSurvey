@@ -43,9 +43,12 @@ jobs:
           # Install Node.js
           nvm install ${{ matrix.nodeJS-versions }}
           nvm use ${{ matrix.nodeJS-versions }}
-          
-      - name: Build Packages
-        run: node ./buildVueComponents.js -s adminbasics -p
+
+      - name: Install adminbasics
+        run: yarn --cwd ./assets/packages/adminbasics 
+      
+      - name: Build adminbasics
+        run: yarn --cwd ./assets/packages/admibasics build
     
   job_run_tests:
     needs: [job_build_packages]
