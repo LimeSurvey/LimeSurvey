@@ -43,6 +43,7 @@ jobs:
           # Install Node.js
           nvm install ${{ matrix.nodeJS-versions }}
           nvm use ${{ matrix.nodeJS-versions }}
+          
       - name: Build Packages
         run: node ./buildVueComponents.js -s adminbasics -p
     
