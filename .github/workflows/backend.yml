@@ -103,7 +103,7 @@ jobs:
           chmod +x ./tests/bin/lint-*
     
   job_check_mysql_service:
-      needs: [job_setup_apache_and_php]
+      needs: [job_start_mysql,job_setup_apache_and_php]
       # Env vars for this job
       env:
         DBENGINE: INNODB
