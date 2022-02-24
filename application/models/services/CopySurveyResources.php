@@ -75,7 +75,7 @@ class CopySurveyResources
                 }
             }
         } else {
-            $this->addError($sourceDir, gT("Source dir not found."));
+            $this->addError($sourceDir, gT("Source directory not found"));
         }
     }
 
