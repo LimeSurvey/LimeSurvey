@@ -37,4 +37,9 @@ function dummy_twig_translation_helper()
     gT("Save as label set");  // From application/views/questionAdministration/answerOptions.twig
     gT("Short free text"); // From application/views/survey/questions/answer/shortfreetext/config.xml
     gT("Set the size to the input or textarea, the input will be displayed with approximately this size in width."); // From application/views/survey/questions/answer/shortfreetext/config.xml
+    gT("Subquestion"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
+    gT("Relevance equation"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
+    gT("Load label set"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
+    gT("Save label set"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
+    gT("Quick add"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
 }
