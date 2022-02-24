@@ -233,7 +233,8 @@ class QuestionTheme extends LSActiveRecord
     public function getManifestButtons()
     {
         $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
-            "<input type='hidden' name='templatefolder' value='" . $this->xml_path . "'>
+            "<input type='hidden' name='templatefolder' value='" . $this->getRelativeXmlPath() . "'>
+            <input type='hidden' name='theme_type' value='" . $this->getThemeType() . "'>
             <input type='hidden' name='theme' value='questiontheme'>
             <button id='template_options_link_" . $this->name . "'class='btn btn-default btn-block'>
             <span class='fa fa-download text-warning'></span>
@@ -250,14 +251,21 @@ class QuestionTheme extends LSActiveRecord
      * @param string $sXMLDirectoryPath the relative path to the Question Theme XML directory
      * @param bool   $bSkipConversion   If converting should be skipped
      * @param $bThrowConversionException If true, throws exception instead of redirecting
+     * @param string|null $themeType The theme type. If specified, the path is considered to be relative to the theme type directory.
      * @return bool|string
      * @throws Exception
      * @todo Please never redirect at this level, only from controllers.
      */
-    public function importManifest($sXMLDirectoryPath, $bSkipConversion = false, $bThrowConversionException = false)
+    public function importManifest($sXMLDirectoryPath, $bSkipConversion = false, $bThrowConversionException = false, $themeType = null)
     {
         if (empty($sXMLDirectoryPath)) {
             throw new InvalidArgumentException('$templateFolder cannot be empty');
+        }
+
+        // If a theme type is specified, the $sXMLDirectoryPath is supposed to be relative to the corresponding
+        // theme type's directory. So we need to get the full path.
+        if (!is_null($themeType)) {
+            $sXMLDirectoryPath = self::getQuestionThemeDirectoryForType($themeType) . '/' . $sXMLDirectoryPath;
         }
 
         // convert Question Theme
@@ -662,7 +670,7 @@ class QuestionTheme extends LSActiveRecord
         $baseQuestionsModified = [];
         foreach ($baseQuestions as $baseQuestion) {
             //TODO: should be moved into DB column (question_theme_settings table)
-            $sQuestionConfigFile = file_get_contents($baseQuestion->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = file_get_contents($baseQuestion->getXmlPath() . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionEngineData = json_decode(json_encode($oQuestionConfig->engine), true);
             $showAsQuestionType = $questionEngineData['show_as_question_type'];
@@ -793,13 +801,14 @@ class QuestionTheme extends LSActiveRecord
         }
 
         $answerColumnDefinition = '';
-        if (isset($questionTheme->xml_path)) {
+        $xmlPath = $questionTheme->getXmlPath();
+        if (isset($xmlPath)) {
             if (\PHP_VERSION_ID < 80000) {
                 $bOldEntityLoaderState = libxml_disable_entity_loader(true);
             }
             // If xml_path is relative, cwd is assumed to be ROOTDIR.
             // TODO: Make it always relative depending on question theme type (core, custom, user).
-            $sQuestionConfigFile = file_get_contents($questionTheme->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = file_get_contents($xmlPath . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             if (isset($oQuestionConfig->metadata->answercolumndefinition)) {
                 // TODO: Check json_last_error.
@@ -830,7 +839,7 @@ class QuestionTheme extends LSActiveRecord
         if (empty($questionTheme)) {
             throw new \CException("The Database definition for Questiontype: " . $type . " is missing");
         }
-        $configXMLPath = App()->getConfig('rootdir') . '/' . $questionTheme->xml_path . '/config.xml';
+        $configXMLPath = App()->getConfig('rootdir') . '/' . $questionTheme->getXmlPath() . '/config.xml';
 
         return $configXMLPath;
     }
@@ -1003,7 +1012,7 @@ class QuestionTheme extends LSActiveRecord
         }
         $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
         if ($questionTheme !== null) {
-            $xml_config = simplexml_load_file($questionTheme->xml_path . '/config.xml');
+            $xml_config = simplexml_load_file($questionTheme->getXmlPath() . '/config.xml');
             $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
         }
         if (\PHP_VERSION_ID < 80000) {
@@ -1121,12 +1130,35 @@ class QuestionTheme extends LSActiveRecord
     public function getRelativeXmlPath()
     {
         $type = $this->getThemeType();
-        $directories = self::getQuestionThemeDirectories();
-        $typeDirectory = $directories[$type];
+        $typeDirectory = self::getQuestionThemeDirectoryForType($type);
 
         // xml_path is supposed to contain the type directory, so we extract the rest of the path
         $relativePath = substr($this->xml_path, strpos($this->xml_path, $typeDirectory) + strlen($typeDirectory));
         $relativePath = ltrim($relativePath, "\\/");
         return $relativePath;
+    }
+
+    /**
+     * Returns the XML path
+     * It may be absolute or relative to the Limesurvey root
+     * @return string
+     */
+    public function getXmlPath()
+    {
+        return $this->xml_path;
+    }
+
+    /**
+     * Returns the path for the specified question theme type
+     * @param string $themeType
+     * @return string
+     */
+    public static function getQuestionThemeDirectoryForType($themeType)
+    {
+        $directories = self::getQuestionThemeDirectories();
+        if (!isset($directories[$themeType])) {
+            throw new Exception(sprintf(gT("No question theme directory found for theme type '%s'"), $themeType));
+        }
+        return $directories[$themeType];
     }
 }
