@@ -119,10 +119,10 @@ class ResponsesController extends LSBaseController
 
         // logging for webserver when parameter is somehting like $surveyid=125<script ...
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (!is_numeric(Yii::app()->request->getParam('id'))) {
-            throw new CHttpException(403, gT("Invalid response id."));
+            throw new CHttpException(403, gT("Invalid response ID"));
         }
         $survey = Survey::model()->findByPk($surveyId);
 
@@ -611,10 +611,10 @@ class ResponsesController extends LSBaseController
     public function actionDeleteSingle(int $surveyId, int $responseId): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (!is_numeric(Yii::app()->request->getParam('responseId'))) {
-            throw new CHttpException(403, gT("Invalid response id."));
+            throw new CHttpException(403, gT("Invalid response ID"));
         }
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
