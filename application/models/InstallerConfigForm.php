@@ -406,8 +406,8 @@ class InstallerConfigForm extends CFormModel
      */
     private function isInnoDbBarracudaFileFormat()
     {
-        $check1 = $this->getMySqlConfigValue('innodb_file_format') == 'Barracuda' || $this->getMySqlConfigValue('innodb_file_format') == NULL;
-        $check2 = $this->getMySqlConfigValue('innodb_file_format_max') == 'Barracuda' || $this->getMySqlConfigValue('innodb_file_format_max') == NULL;
+        $check1 = $this->getMySqlConfigValue('innodb_file_format') == 'Barracuda' || $this->getMySqlConfigValue('innodb_file_format') == null;
+        $check2 = $this->getMySqlConfigValue('innodb_file_format_max') == 'Barracuda' || $this->getMySqlConfigValue('innodb_file_format_max') == null;
         return $check1 && $check2;
     }
 

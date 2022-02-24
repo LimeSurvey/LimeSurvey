@@ -39,6 +39,7 @@
  *
  * @property array $standardCols
  * @property array $standardColsForGrid
+ * @property array $custom_attributes
  */
 class TokenDynamic extends LSActiveRecord
 {
@@ -51,6 +52,8 @@ class TokenDynamic extends LSActiveRecord
     /**
      * @inheritdoc
      * @return TokenDynamic
+     * @param ?string $sid
+     * @psalm-suppress ParamNameMismatch Ignore that $sid is $className in parent class
      */
     public static function model($sid = null)
     {
@@ -174,7 +177,7 @@ class TokenDynamic extends LSActiveRecord
         $command = new CDbCriteria();
         $command->condition = '';
         $command->addCondition("(completed ='N') or (completed='')");
-        $command->addCondition("token <> ''");
+        $command->addCondition("t.token <> ''");
         $command->addCondition("email <> ''");
 
         if ($bEmail) {
@@ -205,7 +208,7 @@ class TokenDynamic extends LSActiveRecord
 
         $command->order = 'tid';
 
-        $oResult = TokenDynamic::model()->findAll($command);
+        $oResult = $this->findAll($command);
         foreach ($oResult as $key => $result) {
             $oResult[$key] = $result->decrypt();
         }
@@ -230,8 +233,8 @@ class TokenDynamic extends LSActiveRecord
     public function findUninvitedIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
         $tokens = $this->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
-        $ids = array_map(function ($item) { 
-            return $item->tid; 
+        $ids = array_map(function ($item) {
+            return $item->tid;
         }, $tokens);
         return $ids;
     }
@@ -503,6 +506,7 @@ class TokenDynamic extends LSActiveRecord
     /**
      * @return array
      */
+    // phpcs:ignore
     public function getCustom_attributes()
     {
         $columns = $this->getMetaData()->columns;
@@ -752,7 +756,6 @@ class TokenDynamic extends LSActiveRecord
     public function getAttributesForGrid()
     {
         $aCustomAttributesCols = array();
-        //$aCustomAttributes = $this->custom_attributes;
 
         $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
         $aCustomAttributes = $oSurvey->tokenAttributes;

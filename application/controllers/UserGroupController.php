@@ -38,7 +38,7 @@ class UserGroupController extends LSBaseController
     }
 
     /**
-     * this is part of _renderWrappedTemplate implement in old usergroups.php
+     * this is part of renderWrappedTemplate implement in old usergroups.php
      *
      * @param string $view
      * @return bool

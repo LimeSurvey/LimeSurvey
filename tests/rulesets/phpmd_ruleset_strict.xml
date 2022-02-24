@@ -15,4 +15,13 @@
             <property name="minimum" value="60" />
         </properties>
     </rule>
+
+    <!-- This rule is considered increasing maintainability, based on the meta-study
+         "Empirical evidence on the link between object-oriented measures and external quality attributes: a systematic literature review" -->
+    <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity">
+        <properties>
+            <!-- TODO: Might need to increase this a little -->
+            <property name="maximum" value="50" />
+        </properties>
+    </rule>
 </ruleset>

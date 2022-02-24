@@ -32,7 +32,6 @@
  */
 class Permission extends LSActiveRecord
 {
-
     /* @var array[]|null The global base Permission LimeSurvey installation */
     protected static $aGlobalBasePermissions;
 
@@ -50,10 +49,10 @@ class Permission extends LSActiveRecord
      * @param string $class
      * @return Permission
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 

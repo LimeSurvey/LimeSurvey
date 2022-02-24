@@ -25,7 +25,6 @@
  */
 class QuestionL10n extends LSActiveRecord
 {
-
     /** @inheritdoc */
     public function tableName()
     {
@@ -42,10 +41,10 @@ class QuestionL10n extends LSActiveRecord
      * @inheritdoc
      * @return QuestionL10n
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 

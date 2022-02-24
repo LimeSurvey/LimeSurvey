@@ -6,7 +6,6 @@
  */
 class UserManagementController extends LSBaseController
 {
-
     /**
      * @return array
      **/
@@ -540,8 +539,10 @@ class UserManagementController extends LSBaseController
     public function actionAddRole(): ?string
     {
         //Permission check user should have permission to add/edit new user ('create' or 'update')
-        if (!(Permission::model()->hasGlobalPermission('users', 'create') ||
-            Permission::model()->hasGlobalPermission('users', 'update'))) {
+        if (
+            !(Permission::model()->hasGlobalPermission('users', 'create') ||
+            Permission::model()->hasGlobalPermission('users', 'update'))
+        ) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
