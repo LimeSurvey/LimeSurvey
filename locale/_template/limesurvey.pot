@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-02-24 16:43:56+00:00\n"
+"POT-Creation-Date: 2022-02-24 16:55:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -759,7 +759,7 @@ msgid "Participant - Opt-out URL"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:319
-msgid "Participant - Central Participant Opt-out URL"
+msgid "Participant - Central participant opt-out URL"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:320
@@ -767,7 +767,7 @@ msgid "Participant - Opt-in URL"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:321
-msgid "Participant - Central Participant Opt-in URL"
+msgid "Participant - Central participant opt-in URL"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:322
@@ -1456,7 +1456,6 @@ msgstr ""
 #: application/controllers/ResponsesController.php:524
 #: application/controllers/ResponsesController.php:558
 #: application/controllers/ResponsesController.php:614
-#: application/controllers/ResponsesController.php:648
 #: application/controllers/ResponsesController.php:715
 #: application/controllers/ResponsesController.php:764
 msgid "Invalid surveyid."
@@ -1464,7 +1463,6 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:125
 #: application/controllers/ResponsesController.php:617
-#: application/controllers/ResponsesController.php:651
 msgid "Invalid response id."
 msgstr ""
 
@@ -1617,8 +1615,25 @@ msgstr ""
 msgid "Response deleted."
 msgstr ""
 
+#: application/controllers/ResponsesController.php:648
+#: application/controllers/ResponsesController.php:1005
+#: application/controllers/ResponsesController.php:1018
+#: application/controllers/SurveyAdministrationController.php:2138
+#: application/controllers/admin/DataEntry.php:1404
+#: application/controllers/admin/Statistics.php:113
+#: application/controllers/admin/Statistics.php:667
+#: application/core/SurveyCommonAction.php:653
+#: application/core/SurveyCommonAction.php:939
+#: application/helpers/LayoutHelper.php:391
+msgid "Invalid survey ID"
+msgstr ""
+
+#: application/controllers/ResponsesController.php:651
+msgid "Invalid response ID"
+msgstr ""
+
 #: application/controllers/ResponsesController.php:654
-msgid "Invalid question id."
+msgid "Invalid question ID"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:658
@@ -1683,18 +1698,6 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:990
 msgid "Sorry, there are no files for this response."
-msgstr ""
-
-#: application/controllers/ResponsesController.php:1005
-#: application/controllers/ResponsesController.php:1018
-#: application/controllers/SurveyAdministrationController.php:2138
-#: application/controllers/admin/DataEntry.php:1404
-#: application/controllers/admin/Statistics.php:113
-#: application/controllers/admin/Statistics.php:667
-#: application/core/SurveyCommonAction.php:653
-#: application/core/SurveyCommonAction.php:939
-#: application/helpers/LayoutHelper.php:391
-msgid "Invalid survey ID"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:1021
@@ -9031,7 +9034,7 @@ msgid "Web server authentication method is not allowed for this user"
 msgstr ""
 
 #: application/core/plugins/Authwebserver/Authwebserver.php:158
-msgid "The current server key is not set in current access. If you set this plugin as default you will not be able to log in again."
+msgid "The server key is not currently set. If you set this plugin as default you will not be able to log in again."
 msgstr ""
 
 #: application/core/plugins/ComfortUpdateChecker/ComfortUpdateChecker.php:64
@@ -9085,7 +9088,7 @@ msgid "STATA (.xml)"
 msgstr ""
 
 #: application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php:50
-msgid "Invalid question code or id “%s”"
+msgid "Invalid question code or ID “%s”"
 msgstr ""
 
 #: application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php:58
@@ -10086,7 +10089,7 @@ msgid "You cannot delete the base language. Please select a different language a
 msgstr ""
 
 #: application/extensions/admin/survey/LanguagesWidget/LanguagesWidget.php:20
-msgid "Are you sure, you want to delete this language? This will remove all survey content with this language permanently."
+msgid "Are you sure, you want to delete this language? This will remove all survey content of this language permanently."
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:25
@@ -16402,7 +16405,7 @@ msgid "Error: "
 msgstr ""
 
 #: application/models/services/CopySurveyResources.php:52
-msgid "Could not open source dir - maybe a permission problem?"
+msgid "Could not open source directory - maybe a permission problem?"
 msgstr ""
 
 #: application/models/services/CopySurveyResources.php:78
@@ -16415,7 +16418,7 @@ msgid "Could not create directory"
 msgstr ""
 
 #: application/models/services/CopySurveyResources.php:94
-msgid "Destination dir already exists! Can contain more files than source dir."
+msgid "Destination directory already exists!"
 msgstr ""
 
 #: application/models/services/ParticipantBlacklistHandler.php:18
@@ -17358,11 +17361,11 @@ msgid "Select columns:"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_columns-control.php:30
-msgid "The number of fields in your survey exceed the maximum numbers of fields you can export."
+msgid "The number of fields in your survey exceeds the maximum numbers of fields you can export."
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_columns-control.php:33
-msgid "If data is missing in the exported file, please contact you system administrator to raise the setting max_input_vars to at least %s."
+msgid "If data is missing in the exported file, please contact your system administrator to raise the setting max_input_vars to at least %s."
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_format.php:5
@@ -20554,7 +20557,7 @@ msgid "All questions, answers, etc for removed languages will be lost. Are you s
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:84
-msgid "Survey Languages"
+msgid "Survey languages"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:96
