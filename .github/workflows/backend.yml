@@ -12,25 +12,20 @@ on:
       - 'zoho/**'
 jobs:
   
-  job_checkout_code:
-    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
-    name: Checkout the code
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
-  
   job_php_versions:
-    needs: [job_checkout_code]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     strategy:
       matrix:
         php-versions: ['7.2', '8.0']
     name: PHP ${{ php-versions }} # Check each version of php specified in the matrix
     steps:
+       - name: Checkout the code
+         uses: actions/checkout@v2
+
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
+       - name: Install specified PHP
+         uses: shivammathur/setup-php@v2
+         with:
           php-version: ${{ matrix.php-versions }}
   
   job_start_mysql:
