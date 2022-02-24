@@ -12,7 +12,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-/*
+/**
  * This is the model class for table "{{template_configuration}}".
  *
  * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
@@ -34,13 +34,13 @@
  * @property string $packages_ltr
  * @property string $packages_rtl
  * @property string $packages_rtl
+ * @property Template $template
  *
  * @package       LimeSurvey
  * @subpackage    Backend
  */
 class TemplateConfiguration extends TemplateConfig
 {
-
     /**
      * @var TemplateConfiguration $oParentTemplate The parent template name
      * A template configuration, in the database, can inherit from another one.
@@ -124,6 +124,7 @@ class TemplateConfiguration extends TemplateConfig
             array('cssframework_name', 'length', 'max' => 45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load',
                 'safe'),
+            array('options', 'sanitizeImagePathsOnJson'),
             // The following rule is used by search().
             array('id, template_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load', 'safe', 'on' => 'search'),
         );
@@ -512,7 +513,8 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('template.description', $this->template_description, true);
         $criteria->compare('template.extends', $this->template_extends, true);
 
-        $coreTemplates = Template::getStandardTemplateList();
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $coreTemplates = SurveyThemeHelper::getStandardTemplateList();
         if ($this->template_type == 'core') {
             $criteria->addInCondition('template_name', $coreTemplates);
         } elseif ($this->template_type == 'user') {
@@ -684,7 +686,8 @@ class TemplateConfiguration extends TemplateConfig
     public function getTypeIcon()
     {
         if (empty($this->sTypeIcon)) {
-            $this->sTypeIcon = (Template::isStandardTemplate($this->template->name)) ?
+            Yii::import('application.helpers.SurveyThemeHelper');
+            $this->sTypeIcon = (SurveyThemeHelper::isStandardTemplate($this->template->name)) ?
                 gT("Core theme") :
                 gT("User theme");
         }
@@ -742,7 +745,7 @@ class TemplateConfiguration extends TemplateConfig
             </a>";
 
         $OptionLink = '';
-        if ($this->hasOptionPage) {
+        if ($this->getHasOptionPage()) {
             $OptionLink .= "<a
                 id='template_options_link_" . $this->template_name . "'
                 href='" . $sOptionUrl . "'
@@ -959,7 +962,7 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $file with Path
      * @return array|null
      */
-    private function getImageInfo($file)
+    private function getImageInfo($file, $pathPrefix = '')
     {
         if (!file_exists($file)) {
             return;
@@ -972,11 +975,12 @@ class TemplateConfiguration extends TemplateConfig
         }
         $filePath = $this->getRelativePath(App()->getConfig('rootdir'), $file);
         $previewFilePath = App()->getAssetManager()->publish($file);
+        $fileName = basename($file);
         return [
             'preview' => $previewFilePath,
-            'filepath' => $filePath,
-            'filepathOptions' => $filePath ,
-            'filename' => basename($file)
+            'filepath' => $pathPrefix . $fileName,
+            'filepathOptions' => $filePath,
+            'filename' => $fileName
         ];
     }
 
@@ -988,27 +992,35 @@ class TemplateConfiguration extends TemplateConfig
     public function getOptionPageAttributes()
     {
         $aData = $this->attributes;
-        $fileList = array_merge(
-            Template::getOtherFiles($this->filesPath),
-            Template::getOtherFiles($this->generalFilesPath)
-        );
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
-        $categoryList = []; // Array with optgroup label and path
-        $categoryList[] = ['group' => gT("Global"),'path' => $this->generalFilesPath];
-        $categoryList[] = ['group' => gT("Theme"),'path' => $this->filesPath];
-        if ($this->sid) {
-            $categoryList[] = [
-                'group' => gT("Survey"),
-                'path' => App()->getConfig('uploaddir') . '/surveys/' . $this->sid . '/images/'
-            ];
-        }
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $categoryList = SurveyThemeHelper::getFileCategories($this->template_name, $this->sid);
+
+        // Compose list of image files for each category
         foreach ($categoryList as $category) {
-            $fileList = Template::getOtherFiles($category['path']);
+            // Get base path for category
+            $pathPrefix = empty($category->pathPrefix) ? '' : $category->pathPrefix;
+            $basePath = $category->path;
+            // If the category is theme, add the "files folder" to the base path, as that's the directory to scan for files
+            if ($category->name == 'theme') {
+                $filesFolder = $this->getAttributeValue('files_folder') . DIRECTORY_SEPARATOR;
+                $basePath = $basePath . $filesFolder;
+                $pathPrefix = $pathPrefix . $filesFolder;
+            }
+            // Get full list of files
+            $fileList = Template::getOtherFiles($basePath);
+
+            // Keep only image files
             foreach ($fileList as $file) {
-                $imageInfo = $this->getImageInfo($category['path'] . $file['name']);
+                $imageInfo = $this->getImageInfo($basePath . $file['name'], $pathPrefix);
                 if ($imageInfo) {
-                    $aData['imageFileList'][] = array_merge($category, $imageInfo);
+                    $aData['imageFileList'][] = array_merge(
+                        [
+                            'group' => $category->title,
+                        ],
+                        $imageInfo
+                    );
                 }
             };
         }
@@ -1027,6 +1039,8 @@ class TemplateConfiguration extends TemplateConfig
         $oSimpleInheritance->options = 'inherit';
         $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($this->template->name);
 
+        // TODO: It's not clear which class prepareTemplateRendering() returns or should return.
+        /** @var Template */
         $oTemplate = $this->prepareTemplateRendering($this->template->name);
 
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
@@ -1176,15 +1190,15 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Get the closest template in the hierarchy that has the definition for $attribute
      *
      * @param TemplateConfiguration $oRTemplate
-     * @param string $sPath
+     * @param string $attribute
      * @return TemplateConfiguration
      */
-    protected function getTemplateForPath($oRTemplate, $sPath)
+    protected function getTemplateConfigurationForAttribute($oRTemplate, $attribute)
     {
-        while (empty($oRTemplate->template->$sPath)) {
+        while (empty($oRTemplate->getRelatedTemplate()->$attribute)) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 $this->uninstallIncorectTheme($this->template_name);
@@ -1215,14 +1229,16 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Set the default configuration values for the template, and use the motherTemplate value if needed
+     *
+     * @return void
      */
     protected function setThisTemplate()
     {
         $this->apiVersion       = (!empty($this->template->api_version)) ?
             $this->template->api_version : null; // Mandtory setting in config XML
-        $this->viewPath         = $this->path . $this->getTemplateForPath($this, 'view_folder')
+        $this->viewPath         = $this->path . $this->getTemplateConfigurationForAttribute($this, 'view_folder')
                 ->template->view_folder . DIRECTORY_SEPARATOR;
-        $this->filesPath        = $this->path . $this->getTemplateForPath($this, 'files_folder')
+        $this->filesPath        = $this->path . $this->getTemplateConfigurationForAttribute($this, 'files_folder')
                 ->template->files_folder . DIRECTORY_SEPARATOR;
         $this->generalFilesPath = App()->getConfig("userthemerootdir")
             . DIRECTORY_SEPARATOR . 'generalfiles' . DIRECTORY_SEPARATOR;
@@ -1323,8 +1339,8 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * @todo document me
      *
-     * @param $packages
-     * @return array
+     * @param string[] $packages
+     * @return string[]
      */
     protected function addMotherTemplatePackage($packages)
     {
@@ -1568,5 +1584,186 @@ class TemplateConfiguration extends TemplateConfig
             }
             $this->options = json_encode($aOptions);
         }
+    }
+
+    /**
+     * Sanitizes the theme options making sure that paths are valid.
+     * Options that match a file will be marked as invalid if the file
+     * is not valid, or replaced with the virtual path if the file is valid.
+     */
+    public function sanitizeImagePathsOnJson($attribute, $params)
+    {
+        // Validates all options of the theme. Not only classic ones which are expected to hold a path,
+        // as other options may hold a path as well (eg. custom theme options)
+        $decodedOptions = json_decode($this->$attribute, true);
+        if (is_array($decodedOptions)) {
+            Yii::import('application.helpers.SurveyThemeHelper');
+            foreach ($decodedOptions as &$value) {
+                $value = SurveyThemeHelper::sanitizePathInOption($value, $this->template_name, $this->sid);
+            }
+            $this->$attribute = json_encode($decodedOptions);
+        }
+    }
+
+    /**
+     * Returns the related Template.
+     * The template can only be accessed as a relation when this model is stored in the DB. Before
+     * saving, $this->template is null. In that case, this method will load the approriate Template.
+     * @return Template|null
+     */
+    private function getRelatedTemplate()
+    {
+        $template = !empty($this->template) ? $this->template : Template::model()->findByAttributes(['name' => $this->template_name]);
+        return $template;
+    }
+
+    /**
+     * Returns the value of the specified attribute ($attributeName) from
+     * the closest Template in the hierarchy.
+     *
+     * @param string $attributeName
+     * @return mixed
+     */
+    private function getAttributeValue($attributeName)
+    {
+        return $this->getTemplateConfigurationForAttribute($this, $attributeName)->template->$attributeName;
+    }
+
+    /**
+     * @todo document me
+     * @return array|mixed|string|null
+     */
+    public function getPreview()
+    {
+        if (empty($this->sPreviewImgTag)) {
+            if (is_a($this->template, 'Template')) {
+                $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
+                $previewPath         = Template::getTemplatePath($this->template->name) . '/' . $sTemplateFileFolder;
+
+                if ($previewPath && file_exists($previewPath . '/preview.png')) {
+                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder;
+                    $this->sPreviewImgTag = '<img src="' .
+                        $previewUrl .
+                        '/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
+                }
+            } else {
+                $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
+            }
+        }
+
+        return $this->sPreviewImgTag;
+    }
+
+    /**
+     * Prepare all the needed datas to render the temple
+     * If any problem (like template doesn't exist), it will load the default theme configuration
+     * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the
+     *         same for all mother templates
+     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it
+     *         only before rendering anything related to the template.
+     *
+     * @param  string $sTemplateName the name of the template to load.
+     *                               The string comes from the template selector in survey settings
+     * @param  string $iSurveyId the id of the survey. If
+     * @param bool $bUseMagicInherit
+     * @return self
+     */
+    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
+    {
+        if (!empty($sTemplateName) && !empty($iSurveyId)) {
+            if (!empty(self::$aPreparedToRender[$sTemplateName])) {
+                if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId])) {
+                    if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+                        return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
+                    } else {
+                        /** @psalm-supress InvalidArrayOffset */
+                        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+                    }
+                } else {
+                    self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
+                    /** @psalm-suppress InvalidArrayOffset */
+                    self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+                }
+            } else {
+                self::$aPreparedToRender = array();
+                self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
+                /** @psalm-suppress InvalidArrayOffset */
+                self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+            }
+        }
+
+        $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
+        $this->setMotherTemplates(); // Recursive mother templates configuration
+        $this->setThisTemplate(); // Set the main config values of this template
+        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
+        $this->removeFiles();
+        $this->getshowpopups();
+
+        if (!empty($sTemplateName) && !empty($iSurveyId)) {
+            self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
+        }
+        return $this;
+    }
+
+    /**
+     * Create a package for the asset manager.
+     * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
+     * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
+     * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
+     *
+     * @param TemplateConfiguration $oTemplate TemplateManifest
+     */
+    protected function createTemplatePackage($oTemplate)
+    {
+        // Each template in the inheritance tree needs a specific alias
+        $sPathName  = 'survey.template-' . $oTemplate->sTemplateName . '.path';
+        $sViewName  = 'survey.template-' . $oTemplate->sTemplateName . '.viewpath';
+
+        Yii::setPathOfAlias($sPathName, $oTemplate->path);
+        Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
+
+        // First we add the framework replacement (bootstrap.css must be loaded before template.css)
+        $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
+        $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
+
+        // This variable will be used to add the variation name to the body class
+        // via $aClassAndAttributes['class']['body']
+        $this->aCssFrameworkReplacement = $aCssFiles;
+
+        // Then we add the template config files
+        $aTCssFiles = $this->getFilesToLoad($oTemplate, 'css');
+        $aTJsFiles  = $this->getFilesToLoad($oTemplate, 'js');
+
+        $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
+        $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
+
+        // Remove/Replace mother template files
+        if (
+            App()->getConfig('force_xmlsettings_for_survey_rendering') ||
+            ($this->template instanceof Template &&  $this->template->extends) ||
+            !empty($this->config->metadata->extends)
+        ) {
+              $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
+              $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
+        }
+
+        // Then we add the direction files if they exist
+        // TODO: attribute system rather than specific fields for RTL
+
+        $this->sPackageName = 'survey-template-' . $this->sTemplateName;
+        $sTemplateurl       = $oTemplate->getTemplateURL();
+
+        $aDepends = empty($oTemplate->depends) ? array() : $oTemplate->depends;
+
+        // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
+        // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );
+        // Depending on settings, it will create the asset directory, and publish the css and js files
+        App()->clientScript->addPackage($this->sPackageName, array(
+            'devBaseUrl'  => $sTemplateurl, // Used when asset manager is off
+            'basePath'    => $sPathName, // Used when asset manager is on
+            'css'         => $aCssFiles,
+            'js'          => $aJsFiles,
+            'depends'     => $aDepends,
+        ));
     }
 }

@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'pt-br', {
 	acccessKey: 'Chave de Acesso',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'pt-br', {
 	noAnchors: '(Não há âncoras no documento)',
 	noEmail: 'Por favor, digite o endereço de e-mail',
 	noUrl: 'Por favor, digite o endereço do Link',
+	noTel: 'Por favor, informe o número do telefone',
 	other: '<outro>',
+	phoneNumber: 'Número de telefone',
 	popupDependent: 'Dependente (Netscape)',
 	popupFeatures: 'Propriedades da Janela Pop-up',
 	popupFullScreen: 'Modo Tela Cheia (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'pt-br', {
 	toAnchor: 'Âncora nesta página',
 	toEmail: 'E-Mail',
 	toUrl: 'URL',
+	toPhone: 'Telefone',
 	toolbar: 'Inserir/Editar Link',
 	type: 'Tipo de hiperlink',
 	unlink: 'Remover Link',

@@ -32,7 +32,6 @@
  */
 class Permission extends LSActiveRecord
 {
-
     /* @var array[]|null The global base Permission LimeSurvey installation */
     protected static $aGlobalBasePermissions;
 
@@ -50,10 +49,10 @@ class Permission extends LSActiveRecord
      * @param string $class
      * @return Permission
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -678,7 +677,7 @@ class Permission extends LSActiveRecord
     /**
      * Returns true if a role has permission for crud
      * @param integer $roleId
-     * @param string $sPermission 
+     * @param string $sPermission
      * @param string $sCRUD The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
      * @return bool allowed permssion
      */
@@ -873,7 +872,7 @@ class Permission extends LSActiveRecord
      * @param $aTemplatePermissions array -- permissions to be set
      * @return array
      */
-    public static function editThemePermissionsUser($userId, $aTemplatePermissions)
+    public static function editThemePermissionsUser(int $userId, $aTemplatePermissions)
     {
         $results = [];
         foreach ($aTemplatePermissions as $key => $value) {
@@ -881,7 +880,7 @@ class Permission extends LSActiveRecord
             if (empty($oPermission)) {
                 $oPermission = new Permission();
                 $oPermission->uid = $userId;
-                $oPermission->permission = $key;
+                $oPermission->permission = $key; // maybe this one should be checked before
                 $oPermission->entity = 'template';
                 $oPermission->entity_id = 0;
             }

@@ -16,18 +16,20 @@
     <div class="row welcome survey-action">
         <div class="col-lg-12 content-right">
             <div class='jumbotron message-box'>
-                <h3><?php eT("Activate Survey");?> (<?php echo $iSurveyID; ?>)</h3>
+                <h3>
+                    <?php eT('Activate Survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>)
+                </h3>
                 <p class='lead'>
-                    <?php eT("Survey has been activated. Results table has been successfully created."); ?>
+                    <?php eT("Your survey has been activated and the responses and statistics section is now available."); ?>
                 </p>
 
-                <?php if($warning):?>
+                <?php if ($warning) :?>
                     <strong class='text-warning'>
                         <?php eT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory."); ?>
                     </strong>
-                    <?php endif; ?>
+                <?php endif; ?>
 
-                <?php if($allowregister && !tableExists('tokens_'.$iSurveyID)):?>
+                <?php if ($allowregister && !tableExists('tokens_' . $iSurveyID)) :?>
                     <p>
                         <?php eT("This survey allows public registration. A survey participants table must also be created."); ?>
                         <br />
@@ -35,21 +37,24 @@
                         <input
                             type="submit"
                             class="btn btn-default btn-lg limebutton"
-                            value="<?php eT("Initialise participant table"); ?>"
+                            value="<?php eT("Initialize participant table"); ?>"
                             onclick='<?php echo $onclickAction;?>'
                             />
                     </p>
-                    <?php else:?>
+                <?php else :?>
                     <p>
-                        <?php eT("This survey is now active, and responses can be recorded."); ?>
                         <br />
-                        <br />
-                        <?php if(!tableExists('tokens_'.$iSurveyID)):?>
-
-                            <strong><?php eT("Open-access mode:");?></strong>
-                            <?php eT("No invitation code is needed to complete the survey."); ?>
+                        <?php if (!tableExists('tokens_' . $iSurveyID)) :?>
+                            <!-- Open Access Mode -->
+                            <?php eT("By default, surveys are activated in open-access mode. In this mode participants do not need an invitation (access code) to complete the survey."); ?>
+                            <?php eT("You can share your survey via URL, QR code or social media. Navigate to Settings --> Overview --> Share your survey."); ?>
                             <br />
-                            <?php eT("You can switch to the closed-access mode by initialising a survey participants table by using the button below."); ?>
+                            <br />
+                            <!-- Closed Access Mode -->
+                            <?php eT("In closed-access mode, only those who are invited (and have an access code) can access the survey. You can activate the closed access mode now or later."); ?>
+                            <br />
+                            <br />
+                            <?php eT("You can switch back to open-access mode at any time. Navigate to Settings -> Survey participants and click on the red 'Delete participants table' button in the top bar.");?>
                             <br />
                             <br />
                             <input
@@ -62,9 +67,9 @@
                                 type='submit'
                                 class='btn btn-default'
                                 id='activateTokenTable__selector--no'
-                                value='<?php eT("No, thanks."); ?>'
+                                value='<?php eT("Continue in open-access mode"); ?>'
                                 />
-                            <?php else:?>
+                        <?php else :?>
                             <input
                                 type='submit'
                                 class='btn btn-default'
@@ -72,17 +77,17 @@
                                 value='<?php eT("Back to survey home"); ?>'
                                 />
 
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                     </p>
-                    <?php endif; ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 </div>
 
-<?php App()->getClientScript()->registerScript("ActivationFeedBackTriggers","
-$('#activateTokenTable__selector--yes').on('click', function(e){ var run=function(){".$closedOnclickAction."}; run();});
-$('#activateTokenTable__selector--no, #activateRedirectSurvey__selector').on('click', function(e){ var run=function(){".$noOnclickAction."}; run();});
-",LSYii_ClientScript::POS_POSTSCRIPT); 
+<?php App()->getClientScript()->registerScript("ActivationFeedBackTriggers", "
+$('#activateTokenTable__selector--yes').on('click', function(e){ var run=function(){" . $closedOnclickAction . "}; run();});
+$('#activateTokenTable__selector--no, #activateRedirectSurvey__selector').on('click', function(e){ var run=function(){" . $noOnclickAction . "}; run();});
+", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>

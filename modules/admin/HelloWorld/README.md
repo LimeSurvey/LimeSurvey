@@ -12,6 +12,8 @@ To create a module, you must first know a bit of the Yii 1 Framework.
 see: https://www.yiiframework.com/doc/guide/1.1/en
 
 
+NB: More info can be found in deleted globalsettings module: bc85197a266d44b75e8b7a5f6193ee750a0871a2
+
 ##  Full page Hello World Module
 
 
@@ -71,20 +73,20 @@ It will tell you "Hello Lime!"
 You'll notice that the sayHello() functions consists in nothing but just returning a view and passing it the sWho parameter:
 
 ```php
-// Call to Survey_Common_Action::_renderWrappedTemplate that will generate the "Layout"
-$this->_renderWrappedTemplate('HelloWorld', 'index', array(
+// Call to SurveyCommonAction::renderWrappedTemplate that will generate the "Layout"
+$this->renderWrappedTemplate('HelloWorld', 'index', array(
     'sWho'=>$sWho,
   ));
 ```
 
-It's pretty different from the normal Yii's renderPartial. That's because LimeSurvey (sadly) doesn't use the Yii Layout system, but rather a custom layout system that is defined in Survey_Common_Action. For you to know: this has been done by the Google Team during the Google Summer Code 2014, and we hope that for LS5 we'll totally get rid of it, and we'll use a real Yii Layout (and maybe even yii3 :) )
+It's pretty different from the normal Yii's renderPartial. That's because LimeSurvey (sadly) doesn't use the Yii Layout system, but rather a custom layout system that is defined in SurveyCommonAction. For you to know: this has been done by the Google Team during the Google Summer Code 2014, and we hope that for LS5 we'll totally get rid of it, and we'll use a real Yii Layout (and maybe even yii3 :) )
 
-You don't need to understand the logic in Survey_Common_Action. The only thing you need to understand is the signature of the function:
+You don't need to understand the logic in SurveyCommonAction. The only thing you need to understand is the signature of the function:
 The first parameter is the name of the directory inside your module where is the view, the second one in the name of the file of the view (without ".php"), the last one is the array of variables that will be available in the view ('foo'=> "bar" : means in your view you will have a variable called "$foo" that will contain the string "var")
 
 So the function sayHello() call the view :**modules/admin/HelloWorld/views/index.php**
 
-By the way, this why our module extends Survey_Common_Action.
+By the way, this why our module extends SurveyCommonAction.
 
 
 ### Can I call a view outside of the module directory?
@@ -136,7 +138,7 @@ If the array of data passed to the view contains a field "surveyid", Survey Comm
 
 ```php
 // By providing a surveyid, we launch the survey "layout".
-// see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/Survey_Common_Action.php#L328-L338
+// see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/SurveyCommonAction.php#L328-L338
 $aData['surveyid'] = $surveyid;
 ```
 
@@ -146,7 +148,7 @@ If the array of data passed to the view contains a field "title_bar", Survey Com
 
 ```php
 // By providing a "title_bar", we the green top bar with the breadcrumb.
-// see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/Survey_Common_Action.php#L481-L486
+// see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/SurveyCommonAction.php#L481-L486
 $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
 ```
 

@@ -24,9 +24,19 @@ foreach ($tokendata as $Key => $Value) {
 }
 ?>
 
+<div id="edittoken-error-container" class="row" style="display: none;">
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" aria-label="Close" onclick="$('#edittoken-error-container').hide();"><span>×</span></button>
+        <span class="alert-content"></span>
+    </div>
+</div>
 <div class="row">
   <div class="col-md-12 content-right">
-    <?php echo CHtml::form(array("admin/tokens/sa/{$token_subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array('id'=>'edittoken', 'class'=>'')); ?>
+    <?php echo CHtml::form(array("admin/tokens/sa/{$token_subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array(
+        'id' => 'edittoken',
+        'class' => '',
+        'data-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them.")
+    )); ?>
       <!-- Tabs -->
       <?php if( count($attrfieldnames) > 0 ):?>
         <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
@@ -199,10 +209,11 @@ foreach ($tokendata as $Key => $Value) {
                 <?php eT("Email:"); ?>
             </label>
             <div class="">
-                <?=TbHtml::textField('email', $email, [
+                <?=TbHtml::emailField('email', $email, [
                         'class' => 'form-control',
                         'size' => '50',
                         'maxlength' => '320',
+                        'multiple' => true
                 ]);?>
             </div>
             </div>
@@ -417,7 +428,14 @@ foreach ($tokendata as $Key => $Value) {
                     <?php echo $attr_description['description'].($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:
                 </label>
                 <div class="">
-                    <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars($$attr_name, ENT_QUOTES, 'utf-8');}?>' />
+                    <input
+                        class='form-control<?= $attr_description['mandatory'] == 'Y' ? ' mandatory-attribute' : '' ?>'
+                        type='text'
+                        size='55'
+                        id='<?php echo $attr_name; ?>'
+                        name='<?php echo $attr_name; ?>'
+                        value='<?php if (isset($$attr_name)){echo htmlspecialchars($$attr_name, ENT_QUOTES, 'utf-8');}?>' 
+                    />
                 </div>
             </div>
             <?php endforeach; ?>
@@ -462,3 +480,24 @@ App()->getClientScript()->registerScript('TokenformViewBSSwitcher', "
 LS.renderBootstrapSwitch();
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
+
+<?php if ($token_subaction == "addnew"): ?>
+    <!-- Empty Token Confirmation Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="emptyTokenConfirmationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><?= gT('Create empty participant') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <?= gT("You are about to create a participant without the basic details. Are you sure you want to proceed?") ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel");?></button>
+                    <button type="button" class="btn btn-primary" id="save-empty-token"><?php eT("Save");?></button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+<?php endif; ?>

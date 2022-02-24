@@ -33,7 +33,6 @@ function dbExecuteAssoc($sql, $inputarr = false, $silent = true)
             $dataset = Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query(); //Checked
         } else {
             $dataset = Yii::app()->db->createCommand($sql)->query();
-
         }
     } catch (CDbException $e) {
         $error = $e->getMessage();
@@ -42,7 +41,7 @@ function dbExecuteAssoc($sql, $inputarr = false, $silent = true)
 
     if (!$dataset && (Yii::app()->getConfig('debug') > 0 || !$silent)) {
         // Exception is better than safeDie, because you can see the backtrace.
-        throw new \Exception('Error executing query in dbExecuteAssoc:'.$error);
+        throw new \Exception('Error executing query in dbExecuteAssoc:' . $error);
     }
     return $dataset;
 }

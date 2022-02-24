@@ -8,7 +8,7 @@ class HtmlWriter extends Writer
     protected $handle = null;
 
     protected $first = true;
-        
+
     protected $groupMap = array();
     /**
      *

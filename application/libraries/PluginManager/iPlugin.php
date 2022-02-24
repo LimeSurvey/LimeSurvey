@@ -17,17 +17,17 @@ interface iPlugin
      * Return the description for this plugin
      */
     public static function getDescription();
-    
+
     /**
      * Get the current event this plugin is responding to
-     * 
+     *
      * @return PluginEvent
      */
     public function getEvent();
 
     /**
      * Get the id of this plugin (set by PluginManager on instantiation)
-     * 
+     *
      * @return int
      */
     public function getId();
@@ -47,23 +47,23 @@ interface iPlugin
     public static function getName();
     /**
      * Returns a reference to the storage interface for the plugin.
-     * @return iPluginStorage 
+     * @return iPluginStorage
      */
     public function getStore();
-    
+
     /**
      * Saves the settings for this plugin
-     * 
+     *
      * Assumes an array with valid key/value pairs is passed.
-     * 
-     * @param array<string, mixed> $aSettings An array with key/value pairs for all plugin settings
+     *
+     * @param array<string, mixed> $settings An array with key/value pairs for all plugin settings
      */
-    public function saveSettings($aSettings);
-    
+    public function saveSettings($settings);
+
     /**
      * Set the event to the plugin, this method is executed by the PluginManager
      * just before dispatching the event.
-     * 
+     *
      * @param PluginEvent $event
      * @return PluginBase
      */

@@ -175,8 +175,12 @@ class Surveymenu extends LSActiveRecord
                 $oDataAttribute->apply($menuEntry, ($oSurvey ? $oSurvey->sid : null));
 
                 if ($oDataAttribute->isActive !== null && $oSurvey != null) {
-                    if (($oDataAttribute->isActive == true && $oSurvey->active == 'N') || ($oDataAttribute->isActive == false && $oSurvey->active == 'Y')) {
-                        continue;
+                    if ($oDataAttribute->isActive == true && $oSurvey->active == 'N') {
+                        $aEntry['disabled'] = true;
+                        $aEntry['disabled_tooltip'] = sprintf(gT("The '%s' section is not available yet. Please activate your survey to enable this section."), gT($aEntry['menu_title']));
+                    } elseif ($oDataAttribute->isActive == false && $oSurvey->active == 'Y') {
+                        $aEntry['disabled'] = true;
+                        $aEntry['disabled_tooltip'] = sprintf(gT("The '%s' section is not available while the survey is active."), gT($aEntry['menu_title']));
                     }
                 }
 
@@ -481,6 +485,7 @@ class Surveymenu extends LSActiveRecord
      */
     public function restoreDefaults()
     {
+        $sOldLanguage = App()->language;
         $oDB = Yii::app()->db;
         switchMSSQLIdentityInsert('surveymenu', true);
         $oTransaction = $oDB->beginTransaction();
@@ -493,7 +498,6 @@ class Surveymenu extends LSActiveRecord
             }
             $oTransaction->commit();
         } catch (Exception $e) {
-            // FIXME $sOldLanguage is undefined
             App()->setLanguage($sOldLanguage);
             return false;
         }

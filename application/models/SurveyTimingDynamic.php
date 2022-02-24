@@ -27,7 +27,9 @@ class SurveyTimingDynamic extends LSActiveRecord
 
     /**
      * @inheritdoc
+     * @param string $sid
      * @return SurveyTimingDynamic
+     * @psalm-suppress ParamNameMismatch
      */
     public static function model($sid = null)
     {
@@ -191,7 +193,7 @@ class SurveyTimingDynamic extends LSActiveRecord
             $buttons .= '<a class="btn btn-sm btn-default" href="' . $editUrl . '" role="button" data-toggle="tooltip" title="' . gT('Edit this response') . '"><span class="fa fa-pencil" ></span></a>';
         }
         // View details
-        $viewUrl = App()->createUrl("admin/responses/sa/view/surveyid/" . self::$sid . "/id/" . $this->id);
+        $viewUrl = App()->createUrl("responses/view/", ['surveyId' => self::$sid, 'id' => $this->id]);
         $buttons .= '<a class="btn btn-sm btn-default" href="' . $viewUrl . '" role="button" data-toggle="tooltip" title="' . gT('View response details') . '"><span class="fa fa-list-alt" ></span></a>';
 
 

@@ -45,10 +45,10 @@ class DefaultValueL10n extends LSActiveRecord
      * @inheritdoc
      * @return DefaultValueL10n
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -72,7 +72,7 @@ class DefaultValueL10n extends LSActiveRecord
             'defaultvalue' => array(self::BELONGS_TO, 'defaultvalue', '', 'on' => "$alias.dvid = defaultvalue.dvid"),
         );
     }
-    
+
     public function defaultScope()
     {
         return array('index' => 'language');

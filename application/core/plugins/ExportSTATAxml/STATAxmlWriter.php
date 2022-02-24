@@ -213,7 +213,7 @@ class STATAxmlWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not Selected')
                     );
-                } elseif ($aQuestion['type'] == Question::QT_G_GENDER_DROPDOWN) {
+                } elseif ($aQuestion['type'] == Question::QT_G_GENDER) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 'F',
                         'answer' => gT('Female')
@@ -244,7 +244,7 @@ class STATAxmlWriter extends Writer
                         'code' => 3,
                         'answer' => gT('Uncertain')
                     );
-                } elseif ($aQuestion['type'] == Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS) {
+                } elseif ($aQuestion['type'] == Question::QT_E_ARRAY_INC_SAME_DEC) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
                         'answer' => gT('Increase')
@@ -362,7 +362,7 @@ class STATAxmlWriter extends Writer
                 if ($response != '') {
                     // recode some values from letters to numeric, so we can attach value labels and have more time doing statistics
                     switch ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type']) {
-                        case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+                        case Question::QT_G_GENDER: //GENDER drop-down list
                             $response = str_replace(array(
                                 'F',
                                 'M'
@@ -372,7 +372,7 @@ class STATAxmlWriter extends Writer
                             ), $response);
                             break;
                         case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
-                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
                             $response = str_replace(array(
                                 'Y',
                                 'N',
@@ -383,7 +383,7 @@ class STATAxmlWriter extends Writer
                                 '9'
                             ), $response);
                             break;
-                        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                        case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
                             $response = str_replace(array(
                                 'I',
                                 'S',
@@ -397,7 +397,7 @@ class STATAxmlWriter extends Writer
                         case Question::QT_D_DATE: //replace in customResponsemap: date/time as string with STATA-timestamp
                             $response = strtotime($response . ' GMT') * 1000 + 315619200000; // convert seconds since 1970 (UNIX) to milliseconds since 1960 (STATA)
                             break;
-                        case Question::QT_L_LIST_DROPDOWN:
+                        case Question::QT_L_LIST:
                             // For radio lists, user wants code, not label
                             // TODO: We could skip this loop if we had answer code
                             foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {

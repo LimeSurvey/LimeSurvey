@@ -2,6 +2,12 @@
 /** @var AdminController $this */
 /** @var UserGroup $userGroup */
 ?>
+<?php
+    App()->getClientScript()->registerScriptFile(
+        App()->getConfig('adminscripts') . 'topbar.js',
+        CClientScript::POS_END
+    );
+?>
 <!-- User Group Bar -->
 <div class='menubar surveybar' id="usergroupbar">
     <div class='row'>
@@ -72,7 +78,7 @@
             <!-- Save -->
             <?php if (isset($usergroupbar['savebutton']['form'])) :?>
                 <a class="btn btn-primary" type="submit" href="#" role="button" id="save-form-button" data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
-                    <span class="fa fa-floppy-o" ></span>
+                    <span class="fa fa-envelope" ></span>
                     <?php echo $usergroupbar['savebutton']['text'];?>
                 </a>
             <?php endif;?>

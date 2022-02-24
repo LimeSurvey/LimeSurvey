@@ -86,7 +86,7 @@ class QuestionTheme extends LSActiveRecord
     public function scopes()
     {
         return array(
-            // 'base' themes are the ones that don't extend any question type/theme. 
+            // 'base' themes are the ones that don't extend any question type/theme.
             'base' => array(
                 'condition' => 'core_theme = :true AND extends = :extends',
                 'params' => array(':true' => true, ':extends' => '')
@@ -465,7 +465,7 @@ class QuestionTheme extends LSActiveRecord
         if ($user) {
             $userQuestionThemesPath = $questionDirectories['customUserTheme'];
             if (!is_dir($userQuestionThemesPath)) {
-                mkdir($userQuestionThemesPath);
+                mkdir($userQuestionThemesPath, 0777, true);
             }
             $selectedQuestionDirectories[] = $userQuestionThemesPath;
         }

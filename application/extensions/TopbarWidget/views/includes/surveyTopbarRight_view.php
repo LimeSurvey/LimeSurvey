@@ -26,6 +26,15 @@
     </a>
 <?php endif; ?>
 
+<!-- Return -->
+<?php if (!empty($showBackButton)): ?>
+    <a class="btn btn-default" href="<?php echo $returnUrl; ?>" role="button">
+        <span class="fa fa-backward"></span>
+        &nbsp;&nbsp;
+        <?php eT('Back') ?>
+    </a>
+<?php endif; ?>
+
 <!-- Green Save and Close -->
 <?php if (!empty($showGreenSaveAndCloseButton)): ?>
     <a class="btn btn-success"
@@ -60,15 +69,6 @@
         <span class="fa fa-upload"></span>
         <?php eT("Import"); ?>
     </button>
-<?php endif; ?>
-
-<!-- Return -->
-<?php if (!empty($showBackButton)): ?>
-    <a class="btn btn-default" href="<?php echo $returnUrl; ?>" role="button">
-        <span class="fa fa-backward"></span>
-        &nbsp;&nbsp;
-        <?php eT('Back') ?>
-    </a>
 <?php endif; ?>
 
 <!-- Close -->

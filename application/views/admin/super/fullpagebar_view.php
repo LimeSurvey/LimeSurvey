@@ -9,14 +9,13 @@
 <!-- Full page menu bar -->
 <div class='menubar surveybar' id="fullpagebar">
     <div class='row'>
+
+        <!-- Left actions -->
         <div class="col-md-6 text-left">
             <!-- Plugin Manager -->
             <?php if (isset($fullpagebar['pluginManager'])) : ?>
                 <!-- Install Plugin Zip -->
-                <?php if (
-                    isset($fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']) &&
-                    !$fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']
-                ) : ?>
+                <?php if (!empty($fullpagebar['pluginManager']['buttons']['showUpload'])) : ?>
                     <a
                         href=''
                         class='btn btn-default'
@@ -134,18 +133,6 @@
                 <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="box-shadow: 3px 3px 3px;">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
-                </a>
-            <?php endif;?>
-
-            <!-- Box Buttons -->
-            <?php if (isset($fullpagebar['boxbuttons'])) :?>
-                <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default">
-                    <span class="icon-add  text-success"></span>
-                    <?php eT("Create a new box");?>
-                </a>
-                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">
-                    <span class="fa fa-refresh"></span>
-                    <?php eT("Reset to default boxes");?>
                 </a>
             <?php endif;?>
 

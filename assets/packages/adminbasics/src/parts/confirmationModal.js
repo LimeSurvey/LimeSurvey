@@ -68,7 +68,7 @@ const ConfirmationModal = function(e){
 
                 success : function(html, statut)
                 {
-                    $.fn.yiiGridView.update(options.gridid);                   // Update the surveys list
+                    $.fn.yiiGridView.update(options.gridid);                   // Update the list
                     $('#confirmation-modal').modal('hide');
                 },
                 error :  function(html, statut){
@@ -80,8 +80,8 @@ const ConfirmationModal = function(e){
     },
     _sendPost = () => {
         LOG.log('Binding post handler on confirmation dialog');
-        $(_this).find('.btn-ok').on('click', function(ev) {
-            window.LS.sendPost(options.postUrl, options.postDatas);
+        $(_this).find('.btn-ok').on('click', function (ev) {
+            window.LS.sendPost(options.postUrl, '',options.postDatas);
         });
     },
     _setTarget = () => {

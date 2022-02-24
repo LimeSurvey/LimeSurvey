@@ -150,10 +150,8 @@
         'widgetsJsName' => "exportTypeSelector",
         'renderType' =>  "modal",
         'selectButton' => gT("Export"),
-        'modalTitle' => gT("Display/Export"),
-        'currentSelected' => gT("Display/Export"),
-        'debugKeyCheck' => gT("Export type"),
-        'previewWindowTitle' => gT("Export type"),
+        'modalTitle' => gT("Export"),
+        'currentSelected' => gT("Export"),
         'iconPosition' => "front",
         'itemsArray' => $aExportItemsArray,
         'value' => '',
@@ -161,7 +159,7 @@
         'optionArray' => [
             'onModalClose' => [
                 "
-                $('#selector__exportTypeSelector--buttonText').html('".gT("Display/Export")."');
+                $('#selector__exportTypeSelector--buttonText').html('".gT("Export")."');
                 "
             ],
             'onUpdate' => [
@@ -185,15 +183,12 @@
                         $(document).trigger('pjax:load', {url: loadUrl});
                     }
                 }
-                $('#selector__exportTypeSelector--buttonText').html('".gT("Display/Export")."');
+                $('#selector__exportTypeSelector--buttonText').html('".gT("Export")."');
                 "
             ],
         ]
     ));
 ?>
-    <?php
-    // echo '<pre>'.htmlentities($oExportSelector->getModal(true)).'</pre>'
-    ?>
 <div class="btn-group hidden-xs">
     <?=$oExportSelector->getModal(); ?>
 

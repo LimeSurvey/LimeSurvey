@@ -24,7 +24,7 @@ class UploaderController extends SurveyController
     public function run($actionID)
     {
         $surveyid = Yii::app()->session['LEMsid'];
-        if(empty($surveyid)) {
+        if (empty($surveyid)) {
             throw new CHttpException(401, gT("We are sorry but your session has expired."));
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
@@ -140,9 +140,7 @@ class UploaderController extends SurveyController
                 // Try to create
                 mkdir($sTempUploadDir);
             }
-            $filename = $_FILES['uploadfile']['name'];
-            // Do we filter file name ? It's used on displaying only , but not save like that.
-            //$filename = sanitize_filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
+            $filename = sanitize_filename($_FILES['uploadfile']['name'], false, false, true);
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
             $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
@@ -272,12 +270,12 @@ class UploaderController extends SurveyController
                 }
                 if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
                     $return = array(
-                        "success" => true,
-                        "size"    => $size,
-                        "name"    => rawurlencode(basename($filename)),
-                        "ext"     => $cleanExt,
-                        "filename"      => $randfilename,
-                        "msg"     => gT("The file has been successfully uploaded.")
+                        "success"  => true,
+                        "size"     => $size,
+                        "name"     => $filename,
+                        "ext"      => $cleanExt,
+                        "filename" => $randfilename,
+                        "msg"      => gT("The file has been successfully uploaded.")
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
@@ -300,7 +298,7 @@ class UploaderController extends SurveyController
         /* No action */
         $meta = '';
         App()->getClientScript()->registerPackage('question-file-upload');
-        
+
         $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
         $oEvent = new PluginEvent('beforeSurveyPage');
         $oEvent->set('surveyId', $surveyid);
@@ -341,8 +339,6 @@ class UploaderController extends SurveyController
         $oTemplate = Template::model()->getInstance('', $surveyid);
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('packages') . 'questions/upload/build/uploadquestion.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('packages') . 'questions/upload/src/ajaxupload.js');
 
         $header = getHeader($meta);
 
@@ -378,7 +374,7 @@ class UploaderController extends SurveyController
                     . "sPreview : '" . $sPreview . "', "
                     . "questgrppreview : '" . $sPreview . "', "
                     . "uploadurl : '" . $this->createUrl('/uploader/index/mode/upload/') . "', "
-                    . "csrfToken: '" . ls_json_encode(Yii::app()->request->csrfToken) . "', "
+                    . "csrfToken: " . ls_json_encode(Yii::app()->request->csrfToken) . ", " // does not need quotes as json_encode already encodes
                     . "showpopups: '" . Yii::app()->getConfig("showpopups") . "', "
                     . "uploadLang: " . $sLangScript
                     . "});

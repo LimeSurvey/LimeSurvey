@@ -84,7 +84,7 @@ class questionIndexHelper
 
         return self::$instance;
     }
-    
+
     /**
      * Get the array of all step for this session
      *

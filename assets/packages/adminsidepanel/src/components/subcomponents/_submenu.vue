@@ -22,7 +22,13 @@ export default {
         },
     },
     methods:{
-        setActiveMenuItemIndex(menuItem){
+        setActiveMenuItemIndex(menuItem, event){
+            if (menuItem.disabled) {
+                if (event) {
+                    event.preventDefault();
+                }
+                return false;
+            }
             let activeMenuIndex = menuItem.id;
             this.$store.commit('lastMenuItemOpen', menuItem);
             this.$log.log('Opened Menuitem', menuItem);
@@ -51,6 +57,7 @@ export default {
             let classes = "ls-flex-row nowrap ";
             classes += (menuItem.pjax ? 'pjax ' : ' ');
             classes += (this.$store.state.lastMenuItemOpen==menuItem.id ? 'selected ' : ' ' );
+            classes += (menuItem.disabled ? 'disabled ' : ' ');
             return classes;
         },
         reConvertHTML(string) {
@@ -69,14 +76,8 @@ export default {
     },
     mounted(){
         const self = this;
-        this.updatePjaxLinks();
-        this.redoTooltips();
-        // this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
-        //     self.$log.debug('sidemenues',result);
-        //     self.menues =  LS.ld.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-        //     self.$localStorage.set('sidemenues', JSON.stringify(self.menues));
-        //     self.$forceUpdate();
-        // });
+        this.updatePjaxLinks(this.$store);
+        this.redoTooltips(window.LS);
     }
 }
 </script>
@@ -84,7 +85,7 @@ export default {
     <ul class="list-group subpanel col-12" :class="'level-'+(menu.level)">        
         <a  v-for="(menuItem) in sortedMenuEntries" 
             v-bind:key="menuItem.id" 
-            v-on:click.stop="setActiveMenuItemIndex(menuItem)"  
+            v-on:click.stop="setActiveMenuItemIndex(menuItem, $event)"  
             :href="menuItem.link" 
             :target="menuItem.link_external == true ? '_blank' : ''"
             :id="'sidemenu_'+menuItem.name" 
@@ -92,7 +93,7 @@ export default {
             :class="getLinkClass(menuItem)" >
 
             <div class="col-12" :class="menuItem.menu_class" 
-            v-bind:title="reConvertHTML(menuItem.menu_description)"  
+            v-bind:title="menuItem.disabled ? reConvertHTML(menuItem.disabled_tooltip) : reConvertHTML(menuItem.menu_description)"  
             data-toggle="tooltip" >
                 <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>

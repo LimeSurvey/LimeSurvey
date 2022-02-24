@@ -3,7 +3,7 @@
 namespace LimeSurvey\PluginManager;
 
 /**
- * Used as shutdown function during plugin loading, to turn off 
+ * Used as shutdown function during plugin loading, to turn off
  * plugins that causes troubles.
  *
  * @see https://stackoverflow.com/questions/2726524/can-you-unregister-a-shutdown-function
@@ -52,7 +52,7 @@ class PluginManagerShutdownFunction
     }
 
     /**
-     * 
+     *
      */
     public function setPluginName($name)
     {
@@ -96,7 +96,6 @@ class PluginManagerShutdownFunction
                 'error'  => $error
             ]
         );
-
     }
 
     /**

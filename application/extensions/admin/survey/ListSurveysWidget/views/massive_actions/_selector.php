@@ -57,7 +57,7 @@
                     'showSelected' => 'yes',
                     'selectedUrl'  => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'keepopen'     => 'yes',
-                    'sModalTitle'  => gT('Set survey theme'),
+                    'sModalTitle'  => gT('Apply survey theme'),
                     'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_select_survey_theme.php', array(), true),
                 ),
 
@@ -72,7 +72,7 @@
                     'grid-reload' => 'yes',
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'cancel-apply',
+                    'modalType'   => 'cancel-change',
                     'keepopen'    => 'yes',
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
@@ -106,7 +106,7 @@
 
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'cancel-apply',
+                    'modalType'   => 'cancel-export',
                     'keepopen'    => 'yes',
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
@@ -126,7 +126,7 @@
 
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'cancel-apply',
+                    'modalType'   => 'cancel-export',
                     'keepopen'    => 'yes',
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
@@ -144,7 +144,7 @@
                     'text'        =>  gT("Printable survey (*.html)"),
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'cancel-apply',
+                    'modalType'   => 'cancel-export',
                     'keepopen'    => 'yes',
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),

@@ -173,6 +173,25 @@
             </tr>
         <?php endif; ?>
 
+
+        <!-- Encrypted -->
+        <?php if (isset($question->encrypted)):?>
+            <tr>
+                <td>
+                    <strong>
+                        <?php eT("Encrypted:"); ?>
+                    </strong>
+                </td>
+                <td>
+                    <?php if ($question->encrypted == "Y") : ?>
+                        <?php eT("Yes"); ?>
+                    <?php else:?>
+                        <?php eT("No"); ?>
+                    <?php endif;  ?>
+                </td>
+            </tr>
+        <?php endif; ?>
+
         <!-- Condition for this question -->
         <?php if (trim($question->relevance) != ''): ?>
             <tr>
@@ -206,8 +225,11 @@
         <!-- Advanced Settings -->
         <?php foreach ($advancedSettings as $settings){ ?>
             <?php foreach ($settings as $setting){
-
-                if($setting['default'] != $setting['value']){ ?>
+                $value = $setting['value'];
+                if (!empty($setting['i18n'])) {
+                    $value = $setting[$question->survey->language]['value'];
+                }
+                if($setting['default'] != $value){ ?>
                 <tr>
                     <td>
                         <strong>
@@ -216,19 +238,16 @@
                     </td>
                     <td>
                         <?php
+
                             if (isset($setting['expression']) && $setting['expression'] > 0) {
                                 if ($setting['expression'] == 1) {
-                                    LimeExpressionManager::ProcessString($setting['value'], $question->qid);
+                                    LimeExpressionManager::ProcessString($value, $question->qid);
                                 } else {
-                                    LimeExpressionManager::ProcessString('{' . $setting['value'] . '}', $question->qid);
+                                    LimeExpressionManager::ProcessString('{' . $value . '}', $question->qid);
                                 }
-                                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             } else {
-                                if (($setting['i18n'] ==null) || ($setting['i18n'] == false)) {
-                                    echo htmlspecialchars($setting['value']);
-                                } else {
-                                    echo htmlspecialchars($setting[$question->survey->language]['value']);
-                                }
+                                echo htmlspecialchars($value);
                             }
                         ?>
                     </td>

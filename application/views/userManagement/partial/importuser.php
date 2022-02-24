@@ -3,7 +3,7 @@
  * Subview: Userimport form 
  * 
  * @package UserManagement
- * @author Markus Flür <markus.fluer@limesurvey.org>
+ * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
  */
 ?>
@@ -48,6 +48,6 @@ Yii::app()->getController()->renderPartial(
 
 <div class="modal-footer modal-footer-buttons">
     <button class="btn btn-cancel" id="exitForm"><?=gT('Cancel')?></button>
-    <button class="btn btn-success " id="submitForm"><?=gT('Save')?></button>
+    <button class="btn btn-success " id="submitForm"><?=gT('Import')?></button>
 </div>
 </form>

@@ -142,9 +142,9 @@ class Box extends CActiveRecord
         $url .= '/' . $this->id;
         $button = "<div class='icon-btn-row'>";
         $button .= '<a class="btn btn-sm btn-default green-border" data-toggle="tooltip" data-target="top" '
-         . 'title="'.gT('Edit').'"'
+         . 'title="' . gT('Edit') . '"'
          . 'href="'
-         . $url 
+         . $url
          . '" role="button"><span class="fa fa-pencil" ></span></a>';
 
         $url = Yii::app()->createUrl("/homepageSettings/deleteBox");
@@ -233,6 +233,7 @@ class Box extends CActiveRecord
     /**
      * @return int
      */
+    // phpcs:ignore
     public function getIcons_length()
     {
         return count($this->icons);

@@ -37,7 +37,7 @@ class ThemeControllerTest extends TestBaseClassWeb
         // Browser login.
         self::adminLogin($username, $password);
 
-        \Yii::import('application.controllers.admin.themes', true);
+        \Yii::import('application.controllers.admin.Themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
 
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
@@ -109,7 +109,7 @@ class ThemeControllerTest extends TestBaseClassWeb
     public function testExtendTheme()
     {
         $this->markTestIncomplete();
-        \Yii::import('application.controllers.admin.themes', true);
+        \Yii::import('application.controllers.admin.Themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
 
         // Delete theme vanilla_version_1 if present.
@@ -228,7 +228,7 @@ class ThemeControllerTest extends TestBaseClassWeb
      */
     public function testUploadFile()
     {
-        \Yii::import('application.controllers.admin.themes', true);
+        \Yii::import('application.controllers.admin.Themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
 
         // Clear flashes.
@@ -313,7 +313,7 @@ class ThemeControllerTest extends TestBaseClassWeb
         // TODO: Test won't work on Travis. Problem with file and folder permission? Web user != CLI user.
         $this->markTestSkipped();
 
-        \Yii::import('application.controllers.admin.themes', true);
+        \Yii::import('application.controllers.admin.Themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
 
         // Make sure there's no vanilla_test_3 yet.

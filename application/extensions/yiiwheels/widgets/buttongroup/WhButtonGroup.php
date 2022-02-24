@@ -3,7 +3,7 @@
  *
  * WhBox.php
  *
- * @author Carsten Schmitz <carsten.schmitz@limesurvey.org>
+ * @author LimeSurvey GmbH <info@limesurvey.org>
  * @copyright Copyright &copy; LimeSurvey GmbH 2015
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package YiiWheels.widgets.whbuttongroup

@@ -105,7 +105,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class=" control-label" for='queXMLAllowSplittingMatrixText'><?php eT("Allow multiple short text / numeric questions to be split over multiple pages"); ?></label>
+                        <label class=" control-label" for='queXMLAllowSplittingMatrixText'><?php eT("Allow Multiple short text / numeric questions to be split over multiple pages"); ?></label>
                         <div class="">
 
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(

@@ -83,7 +83,7 @@ class Menu implements MenuInterface
     {
         return $this->isDropDown;
     }
-    
+
     /**
      * @return string
      */
@@ -91,7 +91,7 @@ class Menu implements MenuInterface
     {
         return $this->label;
     }
-    
+
     /**
      * @return string
      */
@@ -99,7 +99,7 @@ class Menu implements MenuInterface
     {
         return $this->href;
     }
-    
+
     /**
      * @return MenuItem[]
      */
@@ -107,7 +107,7 @@ class Menu implements MenuInterface
     {
         return $this->menuItems;
     }
-    
+
     /**
      * @return string
      */

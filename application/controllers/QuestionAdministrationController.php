@@ -1,10 +1,10 @@
 <?php
+
 /**
  * Class QuestionAdministrationController
  */
 class QuestionAdministrationController extends LSBaseController
 {
-
     /**
      * It's import to have the accessRules set (security issue).
      * Only logged in users should have access to actions. All other permissions
@@ -30,7 +30,7 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * This part comes from _renderWrappedTemplate
+     * This part comes from renderWrappedTemplate
      *
      * @param string $view View
      *
@@ -216,19 +216,24 @@ class QuestionAdministrationController extends LSBaseController
         // Top Bar
         $this->aData['topBar']['name'] = 'questionTopbar_view';
 
+        // Save Button
         $this->aData['showSaveButton'] = true;
+
+        // Save and Close Button
         $this->aData['showSaveAndCloseButton'] = true;
+
+        // Close Button
         $this->aData['showCloseButton'] = true;
 
         // Delete Button
         $this->aData['showDeleteButton'] = true;
-        
+
         $this->aData['sid'] = $question->sid;
         $this->aData['gid'] = $question->gid;
         $this->aData['qid'] = $question->qid;
 
         $this->aData['hasdefaultvalues'] = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
-        
+
         $generalSettings = $this->getGeneralOptions(
             $question->qid,
             $question->type,
@@ -1084,7 +1089,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
         $fatalerror = '';
-        
+
         // Check file size and redirect on error
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('questionAdministration/importView', array('surveyid' => $iSurveyID)));
@@ -1604,8 +1609,8 @@ class QuestionAdministrationController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyId);
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid' => $questionGroupId));
         $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
-        
-        //array elements for frontend (topbar etc.)
+
+        // Array elements for frontend (topbar etc.)
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyId . ")";
@@ -1642,7 +1647,7 @@ class QuestionAdministrationController extends LSBaseController
                     )
                 );
             }
-            
+
             $newQuestionL10n = Yii::app()->request->getParam('questionI10N');
             $copyQuestionTextValues = [];
             if (!empty($newQuestionL10n)) {
@@ -1985,7 +1990,7 @@ class QuestionAdministrationController extends LSBaseController
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
             // Only set the other state for question types that have this attribute
             if (
-                ($oQuestion->type == Question::QT_L_LIST_DROPDOWN)
+                ($oQuestion->type == Question::QT_L_LIST)
                 || ($oQuestion->type == Question::QT_EXCLAMATION_LIST_DROPDOWN)
                 || ($oQuestion->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
                 || ($oQuestion->type == Question::QT_M_MULTIPLE_CHOICE)
@@ -2009,7 +2014,7 @@ class QuestionAdministrationController extends LSBaseController
             $iQid = (int)$sQid;
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
             // These are the questions types that have no mandatory property - so ignore them
-            if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
+            if ($oQuestion->type != Question::QT_X_TEXT_DISPLAY && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $oQuestion->mandatory = $sMandatory;
                 $oQuestion->save();
             }
@@ -2428,8 +2433,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $iSurveyId = $aQuestionData['sid'];
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        // TODO: Don't read request from private methods.
-        $iQuestionGroupId = (int) App()->request->getParam('gid'); //the group id the question belongs to
+        $iQuestionGroupId = (int) $aQuestionData['gid'];
         $type = SettingsUser::getUserSettingValue(
             'preselectquestiontype',
             null,
@@ -2846,7 +2850,8 @@ class QuestionAdministrationController extends LSBaseController
                 $subquestion = Question::model()->findByAttributes(
                     [
                         'parent_qid' => $question->qid,
-                        'title'      => $data['code']
+                        'title'      => $data['code'],
+                        'scale_id'   => $scaleId
                     ]
                 );
                 if (empty($subquestion)) {

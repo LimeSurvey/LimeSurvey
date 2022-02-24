@@ -133,6 +133,10 @@ function submitEditToken(){
     var $modal      = $('#editTokenModal');
     var $gridId     = '';
 
+    if (!$form[0].reportValidity()) {
+        return;
+    }
+
     // check which grid id exists on the page, to be able to update grid successfully
     if ($('#token-grid').length > 0) {
         $gridId = 'token-grid';
@@ -149,8 +153,11 @@ function submitEditToken(){
         success : function(result, stat) {
             if (result.success) {
                 $modal.modal('hide');
-            }
-            else {
+            } else {
+                var errorMsg = result.error.message ? result.error.message : result.error;
+                if (!errorMsg) errorMsg = "Unexpected error";
+                showError(errorMsg);
+                return;
             }
 
             // Using Try/Catch here to catch errors if there is no grid
@@ -172,6 +179,49 @@ function submitEditToken(){
             $('#modal-content').empty().append(html);
         }
     });
+}
+
+function showError(msg) {
+    $('#edittoken-error-container .alert-content').html(msg);
+    $('#edittoken-error-container').show();
+}
+
+/**
+ * Validates that mandatory additional attributes are filled
+ */
+function validateAdditionalAttributes() {
+    const validationErrorMsg = $('#edittoken').attr('data-validation-error');
+
+    let valid = true;
+    $('.mandatory-attribute').each(function () {
+        let value = $(this).val();
+        if (value === null || value === "") {
+            valid = false;
+            if (!$('#custom').is(':visible')) {
+                $('.nav-tabs a[href="#custom"]').tab('show');
+            }
+            showError(validationErrorMsg);
+            $(this).trigger('invalid');
+            return false;
+        }
+    });
+    return valid;
+}
+
+/**
+ * Validates some form fields checking that at least one is not empty when creating a participant.
+ * @returns {boolean} false if all of the checked fields are empty and the subaction is inserttoken.
+ */
+function validateNotEmptyTokenForm() {
+    if ($('#edittoken').find('[name="subaction"]').val() != 'inserttoken') {
+        return true;
+    }
+    var isFormEmpty = $('#email').val() == '' && $('#firstname').val() == '' && $('#lastname').val() == '';
+    if (isFormEmpty) {
+        $('#emptyTokenConfirmationModal').modal('show');
+        return false;
+    }
+    return true;
 }
 
 /**
@@ -248,18 +298,36 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
     $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', startEditToken);
 
-    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event){
+    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
+        var eventParams = params || {};
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();
+            return;
+        }
+        if (!validateAdditionalAttributes()) {
+            event.preventDefault();
+            return false;
+        }
+        if (!eventParams.confirm_empty_save && !validateNotEmptyTokenForm()) {
+            return false;
         }
     });
 
     /**
      * Save token
      */
-    $("#save-edittoken").click(function(){
-        submitEditToken();
+    $("#save-edittoken").off('click.token-save').on('click.token-save', function() {
+        if (validateAdditionalAttributes()) {
+            submitEditToken();
+        }
+    });
+
+    /**
+     * Confirm save empty token
+     */
+    $("#save-empty-token").off('click.token-save').on('click.token-save', function() {
+        $('#edittoken').trigger('submit', {confirm_empty_save: true});
     });
 
 
@@ -354,17 +422,29 @@ var startEditToken = function(){
         $modalBody  = $modal.find('.modal-body'),
         $ajaxLoader = $('#ajaxContainerLoading2'),
         $oldModalBody   = $modalBody.html();
+        modalContent = $modal.find('#modal-content');
     $ajaxLoader.show();
+    modalContent.empty();
     $modal.modal('show');
+
     // Ajax request
     $.ajax({
         url : $actionUrl,
         type : 'GET',
 
         // html contains the buttons
-        success : function(html, statut){
+        success : function(html, status){
 
-            $('#modal-content').empty().append(html);                       // Inject the returned HTML in the modal body
+            // Fake hide of modal content, so we can still get width of inner elements like labels
+            var previousCss  = modalContent.attr("style");
+            modalContent
+                .css({
+                    position:   'absolute', // Optional if #myDiv is already absolute
+                    visibility: 'hidden',
+                    display:    'block'
+                });
+
+            modalContent.append(html);                       // Inject the returned HTML in the modal body
 
             // Apply the yes/no/date jquery plugin to the elements loaded via ajax
             /*
@@ -392,28 +472,19 @@ var startEditToken = function(){
 
             var elGeneral  = $('#general');
 
-            // Fake hide of modal content, so we can still get width of inner elements like labels
-            var previousCss  = $("#modal-content").attr("style");
-            $("#modal-content")
-                .css({
-                    position:   'absolute', // Optional if #myDiv is already absolute
-                    visibility: 'hidden',
-                    display:    'block'
-                });
-
             // Stick the labels on the left side
             // Sometime, the content is loaded after modal is shown, sometimes not. So, we wait 200ms just in case (For label width)
             setTimeout(function(){
                 elGeneral.stickLabelOnLeft();
                 $ajaxLoader.hide();
                 // Remove fake hide
-                $("#modal-content").attr("style", previousCss ? previousCss : "");
+                modalContent.attr("style", previousCss ? previousCss : "");
             }, 200);
 
         },
-        error :  function(html, statut){
+        error :  function(html, status){
             $ajaxLoader.hide();
-            $('#modal-content').empty().append(html);
+            modalContent.append(html);
             console.ls.error(html);
         }
     });

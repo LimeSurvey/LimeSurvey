@@ -34,11 +34,11 @@ $aActionsArray = array(
             'text'          =>  gT('Resend login data'),
             'grid-reload'   => 'yes',
             'actionType'    => 'modal',
-            'modalType'     => 'cancel-apply',
+            'modalType'     => 'cancel-resend',
             'keepopen'      => 'yes',
             'showSelected'  => 'yes',
             'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
-            'sModalTitle'   => gT('Resend login data user'),
+            'sModalTitle'   => gT('Resend login data'),
             'htmlModalBody' => gT('Are you sure you want to reset and resend selected users login data?'),
         ),
         // Mass Edit
@@ -75,7 +75,7 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
         'grid-reload'   => 'yes',
         //modal
         'actionType'    => 'modal',
-        'modalType'     => 'cancel-apply',
+        'modalType'     => 'cancel-add',
         'keepopen'      => 'yes',
         'showSelected'  => 'yes',
         'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
@@ -95,7 +95,7 @@ if(Permission::model()->hasGlobalPermission('superadmin','read')) {
         'grid-reload'       => 'yes',
         //modal
         'actionType'        => 'modal',
-        'modalType'         => 'cancel-apply',
+        'modalType'         => 'cancel-add',
         'keepopen'          => 'yes',
         'showSelected'      => 'yes',
         'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),

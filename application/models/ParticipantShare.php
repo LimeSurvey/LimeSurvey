@@ -31,17 +31,16 @@ use ls\ajax\AjaxHelper;
  */
 class ParticipantShare extends LSActiveRecord
 {
-
     public $ownerName;
 
     /**
      * @inheritdoc
      * @return ParticipantShare
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -225,17 +224,17 @@ class ParticipantShare extends LSActiveRecord
             array(
                 "name" => 'participant.lastname',
                 "header" => gT("Last name"),
-                "filter" => TbHtml::textField("Participant[lastname]", isset($participantFilter['lastname'])?$participantFilter['lastname']:'')
+                "filter" => TbHtml::textField("Participant[lastname]", isset($participantFilter['lastname']) ? $participantFilter['lastname'] : '')
             ),
             array(
                 "name" => 'participant.firstname',
                 "header" => gT("First name"),
-                "filter" => TbHtml::textField("Participant[firstname]", isset($participantFilter['firstname'])?$participantFilter['firstname']:'')
+                "filter" => TbHtml::textField("Participant[firstname]", isset($participantFilter['firstname']) ? $participantFilter['firstname'] : '')
             ),
             array(
                 "name" => 'participant.email',
                 "header" => gT("Email address"),
-                "filter" => TbHtml::textField("Participant[email]", isset($participantFilter['email'])?$participantFilter['email']:'')
+                "filter" => TbHtml::textField("Participant[email]", isset($participantFilter['email']) ? $participantFilter['email'] : '')
             ),
             array(
                 "name" => 'share_uid',
@@ -312,7 +311,7 @@ class ParticipantShare extends LSActiveRecord
         $criteria->compare('share_uid', $this->share_uid);
         $criteria->compare('date_added', $this->date_added, true);
         $criteria->compare('can_edit', $this->can_edit, true);
-        if (!empty($participantFilter)){
+        if (!empty($participantFilter)) {
             $criteria->compare('participant.lastname', $participantFilter['lastname'], true);
             $criteria->compare('participant.firstname', $participantFilter['firstname'], true);
             $criteria->compare('participant.email', $participantFilter['email'], true);
@@ -356,7 +355,6 @@ class ParticipantShare extends LSActiveRecord
             $oParticipantShare = new ParticipantShare();
             $oParticipantShare->setAttributes($data);
             $oParticipantShare->save();
-
         } else {
             $this->updateShare($data);
         }
@@ -373,7 +371,7 @@ class ParticipantShare extends LSActiveRecord
             $data = array("participant_id" => $participantId, "share_uid" => $shareuid, "can_edit" => $data['can_edit']);
         }
         $criteria = new CDbCriteria();
-        $criteria->addColumnCondition(['participant_id'=>$data['participant_id'],'share_uid'=>$data['share_uid']]);
+        $criteria->addColumnCondition(['participant_id' => $data['participant_id'],'share_uid' => $data['share_uid']]);
         ParticipantShare::model()->updateAll($data, $criteria);
     }
 

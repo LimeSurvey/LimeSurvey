@@ -130,7 +130,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $oQuestionGroupL10n->save();
         }
     }
-    
+
     // Import questions table ===================================================================================
 
     // We have to run the question table data two times - first to find all main questions
@@ -169,7 +169,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 unset($insertdata['help']);
                 unset($insertdata['language']);
             }
-            
+
             if (!$bTranslateLinksFields) {
                 $sScenario = 'archiveimport';
             } else {
@@ -210,7 +210,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
             }
-            
+
             if (isset($oQuestionL10n)) {
                 $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
                 $oQuestionL10n->save();
@@ -326,7 +326,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
         }
     }
 
-    
+
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
         foreach ($xml->question_l10ns->rows->row as $row) {
@@ -366,7 +366,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             }
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
-            
+
             if (!isset($xml->answer_l10ns->rows->row)) {
                 $oAnswerL10n = new AnswerL10n();
                 $oAnswerL10n->answer = $insertdata['answer'];
@@ -374,7 +374,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 unset($insertdata['answer']);
                 unset($insertdata['language']);
             }
-            
+
             $oAnswer = new Answer();
             $oAnswer->setAttributes($insertdata, false);
             if ($oAnswer->save() && isset($xml->answer_l10ns->rows->row)) {
@@ -457,7 +457,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
 
     // Import defaultvalues ------------------------------------------------------
-    importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results);
+    importDefaultValues($xml, $importlanguages, $aQIDReplacements, $results);
 
     // Import conditions --------------------------------------------------------------
     if (isset($xml->conditions)) {
@@ -610,7 +610,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             unset($insertdata['help']);
             unset($insertdata['language']);
         }
-            
+
         $oQuestion = new Question('import');
         $oQuestion->setAttributes($insertdata, false);
 
@@ -640,7 +640,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             if (isset($insertdata['qid'])) {
                 switchMSSQLIdentityInsert('questions', true);
             }
-            
+
             if (!$oQuestion->save()) {
                 $results['fatalerror'] = CHtml::errorSummary(
                     $oQuestion,
@@ -651,10 +651,11 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
             switchMSSQLIdentityInsert('questions', false);
             $aQIDReplacements[$iOldQID] = $oQuestion->qid;
+
+            $newqid = $oQuestion->qid;
         }
-        
+
         $results['questions'] = isset($results['questions']) ? $results['questions'] + 1 : 1;
-        $newqid = $oQuestion->qid;
 
         if (isset($oQuestionL10n)) {
             $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
@@ -753,7 +754,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 }
 
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
-                
+
                 $results['questions']++;
             }
 
@@ -772,7 +773,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
         }
     }
-    
+
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
         foreach ($xml->question_l10ns->rows->row as $row) {
@@ -812,7 +813,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
-            
+
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
@@ -827,7 +828,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 unset($insertdata['answer']);
                 unset($insertdata['language']);
             }
-            
+
             $oAnswer = new Answer();
             $oAnswer->setAttributes($insertdata, false);
             if ($oAnswer->save() && isset($xml->answer_l10ns->rows->row)) {
@@ -881,7 +882,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $insertdata[(string) $key] = (string) $value;
             }
             unset($insertdata['qaid']);
-            if ($insertdata['qid']) {
+            if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
             }
 
@@ -927,7 +928,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results);
-    
+
     LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
 
     $results['newqid'] = $newqid;
@@ -993,7 +994,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
                 $iOldLabelID = $insertdata['id'];
             }
             unset($insertdata['id']);
-            
+
             if (!isset($xml->label_l10ns->rows->row)) {
                 $findLabel = Label::model()->findByAttributes($insertdata);
                 if (empty($findLabel)) {
@@ -1013,7 +1014,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
                 $arLabel->save();
                 $aLIDReplacements[$iOldLabelID] = $arLabel->id;
             }
-            
+
             $results['labels']++;
         }
     }
@@ -1031,7 +1032,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
             $arLabelL10n->save();
         }
     }
-    
+
     //CHECK FOR DUPLICATE LABELSETS
 
     if ($options['checkforduplicates'] == 'on') {
@@ -1092,7 +1093,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             foreach ($aFiles as $aFile) {
                 if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
-                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, null, null, true, false);
+                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, $sNewSurveyName, null, true, false);
                     if ($aImportResults && $aImportResults['newsid']) {
                         $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                         $SurveyIntegrity->fixSurveyIntegrity();
@@ -1160,6 +1161,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 *
 * @param string $sFullFilePath  The full filepath of the uploaded file
 * @param string $sXMLdata
+* @todo Use transactions to prevent orphaned data and clean rollback on errors
 */
 function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
 {
@@ -1210,7 +1212,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['languages'] = count($aLanguagesSupported);
 
     // Import surveys table ====================================================
-    
+
     foreach ($xml->surveys->rows->row as $row) {
         $insertdata = array();
 
@@ -1267,8 +1269,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['allowjumps']);
         }
 
-        if (isset($insertdata['tokenlength']) && $insertdata['tokenlength']>35) {
-            $insertdata['tokenlength']=35;
+        if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > 35) {
+            $insertdata['tokenlength'] = 35;
         }
         /* Remove unknow column */
         $aSurveyModelsColumns = Survey::model()->attributes;
@@ -1336,9 +1338,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
             unset($insertdata['surveyls_attributecaptions']);
         }
+        $aColumns = SurveyLanguageSetting::model()->attributes;
+        $insertdata = array_intersect_key($insertdata, $aColumns);
 
-        if (!SurveyLanguageSetting::model()->insertNewSurvey($insertdata)) {
-            throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid<br />");
+        $surveyLanguageSetting = new SurveyLanguageSetting();
+        $surveyLanguageSetting->setAttributes($insertdata, false);
+        try {
+            if (!$surveyLanguageSetting->save()) {
+                throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
+            }
+        } catch (CDbException $e) {
+            throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
         }
     }
 
@@ -1422,7 +1432,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
         }
     }
-    
+
     // Import questions table ===================================================================================
 
     // We have to run the question table data two times - first to find all main questions
@@ -1447,7 +1457,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!isset($insertdata['mandatory']) || trim($insertdata['mandatory']) == '') {
                 $insertdata['mandatory'] = 'N';
             }
-            
+
             $iOldSID = $insertdata['sid'];
             $iOldGID = $insertdata['gid'];
             $insertdata['sid'] = $iNewSID;
@@ -1632,7 +1642,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
         }
     }
-    
+
     //  Import question_l10ns
     if (isset($xml->question_l10ns->rows->row)) {
         foreach ($xml->question_l10ns->rows->row as $row) {
@@ -1642,8 +1652,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             unset($insertdata['id']);
             // now translate any links
-            $insertdata['question'] = isset($insertdata['question']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']) : '';
-            $insertdata['help'] = isset($insertdata['help']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']) : '';
+            if ($bTranslateInsertansTags) {
+                $insertdata['question'] = isset($insertdata['question']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']) : '';
+                $insertdata['help'] = isset($insertdata['help']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']) : '';
+            }
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             } else {
@@ -1675,7 +1687,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
-            
+
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
@@ -1690,7 +1702,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 unset($insertdata['answer']);
                 unset($insertdata['language']);
             }
-            
+
             $oAnswer = new Answer();
             $oAnswer->setAttributes($insertdata, false);
             if ($oAnswer->save() && isset($xml->answer_l10ns->rows->row) && isset($iOldAID)) {
@@ -1728,7 +1740,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oAnswerL10n->save();
         }
     }
-    
+
     // Import questionattributes -------------------------------------------------
     if (isset($xml->question_attributes)) {
         $aAllAttributes = questionHelper::getAttributesDefinitions();
@@ -1770,7 +1782,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 }
                 continue;
             }
-            
+
             if ($iDBVersion < 156 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n']) {
                 foreach ($aLanguagesSupported as $sLanguage) {
                     $insertdata['language'] = $sLanguage;
@@ -2122,7 +2134,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
  *
  * @param $questionId
  */
-function checkWrongQuestionAttributes($questionId){
+function checkWrongQuestionAttributes($questionId)
+{
     //these attributes could be wrongly set to 'Y' or 'N' instead of 1 and 0
     $attributesTobeChecked = ['statistics_showgraph', 'public_statistics' , 'page_break' , 'other_numbers_only',
         'other_comment_mandatory', 'hide_tip' , 'hidden', 'exclude_all_others_auto',
@@ -2130,13 +2143,13 @@ function checkWrongQuestionAttributes($questionId){
         'slider_default_set', 'slider_layout', 'slider_middlestart', 'slider_reset',
         'slider_reversed', 'slider_showminmax', 'value_range_allows_missing'];
     $questionAttributes = QuestionAttribute::model()->findAllByAttributes(['qid' => $questionId]);
-    foreach($questionAttributes as $questionAttribute){
-        if(in_array($questionAttribute->attribute, $attributesTobeChecked)){
+    foreach ($questionAttributes as $questionAttribute) {
+        if (in_array($questionAttribute->attribute, $attributesTobeChecked)) {
             //now check if value is 0 or 1 (if not then reset the wrong values ('Y' or 'N')
-            if($questionAttribute->value === 'Y'){
+            if ($questionAttribute->value === 'Y') {
                 $questionAttribute->value = 1;
                 $questionAttribute->save();
-            }elseif($questionAttribute->value === 'N'){
+            } elseif ($questionAttribute->value === 'N') {
                 $questionAttribute->value = 0;
                 $questionAttribute->save();
             }
@@ -2238,7 +2251,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     if (\PHP_VERSION_ID < 80000) {
         libxml_disable_entity_loader(true);
     }
-if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
+    if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
         $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
         while ($oXMLReader->read()) {
             if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
@@ -2433,6 +2446,10 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     $iIdKey = array_search('id', $aCsvHeader); // the id is allways needed and used a lot
     if (is_int($iIdKey)) {
         unset($aKeyForFieldNames['id']);
+        /* Unset it if option is ignore */
+        if ($aOptions['sExistingId'] == 'ignore') {
+            $iIdKey = false;
+        }
     }
     $iSubmitdateKey = array_search('submitdate', $aCsvHeader); // submitdate can be forced to null
     if (is_int($iSubmitdateKey)) {
@@ -2459,14 +2476,13 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                         break;
                     case 'replaceanswers':
                         break;
+                    case 'skip':
+                        $oSurvey = false; // Remove existing survey : don't import again
+                        break;
                     case 'renumber':
+                    default: // Must not happen, keep it in case
                         SurveyDynamic::sid($iSurveyId);
                         $oSurvey = new SurveyDynamic();
-                        break;
-                    case 'skip':
-                    case 'ignore':
-                    default:
-                        $oSurvey = false; // Remove existing survey : don't import again
                         break;
                 }
             } else {
@@ -2769,7 +2785,7 @@ function TSVImportSurvey($sFullFilePath)
         $iNewSID = randomChars(6, '123456789');
     }
 
-    
+
     $gidNew = 0;
     $gid = 0;
     $gseq = 1; // group_order
@@ -2778,7 +2794,7 @@ function TSVImportSurvey($sFullFilePath)
     $qseq = 0; // question_order
     $qtype = 'T';
     $aseq = 0; // answer sortorder
-    
+
     $ginfo = array();
     $qinfo = array();
     $sqinfo = array();
@@ -2945,7 +2961,7 @@ function TSVImportSurvey($sFullFilePath)
                     ;   // these are fake rows to show naming of comment and filecount fields
                 } elseif ($sqname == 'other' && $lastother == "Y") {
                     // If last question have other to Y : it's not a real SQ row
-                    if ($qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qtype == Question::QT_L_LIST_DROPDOWN) {
+                    if ($qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qtype == Question::QT_L_LIST) {
                         // only used to set default value for 'other' in these cases
                         if (isset($row['default']) && $row['default'] != "") {
                             $defaultvalue = array();
@@ -2987,7 +3003,7 @@ function TSVImportSurvey($sFullFilePath)
                         } else {
                             $sqid = $row['id'];
                         }
-                        
+
                         $subquestion['qid'] = $sqid;
                     }
                     $subquestions[] = $subquestion;
@@ -3121,7 +3137,7 @@ function TSVImportSurvey($sFullFilePath)
         $output['assessments']['rows']['row'] = $assessments;
     }
 
-    
+
     if (!empty($quotas)) {
         $output['quota']['fields']['fieldname'] = array_keys($quotas[0]);
         $output['quota']['rows']['row'] = $quotas;
@@ -3179,7 +3195,7 @@ function createXMLfromData($aData = array())
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType', 'Survey');
     $xml->writeElement('DBVersion', App()->getConfig("DBVersion"));
-   
+
     $xml->startElement('languages');
     foreach ($surveylanguages as $surveylanguage) {
         $xml->writeElement('language', $surveylanguage);

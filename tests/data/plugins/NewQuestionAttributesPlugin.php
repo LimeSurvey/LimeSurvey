@@ -34,6 +34,17 @@ class NewQuestionAttributesPlugin extends PluginBase
                 'help'      => 'This is a dummy attribute for testing purposes.',
                 'expression'=> 1,
             ],
+            'nonFilteredAttribute' => [
+                'types'     => 'S',
+                'category'  => 'Test',
+                'sortorder' => 1,
+                'inputtype' => 'text',
+                'default'   => '',
+                'caption'   => 'Non Filtered Test Attribute',
+                'help'      => 'This is a dummy attribute for testing purposes. It\'s not filtered for XSS',
+                'xssfilter' => false,
+                'expression'=> 1,
+            ],
         ];
         $event->append('questionAttributes', $questionAttributes);
     }

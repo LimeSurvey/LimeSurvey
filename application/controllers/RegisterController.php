@@ -22,7 +22,6 @@
 */
 class RegisterController extends LSYii_Controller
 {
-
     /* @var string : Default layout when using render : leave at bare actually : just send content */
     public $layout = 'survey';
     /* @var string the template name to be used when using layout */
@@ -195,9 +194,9 @@ class RegisterController extends LSYii_Controller
     public function getRegisterSuccess($iSurveyId, $iTokenId)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        
+
         $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt();
-        
+
         $aData['active'] = $oSurvey->active;
         $aData['iSurveyId'] = $iSurveyId;
         $aData['sLanguage'] = App()->language;

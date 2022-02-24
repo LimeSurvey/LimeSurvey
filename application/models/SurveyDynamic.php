@@ -38,6 +38,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * @inheritdoc
      * @return SurveyDynamic
+     * @psalm-suppress ParamNameMismatch Ignore that $sid is $className in parent class
      */
     public static function model($sid = null)
     {
@@ -271,97 +272,97 @@ class SurveyDynamic extends LSActiveRecord
      * @see https://www.yiiframework.com/doc/api/1.1/CButtonColumn
      * @see https://bugs.limesurvey.org/view.php?id=14219
      * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response : all page is reloaded (not only grid)
-     * @return array
+     * @return string
      */
     public function getGridButtons()
     {
-        $sBrowseLanguage = sanitize_languagecode(Yii::app()->request->getParam('browselang', ''));
+        $sBrowseLanguage = sanitize_languagecode(Yii::app()->request->getParam('browseLang', ''));
+        $buttons = '';
+
         /* detail button */
-        $gridButtons['detail'] = array(
-            'label' => '<span class="sr-only">' . gT("View response details") . '</span><span class="fa fa-eye" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("/admin/responses/sa/view",array("surveyid"=>' . self::$sid . ',"id"=>$data->id,"browselang"=>"' . $sBrowseLanguage . '"));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm",
-                'target' => "_blank",
-                'data-toggle' => "tooltip",
-                'title' => gT("View response details")
-            ),
-        );
+        $buttons .= "<a
+        href='" . App()->createUrl("responses/view", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
+        class='btn btn-default btn-sm'
+        target='_blank'
+        data-toggle='tooltip'
+        title='" . gt("View response details") . "'>
+            <i class='fa fa-eye'></i>
+        </a>";
+
         /* quexmlpdf button */
-        $gridButtons['quexmlpdf'] = array(
-            'label' => '<span class="sr-only">' . gT("View response details as queXML PDF") . '</span><span class="fa fa-file-o" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("/admin/responses/sa/viewquexmlpdf",array("surveyid"=>' . self::$sid . ',"id"=>$data->id,"browselang"=>"' . $sBrowseLanguage . '"));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm",
-                'target' => "_blank",
-                'data-toggle' => "tooltip",
-                'title' => gT("View response details as queXML PDF")
-            ),
-        );
+        $buttons .= "<a
+        href='" . App()->createUrl("responses/viewquexmlpdf", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
+        class='btn btn-default btn-sm'
+        target='_blank'
+        data-toggle='tooltip'
+        title='" . gt("View response details as queXML PDF") . "'>
+            <i class='fa fa-file-o'></i>
+        </a>";
+
         /* edit button */
-        $baseVisible = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update'));
-        $gridButtons['edit'] = array(
-            'label' => '<span class="sr-only">' . gT("Edit this response") . '</span><span class="fa fa-pencil text-success" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("admin/dataentry/sa/editdata/subaction/edit",array("surveyid"=>' . self::$sid . ',"id"=>$data->id,"browselang"=>"' . $sBrowseLanguage . '"));',
-            'options' => array(
-                'class' => "btn btn-default btn-sm",
-                'target' => "_blank",
-                'data-toggle' => "tooltip",
-                'title' => gT("Edit this response")
-            ),
-            'visible' => 'boolval(' . $baseVisible . ')',
-        );
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
+            $buttons .= "<a
+            href='" . App()->createUrl("admin/dataentry/sa/editdata/subaction/edit", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
+            class='btn btn-default btn-sm'
+            target='_blank'
+            data-toggle='tooltip'
+            title='" . gt("Edit this response") . "'>
+                <i class='fa fa-pencil text-success'></i>
+            </a>";
+        }
+
         /* downloadfile button */
-        $baseVisible = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid));
-        $gridButtons['downloadfiles'] = array(
-            'label' => '<span class="sr-only">' . gT("Download all files in this response as a zip file") . '</span><span class="fa fa-download text-success" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("admin/responses/sa/actionDownloadfiles",array("surveyid"=>' . self::$sid . ',"sResponseId"=>$data->id));',
-            'visible' => 'boolval(' . $baseVisible . ') && Response::model(' . self::$sid . ')->findByPk($data->id)->someFileExists()',
-            'options' => array(
-                'class' => "btn btn-default btn-sm",
-                'target' => "_blank",
-                'data-toggle' => "tooltip",
-                'title' => gT("Download all files in this response as a zip file")
-            ),
-        );
-        /* deletefile button */
-        $gridButtons['deletefiles'] = array(
-            'label' => '<span class="sr-only">' . gT("Delete all files of this response") . '</span><span class="fa fa-paperclip text-danger" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'url' => 'App()->createUrl("admin/responses/sa/actionDeleteAttachments",array("surveyid"=>' . self::$sid . ',"sResponseId"=>$data->id));',
-            'visible' => 'boolval(' . $baseVisible . ') && Response::model(' . self::$sid . ')->findByPk($data->id)->someFileExists()',
-            'options' => array(
-                'class' => "btn btn-default btn-sm btn-deletefiles",
-                'data-toggle' => "tooltip",
-                'title' => gT("Delete all files of this response"),
-            ),
-            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
-        );
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
+            $buttons .= "<a
+            href='" . App()->createUrl("responses/downloadfiles", ["surveyId" => self::$sid, "responseIds" => $this->id]) . "'
+            class='btn btn-default btn-sm'
+            target='_blank'
+            data-toggle='tooltip'
+            title='" . gt("Download all files in this response as a zip file") . "'>
+                <i class='fa fa-download text-success'></i>
+            </a>";
+        }
+
+        /* deletefiles button */
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
+            $buttons .= "
+            <span
+            data-toggle='modal'
+            data-target='#confirmation-modal'
+            data-btnclass='btn-danger'
+            data-post-url='" . App()->createUrl("responses/deleteAttachments") . "'
+            data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
+            data-btntext='" . gt("Delete") . "'
+            data-message='" . gt("Do you want to delete all files of this response?") . "'>
+            <button
+            data-toggle='tooltip'
+            class='btn btn-default btn-sm btn-deletefiles'
+            title='" . gt("Delete all files of this response") . "'>
+            <i class='fa fa-paperclip text-danger'></i>
+            </button>
+            </span>";
+        }
+
         /* delete  button */
-        $baseVisible = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete'));
-        $gridButtons['deleteresponse'] = array(
-            'label' => '<span class="sr-only">' . gT("Delete this response") . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
-            'imageUrl' => false,
-            'visible' => 'boolval(' . $baseVisible . ')',
-            'options' => array(
-                'class' => "btn btn-default btn-sm btn-delete",
-                'data-toggle' => "modal",
-                'data-target' => '#confirmation-modal',
-                'data-btnclass' => 'btn-danger',
-                'data-btntext' => gt('Delete'),
-                'data-post-url' => 'App()->createUrl("admin/responses/sa/actionDeleteSingle",array("surveyid"=>' . self::$sid . ',"responseId"=>$data->id));',
-                'evaluateOptions' => array('data-post-url'),
-                'title' => gT("Delete this response"),
-                'data-message' => gT('Do you want to delete this response?')
-                . '<br/>'
-                . gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.')
-            ),
-        );
-        return $gridButtons;
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
+            $buttons .= "
+            <span
+            data-toggle='modal'
+            data-target='#confirmation-modal'
+            data-btnclass='btn-danger'
+            data-post-url='" . App()->createUrl("responses/deleteSingle") . "'
+            data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
+            data-btntext='" . gt("Delete") . "'
+            data-message='" . gt("Do you want to delete this response?") . "<br/>" . gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.") . "'>
+            <button
+            data-toggle='tooltip'
+            class='btn btn-default btn-sm btn-delete'
+            title='" . gt("Delete this response") . "'>
+            <i class='fa fa-trash text-danger'></i>
+            </button>
+            </span>";
+        }
+        return $buttons;
     }
 
     /**
@@ -397,13 +398,13 @@ class SurveyDynamic extends LSActiveRecord
 
         // Upload question
         if ($oFieldMap->type == Question::QT_VERTICAL_FILE_UPLOAD && strpos($oFieldMap->fieldname, 'filecount') === false) {
-            $sSurveyEntry = "<table class='table table-condensed upload-question'><tr>";
+            $sSurveyEntry = "<table class='table table-condensed upload-question'>";
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
                 $sSurveyEntry .= '<tr>';
                 if (isset($aFilesInfo[$iFileIndex])) {
-                    $sSurveyEntry .= '<td>' . CHtml::link(CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name'])), App()->createUrl("/admin/responses", array("sa" => "actionDownloadfile", "surveyid" => self::$sid, "iResponseId" => $this->id, "iQID" => $oFieldMap->qid, "iIndex" => $iFileIndex))) . '</td>';
+                    $sSurveyEntry .= '<td>' . CHtml::link(CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name'])), App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex])) . '</td>';
                     $sSurveyEntry .= '<td>' . sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2)) . '</td>';
 
                     if ($aQuestionAttributes['show_title']) {
@@ -629,6 +630,7 @@ class SurveyDynamic extends LSActiveRecord
      * @see: http://www.yiiframework.com/wiki/324/cgridview-keep-state-of-page-and-sort/
      * @see: http://www.yiiframework.com/forum/index.php?/topic/8994-dropdown-for-pagesize-in-cgridview
      */
+    // phpcs:ignore
     public function getEllipsize_header_value()
     {
         return Yii::app()->user->getState('defaultEllipsizeHeaderValue', Yii::app()->params['defaultEllipsizeHeaderValue']);
@@ -640,6 +642,7 @@ class SurveyDynamic extends LSActiveRecord
      * @see: http://www.yiiframework.com/wiki/324/cgridview-keep-state-of-page-and-sort/
      * @see: http://www.yiiframework.com/forum/index.php?/topic/8994-dropdown-for-pagesize-in-cgridview
      */
+    // phpcs:ignore
     public function getEllipsize_question_value()
     {
         return Yii::app()->user->getState('defaultEllipsizeQuestionValue', Yii::app()->params['defaultEllipsizeQuestionValue']);
@@ -684,7 +687,7 @@ class SurveyDynamic extends LSActiveRecord
         // When selection of responses come from statistics
         // TODO: This provide a first step to enable the old jQgrid selector system, and could be use for users and tokens
         if (Yii::app()->user->getState('sql_' . self::$sid) != null) {
-            $criteria->condition .= Yii::app()->user->getState('sql_' . self::$sid);
+            $criteria->addCondition(Yii::app()->user->getState('sql_' . self::$sid));
         }
 
         $this->filterColumns($criteria);
@@ -697,7 +700,6 @@ class SurveyDynamic extends LSActiveRecord
                 'pageSize' => $pageSize,
             ),
         ));
-
         return $dataProvider;
     }
 
@@ -851,7 +853,7 @@ class SurveyDynamic extends LSActiveRecord
                     "title" => "other",
                 ), false);
                 $oOtherQuestion->questionl10ns = [$sLanguage => $oOtherQuestionL10n];
-                
+
                 $aQuestionAttributes['subquestions']["other"] = $this->getQuestionArray($oOtherQuestion, $oResponses, $bHonorConditions, true, false, $sLanguage);
                 if ($oQuestion->type == "P") {
                     $aQuestionAttributes['subquestions']["other"]['comment'] = $this->getQuestionArray($oOtherQuestion, $oResponses, $bHonorConditions, true, true, $sLanguage);
@@ -923,18 +925,14 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['fileinfo'] = json_decode($aQuestionAttributes['answervalue'], true);
         }
 
-
         if ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "1") {
             $aAnswers = (
-                $oQuestion->parent_qid == 0
-                    ? $oQuestion->answers
-                    : ($oQuestion->parent != null
-                        ? $oQuestion->parent->answers
-                        : []
-                    )
+                $oQuestion->parent != null
+                ? $oQuestion->parent->answers
+                : []
             );
 
-            foreach($aAnswers as $key=>$value){
+            foreach ($aAnswers as $key => $value) {
                 $aAnswerText[$value['scale_id']][$value['code']] = Answer::model()->getAnswerFromCode($value->qid, $value->code, $sLanguage, $value->scale_id);
             }
 
@@ -949,7 +947,7 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['answervalues'][1] = $sAnswerText;
         }
 
-        // array dual scale headers
+        // Array dual scale headers
         if (isset($attributes['dualscale_headerA']) && !empty($attributes['dualscale_headerA'][$sLanguage])) {
             $aQuestionAttributes['dualscale_header'][0] =  $attributes['dualscale_headerA'][$sLanguage];
         }
@@ -994,7 +992,7 @@ class SurveyDynamic extends LSActiveRecord
                 $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = isset($oScaleSubquestion->questionl10ns[$sLanguage]->question) ? $oScaleSubquestion->questionl10ns[$sLanguage]->question : null;
             }
         }
-        
+
         if ($oQuestion->type == 'N' || ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "K")) {
             if (strpos($aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
                 $aQuestionAttributes['answervalue'] = rtrim(rtrim($aQuestionAttributes['answervalue'], "0"), ".");

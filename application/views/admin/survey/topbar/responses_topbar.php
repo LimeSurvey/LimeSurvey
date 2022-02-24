@@ -19,7 +19,7 @@ if ($hasResponsesReadPermission) {
     // Summary Button
     $buttons['summary'] = [
         'class' => 'btn-default pjax',
-        'url'   => $this->createUrl("admin/responses/sa/index/surveyid/$survey->sid"),
+        'url'   => $this->createUrl("responses/index/", ['surveyId' => $survey->sid]),
         'icon'  => 'fa fa-list-alt',
         'iconclass' => 'text-success',
         'name' => gT('Summary'),
@@ -32,7 +32,7 @@ if ($hasResponsesReadPermission) {
         'class' => 'btn btn-default pjax',
         'icon' => 'fa fa-list-alt',
         'iconclass' => 'text-success',
-        'url' => $this->createUrl("admin/responses/sa/browse/surveyid/$survey->sid"),
+        'url' => $this->createUrl("responses/browse/", ['surveyId' => $survey->sid]),
     ];
     array_push($topBar['alignment']['left']['buttons'], $buttons['display_responses']);
 }
@@ -69,7 +69,7 @@ if($isActive) {
     if ($isTimingEnabled) {
         $buttons['timing_statistics'] = [
             'name' => gT('Timing statistics'),
-            'url'  => $this->createUrl("admin/responses/sa/time/surveyid/$survey->sid"),
+            'url'  => $this->createUrl("responses/time/", ['surveyId' => $survey->sid]),
             'class'=> 'btn btn-default pjax',
             'icon' => 'fa fa-clock-o',
             'iconclass' => 'text-success',
@@ -170,7 +170,7 @@ if ($hasResponsesDeletePermission) {
     $buttons['batch_deletion'] = [
         'name' => gT("Batch deletion"),
         'id'   => 'response-batch-deletion',
-        'url'  => $this->createUrl("admin/responses/sa/actionDelete/", array("surveyid" => $survey->sid)),
+        'url'  => $this->createUrl("responses/delete/", ["surveyId" => $survey->sid]),
         'data' => [
             'post' => "{}",
             'show-text-area' => true,

@@ -1,9 +1,9 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
- /** @class CKEDITOR */
+/** @class CKEDITOR */
 
 /**
  * The class name used to identify `<textarea>` elements to be replaced
@@ -200,7 +200,7 @@ CKEDITOR.replaceClass = 'ckeditor';
 
 			// If data has not been modified in the mode which we are currently leaving,
 			// avoid making snapshot right after initializing new mode.
-			// http://dev.ckeditor.com/ticket/5217#comment:20
+			// https://dev.ckeditor.com/ticket/5217#comment:20
 			// Tested by:
 			// 'test switch mode with unrecoreded, inner HTML specific content (boguses)'
 			// 'test switch mode with unrecoreded, inner HTML specific content (boguses) plus changes in source mode'
@@ -239,6 +239,9 @@ CKEDITOR.replaceClass = 'ckeditor';
 
 			// Delay to avoid race conditions (setMode inside setMode).
 			setTimeout( function() {
+				if ( editor.isDestroyed() || editor.isDetached() ) {
+					return;
+				}
 				editor.fire( 'mode' );
 				callback && callback.call( editor );
 			}, 0 );
@@ -248,12 +251,16 @@ CKEDITOR.replaceClass = 'ckeditor';
 	/**
 	 * Resizes the editor interface.
 	 *
-	 *		editor.resize( 900, 300 );
+	 * **Note:** Since 4.14.1 this method accepts numeric or absolute CSS length units.
 	 *
-	 *		editor.resize( '100%', 450, true );
+	 * ```javascript
+	 *	editor.resize( 900, 300 );
+	 *
+	 *	editor.resize( '5in', 450, true );
+	 * ```
 	 *
 	 * @param {Number/String} width The new width. It can be an integer denoting a value
-	 * in pixels or a CSS size value with unit.
+	 * in pixels or a CSS size value with unit. When null is passed, the value will not be set.
 	 * @param {Number/String} height The new height. It can be an integer denoting a value
 	 * in pixels or a CSS size value with unit.
 	 * @param {Boolean} [isContentHeight] Indicates that the provided height is to
@@ -280,11 +287,17 @@ CKEDITOR.replaceClass = 'ckeditor';
 			outer = container;
 		}
 
-		// Set as border box width. (http://dev.ckeditor.com/ticket/5353)
+		if ( width || width === 0 ) {
+			width = convertCssUnitToPx( width );
+		}
+
+		// Set as border box width. (https://dev.ckeditor.com/ticket/5353)
 		outer.setSize( 'width', width, true );
 
-		// WebKit needs to refresh the iframe size to avoid rendering issues. (1/2) (http://dev.ckeditor.com/ticket/8348)
+		// WebKit needs to refresh the iframe size to avoid rendering issues. (1/2) (https://dev.ckeditor.com/ticket/8348)
 		contentsFrame && ( contentsFrame.style.width = '1%' );
+
+		height = convertCssUnitToPx( height );
 
 		// Get the height delta between the outer table and the content area.
 		var contentsOuterDelta = ( outer.$.offsetHeight || 0 ) - ( contents.$.clientHeight || 0 ),
@@ -293,9 +306,9 @@ CKEDITOR.replaceClass = 'ckeditor';
 			resultContentsHeight = Math.max( height - ( isContentHeight ? 0 : contentsOuterDelta ), 0 ),
 			resultOuterHeight = ( isContentHeight ? height + contentsOuterDelta : height );
 
-		contents.setStyle( 'height', resultContentsHeight + 'px' );
+		contents.setStyle( 'height', CKEDITOR.tools.cssLength( resultContentsHeight ) );
 
-		// WebKit needs to refresh the iframe size to avoid rendering issues. (2/2) (http://dev.ckeditor.com/ticket/8348)
+		// WebKit needs to refresh the iframe size to avoid rendering issues. (2/2) (https://dev.ckeditor.com/ticket/8348)
 		contentsFrame && ( contentsFrame.style.width = '100%' );
 
 		// Emit a resize event.
@@ -309,7 +322,7 @@ CKEDITOR.replaceClass = 'ckeditor';
 
 	/**
 	 * Gets the element that can be used to check the editor size. This method
-	 * is mainly used by the [Editor Resize](http://ckeditor.com/addon/resize) plugin, which adds
+	 * is mainly used by the [Editor Resize](https://ckeditor.com/cke4/addon/resize) plugin, which adds
 	 * a UI handle that can be used to resize the editor.
 	 *
 	 * @param {Boolean} forContents Whether to return the "contents" part of the theme instead of the container.
@@ -319,15 +332,22 @@ CKEDITOR.replaceClass = 'ckeditor';
 		return forContents ? this.ui.space( 'contents' ) : this.container;
 	};
 
+	function convertCssUnitToPx( unit ) {
+		return CKEDITOR.tools.convertToPx( CKEDITOR.tools.cssLength( unit ) );
+	}
+
 	function createInstance( element, config, data, mode ) {
-		if ( !CKEDITOR.env.isCompatible )
+		element = CKEDITOR.editor._getEditorElement( element );
+
+		if ( !element ) {
 			return null;
+		}
 
-		element = CKEDITOR.dom.element.get( element );
-
-		// Avoid multiple inline editor instances on the same element.
-		if ( element.getEditor() )
-			throw 'The editor instance "' + element.getEditor().name + '" is already attached to the provided element.';
+		// (#4461)
+		if ( CKEDITOR.editor.shouldDelayEditorCreation( element, config ) ) {
+			CKEDITOR.editor.initializeDelayedEditorCreation( element, config, 'replace' );
+			return null;
+		}
 
 		// Create the editor instance.
 		var editor = new CKEDITOR.editor( config, element, mode );
@@ -337,7 +357,7 @@ CKEDITOR.replaceClass = 'ckeditor';
 			// replacement will be done later in the editor creation lifecycle.
 			element.setStyle( 'visibility', 'hidden' );
 
-			// http://dev.ckeditor.com/ticket/8031 Remember if textarea was required and remove the attribute.
+			// https://dev.ckeditor.com/ticket/8031 Remember if textarea was required and remove the attribute.
 			editor._.required = element.hasAttribute( 'required' );
 			element.removeAttribute( 'required' );
 		}
@@ -346,6 +366,10 @@ CKEDITOR.replaceClass = 'ckeditor';
 
 		// Once the editor is loaded, start the UI.
 		editor.on( 'loaded', function() {
+			if ( editor.isDestroyed() || editor.isDetached() ) {
+				return;
+			}
+
 			loadTheme( editor );
 
 			if ( mode == CKEDITOR.ELEMENT_MODE_REPLACE && editor.config.autoUpdateElement && element.$.form )
@@ -422,7 +446,7 @@ CKEDITOR.replaceClass = 'ckeditor';
 			topHtml: topHtml ? '<span id="' + editor.ui.spaceId( 'top' ) + '" class="cke_top cke_reset_all" role="presentation" style="height:auto">' + topHtml + '</span>' : '',
 			contentId: editor.ui.spaceId( 'contents' ),
 			bottomHtml: bottomHtml ? '<span id="' + editor.ui.spaceId( 'bottom' ) + '" class="cke_bottom cke_reset_all" role="presentation">' + bottomHtml + '</span>' : '',
-			outerEl: CKEDITOR.env.ie ? 'span' : 'div'	// http://dev.ckeditor.com/ticket/9571
+			outerEl: CKEDITOR.env.ie ? 'span' : 'div'	// https://dev.ckeditor.com/ticket/9571
 		} ) );
 
 		if ( elementMode == CKEDITOR.ELEMENT_MODE_REPLACE ) {
@@ -451,7 +475,7 @@ CKEDITOR.replaceClass = 'ckeditor';
 		// Disable browser context menu for editor's chrome.
 		container.disableContextMenu();
 
-		// Redirect the focus into editor for webkit. (http://dev.ckeditor.com/ticket/5713)
+		// Redirect the focus into editor for webkit. (https://dev.ckeditor.com/ticket/5713)
 		CKEDITOR.env.webkit && container.on( 'focus', function() {
 			editor.focus();
 		} );
@@ -492,7 +516,7 @@ CKEDITOR.config.startupMode = 'wysiwyg';
  *
  * @event resize
  * @param {CKEDITOR.editor} editor This editor instance.
- * @param {Object} data Available since CKEditor 4.5.
+ * @param {Object} data Available since CKEditor 4.5.0.
  * @param {Number} data.outerHeight The height of the entire area that the editor covers.
  * @param {Number} data.contentsHeight Editable area height in pixels.
  * @param {Number} data.outerWidth The width of the entire area that the editor covers.
@@ -538,4 +562,16 @@ CKEDITOR.config.startupMode = 'wysiwyg';
  *
  * @event required
  * @param {CKEDITOR.editor} editor This editor instance.
+ */
+
+/**
+ * Fired when the UI space is created. This event allows to modify the top bar or the bottom bar with additional HTML.
+ *
+ * For example, it is used in the [Editor Resize](https://ckeditor.com/cke4/addon/resize) plugin
+ * to add the HTML element used to resize the editor.
+ *
+ * @event uiSpace
+ * @param {Object} data
+ * @param {String} data.space The name of the {@link CKEDITOR.ui#space space} for which the event is fired.
+ * @param {String} data.html HTML string which will be included in the given space.
  */

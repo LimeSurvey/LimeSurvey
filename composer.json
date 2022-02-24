@@ -26,8 +26,13 @@
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
 			"LimeSurvey\\ExtensionInstaller\\": "application/libraries/ExtensionInstaller/",
 			"LimeSurvey\\Helpers\\": "application/helpers",
+			"LimeSurvey\\Helpers\\Update\\": [
+                "application/helpers/update",
+                "application/helpers/update/updates"
+            ],
 			"LimeSurvey\\Models\\Services\\": "application/models/services",
-			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects"
+			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects",
+			"LimeSurvey\\Exceptions\\": "application/exceptions"
 		}
 	},
 	"require": {
@@ -50,20 +55,22 @@
         "phpmd/phpmd" : "^2.8",
         "phpunit/phpunit": "^8.0",
         "vimeo/psalm": "^4.6",
-		"misantron/dbunit": "^5.1"
+		"misantron/dbunit": "^5.1",
+		"tebazil/yii1-db-seeder": "^0.0.0"
     },
     "scripts": {
         "test": [
             "./tests/bin/lint-tests",
             "./tests/bin/lint-application",
-            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/services",
-            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateManifest.php",
-            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateConfiguration.php",
-            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateConfig.php",
-            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/ArchivedTableSettings.php",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/controllers",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updatedb_helper.php",
-            "./third_party/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php",
+            "./third_party/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset_strict.xml",
+            "./third_party/bin/phpmd application/helpers/update/updates/ text tests/rulesets/phpmd_ruleset_strict.xml",
             "./third_party/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateConfiguration.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateManifest.php text tests/rulesets/phpmd_ruleset.xml",
@@ -71,7 +78,9 @@
             "./third_party/bin/phpmd application/libraries/PluginManager text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/controllers/SurveyAdministrationController.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/libraries/ExtensionInstaller/ text tests/rulesets/phpmd_ruleset.xml",
-            "./third_party/bin/psalm"
+            "./third_party/bin/phpmd application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php text tests/rulesets/phpmd_ruleset_strict.xml",
+            "./third_party/bin/phpmd application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php text tests/rulesets/phpmd_ruleset_strict.xml",
+            "./third_party/bin/psalm --threads=4"
         ]
     }
 }

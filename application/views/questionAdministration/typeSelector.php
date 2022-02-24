@@ -24,7 +24,7 @@ $oQuestionSelector = $this->beginWidget(
         'groupTitleKey' => "questionGroupName",
         'groupItemsKey' => "questionTypes",
         'debugKeyCheck' => gT("Type:") . " ",
-        'previewWindowTitle' => gT("Preview question type"),
+        'previewWindowTitle' => "",
         'groupStructureArray' => $aQuestionTypeGroups,
         'survey_active' => $question->survey->active=='Y',
         'value' => $question->type,
@@ -48,8 +48,8 @@ $oQuestionSelector = $this->beginWidget(
 ?>
 <?= $oQuestionSelector->getModal(); ?>
 
-<div class="form-group col-sm-12 contains-question-selector">
-    <label for="questionCode"><?= gT('Question type'); ?></label>
+<div class="form-group col-sm-12 col-lg-8 contains-question-selector">
+    <label for="questionCode"><?= gT('Switch question type'); ?></label>
     <div class="btn-group" style="width: 100%;">
         <?= $oQuestionSelector->getButtonOrSelect(); ?>
         <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>

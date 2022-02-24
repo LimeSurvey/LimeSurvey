@@ -76,8 +76,12 @@ class SaveEditedReponseTest extends TestBaseClassWeb
         sleep(5);
 
         $completedElement = $web->findElement(WebDriverBy::id('startlanguage'));
-        $completedElement->clear();
-        $completedElement->sendKeys("de");
+        $allOptions = $completedElement->findElement(WebDriverBy::tagName('option'));
+        foreach ($allOptions as $option) {
+            if ($option->getAttribute('value') == 'en') {
+                $option->click();
+            };
+        }
 
         sleep(1);
 
@@ -90,6 +94,6 @@ class SaveEditedReponseTest extends TestBaseClassWeb
         $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($oNotifCOntainer));
 
         $question = \Response::model(self::$surveyId)->findAllByAttributes([], 'id = :id', [':id' => $reponseID]);
-        $this->assertEquals('de', $question[0]->startlanguage);
+        $this->assertEquals('en', $question[0]->startlanguage);
     }
 }

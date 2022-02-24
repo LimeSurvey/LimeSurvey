@@ -41,33 +41,6 @@
         </p>
     </div>
 
-<!-- Import success but errors -->
-<?php elseif ( isset($aImportResults['error']) && $aImportResults['error']!=false ): ?>
-
-    <div class="jumbotron message-box message-box-error">
-        <h2 class="text-success"> <?php eT("Success"); ?></h2>
-        <p class="lead"><?php eT("File upload succeeded.");?> </p>
-            <h2 class="warning"><?php eT("Error");?></h2>
-            <!-- errors -->
-            <?php
-            if(is_array($aImportResults['error']))
-            {
-                foreach($aImportResults['error'] as $error)
-                    echo '<p>'.$error."<p/>";
-            }
-            else
-            {
-                echo '<p>'.$aImportResults['error'].'</p>';
-            }
-            ?>
-
-            <!-- buttons -->
-            <p>
-                <input type='submit' value='<?php eT("Main Admin Screen");?>' class="btn btn-large btn-default" onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')" />
-            </p>
-
-    </div>
-
 <!-- Success -->
 <?php else:?>
     <div class="jumbotron message-box">

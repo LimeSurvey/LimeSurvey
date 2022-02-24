@@ -57,7 +57,7 @@ foreach ($data as $row) {
 ?>
 <?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
     <div class='statisticscolumnid col-sm-1 hidden-print'>
-        <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank' title='<?php eT("View response"); ?>' data-toggle="tooltip" data-placement="top">
+        <a href='<?php echo Yii::app()->getController()->createUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $row['id']]); ?>' target='_blank' title='<?php eT("View response"); ?>' data-toggle="tooltip" data-placement="top">
             <span class="fa fa-search"></span>
         </a>
     </div>

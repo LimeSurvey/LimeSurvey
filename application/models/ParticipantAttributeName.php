@@ -40,10 +40,10 @@ class ParticipantAttributeName extends LSActiveRecord
      * @inheritdoc
      * @return ParticipantAttributeName
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -110,7 +110,7 @@ class ParticipantAttributeName extends LSActiveRecord
             . "<span class='fa fa-%s' ></span>" //icon class
             . "</button>";
         $buttons .= "";
-        
+
         //Edit-button
         $editData = array(
             'green-border action_attributeNames_editModal',
@@ -133,9 +133,9 @@ class ParticipantAttributeName extends LSActiveRecord
         data-title='" . gT("Delete this attribute") . "'
         data-btnclass='btn-danger'
         data-btntext='" . gt("Delete") . "'
-        data-message=' " . gt("Do you really want to delete this attribute") ."?'
+        data-message=' " . gt("Do you really want to delete this attribute") . "?'
         data-onclick='deleteAttributeAjax(" . $this->attribute_id . ")'>";
-        $buttons.= vsprintf($raw_button_template, $deleteData) . "</a>";
+        $buttons .= vsprintf($raw_button_template, $deleteData) . "</a>";
         $buttons .= "</div>";
 
         return $buttons;
@@ -314,8 +314,7 @@ class ParticipantAttributeName extends LSActiveRecord
         ));
     }
 
-
-    function getAllAttributes()
+    public function getAllAttributes()
     {
         $aResult = Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*')
                                                 ->from('{{participant_attribute_names}}')
@@ -325,7 +324,7 @@ class ParticipantAttributeName extends LSActiveRecord
         return $aResult;
     }
 
-    function getAllAttributesValues()
+    public function getAllAttributesValues()
     {
         return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_values}}')->queryAll();
     }
@@ -480,7 +479,7 @@ class ParticipantAttributeName extends LSActiveRecord
      *                  result['attribute_name']
      *                  result['lang']
      */
-    function getCPDBAttributes()
+    public function getCPDBAttributes()
     {
         /**  @var $models ParticipantAttributeName[] */
         $models = ParticipantAttributeName::model()->findAll('core_attribute=:core_attribute', array(
@@ -696,7 +695,7 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
      * @param string $attribute_id
      * @return mixed
-     * @return ParticipantAttributeName
+     * @psalm-suppress ParamNameMismatch
      * TODO: Tonis: this is a bad name for this method - it overrides parent method doing totally different thing
      */
     public function getAttribute($attribute_id)
@@ -709,7 +708,7 @@ class ParticipantAttributeName extends LSActiveRecord
         return $data;
     }
 
-    function saveAttribute($data)
+    public function saveAttribute($data)
     {
         if (empty($data['attribute_id'])) {
             return;

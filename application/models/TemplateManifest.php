@@ -616,9 +616,9 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getTemplateURL()
     {
-
-      // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
-        if (Template::isStandardTemplate($this->sTemplateName)) {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
+        if (SurveyThemeHelper::isStandardTemplate($this->sTemplateName)) {
             return Yii::app()->getConfig("standardthemerooturl") . '/' . $this->sTemplateName . '/';
         } else {
             return  Yii::app()->getConfig("userthemerooturl") . '/' . $this->sTemplateName . '/';
@@ -658,7 +658,8 @@ class TemplateManifest extends TemplateConfiguration
 
         $sDeleteLink = '';
         // We don't want user to be able to delete standard theme. Must be done via ftp (advanced users only)
-        if (Permission::model()->hasGlobalPermission('templates', 'delete') && !Template::isStandardTemplate($this->sTemplateName)) {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        if (Permission::model()->hasGlobalPermission('templates', 'delete') && !SurveyThemeHelper::isStandardTemplate($this->sTemplateName)) {
             $sDeleteLink = '<a
               id="template_delete_link_' . $this->sTemplateName . '"
               href="' . $sDeleteUrl . '"
@@ -1044,7 +1045,8 @@ class TemplateManifest extends TemplateConfiguration
                 /* @todo ? : check if installed, install if not */
             }
             $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
-            if (Template::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
+            Yii::import('application.helpers.SurveyThemeHelper');
+            if (SurveyThemeHelper::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
                 $this->isStandard    = true;
                 $this->path = Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . DIRECTORY_SEPARATOR;
             } else {
@@ -1190,14 +1192,14 @@ class TemplateManifest extends TemplateConfiguration
      * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
      * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
      *
-     * @param string $sPackageName     string   name of the package to edit
-     * @param $sType            string   the type of settings to change (css or js)
-     * @param $aSettings        array    array of local setting
-     * @return array
+     * @param string $sPackageName name of the package to edit
+     * @param string $sType        the type of settings to change (css or js)
+     * @param array $aSettings     array of local setting
+     * @return void
      */
-    protected function removeFileFromPackage($sPackageName, $sType, $aSetting)
+    protected function removeFileFromPackage($sPackageName, $sType, $aSettings)
     {
-        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSetting);
+        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSettings);
     }
 
     /**
@@ -1218,14 +1220,14 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * @param TemplateManifest $oRTemplate
-     * @param string $sPath
+     * @param string $attribute
      */
-    protected function getTemplateForPath($oRTemplate, $sPath)
+    protected function getTemplateConfigurationForAttribute($oRTemplate, $attribute)
     {
-        while (empty($oRTemplate->config->xpath($sPath))) {
+        while (empty($oRTemplate->config->xpath($attribute))) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
-                throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sPath'.");
+                throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$attribute'.");
             }
             $oRTemplate = $oMotherTemplate;
         }
@@ -1241,9 +1243,9 @@ class TemplateManifest extends TemplateConfiguration
         $this->apiVersion         = (isset($this->config->metadata->apiVersion)) ? $this->config->metadata->apiVersion : null;
 
 
-        $this->viewPath           = $this->path . $this->getTemplateForPath($this, '//viewdirectory')->config->engine->viewdirectory . DIRECTORY_SEPARATOR;
-        $this->filesPath          = $this->path . $this->getTemplateForPath($this, '//filesdirectory')->config->engine->filesdirectory . DIRECTORY_SEPARATOR;
-        $this->templateEditor     = $this->getTemplateForPath($this, '//template_editor')->config->engine->template_editor;
+        $this->viewPath           = $this->path . $this->getTemplateConfigurationForAttribute($this, '//viewdirectory')->config->engine->viewdirectory . DIRECTORY_SEPARATOR;
+        $this->filesPath          = $this->path . $this->getTemplateConfigurationForAttribute($this, '//filesdirectory')->config->engine->filesdirectory . DIRECTORY_SEPARATOR;
+        $this->templateEditor     = $this->getTemplateConfigurationForAttribute($this, '//template_editor')->config->engine->template_editor;
 
         // Options are optional
         if (!empty($this->config->xpath("//options"))) {
@@ -1252,7 +1254,7 @@ class TemplateManifest extends TemplateConfiguration
         } elseif (!empty($this->oMotherTemplate->oOptions)) {
             $this->oOptions = $this->oMotherTemplate->oOptions;
         } else {
-            $this->oOptions = "";
+            $this->oOptions = new stdClass();
         }
 
         // Not mandatory (use package dependances)
@@ -1335,6 +1337,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         $aAssetsToRemove = array();
         if (!empty($this->cssFramework->$sType)) {
+            /** @var array */
             $nodes = (array) $this->config->xpath('//cssframework/' . $sType . '[@replace]');
             if (!empty($nodes)) {
                 foreach ($nodes as $key => $node) {

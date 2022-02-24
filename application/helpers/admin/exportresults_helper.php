@@ -84,9 +84,9 @@ class ExportSurveyResultsService
         if ($oOptions->output == 'display') {
             header("Cache-Control: must-revalidate, no-store, no-cache");
         }
-        
+
         $exports = $this->getExports();
-        
+
         if (array_key_exists($sExportPlugin, $exports) && !empty($exports[$sExportPlugin])) {
             // This must be a plugin, now use plugin to load the right class
             $event = new PluginEvent('newExport');
@@ -95,7 +95,7 @@ class ExportSurveyResultsService
             $oPluginManager->dispatchEvent($event, $exports[$sExportPlugin]);
             $writer = $event->get('writer');
         }
-        
+
         if (!($writer instanceof IWriter)) {
             throw new Exception(sprintf('Writer for %s should implement IWriter', $sExportPlugin));
         }
@@ -119,19 +119,19 @@ class ExportSurveyResultsService
             $writer->write($survey, $sLanguageCode, $oOptions, true);
         }
         $result = $writer->close();
-        
+
         // Close resultset if needed
         if ($survey->responses instanceof CDbDataReader) {
             $survey->responses->close();
         }
-        
+
         if ($oOptions->output == 'file') {
             return $writer->filename;
         } else {
             return $result;
         }
     }
-    
+
     /**
      * Get an array of available export types
      *
@@ -145,10 +145,10 @@ class ExportSurveyResultsService
             $oPluginManager->dispatchEvent($event);
 
             $exports = $event->get('exportplugins', array());
-            
+
             $this->_exports = $exports;
         }
-        
+
         return $this->_exports;
     }
 }

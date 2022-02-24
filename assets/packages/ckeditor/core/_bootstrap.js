@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -8,31 +8,26 @@
  */
 
 ( function() {
-	// Disable HC detection in WebKit. (http://dev.ckeditor.com/ticket/5429)
-	if ( CKEDITOR.env.webkit )
+	// Check whether high contrast is active by creating a colored border.
+	var hcDetect = CKEDITOR.dom.element.createFromHtml( '<div style="width:0;height:0;position:absolute;left:-10000px;' +
+		'border:1px solid;border-color:red blue"></div>', CKEDITOR.document );
+
+	hcDetect.appendTo( CKEDITOR.document.getHead() );
+
+	// Update CKEDITOR.env.
+	// Catch exception needed sometimes for FF. (https://dev.ckeditor.com/ticket/4230)
+	try {
+		var top = hcDetect.getComputedStyle( 'border-top-color' ),
+			right = hcDetect.getComputedStyle( 'border-right-color' );
+
+		// We need to check if getComputedStyle returned any value, because on FF
+		// it returnes empty string if CKEditor is loaded in hidden iframe. (https://dev.ckeditor.com/ticket/11121)
+		CKEDITOR.env.hc = !!( top && top == right );
+	} catch ( e ) {
 		CKEDITOR.env.hc = false;
-	else {
-		// Check whether high contrast is active by creating a colored border.
-		var hcDetect = CKEDITOR.dom.element.createFromHtml( '<div style="width:0;height:0;position:absolute;left:-10000px;' +
-			'border:1px solid;border-color:red blue"></div>', CKEDITOR.document );
-
-		hcDetect.appendTo( CKEDITOR.document.getHead() );
-
-		// Update CKEDITOR.env.
-		// Catch exception needed sometimes for FF. (http://dev.ckeditor.com/ticket/4230)
-		try {
-			var top = hcDetect.getComputedStyle( 'border-top-color' ),
-				right = hcDetect.getComputedStyle( 'border-right-color' );
-
-			// We need to check if getComputedStyle returned any value, because on FF
-			// it returnes empty string if CKEditor is loaded in hidden iframe. (http://dev.ckeditor.com/ticket/11121)
-			CKEDITOR.env.hc = !!( top && top == right );
-		} catch ( e ) {
-			CKEDITOR.env.hc = false;
-		}
-
-		hcDetect.remove();
 	}
+
+	hcDetect.remove();
 
 	if ( CKEDITOR.env.hc )
 		CKEDITOR.env.cssClass += ' cke_hc';

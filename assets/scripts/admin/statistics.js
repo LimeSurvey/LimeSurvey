@@ -349,7 +349,7 @@ LS.Statistics2 = function () {
             }
 
             if (destinationdiv.parents("td:first").css("display") != "none") {
-                $.post(listColumnUrl + '/' + id + '/' + extra, function (data) {
+                $.get(listColumnUrl + '/' + id + '/' + extra, function (data) {
                     $('#' + id).parent().append(data);
                 });
             }

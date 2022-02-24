@@ -38,8 +38,10 @@
  * @property Permission[] $permissions
  * @property User $parentUser Parent user
  * @property string $parentUserName  Parent user's name
+ * @property string $last_login
+ * @property Permissiontemplates[] $roles
+ * @property UserGroup[] $groups
  */
-
 class User extends LSActiveRecord
 {
     /** @var int maximum time the validation_key is valid*/
@@ -61,10 +63,10 @@ class User extends LSActiveRecord
      * @inheritdoc
      * @return User
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -106,7 +108,7 @@ class User extends LSActiveRecord
             array('lang', 'default', 'value' => Yii::app()->getConfig('defaultlang')),
             array('lang', 'LSYii_Validators', 'isLanguage' => true),
             array('htmleditormode', 'default', 'value' => 'default'),
-            array('htmleditormode', 'in', 'range'=>array('default', 'inline', 'popup', 'none'), 'allowEmpty'=>true),
+            array('htmleditormode', 'in', 'range' => array('default', 'inline', 'popup', 'none'), 'allowEmpty' => true),
             array('questionselectormode', 'default', 'value' => 'default'),
             array('questionselectormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('templateeditormode', 'default', 'value' => 'default'),
@@ -160,43 +162,14 @@ class User extends LSActiveRecord
         return $dateFormat['phpdate'];
     }
 
+    /**
+     * @todo Not used?
+     */
     public function getFormattedDateCreated()
     {
         $dateCreated = $this->created;
         $date = new DateTime($dateCreated);
-        return $date->format($this->dateFormat);
-    }
-    /**
-     * Returns onetime password
-     *
-     * @access public
-     * @param string $username
-     * @return string
-     */
-    public function getOTPwd($username)
-    {
-        // TODO get this via $this instead of param
-        $this->db->select('uid, users_name, password, one_time_pw, dateformat, full_name, htmleditormode');
-        $this->db->where('users_name', $username);
-        $data = $this->db->get('users', 1);
-
-        return $data;
-    }
-
-    /**
-     * Deletes onetime password
-     *
-     * @access public
-     * @param string $username
-     */
-    public function deleteOTPwd($username)
-    {
-        // TODO get this via $this instead of param
-        $data = array(
-            'one_time_pw' => ''
-        );
-        $this->db->where('users_name', $username);
-        $this->db->update('users', $data);
+        return $date->format($this->dateformat);
     }
 
     /**
@@ -207,7 +180,7 @@ class User extends LSActiveRecord
      * @param string $new_pass
      * @param string $new_full_name
      * @param string $new_email
-     * @param string $parent_user
+     * @param int $parent_user
      * @return integer|boolean User ID if success
      */
     public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email)
@@ -425,7 +398,7 @@ class User extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        return $this->db->insert('users', $data);
+        return $this->getDb()->insert('users', $data);
     }
 
     /**
@@ -483,7 +456,7 @@ class User extends LSActiveRecord
         $setPermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setuserpermissions');
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setusertemplates');
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('admin/user/sa/setasadminchild');
-        
+
         $oUser = self::model()->findByPK($this->uid);
         if ($this->uid == Yii::app()->user->getId()) {
             // Edit self
@@ -750,16 +723,18 @@ class User extends LSActiveRecord
         return join(', ', $list);
     }
 
+    /**
+     * @todo Not used?
+     */
     public function getLastloginFormatted()
     {
-        
         $lastLogin = $this->last_login;
         if ($lastLogin == null) {
             return '---';
         }
 
         $date = new DateTime($lastLogin);
-        return $date->format($this->dateFormat) . ' ' . $date->format('H:i');
+        return $date->format($this->dateformat) . ' ' . $date->format('H:i');
     }
 
     public function getManagementCheckbox()
@@ -815,7 +790,7 @@ class User extends LSActiveRecord
                 "header" => gT("Created by"),
             )
         );
-        
+
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $cols[] = array(
                 "name" => 'surveysCreated',
@@ -917,13 +892,11 @@ class User extends LSActiveRecord
             }
         }
 
-        //filter for parentUserName
-        // This don't re&ally work : filter stay empty
         $getUser = Yii::app()->request->getParam('User');
         if (!empty($getUser['parentUserName'])) {
-            $getParentName = $getUser['parentUserName'];
-            $criteria->join = "LEFT JOIN lime_users luparent ON t.parent_id = luparent.uid";
-            $criteria->compare('luparent.users_name', $getParentName, true, 'OR');
+             $getParentName = $getUser['parentUserName'];
+            $criteria->join = "LEFT JOIN {{users}} u ON t.parent_id = u.uid";
+            $criteria->compare('u.users_name', $getParentName, true, 'OR');
         }
 
         return new CActiveDataProvider($this, array(
@@ -939,7 +912,8 @@ class User extends LSActiveRecord
      *
      * @return bool true if validation_key could be saved in db, false otherwise
      */
-    public function setValidationKey(){
+    public function setValidationKey()
+    {
         $this->validation_key = randomChars(self::MAX_VALIDATION_KEY_LENGTH);
 
         return $this->save();
@@ -951,7 +925,8 @@ class User extends LSActiveRecord
      * @return bool true if datetime could be saved, false otherwise
      * @throws Exception
      */
-    public function setValidationExpiration(){
+    public function setValidationExpiration()
+    {
         $datePlusMaxExpiration = new DateTime();
         $datePlusString = 'P' . self::MAX_EXPIRATION_TIME_IN_DAYS . 'D';
         $dateInterval = new DateInterval($datePlusString);

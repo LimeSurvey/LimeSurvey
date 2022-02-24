@@ -4,7 +4,6 @@ namespace LimeSurvey\Models\Services;
 
 class FilterImportedResources
 {
-
     //todo: make a good service class ... (constructor, dependency injection etc.)
 
     /**

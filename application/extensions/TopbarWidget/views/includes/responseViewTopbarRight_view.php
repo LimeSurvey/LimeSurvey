@@ -14,7 +14,7 @@
     <?php endif;?>
 
     <?php if ($bHasFile): ?>
-    <a class="btn btn-default" href='<?php echo Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$id)); ?>' role="button" >
+    <a class="btn btn-default" href='<?php echo Yii::app()->createUrl("responses/downloadfiles", ["surveyId" =>$surveyid, "responseIds" =>$id]); ?>' role="button" >
         <span class="fa  fa-download-alt text-success"></span>
         <?php eT("Download files"); ?>
     </a>
@@ -26,11 +26,11 @@
     </a>
 <?php endif;?>
 
-<a href='<?php echo Yii::App()->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$previous"); ?>' title='<?php eT("Show previous..."); ?>'
+<a href='<?php echo Yii::App()->createUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $previous]); ?>' title='<?php eT("Show previous..."); ?>'
     class="btn btn-default <?php if (!$previous) {echo 'disabled';}?>">
     <span class="icon-databack text-success" title='<?php eT("Show previous..."); ?>'></span> <?php eT("Show previous..."); ?>
 </a>
-<a href='<?php echo Yii::App()->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$next"); ?>' title='<?php eT("Show next..."); ?>'
+<a href='<?php echo Yii::App()->createUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $next]); ?>' title='<?php eT("Show next..."); ?>'
     class="btn btn-default <?php if (!$next) {echo 'disabled';}?>">
     <span class="icon-dataforward text-success" title='<?php eT("Show next..."); ?>'></span> <?php eT("Show next..."); ?>
 </a>

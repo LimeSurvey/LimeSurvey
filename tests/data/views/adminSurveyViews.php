@@ -49,7 +49,7 @@ return [
     ['statisticsIndex', ['route'=>'statistics/sa/index/surveyid/{SID}']],
     ['exportResults', ['route'=>'export/sa/exportresults/surveyid/{SID}']],
     ['exportSpss', ['route'=>'export/sa/exportspss/sid/{SID}']],
-    ['surveyResponsesIndex', ['route'=>'responses/sa/index/surveyid/{SID}']],
-    ['surveyResponsesBrowse', ['route'=>'responses/sa/browse/surveyid/{SID}']],
+    ['surveyResponsesIndex', ['route'=>'responses/index/surveyId/{SID}', 'noAdminInFront' => true]],
+    ['surveyResponsesBrowse', ['route'=>'responses/browse/surveyId/{SID}', 'noAdminInFront' => true]],
     ['surveyParticipantsIndex', ['route'=>'tokens/sa/index/surveyid/{SID}']],
 ];
