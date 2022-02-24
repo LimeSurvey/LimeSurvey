@@ -251,21 +251,14 @@ class QuestionTheme extends LSActiveRecord
      * @param string $sXMLDirectoryPath the relative path to the Question Theme XML directory
      * @param bool   $bSkipConversion   If converting should be skipped
      * @param $bThrowConversionException If true, throws exception instead of redirecting
-     * @param string|null $themeType The theme type. If specified, the path is considered to be relative to the theme type directory.
      * @return bool|string
      * @throws Exception
      * @todo Please never redirect at this level, only from controllers.
      */
-    public function importManifest($sXMLDirectoryPath, $bSkipConversion = false, $bThrowConversionException = false, $themeType = null)
+    public function importManifest($sXMLDirectoryPath, $bSkipConversion = false, $bThrowConversionException = false)
     {
         if (empty($sXMLDirectoryPath)) {
             throw new InvalidArgumentException('$templateFolder cannot be empty');
-        }
-
-        // If a theme type is specified, the $sXMLDirectoryPath is supposed to be relative to the corresponding
-        // theme type's directory. So we need to get the full path.
-        if (!is_null($themeType)) {
-            $sXMLDirectoryPath = self::getQuestionThemeDirectoryForType($themeType) . '/' . $sXMLDirectoryPath;
         }
 
         // convert Question Theme
@@ -1152,6 +1145,7 @@ class QuestionTheme extends LSActiveRecord
      * Returns the path for the specified question theme type
      * @param string $themeType
      * @return string
+     * @throws Exception if no directory is found for the given type
      */
     public static function getQuestionThemeDirectoryForType($themeType)
     {
@@ -1160,5 +1154,16 @@ class QuestionTheme extends LSActiveRecord
             throw new Exception(sprintf(gT("No question theme directory found for theme type '%s'"), $themeType));
         }
         return $directories[$themeType];
+    }
+
+    /**
+     * Returns the corresponding absolute path, given a relative path and the theme type.
+     * @param string $relativePath
+     * @param string $themeType
+     * @return string
+     */
+    public static function getAbsolutePathForType($relativePath, $themeType)
+    {
+        return self::getQuestionThemeDirectoryForType($themeType) . '/' . $relativePath;
     }
 }

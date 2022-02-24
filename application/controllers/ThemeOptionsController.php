@@ -563,9 +563,10 @@ class ThemeOptionsController extends LSBaseController
             if ($theme === 'questiontheme') {
                 $templateFolder = App()->request->getPost('templatefolder');
                 $themeType = App()->request->getPost('theme_type');
+                $fullTemplateFolder = QuestionTheme::getAbsolutePathForType($templateFolder, $themeType);
                 $questionTheme = new QuestionTheme();
                 //skip convertion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
-                $themeName = $questionTheme->importManifest($templateFolder, true, false, $themeType);
+                $themeName = $questionTheme->importManifest($fullTemplateFolder, true);
                 if (isset($themeName)) {
                     App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been sucessfully installed'), "$themeName"), 'success');
                 } else {
