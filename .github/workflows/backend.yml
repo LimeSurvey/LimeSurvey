@@ -41,6 +41,9 @@ jobs:
     needs: [job_start_mysql]
     runs-on: ubuntu-18.04 # ubuntu runnter hosted by Github
     steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+        
       - name: Check autoloader
         run: |
           # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded
