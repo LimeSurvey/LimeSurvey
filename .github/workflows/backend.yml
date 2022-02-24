@@ -17,12 +17,12 @@ jobs:
     strategy:
       matrix:
         php-versions: ['7.2', '8.0']
-    name: PHP ${{ php-versions }} # Check each version of php specified in the matrix
+    name: PHP ${{ matrix.php-versions }} # Check each version of php specified in the matrix
     steps:
        - name: Checkout the code
          uses: actions/checkout@v2
 
-      # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
+       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
        - name: Install specified PHP
          uses: shivammathur/setup-php@v2
          with:
