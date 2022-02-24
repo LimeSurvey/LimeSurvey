@@ -119,11 +119,11 @@
 </div>
 
     <div class="ls-flex-column ls-space padding left-5 right-35 col-md-5">
-        <h3> <?= gt('Security settings user/admin') ?></h3>
+        <h3> <?= gt('Brute-force protection for administration') ?></h3>
 
         <div class="form-group">
             <label class="control-label" for='loginIpWhitelist'>
-                <?php eT("IP whitelist for login:"); ?>
+                <?php eT("IP whitelist:"); ?>
             </label>
             <textarea class="form-control" id='loginIpWhitelist'
                       name='loginIpWhitelist'><?php echo htmlspecialchars(Yii::app()->getConfig('loginIpWhitelist')); ?></textarea>
@@ -132,8 +132,17 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label" for='maxLoginAttempt'>
+                <?php eT("Maximum number of attempts:"); ?>
+            </label>
+            <div class="">
+                <input class="form-control" type="number" name="maxLoginAttempt"
+                       value="<?= Yii::app()->getConfig('maxLoginAttempt') ?>"/>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label" for='timeOutTime'>
-                <?php eT("Time to wait after failed attempts in seconds:"); ?>
+                <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
             </label>
             <div class="">
                 <input class="form-control" type="number" name="timeOutTime"
@@ -141,23 +150,14 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label" for='maxLoginAttempt'>
-                <?php eT("Max. attempts wrong login:"); ?>
-            </label>
-            <div class="">
-                <input class="form-control" type="number" name="maxLoginAttempt"
-                       value="<?= Yii::app()->getConfig('maxLoginAttempt') ?>"/>
-            </div>
-        </div>
     </div>
 
     <div class="ls-flex-column ls-space padding left-5 right-5 col-md-5">
-        <h3> <?= gt('Security settings participant') ?></h3>
+        <h3> <?= gt('Brute-force protection for survey participation') ?></h3>
 
         <div class="form-group">
             <label class="control-label" for='tokenIpWhitelist'>
-                <?php eT("IP whitelist for participant access:"); ?>
+                <?php eT("IP whitelist:"); ?>
             </label>
             <textarea class="form-control" id='tokenIpWhitelist'
                       name='tokenIpWhitelist'><?php echo htmlspecialchars(Yii::app()->getConfig('tokenIpWhitelist')); ?></textarea>
@@ -166,22 +166,21 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label" for='timeOutParticipants'>
-                <?php eT("Time to wait after failed attempts in seconds:"); ?>
-            </label>
-            <div class="">
-                <input class="form-control" type="number" name="timeOutParticipants"
-                       value="<?= Yii::app()->getConfig('timeOutParticipants') ?>"/>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label class="control-label" for='maxLoginAttemptParticipants'>
-                <?php eT("Max. attempts wrong login:"); ?>
+                <?php eT("Maximum number of attempts:"); ?>
             </label>
             <div class="">
                 <input class="form-control" type="number" name="maxLoginAttemptParticipants"
                        value="<?= Yii::app()->getConfig('maxLoginAttemptParticipants') ?>"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for='timeOutParticipants'>
+                <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
+            </label>
+            <div class="">
+                <input class="form-control" type="number" name="timeOutParticipants"
+                       value="<?= Yii::app()->getConfig('timeOutParticipants') ?>"/>
             </div>
         </div>
 
