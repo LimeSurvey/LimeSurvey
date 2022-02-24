@@ -87,14 +87,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // NB: safeUp() wraps up() inside a transaction and also updates DBVersion.
             $update->safeUp();
         }
-        if ($iOldDBVersion < 480) {
-            $oTransaction = $oDB->beginTransaction();
-
-            $oDB->createCommand()->addColumn('{{failed_login_attempts}}', 'is_frontend', "boolean NOT NULL DEFAULT FALSE");
-
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 480], "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         // Activate schema caching
