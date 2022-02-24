@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-02-24 17:07:39+00:00\n"
+"POT-Creation-Date: 2022-02-24 17:09:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1451,8 +1451,14 @@ msgid "Sorry, this response was not found."
 msgstr ""
 
 #: application/controllers/ResponsesController.php:122
+#: application/controllers/ResponsesController.php:373
+#: application/controllers/ResponsesController.php:407
+#: application/controllers/ResponsesController.php:524
+#: application/controllers/ResponsesController.php:558
 #: application/controllers/ResponsesController.php:614
 #: application/controllers/ResponsesController.php:648
+#: application/controllers/ResponsesController.php:715
+#: application/controllers/ResponsesController.php:764
 #: application/controllers/ResponsesController.php:1005
 #: application/controllers/ResponsesController.php:1018
 #: application/controllers/SurveyAdministrationController.php:2138
@@ -1597,15 +1603,6 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:341
 msgid "This response ID is invalid."
-msgstr ""
-
-#: application/controllers/ResponsesController.php:373
-#: application/controllers/ResponsesController.php:407
-#: application/controllers/ResponsesController.php:524
-#: application/controllers/ResponsesController.php:558
-#: application/controllers/ResponsesController.php:715
-#: application/controllers/ResponsesController.php:764
-msgid "Invalid surveyid."
 msgstr ""
 
 #: application/controllers/ResponsesController.php:587
@@ -16406,7 +16403,7 @@ msgid "Could not open source directory - maybe a permission problem?"
 msgstr ""
 
 #: application/models/services/CopySurveyResources.php:78
-msgid "Source dir not found."
+msgid "Source directory not found"
 msgstr ""
 
 #: application/models/services/CopySurveyResources.php:90
