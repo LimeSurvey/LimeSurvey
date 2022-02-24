@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-02-24 17:09:49+00:00\n"
+"POT-Creation-Date: 2022-02-24 17:13:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -759,7 +759,7 @@ msgid "Participant - Opt-out URL"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:319
-msgid "Participant - Central participant opt-out URL"
+msgid "Participant - Central participant DB opt-out URL"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:320
@@ -767,7 +767,7 @@ msgid "Participant - Opt-in URL"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:321
-msgid "Participant - Central participant opt-in URL"
+msgid "Participant - Central participant DB opt-in URL"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:322
