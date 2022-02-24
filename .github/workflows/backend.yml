@@ -126,6 +126,9 @@ jobs:
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     name: Load custom console and start the Application
     steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
       - name: Load custom console and start the Application
         run: |
            php application/commands/console.php install admin password TravisLS no@email.com verbose
