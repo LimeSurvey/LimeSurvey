@@ -40,10 +40,11 @@ jobs:
   job_initialize_and_check_all_dependencies:
     needs: [job_start_mysql]
     runs-on: ubuntu-18.04 # ubuntu runnter hosted by Github
+    name: Initialize and check all dependencies
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
-        
+
       - name: Check autoloader
         run: |
           # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded
@@ -69,7 +70,11 @@ jobs:
   job_setup_apache_and_php:
     needs: [job_initialize_and_check_all_dependencies]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    name: Setup apache and php
     steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
       - name: Setup Apache and PHP
         run: |
           # Set up the Apache and PHP
@@ -99,6 +104,9 @@ jobs:
     
   job_check_mysql_service:
       needs: [job_setup_apache_and_php]
+      # Env vars for this job
+      env:
+        DBENGINE: INNODB
       runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
       name: Check MySQL service
       steps:
