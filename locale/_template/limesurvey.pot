@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-02-24 16:55:14+00:00\n"
+"POT-Creation-Date: 2022-02-24 17:07:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1451,19 +1451,24 @@ msgid "Sorry, this response was not found."
 msgstr ""
 
 #: application/controllers/ResponsesController.php:122
-#: application/controllers/ResponsesController.php:373
-#: application/controllers/ResponsesController.php:407
-#: application/controllers/ResponsesController.php:524
-#: application/controllers/ResponsesController.php:558
 #: application/controllers/ResponsesController.php:614
-#: application/controllers/ResponsesController.php:715
-#: application/controllers/ResponsesController.php:764
-msgid "Invalid surveyid."
+#: application/controllers/ResponsesController.php:648
+#: application/controllers/ResponsesController.php:1005
+#: application/controllers/ResponsesController.php:1018
+#: application/controllers/SurveyAdministrationController.php:2138
+#: application/controllers/admin/DataEntry.php:1404
+#: application/controllers/admin/Statistics.php:113
+#: application/controllers/admin/Statistics.php:667
+#: application/core/SurveyCommonAction.php:653
+#: application/core/SurveyCommonAction.php:939
+#: application/helpers/LayoutHelper.php:391
+msgid "Invalid survey ID"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:125
 #: application/controllers/ResponsesController.php:617
-msgid "Invalid response id."
+#: application/controllers/ResponsesController.php:651
+msgid "Invalid response ID"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:145
@@ -1594,6 +1599,15 @@ msgstr ""
 msgid "This response ID is invalid."
 msgstr ""
 
+#: application/controllers/ResponsesController.php:373
+#: application/controllers/ResponsesController.php:407
+#: application/controllers/ResponsesController.php:524
+#: application/controllers/ResponsesController.php:558
+#: application/controllers/ResponsesController.php:715
+#: application/controllers/ResponsesController.php:764
+msgid "Invalid surveyid."
+msgstr ""
+
 #: application/controllers/ResponsesController.php:587
 msgid "A response was not deleted.|{n} responses were not deleted."
 msgstr ""
@@ -1613,23 +1627,6 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:630
 msgid "Response deleted."
-msgstr ""
-
-#: application/controllers/ResponsesController.php:648
-#: application/controllers/ResponsesController.php:1005
-#: application/controllers/ResponsesController.php:1018
-#: application/controllers/SurveyAdministrationController.php:2138
-#: application/controllers/admin/DataEntry.php:1404
-#: application/controllers/admin/Statistics.php:113
-#: application/controllers/admin/Statistics.php:667
-#: application/core/SurveyCommonAction.php:653
-#: application/core/SurveyCommonAction.php:939
-#: application/helpers/LayoutHelper.php:391
-msgid "Invalid survey ID"
-msgstr ""
-
-#: application/controllers/ResponsesController.php:651
-msgid "Invalid response ID"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:654
