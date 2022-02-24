@@ -645,13 +645,13 @@ class ResponsesController extends LSBaseController
     public function actionDownloadfile(int $surveyId, int $responseId, int $qid, int $index): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (!is_numeric(Yii::app()->request->getParam('responseId'))) {
-            throw new CHttpException(403, gT("Invalid response id."));
+            throw new CHttpException(403, gT("Invalid response ID"));
         }
         if (!is_numeric(Yii::app()->request->getParam('qid'))) {
-            throw new CHttpException(403, gT("Invalid question id."));
+            throw new CHttpException(403, gT("Invalid question ID"));
         }
         $oSurvey = Survey::model()->findByPk($surveyId);
         if (!$oSurvey->isActive) {
