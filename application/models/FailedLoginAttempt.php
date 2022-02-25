@@ -83,7 +83,7 @@ class FailedLoginAttempt extends LSActiveRecord
             return false;
         }
 
-        switch ($attemptType){
+        switch ($attemptType) {
             case FailedLoginAttempt::TYPE_LOGIN:
                 $timeOut = Yii::app()->getConfig('timeOutTime');
                 $maxLoginAttempt = Yii::app()->getConfig('maxLoginAttempt');
@@ -156,7 +156,7 @@ class FailedLoginAttempt extends LSActiveRecord
      * @throws InvalidArgumentException if an invalid attempt type is specified
      * @return boolean
      */
-    private function isWhitelisted(string $ip, string $attemptType):bool
+    private function isWhitelisted(string $ip, string $attemptType): bool
     {
         // Init
         if ($attemptType != self::TYPE_LOGIN && $attemptType != self::TYPE_TOKEN) {
