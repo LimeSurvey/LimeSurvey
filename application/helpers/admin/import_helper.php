@@ -1906,7 +1906,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
         $aFileResponses[] = $aLineResponse;
     }
     if (empty($aFileResponses)) {
-        $CSVImportResult['errors'][] = sprintf(gT("File seems empty or you select an invalid caracter set %s."), $aOptions['sCharset']);
+        $CSVImportResult['errors'][] = sprintf(gT("File is empty or you selected an invalid character set(%s)."), $aOptions['sCharset']);
         return $CSVImportResult;
     }
     if ($aOptions['bDeleteFistLine']) {
