@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -17,7 +17,7 @@
 	CKEDITOR.plugins.add( 'balloonpanel', {
 		init: function() {
 			if ( !stylesLoaded ) {
-				CKEDITOR.document.appendStyleSheet( this.path + 'skins/' + CKEDITOR.skinName + '/balloonpanel.css' );
+				CKEDITOR.document.appendStyleSheet( this.path + 'skins/' + CKEDITOR.skin.name + '/balloonpanel.css' );
 				stylesLoaded = true;
 			}
 		}
@@ -38,7 +38,7 @@
 	 *		panel.attach( domElement );
 	 *
 	 * @class
-	 * @since 4.6
+	 * @since 4.6.0
 	 * @param {CKEDITOR.editor} editor The editor instance for which the panel is created.
 	 * @param {Object} definition An object containing the panel definition.
 	 */
@@ -301,8 +301,8 @@
 		/**
 		 * Moves the **upper-left** balloon panel corner to the specified absolute position.
 		 *
-		 * @param {Number} left
 		 * @param {Number} top
+		 * @param {Number} left
 		 */
 		move: function( top, left ) {
 			this.rect.left = left;
@@ -315,15 +315,20 @@
 		},
 
 		/**
-		 * Places the balloon panel next to a specified element so the tip of the balloon's triangle
-		 * touches that element. Once the panel is attached it gains focus.
+		 * Places the balloon panel next to a specified element or a selection so the tip of the balloon's triangle
+		 * touches that element or the center of the selection. Once the panel is attached it gains focus.
 		 *
 		 * @method attach
-		 * @param {CKEDITOR.dom.element} element The element to which the panel is attached.
-		 * @param {CKEDITOR.dom.element/Boolean} [focusElement] The element to be focused after the panel
+		 * @param {CKEDITOR.dom.element/CKEDITOR.dom.selection} elementOrSelection The element or selection to which the panel is attached.
+		 * **Since 4.11.0** instead of an element it is possible to pass a selection {@link CKEDITOR.dom.selection}.
+		 * @param {Object/CKEDITOR.dom.element/Boolean} [options] **Since 4.8.0** this parameter works as an `options` object.
+		 *
+		 * If a `{@link CKEDITOR.dom.element}/Boolean` instance is given, this parameter acts as an `options.focusElement`.
+		 * @param {CKEDITOR.dom.element/Boolean} [options.focusElement] The element to be focused after the panel
 		 * is attached. By default the `panel` property of {@link #parts} will be focused. You might specify the element
 		 * to be focused by passing any {@link CKEDITOR.dom.element} instance.
-		 * You can also prevent changing focus at all by setting it to `false`.
+		 * You can also prevent changing the focus at all by setting it to `false`.
+		 * @param {Boolean} [options.show=true] Defines if the balloon panel should be shown after being attached.
 		 */
 		attach: ( function() {
 			var winGlobal, frame, editable, isInline;
@@ -347,29 +352,46 @@
 				return newRect;
 			}
 
-			// Returns element rect absolute to the top-most document, e.g. it considers
-			// outer window scroll position, inner window scroll position (framed editor) and
-			// frame position (framed editor) in the top-most document.
-			function getAbsoluteRect( element ) {
-				var elementRect = element.getClientRect(),
-					winGlobalScroll = winGlobal.getScrollPosition(),
-					frameRect;
+			function createLineRect( first, last ) {
+				var newRect = first;
+				newRect.right = last.right;
+				newRect.width = newRect.right - newRect.left;
 
-				if ( isInline || element.equals( frame ) ) {
-					elementRect.top = elementRect.top + winGlobalScroll.y;
-					elementRect.left = elementRect.left + winGlobalScroll.x;
-					elementRect.right = elementRect.left + elementRect.width;
-					elementRect.bottom = elementRect.top + elementRect.height;
-				} else {
-					frameRect = frame.getClientRect();
-
-					elementRect.top = frameRect.top + elementRect.top + winGlobalScroll.y;
-					elementRect.left = frameRect.left + elementRect.left + winGlobalScroll.x;
-					elementRect.right = elementRect.left + elementRect.width;
-					elementRect.bottom = elementRect.top + elementRect.height;
+				if ( last.y ) {
+					newRect.y = last.y;
 				}
 
-				return elementRect;
+				return newRect;
+			}
+
+			function getTopAndBottomRects( rectList ) {
+				var topAlignedRects = getAlignedRects( rectList, true ),
+					bottomAlignedRects = getAlignedRects( rectList ),
+					first = createLineRect( topAlignedRects[ 0 ], topAlignedRects.pop() ),
+					last = createLineRect( bottomAlignedRects[ 0 ], bottomAlignedRects.pop() );
+
+				// Make height of both rects equal to height of whole selection, so panel won't cover selection unless it needs to.
+				first.bottom = last.bottom;
+				first.height = first.bottom - first.top;
+				if ( last.y ) {
+					first.y = last.y;
+				}
+
+				last.top = first.top;
+				last.height = first.height;
+
+				return [ first, last ];
+			}
+
+			function getAlignedRects( rectList, top ) {
+				var edgeRect = top ? rectList [ 0 ] : rectList[ rectList.length - 1 ],
+					alignment = top ? 'top' : 'bottom';
+
+				return CKEDITOR.tools.array.filter( rectList, function( item ) {
+					if ( item[ alignment ] === edgeRect[ alignment ] ) {
+						return item;
+					}
+				} );
 			}
 
 			var triangleRelativePosition = {
@@ -383,8 +405,46 @@
 				left: 'right'
 			};
 
-			return function( element, focusElement ) {
-				this.show();
+			return function( elementOrSelection, options ) {
+				if ( elementOrSelection instanceof CKEDITOR.dom.selection ) {
+					var ranges = elementOrSelection.getRanges(),
+						rectList;
+
+					// Handle fake selection within table.
+					if ( elementOrSelection.isFake && elementOrSelection.isInTable() ) {
+						rectList = CKEDITOR.tools.array.map( ranges, function( item ) {
+							// With table selection the first rect represents `td` element rect. Lets use it in that case.
+							return item.getClientRects( true )[ 0 ];
+						} );
+					} else {
+						rectList = ranges[ ranges.length - 1 ].getClientRects( true );
+					}
+
+					// We need two rects, one representing the first selected line, and other representing the last selected line.
+					var first = rectList[ 0 ],
+						last = rectList[ rectList.length - 1 ],
+						selectionRects;
+
+					if ( first === last ) {
+						selectionRects = [ first ];
+					} else if ( first.top === last.top ) {
+						selectionRects = [ createLineRect( first, last ) ];
+					} else {
+						selectionRects = getTopAndBottomRects( rectList );
+					}
+				}
+
+				if ( options instanceof CKEDITOR.dom.element || !options ) {
+					options = { focusElement: options };
+				}
+
+				options = CKEDITOR.tools.extend( options, {
+					show: true
+				} );
+
+				if ( options.show === true ) {
+					this.show();
+				}
 
 				this.fire( 'attach' );
 
@@ -393,14 +453,23 @@
 				editable = this.editor.editable();
 				isInline = editable.isInline();
 
+				if ( !isInline && CKEDITOR.env.safari ) {
+					// Overwrite frame with editor iframe closest parent, because iframe has wrong rect values in mobile Safari (#1076).
+					frame = frame.getParent();
+				}
+
 				var panelWidth = this.getWidth(),
 					panelHeight = this.getHeight(),
 
-					elementRect = getAbsoluteRect( element ),
-					editorRect = getAbsoluteRect( isInline ? editable : frame ),
+					// The area of the panel.
+					panelArea = panelWidth * panelHeight,
+					alignments, minDifferenceAlignment, alignmentRect, areaDifference,
+
+					elementRect = elementOrSelection.getClientRect && elementOrSelection.getClientRect( true ),
+					editorRect = isInline ? editable.getClientRect( true ) : frame.getClientRect( true ),
 
 					viewPaneSize = winGlobal.getViewPaneSize(),
-					winGlobalScroll = winGlobal.getScrollPosition();
+					winGlobalScroll = winGlobal.getScrollPosition(),
 
 				// allowedRect is the rect into which the panel should fit to remain
 				// both within the visible area of the editor and the viewport, i.e.
@@ -416,14 +485,16 @@
 				// 	|                        +--------------------+
 				// 	|                                     |
 				// 	+-------------------------------------+
-				var allowedRect = {
-					top: Math.max( editorRect.top, winGlobalScroll.y ),
-					left: Math.max( editorRect.left, winGlobalScroll.x ),
-					right: Math.min( editorRect.right, viewPaneSize.width + winGlobalScroll.x ),
-					bottom: Math.min( editorRect.bottom, viewPaneSize.height + winGlobalScroll.y )
-				};
+					allowedRect = {
+						top: Math.max( editorRect.top, winGlobalScroll.y ),
+						left: Math.max( editorRect.left, winGlobalScroll.x ),
+						right: Math.min( editorRect.right, viewPaneSize.width + winGlobalScroll.x ),
+						bottom: Math.min( editorRect.bottom, viewPaneSize.height + winGlobalScroll.y )
+					},
+					alignmentKeys;
 
-				if ( isInline ) {
+				// Position balloon on entire view port only when it's real inline mode (#1048).
+				if ( isInline && this.editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE ) {
 					// In inline we want to limit position within the window.
 					allowedRect = this._getViewPaneRect( winGlobal );
 
@@ -434,15 +505,28 @@
 
 				// This method will modify elementRect if the element is outside of allowedRect / editorRect.
 				// If it's outside then in
-				this._adjustElementRect( elementRect, isInline ? allowedRect : editorRect );
+				if ( selectionRects ) {
+					CKEDITOR.tools.array.forEach( selectionRects, function( item ) {
+						this._adjustElementRect( item, isInline ? allowedRect : editorRect );
+					}, this );
 
-				// The area of the panel.
-				var panelArea = panelWidth * panelHeight,
-					alignments = this._getAlignments( elementRect, panelWidth, panelHeight ),
-					minDifferenceAlignment, alignmentRect, areaDifference;
+					alignments = this._getAlignments( selectionRects[ 0 ], panelWidth, panelHeight );
+
+					if ( selectionRects.length > 1 ) {
+						alignments[ 'bottom hcenter' ] = this._getAlignments( selectionRects[ 1 ], panelWidth, panelHeight )[ 'bottom hcenter' ];
+					}
+
+					alignmentKeys = {
+						'top hcenter': true,
+						'bottom hcenter': true
+					};
+				} else {
+					this._adjustElementRect( elementRect, isInline ? allowedRect : editorRect );
+					alignments = this._getAlignments( elementRect, panelWidth, panelHeight );
+				}
 
 				// Iterate over all possible alignments to find the optimal one.
-				for ( var a in alignments ) {
+				for ( var a in alignmentKeys || alignments ) {
 					// Create a rect which would represent the panel in such alignment.
 					alignmentRect = newPanelRect( alignments[ a ].top, alignments[ a ].left, panelWidth, panelHeight );
 
@@ -462,20 +546,29 @@
 					}
 
 					// Determine the alignment of a minimal area difference. It will be used as a fallback
-					// if no aligment provides a perfect fit into allowed rect.
+					// if no alignment provides a perfect fit into allowed rect.
 					if ( areaDifference < alignments[ minDifferenceAlignment ].areaDifference ) {
 						minDifferenceAlignment = a;
 					}
 				}
 
-				this.move( alignments[ minDifferenceAlignment ].top, alignments[ minDifferenceAlignment ].left );
+				// For non-static parent elements we need to remove its margin offset from balloon panel (#1048).
+				var parent = this.parts.panel.getAscendant( function( el ) {
+						return el instanceof CKEDITOR.dom.document ? false : el.getComputedStyle( 'position' ) !== 'static';
+					} ),
+					parentMargin = {
+						left: parent ? parseInt( parent.getComputedStyle( 'margin-left' ), 10 ) : 0,
+						top: parent ? parseInt( parent.getComputedStyle( 'margin-top' ), 10 ) : 0
+					};
+
+				this.move( alignments[ minDifferenceAlignment ].top - parentMargin.top , alignments[ minDifferenceAlignment ].left - parentMargin.left );
 
 				minDifferenceAlignment = minDifferenceAlignment.split( ' ' );
 				this.setTriangle( triangleRelativePosition[ minDifferenceAlignment[ 0 ] ], minDifferenceAlignment[ 1 ] );
 
 				// Set focus to proper element.
-				if ( focusElement !== false ) {
-					( focusElement || this.parts.panel ).focus();
+				if ( options.focusElement !== false ) {
+					( options.focusElement || this.parts.panel ).focus();
 				}
 			};
 		} )(),

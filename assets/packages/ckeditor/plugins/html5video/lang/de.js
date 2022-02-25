@@ -9,6 +9,9 @@
     btnUpload: 'Zum Server senden',
     advanced: 'Erweitert',
     autoplay: 'Autoplay?',
+    allowdownload: 'Allow download?',
+    advisorytitle: 'Advisory title',
     yes: 'Ja',
-    no: 'Nein'
+    no: 'Nein',
+    controls: 'Steuerelemente anzeigen'
 } );

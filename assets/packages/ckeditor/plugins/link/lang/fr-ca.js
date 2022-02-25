@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'fr-ca', {
 	acccessKey: 'Touche d\'accessibilité',
@@ -20,7 +20,7 @@ CKEDITOR.plugins.setLang( 'link', 'fr-ca', {
 	charset: 'Encodage de la cible',
 	cssClasses: 'Classes CSS',
 	download: 'Force Download', // MISSING
-	displayText: 'Display Text', // MISSING
+	displayText: 'Afficher le texte',
 	emailAddress: 'Courriel',
 	emailBody: 'Corps du message',
 	emailSubject: 'Objet du message',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'fr-ca', {
 	noAnchors: '(Pas d\'ancre disponible dans le document)',
 	noEmail: 'Veuillez saisir le courriel',
 	noUrl: 'Veuillez saisir l\'URL',
+	noTel: 'Please type the phone number', // MISSING
 	other: '<autre>',
+	phoneNumber: 'Phone number', // MISSING
 	popupDependent: 'Dépendante (Netscape)',
 	popupFeatures: 'Caractéristiques de la fenêtre popup',
 	popupFullScreen: 'Plein écran (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'fr-ca', {
 	toAnchor: 'Ancre dans cette page',
 	toEmail: 'Courriel',
 	toUrl: 'URL',
+	toPhone: 'Phone', // MISSING
 	toolbar: 'Lien',
 	type: 'Type de lien',
 	unlink: 'Supprimer le lien',

@@ -847,8 +847,8 @@ function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 */
 function groupOrderThenQuestionOrder($a, $b)
 {
-    if (isset($a['group_order']) && isset($b['group_order'])) {
-        $GroupResult = strnatcasecmp($a['group_order'], $b['group_order']);
+    if (isset($a->group['group_order']) && isset($b->group['group_order'])) {
+        $GroupResult = strnatcasecmp($a->group['group_order'], $b->group['group_order']);
     } else {
         $GroupResult = "";
     }
@@ -1159,7 +1159,7 @@ function validateEmailAddresses($aEmailAddressList)
 
 /**
  * This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
- * It can be used for the generation of statistics. Derived from Statistics_userController
+ * It can be used for the generation of statistics. Derived from StatisticsUserController
  * @param int $iSurveyID Id of the Survey in question
  * @param array $aFilters an array which is the result of a query in Questions model
  * @param string $sLanguage
@@ -3653,9 +3653,10 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 * fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
 * @param string $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
+* @param string $baselang - language to use as base (useful when changing the base language) - if empty, it will be picked from the survey
 * @return bool - always returns true
 */
-function fixLanguageConsistency($sid, $availlangs = '')
+function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
     if (trim($availlangs) != '') {
@@ -3670,7 +3671,9 @@ function fixLanguageConsistency($sid, $availlangs = '')
     if (count($langs) == 0) {
         return true; // Survey only has one language
     }
-    $baselang = Survey::model()->findByPk($sid)->language;
+    if (empty($baselang)) {
+        $baselang = Survey::model()->findByPk($sid)->language;
+    }
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $query = "SELECT * FROM $quotedGroups g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid='{$sid}' AND language='{$baselang}'  ";
     $result = Yii::app()->db->createCommand($query)->query();
@@ -4521,7 +4524,7 @@ function fixSubquestions()
 */
 function ls_json_encode($content)
 {
-    $ans = json_encode($content);
+    $ans = json_encode($content, JSON_UNESCAPED_UNICODE);
     $ans = str_replace(array('{', '}'), array('{ ', ' }'), $ans);
     return $ans;
 }
@@ -4625,24 +4628,39 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
 }
 
 /**
-* This function tries to returns the 'real' IP address under all configurations
-* Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
-*/
+ * This function tries to returns the 'real' IP address under all configurations
+ * Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
+ *
+ * @return	string	Client's IP Address
+ */
 function getIPAddress()
 {
     $sIPAddress = '127.0.0.1';
     if (!empty($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP) !== false) {
         //check IP address from share internet
         $sIPAddress = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
-        //Check IP address passed from proxy
-        $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        //Check IP Address passed from proxy
+        $vComma = strpos($_SERVER['HTTP_X_FORWARDED_FOR'], ',');
+        if (false === $vComma && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
+            // Single forward 
+            $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+		// Multitple forward
+		// see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+		// TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
+            $aForwarded = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            if (false !== filter_var($aForwarded[0], FILTER_VALIDATE_IP)) {
+                $sIPAddress = $aForwarded[0];
+            }
+        }
     } elseif (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
+        // Check IP Address from remote host
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
     }
+
     return $sIPAddress;
 }
-
 
 /**
 * This function tries to find out a valid language code for the language of the browser used

@@ -72,6 +72,45 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
+            <name>other_position</name>
+            <category>Display</category>
+            <sortorder>150</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>beginning</value>
+                    <text>At beginning</text>
+                </option>
+                <option>
+                    <value>end</value>
+                    <text>At end</text>
+                </option>
+                <option>
+                    <value>specific</value>
+                    <text>After specific subquestion</text>
+                </option>
+            </options>
+            <default>end</default>
+            <help>Indicates where the &#039;Other&#039; option should be placed</help>
+            <caption>Position for &#039;Other:&#039; option</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+            <i18n></i18n>
+        </attribute>
+        <attribute>
+            <name>other_position_code</name>
+            <category>Display</category>
+            <sortorder>151</sortorder>
+            <inputtype>text</inputtype>
+            <expression></expression>
+            <i18n></i18n>
+            <help>The title of the subquestion after which the &#039;Other:&#039; option will be placed if the position is set to &#039;After specific subquestion&#039;</help>
+            <caption>Subquestion title for &#039;After specific subquestion&#039;</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
             <name>random_order</name>
             <category>Display</category>
             <sortorder>100</sortorder>
@@ -173,19 +212,6 @@
             <default></default>
             <help>The answer options will be distributed across the number of columns set here</help>
             <caption>Display columns</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>input_size</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>integer</inputtype>
-            <default></default>
-            <help>Set the size of the input or textarea. The input will be displayed approximately this size in width.</help>
-            <caption>Text input box size</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

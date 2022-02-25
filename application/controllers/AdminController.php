@@ -30,11 +30,11 @@ class AdminController extends LSYii_Controller
      * @access protected
      * @return void
      */
-    protected function _init()
+    protected function customInit()
     {
-        parent::_init();
+        parent::customInit();
         App()->getComponent('bootstrap');
-        $this->_sessioncontrol();
+        $this->sessioncontrol();
 
         $this->user_id = Yii::app()->user->getId();
         // Check if the user really exists
@@ -93,7 +93,7 @@ class AdminController extends LSYii_Controller
      */
     public function error($message, $sURL = array())
     {
-        $this->_getAdminHeader();
+        $this->getAdminHeader();
         $sOutput = "<div class='messagebox ui-corner-all'>\n";
         $sOutput .= '<div class="warningheader">' . gT('Error') . '</div><br />' . "\n";
         $sOutput .= $message . '<br /><br />' . "\n";
@@ -115,7 +115,7 @@ class AdminController extends LSYii_Controller
         $sOutput .= '</div>' . "\n";
         echo $sOutput;
 
-        $this->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+        $this->getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
 
         Yii::app()->end();
     }
@@ -128,7 +128,7 @@ class AdminController extends LSYii_Controller
      * @access protected
      * @return void
      */
-    protected function _sessioncontrol()
+    protected function sessioncontrol()
     {
         // From personal settings
         if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
@@ -281,7 +281,7 @@ class AdminController extends LSYii_Controller
         // But now, they can be in a module added by a third pary developper.
         $aModuleActions = $this->getModulesActions();
 
-        // We keep a trace of the overriden actions and their path. It will be used in the rendering logic (Survey_Common_Action, renderPartial, etc)
+        // We keep a trace of the overriden actions and their path. It will be used in the rendering logic (SurveyCommonAction, renderPartial, etc)
         foreach ($aModuleActions as $sAction => $sActionClass) {
           // Module override existing action
             if (!empty($aActions[$sAction])) {
@@ -335,59 +335,46 @@ class AdminController extends LSYii_Controller
 
     public function getActionClasses()
     {
-        return array(
-     //   'assessments'      => 'assessments',  REFACTORED
-        'authentication'   => 'authentication',
-        'checkintegrity'   => 'checkintegrity',
-        'conditions'       => 'conditionsaction',
-        'database'         => 'database',
-        'databaseupdate'   => 'databaseupdate',
-        'dataentry'        => 'dataentry',
-        'dumpdb'           => 'dumpdb',
-        'emailtemplates'   => 'emailtemplates',
-        'export'           => 'export',
-        'expressions'      => 'expressions',
-        'validate'         => 'ExpressionValidate',
-        'globalsettings'   => 'globalsettings',
-        'htmleditor_pop'   => 'htmleditor_pop',
-        'homepagesettings' => 'homepagesettings',
-        //'themeoptions'     => 'themeoptions',
-        'surveysgroups'    => 'SurveysGroupsController',
-        'limereplacementfields' => 'limereplacementfields',
-        'index'            => 'index',
-        'labels'           => 'labels',
-        'participants'     => 'participantsaction',
-        'pluginmanager'    => 'PluginManagerController',
-        'printablesurvey'  => 'printablesurvey',
-//        'roles'            => 'PermissiontemplatesController',
-//        'questiongroups'   => 'questiongroups',  refactored to QuestionGroupsAdministration
-//        'questions'        => 'questions',
-//        'questioneditor'   => 'questionedit',
-        'questionthemes'   => 'questionthemes',
-        'quotas'           => 'quotas',
-        'remotecontrol'    => 'remotecontrol',
-//        'responses'        => 'responses',
-        'saved'            => 'saved',
-        'statistics'       => 'statistics',
-      //  'survey'           => 'surveyadmin',
-        'surveypermission' => 'surveypermission',
-        'user'             => 'useraction',
-//        'usermanagement'   => 'UserManagement',  refactored to UserManagementController
-//        'usergroups'       => 'usergroups',      refactored to UserGroupController
-        'themes'           => 'themes',
-        'tokens'           => 'tokens',
-        'translate'        => 'translate',
-        'update'           => 'update',
-        'pluginhelper'     => 'PluginHelper',
-        'notification'     => 'NotificationController',
-        'menus'            => 'SurveymenuController',
-        'menuentries'      => 'SurveymenuEntryController',
-        'tutorials'        => 'TutorialsController',
-        'tutorialentries'  => 'TutorialEntryController',
-        'extensionupdater' => 'ExtensionUpdaterController',
-        );
+        return [
+            'authentication'   => 'Authentication',
+            'checkintegrity'   => 'CheckIntegrity',
+            'conditions'       => 'ConditionsAction',
+            'database'         => 'Database',
+            'databaseupdate'   => 'DatabaseUpdate',
+            'dataentry'        => 'DataEntry',
+            'dumpdb'           => 'dumpdb',
+            'emailtemplates'   => 'EmailTemplates',
+            'export'           => 'Export',
+            'expressions'      => 'Expressions',
+            'validate'         => 'ExpressionValidate',
+            'globalsettings'   => 'GlobalSettings',
+            'htmleditorpop'    => 'HtmlEditorPop',
+            'surveysgroups'    => 'SurveysGroupsController',
+            'limereplacementfields' => 'limereplacementfields',
+            'index'            => 'index',
+            'labels'           => 'Labels',
+            'participants'     => 'ParticipantsAction',
+            'pluginmanager'    => 'PluginManagerController',
+            'printablesurvey'  => 'PrintableSurvey',
+            'questionthemes'   => 'QuestionThemes',
+            'quotas'           => 'Quotas',
+            'remotecontrol'    => 'RemoteControl',
+            'statistics'       => 'Statistics',
+            'surveypermission' => 'SurveyPermission',
+            'user'             => 'UserAction',
+            'themes'           => 'Themes',
+            'tokens'           => 'Tokens',
+            'translate'        => 'Translate',
+            'update'           => 'Update',
+            'pluginhelper'     => 'PluginHelper',
+            'notification'     => 'NotificationController',
+            'menus'            => 'SurveymenuController',
+            'menuentries'      => 'SurveymenuEntryController',
+            'tutorials'        => 'TutorialsController',
+            'tutorialentries'  => 'TutorialEntryController',
+            'extensionupdater' => 'ExtensionUpdaterController',
+        ];
     }
-
 
     /**
      * This function returns an array similar to getActionClasses()
@@ -398,7 +385,7 @@ class AdminController extends LSYii_Controller
     public function getAdminModulesActionClasses()
     {
 
-      // This function is called at least twice by page load. Once from AdminController, another one by Survey_Common_Action
+      // This function is called at least twice by page load. Once from AdminController, another one by SurveyCommonAction
         if (empty($this->aAdminModulesClasses)) {
             $aAdminModulesClasses = array();
             $slsadminmodules = new DirectoryIterator(Yii::app()->getConfig('lsadminmodulesrootdir'));
@@ -426,7 +413,7 @@ class AdminController extends LSYii_Controller
      * @param bool $return
      * @return string|null
      */
-    public function _getAdminHeader($meta = false, $return = false)
+    public function getAdminHeader($meta = false, $return = false)
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -492,7 +479,7 @@ class AdminController extends LSYii_Controller
      * @param bool $return
      * @return string|null
      */
-    public function _getAdminFooter($url, $explanation, $return = false)
+    public function getAdminFooter($url, $explanation, $return = false)
     {
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
@@ -527,7 +514,7 @@ class AdminController extends LSYii_Controller
      * @param boolean $return
      * @return string|null
      */
-    public function _showMessageBox($title, $message, $class = "message-box-error", $return = false)
+    public function showMessageBox($title, $message, $class = "message-box-error", $return = false)
     {
         $aData['title'] = $title;
         $aData['message'] = $message;
@@ -543,7 +530,7 @@ class AdminController extends LSYii_Controller
      * @return bool|string
      * @throws CException
      */
-    public function _loadEndScripts()
+    public function loadEndScripts()
     {
         static $bRendered = false;
         if ($bRendered) {

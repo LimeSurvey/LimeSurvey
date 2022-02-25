@@ -56,9 +56,13 @@ $config['admintheme']         = 'Sea_Green'; // This setting specifys the direct
 $config['adminthemeiconsize'] = 32; // This settings describes the icon size for a normal toolbar icon - default for gringegreen is 32
 
 
-// If the user enters password incorrectly
+// If the user (admins) enters password incorrectly
 $config['maxLoginAttempt']    = 3; // Lock them out after 3 attempts
 $config['timeOutTime']        = 60 * 10; // Lock them out for 10 minutes.
+
+// If participant enters wrong access token
+$config['maxLoginAttemptParticipants']    = 3; // Lock them out after 3 attempts
+$config['timeOutParticipants']        = 60 * 10; // Lock them out for 10 minutes.
 
 // Site Settings
 $config['printanswershonorsconditions'] = 1; // If set to 1, only relevant answers to questions can be printed by user. If set to 0, also questions not shown are printed
@@ -788,21 +792,18 @@ $config['max_execution_time'] = 1200;
 // This is useful when developing a theme, so changes to XML files are immediately applied without the need to uninstall and reinstall the theme.
 $config['force_xmlsettings_for_survey_rendering'] = false;
 
+/**
+ * When this setting is true, plugins that are not in the white list (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
+ * already installed plugins.
+ * Core plugins are not affected by this setting.
+ */
 $config['usePluginWhitelist'] = false;
 
-$config['pluginCoreList'] = [
-    'AuditLog',
-    'ExportR',
-    'ExportSTATAxml',
-    'ExportSPSSsav',
-    'extendedStartPage',
-    'oldUrlCompat',
-    'AuthLDAP',
-    'Authdb',
-    'Authwebserver'
-];
-
+// List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly whitelisted.
 $config['pluginWhitelist'] = [];
+
+// When this setting is true, the "Plugin Upload" feature is disabled.
+$config['disablePluginUpload'] = false;
 
 /* replaced in generated application/config/security.php if exist */
 $config['encryptionkeypair'] = '';

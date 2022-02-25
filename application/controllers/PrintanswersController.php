@@ -31,15 +31,14 @@ class PrintanswersController extends LSYii_Controller
     /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
     public $aGlobalData = array();
 
-
-        /**
-         * printanswers::view()
-         * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
-         * @param mixed $surveyid
-         * @param bool $printableexport
-         * @return
-         */
-    function actionView($surveyid, $printableexport = false)
+    /**
+     * printanswers::view()
+     * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
+     * @param mixed $surveyid
+     * @param bool $printableexport
+     * @return
+     */
+    public function actionView($surveyid, $printableexport = false)
     {
         Yii::app()->loadHelper("frontend");
         Yii::import('application.libraries.admin.pdf');

@@ -44,10 +44,18 @@ Yii::import('application.helpers.expressions.em_core_helper', true);
 Yii::import('application.helpers.expressions.em_manager_helper', true);
 Yii::import('application.helpers.replacements_helper', true);
 Yii::import('application.helpers.admin.export.*');
+Yii::import('application.helpers.admin.backupdb_helper', true);
+Yii::import('application.helpers.admin.activate_helper', true);
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
 Yii::import('application.helpers.update.update_helper', true);
+Yii::import('application.helpers.update.updatedb_helper', true);
+Yii::import('application.helpers.admin.ajax_helper', true);
+Yii::import('webroot.installer.create-database', true);
+Yii::import('ext.GeneralOptionWidget.settings.*');
 Yii::app()->loadLibrary('admin.pclzip');
+// TODO: Replace with autoload
+LoadQuestionTypes::loadAll();
 
 /** @var PluginManager */
 $pluginManager = Yii::app()->getComponent('pluginManager');

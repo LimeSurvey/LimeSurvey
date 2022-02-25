@@ -96,10 +96,10 @@ class Question extends LSActiveRecord
      * @inheritdoc
      * @return Question
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -478,7 +478,7 @@ class Question extends LSActiveRecord
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
      * @param string $fields
      * @param mixed $condition
-     * @param string $orderby
+     * @param string|false $orderby
      * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
@@ -1248,7 +1248,7 @@ class Question extends LSActiveRecord
                 $oRenderer = new RenderFileUpload($aFieldArray);
                 break;
             default:
-                $oRenderer = new DummyQuestionEditContainer($aFieldArray);
+                throw new InvalidArgumentException('Missing question type in getRenderererObject');
                 break;
         };
 
@@ -1320,7 +1320,7 @@ class Question extends LSActiveRecord
             case Question::QT_VERTICAL_FILE_UPLOAD:
                 return new DataSetFileUpload($this->qid);
             default:
-                return new DummyQuestionEditContainer($aFieldArray);
+                throw new InvalidArgumentException('Missing question type in getDataSetObject');
         };
     }
 

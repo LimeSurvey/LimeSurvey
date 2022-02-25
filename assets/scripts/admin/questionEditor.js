@@ -1457,7 +1457,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {boolean}
    * @todo Dual scale
    */
-  function checkSubquestionCodeUnique(table /*: HTMLElement */) /*: boolean */ {
+  function checkSubquestionCodeUnique(table /*: HTMLElement */, msg /*: string */) /*: boolean */ {
     const codeInputs = table.querySelectorAll('input.code');
     // Get all codes from code input node list.
     const codes = [...codeInputs].map((input) => {
@@ -1467,8 +1467,18 @@ $(document).on('ready pjax:scriptcomplete', function () {
         throw 'input is not an HTMLInputElement';
       }
     });
-    const uniqueCodes = codes.filter((value, index, self) => self.indexOf(value) === index);
-    return codes.length === uniqueCodes.length;
+    const duplicateCodes = codes.filter((value, index, self) => self.indexOf(value) !== index);
+    codeInputs.forEach((input, key) => {
+      if (input instanceof HTMLInputElement) {
+        const parent = $(input.parentElement);
+        if (duplicateCodes.includes(input.value)) {
+          parent.addClass('has-error');
+        } else {
+          parent.removeClass('has-error');
+        }
+      }
+    });
+    return duplicateCodes.length == 0;
   }
 
   /**
@@ -1485,14 +1495,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
         throw 'Found no table';
       }
 
+      var hasError = false;
+
       // Check uniqueness.
-      if (!checkSubquestionCodeUnique(table)) {
-        $(that.parentElement).addClass('has-error');
+      if (!checkSubquestionCodeUnique(table, msg)) {
         LS.LsGlobalNotifier.create(
           msg,
           'well-lg bg-danger text-center'
         );
-        return false;
+        hasError = true;
       }
 
       // Check too long subquestion code.
@@ -1507,11 +1518,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
             'Subquestion code is too long. Maximal number of characters is: 20.',
             'well-lg bg-danger text-center'
           );
-          return false;
+          hasError = true;
         }
       }
 
-      $(that.parentElement).removeClass('has-error');
+      if (hasError) {
+        return false;
+      }
+
+      $(that.parentElement).removeClass('has-error duplicate-code');
       return true;
     };
   }

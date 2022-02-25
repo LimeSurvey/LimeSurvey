@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'ko', {
 	acccessKey: '액세스 키',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'ko', {
 	noAnchors: '(문서에 책갈피가 없습니다.)',
 	noEmail: '이메일 주소를 입력하십시오',
 	noUrl: '링크 주소(URL)를 입력하십시오',
+	noTel: 'Please type the phone number', // MISSING
 	other: '<기타>',
+	phoneNumber: 'Phone number', // MISSING
 	popupDependent: 'Dependent (Netscape)',
 	popupFeatures: '팝업창 속성',
 	popupFullScreen: '전체화면 (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'ko', {
 	toAnchor: '책갈피',
 	toEmail: '이메일',
 	toUrl: '주소(URL)',
+	toPhone: 'Phone', // MISSING
 	toolbar: '링크 삽입/변경',
 	type: '링크 종류',
 	unlink: '링크 지우기',
