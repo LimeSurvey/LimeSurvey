@@ -4,7 +4,6 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_481 extends DatabaseUpdateBase
 {
-
     /**
      * @inheritDoc
      */
