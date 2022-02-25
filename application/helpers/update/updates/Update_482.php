@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LimeSurvey\Helpers\Update;
 
 class Update_482 extends DatabaseUpdateBase
