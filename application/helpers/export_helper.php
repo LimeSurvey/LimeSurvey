@@ -2382,6 +2382,7 @@ function tokensExport($iSurveyID)
         }
         $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
         $tokenoutput .= "\n";
+        // @todo: Use proper fputcsv, instead
         echo $tokenoutput;
         $tokenoutput = '';
 
