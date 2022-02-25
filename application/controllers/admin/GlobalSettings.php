@@ -278,6 +278,14 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('javascriptdebugfrntnd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugfrntnd', false)));
         SettingGlobal::setSetting('maintenancemode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('maintenancemode', 'off')));
 
+        //security: for failed login attempts by user/admin
+        SettingGlobal::setSetting('maxLoginAttempt', sanitize_int(Yii::app()->getRequest()->getPost('maxLoginAttempt', 3)));
+        SettingGlobal::setSetting('timeOutTime', sanitize_int(Yii::app()->getRequest()->getPost('timeOutTime', 600)));
+
+        //security: for failed attempts wrong access token by participant
+        SettingGlobal::setSetting('maxLoginAttemptParticipants', sanitize_int(Yii::app()->getRequest()->getPost('maxLoginAttemptParticipants', 3)));
+        SettingGlobal::setSetting('timeOutParticipants', sanitize_int(Yii::app()->getRequest()->getPost('timeOutParticipants', 600)));
+
         // Unstable extensions can only be changed by super admin.
         if (Permission::model()->hasGlobalPermission('superadmin', 'delete')) {
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
@@ -609,6 +617,18 @@ class GlobalSettings extends SurveyCommonAction
             'emailsmtpssl' => Yii::app()->getConfig("emailsmtpssl"),
         ];
         $this->getController()->renderPartial("globalsettings/_emailTestConfirmation", $aData);
+    }
+
+    /**
+     * Resets (deletes) failed login attempts for participants
+     *
+     * @return void
+     */
+    public function resetFailedLoginParticipants()
+    {
+        FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_TOKEN);
+        Yii::app()->setFlashMessage(gT("Failed login attempts of participants have been reset."), 'success');
+        $this->getController()->redirect(array("admin/globalsettings"));
     }
 
     /**
