@@ -110,7 +110,7 @@ jobs:
   
   # TODO: This task always fails ... there are dependencies defined but its ignoring it.
   job_load_custom_console_and_start_application:
-    needs: [job_start_mysql, job_initialize_and_check_all_dependencies, job_setup_apache_and_php]
+    needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     name: Load custom console and start the Application
     steps:
