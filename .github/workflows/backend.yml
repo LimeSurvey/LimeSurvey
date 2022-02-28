@@ -14,6 +14,9 @@ jobs:
   
   job_php_versions:
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    # Env vars for this job
+    env:
+      DBENGINE: INNODB
     strategy:
       matrix:
         php-versions: ['7.2', '8.0']
@@ -27,20 +30,13 @@ jobs:
          uses: shivammathur/setup-php@v2
          with:
           php-version: ${{ matrix.php-versions }}
-  
-  job_start_mysql:
-    needs: [job_php_versions]
-    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
-    # Env vars for this job
-    env:
-      DBENGINE: INNODB
-    # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
-    name: Start and check MySQL service
-    steps:
-      - name: Start the MySQL service
-        run: sudo systemctl start mysql.service
-      - name: Check MySQL service
-        run: |
+
+       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql      
+       - name: Start the MySQL service
+         run: sudo systemctl start mysql.service
+
+       - name: Check MySQL service
+         run: |
             # InnoDB needs large_file_prefix & Barracuda file format
             # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
             # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
@@ -49,40 +45,36 @@ jobs:
             mysql -uroot -proot -e "Show  variables like '%large%';"
             mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
             mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
-  
-  job_initialize_and_check_all_dependencies:
-    needs: [job_start_mysql]
-    runs-on: ubuntu-18.04 # ubuntu runnter hosted by Github
-    name: Initialize and check all dependencies
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
 
-      - name: Check autoloader
-        run: |
+       - name: Check autoloader
+         run: |
           # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded
           php tests/check_autoloader.php
-      - name: Test
-        run: |
+
+       - name: Test
+         run: |
           # Test
           echo $archive_url
           php -r 'var_dump(PHP_INT_SIZE);'
-      - name: Install LimeSurvey
-        run: |
+
+       - name: Install LimeSurvey
+         run: |
           php -m  # Spit out all loaded PHP modules
           mysql --version
-      - name: Touch Enabletests
-        run: |
+
+       - name: Touch Enabletests
+         run: |
            touch enabletests
-      - name: Composer install
-        run: |
+
+       - name: Composer install
+         run: |
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
           ./third_party/bin/phpunit --version
   
   # TODO: This task takes up to 2 mins - is it possible to make it faster?
   job_setup_apache_and_php:
-    needs: [job_php_versions, job_start_mysql, job_initialize_and_check_all_dependencies]
+    needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     name: Setup apache and php
     steps:
@@ -115,7 +107,8 @@ jobs:
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
           chmod +x ./tests/bin/lint-*
-    
+  
+  # TODO: This task always fails ... there are dependencies defined but its ignoring it.
   job_load_custom_console_and_start_application:
     needs: [job_start_mysql, job_initialize_and_check_all_dependencies, job_setup_apache_and_php]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
