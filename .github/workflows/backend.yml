@@ -138,6 +138,9 @@ jobs:
       - name: Grant Permissions to folder
         run:  chmod -R 777 ./tests/
 
+      - name: Composer install
+        run: composer install
+        
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
   
