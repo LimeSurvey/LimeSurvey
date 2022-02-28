@@ -63,10 +63,6 @@ jobs:
           php -m  # Spit out all loaded PHP modules
           mysql --version
 
-       - name: Touch Enabletests
-         run: |
-           touch enabletests
-
        - name: Composer install
          run: |
           # NB: PHPUnit 6.5.* is installed with composer.
@@ -193,6 +189,10 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
+
+      - name: Touch Enabletests
+        run: |
+           touch enabletests
 
       - name: Composer Install
         run: composer install
