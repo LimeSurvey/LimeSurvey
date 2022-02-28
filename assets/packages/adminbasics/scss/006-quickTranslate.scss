@@ -2,6 +2,8 @@
     table-layout: fixed;
 }
 
-.translate > table > tbody > tr > td:nth-child(2) {
+.translate td._from_ > .question-text-from {
+    width: 100%;
     overflow: auto;
+    word-wrap: break-word;
 }

@@ -855,9 +855,9 @@ class translate extends Survey_Common_Action
                 $translateoutput .= "<td class='col-sm-2'>".htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid}) </td>";
             }
 
-            $translateoutput .= "<td class='_from_ col-sm-5' id='".$type."_from_".$i."'>"
+            $translateoutput .= "<td class='_from_ col-sm-5' id='".$type."_from_".$i."'><div class='question-text-from'>"
                                     . showJavaScript($textfrom)
-                                ." </td>";
+                                ."</div></td>";
 
             $translateoutput .= "<td class='col-sm-5'>";
 
