@@ -320,7 +320,7 @@ echo $oQuestionSelector->getModal();
                                         <?php echo TbHtml::label(gT("Show script field:"), 'showScriptEdit', ['class' => " control-label"]); ?>
                                         <?php echo TbHtml::dropDownList(
                                             'showScriptEdit',
-                                            ($aUserSettings['showScriptEdit'] ?? '0'),
+                                            ($aUserSettings['showScriptEdit'] ?? '1'),
                                             [
                                                 '0' => gT("No", 'unescaped'),
                                                 '1' => gT("Yes", 'unescaped'),
