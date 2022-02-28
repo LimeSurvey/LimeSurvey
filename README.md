@@ -57,10 +57,6 @@ We are using BrowserStack to run manual tests on different browsers and devices
 
 [![](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/browserstack-logo.png "Checkout BrowserStack")](https://www.browserstack.com/)
 
-We are using Scrutinizer to statically check our code
-
-[![](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/scrutinizer-logo.png "Checkout scrutinizer")](https://scrutinizer-ci.com/)
-
 We are using Github Actions to run automated tests before release.
 
 ![Main workflow](https://github.com/LimeSurvey/LimeSurvey/actions/workflows/main.yml/badge.svg)

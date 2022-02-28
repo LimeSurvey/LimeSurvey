@@ -233,6 +233,7 @@ class Box extends CActiveRecord
     /**
      * @return int
      */
+    // phpcs:ignore
     public function getIcons_length()
     {
         return count($this->icons);

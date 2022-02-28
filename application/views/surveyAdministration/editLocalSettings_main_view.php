@@ -55,7 +55,6 @@ echo $scripts;
           <input type="hidden" name="action" value="<?=$entryData['action']?>" />
           <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" />
           <input type="hidden" name="surveyid" value="<?php echo $surveyid; ?>" />
-          <input type="hidden" name="language" value="<?php echo $surveyls_language; ?>" />
           <input type="hidden" name="responsejson" value="1" />
           <input type='submit' class="hide" id="globalsetting_submit" />
           </form>

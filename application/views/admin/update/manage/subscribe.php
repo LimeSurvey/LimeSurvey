@@ -23,7 +23,7 @@
         <?php echo sprintf(gT("If you don't have an account on limesurvey.org, please %sregister first%s."),$aopen, $aclose);?></p>
 
         <?php
-        echo CHtml::beginForm(App()->createUrl('/admin/update/sa/manage_submitkey'), 'post', array("id"=>""));
+        echo CHtml::beginForm(App()->createUrl('/admin/update/sa/manageSubmitkey'), 'post', array("id"=>""));
         ?>
         <div class="form-group">
             <?php

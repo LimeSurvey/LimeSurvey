@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 'use strict';
@@ -51,10 +51,12 @@
 			var allowed = 'a[!href]',
 				required = 'a[href]';
 
-			if ( CKEDITOR.dialog.isTabEnabled( editor, 'link', 'advanced' ) )
+			if ( CKEDITOR.dialog.isTabEnabled( editor, 'link', 'advanced' ) ) {
 				allowed = allowed.replace( ']', ',accesskey,charset,dir,id,lang,name,rel,tabindex,title,type,download]{*}(*)' );
-			if ( CKEDITOR.dialog.isTabEnabled( editor, 'link', 'target' ) )
+			}
+			if ( CKEDITOR.dialog.isTabEnabled( editor, 'link', 'target' ) ) {
 				allowed = allowed.replace( ']', ',target,onclick]' );
+			}
 
 			// Add the link and unlink buttons.
 			editor.addCommand( 'link', new CKEDITOR.dialogCommand( 'link', {
@@ -69,6 +71,9 @@
 			editor.addCommand( 'removeAnchor', new CKEDITOR.removeAnchorCommand() );
 
 			editor.setKeystroke( CKEDITOR.CTRL + 76 /*L*/, 'link' );
+
+			// (#2478)
+			editor.setKeystroke( CKEDITOR.CTRL + 75 /*K*/, 'link' );
 
 			if ( editor.ui.addButton ) {
 				editor.ui.addButton( 'Link', {
@@ -93,7 +98,7 @@
 
 			editor.on( 'doubleclick', function( evt ) {
 				// If the link has descendants and the last part of it is also a part of a word partially
-				// unlinked, clicked element may be a descendant of the link, not the link itself (http://dev.ckeditor.com/ticket/11956).
+				// unlinked, clicked element may be a descendant of the link, not the link itself (https://dev.ckeditor.com/ticket/11956).
 				// The evt.data.element.getAscendant( 'img', 1 ) condition allows opening anchor dialog if the anchor is empty (#501).
 				var element = evt.data.element.getAscendant( { a: 1, img: 1 }, true );
 
@@ -111,9 +116,10 @@
 
 			// If event was cancelled, link passed in event data will not be selected.
 			editor.on( 'doubleclick', function( evt ) {
-				// Make sure both links and anchors are selected (http://dev.ckeditor.com/ticket/11822).
-				if ( evt.data.dialog in { link: 1, anchor: 1 } && evt.data.link )
+				// Make sure both links and anchors are selected (https://dev.ckeditor.com/ticket/11822).
+				if ( evt.data.dialog in { link: 1, anchor: 1 } && evt.data.link ) {
 					editor.getSelection().selectElement( evt.data.link );
+				}
 			}, null, null, 20 );
 
 			// If the "menu" plugin is loaded, register the menu items.
@@ -152,21 +158,25 @@
 			// If the "contextmenu" plugin is loaded, register the listeners.
 			if ( editor.contextMenu ) {
 				editor.contextMenu.addListener( function( element ) {
-					if ( !element || element.isReadOnly() )
+					if ( !element || element.isReadOnly() ) {
 						return null;
+					}
 
 					var anchor = CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, element );
 
-					if ( !anchor && !( anchor = CKEDITOR.plugins.link.getSelectedLink( editor ) ) )
+					if ( !anchor && !( anchor = CKEDITOR.plugins.link.getSelectedLink( editor ) ) ) {
 						return null;
+					}
 
 					var menu = {};
 
-					if ( anchor.getAttribute( 'href' ) && anchor.getChildCount() )
+					if ( anchor.getAttribute( 'href' ) && anchor.getChildCount() ) {
 						menu = { link: CKEDITOR.TRISTATE_OFF, unlink: CKEDITOR.TRISTATE_OFF };
+					}
 
-					if ( anchor && anchor.hasAttribute( 'name' ) )
+					if ( anchor && anchor.hasAttribute( 'name' ) ) {
 						menu.anchor = menu.removeAnchor = CKEDITOR.TRISTATE_OFF;
+					}
 
 					return menu;
 				} );
@@ -180,11 +190,13 @@
 			editor.dataProcessor.dataFilter.addRules( {
 				elements: {
 					a: function( element ) {
-						if ( !element.attributes.name )
+						if ( !element.attributes.name ) {
 							return null;
+						}
 
-						if ( !element.children.length )
+						if ( !element.children.length ) {
 							return editor.createFakeParserElement( element, 'cke_anchor', 'anchor' );
+						}
 
 						return null;
 					}
@@ -195,8 +207,9 @@
 			if ( pathFilters ) {
 				pathFilters.push( function( element, name ) {
 					if ( name == 'a' ) {
-						if ( CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, element ) || ( element.getAttribute( 'name' ) && ( !element.getAttribute( 'href' ) || !element.getChildCount() ) ) )
+						if ( CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, element ) || ( element.getAttribute( 'name' ) && ( !element.getAttribute( 'href' ) || !element.getChildCount() ) ) ) {
 							return 'anchor';
+						}
 					}
 				} );
 			}
@@ -205,7 +218,7 @@
 
 	// Loads the parameters in a selected link to the link dialog fields.
 	var javascriptProtocolRegex = /^javascript:/,
-		emailRegex = /^mailto:([^?]+)(?:\?(.+))?$/,
+		emailRegex = /^(?:mailto)(?:(?!\?(subject|body)=).)+/i,
 		emailSubjectRegex = /subject=([^;?:@&=$,\/]*)/i,
 		emailBodyRegex = /body=([^;?:@&=$,\/]*)/i,
 		anchorRegex = /^#(.*)$/,
@@ -214,7 +227,8 @@
 		encodedEmailLinkRegex = /^javascript:void\(location\.href='mailto:'\+String\.fromCharCode\(([^)]+)\)(?:\+'(.*)')?\)$/,
 		functionCallProtectedEmailLinkRegex = /^javascript:([^(]+)\(([^)]+)\)$/,
 		popupRegex = /\s*window.open\(\s*this\.href\s*,\s*(?:'([^']*)'|null)\s*,\s*'([^']*)'\s*\)\s*;\s*return\s*false;*\s*/,
-		popupFeaturesRegex = /(?:^|,)([^=]+)=(\d+|yes|no)/gi;
+		popupFeaturesRegex = /(?:^|,)([^=]+)=(\d+|yes|no)/gi,
+		telRegex = /^tel:(.*)$/;
 
 	var advAttrNames = {
 		id: 'advId',
@@ -241,9 +255,9 @@
 	}
 
 	function protectEmailAddressAsEncodedString( address ) {
-		var charCode,
-			length = address.length,
-			encodedChars = [];
+		var length = address.length,
+			encodedChars = [],
+			charCode;
 
 		for ( var i = 0; i < length; i++ ) {
 			charCode = address.charCodeAt( i );
@@ -257,9 +271,10 @@
 		var plugin = editor.plugins.link,
 			name = plugin.compiledProtectionFunction.name,
 			params = plugin.compiledProtectionFunction.params,
-			paramName, paramValue, retval;
+			retval = [ name, '(' ],
+			paramName,
+			paramValue;
 
-		retval = [ name, '(' ];
 		for ( var i = 0; i < params.length; i++ ) {
 			paramName = params[ i ].toLowerCase();
 			paramValue = email[ paramName ];
@@ -324,18 +339,18 @@
 				ranges = selection.getRanges(),
 				links = [],
 				link,
-				range,
-				i;
+				range;
 
 			if ( !returnMultiple && selectedElement && selectedElement.is( 'a' ) ) {
 				return selectedElement;
 			}
 
-			for ( i = 0; i < ranges.length; i++ ) {
+			for ( var i = 0; i < ranges.length; i++ ) {
 				range = selection.getRanges()[ i ];
 
 				// Skip bogus to cover cases of multiple selection inside tables (#tp2245).
-				range.shrink( CKEDITOR.SHRINK_TEXT, false, { skipBogus: true } );
+				// Shrink to element to prevent losing anchor (#859).
+				range.shrink( CKEDITOR.SHRINK_ELEMENT, true, { skipBogus: true } );
 				link = editor.elementPath( range.getCommonAncestor() ).contains( 'a', 1 );
 
 				if ( link && returnMultiple ) {
@@ -361,17 +376,17 @@
 			var editable = editor.editable(),
 
 				// The scope of search for anchors is the entire document for inline editors
-				// and editor's editable for classic editor/divarea (http://dev.ckeditor.com/ticket/11359).
+				// and editor's editable for classic editor/divarea (https://dev.ckeditor.com/ticket/11359).
 				scope = ( editable.isInline() && !editor.plugins.divarea ) ? editor.document : editable,
 
 				links = scope.getElementsByTag( 'a' ),
 				imgs = scope.getElementsByTag( 'img' ),
 				anchors = [],
-				i = 0,
+				iterator = 0,
 				item;
 
 			// Retrieve all anchors within the scope.
-			while ( ( item = links.getItem( i++ ) ) ) {
+			while ( ( item = links.getItem( iterator++ ) ) ) {
 				if ( item.data( 'cke-saved-name' ) || item.hasAttribute( 'name' ) ) {
 					anchors.push( {
 						name: item.data( 'cke-saved-name' ) || item.getAttribute( 'name' ),
@@ -380,9 +395,9 @@
 				}
 			}
 			// Retrieve all "fake anchors" within the scope.
-			i = 0;
+			iterator = 0;
 
-			while ( ( item = imgs.getItem( i++ ) ) ) {
+			while ( ( item = imgs.getItem( iterator++ ) ) ) {
 				if ( ( item = this.tryRestoreFakeAnchor( editor, item ) ) ) {
 					anchors.push( {
 						name: item.getAttribute( 'name' ),
@@ -405,7 +420,7 @@
 		fakeAnchor: true,
 
 		/**
-		 * For browsers that do not support CSS3 `a[name]:empty()`. Note that IE9 is included because of http://dev.ckeditor.com/ticket/7783.
+		 * For browsers that do not support CSS3 `a[name]:empty()`. Note that IE9 is included because of https://dev.ckeditor.com/ticket/7783.
 		 *
 		 * @readonly
 		 * @deprecated 4.3.3 It is set to `false` in every browser.
@@ -431,8 +446,9 @@
 		tryRestoreFakeAnchor: function( editor, element ) {
 			if ( element && element.data( 'cke-real-element-type' ) && element.data( 'cke-real-element-type' ) == 'anchor' ) {
 				var link = editor.restoreRealElement( element );
-				if ( link.data( 'cke-saved-name' ) )
+				if ( link.data( 'cke-saved-name' ) ) {
 					return link;
+				}
 			}
 		},
 
@@ -444,7 +460,7 @@
 		 * **Note:** Data model format produced by the parser must be compatible with the Link
 		 * plugin dialog because it is passed directly to {@link CKEDITOR.dialog#setupContent}.
 		 *
-		 * @since 4.4
+		 * @since 4.4.0
 		 * @param {CKEDITOR.editor} editor
 		 * @param {CKEDITOR.dom.element} element
 		 * @returns {Object} An object of link data.
@@ -453,13 +469,17 @@
 			var href = ( element && ( element.data( 'cke-saved-href' ) || element.getAttribute( 'href' ) ) ) || '',
 				compiledProtectionFunction = editor.plugins.link.compiledProtectionFunction,
 				emailProtection = editor.config.emailProtection,
-				javascriptMatch, emailMatch, anchorMatch, urlMatch,
-				retval = {};
+				retval = {},
+				javascriptMatch = href.match( javascriptProtocolRegex ),
+				emailMatch,
+				anchorMatch,
+				urlMatch,
+				telMatch;
 
-			if ( ( javascriptMatch = href.match( javascriptProtocolRegex ) ) ) {
+			if ( javascriptMatch ) {
 				if ( emailProtection == 'encode' ) {
 					href = href.replace( encodedEmailLinkRegex, function( match, protectedAddress, rest ) {
-						// Without it 'undefined' is appended to e-mails without subject and body (http://dev.ckeditor.com/ticket/9192).
+						// Without it 'undefined' is appended to e-mails without subject and body (https://dev.ckeditor.com/ticket/9192).
 						rest = rest || '';
 
 						return 'mailto:' +
@@ -472,13 +492,14 @@
 					href.replace( functionCallProtectedEmailLinkRegex, function( match, funcName, funcArgs ) {
 						if ( funcName == compiledProtectionFunction.name ) {
 							retval.type = 'email';
-							var email = retval.email = {};
 
-							var paramRegex = /[^,\s]+/g,
+							var email = retval.email = {},
+								paramRegex = /[^,\s]+/g,
 								paramQuoteRegex = /(^')|('$)/g,
 								paramsMatch = funcArgs.match( paramRegex ),
 								paramsMatchLength = paramsMatch.length,
-								paramName, paramVal;
+								paramName,
+								paramVal;
 
 							for ( var i = 0; i < paramsMatchLength; i++ ) {
 								paramVal = decodeURIComponent( unescapeSingleQuote( paramsMatch[ i ].replace( paramQuoteRegex, '' ) ) );
@@ -496,15 +517,18 @@
 					retval.type = 'anchor';
 					retval.anchor = {};
 					retval.anchor.name = retval.anchor.id = anchorMatch[ 1 ];
+				} else if ( ( telMatch = href.match( telRegex ) ) ) {
+					retval.type = 'tel';
+					retval.tel = telMatch[ 1 ];
 				}
 				// Protected email link as encoded string.
 				else if ( ( emailMatch = href.match( emailRegex ) ) ) {
 					var subjectMatch = href.match( emailSubjectRegex ),
-						bodyMatch = href.match( emailBodyRegex );
+						bodyMatch = href.match( emailBodyRegex ),
+						email = ( retval.email = {} );
 
 					retval.type = 'email';
-					var email = ( retval.email = {} );
-					email.address = emailMatch[ 1 ];
+					email.address = emailMatch[ 0 ].replace( 'mailto:', '' );
 					subjectMatch && ( email.subject = decodeURIComponent( subjectMatch[ 1 ] ) );
 					bodyMatch && ( email.body = decodeURIComponent( bodyMatch[ 1 ] ) );
 				}
@@ -534,11 +558,12 @@
 
 						var featureMatch;
 						while ( ( featureMatch = popupFeaturesRegex.exec( onclickMatch[ 2 ] ) ) ) {
-							// Some values should remain numbers (http://dev.ckeditor.com/ticket/7300)
-							if ( ( featureMatch[ 2 ] == 'yes' || featureMatch[ 2 ] == '1' ) && !( featureMatch[ 1 ] in { height: 1, width: 1, top: 1, left: 1 } ) )
+							// Some values should remain numbers (https://dev.ckeditor.com/ticket/7300)
+							if ( ( featureMatch[ 2 ] == 'yes' || featureMatch[ 2 ] == '1' ) && !( featureMatch[ 1 ] in { height: 1, width: 1, top: 1, left: 1 } ) ) {
 								retval.target[ featureMatch[ 1 ] ] = true;
-							else if ( isFinite( featureMatch[ 2 ] ) )
+							} else if ( isFinite( featureMatch[ 2 ] ) ) {
 								retval.target[ featureMatch[ 1 ] ] = featureMatch[ 2 ];
+							}
 						}
 					}
 				} else {
@@ -554,21 +579,22 @@
 				}
 
 				var advanced = {};
-
 				for ( var a in advAttrNames ) {
 					var val = element.getAttribute( a );
 
-					if ( val )
+					if ( val ) {
 						advanced[ advAttrNames[ a ] ] = val;
+					}
 				}
 
 				var advName = element.data( 'cke-saved-name' ) || advanced.advName;
-
-				if ( advName )
+				if ( advName ) {
 					advanced.advName = advName;
+				}
 
-				if ( !CKEDITOR.tools.isEmpty( advanced ) )
+				if ( !CKEDITOR.tools.isEmpty( advanced ) ) {
 					retval.advanced = advanced;
+				}
 			}
 
 			return retval;
@@ -579,7 +605,7 @@
 		 * of attributes to be set (with their values) and an array of attributes to be removed.
 		 * This method can be used to compose or to update any link element with the given data.
 		 *
-		 * @since 4.4
+		 * @since 4.4.0
 		 * @param {CKEDITOR.editor} editor
 		 * @param {Object} data Data in {@link #parseLinkAttributes} format.
 		 * @returns {Object} An object consisting of two keys, i.e.:
@@ -608,15 +634,15 @@
 						url = ( data.url && CKEDITOR.tools.trim( data.url.url ) ) || '';
 
 					set[ 'data-cke-saved-href' ] = ( url.indexOf( '/' ) === 0 ) ? url : protocol + url;
-
 					break;
+
 				case 'anchor':
 					var name = ( data.anchor && data.anchor.name ),
 						id = ( data.anchor && data.anchor.id );
 
 					set[ 'data-cke-saved-href' ] = '#' + ( name || id || '' );
-
 					break;
+
 				case 'email':
 					var email = data.email,
 						address = email.address,
@@ -646,8 +672,8 @@
 							} else {
 								linkHref = [ 'mailto:', address, argList ];
 							}
-
 							break;
+
 						default:
 							// Separating name and domain.
 							var nameAndDomain = address.split( '@', 2 );
@@ -656,8 +682,11 @@
 
 							linkHref = [ 'javascript:', protectEmailLinkAsFunction( editor, email ) ]; // jshint ignore:line
 					}
-
 					set[ 'data-cke-saved-href' ] = linkHref.join( '' );
+					break;
+
+				case 'tel':
+					set[ 'data-cke-saved-href' ] = 'tel:' + data.tel;
 					break;
 			}
 
@@ -672,12 +701,14 @@
 						],
 						featureLength = featureList.length,
 						addFeature = function( featureName ) {
-							if ( data.target[ featureName ] )
+							if ( data.target[ featureName ] ) {
 								featureList.push( featureName + '=' + data.target[ featureName ] );
+							}
 						};
 
-					for ( var i = 0; i < featureLength; i++ )
+					for ( var i = 0; i < featureLength; i++ ) {
 						featureList[ i ] = featureList[ i ] + ( data.target[ featureList[ i ] ] ? '=yes' : '=no' );
+					}
 
 					addFeature( 'width' );
 					addFeature( 'left' );
@@ -702,17 +733,20 @@
 				for ( var a in advAttrNames ) {
 					var val = data.advanced[ advAttrNames[ a ] ];
 
-					if ( val )
+					if ( val ) {
 						set[ a ] = val;
+					}
 				}
 
-				if ( set.name )
+				if ( set.name ) {
 					set[ 'data-cke-saved-name' ] = set.name;
+				}
 			}
 
-			// Browser need the "href" fro copy/paste link to work. (http://dev.ckeditor.com/ticket/6641)
-			if ( set[ 'data-cke-saved-href' ] )
+			// Browser need the "href" fro copy/paste link to work. (https://dev.ckeditor.com/ticket/6641)
+			if ( set[ 'data-cke-saved-href' ] ) {
 				set.href = set[ 'data-cke-saved-href' ];
+			}
 
 			var removed = {
 				target: 1,
@@ -722,16 +756,18 @@
 				'download': 1
 			};
 
-			if ( data.advanced )
+			if ( data.advanced ) {
 				CKEDITOR.tools.extend( removed, advAttrNames );
+			}
 
 			// Remove all attributes which are not currently set.
-			for ( var s in set )
+			for ( var s in set ) {
 				delete removed[ s ];
+			}
 
 			return {
 				set: set,
-				removed: CKEDITOR.tools.objectKeys( removed )
+				removed: CKEDITOR.tools.object.keys( removed )
 			};
 		},
 
@@ -778,11 +814,11 @@
 		exec: function( editor ) {
 			// IE/Edge removes link from selection while executing "unlink" command when cursor
 			// is right before/after link's text. Therefore whole link must be selected and the
-			// position of cursor must be restored to its initial state after unlinking. (http://dev.ckeditor.com/ticket/13062)
+			// position of cursor must be restored to its initial state after unlinking. (https://dev.ckeditor.com/ticket/13062)
 			if ( CKEDITOR.env.ie ) {
 				var range = editor.getSelection().getRanges()[ 0 ],
 					link = ( range.getPreviousEditableNode() && range.getPreviousEditableNode().getAscendant( 'a', true ) ) ||
-							( range.getNextEditableNode() && range.getNextEditableNode().getAscendant( 'a', true ) ),
+						( range.getNextEditableNode() && range.getNextEditableNode().getAscendant( 'a', true ) ),
 					bookmark;
 
 				if ( range.collapsed && link ) {
@@ -807,10 +843,11 @@
 
 			var element = path.lastElement && path.lastElement.getAscendant( 'a', true );
 
-			if ( element && element.getName() == 'a' && element.getAttribute( 'href' ) && element.getChildCount() )
+			if ( element && element.getName() == 'a' && element.getAttribute( 'href' ) && element.getChildCount() ) {
 				this.setState( CKEDITOR.TRISTATE_OFF );
-			else
+			} else {
 				this.setState( CKEDITOR.TRISTATE_DISABLED );
+			}
 		},
 
 		contextSensitive: 1,
@@ -825,9 +862,10 @@
 			var sel = editor.getSelection(),
 				bms = sel.createBookmarks(),
 				anchor;
-			if ( sel && ( anchor = sel.getSelectedElement() ) && ( !anchor.getChildCount() ? CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, anchor ) : anchor.is( 'a' ) ) )
+
+			if ( sel && ( anchor = sel.getSelectedElement() ) && ( !anchor.getChildCount() ? CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, anchor ) : anchor.is( 'a' ) ) ) {
 				anchor.remove( 1 );
-			else {
+			} else {
 				if ( ( anchor = CKEDITOR.plugins.link.getSelectedLink( editor ) ) ) {
 					if ( anchor.hasAttribute( 'href' ) ) {
 						anchor.removeAttributes( { name: 1, 'data-cke-saved-name': 1 } );
@@ -857,19 +895,66 @@
 		 * @cfg {Boolean} [linkShowTargetTab=true]
 		 * @member CKEDITOR.config
 		 */
-		linkShowTargetTab: true
+		linkShowTargetTab: true,
+
+		/**
+		 * Default URL protocol used for the Link dialog.
+		 *
+		 * Available values are:
+		 *
+		 * * `'http://'`
+		 * * `'https://'`
+		 * * `'ftp://'`
+		 * * `'news://'`
+		 * * `''` &mdash; An empty string for the `<other>` option.
+		 *
+		 * ```js
+		 * config.linkDefaultProtocol = 'https://';
+		 * ```
+		 *
+		 * @cfg {String}
+		 * @member CKEDITOR.config
+		 * @since 4.13.0
+		 */
+		linkDefaultProtocol: 'http://'
 
 		/**
 		 * Whether JavaScript code is allowed as a `href` attribute in an anchor tag.
 		 * With this option enabled it is possible to create links like:
 		 *
-		 *		<a href="javascript:alert('Hello world!')">hello world</a>
+		 * ```html
+		 * <a href="javascript:alert('Hello world!')">hello world</a>
+		 * ```
 		 *
 		 * By default JavaScript links are not allowed and will not pass
 		 * the Link dialog window validation.
 		 *
 		 * @since 4.4.1
 		 * @cfg {Boolean} [linkJavaScriptLinksAllowed=false]
+		 * @member CKEDITOR.config
+		 */
+
+		/**
+		 * Optional JavaScript regular expression used whenever phone numbers in the Link dialog should be validated.
+		 *
+		 * ```js
+		 * config.linkPhoneRegExp = /^[0-9]{9}$/;
+		 * ```
+		 *
+		 * @since 4.11.0
+		 * @cfg {RegExp} [linkPhoneRegExp]
+		 * @member CKEDITOR.config
+		 */
+
+		/**
+		 * Optional message for the alert popup used when the phone number in the Link dialog does not pass the validation.
+		 *
+		 * ```js
+		 * config.linkPhoneMsg = "Invalid number";
+		 * ```
+		 *
+		 * @since 4.11.0
+		 * @cfg {String} [linkPhoneMsg]
 		 * @member CKEDITOR.config
 		 */
 	} );

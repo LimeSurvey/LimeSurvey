@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'sl', {
 	acccessKey: 'Tipka za dostop',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'sl', {
 	noAnchors: '(V tem dokumentu ni sider)',
 	noEmail: 'Vnesite e-poštni naslov',
 	noUrl: 'Vnesite URL povezave',
+	noTel: 'Please type the phone number', // MISSING
 	other: '<drugo>',
+	phoneNumber: 'Phone number', // MISSING
 	popupDependent: 'Podokno (Netscape)',
 	popupFeatures: 'Značilnosti pojavnega okna',
 	popupFullScreen: 'Celozaslonsko (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'sl', {
 	toAnchor: 'Sidro na tej strani',
 	toEmail: 'E-pošta',
 	toUrl: 'URL',
+	toPhone: 'Phone', // MISSING
 	toolbar: 'Vstavi/uredi povezavo',
 	type: 'Vrsta povezave',
 	unlink: 'Odstrani povezavo',

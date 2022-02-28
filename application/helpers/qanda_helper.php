@@ -769,13 +769,13 @@ function do_list_dropdown($ia)
                     'name' => $ia[1],
                     'value' => $optionarray['code'],
                     'opt_select' => $opt_select,
-                    'answer' => flattenText($optionarray['answer'])
+                    'answer' => $optionarray['answer']
                     ), true);
             }
 
 
             $sOptions .= doRender('/survey/questions/answer/list_dropdown/rows/optgroup', array(
-                'categoryname'      => flattenText($categoryname),
+                'categoryname'      => $categoryname,
                 'sOptGroupOptions'  => $sOptGroupOptions,
                 ), true);
         }
@@ -791,7 +791,7 @@ function do_list_dropdown($ia)
                 'name' => $ia[1],
                 'value' => $optionarray['code'],
                 'opt_select' => $opt_select,
-                'answer' => flattenText($optionarray['answer'])
+                'answer' => $optionarray['answer']
                 ), true);
         }
     }
@@ -811,7 +811,7 @@ function do_list_dropdown($ia)
             'classes' => 'other-item',
             'value' => '-oth-',
             'opt_select' => $opt_select,
-            'answer' => flattenText($_prefix . $othertext)
+            'answer' => $_prefix . $othertext
             ), true);
     }
 
@@ -1782,10 +1782,12 @@ function do_file_upload($ia)
         'value' => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
         'filecountvalue' => $filecountvalue,
         'coreClass' => $coreClass,
+        'maxFiles' =>  $aQuestionAttributes['max_num_of_files'],
         'basename' => $ia[1],
         'uploadurl' => $uploadurl,
-        'show_title' => $aQuestionAttributes['show_title'],
-        'show_comment' => $aQuestionAttributes['show_comment'],
+        'scriptloc' => Yii::app()->getController()->createUrl('/uploader/index/mode/upload/'),
+        'showTitle' => $aQuestionAttributes['show_title'],
+        'showComment' => $aQuestionAttributes['show_comment'],
         'uploadButtonLabel' => ngT("Upload file|Upload files", $aQuestionAttributes['max_num_of_files'])
     );
     $answer = doRender('/survey/questions/answer/file_upload/answer', $fileuploadData, true);

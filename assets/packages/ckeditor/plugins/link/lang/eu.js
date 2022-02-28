@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'eu', {
 	acccessKey: 'Sarbide-tekla',
@@ -19,7 +19,7 @@ CKEDITOR.plugins.setLang( 'link', 'eu', {
 	anchorName: 'Aingura-izenaren arabera',
 	charset: 'Estekatutako baliabide karaktere-jokoa',
 	cssClasses: 'Estilo-orriko klaseak',
-	download: 'Force Download', // MISSING
+	download: 'Behartu deskarga',
 	displayText: 'Bistaratu testua',
 	emailAddress: 'E-posta helbidea',
 	emailBody: 'Mezuaren gorputza',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'eu', {
 	noAnchors: '(Ez dago aingurarik erabilgarri dokumentuan)',
 	noEmail: 'Mesedez idatzi e-posta helbidea',
 	noUrl: 'Mesedez idatzi estekaren URLa',
+	noTel: 'Please type the phone number', // MISSING
 	other: '<bestelakoa>',
+	phoneNumber: 'Phone number', // MISSING
 	popupDependent: 'Menpekoa (Netscape)',
 	popupFeatures: 'Laster-leihoaren ezaugarriak',
 	popupFullScreen: 'Pantaila osoa (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'eu', {
 	toAnchor: 'Estekatu testuko aingurara',
 	toEmail: 'E-posta',
 	toUrl: 'URLa',
+	toPhone: 'Phone', // MISSING
 	toolbar: 'Esteka',
 	type: 'Esteka-mota',
 	unlink: 'Kendu esteka',

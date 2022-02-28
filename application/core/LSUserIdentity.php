@@ -85,10 +85,10 @@ class LSUserIdentity extends CUserIdentity
             regenerateCSRFToken();
             $this->postLogin();
             // Reset counter after successful login
-            FailedLoginAttempt::model()->deleteAttempts();
+            FailedLoginAttempt::model()->deleteAttempts(FailedLoginAttempt::TYPE_LOGIN);
         } else {
             // Log a failed attempt
-            FailedLoginAttempt::model()->addAttempt();
+            FailedLoginAttempt::model()->addAttempt(FailedLoginAttempt::TYPE_LOGIN);
             regenerateCSRFToken();
             App()->session->regenerateID(); // Handled on login by Yii
         }

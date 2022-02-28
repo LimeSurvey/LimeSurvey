@@ -1093,7 +1093,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             foreach ($aFiles as $aFile) {
                 if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
-                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, null, null, true, false);
+                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, $sNewSurveyName, null, true, false);
                     if ($aImportResults && $aImportResults['newsid']) {
                         $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                         $SurveyIntegrity->fixSurveyIntegrity();
@@ -1652,8 +1652,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             unset($insertdata['id']);
             // now translate any links
-            $insertdata['question'] = isset($insertdata['question']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']) : '';
-            $insertdata['help'] = isset($insertdata['help']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']) : '';
+            if ($bTranslateInsertansTags) {
+                $insertdata['question'] = isset($insertdata['question']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']) : '';
+                $insertdata['help'] = isset($insertdata['help']) ? translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']) : '';
+            }
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             } else {

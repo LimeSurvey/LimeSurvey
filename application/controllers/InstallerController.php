@@ -24,7 +24,6 @@
 */
 class InstallerController extends CController
 {
-
     /**
      * @var CDbConnection
      */
@@ -46,8 +45,8 @@ class InstallerController extends CController
      */
     public function run($action = 'index')
     {
-        $this->_checkInstallation();
-        $this->_sessioncontrol();
+        $this->checkInstallation();
+        $this->sessioncontrol();
         Yii::import('application.helpers.common_helper', true);
 
         switch ($action) {
@@ -91,13 +90,13 @@ class InstallerController extends CController
     }
 
     /**
-     * Installer::_checkInstallation()
+     * Installer::checkInstallation()
      *
      * Based on existance of 'sample_installer_file.txt' file, check if
      * installation should proceed further or not.
      * @return void
      */
-    private function _checkInstallation()
+    private function checkInstallation()
     {
         if (file_exists(APPPATH . 'config/config.php')) {
             throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
@@ -110,7 +109,7 @@ class InstallerController extends CController
      * @access protected
      * @return void
      */
-    protected function _sessioncontrol()
+    protected function sessioncontrol()
     {
         if (empty(Yii::app()->session['installerLang'])) {
                     Yii::app()->session['installerLang'] = 'en';
@@ -280,7 +279,7 @@ class InstallerController extends CController
                     Yii::app()->session['step3'] = true;
 
                     //Write config file as we no longer redirect to optional view
-                    $this->_writeConfigFile();
+                    $this->writeConfigFile();
 
                     header("refresh:5;url=" . $this->createUrl("/admin"));
                     $aData['noticeMessage'] = gT('The database exists and contains LimeSurvey tables.');
@@ -481,7 +480,7 @@ class InstallerController extends CController
                     Yii::app()->cache->flush();
                 }
 
-                $aDbConfigArray = $this->_getDatabaseConfigArray();
+                $aDbConfigArray = $this->getDatabaseConfigArray();
                 $aDbConfigArray['class'] = '\CDbConnection';
                 \Yii::app()->setComponent('db', $aDbConfigArray, false);
 
@@ -519,7 +518,7 @@ class InstallerController extends CController
                         $permission->save();
 
                         // Save  global settings
-                        $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->_getRandomString()));
+                        $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => $this->getRandomString()));
                         $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $model->siteName));
                         $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $model->adminName));
                         $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $model->adminEmail));
@@ -544,7 +543,7 @@ class InstallerController extends CController
                             $aData['pwd'] = gT("The password you have chosen at the optional settings step.");
                         }
 
-                        $this->_writeConfigFile();
+                        $this->writeConfigFile();
                         $this->clearSession();
 
                         $this->render('/installer/success_view', $aData);
@@ -590,7 +589,7 @@ class InstallerController extends CController
      * @param bool $result
      * @return string Span with check if $result is true; otherwise a span with warning
      */
-    public function check_HTML_image($result)
+    public function chekHtmlImage($result)
     {
         if ($result) {
             return "<span class='fa fa-check text-success' alt='right'></span>";
@@ -632,7 +631,7 @@ class InstallerController extends CController
     public function checkPHPFunctionOrClass($sFunctionName, &$sImage)
     {
         $bExists = function_exists($sFunctionName) || class_exists($sFunctionName);
-        $sImage = $this->check_HTML_image($bExists);
+        $sImage = $this->chekHtmlImage($bExists);
         return $bExists;
     }
 
@@ -708,8 +707,9 @@ class InstallerController extends CController
      * check requirements
      *
      * @return bool requirements met
+     * @todo Not used? Compare models/InstallerConfigForm::getHasMinimumRequirements
      */
-    private function _check_requirements(&$aData)
+    private function checkRequirements(&$aData)
     {
         // proceed variable check if all requirements are true. If any of them is false, proceed is set false.
         $bProceed = true; //lets be optimistic!
@@ -723,7 +723,6 @@ class InstallerController extends CController
         if (convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024 < 128 && ini_get('memory_limit') != -1) {
                     $bProceed = !$aData['bMemoryError'] = true;
         }
-
 
         // mbstring library check
         if (!$this->checkPHPFunctionOrClass('mb_convert_encoding', $aData['mbstringPresent'])) {
@@ -761,7 +760,7 @@ class InstallerController extends CController
         $session = Yii::app()->session; /* @var $session CHttpSession */
         $sessionWritable = ($session->get('saveCheck', null) === 'save');
         $aData['sessionWritable'] = $sessionWritable;
-        $aData['sessionWritableImg'] = $this->check_HTML_image($sessionWritable);
+        $aData['sessionWritableImg'] = $this->chekHtmlImage($sessionWritable);
         if (!$sessionWritable) {
             // For recheck, try to set the value again
             $session['saveCheck'] = 'save';
@@ -772,9 +771,9 @@ class InstallerController extends CController
 
         // gd library check
         if (function_exists('gd_info')) {
-            $aData['gdPresent'] = $this->check_HTML_image(array_key_exists('FreeType Support', gd_info()));
+            $aData['gdPresent'] = $this->chekHtmlImage(array_key_exists('FreeType Support', gd_info()));
         } else {
-            $aData['gdPresent'] = $this->check_HTML_image(false);
+            $aData['gdPresent'] = $this->chekHtmlImage(false);
         }
         // ldap library check
         $this->checkPHPFunctionOrClass('ldap_connect', $aData['ldapPresent']);
@@ -803,7 +802,7 @@ class InstallerController extends CController
      * @param string $sFileName
      * @param string $sDatabasePrefix
      */
-    public function _executeSQLFile($sFileName, $sDatabasePrefix)
+    public function executeSQLFile($sFileName, $sDatabasePrefix)
     {
         $aMessages = array();
         $sCommand = '';
@@ -840,9 +839,8 @@ class InstallerController extends CController
     /**
      * Function to write given database settings in APPPATH.'config/config.php'
      */
-    private function _writeConfigFile()
+    private function writeConfigFile()
     {
-
         //write config.php if database exists and has been populated.
         if (Yii::app()->session['databaseexist'] && Yii::app()->session['tablesexist']) {
             $model = $this->getModelFromSession();
@@ -932,7 +930,7 @@ class InstallerController extends CController
             . "\t\t" . "" . "\n"
 
             . "\t\t" . " 'session' => array (" . "\n"
-            . "\t\t\t" . "'sessionName'=>'LS-" . $this->_getRandomString(16) . "'" . ",\n"
+            . "\t\t\t" . "'sessionName'=>'LS-" . $this->getRandomString(16) . "'" . ",\n"
             . "\t\t\t" . "// Uncomment the following lines if you need table-based sessions." . "\n"
             . "\t\t\t" . "// Note: Table-based sessions are currently not supported on MSSQL server." . "\n"
             . "\t\t\t" . "// 'class' => 'application.core.web.DbHttpSession'," . "\n"
@@ -1001,7 +999,7 @@ class InstallerController extends CController
      *
      * @return string
      */
-    private function _getRandomString($iTotalChar = 64)
+    private function getRandomString($iTotalChar = 64)
     {
         $sResult = '';
         for ($i = 0; $i < $iTotalChar; $i++) {
@@ -1011,8 +1009,6 @@ class InstallerController extends CController
         }
         return $sResult;
     }
-
-
 
     /**
      * @param $scenario
@@ -1053,7 +1049,7 @@ class InstallerController extends CController
      * Use with \Yii::app()->setComponent() to set connection at runtime.
      * @return array
      */
-    private function _getDatabaseConfigArray()
+    private function getDatabaseConfigArray()
     {
         $model = $this->getModelFromSession();
 

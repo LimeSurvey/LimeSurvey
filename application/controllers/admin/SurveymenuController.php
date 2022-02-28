@@ -3,9 +3,8 @@
 /**
  * Class SurveymenuController
  */
-class SurveymenuController extends Survey_Common_Action
+class SurveymenuController extends SurveyCommonAction
 {
-
     /**
      * @return string[] action filters
      */
@@ -402,7 +401,7 @@ class SurveymenuController extends Survey_Common_Action
         ];
 
         App()->getClientScript()->registerPackage('surveymenufunctions');
-        $this->_renderWrappedTemplate(null, array('surveymenu/index'), $aData);
+        $this->renderWrappedTemplate(null, array('surveymenu/index'), $aData);
     }
 
     /**

@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 ( function() {
@@ -26,7 +26,7 @@
 		init: function( editor ) {
 			var pluginName = 'iframe',
 				lang = editor.lang.iframe,
-				allowed = 'iframe[align,longdesc,frameborder,height,name,scrolling,src,title,width]';
+				allowed = 'iframe[align,longdesc,tabindex,frameborder,height,name,scrolling,src,title,width]';
 
 			if ( editor.plugins.dialogadvtab )
 				allowed += ';iframe' + editor.plugins.dialogadvtab.allowedContent( { id: 1, classes: 1, styles: 1 } );

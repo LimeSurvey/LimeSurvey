@@ -61,10 +61,6 @@ function loadanswers()
         $md5_code = md5($sLoadPass);
         $sha256_code = hash('sha256', $sLoadPass);
         if ($md5_code === $access_code || $sha256_code === $access_code || password_verify($sLoadPass, $access_code)) {
-            //A match has been found. Let's load the values!
-            //If this is from an email, build surveysession first
-            $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
-
             // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
             if (Yii::app()->request->getParam('loadall') === "reload") {
                 // We don't need to control if we have one, because we do the test before
@@ -93,7 +89,7 @@ function loadanswers()
                 $_SESSION['survey_' . $surveyid]['step'] = ($value > 1 ? $value : 1);
                 $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1;
             } else {
-                $_SESSION['survey_' . $surveyid]['maxstep'] = ($value > 1 ? $value : 1);
+                $_SESSION['survey_' . $surveyid]['maxstep'] = $_SESSION['survey_' . $surveyid]['totalsteps'];
             }
         } elseif ($column === "datestamp") {
             $_SESSION['survey_' . $surveyid]['datestamp'] = $value;
@@ -123,6 +119,7 @@ function loadanswers()
             }  // if (in_array(
         }  // else
     } // foreach
+    $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
     return true;
 }
 
@@ -1112,7 +1109,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
 {
     $FlashError = '';
     if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
-        $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
+        $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
         $renderToken = 'main';
     } else {
         if (!$subscenarios['tokenValid']) {
@@ -1128,7 +1125,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
                 $errorMsg    = gT("The access code you have provided is either not valid, or has already been used.");
                 $FlashError .= $errorMsg;
                 $renderToken = 'main';
-                FailedLoginAttempt::model()->addAttempt();
+                FailedLoginAttempt::model()->addAttempt(FailedLoginAttempt::TYPE_TOKEN);
             }
         } else {
             $aEnterTokenData['visibleToken'] = $clienttoken;
