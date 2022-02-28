@@ -21,6 +21,12 @@ jobs:
       matrix:
         php-versions: ['7.2', '8.0']
     name: PHP ${{ matrix.php-versions }} # Check each version of php specified in the matrix
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_DATABASE: limesurvey
+          MYSQL_PORT: 3306
     steps:
        - name: Checkout the code
          uses: actions/checkout@v2
@@ -30,21 +36,6 @@ jobs:
          uses: shivammathur/setup-php@v2
          with:
           php-version: ${{ matrix.php-versions }}
-
-       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql      
-       - name: Start the MySQL service
-         run: sudo systemctl start mysql.service
-
-       - name: Check MySQL service
-         run: |
-            # InnoDB needs large_file_prefix & Barracuda file format
-            # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
-            # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
-
-            sudo service mysql status
-            mysql -uroot -proot -e "Show  variables like '%large%';"
-            mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
-            mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
 
        - name: Check autoloader
          run: |
@@ -124,14 +115,13 @@ jobs:
           # sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
-  # TODO: This task always fails ... there are dependencies defined but its ignoring it.
   job_run_syntax_check:
     needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
-    name: Run Syntax Check
     strategy:
       matrix:
         php-versions: ['7.2', '8.0']
+    name: Run Syntax Check ${{ matrix.php-versions }}
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
@@ -204,7 +194,7 @@ jobs:
 
       - name: Add Folder Permissions to upload
         run: chmod -R 777 ./upload
-        
+
       - name: Add Folder Permissions to tests/tmp
         run:  chmod -R 777 ./tests/tmp      
 
