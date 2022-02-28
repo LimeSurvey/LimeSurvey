@@ -38,19 +38,14 @@ return array(
     // Then instead of using the composer dependency system for themes
     // We can use the package dependency system (easier for now)
     'bootstrap' => array(
-        'devBaseUrl' => 'assets/packages/bootstrap/',
-        'basePath' => 'core.bootstrap',
+        'devBaseUrl' => 'assets/bootstrap_5/',
+        'basePath' => 'bootstrap',
         'css'=> array(
-            'bootstrap'.$minVersion.'.css', /* Admin need it, not public */
-            'yiistrap'.$minVersion.'.css',
+            'build/css/custom.min.css',
         ),
         'js'=>array(
-            'bootstrap'.$minVersion.'.js',
-            'plugins/bootstrapconfirm/bootstrapconfirm'.$minVersion.'.js'
+            'build/js/custom.min.js',
         ),
-        'depends' => array(
-            'jquery',
-        )
     ),
 
     // Bootstrap admin

@@ -1,0 +1,55 @@
+// Custom.scss
+// Option B: Include parts of Bootstrap
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "third_party/twbs/bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "third_party/twbs/bootstrap/scss/variables";
+@import "third_party/twbs/bootstrap/scss/mixins";
+@import "third_party/twbs/bootstrap/scss/root";
+
+// 4. Include any optional Bootstrap CSS as needed
+@import "third_party/twbs/bootstrap/scss/utilities";
+@import "third_party/twbs/bootstrap/scss/reboot";
+@import "third_party/twbs/bootstrap/scss/type";
+@import "third_party/twbs/bootstrap/scss/images";
+@import "third_party/twbs/bootstrap/scss/containers";
+@import "third_party/twbs/bootstrap/scss/grid";
+@import "third_party/twbs/bootstrap/scss/tables";
+@import "third_party/twbs/bootstrap/scss/forms";
+@import "third_party/twbs/bootstrap/scss/buttons";
+@import "third_party/twbs/bootstrap/scss/transitions";
+@import "third_party/twbs/bootstrap/scss/dropdown";
+@import "third_party/twbs/bootstrap/scss/button-group";
+@import "third_party/twbs/bootstrap/scss/nav";
+@import "third_party/twbs/bootstrap/scss/navbar";
+@import "third_party/twbs/bootstrap/scss/card";
+@import "third_party/twbs/bootstrap/scss/accordion";
+@import "third_party/twbs/bootstrap/scss/breadcrumb";
+@import "third_party/twbs/bootstrap/scss/pagination";
+@import "third_party/twbs/bootstrap/scss/badge";
+@import "third_party/twbs/bootstrap/scss/alert";
+@import "third_party/twbs/bootstrap/scss/progress";
+@import "third_party/twbs/bootstrap/scss/list-group";
+@import "third_party/twbs/bootstrap/scss/close";
+@import "third_party/twbs/bootstrap/scss/toasts";
+@import "third_party/twbs/bootstrap/scss/modal";
+@import "third_party/twbs/bootstrap/scss/tooltip";
+@import "third_party/twbs/bootstrap/scss/popover";
+@import "third_party/twbs/bootstrap/scss/carousel";
+@import "third_party/twbs/bootstrap/scss/spinners";
+@import "third_party/twbs/bootstrap/scss/offcanvas";
+@import "third_party/twbs/bootstrap/scss/placeholders";
+@import "third_party/twbs/bootstrap/scss/helpers";
+
+// 5. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "third_party/twbs/bootstrap/scss/utilities/api";
+
+// 6. Add additional custom code here
+.testing {
+    width: percentage(5/7);
+    height: 25px;
+}
