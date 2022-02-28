@@ -105,7 +105,7 @@ class SurveyActivator
      *
      * @return void
      */
-    public function fixQuestionAttributeForRanking()
+    public function fixQuestionAttributeForRanking($sFieldMap)
     {
         foreach ($sFieldMap as $aRow) {
             switch ($aRow['type']) {
