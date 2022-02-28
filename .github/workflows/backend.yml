@@ -178,6 +178,9 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
 
+      - name: Composer Install
+        run: composer install
+      
       - name: Set up Selenium with firefox
         run: |
           echo `which firefox`
