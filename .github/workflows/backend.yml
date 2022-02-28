@@ -166,6 +166,9 @@ jobs:
     runs-on: ubuntu-18.04 # ubuntu test runner hosted by Github
     name: Run Selenium Tests
     steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
       - name: Set up Selenium with firefox
         run: |
           echo `which firefox`
@@ -178,25 +181,6 @@ jobs:
           export MOZ_HEADLESS_WIDTH=1280
           export MOZ_HEADLESS_HEIGHT=1024
           java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
-  
-  job_run_tests:
-    needs: [job_setup_selenium_with_firefox]
-    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
-    name: Run PHPUnit Tests
-    steps:
+      
       - name: Run tests
         run:  DOMAIN=localhost ./third_party/bin/phpunit --testdox --stop-on-failure
-          
-          
-        
-          
-        
-        
-        
-        
-    
-    
-    
-  
-    
-  
