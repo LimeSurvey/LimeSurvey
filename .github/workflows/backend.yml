@@ -131,6 +131,7 @@ jobs:
   job_run_syntax_check:
     needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    name: Run Syntax Check
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
@@ -147,6 +148,7 @@ jobs:
   job_test_server:
     needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    name: Test Server
     steps:
       - name: Test the server
         run: |
@@ -162,6 +164,7 @@ jobs:
   job_setup_selenium_with_firefox:
     needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu test runner hosted by Github
+    name: Run Selenium Tests
     steps:
       - name: Set up Selenium with firefox
         run: |
@@ -179,6 +182,7 @@ jobs:
   job_run_tests:
     needs: [job_setup_selenium_with_firefox]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
+    name: Run PHPUnit Tests
     steps:
       - name: Run tests
         run:  DOMAIN=localhost ./third_party/bin/phpunit --testdox --stop-on-failure
