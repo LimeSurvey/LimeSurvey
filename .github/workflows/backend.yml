@@ -140,12 +140,12 @@ jobs:
 
       - name: Composer install
         run: composer install
-        
+
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
   
   job_test_server:
-    needs: [job_run_syntax_check]
+    needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     steps:
       - name: Test the server
@@ -160,7 +160,7 @@ jobs:
           # unzip chromedriver_linux64.zip
   
   job_setup_selenium_with_firefox:
-    needs: [job_test_server]
+    needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu test runner hosted by Github
     steps:
       - name: Set up Selenium with firefox
