@@ -73,6 +73,7 @@ jobs:
           ./third_party/bin/phpunit --version
 
        # TODO: This task takes up to 2 mins - is it possible to make it faster? -- BEGIN
+       # TODO: Maybe we need to cache this task.
        - name: Setup Apache and PHP
          run: |
           # Set up the Apache and PHP
@@ -133,6 +134,9 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
+      
+      - name: Grant Permissions to folder
+        run:  chmod -R 777 ./tests/tmp
         
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
