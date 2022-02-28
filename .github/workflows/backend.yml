@@ -196,7 +196,10 @@ jobs:
 
       - name: Composer Install
         run: composer install
-      
+
+      - name: Add Folder Permissions to tests/tmp
+        run:  chmod -R 777 ./tests/tmp      
+        
       - name: Set up Selenium with firefox
         run: |
           echo `which firefox`
