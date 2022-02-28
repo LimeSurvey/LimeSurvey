@@ -113,7 +113,20 @@ jobs:
           # sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
       # TODO: This task always fails ... there are dependencies defined but its ignoring it.
-  
+
+      # Cache Composer
+       - name: Cache Composer
+         id: composer-cache
+         run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+       - uses: actions/cache@v2
+         with:
+            path: ${{ steps.composer-cache.outputs.dir }}
+            keys: ${{ runner.os }}-composer-${{ hashFiles('**/composer-lock') }}
+            restore-keys: |
+              ${{ runner.os }}-composer-
+
   job_run_syntax_check:
     needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
