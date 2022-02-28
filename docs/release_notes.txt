@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.0 (build 220215) to 3.28.1 (build 220229) February 28, 2022
+-Fixed issue: Survey participant data with quotes is not properly exported to CSV (#2073) (Vilius Šumskas)
+-Fixed issue #17903: Incorrect IP address used when having multiple forward from proxies (Tassoman)
+-Fixed issue #17677: Valid TSV file can not be used in VV import (#2177) (Denis Chenu)
+#Updated translation: Tigrinya by lucas_encuesta.biz
+#Updated translation: Slovak by jelen1
+#Updated translation: Italian by lfanfoni, mike73rn
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+
+
 Changes from 3.27.35 (build 220208) to 3.28.0 (build 220215) February 14, 2022
 +New feature: Plugin event beforeSurveyEmail (Dan Guy)
 +New feature: Plugin event beforeEmail (Dan Guy)
