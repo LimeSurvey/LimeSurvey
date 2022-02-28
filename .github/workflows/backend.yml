@@ -71,18 +71,10 @@ jobs:
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
           ./third_party/bin/phpunit --version
-  
-  # TODO: This task takes up to 2 mins - is it possible to make it faster?
-  job_setup_apache_and_php:
-    needs: [job_php_versions]
-    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
-    name: Setup apache and php
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
 
-      - name: Setup Apache and PHP
-        run: |
+       # TODO: This task takes up to 2 mins - is it possible to make it faster? -- BEGIN
+       - name: Setup Apache and PHP
+         run: |
           # Set up the Apache and PHP
           sudo apt-get update > /dev/null
           sudo apt install php libapache2-mod-php -y
@@ -91,8 +83,8 @@ jobs:
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
           sudo service apache2 restart
           
-      - name: Give Permissions to access files for apache
-        run: |
+       - name: Give Permissions to access files for apache
+         run: |
           # Give permision to access files for Apache
           setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./tmp
           setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./upload
@@ -107,18 +99,10 @@ jobs:
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
           chmod +x ./tests/bin/lint-*
-  
-  # TODO: This task always fails ... there are dependencies defined but its ignoring it.
-  job_load_custom_console_and_start_application:
-    needs: [job_php_versions]
-    runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
-    name: Load custom console and start the Application
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
+      # TODO: This task takes up to 2 mins - is it possible to make it faster? -- END
 
-      - name: Load custom console and start the Application
-        run: |
+       - name: Load custom console and start the Application
+         run: |
            php application/commands/console.php install admin password TravisLS no@email.com verbose
            cp application/config/config-sample-mysql.php application/config/config.php
 
@@ -128,9 +112,10 @@ jobs:
           # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
           # sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
+  # TODO: This task always fails ... there are dependencies defined but its ignoring it.
   
   job_run_syntax_check:
-    needs: [job_load_custom_console_and_start_application]
+    needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     steps:
       - name: Run syntax check, CodeSniffer, MessDetector, ...
