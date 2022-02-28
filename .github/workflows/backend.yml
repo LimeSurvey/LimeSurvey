@@ -171,6 +171,9 @@ jobs:
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     name: Test Server
     steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
       - name: Test the server
         run: |
           # Test server.
@@ -191,15 +194,17 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Touch Enabletests
-        run: |
-           touch enabletests
+        run: touch enabletests
 
       - name: Composer Install
         run: composer install
 
+      - name: Add Folder Permissions to tmp
+        run: chmod -R 777 ./tmp
+
       - name: Add Folder Permissions to tests/tmp
         run:  chmod -R 777 ./tests/tmp      
-        
+
       - name: Set up Selenium with firefox
         run: |
           echo `which firefox`
