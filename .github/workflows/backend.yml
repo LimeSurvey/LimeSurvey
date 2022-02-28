@@ -117,7 +117,7 @@ jobs:
           chmod +x ./tests/bin/lint-*
     
   job_load_custom_console_and_start_application:
-    needs: [job_setup_apache_and_php]
+    needs: [job_start_mysql, job_initialize_and_check_all_dependencies, job_setup_apache_and_php]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     name: Load custom console and start the Application
     steps:
