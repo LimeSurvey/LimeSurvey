@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-02-24 17:13:15+00:00\n"
+"POT-Creation-Date: 2022-02-28 11:52:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1778,11 +1778,11 @@ msgstr ""
 #: application/views/admin/globalsettings/_presentation.php:97
 #: application/views/admin/globalsettings/_presentation.php:110
 #: application/views/admin/globalsettings/_presentation.php:123
-#: application/views/admin/globalsettings/_security.php:17
-#: application/views/admin/globalsettings/_security.php:31
-#: application/views/admin/globalsettings/_security.php:48
-#: application/views/admin/globalsettings/_security.php:66
-#: application/views/admin/globalsettings/_security.php:103
+#: application/views/admin/globalsettings/_security.php:18
+#: application/views/admin/globalsettings/_security.php:32
+#: application/views/admin/globalsettings/_security.php:51
+#: application/views/admin/globalsettings/_security.php:71
+#: application/views/admin/globalsettings/_security.php:108
 #: application/views/admin/globalsettings/_storage.php:33
 #: application/views/admin/globalsettings/_useradministration.php:29
 #: application/views/admin/globalsettings/surveySettings.php:12
@@ -1876,11 +1876,11 @@ msgstr ""
 #: application/views/admin/globalsettings/_presentation.php:98
 #: application/views/admin/globalsettings/_presentation.php:111
 #: application/views/admin/globalsettings/_presentation.php:124
-#: application/views/admin/globalsettings/_security.php:18
-#: application/views/admin/globalsettings/_security.php:32
-#: application/views/admin/globalsettings/_security.php:49
-#: application/views/admin/globalsettings/_security.php:67
-#: application/views/admin/globalsettings/_security.php:104
+#: application/views/admin/globalsettings/_security.php:19
+#: application/views/admin/globalsettings/_security.php:33
+#: application/views/admin/globalsettings/_security.php:52
+#: application/views/admin/globalsettings/_security.php:72
+#: application/views/admin/globalsettings/_security.php:109
 #: application/views/admin/globalsettings/_storage.php:34
 #: application/views/admin/globalsettings/_useradministration.php:30
 #: application/views/admin/globalsettings/surveySettings.php:13
@@ -3640,7 +3640,6 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1284
 #: application/controllers/admin/UserAction.php:116
 #: application/controllers/admin/UserAction.php:127
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:236
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:286
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:301
 #: application/core/plugins/Authdb/Authdb.php:65
@@ -5247,32 +5246,32 @@ msgstr ""
 msgid "deleted"
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:302
-#: application/controllers/admin/GlobalSettings.php:307
+#: application/controllers/admin/GlobalSettings.php:310
+#: application/controllers/admin/GlobalSettings.php:315
 msgid "Warning! Invalid IP addresses have been excluded from '%s' setting."
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:302
+#: application/controllers/admin/GlobalSettings.php:310
 msgid "IP whitelist for login"
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:307
+#: application/controllers/admin/GlobalSettings.php:315
 msgid "IP whitelist for token access"
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:340
+#: application/controllers/admin/GlobalSettings.php:348
 msgid "Warning! Admin bounce email was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:348
+#: application/controllers/admin/GlobalSettings.php:356
 msgid "Warning! Administrator email address was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:400
+#: application/controllers/admin/GlobalSettings.php:408
 msgid "Global settings were saved."
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:509
+#: application/controllers/admin/GlobalSettings.php:517
 #: application/controllers/admin/SurveysGroupsController.php:316
 #: application/core/LsDefaultDataSets.php:867
 #: application/models/Survey.php:2229 application/models/SurveysGroups.php:314
@@ -5280,24 +5279,28 @@ msgstr ""
 msgid "Survey settings"
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:515
+#: application/controllers/admin/GlobalSettings.php:523
 msgid "Global survey settings"
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:553
+#: application/controllers/admin/GlobalSettings.php:561
 msgid "Test email from %s"
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:556
+#: application/controllers/admin/GlobalSettings.php:564
 msgid "This is a test email from %s"
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:582
+#: application/controllers/admin/GlobalSettings.php:590
 msgid "Email sent successfully"
 msgstr ""
 
-#: application/controllers/admin/GlobalSettings.php:584
+#: application/controllers/admin/GlobalSettings.php:592
 msgid "Email sending failure: %s"
+msgstr ""
+
+#: application/controllers/admin/GlobalSettings.php:630
+msgid "Failed login attempts of participants have been reset."
 msgstr ""
 
 #: application/controllers/admin/Labels.php:188
@@ -8939,10 +8942,6 @@ msgstr ""
 msgid "Use LDAP authentication"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:237
-msgid "Simple bind LDAP configuration doesn't allow LDAP user creation"
-msgstr ""
-
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:252
 msgid "Could not connect to LDAP server."
 msgstr ""
@@ -8968,11 +8967,11 @@ msgstr ""
 msgid "Error creating LDAP connection"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:548
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:541
 msgid "Valid username but not authorized by group restriction"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:575
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:568
 msgid "Credentials are valid but we failed to create a user"
 msgstr ""
 
@@ -17959,7 +17958,7 @@ msgstr ""
 #: application/views/admin/globalsettings/_interfaces.php:58
 #: application/views/admin/globalsettings/_language.php:71
 #: application/views/admin/globalsettings/_presentation.php:134
-#: application/views/admin/globalsettings/_security.php:133
+#: application/views/admin/globalsettings/_security.php:204
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr ""
 
@@ -18305,72 +18304,95 @@ msgstr ""
 msgid "Borders around responses in PDF:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:11
+#: application/views/admin/globalsettings/_security.php:12
 msgid "Survey preview only for administration users:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:24
+#: application/views/admin/globalsettings/_security.php:25
 msgid "Filter HTML for XSS:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:37
+#: application/views/admin/globalsettings/_security.php:39
 msgid "Note: XSS filtering is always disabled for the superadministrator."
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:42
+#: application/views/admin/globalsettings/_security.php:45
 msgid "Disable question script for XSS restricted user:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:54
+#: application/views/admin/globalsettings/_security.php:58
 msgid "If you disable this option : user with XSS restriction still can add script. This allows user to add cross-site scripting javascript system."
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:60
+#: application/views/admin/globalsettings/_security.php:65
 msgid "Group member can only see own group:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:77
+#: application/views/admin/globalsettings/_security.php:82
 msgid "IFrame embedding allowed:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:84
+#: application/views/admin/globalsettings/_security.php:89
 msgid "Allow"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:85
+#: application/views/admin/globalsettings/_security.php:90
 msgid "Same origin"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:96
+#: application/views/admin/globalsettings/_security.php:101
 msgid "Force HTTPS:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:110
+#: application/views/admin/globalsettings/_security.php:116
 msgid "%sWarning:%s Before turning on HTTPS,%s check this link.%s"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:110
+#: application/views/admin/globalsettings/_security.php:116
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:112
+#: application/views/admin/globalsettings/_security.php:118
 msgid "If the link does not work and you turn on HTTPS, you will not be able to access and use your LimeSurvey application!"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:117
-msgid "IP whitelist for login:"
+#: application/views/admin/globalsettings/_security.php:122
+msgid "Brute-force protection for administration"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:120
+#: application/views/admin/globalsettings/_security.php:126
+#: application/views/admin/globalsettings/_security.php:160
+msgid "IP whitelist:"
+msgstr ""
+
+#: application/views/admin/globalsettings/_security.php:131
 msgid "List of IP addresses to exclude from the maximum login attempts check. Separate each IP address with a comma or a new line."
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:125
-msgid "IP whitelist for token access:"
+#: application/views/admin/globalsettings/_security.php:136
+#: application/views/admin/globalsettings/_security.php:170
+msgid "Maximum number of attempts:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:128
+#: application/views/admin/globalsettings/_security.php:145
+#: application/views/admin/globalsettings/_security.php:179
+msgid "Lockout time in seconds (after maximum number of attempts):"
+msgstr ""
+
+#: application/views/admin/globalsettings/_security.php:156
+msgid "Brute-force protection for survey participation"
+msgstr ""
+
+#: application/views/admin/globalsettings/_security.php:165
 msgid "List of IP addresses to exclude from the maximum token validation attempts check. Separate each IP address with a comma or a new line."
+msgstr ""
+
+#: application/views/admin/globalsettings/_security.php:189
+msgid "Reset failed login attempts of participants to make survey accessible again:"
+msgstr ""
+
+#: application/views/admin/globalsettings/_security.php:197
+msgid "Reset participant attempts"
 msgstr ""
 
 #: application/views/admin/globalsettings/_storage.php:13
