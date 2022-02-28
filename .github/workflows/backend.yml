@@ -202,6 +202,9 @@ jobs:
       - name: Add Folder Permissions to tmp
         run: chmod -R 777 ./tmp
 
+      - name: Add Folder Permissions to upload
+        run: chmod -R 777 ./upload
+        
       - name: Add Folder Permissions to tests/tmp
         run:  chmod -R 777 ./tests/tmp      
 
