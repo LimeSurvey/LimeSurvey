@@ -5062,7 +5062,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 [
                     'files_css' => '{"add":["css/base.css","css/theme.css","css/custom.css","css/noTablesOnMobile.css"]}',
                 ],
-                "template_name = 'vanilla' AND files_css != 'inherit'"
+                "template_name = 'vanilla' AND files_css = :default_files_css",
+                [':default_files_css' => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}']
             );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 480), "stg_name='DBVersion'");
             $oTransaction->commit();
