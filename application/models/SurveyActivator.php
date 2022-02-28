@@ -109,25 +109,25 @@ class SurveyActivator
     {
         foreach ($sFieldMap as $aRow) {
             switch ($aRow['type']) {
-            case Question::QT_R_RANKING:
-                $nrOfAnswers = Answer::model()->countByAttributes(
-                    array('qid' => $aRow['qid'])
-                );
-                $oQuestionAttribute = QuestionAttribute::model()->find(
-                    "qid = :qid AND attribute = 'max_subquestions'",
-                    array(':qid' => $aRow['qid'])
-                );
-                if (empty($oQuestionAttribute)) {
-                    $oQuestionAttribute = new QuestionAttribute();
-                    $oQuestionAttribute->qid = $aRow['qid'];
-                    $oQuestionAttribute->attribute = 'max_subquestions';
-                    $oQuestionAttribute->value = $nrOfAnswers;
-                    $oQuestionAttribute->save();
-                } elseif (intval($oQuestionAttribute->value) < 1) {
-                    // Fix it if invalid : disallow 0, but need a sub question minimum for EM
-                    $oQuestionAttribute->value = $nrOfAnswers;
-                    $oQuestionAttribute->save();
-                }
+                case Question::QT_R_RANKING:
+                    $nrOfAnswers = Answer::model()->countByAttributes(
+                        array('qid' => $aRow['qid'])
+                    );
+                    $oQuestionAttribute = QuestionAttribute::model()->find(
+                        "qid = :qid AND attribute = 'max_subquestions'",
+                        array(':qid' => $aRow['qid'])
+                    );
+                    if (empty($oQuestionAttribute)) {
+                        $oQuestionAttribute = new QuestionAttribute();
+                        $oQuestionAttribute->qid = $aRow['qid'];
+                        $oQuestionAttribute->attribute = 'max_subquestions';
+                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->save();
+                    } elseif (intval($oQuestionAttribute->value) < 1) {
+                        // Fix it if invalid : disallow 0, but need a sub question minimum for EM
+                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->save();
+                    }
             }
         }
     }
