@@ -82,7 +82,7 @@ jobs:
   
   # TODO: This task takes up to 2 mins - is it possible to make it faster?
   job_setup_apache_and_php:
-    needs: [job_start_mysql, job_initialize_and_check_all_dependencies]
+    needs: [job_php_versions, job_start_mysql, job_initialize_and_check_all_dependencies]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     name: Setup apache and php
     steps:
