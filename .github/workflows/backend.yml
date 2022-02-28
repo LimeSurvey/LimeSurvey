@@ -72,8 +72,21 @@ jobs:
           composer install -vvv
           ./third_party/bin/phpunit --version
 
+       # Cache Composer
+       - name: Cache Composer
+         id: composer-cache
+         run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+       - uses: actions/cache@v2
+         with:
+            path: ${{ steps.composer-cache.outputs.dir }}
+            key: ${{ runner.os }}-composer-${{ hashFiles('**/composer-lock') }}
+            restore-keys: |
+              ${{ runner.os }}-composer-
+        
        # TODO: This task takes up to 2 mins - is it possible to make it faster? -- BEGIN
-       # TODO: Maybe we need to cache this task.
+       # TODO: Maybe we need to cache this task or use docker container instead
        - name: Setup Apache and PHP
          run: |
           # Set up the Apache and PHP
@@ -113,21 +126,8 @@ jobs:
           # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
           # sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
-      # TODO: This task always fails ... there are dependencies defined but its ignoring it.
 
-      # Cache Composer
-       - name: Cache Composer
-         id: composer-cache
-         run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-       - uses: actions/cache@v2
-         with:
-            path: ${{ steps.composer-cache.outputs.dir }}
-            key: ${{ runner.os }}-composer-${{ hashFiles('**/composer-lock') }}
-            restore-keys: |
-              ${{ runner.os }}-composer-
-
+  # TODO: This task always fails ... there are dependencies defined but its ignoring it.
   job_run_syntax_check:
     needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
