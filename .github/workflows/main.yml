@@ -138,3 +138,4 @@ jobs:
 
       - name: Run the test script
         run: DOMAIN=localhost ./third_party/bin/phpunit --testdox --stop-on-failure
+        
