@@ -112,12 +112,15 @@ jobs:
           # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
           # sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
-  # TODO: This task always fails ... there are dependencies defined but its ignoring it.
+      # TODO: This task always fails ... there are dependencies defined but its ignoring it.
   
   job_run_syntax_check:
     needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+        
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
   
