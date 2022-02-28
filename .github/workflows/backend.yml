@@ -136,8 +136,8 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Grant Permissions to folder
-        run:  chmod -R 777 ./tests/tmp
-        
+        run:  chmod -R 777 ./tests/
+
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
   
