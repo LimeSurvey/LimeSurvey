@@ -20,7 +20,7 @@ use LimeSurvey\Menu\MenuItem;
 /**
  * @todo Apply new permission 'extensions' instead of 'settings'.
  */
-class PluginManagerController extends Survey_Common_Action
+class PluginManagerController extends SurveyCommonAction
 {
     /**
      * Init
@@ -88,7 +88,7 @@ class PluginManagerController extends Survey_Common_Action
             'showUpload' => !Yii::app()->getConfig('demoMode') && !Yii::app()->getConfig('disablePluginUpload'),
         ];
 
-        $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
+        $this->renderWrappedTemplate('pluginmanager', 'index', $aData);
     }
 
     /**
@@ -161,7 +161,7 @@ class PluginManagerController extends Survey_Common_Action
             ],
         ];
 
-        $this->_renderWrappedTemplate(
+        $this->renderWrappedTemplate(
             'pluginmanager',
             'scanFilesResult',
             $data
@@ -375,7 +375,7 @@ class PluginManagerController extends Survey_Common_Action
         // Green Bar with Page Title
         $pageTitle = gT("Plugin:") . ' ' . $plugin['name'];
 
-        $this->_renderWrappedTemplate(
+        $this->renderWrappedTemplate(
             'pluginmanager',
             'configure',
             [
@@ -585,7 +585,7 @@ class PluginManagerController extends Survey_Common_Action
                 'plugin'   => $plugin,
                 'isUpdate' => !empty($plugin)
             ];
-            $this->_renderWrappedTemplate(
+            $this->renderWrappedTemplate(
                 'pluginmanager',
                 'uploadConfirm',
                 $data
@@ -780,9 +780,9 @@ class PluginManagerController extends Survey_Common_Action
      * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'pluginmanager', $aViewUrls = [], $aData = [], $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'pluginmanager', $aViewUrls = [], $aData = [], $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }
 

@@ -8,9 +8,8 @@
 * @todo : Add any expression
 * @version : 1.1
 */
-class ExpressionValidate extends Survey_Common_Action
+class ExpressionValidate extends SurveyCommonAction
 {
-
     /**
      * @var string : Default layout is popup : less header, no footer
      */
@@ -197,6 +196,7 @@ class ExpressionValidate extends Survey_Common_Action
                 $aReplacement["OPTOUTURL"] = gT("URL for a respondent to opt-out of this survey");
                 $aReplacement["GLOBALOPTOUTURL"] = gT("URL for a respondent to opt-out of central participant list for this site");
                 $aReplacement["OPTINURL"] = gT("URL for a respondent to opt-in to this survey");
+                $aReplacement["GLOBALOPTINURL"] = gT("URL for a respondent to opt-in to the central participant list for this site");
                 $aReplacement["SURVEYURL"] = gT("Survey URL");
                 foreach ($aAttributes as $sAttribute => $aAttribute) {
                     $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);

@@ -553,7 +553,7 @@ class SurveymenuEntries extends LSActiveRecord
         return true;
     }
 
-    private function _parseUniqueNameFromTitle()
+    private function parseUniqueNameFromTitle()
     {
 
         $name = preg_replace("/[^a-z]*/", "", strtolower($this->title));
@@ -570,7 +570,7 @@ class SurveymenuEntries extends LSActiveRecord
     public function save($runValidation = true, $attributes = null)
     {
         if ($this->getIsNewRecord()) {
-            $this->name = $this->_parseUniqueNameFromTitle();
+            $this->name = $this->parseUniqueNameFromTitle();
             $this->menu_title = empty($this->menu_title) ? $this->title : $this->menu_title;
             $this->menu_description = empty($this->menu_description) ? $this->title : $this->menu_title;
         }

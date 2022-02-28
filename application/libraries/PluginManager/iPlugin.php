@@ -56,9 +56,9 @@ interface iPlugin
      *
      * Assumes an array with valid key/value pairs is passed.
      *
-     * @param array<string, mixed> $aSettings An array with key/value pairs for all plugin settings
+     * @param array<string, mixed> $settings An array with key/value pairs for all plugin settings
      */
-    public function saveSettings($aSettings);
+    public function saveSettings($settings);
 
     /**
      * Set the event to the plugin, this method is executed by the PluginManager

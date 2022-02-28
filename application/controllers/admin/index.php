@@ -12,9 +12,8 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class Index extends Survey_Common_Action
+class Index extends SurveyCommonAction
 {
-
     public function run()
     {
         App()->loadHelper('surveytranslator');
@@ -92,6 +91,6 @@ class Index extends Survey_Common_Action
         $aData['iBoxesByRow'] = (int) getGlobalSetting('boxes_by_row');
         $aData['sBoxesOffSet'] = (int) getGlobalSetting('boxes_offset');
         $aData['bBoxesInContainer'] = (getGlobalSetting('boxes_in_container') == 'yes');
-        $this->_renderWrappedTemplate('super', 'welcome', $aData);
+        $this->renderWrappedTemplate('super', 'welcome', $aData);
     }
 }

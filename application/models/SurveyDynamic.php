@@ -38,6 +38,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * @inheritdoc
      * @return SurveyDynamic
+     * @psalm-suppress ParamNameMismatch Ignore that $sid is $className in parent class
      */
     public static function model($sid = null)
     {
@@ -629,6 +630,7 @@ class SurveyDynamic extends LSActiveRecord
      * @see: http://www.yiiframework.com/wiki/324/cgridview-keep-state-of-page-and-sort/
      * @see: http://www.yiiframework.com/forum/index.php?/topic/8994-dropdown-for-pagesize-in-cgridview
      */
+    // phpcs:ignore
     public function getEllipsize_header_value()
     {
         return Yii::app()->user->getState('defaultEllipsizeHeaderValue', Yii::app()->params['defaultEllipsizeHeaderValue']);
@@ -640,6 +642,7 @@ class SurveyDynamic extends LSActiveRecord
      * @see: http://www.yiiframework.com/wiki/324/cgridview-keep-state-of-page-and-sort/
      * @see: http://www.yiiframework.com/forum/index.php?/topic/8994-dropdown-for-pagesize-in-cgridview
      */
+    // phpcs:ignore
     public function getEllipsize_question_value()
     {
         return Yii::app()->user->getState('defaultEllipsizeQuestionValue', Yii::app()->params['defaultEllipsizeQuestionValue']);
@@ -922,15 +925,11 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['fileinfo'] = json_decode($aQuestionAttributes['answervalue'], true);
         }
 
-
         if ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "1") {
             $aAnswers = (
-                $oQuestion->parent_qid == 0
-                    ? $oQuestion->answers
-                    : ($oQuestion->parent != null
-                        ? $oQuestion->parent->answers
-                        : []
-                    )
+                $oQuestion->parent != null
+                ? $oQuestion->parent->answers
+                : []
             );
 
             foreach ($aAnswers as $key => $value) {

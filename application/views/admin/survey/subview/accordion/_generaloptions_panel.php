@@ -79,42 +79,41 @@
         <div class="col-md-6 col-sm-12">
             <?php if ($bShowAllOptions === true){ ?>
                 <?php if(!$oSurvey->isNewRecord):?>
+                <!-- Survey Languages -->
+                <div class="form-group">
+                    <label class=" control-label"  for='additional_languages'><?php  eT("Survey languages"); ?>:</label>
+                    <div class="">
+                        <?php
+                        $aAllLanguages = getLanguageDataRestricted (false,'short');
+
+                        Yii::app()->getController()->widget('ext.admin.survey.LanguagesWidget.LanguagesWidget', array(
+                            'asDropDownList' => true,
+                            'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
+                            'data' => $aAllLanguages,
+                            'value' =>  $oSurvey->allLanguages,
+                            'name' => 'additional_languages',
+                            'pluginOptions' => array(
+                                'placeholder' => gT('Select additional languages','unescaped'),
+                                'baselanguage' => $oSurvey->language,
+                                'baselanguage_selector' => '#language',
+                            )
+                        ));
+                        ?>
+                        <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ', $oSurvey->additionalLanguages); ?>'>
+                    </div>
+                </div>
                 <!-- Base language -->
                 <div class="form-group">
                     <label class=" control-label" ><?php  eT("Base language:") ; ?></label>
-                    <div class="" style="padding-top: 7px;">
-                        <?php if($oSurvey->isNewRecord):?>
+                    <div class="">
                         <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                             'asDropDownList' => true,
-                            'data' => getLanguageDataRestricted (false,'short'),
+                            'htmlOptions'=>array('style'=>"width: 100%"),
+                            'data' => array_intersect_key($aAllLanguages, array_flip($oSurvey->allLanguages)),
                             'value' => $oSurvey->language,
                             'name' => 'language',
                             'pluginOptions' => array()
                         ));?>
-                        <?php else:?>
-                        <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>
-                        <?php endif;?>
-                    </div>
-                </div>
-                <!-- Additional Languages -->
-                <div class="form-group">
-                    <label class=" control-label"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
-                    <div class="">
-                        <?php
-                        $aAllLanguages=getLanguageDataRestricted (false,'short');
-                        unset($aAllLanguages[$oSurvey->language]);
-
-                        Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
-                            'asDropDownList' => true,
-                            'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
-                            'data' => $aAllLanguages,
-                            'value' =>  $oSurvey->additionalLanguages,
-                            'name' => 'additional_languages',
-                            'pluginOptions' => array(
-                                'placeholder' => gT('Select additional languages','unescaped'),
-                        )));
-                        ?>
-                        <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ', $oSurvey->additionalLanguages); ?>'>
                     </div>
                 </div>
                 <?php endif;?>

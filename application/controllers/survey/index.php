@@ -1,8 +1,5 @@
 <?php
 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -15,9 +12,8 @@ if (!defined('BASEPATH')) {
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-class index extends CAction
+class Index extends CAction
 {
-
     public $oTemplate;
 
     public function run()
@@ -32,8 +28,8 @@ class index extends CAction
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
 
-        $this->_loadRequiredHelpersAndLibraries();
-        $param       = $this->_getParameters(func_get_args(), $_POST);
+        $this->loadRequiredHelpersAndLibraries();
+        $param       = $this->getParameters(func_get_args(), $_POST);
         $surveyid    = $param['sid'];
         $thisstep    = $param['thisstep'];
         $move        = getMove();
@@ -92,7 +88,7 @@ class index extends CAction
 
         $previewmode = false;
         if (isset($param['action']) && (in_array($param['action'], array('previewgroup', 'previewquestion')))) {
-            if (!$this->_canUserPreviewSurvey($surveyid)) {
+            if (!$this->canUserPreviewSurvey($surveyid)) {
                 $aErrors  = array(gT('Error'));
                 $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
                 if (Permission::model()->getUserId()) {
@@ -154,7 +150,7 @@ class index extends CAction
             }
         }
 
-        $this->_loadLimesurveyLang($surveyid);
+        $this->loadLimesurveyLang($surveyid);
 
         // Set the language of the survey, either from POST, GET parameter of session var
         // Keep the old value, because SetSurveyLanguage update $_SESSION
@@ -180,7 +176,7 @@ class index extends CAction
         $beforeSurveyPageEvent->set('surveyId', $surveyid);
         App()->getPluginManager()->dispatchEvent($beforeSurveyPageEvent);
 
-        if ($this->_isClientTokenDifferentFromSessionToken($clienttoken, $surveyid)) {
+        if ($this->isClientTokenDifferentFromSessionToken($clienttoken, $surveyid)) {
             $sReloadUrl = $this->getController()->createUrl("/survey/index/sid/{$surveyid}", array('token' => $clienttoken, 'lang' => App()->language, 'newtest' => 'Y'));
             $aErrors    = array(gT('Access code mismatch'));
             $asMessage  = array(gT('The access code you provided doesn\'t match the one in your session.'));
@@ -214,7 +210,7 @@ class index extends CAction
         }
 
         // No test for response update
-        if ($this->_isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) {
+        if ($this->isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) {
             $aReloadUrlParam = array('lang' => App()->language, 'newtest' => 'Y');
 
             if (!empty($clienttoken)) {
@@ -239,8 +235,8 @@ class index extends CAction
             );
         }
 
-        if ($this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists)) {
-            $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
+        if ($this->surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists)) {
+            $bPreviewRight = $this->userHasPreviewAccessSession($surveyid);
 
             if ($bPreviewRight === false) {
                 $event    = new PluginEvent('onSurveyDenied');
@@ -265,7 +261,7 @@ class index extends CAction
         // recompute $redata since $saved_id used to be a global
         $redata = compact(array_keys(get_defined_vars()));
 
-        if ($this->_didSessionTimeout($surveyid)) {
+        if ($this->didSessionTimeout($surveyid)) {
             $aErrors = array(gT('We are sorry but your session has expired.'));
             $aMessage = array(
                 gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
@@ -422,7 +418,7 @@ class index extends CAction
             }
 
             if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
-                $aLoadErrorMsg['tooManyRetries'] = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
+                $aLoadErrorMsg['tooManyRetries'] = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
             }
 
             if (empty($aLoadErrorMsg)) {
@@ -446,7 +442,7 @@ class index extends CAction
             }
             usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"), Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
             if (count($aLoadErrorMsg)) {
-                FailedLoginAttempt::model()->addAttempt();
+                FailedLoginAttempt::model()->addAttempt(FailedLoginAttempt::TYPE_TOKEN);
                 Yii::app()->setConfig('move', "loadall"); // Show loading form
             }
         }
@@ -624,7 +620,7 @@ class index extends CAction
         // }
     }
 
-    private function _getParameters($args = array(), $post = array())
+    private function getParameters($args = array(), $post = array())
     {
         $param = array();
         if (@$args[0] == __CLASS__) {
@@ -646,7 +642,7 @@ class index extends CAction
         return $param;
     }
 
-    private function _loadRequiredHelpersAndLibraries()
+    private function loadRequiredHelpersAndLibraries()
     {
         //Load helpers, libraries and config vars
         Yii::app()->loadHelper("database");
@@ -654,7 +650,7 @@ class index extends CAction
         Yii::app()->loadHelper("surveytranslator");
     }
 
-    private function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
+    private function loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
         $oSurvey = Survey::model()->findByPk($mvSurveyIdOrBaseLang);
         if ($oSurvey) {
@@ -668,33 +664,33 @@ class index extends CAction
         App()->setLanguage($baselang);
     }
 
-    private function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
+    private function isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
         return $clientToken != '' && isset($_SESSION['survey_' . $surveyid]['token']) && $clientToken != $_SESSION['survey_' . $surveyid]['token'];
     }
 
-    private function _isSurveyFinished($surveyid)
+    private function isSurveyFinished($surveyid)
     {
         return isset($_SESSION['survey_' . $surveyid]['finished']) && $_SESSION['survey_' . $surveyid]['finished'] === true;
     }
 
-    private function _surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
+    private function surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
     {
         $bSurveyPreviewRequireAuth = Yii::app()->getConfig('surveyPreview_require_Auth');
-        return $surveyid && $bIsSurveyActive === false && $bSurveyExists && isset($bSurveyPreviewRequireAuth) && $bSurveyPreviewRequireAuth == true && !$this->_canUserPreviewSurvey($surveyid);
+        return $surveyid && $bIsSurveyActive === false && $bSurveyExists && isset($bSurveyPreviewRequireAuth) && $bSurveyPreviewRequireAuth == true && !$this->canUserPreviewSurvey($surveyid);
     }
 
-    private function _didSessionTimeout($surveyid)
+    private function didSessionTimeout($surveyid)
     {
         return (!isset($_SESSION['survey_' . $surveyid]['step']) && null !== App()->request->getPost('thisstep'));
     }
 
-    function _canUserPreviewSurvey($iSurveyID)
+    private function canUserPreviewSurvey($iSurveyID)
     {
         return Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
     }
 
-    function _userHasPreviewAccessSession($iSurveyID)
+    private function userHasPreviewAccessSession($iSurveyID)
     {
         return (isset($_SESSION['USER_RIGHT_PREVIEW']) && ($_SESSION['USER_RIGHT_PREVIEW'] == $iSurveyID));
     }

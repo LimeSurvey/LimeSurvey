@@ -73,7 +73,7 @@ class UpdateForm extends CFormModel
             if ($this->build != '') {
                 $crosscheck = (int) $crosscheck;
                 $getters = '/index.php?r=updates/updateinfo&currentbuild=' . $this->build . '&id=' . md5(getGlobalSetting('SessionName')) . '&crosscheck=' . $crosscheck;
-                $content = $this->_performRequest($getters);
+                $content = $this->performRequest($getters);
             } else {
                 $content = new stdClass();
                 $content->result = false;
@@ -104,7 +104,7 @@ class UpdateForm extends CFormModel
         $updater_version = Yii::app()->getConfig("updaterversion");
         touch($this->path_cookie);
         $getters = '/index.php?r=updates/getwelcome&currentbuild=' . $this->build . '&keyid=' . $updateKey . '&destinationbuild=' . $destinationBuild . '&updater_version=' . $updater_version;
-        $content = $this->_performRequest($getters, true);
+        $content = $this->performRequest($getters, true);
         return $content;
     }
 
@@ -116,7 +116,7 @@ class UpdateForm extends CFormModel
     public function checkUpdateKeyonServer($submittedUpdateKey)
     {
         $getters = '/index.php?r=updates/checkupdatekey&keyid=' . $submittedUpdateKey;
-        $content = $this->_performRequest($getters);
+        $content = $this->performRequest($getters);
         return $content;
     }
 
@@ -168,10 +168,10 @@ class UpdateForm extends CFormModel
     {
         $checks = new stdClass();
 
-        $checks->files = $this->_getFileSystemCheckList();
-        $checks->php = $this->_phpVerCheck($destinationBuild);
-        $checks->php_modules = $this->_getModuleChecks($destinationBuild);
-        $checks->mysql = $this->_getMysqlChecks($destinationBuild);
+        $checks->files = $this->getFileSystemCheckList();
+        $checks->php = $this->phpVerCheck($destinationBuild);
+        $checks->php_modules = $this->getModuleChecks($destinationBuild);
+        $checks->mysql = $this->getMysqlChecks($destinationBuild);
 
         return $checks;
     }
@@ -187,7 +187,7 @@ class UpdateForm extends CFormModel
     {
 
         $getters = '/index.php?r=updates/filesystemchecklistforupdater';
-        $content = $this->_performRequest($getters);
+        $content = $this->performRequest($getters);
         $toCheck = $content->list;
         $readOnly = array();
 
@@ -218,7 +218,7 @@ class UpdateForm extends CFormModel
     public function getChangelog($destinationBuild)
     {
         $getters = '/index.php?r=updates/changelog&frombuild=' . $this->build . '&tobuild=' . $destinationBuild;
-        $content = $this->_performRequest($getters);
+        $content = $this->performRequest($getters);
         return $content;
     }
 
@@ -230,7 +230,7 @@ class UpdateForm extends CFormModel
     public function getChangedFiles($destinationBuild)
     {
         $getters = '/index.php?r=updates/changed-files&frombuild=' . $this->build . '&tobuild=' . $destinationBuild;
-        $content = $this->_performRequest($getters);
+        $content = $this->performRequest($getters);
         return $content;
     }
 
@@ -245,7 +245,7 @@ class UpdateForm extends CFormModel
     {
         $getters = '/index.php?r=updates/download&frombuild=' . $this->build . '&tobuild=' . $tobuild;
         $getters .= "&access_token=" . $_REQUEST['access_token'];
-        $file = $this->_performDownload($getters);
+        $file = $this->performDownload($getters);
         return $file;
     }
 
@@ -258,7 +258,7 @@ class UpdateForm extends CFormModel
     public function downloadUpdateUpdaterFile($tobuild)
     {
         $getters = '/index.php?r=updates/download-updater&tobuild=' . $tobuild . '&frombuild=' . $this->build;
-        $file = $this->_performDownload($getters, 'update_updater');
+        $file = $this->performDownload($getters, 'update_updater');
         return $file;
     }
 
@@ -306,7 +306,8 @@ class UpdateForm extends CFormModel
 
     /**
      * Delete the files tagged as deleted in the update
-     * @param string[] $updateinfos
+     *
+     * @param array $updateinfos
      * @return object
      */
     public function removeDeletedFiles($updateinfos)
@@ -315,6 +316,7 @@ class UpdateForm extends CFormModel
             $sFileToDelete = str_replace("..", "", $file['file']);
             if ($file['type'] == 'D' && file_exists($this->rootdir . $sFileToDelete)) {
                 if (is_file($this->rootdir . $sFileToDelete)) {
+                    // TODO: Deal with error here
                     if (!@unlink($this->rootdir . $sFileToDelete)) {
                         $return = array('result' => false, 'error' => 'cant_remove_deleted_files', 'message' => 'file : ' . $sFileToDelete);
                         return (object) $return;
@@ -411,7 +413,8 @@ class UpdateForm extends CFormModel
 
     /**
      * This function provide status information about files presents on the system that will be afected by the update : do they exist ? are they writable ? modified ?
-     * @param int $updateinfo  array of updated files
+     *
+     * @param array $updateinfo Array of updated files
      * @return array
      */
     public function getFileStatus($updateinfo)
@@ -422,13 +425,13 @@ class UpdateForm extends CFormModel
 
         foreach ($updateinfo as $file) {
             $file = (array) $file;
-            $readonly_checked_file = $this->_getReadOnlyCheckedFile($file);
+            $readonly_checked_file = $this->getReadOnlyCheckedFile($file);
 
             if ($readonly_checked_file->type == 'readonlyfile') {
                 $readonlyfiles[] = $readonly_checked_file->file;
             }
 
-            $checkedfile = $this->_getCheckedFile($file);
+            $checkedfile = $this->getCheckedFile($file);
             switch ($checkedfile->type) {
                 case 'modifiedfile':
                     $modifiedfiles[] = $checkedfile->file;
@@ -507,7 +510,7 @@ class UpdateForm extends CFormModel
         // TODO : add postgresql
         if (in_array($dbType, array('mysql', 'mysqli')) && Yii::app()->getConfig('demoMode') != true) {
             // This function will call the server to get the requirement about DB, such as max size
-            $dbChecks = $this->_getDbChecks($destinationBuild);
+            $dbChecks = $this->getDbChecks($destinationBuild);
 
             // Test if user defined by himself a max size for dbBackup
             if (Yii::app()->getConfig("maxdbsizeforbackup")) {
@@ -517,11 +520,11 @@ class UpdateForm extends CFormModel
             if ($dbChecks->result) {
                 $currentDbVersion = Yii::app()->getConfig("dbversionnumber");
                 if ($currentDbVersion < $dbChecks->dbVersion) {
-                    $dbSize = $this->_getDbTotalSize();
+                    $dbSize = $this->getDbTotalSize();
                     $backupDb->message = 'db_change';
 
                     if ($dbSize <= $dbChecks->dbSize) {
-                        return $this->_createDbBackup();
+                        return $this->createDbBackup();
                     } else {
                         $backupDb->result = false;
                         $backupDb->message = 'db_too_big';
@@ -554,8 +557,6 @@ class UpdateForm extends CFormModel
         }
         return false;
     }
-
-
 
     /**
      * Check if an update is available, and prints the update notification
@@ -630,19 +631,17 @@ class UpdateForm extends CFormModel
         return (object) $updates;
     }
 
-
     //// END OF INTERFACE ////
-
 
     /**
      * Call the server to get the necessary datas to check the database
      * @param string $destinationBuild
      * @return mixed|stdClass
      */
-    private function _getDbChecks($destinationBuild)
+    private function getDbChecks($destinationBuild)
     {
         $getters = '/index.php?r=updates/get-db-checks&build=' . $destinationBuild;
-        $content = $this->_performRequest($getters);
+        $content = $this->performRequest($getters);
         return $content;
     }
 
@@ -651,7 +650,7 @@ class UpdateForm extends CFormModel
      * Return the total size of the current database in MB
      * @return string
      */
-    private function _getDbTotalSize()
+    private function getDbTotalSize()
     {
         $command = Yii::app()->db->createCommand("SHOW TABLE STATUS");
         $results = $command->query();
@@ -670,7 +669,7 @@ class UpdateForm extends CFormModel
      * Create a backup of the DataBase
      * @return stdClass result of backup
      */
-    private function _createDbBackup()
+    private function createDbBackup()
     {
         Yii::app()->loadHelper("admin/backupdb");
         $backupDb = new stdClass();
@@ -704,7 +703,7 @@ class UpdateForm extends CFormModel
      * @param array $file a file to update (must contain file and type indexes)
      * @return stdClass containing a list of read only files
      */
-    private function _getReadOnlyCheckedFile($file)
+    private function getReadOnlyCheckedFile($file)
     {
         $checkedfile = new stdClass();
         $checkedfile->type = '';
@@ -747,9 +746,8 @@ class UpdateForm extends CFormModel
      * @param array $file  array of files to update (must contain file, type and chekcsum indexes)
      * @return stdClass containing a list of read only files
      */
-    private function _getCheckedFile($file)
+    private function getCheckedFile($file)
     {
-
         $checkedfile = new stdClass();
         $checkedfile->type = '';
         $checkedfile->file = '';
@@ -760,10 +758,8 @@ class UpdateForm extends CFormModel
                 //A new file, check if this already exists
                 $checkedfile->type = 'existingfile';
                 $checkedfile->file = $file;
-            }
-
-            // We check if the file has been modified
-            elseif (
+            } elseif (
+                // We check if the file has been modified
                 ($file['type'] == 'D' || $file['type'] == 'M') && is_file($this->rootdir . $file['file'])
                 && sha1_file($this->rootdir . $file['file']) != $file['checksum']
             ) {
@@ -780,18 +776,18 @@ class UpdateForm extends CFormModel
      * Call the server to get the list of files and directory to check (and check type : writable / free space)
      * @return array containing the list
      */
-    private function _getFileSystemCheckList()
+    private function getFileSystemCheckList()
     {
         $getters = '/index.php?r=updates/filesystemchecklist';
-        $content = $this->_performRequest($getters);
+        $content = $this->performRequest($getters);
         $fileSystemCheck = $content->list;
 
         // Strategy Pattern : different way to buil the path of the file
-        // Right now, calling _fileSystemCheckAppath() or _fileSystemCheckConfig()
+        // Right now, calling fileSystemCheckAppath() or fileSystemCheckConfig()
         // Could also use params in the futur : YAGNI !!!!!
         $files = array();
         foreach ($fileSystemCheck as $key => $obj) {
-            $method = '_fileSystemCheck' . $obj->type;
+            $method = 'fileSystemCheck' . $obj->type;
             $files[$key] = $this->$method($obj);
         }
 
@@ -803,7 +799,7 @@ class UpdateForm extends CFormModel
      * @param object $obj an object containing the name of the file/directory to check, and what must be checked
      * @return stdClass the result of the test
      */
-    private function _fileSystemCheck($obj)
+    private function fileSystemCheck($obj)
     {
         $check = new stdClass();
         $check->name = $obj->name;
@@ -826,29 +822,29 @@ class UpdateForm extends CFormModel
 
     /**
      * build the file / Directory path using APPATH, and then call the check method
-     * NB: This method is called by building the method name string in _getFileSystemCheckList.
+     * NB: This method is called by building the method name string in getFileSystemCheckList.
      * @param object $obj an object containing the name of the file/directory to check, and what must be checked
      * @return stdClass the result of the test
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _fileSystemCheckAppath($obj)
+    private function fileSystemCheckAppath($obj)
     {
         $obj->name = APPPATH . $obj->name;
-        return  $this->_fileSystemCheck($obj);
+        return  $this->fileSystemCheck($obj);
     }
 
 
     /**
      * build the file / Directory path using getConfig(), and then call the check method
-     * NB: This method is called by building the method name string in _getFileSystemCheckList.
+     * NB: This method is called by building the method name string in getFileSystemCheckList.
      * @param object $obj an object containing the name of the file/directory to check, and what must be checked
      * @return stdClass the result of the test
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _fileSystemCheckConfig($obj)
+    private function fileSystemCheckConfig($obj)
     {
         $obj->name = Yii::app()->getConfig($obj->name);
-        return  $this->_fileSystemCheck($obj);
+        return  $this->fileSystemCheck($obj);
     }
 
     /**
@@ -857,10 +853,10 @@ class UpdateForm extends CFormModel
      * @param int $build the buildId to test
      * @return stdClass the success/error result
      */
-    private function _phpVerCheck($build)
+    private function phpVerCheck($build)
     {
         $getters = '/index.php?r=updates/get-php-ver&build=' . $build;
-        $php_ver = $this->_performRequest($getters);
+        $php_ver = $this->performRequest($getters);
 
         $return = new stdClass();
         $return->php_ver = $php_ver->php_version;
@@ -880,10 +876,10 @@ class UpdateForm extends CFormModel
      * @param int $build the buildId to test
      * @return stdClass the success/error message
      */
-    private function _getModuleChecks($build)
+    private function getModuleChecks($build)
     {
         $getters = '/index.php?r=updates/get-php-modules&build=' . $build;
-        $php_module_list = $this->_performRequest($getters);
+        $php_module_list = $this->performRequest($getters);
 
         $return = new stdClass();
         if ($php_module_list->result) {
@@ -905,14 +901,14 @@ class UpdateForm extends CFormModel
      * @param integer $build
      * @return stdClass
      */
-    private function _getMysqlChecks($build)
+    private function getMysqlChecks($build)
     {
         $checks = new stdClass();
         $dbType = Yii::app()->db->getDriverName();
         if (in_array($dbType, array('mysql', 'mysqli'))) {
             $checks->docheck = 'do';
             $getters = '/index.php?r=updates/get-mysql-ver&build=' . $build;
-            $mysql_requirements = $this->_performRequest($getters);
+            $mysql_requirements = $this->performRequest($getters);
             $checks->mysql_ver = $mysql_requirements->version;
             $checks->local_mysql_ver = Yii::app()->db->getServerVersion();
             $checks->result = (version_compare($checks->local_mysql_ver, $checks->mysql_ver, '<')) ? false : true;
@@ -927,7 +923,7 @@ class UpdateForm extends CFormModel
      *
      * @return string
      */
-    private function _getProtocol()
+    private function getProtocol()
     {
         $server_ssl = Yii::app()->getConfig("comfort_update_server_ssl");
         if ($server_ssl === 1) {
@@ -938,20 +934,18 @@ class UpdateForm extends CFormModel
         return 'http://';
     }
 
-
-
     /**
      * This function download a file from the ComfortUpdate and accept redirection
      * @param string $getters request parameters
      * @param string $fileName
      * @return object containing success = TRUE or error message
      */
-    private function _performDownload($getters, $fileName = 'update')
+    private function performDownload($getters, $fileName = 'update')
     {
         // TODO : Could test if curl is loaded, and if not, use httprequest2
         $ch = curl_init();
         $pFile = fopen($this->tempdir . DIRECTORY_SEPARATOR . $fileName . '.zip', 'w');
-        curl_setopt($ch, CURLOPT_URL, $this->_getProtocol() . Yii::app()->getConfig("comfort_update_server_url") . $getters);
+        curl_setopt($ch, CURLOPT_URL, $this->getProtocol() . Yii::app()->getConfig("comfort_update_server_url") . $getters);
         if ($this->proxy_host_name != '') {
             $proxy = $this->proxy_host_name . ':' . $this->proxy_host_port;
             curl_setopt($ch, CURLOPT_PROXY, $proxy);
@@ -978,14 +972,14 @@ class UpdateForm extends CFormModel
      * @param boolean $create_new_cookie_file
      * @return mixed|stdClass the server page answer (json most of the time)
      */
-    private function _performRequest($getters, $create_new_cookie_file = false)
+    private function performRequest($getters, $create_new_cookie_file = false)
     {
         if ((extension_loaded("curl"))) {
             if (isset($_REQUEST['access_token'])) {
                 $getters .= "&access_token=" . $_REQUEST['access_token'];
             }
 
-            $ch = curl_init($this->_getProtocol() . Yii::app()->getConfig("comfort_update_server_url") . $getters);
+            $ch = curl_init($this->getProtocol() . Yii::app()->getConfig("comfort_update_server_url") . $getters);
 
             if ($this->proxy_host_name != '') {
                 $proxy = $this->proxy_host_name . ':' . $this->proxy_host_port;

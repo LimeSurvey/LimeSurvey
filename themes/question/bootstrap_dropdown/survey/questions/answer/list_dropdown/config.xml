@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Bootstrap Dropdown Configuration Template.
+-->
+
+<config>
+    <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
+    <metadata>
+        <name>bootstrap_dropdown</name>
+        <title>Bootstrap Dropdown</title>
+        <creationDate>2021-09-29</creationDate>
+        <author>Adam Zammit</author>
+        <authorEmail>adam.zammit@acspri.org.au</authorEmail>
+        <authorUrl>https://www.acspri.org.au</authorUrl>
+        <copyright>Copyright (C) 2021 The Australian Consoritium for Social and Political Research Incorporated (ACSPRI)</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <apiVersion>1</apiVersion>
+        <description>Bootstrap dropdown</description>
+        <questionType>!</questionType>
+        <group>Single choice questions</group>
+        <subquestions>0</subquestions>
+        <answerscales>1</answerscales>
+        <hasdefaultvalues>1</hasdefaultvalues>
+        <assessable>1</assessable>
+        <class>list-dropdown</class>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+        <version>5.0</version>
+    </compatibility>
+
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
+    -->
+    <files>
+        <css>
+            <filename>scripts/bootstrap-select.min.css</filename>
+        </css>
+        <js>
+            <filename>scripts/bootstrap-select.min.js</filename>
+        </js>
+        <preview>
+            <filename>bootstrap_dropdown_list_dropdown.png</filename>
+        </preview>
+    </files>
+
+    <attributes>
+        <attribute>
+            <name>show_search</name>
+            <category>Display theme options</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <true>On (searchable)</true>
+                <false>Off (no search function)</false>
+            </options>
+            <default>false</default>
+            <help>Enable search function</help>
+            <caption>Allow searching of dropdown</caption>
+        </attribute>
+        <attribute>
+            <name>show_tick</name>
+            <category>Display theme options</category>
+            <sortorder>91</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <true>Show tick</true>
+                <false>No tick</false>
+            </options>
+            <default>false</default>
+            <help>Show a tick on the selected item in the dropdown</help>
+            <caption>Display tick on selected item</caption>
+        </attribute>
+        <attribute>
+            <name>width_entry</name>
+            <category>Display theme options</category>
+            <sortorder>92</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <true>Width of dropdown to be currently selected entry</true>
+                <false>Width of dropdown to be longest entry</false>
+            </options>
+            <default>false</default>
+            <help>Can be as wide as the entry that is selected, or fixed at the longest entry (default)</help>
+            <caption>Width of dropdown should be the currently selected entry</caption>
+        </attribute>
+    </attributes>
+
+    <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
+    <engine>
+        <load_core_css>true</load_core_css>
+        <load_core_js>true</load_core_js>
+        <show_as_template>true</show_as_template>
+        <show_as_question_type>true</show_as_question_type>
+    </engine>
+</config>

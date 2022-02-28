@@ -119,7 +119,7 @@
 
                     <!-- Show Survey logic file -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_form'); ?>">
+                        <a href="<?php echo $this->createUrl('admin/expressions/sa/surveyLogicForm'); ?>">
                             <?php eT("Show survey logic file");?>
                         </a>
                     </li>
