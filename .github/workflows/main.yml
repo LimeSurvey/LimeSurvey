@@ -115,7 +115,15 @@ jobs:
         # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
         # unzip chromedriver_linux64.zip
 
-      - name: Set up Selenium with firefox
+      - name: Run unit tests
+        env:
+            XDEBUG_MODE: coverage
+        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
+
+      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
+        run: php tests/bin/check_coverage.php cov.xml 37
+
+      - name: Set up Selenium with firefox (needed for integrity tests)
         run: |
           echo `which firefox`
           echo `firefox -v`
@@ -130,4 +138,3 @@ jobs:
 
       - name: Run the test script
         run: DOMAIN=localhost ./third_party/bin/phpunit --testdox --stop-on-failure
-      

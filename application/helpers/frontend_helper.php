@@ -1109,7 +1109,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
 {
     $FlashError = '';
     if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
-        $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
+        $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
         $renderToken = 'main';
     } else {
         if (!$subscenarios['tokenValid']) {
@@ -1125,7 +1125,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
                 $errorMsg    = gT("The access code you have provided is either not valid, or has already been used.");
                 $FlashError .= $errorMsg;
                 $renderToken = 'main';
-                FailedLoginAttempt::model()->addAttempt();
+                FailedLoginAttempt::model()->addAttempt(FailedLoginAttempt::TYPE_TOKEN);
             }
         } else {
             $aEnterTokenData['visibleToken'] = $clienttoken;

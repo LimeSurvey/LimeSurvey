@@ -146,6 +146,7 @@ function populateDatabase($oDB)
             'ip' =>  "string(40) NOT NULL",
             'last_attempt' =>  "string(20) NOT NULL",
             'number_attempts' =>  "integer NOT NULL",
+            'is_frontend' => "boolean NOT NULL DEFAULT FALSE"
         ), $options);
 
 
@@ -1124,6 +1125,31 @@ function populateDatabase($oDB)
             'properties' => "text NOT NULL",
             'attributes' => "text NULL",
         ], $options);
+
+        // language tables: sourcemessage + message and constraint
+        $oDB->createCommand()->createTable(
+            '{{source_message}}',
+            [
+                'id' => "pk",
+                'category' => "string(35)",
+                'message' => "text",
+            ],
+            $options
+        );
+        $oDB->createCommand()->createTable(
+            '{{message}}',
+            [
+                'id' => "integer NOT NULL",
+                'language' => "string(16)",
+                'translation' => "text",
+            ],
+            $options
+        );
+        $oDB->createCommand()->addPrimaryKey(
+            '{{message_pk}}',
+            '{{message}}',
+            ['id', 'language']
+        );
 
         // Install default plugins.
         foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {

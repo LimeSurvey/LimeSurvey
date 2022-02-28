@@ -18,7 +18,6 @@
  */
 class Notification extends LSActiveRecord
 {
-
     const NORMAL_IMPORTANCE = 1; // Just notification in admin menu
     const BELL_IMPORTANCE = 2; // TODO: Bell animation
     const HIGH_IMPORTANCE = 3; // Popup on page load

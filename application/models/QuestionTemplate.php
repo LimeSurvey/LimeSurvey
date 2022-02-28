@@ -176,7 +176,7 @@ class QuestionTemplate extends CFormModel
     /**
      * Register a core css file
      * @param string $sCssFile
-     * @param int $media
+     * @param string $media
      */
     public function registerCssFile($sCssFile, $media = '')
     {

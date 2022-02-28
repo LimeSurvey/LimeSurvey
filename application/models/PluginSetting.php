@@ -26,7 +26,6 @@
 
 class PluginSetting extends CActiveRecord
 {
-
     /**
      * @inheritdoc
      * @return PluginSetting

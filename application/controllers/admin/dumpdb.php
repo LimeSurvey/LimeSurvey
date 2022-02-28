@@ -19,7 +19,7 @@
  * @copyright 2011
  * @access public
  */
-class Dumpdb extends Survey_Common_Action
+class Dumpdb extends SurveyCommonAction
 {
     /**
      * Dumpdb constructor.

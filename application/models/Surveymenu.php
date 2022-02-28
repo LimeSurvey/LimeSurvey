@@ -485,6 +485,7 @@ class Surveymenu extends LSActiveRecord
      */
     public function restoreDefaults()
     {
+        $sOldLanguage = App()->language;
         $oDB = Yii::app()->db;
         switchMSSQLIdentityInsert('surveymenu', true);
         $oTransaction = $oDB->beginTransaction();
@@ -497,7 +498,6 @@ class Surveymenu extends LSActiveRecord
             }
             $oTransaction->commit();
         } catch (Exception $e) {
-            // FIXME $sOldLanguage is undefined
             App()->setLanguage($sOldLanguage);
             return false;
         }

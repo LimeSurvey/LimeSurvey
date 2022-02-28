@@ -34,6 +34,60 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.14 (build 220214) to 5.3.0 (build 220228) February 28, 2022
++New feature #17640: Question theme - bootstrap styling of dropdown boxes (#2064) (Adam Zammit)
++New feature #17520: Auto-create LDAP users without bind DN (Martin Kofahl)
++New feature #17477: Make it possible to use answer option text in expression script. (#2155) (Denis Chenu)
++New feature #15750: Send emails only to participants with incomplete responses (#2162) (Gabriel Jenik)
++New feature #14782: Possibility to override single translations by database (#2213) (Denis Chenu)
+-Fixed issue: [security] Update packages and document package building process for js packages (#2250) (Jessica Höck)
+-Fixed issue: Wrong language description for Valencian (Carsten Schmitz)
+-Fixed issue: Upgrade JavaScript packages to a newer version (Jessica Höck)
+-Fixed issue: Survey participant data with quotes is not properly exported to CSV (#2072) (Vilius Šumskas)
+-Fixed issue: Statistics form looking garbled when using Portuguese (#2260) (Tim Willig)
+-Fixed issue: Purging obsolete directory files not working after storage calculation (Carsten Schmitz)
+-Fixed issue: On installation InnoDB is used instead of MyISAM for database tables (Carsten Schmitz)
+-Fixed issue: Notice when showing statistics (Frithjof)
+-Fixed issue: Not all response columns begin exported if PHP setting max_input_vars is too low (Carsten Schmitz)
+-Fixed issue: Missing validation for start language in data entry (Carsten Schmitz)
+-Fixed issue: Close button not working after import tokens from LDAP (Mantis Development)
+-Fixed issue #T1358: Label Sets: Export multiple label sets - Export Button disabled state (#2123) (Jessica Höck)
+-Fixed issue #T1055: Optimization open/closed-access mode and survey activation screens (#2138) (Jessica Höck)
+-Fixed issue #17912: Sporadic "There are empty question groups in this survey " error (#2270) (Mark Hanna)
+-Fixed issue #17903: Incorrect IP address used when having multiple forward from proxies (Tassoman)
+-Fixed issue #17901: When using RemoteControl and uploading a 'lsa' file, the survey name parameter was not used (Gabriel Cavalari)
+-Fixed issue #17848: Strings appearing always in english (#2261) (Gabriel Jenik)
+-Fixed issue #17838: Add javascript in script tab only works for superadmin (#2266) (Gabriel Jenik)
+-Fixed issue #17834: When editing the assessment message, the previously inputted text disappears (#2256) (Gabriel Jenik)
+-Fixed issue #17831: Database error when upgrading from 2.0.6 to 5.2.9 when using MSSQL (Carsten Schmitz)
+-Fixed issue #17798: Set authwebserver as default didn't deactivate AuthDB usage (#2210) (Gabriel Jenik)
+-Fixed issue #17787: open_base_dir + debug can throw error when load some question type. (#2175) (Denis Chenu)
+-Fixed issue #17762: vulnerable verson of jQuery used in devbridge-autocomplete (#2160) (Denis Chenu)
+-Fixed issue #17762: vulnerable verson of jQuery included in qtip2 (#2161) (Denis Chenu)
+-Fixed issue #17685: When adding a new participant, user is able to Save without adding any information and a blank record is save (#2194) (Gabriel Jenik)
+-Fixed issue #17647: Strange sort order of question groups in statistics (Steffen Moser)
+-Fixed issue #17492: Refactor updatedb helper into multiple command classes (#2163) (Olle Härstedt)
+-Fixed issue #17322: [security] Separate settings for administration & participants for handling failed login attempts (#2251) (Patricia Stell)
+-Fixed issue #12105: Scroll bar partially broken at browse response screen (#2262) (Gabriel Jenik)
+#Updated translation: Valencian by vbraque
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Portugal) by algarvio, c_schmitz, samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German by actxcellence, Basil, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo, tigger
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.2.13 (build 220207) to 5.2.14 (build 220214) February 14, 2022
 -Fixed issue: [security] Possible XSS in file uploader (Carsten Schmitz)
 -Fixed issue: [security] Missing brute-force protection when loading a survey (Carsten Schmitz)

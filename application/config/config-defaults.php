@@ -56,9 +56,13 @@ $config['admintheme']         = 'Sea_Green'; // This setting specifys the direct
 $config['adminthemeiconsize'] = 32; // This settings describes the icon size for a normal toolbar icon - default for gringegreen is 32
 
 
-// If the user enters password incorrectly
+// If the user (admins) enters password incorrectly
 $config['maxLoginAttempt']    = 3; // Lock them out after 3 attempts
 $config['timeOutTime']        = 60 * 10; // Lock them out for 10 minutes.
+
+// If participant enters wrong access token
+$config['maxLoginAttemptParticipants']    = 3; // Lock them out after 3 attempts
+$config['timeOutParticipants']        = 60 * 10; // Lock them out for 10 minutes.
 
 // Site Settings
 $config['printanswershonorsconditions'] = 1; // If set to 1, only relevant answers to questions can be printed by user. If set to 0, also questions not shown are printed

@@ -5,10 +5,10 @@
  */
 class PluginDynamic extends LSActiveRecord
 {
-    private static $_models = array();
+    private static $models = array();
 
-    /** @var CActiveRecordMetaData $_md meta data*/
-    private $_md;
+    /** @var CActiveRecordMetaData $md meta data*/
+    private $md;
 
     /** @var null|string $tableName */
     protected $tableName;
@@ -39,18 +39,19 @@ class PluginDynamic extends LSActiveRecord
     /**
      * We have a custom implementation here since the parents' implementation
      * does not create a new model for each table name.
-     * @param string $sTableName
+     *
+     * @param string $className Table name
      * @return Plugin
      */
-    public static function model($sTableName = null)
+    public static function model($className = null)
     {
-        if (isset($sTableName)) {
-            if (!isset(self::$_models[$sTableName])) {
-                $model = self::$_models[$sTableName] = new PluginDynamic($sTableName, null);
-                $model->_md = new CActiveRecordMetaData($model);
+        if (isset($className)) {
+            if (!isset(self::$models[$className])) {
+                $model = self::$models[$className] = new PluginDynamic($className, null);
+                $model->md = new CActiveRecordMetaData($model);
                 $model->attachBehaviors($model->behaviors());
             }
-            return self::$_models[$sTableName];
+            return self::$models[$className];
         }
         return null;
     }
@@ -67,12 +68,12 @@ class PluginDynamic extends LSActiveRecord
      */
     public function getMetaData()
     {
-        if ($this->_md !== null) {
-            return $this->_md;
+        if ($this->md !== null) {
+            return $this->md;
         } else {
             /** @var CActiveRecordMetaData $md */
-            $md = self::model($this->tableName())->_md;
-            return $this->_md = $md;
+            $md = self::model($this->tableName())->md;
+            return $this->md = $md;
         }
     }
 }

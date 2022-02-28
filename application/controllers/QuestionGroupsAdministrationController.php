@@ -38,7 +38,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     }
 
     /**
-     * This part comes from _renderWrappedTemplate
+     * This part comes from renderWrappedTemplate
      *
      * @param string $view
      * @return bool
@@ -182,7 +182,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         //todo: this action should not be used for new groups, use actionAdd instead
         //DO NOT accept any other values for gid
-        if ($gid === null  || $gid==='') {
+        if ($gid === null || $gid === '') {
             //this means new group
             $gid = null;
         } else {

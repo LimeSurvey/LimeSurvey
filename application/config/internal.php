@@ -202,8 +202,9 @@ $internalConfig = array(
                 'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443))
             ),
         ),
+        'sourceLanguage' => 'en',
         'messages' => array(
-            'class' => 'CGettextMessageSource',
+            'class' => 'application.core.LSMessageSource',
             'cachingDuration'=>3600,
             'forceTranslation' => true,
             'useMoFile' => true,
