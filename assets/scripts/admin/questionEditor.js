@@ -834,8 +834,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
               langIds[i] = randId;
             }
 
-            $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', langIds[i]));
-            $tr.attr('id', $tr.attr('id').replace('/new[0-9]{3-6}/', langIds[i]));
+            $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/, langIds[i]));
+            $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3,6}/, langIds[i]));
 
             $row.find('input').each((j /*: number */, inputField) => {
               $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/, langIds[i]));
