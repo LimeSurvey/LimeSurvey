@@ -132,10 +132,19 @@ jobs:
     needs: [job_php_versions]
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
     name: Run Syntax Check
+    strategy:
+      matrix:
+        php-versions: ['7.2', '8.0']
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
       
+       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
       - name: Grant Permissions to folder
         run:  chmod -R 777 ./tests/
 
