@@ -137,5 +137,5 @@ jobs:
           java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
 
       - name: Run the test script
-        run: DOMAIN=localhost ./third_party/bin/phpunit --testdox --stop-on-failure
-        
+        run: |
+         DOMAIN=localhost ./third_party/bin/phpunit --testdox --stop-on-failure
