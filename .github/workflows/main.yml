@@ -136,7 +136,7 @@ jobs:
           export MOZ_HEADLESS_HEIGHT=1024
           java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
 
-      - name: Run the test script
+      - name: Run functional tests
         env:
-          DOMAIN: localhost
-        run: DOMAIN=localhost ./third_party/bin/phpunit --testdox --stop-on-failure
+            DOMAIN: localhost
+        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
