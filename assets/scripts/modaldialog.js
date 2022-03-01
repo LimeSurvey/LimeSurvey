@@ -138,7 +138,6 @@ function copyJSON(jsonstring, filecount, fieldname, show_title, show_comment, po
     $('#'+fieldname).val(jsonstring);
     $('#'+fieldname+'_filecount').val(filecount);
     displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show_comment, pos);
-    checkconditions($('#'+fieldname).val(), fieldname, 'upload', 'change');
 }
 
 

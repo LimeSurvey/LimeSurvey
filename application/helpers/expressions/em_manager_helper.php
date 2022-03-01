@@ -7892,12 +7892,8 @@
                         if (count($qrelgseqs) > 0) { // If some of related group are updated : must check relevance (continue)
                              $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                         }
-                        $qrelJS .= "  if (typeof sgqa !== 'undefined') {\n";
-                        $qrelJS .= "    var jsName = LEMalias2varName[sgqa] || 'java' + sgqa;\n";
-                        $qrelJS .= "    if (!LEMregexMatch('/ ' + jsName + ' /', UsesVars)) {\n";
-                        $qrelJS .= "      return;\n";
-                        $qrelJS .= "    }\n";
-                        $qrelJS .= "  }\n";
+                        $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+                        $qrelJS .= "  return;\n }\n";
                     }
 
                     $qrelJS .= implode("",$relParts);
