@@ -3,7 +3,9 @@ const {src, dest} = require('gulp');
 const uglify = require('gulp-uglify');
 const rename = require('gulp-rename');
 const sass = require('gulp-sass')(require('sass'));
-const cssnano = require('gulp-cssnano');
+const gulppostcss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
 const concat = require('gulp-concat');
 const gulpIf = require('gulp-if');
 const useref = require('gulp-useref');
@@ -24,7 +26,12 @@ function scss_transpile() {
 }
 
 function scss_minify() {
-    return scss_transpile().pipe(cssnano())
+    let plugins = [
+        autoprefixer(),
+        cssnano()
+    ];
+    return scss_transpile()
+        .pipe(gulppostcss(plugins))
         .pipe(rename({extname: '.min.css'}))
         .pipe(dest('assets/bootstrap_5/build/css'));
 }
