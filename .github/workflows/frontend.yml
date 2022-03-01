@@ -73,6 +73,11 @@ jobs:
           cd ${{ github.workspace }}
           yarn --cwd ./assets/packages/adminbasics
 
+      - name: Install adminsidepanel
+        run: |
+          cd ${{ github.workspace }}
+          yarn --cwd ./assets/packages/adminsidepanel
+      
       - name: Run Tests
         run: |
           cd ${{ github.workspace }}
