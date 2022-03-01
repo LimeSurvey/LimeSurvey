@@ -1140,7 +1140,7 @@ function populateDatabase($oDB)
             '{{message}}',
             [
                 'id' => "integer NOT NULL",
-                'language' => "string(16)",
+                'language' => "string(50) NOT NULL deafult ''",
                 'translation' => "text",
             ],
             $options
