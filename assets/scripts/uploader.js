@@ -30,14 +30,14 @@ function doFileUpload()
 {
     var fieldname = $('#ia').val();
     /* Load the previously uploaded files */
-    var filecount = window.parent.window.$('#' + fieldname + '_filecount').val();
+    var filecount = window.parent.window.$('#java' + fieldname + '_filecount').val();
     $('#' + fieldname + '_filecount').val(filecount);
 
     var image_extensions = new Array("gif", "jpeg", "jpg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
 
     if (filecount > 0)
     {
-        var jsontext = window.parent.window.$('#' + fieldname).val();
+        var jsontext = window.parent.window.$('#java' + fieldname).val();
         var json = '';
         try{
             json = JSON.parse(jsontext);

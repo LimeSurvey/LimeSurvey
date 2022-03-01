@@ -46,6 +46,10 @@ $(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:
 $(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
+/* file upload */
+$(document).on("change",".upload-item input[id^='java']",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'upload', 'change')
+});
 
 /**
  * For number
