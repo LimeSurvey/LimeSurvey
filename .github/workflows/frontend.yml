@@ -77,5 +77,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           yarn --cwd ./assets/packages/adminbasics run test
+          yarn --cwd ./assets/packages/adminsidepanel run test
   
     
