@@ -367,30 +367,29 @@ class Update extends SurveyCommonAction
                     $updateinfos = json_decode(base64_decode(App()->request->getPost('datasupdateinfo')), true);
 
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
-                    $updateModel = new UpdateForm();
-                    $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
 
+                    $updateModel = new UpdateForm();
+
+                    $remove = $updateModel->removeDeletedFiles($updateinfos);
+                    if (!$remove->result) {
+                        return $this->_renderErrorString($remove->error);
+                    };
+                    $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
                     if ($file->result) {
                         $unzip = $updateModel->unzipUpdateFile();
                         if ($unzip->result) {
-                            $remove = $updateModel->removeDeletedFiles($updateinfos);
-                            if ($remove->result) {
-                                // Should never bug (version.php is checked before))
-                                $updateModel->updateVersion($destinationBuild);
-                                $updateModel->destroyGlobalSettings();
-                                $updateModel->removeTmpFile('update.zip');
-                                $updateModel->removeTmpFile('comfort_updater_cookie.txt');
+                            // Should never bug (version.php is checked before))
+                            $updateModel->updateVersion($destinationBuild);
+                            $updateModel->destroyGlobalSettings();
+                            $updateModel->removeTmpFile('update.zip');
+                            $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
-                                App()->session['update_result'] = null;
-                                App()->session['security_update'] = null;
-                                $today = new DateTime("now");
-                                App()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
+                            App()->session['update_result'] = null;
+                            App()->session['security_update'] = null;
+                            $today = new DateTime("now");
+                            App()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
-                                // TODO : aData should contains information about each step
-                                return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild' => $destinationBuild), false, false);
-                            } else {
-                                $error = $remove->error;
-                            }
+                            return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild' => $destinationBuild), false, false);
                         } else {
                             $error = $unzip->error;
                         }
