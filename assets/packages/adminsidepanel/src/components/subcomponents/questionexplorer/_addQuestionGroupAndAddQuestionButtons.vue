@@ -108,12 +108,13 @@ export default {
     methods: {
         createFullQuestionLink() {
             if (this.isCreateQuestionAllowed) {
-            if (LS.reparsedParameters().combined.gid) {
-              return LS.createUrl(this.createQuestionLink, {gid: LS.reparsedParameters().combined.gid});
+                if (LS.reparsedParameters().combined.gid) {
+                    return this.createQuestionLink + '&gid=' + LS.reparsedParameters().combined.gid;
+                } else {
+                    return this.createQuestionLink;
+                }
             }
-            return LS.createUrl(this.createQuestionLink, {});
-          }
-          return "";
+            return "";
         },
         toggleOrganizer() {
             this.$store.dispatch('unlockOrganizer');
