@@ -61,8 +61,30 @@
 * @package       LimeSurvey
 * @subpackage    Backend
 */
-class Update extends SurveyCommonAction
+
+// Backward compatibility function for updates to 5.3 from any previous version
+if (class_exists('Survey_Common_Action')) {
+    class DynamicSurveyCommonAction extends Survey_Common_Action {}
+} else {
+    class DynamicSurveyCommonAction extends SurveyCommonAction {}
+}
+
+class Update extends DynamicSurveyCommonAction
 {
+    /**
+     * Backward compatibility function for updates to 5.3 from any previous version
+     * 
+     * @inheritDoc
+     */
+    protected function renderWrappedTemplate ($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    {
+        if (method_exists(get_parent_class($this), 'renderWrappedTemplate')) {
+            parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        } else {
+            parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        }
+    }
+
     /**
      * First function to be called, when coming to admin/update
      *
