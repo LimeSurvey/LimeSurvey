@@ -65,7 +65,7 @@
 // Backward compatibility function for updates to 5.3 from any previous version
 // Psalm does not like that the classes are in the same file
 if (class_exists('Survey_Common_Action')) {
-// @codingStandardsIgnoreStart
+// phpcs:disable
     class DynamicSurveyCommonAction extends Survey_Common_Action
     {
     }
@@ -77,7 +77,7 @@ if (class_exists('Survey_Common_Action')) {
 
 class Update extends DynamicSurveyCommonAction
 {
-// @codingStandardsIgnoreEnd
+// phpcs:enable
     /**
      * Backward compatibility function for updates to 5.3 from any previous version
      *
