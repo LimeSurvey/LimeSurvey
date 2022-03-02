@@ -64,8 +64,8 @@
 
 // Backward compatibility function for updates to 5.3 from any previous version
 // Psalm does not like that the classes are in the same file
-// @codingStandardsIgnoreStart
 if (class_exists('Survey_Common_Action')) {
+// @codingStandardsIgnoreStart
     class DynamicSurveyCommonAction extends Survey_Common_Action
     {
     }
@@ -74,10 +74,10 @@ if (class_exists('Survey_Common_Action')) {
     {
     }
 }
-// @codingStandardsIgnoreEnd
 
 class Update extends DynamicSurveyCommonAction
 {
+// @codingStandardsIgnoreEnd
     /**
      * Backward compatibility function for updates to 5.3 from any previous version
      *
