@@ -61,13 +61,10 @@ Yii::app()->getController()->renderPartial(
             <?php echo $form->error($oUser, 'expires'); ?>
         </div>
         <?php if (!$oUser->isNewRecord): ?>
-            <?php // Show last login date if the logged user is superadmin or owner of the user being edited ?>
-            <?php if ($oUser->parent_id == Yii::app()->session['loginID'] || Permission::isForcedSuperAdmin(Yii::app()->session['loginID'])): ?>
-                <div class="row ls-space margin top-5">
-                    <?php echo $form->labelEx($oUser, 'last_login', ['for' => 'User_Form_last_login']); ?>
-                    <input class="form-control" type="text" value="<?= !empty($oUser->last_login) ? convertToGlobalSettingFormat($oUser->last_login, true) : gT("Never") ?>" disabled="true" />
-                </div>
-            <?php endif; ?>
+            <div class="row ls-space margin top-5">
+                <?php echo $form->labelEx($oUser, 'last_login', ['for' => 'User_Form_last_login']); ?>
+                <input class="form-control" type="text" value="<?= !empty($oUser->last_login) ? convertToGlobalSettingFormat($oUser->last_login, true) : gT("Never") ?>" disabled="true" />
+            </div>
             <div class="row ls-space margin top-10">
                 <div class="col-xs-12">
                     <input type="checkbox" id="utility_change_password">
