@@ -146,7 +146,7 @@ function populateDatabase($oDB)
             'ip' =>  "string(40) NOT NULL",
             'last_attempt' =>  "string(20) NOT NULL",
             'number_attempts' =>  "integer NOT NULL",
-            'is_frontend' => "boolean NOT NULL DEFAULT FALSE"
+            'is_frontend' => "boolean NOT NULL DEFAULT 0"
         ), $options);
 
 
@@ -1140,7 +1140,7 @@ function populateDatabase($oDB)
             '{{message}}',
             [
                 'id' => "integer NOT NULL",
-                'language' => "string(16)",
+                'language' => "string(50) NOT NULL default ''",
                 'translation' => "text",
             ],
             $options
