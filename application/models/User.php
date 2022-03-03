@@ -114,6 +114,7 @@ class User extends LSActiveRecord
             array('templateeditormode', 'default', 'value' => 'default'),
             array('templateeditormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('dateformat', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+            array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
 
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
@@ -141,6 +142,7 @@ class User extends LSActiveRecord
             'created' => gT('Created at'),
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
+            'expires' => gT("Expiry date/time:"),
         ];
     }
 
