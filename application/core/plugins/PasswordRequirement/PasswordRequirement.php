@@ -70,7 +70,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $this->subscribe('checkPasswordRequirement');
         $this->subscribe('createRandomPassword');
 
-        $this->subscribe('validateSaveSurveyForm');
+        $this->subscribe('SaveSurveyForm', 'validateSaveSurveyForm');
     }
 
     public function checkPasswordRequirement()
@@ -101,8 +101,18 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             return;
         }
         $event = $this->getEvent();
-        $password = $event->get('savePass');
+        if ($event->get('state') != 'validate') {
+            // Action only when validate
+            return;
+        }
+        $aSaveDatas = $event->get('aSaveDatas');
         $aSaveErrors = $event->get('aSaveErrors');
+        if (empty($aSaveDatas['clearpassword'])) {
+            // No need to check password if empty : core disallow it
+            return;
+        }
+
+        $password = $aSaveDatas['clearpassword'];
         $errors = $this->checkValidityOfPassword(
             $password,
             $this->get('surveySaveNeedsNumber', null, null, false),
