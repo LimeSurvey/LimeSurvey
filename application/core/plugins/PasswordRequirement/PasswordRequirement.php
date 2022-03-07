@@ -1,6 +1,6 @@
 <?php
 /**
- * Copre plugin for LimeSurvey
+ * Core plugin for LimeSurvey : password requirement settings
  * @version 1.1.0
  */
 
@@ -38,7 +38,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         ),
         'surveySaveActive' => array(
             'type' => 'boolean',
-            'label' => 'Check password when save survey',
+            'label' => 'Check password when saving survey',
             'default' => false,
         ),
         'surveySaveNeedsNumber' => array(
@@ -70,7 +70,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $this->subscribe('checkPasswordRequirement');
         $this->subscribe('createRandomPassword');
 
-        $this->subscribe('SaveSurveyForm', 'validateSaveSurveyForm');
+        $this->subscribe('saveSurveyForm', 'validateSaveSurveyForm');
     }
 
     public function checkPasswordRequirement()
@@ -105,14 +105,14 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             // Action only when validate
             return;
         }
-        $aSaveDatas = $event->get('aSaveDatas');
+        $saveData = $event->get('saveData');
         $aSaveErrors = $event->get('aSaveErrors');
-        if (empty($aSaveDatas['clearpassword'])) {
+        if (empty($saveData['clearpassword'])) {
             // No need to check password if empty : core disallow it
             return;
         }
 
-        $password = $aSaveDatas['clearpassword'];
+        $password = $saveData['clearpassword'];
         $errors = $this->checkValidityOfPassword(
             $password,
             $this->get('surveySaveNeedsNumber', null, null, false),
