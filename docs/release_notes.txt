@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.1 (build 220229) to 3.28.2 (build 220308) March 7, 2022
+-Fixed issue #15057: Translation screen not working correctly when there are long question text (#2259) (Gabriel Jenik)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 3.28.0 (build 220215) to 3.28.1 (build 220229) February 28, 2022
 -Fixed issue: Survey participant data with quotes is not properly exported to CSV (#2073) (Vilius Šumskas)
 -Fixed issue #17903: Incorrect IP address used when having multiple forward from proxies (Tassoman)
