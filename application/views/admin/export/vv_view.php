@@ -84,7 +84,7 @@
 
                     <div class="form-group">
                         <label for="qseparator" class="col-sm-4 control-label">
-                            <?php eT("Separator for question and subquestion"); ?>
+                            <?php eT("Separator for question and subquestion:"); ?>
                         </label>
                         <div class="col-sm-8">
                             <select class="form-control" name="qseparator" id="qseparator">
@@ -96,7 +96,7 @@
                     </div>
                     <div class="form-group">
                         <label for="abbreviatedtextto" class="col-sm-4 control-label">
-                            <?php eT("Separator for question and subquestion"); ?>
+                            <?php eT("Number of characters:"); ?>
                         </label>
                         <div class="col-sm-8">
                             <?php echo CHtml::numberField('abbreviatedtextto', '', array('min' => "1", 'step' => "1", 'class' => 'form-control')); ?>
