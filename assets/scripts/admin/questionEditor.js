@@ -622,6 +622,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   function labelSetDestruct() {
     $('#labelsets').select2('destroy');
     $('#labelsetpreview').empty();
+    $('#longcodesalert').hide();
   }
 
   /**
@@ -649,6 +650,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
         const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
 
+        var hasInvalidCodes = false;
+        const source = $('#labelsetbrowserModal').data('source');
         const i = 0;
         $.each(json.languages, (language, languageName) => {
           const $linkItem = $aTemplate.clone();
@@ -670,18 +673,27 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
           labelSet.labels.forEach((label) => {
             // Label title is not concatenated directly because it may have non-encoded HTML
-            const $labelTitleDiv = $('<div class="col-md-8"></div>');
+            const $labelTitleDiv = $('<div class="col-md-7"></div>');
             $labelTitleDiv.text(label.title);
             const $listItem = $listItemTemplate.clone();
-            $listItem.append(`<div class="col-md-3 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+            $listItem.append(`<div class="col-md-5 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
             $listItem.append($labelTitleDiv);
-            $listItem.append('<div class="col-md-1"></div>');
             $listItem.attr('data-label', JSON.stringify(label));
             $itemList.append($listItem);
+
+            if (source === 'answeroptions' && label.code.length > 5) {
+              hasInvalidCodes = true;
+            }
           });
 
           $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
           $itemList.appendTo($bodyItem);
+
+          if (hasInvalidCodes) {
+              $('#longcodesalert').show();
+          } else {
+              $('#longcodesalert').hide();
+          }
         });
         $('#labelsetpreview').empty();
         $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
@@ -811,6 +823,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $tr = $row.eq(4);
             } else if (source === 'answeroptions') {
               $tr = $row.eq(2);
+
+              // Make sure codes are limited to 5 characters
+              label.code = label.code.substr(0, 5);
             } else {
               throw 'source is not subquestions or answeroptions: ' + source;
             }
@@ -834,8 +849,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
               langIds[i] = randId;
             }
 
-            $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', langIds[i]));
-            $tr.attr('id', $tr.attr('id').replace('/new[0-9]{3-6}/', langIds[i]));
+            $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/, langIds[i]));
+            $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3,6}/, langIds[i]));
 
             $row.find('input').each((j /*: number */, inputField) => {
               $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/, langIds[i]));
@@ -1672,6 +1687,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
       $('#labelsetbrowserModal').modal('show');
 
       initLabelSetModal(event);
+
+      $('#labelsetbrowserModal').data('source', source);
     },
 
     /**

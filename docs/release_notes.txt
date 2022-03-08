@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.3 (build 220307) to 5.3.4 (build 220309) March 8, 2022
+-Fixed issue: Font is looking different for various question types in statistics response filter (#2085) (Gabriel Jenik)
+-Fixed issue: Duplicate ComfortUpdate checker plugin (#2276) (Tim Willig)
+-Fixed issue #17935: See only general settings on global and group survey settings (Olle Haerstedt)
+-Fixed issue #17927: Error on database update when using Postgres (Carsten Schmitz)
+-Fixed issue #17926: No quotas adjustable (#2280) (Gabriel Jenik)
+-Fixed issue #17873: Remote Control `delete_language` fails to remove language (#2235) (Edgar Ramírez)
+-Fixed issue #17844: Deleting or adding in the middle of a loaded label set not possible (#2279) (Gabriel Jenik)
+-Fixed issue #17677: Valid TSV file can not be used in VV import (#2273) (Denis Chenu)
+#Updated translation: Spanish (Spain) by DarioRoig, Ignacio, ignaciogros, ireneoh, segui
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.3.2 (build 220302) to 5.3.3 (build 220307) March 7, 2022
+-Fixed issue #17773: Code name change while we updated from Edit Question screen (encuestabizdevgit)
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, DarioRoig, Ignacio, ignaciogros, ireneoh, segui, valdomir, xtingray
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.3.1 (build 220301) to 5.3.2 (build 220302) March 2, 2022
 -Fixed issue: Error on updating database (Carsten Schmitz)
 -Fixed issue #17922: ComfortUpdate deletes essential files (Carsten Schmitz)
