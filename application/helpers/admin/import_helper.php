@@ -3323,7 +3323,7 @@ function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDR
 }
 
 /**
- * Read a csv file and resturn a tmp ressources to same file in utf8
+ * Read a csv file and return a tmp ressources to same file in utf8
  * @param string $fullfilepath
  * @param string $encoding from
  * @return resource
