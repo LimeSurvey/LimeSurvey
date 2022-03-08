@@ -6,7 +6,7 @@ namespace LimeSurvey\Helpers\Update;
  * Add missing noTablesOnMobile.css to vanilla configs again. It was done on 428, but the bug on LsDefaultDataSets remained
  * causing problems on new installations.
  */
-class Update_484 extends DatabaseUpdateBase
+class Update_485 extends DatabaseUpdateBase
 {
     /**
      * @inheritDoc
