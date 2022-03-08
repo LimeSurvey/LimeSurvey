@@ -78,18 +78,18 @@
                                     <?php eT("Old VV version"); ?>
                                 </label>
                             </div>
-                            <p class="help-block"><?php eT("If you want to import survey on old installation or if your survey have problem: use old version (automatically selected if some code are duplicated)."); ?></p>
+                            <p class="help-block"><?php eT("If you want to import the response data in older version or if your survey has integrity problem, please use the old export version (automatically selected if there are duplicate codes)."); ?></p>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="qseparator" class="col-sm-4 control-label">
-                            <?php eT("Separator for question and subquestion:"); ?>
+                            <?php eT("Separator between question and subquestion:"); ?>
                         </label>
                         <div class="col-sm-8">
                             <select class="form-control" name="qseparator" id="qseparator">
                                 <option value="newline"><?php eT("New line (use with care)"); ?></option>
-                                <option value="parenthesis" selected><?php eT("Sub question wrapped by parenthesis"); ?></option>
+                                <option value="parenthesis" selected><?php eT("Subquestion wrapped by parentheses"); ?></option>
                                 <option value="dash"><?php printf(gT("Single dash (%s)"), ' - '); ?></option>
                             </select>
                         </div>
