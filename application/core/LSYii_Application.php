@@ -136,7 +136,7 @@ class LSYii_Application extends CWebApplication
 
         // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
 
-        /* Default config */
+        /* Default config */ 
         $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
         $emailConfig = require(__DIR__ . '/../config/email.php');
         $versionConfig = require(__DIR__ . '/../config/version.php');
