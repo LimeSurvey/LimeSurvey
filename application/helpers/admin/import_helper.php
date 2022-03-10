@@ -2350,24 +2350,21 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
 
     // Prepare an array of sentence for result
     $CSVImportResult = array();
-    // Read the file
-    $handle = fopen($sFullFilePath, "r"); // Need to be adapted for Mac ? in options ?
-    if ($handle === false) {
-        throw new Exception("Can't open file");
+    $tmpVVFile = fileCsvToUtf8($sFullFilePath, $aOptions['sCharset']);
+    $aFileResponses = array();
+    while (($aLineResponse = fgetcsv($tmpVVFile, 0, $aOptions['sSeparator'], $aOptions['sQuoted'])) !== false) {
+        $aFileResponses[] = $aLineResponse;
     }
-    while (!feof($handle)) {
-        $buffer = fgets($handle); //To allow for very long lines . Another option is fgetcsv (0 to length), but need mb_convert_encoding
-        $aFileResponses[] = mb_convert_encoding($buffer, "UTF-8", $aOptions['sCharset']);
+    if (empty($aFileResponses)) {
+        $CSVImportResult['errors'][] = sprintf(gT("File is empty or you selected an invalid character set (%s)."), $aOptions['sCharset']);
+        return $CSVImportResult;
     }
-    // Close the file
-    fclose($handle);
     if ($aOptions['bDeleteFistLine']) {
         array_shift($aFileResponses);
     }
 
     $aRealFieldNames = Yii::app()->db->getSchema()->getTable(SurveyDynamic::model($iSurveyId)->tableName())->getColumnNames();
-    //$aCsvHeader=array_map("trim",explode($aOptions['sSeparator'], trim(array_shift($aFileResponses))));
-    $aCsvHeader = str_getcsv(array_shift($aFileResponses), $aOptions['sSeparator'], $aOptions['sQuoted']);
+    $aCsvHeader = array_shift($aFileResponses);
     LimeExpressionManager::SetDirtyFlag(); // Be sure survey EM code are up to date
     $aLemFieldNames = LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
     $aKeyForFieldNames = array(); // An array assicated each fieldname with corresponding responses key
@@ -2458,10 +2455,9 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     $iIdReponsesKey = (is_int($iIdKey)) ? $iIdKey : 0; // The key for reponses id: id column or first column if not exist
 
     // Import each responses line here
-    while ($sResponses = array_shift($aFileResponses)) {
+    while ($aResponses = array_shift($aFileResponses)) {
         $iNbResponseLine++;
         $bExistingsId = false;
-        $aResponses = str_getcsv($sResponses, $aOptions['sSeparator'], $aOptions['sQuoted']);
         if ($iIdKey !== false) {
             $oSurvey = SurveyDynamic::model($iSurveyId)->findByPk($aResponses[$iIdKey]);
             if ($oSurvey) {
@@ -2676,40 +2672,9 @@ function TSVImportSurvey($sFullFilePath)
 {
     $baselang = 'en'; // TODO set proper default
 
-    $handle = fopen($sFullFilePath, 'r');
-    if ($handle === false) {
-        throw new Exception("Can't open file");
-    }
-    $bom = fread($handle, 2);
-    rewind($handle);
     $aAttributeList = array(); //QuestionAttribute::getQuestionAttributesSettings();
+    $tmp = fileCsvToUtf8($sFullFilePath);
 
-    // Excel tends to save CSV as UTF-16, which PHP does not properly detect
-    if ($bom === chr(0xff) . chr(0xfe) || $bom === chr(0xfe) . chr(0xff)) {
-        // UTF16 Byte Order Mark present
-        $encoding = 'UTF-16';
-    } else {
-        $file_sample = (string) fread($handle, 1000) . 'e'; //read first 1000 bytes
-        // + e is a workaround for mb_string bug
-        rewind($handle);
-
-        $encoding = mb_detect_encoding($file_sample, 'UTF-8, UTF-7, ASCII, EUC-JP,SJIS, eucJP-win, SJIS-win, JIS, ISO-2022-JP');
-    }
-    if ($encoding !== false && $encoding != 'UTF-8') {
-        stream_filter_append($handle, 'convert.iconv.' . $encoding . '/UTF-8');
-    }
-
-    $file = stream_get_contents($handle);
-    fclose($handle);
-    // fix Excel non-breaking space
-    $file = str_replace("0xC20xA0", ' ', $file);
-    // Replace all different newlines styles with \n
-    $file = preg_replace('~\R~u', "\n", $file);
-    $tmp = fopen('php://temp', 'r+');
-    fwrite($tmp, $file);
-    // Release the file, otherwise it will saty in memory
-    unset($file);
-    rewind($tmp);
     $rowheaders = fgetcsv($tmp, 0, "\t", '"');
     $rowheaders = array_map('trim', $rowheaders);
     // remove BOM from the first header cell, if needed
@@ -3355,4 +3320,61 @@ function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDR
             }
         }
     }
+}
+
+/**
+ * Read a csv file and return a tmp ressources to same file in utf8
+ * @param string $fullfilepath
+ * @param string $encoding from
+ * @return resource
+ */
+function fileCsvToUtf8($fullfilepath, $encoding = 'auto')
+{
+    $handle = fopen($fullfilepath, 'r');
+    if ($handle === false) {
+        throw new Exception("Can't open file");
+    }
+    $aEncodings = aEncodingsArray();
+    if (!array_key_exists($encoding, $aEncodings)) {
+        $encoding = 'auto';
+    }
+    if ($encoding == 'auto') {
+        $bom = fread($handle, 2);
+        rewind($handle);
+        // Excel tends to save CSV as UTF-16, which PHP does not properly detect
+        if ($bom === chr(0xff) . chr(0xfe) || $bom === chr(0xfe) . chr(0xff)) {
+            // UTF16 Byte Order Mark present
+            $encoding = 'UTF-16';
+        } else {
+            $file_sample = (string) fread($handle, 10000) . 'e'; //read first 1000 bytes
+            // + e is a workaround for mb_string bug
+            rewind($handle);
+            $encoding = mb_detect_encoding(
+                $file_sample,
+                'UTF-8, UTF-7, ASCII, EUC-JP,SJIS, eucJP-win, SJIS-win, JIS, ISO-2022-JP'
+            );
+        }
+        if ($encoding === false) {
+            $encoding = 'utf8';
+        }
+    }
+    if ($encoding != 'utf8' && $encoding != 'UTF-8') {
+        stream_filter_append($handle, 'convert.iconv.' . $encoding . '/UTF-8');
+    }
+
+    $file = stream_get_contents($handle);
+    fclose($handle);
+    // fix Excel non-breaking space
+    $file = str_replace("0xC20xA0", ' ', $file);
+    // Replace all different newlines styles with \n
+    $file = preg_replace('~\R~u', "\n", $file);
+    $tmp = fopen('php://temp', 'r+');
+    fwrite($tmp, $file);
+    // Release the file, otherwise it will stay in memory
+    unset($file);
+    // Delete not needed file
+    unlink($fullfilepath);
+    /* Return the tempory ressource */
+    rewind($tmp);
+    return $tmp;
 }
