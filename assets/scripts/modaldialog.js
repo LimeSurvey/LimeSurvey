@@ -135,8 +135,8 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
 }
 
 function copyJSON(jsonstring, filecount, fieldname, show_title, show_comment, pos) {
-    $('#java'+fieldname).val(jsonstring).trigger('change');
-    $('#java'+fieldname+'_filecount').val(filecount).trigger('change');
+    $('#java'+fieldname).val(jsonstring).trigger('updated');
+    $('#java'+fieldname+'_filecount').val(filecount).trigger('updated');
     displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show_comment, pos);
 }
 
