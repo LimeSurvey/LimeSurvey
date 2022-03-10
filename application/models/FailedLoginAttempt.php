@@ -22,6 +22,8 @@
  * @property integer $number_attempts
  * @property int $is_frontend  from frontend(=1) or from backend (=0)
  */
+
+// @property int $is_frontend  from frontend(=1) or from backend (=0)
 class FailedLoginAttempt extends LSActiveRecord
 {
     public const TYPE_LOGIN = 'login';
@@ -63,7 +65,13 @@ class FailedLoginAttempt extends LSActiveRecord
     {
         $ip = substr(getIPAddress(), 0, 40);
 
-        $this->deleteAllByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)));
+        try {
+            $this->deleteAllByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)));
+        } catch (Exception $e) {
+            //this happens ONLY if no admin has loggin before and db-update 481 has not been done before and
+            //participant takes a survey
+            $this->deleteAllByAttributes(array('ip' => $ip));
+        }
     }
 
     /**
@@ -96,15 +104,25 @@ class FailedLoginAttempt extends LSActiveRecord
                 throw new InvalidArgumentException(sprintf("Invalid attempt type: %s", $attemptType));
         }
 
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'number_attempts > :attempts AND ip = :ip AND is_frontend = :is_frontend';
-        $criteria->params = array(
-            ':attempts' => $maxLoginAttempt,
-            ':ip' => $ip,
-            ':is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)
-        );
-
-        $row = $this->find($criteria);
+        try {
+            $criteria = new CDbCriteria();
+            $criteria->condition = 'number_attempts > :attempts AND ip = :ip AND is_frontend = :is_frontend';
+            $criteria->params = array(
+                ':attempts' => $maxLoginAttempt,
+                ':ip' => $ip,
+                ':is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)
+            );
+            $row = $this->find($criteria);
+        } catch (Exception $e) {
+            //this happens only if update-db 481 is not already done
+            $criteria = new CDbCriteria();
+            $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
+            $criteria->params = array(
+                ':attempts' => $maxLoginAttempt,
+                ':ip' => $ip,
+            );
+            $row = $this->find($criteria);
+        }
 
         if ($row != null) {
             $lastattempt = strtotime($row->last_attempt);
@@ -130,7 +148,12 @@ class FailedLoginAttempt extends LSActiveRecord
         if (!$this->isLockedOut($attemptType)) {
             $timestamp = date("Y-m-d H:i:s");
             $ip = substr(getIPAddress(), 0, 40);
-            $row = $this->findByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === self::TYPE_TOKEN)));
+            try {
+                $row = $this->findByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === self::TYPE_TOKEN)));
+            } catch (Exception $e) {
+                //this happens only if update-db 481 is not already done
+                $row = $this->findByAttributes(array('ip' => $ip));
+            }
 
             if ($row !== null) {
                 $row->number_attempts = $row->number_attempts + 1;
@@ -141,8 +164,12 @@ class FailedLoginAttempt extends LSActiveRecord
                 $record->ip = $ip;
                 $record->number_attempts = 1;
                 $record->last_attempt = $timestamp;
-                $record->is_frontend = ($attemptType === self::TYPE_TOKEN);
-                $record->save();
+                try {
+                    $record->is_frontend = ($attemptType === self::TYPE_TOKEN) ? 1 : 0;
+                    $record->save();
+                } catch (Exception $e) {
+                    $record->save();
+                }
             }
         }
     }
