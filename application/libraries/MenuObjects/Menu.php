@@ -42,6 +42,18 @@ class Menu implements MenuInterface
     protected $tooltip = "";
 
     /**
+     * If true, render this menu before the main menu.
+     * @var boolean
+     */
+    protected $isPrepended = false;
+
+    /**
+     * Can only be true when child class MenuButton is used.
+     * @var boolean
+     */
+    protected $isButton = false;
+
+    /**
      * @param array $options - Options for either dropdown menu or plain link
      * @return void
      */
@@ -73,6 +85,10 @@ class Menu implements MenuInterface
 
         if (isset($options['tooltip'])) {
             $this->tooltip = $options['tooltip'];
+        }
+
+        if (isset($options['isPrepended'])) {
+            $this->isPrepended = $options['isPrepended'];
         }
     }
 
@@ -130,5 +146,21 @@ class Menu implements MenuInterface
     public function getTooltip()
     {
         return $this->tooltip;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPrepended()
+    {
+        return $this->isPrepended;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isButton()
+    {
+        return $this->isButton;
     }
 }
