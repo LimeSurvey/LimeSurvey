@@ -65,12 +65,10 @@ class FailedLoginAttempt extends LSActiveRecord
     {
         $ip = substr(getIPAddress(), 0, 40);
 
-        try {
-            $this->deleteAllByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)));
-        } catch (Exception $e) {
-            //this happens ONLY if no admin has loggin before and db-update 481 has not been done before and
-            //participant takes a survey
+        if (Yii::app()->getConfig('DBVersion') <= 480) {
             $this->deleteAllByAttributes(array('ip' => $ip));
+        } else {
+            $this->deleteAllByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)));
         }
     }
 
@@ -104,22 +102,21 @@ class FailedLoginAttempt extends LSActiveRecord
                 throw new InvalidArgumentException(sprintf("Invalid attempt type: %s", $attemptType));
         }
 
-        try {
+        if (Yii::app()->getConfig('DBVersion') <= 480) {
+            $criteria = new CDbCriteria();
+            $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
+            $criteria->params = array(
+                ':attempts' => $maxLoginAttempt,
+                ':ip' => $ip,
+            );
+            $row = $this->find($criteria);
+        } else {
             $criteria = new CDbCriteria();
             $criteria->condition = 'number_attempts > :attempts AND ip = :ip AND is_frontend = :is_frontend';
             $criteria->params = array(
                 ':attempts' => $maxLoginAttempt,
                 ':ip' => $ip,
                 ':is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)
-            );
-            $row = $this->find($criteria);
-        } catch (Exception $e) {
-            //this happens only if update-db 481 is not already done
-            $criteria = new CDbCriteria();
-            $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
-            $criteria->params = array(
-                ':attempts' => $maxLoginAttempt,
-                ':ip' => $ip,
             );
             $row = $this->find($criteria);
         }
@@ -148,11 +145,11 @@ class FailedLoginAttempt extends LSActiveRecord
         if (!$this->isLockedOut($attemptType)) {
             $timestamp = date("Y-m-d H:i:s");
             $ip = substr(getIPAddress(), 0, 40);
-            try {
-                $row = $this->findByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === self::TYPE_TOKEN)));
-            } catch (Exception $e) {
-                //this happens only if update-db 481 is not already done
+
+            if (Yii::app()->getConfig('DBVersion') <= 480) {
                 $row = $this->findByAttributes(array('ip' => $ip));
+            } else {
+                $row = $this->findByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === self::TYPE_TOKEN)));
             }
 
             if ($row !== null) {
@@ -164,10 +161,10 @@ class FailedLoginAttempt extends LSActiveRecord
                 $record->ip = $ip;
                 $record->number_attempts = 1;
                 $record->last_attempt = $timestamp;
-                try {
-                    $record->is_frontend = ($attemptType === self::TYPE_TOKEN) ? 1 : 0;
+                if (Yii::app()->getConfig('DBVersion') <= 480) {
                     $record->save();
-                } catch (Exception $e) {
+                } else {
+                    $record->is_frontend = ($attemptType === self::TYPE_TOKEN) ? 1 : 0;
                     $record->save();
                 }
             }
