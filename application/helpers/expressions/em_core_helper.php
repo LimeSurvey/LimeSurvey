@@ -2429,7 +2429,11 @@ class ExpressionManager
      */
     public static function gT($string, $sEscapeMode  = 'html')
     {
-        return gT($string, $sEscapeMode, Yii::app()->session['adminlang']);
+        $language = App()->getConfig("defaultlang");
+        if (!Yii::app() instanceof CConsoleApplication && isset(Yii::app()->session['adminlang'])) {
+            $language = Yii::app()->session['adminlang'];
+        }
+        return gT($string, $sEscapeMode, $language);
     }
 }
 

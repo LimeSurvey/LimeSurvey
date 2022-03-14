@@ -551,7 +551,6 @@ class Permission extends LSActiveRecord
      */
     public function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        // TODO: in entry script, if CConsoleApplication, set user as superadmin
         if (is_null($iUserID) && Yii::app() instanceof CConsoleApplication) {
             return true;
         }
