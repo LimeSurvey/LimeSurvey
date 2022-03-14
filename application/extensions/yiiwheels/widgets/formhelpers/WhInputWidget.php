@@ -10,8 +10,8 @@
  * @link http://www.2amigos.us/
  */
 
-Yii::import('bootstrap.helpers.TbArray');
-Yii::import('bootstrap.helpers.TbHtml');
+Yii::import('yiistrap.helpers.TbArray');
+Yii::import('yiistrap.helpers.TbHtml');
 
 class WhInputWidget extends CInputWidget {
     /**

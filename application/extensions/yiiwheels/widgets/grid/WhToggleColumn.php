@@ -9,8 +9,8 @@
  * @uses YiiStrap.helpers.TbHtml
  * @uses YiiStrap.widgets.TbDataColumn
  */
-Yii::import('bootstrap.helpers.TbHtml');
-Yii::import('bootstrap.widgets.TbDataColumn');
+Yii::import('yiistrap.helpers.TbHtml');
+Yii::import('yiistrap.widgets.TbDataColumn');
 
 class WhToggleColumn extends TbDataColumn
 {

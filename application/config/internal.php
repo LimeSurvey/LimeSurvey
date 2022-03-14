@@ -46,12 +46,15 @@ $internalConfig = array(
         'core' => realpath(__DIR__.'/../../assets/packages'),
         'fonts' => realpath(__DIR__.'/../../assets/fonts'),
 
-        // yiistrap configuration
+        // bootstrap 5 configuration
         'bootstrap' => realpath(__DIR__.'/../assets/bootstrap_5'),
-//        'vendor.twbs.bootstrap.dist' => realpath(__DIR__.'/../extensions/bootstrap'),
+        // yiistrap configuration
+        // TODO:
+        'yiistrap' => realpath(__DIR__.'/../extensions/bootstrap'),
+        'vendor.twbs.bootstrap.dist' => realpath(__DIR__.'/../extensions/bootstrap'),
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__.'/../extensions/yiiwheels'),
-        'vendor.twbs.bootstrap.dist',
+//        'vendor.twbs.bootstrap.dist',
 
         //Basic questiontype objects
         'questiontypes' => realpath(__DIR__.'/../core/QuestionTypes')
@@ -95,9 +98,9 @@ $internalConfig = array(
         'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
-//        'bootstrap.helpers.*',
-//        'bootstrap.widgets.*',
-//        'bootstrap.behaviors.*',
+        'yiistrap.helpers.*',
+        'yiistrap.widgets.*',
+        'yiistrap.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'third_party.Twig.*',
         'third_party.sodium.*',
@@ -108,9 +111,9 @@ $internalConfig = array(
     'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
         // yiistrap configuration
-//        'bootstrap' => array(
-//            'class' => 'bootstrap.components.TbApi',
-//        ),
+        'bootstrap' => array(
+            'class' => 'yiistrap.components.TbApi',
+        ),
         // yiiwheels configuration
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',

@@ -8,7 +8,7 @@
  * @package YiiWheels.widgets.fileupload
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+Yii::import('yiistrap.helpers.TbArray');
 Yii::import('zii.widgets.jui.CJuiInputWidget');
 
 class WhFileUpload extends CJuiInputWidget

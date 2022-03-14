@@ -51,18 +51,14 @@ return array(
     // Bootstrap admin
     // must be different for theme editor not to colide with theme files replacement
     'bootstrap-admin' => array(
-        'devBaseUrl' => 'assets/packages/bootstrap/',
-        'basePath' => 'core.bootstrap',
+        'devBaseUrl' => 'assets/bootstrap_5/',
+        'basePath' => 'bootstrap',
         'css'=> array(
-            'bootstrap'.$minVersion.'.css', /* Admin need it, not public */
-            'yiistrap'.$minVersion.'.css',
+            'build/css/custom.min.css',
         ),
         'js'=>array(
-            'bootstrap'.$minVersion.'.js'
+            'build/js/custom.min.js',
         ),
-        'depends' => array(
-            'jquery',
-        )
     ),
 
     // bootstrap-slider : for multinumeric with slider
@@ -349,7 +345,6 @@ return array(
             'dom2image',
             'es6promise',
             'jquery',
-            'bootstrap'
         )
     ),
     /* Used by ranking question type */

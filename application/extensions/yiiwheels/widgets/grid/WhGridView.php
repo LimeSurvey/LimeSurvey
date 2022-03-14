@@ -16,8 +16,8 @@
  * @uses Yiistrap.widgets.TbHtml
  * @uses Yiistrap.widgets.TbGridView
  */
-Yii::import('bootstrap.helpers.TbHtml');
-Yii::import('bootstrap.widgets.TbGridView');
+Yii::import('yiistrap.helpers.TbHtml');
+Yii::import('yiistrap.widgets.TbGridView');
 
 class WhGridView extends TbGridView
 {

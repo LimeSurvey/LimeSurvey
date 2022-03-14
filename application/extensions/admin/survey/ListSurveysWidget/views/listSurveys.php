@@ -17,7 +17,7 @@
 <div class="row">
     <div class="col-lg-12 content-right">
         <?php
-            $surveyGrid = $this->widget('bootstrap.widgets.TbGridView', array(
+            $surveyGrid = $this->widget('yiistrap.widgets.TbGridView', array(
             'dataProvider' => $this->model->search(),
 
                 // Number of row per page selection
