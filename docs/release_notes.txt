@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.4 (build 220309) to 5.3.5 (build 220314) March 14, 2022
+-Fixed issue: Downloading a single file was not possible if file path is symlinked (Carsten Schmitz)
+-Fixed issue: Database exception when running survey and db update has not been done yet… (#2289) (Patricia Stell)
+-Fixed issue #17942: Question cannot be deleted if another deleted question had a condition pending on it (Carsten Schmitz)
+-Fixed issue #17922: ComfortUpdate deletes essential files (Carsten Schmitz)
+-Fixed issue #17906: Label set doesn't load (#2287) (Gabriel Jenik)
+-Fixed issue #17374: aSurveyInfo.datasecurity_notice_label do not return only the label (#2281) (Denis Chenu)
+-Fixed issue #17321: Array question are not split up on mobile devices when using vanilla theme (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.3.3 (build 220307) to 5.3.4 (build 220309) March 8, 2022
 -Fixed issue: Font is looking different for various question types in statistics response filter (#2085) (Gabriel Jenik)
 -Fixed issue: Duplicate ComfortUpdate checker plugin (#2276) (Tim Willig)

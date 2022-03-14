@@ -743,7 +743,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           $('#labelsets').find('option').each((i, option) => { if ($(option).attr('value')) { $(option).remove(); } });
           jsonString.labelsets.forEach((item) => {
             const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);  // jshint ignore: line
-            $('#labelsets').append(newOption).trigger('change');
+            $('#labelsets').append(newOption);
           });
         }
       }
@@ -751,7 +751,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
 
     // Label set select2 element.
-    $('#labelsets').on('change', function () {
+    $('#labelsets').off('change').on('change', function () {
       const value = $(this).val();
       showLabelSetPreview(parseInt(value));
     });
@@ -1962,7 +1962,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       });
     });
 
-    $('#labelsets').click(showLabelSetPreview);
     $('.bthsaveaslabel').click(getLabel);
     $('input[name=savelabeloption]:radio').click(saveAsLabelSetOptionClick);
     updateRowProperties();
