@@ -46,6 +46,10 @@ $(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:
 $(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
+/* hidden item */
+$(document).on("updated",".answer-item :hidden, .upload-item :hidden",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'equation', 'updated')
+});
 
 /**
  * For number

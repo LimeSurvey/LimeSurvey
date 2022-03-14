@@ -4087,7 +4087,7 @@
                         $jsVarName_on = 'answer' . $sgqa;;
                         break;
                     case '|': //File Upload
-                        $jsVarName = $sgqa;
+                        $jsVarName = 'java' . $sgqa;
                         $jsVarName_on = $jsVarName;
                         break;
                     case 'P': //Multiple choice with comments checkbox + text
