@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.2 (build 220308) to 3.28.3 (build 220315) March 14, 2022
+-Fixed issue #17846: Expression manager on file upload question type don't work on same page (#2269) (Gabriel Jenik)
+#Updated translation: Japanese by nomoto
+
+
 Changes from 3.28.1 (build 220229) to 3.28.2 (build 220308) March 7, 2022
 -Fixed issue #15057: Translation screen not working correctly when there are long question text (#2259) (Gabriel Jenik)
 #Updated translation: Dutch by Han
