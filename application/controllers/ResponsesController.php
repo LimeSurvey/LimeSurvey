@@ -671,7 +671,7 @@ class ResponsesController extends LSBaseController
                 // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
                 $sDir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
-                $sRealUserPath = realpath($sFileRealName);
+                $sRealUserPath = get_absolute_path($sFileRealName);
                 if ($sRealUserPath === false) {
                     throw new CHttpException(404, "File not found.");
                 } elseif (strpos($sRealUserPath, $sDir) !== 0) {
