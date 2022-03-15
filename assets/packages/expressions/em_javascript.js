@@ -235,7 +235,7 @@ $(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :c
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* hidden item */
-$(document).on("updated",".answer-item :hidden",function(event){
+$(document).on("updated",".answer-item :hidden, .upload-item :hidden",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'equation', 'updated')
 });
 /**
