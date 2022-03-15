@@ -61,8 +61,38 @@
 * @package       LimeSurvey
 * @subpackage    Backend
 */
-class Update extends SurveyCommonAction
+
+// Backward compatibility function for updates to 5.3 from any previous version
+// Psalm does not like that the classes are in the same file
+if (class_exists('SurveyCommonAction')) {
+// phpcs:disable
+    class DynamicSurveyCommonAction extends SurveyCommonAction
+    {
+    }
+} else {
+    // try to include the old one
+    class DynamicSurveyCommonAction extends Survey_Common_Action
+    {
+    }
+}
+
+class Update extends DynamicSurveyCommonAction
 {
+// phpcs:enable
+    /**
+     * Backward compatibility function for updates to 5.3 from any previous version
+     *
+     * @inheritDoc
+     */
+    protected function renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    {
+        if (method_exists(get_parent_class($this), 'renderWrappedTemplate')) {
+            parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        } else {
+            parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        }
+    }
+
     /**
      * First function to be called, when coming to admin/update
      *

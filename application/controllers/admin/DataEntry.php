@@ -155,7 +155,6 @@ class DataEntry extends SurveyCommonAction
         $aOptions['sCharset'] = Yii::app()->request->getPost('vvcharset');
         $aOptions['sSeparator'] = "\t";
         $aResult = CSVImportResponses($filePath, $iSurveyId, $aOptions);
-        unlink($filePath); //delete the uploaded file
         $aData['class'] = "";
         $aData['title'] = gT("Import a VV response data file");
         $aData['aResult']['success'][] = gT("File upload succeeded.");
