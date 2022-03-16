@@ -1,4 +1,4 @@
-export default {
+export const pjaxMixins = {
     methods: {
         updatePjaxLinks: function (store) {
             this.$forceUpdate();

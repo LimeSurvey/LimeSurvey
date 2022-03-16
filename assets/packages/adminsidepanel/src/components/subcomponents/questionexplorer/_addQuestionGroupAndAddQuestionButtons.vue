@@ -65,7 +65,7 @@
     </div>
 </template>
 <script>
-import translateMixins from '../../../mixins/translateMixins';
+import {translateMixins} from '../../../mixins/translateMixins';
 import EventBus from '../../../../eventbus.js';
 
 export default {

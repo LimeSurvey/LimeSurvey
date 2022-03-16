@@ -1,5 +1,5 @@
 
-export default {
+export const translateMixins = {
     methods: {
         translate(sidemenu, string) {
             return sidemenu.translate[string] || string;

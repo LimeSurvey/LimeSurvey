@@ -17,8 +17,8 @@
 </template>
 <script>
 import _ from "lodash";
-import pjaxMixins from "../../../mixins/pjaxMixins.js";
-import translateMixins from "../../../mixins/translateMixins.js";
+import {pjaxMixins} from "../../../mixins/pjaxMixins.js";
+import {translateMixins} from "../../../mixins/translateMixins.js";
 import AddQuestionGroupAndAddQuestionButtons from './_addQuestionGroupAndAddQuestionButtons.vue';
 import ListOfAllQuestionGroupsWithQuestions from './_listOfAllQuestionGroupsWithQuestions.vue';
 import EventBus from '../../../../eventbus.js';
