@@ -1,0 +1,49 @@
+$spaces: 0 5 10 15 25 30 35 40 45 50;
+@mixin margin($space) {
+    &.margin {
+        &.left-#{$space} {
+            margin-left: $space*1px;
+        }
+        &.right-#{$space} {
+            margin-right: $space*1px;
+        }
+        &.top-#{$space} {
+            margin-top: $space*1px;
+        }
+        &.bottom-#{$space} {
+            margin-bottom: $space*1px;
+        }
+        &.all-#{$space} {
+            margin : $space*1px;
+        }
+    }
+}
+
+@mixin padding($space) {
+    &.padding {
+        &.left-#{$space} {
+            padding-left: $space*1px;
+        }
+        &.right-#{$space} {
+            padding-right: $space*1px;
+        }
+        &.top-#{$space} {
+            padding-top: $space*1px;
+        }
+        &.bottom-#{$space} {
+            padding-bottom: $space*1px;
+        }
+        &.all-#{$space} {
+            padding: $space*1px;
+        }
+    }
+}
+
+.ls-space {
+    @each $space in $spaces {
+        @include margin($space);
+    }
+    @each $space in $spaces {
+        @include padding($space);
+    }
+}

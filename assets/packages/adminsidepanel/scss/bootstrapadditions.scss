@@ -1,0 +1,38 @@
+.ls-ba {
+    .list-group {
+        padding-right:0;
+        >.list-group-item {
+            padding-right:0;
+            .list-group {
+                margin-bottom: 0;
+                .list-group-item {
+                    //padding-left:15px;
+                    &:last-of-type {
+                        border-bottom: 1px solid #dadada;
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+        }
+    }
+    .breadcrumb>li+li:before {
+        padding: 0 5px;
+        color: #ccc;
+        content: "\f061";
+        font: normal normal normal 18px/1 FontAwesome;
+    }
+
+    .pager li > a, .pager li > span {
+        border-radius: 4px;
+        margin: 1px;
+    }
+    
+}
+
+div[class^="col-"],
+div[class*=" col-"] {
+    &.nofloat {
+        float: none;
+    }
+}
+
