@@ -359,6 +359,7 @@ class AdminController extends LSYii_Controller
             'questionthemes'   => 'QuestionThemes',
             'quotas'           => 'Quotas',
             'remotecontrol'    => 'RemoteControl',
+            'saved'            => 'Saved',
             'statistics'       => 'Statistics',
             'surveypermission' => 'SurveyPermission',
             'user'             => 'UserAction',
