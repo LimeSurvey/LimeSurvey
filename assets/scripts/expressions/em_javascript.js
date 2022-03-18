@@ -249,7 +249,10 @@ function LEMis_int(mixed_var)
  */
 function LEMis_numeric(mixed_var)
 {
-    var isNumericRegex = new RegExp(/^(-)?\d*(,|\.)?\d*$/);
+    var isNumericRegex = new RegExp(/^(-)?[0-9]*(\.)[0-9]*$/);
+    if (LEMradix === ',') {
+        isNumericRegex = new RegExp(/^(-)?[0-9]*(,)[0-9]*$/);
+    }
     return ( ( ( typeof mixed_var === 'string' && isNumericRegex.test(mixed_var)) || typeof mixed_var === 'number') && mixed_var !== '' && !isNaN(mixed_var));
     // var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
     // return (typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -1)) && mixed_var !== '' && !isNaN(mixed_var);
@@ -737,8 +740,7 @@ function LEMval(alias)
         try{
             newval = new Decimal(newval);
         } catch(e){
-            if(e)
-                newval = new Decimal(newval.toString().replace(/,/,'.'));
+            // Nothing to do : already done before if needed (accordig to LEMradix)
         }
     }
     if (newval == parseFloat(newval)) {
@@ -1021,7 +1023,10 @@ function LEMval(alias)
                     return "";
                 }
 
-                var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
+                var checkNumericRegex = new RegExp(/^(-)?[0-9]*(\.)[0-9]*$/);
+                if (LEMradix === ',') {
+                    checkNumericRegex = new RegExp(/^(-)?[0-9]*(,)[0-9]*$/);
+                }
                 /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
                 if( checkNumericRegex.test(value) && value.length > 1 )
                 {
@@ -1040,7 +1045,8 @@ function LEMval(alias)
                     }
                     value = Number(value); /* If it's a number : always return a number */
                 }
-                if(LSvar.bNumRealValue) {
+                /* Always check if value are not updated, see #17963 */
+                if(Number(value).toString() != value.toString() || LSvar.bNumRealValue) {
                     return value;
                 }
                 return Number(value);
