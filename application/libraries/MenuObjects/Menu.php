@@ -6,7 +6,7 @@ class Menu implements MenuInterface
 {
     /**
      * If true, render this menu as a dropdown.
-     * @var boolean
+     * @var bool
      */
     protected $isDropDown = false;
 
@@ -43,15 +43,9 @@ class Menu implements MenuInterface
 
     /**
      * If true, render this menu before the main menu.
-     * @var boolean
+     * @var bool
      */
     protected $isPrepended = false;
-
-    /**
-     * Can only be true when child class MenuButton is used.
-     * @var boolean
-     */
-    protected $isButton = false;
 
     /**
      * @param array $options - Options for either dropdown menu or plain link
@@ -93,7 +87,7 @@ class Menu implements MenuInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDropDown()
     {
@@ -149,7 +143,7 @@ class Menu implements MenuInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPrepended()
     {
@@ -157,10 +151,10 @@ class Menu implements MenuInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isButton()
     {
-        return $this->isButton;
+        return false;
     }
 }

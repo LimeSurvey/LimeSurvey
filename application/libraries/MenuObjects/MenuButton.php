@@ -29,7 +29,6 @@ class MenuButton extends Menu implements MenuButtonInterface
         parent::__construct($options);
 
         $this->isDropDown = false;
-        $this->isButton = true;
 
         if (isset($options['buttonId'])) {
             $this->buttonId = $options['buttonId'];
@@ -76,5 +75,13 @@ class MenuButton extends Menu implements MenuButtonInterface
     public function getOpenInNewTab()
     {
         return $this->openInNewTab;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isButton()
+    {
+        return true;
     }
 }
