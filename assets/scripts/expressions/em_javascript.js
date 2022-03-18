@@ -245,17 +245,15 @@ function LEMis_int(mixed_var)
 }
 /**
  * Test if mixed_var is a PHP numeric value
- * From: http://phpjs.org/functions/is_numeric/
+ * Do not use locutus because of LEMradix
  */
 function LEMis_numeric(mixed_var)
 {
     var isNumericRegex = new RegExp(/^(-)?[0-9]*(\.)[0-9]*$/);
-    if (LEMradix === ',') {
+    if (LSvar.LEMradix === ',') {
         isNumericRegex = new RegExp(/^(-)?[0-9]*(,)[0-9]*$/);
     }
     return ( ( ( typeof mixed_var === 'string' && isNumericRegex.test(mixed_var)) || typeof mixed_var === 'number') && mixed_var !== '' && !isNaN(mixed_var));
-    // var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
-    // return (typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -1)) && mixed_var !== '' && !isNaN(mixed_var);
 }
 
 function LEMis_string(a)
@@ -1023,9 +1021,9 @@ function LEMval(alias)
                     return "";
                 }
 
-                var checkNumericRegex = new RegExp(/^(-)?[0-9]*(\.)[0-9]*$/);
+                var isNumericRegex = new RegExp(/^(-)?[0-9]*(\.)[0-9]*$/);
                 if (LEMradix === ',') {
-                    checkNumericRegex = new RegExp(/^(-)?[0-9]*(,)[0-9]*$/);
+                    isNumericRegex = new RegExp(/^(-)?[0-9]*(,)[0-9]*$/);
                 }
                 /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
                 if( checkNumericRegex.test(value) && value.length > 1 )
