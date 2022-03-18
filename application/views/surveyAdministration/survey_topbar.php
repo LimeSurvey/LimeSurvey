@@ -246,7 +246,7 @@ if (!$isActive && $hasSurveyContentPermission) {
     // Divider
     $buttons['divider'] = [
         'role' => 'seperator',
-        'class' => 'divider',
+        'class' => 'dropdown-divider',
         'id' => 'divider---1'
     ];
     array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['divider']);
@@ -285,7 +285,7 @@ if (!empty($extraToolsMenuItems)) {
             // Divider
             $buttons['divider' . $i] = [
                 'role' => 'seperator',
-                'class' => 'divider',
+                'class' => 'dropdown-divider',
                 'id' => 'divider---1' . $i
             ];
             array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['divider' . $i]);
@@ -424,7 +424,7 @@ if (!empty($beforeSurveyBarRender)) {
                     // Divider
                     $item = [
                         'role' => 'seperator',
-                        'class' => 'divider',
+                        'class' => 'dropdown-divider',
                         'id' => 'divider---1' . $i
                     ];
                 } elseif ($item->isSmallText()) {

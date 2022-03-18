@@ -122,10 +122,10 @@ const NotifcationSystem  = function (){
     
     updateNotificationWidget = (url, openAfter) => {
         // Make sure menu is open after load
-        __updateNotificationWidget(url).then(() =>{
-            if (openAfter !== false) {
-                $('#notification-li').addClass('open');
-            }
+        __updateNotificationWidget(url).then(() => {
+            let dropdownToggleEl = document.querySelector('#notification-li .dropdown-toggle');
+            let dropdownList = new bootstrap.Dropdown(dropdownToggleEl);
+            dropdownList.show();
         });
         // Only update once
         $('#notification-li').off('click.showNotification');

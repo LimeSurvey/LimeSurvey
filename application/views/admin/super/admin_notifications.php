@@ -1,6 +1,6 @@
 <!-- Admin notification system -->
 <?php if ($nrOfNotifications == 0): ?>
-    <li id='notification-li' class='dropdown'>
+    <li id='nav-link notification-li' class='dropdown nav-item'>
         <a aria-expanded='false' 
             href='#'>
             <span class='fa fa-bell text-muted'></span>
@@ -8,8 +8,8 @@
         </a>
     </li>
 <?php elseif($showLoader): ?>
-<li id='notification-li' class='dropdown' onclick='LS.updateNotificationWidget("<?php echo $updateUrl; ?>");' >
-        <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+<li id='notification-li' class='dropdown nav-item' onclick='LS.updateNotificationWidget("<?php echo $updateUrl; ?>");' >
+        <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
 
@@ -19,15 +19,15 @@
 
             <span class='caret'></span>
         </a>
-        <ul class='dropdown-menu' role='menu'>
+        <ul class='dropdown-menu dropdown-menu-end' role='menu'>
             <li>
-                <a><span class='fa fa-spinner fa-spin'></span><span class='sr-only'>Loading notifications</span></a>
+                <a class="dropdown-item"><span class='fa fa-spinner fa-spin'></span><span class='sr-only'>Loading notifications</span></a>
             </li>
         </ul>
     </li>
 <?php else: ?>
-    <li id='notification-li' class='dropdown' onclick='LS.styleNotificationMenu();'>
-        <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+    <li id='notification-li' class='dropdown nav-item' onclick='LS.styleNotificationMenu();'>
+        <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
 
@@ -38,7 +38,7 @@
             <span class='caret'></span>
         </a>
 
-        <ul id='notification-outer-ul' class='dropdown-menu' role='menu'>
+        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end' role='menu'>
             <li id='notification-inner-li' style='height: 88%;'>
                 <ul id='notification-inner-ul' class='notification-list'>
                     <?php foreach ($notifications as $not): ?>

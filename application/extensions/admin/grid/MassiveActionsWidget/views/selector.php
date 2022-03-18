@@ -25,7 +25,7 @@
             ?>
 
                 <!-- Separator -->
-                <li role="separator" class="divider"></li>
+                <li role="separator" class="dropdown-divider"></li>
             <?php break;?>
 
             <?php case 'dropdown-header': ?>

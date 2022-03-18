@@ -29785,8 +29785,8 @@
   };
   var globalStartUpMethods = {
     bootstrapping: function bootstrapping() {
-      $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
-      $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
+      // $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
+      // $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
       $(".progressbar").each(function () {
         var pValue = parseInt($(this).attr('name'));
         $(this).progressbar({
@@ -33063,11 +33063,16 @@
        * Panel shown one by one
        */
 
-      $('.panel').each(function (i) {
-        $(this).delay(i++ * 200).animate({
-          opacity: 1,
-          top: '0px'
-        }, 200);
+      document.querySelectorAll(".panel").forEach(function (e, i) {
+        setTimeout(function () {
+          e.animate({
+            top: '0px',
+            opacity: 1
+          }, {
+            duration: 200,
+            fill: 'forwards'
+          });
+        }, i * 200);
       });
       /**
        * Rotate last survey/question
@@ -33209,9 +33214,9 @@
     updateNotificationWidget = function updateNotificationWidget(url, openAfter) {
       // Make sure menu is open after load
       __updateNotificationWidget(url).then(function () {
-        if (openAfter !== false) {
-          $('#notification-li').addClass('open');
-        }
+        var dropdownToggleEl = document.querySelector('#notification-li .dropdown-toggle');
+        var dropdownList = new bootstrap.Dropdown(dropdownToggleEl);
+        dropdownList.show();
       }); // Only update once
 
 

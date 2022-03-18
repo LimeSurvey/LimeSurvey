@@ -39,45 +39,50 @@ echo viewHelper::getViewTestTag('index');
     <!-- Message when first start -->
     <?php if($countSurveyList==0  && Permission::model()->hasGlobalPermission('surveys','create') ):?>
         <script type="text/javascript">
-            $(window).load(function(){
-                $('#welcomeModal').modal('show');
-            });
+            window.onload = function() {
+                var welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+                welcomeModal.show()
+            };
         </script>
 
-        <div class="modal fade" id="welcomeModal">
+        <div class="modal fade" id="welcomeModal" aria-labelledby="welcome-modal-title">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title"><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h4>
+                      <h4 class="modal-title" id="welcome-modal-title"><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h4>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-hidden="true"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row" id="selector__welcome-modal--simplesteps">
-                                <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
+                        <div id="selector__welcome-modal--simplesteps">
+                            <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
+                            <div>
                                 <ol>
                                     <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'),
-                                                "<i class='icon-add text-success'></i>"); ?></li>
+                                                           "<i class='icon-add text-success'></i>"); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
                                     <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<i class='icon-do text-success'></i>"); ?></li>
                                 </ol>
                             </div>
-                            <div class="row"><hr/></div>
+                            <div>
+                                <hr/>
+                            </div>
 
-                            <?php 
+                            <?php
                             // Hide this until we have fixed the tutorial
                             // @TODO FIX TUTORIAL
-                            if(Permission::model()->hasGlobalPermission('surveys','create') && 1==2) { ?>
+                            if (Permission::model()->hasGlobalPermission('surveys', 'create') && 1 == 2) { ?>
                                 <div class="row" id="selector__welcome-modal--tutorial">
                                     <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
-                                    <p class="text-center"><button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button></p>
+                                    <p class="text-center">
+                                        <button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button>
+                                    </p>
                                 </div>
                             <?php } ?>
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close');?></button>
+                      <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Close');?></button>
                       <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey") ?>" class="btn btn-primary"><?php eT('Create a new survey');?></a>
                     </div>
                 </div><!-- /.modal-content -->
@@ -86,7 +91,7 @@ echo viewHelper::getViewTestTag('index');
 
     <?php endif;?>
 
-    <?php 
+    <?php
         //Check for IE and show a warning box
         if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false && strpos($_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false)) {
     ?>
@@ -106,14 +111,14 @@ echo viewHelper::getViewTestTag('index');
             </div>
         </div>
     </div>
-        
-    <?php 
+
+    <?php
     }
     App()->getClientScript()->registerScript('WelcomeCheckIESafety', "
     if(!/(MSIE|Trident\/)/i.test(navigator.userAgent)) {
         $('#warningIE11').remove();
     }
-    ", LSYii_ClientScript::POS_POSTSCRIPT); 
+    ", LSYii_ClientScript::POS_POSTSCRIPT);
     ?>
     <!-- Last visited survey/question -->
     <?php if( $bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
@@ -162,7 +167,7 @@ echo viewHelper::getViewTestTag('index');
 
 
     <!-- Boxes for smartphones -->
-    <div class="row  hidden-sm  hidden-md hidden-lg ">
+    <div class="row d-md-none ">
         <div class="panel panel-primary panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/surveyAdministration//listsurveys" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
                 <div class="panel-title"><?php eT('List surveys');?></div>

@@ -53,9 +53,9 @@ $(document).on('ready  pjax:scriptcomplete', function() {
      * @param {boolean} openAfter If notification widget should be opened after load; default to true
      * @return
      */
-    LS.updateNotificationWidget = function(url, openAfter) {
+    LS.updateNotificationWidget = function (url, openAfter) {
         // Make sure menu is open after load
-        updateNotificationWidget(url).then(function() {
+        updateNotificationWidget(url).then(function () {
             if (openAfter !== false) {
                 $('#notification-li').addClass('open');
             }
@@ -63,7 +63,7 @@ $(document).on('ready  pjax:scriptcomplete', function() {
 
         // Only update once
         $('#notification-li').unbind('click');
-    }
+    };
 
     /**
      * Tell system that notification is read
