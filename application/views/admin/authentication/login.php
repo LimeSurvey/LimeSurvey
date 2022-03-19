@@ -108,7 +108,7 @@ echo viewHelper::getViewTestTag('login');
                                     'data' => $languageData,
                                     'value' => $language,
                                     'htmlOptions' => array(
-                                        'onChange' => 'this.form.submit();'
+                                         'onChange' => 'this.form.submit();'
                                     ),
                                     'pluginOptions' => array(
                                         'htmlOptions' => array(
