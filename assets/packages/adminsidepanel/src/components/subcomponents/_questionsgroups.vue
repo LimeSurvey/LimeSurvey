@@ -65,10 +65,9 @@ export default {
         },
         createFullQuestionLink() { 
             if (LS.reparsedParameters().combined.gid) {
-                    return this.createQuestionLink + '&gid=' + LS.reparsedParameters().combined.gid;
-                } else {
-                    return this.createQuestionLink;
-                }
+                return this.createQuestionLink + '&gid=' + LS.reparsedParameters().combined.gid;
+            } else {
+                return this.createQuestionLink;
             }
         },
         questionHasCondition(question) {
