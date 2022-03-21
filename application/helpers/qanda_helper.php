@@ -2398,10 +2398,10 @@ function do_shortfreetext($ia)
         $sSeparator             = $sSeparator['separator'];
         $extraclass            .= " numberonly";
         $coreClass             .= " numeric-item";
-        $checkconditionFunction = "fixnum_checkconditions";
+        $numberonly             = true; 
     } else {
         $sSeparator = '';
-        $checkconditionFunction = "checkconditions";
+        $numberonly             = false; 
     }
     if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0) {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -2473,7 +2473,6 @@ function do_shortfreetext($ia)
             'name'                   => $ia[1],
             'basename'               => $ia[1],
             'drows'                  => $drows,
-            'checkconditionFunction' => $checkconditionFunction . '(this.value, this.name, this.type)',
             'dispVal'                => $dispVal,
             'maxlength'              => $maxlength,
             'kpclass'                => $kpclass,
@@ -2481,7 +2480,8 @@ function do_shortfreetext($ia)
             'suffix'                 => $suffix,
             'inputsize'              => $inputsize,
             'placeholder'            => $placeholder,
-            'withColumn'             => $withColumn
+            'withColumn'             => $withColumn,
+            'numberonly'             => $numberonly,
             ), true);
     } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 1) {
         $coreClass       = "ls-answers map-item geoloc-item";
@@ -2548,7 +2548,6 @@ function do_shortfreetext($ia)
             'name'                   => $ia[1],
             'qid'                    => $ia[0],
             'basename'               => $ia[1],
-            'checkconditionFunction' => $checkconditionFunction . '(this.value, this.name, this.type)',
             'value'                  => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
             'kpclass'                => $kpclass,
             'currentLocation'        => $currentLocation,
@@ -2613,7 +2612,6 @@ function do_shortfreetext($ia)
             'name' => $ia[1],
             'qid' => $ia[0],
             'basename'               => $ia[1],
-            'checkconditionFunction' => $checkconditionFunction . '(this.value, this.name, this.type)',
             'value' => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
             'strBuild' => $strBuild,
             'location_mapservice' => $aQuestionAttributes['location_mapservice'],
@@ -2636,7 +2634,6 @@ function do_shortfreetext($ia)
             $dispVal = str_replace('.', $sSeparator, $dispVal);
         }
         $dispVal = htmlspecialchars($dispVal, ENT_QUOTES, 'UTF-8');
-
         $itemDatas = array(
             'extraclass' => $extraclass,
             'coreClass' => $coreClass,
@@ -2647,6 +2644,7 @@ function do_shortfreetext($ia)
             'kpclass' => $kpclass,
             'dispVal' => $dispVal,
             'maxlength' => $maxlength,
+            'numberonly' => $numberonly,
             'inputsize'              => $inputsize,
             'placeholder'            => $placeholder,
             'withColumn'             => $withColumn
