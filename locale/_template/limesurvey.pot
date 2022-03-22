@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-03-14 10:19:38+00:00\n"
+"POT-Creation-Date: 2022-03-21 09:11:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -135,7 +135,7 @@ msgstr ""
 msgid "LimeSurvey online manual"
 msgstr ""
 
-#: application/controllers/AdminController.php:497
+#: application/controllers/AdminController.php:498
 #: application/extensions/AdminFooter/AdminFooter.php:30
 #: application/helpers/LayoutHelper.php:321
 msgid "Version"
