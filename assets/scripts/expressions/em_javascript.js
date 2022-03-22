@@ -249,10 +249,7 @@ function LEMis_int(mixed_var)
  */
 function LEMis_numeric(mixed_var)
 {
-    var isNumericRegex = new RegExp(/^(-)?[0-9]*(\.)[0-9]*$/);
-    if (LSvar.LEMradix === ',') {
-        isNumericRegex = new RegExp(/^(-)?[0-9]*(,)[0-9]*$/);
-    }
+    var isNumericRegex = new RegExp(/^(-)?\d*(,|\.)?\d*$/);
     return ( ( ( typeof mixed_var === 'string' && isNumericRegex.test(mixed_var)) || typeof mixed_var === 'number') && mixed_var !== '' && !isNaN(mixed_var));
 }
 
@@ -1021,10 +1018,7 @@ function LEMval(alias)
                     return "";
                 }
 
-                var isNumericRegex = new RegExp(/^(-)?[0-9]*(\.)[0-9]*$/);
-                if (LEMradix === ',') {
-                    isNumericRegex = new RegExp(/^(-)?[0-9]*(,)[0-9]*$/);
-                }
+                var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
                 /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
                 if( checkNumericRegex.test(value) && value.length > 1 )
                 {
