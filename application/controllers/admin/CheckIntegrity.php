@@ -633,12 +633,14 @@ class CheckIntegrity extends SurveyCommonAction
                                 // It was just the QID....
                                 $sQID = $sDirtyQid;
                             }
-                            if ((string) intval($sQID) !== $sQID) {
-                                throw new \Exception('sQID is not an integer: ' . $sQID);
-                            }
 
                             // Here, we get the question as defined in backend
-                            $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'sid' => $oSurvey->sid ]);
+                            try {
+                                $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'language' => $oSurvey->language, 'sid' => $oSurvey->sid ]);
+                            } catch (Exception $e) {
+                                // QID potentially invalid , see #17458, reset $oQuestion
+                                $oQuestion = null;
+                            }
                             if (is_a($oQuestion, 'Question')) {
                                 // We check if its GID is the same as the one defined in the column name
                                 if ($oQuestion->gid != $sGid) {
