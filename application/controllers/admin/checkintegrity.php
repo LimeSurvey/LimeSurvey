@@ -528,6 +528,7 @@ class CheckIntegrity extends Survey_Common_Action
                                 // It was just the QID....
                                 $sQID      =  $sDirtyQid;
                             }
+
                             // Here, we get the question as defined in backend
                             try {
                                 $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'language' => $oSurvey->language, 'sid' => $oSurvey->sid ]);
@@ -554,9 +555,10 @@ class CheckIntegrity extends Survey_Common_Action
                             } else {
                                 // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
                                 // So for certain question types (for example Text Array) the field name cannot be properly derived
-                                // This happen if subquestions code are number only.
+                                // This happen if subquestions code are number only for example
                                 // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
                                 // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
+                                \Yii::log(sprintf("Invalid question id %s when checkintegrity in survey %s", $sQID, $oSurvey->sid), \CLogger::LEVEL_INFO, 'application.controller.admin.checkintegrity');
                             }
                         }
                     }
