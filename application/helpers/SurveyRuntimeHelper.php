@@ -420,7 +420,7 @@ class SurveyRuntimeHelper
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1);
+            $aGroup['name']        = $gl['group_name'];
             LimeExpressionManager::updateReplacementFields(array(
                 'GROUPNAME' => $aGroup['name'],
             ));
@@ -439,7 +439,7 @@ class SurveyRuntimeHelper
 
             $aGroup['showgroupinfo'] = $showgroupinfo_;
             $aGroup['showdescription']  = (!$this->previewquestion && trim($gl['description']) != "" && $showgroupdesc_);
-            $aGroup['description']      = LimeExpressionManager::ProcessString($gl['description'], null, null, 3, 1);
+            $aGroup['description']      = $gl['description'];
 
             // one entry per QID
             foreach ($qanda as $qa) {
