@@ -154,7 +154,6 @@ echo viewHelper::getViewTestTag('login');
 <!-- Set focus on user input -->
 <script type='text/javascript'>
 $( document ).ready(function() {
-    $('#user').val('<?php echo addslashes($_POST['user'])?>');
     $('#user').focus();
     $("#width").val($(window).width());
 });
