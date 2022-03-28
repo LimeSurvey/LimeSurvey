@@ -3708,7 +3708,7 @@ class LimeExpressionManager
                     ;
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
-                    $jsVarName = $sgqa;
+                    $jsVarName = 'java' . $sgqa;
                     $jsVarName_on = $jsVarName;
                     break;
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
