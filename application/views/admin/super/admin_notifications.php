@@ -39,7 +39,7 @@
         </a>
 
         <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end' role='menu'>
-            <li id='notification-inner-li' style='height: 88%;'>
+            <li id='notification-inner-li'>
                 <ul id='notification-inner-ul' class='notification-list'>
                     <?php foreach ($notifications as $not): ?>
                         <li>
@@ -67,13 +67,10 @@
                     <?php endforeach; ?>
                 </ul>
             </li>
-            <li id='notification-divider' class="divider"></li>
+            <li id='notification-divider' class="dropdown-divider"></li>
 
             <li id='notification-clear-all'>
-                <a 
-                    href='#'
-                    onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()'
-                >
+                <a href='#'  class="dropdown-item" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()'>
                     <span class='fa fa-trash text-danger'></span>&nbsp;
                     <?php eT('Delete all notifications'); ?>
                 </a>

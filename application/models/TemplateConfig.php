@@ -541,8 +541,6 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['navigatorcolrbutton']  = ' ls-move-btn ls-move-submit-btn action--ls-button-submit';
         $aClassAndAttributes['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl ';
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
-        $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
-        $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
 
         $aClassAndAttributes['attr']['navigatorcollbutton'] = '  type="submit" name="move" ';
         $aClassAndAttributes['attr']['navigatorcolrbutton'] = '  type="submit" name="move" value="confirmquota" ';
@@ -629,16 +627,16 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['nojs']  = ' ';
 
         // NavBar
-        $aClassAndAttributes['id']['navbar']            = 'navbar';
-        $aClassAndAttributes['class']['navbar']         = ' navbar navbar-default';
-        $aClassAndAttributes['class']['navbarheader']   = ' navbar-header ';
-        $aClassAndAttributes['class']['navbartoggle']   = ' navbar-toggle collapsed ';
-        $aClassAndAttributes['class']['navbarbrand']    = ' navbar-brand ';
-        $aClassAndAttributes['class']['navbarcollapse'] = ' collapse navbar-collapse ';
-        $aClassAndAttributes['class']['navbarlink']     = ' nav navbar-nav  navbar-action-link ';
+//        $aClassAndAttributes['id']['navbar']            = 'navbar';
+//        $aClassAndAttributes['class']['navbar']         = ' navbar navbar-default';
+//        $aClassAndAttributes['class']['navbarheader']   = ' navbar-header ';
+//        $aClassAndAttributes['class']['navbartoggle']   = ' navbar-toggle collapsed ';
+//        $aClassAndAttributes['class']['navbarbrand']    = ' navbar-brand ';
+//        $aClassAndAttributes['class']['navbarcollapse'] = ' collapse navbar-collapse ';
+//        $aClassAndAttributes['class']['navbarlink']     = ' nav navbar-nav  navbar-action-link ';
 
-        $aClassAndAttributes['attr']['navbartoggle']    = ' data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
-        $aClassAndAttributes['attr']['navbar'] = $aClassAndAttributes['attr']['navbarheader'] = $aClassAndAttributes['attr']['navbarbrand'] = $aClassAndAttributes['attr']['navbarcollapse'] = $aClassAndAttributes['attr']['navbarlink'] = '';
+//        $aClassAndAttributes['attr']['navbartoggle']    = ' data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
+//        $aClassAndAttributes['attr']['navbar'] = $aClassAndAttributes['attr']['navbarbrand'] = '';
 
         // Language changer
         $aClassAndAttributes['class']['languagechanger'] = '  form-change-lang  ';
@@ -725,9 +723,10 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['privacycontainer'] = $aClassAndAttributes['attr']['privacycol'] = $aClassAndAttributes['attr']['privacyhead'] = $aClassAndAttributes['attr']['privacybody'] = '';
 
         // Clearall Links
-        $aClassAndAttributes['class']['clearalllinks'] = ' ls-no-js-hidden ';
-        $aClassAndAttributes['class']['clearalllink']  = ' ls-link-action ls-link-clearall ';
-        $aClassAndAttributes['attr']['clearalllinks']  = $aClassAndAttributes['attr']['clearalllink'] = ' ';
+//        $aClassAndAttributes['class']['clearalllinks'] = ' ls-no-js-hidden ';
+//        $aClassAndAttributes['class']['clearalllink']  = ' ls-link-action ls-link-clearall ';
+//        $aClassAndAttributes['attr']['clearalllinks']  = $aClassAndAttributes['attr']['clearalllink'] = ' ';
+
         // Clearall Buttons
         $aClassAndAttributes['class']['clearallwrapper'] = $aClassAndAttributes['class']['clearallconfirm'] = ""; // No need, adding it if need something after
         $aClassAndAttributes['class']['clearalllabel'] = "ls-js-hidden";
@@ -736,20 +735,20 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['clearallbutton'] = "ls-clearaction ls-clearall"; // Not needed, keep it (and adding to twig to be most compatible in future)
 
         // Language changer
-        $aClassAndAttributes['id']['lctdropdown'] = 'langs-container';
+//        $aClassAndAttributes['id']['lctdropdown'] = 'langs-container';
 
-        $aClassAndAttributes['class']['lctli']          = ' ls-no-js-hidden form-change-lang ';
-        $aClassAndAttributes['class']['lctla']          = ' ';
-        $aClassAndAttributes['class']['lctspan']        = ' ';
-        $aClassAndAttributes['class']['lctdropdown']    = ' language_change_container ';
-        $aClassAndAttributes['class']['lctdropdownli']  = 'index-item ';
-        $aClassAndAttributes['class']['lctdropdownlia'] = 'ls-language-link ';
+//        $aClassAndAttributes['class']['lctli']          = ' ls-no-js-hidden form-change-lang ';
+//        $aClassAndAttributes['class']['lctla']          = ' ';
+//        $aClassAndAttributes['class']['lctspan']        = ' ';
+//        $aClassAndAttributes['class']['lctdropdown']    = ' language_change_container ';
+//        $aClassAndAttributes['class']['lctdropdownli']  = 'index-item ';
+//        $aClassAndAttributes['class']['lctdropdownlia'] = 'ls-language-link ';
 
-        $aClassAndAttributes['attr']['lctla']       = ' data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" ';
-        $aClassAndAttributes['attr']['lctdropdown'] = ' style="overflow: scroll" ';
+//        $aClassAndAttributes['attr']['lctla']       = ' data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" ';
+//        $aClassAndAttributes['attr']['lctdropdown'] = ' style="overflow: scroll" ';
 
-        $aClassAndAttributes['attr']['lctli'] = $aClassAndAttributes['attr']['lctspan'] = $aClassAndAttributes['attr']['lctdropdownli'] = $aClassAndAttributes['attr']['lctdropdownlia'] = ' ';
-        $aClassAndAttributes['attr']['navigatorcontainer'] = $aClassAndAttributes['attr']['navigatorbuttonl'] = $aClassAndAttributes['attr']['loadsavecontainer'] = $aClassAndAttributes['attr']['loadsavecol'] = '';
+//        $aClassAndAttributes['attr']['lctli'] = $aClassAndAttributes['attr']['lctspan'] = $aClassAndAttributes['attr']['lctdropdownli'] = $aClassAndAttributes['attr']['lctdropdownlia'] = ' ';
+//        $aClassAndAttributes['attr']['navigatorcontainer'] = $aClassAndAttributes['attr']['navigatorbuttonl'] = $aClassAndAttributes['attr']['loadsavecontainer'] = $aClassAndAttributes['attr']['loadsavecol'] = '';
 
         // Navigator
         $aClassAndAttributes['id']['navigatorcontainer'] = 'navigator-container';
@@ -773,23 +772,23 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['navigatorbuttonnext']   = ' id="ls-button-submit" type="submit" value="movenext" name="move" ';
 
         // Index Menu
-        $aClassAndAttributes['class']['indexmenugli']     = ' ls-index-menu ls-no-js-hidden  ';
-        $aClassAndAttributes['class']['indexmenuglia']    = '   ';
-        $aClassAndAttributes['class']['indexmenugspan']   = '  ';
-        $aClassAndAttributes['class']['indexmenusgul']    = '  ';
-        $aClassAndAttributes['class']['indexmenusli']     = ' ls-index-menu ls-no-js-hidden  ';
-        $aClassAndAttributes['class']['indexmenuslia']    = '   ';
-        $aClassAndAttributes['class']['indexmenusspan']   = '  ';
-        $aClassAndAttributes['class']['indexmenussul']    = '  ';
-        $aClassAndAttributes['class']['indexmenusddh']    = '  ';
-        $aClassAndAttributes['class']['indexmenusddspan'] = '  ';
-        $aClassAndAttributes['class']['indexmenusddul']   = '  dropdown-sub-menu ';
+//        $aClassAndAttributes['class']['indexmenugli']     = ' ls-index-menu ls-no-js-hidden  ';
+//        $aClassAndAttributes['class']['indexmenuglia']    = '   ';
+//        $aClassAndAttributes['class']['indexmenugspan']   = '  ';
+//        $aClassAndAttributes['class']['indexmenusgul']    = '  ';
+//        $aClassAndAttributes['class']['indexmenusli']     = ' ls-index-menu ls-no-js-hidden  ';
+//        $aClassAndAttributes['class']['indexmenuslia']    = '   ';
+//        $aClassAndAttributes['class']['indexmenusspan']   = '  ';
+//        $aClassAndAttributes['class']['indexmenussul']    = '  ';
+//        $aClassAndAttributes['class']['indexmenusddh']    = '  ';
+//        $aClassAndAttributes['class']['indexmenusddspan'] = '  ';
+//        $aClassAndAttributes['class']['indexmenusddul']   = '  dropdown-sub-menu ';
 
-        $aClassAndAttributes['attr']['indexmenuglia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
-        $aClassAndAttributes['attr']['indexmenuslia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+//        $aClassAndAttributes['attr']['indexmenuglia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+//        $aClassAndAttributes['attr']['indexmenuslia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
 
-        $aClassAndAttributes['attr']['indexmenugli']  = $aClassAndAttributes['attr']['indexmenugspan'] = $aClassAndAttributes['attr']['indexmenusgul'] = $aClassAndAttributes['attr']['indexmenusli'] = $aClassAndAttributes['attr']['indexmenusspan'] = $aClassAndAttributes['attr']['indexmenussul'] = '';
-        $aClassAndAttributes['attr']['indexmenusddh'] = $aClassAndAttributes['attr']['indexmenusddspan'] = $aClassAndAttributes['attr']['indexmenusddul'] = $aClassAndAttributes['attr']['indexmenussli'] = $aClassAndAttributes['attr']['indexmenusgli'] = '';
+//        $aClassAndAttributes['attr']['indexmenussul'] = '';
+//        $aClassAndAttributes['attr']['indexmenusgli'] = '';
 
         // Preview submit
         $aClassAndAttributes['class']['previewsubmit']      = ' completed-wrapper  ';
@@ -822,17 +821,16 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['surveylistfootercont']      = '  ';
 
         $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
-        $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
 
         $aClassAndAttributes['attr']['surveylistrow'] = $aClassAndAttributes['attr']['surveylistrowjumbotron'] = $aClassAndAttributes['attr']['surveylistrowdiva'] = $aClassAndAttributes['attr']['surveylistrowdivadiv'] = $aClassAndAttributes['attr']['surveylistrowdivb'] = $aClassAndAttributes['attr']['surveylistrowdivbdivul'] = '';
         $aClassAndAttributes['attr']['surveylistrowdivbdivulli'] = $aClassAndAttributes['attr']['surveylistrowdivc'] = $aClassAndAttributes['attr']['surveylistfooter'] = $aClassAndAttributes['attr']['surveylistfootercont'] = $aClassAndAttributes['class']['surveylistfootercontp'] = '';
 
         // Save/Load links
-        $aClassAndAttributes['class']['loadlinksli']  = ' ls-no-js-hidden ';
-        $aClassAndAttributes['class']['loadlinkslia'] = ' ls-link-action ls-link-loadall ';
-        $aClassAndAttributes['class']['savelinksli']  = ' ls-no-js-hidden ';
-        $aClassAndAttributes['class']['savelinkslia'] = 'ls-link-action ls-link-saveall';
-        $aClassAndAttributes['attr']['loadlinksli'] = $aClassAndAttributes['attr']['savelinksli'] = $aClassAndAttributes['class']['savelinkslia'] = '';
+//        $aClassAndAttributes['class']['loadlinksli']  = ' ls-no-js-hidden ';
+//        $aClassAndAttributes['class']['loadlinkslia'] = ' ls-link-action ls-link-loadall ';
+//        $aClassAndAttributes['class']['savelinksli']  = ' ls-no-js-hidden ';
+//        $aClassAndAttributes['class']['savelinkslia'] = '';
+//        $aClassAndAttributes['attr']['loadlinksli'] = '';
 
         // Here you can add metas from core
         $aClassAndAttributes['metas'] = '    ';
