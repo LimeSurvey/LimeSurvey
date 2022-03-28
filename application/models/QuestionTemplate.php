@@ -103,7 +103,7 @@ class QuestionTemplate extends CFormModel
     {
         if (!isset($this->aViews[$sView])) {
             $sTemplatePath = $this->getTemplatePath();
-            if (is_file("$sTemplatePath/$sView.twig")) {
+            if (!empty($sTemplatePath) && is_file("$sTemplatePath/$sView.twig")) {
                 $this->aViews[$sView] = true;
             } else {
                 $this->aViews[$sView] = false;
@@ -113,8 +113,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * Retrieve the template base path
-     * @return string
+     * Retrieve the template base path if exist
+     * @return null|string
      */
     public function getTemplatePath()
     {
@@ -262,6 +262,9 @@ class QuestionTemplate extends CFormModel
         if (!isset($this->oConfig)) {
             $oQuestion                    = $this->oQuestion;
             $sTemplatePath                = $this->getTemplatePath();
+            if (empty($sTemplatePath)) {
+                return;
+            }
             $sFolderName                  = self::getFolderName($oQuestion->type);
             $this->sTemplateQuestionPath  = $sTemplatePath . '/survey/questions/answer/' . $sFolderName;
             $xmlFile                      = $this->sTemplateQuestionPath . '/config.xml';

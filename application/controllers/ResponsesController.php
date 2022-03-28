@@ -119,10 +119,10 @@ class ResponsesController extends LSBaseController
 
         // logging for webserver when parameter is somehting like $surveyid=125<script ...
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (!is_numeric(Yii::app()->request->getParam('id'))) {
-            throw new CHttpException(403, gT("Invalid response id."));
+            throw new CHttpException(403, gT("Invalid response ID"));
         }
         $survey = Survey::model()->findByPk($surveyId);
 
@@ -370,7 +370,7 @@ class ResponsesController extends LSBaseController
     {
         // logging for webserver when parameter is somehting like $surveyid=125<script ...
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         $survey = Survey::model()->findByPk($surveyId);
         $aData = $this->getData($surveyId);
@@ -404,7 +404,7 @@ class ResponsesController extends LSBaseController
     {
         // logging for webserver when parameter is somehting like $surveyid=125<script ...
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         $survey = Survey::model()->findByPk($surveyId);
         $displaymode = App()->request->getPost('displaymode', null);
@@ -521,7 +521,7 @@ class ResponsesController extends LSBaseController
     {
         // logging for webserver when parameter is something like $surveyid=125<script ...
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             $aFilteredColumns = [];
@@ -555,7 +555,7 @@ class ResponsesController extends LSBaseController
     public function actionDelete(int $surveyId): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -611,10 +611,10 @@ class ResponsesController extends LSBaseController
     public function actionDeleteSingle(int $surveyId, int $responseId): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (!is_numeric(Yii::app()->request->getParam('responseId'))) {
-            throw new CHttpException(403, gT("Invalid response id."));
+            throw new CHttpException(403, gT("Invalid response ID"));
         }
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -645,13 +645,13 @@ class ResponsesController extends LSBaseController
     public function actionDownloadfile(int $surveyId, int $responseId, int $qid, int $index): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (!is_numeric(Yii::app()->request->getParam('responseId'))) {
-            throw new CHttpException(403, gT("Invalid response id."));
+            throw new CHttpException(403, gT("Invalid response ID"));
         }
         if (!is_numeric(Yii::app()->request->getParam('qid'))) {
-            throw new CHttpException(403, gT("Invalid question id."));
+            throw new CHttpException(403, gT("Invalid question ID"));
         }
         $oSurvey = Survey::model()->findByPk($surveyId);
         if (!$oSurvey->isActive) {
@@ -671,7 +671,7 @@ class ResponsesController extends LSBaseController
                 // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
                 $sDir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
-                $sRealUserPath = realpath($sFileRealName);
+                $sRealUserPath = get_absolute_path($sFileRealName);
                 if ($sRealUserPath === false) {
                     throw new CHttpException(404, "File not found.");
                 } elseif (strpos($sRealUserPath, $sDir) !== 0) {
@@ -712,7 +712,7 @@ class ResponsesController extends LSBaseController
     public function actionDownloadfiles(int $surveyId, string $responseIds = ''): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             $oSurvey = Survey::model()->findByPk($surveyId);
@@ -761,7 +761,7 @@ class ResponsesController extends LSBaseController
     public function actionDeleteAttachments(int $surveyId, int $responseId = null): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
-            throw new CHttpException(403, gT("Invalid surveyid."));
+            throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));

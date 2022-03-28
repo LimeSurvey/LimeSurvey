@@ -459,7 +459,7 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function getTotalGroupsWithQuestions($surveyid)
     {
-        $cacheKey = 'getTotalGroupsWithoutQuestions_' . $surveyid;
+        $cacheKey = 'getTotalGroupsWithQuestions_' . $surveyid;
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
             return $value;
