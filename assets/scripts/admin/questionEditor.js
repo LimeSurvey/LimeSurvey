@@ -658,8 +658,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
           $('#labelsetpreview').empty();
 
-          var hasInvalidCodes = false;
-          var isEmpty = true;
+          let hasInvalidCodes = false;
+          let isEmpty = true;
           const source = $('#labelsetbrowserModal').data('source');
           const i = 0;
           $.each(json.languages, (language, languageName) => {
@@ -730,7 +730,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    */
   function showLabelSetAlert(message /*: string */, type /*: string */) /*: void */ {
     const alertType = type ?? 'warning';
-    var alert = $('#labelsetalert');
+    const alert = $('#labelsetalert');
     const alertHtml = '<div class="alert alert-' + alertType + ' ls-space margin bottom-0 top-15">' + message + '</div>';
     alert.html(alertHtml).show();
   }
