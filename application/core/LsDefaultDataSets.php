@@ -2683,7 +2683,7 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"list-radio\"}",
             ),
             array(
-                "name" => "bootstrap_buttons",
+                "name" => "bootstrap_buttons_multi",
                 "visible" => "Y",
                 "xml_path" => "themes/question/bootstrap_buttons/survey/questions/answer/multiplechoice",
                 "image_path" => "/themes/question/bootstrap_buttons/survey/questions/answer/multiplechoice/assets/bootstrap_buttons_multiplechoice.png",
