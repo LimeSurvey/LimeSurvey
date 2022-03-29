@@ -2685,8 +2685,8 @@ class LsDefaultDataSets
             array(
                 "name" => "bootstrap_buttons_multi",
                 "visible" => "Y",
-                "xml_path" => "themes/question/bootstrap_buttons/survey/questions/answer/multiplechoice",
-                "image_path" => "/themes/question/bootstrap_buttons/survey/questions/answer/multiplechoice/assets/bootstrap_buttons_multiplechoice.png",
+                "xml_path" => "themes/question/bootstrap_buttons_multi/survey/questions/answer/multiplechoice",
+                "image_path" => "/themes/question/bootstrap_buttons_multi/survey/questions/answer/multiplechoice/assets/bootstrap_buttons_multiplechoice.png",
                 "title" => "Bootstrap buttons",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",
