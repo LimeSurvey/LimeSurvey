@@ -725,7 +725,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * Shows an alert in the label set's modal
    *
    * @param {string} message The message to show
-   * @param {string=} type Alert type (eg. 'danger')
+   * @param {string} type Alert type (eg. 'danger')
    * @return {void}
    */
   function showLabelSetAlert(message /*: string */, type /*: string */) /*: void */ {
