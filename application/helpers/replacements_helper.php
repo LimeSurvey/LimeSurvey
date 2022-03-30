@@ -168,17 +168,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     } else {
         $_groupname = '';
     };
-    if (
-    $showgroupinfo == 'both' ||
-    $showgroupinfo == 'description' ||
-    ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
-    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
-    ) {
-        $_groupdescription = isset($groupdescription) ? $groupdescription : '';
-    } else {
-        $_groupdescription = '';
-    };
 
     if (!isset($totalquestions)) {
         $totalquestions = 0;
@@ -307,9 +296,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['EXPIRY'] = $_dateoutput;
     $coreReplacements['ADMINNAME'] = isset($thissurvey['admin']) ? $thissurvey['admin'] : '';
     $coreReplacements['ADMINEMAIL'] = isset($thissurvey['adminemail']) ? $thissurvey['adminemail'] : '';
-    $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
-    $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
-    $coreReplacements['GROUPNAME'] = $_groupname;
     $coreReplacements['LANG'] = App()->language;
     $coreReplacements['NAVIGATOR'] = isset($navigator) ? $navigator : ''; // global
     $coreReplacements['MOVEPREVBUTTON'] = isset($moveprevbutton) ? $moveprevbutton : ''; // global

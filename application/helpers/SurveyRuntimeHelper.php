@@ -319,9 +319,10 @@ class SurveyRuntimeHelper
             // Set basic replacements to use on group texts
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
             $aStandardsReplacementFields['GID'] = $gid;
+            $aStandardsReplacementFields['GROUPNAME'] = LimeExpressionManager::ProcessString($gl['group_name'], null, $aStandardsReplacementFields, 3, 1);
 
-            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, $aStandardsReplacementFields, 3, 1);
-            $aStandardsReplacementFields['GROUPNAME'] = $aGroup['name'];
+            /* Used in twig files */
+            $aGroup['name']        = $gl['group_name'];
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
@@ -334,10 +335,9 @@ class SurveyRuntimeHelper
             }
 
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
-
             $aGroup['showgroupinfo'] = $showgroupinfo_;
             $aGroup['showdescription']  = (!$this->previewquestion && trim($gl['description']) != "" && $showgroupdesc_);
-            $aGroup['description']      = LimeExpressionManager::ProcessString($gl['description'], null, $aStandardsReplacementFields, 3, 1);
+            $aGroup['description']      = $gl['description'];
 
             // Note: $qanda contains all questions to be shown in the screen,
             // according to the survey's format:
@@ -377,7 +377,6 @@ class SurveyRuntimeHelper
                     $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
 
                     if ( strpos( $qa[0]['text'], '{' ) || strpos( $lemQuestionInfo['info']['help'], '{' ) )   {
-
                         // process string anyway so that it can be pretty-printed
                         $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
                         $aStandardsReplacementFields['QID'] = $qid;
@@ -1698,8 +1697,8 @@ class SurveyRuntimeHelper
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
                 $this->groupdescription = $this->aStepInfo['gtext'];
-                $this->groupname        = LimeExpressionManager::ProcessString($this->groupname, null, null, 3, 1, false, true, false);
-                $this->groupdescription = LimeExpressionManager::ProcessString($this->groupdescription, null, null, 3, 1, false, true, false);
+                $this->groupname        = $this->groupname;
+                $this->groupdescription = $this->groupdescription;
             }
         }
     }
