@@ -7,22 +7,18 @@
         <?php endif; ?>
     >
         <div class="card-header bg-primary text-white">
-            <div class="card-title"><?php echo viewHelper::filterScript(gT($title)); ?></div>
+            <div class=""><?php echo viewHelper::filterScript(gT($title)); ?></div>
         </div>
         <div class="card-body">
-            <div class="card-body-ico">
-                <span class="sr-only"><?php echo viewHelper::filterScript(gT($title)); ?></span>
-                <span class="<?php echo CHtml::encode($ico); ?>" style="font-size: 4em">
-                </span>
-            </div>
+            <span class="sr-only"><?php echo viewHelper::filterScript(gT($title)); ?></span>
+            <span class="<?php echo CHtml::encode($ico); ?>" style="font-size: 4em">
+            </span>
         </div>
-        <div class="card-footer">
-            <div class="card-body-link">
-                <?php echo viewHelper::filterScript(gT($description)); ?>
-                <?php if ($external): ?>
-                    &nbsp;<i class="fa fa-external-link"></i>
-                <?php endif; ?>
-            </div>
-        </div>
+        <p class="card-body-link">
+            <?php echo viewHelper::filterScript(gT($description)); ?>
+            <?php if ($external): ?>
+                &nbsp;<i class="fa fa-external-link"></i>
+            <?php endif; ?>
+        </p>
     </div>
 </div>
