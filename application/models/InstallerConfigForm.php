@@ -531,8 +531,8 @@ class InstallerConfigForm extends CFormModel
         $port = $this->getDbPort();
 
         // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
-        if (substr($this->dblocation, 0, 1) == "/") {
-            $sDSN = "mysql:unix_socket={$this->dblocation}";
+        if (substr($this->dblocation, 0, 1) === "/") {
+            $sDSN = "mysql:unix_socket={$this->dblocation};";
         } else {
             $sDSN = "mysql:host={$this->dblocation};port={$port};";
         }
