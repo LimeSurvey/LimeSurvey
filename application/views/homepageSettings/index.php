@@ -37,7 +37,7 @@ App()->getClientScript()->registerScript(
             <!-- Boxes -->
             <div id="boxes" class="tab-pane fade show active">
                 <?php $this->widget(
-                    'bootstrap.widgets.TbGridView',
+                    'yiistrap.widgets.TbGridView',
                     [
                         'id'           => 'boxes-grid',
                         'dataProvider' => $dataProviderBox->search(),

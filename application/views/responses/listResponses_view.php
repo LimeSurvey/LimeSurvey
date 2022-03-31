@@ -98,7 +98,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         ],
 //                        [
 //                            'header'      => gT('Action'),
-//                            'class'       => 'bootstrap.widgets.TbButtonColumn',
+//                            'class'       => 'yiistrap.widgets.TbButtonColumn',
 //                            'template'    => '{edit}{detail}{quexmlpdf}{downloadfiles}{deletefiles}<span data-toggle="tooltip" title="' . gT("Delete this response") . '">{deleteresponse}</span>',
 //                            'htmlOptions' => ['class' => 'icon-btn-row'],
 //                            'buttons'     => $model->getGridButtons(),

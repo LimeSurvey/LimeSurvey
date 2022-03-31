@@ -70,7 +70,7 @@ if ($count >= 7) {
 }
 ?>
 		array(
-			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'class'=>'yiistrap.widgets.TbButtonColumn',
 		),
 	),
 )); ?>

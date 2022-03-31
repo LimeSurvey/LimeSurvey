@@ -30,7 +30,7 @@ echo viewHelper::getViewTestTag('listSurveys');
             <div class="row">
                 <div class="col-sm-12 content-right">
                     <?php
-                    $this->widget('bootstrap.widgets.TbGridView', array(
+                    $this->widget('yiistrap.widgets.TbGridView', array(
                         'id'           => 'surveygroups--gridview',
                         'dataProvider' => $groupModel->search(),
                         'columns'      => $groupModel->columns,

@@ -35,7 +35,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             <!-- Grid -->
             <div class="row">
                 <div class="col-sm-12 content-right">
-                    <?php $this->widget('bootstrap.widgets.TbGridView', array(
+                    <?php $this->widget('yiistrap.widgets.TbGridView', array(
                         'dataProvider'  => $oDataProvider,
                         'id'            => 'quota-grid',
                         'htmlOptions'   => ['class' => 'table-responsive grid-view-ls'],

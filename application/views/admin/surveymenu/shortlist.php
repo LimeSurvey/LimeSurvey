@@ -8,7 +8,7 @@ $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPa
         <div class="col-12 ls-flex-item">
             <?php
             $this->widget(
-                'bootstrap.widgets.TbGridView',
+                'yiistrap.widgets.TbGridView',
                 [
                     'dataProvider'  => $model->search(),
                     'id'            => 'surveymenu-shortlist-grid',

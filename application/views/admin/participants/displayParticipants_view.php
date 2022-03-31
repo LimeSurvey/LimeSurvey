@@ -65,7 +65,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                 <?php
                 echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='" . join("||", $searchcondition) . "' />";
                 $this->widget(
-                    'bootstrap.widgets.TbGridView',
+                    'yiistrap.widgets.TbGridView',
                     [
                         'id'                       => 'list_central_participants',
                         'emptyText'                => gT('No participants found.'),

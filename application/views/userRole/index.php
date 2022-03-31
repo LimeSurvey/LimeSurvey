@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('roles');
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php
-            $this->widget('bootstrap.widgets.TbGridView',
+            $this->widget('yiistrap.widgets.TbGridView',
                 [
                     'id'              => 'RoleControl--identity-gridPanel',
                     'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],

@@ -20,7 +20,7 @@
             false
         );
 
-        $this->widget('bootstrap.widgets.TbGridView', array(
+        $this->widget('yiistrap.widgets.TbGridView', array(
             'dataProvider'    => $oQuestionTheme->search(),
             'filter'          => $oQuestionTheme,
             'id'              => 'questionthemes-grid',

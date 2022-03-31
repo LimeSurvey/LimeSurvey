@@ -17,7 +17,7 @@
     </script>
     <?php
     $this->widget(
-        'bootstrap.widgets.TbGridView',
+        'yiistrap.widgets.TbGridView',
         [
             'dataProvider'    => $model->search($surveyId, $language),
             'id'              => 'time-grid',
