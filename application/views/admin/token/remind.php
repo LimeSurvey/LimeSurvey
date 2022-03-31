@@ -105,27 +105,17 @@
             </div>
             <div>
                 <ul class="nav nav-tabs">
-                    <?php
-                    $c = true;
-                    foreach ($surveylangs as $language)
-                    {
-                        //GET SURVEY DETAILS
-                        echo '<li role="presentation"';
-
-                        if ($c)
-                        {
-                            $c=false;
-                            echo ' class="active"';
-                        }
-
-                        echo ' ><a data-toggle="tab" href="#'.$language.'">' . getLanguageNameFromCode($language, false);
-                        if ($language == $baselang)
-                        {
-                            echo " (" . gT("Base language") . ")";
-                        }
-                        echo "</a></li>";
-                    }
-                    ?>
+                        <?php $c = true ?>
+                        <?php foreach ($oSurvey->allLanguages as $language): ?>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link <?= $c ? "active" : "" ?>" data-bs-toggle="tab" href="#<?= $language ?>">
+                                    <?php if ($c) {
+                                        $c = false;
+                                    } ?>
+                                    <?= getLanguageNameFromCode($language, false) . " " . (($language == $oSurvey->language) ? "(" . gT("Base language") . ")" : "")  ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
                 </ul>
 
                 <div class="tab-content">
@@ -147,7 +137,7 @@
                         }
                         ?>
 
-                        <div id="<?php echo $language; ?>" class="tab-pane fade in <?php if ($c){$c=false;echo ' active';}?>">
+                        <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c){$c=false;echo 'show active';}?>">
 
                             <div class='form-group'>
                                 <label class='control-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>

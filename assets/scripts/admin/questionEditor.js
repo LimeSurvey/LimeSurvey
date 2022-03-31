@@ -642,8 +642,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
           throw 'abort';
         }
 
-        const $liTemplate = $('<li role="presentation"></li>');
-        const $aTemplate = $('<a data-toggle="tab"></a>');
+        const $liTemplate = $('<li class="nav-item" role="presentation"></li>');
+        const $aTemplate = $('<a class="nav-link" data-bs-toggle="tab"></a>');
         const $tabTodyTemplate = $('<div></div>');
         const $listTemplate = $('<div class="list-group selector_label-list"></div>');
         const $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
@@ -659,7 +659,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           let $itemList = $listTemplate.clone();
 
           const classLink = i === 0 ? 'active' : '';
-          const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
+          const classBody = i === 0 ? 'tab-pane tab-pane fade show active' : 'tab-page tab-pane fade';
 
           $linkItem.addClass(classLink).attr('href', `#language_${language}`).text(languageName);
           $liTemplate.clone().append($linkItem).appendTo($tabindex);

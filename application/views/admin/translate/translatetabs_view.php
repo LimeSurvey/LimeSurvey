@@ -1,4 +1,4 @@
-<div id='tab-<?php echo $type;?>' class='tab-pane fade in <?php if($activeTab){echo "active";}?>'>
+<div id='tab-<?php echo $type;?>' class='tab-pane fade <?php if($activeTab){echo "show active";}?>'>
 <?php
 Yii::app()->loadHelper('admin.htmleditor');
 echo PrepareEditorScript(true, Yii::app()->getController());

@@ -86,15 +86,15 @@ echo $oQuestionSelector->getModal();
         <div class="row">
             <div class="col-xs-12">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#your-profile" role="tab" data-toggle="tab"><?php eT("My profile"); ?></a></li>
-                    <li role="presentation"><a href="#your-personal-settings" role="tab" data-toggle="tab"><?php eT("My personal settings"); ?></a></li>
-                    <li role="presentation"><a href="#your-personal-menues" role="tab" data-toggle="tab"><?php eT("My personal menus"); ?></a></li>
-                    <li role="presentation"><a href="#your-personal-menueentries" role="tab" data-toggle="tab"><?php eT("My personal menu entries"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link active" href="#your-profile" role="tab" data-bs-toggle="tab"><?php eT("My profile"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab"><?php eT("My personal settings"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab"><?php eT("My personal menus"); ?></a></li>
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab"><?php eT("My personal menu entries"); ?></a></li>
                 </ul>
                 <div class="tab-content">
 
                     <!-- TAB: My profile settings -->
-                    <div role="tabpanel" class="tab-pane fade in active" id="your-profile">
+                    <div role="tabpanel" class="tab-pane fade show active" id="your-profile">
                         <div class="pagetitle h3"><?php eT("My profile"); ?></div>
                         <div class="container-fluid">
                             <div class="row">

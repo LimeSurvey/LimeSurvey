@@ -12,11 +12,11 @@ echo viewHelper::getViewTestTag('listSurveys');
 ?>
 <div class="container-fluid ls-space row list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
-        <li class="active"><a href="#surveys" aria-controls="surveys" role="tab" data-toggle="tab"><?php eT('Survey list'); ?></a></li>
-        <li><a href="#surveygroups" aria-controls="surveygroups" role="tab" data-toggle="tab"><?php eT('Survey groups'); ?></a></li>
+        <li class="nav-item"><a class="nav-link active" href="#surveys" aria-controls="surveys" role="tab" data-bs-toggle="tab"><?php eT('Survey list'); ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="#surveygroups" aria-controls="surveygroups" role="tab" data-bs-toggle="tab"><?php eT('Survey groups'); ?></a></li>
     </ul>
     <div class="tab-content">
-        <div id="surveys" class="tab-pane active">
+        <div id="surveys" class="tab-pane show active">
             <!-- Survey List widget -->
             <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
                         'pageSize' => Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),

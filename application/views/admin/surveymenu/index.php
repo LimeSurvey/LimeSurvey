@@ -18,23 +18,21 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="row">
         <!-- Tabs -->
         <ul class="nav nav-tabs" id="menueslist" role="tablist">
-            <li class="active">
-				<a href="#surveymenues" aria-controls="surveymenues" role="tab" data-toggle="tab">
+            <li class="nav-item">
+				<a class="nav-link active" role="tab" data-bs-toggle="tab" href="#surveymenues" aria-controls="surveymenues">
                     <?php eT('Survey menus'); ?>
                 </a>
             </li>
-            <li>
-				<a href="#surveymenuentries" aria-controls="surveymenuentries" role="tab" data-toggle="tab">
+            <li class="nav-item">
+                <a class="nav-link" role="tab" data-bs-toggle="tab" href="#surveymenuentries" aria-controls="surveymenuentries">
                     <?php eT('Survey menu entries'); ?>
                 </a>
             </li>
         </ul>
-
         <!-- Tab Content -->
         <div class="tab-content">
-
             <!-- Survey Menu -->
-            <div id="surveymenues" class="tab-pane active">
+            <div id="surveymenues" class="tab-pane show active">
                 <div class="col-12 ls-space margin top-15">
                     <div class="col-12 ls-flex-item">
                         <?php

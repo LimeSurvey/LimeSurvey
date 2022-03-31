@@ -5,24 +5,24 @@
             <!-- Subquestions and Answers tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <?php if ($question->questionType->subquestions > 0): ?>
-                    <li role="presentation" <?php echo (++$tabCount == 1 ? 'class="active"' : ''); ?>>
-                        <a
-                            href="#subquestions"
-                            aria-controls="subquestions"
-                            role="tab"
-                            data-toggle="tab"
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link <?= (++$tabCount == 1) ? "active" : "" ?>"
+                           href="#subquestions"
+                           aria-controls="subquestions"
+                           role="tab"
+                           data-bs-toggle="tab"
                         >
                             <?= gT('Subquestions'); ?>
                         </a>
                     </li>
                 <?php endif; ?>
                 <?php if ($question->questionType->answerscales > 0): ?>
-                    <li role="presentation" <?php echo (++$tabCount == 1 ? 'class="active"' : ''); ?>>
-                        <a
-                            href="#answeroptions"
-                            aria-controls="answeroptions"
-                            role="tab"
-                            data-toggle="tab"
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link <?= (++$tabCount == 1) ? "active" : "" ?>"
+                           href="#answeroptions"
+                           aria-controls="answeroptions"
+                           role="tab"
+                           data-bs-toggle="tab"
                         >
                             <?= gT('Answer options'); ?>
                         </a>
@@ -32,7 +32,7 @@
             <?php $tabCount = 0; ?>
             <div class="tab-content">
                 <?php if ($question->questionType->subquestions > 0): ?>
-                    <div role="tabpanel" class="tab-pane<?php echo (++$tabCount == 1 ? ' active' : ''); ?>" id="subquestions">
+                    <div role="tabpanel" class="tab-pane <?= (++$tabCount == 1) ? 'show active' : '' ?>" id="subquestions">
                         <!-- TODO: Add path in controller. -->
                         <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
                         <?= Yii::app()->twigRenderer->renderViewFromFile(

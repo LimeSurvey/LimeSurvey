@@ -22,17 +22,17 @@
                 <label class='control-label col-sm-2'><?php eT("Question"); ?></label>
                 <div class='col-sm-10'>
                     <ul class='nav nav-tabs'>
-                        <li role='presentation' class='active src-tab'>
-                            <a href='#QUICKADD-SRCPREVQUEST' aria-controls='SRCPREVQUEST' role='tab' data-toggle='tab'><?php eT('Previous questions'); ?></a>
+                        <li role='presentation' class='nav-item src-tab'>
+                            <a class="nav-link active" href='#QUICKADD-SRCPREVQUEST' aria-controls='SRCPREVQUEST' role='tab' data-bs-toggle='tab'><?php eT('Previous questions'); ?></a>
                         </li>
-                        <li role='presentation' class='src-tab'>
-                            <a href='#QUICKADD-SRCTOKENATTRS' aria-controls='SRCTOKENATTRS' role='tab' data-toggle='tab'><?php eT('Survey participant attributes'); ?></a>
+                        <li role='presentation' class='nav-item src-tab'>
+                            <a class="nav-link" href='#QUICKADD-SRCTOKENATTRS' aria-controls='SRCTOKENATTRS' role='tab' data-bs-toggle='tab'><?php eT('Survey participant attributes'); ?></a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class='tab-content'>
-                <div role='tabpanel' class='tab-pane active' id='QUICKADD-SRCPREVQUEST'>
+                <div role='tabpanel' class='tab-pane show active' id='QUICKADD-SRCPREVQUEST'>
                     <div class='form-group question-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <div role='tabpanel' class='tab-pane ' id='QUICKADD-SRCTOKENATTRS'>
+                <div role='tabpanel' class='tab-pane' id='QUICKADD-SRCTOKENATTRS'>
                     <div class='form-group question-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
@@ -81,26 +81,26 @@
                 <label class='control-label col-sm-2'><?php echo gT("Answer"); ?></label>
                 <div class='col-sm-10'>
                     <ul class='nav nav-tabs'>
-                        <li role='presentation' class='active target-tab'>
-                            <a href='#QUICKADD-CANSWERSTAB' aria-controls='CANSWERSTAB' role='tab' data-toggle='tab'><?php eT('Predefined'); ?></a>
+                        <li role='presentation' class='nav-item target-tab'>
+                            <a class="nav-link active" href='#QUICKADD-CANSWERSTAB' aria-controls='CANSWERSTAB' role='tab' data-bs-toggle='tab'><?php eT('Predefined'); ?></a>
                         </li>
-                        <li role='presentation' class='target-tab'>
-                            <a href='#QUICKADD-CONST' aria-controls='CONST' role='tab' data-toggle='tab'><?php eT('Constant'); ?></a>
+                        <li role='presentation' class='nav-item target-tab'>
+                            <a class="nav-link" href='#QUICKADD-CONST' aria-controls='CONST' role='tab' data-bs-toggle='tab'><?php eT('Constant'); ?></a>
                         </li>
-                        <li role='presentation' class='target-tab'>
-                            <a href='#QUICKADD-PREVQUESTIONS' aria-controls='PREVQUESTIONS' role='tab' data-toggle='tab'><?php eT('Questions'); ?></a>
+                        <li role='presentation' class='nav-item target-tab'>
+                            <a class="nav-link" href='#QUICKADD-PREVQUESTIONS' aria-controls='PREVQUESTIONS' role='tab' data-bs-toggle='tab'><?php eT('Questions'); ?></a>
                         </li>
-                        <li role='presentation' class='target-tab'>
-                            <a href='#QUICKADD-TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-toggle='tab'><?php eT('Participant fields'); ?></a>
+                        <li role='presentation' class='nav-item target-tab'>
+                            <a class="nav-link" href='#QUICKADD-TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-bs-toggle='tab'><?php eT('Participant fields'); ?></a>
                         </li>
-                        <li role='presentation' class='target-tab disabled'>
-                            <a href='#QUICKADD-REGEXP' aria-controls='REGEXP' role='tab' data-toggle='tab'><?php eT('RegExp'); ?></a>
+                        <li role='presentation' class='nav-item target-tab disabled'>
+                            <a class="nav-link" href='#QUICKADD-REGEXP' aria-controls='REGEXP' role='tab' data-bs-toggle='tab'><?php eT('RegExp'); ?></a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class='tab-content'>
-                <div role='tabpanel' class='tab-pane active' id='QUICKADD-CANSWERSTAB'>
+                <div role='tabpanel' class='tab-pane show active' id='QUICKADD-CANSWERSTAB'>
                     <div class='form-group answer-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>

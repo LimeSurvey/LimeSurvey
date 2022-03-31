@@ -58,7 +58,7 @@ $googleAnalyticsStyleOptions = array(
                                 }
                             }")*/
                             ));
-                            /*$this->widget('bootstrap.widgets.TbModal', array(
+                            /*$this->widget('yiistrap.widgets.TbModal', array(
                                 'id' => 'datestampModal_1',
                                 'htmlOptions' => ['class' => 'selector_dateStampModal_notification'],
                                 'header' => gT('Warning','unescaped'),

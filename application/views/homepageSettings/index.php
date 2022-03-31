@@ -19,25 +19,23 @@ App()->getClientScript()->registerScript(
 </script>
 
 <div class="col-lg-12 list-surveys">
-
     <div class="row">
-
         <!-- Tabs -->
-        <ul class="nav nav-tabs" id="boxeslist" role="tablist">
-            <li class="active">
-                <a href='#boxes'>
+        <ul class="nav nav-tabs" id="boxeslist">
+            <li class="nav-item">
+                <a class="nav-link active" href='#boxes' data-bs-toggle="tab">
                     <?php eT('Boxes') ?>
                 </a>
             </li>
-            <li>
-                <a href='#boxsettings'>
+            <li class="nav-item">
+                <a class="nav-link" href='#boxsettings' data-bs-toggle="tab">
                     <?php eT('Box Settings'); ?>
                 </a>
             </li>
         </ul>
         <div class="tab-content">
             <!-- Boxes -->
-            <div id="boxes" class="tab-pane active">
+            <div id="boxes" class="tab-pane fade show active">
                 <?php $this->widget(
                     'bootstrap.widgets.TbGridView',
                     [
@@ -105,7 +103,7 @@ App()->getClientScript()->registerScript(
                 ); ?>
             </div>
             <!-- Box Settings -->
-            <div id="boxsettings" class="tab-pane">
+            <div id="boxsettings" class="tab-pane fade">
 
                 <div class="row">
                     <label class="col-sm-2 control-label"><?php eT("Display logo:"); ?> </label>
@@ -183,9 +181,6 @@ App()->getClientScript()->registerScript(
 <script>
     $('#boxeslist a').click(function (e) {
         window.location.hash = $(this).attr('href');
-        e.preventDefault();
-        $(this).tab('show');
-
         // Hide the save button for boxes tab
         let tabName = $(this).tab().attr('href');
         if (tabName === '#boxes') {

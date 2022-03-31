@@ -14,23 +14,23 @@
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
             <div>
                 <ul class="nav nav-tabs">
-                    <?php $c=true; ?>
-                    <?php foreach ($oSurvey->allLanguages as $sLanguage) {
-                        $sTabTitle = getLanguageNameFromCode($sLanguage, false);
-                        if ($sLanguage == $oSurvey->language) {
-                            $sTabTitle .= ' (' . gT("Base language") . ')';
-                        }
-                        ?>
-                        <li <?php if ($c){$c=false; echo 'class="active"'; }?> >
-                            <a data-toggle="tab" href="#language_<?php echo $sLanguage ?>"><?php echo $sTabTitle; ?></a>
+                    <?php $c = true; ?>
+                    <?php foreach ($oSurvey->allLanguages as $sLanguage): ?>
+                        <?php $sTabTitle = getLanguageNameFromCode($sLanguage, false) . " " . (($sLanguage == $oSurvey->language) ? "(" . gT("Base language") . ")" : "") ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?= $c ? "active" : "" ?>" data-bs-toggle="tab" href="#language_<?php echo $sLanguage ?>">
+                                <?php $c = false; ?>
+                                <?php echo $sTabTitle; ?>
+                            </a>
                         </li>
-                        <?php } ?>
+                    <?php endforeach; ?>
                 </ul>
 
                 <div class="tab-content">
                     <?php $c=true;?>
                     <?php foreach ($oSurvey->allLanguages as $sLanguage) { ?>
-                        <div id="language_<?php echo $sLanguage ?>"  class="table-responsive tab-pane fade in <?php if ($c){$c=false; echo 'active'; }?>">
+                        <div id="language_<?php echo $sLanguage ?>"  class="table-responsive tab-pane fade <?= $c ? "show active" : "" ?>">
+                            <?php $c=false; ?>
                             <table class='listtokenattributes table table-hover'>
                                 <thead> <tr>
                                     <th><?php eT("Attribute field"); ?></th>

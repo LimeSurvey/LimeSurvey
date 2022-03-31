@@ -42,15 +42,15 @@ foreach ($tokendata as $Key => $Value) {
         <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
 
           <!-- Common  -->
-          <li role="presentation" class="active">
-            <a data-toggle="tab" href="#general" aria-expanded="true">
+          <li role="presentation" class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#general" aria-expanded="true">
               <?php eT('General'); ?>
             </a>
           </li>
 
           <!-- Custom attibutes -->
-          <li role="presentation" class="">
-            <a data-toggle="tab" href="#custom" aria-expanded="false">
+          <li role="presentation" class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#custom" aria-expanded="false">
               <?php eT('Additional attributes'); ?>
             </a>
           </li>
@@ -59,7 +59,7 @@ foreach ($tokendata as $Key => $Value) {
 
       <!-- Tabs content-->
       <div class="tab-content">
-        <div id="general" class="tab-pane fade in active">
+        <div id="general" class="tab-pane fade show active">
             <div class="ls-flex-column ls-space padding left-5 right-35 col-md-6">
             <!-- General -->
                 <!-- ID,Completed  -->
@@ -420,7 +420,7 @@ foreach ($tokendata as $Key => $Value) {
     </div>
 
     <!-- Custom attibutes -->
-    <div id="custom" class="tab-pane fade in">
+    <div id="custom" class="tab-pane fade">
         <!-- Attributes -->
         <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
             <div class="form-group">
