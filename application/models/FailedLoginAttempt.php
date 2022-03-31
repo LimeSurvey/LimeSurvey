@@ -20,11 +20,14 @@
  * @property string $ip Ip address
  * @property string $last_attempt
  * @property integer $number_attempts
+ * @property int $is_frontend  from frontend(=1) or from backend (=0)
  */
+
+// @property int $is_frontend  from frontend(=1) or from backend (=0)
 class FailedLoginAttempt extends LSActiveRecord
 {
-    const TYPE_LOGIN = 'login';
-    const TYPE_TOKEN = 'token';
+    public const TYPE_LOGIN = 'login';
+    public const TYPE_TOKEN = 'token';
 
     /**
      * @inheritdoc
@@ -50,44 +53,78 @@ class FailedLoginAttempt extends LSActiveRecord
     }
 
     /**
-     * Deletes all the attempts by IP
+     * Deletes all the attempts by IP.
+     * Separation between backend and frontend
+     *
+     * @param  string $attemptType  The attempt type ('login' or 'token').
      *
      * @access public
      * @return void
      */
-    public function deleteAttempts()
+    public function deleteAttempts(string $attemptType = 'login')
     {
         $ip = substr(getIPAddress(), 0, 40);
-        $this->deleteAllByAttributes(array('ip' => $ip));
+
+        if (Yii::app()->getConfig('DBVersion') <= 480) {
+            $this->deleteAllByAttributes(array('ip' => $ip));
+        } else {
+            $this->deleteAllByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)));
+        }
     }
 
     /**
-     * Check if an IP address is allowed to login or not
+     * Check if an IP address is allowed to log in or not
      *
-     * @param string $attemptType  The attempt type ('login' or 'token'). Used to check the white lists.
+     * @param string $attemptType  The attempt type ('login' or 'token')
      *
-     * @return boolean Returns true if the user is blocked
+     * @return bool Returns true if the user is blocked
      */
-    public function isLockedOut($attemptType = '')
+    public function isLockedOut(string $attemptType): bool
     {
         $isLockedOut = false;
         $ip = substr(getIPAddress(), 0, 40);
 
         // Return false if IP is whitelisted
-        if (!empty($attemptType) && $this->isWhitelisted($ip, $attemptType)) {
+        if ($this->isWhitelisted($ip, $attemptType)) {
             return false;
         }
 
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
-        $criteria->params = array(':attempts' => Yii::app()->getConfig('maxLoginAttempt'), ':ip' => $ip);
+        switch ($attemptType) {
+            case FailedLoginAttempt::TYPE_LOGIN:
+                $timeOut = Yii::app()->getConfig('timeOutTime');
+                $maxLoginAttempt = Yii::app()->getConfig('maxLoginAttempt');
+                break;
+            case FailedLoginAttempt::TYPE_TOKEN:
+                $timeOut = Yii::app()->getConfig('timeOutParticipants');
+                $maxLoginAttempt = Yii::app()->getConfig('maxLoginAttemptParticipants');
+                break;
+            default:
+                throw new InvalidArgumentException(sprintf("Invalid attempt type: %s", $attemptType));
+        }
 
-        $row = $this->find($criteria);
+        if (Yii::app()->getConfig('DBVersion') <= 480) {
+            $criteria = new CDbCriteria();
+            $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
+            $criteria->params = array(
+                ':attempts' => $maxLoginAttempt,
+                ':ip' => $ip,
+            );
+            $row = $this->find($criteria);
+        } else {
+            $criteria = new CDbCriteria();
+            $criteria->condition = 'number_attempts > :attempts AND ip = :ip AND is_frontend = :is_frontend';
+            $criteria->params = array(
+                ':attempts' => $maxLoginAttempt,
+                ':ip' => $ip,
+                ':is_frontend' => ($attemptType === FailedLoginAttempt::TYPE_TOKEN)
+            );
+            $row = $this->find($criteria);
+        }
 
         if ($row != null) {
             $lastattempt = strtotime($row->last_attempt);
-            if (time() > $lastattempt + Yii::app()->getConfig('timeOutTime')) {
-                $this->deleteAttempts();
+            if (time() > $lastattempt + $timeOut) {
+                $this->deleteAttempts($attemptType);
             } else {
                 $isLockedOut = true;
             }
@@ -96,28 +133,24 @@ class FailedLoginAttempt extends LSActiveRecord
     }
 
     /**
-     * This function removes obsolete login attempts
-     * TODO
-     */
-    public function cleanOutOldAttempts()
-    {
-        // this where select whole part
-        //$this->db->where('now() > (last_attempt+'.$this->config->item("timeOutTime").')');
-        //return $this->db->delete('failed_login_attempts');
-    }
-
-    /**
-     * Records an failed login-attempt if IP is not already locked out
+     * Records a failed login-attempt if IP is not already locked out
+     *
+     * @param string attempt type ('login' or 'token')
      *
      * @access public
-     * @return true
+     * @return void
      */
-    public function addAttempt()
+    public function addAttempt($attemptType = self::TYPE_LOGIN)
     {
-        if (!$this->isLockedOut()) {
+        if (!$this->isLockedOut($attemptType)) {
             $timestamp = date("Y-m-d H:i:s");
             $ip = substr(getIPAddress(), 0, 40);
-            $row = $this->findByAttributes(array('ip' => $ip));
+
+            if (Yii::app()->getConfig('DBVersion') <= 480) {
+                $row = $this->findByAttributes(array('ip' => $ip));
+            } else {
+                $row = $this->findByAttributes(array('ip' => $ip, 'is_frontend' => ($attemptType === self::TYPE_TOKEN)));
+            }
 
             if ($row !== null) {
                 $row->number_attempts = $row->number_attempts + 1;
@@ -128,10 +161,14 @@ class FailedLoginAttempt extends LSActiveRecord
                 $record->ip = $ip;
                 $record->number_attempts = 1;
                 $record->last_attempt = $timestamp;
-                $record->save();
+                if (Yii::app()->getConfig('DBVersion') <= 480) {
+                    $record->save();
+                } else {
+                    $record->is_frontend = ($attemptType === self::TYPE_TOKEN) ? 1 : 0;
+                    $record->save();
+                }
             }
         }
-        return true;
     }
 
     /**
@@ -143,7 +180,7 @@ class FailedLoginAttempt extends LSActiveRecord
      * @throws InvalidArgumentException if an invalid attempt type is specified
      * @return boolean
      */
-    private function isWhitelisted($ip, $attemptType)
+    private function isWhitelisted(string $ip, string $attemptType): bool
     {
         // Init
         if ($attemptType != self::TYPE_LOGIN && $attemptType != self::TYPE_TOKEN) {

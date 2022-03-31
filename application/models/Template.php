@@ -322,7 +322,7 @@ class Template extends LSActiveRecord
 
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
         if ($bForceXML || !is_a($oTemplateConfigurationModel, 'TemplateConfiguration') || !$oTemplateConfigurationModel->checkTemplate()) {
-            $oTemplateConfigurationModel = new TemplateManifest();
+            $oTemplateConfigurationModel = new TemplateManifest(null);
             $oTemplateConfigurationModel->setBasics($sTemplateName, $iSurveyId);
         }
 

@@ -155,7 +155,6 @@ class DataEntry extends SurveyCommonAction
         $aOptions['sCharset'] = Yii::app()->request->getPost('vvcharset');
         $aOptions['sSeparator'] = "\t";
         $aResult = CSVImportResponses($filePath, $iSurveyId, $aOptions);
-        unlink($filePath); //delete the uploaded file
         $aData['class'] = "";
         $aData['title'] = gT("Import a VV response data file");
         $aData['aResult']['success'][] = gT("File upload succeeded.");
@@ -1286,6 +1285,12 @@ class DataEntry extends SurveyCommonAction
                             );
                             break;
                         case "startlanguage":
+                            $slangs = $oSurvey->allLanguages;
+                            foreach ($slangs as $lang) {
+                                $LanguageList[$lang] = getLanguageNameFromCode($lang, false);
+                            }
+                            $aDataentryoutput .= CHtml::dropDownList($fname['fieldname'], $idrow[$fname['fieldname']], $LanguageList, array('class' => 'form-control'));
+                            break;
                         default:
                             $aDataentryoutput .= CHtml::textField(
                                 $fname['fieldname'],

@@ -176,7 +176,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $id SurveysGroups id
      * @return void
      */
-    public function actionAddUser($id)
+    public function actionAddUser(int $id)
     {
         $model = $this->loadModel($id);
         if (!$model->hasPermission('permission', 'create')) {
@@ -234,7 +234,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $id SurveysGroups id
      * @return void
      */
-    public function actionAddUserGroup($id)
+    public function actionAddUserGroup(int $id)
     {
         $model = $this->loadModel($id);
         if (!$model->hasPermission('permission', 'create')) {
@@ -298,7 +298,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $to user id
      * @return void
      */
-    public function actionViewUser($id, $to)
+    public function actionViewUser(int $id, int $to)
     {
         $oUser = User::model()->findByPk($to);
         if (empty($oUser)) {
@@ -319,7 +319,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $to group id
      * @return void
      */
-    public function actionViewUserGroup($id, $to)
+    public function actionViewUserGroup(int $id, int $to)
     {
         $oUserGroup = UserGroup::model()->findByPk($to);
         if (empty($oUserGroup)) {
@@ -339,7 +339,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $id SurveysGroups id
      * @return void
      */
-    public function actionSave($id)
+    public function actionSave(int $id)
     {
         $model = $this->loadModel($id);
         $uid = null;
@@ -409,7 +409,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $uid user id
      * @return void
      */
-    public function actionDeleteUser($id, $uid)
+    public function actionDeleteUser(int $id, int $uid)
     {
         $model = $this->loadModel($id);
         if (!$model->hasPermission('permission', 'delete')) {

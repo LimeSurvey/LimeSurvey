@@ -53,10 +53,6 @@
     margin-bottom: 1em;
 }
 
-#statisticsgeneralfilters {
-    text-align: center;
-}
-
 tr.success
 {
     color : white;
@@ -100,4 +96,8 @@ tr.info, tr.danger {
         display: inline-block;
     vertical-align: middle;
     float: none;
+}
+
+.question-filter-container label {
+    font-weight: normal;
 }

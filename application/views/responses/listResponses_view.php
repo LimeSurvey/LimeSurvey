@@ -245,7 +245,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'dataProvider'    => $model->search(),
                             'filter'          => $model,
                             'columns'         => $aColumns,
-                            'htmlOptions'     => ['class' => 'table-responsive'],
+                            //'htmlOptions'     => ['class' => 'table-responsive'],
                             'id'              => 'responses-grid',
                             'ajaxUpdate'      => 'responses-grid',
                             'ajaxType'        => 'POST',

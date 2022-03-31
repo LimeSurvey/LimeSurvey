@@ -49,7 +49,7 @@ class CopySurveyResources
         if (is_dir($sourceDir)) {
             $directory = opendir($sourceDir);
             if (!$directory) {
-                $this->addError($sourceDir, gT("Could not open source dir - maybe a permission problem?"));
+                $this->addError($sourceDir, gT("Could not open source directory - maybe a permission problem?"));
                 return;
             }
 
@@ -75,7 +75,7 @@ class CopySurveyResources
                 }
             }
         } else {
-            $this->addError($sourceDir, gT("Source dir not found."));
+            $this->addError($sourceDir, gT("Source directory not found"));
         }
     }
 
@@ -91,7 +91,7 @@ class CopySurveyResources
                 return false;
             }
         } else {
-            $this->addError($targetDir, gT("Destination dir already exists! Can contain more files than source dir."));
+            $this->addError($targetDir, gT("Destination directory already exists!"));
         }
         return true;
     }
