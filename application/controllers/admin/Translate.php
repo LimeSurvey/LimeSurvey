@@ -215,6 +215,9 @@ class Translate extends SurveyCommonAction
                     $aResultTo2 = !empty($type2) ? $oResultTo2->questiongroupl10ns[$tolang]->getAttributes() : $aResultTo;
                 } elseif ($class == 'Question' || $class == 'Subquestion') {
                     $aRowfrom = $oRowfrom->questionl10ns[$baselang]->getAttributes();
+                    if (!empty($oRowfrom['parent_qid'])) {
+                        $aRowfrom['parent'] = $oRowfrom->parent->getAttributes();
+                    }
                     $aResultBase2 = !empty($type2) ? $oResultBase2->questionl10ns[$baselang]->getAttributes() : $aRowfrom;
                     $aResultTo = $oResultTo->questionl10ns[$tolang]->getAttributes();
                     $aResultTo2 = !empty($type2) ? $oResultTo2->questionl10ns[$tolang]->getAttributes() : $aResultTo;
@@ -931,14 +934,14 @@ class Translate extends SurveyCommonAction
             $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['answer']) . " (" . $rowfrom['qid'] . ") </td>";
         }
         if ($type == 'question_help' || $type == 'question') {
-            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['question']) . " ({$rowfrom['qid']}) </td>";
+            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['title']) . " ({$rowfrom['qid']}) </td>";
         } elseif ($type == 'subquestion') {
-            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['question']) . " ({$rowfrom['qid']}) </td>";
+            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['parent']['title']) . " ({$rowfrom['parent']['qid']}) </td>";
         }
 
-            $translateoutput .= "<td class='_from_ col-sm-5' id='" . $type . "_from_" . $i . "'>"
+            $translateoutput .= "<td class='_from_ col-sm-5' id='" . $type . "_from_" . $i . "'><div class='question-text-from'>"
                                     . showJavaScript($textfrom)
-                                . " </td>";
+                                . "</div></td>";
 
             $translateoutput .= "<td class='col-sm-5'>";
 

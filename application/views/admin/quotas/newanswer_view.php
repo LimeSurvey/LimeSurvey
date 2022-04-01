@@ -17,7 +17,7 @@
                     <p class="lead">
                         <?php eT("Select question");?>:
                     </p>
-                    <?php echo CHtml::form(array("admin/quotas/sa/newanswer/surveyid/{$oQuota->sid}/subaction/newanswer"), 'post', array('class' => '')); ?>
+                    <?php echo CHtml::form(array("admin/quotas/sa/newanswer/surveyid/{$oQuota->sid}/subaction/new_answer_two"), 'post', array('class' => '')); ?>
                         <div class='form-group'>
                             <div class='col-sm-5 col-sm-offset-4'>
                                 <select class='form-control' name="quota_qid" size="15">

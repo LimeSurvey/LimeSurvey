@@ -1356,7 +1356,6 @@ class QuestionAdministrationController extends LSBaseController
         LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
 
         // Check if any other questions have conditions which rely on this question. Don't delete if there are.
-        // TMSW Condition->Relevance:  Allow such deletes - can warn about missing relevance separately.
         $oConditions = Condition::model()->findAllByAttributes(['cqid' => $qid]);
         $iConditionsCount = count($oConditions);
         // There are conditions dependent on this question

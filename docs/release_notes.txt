@@ -34,6 +34,144 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.6 (build 220321) to 5.3.7 (build 220328) March 28, 2022
+#Updated translation: Valencian by joamuran, vbraque
+#Updated translation: Slovak by jelen1, myrdyn
+#Updated translation: Slovak by c_schmitz, jelen1, sweetakasha
+#Updated translation: Romansh by htwchur
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa, stcknstck
+#Updated translation: Italian by lfanfoni, lfortunato, luciano.parrilla, usastice
+#Updated translation: Italian (Informal) by lfanfoni, luciano.parrilla
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Albanian by ardian_klgj, eniisula
+
+
+Changes from 5.3.5 (build 220314) to 5.3.6 (build 220321) March 21, 2022
+-Fixed issue #17964: View saved but not submitted responses don't work (#2299) (Gabriel Jenik)
+-Fixed issue #17940: Array filter in combination with 'equals sum value' feature does not sum up values correctly (#2288) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.3.4 (build 220309) to 5.3.5 (build 220314) March 14, 2022
+-Fixed issue: Downloading a single file was not possible if file path is symlinked (Carsten Schmitz)
+-Fixed issue: Database exception when running survey and db update has not been done yet… (#2289) (Patricia Stell)
+-Fixed issue #17942: Question cannot be deleted if another deleted question had a condition pending on it (Carsten Schmitz)
+-Fixed issue #17922: ComfortUpdate deletes essential files (Carsten Schmitz)
+-Fixed issue #17906: Label set doesn't load (#2287) (Gabriel Jenik)
+-Fixed issue #17374: aSurveyInfo.datasecurity_notice_label do not return only the label (#2281) (Denis Chenu)
+-Fixed issue #17321: Array question are not split up on mobile devices when using vanilla theme (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.3.3 (build 220307) to 5.3.4 (build 220309) March 8, 2022
+-Fixed issue: Font is looking different for various question types in statistics response filter (#2085) (Gabriel Jenik)
+-Fixed issue: Duplicate ComfortUpdate checker plugin (#2276) (Tim Willig)
+-Fixed issue #17935: See only general settings on global and group survey settings (Olle Haerstedt)
+-Fixed issue #17927: Error on database update when using Postgres (Carsten Schmitz)
+-Fixed issue #17926: No quotas adjustable (#2280) (Gabriel Jenik)
+-Fixed issue #17873: Remote Control `delete_language` fails to remove language (#2235) (Edgar Ramírez)
+-Fixed issue #17844: Deleting or adding in the middle of a loaded label set not possible (#2279) (Gabriel Jenik)
+-Fixed issue #17677: Valid TSV file can not be used in VV import (#2273) (Denis Chenu)
+#Updated translation: Spanish (Spain) by DarioRoig, Ignacio, ignaciogros, ireneoh, segui
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.3.2 (build 220302) to 5.3.3 (build 220307) March 7, 2022
+-Fixed issue #17773: Code name change while we updated from Edit Question screen (encuestabizdevgit)
+#Updated translation: Spanish (Spain) by aesteban, c_schmitz, DarioRoig, Ignacio, ignaciogros, ireneoh, segui, valdomir, xtingray
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.3.1 (build 220301) to 5.3.2 (build 220302) March 2, 2022
+-Fixed issue: Error on updating database (Carsten Schmitz)
+-Fixed issue #17922: ComfortUpdate deletes essential files (Carsten Schmitz)
+-Fixed issue #17830: LS Expression in Bootstrapbuttons answer not working (#2263) (Gabriel Jenik)
+
+
+Changes from 5.3.0 (build 220228) to 5.3.1 (build 220301) March 1, 2022
+-Fixed issue #17917: A non-recoverable error happened during the update when using MSSQL (#2275) (Denis Chenu)
+-Fixed issue #17915: Error accessing general settings (Olle Haerstedt)
+
+
+Changes from 5.2.14 (build 220214) to 5.3.0 (build 220228) February 28, 2022
++New feature #17640: Question theme - bootstrap styling of dropdown boxes (#2064) (Adam Zammit)
++New feature #17520: Auto-create LDAP users without bind DN (Martin Kofahl)
++New feature #17477: Make it possible to use answer option text in expression script. (#2155) (Denis Chenu)
++New feature #15750: Send emails only to participants with incomplete responses (#2162) (Gabriel Jenik)
++New feature #14782: Possibility to override single translations by database (#2213) (Denis Chenu)
+-Fixed issue: [security] Update packages and document package building process for js packages (#2250) (Jessica Höck)
+-Fixed issue: Wrong language description for Valencian (Carsten Schmitz)
+-Fixed issue: Upgrade JavaScript packages to a newer version (Jessica Höck)
+-Fixed issue: Survey participant data with quotes is not properly exported to CSV (#2072) (Vilius Šumskas)
+-Fixed issue: Statistics form looking garbled when using Portuguese (#2260) (Tim Willig)
+-Fixed issue: Purging obsolete directory files not working after storage calculation (Carsten Schmitz)
+-Fixed issue: On installation InnoDB is used instead of MyISAM for database tables (Carsten Schmitz)
+-Fixed issue: Notice when showing statistics (Frithjof)
+-Fixed issue: Not all response columns begin exported if PHP setting max_input_vars is too low (Carsten Schmitz)
+-Fixed issue: Missing validation for start language in data entry (Carsten Schmitz)
+-Fixed issue: Close button not working after import tokens from LDAP (Mantis Development)
+-Fixed issue #T1358: Label Sets: Export multiple label sets - Export Button disabled state (#2123) (Jessica Höck)
+-Fixed issue #T1055: Optimization open/closed-access mode and survey activation screens (#2138) (Jessica Höck)
+-Fixed issue #17912: Sporadic "There are empty question groups in this survey " error (#2270) (Mark Hanna)
+-Fixed issue #17903: Incorrect IP address used when having multiple forward from proxies (Tassoman)
+-Fixed issue #17901: When using RemoteControl and uploading a 'lsa' file, the survey name parameter was not used (Gabriel Cavalari)
+-Fixed issue #17848: Strings appearing always in english (#2261) (Gabriel Jenik)
+-Fixed issue #17838: Add javascript in script tab only works for superadmin (#2266) (Gabriel Jenik)
+-Fixed issue #17834: When editing the assessment message, the previously inputted text disappears (#2256) (Gabriel Jenik)
+-Fixed issue #17831: Database error when upgrading from 2.0.6 to 5.2.9 when using MSSQL (Carsten Schmitz)
+-Fixed issue #17798: Set authwebserver as default didn't deactivate AuthDB usage (#2210) (Gabriel Jenik)
+-Fixed issue #17787: open_base_dir + debug can throw error when load some question type. (#2175) (Denis Chenu)
+-Fixed issue #17762: vulnerable verson of jQuery used in devbridge-autocomplete (#2160) (Denis Chenu)
+-Fixed issue #17762: vulnerable verson of jQuery included in qtip2 (#2161) (Denis Chenu)
+-Fixed issue #17685: When adding a new participant, user is able to Save without adding any information and a blank record is save (#2194) (Gabriel Jenik)
+-Fixed issue #17647: Strange sort order of question groups in statistics (Steffen Moser)
+-Fixed issue #17492: Refactor updatedb helper into multiple command classes (#2163) (Olle Härstedt)
+-Fixed issue #17322: [security] Separate settings for administration & participants for handling failed login attempts (#2251) (Patricia Stell)
+-Fixed issue #12105: Scroll bar partially broken at browse response screen (#2262) (Gabriel Jenik)
+#Updated translation: Valencian by vbraque
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Portugal) by algarvio, c_schmitz, samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German by actxcellence, Basil, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo, tigger
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.2.13 (build 220207) to 5.2.14 (build 220214) February 14, 2022
 -Fixed issue: [security] Possible XSS in file uploader (Carsten Schmitz)
 -Fixed issue: [security] Missing brute-force protection when loading a survey (Carsten Schmitz)
