@@ -3,7 +3,7 @@
         <div class="card-header bg-primary">
             <div class=""><?php eT("Submission date"); ?></div>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
 
             <div class="row ls-space margin top-5">
                 <div class='form-group'>

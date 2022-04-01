@@ -5,7 +5,7 @@
       <?php eT("Columns");?>
     </div>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <?php if ($SingleResponse): ?>
       <input type='hidden' name='response_id' value="<?php echo $SingleResponse;?>" />

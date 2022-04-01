@@ -8,7 +8,7 @@
       <?php eT("Participant control");?>
     </div>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
     <div class="alert alert-info alert-dismissible" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
       <?php eT('Your survey can export associated participant data with each response. Select any additional fields you would like to export.'); ?>

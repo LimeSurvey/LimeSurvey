@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <div class="panel-body">
+        <div class="card-body">
             <div class="form-group">
                 <label for="csv_vv_file" class=" control-label">
                     <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>

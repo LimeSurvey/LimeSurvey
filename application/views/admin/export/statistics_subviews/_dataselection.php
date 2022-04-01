@@ -3,7 +3,7 @@
         <div class=""><?php eT("Data selection"); ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <div class="row">
             <div class='form-group'>
                 <label for='completionstate' class="col-sm-4 control-label"><?php eT("Include:"); ?> </label>

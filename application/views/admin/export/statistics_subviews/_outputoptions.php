@@ -2,7 +2,7 @@
         <div class="card-header bg-primary">
             <div class=""><?php eT("Output options"); ?></div>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <div class="row">
                 <div class='form-group col-md-6'>
                     <label for='showtextinline' class="col-lg-8 control-label" ><?php eT("Show text responses inline:") ?></label>

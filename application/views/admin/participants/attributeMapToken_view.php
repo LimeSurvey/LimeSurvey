@@ -25,7 +25,7 @@
                         {
                             foreach ($tokenattribute as $key => $value)
                             {
-                                echo "<div id='t_" . $value . "' data-name='" . $key . "' class='panel panel-default token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"panel-body\">" . $key . "</div></div>";
+                                echo "<div id='t_" . $value . "' data-name='" . $key . "' class='panel panel-default token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"card-body\">" . $key . "</div></div>";
                             }
                         }
                     ?>
@@ -37,7 +37,7 @@
         <div class='col-sm-4'>
             <div id="newcreated" class="card attribute-column">
                 <div class="card-header bg-primary"><?php eT("Participant attributes to create") ?></div>
-                <div class="panel-body newcreate droppable" style ="height: 40px">
+                <div class="card-body newcreate droppable" style ="height: 40px">
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                     {
                         foreach ($attribute as $key => $value)
                         {
-                            echo "<div class='panel panel-default mappable-attribute-wrapper droppable'><div class=\"panel-body mappable-attribute attribute-item\" id='c_" . $key . "' data-name='c_" . $key . "'>" . $value . "</div></div>";
+                            echo "<div class='panel panel-default mappable-attribute-wrapper droppable'><div class=\"card-body mappable-attribute attribute-item\" id='c_" . $key . "' data-name='c_" . $key . "'>" . $value . "</div></div>";
                         }
                     }
                     ?>

@@ -25,7 +25,7 @@
 </a>
 
     <div id="explorer-lvl1" class="panel-collapse collapse" >
-        <div class="panel-body">
+        <div class="card-body">
     <ul class="nav navbar-nav dropdown-first-level" id="explorer-container">
 
         <!--  Groups and questions-->

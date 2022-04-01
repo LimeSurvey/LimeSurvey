@@ -2,7 +2,7 @@
         <div class="card-header bg-primary">
             <div class=""><?php eT("Response ID"); ?></div>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <div class="row">
                 <div class='form-group'>
                     <label class="col-sm-4 control-label" for='idG'><?php eT("Greater than:"); ?></label>

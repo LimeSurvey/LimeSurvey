@@ -2,7 +2,7 @@
         <div class="card-header bg-primary">
             <div class=""><?php eT("Output format"); ?></div>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-default active">
                     <input name="outputtype" value="html" type="radio" checked='checked' id="outputtypehtml" autofocus="true" ><?php eT('HTML');?>

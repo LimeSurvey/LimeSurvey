@@ -91,7 +91,7 @@
         </div>
     </div>
 
-    <div class='panel-body'>
+    <div class='card-body'>
         <?php echo $conditionHtml; ?>
     </div>
 </div>

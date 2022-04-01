@@ -34,7 +34,7 @@
                     </div>
                         <?php if (isset ($aGroupAndQuestions['questions']))
                             {?>
-                            <ol class='question-list list-unstyled panel-body' data-level='question'>
+                            <ol class='question-list list-unstyled card-body' data-level='question'>
                                 <?php
                                     foreach($aGroupAndQuestions['questions'] as $aQuestion)
                                     {?>

@@ -11,7 +11,7 @@
                     <span id='move-all' class='btn fa fa-arrow-right no-padding' data-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>'></span>
                 </div>
             </div>
-            <div class='panel-body'>
+            <div class='card-body'>
                 <p class='help-block'><?php eT("The following additional fields were found in your CSV file."); ?></p>
                 <div class="csvatt droppable-csv">
                     <?php
@@ -33,7 +33,7 @@
             <div class="card-header bg-primary">
                 <?php eT("Attributes to be created") ?>
             </div>
-            <div class='panel-body'>
+            <div class='card-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into this area to create a new participant attribute and import your data into it."); ?></p>
                 <div class="newcreate droppable-new">
                 </div>
@@ -43,7 +43,7 @@
     <div class='col-sm-4'>
         <div id="centralattribute" class="card">
             <div class="card-header bg-primary"><?php eT("Existing attribute"); ?></div>
-            <div class='panel-body'>
+            <div class='card-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into an existing participant attribute listed below to import your data into it."); ?></p>
                 <div class="centralatt">
                     <?php foreach ($attributes as $key => $value): ?>

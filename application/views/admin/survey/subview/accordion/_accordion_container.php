@@ -31,7 +31,7 @@
             </div>
         </div>
         <div id="generaloptions" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-generaloptions">
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_generaloptions_panel', $data); ?>
             </div>
         </div>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div id="presentationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-presentationoptions">
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_presentation_panel', $data); ?>
             </div>
         </div>
@@ -71,7 +71,7 @@
             </div>
         </div>
         <div id="publicationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-publicationoptions">
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_publication_panel', $data); ?>
             </div>
         </div>
@@ -91,7 +91,7 @@
             </div>
         </div>
         <div id="notificationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-notificationoptions">
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_notification_panel', $data); ?>
             </div>
         </div>
@@ -111,7 +111,7 @@
             </div>
         </div>
         <div id="tokensoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-tokensoptions">
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_tokens_panel', $data); ?>
             </div>
         </div>
@@ -133,7 +133,7 @@
                 </div>
             </div>
             <div id="integrationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-integrationoptions">
-                <div class="panel-body">
+                <div class="card-body">
                     <?php $this->renderPartial('/admin/survey/subview/accordion/_integration_panel', $data); ?>
                 </div>
             </div>
@@ -155,7 +155,7 @@
                 </div>
             </div>
             <div id="resourcesoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-resourcesoptions">
-                <div class="panel-body">
+                <div class="card-body">
                     <?php $this->renderPartial('/admin/survey/subview/accordion/_resources_panel', $data); ?>
                 </div>
             </div>

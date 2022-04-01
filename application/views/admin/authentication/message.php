@@ -4,7 +4,7 @@
             <div class="card login-panel" id="panel-1">
 
                 <!-- Header -->
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12">
                           <img alt='logo' id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />

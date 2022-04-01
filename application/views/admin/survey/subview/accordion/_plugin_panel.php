@@ -30,7 +30,7 @@ App()->getClientScript()->registerScript("plugin-panel-variables", "
                 </div>
             </div>
             <div id="plugin<?php echo $id; ?>" class="panel-collapse collapse" role="tabpanel">
-                <div class="panel-body">
+                <div class="card-body">
                 <?php
                 $this->widget('ext.SettingsWidget.SettingsWidget', array(
                     'settings' => $plugin['settings'],

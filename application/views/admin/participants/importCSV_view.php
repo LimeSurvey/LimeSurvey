@@ -97,7 +97,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                         <div class="card-header bg-primary">
                             <?php eT("CSV input format") ?>
                         </div>
-                        <div class='panel-body'>
+                        <div class='card-body'>
 
                             <p>
                                 <?php eT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for most spreadsheet tools). The first line must contain the field names. The fields can be in any order."); ?>

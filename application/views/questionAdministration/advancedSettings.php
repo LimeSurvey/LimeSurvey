@@ -7,7 +7,7 @@
                 </a>
             </div>
             <div id="collapse-<?= CHtml::getIdByName($category); ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="<?= CHtml::getIdByName($category); ?>-heading">
-                <div class="panel-body">
+                <div class="card-body">
                     <?php foreach ($settings as $setting) : ?>
                         <?php $this->widget(
                             'ext.AdvancedSettingWidget.AdvancedSettingWidget',

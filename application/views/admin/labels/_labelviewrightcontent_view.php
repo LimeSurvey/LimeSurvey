@@ -15,7 +15,7 @@
 
         <!-- Body -->
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
+          <div class="card-body">
             <div id="upload-form-container">
 
               <!-- Form browselabelresources -->
@@ -85,7 +85,7 @@
             </div>
             <!-- upload-form-container -->
           </div>
-          <!-- panel-body -->
+          <!-- card-body -->
         </div>
         <!-- collapseOne -->
       </div>

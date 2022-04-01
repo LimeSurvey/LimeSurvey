@@ -64,7 +64,7 @@
                         </div>
                         <div id="collapse-copy" class="panel-collapse collapse  in" role="tabpanel"
                              aria-labelledby="heading-copy">
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <div class="form-group">
                                     <label class=" control-label"
                                            for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>

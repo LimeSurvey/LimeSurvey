@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="form-group">
                         <label for="surveyid" class="col-sm-2 control-label">
                             <?php eT("Survey ID:"); ?>
@@ -62,7 +62,7 @@
                         <?php eT("Format"); ?>
                     </div>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="form-group">
                         <label for="extension" class="col-sm-2 control-label" data-toggle="tooltip" data-placement="right" title='<?php eT("For easy opening in MS Excel, change the extension to 'tab' or 'txt'"); ?>'>
                             <?php eT("File extension:"); ?>

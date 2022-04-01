@@ -12,7 +12,7 @@
 <?php eT("Selection");?>
 </h4>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
     <div class="form-group">
         <!-- From -->
         <label for='export_ids' class="col-sm-2 control-label">

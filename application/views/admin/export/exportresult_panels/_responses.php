@@ -4,7 +4,7 @@
             <?php eT("Responses");?>
         </div>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <div class='form-group row'>
             <label class="col-sm-12 control-label" for=''>
                 <?php eT("Export responses as:"); ?>

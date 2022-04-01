@@ -5,7 +5,7 @@
       <?php eT("Range");?>
     </div>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
     <div class="form-group">
       <!-- From -->
       <label for='export_from' class=" control-label">
