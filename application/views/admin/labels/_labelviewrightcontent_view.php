@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-12 content-right text-center">
     <div class="panel-group" id="accordion" role="tablist" style="margin-top: 20px">
-      <div class="panel panel-default" id="up_resmgmt">
+      <div class="card" id="up_resmgmt">
 
         <!-- Uploaded resources management -->
         <div class="card-header bg-primary" role="tab" id="headingOne">

@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="card">
 <?php
     foreach($aExpressions as $aExpression)
     {

@@ -1,6 +1,6 @@
 <div id="advanced-options-container" class="custom custom-margin top-5">
     <?php foreach ($advancedSettings as $category => $settings) : ?>
-        <div class="panel panel-default panel-advancedquestionsettings col-12" id="<?= CHtml::getIdByName($category); ?>">
+        <div class="card panel-advancedquestionsettings col-12" id="<?= CHtml::getIdByName($category); ?>">
             <div class="card-header bg-primary" id="<?= CHtml::getIdByName($category); ?>-heading">
                 <a class=" selector--questionEdit-collapse" id="button-collapse-<?= CHtml::getIdByName($category); ?>" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-<?= CHtml::getIdByName($category); ?>" aria-expanded="false" aria-controls="collapse-<?= CHtml::getIdByName($category); ?>">
                     <?= gT($category); ?>

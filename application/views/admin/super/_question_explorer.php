@@ -10,7 +10,7 @@
 ?>
 
 <!-- State when group is loaded : for JavaScript-->
-<li id="explorer" class="dropdownlvl2 dropdownstyle panel panel-default">
+<li id="explorer" class="dropdownlvl2 dropdownstyle card">
 <?php if(isset($sidemenu['explorer']['state']) && $sidemenu['explorer']['state']==true):?>
     <input type="hidden" id="open-explorer" />
 
@@ -30,7 +30,7 @@
 
         <!--  Groups and questions-->
         <?php if(count($aGroups)):?>
-            <li class="panel panel-default dropdownstyle" id="questionexplorer-group-container">
+            <li class="card dropdownstyle" id="questionexplorer-group-container">
 
 
                 <?php if (!$bSurveyIsActive && Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'create')): ?>

@@ -47,7 +47,7 @@
                     foreach ($selectedcentralattribute as $key => $value)
                     {
                         ?>
-                        <div class='panel panel-default col-sm-12' id='c_<?php echo $key; ?>'><div class='card-body'><?php echo $value; ?></div></div>
+                        <div class='card col-sm-12' id='c_<?php echo $key; ?>'><div class='card-body'><?php echo $value; ?></div></div>
                         <?php
                     }
                     ?>
@@ -77,7 +77,7 @@
                                     <?php $autoAttr = $automaticallyMappedAttributes[$id]; // Short-hand... ?>
                                     <div class='tokenatt-container col-sm-12'>
                                         <div class='col-sm-6'>
-                                            <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
+                                            <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
                                                     <span class='fa fa-arrows-h tokenatt-arrow'></span>
@@ -85,7 +85,7 @@
                                             </div>
                                         </div>
                                         <div class='col-sm-6'>
-                                            <div class='panel panel-default ui-state-disabled cpdb-attribute' id='c_<?php echo $autoAttr['cpdbAttribute']['attribute_id']; ?>'>
+                                            <div class='card ui-state-disabled cpdb-attribute' id='c_<?php echo $autoAttr['cpdbAttribute']['attribute_id']; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo $autoAttr['cpdbAttribute']['attribute_name']; ?>
                                                 </div>
@@ -95,7 +95,7 @@
                                 <?php else: ?>
                                     <div class='tokenatt-container col-sm-12'>
                                         <div class='col-sm-6'>
-                                            <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
+                                            <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
                                                 </div>
@@ -133,7 +133,7 @@
                                 foreach ($alreadymappedattributename as $key => $value)
                                 {
                                     ?>
-                                    <div class='panel panel-default' title='This attribute is already mapped' id=''><div class='card-body'><?php echo $value; ?></div></div>
+                                    <div class='card' title='This attribute is already mapped' id=''><div class='card-body'><?php echo $value; ?></div></div>
                                     <?php
                                 }
                                 ?>
@@ -153,7 +153,7 @@
                     <div class="standardfields">
                         <div class='tokenatt-container col-sm-12'>
                             <div class='col-sm-6'>
-                                <div class='panel panel-default ui-state-disabled token-attribute' id='t_token'>
+                                <div class='card ui-state-disabled token-attribute' id='t_token'>
                                     <div class='card-body'>
                                         <?php eT("Participant") ?>
                                         <span class='fa fa-arrows-h tokenatt-arrow'></span>

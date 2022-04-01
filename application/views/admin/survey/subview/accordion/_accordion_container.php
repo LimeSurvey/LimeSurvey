@@ -18,7 +18,7 @@
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
     <!-- General Option -->
-    <div class="panel panel-default" id="generaloptionsContainer">
+    <div class="card" id="generaloptionsContainer">
         <div class="card-header bg-primary" role="tab" id="heading-generaloptions">
             <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
@@ -38,7 +38,7 @@
     </div>
 
     <!-- Presentation & navigation  -->
-    <div class="panel panel-default">
+    <div class="card">
         <div class="card-header bg-primary" role="tab" id="heading-presentationoptions">
             <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
@@ -58,7 +58,7 @@
     </div>
 
     <!-- Publication & access control -->
-    <div class="panel panel-default">
+    <div class="card">
         <div class="card-header bg-primary" role="tab" id="heading-publicationoptions">
             <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
@@ -78,7 +78,7 @@
     </div>
 
     <!-- Notification & data management -->
-    <div class="panel panel-default">
+    <div class="card">
         <div class="card-header bg-primary" role="tab" id="heading-notificationoptions">
             <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
@@ -98,7 +98,7 @@
     </div>
 
     <!-- Participants (tokens) -->
-    <div class="panel panel-default">
+    <div class="card">
         <div class="card-header bg-primary" role="tab" id="heading-tokensoptions">
             <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
@@ -120,7 +120,7 @@
     <!-- Edition Mode -->
     <?php if($data['action']=='surveygeneralsettings'):?>
         <!-- Panel integration -->
-        <div class="panel panel-default">
+        <div class="card">
             <div class="card-header bg-primary" role="tab" id="heading-integrationoptions">
                 <div class="">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
@@ -143,7 +143,7 @@
         <?php $this->renderPartial('/admin/survey/subview/accordion/_plugins_panel', $data); ?>
 
         <!-- Resources -->
-        <div class="panel panel-default">
+        <div class="card">
             <div class="card-header bg-primary" role="tab" id="heading-resourcesoptions">
                 <div class="">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">

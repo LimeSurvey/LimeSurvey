@@ -18,7 +18,7 @@
 
 <!-- Quick Actions -->
 
-<div class="panel panel-default">
+<div class="card">
     <div id="survey-action-title" class="card-header bg-primary" >
         <div class="row">
             <div class="col-xs-2 col-sm-1">
