@@ -11,7 +11,7 @@
 
 <div class='panel panel-primary'>
 
-    <div class='card-header scenario-heading'>
+    <div class='card-header bg-primary scenario-heading'>
 
         <div class='row'>
             <div class='col-sm-2'>

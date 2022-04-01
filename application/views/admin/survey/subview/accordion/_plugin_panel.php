@@ -18,7 +18,7 @@ App()->getClientScript()->registerScript("plugin-panel-variables", "
 
     if (!empty($plugin['settings'])): ?>
         <div class="panel panel-default">
-            <div class="card-header" role="tab" id="heading-plugin<?php echo $id; ?>">
+            <div class="card-header bg-primary" role="tab" id="heading-plugin<?php echo $id; ?>">
                 <div class="panel-title h4">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>

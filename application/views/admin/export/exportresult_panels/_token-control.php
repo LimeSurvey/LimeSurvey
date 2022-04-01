@@ -3,7 +3,7 @@
 ?>
 
 <div class="panel panel-primary" id="panel-7">
-  <div class="card-header">
+  <div class="card-header bg-primary">
     <div class="panel-title h4">
       <?php eT("Participant control");?>
     </div>

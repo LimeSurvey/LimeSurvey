@@ -4,7 +4,7 @@
       <div class="panel panel-default" id="up_resmgmt">
 
         <!-- Uploaded resources management -->
-        <div class="card-header" role="tab" id="headingOne">
+        <div class="card-header bg-primary" role="tab" id="headingOne">
           <div class="panel-title h4">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <?php eT("Uploaded resources management"); ?>

@@ -27,7 +27,7 @@
                     {?>
                     <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='panel panel-primary mjs-nestedSortable-expanded' data-level='group'>
 
-                    <div class="card-header">
+                    <div class="card-header bg-primary">
                         <a class='btn btn-default btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>
                         &nbsp;
                         <?php echo ellipsize($aGroupAndQuestions['group_text'], 80);?>

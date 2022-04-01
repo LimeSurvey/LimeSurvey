@@ -19,7 +19,7 @@
 <!-- Quick Actions -->
 
 <div class="panel panel-default">
-    <div id="survey-action-title" class="card-header" >
+    <div id="survey-action-title" class="card-header bg-primary" >
         <div class="row">
             <div class="col-xs-2 col-sm-1">
                 <button id="survey-action-chevron" class="btn btn-default btn-tiny" data-active="<?=$quickactionstate?>" data-url="<?php echo Yii::app()->urlManager->createUrl("surveyAdministration/toggleQuickAction/");?>">
@@ -95,7 +95,7 @@
                                     <!-- Can't add new group to survey  -->
                                     <div class="col-sm-6">
                                         <div class="panel panel-primary disabled" id="panel-1">
-                                            <div class="card-header">
+                                            <div class="card-header bg-primary">
                                                 <div class="panel-title h4"><?php eT('Add group');?></div>
                                             </div>
                                             <div class="panel-body">
@@ -115,7 +115,7 @@
                                     <!-- Can't add a new question -->
                                     <div class="col-sm-6" >
                                         <div class="panel panel-primary disabled" id="panel-2">
-                                            <div class="card-header">
+                                            <div class="card-header bg-primary">
                                                 <div class="panel-title h4 disabled"><?php eT('Add question');?></div>
                                             </div>
                                             <div class="panel-body">
@@ -142,7 +142,7 @@
                                     <!-- Add group -->
                                     <div class="col-sm-6">
                                         <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>">
-                                            <div class="card-header">
+                                            <div class="card-header bg-primary">
                                                 <div class="panel-title h4"><?php eT('Add group');?></div>
                                             </div>
                                             <div class="panel-body">
@@ -163,7 +163,7 @@
                                     <?php if(!$groups_count > 0): ?>
                                         <div class="col-sm-6" >
                                             <div class="panel panel-primary disabled" id="panel-2">
-                                                <div class="card-header">
+                                                <div class="card-header bg-primary">
                                                     <div class="panel-title h4 disabled"><?php eT('Add question');?></div>
                                                 </div>
                                                 <div class="panel-body  ">
@@ -189,7 +189,7 @@
                                     <?php else:?>
                                         <div class="col-sm-6">
                                             <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>">
-                                                <div class="card-header">
+                                                <div class="card-header bg-primary">
                                                     <div class="panel-title h4"><?php eT('Add question');?></div>
                                                 </div>
                                                 <div class="panel-body">
@@ -216,7 +216,7 @@
                                 <!-- Edit text elements and general settings -->
                                 <?php if($surveylocale && $surveysettings): ?>
                                     <div class="panel panel-primary panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
-                                        <div class="card-header">
+                                        <div class="card-header bg-primary">
                                             <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
                                         </div>
                                         <div class="panel-body">
@@ -233,7 +233,7 @@
                                     </div>
                                 <?php else: ?>
                                     <div class="panel panel-primary disabled" id="panel-3" >
-                                        <div class="card-header">
+                                        <div class="card-header bg-primary">
                                             <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
                                         </div>
                                         <div class="panel-body">
@@ -256,7 +256,7 @@
                             <?php if($respstatsread && $activated=="Y"):?>
                                 <div class="col-sm-6">
                                     <div class="panel panel-primary panel-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>">
-                                        <div class="card-header">
+                                        <div class="card-header bg-primary">
                                             <div class="panel-title h4"><?php eT("Statistics");?></div>
                                         </div>
                                         <div class="panel-body">
@@ -279,7 +279,7 @@
                             <?php else: ?>
                                 <div class="col-sm-6">
                                     <div class="panel panel-primary disabled" id="panel-4">
-                                        <div class="card-header">
+                                        <div class="card-header bg-primary">
                                             <div class="panel-title h4"><?php eT("Responses & statistics");?></div>
                                         </div>
                                         <div class="panel-body">

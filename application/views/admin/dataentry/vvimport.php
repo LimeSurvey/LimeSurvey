@@ -23,7 +23,7 @@
     
     
     <div class="panel panel-primary" id="panel-1">
-        <div class="card-header">
+        <div class="card-header bg-primary">
             <div class="panel-title h4">
                 <?php eT("General");?>
             </div>
