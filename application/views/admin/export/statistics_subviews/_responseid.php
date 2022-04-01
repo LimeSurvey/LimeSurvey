@@ -1,6 +1,6 @@
     <div class="card" id="panel-response-id">
         <div class="card-header bg-primary">
-            <div class="panel-title h4"><?php eT("Response ID"); ?></div>
+            <div class=""><?php eT("Response ID"); ?></div>
         </div>
         <div class="panel-body">
             <div class="row">

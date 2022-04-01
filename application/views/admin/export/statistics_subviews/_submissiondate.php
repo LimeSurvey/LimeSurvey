@@ -1,7 +1,7 @@
 <?php if (isset($datestamp) && $datestamp == "Y"): ?>
     <div class="card " id="panel-submission-date">
         <div class="card-header bg-primary">
-            <div class="panel-title h4"><?php eT("Submission date"); ?></div>
+            <div class=""><?php eT("Submission date"); ?></div>
         </div>
         <div class="panel-body">
 

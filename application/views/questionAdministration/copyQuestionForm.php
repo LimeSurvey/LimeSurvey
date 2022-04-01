@@ -56,7 +56,7 @@
                     <!-- Copy options -->
                     <div class="panel panel-default">
                         <div class="card-header bg-primary" role="tab" id="heading-copy">
-                            <a class="panel-title h4 selector--questionEdit-collapse" role="button"
+                            <a class=" selector--questionEdit-collapse" role="button"
                                data-toggle="collapse" data-parent="#accordion" href="#collapse-copy"
                                aria-expanded="false" aria-controls="collapse-copy">
                                 <?php eT("Copy options"); ?>

@@ -1,6 +1,6 @@
     <div class="card" id="panel-output-options">
         <div class="card-header bg-primary">
-            <div class="panel-title h4"><?php eT("Output options"); ?></div>
+            <div class=""><?php eT("Output options"); ?></div>
         </div>
         <div class="panel-body">
             <div class="row">

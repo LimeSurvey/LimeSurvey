@@ -1,6 +1,6 @@
     <div class="card " id="panel-output-forma">
         <div class="card-header bg-primary">
-            <div class="panel-title h4"><?php eT("Output format"); ?></div>
+            <div class=""><?php eT("Output format"); ?></div>
         </div>
         <div class="panel-body">
             <div class="btn-group" data-toggle="buttons">

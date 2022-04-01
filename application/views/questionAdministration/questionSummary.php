@@ -40,7 +40,7 @@
                         <div class="col-lg-3">
                             <div class="card <?php if ($survey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create/surveyid/'.$survey->sid.'/gid/'.$question->gid); ?>">
                                 <div class="card-header bg-primary">
-                                    <div class="panel-title h4"><?php eT("Add new question to group");?></div>
+                                    <div class=""><?php eT("Add new question to group");?></div>
                                 </div>
                                 <div class="panel-body">
                                     <span class="icon-add text-success"  style="font-size: 3em;"></span>

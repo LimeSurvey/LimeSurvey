@@ -96,7 +96,7 @@
                                     <div class="col-sm-6">
                                         <div class="card disabled" id="panel-1">
                                             <div class="card-header bg-primary">
-                                                <div class="panel-title h4"><?php eT('Add group');?></div>
+                                                <div class=""><?php eT('Add group');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
@@ -116,7 +116,7 @@
                                     <div class="col-sm-6" >
                                         <div class="card disabled" id="panel-2">
                                             <div class="card-header bg-primary">
-                                                <div class="panel-title h4 disabled"><?php eT('Add question');?></div>
+                                                <div class=" disabled"><?php eT('Add question');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
@@ -143,7 +143,7 @@
                                     <div class="col-sm-6">
                                         <div class="card panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>">
                                             <div class="card-header bg-primary">
-                                                <div class="panel-title h4"><?php eT('Add group');?></div>
+                                                <div class=""><?php eT('Add group');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
@@ -164,7 +164,7 @@
                                         <div class="col-sm-6" >
                                             <div class="card disabled" id="panel-2">
                                                 <div class="card-header bg-primary">
-                                                    <div class="panel-title h4 disabled"><?php eT('Add question');?></div>
+                                                    <div class=" disabled"><?php eT('Add question');?></div>
                                                 </div>
                                                 <div class="panel-body  ">
                                                     <div class="panel-body-ico">
@@ -190,7 +190,7 @@
                                         <div class="col-sm-6">
                                             <div class="card panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>">
                                                 <div class="card-header bg-primary">
-                                                    <div class="panel-title h4"><?php eT('Add question');?></div>
+                                                    <div class=""><?php eT('Add question');?></div>
                                                 </div>
                                                 <div class="panel-body">
                                                     <div class="panel-body-ico">
@@ -217,7 +217,7 @@
                                 <?php if($surveylocale && $surveysettings): ?>
                                     <div class="card panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
                                         <div class="card-header bg-primary">
-                                            <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
+                                            <div class=""><?php eT('Edit text elements and general settings');?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
@@ -234,7 +234,7 @@
                                 <?php else: ?>
                                     <div class="card disabled" id="panel-3" >
                                         <div class="card-header bg-primary">
-                                            <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
+                                            <div class=""><?php eT('Edit text elements and general settings');?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
@@ -257,7 +257,7 @@
                                 <div class="col-sm-6">
                                     <div class="card panel-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>">
                                         <div class="card-header bg-primary">
-                                            <div class="panel-title h4"><?php eT("Statistics");?></div>
+                                            <div class=""><?php eT("Statistics");?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
@@ -280,7 +280,7 @@
                                 <div class="col-sm-6">
                                     <div class="card disabled" id="panel-4">
                                         <div class="card-header bg-primary">
-                                            <div class="panel-title h4"><?php eT("Responses & statistics");?></div>
+                                            <div class=""><?php eT("Responses & statistics");?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">

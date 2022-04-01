@@ -1,6 +1,6 @@
 <div class="card" id="panel-data-selection">
     <div class="card-header bg-primary">
-        <div class="panel-title h4"><?php eT("Data selection"); ?></div>
+        <div class=""><?php eT("Data selection"); ?></div>
     </div>
 
     <div class="panel-body">

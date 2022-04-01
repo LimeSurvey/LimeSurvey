@@ -20,7 +20,7 @@
     <!-- General Option -->
     <div class="panel panel-default" id="generaloptionsContainer">
         <div class="card-header bg-primary" role="tab" id="heading-generaloptions">
-            <div class="panel-title h4">
+            <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
@@ -40,7 +40,7 @@
     <!-- Presentation & navigation  -->
     <div class="panel panel-default">
         <div class="card-header bg-primary" role="tab" id="heading-presentationoptions">
-            <div class="panel-title h4">
+            <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
@@ -60,7 +60,7 @@
     <!-- Publication & access control -->
     <div class="panel panel-default">
         <div class="card-header bg-primary" role="tab" id="heading-publicationoptions">
-            <div class="panel-title h4">
+            <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
@@ -80,7 +80,7 @@
     <!-- Notification & data management -->
     <div class="panel panel-default">
         <div class="card-header bg-primary" role="tab" id="heading-notificationoptions">
-            <div class="panel-title h4">
+            <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
@@ -100,7 +100,7 @@
     <!-- Participants (tokens) -->
     <div class="panel panel-default">
         <div class="card-header bg-primary" role="tab" id="heading-tokensoptions">
-            <div class="panel-title h4">
+            <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
@@ -122,7 +122,7 @@
         <!-- Panel integration -->
         <div class="panel panel-default">
             <div class="card-header bg-primary" role="tab" id="heading-integrationoptions">
-                <div class="panel-title h4">
+                <div class="">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
 			<span class="sr-only">Expand/Collapse</span>
@@ -145,7 +145,7 @@
         <!-- Resources -->
         <div class="panel panel-default">
             <div class="card-header bg-primary" role="tab" id="heading-resourcesoptions">
-                <div class="panel-title h4">
+                <div class="">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
                     </a>
