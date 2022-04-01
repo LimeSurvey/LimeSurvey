@@ -9,7 +9,7 @@
     </script>
 <?php endif; ?>
 
-<div class='panel panel-primary'>
+<div class='card'>
 
     <div class='card-header bg-primary scenario-heading'>
 

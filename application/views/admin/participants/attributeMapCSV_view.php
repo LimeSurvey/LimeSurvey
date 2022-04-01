@@ -4,7 +4,7 @@
 
 <div class='row draggable-container' style='z-index: 1;'>
     <div class='col-sm-4'>
-        <div id="csvattribute" class="panel panel-primary">
+        <div id="csvattribute" class="card">
             <div class="card-header bg-primary">
                 <?php eT("CSV field names "); ?>
                 <div class='pull-right'>
@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class='col-sm-4'>
-        <div id="newcreated" class="panel panel-primary">
+        <div id="newcreated" class="card">
             <div class="card-header bg-primary">
                 <?php eT("Attributes to be created") ?>
             </div>
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class='col-sm-4'>
-        <div id="centralattribute" class="panel panel-primary">
+        <div id="centralattribute" class="card">
             <div class="card-header bg-primary"><?php eT("Existing attribute"); ?></div>
             <div class='panel-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into an existing participant attribute listed below to import your data into it."); ?></p>

@@ -13,7 +13,7 @@
 
     <div class="row">
         <div class="col-sm-6 content-right">
-            <div class="panel panel-primary" id="panel-1" style="opacity: 1; top: 0px;">
+            <div class="card" id="panel-1" style="opacity: 1; top: 0px;">
                 <div class="card-header bg-primary">
                     <div class="panel-title h4">
                         <?php eT("Export survey"); ?>
@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-primary" id="panel-extension" style="opacity: 1; top: 0px;">
+            <div class="card" id="panel-extension" style="opacity: 1; top: 0px;">
                 <div class="card-header bg-primary">
                     <div class="panel-title h4">
                         <?php eT("Format"); ?>

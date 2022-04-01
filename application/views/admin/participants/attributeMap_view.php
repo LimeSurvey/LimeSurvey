@@ -39,7 +39,7 @@
 
 <div class='row'>
     <div class='col-sm-4'>
-        <div id="centralattribute" class="panel panel-primary <?php echo $columnstyle ?>">
+        <div id="centralattribute" class="card <?php echo $columnstyle ?>">
             <div class="card-header bg-primary"><?php eT("Unmapped participant attributes"); ?></div>
             <div class='panel-body'>
                 <div id="cpdbatt">
@@ -56,7 +56,7 @@
         </div>
     </div>
     <div class='col-sm-4'>
-        <div id="newcreated" class="panel panel-primary <?php echo $columnstyle ?>">
+        <div id="newcreated" class="card <?php echo $columnstyle ?>">
             <div class="card-header bg-primary"><?php eT("Survey participant attributes to create"); ?></div>
             <div class='panel-body' style="height:100%;">
                 <div class="newcreate" id="sortable" style ="height:100%;">
@@ -66,7 +66,7 @@
     </div>
     <div class='col-sm-4'>
         <div id='tokenattribute'>
-            <div class='panel panel-primary'>
+            <div class='card'>
                 <div class="card-header bg-primary">
                     <?php eT("Existing survey participant attributes"); ?>
                 </div>
@@ -147,7 +147,7 @@
                 </div>
             </div>
 
-            <div class='panel panel-primary'>
+            <div class='card'>
                 <div class='card-header bg-primary'><?php eT("Standard participant fields") ?></div>
                 <div class='panel-body'>
                     <div class="standardfields">

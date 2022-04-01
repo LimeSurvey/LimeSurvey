@@ -1,4 +1,4 @@
-<div class="panel panel-primary" id="panel-data-selection">
+<div class="card" id="panel-data-selection">
     <div class="card-header bg-primary">
         <div class="panel-title h4"><?php eT("Data selection"); ?></div>
     </div>

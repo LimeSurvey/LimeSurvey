@@ -25,7 +25,7 @@
                 <?php
                     foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
                     {?>
-                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='panel panel-primary mjs-nestedSortable-expanded' data-level='group'>
+                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='card mjs-nestedSortable-expanded' data-level='group'>
 
                     <div class="card-header bg-primary">
                         <a class='btn btn-default btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>

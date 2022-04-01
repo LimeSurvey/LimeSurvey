@@ -17,7 +17,7 @@
 <div class="draggable-container">
     <div class='row'>
         <div class='col-sm-4'>
-            <div id="tokenattribute" class="panel panel-primary attribute-column">
+            <div id="tokenattribute" class="card attribute-column">
                 <div class="card-header bg-primary"><?php eT("Unmapped survey participant attributes") ?></div>
                 <div id="tokenatt" class="tokenatt droppable">
                     <?php
@@ -35,7 +35,7 @@
         </div>
 
         <div class='col-sm-4'>
-            <div id="newcreated" class="panel panel-primary attribute-column">
+            <div id="newcreated" class="card attribute-column">
                 <div class="card-header bg-primary"><?php eT("Participant attributes to create") ?></div>
                 <div class="panel-body newcreate droppable" style ="height: 40px">
                 </div>
@@ -43,7 +43,7 @@
         </div>
 
         <div class='col-sm-4'>
-            <div id="centralattribute" class="panel panel-primary attribute-column">
+            <div id="centralattribute" class="card attribute-column">
                 <div class="card-header bg-primary"><?php eT("Existing participant attributes")?></div>
                 <div class="centralatt">
                     <?php
