@@ -19,7 +19,7 @@
 
     <!-- General Option -->
     <div class="panel panel-default" id="generaloptionsContainer">
-        <div class="panel-heading" role="tab" id="heading-generaloptions">
+        <div class="card-header" role="tab" id="heading-generaloptions">
             <div class="panel-title h4">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
@@ -39,7 +39,7 @@
 
     <!-- Presentation & navigation  -->
     <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading-presentationoptions">
+        <div class="card-header" role="tab" id="heading-presentationoptions">
             <div class="panel-title h4">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
@@ -59,7 +59,7 @@
 
     <!-- Publication & access control -->
     <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading-publicationoptions">
+        <div class="card-header" role="tab" id="heading-publicationoptions">
             <div class="panel-title h4">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
@@ -79,7 +79,7 @@
 
     <!-- Notification & data management -->
     <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading-notificationoptions">
+        <div class="card-header" role="tab" id="heading-notificationoptions">
             <div class="panel-title h4">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
@@ -99,7 +99,7 @@
 
     <!-- Participants (tokens) -->
     <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading-tokensoptions">
+        <div class="card-header" role="tab" id="heading-tokensoptions">
             <div class="panel-title h4">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
@@ -121,7 +121,7 @@
     <?php if($data['action']=='surveygeneralsettings'):?>
         <!-- Panel integration -->
         <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading-integrationoptions">
+            <div class="card-header" role="tab" id="heading-integrationoptions">
                 <div class="panel-title h4">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
@@ -144,7 +144,7 @@
 
         <!-- Resources -->
         <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading-resourcesoptions">
+            <div class="card-header" role="tab" id="heading-resourcesoptions">
                 <div class="panel-title h4">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>

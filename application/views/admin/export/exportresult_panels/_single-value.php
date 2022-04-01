@@ -7,7 +7,7 @@
 ?>
 
 <div class="panel panel-primary" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
-  <div class="panel-heading">
+  <div class="card-header">
     <h4 class="panel-title">
 <?php eT("Selection");?>
 </h4>

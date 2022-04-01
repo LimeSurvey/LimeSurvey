@@ -1,5 +1,5 @@
     <div class="panel panel-primary " id="panel-output-forma">
-        <div class="panel-heading">
+        <div class="card-header">
             <div class="panel-title h4"><?php eT("Output format"); ?></div>
         </div>
         <div class="panel-body">

@@ -40,7 +40,7 @@
 <div class='row'>
     <div class='col-sm-4'>
         <div id="centralattribute" class="panel panel-primary <?php echo $columnstyle ?>">
-            <div class="panel-heading"><?php eT("Unmapped participant attributes"); ?></div>
+            <div class="card-header"><?php eT("Unmapped participant attributes"); ?></div>
             <div class='panel-body'>
                 <div id="cpdbatt">
                     <?php
@@ -57,7 +57,7 @@
     </div>
     <div class='col-sm-4'>
         <div id="newcreated" class="panel panel-primary <?php echo $columnstyle ?>">
-            <div class="panel-heading"><?php eT("Survey participant attributes to create"); ?></div>
+            <div class="card-header"><?php eT("Survey participant attributes to create"); ?></div>
             <div class='panel-body' style="height:100%;">
                 <div class="newcreate" id="sortable" style ="height:100%;">
                 </div>
@@ -67,7 +67,7 @@
     <div class='col-sm-4'>
         <div id='tokenattribute'>
             <div class='panel panel-primary'>
-                <div class="panel-heading">
+                <div class="card-header">
                     <?php eT("Existing survey participant attributes"); ?>
                 </div>
                 <div class='panel-body'>
@@ -124,7 +124,7 @@
                     <?php endif; ?>
 
                     <?php if(!empty($alreadymappedattributename)): ?>
-                        <div class='panel-heading'>
+                        <div class='card-header'>
                             <?php eT("Pre-mapped attributes") ?>
                         </div>
                         <div class='panel-body'>
@@ -148,7 +148,7 @@
             </div>
 
             <div class='panel panel-primary'>
-                <div class='panel-heading'><?php eT("Standard participant fields") ?></div>
+                <div class='card-header'><?php eT("Standard participant fields") ?></div>
                 <div class='panel-body'>
                     <div class="standardfields">
                         <div class='tokenatt-container col-sm-12'>

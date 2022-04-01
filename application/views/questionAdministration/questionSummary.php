@@ -39,7 +39,7 @@
                         <!-- create question in this group -->
                         <div class="col-lg-3">
                             <div class="panel panel-primary <?php if ($survey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create/surveyid/'.$survey->sid.'/gid/'.$question->gid); ?>">
-                                <div class="panel-heading">
+                                <div class="card-header">
                                     <div class="panel-title h4"><?php eT("Add new question to group");?></div>
                                 </div>
                                 <div class="panel-body">
