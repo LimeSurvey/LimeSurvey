@@ -165,7 +165,7 @@ echo viewHelper::getViewTestTag('index');
     <div class="row d-sm-none d-md-none d-lg-none">
         <div class="card panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/surveyAdministration//listsurveys" style="opacity: 1; top: 0px;">
             <div class="card-header bg-primary">
-                <div class="panel-title"><?php eT('List surveys');?></div>
+                <?php eT('List surveys');?>
             </div>
             <div class="card-body">
                 <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'>
@@ -178,7 +178,7 @@ echo viewHelper::getViewTestTag('index');
 
         <div class="card panel-clickable" id="panel-8" data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
             <div class="card-header bg-primary">
-                <div class="panel-title"><?php eT('Edit global settings');?></div>
+                <?php eT('Edit global settings');?>
             </div>
             <div class="card-body">
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>

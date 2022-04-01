@@ -8,9 +8,7 @@
 
 <div class="card" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
   <div class="card-header bg-primary">
-    <h4 class="panel-title">
-<?php eT("Selection");?>
-</h4>
+    <?php eT("Selection");?>
   </div>
   <div class="card-body">
     <div class="form-group">
