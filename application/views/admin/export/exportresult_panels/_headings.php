@@ -1,11 +1,9 @@
 <!-- Heading -->
-<div class="panel panel-primary" id="panel-4">
-  <div class="panel-heading">
-    <div class="panel-title h4">
+<div class="card" id="panel-4">
+  <div class="card-header bg-primary">
       <?php eT("Headings");?>
-    </div>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
 
     <!-- Headers -->
     <div class="form-group row">
