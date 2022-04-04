@@ -21,28 +21,23 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
         <!-- Tabs -->
         <ul class="nav nav-tabs" >
             <?php foreach ($grplangs as $grouplang): ?>
-                <li role="presentation" class="<?php if($active){ echo 'active'; $active=0; }?>">
-                    <a role="tab" data-toggle="tab" href="#<?php echo $grouplang; ?>">
-                            <?php echo getLanguageNameFromCode($grouplang,false);
-                            if ($grouplang==$baselang) { ?> (<?php eT("Base language"); ?>) <?php } ?>
+                <li role="presentation" class="nav-item">
+                    <a class="nav-link <?php if($active){ echo 'active'; $active=0; }?>" role="tab" data-bs-toggle="tab" href="#<?php echo $grouplang; ?>">
+                        <?= getLanguageNameFromCode($grouplang, false) . " " . (($grouplang == $baselang) ? "(" . gT("Base language") . ")" : "") ?>
                     </a>
                 </li>
             <?php endforeach; ?>
 
         </ul>
-
         <!-- form -->
         <?php echo CHtml::form(array("questionGroupsAdministration/saveQuestionGroupData/sid/{$surveyid}"), 'post', array('id'=>'newquestiongroup', 'name'=>'newquestiongroup', 'class'=>'form30 ')); ?>
             <input type="hidden" name="questionGroup[sid]" id="questionGroup[sid]" value="<?=$surveyid?>"> 
             <!-- tab content -->
             <div class="tab-content">
-
                 <?php $active=1; foreach ($grplangs as $grouplang): ?>
-
                     <!-- Lang Content -->
-                    <div id="<?php echo $grouplang; ?>" class="tab-pane fade in <?php if($active){ echo 'active'; $active=0; }?> ">
+                    <div id="<?php echo $grouplang; ?>" class="tab-pane fade <?php if($active){ echo 'show active'; $active=0; }?> ">
                         <div>
-
                             <!-- Title -->
                             <div class="form-group">
                                 <label class="control-label " for='group_name_<?php echo $grouplang; ?>'><?php eT("Title:"); ?></label>

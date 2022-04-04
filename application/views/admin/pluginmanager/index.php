@@ -109,7 +109,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
     ];
 
     $this->widget(
-        'bootstrap.widgets.TbGridView',
+        'yiistrap.widgets.TbGridView',
         [
             'id'                       => 'plugins-grid',
             'dataProvider'             => $dataProvider,

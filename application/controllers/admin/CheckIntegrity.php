@@ -759,6 +759,15 @@ class CheckIntegrity extends SurveyCommonAction
                     }
                 }
             }
+            // Check that QID exists
+            if (!array_key_exists($condition['qid'], $okQuestion)) {
+                $iRowCount = Question::model()->countByAttributes(array('qid' => $condition['qid']));
+                if (!$iRowCount) {
+                    $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No matching QID'));
+                } else {
+                    $okQuestion[$condition['qid']] = $condition['qid'];
+                }
+            }
             //Only do this if there actually is a 'cfieldname'
             if ($condition['cfieldname']) {
                 // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token

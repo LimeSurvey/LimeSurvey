@@ -576,7 +576,7 @@ class SettingsWidget extends CWidget
             'td',
             [],
             $this->widget(
-                'bootstrap.widgets.TbButtonGroup',
+                'yiistrap.widgets.TbButtonGroup',
                 [
                     'type' => 'link',
                     'buttons' => array(

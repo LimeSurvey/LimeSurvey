@@ -21,7 +21,7 @@ if (!empty($aTutorials) && Permission::model()->hasGlobalPermission('surveys', '
             </li>
         <?php } ?>
         <?php if (!empty($aTutorials) && Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
-            <li class="divider"></li>
+            <li class="dropdown-divider"></li>
             <li>
                 <a href="<?=App()->createUrl('admin/tutorials/sa/view')?>">
                     <span class="fa fa-rocket" ></span>

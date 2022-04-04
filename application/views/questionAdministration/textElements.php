@@ -1,18 +1,18 @@
 <!-- Text element tabs -->
 <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active">
-        <a href="#question-tab" aria-controls="question-tab" role="tab" data-toggle="tab">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" href="#question-tab" aria-controls="question-tab" role="tab" data-bs-toggle="tab">
             <?= gT('Question'); ?>
         </a>
     </li>
-    <li role="presentation">
-        <a href="#question-help-tab" aria-controls="question-help-tab" role="tab" data-toggle="tab">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="#question-help-tab" aria-controls="question-help-tab" role="tab" data-bs-toggle="tab">
             <?= gT('Help'); ?>
         </a>
     </li>
     <?php if ($showScriptField): ?>
-        <li role="presentation">
-            <a href="#script-field-tab" aria-controls="script-field-tab" role="tab" data-toggle="tab">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" href="#script-field-tab" aria-controls="script-field-tab" role="tab" data-bs-toggle="tab">
                 <?= gT('Script'); ?>
             </a>
         </li>
@@ -28,7 +28,7 @@
 </ul>
 <div class="tab-content">
     <!-- Question text tab content -->
-    <div role="tabpanel" class="tab-pane active" id="question-tab">
+    <div role="tabpanel" class="tab-pane show active" id="question-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
             <div class="form-group scope-contains-ckeditor">

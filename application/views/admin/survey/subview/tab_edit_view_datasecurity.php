@@ -40,16 +40,14 @@ PrepareEditorScript(false, $this);
             </div>
         </div>
     </div>
-    <div class="row ls-space margin top-15">
-        <ul class="nav nav-tabs" id="edit-survey-datasecurity-element-language-selection">
+    <nav>
+        <div class="nav nav-tabs" id="edit-survey-datasecurity-element-language-selection">
             <?php foreach ($aTabTitles as $i=>$eachtitle):?>
-                <li role="presentation" class="<?php if($count==0) {echo "active"; }?>">
-                    <a data-toggle="tab" href="#editdatasecele-<?php echo $count; $count++; ?>">
-                        <?php echo $eachtitle;?>
-                    </a>
-                </li>
+                <button class="nav-link <?php if($count==0) {echo "active"; }?>" data-bs-toggle="tab" data-bs-target="#editdatasecele-<?php echo $count; $count++; ?>" type="button">
+                    <?php echo $eachtitle;?>
+                </button>
             <?php endforeach;?>
-        </ul>
+        </div>
         <div class="tab-content">
             <?php foreach ($aTabContents as $i=>$sTabContent):?>
                 <?php
@@ -57,7 +55,7 @@ PrepareEditorScript(false, $this);
                 ?>
             <?php endforeach; ?>
         </div>
-    </div>
+    </nav>
 </div>
 
 <?php App()->getClientScript()->registerScript("EditSurveyDataSecurityTabs", "

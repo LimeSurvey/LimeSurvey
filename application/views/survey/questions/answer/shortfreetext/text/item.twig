@@ -40,6 +40,7 @@
             placeholder="{{ flatString(processString(placeholder,1),1) }}"
             {% if inputsize %}size="{{ inputsize }}" {% endif %}
             {% if maxlength %}maxlength="{{ maxlength }}" {% endif %}
+            {% if numberonly %}data-number="1" {% endif %}
             aria-labelledby="ls-question-text-{{ basename }}"
         />
 

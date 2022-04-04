@@ -8,7 +8,7 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body ">
 <?php
     $form = $this->beginWidget(
-        'bootstrap.widgets.TbActiveForm',
+        'yiistrap.widgets.TbActiveForm',
         array(
             'id' => 'deleteParticipantActiveForm',
             'action' => array('admin/participants/sa/editValueParticipantPanel'),

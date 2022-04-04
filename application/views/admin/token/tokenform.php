@@ -42,15 +42,15 @@ foreach ($tokendata as $Key => $Value) {
         <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
 
           <!-- Common  -->
-          <li role="presentation" class="active">
-            <a data-toggle="tab" href="#general" aria-expanded="true">
+          <li role="presentation" class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#general" aria-expanded="true">
               <?php eT('General'); ?>
             </a>
           </li>
 
           <!-- Custom attibutes -->
-          <li role="presentation" class="">
-            <a data-toggle="tab" href="#custom" aria-expanded="false">
+          <li role="presentation" class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#custom" aria-expanded="false">
               <?php eT('Additional attributes'); ?>
             </a>
           </li>
@@ -59,7 +59,7 @@ foreach ($tokendata as $Key => $Value) {
 
       <!-- Tabs content-->
       <div class="tab-content">
-        <div id="general" class="tab-pane fade in active">
+        <div id="general" class="tab-pane fade show active">
             <div class="ls-flex-column ls-space padding left-5 right-35 col-md-6">
             <!-- General -->
                 <!-- ID,Completed  -->
@@ -420,7 +420,7 @@ foreach ($tokendata as $Key => $Value) {
     </div>
 
     <!-- Custom attibutes -->
-    <div id="custom" class="tab-pane fade in">
+    <div id="custom" class="tab-pane fade">
         <!-- Attributes -->
         <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
             <div class="form-group">
@@ -480,3 +480,24 @@ App()->getClientScript()->registerScript('TokenformViewBSSwitcher', "
 LS.renderBootstrapSwitch();
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
+
+<?php if ($token_subaction == "addnew"): ?>
+    <!-- Empty Token Confirmation Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="emptyTokenConfirmationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><?= gT('Create empty participant') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <?= gT("You are about to create a participant without the basic details. Are you sure you want to proceed?") ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel");?></button>
+                    <button type="button" class="btn btn-primary" id="save-empty-token"><?php eT("Save");?></button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+<?php endif; ?>

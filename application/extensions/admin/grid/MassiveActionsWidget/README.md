@@ -65,7 +65,7 @@ This will generate a dropup button of this kind :
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
         <!-- Separator -->
-        <li role="separator" class="divider"></li>        
+        <li role="separator" class="dropdown-divider"></li>        
 
         <!-- Header -->
         <li class="dropdown-header">Muh Header</li>

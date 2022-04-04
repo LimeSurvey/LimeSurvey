@@ -13,7 +13,7 @@
             ),
             true,
             false);
-        $this->widget('bootstrap.widgets.TbGridView', array(
+        $this->widget('yiistrap.widgets.TbGridView', array(
             'dataProvider' => $oSurveyTheme->searchGrid(),
             'filter'       => $oSurveyTheme,
             'id'           => 'themeoptions-grid',

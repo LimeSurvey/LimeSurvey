@@ -5,7 +5,7 @@
 @import "third_party/twbs/bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
-@import "colors";
+@import "assets/bootstrap_5/scss/variables.scss";
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "third_party/twbs/bootstrap/scss/variables";
@@ -50,7 +50,6 @@
 @import "third_party/twbs/bootstrap/scss/utilities/api";
 
 // 6. Add additional custom code here
-.testing {
-    width: percentage(5/7);
-    height: 25px;
-}
+@import "customizations";
+
+

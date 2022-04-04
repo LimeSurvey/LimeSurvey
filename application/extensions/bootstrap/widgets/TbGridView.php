@@ -23,7 +23,7 @@ class TbGridView extends CGridView
     public $type;
     /**
      * @var array the configuration for the pager.
-     * Defaults to <code>array('class'=>'ext.bootstrap.widgets.TbPager')</code>.
+     * Defaults to <code>array('class'=>'ext.yiistrap.widgets.TbPager')</code>.
      */
     public $pager = array('class' => '\TbPager');
     /**

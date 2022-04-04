@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
     var sAddParam = '';
 ", LSYii_ClientScript::POS_BEGIN); ?>
 
-<div id="edittxtele-<?php echo $i;?>" class="tab-pane fade in <?php if($i==0){echo "active";}?> center-box">
+<div id="edittxtele-<?= $i?>" class="tab-pane fade <?= $i == 0 ? "show active" : ""?> center-box">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">

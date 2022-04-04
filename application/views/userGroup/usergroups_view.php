@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php
-            $this->widget('bootstrap.widgets.TbGridView', array(
+            $this->widget('yiistrap.widgets.TbGridView', array(
                 'dataProvider'     => $model->searchMine(true),
                 'id'               => 'usergroups-grid-mine',
                 'emptyText'        => gT('No user groups found.'),
@@ -100,7 +100,7 @@
         <div class="col-lg-12 content-right">
             <?php
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $this->widget('bootstrap.widgets.TbGridView', array(
+                $this->widget('yiistrap.widgets.TbGridView', array(
                     'dataProvider'     => $model->searchMine(false),
                     'id'               => 'usergroups-grid-belong-to',
                     'emptyText'        => gT('No user groups found.'),

@@ -8,7 +8,7 @@
         <div class="col-12 ls-flex-item">
             <?php
             $this->widget(
-                'bootstrap.widgets.TbGridView',
+                'yiistrap.widgets.TbGridView',
                 [
                     'dataProvider' => $model->search(),
                     'id'           => 'surveymenu-entries-shortlist-grid',

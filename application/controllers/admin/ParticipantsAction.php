@@ -333,6 +333,9 @@ class ParticipantsAction extends SurveyCommonAction
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
         $model = new Participant();
+        if (Yii::app()->getConfig('hideblacklisted') == "Y") {
+            $model->blacklisted = "Y";
+        }
         $request = Yii::app()->request;
         $participantParam = $request->getParam('Participant');
         if ($participantParam) {
@@ -1837,25 +1840,6 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Responsible for showing the additional attribute for CPDB
-     * Edit attribute form
-     *
-     * @return void
-     */
-    public function viewAttribute()
-    {
-        $iAttributeId = Yii::app()->request->getQuery('aid');
-        $aData = array(
-            'attributes' => ParticipantAttributeName::model()->getAttribute($iAttributeId),
-            'attributenames' => ParticipantAttributeName::model()->getAttributeNames($iAttributeId),
-            'attributevalues' => ParticipantAttributeName::model()->getAttributesValues($iAttributeId),
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
-        );
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'viewAttribute.js');
-        $this->renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
-    }
-
-    /**
      * Responsible for saving the additional attribute. It iterates through all the new attributes added dynamically
      * and iterates through them
      *
@@ -1923,17 +1907,6 @@ class ParticipantsAction extends SurveyCommonAction
             ParticipantAttributeName::model()->saveAttributeValue($editattvalue);
         }
         Yii::app()->getController()->redirect(array('admin/participants/sa/attributeControl'));
-    }
-
-    /**
-     * Responsible for deleting the additional attribute values in case of drop down.
-     */
-    public function delAttributeValues()
-    {
-        $iAttributeId = Yii::app()->request->getQuery('aid');
-        $iValueId = Yii::app()->request->getQuery('vid');
-        ParticipantAttributeName::model()->delAttributeValues($iAttributeId, $iValueId);
-        Yii::app()->getController()->redirect(array('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
     }
 
     /**

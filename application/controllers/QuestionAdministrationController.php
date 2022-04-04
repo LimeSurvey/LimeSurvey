@@ -1356,7 +1356,6 @@ class QuestionAdministrationController extends LSBaseController
         LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
 
         // Check if any other questions have conditions which rely on this question. Don't delete if there are.
-        // TMSW Condition->Relevance:  Allow such deletes - can warn about missing relevance separately.
         $oConditions = Condition::model()->findAllByAttributes(['cqid' => $qid]);
         $iConditionsCount = count($oConditions);
         // There are conditions dependent on this question
@@ -1846,8 +1845,6 @@ class QuestionAdministrationController extends LSBaseController
             };
         }
 
-        $resultdata = ['results' => $result, 'languages' => $languages];
-
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
@@ -1869,12 +1866,10 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $match
      * @return void
      */
-    public function actionGetLabelsetPicker($sid, $match = 0)
+    public function actionGetLabelsetPicker($sid, $match = 0, $language = null)
     {
         $criteria = new CDbCriteria();
-        // TODO: Always null
-        $language = null;
-        if ($match === 1) {
+        if ($match == 1 && !empty($language)) {
             $criteria->addCondition('languages LIKE :language');
             $criteria->params = [':language' => '%' . $language . '%'];
         }

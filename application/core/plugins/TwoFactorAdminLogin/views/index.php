@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
         <div class="row" style="margin-bottom: 100px">
             <div class="container-fluid">
                 <?php
-                    $this->widget('bootstrap.widgets.TbGridView', array(
+                    $this->widget('yiistrap.widgets.TbGridView', array(
                         'id' => 'tfa-usermanagement-gridPanel',
                         'itemsCssClass' => 'table table-striped items',
                         'dataProvider' => $model->search(),

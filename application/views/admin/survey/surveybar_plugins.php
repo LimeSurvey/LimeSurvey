@@ -23,7 +23,7 @@
             <ul class="dropdown-menu" role="menu">
                 <?php foreach ($menu->getMenuItems() as $menuItem): ?>
                     <?php if ($menuItem->isDivider()): ?>
-                        <li class="divider"></li>
+                        <li class="dropdown-divider"></li>
                     <?php elseif ($menuItem->isSmallText()): ?>
                         <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
                     <?php else: ?>

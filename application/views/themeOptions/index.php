@@ -15,10 +15,22 @@ echo viewHelper::getViewTestTag('templateOptions');
 ?>
 
 <div class="meme ls-space margin left-15 right-15 row list-themes">
-    <ul class="nav nav-tabs" id="themelist" role="tablist">
-        <li class="active"><a href="#surveythemes"><?php eT('Survey themes'); ?></a></li>
-        <li><a href="#adminthemes"><?php eT('Admin themes'); ?></a></li>
-        <li><a href="#questionthemes"><?php eT('Question themes'); ?></a></li>
+    <ul class="nav nav-tabs" id="themelist">
+        <li class="nav-item">
+            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab">
+                <?php eT('Survey themes'); ?>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab">
+                <?php eT('Admin themes'); ?>
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab">
+                <?php eT('Question themes'); ?>
+            </a>
+        </li>
     </ul>
     <div class="tab-content">
         <div id="surveythemes" class="tab-pane active">
@@ -244,9 +256,6 @@ echo viewHelper::getViewTestTag('templateOptions');
 
 <script>
     $('#themelist a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-
         var target = $(e.target).attr("href");
         if(target ==="#questionthemes"){
             $("#uploadandinstall").attr('data-target', '#importQuestionModal');
@@ -254,6 +263,5 @@ echo viewHelper::getViewTestTag('templateOptions');
         if(target ==="#surveythemes"){
             $("#uploadandinstall").attr('data-target', '#importSurveyModal');
         }
-        $(this).tab('show');
     });
 </script>

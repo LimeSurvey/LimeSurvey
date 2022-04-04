@@ -20,10 +20,8 @@
         <!-- tabs -->
         <ul class="nav nav-tabs">
             <?php foreach ($lslanguages as $i => $language) : ?>
-                <li role="presentation" <?php if ($i == 0) {
-                    echo 'class="active"';
-                } ?>>
-                    <a data-toggle="tab" href='#neweditlblset<?php echo $i; ?>'>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link <?= $i === 0 ? 'active' : '' ?>" href='#neweditlblset<?= $i ?>' data-bs-toggle="tab">
                         <?php echo getLanguageNameFromCode($language, false); ?>
                     </a>
                 </li>
@@ -37,7 +35,7 @@
 
         <!-- tab content -->
         <?php $this->renderPartial("./labels/_labelviewtabcontent_view", ['lslanguages' => $lslanguages, 'results' => $results, 'action' => $action]); ?>
-        </form>
+        <?php echo CHtml::endForm() ?>
     </div>
 
     <!-- Right content -->

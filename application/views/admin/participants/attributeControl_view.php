@@ -17,7 +17,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
             <div class="row">
                 <?php
                 $this->widget(
-                    'bootstrap.widgets.TbGridView',
+                    'yiistrap.widgets.TbGridView',
                     [
                         'id'                       => 'list_attributes',
                         'dataProvider'             => $model->search(),

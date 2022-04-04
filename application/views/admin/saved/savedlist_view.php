@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php
-            $this->widget('bootstrap.widgets.TbGridView', array(
+            $this->widget('yiistrap.widgets.TbGridView', array(
                     'id'           => 'saved-grid',
                     'ajaxUpdate'   => 'saved-grid',
                     'dataProvider' => $model->search(),

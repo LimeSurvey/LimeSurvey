@@ -41,7 +41,7 @@
 <?php if($hasSurveyContentReadPermission): ?>
     <?php if (count($surveyLanguages) > 1): ?>
         <!-- Check survey logic multilanguage -->
-        <li role="separator" class="divider"></li>
+        <li role="separator" class="dropdown-divider"></li>
         <li class="dropdown-header"><?php eT("Survey logic file"); ?></li>
         <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
             <li>

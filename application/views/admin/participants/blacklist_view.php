@@ -64,7 +64,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                         <div class="row ls-space margin top-10 bottom-10">
                             <div class="form-group">
                                 <label class='control-label col-sm-8'>
-                                    <?php eT('Allow blacklisted participants to be added to a survey:'); ?>
+                                    <?php eT('Prevent blacklisted participants from being added to a survey:'); ?>
                                 </label>
                                 <div class='col-sm-3'>
                                     <?php $this->widget(

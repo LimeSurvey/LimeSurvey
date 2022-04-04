@@ -106,7 +106,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                         }
                     }")*/
                     ));
-                    /*$this->widget('bootstrap.widgets.TbModal', array(
+                    /*$this->widget('yiistrap.widgets.TbModal', array(
                         'id' => 'tokenanswerspersistenceModal',
                         'header' => gT('Error','unescaped'),
                         'content' => '<p>'.gT("This option can't be used if the -Anonymized responses- option is active.").'</p>',
@@ -159,7 +159,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                         $('#htmlemailModal').modal();
                     }")*/
                     ));
-                    $this->widget('bootstrap.widgets.TbModal', array(
+                    $this->widget('yiistrap.widgets.TbModal', array(
                         'id' => 'htmlemailModal',
                         'header' => gT('Error','unescaped'),
                         'content' => '<p>'.gT("If you change the email format, you'll have to review your email templates to fit the new format").'</p>',
@@ -186,13 +186,13 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
     </div>
 </div>
     <?php
-    $this->widget('bootstrap.widgets.TbModal', array(
+    $this->widget('yiistrap.widgets.TbModal', array(
         'id' => 'alertPrivacy1',
         'header' => gT('Warning','unescaped'),                    
         'content' => '<p>'.gT("You can't use 'Anonymized responses' when participant-based response persistence is enabled.").'</p>',
         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
     ));
-    $this->widget('bootstrap.widgets.TbModal', array(
+    $this->widget('yiistrap.widgets.TbModal', array(
         'id' => 'alertPrivacy2',
         'header' => gT('Warning','unescaped'),
         'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
