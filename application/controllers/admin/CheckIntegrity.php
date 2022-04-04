@@ -634,7 +634,7 @@ class CheckIntegrity extends SurveyCommonAction
                                 $sQID = $sDirtyQid;
                             }
                             if ((string) intval($sQID) !== $sQID) {
-                                throw new \Exception('sQID is not an integer: ' . $sQID);
+                                //throw new \Exception('sQID is not an integer: ' . $sQID);
                             }
 
                             // Here, we get the question as defined in backend
@@ -744,7 +744,7 @@ class CheckIntegrity extends SurveyCommonAction
         /*     Check conditions                                               */
         /**********************************************************************/
         $okQuestion = array();
-        $sQuery = 'SELECT cqid,cid,cfieldname FROM {{conditions}}';
+        $sQuery = 'SELECT cqid,cid,cfieldname,qid FROM {{conditions}}';
         $aConditions = Yii::app()->db->createCommand($sQuery)->queryAll();
         $aDelete = array();
         foreach ($aConditions as $condition) {
