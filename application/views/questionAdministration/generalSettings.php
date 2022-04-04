@@ -1,11 +1,11 @@
-<div class="card question-option-general-container col-12" id="general-settings">
-    <div class="card-heading" id="general-setting-heading">
-        <a class="card-title h4 selector--questionEdit-collapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
+<div class="accordion-item question-option-general-container col-12" id="general-settings">
+    <h2 class="accordion-header" id="general-setting-heading">
+        <button class="accordion-button selector--questionEdit-collapse" type="button" role="button" data-bs-toggle="collapse" data-bs-target="" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
             <?= gT('General Settings'); ?>
-        </a>
-    </div>
+        </button>
+    </h2>
     <div id="collapse-question" class="collapse in" role="tabpanel" aria-labelledby="general-setting-heading">
-        <div class="card-body">
+        <div class="accordion-body collapse show">
             <?php foreach ($generalSettings as $generalOption) : ?>
                 <?php $this->widget(
                     'ext.GeneralOptionWidget.GeneralOptionWidget',
