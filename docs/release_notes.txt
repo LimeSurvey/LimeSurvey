@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.4 (build 220329) to 3.28.5 (build 220405) April 4, 2022
+-Fixed issue #17966: twig processString assumes wrong question Id (#2314) (Denis Chenu)
+-Fixed issue #17963: Numbers on text question does not detect blanks (#2305) (Denis Chenu)
+
+
 Changes from 3.28.3 (build 220315) to 3.28.4 (build 220329) March 28, 2022
 #Updated translation: Valencian by vbraque
 #Updated translation: Polish by elissa
