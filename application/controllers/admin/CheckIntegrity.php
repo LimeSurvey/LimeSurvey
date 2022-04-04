@@ -634,7 +634,7 @@ class CheckIntegrity extends SurveyCommonAction
                                 $sQID = $sDirtyQid;
                             }
                             if ((string) intval($sQID) !== $sQID) {
-                                //throw new \Exception('sQID is not an integer: ' . $sQID);
+                                throw new \Exception('sQID is not an integer: ' . $sQID);
                             }
 
                             // Here, we get the question as defined in backend
