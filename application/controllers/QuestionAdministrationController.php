@@ -1845,8 +1845,6 @@ class QuestionAdministrationController extends LSBaseController
             };
         }
 
-        $resultdata = ['results' => $result, 'languages' => $languages];
-
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
@@ -1868,12 +1866,10 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $match
      * @return void
      */
-    public function actionGetLabelsetPicker($sid, $match = 0)
+    public function actionGetLabelsetPicker($sid, $match = 0, $language = null)
     {
         $criteria = new CDbCriteria();
-        // TODO: Always null
-        $language = null;
-        if ($match === 1) {
+        if ($match == 1 && !empty($language)) {
             $criteria->addCondition('languages LIKE :language');
             $criteria->params = [':language' => '%' . $language . '%'];
         }

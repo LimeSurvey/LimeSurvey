@@ -34,6 +34,37 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.7 (build 220328) to 5.3.8 (build 220404) April 4, 2022
+-Fixed issue [security] : Missing password policy when saving a survey (#2285) (Denis Chenu)
+-Fixed issue #17982: Malformed DSN when using MySQL socket and DB name during installation (#2311) (Valerio Bozzolan)
+-Fixed issue #17974: Text input with numbers only are not filtered (#2308) (Denis Chenu)
+-Fixed issue #17973: Error 404 for statisctics_user/action (#2310) (Gabriel Jenik)
+-Fixed issue #17966: twig processString assumes wrong question Id (#2315) (Denis Chenu)
+-Fixed issue #17963: Numbers on text question does not detect white space (#2306) (Denis Chenu)
+-Fixed issue #17846: Expression manager on file upload question type don't work on same page (#2298) (Gabriel Jenik)
+-Fixed issue #17602: Errors while installing 5.1 with MySQL 8 and InnoDB (#2182) (Gabriel Jenik)
+-Fixed issue #15057: Translation screen not working correctly when there are long question text (#2297) (Gabriel Jenik)
+#Updated translation: Slovak by c_schmitz, dusanm, jelen1, sweetakasha
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+
+
+Changes from 5.3.6 (build 220321) to 5.3.7 (build 220328) March 28, 2022
+#Updated translation: Valencian by joamuran, vbraque
+#Updated translation: Slovak by jelen1, myrdyn
+#Updated translation: Slovak by c_schmitz, jelen1, sweetakasha
+#Updated translation: Romansh by htwchur
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa, stcknstck
+#Updated translation: Italian by lfanfoni, lfortunato, luciano.parrilla, usastice
+#Updated translation: Italian (Informal) by lfanfoni, luciano.parrilla
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Albanian by ardian_klgj, eniisula
+
+
 Changes from 5.3.5 (build 220314) to 5.3.6 (build 220321) March 21, 2022
 -Fixed issue #17964: View saved but not submitted responses don't work (#2299) (Gabriel Jenik)
 -Fixed issue #17940: Array filter in combination with 'equals sum value' feature does not sum up values correctly (#2288) (Gabriel Jenik)
