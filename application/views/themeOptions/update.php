@@ -37,18 +37,29 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php endif; ?>
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
-        <div class="col-sm-12" id="theme-options-tabs">
+        <div class="col-sm-12">
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-                <?php
-                if ($aOptionAttributes['optionsPage'] == 'core') {
-                    foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
-                        <li role="presentation" class="<?php echo $key == 0 ? 'active' : 'action_hide_on_inherit'; ?>"><a href="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-toggle="tab"><?php echo $category; ?></a></li>
-                    <?php } ?>
-                <?php } else { ?>
-                    <li role="presentation" class="active"><a href="#simple" aria-controls="home" role="tab" data-toggle="tab"><?php eT('Simple options') ?></a></li>
-                <?php } ?>
-                <li role="presentation"><a href="#advanced" aria-controls="profile" role="tab" data-toggle="tab" class="<?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>"><?php eT('Advanced options') ?></a></li>
+            <ul class="nav nav-tabs" id="theme-options-tabs" role="tablist">
+                <?php if ($aOptionAttributes['optionsPage'] === 'core'): ?>
+                    <?php foreach ($aOptionAttributes['categories'] as $key => $category): ?>
+                        <li role="presentation" class="nav-item">
+                            <button class="nav-link <?php echo $key == 0 ? 'active' : 'action_hide_on_inherit'; ?>" data-bs-target="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-bs-toggle="tab" aria-selected="<?php echo $key == 0 ? 'true' : 'false'; ?>">
+                                <?php echo $category; ?>
+                            </button>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li role="presentation" class="nav-item">
+                        <button class="nav-link active" data-bs-target="#simple" aria-controls="home" role="tab" data-bs-toggle="tab" aria-selected="true">
+                            <?php eT('Simple options') ?>
+                        </button>
+                    </li>
+                <?php endif; ?>
+                <li role="presentation" class="nav-item">
+                    <button class="nav-link <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>" data-bs-target="#advanced" aria-controls="profile" role="tab" data-bs-toggle="tab" aria-selected="false">
+                        <?php eT('Advanced options') ?>
+                    </button>
+                </li>
             </ul>
         </div>
     </div>

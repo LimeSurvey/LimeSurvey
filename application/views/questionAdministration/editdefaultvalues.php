@@ -18,14 +18,14 @@
                 <?php echo CHtml::form(["admin/database/index"], 'post', ['class' => '', 'id' => 'frmdefaultvalues', 'name' => 'frmdefaultvalues']); ?>
                 <ul class="nav nav-tabs">
                     <?php foreach ($oSurvey->allLanguages as $i => $language) : ?>
-                        <li role="presentation" <?php echo $i == 0 ? 'class="active"' : ''; ?>>
-                            <a data-toggle="tab" href='#df_<?php echo $language ?>'><?php echo getLanguageNameFromCode($language, false) ?></a>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link <?= ($i == 0) ? "active" : "" ?>" data-bs-toggle="tab" href='#df_<?php echo $language ?>'><?php echo getLanguageNameFromCode($language, false) ?></a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
                 <div class="tab-content">
                     <?php foreach ($oSurvey->allLanguages as $i => $language) : ?>
-                        <div id='df_<?php echo $language ?>' class="tab-pane fade in <?php echo $i == 0 ? 'active' : '' ?>">
+                        <div id='df_<?php echo $language ?>' class="tab-pane fade <?php echo $i == 0 ? 'show active' : '' ?>">
                             <?php if ((int)$questionMetaData->answerscales > 0) : ?>
                                 <?php for ($scale_id = 0; $scale_id < (int)$questionMetaData->answerscales; $scale_id++) : ?>
                                     <?php $opts = $langopts[$language][$questionrow['type']][$scale_id]; ?>

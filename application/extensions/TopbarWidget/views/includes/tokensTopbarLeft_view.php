@@ -34,7 +34,7 @@
     </li>
     <?php endif; ?>
     <?php if ($hasTokensCreatePermission && $hasTokensImportPermission): ?>
-        <li role="separator" class="divider"></li>
+        <li role="separator" class="dropdown-divider"></li>
     <?php endif; ?>
     <!-- Import tokens -->
     <?php if ($hasTokensImportPermission): ?>
@@ -115,7 +115,7 @@
             </li>
             <?php endif; ?>
 
-            <li role="separator" class="divider"></li>
+            <li role="separator" class="dropdown-divider"></li>
 
             <!-- Bounce processing -->
             <?php if ($hasTokensUpdatePermission):?>

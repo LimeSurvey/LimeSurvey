@@ -8,17 +8,16 @@ echo viewHelper::getViewTestTag('configurePlugin');
 
 <div class="col-lg-12">
     <ul class="nav nav-tabs" id="settingTabs">
-        <li role="presentation" class="active">
-            <a role="tab" data-toggle="tab" href='#overview'><?php eT("Overview"); ?></a>
+        <li role="presentation" class="nav-item">
+            <a class="nav-link active" role="tab" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a>
         </li>
         <li role="presentation">
-            <a role="tab" data-toggle="tab" href='#settings'><?php eT("Settings"); ?></a>
+            <a class="nav-link" role="tab" data-bs-toggle="tab" href='#settings'><?php eT("Settings"); ?></a>
         </li>
     </ul>
 
     <div class="tab-content">
-
-        <div id="overview" class="tab-pane active">
+        <div id="overview" class="tab-pane show active">
             <?php $this->renderPartial(
                 './pluginmanager/overview',
                 [

@@ -4,7 +4,7 @@
  * Needed to set Scriptfile and script to good position
  */
 
-Yii::import('bootstrap.widgets.TbGridView');
+Yii::import('yiistrap.widgets.TbGridView');
 
 /**
  * LimeSurvey Zii grid view.

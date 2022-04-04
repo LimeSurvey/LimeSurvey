@@ -40,7 +40,6 @@ PrepareEditorScript(false, $this);
             </div>
         </div>
     </div>
-    <div class="row ls-space margin top-15">
     <nav>
         <div class="nav nav-tabs" id="edit-survey-datasecurity-element-language-selection">
             <?php foreach ($aTabTitles as $i=>$eachtitle):?>
@@ -57,15 +56,6 @@ PrepareEditorScript(false, $this);
             <?php endforeach; ?>
         </div>
     </nav>
-        <div class="tab-content">
-            <?php foreach ($aTabContents as $i=>$sTabContent):?>
-                <?php
-                    echo $sTabContent;
-                ?>
-            <?php endforeach; ?>
-            </div>
-        </div>
-    </div>
 </div>
 
 <?php App()->getClientScript()->registerScript("EditSurveyDataSecurityTabs", "

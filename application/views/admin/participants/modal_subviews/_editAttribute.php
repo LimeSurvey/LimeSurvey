@@ -5,7 +5,7 @@
 <div class="modal-body ">
 <?php
     $form = $this->beginWidget(
-        'bootstrap.widgets.TbActiveForm',
+        'yiistrap.widgets.TbActiveForm',
         array(
             'id' => 'editAttributeNameActiveForm',
             'action' => array('admin/participants/sa/editAttributeName'),

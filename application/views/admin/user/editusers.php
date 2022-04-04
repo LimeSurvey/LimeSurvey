@@ -43,7 +43,7 @@ echo viewHelper::getViewTestTag('usersIndex');
     <div class="row" style="margin-bottom: 100px">
         <div class="container-fluid">
             <?php
-            $this->widget('bootstrap.widgets.TbGridView', array(
+            $this->widget('yiistrap.widgets.TbGridView', array(
                 'id' => 'all_users',
                 'itemsCssClass'   => 'table table-striped items',
                 'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],

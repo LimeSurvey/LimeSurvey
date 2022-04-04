@@ -67,18 +67,18 @@
                     <label class='control-label '><?php eT("Question"); ?></label>
                     <div class=''>
                         <ul class='nav nav-tabs'>
-                            <li role='presentation' class='active src-tab'>
-                                <a href='#SRCPREVQUEST' aria-controls='SRCPREVQUEST' role='tab' data-toggle='tab'><?php eT('Previous questions'); ?></a>
+                            <li class='nav-item src-tab' role='presentation'>
+                                <a class='nav-link active' href="#SRCPREVQUEST" aria-controls='SRCPREVQUEST' role='tab' data-bs-toggle='tab'><?php eT('Previous questions'); ?></a>
                             </li>
-                            <li role='presentation' class='src-tab'>
-                                <a href='#SRCTOKENATTRS' aria-controls='SRCTOKENATTRS' role='tab' data-toggle='tab'><?php eT('Survey participant attributes'); ?></a>
+                            <li class='nav-item src-tab' role='presentation'>
+                                <a class="nav-link" href='#SRCTOKENATTRS' aria-controls='SRCTOKENATTRS' role='tab' data-bs-toggle='tab'><?php eT('Survey participant attributes'); ?></a>
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 <div class='tab-content'>
-                    <div role='tabpanel' class='tab-pane active' id='SRCPREVQUEST'>
+                    <div role='tabpanel' class='tab-pane show active' id='SRCPREVQUEST'>
                         <div class='form-group question-option'>
                             <div class=''>
                                 <select class='form-control' name='cquestions' id='cquestions' size='7'>
@@ -116,27 +116,27 @@
                     <label class='control-label'><?php echo gT("Answer"); ?></label>
                     <div class=''>
                         <ul class='nav nav-tabs'>
-                            <li role='presentation' class='active target-tab'>
-                                <a href='#CANSWERSTAB' aria-controls='CANSWERSTAB' role='tab' data-toggle='tab'><?php eT('Predefined'); ?></a>
+                            <li role='presentation' class='nav-item target-tab'>
+                                <a class="nav-link active" href='#CANSWERSTAB' aria-controls='CANSWERSTAB' role='tab' data-bs-toggle='tab'><?php eT('Predefined'); ?></a>
                             </li>
-                            <li role='presentation' class='target-tab'>
-                                <a href='#CONST' aria-controls='CONST' role='tab' data-toggle='tab'><?php eT('Constant'); ?></a>
+                            <li role='presentation' class='nav-item target-tab'>
+                                <a class="nav-link" href='#CONST' aria-controls='CONST' role='tab' data-bs-toggle='tab'><?php eT('Constant'); ?></a>
                             </li>
-                            <li role='presentation' class='target-tab'>
-                                <a href='#PREVQUESTIONS' aria-controls='PREVQUESTIONS' role='tab' data-toggle='tab'><?php eT('Questions'); ?></a>
+                            <li role='presentation' class='nav-item target-tab'>
+                                <a class="nav-link" href='#PREVQUESTIONS' aria-controls='PREVQUESTIONS' role='tab' data-bs-toggle='tab'><?php eT('Questions'); ?></a>
                             </li>
-                            <li role='presentation' class='target-tab'>
-                                <a href='#TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-toggle='tab'><?php eT('Participant fields'); ?></a>
+                            <li role='presentation' class='nav-item target-tab'>
+                                <a class="nav-link" href='#TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-bs-toggle='tab'><?php eT('Participant fields'); ?></a>
                             </li>
-                            <li role='presentation' class='target-tab disabled'>
-                                <a href='#REGEXP' aria-controls='REGEXP' role='tab' data-toggle='tab'><?php eT('RegExp'); ?></a>
+                            <li role='presentation' class='nav-item target-tab'>
+                                <a class="nav-link disabled" href='#REGEXP' aria-controls='REGEXP' role='tab' data-bs-toggle='tab'><?php eT('RegExp'); ?></a>
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 <div class='tab-content'>
-                    <div role='tabpanel' class='tab-pane active' id='CANSWERSTAB'>
+                    <div role='tabpanel' class='tab-pane show active' id='CANSWERSTAB'>
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>
@@ -152,7 +152,7 @@
                         </div>
                     </div>
 
-                    <div role='tabpanel' class='tab-pane active' id='CONST'>
+                    <div role='tabpanel' class='tab-pane' id='CONST'>
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>
@@ -161,7 +161,7 @@
                         </div>
                     </div>
 
-                    <div role='tabpanel' class='tab-pane active' id='PREVQUESTIONS'>
+                    <div role='tabpanel' class='tab-pane' id='PREVQUESTIONS'>
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>
@@ -183,7 +183,7 @@
                         </div>
                     </div>
 
-                    <div role='tabpanel' class='tab-pane active' id='TOKENATTRS'>
+                    <div role='tabpanel' class='tab-pane' id='TOKENATTRS'>
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>
@@ -198,7 +198,7 @@
                         </div>
                     </div>
 
-                    <div role='tabpanel' class='tab-pane active' id='REGEXP'>
+                    <div role='tabpanel' class='tab-pane' id='REGEXP'>
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>

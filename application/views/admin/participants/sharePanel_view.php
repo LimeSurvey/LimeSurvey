@@ -17,7 +17,7 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
                 <div class="row">
                     <?php
                     $this->widget(
-                        'bootstrap.widgets.TbGridView',
+                        'yiistrap.widgets.TbGridView',
                         [
                             'id'                       => 'share_central_participants',
                             'emptyText'                => gT('No shared participants found'),

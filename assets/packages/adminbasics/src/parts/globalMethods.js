@@ -116,8 +116,8 @@ const globalWindowMethods = {
 };
 const globalStartUpMethods = {
     bootstrapping : ()=>{
-        $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
-        $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
+        // $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
+        // $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
 
         $(".progressbar").each(function(){
             var pValue = parseInt($(this).attr('name'));

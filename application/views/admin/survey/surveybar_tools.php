@@ -84,7 +84,7 @@
           <?php if (!empty($extraToolsMenuItems)): ?>
               <?php foreach ($extraToolsMenuItems as $menuItem): ?>
                   <?php if ($menuItem->isDivider()): ?>
-                      <li class="divider"></li>
+                      <li class="dropdown-divider"></li>
                 <?php elseif ($menuItem->isSmallText()): ?>
                       <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
                 <?php else: ?>
@@ -116,7 +116,7 @@
             <?php else : ?>
                 <!-- multilangue  -->
 
-                <li role="separator" class="divider"></li>
+                <li role="separator" class="dropdown-divider"></li>
 
                 <!-- Survey logic file -->
                 <li class="dropdown-header"><?php eT("Survey logic file"); ?></li>
@@ -133,7 +133,7 @@
             <?php endif; ?>
         <?php endif; ?>
         <?php if (!$oSurvey->isActive && Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')): ?>
-            <li role="separator" class="divider"></li>
+            <li role="separator" class="dropdown-divider"></li>
 
             <!-- Regenerate question codes -->
             <li class="dropdown-header">

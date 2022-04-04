@@ -42,17 +42,20 @@ foreach ($tokendata as $Key => $Value) {
         <nav>
             <div class="nav nav-tabs" id="edit-survey-text-element-language-selection">
 
-                <!-- Common  -->
-                <button href=#general" role="presentation" class="nav-link active" data-bs-toggle="tab" type="button">
-                    <?php eT('General'); ?>
-                </li>
+          <!-- Common  -->
+          <li role="presentation" class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#general" aria-expanded="true">
+              <?php eT('General'); ?>
+            </a>
+          </li>
 
-                <!-- Custom attibutes -->
-                <button href="#custom" role="presentation" class="nav-link" data-bs-toggle="tab">
-                    <?php eT('Additional attributes'); ?>
-                </button>
-            </div>
-        </nav>
+          <!-- Custom attibutes -->
+          <li role="presentation" class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#custom" aria-expanded="false">
+              <?php eT('Additional attributes'); ?>
+            </a>
+          </li>
+        </ul>
       <?php endif; ?>
 
       <!-- Tabs content-->
@@ -432,7 +435,7 @@ foreach ($tokendata as $Key => $Value) {
     </div>
 
     <!-- Custom attibutes -->
-    <div id="custom" class="tab-pane fade in">
+    <div id="custom" class="tab-pane fade">
         <!-- Attributes -->
         <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
             <div class="form-group">

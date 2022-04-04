@@ -40,7 +40,7 @@ echo viewHelper::getViewTestTag('tutorials');
 		</div>
 		<div class="col-12 ls-space margin top-15">
 			<div class="col-12 ls-flex-item">
-				<?php $this->widget('bootstrap.widgets.TbGridView', array(
+				<?php $this->widget('yiistrap.widgets.TbGridView', array(
 					'dataProvider' => $model->search(),
 					// Number of row per page selection
 					'id' => 'tutorial-grid',
