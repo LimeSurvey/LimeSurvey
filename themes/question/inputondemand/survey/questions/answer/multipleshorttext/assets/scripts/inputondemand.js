@@ -5,15 +5,25 @@ var InputOnDemanControlGenerator = function(containerId, options){
     var $button = $container.find('.selector--inputondemand-addlinebutton');
 
     //if(options.autoadd) {}
-    var controlListAddAuto = function() {
+    var controlListItemVisibility = function() {
         var last = null;
+        var lastComplete = null;
+        var isFirst = true;
         $list.find('.selector--inputondemand-list-input').each(function(itrt, listItem){
-            if(last == null) {
+            var isComplete = $(listItem).val() != '';
+            if (isFirst || (isComplete && lastComplete == null)) {
                 $(listItem).closest('.selector--inputondemand-list-item').removeClass('hidden');
             } else {
                 $(listItem).closest('.selector--inputondemand-list-item').addClass('hidden');
+                if (lastComplete == null) {
+                    lastComplete = last;
+                    if (options.autoadd == 'yes') {
+                        $(listItem).closest('.selector--inputondemand-list-item').removeClass('hidden');
+                    }
+                }
             }
-            last = $(listItem).val() == '' ? listItem : null;
+            last = listItem;
+            isFirst = false;
         });
     }
 
@@ -36,7 +46,12 @@ var InputOnDemanControlGenerator = function(containerId, options){
     }
 
     var bind = function(){
-        $list.find('.selector--inputondemand-list-input').first().closest('.selector--inputondemand-list-item').removeClass('hidden');
+        // Assess which lines to show when question is rendered.
+        // It may be someone navigating back or editing a response.
+        // Then we should show all non-empty lines
+        controlListItemVisibility();
+
+        //$list.find('.selector--inputondemand-list-input').first().closest('.selector--inputondemand-list-item').removeClass('hidden');
         console.log('INPUTONDEMAND',  $list.find('.selector--inputondemand-list-input'));
         console.log('INPUTONDEMAND',  $list.find('.selector--inputondemand-list-input').first())
         console.log('INPUTONDEMAND',  $list.find('.selector--inputondemand-lis-input').first().closest('.selector--inputondemand-list-item'))
@@ -47,8 +62,7 @@ var InputOnDemanControlGenerator = function(containerId, options){
 
         if(options.autoadd == 'yes') {
             $button.addClass('hidden');
-            controlListAddAuto();
-            $list.find('.selector--inputondemand-list-input').on('keyup', controlListAddAuto);
+            $list.find('.selector--inputondemand-list-input').on('keyup', controlListItemVisibility);
         }
     };
 
