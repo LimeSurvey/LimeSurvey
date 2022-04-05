@@ -1,8 +1,8 @@
 <?php
 
 /**
+ * @copyright 2022 LimeSurvey Team <https://limesurvey.org>
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2022 Denis Chenu <https://www.sondages.pro>
  * @license GPL version 3
  * @version 0.1.0
  *

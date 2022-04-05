@@ -4,9 +4,9 @@
         <name>FunctionStatic</name>
         <type>plugin</type>
         <creationDate>2022-03-15</creationDate>
-        <lastUpdate>22022-04-04</lastUpdate>
+        <lastUpdate>2202-04-04</lastUpdate>
         <author>Denis Chenu</author>
-        <authorUrl>https://www.sondages.pro</authorUrl>
+        <authorUrl>https://limesurvey.org</authorUrl>
         <supportUrl>https://limesurvey.org</supportUrl>
         <version>0.1.0</version>
         <license>GNU General Public License version 3 or later</license>
