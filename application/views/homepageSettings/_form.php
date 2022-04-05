@@ -23,7 +23,7 @@
 
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'position'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'position'); ?></label>
                     <div class=''>
                         <?php echo $form->numberField($model,'position', array('class' => 'form-control')); ?>
                     </div>
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'url'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'url'); ?></label>
                     <div class=''>
                         <?php echo $form->textField($model,'url',array('class' => 'form-control')); ?>
                     </div>
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'title'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'title'); ?></label>
                     <div class=''>
                         <?php echo $form->textField($model,'title',array('class' => 'form-control')); ?>
                     </div>
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'ico'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'ico'); ?></label>
                     <div class=''>
                         <div class='btn-group'>
                             <button type='button' class='btn btn-default dropdown-toggle limebutton form-control' data-toggle='dropdown' aria-hashpopup='true' aria-expanded='false'>
@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'desc'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'desc'); ?></label>
                     <div class=''>
                         <?php echo $form->textArea($model,'desc',array('rows'=>6, 'cols'=>50, 'class' => 'form-control')); ?>
                     </div>
@@ -127,7 +127,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'usergroup'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'usergroup'); ?></label>
                     <div class=''>
                         <?php
                             $options_array = CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name');

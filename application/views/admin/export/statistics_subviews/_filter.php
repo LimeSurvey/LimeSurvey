@@ -9,7 +9,7 @@ if (!isset($datestamp) || $datestamp == "N"){
 <div class="row">
     <div class="<?= $colClass ?>">
         <div class='form-group'>
-            <label class="control-label" for='idG'><?php
+            <label class="form-label" for='idG'><?php
                 eT("Response ID greater than:"); ?></label>
             <div class=''>
                 <input class="form-control" type='number' id='idG' name='idG' size='10' value='<?php
@@ -21,7 +21,7 @@ if (!isset($datestamp) || $datestamp == "N"){
     </div>
     <div class="<?= $colClass ?>">
         <div class='form-group'>
-            <label class="control-label" for='idL'><?php
+            <label class="form-label" for='idL'><?php
                 eT("Response ID less than:"); ?></label>
             <div class=''>
                 <input class="form-control" type='number' id='idL' name='idL' size='10' value='<?php
@@ -37,7 +37,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
     <div class="row">
         <div class="col-md-4 col-sm-12">
             <div class='form-group'>
-                <label class="control-label" for='datestampE'><?php
+                <label class="form-label" for='datestampE'><?php
                     eT("Submission date equals:"); ?></label>
                 <div class="has-feedback">
                     <?php
@@ -72,7 +72,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
         </div>
         <div class="col-md-4 col-sm-12">
             <div class='form-group'>
-                <label class="control-label" for='datestampG'><?php
+                <label class="form-label" for='datestampG'><?php
                     eT("Submission date later than:"); ?></label>
                 <div class="has-feedback">
                     <?php
@@ -108,7 +108,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
         </div>
         <div class="col-md-4 col-sm-12">
             <div class='form-group top-5'>
-                <label class="control-label" for='datestampL'><?php
+                <label class="form-label" for='datestampL'><?php
                     eT("Submission date earlier than:"); ?></label>
                 <div class="has-feedback">
                     <?php

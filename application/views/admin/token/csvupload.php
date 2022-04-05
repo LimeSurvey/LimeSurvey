@@ -14,7 +14,7 @@
 
                 <!-- Choose the CSV file to upload -->
                 <div class="form-group">
-                    <label class=" control-label" for='the_file'><?php eT("Choose the CSV file to upload:"); ?></label>
+                    <label class=" form-label" for='the_file'><?php eT("Choose the CSV file to upload:"); ?></label>
                     <div class="">
                         <?php echo CHtml::fileField('the_file','',array('required'=>'required','accept'=>'.csv')); ?>
                     </div>
@@ -22,7 +22,7 @@
 
                 <!-- "Character set of the file -->
                 <div class="form-group">
-                    <label class=" control-label" for='csvcharset'><?php eT("Character set of the file:"); ?></label>
+                    <label class=" form-label" for='csvcharset'><?php eT("Character set of the file:"); ?></label>
                     <div class="">
                         <?php
                             echo CHtml::dropDownList('csvcharset', $thischaracterset, $aEncodings, array('size' => '1', 'class'=>'form-control'));
@@ -32,7 +32,7 @@
 
                 <!-- Separator used -->
                 <div class="form-group">
-                    <label class=" control-label" for='separator'><?php eT("Separator used:"); ?> </label>
+                    <label class=" form-label" for='separator'><?php eT("Separator used:"); ?> </label>
                     <div class="">
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'separator',
@@ -48,7 +48,7 @@
 
                 <!-- Filter blank email addresses -->
                 <div class="form-group">
-                    <label class=" control-label" for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
+                    <label class=" form-label" for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
                     <div class="">
                             <?php
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -63,7 +63,7 @@
 
                 <!-- Allow invalid email addresses -->
                 <div class="form-group">
-                    <label class=" control-label" for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
+                    <label class=" form-label" for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
                     <div class="">
                         <?php
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -78,7 +78,7 @@
 
                 <!-- show invalid attributes -->
                 <div class="form-group">
-                            <label class=" control-label" for='showwarningtoken'><?php eT("Display attribute warnings:"); ?></label>
+                            <label class=" form-label" for='showwarningtoken'><?php eT("Display attribute warnings:"); ?></label>
                     <div class="">
                         <?php
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -93,7 +93,7 @@
 
                 <!-- Filter duplicate records -->
                 <div class="form-group">
-                    <label class=" control-label" for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
+                    <label class=" form-label" for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
                     <div class="">
                     <?php
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -109,7 +109,7 @@
 
                 <!-- Duplicates are determined by -->
                 <div class="form-group" id='lifilterduplicatefields'>
-                    <label class=" control-label" for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
+                    <label class=" form-label" for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
                     <div class="">
                         <?php
                             unset($aTokenTableFields['token']); // token are already duplicate forbidden mantis #14334, remove it

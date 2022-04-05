@@ -14,7 +14,7 @@
       <?php eT('Your survey can export associated participant data with each response. Select any additional fields you would like to export.'); ?>
     </div>
 
-    <label for='attribute_select' class="col-sm-4 control-label">
+    <label for='attribute_select' class="col-sm-4 form-label">
       <?php eT("Choose participant fields:");?>
     </label>
     <div class="col-sm-8">

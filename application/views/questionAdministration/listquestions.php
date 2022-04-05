@@ -57,14 +57,14 @@ $baseLanguage = $oSurvey->language;
                                 <?php echo $form->label(
                                     $model,
                                     'search',
-                                    array('label'=>gT('Search:'),'class'=>'control-label' )
+                                    array('label'=>gT('Search:'),'class'=>'form-label' )
                                 ); ?>
                                 <?php echo $form->textField($model, 'title', array('class'=>'form-control')); ?>
                             </div>
 
                             <!-- select group -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
+                                <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'form-label')); ?>
                                     <select name="gid" class="form-control">
                                         <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($oSurvey->groups as $group): ?>

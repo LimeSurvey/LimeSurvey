@@ -7,7 +7,7 @@
 
 <?php $RPCInterface=getGlobalSetting('RPCInterface'); ?>
 <div class="form-group">
-    <label class=" control-label"  for='RPCInterface'><?php eT("RPC interface enabled:"); ?></label>
+    <label class=" form-label"  for='RPCInterface'><?php eT("RPC interface enabled:"); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
             'name' => 'RPCInterface',
@@ -22,14 +22,14 @@
 </div>
 
 <div class="form-group">
-    <label class=" control-label" ><?php eT("URL:"); ?></label>
+    <label class=" form-label" ><?php eT("URL:"); ?></label>
     <div class="">
         <?php echo $this->createAbsoluteUrl("admin/remotecontrol"); ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label class=" control-label"  for='rpc_publish_api'><?php eT("Publish API on /admin/remotecontrol:"); ?></label>
+    <label class=" form-label"  for='rpc_publish_api'><?php eT("Publish API on /admin/remotecontrol:"); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'rpc_publish_api',
@@ -42,7 +42,7 @@
 </div>
 
 <div class="form-group">
-    <label class=" control-label"  for='add_access_control_header'><?php eT("Set Access-Control-Allow-Origin header:"); ?></label>
+    <label class=" form-label"  for='add_access_control_header'><?php eT("Set Access-Control-Allow-Origin header:"); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'add_access_control_header',

@@ -1,4 +1,4 @@
-<label class=" control-label" for="datepickerInputField_[<?=CHtml::encode($name)?>]"><?php echo $defaultname; ?></label>
+<label class=" form-label" for="datepickerInputField_[<?=CHtml::encode($name)?>]"><?php echo $defaultname; ?></label>
     <div>
         <div class=''>
             <select class="form-control" name="Attributes[<?=CHtml::encode($name)?>]" id="Attributes_<?=CHtml::encode($name)?>">

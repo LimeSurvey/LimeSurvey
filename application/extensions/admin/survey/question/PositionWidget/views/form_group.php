@@ -9,7 +9,7 @@
 
 <!-- PositionWidget : form_group -->
 <div id='PositionWidget' class='form-group'>
-    <label class="col-sm-4 control-label" for='pos'><?php eT("Position:"); ?></label>
+    <label class="col-sm-4 form-label" for='pos'><?php eT("Position:"); ?></label>
     <div class="col-sm-8">
         <select class='form-control <?php echo $this->classes;?>' name='questionposition' id='questionposition'>
             <option value=''><?php eT("At end"); ?></option>

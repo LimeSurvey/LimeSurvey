@@ -8,7 +8,7 @@
     <div class='col-sm-12'>
         <?php foreach ($result as $name => $scannedPlugin) : ?>
             <div class='form-group col-lg-12'>
-                <label class='control-label col-sm-4'>
+                <label class='form-label col-sm-4'>
                     <?php echo $name; ?>
                 </label>
                 <?php if ($scannedPlugin['load_error'] == 0 && $scannedPlugin['extensionConfig'] == null) : ?>

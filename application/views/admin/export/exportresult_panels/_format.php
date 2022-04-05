@@ -8,7 +8,7 @@
   <div class="panel-body">
     <div class="form-group">
       <!-- Format -->
-      <label for='export_format' class="col-sm-6 control-label">
+      <label for='export_format' class="col-sm-6 form-label">
         <?php eT("Export format:"); ?>
       </label>
       <div class="col-sm-12">
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="col-sm-3">
-      <label for="csvfieldseparator" class="control-label">
+      <label for="csvfieldseparator" class="form-label">
         <?php eT("CSV field separator:");?>
       </label>
       <div class="">

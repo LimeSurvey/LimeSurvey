@@ -35,7 +35,7 @@
                     ),
                 )); ?>
                     <div class="form-group">
-                        <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => ' control-label text-right')); ?>
+                        <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => ' form-label text-right')); ?>
                         <?php echo $form->textField($model, 'group_name', array('class' => 'form-control')); ?>
                     </div>
                     <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>

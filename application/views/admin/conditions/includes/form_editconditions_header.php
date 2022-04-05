@@ -24,7 +24,7 @@
         <div class="row ">
             <!-- Condition -->
             <div class='form-group'>
-                <label class='control-label col-xs-12'><?php eT('Scenario'); ?></label>
+                <label class='form-label col-xs-12'><?php eT('Scenario'); ?></label>
                 <div class='add-scenario-column col-xs-12  ls-space padding bottom-15'>
                     <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if($showScenario):?> style='display: none;' <?php endif;?>/>
                     <?php if($showScenario):?>
@@ -46,7 +46,7 @@
         <!-- Comparison operator -->
         <div class="row">
             <div class='form-group col-xs-12'>
-                <label class='control-label'><?php eT("Comparison operator"); ?></label>
+                <label class='form-label'><?php eT("Comparison operator"); ?></label>
                 <div class=''>
                     <select class='form-control' name='method' id='method'>
                         <?php foreach ($method as $methodCode => $methodTxt): ?>
@@ -64,7 +64,7 @@
             <!-- Question section -->
             <div class="col-lg-6">
                 <div class='form-group'>
-                    <label class='control-label '><?php eT("Question"); ?></label>
+                    <label class='form-label '><?php eT("Question"); ?></label>
                     <div class=''>
                         <ul class='nav nav-tabs'>
                             <li class='nav-item src-tab' role='presentation'>
@@ -113,7 +113,7 @@
             <!-- Answer section -->
             <div class="col-lg-6">
                 <div class='form-group'>
-                    <label class='control-label'><?php echo gT("Answer"); ?></label>
+                    <label class='form-label'><?php echo gT("Answer"); ?></label>
                     <div class=''>
                         <ul class='nav nav-tabs'>
                             <li role='presentation' class='nav-item target-tab'>

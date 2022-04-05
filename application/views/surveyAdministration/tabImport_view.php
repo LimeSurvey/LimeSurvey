@@ -14,7 +14,7 @@
 
             <!-- Select file -->
             <div class='form-group '>
-                <label class='control-label ' for='the_file'>
+                <label class='form-label ' for='the_file'>
                     <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
                 <div class=''>
@@ -30,7 +30,7 @@
 
             <!-- Convert resource links and INSERTANS fields? -->
             <div class='form-group'>
-                <label class='control-label ' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
+                <label class='form-label ' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
                 <div class=''>
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'translinksfields',

@@ -7,7 +7,7 @@
   </div>
   <div class="panel-body">
     <div class="form-group row">
-      <label for='completionstate' class="control-label">
+      <label for='completionstate' class="form-label">
         <?php eT("Completion state:");?>
       </label>
 
@@ -27,7 +27,7 @@
     </div>
 
     <div class="form-group row">
-      <label for='exportlang' class="control-label">
+      <label for='exportlang' class="form-label">
         <?php eT("Export language:"); ?>
       </label>
       <div class=''>

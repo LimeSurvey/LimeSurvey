@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-6 col-sm-12">
         <div class='form-group'>
-            <label for='completionstate' class="control-label"><?php
+            <label for='completionstate' class="form-label"><?php
                 eT("Include:"); ?> </label>
             <div class="">
                 <?php
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class='form-group'>
-            <label for='outputtype' class="control-label"><?php
+            <label for='outputtype' class="form-label"><?php
                 eT("Output format:") ?></label>
             <div>
                 <div class="btn-group" data-toggle="buttons">
@@ -45,7 +45,7 @@
         <div class='form-group'>
             <?php
             $sViewsummaryall = (int)Yii::app()->request->getPost('viewsummaryall'); ?>
-            <label class="control-label" for='viewsummaryall'><?php
+            <label class="form-label" for='viewsummaryall'><?php
                 eT("View summary of all available fields:"); ?></label>
             <div>
                 <?php
@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class='form-group'>
-            <label for='usegraph' class="control-label"><?php
+            <label for='usegraph' class="form-label"><?php
                 eT("Show graphs:"); ?></label>
             <div class=''>
                 <?php
@@ -105,7 +105,7 @@
         if (count($survlangs) == 1) {
             echo "style='display:none'";
         } ?>>
-            <label for='statlang' class="control-label"><?php
+            <label for='statlang' class="form-label"><?php
                 eT("Statistics report language:"); ?></label>
             <div class=''>
                 <select name="statlang" id="statlang" class="form-control">

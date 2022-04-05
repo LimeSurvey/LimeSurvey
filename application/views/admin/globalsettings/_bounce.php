@@ -7,14 +7,14 @@
 
 
 <div class="form-group">
-    <label class=" control-label" for='siteadminbounce'><?php eT("Default site bounce email:"); ?></label>
+    <label class=" form-label" for='siteadminbounce'><?php eT("Default site bounce email:"); ?></label>
     <div class="">
         <input class="form-control" type='text' size='50' id='siteadminbounce' name='siteadminbounce' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminbounce')); ?>" />
     </div>
 </div>
 
 <div class="form-group">
-    <label class=" control-label"  for='bounceaccounttype'><?php eT("Server type:"); ?></label>
+    <label class=" form-label"  for='bounceaccounttype'><?php eT("Server type:"); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'bounceaccounttype',
@@ -30,7 +30,7 @@
 
 
 <div class="form-group">
-    <label class=" control-label"  for='bounceaccounthost'><?php eT("Server name & port:"); ?></label>
+    <label class=" form-label"  for='bounceaccounthost'><?php eT("Server name & port:"); ?></label>
     <div class="">
         <input class="form-control" type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" />
         <span class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:993"); ?></span>
@@ -39,7 +39,7 @@
 </div>
 
 <div class="form-group">
-    <label class=" control-label"  for='bounceaccountuser'><?php eT("User name:"); ?></label>
+    <label class=" form-label"  for='bounceaccountuser'><?php eT("User name:"); ?></label>
     <div class="">
         <input class="form-control" type='text' size='50' id='bounceaccountuser' name='bounceaccountuser'
             value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccountuser'))?>" />
@@ -47,14 +47,14 @@
 </div>
 
 <div class="form-group">
-    <label class=" control-label"  for='bounceaccountpass'><?php eT("Password:"); ?></label>
+    <label class=" form-label"  for='bounceaccountpass'><?php eT("Password:"); ?></label>
     <div class="">
         <input class="form-control" type='password' size='50' autocomplete="off" id='bounceaccountpass' name='bounceaccountpass' value='enteredpassword' />
     </div>
 </div>
 
 <div class="form-group">
-    <label class=" control-label"  for='bounceencryption'><?php eT("Encryption type:"); ?></label>
+    <label class=" form-label"  for='bounceencryption'><?php eT("Encryption type:"); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'bounceencryption',

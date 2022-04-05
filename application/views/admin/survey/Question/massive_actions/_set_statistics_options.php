@@ -10,7 +10,7 @@
 
     <!-- Public statistics -->
     <div  class="form-group" id="PublicStatistcs">
-        <label class="col-sm-4 control-label" for="public_statistics"><?php eT("Show in public statistics:"); ?></label>
+        <label class="col-sm-4 form-label" for="public_statistics"><?php eT("Show in public statistics:"); ?></label>
         <div class="col-sm-8">
             <?php $this->widget(
                     'yiiwheels.widgets.switch.WhSwitch',
@@ -27,7 +27,7 @@
     </div>
     <!-- Display charts -->
     <div  class="form-group" id="StatisticsShowgraph">
-        <label class="col-sm-4 control-label" for="statistics_showgraph"><?php eT("Display chart:"); ?></label>
+        <label class="col-sm-4 form-label" for="statistics_showgraph"><?php eT("Display chart:"); ?></label>
         <div class="col-sm-8">
             <?php $this->widget(
                 'yiiwheels.widgets.switch.WhSwitch',
@@ -44,7 +44,7 @@
     </div>
     <!-- Display charts -->
     <div  class="form-group" id="StatisticsGraphType">
-        <label class="col-sm-4 control-label" for="statistics_showgraph"><?php eT("Chart type:"); ?></label>
+        <label class="col-sm-4 form-label" for="statistics_showgraph"><?php eT("Chart type:"); ?></label>
         <div class="col-sm-8">
             <select class="form-control custom-data attributes-to-update" id="statistics_graphtype" name="statistics_graphtype">
                 <option value="0" selected="selected">Bar chart</option>

@@ -17,7 +17,7 @@
                 <!-- Scope, Total, Group -->
                 <div class='row'>
                     <div class='form-group col-md-12'>
-                        <label class='control-label col-sm-2'>
+                        <label class='form-label col-sm-2'>
                             <?php eT("Scope:"); ?>
                         </label>
                         <div class='col-sm-10 ls-flex wrap'>
@@ -38,7 +38,7 @@
                     </div>
                     <!-- Question group -->
                     <div class='form-group col-md-12'>
-                        <label class='control-label col-sm-2' for='gid'>
+                        <label class='form-label col-sm-2' for='gid'>
                             <?php eT("Question group:"); ?>
                         </label>
                         <div class='col-sm-10'>
@@ -59,7 +59,7 @@
                 <div class='row'>
                     <!-- Minimum -->
                     <div class='form-group col-md-12'>
-                        <label class='control-label col-sm-2' for='minimum'>
+                        <label class='form-label col-sm-2' for='minimum'>
                             <?php eT("Minimum:"); ?>
                         </label>
                         <div class='col-sm-10'>
@@ -70,7 +70,7 @@
 
                     <!-- Maximum -->
                     <div class='form-group col-md-12'>
-                        <label class='control-label col-sm-2' for='maximum'>
+                        <label class='form-label col-sm-2' for='maximum'>
                             <?php eT("Maximum:"); ?>
                         </label>
                         <div class='col-sm-10'>
@@ -112,14 +112,14 @@
                             } ?>">
                                 <div class='col-sm-12'></div>
                                 <div class='form-group col-sm-12'>
-                                    <label class='control-label col-sm-12' for='name_<?= $assessmentlang ?>'>
+                                    <label class='form-label col-sm-12' for='name_<?= $assessmentlang ?>'>
                                         <?php eT("Heading"); ?>:</label>
                                     <div class='col-sm-12'>
                                         <input class='form-control' type='text' name='name_<?= $assessmentlang ?>' id='name_<?= $assessmentlang ?>>' size='80' value='<?= $heading ?>'/>
                                     </div>
                                 </div>
                                 <div class='form-group col-sm-12'>
-                                    <label class='control-label col-sm-12' for='assessmentmessage_<?= $assessmentlang ?>'>
+                                    <label class='form-label col-sm-12' for='assessmentmessage_<?= $assessmentlang ?>'>
                                         <?php eT("Message"); ?>:</label>
                                     <div class='col-sm-12'>
                                         <div class="htmleditor input-group">

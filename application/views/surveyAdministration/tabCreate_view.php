@@ -67,7 +67,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                             </div>
                         </div>
                         <div class="form-group col-4">
-                            <label class="control-label" for="language"><?= gT('Base language:')?></label>
+                            <label class="form-label" for="language"><?= gT('Base language:')?></label>
                             <div class="">
                                 <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'asDropDownList' => true,
@@ -80,7 +80,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                             </div>
                         </div>
                         <div class="form-group col-4">
-                            <label class=" control-label" for='gsid'><?php  eT("Survey group:"); ?></label>
+                            <label class=" form-label" for='gsid'><?php  eT("Survey group:"); ?></label>
                             <div class="">
                                 <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'asDropDownList' => true,
@@ -93,7 +93,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="administrator"><?= gT("Administrator:")?></label>
+                            <label class="form-label" for="administrator"><?= gT("Administrator:")?></label>
                             <div class="">
                                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                     'name' => 'administrator',
@@ -104,7 +104,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                         </div>
                         <div id="conditional-administrator-fields" style="display: none;">
                             <div class="form-group col-4">
-                                <label class="control-label" for="admin"><?= gT("Administrator name")?></label>
+                                <label class="form-label" for="admin"><?= gT("Administrator name")?></label>
                                 <?php echo CHtml::textField('admin', '', array(
                                     'class' => 'form-control',
                                     'id' => 'admin',
@@ -113,7 +113,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                 ));?>
                             </div>
                             <div class="form-group col-4">
-                                <label class=" control-label" for='adminemail'><?php  eT("Administrator email"); ?></label>
+                                <label class=" form-label" for='adminemail'><?php  eT("Administrator email"); ?></label>
                                 <?php echo CHtml::textField('adminemail', '', array(
                                     'class' => 'form-control',
                                     'id' => 'adminemail',

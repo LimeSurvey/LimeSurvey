@@ -13,7 +13,7 @@
 
                 <!-- ID  -->
                 <div class="form-group">
-                    <label  class=" control-label">ID:</label>
+                    <label  class=" form-label">ID:</label>
                     <div class="">
                         <p class="form-control-static"><?php eT("Auto"); ?></p>
                     </div>
@@ -21,7 +21,7 @@
 
                 <!-- Number of tokens  -->
                 <div class="form-group">
-                    <label  class=" control-label" for='amount'><?php eT("Number of participants:"); ?></label>
+                    <label  class=" form-label" for='amount'><?php eT("Number of participants:"); ?></label>
                     <div class="">
                         <input class='form-control' type='text' size='20' id='amount' name='amount' value="<?php echo $amount; ?>" />
                     </div>
@@ -29,7 +29,7 @@
 
                 <!-- Token length  -->
                 <div class="form-group">
-                    <label  class=" control-label" for='tokenlen'><?php eT("Access code length"); ?>:</label>
+                    <label  class=" form-label" for='tokenlen'><?php eT("Access code length"); ?>:</label>
                     <div class="">
                         <input class='form-control' type='text' size='20' id='tokenlen' name='tokenlen' value="<?php echo $tokenlength; ?>" />
                     </div>
@@ -37,7 +37,7 @@
 
                 <!-- First name  -->
                 <div class="form-group">
-                    <label  class=" control-label" for='firstname'><?php eT("First name"); ?>:</label>
+                    <label  class=" form-label" for='firstname'><?php eT("First name"); ?>:</label>
                     <div class="">
                         <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="<?php echo $firstname; ?>" />
                     </div>
@@ -45,7 +45,7 @@
 
                 <!-- Last name  -->
                 <div class="form-group">
-                    <label  class=" control-label" for='lastname'><?php eT("Last name"); ?>:</label>
+                    <label  class=" form-label" for='lastname'><?php eT("Last name"); ?>:</label>
                     <div class="">
                         <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="<?php echo $lastname; ?>" />
                     </div>
@@ -53,7 +53,7 @@
 
                 <!-- Email  -->
                 <div class="form-group">
-                    <label  class=" control-label" for='email'><?php eT("Email address:"); ?></label>
+                    <label  class=" form-label" for='email'><?php eT("Email address:"); ?></label>
                     <div class="">
                         <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' value="<?php echo $email; ?>" />
                     </div>
@@ -61,7 +61,7 @@
 
                 <!-- Language  -->
                 <div class="form-group">
-                    <label  class=" control-label" for='language'><?php eT("Language"); ?>:</label>
+                    <label  class=" form-label" for='language'><?php eT("Language"); ?>:</label>
                     <div class="">
                         <?php echo languageDropdownClean($surveyid, $language); ?>
                     </div>
@@ -69,7 +69,7 @@
 
                 <!-- Uses left  -->
                 <div class="form-group">
-                    <label  class=" control-label" for='usesleft'><?php eT("Uses left:"); ?></label>
+                    <label  class=" form-label" for='usesleft'><?php eT("Uses left:"); ?></label>
                     <div class="">
                         <input class='form-control' type='text' size='20' id='usesleft' name='usesleft' value="<?php echo $usesleft; ?>" />
                     </div>
@@ -88,7 +88,7 @@
             ?>
                 <!--  Validity -->
                 <div class="form-group">
-                    <label  class=" control-label" for='validfrom'><?php eT("Valid from"); ?>:</label>
+                    <label  class=" form-label" for='validfrom'><?php eT("Valid from"); ?>:</label>
                     <div class=" has-feedback">
                         <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "validfrom",
@@ -118,7 +118,7 @@
                         <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
                     </div>
 
-                    <label  class=" control-label" for='validuntil'><?php eT('Until:'); ?></label>
+                    <label  class=" form-label" for='validuntil'><?php eT('Until:'); ?></label>
                     <div class=" has-feedback">
                         <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "validuntil",
@@ -152,7 +152,7 @@
                 <!-- Attribute fields  -->
                 <?php foreach ($aAttributeFields as $attr_name => $attr_description): ?>
                     <div class="form-group">
-                        <label  class=" control-label" for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
+                        <label  class=" form-label" for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
                         <div class="">
                             <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars($$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
                         </div>

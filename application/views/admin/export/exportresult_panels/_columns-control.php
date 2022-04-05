@@ -10,7 +10,7 @@
     <?php if ($SingleResponse): ?>
       <input type='hidden' name='response_id' value="<?php echo $SingleResponse;?>" />
       <?php endif; ?>
-        <label for='colselect' class="col-sm-12 control-label">
+        <label for='colselect' class="col-sm-12 form-label">
           <?php eT("Select columns:");?>
         </label>
         <div class="col-sm-12">
