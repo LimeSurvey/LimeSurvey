@@ -141,7 +141,7 @@
 
                                     <!-- Add group -->
                                     <div class="col-sm-6">
-                                        <div class="card panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>">
+                                        <div class="card card-clickable" id="panel-1" data-url="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>">
                                             <div class="card-header bg-primary">
                                                 <div class=""><?php eT('Add group');?></div>
                                             </div>
@@ -188,7 +188,7 @@
                                         <!-- Survey has a group, so can add a question -->
                                     <?php else:?>
                                         <div class="col-sm-6">
-                                            <div class="card panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>">
+                                            <div class="card card-clickable" id="panel-2" data-url="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>">
                                                 <div class="card-header bg-primary">
                                                     <div class=""><?php eT('Add question');?></div>
                                                 </div>
@@ -215,7 +215,7 @@
 
                                 <!-- Edit text elements and general settings -->
                                 <?php if($surveylocale && $surveysettings): ?>
-                                    <div class="card panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
+                                    <div class="card card-clickable" id="panel-3" data-url="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
                                         <div class="card-header bg-primary">
                                             <div class=""><?php eT('Edit text elements and general settings');?></div>
                                         </div>
@@ -255,7 +255,7 @@
                             <!-- Stats -->
                             <?php if($respstatsread && $activated=="Y"):?>
                                 <div class="col-sm-6">
-                                    <div class="card panel-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>">
+                                    <div class="card card-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>">
                                         <div class="card-header bg-primary">
                                             <div class=""><?php eT("Statistics");?></div>
                                         </div>

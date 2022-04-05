@@ -33040,7 +33040,7 @@
    * Like in front page, or quick actions
    */
   function panelClickable() {
-    $(".panel-clickable").on('click', function (e) {
+    $(".card-clickable").on('click', function (e) {
       var self = $(this);
 
       if (self.data('url') != '') {

@@ -77,7 +77,7 @@
 
                     <!-- create question in this group -->
                     <div class="col-lg-3">
-                        <div class="card text-center <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create', array('surveyid'=>$surveyid,'gid'=>$gid)); ?>">
+                        <div class="card text-center <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'card-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create', array('surveyid'=>$surveyid,'gid'=>$gid)); ?>">
                             <div class="card-header bg-primary">
                                 <div class=""><?php eT("Add new question to group");?></div>
                             </div>
