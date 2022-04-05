@@ -1,13 +1,23 @@
-<div id="advanced-options-container" class="custom custom-margin top-5">
     <?php foreach ($advancedSettings as $category => $settings) : ?>
-        <div class="card panel-advancedquestionsettings col-12" id="<?= CHtml::getIdByName($category); ?>">
-            <div class="card-header bg-primary" id="<?= CHtml::getIdByName($category); ?>-heading">
-                <a class=" selector--questionEdit-collapse" id="button-collapse-<?= CHtml::getIdByName($category); ?>" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-<?= CHtml::getIdByName($category); ?>" aria-expanded="false" aria-controls="collapse-<?= CHtml::getIdByName($category); ?>">
+        <div class="accordion-item panel-advancedquestionsettings col-12" id="<?= CHtml::getIdByName($category); ?>">
+            <h2 class="accordion-header bg-primary" id="<?= CHtml::getIdByName($category); ?>-heading">
+                <button
+                    class="selector--questionEdit-collapse accordion-button"
+                    id="button-collapse-<?= CHtml::getIdByName($category); ?>"
+                    role="button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target=""
+                    data-parent="#accordion"
+                    href="#collapse-<?= CHtml::getIdByName($category); ?>"
+                    aria-expanded="false"
+                    aria-controls="collapse-<?= CHtml::getIdByName($category); ?>"
+                >
                     <?= gT($category); ?>
-                </a>
-            </div>
+                </button>
+            </h2>
             <div id="collapse-<?= CHtml::getIdByName($category); ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="<?= CHtml::getIdByName($category); ?>-heading">
-                <div class="card-body">
+                <div class="accordion-body">
                     <?php foreach ($settings as $setting) : ?>
                         <?php $this->widget(
                             'ext.AdvancedSettingWidget.AdvancedSettingWidget',
@@ -18,4 +28,3 @@
             </div>
         </div>
     <?php endforeach; ?>
-</div>
