@@ -711,6 +711,25 @@ html {
     min-height: 0;
   }
 }
+.welcome .card {
+  position: relative;
+  top: 50px;
+  opacity: 0;
+}
+
+.welcome .card-body {
+  text-align: center;
+}
+
+.welcome .card-body img {
+  height: 4em;
+  margin-bottom: 1em;
+}
+
+.welcome .login-card .card-body img {
+  margin-bottom: 0;
+}
+
 .login-panel {
   margin-top: 40px;
 }
@@ -4495,10 +4514,6 @@ html[dir=rtl] th {
   display: none;
 }
 
-#cpdbatt {
-  min-height: 100px;
-}
-
 .draggable-container {
   min-height: 300px;
 }
@@ -4603,6 +4618,10 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 
 /* Existing attribute column in CSV CPDB import */
 .centralatt {
+  min-height: 100px;
+}
+
+#cpdbatt {
   min-height: 100px;
 }
 

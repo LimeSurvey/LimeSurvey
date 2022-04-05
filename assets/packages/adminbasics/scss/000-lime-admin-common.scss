@@ -661,6 +661,25 @@ html {
     }
 }
 
+.welcome .card {
+  position: relative;
+  top: 50px;
+  opacity: 0;
+}
+
+.welcome .card-body {
+  text-align: center;
+}
+
+.welcome .card-body img {
+  height: 4em;
+  margin-bottom: 1em;
+}
+
+.welcome .login-card .card-body img {
+  margin-bottom: 0;
+}
+
 .login-panel {
     margin-top: 40px;
 }
