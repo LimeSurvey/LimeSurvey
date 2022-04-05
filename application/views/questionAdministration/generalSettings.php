@@ -13,7 +13,13 @@
             <?= gT('General Settings'); ?>
         </button>
     </h2>
-    <div id="collapse-question" class="accordion-collapse" role="tabpanel" aria-labelledby="general-setting-heading">
+    <div
+        id="collapse-question"
+        class="accordion-collapse collapse show"
+        role="tabpanel"
+        data-bs-parent="#accordion"
+        aria-labelledby="general-setting-heading"
+    >
         <div class="accordion-body collapse show">
             <?php foreach ($generalSettings as $generalOption) : ?>
                 <?php $this->widget(

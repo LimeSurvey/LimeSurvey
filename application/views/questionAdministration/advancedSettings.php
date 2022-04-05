@@ -1,6 +1,6 @@
 <?php foreach ($advancedSettings as $category => $settings) : ?>
     <div class="accordion-item panel-advancedquestionsettings col-12" id="<?= CHtml::getIdByName($category); ?>">
-        <h2 class="accordion-header bg-primary" id="<?= CHtml::getIdByName($category); ?>-heading">
+        <h2 class="accordion-header" id="<?= CHtml::getIdByName($category); ?>-heading">
             <button
                 class="selector--questionEdit-collapse accordion-button collapsed"
                 id="button-collapse-<?= CHtml::getIdByName($category); ?>"
