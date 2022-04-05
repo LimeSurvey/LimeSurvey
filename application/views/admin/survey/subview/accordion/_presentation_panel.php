@@ -153,6 +153,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class="form-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'showxquestions',
                     'value'=> $oSurvey->showxquestions,
@@ -166,6 +167,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class=" form-label" for='showwelcome'><?php  eT("Show welcome screen:") ; ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'showwelcome',
                     'value'=> $oSurvey->showwelcome,
@@ -179,6 +181,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class=" form-label" for='allowprev'><?php  eT("Allow backward navigation:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'allowprev',
                     'value'=> $oSurvey->allowprev,
@@ -193,6 +196,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class=" form-label" for='nokeyboard'><?php  eT("Show on-screen keyboard:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'nokeyboard',
                     'value'=> $oSurvey->nokeyboard,
@@ -206,6 +210,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class=" form-label" for='showprogress'><?php  eT("Show progress bar:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'showprogress',
                     'value'=> $oSurvey->showprogress,
@@ -218,6 +223,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class=" form-label" for='printanswers'><?php  eT("Participants may print answers:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'printanswers',
                     'value'=> $oSurvey->printanswers,
@@ -231,6 +237,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class=" form-label" for='publicstatistics'><?php  eT("Public statistics:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'publicstatistics',
                     'value'=> $oSurvey->publicstatistics,
@@ -244,6 +251,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class=" form-label" for='publicgraphs'><?php  eT("Show graphs in public statistics:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'publicgraphs',
                     'value'=> $oSurvey->publicgraphs,
@@ -257,6 +265,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class=" form-label" for='autoredirect'><?php  eT("Automatically load end URL when survey complete:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'autoredirect',
                     'value'=> $oSurvey->autoredirect,
