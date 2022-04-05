@@ -50,7 +50,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 </div>
 <div class="row">
     <div class="container-fluid">
-        <?php
+        <?php /*
             $this->widget('yiistrap.widgets.TbGridView', array(
                 'id'              => 'usermanagement--identity-gridPanel',
                 'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
@@ -69,8 +69,37 @@ echo viewHelper::getViewTestTag('usersIndex');
                             array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
                         )
                     ),
-            ));
+            ));*/
+            ?>
+    </div>
 
+    <div class="container-fluid">
+        <?php
+        $this->widget('zii.widgets.grid.CGridView', [
+            'id' => 'my-grid',
+            'dataProvider' => $model->search(),
+            'selectableRows' => 5, // can be anything other than 1 or 0
+            'columns' => $columnDefinition,
+            'pager' => [
+                'header' => '',
+                'firstPageLabel' => '&laquo;',
+                'prevPageLabel'  => '&lsaquo;',
+                'nextPageLabel'  => '&rsaquo;',
+                'lastPageLabel'  => '&raquo;',
+            ],
+            'filter'          => $model,
+            'template'        => "{items}\n<div class=\"row\" id='userListPager'><div class=\"col-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-4 \">{pager}</div><div class=\"col-4 summary-container\">{summary}</div></div>",
+            'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                . sprintf(
+                    gT('%s rows per page'),
+                    CHtml::dropDownList(
+                        'pageSize',
+                        $pageSize,
+                        App()->params['pageSizeOptions'],
+                        array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
+                    )
+                ),
+        ]);
         ?>
     </div>
 
