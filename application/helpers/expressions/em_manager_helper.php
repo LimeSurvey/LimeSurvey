@@ -1702,7 +1702,7 @@ class LimeExpressionManager
                             }
                         }
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                        $sumRemainingEqn = '(' . $equals_num_value . ' - sum(' . implode(', ', $sq_names) . '))';
+                        $sumRemainingEqn = 'sum(' . $equals_num_value . ', sum(' . implode(', ', $sq_names) . ') * -1)';
                         $mainEqn = 'sum(' . implode(', ', $sq_names) . ')';
 
                         if (!is_null($precision)) {
