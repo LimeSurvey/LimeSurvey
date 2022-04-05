@@ -396,13 +396,10 @@ class SurveyAdministrationController extends LSBaseController
             'custom' => gT('Custom', 'unescaped'),
         );
 
-        $defaultLanguage = App()->getConfig('defaultlang');
-
         $testLanguages = getLanguageDataRestricted(true, 'short');
 
         $aData['edittextdata']['listLanguagesCode'] = $testLanguages;
         $aData['edittextdata']['aSurveyGroupList'] = SurveysGroups::getSurveyGroupsList();
-        $aData['edittextdata']['defaultLanguage'] =  getLanguageCodefromLanguage($defaultLanguage);
 
         $arrayed_data = array();
         $arrayed_data['oSurvey'] = $survey;

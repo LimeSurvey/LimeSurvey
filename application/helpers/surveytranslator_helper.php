@@ -1197,9 +1197,9 @@ function canShowDatePicker($dateformatdetails, $dateformats = null)
 }
 
 /**
+ * Returns a language code from the name
  *
- *
- * @param string $languagetosearch this is the shortname for the language (e.g. 'en' see array in getLanguageData())
+ * @param string $languagetosearch this is the name of the language (e.g. 'English' see array in getLanguageData())
  * @return int|string
  */
 function getLanguageCodefromLanguage($languagetosearch)
