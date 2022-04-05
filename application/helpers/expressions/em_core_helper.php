@@ -1281,7 +1281,7 @@ class ExpressionManager
                 if ($bracket == 0) { // Last close bracket : get the static final function and reset
                     //~ $staticString = LimeExpressionManager::ProcessStepString("{".$staticStringToParse."}",array(),3,true);
                     $staticString = $this->sProcessStringContainingExpressions("{" . $staticStringToParse . "}", 0, 3, 1, -1, -1, true); // As static : no gseq,qseq etc …
-                    $stringParts[] = $staticString;
+                    $stringParts[] = "'" . addcslashes($staticString, "'") . "'";
                     $staticStringToParse = "";
                 }
             } else {
