@@ -83,7 +83,7 @@ class PluginManager extends \CApplicationComponent
     }
     /**
      * Return a list of installed plugins, but only if the files are still there
-     *
+     * @deprecated unused in 5.3.8
      * This prevents errors when a plugin was installed but the files were removed
      * from the server.
      *
@@ -98,7 +98,7 @@ class PluginManager extends \CApplicationComponent
 
         foreach ($records as $record) {
             // Only add plugins we can find
-            if ($this->loadPlugin($record->name) !== false) {
+            if ($this->loadPlugin($record->name, $record->id, $record->active) !== false) {
                 $plugins[$record->id] = $record;
             }
         }
@@ -523,7 +523,7 @@ class PluginManager extends \CApplicationComponent
         $records = Plugin::model()->findAll();
         foreach ($records as $record) {
             if ($record->load_error == 0) {
-                $this->loadPlugin($record->name, $record->id);
+                $this->loadPlugin($record->name, $record->id, $record->active);
             }
         }
     }
