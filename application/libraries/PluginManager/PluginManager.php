@@ -69,7 +69,7 @@ class PluginManager extends \CApplicationComponent
 
         foreach ($records as $record) {
             // Only add plugins we can find
-            if ($this->loadPlugin($record->name) !== false) {
+            if ($this->loadPlugin($record->name, $record->id, $record->active) !== false) {
                 $plugins[$record->id] = $record;
             }
         }
@@ -268,10 +268,11 @@ class PluginManager extends \CApplicationComponent
      *
      * @param string $pluginName
      * @param int $id Identifier used for identifying a specific plugin instance.
+     * @param boolean $init init plugin if method is available
      * If ommitted will return the first instantiated plugin with the given name.
      * @return iPlugin|null The plugin or null when missing
      */
-    public function loadPlugin($pluginName, $id = null)
+    public function loadPlugin($pluginName, $id = null, $init = true)
     {
         // If the id is not set we search for the plugin.
         if (!isset($id)) {
@@ -285,8 +286,7 @@ class PluginManager extends \CApplicationComponent
                 if ($this->getPluginInfo($pluginName) !== false) {
                     if (class_exists($pluginName)) {
                         $this->plugins[$id] = new $pluginName($this, $id);
-
-                        if (method_exists($this->plugins[$id], 'init')) {
+                        if ($init && method_exists($this->plugins[$id], 'init')) {
                             $this->plugins[$id]->init();
                         }
                     } else {
@@ -332,7 +332,7 @@ class PluginManager extends \CApplicationComponent
     {
         $records = Plugin::model()->findAll();
         foreach ($records as $record) {
-            $this->loadPlugin($record->name, $record->id);
+            $this->loadPlugin($record->name, $record->id, $record->active);
         }
     }
 
