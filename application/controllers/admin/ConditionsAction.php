@@ -1309,18 +1309,13 @@ class ConditionsAction extends SurveyCommonAction
      */
     protected function getQuestionRows()
     {
-        $qresult = Question::model()->findAllByAttributes(array(
-            'parent_qid' => 0,
-            'sid' => $this->iSurveyID));
+        $qresult = Question::model()->primary()->getQuestionList($this->iSurveyID);
 
         //'language' => $this->language
         $qrows = array();
         foreach ($qresult as $k => $v) {
             $qrows[$k] = array_merge($v->attributes, $v->group->attributes);
         }
-
-        // Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
-        usort($qrows, 'groupOrderThenQuestionOrder');
 
         return $qrows;
     }
