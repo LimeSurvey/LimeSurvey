@@ -838,7 +838,6 @@ function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 * and returns -1, 0 or 1 depending on the result of the comparison of
 * the sort order of the group_order and question_order field
 * Used by :
-* - conditionsaction->getQuestionRows with merging group and question attributes (all in same array)
 * - remotecontrol_handle->export_statistics with merging group and question attributes (all in same array)
 * - checkQuestions() in activate_helper function with ?
 * @param mixed $a
