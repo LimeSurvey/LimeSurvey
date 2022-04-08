@@ -420,7 +420,7 @@ class SurveyRuntimeHelper
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1);
+            $aGroup['name']        = $gl['group_name'];
             LimeExpressionManager::updateReplacementFields(array(
                 'GROUPNAME' => $aGroup['name'],
             ));
@@ -439,7 +439,7 @@ class SurveyRuntimeHelper
 
             $aGroup['showgroupinfo'] = $showgroupinfo_;
             $aGroup['showdescription']  = (!$this->previewquestion && trim($gl['description']) != "" && $showgroupdesc_);
-            $aGroup['description']      = LimeExpressionManager::ProcessString($gl['description'], null, null, 3, 1);
+            $aGroup['description']      = $gl['description'];
 
             // one entry per QID
             foreach ($qanda as $qa) {
@@ -1265,7 +1265,7 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show'] = false;
             if ($this->aSurveyInfo['publicstatistics'] == 'Y') {
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show']  = true;
-                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sUrl']  = $surveyActive ? Yii::app()->getController()->createUrl("/statistics_user/action/", array('surveyid' => $this->iSurveyid, 'language' => App()->getLanguage())) : "#";
+                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sUrl']  = $surveyActive ? Yii::app()->getController()->createUrl("/StatisticsUser/action/", array('surveyid' => $this->iSurveyid, 'language' => App()->getLanguage())) : "#";
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sText'] =  gT("View the statistics for this survey.");
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sTitle'] =  $surveyActive ? $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sText'] : gT("Note: This link only works if the survey is activated.");
             }
