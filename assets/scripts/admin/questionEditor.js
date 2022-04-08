@@ -1936,9 +1936,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
   function showSameScriptForAllLanguagesWarning() {
     if ($('#same_script').is(":checked")) {
-      $('.same-script-alert').show();
+      $('.same-script-alert').removeClass("hidden");
     } else {
-      $('.same-script-alert').hide();
+      $('.same-script-alert').addClass("hidden");
     }
   }
 
