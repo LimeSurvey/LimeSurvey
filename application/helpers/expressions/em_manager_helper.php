@@ -37,8 +37,6 @@
     define('LEM_DEBUG_VALIDATION_DETAIL',4);
     define('LEM_PRETTY_PRINT_ALL_SYNTAX',32);
 
-    define('LEM_DEFAULT_PRECISION',12);
-
     class LimeExpressionManager {
         /**
         * LimeExpressionManager is a singleton.  $instance is its storage location.
@@ -1786,7 +1784,7 @@
                                 $validationEqn[$questionNum] = array();
                             }
                             // sumEqn and sumRemainingEqn may need to be rounded if using sliders
-                            $precision=LEM_DEFAULT_PRECISION;    // default is not to round
+                            $precision = null;    // default is not to round
                             if (isset($qattr['slider_layout']) && $qattr['slider_layout']=='1')
                             {
                                 $precision=0;   // default is to round to whole numbers
@@ -1801,7 +1799,7 @@
                                 }
                             }
                             $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                            $sumRemainingEqn = '(' . $equals_num_value . ' - sum(' . implode(', ', $sq_names) . '))';
+                            $sumRemainingEqn = 'sum(' . $equals_num_value . ', sum(' . implode(', ', $sq_names) . ' ) * -1)';
                             $mainEqn = 'sum(' . implode(', ', $sq_names) . ')';
 
                             if (!is_null($precision))
@@ -2371,12 +2369,6 @@
                             }
 
                             $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                            $precision = LEM_DEFAULT_PRECISION;
-                            if (!is_null($precision))
-                            {
-                                $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
-                            }
-
                             $noanswer_option = '';
                             if ($value_range_allows_missing)
                             {
@@ -2435,12 +2427,6 @@
                             }
 
                             $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                            $precision = LEM_DEFAULT_PRECISION;
-                            if (!is_null($precision))
-                            {
-                                $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
-                            }
-
                             $noanswer_option = '';
                             if ($value_range_allows_missing)
                             {
