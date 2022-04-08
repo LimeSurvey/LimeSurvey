@@ -1,7 +1,12 @@
 <?php
 
-class CLSYiiPager extends CBasePager
+class CLSYiiPager extends CLinkPager
 {
+
+    /**
+     * @var string the CSS class for the internal page buttons .
+     */
+    public $internalPageCssClass = 'page-item';
 
     /**
      * @var string the text label for the next page button.
@@ -21,87 +26,75 @@ class CLSYiiPager extends CBasePager
     public $lastPageLabel = '&raquo;';
 
     /**
+     * @return void
+     */
+    public function init()
+    {
+        //$this->cssFile = false;
+        $this->header = '';
+        if(!isset($this->htmlOptions['id']))
+            $this->htmlOptions['id']=$this->getId();
+        if(!isset($this->htmlOptions['class']))
+            $this->htmlOptions['class']='pagination';
+    }
+
+    /**
      * Creates the page buttons.
      * @return array a list of page buttons (in HTML code).
      */
-    protected function createPageLinks()
+    protected function createPageButtons()
     {
-        if (($pageCount = $this->getPageCount()) <= 1) {
+        if(($pageCount=$this->getPageCount())<=1)
             return array();
-        }
 
-        list($beginPage, $endPage) = $this->getPageRange();
-
-        $currentPage = $this->getCurrentPage(false); // currentPage is calculated in getPageRange()
-        $links = array();
+        list($beginPage,$endPage)=$this->getPageRange();
+        $currentPage=$this->getCurrentPage(false); // currentPage is calculated in getPageRange()
+        $buttons=array();
 
         // first page
-        if (!$this->hideFirstAndLast) {
-            $links[] = $this->createPageLink($this->firstPageLabel, 0, $currentPage <= 0, false);
+        if ($this->firstPageLabel !== false) {
+            $buttons[]=$this->createPageButton($this->firstPageLabel,0,$this->firstPageCssClass,$currentPage<=0,false);
         }
-
         // prev page
-        if (($page = $currentPage - 1) < 0) {
-            $page = 0;
+        if ($this->prevPageLabel !== false) {
+            if(($page=$currentPage-1)<0)
+                $page=0;
+            $buttons[]=$this->createPageButton($this->prevPageLabel,$page,$this->previousPageCssClass,$currentPage<=0,false);
         }
-
-        $links[] = $this->createPageLink($this->prevPageLabel, $page, $currentPage <= 0, false);
 
         // internal pages
-        for ($i = $beginPage; $i <= $endPage; ++$i) {
-            $links[] = $this->createPageLink($i + 1, $i, false, $i == $currentPage);
-        }
+        for($i=$beginPage;$i<=$endPage;++$i)
+            $buttons[]=$this->createPageButton($i+1,$i,$this->internalPageCssClass,false,$i==$currentPage);
 
         // next page
-        if (($page = $currentPage + 1) >= $pageCount - 1) {
-            $page = $pageCount - 1;
+        if ($this->nextPageLabel !== false) {
+            if(($page=$currentPage+1)>=$pageCount-1)
+                $page=$pageCount-1;
+            $buttons[]=$this->createPageButton($this->nextPageLabel,$page,$this->nextPageCssClass,$currentPage>=$pageCount-1,false);
         }
-
-        $links[] = $this->createPageLink($this->nextPageLabel, $page, $currentPage >= $pageCount - 1, false);
-
         // last page
-        if (!$this->hideFirstAndLast) {
-            $links[] = $this->createPageLink(
-                $this->lastPageLabel,
-                $pageCount - 1,
-                $currentPage >= $pageCount - 1,
-                false
-            );
+        if ($this->lastPageLabel !== false) {
+            $buttons[]=$this->createPageButton($this->lastPageLabel,$pageCount-1,$this->lastPageCssClass,$currentPage>=$pageCount-1,false);
         }
 
-        return $links;
+        return $buttons;
     }
 
     /**
-     * Creates a page link.
-     * @param string $label the link label text.
-     * @param integer $page the page number.
-     * @param boolean $visible whether the link is disabled.
-     * @param boolean $active whether the link is active.
-     * @return string the generated link.
+     * Creates a page button.
+     * You may override this method to customize the page buttons.
+     * @param string $label the text label for the button
+     * @param integer $page the page number
+     * @param string $class the CSS class for the page button.
+     * @param boolean $hidden whether this page button is visible
+     * @param boolean $selected whether this page button is selected
+     * @return string the generated button
      */
-    protected function createPageLink($label, $page, $disabled, $active)
+    protected function createPageButton($label,$page,$class,$hidden,$selected)
     {
-        return array(
-            'label' => $label,
-            'url' => $this->createPageUrl($page),
-            'disabled' => $disabled,
-            'active' => $active,
-        );
-    }
+        if($hidden || $selected)
+            $class.=' '.($hidden ? $this->hiddenPageCssClass : $this->selectedPageCssClass);
 
-    /**
-     * @return array the begin and end pages that need to be displayed.
-     */
-    protected function getPageRange()
-    {
-        $currentPage = $this->getCurrentPage();
-        $pageCount = $this->getPageCount();
-        $beginPage = max(0, $currentPage - (int)($this->maxButtonCount / 2));
-        if (($endPage = $beginPage + $this->maxButtonCount - 1) >= $pageCount) {
-            $endPage = $pageCount - 1;
-            $beginPage = max(0, $endPage - $this->maxButtonCount + 1);
-        }
-        return array($beginPage, $endPage);
+        return '<li class="'.$class.'">'.CHtml::link($label,$this->createPageUrl($page),['class' => 'page-link']).'</li>';
     }
 }

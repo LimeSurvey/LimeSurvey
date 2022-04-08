@@ -81,11 +81,7 @@ echo viewHelper::getViewTestTag('usersIndex');
             'selectableRows' => 5, // can be anything other than 1 or 0
             'columns' => $columnDefinition,
             'pager' => [
-                'header' => '',
-                'firstPageLabel' => '&laquo;',
-                'prevPageLabel'  => '&lsaquo;',
-                'nextPageLabel'  => '&rsaquo;',
-                'lastPageLabel'  => '&raquo;',
+                'class' => 'application.extensions.admin.grid.CLSYiiPager',
             ],
             'filter'          => $model,
             'template'        => "{items}\n<div class=\"row\" id='userListPager'><div class=\"col-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-4 \">{pager}</div><div class=\"col-4 summary-container\">{summary}</div></div>",
