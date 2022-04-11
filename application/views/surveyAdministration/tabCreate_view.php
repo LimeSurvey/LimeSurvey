@@ -38,7 +38,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-10 ls-space padding left-10 right-10">
-            <div class="">
+            <div>
                 <div class="tab-pane active" id="texts" data-count="1">
                     <?php
 
@@ -68,7 +68,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="language"><?= gT('Base language:')?></label>
-                            <div class="">
+                            <div>
                                 <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'asDropDownList' => true,
                                     'htmlOptions'=>array('style'=>"width: 100%"),
@@ -81,7 +81,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                         </div>
                         <div class="mb-3">
                             <label class=" form-label" for='gsid'><?php  eT("Survey group:"); ?></label>
-                            <div class="">
+                            <div>
                                 <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'asDropDownList' => true,
                                     'htmlOptions'=>array('style'=>"width: 100%"),
@@ -94,7 +94,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="administrator"><?= gT("Administrator:")?></label>
-                            <div class="">
+                            <div>
                                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                     'name' => 'administrator',
                                     'value'=> 'default',
@@ -123,7 +123,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                         </div>
                         <!-- Submit -->
                         <div class='mb-3 text-center'>
-                            <div class=''>
+                            <div>
                                 <input id="create-survey-submit" type='submit' class="btn btn-primary col-6" value='<?php  eT("Create survey"); ?>' />
                             </div>
                         </div>
