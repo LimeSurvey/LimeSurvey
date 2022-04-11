@@ -34,6 +34,42 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.8 (build 220404) to 5.3.9 (build 220411) April 11, 2022
+-Fixed issue #18018: Static string variable can break expression (#2328) (Denis Chenu)
+-Fixed issue #18012: Usage of static suffix in condition can broke JS (Denis Chenu)
+-Fixed issue #18008: Broken condition using self.sgqa (static) (#2326) (Denis Chenu)
+-Fixed issue #17989: Check integrity delete all existing condition (#2325) (Denis Chenu)
+-Fixed issue #17968: conditions designer does not show the right questions to select (#2332) (Gabriel Jenik)
+-Fixed issue #17929: Bad code can be entered and saved in answer code (#2331) (Denis Chenu)
+-Fixed issue #17895: Error in multiple-numeric "Equals sum value" setting (#2329) (Denis Chenu)
+-Fixed issue #17882: Base language for new surveys is English instead of default language (#2333) (Gabriel Jenik)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Thai by tomzt
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Spanish (Chile) by ireneoh
+#Updated translation: Slovenian by Aambro, c_schmitz, dusan, lado, parsifal, tejac
+#Updated translation: Slovak by jelen1
+#Updated translation: Romanian by c_schmitz, cdorin, filipguttman
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by tamiel
+#Updated translation: Portuguese (Brazil) by femariso
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Lithuanian by simasj
+#Updated translation: Lithuanian by c_schmitz, rolasj, simasj
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Japanese by d_inoue
+#Updated translation: Hungarian by tdombos
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by AlainR, aschwey, b00z00, DenisChenu, dregad, eddylackmann, frederic93190
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.3.7 (build 220328) to 5.3.8 (build 220404) April 4, 2022
 -Fixed issue [security] : Missing password policy when saving a survey (#2285) (Denis Chenu)
 -Fixed issue #17982: Malformed DSN when using MySQL socket and DB name during installation (#2311) (Valerio Bozzolan)
