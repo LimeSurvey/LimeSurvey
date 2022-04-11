@@ -316,7 +316,7 @@
 
                     <!-- last visited question -->
                     <?php if($showLastQuestion):?>
-                        <div class="row text-left">
+                        <div class="row text-start">
                             <div class="col-sm-12">
                                 <?php eT("Last visited question:");?>
                                 <a href="<?php echo $last_question_link;?>" class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>

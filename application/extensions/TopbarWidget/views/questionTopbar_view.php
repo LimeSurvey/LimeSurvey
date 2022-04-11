@@ -21,7 +21,7 @@ $rightSideContentSummary = $this->render('includes/questionSummaryTopbarRight_vi
                 <?= $leftSideContentSummary ?>
             </div>
 
-            <div class="col-md-4 pull-right text-right">
+            <div class="col-md-4 pull-right text-end">
                 <?= $rightSideContentSummary ?>
             </div>
         </div>
@@ -33,7 +33,7 @@ $rightSideContentSummary = $this->render('includes/questionSummaryTopbarRight_vi
         </div>
 
         <!-- Right Side -->
-        <div class="<?= !empty($leftSideContentEditor) ? 'col-md-6' : 'col-md-12' ?> pull-right text-right">
+        <div class="<?= !empty($leftSideContentEditor) ? 'col-md-6' : 'col-md-12' ?> pull-right text-end">
             <?= $rightSideContent ?>
         </div>
     </div>

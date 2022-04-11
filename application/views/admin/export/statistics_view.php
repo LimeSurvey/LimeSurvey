@@ -17,7 +17,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
     <div class="h1 visible-print-block text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?></div>
     <div class="row hidden-print">
         <div class="col-md-12">
-            <div class="col-md-3 text-left">
+            <div class="col-md-3 text-start">
                 <h4 class="hidden-print">
                     <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
                     <?php eT("Statistics"); ?>

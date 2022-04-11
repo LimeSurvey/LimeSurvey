@@ -16,7 +16,7 @@
 <!-- Search Box -->
 <div class="row">
     <div class="pull-right">
-        <div class="form text-right">
+        <div class="form text-end">
             <!-- Begin Form -->
             <?php $form  =  $this->beginWidget('CActiveForm', array(
                 'action' => Yii::app()->createUrl($this->formUrl),

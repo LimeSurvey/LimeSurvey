@@ -69,7 +69,7 @@ foreach ($systemInfos as $key => $systemInfo) {
             </div>
 
             <!-- Lime survey website -->
-            <div class="col-xs-12 col-sm-4 text-right">
+            <div class="col-xs-12 col-sm-4 text-end">
                 <a  title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a><br />
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?> 
                     <a href="#modalSystemInformation" data-toggle="modal" title="<?=gT("Get system information")?>"> 

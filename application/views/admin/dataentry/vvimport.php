@@ -3,7 +3,7 @@
     <?php if($tableExists):?>
         <div class="row">
         <div class="col-md-12">
-            <div class="col-md-6 text-left">
+            <div class="col-md-6 text-start">
                 <h4>
                     <?php  eT("Import a VV response data file"); ?>
                 </h4>

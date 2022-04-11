@@ -102,7 +102,7 @@
         </div>
         <!-- Test email -->
         <div class="form-group">
-            <label class="text-left form-label" for='sendTestEmail'>
+            <label class="text-start form-label" for='sendTestEmail'>
             <?php eT("Send test email:"); ?>
             </label>
             <div class="">

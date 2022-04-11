@@ -230,7 +230,7 @@ class TbHtmlTest extends TbTestCase
             'Content'
         );
         $div = $I->createNode($html, 'div');
-        $I->seeNodeCssClass($div, 'pull-right col-md-3 text-right');
+        $I->seeNodeCssClass($div, 'pull-right col-md-3 text-end');
     }
 
     public function testOpenTag()

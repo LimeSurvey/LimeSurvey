@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('usersIndex');
     <!-- Search Box -->
     <div class="row">
         <div class="pull-right">
-            <div class="form text-right">
+            <div class="form text-end">
                 <!-- Begin Form -->
                 <?php $form  =  $this->beginWidget('CActiveForm', array(
                     'action' => Yii::app()->createUrl($formUrl),
@@ -124,7 +124,7 @@ echo viewHelper::getViewTestTag('usersIndex');
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-12 text-right">
+                        <div class="col-md-12 text-end">
                             <?php eT("The password will be generated and sent by email.") ?>
                         </div>
                     </div>

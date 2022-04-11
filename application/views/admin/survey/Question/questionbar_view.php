@@ -243,7 +243,7 @@ $aReplacementData=array();
             <!-- Organize bar -->
             <div class='col-md-7'>
             </div>
-            <div class='col-md-5 text-right'>
+            <div class='col-md-5 text-end'>
                 <!-- Save buttons -->
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="fa fa-floppy-o"></span>

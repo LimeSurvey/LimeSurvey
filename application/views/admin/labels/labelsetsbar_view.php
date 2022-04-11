@@ -84,7 +84,7 @@
         </div>
 
         <!-- Right action buttons -->
-        <div class="col-lg-6 text-right">
+        <div class="col-lg-6 text-end">
             <!-- Export Multiple -->
             <?php if (count($labelsets) > 0) : ?>
                 <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>

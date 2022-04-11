@@ -109,13 +109,13 @@
                     <?php if(!empty($selectedtokenattribute)): ?>
                         <div class='explanation row'>
                             <div class='form-group'>
-                                <label class='form-label col-sm-10 text-right' for='overwriteman'><?php eT("Overwrite existing participant attribute values if a participant already exists?") ?></label>
+                                <label class='form-label col-sm-10 text-end' for='overwriteman'><?php eT("Overwrite existing participant attribute values if a participant already exists?") ?></label>
                                 <div class='col-sm-2'>
                                     <input type='checkbox' id='overwriteman' name='overwriteman' />
                                 </div>
                             </div>
                             <div class='form-group'>
-                                <label class='form-label col-sm-10 text-right' for='createautomap'><?php eT("Make these mappings automatic in future") ?></label>
+                                <label class='form-label col-sm-10 text-end' for='createautomap'><?php eT("Make these mappings automatic in future") ?></label>
                                 <div class='col-sm-2'>
                                     <input type='checkbox' id='createautomap' name='createautomap' />
                                 </div>
@@ -164,14 +164,14 @@
                     </div>
                     <div class='explanation'>
                         <div class='form-group'>
-                            <label class='form-label col-sm-10 text-right' for='overwritest'>
+                            <label class='form-label col-sm-10 text-end' for='overwritest'>
                                 <?php eT("Overwrite existing standard field values if a participant already exists?") ?>
                             </label>
                             <div class='col-sm-2'>
                                 <input type='checkbox' id='overwritest' name='overwritest' />
                             </div>
                         </div>
-                        <span class='help-block col-sm-10 text-right'><?php eT("Note: Standard participant fields cannot be automatically mapped") ?></span>
+                        <span class='help-block col-sm-10 text-end'><?php eT("Note: Standard participant fields cannot be automatically mapped") ?></span>
                     </div>
                 </div>
             </div>

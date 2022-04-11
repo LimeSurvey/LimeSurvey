@@ -32,7 +32,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
             <tr>
                 <th><?php eT('Question');?></th>
                 <th><?php eT('Answer');?></th>
-                <th class="text-right">
+                <th class="text-end">
                     <?php echo CHtml::beginForm(array("admin/quotas/sa/newanswer/surveyid/{$oSurvey->getPrimaryKey()}"), 'post');?>
                     <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey(), ['id'=> 'addForm_sid' ]);?>
                     <?php echo CHtml::hiddenField('action','quotas', ['id'=> 'addForm_action' ]);?>
