@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.5 (build 220405) to 3.28.6 (build 220412) April 11, 2022
+-Fixed issue #17895: Error in multiple-numeric "Equals sum value" setting (#2330) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Thai by tomzt
+#Updated translation: Spanish (Chile) by claudiosenel
+#Updated translation: Slovenian by tejac
+#Updated translation: Slovenian by Aambro, c_schmitz, doklb, dusan, kaysersoze, lado, parsifal, tejac
+#Updated translation: Slovak by jelen1
+#Updated translation: Romansh by htwchur
+#Updated translation: Portuguese (Brazil) by educaticteced, effgarces, pmduque, soniagouveia, tamiel
+#Updated translation: Portuguese (Brazil) by educaticteced, effgarces, mauriciofurtado, tamiel, thiagosmartins
+#Updated translation: Myanmar by lucas_encuesta.biz
+#Updated translation: Lithuanian by harrycane77, rolasj
+#Updated translation: Hungarian by annamaria44
+#Updated translation: French (France) by arnaud21, b00z00, DenisChenu, eddylackmann, sim.eesp
+
+
 Changes from 3.28.4 (build 220329) to 3.28.5 (build 220405) April 4, 2022
 -Fixed issue #17966: twig processString assumes wrong question Id (#2314) (Denis Chenu)
 -Fixed issue #17963: Numbers on text question does not detect blanks (#2305) (Denis Chenu)
