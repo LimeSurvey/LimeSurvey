@@ -4,7 +4,7 @@
         <strong> {{ gT("Share your survey") }} </strong>
     </div>
     <!-- List group -->
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <!-- Base language -->
         <li class="list-group-item" id="adminsidepanel__surveysummary--mainLanguageLink">
             <div class="ls-flex-row col-12">
@@ -89,7 +89,7 @@
                         <div class="card">
                             <div class="card-header"> {{ gT("Share QR-code:") }}</div>
                             <div class="card-body">
-                                <ul class="list-group">
+                                <ul class="list-group list-group-flush">
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                     {% endif %}
@@ -143,7 +143,7 @@
                                 <button class="btn btn-xs btn-warning pull-right facebook-button" id="selector_activateFacebookSharing">{{ gT("Enable") }}</button>
                             </div>
                             <div class="card-body">
-                                <ul class="list-group">
+                                <ul class="list-group list-group-flush">
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                     {% endif %}
@@ -184,7 +184,7 @@
                                 {{ gT("Share on Twitter:") }}
                             </div>
                             <div class="card-body">
-                                <ul class="list-group">
+                                <ul class="list-group list-group-flush">
                                     {% if oSurvey.sid %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                     {% endif %}
