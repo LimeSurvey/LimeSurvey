@@ -11,7 +11,7 @@
         <?php echo CHtml::form(array('surveyAdministration/copy'), 'post', array('id'=>'copysurveyform', 'name'=>'copysurveyform', 'class'=>'form30 ')); ?>
             <div class="ls-flex-column col-md-4">
                     <!-- Select survey -->
-                    <div class="form-group">
+                    <div class="">
                         <label for='copysurveylist' class=" form-label"><?php  eT("Select survey to copy:"); ?> </label>
                         <div class="">
                             <select id='copysurveylist' name='copysurveylist' required="required" class="form-control">
@@ -24,7 +24,7 @@
                     </div>
 
                     <!-- New survey title -->
-                    <div class="form-group">
+                    <div class="">
                         <label for='copysurveyname' class=" form-label"><?php echo  eT("New survey title:"); ?> </label>
                         <div class="">
                             <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' required="required" class="form-control" />
@@ -37,7 +37,7 @@
                     </div>
 
                     <!-- New survey id -->
-                    <div class="form-group">
+                    <div class="">
                         <label class=" form-label" for='copysurveyid'><?php echo  eT("New survey id:"); ?> </label>
                         <div class="">
                             <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" />
@@ -48,7 +48,7 @@
                           </p>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="">
                         <!-- Submit -->
                         <div class="text-center">
                             <input type='submit' class='btn btn-primary col-4' value='<?php  eT("Copy survey"); ?>' />
@@ -60,7 +60,7 @@
 
                 <div class="ls-flex-column col-md-4">
                     <!-- Convert resource links -->
-                    <div class="form-group">
+                    <div class="">
                         <label class=" form-label" for='copysurveytranslinksfields'><?php echo  eT("Copy survey resource files and adapt links"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -74,7 +74,7 @@
                     </div>
 
                     <!-- Exclude quotas -->
-                    <div class="form-group">
+                    <div class="">
                         <label class=" form-label" for='copysurveyexcludequotas'><?php echo  eT("Exclude quotas"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -88,7 +88,7 @@
                     </div>
 
                     <!-- Exclude survey permissions -->
-                    <div class="form-group">
+                    <div class="">
                         <label class=" form-label" for='copysurveyexcludepermissions'><?php echo  eT("Exclude survey permissions"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -102,7 +102,7 @@
                     </div>
 
                     <!-- Exclude answers -->
-                    <div class="form-group">
+                    <div class="">
                         <label class=" form-label" for='copysurveyexcludeanswers'><?php echo  eT("Exclude answers"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -116,7 +116,7 @@
                     </div>
 
                     <!-- Reset conditions/relevance -->
-                    <div class="form-group">
+                    <div class="">
                         <label class=" form-label" for='copysurveyresetconditions'><?php echo  eT("Reset conditions"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -130,7 +130,7 @@
                     </div>
 
                     <!-- Reset start/end date/time -->
-                    <div class="form-group">
+                    <div class="">
                         <label class=" form-label" for='copysurveyresetstartenddate'><?php echo  eT("Reset start/end date/time"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -143,7 +143,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="">
                         <label class=" form-label" for='copysurveyresetresponsestartid'><?php echo  eT("Reset response start ID"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -155,7 +155,6 @@
                             ?>
                         </div>
                     </div>
-
             </div>
         </form>
     </div>
