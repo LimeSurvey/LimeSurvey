@@ -1281,7 +1281,7 @@ class ExpressionManager
                 if ($bracket == 0) { // Last close bracket : get the static final function and reset
                     //~ $staticString = LimeExpressionManager::ProcessStepString("{".$staticStringToParse."}",array(),3,true);
                     $staticString = $this->sProcessStringContainingExpressions("{" . $staticStringToParse . "}", 0, 3, 1, -1, -1, true); // As static : no gseq,qseq etc …
-                    $stringParts[] = $staticString;
+                    $stringParts[] = "'" . addcslashes($staticString, "'") . "'";
                     $staticStringToParse = "";
                 }
             } else {
@@ -1314,13 +1314,19 @@ class ExpressionManager
                                 ++$i;
                             }
                         } else {
-                            $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
-                            $code = $this->GetVarAttribute($token[0], 'code', '');
-                            if ($jsName != '') {
-                                $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
-                                $stringParts[] = "LEMval('" . $varName . "') ";
+                            if (preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $token[0])) {
+                                /* This is a static variables : set as static */
+                                $static = $this->sProcessStringContainingExpressions("{" . $token[0] . "}", 0, 1, 1, -1, -1, true);
+                                $stringParts[] = "'" . addcslashes($static, "'") . "'";
                             } else {
-                                $stringParts[] = "'" . addcslashes($code, "'") . "'";
+                                $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
+                                $code = $this->GetVarAttribute($token[0], 'code', '');
+                                if ($jsName != '') {
+                                    $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
+                                    $stringParts[] = "LEMval('" . $varName . "') ";
+                                } else {
+                                    $stringParts[] = "'" . addcslashes($code, "'") . "'";
+                                }
                             }
                         }
                         break;
@@ -1374,8 +1380,12 @@ class ExpressionManager
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
         $nonNAvarsUsed = array();
         foreach ($this->GetVarsUsed() as $var) {
-            // this function wants to see the NAOK suffix
-            if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var)) {
+            /* This function wants to see the NAOK suffix (NAOK|valueNAOK|shown)
+             * OR static var and Check dynamic var inside static function too
+             * see https://bugs.limesurvey.org/view.php?id=18008 for issue about sgqa and question
+             * See https://bugs.limesurvey.org/view.php?id=14818 for feature
+             */
+            if (!preg_match("/^.*\.(NAOK|valueNAOK|shown|relevanceStatus)$/", $var) &&  !preg_match("/^.*\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $var)) {
                 if ($this->GetVarAttribute($var, 'jsName', '') != '') {
                     $nonNAvarsUsed[] = $var;
                 }
@@ -1884,15 +1894,12 @@ class ExpressionManager
         if (is_null($result)) {
             return false; // if there are errors in the expression, hide it?
         }
-        //~ if ($result == 'false') {
-            //~ return false;    // since the string 'false' is not considered boolean false, but an expression in JavaScript can return 'false'
-        //~ }
-        //~ return !empty($result);
 
-        // Check whether any variables are irrelevant - making this comparable to JavaScript which uses LEManyNA(varlist) to do the same thing
         foreach ($this->GetVarsUsed() as $var) {
-            // this function wants to see the NAOK suffix
-            if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var)) {
+            /* this function wants to see the NAOK suffix : NAOK|valueNAOK|shown|relevanceStatus
+             * Static suffix are always OK (no need NAOK)
+             */
+            if (!preg_match("/^.*\.(NAOK|valueNAOK|shown|relevanceStatus)$/", $var) && ! preg_match("/\.(" . $this->getRegexpStaticValidAttributes() . ")$/", $var)) {
                 if (!LimeExpressionManager::GetVarAttribute($var, 'relevanceStatus', false, $groupSeq, $questionSeq)) {
                     return false;
                 }
