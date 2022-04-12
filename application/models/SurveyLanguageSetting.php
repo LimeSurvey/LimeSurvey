@@ -310,6 +310,9 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function checkAliasUniqueness()
     {
+        if (empty($this->surveyls_alias)) {
+            return;
+        }
         if ($this->surveyls_alias !== $this->oldAlias || $this->surveyls_survey_id != $this->oldSurveyId) {
             $model = self::model()->find(
                 'surveyls_alias = ? AND surveyls_survey_id <> ?',

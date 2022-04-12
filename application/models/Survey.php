@@ -2298,11 +2298,39 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if (empty($language)) {
             $language = $this->language;
         }
-        if ($preferShortUrl && !empty($this->languagesettings[$language]->surveyls_alias)) {
-            $url = Yii::app()->getBaseUrl(true) . '/' . $this->languagesettings[$language]->surveyls_alias;
-        } else {
-            $url = Yii::app()->createAbsoluteUrl('survey/index', array('sid' => $this->sid, 'lang' => $language));
+        if ($preferShortUrl) {
+            $langParam = null;
+            $baseAlias = isset($this->languagesettings[$this->language]) ? $this->languagesettings[$this->language]->surveyls_alias : null;
+            $specificAlias = isset($this->languagesettings[$language]) ? $this->languagesettings[$language]->surveyls_alias : null;
+
+            $alias = $baseAlias;
+            if (!empty($specificAlias)) {
+                $alias = $specificAlias;
+            }
+
+            if ($alias == $baseAlias && $language != $this->language) {
+                $langParam = $language;
+            }
+
+            if (!empty($alias)) {
+                $urlFormat = Yii::app()->getUrlManager()->getUrlFormat();
+                if ($urlFormat == CUrlManager::GET_FORMAT) {
+                    $url = Yii::app()->getBaseUrl(true) . '?' . Yii::app()->getUrlManager()->routeVar . '=' . $alias;
+                    if (!empty($langParam)) {
+                        $url .= "&lang={$langParam}";
+                    }
+                } else {
+                    $url = Yii::app()->getBaseUrl(true) . '/' . $this->languagesettings[$language]->surveyls_alias;
+                    if (!empty($langParam)) {
+                        $url .= "/lang/{$langParam}";
+                    }
+                }
+                return $url;
+            }
         }
+
+        // If short url is not preferred or no alias is found, return a traditional URL
+        $url = Yii::app()->createAbsoluteUrl('survey/index', array('sid' => $this->sid, 'lang' => $language));
         return $url;
     }
 }
