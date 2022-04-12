@@ -73,7 +73,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                     'asDropDownList' => true,
                                     'htmlOptions'=>array('style'=>"width: 100%"),
                                     'data' => isset($listLanguagesCode) ?  $listLanguagesCode : [],
-                                    'value' => $defaultLanguage, //or better user language ...
+                                    'value' => $oSurvey->language,
                                     'name' => 'language',
                                     'pluginOptions' => array()
                                 ));?>

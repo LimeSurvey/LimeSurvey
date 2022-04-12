@@ -1,0 +1,9 @@
+.translate > table {
+    table-layout: fixed;
+}
+
+.translate td._from_ > .question-text-from {
+    width: 100%;
+    overflow: auto;
+    word-wrap: break-word;
+}
