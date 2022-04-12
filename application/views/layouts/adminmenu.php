@@ -25,7 +25,7 @@
                 <?php if ($activesurveyscount > 0): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
-                            <?php eT("Active surveys"); ?> <span class="badge badge-success"><?php echo $activesurveyscount ?></span>
+                            <?php eT("Active surveys"); ?> <span class="badge rounded-pill"><?php echo $activesurveyscount ?></span>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -87,7 +87,7 @@
                 <?php if ($activesurveyscount > 0): ?>
                     <li class="nav-item">
                         <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>" class="nav-link">
-                            <?php eT("Active surveys"); ?> <span class="badge badge-success"> <?php echo $activesurveyscount ?> </span>
+                            <?php eT("Active surveys"); ?> <span class="badge rounded-pill"> <?php echo $activesurveyscount ?> </span>
                         </a>
                     </li>
                 <?php endif; ?>
