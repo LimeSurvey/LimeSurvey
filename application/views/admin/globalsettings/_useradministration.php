@@ -15,8 +15,9 @@
         <div class="form-group">
             <label class="control-label" for='sendadmincreationemail'><?php eT("Send email to new user administrators:"); ?></label>
             <div>
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php
-                $this->widget(
+                /** $this->widget(
                     'yiiwheels.widgets.switch.WhSwitch',
                     array(
                         'name' => 'sendadmincreationemail',
@@ -29,7 +30,7 @@
                         'onLabel' => gT('On'),
                         'offLabel' => gT('Off')
                     )
-                );
+                ); */
                 ?>
             </div>
         </div>

@@ -26,13 +26,14 @@
         <div class="form-group">
             <label class="control-label"  for='overwritefiles'><?php eT("Overwrite files with the same name when uploaded, moved or copied through the editor/file-manager?");?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    'name' => 'overwritefiles',
-                    'id' => 'overwritefiles',
-                    'value' => getGlobalSetting('overwritefiles') == 'Y' ? '1' : 0,
-                    'onLabel' => gT('On'),
-                    'offLabel' => gT('Off')));
-                ?>
+                <!-- TODO: Replace with Bootstrap Button Group -->
+                <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    // 'name' => 'overwritefiles',
+                    // 'id' => 'overwritefiles',
+                    // 'value' => getGlobalSetting('overwritefiles') == 'Y' ? '1' : 0,
+                    // 'onLabel' => gT('On'),
+                    // 'offLabel' => gT('Off')));
+                ?> -->
             </div>
         </div>
     </div>

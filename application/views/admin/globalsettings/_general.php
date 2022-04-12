@@ -52,8 +52,9 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                     <?php eT("Create example question group and question:");?>
                 </label>
                 <div class="col-sm-12">
+                    <!-- TODO: Replace with Bootstrap Button Group -->
                     <?php 
-                        $this->widget(
+                        /** $this->widget(
                             'yiiwheels.widgets.switch.WhSwitch', [
                                 'name' => 'createsample',
                                 'id' => 'createsample',
@@ -61,7 +62,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                                 'onLabel' => gT('On'),
                                 'offLabel' => gT('Off')
                             ]
-                        );
+                        );**/
                     ?>
                 </div>
             </div>
@@ -312,14 +313,15 @@ Full lock - none of participants are allowed to take survey, even if they alread
                     <?php eT("JS-Debug mode [Backend]:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
                 <div class="col-sm-12">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    'name' => 'javascriptdebugbcknd',
-                    'id'=>'javascriptdebugbcknd',
-                    'value' => getGlobalSetting('javascriptdebugbcknd'),
-                    'onLabel'=>gT('On'),
-                    'offLabel' => gT('Off')
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    // 'name' => 'javascriptdebugbcknd',
+                    // 'id'=>'javascriptdebugbcknd',
+                    // 'value' => getGlobalSetting('javascriptdebugbcknd'),
+                    // 'onLabel'=>gT('On'),
+                    // 'offLabel' => gT('Off')
                     ));
-                ?>
+                ?> -->
                 </div>
             </div>
         </div>
@@ -330,14 +332,15 @@ Full lock - none of participants are allowed to take survey, even if they alread
                     <?php eT("JS-Debug mode [Frontend]:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
                 <div class="col-sm-12">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    'name' => 'javascriptdebugfrntnd',
-                    'id'=>'javascriptdebugfrntnd',
-                    'value' => getGlobalSetting('javascriptdebugfrntnd'),
-                    'onLabel'=>gT('On'),
-                    'offLabel' => gT('Off')
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    // 'name' => 'javascriptdebugfrntnd',
+                    // 'id'=>'javascriptdebugfrntnd',
+                    // 'value' => getGlobalSetting('javascriptdebugfrntnd'),
+                    // 'onLabel'=>gT('On'),
+                    // 'offLabel' => gT('Off')
                     ));
-                ?>
+                ?> -->
                 </div>
             </div>
         </div>
@@ -350,14 +353,15 @@ Full lock - none of participants are allowed to take survey, even if they alread
                         <?php eT('Allow unstable extension updates:'); ?>
                     </label>
                     <div class="col-sm-12">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'allow_unstable_extension_update',
-                            'id'=>'allow_unstable_extension_update',
-                            'value' => getGlobalSetting('allow_unstable_extension_update'),
-                            'onLabel'=>gT('On'),
-                            'offLabel' => gT('Off')
+                        <!-- TODO: Replace with Bootstrap Button Group -->
+                        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            // 'name' => 'allow_unstable_extension_update',
+                            // 'id'=>'allow_unstable_extension_update',
+                            // 'value' => getGlobalSetting('allow_unstable_extension_update'),
+                            // 'onLabel'=>gT('On'),
+                            // 'offLabel' => gT('Off')
                             ));
-                        ?>
+                        ?> -->
                     </div>
                     <div class="col-sm-12 control-label ">
                         <span class="hint">

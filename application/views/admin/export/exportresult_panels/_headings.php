@@ -28,13 +28,14 @@
         <?php eT("Strip HTML code:"); ?>
       </label>
       <div class='col-sm-12'>
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'striphtmlcode',
-            'id'=>'striphtmlcode',
-            'value' => 1,
-            'onLabel'=>gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+        <!-- TODO: Replace with Bootstrap Button Group -->
+        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            // 'name' => 'striphtmlcode',
+            // 'id'=>'striphtmlcode',
+            // 'value' => 1,
+            // 'onLabel'=>gT('On'),
+            // 'offLabel' => gT('Off')));
+        ?> -->
       </div>
     </div>
 
@@ -44,13 +45,14 @@
         <?php eT("Convert spaces in question text to underscores:"); ?>
       </label>
       <div class='col-sm-12'>
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'headspacetounderscores',
-            'id'=>'headspacetounderscores',
-            'value' => 0,
-            'onLabel'=>gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+        <!-- TODO: Replace with Bootstrap Button Group -->
+        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            // 'name' => 'headspacetounderscores',
+            // 'id'=>'headspacetounderscores',
+            // 'value' => 0,
+            // 'onLabel'=>gT('On'),
+            // 'offLabel' => gT('Off')));
+        ?> -->
       </div>
     </div>
 
@@ -60,13 +62,14 @@
         <?php eT("Text abbreviated:"); ?>
       </label>
       <div class='col-sm-12'>
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'abbreviatedtext',
-            'id'=>'abbreviatedtext',
-            'value' => 0,
-            'onLabel'=>gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+        <!-- TODO: Replace with Bootstrap Button Group -->
+        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            // 'name' => 'abbreviatedtext',
+            // 'id'=>'abbreviatedtext',
+            // 'value' => 0,
+            // 'onLabel'=>gT('On'),
+            // 'offLabel' => gT('Off')));
+        ?> -->
       </div>
     </div>
 
@@ -76,13 +79,14 @@
         <?php eT("Use ExpressionScript code:"); ?>
       </label>
       <div class='col-sm-12'>
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'emcode',
-            'id'=>'emcode',
-            'value' => 0,
-            'onLabel'=>gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+        <!-- TODO: Replace with Bootstrap Button Group -->
+        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            // 'name' => 'emcode',
+            // 'id'=>'emcode',
+            // 'value' => 0,
+            // 'onLabel'=>gT('On'),
+            // 'offLabel' => gT('Off')));
+        ?> -->
       </div>
     </div>
 

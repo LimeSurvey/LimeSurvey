@@ -64,8 +64,9 @@ Yii::app()->getController()->renderPartial(
         <div class='form-group'>
             <label class='control-label '><?php eT("Blacklist user:"); ?></label>
             <div class=''>
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 &nbsp;
-                <?php $this->widget(
+                <?php /* $this->widget(
                 'yiiwheels.widgets.switch.WhSwitch',
                 array(
                     'attribute' => 'blacklisted',
@@ -79,7 +80,7 @@ Yii::app()->getController()->renderPartial(
                     'onColor'=> 'primary',
                     'offColor'=> 'warning'
                 )
-            );
+            ); */
             ?>
             </div>
         </div>

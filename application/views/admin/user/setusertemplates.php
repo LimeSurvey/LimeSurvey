@@ -23,12 +23,13 @@
                         <?php eT('All themes');?>
                     </th>
                     <th>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        <!-- TODO: Replace with Bootstrap Button Group -->
+                        <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'alltemplates',
                             'id'=>'alltemplates',
                             'value' => 0,
                             'onLabel'=>gT('On'),
-                            'offLabel' => gT('Off')));
+                            'offLabel' => gT('Off'))); */
                         ?>
                     </th>
                 </tr>
@@ -55,12 +56,13 @@
                     <tr>
                         <td><?php echo $trow["folder"];?></td>
                         <td>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => $trow['folder'].'_use',
                                 'id'=>$trow['folder'].'_use',
                                 'value' => isset($templaterights[$trow['folder']]['use'])?$templaterights[$trow['folder']]['use']:0,
                                 'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
+                                'offLabel' => gT('Off'))); */
                             ?>
                         </td>
                     </tr>

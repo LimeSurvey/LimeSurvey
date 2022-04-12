@@ -342,14 +342,15 @@ class SettingsWidget extends CWidget
             //~ 0 => 'False',
             //~ 1 => 'True'
         //~ ), $htmlOptions);
+        // TODO: Replace with Bootstrap Button Group
         return CHtml::tag('div', $htmlOptions,
-            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            /** $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                 'name' => $name,
                 'value' => $value,
                 'onLabel'=>gT('On'),
                 'offLabel' => gT('Off'),
                 'htmlOptions' => $htmlOptions,
-            ), true)
+            ), true) **/
         );
     }
 

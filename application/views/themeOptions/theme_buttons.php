@@ -1,5 +1,5 @@
 <?php
-$this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+/* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
         'name'     => 'toggle_question_theme',
         'id'       => 'toggle_question_theme' . $id,
         'value'    => $buttons['visibility_button']['visible'],
@@ -7,5 +7,5 @@ $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
         'offLabel' => gT('Off'),
         'htmlOptions' => array('class' => 'toggle_question_theme', 'data-url' => $buttons['visibility_button']['url'])
     )
-);
+); */
 ?>

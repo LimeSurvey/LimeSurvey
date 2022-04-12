@@ -36,12 +36,13 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
                 <div class="form-group">
                     <label for='translinksfields' class="control-label col-sm-2"><?php eT("Convert resource links?"); ?></label>
                     <div class="col-sm-10">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        <!-- TODO: Replace with Bootstrap Button Group -->
+                        <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'translinksfields',
                             'id'=>'translinksfields',
                             'value' => 1,
                             'onLabel'=>gT('On'),
-                            'offLabel' => gT('Off')));
+                            'offLabel' => gT('Off'))); */
                         ?>
                     </div>
                 </div>

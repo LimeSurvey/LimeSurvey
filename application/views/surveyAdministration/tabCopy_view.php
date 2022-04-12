@@ -63,12 +63,13 @@
                     <div class="form-group">
                         <label class=" control-label" for='copysurveytranslinksfields'><?php echo  eT("Copy survey resource files and adapt links"); ?> </label>
                         <div class="">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveytranslinksfields',
                                 'value'=> "1",
                                 'onLabel'=>gT('On'),
                                 'offLabel'=>gT('Off')
-                                ));
+                                )); */
                             ?>
                         </div>
                     </div>
@@ -77,12 +78,13 @@
                     <div class="form-group">
                         <label class=" control-label" for='copysurveyexcludequotas'><?php echo  eT("Exclude quotas"); ?> </label>
                         <div class="">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyexcludequotas',
                                 'value'=> "0",
                                 'onLabel'=>gT('On'),
                                 'offLabel'=>gT('Off')
-                                ));
+                                )); */
                             ?>
                         </div>
                     </div>
@@ -91,12 +93,13 @@
                     <div class="form-group">
                         <label class=" control-label" for='copysurveyexcludepermissions'><?php echo  eT("Exclude survey permissions"); ?> </label>
                         <div class="">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyexcludepermissions',
                                 'value'=> "0",
                                 'onLabel'=>gT('On'),
                                 'offLabel'=>gT('Off')
-                                ));
+                                )); */
                             ?>
                         </div>
                     </div>
@@ -105,12 +108,13 @@
                     <div class="form-group">
                         <label class=" control-label" for='copysurveyexcludeanswers'><?php echo  eT("Exclude answers"); ?> </label>
                         <div class="">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyexcludeanswers',
                                 'value'=> "0",
                                 'onLabel'=>gT('On'),
                                 'offLabel'=>gT('Off')
-                                ));
+                                )); */
                             ?>
                         </div>
                     </div>
@@ -119,12 +123,13 @@
                     <div class="form-group">
                         <label class=" control-label" for='copysurveyresetconditions'><?php echo  eT("Reset conditions"); ?> </label>
                         <div class="">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyresetconditions',
                                 'value'=> "0",
                                 'onLabel'=>gT('On'),
                                 'offLabel'=>gT('Off')
-                                ));
+                                )); */
                             ?>
                         </div>
                     </div>
@@ -133,12 +138,13 @@
                     <div class="form-group">
                         <label class=" control-label" for='copysurveyresetstartenddate'><?php echo  eT("Reset start/end date/time"); ?> </label>
                         <div class="">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyresetstartenddate',
                                 'value'=> "0",
                                 'onLabel'=>gT('On'),
                                 'offLabel'=>gT('Off')
-                                ));
+                                )); */
                             ?>
                         </div>
                     </div>
@@ -146,12 +152,13 @@
                     <div class="form-group">
                         <label class=" control-label" for='copysurveyresetresponsestartid'><?php echo  eT("Reset response start ID"); ?> </label>
                         <div class="">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyresetresponsestartid',
                                 'value'=> "0",
                                 'onLabel'=>gT('On'),
                                 'offLabel'=>gT('Off')
-                                ));
+                                )); */
                             ?>
                         </div>
                     </div>

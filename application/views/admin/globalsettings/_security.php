@@ -11,13 +11,14 @@
     <label class=" control-label"
            for='surveyPreview_require_Auth'><?php eT("Survey preview only for administration users:"); ?></label>
     <div class="">
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'surveyPreview_require_Auth',
-            'id' => 'surveyPreview_require_Auth',
-            'value' => Yii::app()->getConfig('surveyPreview_require_Auth'),
-            'onLabel' => gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+        <!-- TODO: Replace with Bootstrap Button Group -->
+        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            // 'name' => 'surveyPreview_require_Auth',
+            // 'id' => 'surveyPreview_require_Auth',
+            // 'value' => Yii::app()->getConfig('surveyPreview_require_Auth'),
+            // 'onLabel' => gT('On'),
+            // 'offLabel' => gT('Off')));
+        ?> -->
     </div>
 </div>
 
@@ -25,14 +26,15 @@
     <label class=" control-label" for='filterxsshtml'><?php eT("Filter HTML for XSS:");
         echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?></label>
     <div class="">
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'filterxsshtml',
-            'id' => 'filterxsshtml',
-            'value' => Yii::app()->getConfig('filterxsshtml'),
-            'onLabel' => gT('On'),
-            'offLabel' => gT('Off')
+        <!-- TODO: Replace with Bootstrap Button Group -->
+        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            // 'name' => 'filterxsshtml',
+            // 'id' => 'filterxsshtml',
+            // 'value' => Yii::app()->getConfig('filterxsshtml'),
+            // 'onLabel' => gT('On'),
+            // 'offLabel' => gT('Off')
         ));
-        ?>
+        ?> -->
     </div>
     <div class="help-block">
         <span
@@ -44,14 +46,15 @@
     <label class=" control-label"
            for='disablescriptwithxss'><?php eT("Disable question script for XSS restricted user:"); ?></label>
     <div class="">
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'disablescriptwithxss',
-            'id' => 'disablescriptwithxss',
-            'value' => Yii::app()->getConfig('disablescriptwithxss'),
-            'onLabel' => gT('On'),
-            'offLabel' => gT('Off')
+        <!-- TODO: Replace with Bootstrap Button Group -->
+        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            // 'name' => 'disablescriptwithxss',
+            // 'id' => 'disablescriptwithxss',
+            // 'value' => Yii::app()->getConfig('disablescriptwithxss'),
+            // 'onLabel' => gT('On'),
+            // 'offLabel' => gT('Off')
         ));
-        ?>
+        ?> -->
     </div>
     <div class="help-block">
         <span
@@ -64,13 +67,14 @@
     <label class=" control-label"
            for='usercontrolSameGroupPolicy'><?php eT("Group member can only see own group:"); ?></label>
     <div class="">
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'usercontrolSameGroupPolicy',
-            'id' => 'usercontrolSameGroupPolicy',
-            'value' => Yii::app()->getConfig('usercontrolSameGroupPolicy'),
-            'onLabel' => gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+        <!-- TODO: Replace with Bootstrap Button Group -->
+        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            // 'name' => 'usercontrolSameGroupPolicy',
+            // 'id' => 'usercontrolSameGroupPolicy',
+            // 'value' => Yii::app()->getConfig('usercontrolSameGroupPolicy'),
+            // 'onLabel' => gT('On'),
+            // 'offLabel' => gT('Off')));
+        ?> -->
     </div>
 </div>
 

@@ -69,13 +69,14 @@
                                     <label class=" control-label"
                                            for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
                                     <div class="">
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                        <!-- TODO: Replace with Bootstrap Button Group -->
+                                        <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'copysubquestions',
                                             'id' => 'copysubquestions',
                                             'value' => 'Y',
                                             'onLabel' => gT('Yes'),
                                             'offLabel' => gT('No')
-                                        ));
+                                        )); */
                                         ?>
                                     </div>
                                 </div>
@@ -83,13 +84,14 @@
                                     <label class=" control-label"
                                            for='copyanswers'><?php eT("Copy answer options?"); ?></label>
                                     <div class="">
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                        <!-- TODO: Replace with Bootstrap Button Group -->
+                                        <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'copyanswers',
                                             'id' => 'copyanswers',
                                             'value' => 'Y',
                                             'onLabel' => gT('Yes'),
                                             'offLabel' => gT('No')
-                                        ));
+                                        )); */
                                         ?>
                                     </div>
                                 </div>
@@ -97,13 +99,14 @@
                                     <label class=" control-label"
                                            for='copydefaultanswers'><?php eT("Copy default answers?"); ?></label>
                                     <div class="">
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                        <!-- TODO: Replace with Bootstrap Button Group -->
+                                        <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'copydefaultanswers',
                                             'id' => 'copydefaultanswers',
                                             'value' => 'Y',
                                             'onLabel' => gT('Yes'),
                                             'offLabel' => gT('No')
-                                        ));
+                                        )); */
                                         ?>
                                     </div>
                                 </div>
@@ -111,13 +114,14 @@
                                     <label class=" control-label"
                                            for='copyattributes'><?php eT("Copy question settings?"); ?></label>
                                     <div class="">
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                        <!-- TODO: Replace with Bootstrap Button Group -->
+                                        <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'copyattributes',
                                             'id' => 'copyattributes',
                                             'value' => 'Y',
                                             'onLabel' => gT('Yes'),
                                             'offLabel' => gT('No')
-                                        ));
+                                        )); */
                                         ?>
                                     </div>
                                 </div>

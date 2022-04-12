@@ -82,12 +82,13 @@ $surveyid = $aTabContents['surveyid'];
                 <label for="createsample" class=" control-label"><?php eT("Create example question group and question?") ?></label>
                 <!--<input type="checkbox" name="createsample" id="createsample" />-->
                 <div class="">
-                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'createsample',
                             'value' => 0,
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off')
-                        )); ?>
+                        )); */ ?>
                 </div>
             </div>
         </div>

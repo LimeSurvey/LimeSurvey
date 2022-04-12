@@ -96,12 +96,13 @@
                             <?php eT('Delete exported participants:'); ?>
                         </label>
                         <div class="default controls">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'tokendeleteexported',
                                 'id'=>'tokendeleteexported',
                                 'value' => 0,
                                 'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
+                                'offLabel' => gT('Off'))); */
                             ?>
                         </div>
                         <div class="alert alert-warning controls" role="alert">
@@ -114,12 +115,13 @@
                             <?php eT('Quote equations:'); ?>
                         </label>
                         <div class="default controls">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'maskequations',
                                 'id'=>'maskequations',
                                 'value' => 1,
                                 'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
+                                'offLabel' => gT('Off'))); */
                             ?>
                         </div>
                         <div class="alert alert-warning controls" role="alert">

@@ -43,7 +43,8 @@
             <div class="form-group">
                 <label class=" control-label" for='translinksfields'><?php eT("Automatically rename question code if already exists?"); ?></label>
                 <div class="">
-                    <?php $this->widget(
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <?php /* $this->widget(
                         'yiiwheels.widgets.switch.WhSwitch',
                         [
                             'name'     => 'autorename',
@@ -52,14 +53,15 @@
                             'onLabel'  => gT('On'),
                             'offLabel' => gT('Off')
                         ]
-                    );
+                    ); */
                     ?>
                 </div>
             </div>
             <div class="form-group">
                 <label class=" control-label" for='translinksfields'><?php eT("Convert resource links?"); ?></label>
                 <div class="">
-                    <?php $this->widget(
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <?php /* $this->widget(
                         'yiiwheels.widgets.switch.WhSwitch',
                         [
                             'name'     => 'translinksfields',
@@ -68,14 +70,15 @@
                             'onLabel'  => gT('On'),
                             'offLabel' => gT('Off')
                         ]
-                    );
+                    ); */
                     ?>
                 </div>
             </div>
             <div class="form-group">
                 <label class=" control-label" for='jumptoquestion'><?php eT("Jump to question after import?"); ?></label>
                 <div class="">
-                    <?php $this->widget(
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <?php /* $this->widget(
                         'yiiwheels.widgets.switch.WhSwitch',
                         [
                             'name'     => 'jumptoquestion',
@@ -84,7 +87,7 @@
                             'onLabel'  => gT('On'),
                             'offLabel' => gT('Off')
                         ]
-                    );
+                    ); */
                     ?>
                 </div>
             </div>

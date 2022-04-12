@@ -50,13 +50,14 @@
                 <div class="form-group">
                     <label class=" control-label" for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
                     <div class="">
-                            <?php
+                        <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /*
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => "filterblankemail",
                                 'id'=>"filterblankemail",
                                 'value' => '1',
                                 'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
+                                'offLabel' => gT('Off'))); */
                             ?>
                     </div>
                 </div>
@@ -65,13 +66,14 @@
                 <div class="form-group">
                     <label class=" control-label" for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
                     <div class="">
-                        <?php
+                        <!-- TODO: Replace with Bootstrap Button Group -->
+                        <?php /*
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => "allowinvalidemail",
                             'id'=>"allowinvalidemail",
                             'value' => '0',
                             'onLabel'=>gT('On'),
-                            'offLabel' => gT('Off')));
+                            'offLabel' => gT('Off'))); */
                         ?>
                     </div>
                 </div>
@@ -80,13 +82,14 @@
                 <div class="form-group">
                             <label class=" control-label" for='showwarningtoken'><?php eT("Display attribute warnings:"); ?></label>
                     <div class="">
-                        <?php
+                        <!-- TODO: Replace with Bootstrap Button Group -->
+                        <?php /*
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => "showwarningtoken",
                             'id'=>"showwarningtoken",
                             'value' => '0',
                             'onLabel'=>gT('On'),
-                            'offLabel' => gT('Off')));
+                            'offLabel' => gT('Off'))); */
                         ?>
                     </div>
                 </div>
@@ -95,13 +98,14 @@
                 <div class="form-group">
                     <label class=" control-label" for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
                     <div class="">
-                    <?php
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <?php /*
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => "filterduplicatetoken",
                             'id'=>"filterduplicatetoken",
                             'value' => '1',
                             'onLabel'=>gT('On'),
-                            'offLabel' => gT('Off')));
+                            'offLabel' => gT('Off'))); */
                         ?>
                     </div>
                     <div class="help-block"><?php eT("The access code field is always checked for duplicates."); ?></div>

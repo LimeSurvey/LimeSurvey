@@ -105,14 +105,15 @@ foreach ($tokendata as $Key => $Value) {
                         ?>
 
                         <div class="">
-                        <?php
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                        <?php /*
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => "completed-switch",
                             'id'=>"completed-switch",
                             'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
                             'value' => $bCompletedValue,
                             'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
+                            'offLabel' => gT('No'))); */
                         ?>
                         </div>
                     <?php else: ?>
@@ -123,14 +124,15 @@ foreach ($tokendata as $Key => $Value) {
                         $completed         = (isset($completed) && $completed != 'N') ? 'Y' : 'N';
                         ?>
 
-                        <?php
+                        <!-- TODO: Replace with Bootstrap Button Group -->
+                        <?php /*
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => "completed-switch",
                             'id'=>"completed-switch",
                             'htmlOptions'=>array('class'=>"YesNoSwitch action_toggle_bootstrap_switch"),
                             'value' => $bCompletedValue,
                             'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
+                            'offLabel' => gT('No'))); */
                         ?>
                         </div>
                     <?php endif; ?>
@@ -264,15 +266,15 @@ foreach ($tokendata as $Key => $Value) {
                             $remindersent             = convertToGlobalSettingFormat($remindersent, true);
                         }
                     ?>
-
-                    <?php
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <?php /*
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => "sent-switch",
                         'id'=>"sent-switch",
                         'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
                         'value' => $bSwitchValue,
                         'onLabel'=>gT('Yes'),
-                        'offLabel' => gT('No')));
+                        'offLabel' => gT('No'))); */
                     ?>
                     <?php else:?>
                         <?php
@@ -281,15 +283,15 @@ foreach ($tokendata as $Key => $Value) {
                             $bSwitchValue       = (isset($sent) && $sent != 'N') ? "1" : "0";
                             $bRemindSwitchValue = (isset($remindersent) && $remindersent != 'N') ? "1" : "0";
                         ?>
-
-                            <?php
+                            <!-- TODO: Replace with Bootstrap Button Group -->
+                            <?php /*
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => "sent-switch",
                                 'id'=>"sent-switch",
                                 'htmlOptions'=>array('class'=>"YesNoSwitch action_toggle_bootstrap_switch"),
                                 'value' => $bSwitchValue,
                                 'onLabel'=>gT('Yes'),
-                                'offLabel' => gT('No')));
+                                'offLabel' => gT('No'))); */
                             ?>
                     <?php endif; ?>
                 </div>
@@ -318,24 +320,26 @@ foreach ($tokendata as $Key => $Value) {
                 <div class="">
                     <?php if ($oSurvey->anonymized != 'Y') {
                         ?>
-                    <?php
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <?php /*
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => "remind-switch",
                         'id'=>"remind-switch",
                         'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
                         'value' => $bRemindSwitchValue,
                         'onLabel'=>gT('Yes'),
-                        'offLabel' => gT('No')));
+                        'offLabel' => gT('No'))); */
                     ?>
                     <?php } else { ?>
-                        <?php
+                        <!-- TODO: Replace with Bootstrap Button Group -->
+                        <?php /*
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => "remind-switch",
                             'id'=>"remind-switch",
                             'htmlOptions'=>array('class'=>"YesNoSwitch action_toggle_bootstrap_switch"),
                             'value' => $bRemindSwitchValue,
                             'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
+                            'offLabel' => gT('No'))); */
                         ?>
                     <?php } ?>
                 </div>

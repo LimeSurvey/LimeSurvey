@@ -44,13 +44,14 @@
                     <?php eT("Exclude record IDs?"); ?>
                 </label>
                 <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'noid',
-                        'value'=> 'noid',
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <!-- <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        // 'name' => 'noid',
+                        // 'value'=> 'noid',
+                        // 'onLabel'=>gT('Yes'),
+                        // 'offLabel'=>gT('No')
                         ));
-                    ?>
+                    ?> -->
                 </div>
             </div>
 
@@ -74,13 +75,14 @@
                     <?php eT("Import as not finalized answers?"); ?>
                 </label>
                 <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'notfinalized',
-                        'value'=> false,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <!-- <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        // 'name' => 'notfinalized',
+                        // 'value'=> false,
+                        // 'onLabel'=>gT('Yes'),
+                        // 'offLabel'=>gT('No')
                         ));
-                    ?>
+                    ?> -->
                 </div>
             </div>
 
@@ -98,13 +100,14 @@
                     <?php eT("First line contains the code of questions:"); ?>
                 </label>
                 <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'dontdeletefirstline',
-                        'value'=> false,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <!-- <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        // 'name' => 'dontdeletefirstline',
+                        // 'value'=> false,
+                        // 'onLabel'=>gT('Yes'),
+                        // 'offLabel'=>gT('No')
                         ));
-                    ?>
+                    ?> -->
                 </div>
             </div>
 
@@ -113,11 +116,12 @@
                     <?php eT("Force import:"); ?>
                 </label>
                 <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'forceimport',
-                        'value'=> false,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
+                    <!-- TODO: Replace with Bootstrap Button Group -->
+                    <!-- <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        // 'name' => 'forceimport',
+                        // 'value'=> false,
+                        // 'onLabel'=>gT('Yes'),
+                        // 'offLabel'=>gT('No')
                         ));
                     ?>
                 </div>

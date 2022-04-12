@@ -44,11 +44,12 @@
                 <div class="form-group col-sm-6">
                     <?php echo $form->labelEx($oQuota,'active',array('class'=>'control-label ')); ?>
                     <div class=''>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        <!-- TODO: Replace with Bootstrap Button Group -->
+                        <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'model' => $oQuota,
                             'attribute' => 'active',
                             'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
+                            'offLabel' => gT('No'))); */
                         ?>
                         <?php echo $form->error($oQuota,'active'); ?>
                     </div>
@@ -57,11 +58,12 @@
                 <div class="form-group col-sm-6">
                     <?php echo $form->labelEx($oQuota,'autoload_url',array('class'=>'control-label ')); ?>
                     <div class=''>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        <!-- TODO: Replace with Bootstrap Button Group -->
+                        <?php  /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'model' => $oQuota,
                             'attribute' => 'autoload_url',
                             'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
+                            'offLabel' => gT('No'))); */
                         ?>
                         <?php echo $form->error($oQuota,'autoload_url'); ?>
                     </div>
