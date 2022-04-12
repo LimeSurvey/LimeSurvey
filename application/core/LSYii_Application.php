@@ -549,6 +549,7 @@ class LSYii_Application extends CWebApplication
             $criteria = new CDbCriteria();
             $criteria->addCondition('surveyls_alias = :alias');
             $criteria->params[':alias'] = $alias;
+            $criteria->index = 'surveyls_language';
 
             $language = $this->request->getParam('lang');
             if (!empty($language)) {
@@ -556,12 +557,7 @@ class LSYii_Application extends CWebApplication
                 $criteria->params[':language'] = $language;
             }
 
-            $languageSettings = SurveyLanguageSetting::model()->with([
-                'survey' => [
-                    'select' => false,
-                    'joinType' => 'INNER JOIN',
-                ],
-            ])->find($criteria);
+            $languageSettings = SurveyLanguageSetting::model()->find($criteria);
             if (!empty($languageSettings)) {
                 // If no language is specified in the request, add a GET param based on the survey's language for this alias
                 if (empty($language)) {
