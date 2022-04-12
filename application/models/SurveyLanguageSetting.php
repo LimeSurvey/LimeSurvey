@@ -47,6 +47,9 @@
  */
 class SurveyLanguageSetting extends LSActiveRecord
 {
+    private $oldSurveyId;
+    private $oldAlias;
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -132,7 +135,7 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_urldescription', 'length', 'min' => 0, 'max' => 255),
             array('surveyls_alias', 'length', 'min' => 0, 'max' => 100),
             array('surveyls_alias', 'match', 'allowEmpty' => true, 'pattern' => '/[\w\d-]+/'),
-            array('surveyls_alias', 'unique', 'caseSensitive' => false, 'message' => gT('Survey alias must be unique.')),
+            array('surveyls_alias', 'checkAliasUniqueness'),
 
             array('surveyls_dateformat', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '12', 'allowEmpty' => true),
             array('surveyls_numberformat', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
@@ -300,5 +303,28 @@ class SurveyLanguageSetting extends LSActiveRecord
             $lang->$k = $v;
         }
         return $lang->save();
+    }
+
+    /**
+     * Validates that the alias is not used in another survey
+     */
+    public function checkAliasUniqueness()
+    {
+        if ($this->surveyls_alias !== $this->oldAlias || $this->surveyls_survey_id != $this->oldSurveyId) {
+            $model = self::model()->find(
+                'surveyls_alias = ? AND surveyls_survey_id <> ?',
+                [$this->surveyls_alias, $this->surveyls_survey_id]
+            );
+            if ($model != null) {
+                $this->addError('surveyls_alias', gT('Alias must be unique'));
+            }
+        }
+    }
+
+    protected function afterFind()
+    {
+        parent::afterFind();
+        $this->oldSurveyId = $this->surveyls_survey_id;
+        $this->oldAlias = $this->surveyls_alias;
     }
 }

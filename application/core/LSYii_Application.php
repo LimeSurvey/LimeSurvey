@@ -546,19 +546,26 @@ class LSYii_Application extends CWebApplication
         // We can only determine Survey aliases if the column exists (we can't asume it does, because db update runs from the controller).
         if ($this->getDb()->getSchema()->getTable('{{surveys_languagesettings}}')->getColumn('surveyls_alias')) {
             $alias = explode("/", $route)[0];
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('surveyls_alias = :alias');
+            $criteria->params[':alias'] = $alias;
+
+            $language = $this->request->getParam('lang');
+            if (!empty($language)) {
+                $criteria->addCondition('surveyls_language = :language');
+                $criteria->params[':language'] = $language;
+            }
+
             $languageSettings = SurveyLanguageSetting::model()->with([
                 'survey' => [
                     'select' => false,
                     'joinType' => 'INNER JOIN',
                 ],
-            ])->findByAttributes(['surveyls_alias' => $alias]);
+            ])->find($criteria);
             if (!empty($languageSettings)) {
-                // Override language
-                if (isset($_GET['lang'])) {
+                // If no language is specified in the request, add a GET param based on the survey's language for this alias
+                if (empty($language)) {
                     $_GET['lang'] = $languageSettings->surveyls_language;
-                }
-                if (isset($_POST['lang'])) {
-                    $_POST['lang'] = $languageSettings->surveyls_language;
                 }
                 return $this->createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
             }
