@@ -2307,7 +2307,7 @@ class remotecontrol_handle
                     if ($oGroup->sid != $oSurvey->sid) {
                         return ['status' => 'Error: Mismatch in surveyid and groupid'];
                     } else {
-                        $aQuestionList = Question::model()->findAllByAttributes(["sid" => $oSurvey->sid, "gid" => $iGroupID]);
+                        $aQuestionList = $oGroup->allQuestions;
                     }
                 } else {
                     $aQuestionList = $oSurvey->allQuestions;
