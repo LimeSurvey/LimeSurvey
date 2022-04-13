@@ -34,7 +34,7 @@
             <td class='col-md-3 questionanswertd'>
                 <span><?php echo $target; ?></span>
             </td>
-            <td class='text-right'>
+            <td class='text-end'>
                 <?php echo $editButtons; ?>
                 <?php echo $hiddenFields; ?>
             </td>

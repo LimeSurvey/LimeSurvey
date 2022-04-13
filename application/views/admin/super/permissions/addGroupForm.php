@@ -1,6 +1,6 @@
 <?php echo CHtml::beginForm($action, 'post', array('class'=>'form-horizontal container-fluid')) ?>
 <div class="row">
-    <label class='col-sm-2 col-md-offset-2 text-right control-label' for='ugid'>
+    <label class='col-sm-2 col-md-offset-2 text-end form-label' for='ugid'>
         <?php eT("User group"); ?>
     </label>
     <div class='col-sm-4 '>

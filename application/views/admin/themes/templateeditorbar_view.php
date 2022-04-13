@@ -163,7 +163,7 @@ echo viewHelper::getViewTestTag('themeEditor');
         </div>
 
         <!-- Right Menu -->
-        <div class="col-md-7 text-right form-inline">
+        <div class="col-md-7 text-end form-inline">
 
             <!-- Theme Select Box -->
             <div class="form-group">

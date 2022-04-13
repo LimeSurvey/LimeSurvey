@@ -18,7 +18,7 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
     <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/' . $surveyid), 'post', array('id' => 'resultexport', 'class' => '')); ?>
     <div class="row">
         <div class="col-md-12">
-            <div class="col-md-6 text-left">
+            <div class="col-md-6 text-start">
                 <h4>
                     <?php eT("Export results"); ?>
                     <?php

@@ -6,7 +6,7 @@
  */
 ?>
     <div class="form-group">
-            <label class=" control-label"  for='defaultlang'><?php eT("Default site language:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+            <label class=" form-label"  for='defaultlang'><?php eT("Default site language:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
             <div class="">
                     <select class="form-control"  name='defaultlang' id='defaultlang'>
             <?php
@@ -27,7 +27,7 @@
     </div>
 
     <div class="form-group">
-            <label class=" control-label"  for='includedLanguages'><?php eT("Available languages:"); ?></label>
+            <label class=" form-label"  for='includedLanguages'><?php eT("Available languages:"); ?></label>
             <div class="">
             <table id='languageSelection'>
             <tr>

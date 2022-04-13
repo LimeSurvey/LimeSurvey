@@ -337,7 +337,7 @@ class Translate extends SurveyCommonAction
 
         $language_list .= CHtml::openTag('div', array('class' => 'form-group')); // Opens .menubar-right div
 
-        $language_list .= CHtml::tag('label', array('for' => 'translationlanguage', 'class' => 'control-label'), gT("Translate to") . ":");
+        $language_list .= CHtml::tag('label', array('for' => 'translationlanguage', 'class' => 'form-label'), gT("Translate to") . ":");
         $language_list .= CHtml::openTag(
             'select',
             array(

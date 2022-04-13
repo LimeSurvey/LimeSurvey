@@ -6,7 +6,7 @@
 
                 <!-- Name -->
                 <div class="form-group col-lg-12">
-                    <label for='group_name' class="control-label">
+                    <label for='group_name' class="form-label">
                         <?php eT("Name:"); ?>
                     </label>
 
@@ -17,7 +17,7 @@
 
                 <!-- Description -->
                 <div class="form-group col-lg-12">
-                    <label for='group_description' class="control-label">
+                    <label for='group_description' class="form-label">
                         <?php eT("Description:"); ?>
                     </label>
                     <div class="default controls">

@@ -32,7 +32,7 @@
                         <input type="checkbox" class="action_check_to_keep_old_value" />
                     </label>
                 </div>
-                <label class="col-sm-3 control-label"  for='owner_uid'><?php eT("Owner?"); ?></label>
+                <label class="col-sm-3 form-label"  for='owner_uid'><?php eT("Owner?"); ?></label>
                 <div class="col-sm-8">
                     <?php echo TbHtml::dropDownList('owner_uid', 'lskeep', ['lskeep' => gT('Keep old value')] + $model->getOwnerOptions(), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
                 </div>
@@ -44,7 +44,7 @@
                     <input type="checkbox" class="action_check_to_keep_old_value" />
                 </label>
             </div>
-            <label class="col-sm-3 control-label"  for='language'><?php eT("Language?"); ?></label>
+            <label class="col-sm-3 form-label"  for='language'><?php eT("Language?"); ?></label>
             <div class="col-sm-8">
                 <?php echo TbHtml::dropDownList('language', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getLanguageOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
             </div>
@@ -56,7 +56,7 @@
                     <input type="checkbox" class="action_check_to_keep_old_value" />
                 </label>
             </div>
-            <label class="col-sm-3 control-label"  for='blacklisted'><?php eT("Blacklisted?"); ?></label>
+            <label class="col-sm-3 form-label"  for='blacklisted'><?php eT("Blacklisted?"); ?></label>
             <div class="col-sm-8">
                     <?php echo TbHtml::dropDownList('blacklisted', 'lskeep', ['lskeep' => gT('Keep old value'), 'Y' => gT('Yes'), 'N' => gT('No')], ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
                 </div>

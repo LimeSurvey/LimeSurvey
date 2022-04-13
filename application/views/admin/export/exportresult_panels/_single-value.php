@@ -15,7 +15,7 @@
   <div class="panel-body">
     <div class="form-group">
         <!-- From -->
-        <label for='export_ids' class="col-sm-2 control-label">
+        <label for='export_ids' class="col-sm-2 form-label">
           <?php eT("Selected answers"); ?>
         </label>
 

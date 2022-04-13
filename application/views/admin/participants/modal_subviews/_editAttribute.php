@@ -30,7 +30,7 @@
         echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, $baseControlGroupHtmlOptions);
     ?>
     <div class=" form-group" id="">
-        <label class='control-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
+        <label class='form-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
         <div>
             <?php
             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class=" form-group" id="">
-        <label class=" control-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
+        <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
         <div>
             <?php
             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -99,7 +99,7 @@
     </div>
      <legend><?php eT("Languages") ?></legend>
         <div class="row form-group">
-            <label class=" col-xs-12 control-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
+            <label class=" col-xs-12 form-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
             <div>
                 <div class=" col-xs-11">
                 <?php
@@ -119,7 +119,7 @@
                     $languageKey = Yii::app()->getLanguage();
                     echo 
                     '<div class="form-group" data-lang="'.$languageKey .'">
-                        <label class="col-sm-12 control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
+                        <label class="col-sm-12 form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
                             <div class=" col-xs-11">
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
@@ -136,7 +136,7 @@
                 {
                     echo 
                     '<div class="col-sm-12 form-group" data-lang="'.$languageKey.'">
-                        <label class=" control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
+                        <label class=" form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
                             <div class=" col-xs-11">
                                 <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.$languageOfAttribute.'">
@@ -152,7 +152,7 @@
             ?>
             <div class="hidden">
                 <div class=" form-group" id="dummyLanguageInputGroup">
-                        <label class=" control-label selector_languageAddLabel" for="dummyNameForInputLabel"></label>
+                        <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel"></label>
                         <div>
                             <div class="">
                                 <input class="form-control selector_languageAddInput" name="dummyParticipantAttributeNameLanguages" type="text" value="">

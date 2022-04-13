@@ -70,7 +70,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                     if ($bInherit){ ?>
                     <div class='row' id="general_inherit_active">
                         <div class='form-group row'>
-                            <label for='simple_edit_options_general_inherit' class='control-label'><?php echo gT("Inherit everything" ); ?></label>
+                            <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything" ); ?></label>
                             <div class='col-sm-12'>
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-default">
@@ -116,7 +116,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
 
                             echo '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-' . $attribute['width'] . '">
                             <div class="form-group row">
-                                <label for="simple_edit_options_' . $attributeKey . '" class="control-label">' . gT($attribute['title']) . '</label>';
+                                <label for="simple_edit_options_' . $attributeKey . '" class="form-label">' . gT($attribute['title']) . '</label>';
                             if ($attribute['type'] == 'buttons'){
                                 $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : array();
                                 $optionLabels = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : array();

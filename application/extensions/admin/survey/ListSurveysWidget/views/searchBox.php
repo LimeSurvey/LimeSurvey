@@ -16,7 +16,7 @@
 <!-- Search Box -->
 <div class="row">
     <div class="pull-right">
-        <div class="form text-right">
+        <div class="form text-end">
             <!-- Begin Form -->
             <?php $form  =  $this->beginWidget('CActiveForm', array(
                 'action' => Yii::app()->createUrl($this->formUrl),
@@ -28,13 +28,13 @@
 
             <!-- search input -->
             <div class="form-group">
-                <?php echo $form->label($this->model, 'searched_value', array('label'=>gT('Search:'),'class'=>'control-label')); ?>
+                <?php echo $form->label($this->model, 'searched_value', array('label'=>gT('Search:'),'class'=>'form-label')); ?>
                 <?php echo $form->textField($this->model, 'searched_value', array('class'=>'form-control')); ?>
             </div>
 
             <!-- select state -->
             <div class="form-group">
-                <?php echo $form->label($this->model, 'active', array('label'=>gT('Status:'),'class'=>'control-label')); ?>
+                <?php echo $form->label($this->model, 'active', array('label'=>gT('Status:'),'class'=>'form-label')); ?>
                 <select name="active" id='Survey_active' class="form-control">
                     <option value="" <?php if( $this->model->active==""){echo "selected";}?>><?php eT('(Any)');?></option>
                     <option value="Y" <?php if( $this->model->active=="Y"){echo "selected";}?>><?php eT('Active');?></option>
@@ -48,7 +48,7 @@
 
             <!-- select group -->
             <div class="form-group">
-                <?php echo $form->label($this->model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
+                <?php echo $form->label($this->model, 'group', array('label'=>gT('Group:'),'class'=>'form-label')); ?>
                     <select name="gsid" id='Survey_gsid' class="form-control">
                         <option value=""><?php eT('(Any group)');?></option>
                         <?php foreach( SurveysGroups::getSurveyGroupsList() as $gsid=>$group_title): ?>

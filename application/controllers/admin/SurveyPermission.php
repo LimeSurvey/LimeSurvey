@@ -195,7 +195,7 @@ class SurveyPermission extends SurveyCommonAction
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'create')) {
             $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<br/><br/><ul class='list-unstyled'>\n"
-            . "<li><label class='col-sm-1 col-md-offset-2 text-right control-label' for='uidselect'>" . gT("User") . ": </label>
+            . "<li><label class='col-sm-1 col-md-offset-2 text-end form-label' for='uidselect'>" . gT("User") . ": </label>
                  <div class='col-sm-4'>
                 <select id='uidselect' name='uid'  class='form-control'>\n"
             . getSurveyUserList(false, $iSurveyID)
@@ -205,7 +205,7 @@ class SurveyPermission extends SurveyCommonAction
             . "</li></ul></form>\n";
 
             $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/addusergroup/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<ul class='list-unstyled'><li>\n"
-            . "<label  class='col-sm-1 col-md-offset-2  text-right control-label'  for='ugidselect'>" . gT("User group") . ": </label>
+            . "<label  class='col-sm-1 col-md-offset-2  text-end form-label'  for='ugidselect'>" . gT("User group") . ": </label>
                 <div class='col-sm-4'>
                 <select id='ugidselect' name='ugid'  class='form-control'>\n"
             . getSurveyUserGroupList('htmloptions', $iSurveyID)

@@ -1681,56 +1681,12 @@ input[type="radio"]:focus,
     outline: none;
 }
 
-input[type="radio"]:before,
-.radio input[type="radio"]:before,
-.radio-inline input[type="radio"]:before,
-input[type="radio"]:after,
-.radio input[type="radio"]:after,
-.radio-inline input[type="radio"]:after {
-    content: "";
-    display: block;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    -webkit-transition: 240ms;
-    -o-transition: 240ms;
-    transition: 240ms;
-}
-
-input[type="radio"]:before,
-.radio input[type="radio"]:before,
-.radio-inline input[type="radio"]:before {
-    position: absolute;
-    left: 0;
-    top: -3px;
-    background-color: #2196f3;
-    -webkit-transform: scale(0);
-    -ms-transform: scale(0);
-    -o-transform: scale(0);
-    transform: scale(0);
-}
-
 input[type="radio"]:after,
 .radio input[type="radio"]:after,
 .radio-inline input[type="radio"]:after {
     position: relative;
     top: -3px;
     border: 2px solid #666666;
-}
-
-input[type="radio"]:checked:before,
-.radio input[type="radio"]:checked:before,
-.radio-inline input[type="radio"]:checked:before {
-    -webkit-transform: scale(0.5);
-    -ms-transform: scale(0.5);
-    -o-transform: scale(0.5);
-    transform: scale(0.5);
-}
-
-input[type="radio"]:disabled:checked:before,
-.radio input[type="radio"]:disabled:checked:before,
-.radio-inline input[type="radio"]:disabled:checked:before {
-    background-color: #bbbbbb;
 }
 
 input[type="radio"]:checked:after,

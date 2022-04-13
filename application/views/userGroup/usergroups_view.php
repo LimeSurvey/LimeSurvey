@@ -46,7 +46,7 @@
                         'name'        => 'actions',
                         'type'        => 'raw',
                         'value'       => '$data->buttons',
-                        'htmlOptions' => array('class' => 'text-left'),
+                        'htmlOptions' => array('class' => 'text-start'),
                     ),
                     array(
                         'header'      => gT('User group ID'),

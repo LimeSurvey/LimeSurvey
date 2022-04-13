@@ -66,7 +66,7 @@
                              aria-labelledby="heading-copy">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class=" control-label"
+                                    <label class=" form-label"
                                            for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
                                     <div class="">
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -80,7 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" control-label"
+                                    <label class=" form-label"
                                            for='copyanswers'><?php eT("Copy answer options?"); ?></label>
                                     <div class="">
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -94,7 +94,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" control-label"
+                                    <label class=" form-label"
                                            for='copydefaultanswers'><?php eT("Copy default answers?"); ?></label>
                                     <div class="">
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -108,7 +108,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" control-label"
+                                    <label class=" form-label"
                                            for='copyattributes'><?php eT("Copy question settings?"); ?></label>
                                     <div class="">
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -122,7 +122,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" control-label" for='gid'><?php eT("Question group:"); ?></label>
+                                    <label class=" form-label" for='gid'><?php eT("Question group:"); ?></label>
                                     <div class="">
                                         <select name='gid' id='gid' class="form-control" >
                                             <?php echo getGroupList3($oQuestion->gid, $oQuestion->sid); ?>

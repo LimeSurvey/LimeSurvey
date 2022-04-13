@@ -41,7 +41,7 @@
                     <?php echo CHtml::form(["admin/labels/sa/process"], 'post', ['class' => 'form form30 ', 'id' => 'labelsetform', 'onsubmit' => "return isEmpty(document.getElementById('label_name'), '" . gT("Error: You have to enter a name for this label set.", "js") . "')"]); ?>
                     <!-- Set name -->
                     <div class="form-group col-md-6">
-                        <label class="control-label" for='label_name'><?php eT("Set name:"); ?></label>
+                        <label class="form-label" for='label_name'><?php eT("Set name:"); ?></label>
                         <div class="">
                             <?php echo CHtml::textField('label_name', $lbname ?? "", ['maxlength' => 100, 'size' => 50, 'class' => 'form-control']); ?>
                         </div>
@@ -49,7 +49,7 @@
 
                     <!-- Languages -->
                     <div class="form-group col-md-6">
-                        <label class=" control-label"><?php eT("Languages:"); ?></label>
+                        <label class=" form-label"><?php eT("Languages:"); ?></label>
                         <div class="">
                             <?php
                             $aAllLanguages = getLanguageDataRestricted(false, 'short');
@@ -94,13 +94,13 @@
                     <div id='neweditlblset1' class="tab-pane fade">
                         <?php echo CHtml::form(["admin/labels/sa/import"], 'post', ['enctype' => 'multipart/form-data', 'class' => 'form', 'id' => 'importlabels', 'name' => "importlabels"]); ?>
                         <div class="form-group">
-                            <label class="control-label" for='the_file'>
+                            <label class="form-label" for='the_file'>
                                 <?php echo gT("Select label set file (*.lsl):") . '<br>' . sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                             </label>
                             <input id='the_file' name='the_file' type='file' accept=".lsl"/>
                         </div>
                         <div class="form-group">
-                            <label class=" control-label" for='checkforduplicates'>
+                            <label class=" form-label" for='checkforduplicates'>
                                 <?php eT("Don't import if label set already exists:"); ?>
                             </label>
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', [

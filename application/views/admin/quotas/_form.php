@@ -13,7 +13,7 @@
             <div class="col-lg-4">
                 <?php echo $form->hiddenField($oQuota,'id'); ?>
                 <div class="form-group">
-                    <?php echo $form->labelEx($oQuota,'name',array('class'=>'control-label ')); ?>
+                    <?php echo $form->labelEx($oQuota,'name',array('class'=>'form-label ')); ?>
                     <div class=''>
                         <?php echo $form->textField($oQuota,'name',array('class'=>'form-control')); ?>
                         <?php echo $form->error($oQuota,'name'); ?>
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($oQuota,'qlimit',array('class'=>'control-label ')); ?>
+                    <?php echo $form->labelEx($oQuota,'qlimit',array('class'=>'form-label ')); ?>
                     <div class=''>
                         <?php echo $form->textField($oQuota,'qlimit',array('class'=>'form-control')); ?>
                         <?php echo $form->error($oQuota,'qlimit'); ?>
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($oQuota,'action',array('class'=>'control-label ')); ?>
+                    <?php echo $form->labelEx($oQuota,'action',array('class'=>'form-label ')); ?>
                     <div class=''>
                         <?php echo $form->dropDownList($oQuota,'action',
                             array(
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <?php echo $form->labelEx($oQuota,'active',array('class'=>'control-label ')); ?>
+                    <?php echo $form->labelEx($oQuota,'active',array('class'=>'form-label ')); ?>
                     <div class=''>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'model' => $oQuota,
@@ -55,7 +55,7 @@
                 </div>
                 
                 <div class="form-group col-sm-6">
-                    <?php echo $form->labelEx($oQuota,'autoload_url',array('class'=>'control-label ')); ?>
+                    <?php echo $form->labelEx($oQuota,'autoload_url',array('class'=>'form-label ')); ?>
                     <div class=''>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'model' => $oQuota,

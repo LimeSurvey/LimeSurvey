@@ -12,16 +12,16 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="col-md-3 text-left">
+            <div class="col-md-3 text-start">
                 <h4>
                     <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
                     <?php eT("Statistics"); ?>
                 </h4>
             </div>
-            <div class="col-md-9 text-right">
+            <div class="col-md-9 text-end">
                 <div class="form-group">
                     <div >
-                        <label for='completionstate' class="control-label"><?php eT("Include:"); ?> </label>
+                        <label for='completionstate' class="form-label"><?php eT("Include:"); ?> </label>
                         <?php
                         echo CHtml::dropDownList(
                             'completionstate',

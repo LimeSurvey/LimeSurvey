@@ -48,7 +48,7 @@
         </div>
 
         <!-- Right side -->
-        <div class="col-lg-6 col-sm-4 text-right">
+        <div class="col-lg-6 col-sm-4 text-end">
 
             <!-- Close -->
             <?php if (isset($usergroupbar['closebutton']['url'])) :?>

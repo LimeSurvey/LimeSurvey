@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row ls-space margin top-25 bottom-25">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="the_file" id="fileupload" class='control-label '>
+                            <label for="the_file" id="fileupload" class='form-label '>
                                 <?php eT("Choose the file to upload:"); ?>
                             </label>
                             <div class="col-sm-12">
@@ -28,7 +28,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row ls-space margin top-25 bottom-25">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="characterset" id="characterset" class='control-label '>
+                            <label for="characterset" id="characterset" class='form-label '>
                                 <?php eT("Character set of file:"); ?>
                             </label>
                             <div class="col-sm-12">
@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="separatorused" id="separatorused" class='control-label '>
+                            <label for="separatorused" id="separatorused" class='form-label '>
                                 <?php eT("Separator used:"); ?>
                             </label>
                             <div class="col-sm-12">
@@ -73,7 +73,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row  ls-space margin top-25 bottom-25">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="filter" id="filter" class='control-label '>
+                            <label for="filter" id="filter" class='form-label '>
                                 <?php
                                 eT("Filter blank email addresses:");
                                 ?>

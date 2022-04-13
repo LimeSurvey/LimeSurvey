@@ -23,13 +23,13 @@ echo viewHelper::getViewTestTag('surveyTexts');
     var sAddParam = '';
 ", LSYii_ClientScript::POS_BEGIN); ?>
 
-<div id="editdatasecele-<?php echo $i;?>" class="tab-pane fade in <?php if($i==0){echo "active";}?> center-box">
+<div id="editdatasecele-<?php echo $i;?>" class="tab-pane fade <?php if($i==0){echo "show active";}?> center-box">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 col-lg-6">
                 <!-- Survey data policy checkbox label -->
                 <div class="form-group">
-                    <label class="control-label"><?php eT("Survey data policy checkbox label:"); ?></label>
+                    <label class="form-label"><?php eT("Survey data policy checkbox label:"); ?></label>
                     <div class="">
                         <?php echo CHtml::textField("dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_notice_label'],array('class'=>'form-control','size'=>"80",'id'=>"dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
                     </div>
@@ -45,7 +45,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
             <div class="col-sm-12 col-lg-6">
                 <!-- Survey data policy message -->
                 <div class="form-group">
-                    <label class=" control-label" for='datasec_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Survey data policy message:"); ?></label>
+                    <label class=" form-label" for='datasec_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Survey data policy message:"); ?></label>
                     <div class="">
                     <div class="htmleditor input-group">
                         <?php echo CHtml::textArea("datasec_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_notice'],array('class'=>'form-control','cols'=>'80','rows'=>'20','id'=>"datasec_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
@@ -57,7 +57,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
             <div class="col-sm-12 col-lg-6">
                 <!-- Survey data policy error message -->
                 <div class="form-group">
-                    <label class=" control-label" for='datasecerror_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Survey data policy error message:"); ?></label>
+                    <label class=" form-label" for='datasecerror_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Survey data policy error message:"); ?></label>
                     <div class="">
                     <div class="htmleditor input-group">
                         <?php echo CHtml::textArea("datasecerror_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_error'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"datasecerror_{$aSurveyLanguageSettings['surveyls_language']}")); ?>

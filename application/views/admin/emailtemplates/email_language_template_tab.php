@@ -6,7 +6,7 @@ $script = array();
 <div id='<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>">
     <div class="row">
         <div class='form-group col-sm-12'>
-            <label class=' control-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
+            <label class=' form-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
             <div class=''>
                 <?php
                 $sSubjectField=$details['field']['subject'];
@@ -16,7 +16,7 @@ $script = array();
     </div>
     <div class="row">
         <div class='form-group col-sm-12'>
-            <label class=' control-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
+            <label class=' form-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
             <?php if(getEmailFormat($surveyid) != 'html') { ?>
                 <div class="">
             <?php }else{ ?>
@@ -32,7 +32,7 @@ $script = array();
     </div>
     <div class="row">
         <div class='form-group col-sm-12'>
-            <label class=' control-label'><?php et('Actions:');?></label>
+            <label class=' form-label'><?php et('Actions:');?></label>
             <div class=''>
                 <a class='btn btn-default' id="validate_expression_<?=$grouplang?>_<?=$tab?>" data-parent-element="#in_survey_common" data-target="modal" data-remote-link="<?=App()->createUrl('admin/validate',['sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab])?>" data-footer="false" data-modal-title="<?=$details['title']?>" > 
                     <?=gT("Validate ExpressionScript")?> 
@@ -51,7 +51,7 @@ $script = array();
     if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
     { ?>
     <div class="row">
-            <label class='control-label col-xs-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
+            <label class='form-label col-xs-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
             <div class="col-xs-12">
                 <button class="add-attachment btn btn-default" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
             </div>

@@ -11,7 +11,7 @@
     <div class='row'>
 
         <!-- Left actions -->
-        <div class="col-md-6 text-left">
+        <div class="col-md-6 text-start">
             <!-- Plugin Manager -->
             <?php if (isset($fullpagebar['pluginManager'])) : ?>
                 <!-- Install Plugin Zip -->
@@ -73,7 +73,7 @@
         </div>
 
         <!-- Right actions -->
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 text-end">
 
             <!-- White Close button -->
             <?php if (isset($fullpagebar['white_closebutton']['url'])) :?>

@@ -41,13 +41,13 @@ if ($bShowInherited){
             <?php $navigationdelay = $oSurvey->navigationdelay; ?>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
-                    <label class=" control-label"  for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
+                    <label class="form-label"  for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
                         <?php // NB: Do NOT use === when comparing navigationdelay to '-1', it won't work with Postgresql. ?>
                         <input class="form-control inherit-edit <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'hide' : 'show'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>"/>
                         <input class="form-control inherit-readonly <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
-                    <label class=" control-label content-center col-sm-12"  for='navigationdelay'><?php  eT("Inherit:"); ?></label>
+                    <label class="form-label content-center col-sm-12"  for='navigationdelay'><?php  eT("Inherit:"); ?></label>
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'navigationdelaybutton',
                         // NB: Do NOT use === when comparing navigationdelay with '-1', it won't work with Postgresql.
@@ -64,9 +64,10 @@ if ($bShowInherited){
 
         <!-- Show question index -->
         <div class="form-group">
-            <label class=" control-label" for='questionindex'><?php  eT("Show question index / allow jumping:"); ?></label>
+            <label class="form-label" for='questionindex'><?php  eT("Show question index / allow jumping:"); ?></label>
             <div class="">
-
+            
+            <!-- TODO: Replace with Bootstrap Button Group -->
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'questionindex',
                 'value'=> $oSurvey->questionindex ,
@@ -89,7 +90,7 @@ if ($bShowInherited){
 
         <!-- Show group name and/or group description -->
         <div class="form-group">
-            <label class=" control-label" for="showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
+            <label class="form-label" for="showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
             <div class="">
                 <select id="showgroupinfo" name="showgroupinfo"  class="form-control" >
                     <?php if ($bShowInherited){ ?>
@@ -117,7 +118,7 @@ if ($bShowInherited){
 
         <!-- Show question number and/or code -->
         <div class="form-group">
-            <label class=" control-label" for="showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
+            <label class="form-label" for="showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
             <div class="">
                 <select class="form-control" id="showqnumcode" name="showqnumcode">
                     <?php if ($bShowInherited){ ?>
@@ -134,7 +135,7 @@ if ($bShowInherited){
 
         <!-- Show "No answer" -->
         <div class="form-group">
-            <label class=" control-label" for="shownoanswer"><?php  eT('Show "No answer":'); ?></label>
+            <label class="form-label" for="shownoanswer"><?php  eT('Show "No answer":'); ?></label>
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'shownoanswer',
@@ -150,8 +151,9 @@ if ($bShowInherited){
         
         <!-- Show "There are X questions in this survey" -->
         <div class="form-group">
-            <label class=" control-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
+            <label class="form-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'showxquestions',
                     'value'=> $oSurvey->showxquestions,
@@ -163,8 +165,9 @@ if ($bShowInherited){
  
         <!-- Show welcome screen -->
         <div class="form-group">
-            <label class=" control-label" for='showwelcome'><?php  eT("Show welcome screen:") ; ?></label>
+            <label class=" form-label" for='showwelcome'><?php  eT("Show welcome screen:") ; ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'showwelcome',
                     'value'=> $oSurvey->showwelcome,
@@ -176,8 +179,9 @@ if ($bShowInherited){
 
         <!-- Allow backward navigation: -->
         <div class="form-group">
-            <label class=" control-label" for='allowprev'><?php  eT("Allow backward navigation:"); ?></label>
+            <label class=" form-label" for='allowprev'><?php  eT("Allow backward navigation:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'allowprev',
                     'value'=> $oSurvey->allowprev,
@@ -190,8 +194,9 @@ if ($bShowInherited){
 
         <!-- Show on-screen keyboard -->
         <div class="form-group">
-            <label class=" control-label" for='nokeyboard'><?php  eT("Show on-screen keyboard:"); ?></label>
+            <label class=" form-label" for='nokeyboard'><?php  eT("Show on-screen keyboard:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'nokeyboard',
                     'value'=> $oSurvey->nokeyboard,
@@ -203,8 +208,9 @@ if ($bShowInherited){
 
         <!-- Show progress bar -->
         <div class="form-group">
-            <label class=" control-label" for='showprogress'><?php  eT("Show progress bar:"); ?></label>
+            <label class=" form-label" for='showprogress'><?php  eT("Show progress bar:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'showprogress',
                     'value'=> $oSurvey->showprogress,
@@ -215,8 +221,9 @@ if ($bShowInherited){
         </div>
         <!-- Participants may print answers -->
         <div class="form-group">
-            <label class=" control-label" for='printanswers'><?php  eT("Participants may print answers:"); ?></label>
+            <label class=" form-label" for='printanswers'><?php  eT("Participants may print answers:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'printanswers',
                     'value'=> $oSurvey->printanswers,
@@ -228,8 +235,9 @@ if ($bShowInherited){
 
         <!-- Public statistics -->
         <div class="form-group">
-            <label class=" control-label" for='publicstatistics'><?php  eT("Public statistics:"); ?></label>
+            <label class=" form-label" for='publicstatistics'><?php  eT("Public statistics:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'publicstatistics',
                     'value'=> $oSurvey->publicstatistics,
@@ -241,8 +249,9 @@ if ($bShowInherited){
 
         <!-- Show graphs in public statistics -->
         <div class="form-group">
-            <label class=" control-label" for='publicgraphs'><?php  eT("Show graphs in public statistics:"); ?></label>
+            <label class=" form-label" for='publicgraphs'><?php  eT("Show graphs in public statistics:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'publicgraphs',
                     'value'=> $oSurvey->publicgraphs,
@@ -254,8 +263,9 @@ if ($bShowInherited){
     
         <!-- Automatically load URL -->
         <div class="form-group">
-            <label class=" control-label" for='autoredirect'><?php  eT("Automatically load end URL when survey complete:"); ?></label>
+            <label class=" form-label" for='autoredirect'><?php  eT("Automatically load end URL when survey complete:"); ?></label>
             <div class="">
+                <!-- TODO: Replace with Bootstrap Button Group -->
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'autoredirect',
                     'value'=> $oSurvey->autoredirect,

@@ -9,7 +9,7 @@
 
     <!-- Headers -->
     <div class="form-group row">
-        <label class="col-sm-12 control-label" for=''>
+        <label class="col-sm-12 form-label" for=''>
         <?php eT("Export questions as:"); ?>
       </label>
       <div class="btn-group col-sm-12" data-toggle="buttons">
@@ -24,7 +24,7 @@
 
     <!-- Strip HTML -->
     <div class="form-group row">
-      <label class="col-sm-12 control-label" for='striphtmlcode'>
+      <label class="col-sm-12 form-label" for='striphtmlcode'>
         <?php eT("Strip HTML code:"); ?>
       </label>
       <div class='col-sm-12'>
@@ -40,7 +40,7 @@
 
     <!-- Convert spaces -->
     <div class="form-group row">
-      <label class="col-sm-12 control-label" for='headspacetounderscores'>
+      <label class="col-sm-12 form-label" for='headspacetounderscores'>
         <?php eT("Convert spaces in question text to underscores:"); ?>
       </label>
       <div class='col-sm-12'>
@@ -56,7 +56,7 @@
 
     <!-- Text abbreviated-->
     <div class="form-group row">
-      <label class="col-sm-12 control-label" for='abbreviatedtext'>
+      <label class="col-sm-12 form-label" for='abbreviatedtext'>
         <?php eT("Text abbreviated:"); ?>
       </label>
       <div class='col-sm-12'>
@@ -72,7 +72,7 @@
 
     <!-- Use ExpressionScript Engine code-->
     <div class="form-group row">
-      <label class="col-sm-12 control-label" for='emcode'>
+      <label class="col-sm-12 form-label" for='emcode'>
         <?php eT("Use ExpressionScript code:"); ?>
       </label>
       <div class='col-sm-12'>
@@ -87,7 +87,7 @@
     </div>
 
     <div class="form-group row">
-      <label for='abbreviatedtextto' class="col-sm-12 control-label">
+      <label for='abbreviatedtextto' class="col-sm-12 form-label">
         <?php eT("Number of characters:"); ?>
       </label>
       <div class="col-sm-12">
@@ -96,7 +96,7 @@
     </div>
 
     <div class="form-group row">
-      <label for='codetextseparator' class="col-sm-12 control-label">
+      <label for='codetextseparator' class="col-sm-12 form-label">
         <?php eT("Code/text separator:"); ?>
       </label>
       <div class="col-sm-12">

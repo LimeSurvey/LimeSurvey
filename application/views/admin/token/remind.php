@@ -26,7 +26,7 @@
                 <div class="col-sm-6">
                 <?php if (count($tokenids)>0): ?>
                         <div class='form-group'>
-                            <label class='control-label '><?php eT("Send reminder to participant ID(s):"); ?></label>
+                            <label class='form-label '><?php eT("Send reminder to participant ID(s):"); ?></label>
                             <div class=''>
                                 <?php echo short_implode(", ", "-", (array) $tokenids); ?>
                             </div>
@@ -34,7 +34,7 @@
                     <?php endif; ?>
 
                     <div class='form-group'>
-                        <label class='control-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
+                        <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
                         <div class=''>
                             <?php
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -52,7 +52,7 @@
                             echo CHtml::label(gT("Bypass date control before sending email:"), 'bypassdatecontrol', [
                               'title' => gT("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
                               'unescaped' => 'unescaped',
-                              'class' => 'control-label '
+                              'class' => 'form-label '
                             ]);
                         ?>
                         <div class=''>
@@ -71,7 +71,7 @@
 
                     <!-- Only partial responses -->
                     <div class='form-group'>
-                        <label class='control-label ' for='partialonly'><?php eT("Send email only to participants with partial responses:"); ?></label>
+                        <label class='form-label ' for='partialonly'><?php eT("Send email only to participants with partial responses:"); ?></label>
                         <div class=''>
                             <?php
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', [
@@ -88,7 +88,7 @@
                 <div class="col-sm-6">
                     <!-- Max reminders -->
                     <div class='form-group'>
-                        <label class='control-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
+                        <label class='form-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
                         <div class=''>
                             <input type="text" id="maxremindercount" class="form-control" size="25" value="" name="maxremindercount" style="width: 50%;" />
                         </div>
@@ -96,7 +96,7 @@
 
                     <!-- Min days between reminders -->
                     <div class='form-group'>
-                        <label class='control-label ' for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
+                        <label class='form-label ' for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
                         <div class=''>
                             <input type="text" id="minreminderdelay" class="form-control" size="25" value="" name="minreminderdelay" style="width: 50%;">
                         </div>
@@ -140,21 +140,21 @@
                         <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c){$c=false;echo 'show active';}?>">
 
                             <div class='form-group'>
-                                <label class='control-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
+                                <label class='form-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
                                 <div class=''>
                                     <?php echo CHtml::textField("from_{$language}",$thissurvey[$baselang]['adminname']." <".$thissurvey[$baselang]['adminemail'].">",array('class' => 'form-control')); ?>
                                 </div>
                             </div>
 
                             <div class='form-group'>
-                                <label class='control-label ' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
+                                <label class='form-label ' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
                                 <div class=''>
                                     <?php echo CHtml::textField("subject_{$language}",$subject,array('class' => 'form-control')); ?>
                                 </div>
                             </div>
 
                             <div class='form-group'>
-                                <label class='control-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
+                                <label class='form-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                 <div class="htmleditor ">
                                     <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>
                                     <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>

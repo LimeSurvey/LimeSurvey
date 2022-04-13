@@ -1626,7 +1626,7 @@ EOD;
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
-        self::addCssClass('control-label', $labelOptions);
+        self::addCssClass('form-label', $labelOptions);
         if ($label !== false) {
             $output .= parent::label($label, $name, $labelOptions);
         }
@@ -2510,7 +2510,7 @@ EOD;
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
-        self::addCssClass('control-label', $labelOptions);
+        self::addCssClass('form-label', $labelOptions);
         if ($label !== false) {
             $output .= parent::activeLabelEx($model, $attribute, $labelOptions);
         }

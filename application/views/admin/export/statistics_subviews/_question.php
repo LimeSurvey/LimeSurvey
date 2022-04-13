@@ -86,13 +86,13 @@
                         ."</div>
 
                         <div class='form-group row'>
-                        <label for='".$myfield2."' class='col-sm-4 control-label'>".gT("Number greater than:")."</label>
+                        <label for='".$myfield2."' class='col-sm-4 form-label'>".gT("Number greater than:")."</label>
                         <div class='col-sm-6'>"
                         .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
                         ."</div>
                         </div>
                         <div class='form-group row'>
-                        <label for='N".$myfield3."' class='col-sm-4 control-label'>".gT("Number less than:")."</label>
+                        <label for='N".$myfield3."' class='col-sm-4 form-label'>".gT("Number less than:")."</label>
                         <div class='col-sm-6'>"
                         .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
                         ."</div>
@@ -198,13 +198,13 @@
                 $myfield3="N{$myfield}L";
                 echo " 
                 <div class='form-group row'>
-                <label for='".$myfield2."' class='col-sm-4 control-label'>".gT("Number greater than:")."</label>
+                <label for='".$myfield2."' class='col-sm-4 form-label'>".gT("Number greater than:")."</label>
                 <div class='col-sm-6'>"
                 .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>
                 <div class='form-group row'>
-                <label for='N".$myfield3."' class='col-sm-4 control-label'>".gT("Number less than:")."</label>
+                <label for='N".$myfield3."' class='col-sm-4 form-label'>".gT("Number less than:")."</label>
                 <div class='col-sm-6'>"
                 .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
@@ -219,13 +219,13 @@
                 $myfield3 = "{$myfield}L";
                 echo"
                 <div class='form-group row'>
-                <label for='".$myfield2."' class='col-sm-4 control-label'>".gT("Number of files greater than:")."</label>
+                <label for='".$myfield2."' class='col-sm-4 form-label'>".gT("Number of files greater than:")."</label>
                 <div class='col-sm-6'>"
                 .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>
                 <div class='form-group row'>
-                <label for='N".$myfield3."' class='col-sm-4 control-label'>".gT("Number of files less than:")."</label>
+                <label for='N".$myfield3."' class='col-sm-4 form-label'>".gT("Number of files less than:")."</label>
                 <div class='col-sm-6'>"
                 .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>

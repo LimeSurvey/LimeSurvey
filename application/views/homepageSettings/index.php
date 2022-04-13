@@ -106,14 +106,14 @@ App()->getClientScript()->registerScript(
             <div id="boxsettings" class="tab-pane fade">
 
                 <div class="row">
-                    <label class="col-sm-2 control-label"><?php eT("Display logo:"); ?> </label>
+                    <label class="col-sm-2 form-label"><?php eT("Display logo:"); ?> </label>
                     <div class="col-sm-2">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_logo', 'id' => 'show_logo', 'value' => $bShowLogo, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
 
                         <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLogoStatus'); ?>"/>
                     </div>
 
-                    <label class="col-sm-2 control-label"><?php eT("Show last visited survey and question:"); ?> </label>
+                    <label class="col-sm-2 form-label"><?php eT("Show last visited survey and question:"); ?> </label>
                     <div class="col-sm-2">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_last_survey_and_question', 'id' => 'show_last_survey_and_question', 'value' => $bShowLastSurveyAndQuestion, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
                         <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLastSurveyAndQuestion'); ?>"/>
@@ -123,13 +123,13 @@ App()->getClientScript()->registerScript(
                 </div>
 
                 <div class="row">
-                    <label class="col-sm-2 control-label"><?php eT("Show survey list:"); ?> </label>
+                    <label class="col-sm-2 form-label"><?php eT("Show survey list:"); ?> </label>
                     <div class="col-sm-2">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_survey_list', 'id' => 'show_survey_list', 'value' => $bShowSurveyList, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
                         <input type="hidden" id="show_survey_list-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyList'); ?>"/>
                     </div>
 
-                    <label class="col-sm-2 control-label"><?php eT("Show search box on survey list:"); ?> </label>
+                    <label class="col-sm-2 form-label"><?php eT("Show search box on survey list:"); ?> </label>
                     <div class="col-sm-2">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_survey_list_search', 'id' => 'show_survey_list_search', 'value' => $bShowSurveyListSearch, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
                         <input type="hidden" id="show_survey_list_search-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyListSearch'); ?>"/>
@@ -139,7 +139,7 @@ App()->getClientScript()->registerScript(
                 </div>
 
                 <div class="row">
-                    <label class="col-sm-2 control-label"><?php eT("Wrap container around boxes"); ?> </label>
+                    <label class="col-sm-2 form-label"><?php eT("Wrap container around boxes"); ?> </label>
                     <div class="col-sm-2">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'boxes_in_container', 'id' => 'boxes_in_container', 'value' => $bBoxesInContainer, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
                         <input type="hidden" id="boxes_in_container-url" data-url="<?php echo App()->createUrl('homepageSettings/changeBoxesInContainer'); ?>"/>
@@ -149,11 +149,11 @@ App()->getClientScript()->registerScript(
                 </div>
 
                 <div class="row">
-                    <label class="col-sm-2 control-label"><?php eT("Boxes by row:"); ?></label>
+                    <label class="col-sm-2 form-label"><?php eT("Boxes by row:"); ?></label>
                     <div class="col-sm-1">
                         <input class="form-control" type="number" id="iBoxesByRow" value="<?php echo $iBoxesByRow; ?>" max="6" min="0" name="boxes_by_row"/>
                     </div>
-                    <label class="col-sm-2 col-sm-offset-1 control-label"><?php eT("Box orientation:"); ?></label>
+                    <label class="col-sm-2 col-sm-offset-1 form-label"><?php eT("Box orientation:"); ?></label>
                     <div class="col-sm-1">
                         <select class="form-control" id="iBoxesOffset" name="boxes_offset">
                             <option value="1" <?php if ($iBoxesOffset == '1') {

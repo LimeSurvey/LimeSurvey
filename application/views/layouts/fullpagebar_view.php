@@ -10,7 +10,7 @@
 <div class="menubar surveybar" id="fullpagebar">
     <div class="row">
         <!-- Left actions -->
-        <div class="col-md-6 text-left">
+        <div class="col-md-6 text-start">
 
             <!-- Themes -->
             <?php if (isset($fullpagebar['themes'])) : ?>
@@ -79,7 +79,7 @@
         </div>
 
         <!-- Right actions -->
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 text-end">
 
             <!-- Close -->
             <?php if (isset($fullpagebar['closebutton']['url'])) :?>

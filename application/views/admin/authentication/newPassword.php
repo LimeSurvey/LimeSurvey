@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('login');
                             <input name="password_repeat" placeholder='********'  id="password_repeat" class="form-control" type="password">
                         </div>
                         <div class="row ls-space margin top-5">
-                            <label class="control-label">
+                            <label class="form-label">
                                 <?=gT('Random password (suggestion):')?>
                             </label>
                             <input type="text" class="form-control" readonly name="random_example_password" value="<?=htmlspecialchars($randomPassword)?>"/>
