@@ -18,7 +18,7 @@
             <?php eT("Responses"); ?><span class="caret"></span>
         </button>
     <?php else:?>
-        <button type="button" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is not active - no responses are available."); ?>" class="readonly btn btn-default">
+        <button type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is not active - no responses are available."); ?>" class="readonly btn btn-default">
             <span class="icon-responses"></span>
             <?php eT("Responses"); ?><span class="caret"></span>
         </button>

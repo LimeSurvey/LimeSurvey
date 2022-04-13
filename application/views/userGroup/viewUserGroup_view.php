@@ -50,8 +50,8 @@
                                             <?php echo CHtml::form(["userGroup/DeleteUserFromGroup/ugid/{$ugid}/"], 'post'); ?>
                                             <button
                                                 class="btn btn-default btn-sm"
-                                                data-toggle="tooltip"
-                                                data-placement="bottom"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom"
                                                 title="<?php eT('Delete'); ?>"
                                                 type="submit"
                                                 onclick='return confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")'>

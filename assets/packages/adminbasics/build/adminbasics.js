@@ -29720,7 +29720,7 @@
 
       $(".btntooltip").tooltip();
       $('[data-tooltip="true"]').tooltip();
-      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-bs-toggle="tooltip"]').tooltip();
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes: function arrHasDupes(arrayToCheck) {

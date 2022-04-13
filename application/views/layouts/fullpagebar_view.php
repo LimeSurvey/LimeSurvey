@@ -28,7 +28,7 @@
                     </a>
                 <?php elseif (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && !$fullpagebar['themes']['canImport'] && isset($fullpagebar['themes']['importErrorMessage'])) : ?>
                     <!-- import disabled -->
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $fullpagebar['themes']['importErrorMessage']['importErrorMessage']; ?>" style="display: inline-block">
+                    <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $fullpagebar['themes']['importErrorMessage']['importErrorMessage']; ?>" style="display: inline-block">
                     <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                         <span class="icon-import text-success"></span>
                         <?php eT("Import"); ?>

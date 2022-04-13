@@ -263,7 +263,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {string}
    */
   //function getRelevanceToolTip() {
-  //const relevanceTooltip = !relevanceIsExpanded() ? `data-toggle="tooltip" data-title="${clickToExpand}"` : '';
+  //const relevanceTooltip = !relevanceIsExpanded() ? `data-bs-toggle="tooltip" data-title="${clickToExpand}"` : '';
   //return relevanceTooltip;
   //}
 

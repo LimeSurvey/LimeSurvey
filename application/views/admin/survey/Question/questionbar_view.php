@@ -127,7 +127,7 @@ $aReplacementData=array();
                     <?php eT("Delete"); ?>
                 </button>
             <?php elseif (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete')): ?>
-                <button class="btn btn-default btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("It is not possible to add/delete questions if the survey is active."); ?>">
+                <button class="btn btn-default btntooltip" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("It is not possible to add/delete questions if the survey is active."); ?>">
                     <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </button>
@@ -151,7 +151,7 @@ $aReplacementData=array();
                         <?php eT("Copy"); ?>
                     </a>
                 <?php else:?>
-                    <a class="btn readonly  btntooltip" href="#" role="button" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't copy a question if the survey is active."); ?>" >
+                    <a class="btn readonly  btntooltip" href="#" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can't copy a question if the survey is active."); ?>" >
                         <span class="icon-copy"></span>
                         <?php eT("Copy"); ?>
                     </a>

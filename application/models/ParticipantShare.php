@@ -163,7 +163,7 @@ class ParticipantShare extends LSActiveRecord
                     'shareUid'      => $this->share_uid
                 ]
             );
-            $buttons .= "<span data-toggle='tooltip' title='" . gT("Delete sharing") . "'><a href='#'
+            $buttons .= "<span data-bs-toggle='tooltip' title='" . gT("Delete sharing") . "'><a href='#'
             class='btn btn-sm btn-default action_delete_shareParticipant'
             data-toggle='modal' 
             data-target='#confirmation-modal'

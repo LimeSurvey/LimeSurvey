@@ -8,7 +8,7 @@
             <div class="panel-heading">
                 <?php eT("CSV field names "); ?>
                 <div class='pull-right'>
-                    <span id='move-all' class='btn fa fa-arrow-right no-padding' data-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>'></span>
+                    <span id='move-all' class='btn fa fa-arrow-right no-padding' data-bs-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>'></span>
                 </div>
             </div>
             <div class='panel-body'>

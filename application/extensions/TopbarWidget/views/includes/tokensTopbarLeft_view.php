@@ -139,7 +139,7 @@
 
             <?php if (isset($eMessage)):?>
                 <li class="disabled">
-                    <a  href="#" class="disabled" data-toggle="tooltip" data-placement="bottom" title='<?php echo $eMessage; ?>'>
+                    <a  href="#" class="disabled" data-bs-toggle="tooltip" data-bs-placement="bottom" title='<?php echo $eMessage; ?>'>
                         <span class="ui-bounceprocessing"></span>
                         <?php eT("Start bounce processing"); ?>
                     </a>

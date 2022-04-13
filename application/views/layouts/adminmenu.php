@@ -125,7 +125,8 @@
 </nav>
 <script type="text/javascript">
     //show tooltips
-    $('body').tooltip({
-        selector: '[data-toggle="tooltip"]'
-    });
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 </script>

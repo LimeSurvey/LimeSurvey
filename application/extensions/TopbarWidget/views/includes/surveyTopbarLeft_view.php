@@ -13,7 +13,7 @@
 
     <!-- can't activate -->
     <?php else: ?>
-        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+        <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
             <button id='ls-activate-survey' type="button" class="btn btn-success btntooltip" disabled="disabled">
                 <?php eT("Activate this survey"); ?>
             </button>
@@ -118,7 +118,7 @@
 
                     <!-- Quick-translation disabled -->
                     <li class="disabled">
-                        <a href="#" class="btntooltip disabled" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Currently there are no additional languages configured for this survey.'); ?>">
+                        <a href="#" class="btntooltip disabled" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Currently there are no additional languages configured for this survey.'); ?>">
                             <span class="fa fa-language" ></span>
                             <?php eT("Quick-translation"); ?>
                         </a>
@@ -138,7 +138,7 @@
                 <?php else : ?>
                     <li class="disabled">
                         <!-- condition disabled -->
-                        <a href="#" class="btntooltip disabled" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Currently there are no conditions configured for this survey.", "js");?>">
+                        <a href="#" class="btntooltip disabled" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("Currently there are no conditions configured for this survey.", "js");?>">
                             <span class="icon-resetsurveylogic" ></span>
                             <?php eT("Reset conditions"); ?>
                         </a>

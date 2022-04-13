@@ -141,7 +141,7 @@ class Box extends CActiveRecord
         $url = Yii::app()->createUrl("/homepageSettings/updateBox/id/");
         $url .= '/' . $this->id;
         $button = "<div class='icon-btn-row'>";
-        $button .= '<a class="btn btn-sm btn-default green-border" data-toggle="tooltip" data-target="top" '
+        $button .= '<a class="btn btn-sm btn-default green-border" data-bs-toggle="tooltip" data-target="top" '
          . 'title="' . gT('Edit') . '"'
          . 'href="'
          . $url
@@ -153,7 +153,7 @@ class Box extends CActiveRecord
         . ' data-button-yes="' . gT('Delete') . '"'
         . ' data-button-type="btn-danger"'
         . ' href="' . $url . '"'
-        . ' data-toggle="tooltip"'
+        . ' data-bs-toggle="tooltip"'
         . ' data-target="top"'
         . ' title="' . gT('Delete the box') . '"'
         . ' role="button" data-post=\'' . json_encode(['id' => $this->id]) . '\''

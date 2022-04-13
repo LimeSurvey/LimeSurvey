@@ -62,7 +62,7 @@
     <div id="ParticipantAttributeNamesDropdownEdit" class="row form-group" style="display: none;">
         <div class="row">
             <div class="col-xs-2">
-                <button class="btn btn-default btn-block" id="addDropdownField" data-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
+                <button class="btn btn-default btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
             </div>
             <h4 class="col-xs-8 col-offset-xs-2"><?php eT("Dropdown fields") ?></h4>
         </div>
@@ -108,7 +108,7 @@
                 </div>
             </div>
             <div class="col-xs-1">
-                <button class="btn btn-default form-group" id="addLanguageField" data-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+                <button class="btn btn-default form-group" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
                     <i class="fa fa-plus-circle text-success"></i>
                 </button>
             </div>

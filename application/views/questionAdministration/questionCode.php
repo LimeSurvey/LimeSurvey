@@ -5,7 +5,7 @@
 <div class="form-group col-sm-6 col-lg-5 scoped-responsive-fix-height">
     <label for="questionCode"><?= gT('Code'); ?></label>
     <i class="fa fa-question-circle text-success"
-        data-toggle="tooltip"
+        data-bs-toggle="tooltip"
         title="<?= gT("The question code is used for quick identification of this question and must be unique. It is especially useful if you wish to use the LimeSurvey assessments feature and/or the ExpressionScript."); ?>"
         ></i>
     <div class="scoped-keep-in-line">

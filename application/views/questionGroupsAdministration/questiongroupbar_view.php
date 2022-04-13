@@ -110,8 +110,8 @@
                             </button>
                         <?php else: ?>
                         <!-- there is at least one question having a condition on its content -->
-                            <button type="button" class="btn btn-default btntooltip" disabled data-toggle="tooltip"
-                                data-placement="bottom"
+                            <button type="button" class="btn btn-default btntooltip" disabled data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
                                 title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>">
                                 <span class="fa fa-trash"></span>
                                 <?php eT("Delete current question group"); ?>
@@ -119,8 +119,8 @@
                         <?php endif; ?>
                     <?php else:?>
                         <!-- Activated -->
-                        <button type="button" class="btn btn-default btntooltip" disabled data-toggle="tooltip"
-                            data-placement="bottom"
+                        <button type="button" class="btn btn-default btntooltip" disabled data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
                             title="<?php eT("You can't delete this question group because the survey is currently active."); ?>">
                             <span class="fa fa-trash"></span>
                             <?php eT("Delete current question group"); ?>

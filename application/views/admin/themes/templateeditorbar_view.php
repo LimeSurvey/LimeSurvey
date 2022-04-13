@@ -87,7 +87,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                             <?php eT("Extend"); ?>
                         </a>
                     <?php else : ?>
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The theme upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                        <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("The theme upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom">
                             <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                                 <span class="icon-copy text-success"></span>
                                 <?php eT("Copy"); ?>
@@ -108,7 +108,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                         $sMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
                     }
                     if (Permission::model()->hasGlobalPermission('templates', 'import')) :?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
+                    <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-import text-muted"></span>
                                 <?php eT("Import"); ?>
@@ -118,7 +118,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 
             <!-- export disabled -->
                     <?php if (Permission::model()->hasGlobalPermission('templates', 'export')) :?>
-                <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
+                <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>" >
                     <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                         <span class="icon-export text-muted"></span>
                         <?php eT("Export"); ?>
@@ -128,7 +128,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 
             <!-- create disabled -->
                     <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) :?>
-                <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
+                <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>" >
                     <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                         <span class="icon-copy text-muted"></span>
                         <?php eT("Copy"); ?>
