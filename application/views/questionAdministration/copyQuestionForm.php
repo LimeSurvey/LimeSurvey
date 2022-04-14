@@ -54,9 +54,9 @@
             <div id='questionbottom'>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <!-- Copy options -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="heading-copy">
-                            <a class="panel-title h4 selector--questionEdit-collapse" role="button"
+                    <div class="card">
+                        <div class="card-header bg-primary" role="tab" id="heading-copy">
+                            <a class=" selector--questionEdit-collapse" role="button"
                                data-toggle="collapse" data-parent="#accordion" href="#collapse-copy"
                                aria-expanded="false" aria-controls="collapse-copy">
                                 <?php eT("Copy options"); ?>
@@ -64,7 +64,7 @@
                         </div>
                         <div id="collapse-copy" class="panel-collapse collapse  in" role="tabpanel"
                              aria-labelledby="heading-copy">
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <div class="form-group">
                                     <label class=" form-label"
                                            for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>

@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('index');
         <div class="row">
             <div class="jumbotron" id="welcome-jumbotron">
                 <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
-                <p class="hidden-xs custom custom-margin top-25" ><?php echo PRESENTATION; // Defined in AdminController?></p>
+                <p class="d-xs-none custom custom-margin top-25" ><?php echo PRESENTATION; // Defined in AdminController?></p>
             </div>
         </div>
     <?php endif;?>
@@ -167,12 +167,12 @@ echo viewHelper::getViewTestTag('index');
 
 
     <!-- Boxes for smartphones -->
-    <div class="row d-md-none ">
-        <div class="panel panel-primary panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/surveyAdministration//listsurveys" style="opacity: 1; top: 0px;">
-            <div class="panel-heading">
-                <div class="panel-title"><?php eT('List surveys');?></div>
+    <div class="row d-sm-none d-md-none d-lg-none">
+        <div class="card card-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/surveyAdministration//listsurveys" style="opacity: 1; top: 0px;">
+            <div class="card-header bg-primary">
+                <?php eT('List surveys');?>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'>
                     <span class="icon-list" style="font-size: 4em"></span>
             <span class="sr-only"><?php eT('List surveys');?></span>
@@ -181,11 +181,11 @@ echo viewHelper::getViewTestTag('index');
             </div>
         </div>
 
-        <div class="panel panel-primary panel-clickable" id="panel-8" data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
-            <div class="panel-heading">
-                <div class="panel-title"><?php eT('Edit global settings');?></div>
+        <div class="card card-clickable" id="panel-8" data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
+            <div class="card-header bg-primary">
+                <?php eT('Edit global settings');?>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>
                     <span class="icon-settings" style="font-size: 4em"></span>
                     <span class="sr-only"><?php eT('Edit global settings');?></span>

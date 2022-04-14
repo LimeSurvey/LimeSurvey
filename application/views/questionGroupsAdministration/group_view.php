@@ -77,11 +77,11 @@
 
                     <!-- create question in this group -->
                     <div class="col-lg-3">
-                        <div class="panel panel-primary <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create', array('surveyid'=>$surveyid,'gid'=>$gid)); ?>">
-                            <div class="panel-heading">
-                                <div class="panel-title h4"><?php eT("Add new question to group");?></div>
+                        <div class="card text-center <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'card-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create', array('surveyid'=>$surveyid,'gid'=>$gid)); ?>">
+                            <div class="card-header bg-primary">
+                                <div class=""><?php eT("Add new question to group");?></div>
                             </div>
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                 <p class='btn-link'>
                                         <?php eT("Add new question to group");?>

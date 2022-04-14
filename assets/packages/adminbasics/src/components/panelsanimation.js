@@ -1,15 +1,16 @@
 /**
- * Welcome page panels animations
+ * Welcome page card animations
+ * NB: Bootstrap 5 replaced panels with cards
  */
 import LOG from './lslog';
 
 export default function panelsAnimation() {
     setTimeout(() => {
-        LOG.log('Triggering panel animation');
+        LOG.log('Triggering card animation');
         /**
-         * Panel shown one by one
+         * Card shown one by one
          */
-        document.querySelectorAll(".panel").forEach(function (e, i) {
+        document.querySelectorAll(".card").forEach(function (e, i) {
             setTimeout(() => {
                 e.animate({
                     top: '0px',
