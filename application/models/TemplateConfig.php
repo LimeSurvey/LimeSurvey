@@ -571,9 +571,9 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registerformcaptchainput'] = '  ';
         $aClassAndAttributes['class']['registersuccessblock'] = ' col-sm-12 ';
         $aClassAndAttributes['attr']['registersuccessblock'] = ' ';
-        $aClassAndAttributes['class']['registersuccesslistlabel'] = ' col-sm-4 text-right  ';
+        $aClassAndAttributes['class']['registersuccesslistlabel'] = ' col-sm-4 text-end  ';
         $aClassAndAttributes['attr']['registersuccesslistlabel'] = ' ';
-        $aClassAndAttributes['class']['registersuccesslistcontent'] = ' col-sm-8 text-left ';
+        $aClassAndAttributes['class']['registersuccesslistcontent'] = ' col-sm-8 text-start ';
         $aClassAndAttributes['attr']['registersuccesslistcontent'] = ' ';
         $aClassAndAttributes['attr']['registersuccesslist'] = ' ';
         $aClassAndAttributes['class']['registersuccesslist'] = ' list-group ';

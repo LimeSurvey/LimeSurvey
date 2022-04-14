@@ -635,7 +635,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'tid',
                 'value' => '$data->tid',
                 'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-right'),
+                'htmlOptions' => array('class' => 'hidden-xs text-end'),
             ),
 
 
@@ -712,7 +712,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'remindercount',
                 'value' => '$data->remindercount',
                 'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-right'),
+                'htmlOptions' => array('class' => 'hidden-xs text-end'),
             ),
 
             array(
@@ -729,7 +729,7 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'usesleft',
                 'value' => '$data->usesleft',
                 'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-right'),
+                'htmlOptions' => array('class' => 'hidden-xs text-end'),
             ),
             array(
                 'header' => gT('Valid from'),

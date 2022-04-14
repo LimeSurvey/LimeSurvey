@@ -24,7 +24,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
 
                 <!-- Select question group file -->
                 <div class="form-group">
-                    <label for='the_file' class=" control-label"><?php eT("Select question group file (*.lsg):");
+                    <label for='the_file' class=" form-label"><?php eT("Select question group file (*.lsg):");
                     echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024);
                     ?></label>
                         <div class="">
@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
 
                 <!-- Convert resource links -->
                 <div class="form-group">
-                    <label for='translinksfields' class="control-label col-sm-2"><?php eT("Convert resource links?"); ?></label>
+                    <label for='translinksfields' class="form-label col-sm-2"><?php eT("Convert resource links?"); ?></label>
                     <div class="col-sm-10">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'translinksfields',

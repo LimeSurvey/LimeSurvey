@@ -10,7 +10,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
     <!-- This is only visible when we're not in survey view. -->
     <div class='menubar surveybar' id='theme-options-bar'>
         <div class='row'>
-            <div class='text-right'>
+            <div class='text-end'>
 
                 <?php
                 $sThemeOptionUrl = App()->createUrl("themeOptions");

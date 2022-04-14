@@ -34,11 +34,11 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 <!-- Form submited by save button menu bar -->
 <?php echo CHtml::form(array('surveyAdministration/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
     <!-- Submit button, needs to be the first item for the script to take it -->
-    <button class="btn btn-primary btn-success hide" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
+    <button class="btn btn-primary btn-success d-none" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
 
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-10 ls-space padding left-10 right-10">
-            <div class="">
+            <div>
                 <div class="tab-pane active" id="texts" data-count="1">
                     <?php
 
@@ -58,17 +58,17 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 
                     ?>
 
-                    <div class="row">
-                        <div class="form-group col-4">
+                    <div class="col-4">
+                        <div class="mb-3">
                             <label for="surveyTitle"><?= gT('Survey title:')?></label>
                             <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">
                             <div class="form-control-static">
                                 <span class='annotation text-warning'><?php echo  gT("Required"); ?> </span>
                             </div>
                         </div>
-                        <div class="form-group col-4">
-                            <label class="control-label" for="language"><?= gT('Base language:')?></label>
-                            <div class="">
+                        <div class="mb-3">
+                            <label class="form-label" for="language"><?= gT('Base language:')?></label>
+                            <div>
                                 <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'asDropDownList' => true,
                                     'htmlOptions'=>array('style'=>"width: 100%"),
@@ -79,9 +79,9 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                 ));?>
                             </div>
                         </div>
-                        <div class="form-group col-4">
-                            <label class=" control-label" for='gsid'><?php  eT("Survey group:"); ?></label>
-                            <div class="">
+                        <div class="mb-3">
+                            <label class=" form-label" for='gsid'><?php  eT("Survey group:"); ?></label>
+                            <div>
                                 <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'asDropDownList' => true,
                                     'htmlOptions'=>array('style'=>"width: 100%"),
@@ -92,9 +92,9 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                 ));?>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label" for="administrator"><?= gT("Administrator:")?></label>
-                            <div class="">
+                        <div class="mb-3">
+                            <label class="form-label" for="administrator"><?= gT("Administrator:")?></label>
+                            <div>
                                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                     'name' => 'administrator',
                                     'value'=> 'default',
@@ -103,8 +103,8 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                             </div>
                         </div>
                         <div id="conditional-administrator-fields" style="display: none;">
-                            <div class="form-group col-4">
-                                <label class="control-label" for="admin"><?= gT("Administrator name")?></label>
+                            <div class="mb-3">
+                                <label class="form-label" for="admin"><?= gT("Administrator name")?></label>
                                 <?php echo CHtml::textField('admin', '', array(
                                     'class' => 'form-control',
                                     'id' => 'admin',
@@ -112,8 +112,8 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                     'maxlength' => '50',
                                 ));?>
                             </div>
-                            <div class="form-group col-4">
-                                <label class=" control-label" for='adminemail'><?php  eT("Administrator email"); ?></label>
+                            <div class="mb-3">
+                                <label class=" form-label" for='adminemail'><?php  eT("Administrator email"); ?></label>
                                 <?php echo CHtml::textField('adminemail', '', array(
                                     'class' => 'form-control',
                                     'id' => 'adminemail',
@@ -122,8 +122,8 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                             </div>
                         </div>
                         <!-- Submit -->
-                        <div class='form-group col-4 text-center'>
-                            <div class=''>
+                        <div class='mb-3 text-center'>
+                            <div>
                                 <input id="create-survey-submit" type='submit' class="btn btn-primary col-6" value='<?php  eT("Create survey"); ?>' />
                             </div>
                         </div>

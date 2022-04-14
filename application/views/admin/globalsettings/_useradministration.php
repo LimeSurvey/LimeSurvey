@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="form-group">
-            <label class="control-label" for='sendadmincreationemail'><?php eT("Send email to new user administrators:"); ?></label>
+            <label class="form-label" for='sendadmincreationemail'><?php eT("Send email to new user administrators:"); ?></label>
             <div>
                 <?php
                 $this->widget(
@@ -41,7 +41,7 @@
         <div class="col-sm-12 col-lg-10">
 
             <div class="form-group">
-                <label class=" control-label" for='admincreationemailsubject'><?php eT("Admin creation email subject"); ?>:</label><br>
+                <label class=" form-label" for='admincreationemailsubject'><?php eT("Admin creation email subject"); ?>:</label><br>
                 <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME} </small>
                 <div class="">
                     <input class="form-control" type='text' size='50' id='admincreationemailsubject' name='admincreationemailsubject' value="<?php echo htmlspecialchars($sAdminCreationEmailSubject); ?>" />
@@ -49,7 +49,7 @@
             </div>
             <!-- admin default email template -->
             <div class="form-group">
-                <label class=" control-label" for='admincreationemailtemplate'><?php eT("Admin creation email template"); ?>: </label><br>
+                <label class=" form-label" for='admincreationemailtemplate'><?php eT("Admin creation email template"); ?>: </label><br>
                 <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME}, {SITEADMINEMAIL}, {USERNAME}, {FULLNAME}, {LOGINURL} </small>
                 <div class="top-15">
                     <div class="htmleditor input-group">

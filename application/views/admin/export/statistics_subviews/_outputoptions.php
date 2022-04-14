@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-6 col-sm-12">
         <div class='form-group'>
-            <label for='showtextinline' class="control-label"><?php
+            <label for='showtextinline' class="form-label"><?php
                 eT("Show text responses inline:") ?></label>
             <div>
                 <?php
@@ -27,7 +27,7 @@
         <div class='form-group'>
             <?php
             $sNoncompleted = (int)Yii::app()->request->getPost('noncompleted'); ?>
-            <label class="control-label" id='noncompletedlbl' for='noncompleted' title='<?php
+            <label class="form-label" id='noncompletedlbl' for='noncompleted' title='<?php
             eT(
                 "Count stats for each question based only on the total number of responses for which the question was displayed"
             ); ?>'><?php
@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label for='charttype' class="control-label">
+            <label for='charttype' class="form-label">
                 <?php
                 eT('Chart type:'); ?>
             </label>
@@ -76,7 +76,7 @@
     </div>
     <div class="col-md-6 col-sm-12">
         <div class='form-group'>
-            <label for='stats_columns' class="control-label"><?php
+            <label for='stats_columns' class="form-label"><?php
                 eT("Number of columns:") ?></label>
             <div class="">
                 <div class="btn-group" data-toggle="buttons">
@@ -99,7 +99,7 @@
             </div>
         </div>
         <div class='form-group'>
-            <label for='graph_labels' class="control-label"><?php
+            <label for='graph_labels' class="form-label"><?php
                 eT("Graph labels:") ?></label>
             <div class="">
                 <div class="btn-group" data-toggle="buttons">

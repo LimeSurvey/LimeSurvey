@@ -122,7 +122,7 @@ echo viewHelper::getViewTestTag('index');
     ?>
     <!-- Last visited survey/question -->
     <?php if( $bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
-        <div class="row text-right">
+        <div class="row text-end">
             <div class="col-lg-9 col-sm-9  ">
                 <div class='pull-right'>
                 <?php if($showLastSurvey):?>

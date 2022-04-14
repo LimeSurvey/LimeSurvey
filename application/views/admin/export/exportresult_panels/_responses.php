@@ -6,7 +6,7 @@
     </div>
     <div class="card-body">
         <div class='form-group row'>
-            <label class="col-sm-12 control-label" for=''>
+            <label class="col-sm-12 form-label" for=''>
                 <?php eT("Export responses as:"); ?>
             </label>
             <!-- Answer codes / Full answers -->

@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="row form-group ls-space margin top-5 bottom-5">
-                <label class="control-label">
+                <label class="form-label">
                     Permission level: 
                 </label>
                 <select class="form-control" name="permissionclass" id="smk--selector--permissionclass">
@@ -26,7 +26,7 @@
                 </select>
             </div>
             <div class="row form-group ls-space margin top-5 bottom-5" id="smk--selector--surveypermission" style="display:none;">
-                <label class="control-label">
+                <label class="form-label">
                     Umfragen zur Berechtigung auswählen: 
                 </label>
                 <select class="form-control" name="entity_ids[]" multiple="multiple" id="smk--selector--entity-ids">

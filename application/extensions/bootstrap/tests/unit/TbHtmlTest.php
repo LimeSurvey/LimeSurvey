@@ -230,7 +230,7 @@ class TbHtmlTest extends TbTestCase
             'Content'
         );
         $div = $I->createNode($html, 'div');
-        $I->seeNodeCssClass($div, 'pull-right col-md-3 text-right');
+        $I->seeNodeCssClass($div, 'pull-right col-md-3 text-end');
     }
 
     public function testOpenTag()
@@ -976,7 +976,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::textFieldControlGroup('text', 'text');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=text].form-control'));
     }
 
@@ -985,7 +985,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::passwordFieldControlGroup('password', 'secret');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=password].form-control'));
     }
 
@@ -994,7 +994,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::urlFieldControlGroup('url', 'url');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=url].form-control'));
     }
 
@@ -1003,7 +1003,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::emailFieldControlGroup('email', 'email');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=email].form-control'));
     }
 
@@ -1012,7 +1012,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::numberFieldControlGroup('number', 'number');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=number].form-control'));
     }
 
@@ -1021,7 +1021,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::rangeFieldControlGroup('range', 'range');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=range].form-control'));
     }
 
@@ -1030,7 +1030,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::dateFieldControlGroup('date', 'date');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=date].form-control'));
     }
 
@@ -1039,7 +1039,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::fileFieldControlGroup('file', 'file');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=file]'));
     }
 
@@ -1048,7 +1048,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::textAreaControlGroup('textarea', 'Textarea text');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('textarea.form-control'));
     }
 
@@ -1201,8 +1201,8 @@ class TbHtmlTest extends TbTestCase
         );
         $group = $I->createNode($html, 'div.form-group');
         $I->seeNodeCssClass($group, 'has-success group');
-        $I->seeNodeChildren($group, array('label.control-label', 'div'));
-        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($group, array('label.form-label', 'div'));
+        $label = $group->filter('label.form-label');
         $I->seeNodeCssClass($label, 'label');
         $I->seeNodeAttribute($label, 'for', 'text');
         $I->seeNodeText($label, 'Label text');
@@ -1843,7 +1843,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activeTextFieldControlGroup(new Dummy, 'text');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=text].form-control'));
     }
 
@@ -1852,7 +1852,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activePasswordFieldControlGroup(new Dummy, 'password');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=password].form-control'));
     }
 
@@ -1861,7 +1861,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activeUrlFieldControlGroup(new Dummy, 'url');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=url].form-control'));
     }
 
@@ -1870,7 +1870,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activeEmailFieldControlGroup(new Dummy, 'email');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=email].form-control'));
     }
 
@@ -1879,7 +1879,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activeNumberFieldControlGroup(new Dummy, 'number');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=number].form-control'));
     }
 
@@ -1888,7 +1888,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activeRangeFieldControlGroup(new Dummy, 'range');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=range].form-control'));
     }
 
@@ -1897,7 +1897,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activeDateFieldControlGroup(new Dummy, 'date');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=date].form-control'));
     }
 
@@ -1906,7 +1906,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activeFileFieldControlGroup(new Dummy, 'file');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('input[type=file].form-control'));
     }
 
@@ -1915,7 +1915,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activeTextAreaControlGroup(new Dummy, 'textarea');
         $group = $I->createNode($html, 'div.form-group');
-        $label = $group->filter('label.control-label');
+        $label = $group->filter('label.form-label');
         $I->seeNodeChildren($label, array('textarea.form-control'));
     }
 
@@ -2073,8 +2073,8 @@ class TbHtmlTest extends TbTestCase
         );
         $group = $I->createNode($html, 'div.form-group');
         $I->seeNodeCssClass($group, 'has-error');
-        $I->seeNodeChildren($group, array('label.control-label', 'div'));
-        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($group, array('label.form-label', 'div'));
+        $label = $group->filter('label.form-label');
         $I->seeNodeCssClass($label, 'label');
         $I->seeNodeAttribute($label, 'for', 'Dummy_text');
         $I->seeNodeText($label, 'Text');

@@ -6,7 +6,7 @@
 ?>
 <div class='save-survey-form '>
     <div class='form-group save-survey-row save-survey-name'>
-        <label class='control-label col-sm-3 save-survey-label' for='savename'><?php echo gT("Saved name:") ?></label>
+        <label class='form-label col-sm-3 save-survey-label' for='savename'><?php echo gT("Saved name:") ?></label>
         <div class='col-sm-7 save-survey-input input-cell'>
           <?php
               /* using CHtml::textField because it encode (and break XSS) */
@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class='form-group save-survey-row save-survey-password'>
-        <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass'><?php echo gT("Password:") ?></label>
+        <label class='form-label col-sm-3 save-survey-label label-cell' for='savepass'><?php echo gT("Password:") ?></label>
         <div class='col-sm-7 save-survey-input input-cell'>
           <?php
               /* Never rewrite a password in HTML */
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class='form-group save-survey-row save-survey-password'>
-        <label class='control-label col-sm-3 save-survey-label label-cell' for='savepass2'><?php echo gT("Repeat password:") ?></label>
+        <label class='form-label col-sm-3 save-survey-label label-cell' for='savepass2'><?php echo gT("Repeat password:") ?></label>
         <div class='col-sm-7 save-survey-input input-cell'>
           <?php
               echo CHtml::passwordField('savepass2','',array(
@@ -44,7 +44,7 @@
         </div>
     </div>
     <div class='form-group save-survey-row save-survey-password'>
-        <label class='control-label col-sm-3 save-survey-label label-cell' for='saveemail'><?php echo gT("Your email address:") ?></label>
+        <label class='form-label col-sm-3 save-survey-label label-cell' for='saveemail'><?php echo gT("Your email address:") ?></label>
         <div class='col-sm-7 save-survey-input input-cell'>
           <?php
               echo CHtml::emailField('saveemail',Yii::app()->request->getPost('saveemail'),array(
@@ -56,7 +56,7 @@
     </div>
     <?php if($captcha) : ?>
         <div class='form-group save-survey-row save-survey-captcha'>
-            <label class='control-label col-sm-3 save-survey-label label-cell' for='loadsecurity'><?php echo gT("Security question:") ?></label>
+            <label class='form-label col-sm-3 save-survey-label label-cell' for='loadsecurity'><?php echo gT("Security question:") ?></label>
             <div class='col-sm-7 save-survey-input input-cell'>
                 <div class='input-group'>
                     <div class='input-group-addon captcha-image' >

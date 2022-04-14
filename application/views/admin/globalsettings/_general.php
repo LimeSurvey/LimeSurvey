@@ -20,7 +20,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <!-- Global sitename -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='sitename'>
+                <label class="col-sm-12 form-label" for='sitename'>
                     <?php eT("Site name:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
                 <div class="col-sm-12">
@@ -31,7 +31,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <!-- Default Template -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for="defaulttheme">
+                <label class="col-sm-12 form-label" for="defaulttheme">
                 <?php eT("Default theme:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?>
                 </label>
                 <div class="col-sm-12">
@@ -48,7 +48,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <!-- Autocreate group and question -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for="createsample">
+                <label class="col-sm-12 form-label" for="createsample">
                     <?php eT("Create example question group and question:");?>
                 </label>
                 <div class="col-sm-12">
@@ -69,7 +69,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <!-- Administrative Template -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for="admintheme">
+                <label class="col-sm-12 form-label" for="admintheme">
                 <?php eT("Administration theme:"); ?>
                 </label>
                 <div class="col-sm-12">
@@ -82,7 +82,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                     </select>
                 </div>
                 <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
-                <div class="col-sm-12 control-label ">
+                <div class="col-sm-12 form-label ">
                     <span class="hint">
                     <?php eT("You can add your custom themes in upload/admintheme");?>
                     </span>
@@ -92,7 +92,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
       </div>
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='timeadjust'>
+                <label class="col-sm-12 form-label" for='timeadjust'>
                     <?php eT("Time difference (in hours):"); ?>
                 </label>
                 <div class="col-sm-4">
@@ -111,7 +111,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <?php if( isset(Yii::app()->session->connectionID) ): ?>
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12" >
-                <label class="col-sm-12 control-label" for='iSessionExpirationTime'>
+                <label class="col-sm-12 form-label" for='iSessionExpirationTime'>
                     <?php eT("Session lifetime for surveys (seconds):"); ?>
                 </label>
                 <div class="col-sm-12">
@@ -122,7 +122,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <?php endif; ?>
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='ipInfoDbAPIKey'>
+                <label class="col-sm-12 form-label" for='ipInfoDbAPIKey'>
                 <?php eT("IP Info DB API Key:"); ?>
                 </label>
                 <div class="col-sm-12">
@@ -132,7 +132,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='googleMapsAPIKey'>
+                <label class="col-sm-12 form-label" for='googleMapsAPIKey'>
                 <?php eT("Google Maps API key:"); ?>
                 </label>
                 <div class="col-sm-12">
@@ -143,7 +143,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
 
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='googleanalyticsapikey'>
+                <label class="col-sm-12 form-label" for='googleanalyticsapikey'>
                 <?php eT("Google Analytics Tracking ID:"); ?>
                 </label>
                 <div class="col-sm-12">
@@ -153,7 +153,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='googletranslateapikey'>
+                <label class="col-sm-12 form-label" for='googletranslateapikey'>
                 <?php eT("Google Translate API key:"); ?>
                 </label>
                 <div class="col-sm-12">
@@ -163,7 +163,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         </div>
         <div class="row ls-space margin top-10">
             <div class='form-group col-xs-12'>
-                <label class='col-sm-12 control-label' for='characterset'>
+                <label class='col-sm-12 form-label' for='characterset'>
                     <?php eT("Character set for file import/export:") ?>
                 </label>
                 <div class='col-sm-12'>
@@ -189,7 +189,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
        <!-- Maintenance mode -->
        <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for="maintenancemode" title="<?php echo gT('Maintenance modes: 
+                <label class="col-sm-12 form-label" for="maintenancemode" title="<?php echo gT('Maintenance modes: 
 Off
 Soft lock - participants are able to finish started surveys, no new participants are allowed
 Full lock - none of participants are allowed to take survey, even if they already started to take it'); ?> ">
@@ -213,7 +213,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
          <!-- Refresh assets -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='refreshassets'>
+                <label class="col-sm-12 form-label" for='refreshassets'>
                 <?php eT("Clear assets cache:"); ?> <small>(<?php echo  getGlobalSetting('customassetversionnumber');?>)</small>
                 </label>
                 <div class="col-sm-12">
@@ -225,7 +225,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default Editor mode -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='defaulthtmleditormode'>
+                <label class="col-sm-12 form-label" for='defaulthtmleditormode'>
                 <?php eT("Default HTML editor mode:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
                 <div class="col-sm-12">
@@ -247,7 +247,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <?php /* This setting is just remaining here for campatibility reasons. It is not yet implemented into the new admmin panel */ ?>
         <div class="row" style="display:none">
             <div class='form-group'>
-                <label class='col-sm-12 control-label' for='sideMenuBehaviour'>
+                <label class='col-sm-12 form-label' for='sideMenuBehaviour'>
                     <?php eT("Side-menu behaviour:"); ?>
                 </label>
                 <div class='col-sm-4'>
@@ -268,7 +268,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default question type selector mode -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='defaultquestionselectormode'>
+                <label class="col-sm-12 form-label" for='defaultquestionselectormode'>
                 <?php eT("Question type selector:"); echo((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
                 <div class="col-sm-12">
@@ -288,7 +288,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default theme editor mode -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='defaultthemeteeditormode'>
+                <label class="col-sm-12 form-label" for='defaultthemeteeditormode'>
                     <?php eT("Template editor:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
                 <div class="col-sm-12">
@@ -308,7 +308,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default theme editor mode -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='javascriptdebugbcknd'>
+                <label class="col-sm-12 form-label" for='javascriptdebugbcknd'>
                     <?php eT("JS-Debug mode [Backend]:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
                 <div class="col-sm-12">
@@ -326,7 +326,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Default theme editor mode -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
-                <label class="col-sm-12 control-label" for='javascriptdebugfrntnd'>
+                <label class="col-sm-12 form-label" for='javascriptdebugfrntnd'>
                     <?php eT("JS-Debug mode [Frontend]:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
                 <div class="col-sm-12">
@@ -346,7 +346,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
             <div class="row ls-space margin top-10">
                 <div class="form-group col-xs-12">
-                    <label class="col-sm-12 control-label" for='allow_unstable_extension_update'>
+                    <label class="col-sm-12 form-label" for='allow_unstable_extension_update'>
                         <?php eT('Allow unstable extension updates:'); ?>
                     </label>
                     <div class="col-sm-12">
@@ -359,7 +359,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                             ));
                         ?>
                     </div>
-                    <div class="col-sm-12 control-label ">
+                    <div class="col-sm-12 form-label ">
                         <span class="hint">
                             <?php eT("Enabling unstable updates will allow you to try alpha and beta versions of extensions. Talk to the extension author for more information.");?>
                         </span>

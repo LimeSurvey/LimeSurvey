@@ -11,7 +11,7 @@
 <form class="custom-modal-datas  form-horizontal">
     <!-- select group -->
     <div class="form-group">
-        <label class="control-label col-sm-4" for="group_gid"><?php et('Group:'); ?></label>
+        <label class="form-label col-sm-4" for="group_gid"><?php et('Group:'); ?></label>
         <div class="col-sm-8">
             <select name="group_gid" class="form-control custom-data" id="gid">
                 <?php foreach($model->survey->groups as $group): ?>

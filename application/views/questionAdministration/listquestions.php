@@ -16,9 +16,9 @@ $baseLanguage = $oSurvey->language;
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3 class="ls-flex ls-flex-row">
         <?php if(App()->request->getParam('group_name')!=''):?>
-            <div class="ls-flex-item text-left"><?php eT('Questions in group: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></div>
+            <div class="ls-flex-item text-start"><?php eT('Questions in group: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></div>
         <?php else:?>
-            <div class="ls-flex-item text-left"><?php eT('Questions in this survey'); ?></div>
+            <div class="ls-flex-item text-start"><?php eT('Questions in this survey'); ?></div>
         <?php endif;?>
     </h3>
 
@@ -29,7 +29,7 @@ $baseLanguage = $oSurvey->language;
             <!-- Search Box -->
             <div class="row">
                 <div class="col-lg-12 ls-flex ls-flex-row">
-                    <div class="ls-flex-item text-left">
+                    <div class="ls-flex-item text-start">
                         <?php App()->getController()->renderPartial(
                             '/admin/survey/surveybar_addgroupquestion',
                             [
@@ -39,7 +39,7 @@ $baseLanguage = $oSurvey->language;
                             ]
                         ); ?>
                     </div>
-                    <div class="ls-flex-item form  text-right">
+                    <div class="ls-flex-item form  text-end">
                         <!-- Begin Form -->
                         <?php $form=$this->beginWidget('CActiveForm', array(
                             'action' => App()->createUrl(
@@ -57,14 +57,14 @@ $baseLanguage = $oSurvey->language;
                                 <?php echo $form->label(
                                     $model,
                                     'search',
-                                    array('label'=>gT('Search:'),'class'=>'control-label' )
+                                    array('label'=>gT('Search:'),'class'=>'form-label' )
                                 ); ?>
                                 <?php echo $form->textField($model, 'title', array('class'=>'form-control')); ?>
                             </div>
 
                             <!-- select group -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
+                                <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'form-label')); ?>
                                     <select name="gid" class="form-control">
                                         <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($oSurvey->groups as $group): ?>

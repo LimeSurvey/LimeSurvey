@@ -12,7 +12,7 @@ if($oQuotaMember->question):
     <td>
         <?php echo viewHelper::flatEllipsizeText($data['answer_title'],true,80,'...',0.6); ?>
     </td>
-    <td class="text-right">
+    <td class="text-end">
         <?php $this->renderPartial('/admin/quotas/viewquotas_quota_members_actions',
             array(
                 'oSurvey'=>$oQuotaMember->survey,

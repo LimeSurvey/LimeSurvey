@@ -8,7 +8,7 @@
 ?>
 <div class="form-group">
 
-    <label class=" control-label"
+    <label class=" form-label"
            for='surveyPreview_require_Auth'><?php eT("Survey preview only for administration users:"); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -22,7 +22,7 @@
 </div>
 
 <div class="form-group">
-    <label class=" control-label" for='filterxsshtml'><?php eT("Filter HTML for XSS:");
+    <label class=" form-label" for='filterxsshtml'><?php eT("Filter HTML for XSS:");
         echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -41,7 +41,7 @@
 </div>
 
 <div class="form-group">
-    <label class=" control-label"
+    <label class=" form-label"
            for='disablescriptwithxss'><?php eT("Disable question script for XSS restricted user:"); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -61,7 +61,7 @@
 
 
 <div class="form-group">
-    <label class=" control-label"
+    <label class=" form-label"
            for='usercontrolSameGroupPolicy'><?php eT("Group member can only see own group:"); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -75,7 +75,7 @@
 </div>
 
 <div class="form-group">
-    <label class=" control-label" for="x_frame_options">
+    <label class=" form-label" for="x_frame_options">
         <?php if (Yii::app()->getConfig("demoMode") == true) { ?>
             <span class="text-danger asterisk"></span>
         <?php }; ?>
@@ -94,7 +94,7 @@
 </div>
 
 <div class="form-group">
-    <label class=" control-label" for="force_ssl">
+    <label class=" form-label" for="force_ssl">
         <?php if (Yii::app()->getConfig("demoMode") == true) { ?>
             <span class="text-danger asterisk"></span>
         <?php }; ?>
@@ -122,7 +122,7 @@
         <h3> <?= gt('Brute-force protection for administration') ?></h3>
 
         <div class="form-group">
-            <label class="control-label" for='loginIpWhitelist'>
+            <label class="form-label" for='loginIpWhitelist'>
                 <?php eT("IP whitelist:"); ?>
             </label>
             <textarea class="form-control" id='loginIpWhitelist'
@@ -132,7 +132,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label" for='maxLoginAttempt'>
+            <label class="form-label" for='maxLoginAttempt'>
                 <?php eT("Maximum number of attempts:"); ?>
             </label>
             <div class="">
@@ -141,7 +141,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" for='timeOutTime'>
+            <label class="form-label" for='timeOutTime'>
                 <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
             </label>
             <div class="">
@@ -156,7 +156,7 @@
         <h3> <?= gt('Brute-force protection for survey participation') ?></h3>
 
         <div class="form-group">
-            <label class="control-label" for='tokenIpWhitelist'>
+            <label class="form-label" for='tokenIpWhitelist'>
                 <?php eT("IP whitelist:"); ?>
             </label>
             <textarea class="form-control" id='tokenIpWhitelist'
@@ -166,7 +166,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label" for='maxLoginAttemptParticipants'>
+            <label class="form-label" for='maxLoginAttemptParticipants'>
                 <?php eT("Maximum number of attempts:"); ?>
             </label>
             <div class="">
@@ -175,7 +175,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" for='timeOutParticipants'>
+            <label class="form-label" for='timeOutParticipants'>
                 <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
             </label>
             <div class="">
@@ -185,7 +185,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label" for='tokenIpWhitelist'>
+            <label class="form-label" for='tokenIpWhitelist'>
                 <?php eT("Reset failed login attempts of participants to make survey accessible again:"); ?>
             </label>
             <div class="">

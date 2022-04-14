@@ -34,13 +34,13 @@ Yii::app()->getController()->renderPartial(
         );
     ?>
         <div class='form-group'>
-            <label class='control-label '>
+            <label class='form-label '>
                 <?php eT('First name:'); ?>
             </label>
             <div class=''>
                 <?=$form->textField($model, 'firstname')?>
             </div>
-            <label class='control-label '>
+            <label class='form-label '>
                 <?php eT('Last name:'); ?>
             </label>
             <div class=''>
@@ -48,7 +48,7 @@ Yii::app()->getController()->renderPartial(
             </div>
         </div>
         <div class='form-group'>
-            <label class='control-label '>
+            <label class='form-label '>
                 <?php eT('E-mail:'); ?>
             </label>
             <div class='0'>
@@ -56,13 +56,13 @@ Yii::app()->getController()->renderPartial(
             </div>
         </div>
         <div class='form-group'>
-            <label class='control-label '><?php eT("Language:"); ?></label>
+            <label class='form-label '><?php eT("Language:"); ?></label>
             <div class=''>
                 <?=$form->dropDownList($model, 'language', $model->languageOptions, ['empty' => gT('Select language...')])?>
             </div>
         </div>
         <div class='form-group'>
-            <label class='control-label '><?php eT("Blacklist user:"); ?></label>
+            <label class='form-label '><?php eT("Blacklist user:"); ?></label>
             <div class=''>
                 &nbsp;
                 <?php $this->widget(
@@ -88,7 +88,7 @@ Yii::app()->getController()->renderPartial(
         <?php if ($model->isOwnerOrSuperAdmin()): ?>
         <?php  ?>
             <div class='form-group'>
-                <label class='control-label '><?php eT("Owner:"); ?></label>
+                <label class='form-label '><?php eT("Owner:"); ?></label>
                 <div class=''>
                 <?php
                     // When we add a new user, owner is default to current user

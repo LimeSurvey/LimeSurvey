@@ -88,7 +88,7 @@ $codeids = '';
         </table>
 
         <!-- Action Buttons Quick Add and Save Changes -->
-        <div class="action-buttons text-right">
+        <div class="action-buttons text-end">
             <?php $i++;
             if (Permission::model()->hasGlobalPermission('labelsets', 'update')) { ?>
                 <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-default " data-toggle="modal" data-target="#quickadd">

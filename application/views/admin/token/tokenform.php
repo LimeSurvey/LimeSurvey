@@ -39,7 +39,8 @@ foreach ($tokendata as $Key => $Value) {
     )); ?>
       <!-- Tabs -->
       <?php if( count($attrfieldnames) > 0 ):?>
-        <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
+        <nav>
+            <div class="nav nav-tabs" id="edit-survey-text-element-language-selection">
 
           <!-- Common  -->
           <li role="presentation" class="nav-item">
@@ -62,10 +63,9 @@ foreach ($tokendata as $Key => $Value) {
         <div id="general" class="tab-pane fade show active">
             <div class="ls-flex-column ls-space padding left-5 right-35 col-md-6">
             <!-- General -->
-                <!-- ID,Completed  -->
                 <div class="form-group">
                 <!-- ID  -->
-                <label class=" control-label">ID:</label>
+                <label class="form-label">ID:</label>
                 <div class="">
                     <p class="form-control-static">
                     <?php
@@ -87,73 +87,80 @@ foreach ($tokendata as $Key => $Value) {
                 -->
                 <?php $sCointainerClass = ($oSurvey->anonymized != 'Y') ? 'yes-no-date-container' : 'yes-no-container'; ?>
                 <!-- Completed -->
-                <label class=" control-label" for='completed'>
-                    <?php eT("Completed?"); ?>
-                </label>
-                <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>" id="completed-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
-                    <div class="row">
-                    <?php if ($oSurvey->anonymized != 'Y'):?>
+                <div id="completed-container" class="">
+                    <label class="form-label" for='completed'>
+                        <?php eT("Completed?"); ?>
+                    </label>
+                    <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>"
+                         id="completed-yes-no-date-container"
+                         data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                        <div class="row">
+                        <?php if ($oSurvey->anonymized != 'Y'):?>
 
-                        <?php
-                        $bCompletedValue = "0";
-                        if (isset($completed) && $completed != 'N')
-                        {
-                            $completedDBFormat     = $completed;
-                            $bCompletedValue       = "1";
-                            $completed             = convertToGlobalSettingFormat($completed, true);
-                        }
-                        ?>
+                           <?php
+                            $bCompletedValue = "0";
+                            if (isset($completed) && $completed != 'N')
+                            {
+                                $completedDBFormat     = $completed;
+                                $bCompletedValue       = "1";
+                                $completed             = convertToGlobalSettingFormat($completed, true);
+                            }
+                            ?>
 
-                        <div class="">
-                        <?php
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => "completed-switch",
-                            'id'=>"completed-switch",
-                            'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
-                            'value' => $bCompletedValue,
-                            'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
-                        ?>
-                        </div>
-                    <?php else: ?>
-                        <div class="">
-                        <?php
-                        $completedDBFormat = $completed;
-                        $bCompletedValue   = (isset($completed) && $completed != 'N') ? "1" : "0";
-                        $completed         = (isset($completed) && $completed != 'N') ? 'Y' : 'N';
-                        ?>
-
-                        <?php
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => "completed-switch",
-                            'id'=>"completed-switch",
-                            'htmlOptions'=>array('class'=>"YesNoSwitch action_toggle_bootstrap_switch"),
-                            'value' => $bCompletedValue,
-                            'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
-                        ?>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php if ($oSurvey->anonymized != 'Y'):?>
-                        <div class="">
-                            <div id="sent-date-container" class="date-container"  <?php if (!$bCompletedValue):?>style="display: none;"<?php endif; ?>>
-                            <div id="completed-date_datetimepicker" class="input-group date">
-                                <input class="YesNoDatePicker form-control" id="completed-date" type="text" value="<?php echo isset($completed) ? $completed : ''?>" name="completed-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Completed radio toggle button group">
+                                <input type="radio" class="btn-check" name="btnradio" id="completed-switch-yes" autocomplete="off" checked>
+                                <label class="btn btn-outline-success" for="completed-switch-yes">Yes</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="completed-switch-no" autocomplete="off">
+                                <label class="btn btn-outline-danger" for="completed-switch-no">No</label>
+                            <!-- <?php
+                              //  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                              //  'name' => "completed-switch",
+                              //  'id'=>"completed-switch",
+                              //  'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
+                              //  'value' => $bCompletedValue,
+                              //  'onLabel'=>gT('Yes'),
+                              //  'offLabel' => gT('No')));
+                            ?> -->
                             </div>
+                        <?php else: ?>
+                            <div class="">
+                            <?php
+                            $completedDBFormat = $completed;
+                            $bCompletedValue   = (isset($completed) && $completed != 'N') ? "1" : "0";
+                            $completed         = (isset($completed) && $completed != 'N') ? 'Y' : 'N';
+                            ?>
+
+                            <!--<?php
+                                //$this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                //'name' => "completed-switch",
+                                //'id'=>"completed-switch",
+                                //'htmlOptions'=>array('class'=>"YesNoSwitch action_toggle_bootstrap_switch"),
+                                //'value' => $bCompletedValue,
+                                //'onLabel'=>gT('Yes'),
+                                //'offLabel' => gT('No')));
+                            ?> -->
                             </div>
-                        </div>
                         <?php endif; ?>
-                    </div>
-                    <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)) {echo $completed; } else {echo "N"; }?>" />
-                </div>
 
+                        <?php if ($oSurvey->anonymized != 'Y'):?>
+                            <div class="">
+                                <div id="sent-date-container" class="date-container"  <?php if (!$bCompletedValue):?>style="display: none;"<?php endif; ?>>
+                                <div id="completed-date_datetimepicker" class="input-group date">
+                                    <input class="YesNoDatePicker form-control" id="completed-date" type="text" value="<?php echo isset($completed) ? $completed : ''?>" name="completed-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                </div>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                       <!-- <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)) {echo $completed; } else {echo "N"; }?>" /> -->
+                    </div>
+                </div>
             </div>
 
             <!-- First name, Last name -->            
             <div class="form-group">
-                <label class=" control-label" for='firstname'>
+                <label class="form-label" for='firstname'>
                 <?php eT("First name:"); ?>
                 </label>
                 <div class="">
@@ -164,7 +171,7 @@ foreach ($tokendata as $Key => $Value) {
                 </div>
             </div>
             <div class="form-group">
-                <label class=" control-label" for='lastname'>
+                <label class="form-label" for='lastname'>
                 <?php eT("Last name:"); ?>
                 </label>
                 <div class="">
@@ -175,10 +182,9 @@ foreach ($tokendata as $Key => $Value) {
                 </div>
             </div>
 
-
             <!-- Token, language -->
             <div class="form-group">
-                <label class=" control-label" for='token'>
+                <label class="form-label" for='token'>
                 <?php eT("Access code:"); ?>
                 </label>
                 <div class="">
@@ -193,7 +199,7 @@ foreach ($tokendata as $Key => $Value) {
                 </div>
             </div>
             <div class="form-group">
-                <label class=" control-label" for='language'>
+                <label class="form-label" for='language'>
                 <?php eT("Language:"); ?>
                 </label>
                 <div class="">
@@ -205,7 +211,7 @@ foreach ($tokendata as $Key => $Value) {
 
             <!-- Email, Email Status  -->
             <div class="form-group">
-            <label class=" control-label" for='email'>
+            <label class="form-label" for='email'>
                 <?php eT("Email:"); ?>
             </label>
             <div class="">
@@ -220,7 +226,7 @@ foreach ($tokendata as $Key => $Value) {
 
             <!-- Email Status -->
             <div class="form-group">
-            <label class=" control-label" for='emailstatus'>
+            <label class="form-label" for='emailstatus'>
                 <?php eT("Email status:"); ?>
             </label>
             <div class="">
@@ -236,7 +242,7 @@ foreach ($tokendata as $Key => $Value) {
             <!-- Invitation sent, Reminder sent -->
             <div class="form-group">
             <!-- Invitation sent -->
-            <label class=" control-label" for='sent'>
+            <label class="form-label" for='sent'>
                 <?php eT("Invitation sent?"); ?>
             </label>
             <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>" id="sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
@@ -265,15 +271,21 @@ foreach ($tokendata as $Key => $Value) {
                         }
                     ?>
 
-                    <?php
-                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => "sent-switch",
-                        'id'=>"sent-switch",
-                        'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
-                        'value' => $bSwitchValue,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel' => gT('No')));
-                    ?>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Invitation sent radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="invitation-sent-yes" autocomplete="off" checked>
+                        <label class="btn btn-outline-success" for="invitation-sent-yes">Yes</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="invitation-sent-no" autocomplete="off">
+                        <label class="btn btn-outline-danger" for="invitation-sent-no">No</label>
+                    </div>
+                   <!-- <?php
+                      //  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                      //  'name' => "sent-switch",
+                      //  'id'=>"sent-switch",
+                      //  'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
+                      //  'value' => $bSwitchValue,
+                      //  'onLabel'=>gT('Yes'),
+                      //  'offLabel' => gT('No')));
+                    ?> -->
                     <?php else:?>
                         <?php
                             $sentDBValue = $sent;
@@ -304,12 +316,12 @@ foreach ($tokendata as $Key => $Value) {
                     </div>
                 </div>
                 </div>
-                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo "N"; }?>" />
+                <!-- <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo "N"; }?>" /> -->
             </div>
             </div>
             <div class="form-group">
             <!-- Reminder sent -->
-            <label class=" control-label" for='remindersent'>
+            <label class="form-label" for='remindersent'>
                 <?php eT("Reminder sent?"); ?>
             </label>
             <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>" id="remind-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
@@ -318,15 +330,22 @@ foreach ($tokendata as $Key => $Value) {
                 <div class="">
                     <?php if ($oSurvey->anonymized != 'Y') {
                         ?>
-                    <?php
-                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => "remind-switch",
-                        'id'=>"remind-switch",
-                        'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
-                        'value' => $bRemindSwitchValue,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel' => gT('No')));
-                    ?>
+
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Reminder sent radio toggle button group" id="remind-switch">
+                            <input type="radio" class="btn-check" name="btnradio" id="reminder-sent-yes" autocomplete="off" checked>
+                            <label class="btn btn-outline-success" for="reminder-sent-yes">Yes</label>
+                            <input type="radio" class="btn-check" name="btnradio" id="reminder-sent-no" autocomplete="off">
+                            <label class="btn btn-outline-danger" for="reminder-sent-no">No</label>
+                        </div>
+                   <!-- <?php
+                        //$this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        //'name' => "remind-switch",
+                        //'id'=>"remind-switch",
+                        //'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
+                        //'value' => $bRemindSwitchValue,
+                        //'onLabel'=>gT('Yes'),
+                        //'offLabel' => gT('No')));
+                    ?> -->
                     <?php } else { ?>
                         <?php
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -350,30 +369,26 @@ foreach ($tokendata as $Key => $Value) {
                     </div>
                 </div>
                 </div>
-                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent) && $remindersent!='N') {echo $remindersent; } else {echo "N"; }?>" />
+                <!-- <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent) && $remindersent!='N') {echo $remindersent; } else {echo "N"; }?>" /> -->
             </div>
                 
             <!-- Reminder count, Uses left -->
             <div class="form-group">
                 <!-- Reminder count -->
                 <?php if ($token_subaction == "edit"): ?>
-                <label class=" control-label" for='remindercount'>
+                <label class="form-label" for='remindercount'>
                     <?php eT("Reminder count:"); ?>
                 </label>
-                <div class="">
-                    <input class='form-control' type='number' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>" />
-                </div>
+                <input class='form-control' type='number' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>" />
                 <?php endif; ?>
             </div>
 
-                <!-- Uses left -->
+            <!-- Uses left -->
             <div class="form-group">
-                <label class=" control-label" for='usesleft'>
+                <label class="form-label" for='usesleft'>
                 <?php eT("Uses left:"); ?>
                 </label>
-                <div class="">
                 <input class='form-control' type='number' size='20' id='usesleft' name='usesleft' value="<?php if (isset($usesleft)) {echo $usesleft; } else {echo " 1 "; }?>" />
-                </div>
             </div>
             </div>
         </div>
@@ -394,7 +409,7 @@ foreach ($tokendata as $Key => $Value) {
             ?>
 
             <!-- From -->
-            <label class=" control-label" for='validfrom'>
+            <label class="form-label" for='validfrom'>
                 <?php eT("Valid from"); ?>:</label>
             <div class=" has-feedback">
                 <div id="validfrom_datetimepicker" class="input-group date">
@@ -406,10 +421,10 @@ foreach ($tokendata as $Key => $Value) {
 
             <div class="form-group">
             <!-- To -->
-            <label class=" control-label" for='validuntil'>
+            <label class="form-label" for='validuntil'>
                 <?php eT('Until:'); ?>
             </label>
-            <div class=" has-feedback">
+            <div class="has-feedback">
                 <div id="validuntil_datetimepicker" class="input-group date">
                 <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : ''?>" name="validuntil" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
@@ -424,7 +439,7 @@ foreach ($tokendata as $Key => $Value) {
         <!-- Attributes -->
         <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
             <div class="form-group">
-                <label class=" control-label" for='<?php echo $attr_name; ?>'>
+                <label class="form-label" for='<?php echo $attr_name; ?>'>
                     <?php echo $attr_description['description'].($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:
                 </label>
                 <div class="">

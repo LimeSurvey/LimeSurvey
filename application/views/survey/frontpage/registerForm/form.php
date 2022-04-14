@@ -1,27 +1,27 @@
 <input type="hidden" name="lang" value="<?php echo $sLanguage; ?>" id="register_lang" />
 <div class=''>
     <div class='form-group'>
-        <label for='register_firstname' class='control-label col-sm-5'><?php eT("First name:"); ?></label>
+        <label for='register_firstname' class='form-label col-sm-5'><?php eT("First name:"); ?></label>
         <div class="col-sm-7">
             <?php echo CHtml::textField('register_firstname', $sFirstName,array('id'=>'register_firstname','class'=>'form-control')); ?>
         </div>
     </div>
 
     <div class='form-group'>
-        <label for='register_lastname' class='control-label col-sm-5'><?php eT("Last name:"); ?></label>
+        <label for='register_lastname' class='form-label col-sm-5'><?php eT("Last name:"); ?></label>
         <div class="col-sm-7">
             <?php echo CHtml::textField('register_lastname', $sLastName,array('id'=>'register_lastname','class'=>'form-control')); ?>
         </div>
     </div>
     <div class='form-group'>
-        <label for='register_email' class='control-label col-sm-5'><?php eT("Email address:"); ?><?php $this->renderPartial('/survey/system/required',array());?></label>
+        <label for='register_email' class='form-label col-sm-5'><?php eT("Email address:"); ?><?php $this->renderPartial('/survey/system/required',array());?></label>
         <div class="col-sm-7">
             <?php echo CHtml::textField('register_email', $sEmail,array('id'=>'register_email','class'=>'form-control input-sm','required'=>true)); ?>
         </div>
     </div>
 <?php foreach($aExtraAttributes as $key=>$aExtraAttribute){ ?>
     <div class='form-group'>
-        <label for="register_<?php echo $key; ?>" class='control-label col-sm-5'><?php echo $aExtraAttribute['caption']; ?><?php echo $aExtraAttribute['mandatory'] == 'Y' ? $this->renderPartial('/survey/system/required',array()): ""; ?></label>
+        <label for="register_<?php echo $key; ?>" class='form-label col-sm-5'><?php echo $aExtraAttribute['caption']; ?><?php echo $aExtraAttribute['mandatory'] == 'Y' ? $this->renderPartial('/survey/system/required',array()): ""; ?></label>
         <div class="col-sm-7">
             <?php echo CHtml::textField("register_{$key}", $aAttribute[$key],array('id'=>"register_{$key}",'class'=>'form-control input-sm')); ?>
         </div>
@@ -29,10 +29,10 @@
     <?php } ?>
 <?php if($bCaptcha){ ?>
     <div class='form-group captcha-item'>
-        <label class='control-label col-sm-5' for='loadsecurity'><?php echo gT("Please solve the following equation:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
+        <label class='form-label col-sm-5' for='loadsecurity'><?php echo gT("Please solve the following equation:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
         <div class='col-sm-7'>
             <div class='input-group'>
-                <div class='control-label captcha-widget' >
+                <div class='form-label captcha-widget' >
                       <?php $this->widget('CCaptcha',array(
                           'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
                           'buttonType' => 'button',

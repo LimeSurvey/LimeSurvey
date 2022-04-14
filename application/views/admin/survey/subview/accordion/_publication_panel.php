@@ -27,7 +27,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
 
             <!-- Start date/time -->
             <div class="form-group">
-                <label class=" control-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
+                <label class=" form-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
                 <div class=" has-feedback">
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "startdate",
@@ -60,7 +60,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
 
             <!-- Expiry date/time -->
             <div class="form-group">
-                <label class=" control-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
+                <label class=" form-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
                 <div class=" has-feedback">
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "expires",
@@ -95,7 +95,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
         <div class="col-sm-12 col-md-6">
             <!-- List survey publicly -->
             <div class="form-group">
-                <label class=" control-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
+                <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'listpublic',
@@ -107,7 +107,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             </div>
             <!-- Set cookie to prevent repeated participation -->
             <div class="form-group">
-                <label class=" control-label" for='usecookie'><?php  eT("Set cookie to prevent repeated participation:"); ?></label>
+                <label class=" form-label" for='usecookie'><?php  eT("Set cookie to prevent repeated participation:"); ?></label>
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'usecookie',
@@ -129,7 +129,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             
             ?>
             <div class="form-group">
-                <label class=" control-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
+                <label class=" form-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'usecaptcha_surveyaccess',
@@ -142,7 +142,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
 
             <!-- Use CAPTCHA for registration -->
             <div class="form-group">
-                <label class=" control-label" for='usecaptcha_registration'><?php  eT("Use CAPTCHA for registration:"); ?></label>
+                <label class=" form-label" for='usecaptcha_registration'><?php  eT("Use CAPTCHA for registration:"); ?></label>
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'usecaptcha_registration',
@@ -155,7 +155,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
 
             <!-- Use CAPTCHA for save and load -->
             <div class="form-group">
-                <label class=" control-label" for='usecaptcha_saveandload'><?php  eT("Use CAPTCHA for save and load:"); ?></label>
+                <label class=" form-label" for='usecaptcha_saveandload'><?php  eT("Use CAPTCHA for save and load:"); ?></label>
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'usecaptcha_saveandload',

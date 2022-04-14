@@ -62,7 +62,7 @@ foreach ($data as $row) {
         </a>
     </div>
 <?php } ?>
-<div class='statisticscolumndata col-sm-11 text-left' >
+<div class='statisticscolumndata col-sm-11 text-start' >
     <?php echo sanitize_html_string($row['value']) ?>
 </div>
 

@@ -811,10 +811,10 @@ class userstatistics_helper
                         $statisticsoutput .= "\n<table class='table table-striped statisticstable' >\n"
                             . "\t<thead><tr><th colspan='2' class='text-center'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
                             . "</th></tr>\n"
-                            . "\t<tr><th colspan='2' class='text-left'><strong>$qquestion</strong></th></tr>\n"
-                            . "\t<tr>\n\t\t<th width='50%' class='text-right'><strong>"
+                            . "\t<tr><th colspan='2' class='text-start'><strong>$qquestion</strong></th></tr>\n"
+                            . "\t<tr>\n\t\t<th width='50%' class='text-end'><strong>"
                             . gT("Calculation") . "</strong></th>\n"
-                            . "\t\t<th width='50%' class='text-right'><strong>"
+                            . "\t\t<th width='50%' class='text-end'><strong>"
                             . gT("Result") . "</strong></th>\n"
                             . "\t</tr></thead>\n";
 
@@ -1434,7 +1434,7 @@ class userstatistics_helper
 
                 //question title
                 . $outputs['qquestion'] . "</strong></th></tr>\n"
-                . "\t<tr>\n\t\t<th width='50%' class='text-left'>";
+                . "\t<tr>\n\t\t<th width='50%' class='text-start'>";
                 break;
             default:
                 break;
@@ -1657,9 +1657,9 @@ class userstatistics_helper
                 }
 
                 $statisticsoutput .= "</th>\n"
-                . "\t\t<th width='25%' class='text-right'>"
+                . "\t\t<th width='25%' class='text-end'>"
                 . "<strong>" . gT("Count") . "</strong></th>\n"
-                . "\t\t<th width='25%'class='text-right'>"
+                . "\t\t<th width='25%'class='text-end'>"
                 . "<strong>" . gT("Percentage") . "</strong></th>\n"
                 . "\t</tr></thead>\n";
 
@@ -1697,11 +1697,11 @@ class userstatistics_helper
                             case 'html':
                                 //four columns
                                 $statisticsoutput .= "<strong>" . gT("Answer") . "</strong></th>\n"
-                                . "\t\t<th width='15%' class='text-right'>"
+                                . "\t\t<th width='15%' class='text-end'>"
                                 . "<strong>" . gT("Count") . "</strong></th>\n"
-                                . "\t\t<th width='20%'class='text-right'>"
+                                . "\t\t<th width='20%'class='text-end'>"
                                 . "<strong>" . gT("Percentage") . "</strong></th>\n"
-                                . "\t\t<th width='15%'class='text-right'>"
+                                . "\t\t<th width='15%'class='text-end'>"
                                 . "<strong>" . gT("Sum") . "</strong></th>\n"
                                 . "\t</tr></thead>\n";
                                 break;
@@ -1727,9 +1727,9 @@ class userstatistics_helper
                             case 'html':
                                 //three columns
                                 $statisticsoutput .= "<strong>" . gT("Answer") . "</strong></td>\n"
-                                . "\t\t<th width='25%'class='text-right'>"
+                                . "\t\t<th width='25%'class='text-end'>"
                                 . "<strong>" . gT("Count") . "</strong></th>\n"
-                                . "\t\t<th width='25%'class='text-right'>"
+                                . "\t\t<th width='25%'class='text-end'>"
                                 . "<strong>" . gT("Percentage") . "</strong></th>\n"
                                 . "\t</tr></thead>\n";
                                 break;
@@ -1764,9 +1764,9 @@ class userstatistics_helper
                         case 'html':
                             //three columns
                             $statisticsoutput .= "<strong>" . gT("Answer") . "</strong></th>\n"
-                            . "\t\t<th width='25%'class='text-right'>"
+                            . "\t\t<th width='25%'class='text-end'>"
                             . "<strong>" . gT("Count") . "</strong></th>\n"
-                            . "\t\t<th width='25%'class='text-right'>"
+                            . "\t\t<th width='25%'class='text-end'>"
                             . "<strong>" . gT("Percentage") . "</strong></th>\n"
                             . "\t</tr></thead>\n";
                             break;
@@ -1959,7 +1959,7 @@ class userstatistics_helper
             * 2 (25%) = count (absolute)
             * 3 (25%) = percentage
             */
-            $statisticsoutput .= "\t<tr>\n\t\t<td class='text-left'>" . $label[$i] . "\n"
+            $statisticsoutput .= "\t<tr>\n\t\t<td class='text-start'>" . $label[$i] . "\n"
             . "\t\t</td>\n";
             /*
             * If there is a "browse" button in this label, let's make sure there's an extra row afterwards
@@ -1976,7 +1976,7 @@ class userstatistics_helper
             }
 
             //output absolute number of records
-            $statisticsoutput .= "\t\t<td class='text-right'>" . $grawdata[$i] . "\n</td>";
+            $statisticsoutput .= "\t\t<td class='text-end'>" . $grawdata[$i] . "\n</td>";
 
 
             //no data
@@ -1996,7 +1996,7 @@ class userstatistics_helper
                         break;
                     case 'html':
                         //output when having no data
-                        $statisticsoutput .= "\t\t<td  class='text-right'>";
+                        $statisticsoutput .= "\t\t<td  class='text-end'>";
 
                         //percentage = 0
                         $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
@@ -2090,10 +2090,10 @@ class userstatistics_helper
 
                         case 'html':
                             //output percentage
-                            $statisticsoutput .= "\t\t<td class='text-right'>";
+                            $statisticsoutput .= "\t\t<td class='text-end'>";
                             $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
 
-                            $statisticsoutput .= "\t\t<td class='text-right'>";
+                            $statisticsoutput .= "\t\t<td class='text-end'>";
                             if ($aggregatedPercentage !== 'na') {
                                 $statisticsoutput .= sprintf("%01.2f", $aggregatedPercentage) . "%";
                             } else {
@@ -2150,17 +2150,17 @@ class userstatistics_helper
                                 break;
                             case 'html':
                                 $statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
-                                $statisticsoutput .= "<tr><td class='text-right'><strong>" . gT("Sum") . " (" . gT("Answers") . ")</strong></td>";
-                                $statisticsoutput .= "<td class='text-right'><strong>" . $sumitems . "</strong></td>";
-                                $statisticsoutput .= "<td class='text-right'><strong>$sumpercentage%</strong></td>";
-                                $statisticsoutput .= "<td class='text-right'><strong>$sumpercentage%</strong></td>";
+                                $statisticsoutput .= "<tr><td class='text-end'><strong>" . gT("Sum") . " (" . gT("Answers") . ")</strong></td>";
+                                $statisticsoutput .= "<td class='text-end'><strong>" . $sumitems . "</strong></td>";
+                                $statisticsoutput .= "<td class='text-end'><strong>$sumpercentage%</strong></td>";
+                                $statisticsoutput .= "<td class='text-end'><strong>$sumpercentage%</strong></td>";
                                 $statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
 
-                                $statisticsoutput .= "<tr><td class='text-right'>" . gT("Number of cases") . "</td>"; //German: "Fallzahl"
-                                $statisticsoutput .= "<td class='text-right'>" . $TotalCompleted . "</td>";
-                                $statisticsoutput .= "<td class='text-right'>$casepercentage%</td>";
+                                $statisticsoutput .= "<tr><td class='text-end'>" . gT("Number of cases") . "</td>"; //German: "Fallzahl"
+                                $statisticsoutput .= "<td class='text-end'>" . $TotalCompleted . "</td>";
+                                $statisticsoutput .= "<td class='text-end'>$casepercentage%</td>";
                                 //there has to be a whitespace within the table cell to display correctly
-                                $statisticsoutput .= "<td class='text-right'>&nbsp;</td></tr>";
+                                $statisticsoutput .= "<td class='text-end'>&nbsp;</td></tr>";
                                 break;
                             default:
                                 break;
@@ -2186,7 +2186,7 @@ class userstatistics_helper
                             break;
                         case 'html':
                             //output percentage
-                            $statisticsoutput .= "\t\t<td class='text-right'>";
+                            $statisticsoutput .= "\t\t<td class='text-end'>";
                             $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                             $statisticsoutput .= "\t\t";
                             //end output per line. there has to be a whitespace within the table cell to display correctly
@@ -2296,10 +2296,10 @@ class userstatistics_helper
                         break;
                     case 'html':
                         //calculate standard deviation
-                        $statisticsoutput .= "<tr><td class='text-right'>" . gT("Arithmetic mean") . "</td>"; //German: "Fallzahl"
-                        $statisticsoutput .= "<td>&nbsp;</td><td class='text-right'> $am</td><td>&nbsp;</td></tr>";
-                        $statisticsoutput .= "<tr><td class='text-right'>" . gT("Standard deviation") . "</td>"; //German: "Fallzahl"
-                        $statisticsoutput .= "<td>&nbsp;</td><td class='text-right'>$stddev</td><td>&nbsp;</td></tr>";
+                        $statisticsoutput .= "<tr><td class='text-end'>" . gT("Arithmetic mean") . "</td>"; //German: "Fallzahl"
+                        $statisticsoutput .= "<td>&nbsp;</td><td class='text-end'> $am</td><td>&nbsp;</td></tr>";
+                        $statisticsoutput .= "<tr><td class='text-end'>" . gT("Standard deviation") . "</td>"; //German: "Fallzahl"
+                        $statisticsoutput .= "<td>&nbsp;</td><td class='text-end'>$stddev</td><td>&nbsp;</td></tr>";
 
                         break;
                     default:

@@ -11,7 +11,7 @@
 
             <!-- Condition -->
             <div class='form-group'>
-                <label class='control-label col-sm-2'><?php eT('Scenario'); ?></label>
+                <label class='form-label col-sm-2'><?php eT('Scenario'); ?></label>
                 <div class='col-sm-2 add-scenario-column'>
                     <input class='form-control' type='number' name='quick-add-scenario' id='quick-add-scenario' value='1' />
                 </div>
@@ -19,7 +19,7 @@
         </div>
         <div class="row ls-space margin top-10 bottom-5">
             <div class='form-group row'>
-                <label class='control-label col-sm-2'><?php eT("Question"); ?></label>
+                <label class='form-label col-sm-2'><?php eT("Question"); ?></label>
                 <div class='col-sm-10'>
                     <ul class='nav nav-tabs'>
                         <li role='presentation' class='nav-item src-tab'>
@@ -64,7 +64,7 @@
         </div>
         <div class="row ls-space margin top-10">
             <div class='form-group'>
-                <label class='control-label col-sm-2'><?php eT("Comparison operator"); ?></label>
+                <label class='form-label col-sm-2'><?php eT("Comparison operator"); ?></label>
                 <div class='col-sm-4'>
                     <select class='form-control' name='quick-add-method' id='quick-add-method'>
                         <?php foreach ($method as $methodCode => $methodTxt): ?>
@@ -78,7 +78,7 @@
         </div>
         <div class="row">
             <div class='form-group row'>
-                <label class='control-label col-sm-2'><?php echo gT("Answer"); ?></label>
+                <label class='form-label col-sm-2'><?php echo gT("Answer"); ?></label>
                 <div class='col-sm-10'>
                     <ul class='nav nav-tabs'>
                         <li role='presentation' class='nav-item target-tab'>

@@ -26,13 +26,13 @@
                         <?php foreach ($tabtitles as $i=>$eachtitle):?>
                             <div id="editgrp_<?php echo $i;?>" class="tab-pane fade <?php if($count==1) {echo "show active"; $count++;}?> center-box">
                                 <div class="form-group">
-                                    <label class="control-label " id="question-group-title-<?=$aGroupData[$i]['language']?>"><?php eT("Title:"); ?></label>
+                                    <label class="form-label " id="question-group-title-<?=$aGroupData[$i]['language']?>"><?php eT("Title:"); ?></label>
                                     <div class="">
                                         <?php echo CHtml::textField("questionGroupI10N[{$aGroupData[$i]['language']}][group_name]",$aGroupData[$i]['group_name'],array('class'=>'form-control','size'=>"80",'maxlength'=>'200','id'=>"group_name_{$aGroupData[$i]['language']}")); ?>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" control-label" for="description_<?php echo $aGroupData[$i]['language']; ?>"><?php eT("Description:"); ?></label>
+                                    <label class=" form-label" for="description_<?php echo $aGroupData[$i]['language']; ?>"><?php eT("Description:"); ?></label>
                                     <div class="">
                                         <div class="htmleditor input-group">
                                             <?php echo CHtml::textArea("questionGroupI10N[{$aGroupData[$i]['language']}][description]",$aGroupData[$i]['description'],array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"description_{$aGroupData[$i]['language']}")); ?>
@@ -44,7 +44,7 @@
                         <?php endforeach; ?>
                     </div>
                     <div class="form-group">
-                        <label class="control-label " id="randomization-group"><?php eT("Randomization group:"); ?></label>
+                        <label class="form-label " id="randomization-group"><?php eT("Randomization group:"); ?></label>
                         <div class="">
                             <?php echo CHtml::textField("questionGroup[randomization_group]",$oQuestionGroup['randomization_group'],array('class'=>'form-control','size'=>"20",'maxlength'=>'20','id'=>"randomization_group")); ?>
                         </div>
@@ -52,7 +52,7 @@
 
                     <!-- Relevance Equation -->
                     <div class="form-group">
-                        <label class="control-label " id="relevance-group"><?php eT("Condition:"); ?></label>
+                        <label class="form-label " id="relevance-group"><?php eT("Condition:"); ?></label>
                         <div class="input-group">
                           <div class="input-group-addon">{</div>
                             <?php  echo CHtml::textArea("questionGroup[grelevance]",$oQuestionGroup['grelevance'],array('class'=>'form-control','cols'=>'20','rows'=>'1','id'=>"grelevance")); ?>

@@ -36,7 +36,7 @@ $googleAnalyticsStyleOptions = array(
         <div class="col-sm-12 col-md-6">
             <!-- Date Stamp -->
             <div class="form-group">
-                <label class=" control-label" for='datestamp'><?php  eT("Date stamp:"); ?></label>
+                <label class=" form-label" for='datestamp'><?php  eT("Date stamp:"); ?></label>
                 <div class="">
                     <?php if ($oSurvey->isActive) { ?>
                         <?php if ($oSurvey->datestamp != "Y") {
@@ -71,7 +71,7 @@ $googleAnalyticsStyleOptions = array(
             </div>
             <!-- Save IP Address -->
             <div class="form-group">
-                <label class=" control-label" for='ipaddr'><?php  eT("Save IP address:"); ?></label>
+                <label class=" form-label" for='ipaddr'><?php  eT("Save IP address:"); ?></label>
                 <div class="">
                     <?php if ($oSurvey->isActive) {
                         if ($oSurvey->ipaddr!= "Y") {
@@ -104,7 +104,7 @@ $googleAnalyticsStyleOptions = array(
                 </div>
             </div>
             <div class="form-group">
-                <label class=" control-label" for='ipanonymize'><?php  eT("Anonymize IP address:"); ?></label>
+                <label class=" form-label" for='ipanonymize'><?php  eT("Anonymize IP address:"); ?></label>
                 <div class="">
                     <?php
                     if ($oSurvey->isActive) {
@@ -131,7 +131,7 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- Save referrer URL -->
             <div class="form-group">
-                <label class=" control-label" for='refurl'><?php  eT("Save referrer URL:"); ?></label>
+                <label class=" form-label" for='refurl'><?php  eT("Save referrer URL:"); ?></label>
                 <div class="">
                     <?php if ($oSurvey->isActive) { ?>
                         <?php  if ($oSurvey->refurl != "Y") {
@@ -153,7 +153,7 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- Save timings -->
             <div class="form-group">
-                <label class=" control-label" for='savetimings'><?php  eT("Save timings:"); ?></label>
+                <label class=" form-label" for='savetimings'><?php  eT("Save timings:"); ?></label>
                 <div class="">
                     <?php if ($oSurvey->isActive): ?>
                         <?php if ($oSurvey->savetimings != "Y"): ?>
@@ -180,7 +180,7 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- Enable assessment mode -->
             <div class="form-group">
-                <label class=" control-label" for='assessments'><?php  eT("Enable assessment mode:"); ?></label>
+                <label class=" form-label" for='assessments'><?php  eT("Enable assessment mode:"); ?></label>
                 <div class=""><?php
                     $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'assessments',
@@ -192,7 +192,7 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- Participant may save and resume  -->
             <div class="form-group">
-                <label class=" control-label" for='allowsave'><?php  eT("Participant may save and resume later:"); ?></label>
+                <label class=" form-label" for='allowsave'><?php  eT("Participant may save and resume later:"); ?></label>
                 <div class="">
                 <?php
                     $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
@@ -208,12 +208,12 @@ $googleAnalyticsStyleOptions = array(
             <?php $emailnotificationto = $oSurvey->emailnotificationto; ?>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
-                        <label class=" control-label"  for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
+                        <label class=" form-label"  for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
                             <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="<?php echo htmlspecialchars($emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailnotificationto; ?>"/>
                             <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailnotificationto); ?>" readonly />
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
-                        <label class=" control-label content-center col-sm-12"  for='emailnotificationto'><?php  eT("Inherit:"); ?></label>
+                        <label class=" form-label content-center col-sm-12"  for='emailnotificationto'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'emailnotificationtobutton',
                             'value'=> ($bShowInherited && $emailnotificationto === 'inherit' ? 'Y' : 'N'),
@@ -232,12 +232,12 @@ $googleAnalyticsStyleOptions = array(
             <?php $emailresponseto = $oSurvey->emailresponseto; ?>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
-                        <label class=" control-label"  for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
+                        <label class=" form-label"  for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
                             <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailresponseto' name='emailresponseto' value="<?php echo htmlspecialchars($emailresponseto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailresponseto; ?>"/>
                             <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailresponseto); ?>" readonly />
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
-                        <label class=" control-label content-center col-sm-12"  for='emailresponseto'><?php  eT("Inherit:"); ?></label>
+                        <label class=" form-label content-center col-sm-12"  for='emailresponseto'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'emailresponsetobutton',
                             'value'=> ($bShowInherited && $emailresponseto === 'inherit' ? 'Y' : 'N'),
@@ -254,7 +254,7 @@ $googleAnalyticsStyleOptions = array(
             <?php if ($bShowAllOptions === true){ ?>
             <!-- GoogleAnalytics settings to be used -->
             <div class="form-group">
-                <label class=" control-label" for="googleanalyticsapikeysetting">
+                <label class=" form-label" for="googleanalyticsapikeysetting">
                     <?php echo gT('Google Analytics settings:');?>
                 </label>
                 <div class="">
@@ -267,7 +267,7 @@ $googleAnalyticsStyleOptions = array(
             </div>
             <!-- Google Analytics -->
             <div class="form-group">
-                <label class=" control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
+                <label class=" form-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
                 <div class="">
                     <?php echo CHtml::textField(
                         'googleanalyticsapikey',
@@ -278,7 +278,7 @@ $googleAnalyticsStyleOptions = array(
             </div>
             <!-- Google Analytics style -->
             <div class="form-group">
-                <label class=" control-label" for='googleanalyticsstyle'><?php  eT("Google Analytics style:"); ?></label>
+                <label class=" form-label" for='googleanalyticsstyle'><?php  eT("Google Analytics style:"); ?></label>
                 <div class="">
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'googleanalyticsstyle',

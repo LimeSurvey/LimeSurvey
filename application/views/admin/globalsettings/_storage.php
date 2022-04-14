@@ -10,7 +10,7 @@
 <div class="container-fluid">
     <div class="ls-flex-column ls-space padding left-5 right-35 col-md-12">
         <div id='global-settings-storage' class="form-group">
-            <label class="control-label"  for='global-settings-calculate-storage'><?=gT("Recalculates the storage used by all your files in the upload folders")?></label>
+            <label class="form-label"  for='global-settings-calculate-storage'><?=gT("Recalculates the storage used by all your files in the upload folders")?></label>
             <div class="">
                 <input type='hidden' name='global-settings-storage-url' value='<?php echo Yii::app()->createUrl('admin/globalsettings', array('sa' => 'getStorageData')); ?>' />
                 <a id='global-settings-calculate-storage' class='btn btn-default '>
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label"  for='overwritefiles'><?php eT("Overwrite files with the same name when uploaded, moved or copied through the editor/file-manager?");?></label>
+            <label class="form-label"  for='overwritefiles'><?php eT("Overwrite files with the same name when uploaded, moved or copied through the editor/file-manager?");?></label>
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'overwritefiles',

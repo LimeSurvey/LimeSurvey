@@ -255,7 +255,7 @@ class SettingsWidget extends CWidget
             'htmlOptions'=>array(),
             'type' => 'string',
             'htmlOptions' => array(),
-            'labelOptions' => array( // html option for the control-label part (not the label, but the wrapper)
+            'labelOptions' => array( // html option for the form-label part (not the label, but the wrapper)
                 'class' => "default"
             ),
             'help'=> null,
@@ -267,7 +267,7 @@ class SettingsWidget extends CWidget
         $metaData = array_merge($defaults, $metaData);
 
         // col-sm-6/col-sm-6 used in survey settings, sm-4/sm-6 in global : use sm-4/sm-6 for plugins ?
-        $metaData['labelOptions']['class'].=" control-label col-sm-{$this->labelWidth}";
+        $metaData['labelOptions']['class'].=" form-label col-sm-{$this->labelWidth}";
         // Set the witdth of control-option according to existence of label
         if (!isset($metaData['label'])) {
             $metaData['controlOptions']['class'].=" col-sm-12";

@@ -13,25 +13,23 @@
         <div class="row">
 
             <!-- Select file -->
-            <div class='form-group '>
-                <label class='control-label ' for='the_file'>
+            <div class="mb-3">
+                <label class='form-label ' for='the_file'>
                     <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
-                <div class=''>
-                    <input
-                        id='the_file'
-                        name="the_file"
-                        type="file"
-                        accept='.lss,.lsa,.tsv,.txt'
-                        onchange="$('#import-submit').attr('disabled', false).attr('data-toggle', false);"
-                    />
-                </div>
+<div>
+                <input
+                    id='the_file'
+                    name="the_file"
+                    type="file"
+                    accept='.lss,.lsa,.tsv,.txt'
+                    onchange="$('#import-submit').attr('disabled', false).attr('data-toggle', false);"
+                />
+</div>
             </div>
 
             <!-- Convert resource links and INSERTANS fields? -->
-            <div class='form-group'>
-                <label class='control-label ' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
-                <div class=''>
+            <div class='mb-3 form-check'>
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'translinksfields',
                     'value'=> "1",
@@ -39,7 +37,7 @@
                     'offLabel'=>gT('Off')
                     ));
                 ?>
-                </div>
+                <label class='form-label ' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
             </div>
 
             <!-- Submit -->

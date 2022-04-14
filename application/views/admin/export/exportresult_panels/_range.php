@@ -8,7 +8,7 @@
   <div class="card-body">
     <div class="form-group">
       <!-- From -->
-      <label for='export_from' class=" control-label">
+      <label for='export_from' class=" form-label">
         <?php eT("From:"); ?>
       </label>
       <div class="">
@@ -16,7 +16,7 @@
       </div>
 
       <!-- To -->
-      <label for='export_to' class=" control-label">
+      <label for='export_to' class=" form-label">
         <?php eT("to:"); ?>
       </label>
       <div class="">

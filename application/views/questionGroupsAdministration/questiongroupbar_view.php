@@ -12,7 +12,7 @@
     <div class='ls-flex ls-flex-row wrap align-content-space-between ls-space padding left-10 right-10'>
 
         <?php if (isset($questiongroupbar['buttonspreview']) || isset($questiongroupbar['buttons']['view'])):?>
-            <div id="questiongroupbar--previewbar" class="text-left ls-flex-item">
+            <div id="questiongroupbar--previewbar" class="text-start ls-flex-item">
                 <!-- test/run survey -->
                 <?php if (count($languagelist) > 1): ?>
                     <div class="btn-group">
@@ -145,7 +145,7 @@
         <?php if (isset($questiongroupbar['savebutton']['form'])&&isset($qid)
             && (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))): ?>
             <!-- ####### This is only shown when editing questions -->
-            <div id="questiongroupbar--questionbuttons" class="text-left ls-flex-item">
+            <div id="questiongroupbar--questionbuttons" class="text-start ls-flex-item">
             <!-- Previews while editing a question -->
                 <?php if (count($languagelist) > 1): ?>
                     <!-- test/run survey -->
@@ -240,7 +240,7 @@
         <?php endif; ?>
 
         <!-- Right Buttons (shown for questions and questiongroups) -->
-        <div id="questiongroupbar--savebuttons" class="text-right ls-flex-item">
+        <div id="questiongroupbar--savebuttons" class="text-end ls-flex-item">
             <!-- Save buttons -->
             <?php if (isset($questiongroupbar['savebutton']['form']) && (!isset($copying) || !$copying)): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
