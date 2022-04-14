@@ -1399,9 +1399,12 @@ class Tokens extends SurveyCommonAction
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
                 foreach ($emresult as $emrow) {
-                    if (empty($emrow['language'])) {
-                        $emrow['language'] = $sBaseLanguage;
+                    $mailLanguage = $emrow['language'];
+                    if (!in_array($mailLanguage, Survey::model()->findByPk($iSurveyId)->getAllLanguages())) {
+                        $mailLanguage = $sBaseLanguage;
+                        $tokenoutput .= CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("Invalid language %s for token ID: %s."), $emrow['language'], $emrow['tid']));
                     }
+
                     $mail = \LimeMailer::getInstance();
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'], $bIsInvitation)) {
                         // The email has already been send this session, skip.
@@ -1414,9 +1417,9 @@ class Tokens extends SurveyCommonAction
                         continue;
                     }
                     $mail->setToken($emrow['token']);
-                    $mail->setFrom(Yii::app()->request->getPost('from_' . $emrow['language']));
-                    $mail->rawSubject = $sSubject[$emrow['language']];
-                    $mail->rawBody = $sMessage[$emrow['language']];
+                    $mail->setFrom(Yii::app()->request->getPost('from_' . $mailLanguage));
+                    $mail->rawSubject = $sSubject[$mailLanguage];
+                    $mail->rawBody = $sMessage[$mailLanguage];
                     if (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
                         $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Access code is not yet valid.", 'unescaped'), $fieldsarray)) . "<br />";
                         $bInvalidDate = true;
@@ -1438,7 +1441,16 @@ class Tokens extends SurveyCommonAction
                                 $oToken->remindercount++;
                             }
                             $tokenSaveError = "";
-                            if (!$oToken->encryptSave(true)) {
+                            if (
+                                !$oToken->save(
+                                    true,
+                                    array(
+                                        'sent',
+                                        'remindersent',
+                                        'remindercount'
+                                    )
+                                )
+                            ) {
                                 // Add the error when try to save token
                                 $tokenSaveError = CHtml::errorSummary(
                                     $oToken,
