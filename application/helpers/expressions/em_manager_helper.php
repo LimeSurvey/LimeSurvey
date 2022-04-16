@@ -7038,7 +7038,7 @@ class LimeExpressionManager
 
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
-                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
+                $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
                 if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
