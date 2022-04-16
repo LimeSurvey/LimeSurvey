@@ -6946,6 +6946,13 @@ class LimeExpressionManager
         $gseq_qidList = []; // list of qids using relevance/tailoring within each group
 
         if (is_array($LEM->pageRelevanceInfo)) {
+            foreach ($LEM->pageRelevanceInfo as $prel) {
+                if (is_array($prel)) {
+                    foreach ($prel as $rel) {
+                        $pageRelevanceInfo[] = $rel;
+                    }
+                }
+            }
             $pageRelevanceInfo[] = array(
                 'qid' => 0,
                 'gseq' => $LEM->currentGroupSeq,
@@ -6959,13 +6966,6 @@ class LimeExpressionManager
                 'hidden' => false,
                 'hasErrors' => false,
             );
-            foreach ($LEM->pageRelevanceInfo as $prel) {
-                if (is_array($prel)) {
-                    foreach ($prel as $rel) {
-                        $pageRelevanceInfo[] = $rel;
-                    }
-                }
-            }
         }
         $valEqns = [];
         $relEqns = [];
@@ -6974,7 +6974,6 @@ class LimeExpressionManager
         $dynamicQinG = []; // array of questions, per group, that might affect group-level visibility in all-in-one mode
         $GalwaysRelevant = []; // checks whether a group is always relevant (e.g. has at least one question that is always shown)
         if (is_array($pageRelevanceInfo)) {
-            tracevar($pageRelevanceInfo);
             foreach ($pageRelevanceInfo as $arg) {
                 if (!$LEM->allOnOnePage && $LEM->currentGroupSeq != $arg['gseq']) {
                     continue;
@@ -7039,7 +7038,7 @@ class LimeExpressionManager
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
-                if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
+                if ($arg['qid'] && ($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
@@ -7333,7 +7332,7 @@ class LimeExpressionManager
                 } else {
                     // Second time : now if relevance is true: Group is allways visible (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
-                    if (!($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                    if ($arg['qid'] && !($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
                         $GalwaysRelevant[$arg['gseq']] = true;
                     }
                 }
@@ -7388,7 +7387,6 @@ class LimeExpressionManager
                     $qrelgseqs = [];  // javascript dependencies on groups only for survey mode
                 }
                 $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
-                $qrelJS .= "console.warn([{$arg['qid']},sgqa]);\n";
                 $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
                 $aCheckNeeded = []; // The condition to return
                 /* Basic : sgqa is not in used var */
@@ -7402,10 +7400,8 @@ class LimeExpressionManager
                     $aCheckNeeded[] = "!(" . implode(' || ', $qrelgseqs) . ")";
                 }
                 $qrelJS .= "  if (" . implode(" && ", $aCheckNeeded) . ") {\n";
-                $qrelJS .= "console.warn('return already done');\n";
                 $qrelJS .= "    return;\n";
                 $qrelJS .= "  }\n";
-                $qrelJS .= "console.warn('continue and check');\n";
                 $qrelJS .= implode("", $relParts);
                 $qrelJS .= "}\n";
                 $relEqns[] = $qrelJS;
