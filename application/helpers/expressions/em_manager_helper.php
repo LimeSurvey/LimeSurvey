@@ -4754,7 +4754,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) { // Did we need it ?
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -4969,7 +4968,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -5470,7 +5468,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq, $force);
@@ -6733,34 +6730,6 @@ class LimeExpressionManager
     }
 
     /**
-     * Init groupRelevanceInfo with qid as 0 for expression not related to question
-     * see issue #17966
-     * @return void
-     */
-    private static function InitGroupRelevanceInfo()
-    {
-        $LEM =& LimeExpressionManager::singleton();
-        if (is_null($LEM->currentGroupSeq)) {
-            return;
-        }
-        $LEM->groupRelevanceInfo = [
-            [
-                'qid' => 0,
-                'gseq' => $LEM->currentGroupSeq,
-                'eqn' => '',
-                'result' => true,
-                'numJsVars' => 0,
-                'relevancejs' => '',
-                'relevanceVars' => '',
-                'jsResultVar' => '',
-                'type' => '',
-                'hidden' => false,
-                'hasErrors' => false,
-            ]
-        ];
-    }
-
-    /**
      * This should be called each time a new group is started, whether on same or different pages. Sets/Clears needed internal parameters.
      * @param int|null $gseq - the group sequence
      * @param boolean|null $anonymized - whether anonymized
@@ -6779,7 +6748,6 @@ class LimeExpressionManager
         $LEM->groupRelevanceInfo = [];
         if (!is_null($gseq)) {
             $LEM->currentGroupSeq = $gseq;
-            self::InitGroupRelevanceInfo();
             if (!is_null($surveyid)) {
                 $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized);
                 if ($gseq > $LEM->maxGroupSeq) {
@@ -6978,6 +6946,19 @@ class LimeExpressionManager
         $gseq_qidList = []; // list of qids using relevance/tailoring within each group
 
         if (is_array($LEM->pageRelevanceInfo)) {
+            $pageRelevanceInfo[] = array(
+                'qid' => 0,
+                'gseq' => $LEM->currentGroupSeq,
+                'eqn' => '',
+                'result' => true,
+                'numJsVars' => 0,
+                'relevancejs' => '',
+                'relevanceVars' => '',
+                'jsResultVar' => '',
+                'type' => '',
+                'hidden' => false,
+                'hasErrors' => false,
+            );
             foreach ($LEM->pageRelevanceInfo as $prel) {
                 if (is_array($prel)) {
                     foreach ($prel as $rel) {
@@ -6986,15 +6967,14 @@ class LimeExpressionManager
                 }
             }
         }
-
         $valEqns = [];
         $relEqns = [];
         $relChangeVars = [];
 
         $dynamicQinG = []; // array of questions, per group, that might affect group-level visibility in all-in-one mode
         $GalwaysRelevant = []; // checks whether a group is always relevant (e.g. has at least one question that is always shown)
-
         if (is_array($pageRelevanceInfo)) {
+            tracevar($pageRelevanceInfo);
             foreach ($pageRelevanceInfo as $arg) {
                 if (!$LEM->allOnOnePage && $LEM->currentGroupSeq != $arg['gseq']) {
                     continue;
@@ -7058,9 +7038,7 @@ class LimeExpressionManager
 
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
-
-                $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
-
+      
                 if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
@@ -7112,7 +7090,6 @@ class LimeExpressionManager
                         $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:on',{ style : 'disabled' });\n";
                         $relParts[] = "    }\n";
                     }
-                    $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
                     if ($arg['type'] != Question::QT_R_RANKING) { // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
                         $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
                     }
@@ -7410,6 +7387,7 @@ class LimeExpressionManager
                     $qrelgseqs = [];  // javascript dependencies on groups only for survey mode
                 }
                 $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
+                $qrelJS .= "console.warn([{$arg['qid']},sgqa]);\n";
                 $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
                 $aCheckNeeded = []; // The condition to return
                 /* Basic : sgqa is not in used var */
@@ -7423,8 +7401,10 @@ class LimeExpressionManager
                     $aCheckNeeded[] = "!(" . implode(' || ', $qrelgseqs) . ")";
                 }
                 $qrelJS .= "  if (" . implode(" && ", $aCheckNeeded) . ") {\n";
+                $qrelJS .= "console.warn('return already done');\n";
                 $qrelJS .= "    return;\n";
                 $qrelJS .= "  }\n";
+                $qrelJS .= "console.warn('continue and check');\n";
                 $qrelJS .= implode("", $relParts);
                 $qrelJS .= "}\n";
                 $relEqns[] = $qrelJS;
