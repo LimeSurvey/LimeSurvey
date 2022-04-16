@@ -7038,7 +7038,7 @@ class LimeExpressionManager
 
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
-      
+                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
                 if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
@@ -7090,6 +7090,7 @@ class LimeExpressionManager
                         $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:on',{ style : 'disabled' });\n";
                         $relParts[] = "    }\n";
                     }
+                    $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
                     if ($arg['type'] != Question::QT_R_RANKING) { // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
                         $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
                     }
