@@ -888,8 +888,7 @@ class Translate extends SurveyCommonAction
         $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
         if ($type == 'answer') {
             $translateoutput .= '<th class="col-md-2 text-strong">' . gT('QCode / Answer Code / ID') . "</th>";
-        }
-        elseif ($threeRows) {
+        } elseif ($threeRows) {
             $translateoutput .= '<th class="col-md-2 text-strong">' . gT('Question code / ID') . "</th>";
         }
         $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $baselangdesc . "</th>";
