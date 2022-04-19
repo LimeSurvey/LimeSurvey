@@ -884,17 +884,17 @@ class Translate extends SurveyCommonAction
     {
 
         $translateoutput = "<table class='table table-striped'>";
-            $translateoutput .= '<thead>';
-            $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
-            if ($type == 'answer') {
-                $translateoutput .= '<th class="col-md-2 text-strong">' . gT('QCode / Answer Code / ID') . "</th>";            
-            }
-            elseif($threeRows) {
-                $translateoutput .= '<th class="col-md-2 text-strong">' . gT('Question code / ID') . "</th>";
-            }
-            $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $baselangdesc . "</th>";
-            $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $tolangdesc . "</th>";
-            $translateoutput .= '</thead>';
+        $translateoutput .= '<thead>';
+        $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
+        if ($type == 'answer') {
+            $translateoutput .= '<th class="col-md-2 text-strong">' . gT('QCode / Answer Code / ID') . "</th>";
+        }
+        elseif ($threeRows) {
+            $translateoutput .= '<th class="col-md-2 text-strong">' . gT('Question code / ID') . "</th>";
+        }
+        $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $baselangdesc . "</th>";
+        $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $tolangdesc . "</th>";
+        $translateoutput .= '</thead>';
 
         return $translateoutput;
     }
@@ -937,7 +937,7 @@ class Translate extends SurveyCommonAction
             // Display text in original language
             // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
         if ($type == 'answer') {
-            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['question_title']." / ".$rowfrom['code']) . " (" . $rowfrom['aid'] . ") </td>";
+            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['question_title'] . " / " . $rowfrom['code']) . " (" . $rowfrom['aid'] . ") </td>";
         }
         if ($type == 'question_help' || $type == 'question') {
             $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['title']) . " ({$rowfrom['qid']}) </td>";
