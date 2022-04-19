@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.9 (build 220411) to 5.3.10 (build 220419) April 19, 2022
+-Fixed issue #17902: Question theme error: Missing metadata (Type: M) (#2317) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by c_schmitz, dusanm, jelen1, sweetakasha, wargo
+#Updated translation: Russian by imnetxiin, likeleto, MINForm, TristisOris, vipgroup
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Lithuanian by simasj
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Taiwan) (Traditional) by CTFang, imacat, sylsylsylvie, TuTu_chen, Yeeeeeet
+
+
 Changes from 5.3.8 (build 220404) to 5.3.9 (build 220411) April 11, 2022
 -Fixed issue #18018: Static string variable can break expression (#2328) (Denis Chenu)
 -Fixed issue #18012: Usage of static suffix in condition can broke JS (Denis Chenu)
