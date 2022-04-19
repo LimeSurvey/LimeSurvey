@@ -28,7 +28,7 @@ var BootstrapRemoteModal = function(presetOptions, templateOptions){
     var templateStrings = {
         closeIcon   : templateOptions.closeIcon || '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
         closeButton : templateOptions.closeButton || '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
-        saveButton  : templateOptions.saveButton || '<button type="button" class="btn btn-primary">Save changes</button>'
+        saveButton  : templateOptions.saveButton || '<button role="button" type="button" class="btn btn-primary">Save changes</button>'
     };
 
     //Define all the blocks and combine them by jquery methods

@@ -77,10 +77,10 @@
 
             <!-- Save -->
             <?php if (isset($usergroupbar['savebutton']['form'])) :?>
-                <a class="btn btn-primary" type="submit" href="#" role="button" id="save-form-button" data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
+                <button class="btn btn-primary" type="submit" href="#" role="button" id="save-form-button" data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
                     <span class="fa fa-envelope" ></span>
                     <?php echo $usergroupbar['savebutton']['text'];?>
-                </a>
+                </button>
             <?php endif;?>
         </div>
     </div>

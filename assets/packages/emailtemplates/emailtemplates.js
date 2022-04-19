@@ -155,7 +155,7 @@ var PrepEmailTemplates = function(){
         $(elements.validate).remoteModal({}, {
             closeIcon : '<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label="'+translate.close+'"><span aria-hidden=\"true\">&times;</span></button>',
             closeButton : '<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">'+translate.close+'</button>',
-            saveButton : '<button type=\"button\" class=\"btn btn-primary\">'+translate.save+'</button>'
+            saveButton : '<button role=\"button\" type=\"button\" class=\"btn btn-primary\">'+translate.save+'</button>'
         });
         $(elements.reset).on('click', function(){
             var $self = $(this);

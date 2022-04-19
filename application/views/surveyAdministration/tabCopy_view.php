@@ -36,26 +36,34 @@
                         </div>
                     </div>
 
-                    <!-- New survey id -->
-                    <div class="form-group">
-                        <label class=" control-label" for='copysurveyid'><?php echo  eT("New survey id:"); ?> </label>
-                        <div class="">
-                            <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" />
-                        </div>
-                        <div class="">
-                          <p class="form-control-static">
-                            <span class='annotation text-info'><?php echo  gT("Optional"); ?> </span>
-                          </p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <!-- Submit -->
-                        <div class="text-center">
-                            <input type='submit' class='btn btn-primary col-4' value='<?php  eT("Copy survey"); ?>' />
-                            <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
-                            <input type='hidden' name='action' value='copysurvey' />
-                        </div>
-                    </div>
+                <!-- New survey id -->
+                <label class=" form-label" for='copysurveyid'><?php echo  eT("New survey id:"); ?> </label>
+                <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" />
+                <p class="form-control-static">
+                    <span class='annotation text-info'><?php echo  gT("Optional"); ?> </span>
+                </p>
+
+                <!-- Submit -->
+                <div class="text-center">
+                    <button role="button" type='submit' class='btn btn-primary col-4'>
+                        <?php  eT("Copy survey"); ?>
+                    </button>
+                    <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
+                    <input type='hidden' name='action' value='copysurvey' />
+                </div>
+            </div>
+
+            <div class="col">
+                <!-- Convert resource links -->
+                <div class="form-check">
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'copysurveytranslinksfields',
+                        'value'=> "1",
+                        'onLabel'=>gT('On'),
+                        'offLabel'=>gT('Off')
+                        ));
+                    ?>
+                    <label class=" form-label" for='copysurveytranslinksfields'><?php echo  eT("Copy survey resource files and adapt links"); ?> </label>
                 </div>
 
                 <div class="ls-flex-column col-md-4">

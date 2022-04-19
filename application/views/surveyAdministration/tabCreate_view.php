@@ -34,7 +34,9 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 <!-- Form submited by save button menu bar -->
 <?php echo CHtml::form(array('surveyAdministration/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
     <!-- Submit button, needs to be the first item for the script to take it -->
-    <button class="btn btn-primary btn-success hide" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
+    <button role="button" class="btn btn-primary btn-success d-none" type="submit" name="save" id="create_survey_save_and_send" value='insertsurvey'>
+        <?php eT("Finish & save"); ?>
+    </button>
 
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-10 ls-space padding left-10 right-10">
@@ -122,9 +124,11 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                             </div>
                         </div>
                         <!-- Submit -->
-                        <div class='form-group col-4 text-center'>
-                            <div class=''>
-                                <input id="create-survey-submit" type='submit' class="btn btn-primary col-6" value='<?php  eT("Create survey"); ?>' />
+                        <div class='mb-3 text-center'>
+                            <div>
+                                <button role="button" id="create-survey-submit" type='submit' class="btn btn-primary col-6">
+                                    <?php  eT("Create survey"); ?>
+                                </button>
                             </div>
                         </div>
                     </div>

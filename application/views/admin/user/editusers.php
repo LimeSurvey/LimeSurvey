@@ -130,7 +130,9 @@ echo viewHelper::getViewTestTag('usersIndex');
                     </div>
                     <div class="col-md-12">&nbsp;</div>
                     <div class="col-md-4 col-md-offset-8">
-                        <input type='submit' id='add_user_btn' class="btn btn-primary btn-block" value='<?php eT("Save");?>' />
+                        <button role="button" type='submit' id='add_user_btn' class="btn btn-primary btn-block">
+                            <?php eT("Save");?>
+                        </button>
                         <input type='hidden' name='action' value='adduser' />
                     </div>
                 </div>

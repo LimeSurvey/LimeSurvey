@@ -313,7 +313,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
-                    <button type="button" class="btn btn-primary" id="save-edittoken"><?php eT("Save"); ?></button>
+                    <button role="button" type="button" class="btn btn-primary" id="save-edittoken">
+                        <?php eT("Save"); ?>
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

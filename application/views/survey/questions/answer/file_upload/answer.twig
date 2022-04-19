@@ -12,7 +12,9 @@
 <!--answer -->
 <div class="{{ coreClass }}">
     <div class='upload-button'>
-        <a
+        <button
+            role="button"
+            type="button"
             id='upload_{{ fileid }}'
             class='btn btn-primary upload'
             href='{{uploadurl}}'
@@ -22,8 +24,10 @@
             data-showcomment="{{showComment}}"
             data-fieldname="{{basename}}"
         >
-            <span class='fa fa-upload'></span>&nbsp;{{ uploadButtonLabel }}
-        </a>
+            <span class='fa fa-upload'></span>
+            &nbsp;
+            {{ uploadButtonLabel }}
+        </button>
     </div>
     <input type='hidden' id='java{{ fileid }}' name='{{ fileid }}' value='{{ value }}' />
     <input type='hidden' id='java{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
@@ -127,9 +131,11 @@
         <td class="upload comment">{comment}</td>
         <td class="upload edit">{name}</td>
         <td>
-            <a class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">
-                <i class="fa fa-pencil"></i> &nbsp; {{ "Edit" | gT }}
-            </a>
+            <button role="button" type="button" class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">
+                <i class="fa fa-pencil"></i> 
+                &nbsp; 
+                {{ "Edit" | gT }}
+            </button>
         </td>
     </tr>
 </script>

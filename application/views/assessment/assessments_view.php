@@ -15,9 +15,9 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
         <?php
             $messageLink = gT("Assessment mode for this survey is not activated.").'<br/>'
                 . gT("If you want to activate it, click here:").'<br/>'
-                . '<a type="submit" class="btn btn-primary" href="'
+                . '<button role="button" type="submit" class="btn btn-primary" href="'
                 . $this->createUrl('/assessment/activate', ['surveyid'=> $surveyid])
-                .'">'.gT('Activate assessements').'</a>';
+                .'">'.gT('Activate assessements').'</button>';
         if(!Assessment::isAssessmentActive($surveyid)) {
         ?>
           <div class="row text-center">

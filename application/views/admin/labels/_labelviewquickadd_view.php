@@ -12,7 +12,9 @@
       <div class="modal-footer button-list">
           <button id='btnqacancel' type='button' class="btn btn-cancel"  data-dismiss="modal"><?php eT('Cancel') ?></button>
           <button id='btnqareplace' type='button' class="btn btn-default"><?php eT('Replace') ?></button>
-          <button id='btnqainsert' type='button' class="btn btn-primary"><?php eT('Add') ?></button>
+          <button role="button" id='btnqainsert' type='button' class="btn btn-primary">
+            <?php eT('Add') ?>
+          </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

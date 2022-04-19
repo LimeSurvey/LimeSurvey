@@ -59,7 +59,7 @@
                             <div class="input-group-addon">}</div>
                           </div>
                         </div>
-                    <input type="submit" class="btn btn-primary hidden" value="Save" role="button" aria-disabled="false">
+                    <button role="button" type="submit" class="btn btn-primary hidden" role="button" aria-disabled="false"><?php gT("Save"); ?></button>
                 <?php echo CHtml::endForm() ?>
             </div>
         </div>

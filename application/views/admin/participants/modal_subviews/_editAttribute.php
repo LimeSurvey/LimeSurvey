@@ -246,7 +246,9 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel') ?></button>
-    <button type="button" class="btn btn-primary action_save_modal_editAttributeName"><?php eT("Save")?></button>
+    <button role="button" type="button" class="btn btn-primary action_save_modal_editAttributeName">
+        <?php eT("Save")?>
+    </button>
 </div>
 <?php
 $this->endWidget();

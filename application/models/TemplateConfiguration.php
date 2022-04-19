@@ -773,7 +773,7 @@ class TemplateConfiguration extends TemplateConfig
             data-button-no="' . gt('Cancel') . '" 
             data-button-yes="' . gt('Extend') . '"
             title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
-            class="btn btn-primary btn-block selector--ConfirmModal">
+            role="button" class="btn btn-primary btn-block selector--ConfirmModal">
                 <i class="fa fa-copy"></i>
                 ' . gT('Extend') . '
             </a>';

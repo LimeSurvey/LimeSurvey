@@ -46,7 +46,9 @@
                 </div>
                 <div class="modal-footer">
                     <button id="responses-column-filter-modal-cancel" type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel"); ?></button>
-                    <button id="responses-column-filter-modal-submit" class="btn btn-primary"><?php eT('Select'); ?></button>
+                    <button role="button" type="button"id="responses-column-filter-modal-submit" class="btn btn-primary">
+                        <?php eT('Select'); ?>
+                    </button>
                 </div>
             </form>
         </div>

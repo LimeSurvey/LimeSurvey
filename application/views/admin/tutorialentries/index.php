@@ -11,9 +11,11 @@ echo viewHelper::getViewTestTag('tutorialentries');
             <?php eT('Tutorial entries')?> 
         </div>
         <div class="col-12">
-            <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewtutorialentry" >
-                <i class="fa fa-plus"></i>&nbsp;<?php eT('New') ?>
-            </a>	
+            <button role="button" type="button" class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewtutorialentry">
+                <i class="fa fa-plus"></i>
+				&nbsp;
+				<?php eT('New') ?>
+			</button>	
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
             <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
                 <i class="fa fa-refresh"></i>&nbsp;

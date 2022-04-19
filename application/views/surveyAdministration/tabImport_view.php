@@ -46,15 +46,16 @@
             <!-- Submit -->
             <div class='form-group col-4 text-center'>
                 <div class=''>
-                    <input
+                    <button
+                        role="button"
                         type='submit'
                         id="import-submit"
                         class="btn btn-primary col-6"
-                        value='<?php  eT("Import survey"); ?>'
                         disabled="disabled"
                         data-toggle="tooltip"
-                        data-title="<?= gT('Please choose a file'); ?>"
-                    />
+                        data-title="<?= gT('Please choose a file'); ?>">
+                        <?php  eT("Import survey"); ?>
+                    </button>
                 </div>
             </div>
 

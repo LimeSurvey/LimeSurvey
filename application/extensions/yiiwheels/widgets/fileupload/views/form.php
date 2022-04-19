@@ -11,7 +11,7 @@
 			endif;
 			?>
 		</span>
-		<button type="submit" class="btn btn-primary start">
+		<button role="button" type="submit" class="btn btn-primary start">
 			<i class="icon-upload icon-white"></i>
 			<span>Start upload</span>
 		</button>

@@ -3,7 +3,9 @@
         <div class='container-center'>
             <h3 class="col-sm-12">
                 <?php eT("queXML PDF export");?>
-                <input type='submit' class="btn btn-primary pull-right" value="<?php eT("queXML PDF export"); ?>" />
+                <button role="button" type='submit' class="btn btn-primary pull-right">
+                    <?php eT("queXML PDF export"); ?>
+                </button>
             </h3>
             <div class="form-group row"><label class=" control-label" for='save_language'><?php eT("Language selection"); ?></label>
                 <div class="">

@@ -1059,7 +1059,7 @@ class LsDefaultDataSets
                         . "<div class='row'>"
                             . "<div class='btn-group col-xs-12' role='group' aria-label='...'>"
                                 . "<button class='btn btn-default col-md-6' data-role='prev'>" . gT('Previous', 'js') . "</button>"
-                                . "<button class='btn btn-primary col-md-6' data-role='next'>" . gT('Next', 'js') . "</button>"
+                                . "<button role='button'class='btn btn-primary col-md-6' data-role='next'>" . gT('Next', 'js') . "</button>"
                             . "</div>"
                         . "</div>"
                     . "</div>"
