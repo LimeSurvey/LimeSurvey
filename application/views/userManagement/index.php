@@ -75,11 +75,11 @@ echo viewHelper::getViewTestTag('usersIndex');
 
     <div class="container-fluid">
         <?php
-        $this->widget('zii.widgets.grid.CGridView', [
-            'id' => 'my-grid',
+        $this->widget('application.extensions.admin.grid.CLSGridView', [
+            'id' => 'usermanagement--identity-gridPanel',
             'dataProvider' => $model->search(),
-            'selectableRows' => 5, // can be anything other than 1 or 0
             'columns' => $columnDefinition,
+            'afterAjaxUpdate' => 'LS.UserManagement.bindButtons',
             'pager' => [
                 'class' => 'application.extensions.admin.grid.CLSYiiPager',
             ],
