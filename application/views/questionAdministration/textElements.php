@@ -21,7 +21,7 @@
     <li class="pull-right">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
             <h5 class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-                <span class="label label-default"><?= strtoupper($lang) ?></span>
+                <span class="badge"><?= strtoupper($lang) ?></span>
             </h5>
         <?php endforeach; ?>
     </li>

@@ -1,5 +1,5 @@
 <?php if ($andOrOr): ?>
-    <h4 class='condition-and-or-or'><span class='label label-default'> <?php echo $andOrOr; ?> </span></h4>
+    <h4 class='condition-and-or-or'><span class='badge label-default'> <?php echo $andOrOr; ?> </span></h4>
 <?php endif; ?>
 
 <?php echo TbHtml::form(
