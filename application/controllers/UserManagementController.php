@@ -54,7 +54,7 @@ class UserManagementController extends LSBaseController
         $model = new User('search');
         $model->setAttributes(Yii::app()->getRequest()->getParam('User'), false);
         $aData['model'] = $model;
-        $aData['columnDefinition'] = $model->getManagementColums();
+       // $aData['columnDefinition'] = $model->getManagementColums();
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $aData['formUrl'] = $this->createUrl('userManagement/index');
 
@@ -73,7 +73,7 @@ class UserManagementController extends LSBaseController
 
         return $this->render('index', [
             'model' => $aData['model'],
-            'columnDefinition' => $aData['columnDefinition'],
+            //'columnDefinition' => $aData['columnDefinition'],
             'pageSize' => $aData['pageSize'],
             'formUrl' => $aData['formUrl'],
             'massiveAction' => $aData['massiveAction'],

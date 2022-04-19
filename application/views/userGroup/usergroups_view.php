@@ -20,71 +20,27 @@
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php
-            $this->widget('yiistrap.widgets.TbGridView', array(
-                'dataProvider'     => $model->searchMine(true),
-                'id'               => 'usergroups-grid-mine',
+            $this->widget('application.extensions.admin.grid.CLSGridView', [
+                'id' => 'usergroups-grid-mine',
+                'dataProvider' => $model->searchMine(true),
+                'columns' => $model->getManagementButtons(),
                 'emptyText'        => gT('No user groups found.'),
-                'htmlOptions'      => ['class' => 'table-responsive grid-view-ls'],
-                'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('userGroup/viewGroup/ugid') . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                'massiveActionTemplate' => '',
                 'ajaxUpdate'       => 'usergroups-grid-mine',
-                'template'         => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                'summaryText'      => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        array(
-                                'class' => 'changePageSize form-control',
-                                'style' => 'display: inline; width: auto'
-                            ))),
-
-                'columns' => array(
-
-                     array(
-                        'header'      => gT('Actions'),
-                        'name'        => 'actions',
-                        'type'        => 'raw',
-                        'value'       => '$data->buttons',
-                        'htmlOptions' => array('class' => 'text-start'),
+                'pager' => [
+                    'class' => 'application.extensions.admin.grid.CLSYiiPager',
+                ],
+                'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                    . sprintf(
+                        gT('%s rows per page'),
+                        CHtml::dropDownList(
+                            'pageSize',
+                            $pageSize,
+                            App()->params['pageSizeOptions'],
+                            array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
+                        )
                     ),
-                    array(
-                        'header'      => gT('User group ID'),
-                        'name'        => 'usergroup_id',
-                        'value'       => '$data->ugid',
-                        'htmlOptions' => array('class' => ''),
-                    ),
-
-
-                    array(
-                        'header'      => gT('Name'),
-                        'name'        => 'name',
-                        'value'       => '$data->name',
-                        'htmlOptions' => array('class' => ''),
-                    ),
-
-                    array(
-                        'header'      => gT('Description'),
-                        'name'        => 'description',
-                        'value'       => '$data->description',
-                        'htmlOptions' => array('class' => ''),
-                    ),
-
-                    array(
-                        'header'      => gT('Owner'),
-                        'name'        => 'owner',
-                        'value'       => '$data->owner->users_name',
-                        'htmlOptions' => array('class' => ''),
-                    ),
-
-                    array(
-                        'header'      => gT('Members'),
-                        'name'        => 'members',
-                        'value'       => '$data->countUsers',
-                        'htmlOptions' => array('class' => ''),
-                    ),
-                ),
-            ));
+            ]);
             ?>
         </div>
     </div>
