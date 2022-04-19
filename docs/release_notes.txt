@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.6 (build 220412) to 3.28.7 (build 220420) April 19, 2022
+#Updated translation: Russian by Marysja, olly
+#Updated translation: Portuguese (Brazil) by educaticteced
+#Updated translation: Chinese (Taiwan) (Traditional) by CTFang, katy50306, scott306lr, TuTu_chen, Yeeeeeet
+
+
 Changes from 3.28.5 (build 220405) to 3.28.6 (build 220412) April 11, 2022
 -Fixed issue #17895: Error in multiple-numeric "Equals sum value" setting (#2330) (Denis Chenu)
 #Updated translation: Turkish by kayazeren
