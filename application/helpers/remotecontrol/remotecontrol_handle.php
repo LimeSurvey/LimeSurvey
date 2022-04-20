@@ -3289,11 +3289,12 @@ class remotecontrol_handle
      * @param string  $sSessionKey  Auth credentials
      * @param int     $iSurveyID    ID of the Survey
      * @param string  $sToken       Response token
+     * @param int     $responseId   Response ID
      *
      * @return array On success: array containing all uploads of the specified response
      *               On failure: array with error information
      */
-    public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken)
+    public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken, $responseId = null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY);
@@ -3309,7 +3310,14 @@ class remotecontrol_handle
             return array('status' => 'No permission');
         }
 
-        $oResponses = Response::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
+        if (empty($responseId)) {
+            if (empty($sToken)) {
+                return ['status' => 'Invalid arguments: both Token and Reponse ID are empty'];
+            }
+            $oResponses = Response::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
+        } else {
+            $oResponses = [Response::model($iSurveyID)->findByPk($responseId)];
+        }
 
         $uploaded_files = array();
         foreach ($oResponses as $key => $oResponse) {
