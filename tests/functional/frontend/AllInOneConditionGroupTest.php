@@ -9,7 +9,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
  * @since 2022-04-20
  * @group expression
  */
-class AllInOneConditionGroup extends TestBaseClassWeb
+class AllInOneConditionGroupTest extends TestBaseClassWeb
 {
 
     /** keep surveyurl */
