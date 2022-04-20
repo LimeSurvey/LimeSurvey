@@ -33040,7 +33040,7 @@
    * Like in front page, or quick actions
    */
   function panelClickable() {
-    $(".panel-clickable").on('click', function (e) {
+    $(".card-clickable").on('click', function (e) {
       var self = $(this);
 
       if (self.data('url') != '') {
@@ -33054,16 +33054,17 @@
   }
 
   /**
-   * Welcome page panels animations
+   * Welcome page card animations
+   * NB: Bootstrap 5 replaced panels with cards
    */
   function panelsAnimation() {
     setTimeout(function () {
-      adminCoreLSConsole.log('Triggering panel animation');
+      adminCoreLSConsole.log('Triggering card animation');
       /**
-       * Panel shown one by one
+       * Card shown one by one
        */
 
-      document.querySelectorAll(".panel").forEach(function (e, i) {
+      document.querySelectorAll(".card").forEach(function (e, i) {
         setTimeout(function () {
           e.animate({
             top: '0px',

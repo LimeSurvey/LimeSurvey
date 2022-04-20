@@ -18,9 +18,9 @@
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
     <!-- General Option -->
-    <div class="panel panel-default" id="generaloptionsContainer">
-        <div class="panel-heading" role="tab" id="heading-generaloptions">
-            <div class="panel-title h4">
+    <div class="card" id="generaloptionsContainer">
+        <div class="card-header bg-primary" role="tab" id="heading-generaloptions">
+            <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
@@ -31,16 +31,16 @@
             </div>
         </div>
         <div id="generaloptions" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-generaloptions">
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_generaloptions_panel', $data); ?>
             </div>
         </div>
     </div>
 
     <!-- Presentation & navigation  -->
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading-presentationoptions">
-            <div class="panel-title h4">
+    <div class="card">
+        <div class="card-header bg-primary" role="tab" id="heading-presentationoptions">
+            <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
@@ -51,16 +51,16 @@
             </div>
         </div>
         <div id="presentationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-presentationoptions">
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_presentation_panel', $data); ?>
             </div>
         </div>
     </div>
 
     <!-- Publication & access control -->
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading-publicationoptions">
-            <div class="panel-title h4">
+    <div class="card">
+        <div class="card-header bg-primary" role="tab" id="heading-publicationoptions">
+            <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
@@ -71,16 +71,16 @@
             </div>
         </div>
         <div id="publicationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-publicationoptions">
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_publication_panel', $data); ?>
             </div>
         </div>
     </div>
 
     <!-- Notification & data management -->
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading-notificationoptions">
-            <div class="panel-title h4">
+    <div class="card">
+        <div class="card-header bg-primary" role="tab" id="heading-notificationoptions">
+            <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
@@ -91,16 +91,16 @@
             </div>
         </div>
         <div id="notificationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-notificationoptions">
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_notification_panel', $data); ?>
             </div>
         </div>
     </div>
 
     <!-- Participants (tokens) -->
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading-tokensoptions">
-            <div class="panel-title h4">
+    <div class="card">
+        <div class="card-header bg-primary" role="tab" id="heading-tokensoptions">
+            <div class="">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
@@ -111,7 +111,7 @@
             </div>
         </div>
         <div id="tokensoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-tokensoptions">
-            <div class="panel-body">
+            <div class="card-body">
                 <?php $this->renderPartial('/admin/survey/subview/accordion/_tokens_panel', $data); ?>
             </div>
         </div>
@@ -120,9 +120,9 @@
     <!-- Edition Mode -->
     <?php if($data['action']=='surveygeneralsettings'):?>
         <!-- Panel integration -->
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading-integrationoptions">
-                <div class="panel-title h4">
+        <div class="card">
+            <div class="card-header bg-primary" role="tab" id="heading-integrationoptions">
+                <div class="">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
 			<span class="sr-only">Expand/Collapse</span>
@@ -133,7 +133,7 @@
                 </div>
             </div>
             <div id="integrationoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-integrationoptions">
-                <div class="panel-body">
+                <div class="card-body">
                     <?php $this->renderPartial('/admin/survey/subview/accordion/_integration_panel', $data); ?>
                 </div>
             </div>
@@ -143,9 +143,9 @@
         <?php $this->renderPartial('/admin/survey/subview/accordion/_plugins_panel', $data); ?>
 
         <!-- Resources -->
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading-resourcesoptions">
-                <div class="panel-title h4">
+        <div class="card">
+            <div class="card-header bg-primary" role="tab" id="heading-resourcesoptions">
+                <div class="">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
                     </a>
@@ -155,7 +155,7 @@
                 </div>
             </div>
             <div id="resourcesoptions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-resourcesoptions">
-                <div class="panel-body">
+                <div class="card-body">
                     <?php $this->renderPartial('/admin/survey/subview/accordion/_resources_panel', $data); ?>
                 </div>
             </div>

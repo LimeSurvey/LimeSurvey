@@ -1858,7 +1858,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             // Quick action buttons are hidden in the html, and normally made visible by panelsAnimation() function of adminbasics.js,
             // which is triggered on document ready or pjax:scriptcomplete. To avoid messing with other things, we just do the animation
             // again here.
-            $('.panel').each(function (i) {
+            $('.card').each(function (i) {
               $(this).delay(i++ * 200).animate({
                 opacity: 1,
                 top: '0px'

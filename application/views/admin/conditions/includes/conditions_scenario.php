@@ -9,9 +9,9 @@
     </script>
 <?php endif; ?>
 
-<div class='panel panel-primary'>
+<div class='card'>
 
-    <div class='panel-heading scenario-heading'>
+    <div class='card-header bg-primary scenario-heading'>
 
         <div class='row'>
             <div class='col-sm-2'>
@@ -91,7 +91,7 @@
         </div>
     </div>
 
-    <div class='panel-body'>
+    <div class='card-body'>
         <?php echo $conditionHtml; ?>
     </div>
 </div>

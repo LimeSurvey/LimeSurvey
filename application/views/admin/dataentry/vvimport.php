@@ -22,14 +22,14 @@
     ?>
     
     
-    <div class="panel panel-primary" id="panel-1">
-        <div class="panel-heading">
-            <div class="panel-title h4">
+    <div class="card" id="panel-1">
+        <div class="card-header bg-primary">
+            <div class="">
                 <?php eT("General");?>
             </div>
         </div>
 
-        <div class="panel-body">
+        <div class="card-body">
             <div class="form-group">
                 <label for="csv_vv_file" class=" form-label">
                     <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>

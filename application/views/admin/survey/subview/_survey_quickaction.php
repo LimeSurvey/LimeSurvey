@@ -18,8 +18,8 @@
 
 <!-- Quick Actions -->
 
-<div class="panel panel-default">
-    <div id="survey-action-title" class="panel-heading" >
+<div class="card">
+    <div id="survey-action-title" class="card-header bg-primary" >
         <div class="row">
             <div class="col-xs-2 col-sm-1">
                 <button id="survey-action-chevron" class="btn btn-default btn-tiny" data-active="<?=$quickactionstate?>" data-url="<?php echo Yii::app()->urlManager->createUrl("surveyAdministration/toggleQuickAction/");?>">
@@ -31,7 +31,7 @@
             </div>
         </div>
     </div>
-    <div class="panel-body" style="display:<?=($quickactionstate > 0 ? 'block' : 'none')?>" id="survey-action-container"> 
+    <div class="card-body" style="display:<?=($quickactionstate > 0 ? 'block' : 'none')?>" id="survey-action-container">
         <div class="row welcome survey-action">
             <div class="col-sm-12 content-right">
                 <!-- Alerts, infos... -->
@@ -94,18 +94,18 @@
 
                                     <!-- Can't add new group to survey  -->
                                     <div class="col-sm-6">
-                                        <div class="panel panel-primary disabled" id="panel-1">
-                                            <div class="panel-heading">
-                                                <div class="panel-title h4"><?php eT('Add group');?></div>
+                                        <div class="card disabled" id="panel-1">
+                                            <div class="card-header bg-primary">
+                                                <div class=""><?php eT('Add group');?></div>
                                             </div>
-                                            <div class="panel-body">
-                                                <div class="panel-body-ico">
+                                            <div class="card-body">
+                                                <div class="card-body-ico">
                                                     <a  href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-bs-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                                         <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
-                                                <div  class="panel-body-link">
+                                                <div  class="card-body-link">
                                                     <p><a href="#"><?php eT('Add new group');?></a></p>
                                                 </div>
                                             </div>
@@ -114,18 +114,18 @@
 
                                     <!-- Can't add a new question -->
                                     <div class="col-sm-6" >
-                                        <div class="panel panel-primary disabled" id="panel-2">
-                                            <div class="panel-heading">
-                                                <div class="panel-title h4 disabled"><?php eT('Add question');?></div>
+                                        <div class="card disabled" id="panel-2">
+                                            <div class="card-header bg-primary">
+                                                <div class=" disabled"><?php eT('Add question');?></div>
                                             </div>
-                                            <div class="panel-body">
-                                                <div class="panel-body-ico">
+                                            <div class="card-body">
+                                                <div class="card-body-ico">
                                                     <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-bs-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                                         <span class="sr-only"><?php eT('Add new question');?></span>
                                                     </a>
                                                 </div>
-                                                <div  class="panel-body-link">
+                                                <div  class="card-body-link">
                                                     <p>
                                                         <a  href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                                                             <?php eT("Add new question"); ?>
@@ -141,18 +141,18 @@
 
                                     <!-- Add group -->
                                     <div class="col-sm-6">
-                                        <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>">
-                                            <div class="panel-heading">
-                                                <div class="panel-title h4"><?php eT('Add group');?></div>
+                                        <div class="card card-clickable" id="panel-1" data-url="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>">
+                                            <div class="card-header bg-primary">
+                                                <div class=""><?php eT('Add group');?></div>
                                             </div>
-                                            <div class="panel-body">
-                                                <div class="panel-body-ico">
+                                            <div class="card-body">
+                                                <div class="card-body-ico">
                                                     <a  href="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>" >
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                                         <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
-                                                <div  class="panel-body-link">
+                                                <div  class="card-body-link">
                                                     <p><a href="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>"><?php eT('Add new group');?></a></p>
                                                 </div>
                                             </div>
@@ -162,18 +162,18 @@
                                     <!-- Survey has no group, so can't add a question -->
                                     <?php if(!$groups_count > 0): ?>
                                         <div class="col-sm-6" >
-                                            <div class="panel panel-primary disabled" id="panel-2">
-                                                <div class="panel-heading">
-                                                    <div class="panel-title h4 disabled"><?php eT('Add question');?></div>
+                                            <div class="card disabled" id="panel-2">
+                                                <div class="card-header bg-primary">
+                                                    <div class=" disabled"><?php eT('Add question');?></div>
                                                 </div>
-                                                <div class="panel-body  ">
-                                                    <div class="panel-body-ico">
+                                                <div class="card-body  ">
+                                                    <div class="card-body-ico">
                                                         <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                                                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                 <span class="sr-only"><?php eT("You must first create a question group."); ?></span>
                                                         </a>
                                                     </div>
-                                                    <div  class="panel-body-link">
+                                                    <div  class="card-body-link">
                                                         <p>
                                                             <a  href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                                                                 <?php eT("Add new question"); ?>
@@ -188,18 +188,18 @@
                                         <!-- Survey has a group, so can add a question -->
                                     <?php else:?>
                                         <div class="col-sm-6">
-                                            <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>">
-                                                <div class="panel-heading">
-                                                    <div class="panel-title h4"><?php eT('Add question');?></div>
+                                            <div class="card card-clickable" id="panel-2" data-url="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>">
+                                                <div class="card-header bg-primary">
+                                                    <div class=""><?php eT('Add question');?></div>
                                                 </div>
-                                                <div class="panel-body">
-                                                    <div class="panel-body-ico">
+                                                <div class="card-body">
+                                                    <div class="card-body-ico">
                                                         <a  href="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>" >
                                                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                 <span class="sr-only"><?php eT('Add question');?></span>
                                                         </a>
                                                     </div>
-                                                    <div  class="panel-body-link">
+                                                    <div  class="card-body-link">
                                                         <p><a href="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>"><?php eT("Add new question"); ?></a></p>
                                                     </div>
                                                 </div>
@@ -215,35 +215,35 @@
 
                                 <!-- Edit text elements and general settings -->
                                 <?php if($surveylocale && $surveysettings): ?>
-                                    <div class="panel panel-primary panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
-                                        <div class="panel-heading">
-                                            <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
+                                    <div class="card card-clickable" id="panel-3" data-url="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
+                                        <div class="card-header bg-primary">
+                                            <div class=""><?php eT('Edit text elements and general settings');?></div>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="panel-body-ico">
+                                        <div class="card-body">
+                                            <div class="card-body-ico">
                                                 <a  href="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>" >
                                                     <span class="icon-edit text-success"  style="font-size: 3em;"></span>
                             <span class="sr-only"><?php eT('Edit text elements and general settings');?></span>
                                                 </a>
                                             </div>
-                                            <div  class="panel-body-link">
+                                            <div  class="card-body-link">
                                                 <p><a href="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>"><?php eT('Edit text elements and general settings');?></a></p>
                                             </div>
                                         </div>
                                     </div>
                                 <?php else: ?>
-                                    <div class="panel panel-primary disabled" id="panel-3" >
-                                        <div class="panel-heading">
-                                            <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
+                                    <div class="card disabled" id="panel-3" >
+                                        <div class="card-header bg-primary">
+                                            <div class=""><?php eT('Edit text elements and general settings');?></div>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="panel-body-ico">
+                                        <div class="card-body">
+                                            <div class="card-body-ico">
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-bs-toggle="tooltip" >
                                                     <span class="icon-edit text-success"  style="font-size: 3em;"></span>
                             <span class="sr-only"><?php eT('Edit text elements and general settings');?></span>
                                                 </a>
                                             </div>
-                                            <div  class="panel-body-link">
+                                            <div  class="card-body-link">
                                                 <p><a href="#"><?php eT('Edit text elements and general settings');?></a></p>
                                             </div>
                                         </div>
@@ -255,18 +255,18 @@
                             <!-- Stats -->
                             <?php if($respstatsread && $activated=="Y"):?>
                                 <div class="col-sm-6">
-                                    <div class="panel panel-primary panel-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>">
-                                        <div class="panel-heading">
-                                            <div class="panel-title h4"><?php eT("Statistics");?></div>
+                                    <div class="card card-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>">
+                                        <div class="card-header bg-primary">
+                                            <div class=""><?php eT("Statistics");?></div>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="panel-body-ico">
+                                        <div class="card-body">
+                                            <div class="card-body-ico">
                                                 <a  href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>" >
                                                     <span class="fa fa-bar-chart text-success"  style="font-size: 3em;"></span>
                             <span class="sr-only"><?php eT("Statistics");?></span>
                                                 </a>
                                             </div>
-                                            <div  class="panel-body-link">
+                                            <div  class="card-body-link">
                                                 <p>
                                                     <a href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>">
                                                         <?php eT("Responses & statistics");?>
@@ -278,18 +278,18 @@
                                 </div>
                             <?php else: ?>
                                 <div class="col-sm-6">
-                                    <div class="panel panel-primary disabled" id="panel-4">
-                                        <div class="panel-heading">
-                                            <div class="panel-title h4"><?php eT("Responses & statistics");?></div>
+                                    <div class="card disabled" id="panel-4">
+                                        <div class="card-header bg-primary">
+                                            <div class=""><?php eT("Responses & statistics");?></div>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="panel-body-ico">
+                                        <div class="card-body">
+                                            <div class="card-body-ico">
                                                 <a  href="#" >
                                                     <span class="fa fa-bar-chart text-success"  style="font-size: 3em;"></span>
                             <span class="sr-only"><?php eT("Responses & statistics");?></span>
                                                 </a>
                                             </div>
-                                            <div  class="panel-body-link">
+                                            <div  class="card-body-link">
                                                 <p>
                                                     <a href="#" title="<?php if($activated!="Y"){eT("This survey is not active - no responses are available.");}else{eT("We are sorry but you don't have permissions to do this.");} ?>" style="display: inline-block" >
                                                         <?php eT("Responses & statistics");?>

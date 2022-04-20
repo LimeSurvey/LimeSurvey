@@ -25,16 +25,16 @@
                 <?php
                     foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
                     {?>
-                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='panel panel-primary mjs-nestedSortable-expanded' data-level='group'>
+                    <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='card mjs-nestedSortable-expanded' data-level='group'>
 
-                    <div class="panel-heading">
+                    <div class="card-header bg-primary">
                         <a class='btn btn-default btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>
                         &nbsp;
                         <?php echo ellipsize($aGroupAndQuestions['group_text'], 80);?>
                     </div>
                         <?php if (isset ($aGroupAndQuestions['questions']))
                             {?>
-                            <ol class='question-list list-unstyled panel-body' data-level='question'>
+                            <ol class='question-list list-unstyled card-body' data-level='question'>
                                 <?php
                                     foreach($aGroupAndQuestions['questions'] as $aQuestion)
                                     {?>

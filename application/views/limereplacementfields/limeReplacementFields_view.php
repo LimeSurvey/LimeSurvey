@@ -75,13 +75,13 @@
     if (isset($surveyformat))
     {
         ?>
-        <div class="panel panel-default">
+        <div class="card">
             <?php
             switch ($surveyformat)
             {
                 case 'A':
                     ?>
-                    <div class="panel-body">
+                    <div class="card-body">
 
                         <br />
                         <font color='orange'><?php eT("Some questions have been disabled");?></font>

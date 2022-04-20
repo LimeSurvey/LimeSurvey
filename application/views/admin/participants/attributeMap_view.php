@@ -39,15 +39,15 @@
 
 <div class='row'>
     <div class='col-sm-4'>
-        <div id="centralattribute" class="panel panel-primary <?php echo $columnstyle ?>">
-            <div class="panel-heading"><?php eT("Unmapped participant attributes"); ?></div>
-            <div class='panel-body'>
+        <div id="centralattribute" class="card <?php echo $columnstyle ?>">
+            <div class="card-header bg-primary"><?php eT("Unmapped participant attributes"); ?></div>
+            <div class='card-body'>
                 <div id="cpdbatt">
                     <?php
                     foreach ($selectedcentralattribute as $key => $value)
                     {
                         ?>
-                        <div class='panel panel-default col-sm-12' id='c_<?php echo $key; ?>'><div class='panel-body'><?php echo $value; ?></div></div>
+                        <div class='card col-sm-12' id='c_<?php echo $key; ?>'><div class='card-body'><?php echo $value; ?></div></div>
                         <?php
                     }
                     ?>
@@ -56,9 +56,9 @@
         </div>
     </div>
     <div class='col-sm-4'>
-        <div id="newcreated" class="panel panel-primary <?php echo $columnstyle ?>">
-            <div class="panel-heading"><?php eT("Survey participant attributes to create"); ?></div>
-            <div class='panel-body' style="height:100%;">
+        <div id="newcreated" class="card <?php echo $columnstyle ?>">
+            <div class="card-header bg-primary"><?php eT("Survey participant attributes to create"); ?></div>
+            <div class='card-body' style="height:100%;">
                 <div class="newcreate" id="sortable" style ="height:100%;">
                 </div>
             </div>
@@ -66,27 +66,27 @@
     </div>
     <div class='col-sm-4'>
         <div id='tokenattribute'>
-            <div class='panel panel-primary'>
-                <div class="panel-heading">
+            <div class='card'>
+                <div class="card-header bg-primary">
                     <?php eT("Existing survey participant attributes"); ?>
                 </div>
-                <div class='panel-body'>
+                <div class='card-body'>
                     <div class="tokenatt ui-sortable">
                         <?php foreach ($selectedtokenattribute as $id => $name): ?>
                                 <?php if (isset($automaticallyMappedAttributes[$id])): ?>
                                     <?php $autoAttr = $automaticallyMappedAttributes[$id]; // Short-hand... ?>
                                     <div class='tokenatt-container col-sm-12'>
                                         <div class='col-sm-6'>
-                                            <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
-                                                <div class='panel-body'>
+                                            <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
+                                                <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
                                                     <span class='fa fa-arrows-h tokenatt-arrow'></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class='col-sm-6'>
-                                            <div class='panel panel-default ui-state-disabled cpdb-attribute' id='c_<?php echo $autoAttr['cpdbAttribute']['attribute_id']; ?>'>
-                                                <div class='panel-body'>
+                                            <div class='card ui-state-disabled cpdb-attribute' id='c_<?php echo $autoAttr['cpdbAttribute']['attribute_id']; ?>'>
+                                                <div class='card-body'>
                                                     <?php echo $autoAttr['cpdbAttribute']['attribute_name']; ?>
                                                 </div>
                                             </div>
@@ -95,8 +95,8 @@
                                 <?php else: ?>
                                     <div class='tokenatt-container col-sm-12'>
                                         <div class='col-sm-6'>
-                                            <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
-                                                <div class='panel-body'>
+                                            <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
+                                                <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
                                                 </div>
                                             </div>
@@ -124,16 +124,16 @@
                     <?php endif; ?>
 
                     <?php if(!empty($alreadymappedattributename)): ?>
-                        <div class='panel-heading'>
+                        <div class='card-header bg-primary'>
                             <?php eT("Pre-mapped attributes") ?>
                         </div>
-                        <div class='panel-body'>
+                        <div class='card-body'>
                             <div class="notsortable">
                                 <?php
                                 foreach ($alreadymappedattributename as $key => $value)
                                 {
                                     ?>
-                                    <div class='panel panel-default' title='This attribute is already mapped' id=''><div class='panel-body'><?php echo $value; ?></div></div>
+                                    <div class='card' title='This attribute is already mapped' id=''><div class='card-body'><?php echo $value; ?></div></div>
                                     <?php
                                 }
                                 ?>
@@ -147,14 +147,14 @@
                 </div>
             </div>
 
-            <div class='panel panel-primary'>
-                <div class='panel-heading'><?php eT("Standard participant fields") ?></div>
-                <div class='panel-body'>
+            <div class='card'>
+                <div class='card-header bg-primary'><?php eT("Standard participant fields") ?></div>
+                <div class='card-body'>
                     <div class="standardfields">
                         <div class='tokenatt-container col-sm-12'>
                             <div class='col-sm-6'>
-                                <div class='panel panel-default ui-state-disabled token-attribute' id='t_token'>
-                                    <div class='panel-body'>
+                                <div class='card ui-state-disabled token-attribute' id='t_token'>
+                                    <div class='card-body'>
                                         <?php eT("Participant") ?>
                                         <span class='fa fa-arrows-h tokenatt-arrow'></span>
                                     </div>

@@ -17,9 +17,9 @@ App()->getClientScript()->registerScript("plugin-panel-variables", "
 ", LSYii_ClientScript::POS_BEGIN);
 
     if (!empty($plugin['settings'])): ?>
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading-plugin<?php echo $id; ?>">
-                <div class="panel-title h4">
+        <div class="card">
+            <div class="card-header bg-primary" role="tab" id="heading-plugin<?php echo $id; ?>">
+                <div class="">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
 			<span class="sr-only"><?php eT("Expand/Collapse");?></span>
@@ -30,7 +30,7 @@ App()->getClientScript()->registerScript("plugin-panel-variables", "
                 </div>
             </div>
             <div id="plugin<?php echo $id; ?>" class="panel-collapse collapse" role="tabpanel">
-                <div class="panel-body">
+                <div class="card-body">
                 <?php
                 $this->widget('ext.SettingsWidget.SettingsWidget', array(
                     'settings' => $plugin['settings'],
