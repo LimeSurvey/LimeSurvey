@@ -4,7 +4,7 @@
 ?>
 <div class='row container-fluid  ls-space padding left-0'>
     <div class="col-sm-12 ls-space padding left-0">
-        <div id="breadcrumb-container" class="ls-ba">
+        <div id="breadcrumb-container" class="ls-ba ps-2">
             <div class="">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb ls-flex-row align-items-center align-content-flex-start <?php echo $extraClass?>">
