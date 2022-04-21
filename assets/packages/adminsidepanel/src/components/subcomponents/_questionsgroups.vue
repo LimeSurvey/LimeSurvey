@@ -346,7 +346,7 @@ export default {
                                 v-for="question in orderQuestions(questiongroup.questions)" 
                                 v-bind:key="question.qid" 
                                 v-bind:class="questionItemClasses(question)" 
-                                data-toggle="tootltip" 
+                                data-bs-toggle="tooltip"
                                 class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-start" 
                                 :data-is-hidden="question.hidden"
                                 :data-questiontype="question.type"
