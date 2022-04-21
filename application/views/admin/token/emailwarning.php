@@ -8,7 +8,7 @@
         <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
         <br />
         <br />
-        <input type='button' class="btn btn-default" id="sendTokenInvitationsNow" value='<?php eT("Continue"); ?>' />
+        <input type='button' class="btn btn-outline-secondary" id="sendTokenInvitationsNow" value='<?php eT("Continue"); ?>' />
         <span>&nbsp;&nbsp;&nbsp;</span><button id="cancelAutomaticSubmission" class="btn btn-danger"><?php eT("Cancel automatic sending"); ?></button>
         <input type='hidden' name='ok' value="absolutely" />
         <input type='hidden' name='action' value="tokens" />

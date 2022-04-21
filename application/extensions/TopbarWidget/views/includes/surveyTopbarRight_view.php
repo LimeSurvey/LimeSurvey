@@ -8,7 +8,7 @@
 
 <!-- White Close button -->
 <?php if (!empty($showWhiteCloseButton)) : ?>
-    <a class="btn btn-default" href="<?php echo $closeUrl ?>" role="button">
+    <a class="btn btn-outline-secondary" href="<?php echo $closeUrl ?>" role="button">
         <span class="fa fa-close"></span>
         <?php eT("Close"); ?>
     </a>
@@ -16,7 +16,7 @@
 
 <!-- Save and Close -->
 <?php if (!empty($showSaveAndCloseButton)): ?>
-    <a class="btn btn-default"
+    <a class="btn btn-outline-secondary"
        href="<?php echo $closeUrl; ?>"
        role="button"
        id="save-and-close-button"
@@ -28,7 +28,7 @@
 
 <!-- Return -->
 <?php if (!empty($showBackButton)): ?>
-    <a class="btn btn-default" href="<?php echo $returnUrl; ?>" role="button">
+    <a class="btn btn-outline-secondary" href="<?php echo $returnUrl; ?>" role="button">
         <span class="fa fa-backward"></span>
         &nbsp;&nbsp;
         <?php eT('Back') ?>

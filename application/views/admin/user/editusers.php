@@ -9,7 +9,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-default"><span class="icon-add text-success"></span> <?php eT("Add user");?></button>
+            <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-outline-secondary"><span class="icon-add text-success"></span> <?php eT("Add user");?></button>
         </div>
     </div>
 <div class="pagetitle h3"><?php eT("User control");?></div>

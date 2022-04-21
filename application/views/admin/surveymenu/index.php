@@ -114,7 +114,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                 </p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
                     <?php eT('Cancel'); ?>
                 </button>
                 <button

@@ -467,7 +467,7 @@ class User extends LSActiveRecord
                 data-uid='" . $this->uid . "'
                 data-user='" . htmlspecialchars($oUser['full_name']) . "'
                 data-action='modifyuser'
-                class='btn btn-default btn-sm green-border action_usercontrol_button'>
+                class='btn btn-outline-secondary btn-sm green-border action_usercontrol_button'>
                     <span class='fa fa-pencil text-success'></span>
                 </button>";
         } else {
@@ -478,7 +478,7 @@ class User extends LSActiveRecord
                     && $this->parent_id == Yii::app()->session['loginID']
                 )
             ) {
-                $editUser = "<button data-toggle='tooltip' data-url='" . $editUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='modifyuser' title='" . gT("Edit this user") . "' type='submit' class='btn btn-default btn-sm green-border action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
+                $editUser = "<button data-toggle='tooltip' data-url='" . $editUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='modifyuser' title='" . gT("Edit this user") . "' type='submit' class='btn btn-outline-secondary btn-sm green-border action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
             }
 
             if (
@@ -488,7 +488,7 @@ class User extends LSActiveRecord
                 $this->parent_id == Yii::app()->session['loginID'])) && !Permission::isForcedSuperAdmin($this->uid)
             ) {
                 //'admin/user/sa/setuserpermissions'
-                    $setPermissionsUser = "<button data-toggle='tooltip' data-user='" . htmlspecialchars($this->full_name) . "' data-url='" . $setPermissionsUrl . "' data-uid='" . $this->uid . "' data-action='setuserpermissions' title='" . gT("Set global permissions for this user") . "' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-security text-success'></span></button>";
+                    $setPermissionsUser = "<button data-toggle='tooltip' data-user='" . htmlspecialchars($this->full_name) . "' data-url='" . $setPermissionsUrl . "' data-uid='" . $this->uid . "' data-action='setuserpermissions' title='" . gT("Set global permissions for this user") . "' type='submit' class='btn btn-outline-secondary btn-xs action_usercontrol_button'><span class='icon-security text-success'></span></button>";
             }
             if (
                 (Permission::model()->hasGlobalPermission('superadmin', 'read')
@@ -496,7 +496,7 @@ class User extends LSActiveRecord
                 && !Permission::isForcedSuperAdmin($this->uid)
             ) {
                 //'admin/user/sa/setusertemplates')
-                    $setTemplatePermissionUser = "<button type='submit' data-user='" . htmlspecialchars($this->full_name) . "' data-url='" . $setTemplatePermissionsUrl . "' data-uid='" . $this->uid . "' data-action='setusertemplates' data-toggle='tooltip' title='" . gT("Set template permissions for this user") . "' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
+                    $setTemplatePermissionUser = "<button type='submit' data-user='" . htmlspecialchars($this->full_name) . "' data-url='" . $setTemplatePermissionsUrl . "' data-uid='" . $this->uid . "' data-action='setusertemplates' data-toggle='tooltip' title='" . gT("Set template permissions for this user") . "' class='btn btn-outline-secondary btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
             }
             if (
                 (Permission::model()->hasGlobalPermission('superadmin', 'read')
@@ -521,7 +521,7 @@ class User extends LSActiveRecord
                         data-action='deluser'
                         data-onclick='triggerRunAction($(\"#delete_user_" . $this->uid . "\"))'
                         data-message='" . gT("Do you want to delete this user?") . "'
-                        class='btn btn-default btn-sm'>
+                        class='btn btn-outline-secondary btn-sm'>
                             <span class='fa fa-trash text-danger'></span>
                         </button>
                     </span>";
@@ -531,7 +531,7 @@ class User extends LSActiveRecord
                     && $this->parent_id != Yii::app()->session['loginID']
             ) {
                 //'admin/user/sa/setasadminchild'
-                $changeOwnership = "<button data-toggle='tooltip' data-url='" . $changeOwnershipUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='setasadminchild' title='" . gT("Take ownership") . "' class='btn btn-default btn-xs action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
+                $changeOwnership = "<button data-toggle='tooltip' data-url='" . $changeOwnershipUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='setasadminchild' title='" . gT("Take ownership") . "' class='btn btn-outline-secondary btn-xs action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
             }
         }
         return "<div>"
@@ -615,7 +615,7 @@ class User extends LSActiveRecord
         $deleteUserButton = ""
             . "<button 
                 id='UserManagement--delete-" . $this->uid . "' 
-                class='btn btn-default btn-sm UserManagement--action--openmodal UserManagement--action--delete red-border'
+                class='btn btn-outline-secondary btn-sm UserManagement--action--openmodal UserManagement--action--delete red-border'
                 data-toggle='tooltip' 
                 title='" . gT("Delete User") . "' 
                 data-href='" . $deleteUrl . "'><i class='fa fa-trash text-danger'></i></button>";

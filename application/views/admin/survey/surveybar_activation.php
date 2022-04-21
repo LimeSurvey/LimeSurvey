@@ -65,7 +65,7 @@
     <!-- Multinlinguage -->
     <?php if (count($oSurvey->allLanguages) > 1): ?>
         <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-do" ></span>
             <?php echo $icontext; ?> <span class="caret"></span>
           </button>
@@ -82,7 +82,7 @@
 
     <!-- uniq language -->
     <?php else: ?>
-        <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
+        <a class="btn btn-outline-secondary  btntooltip" href="<?php echo $this->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
             <span class="icon-do" ></span>
             <?php echo $icontext; ?>
         </a>

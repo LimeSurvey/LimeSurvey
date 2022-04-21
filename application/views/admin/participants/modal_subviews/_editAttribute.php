@@ -64,7 +64,7 @@
     <div id="ParticipantAttributeNamesDropdownEdit" class="row form-group" style="display: none;">
         <div class="row">
             <div class="col-xs-2">
-                <button class="btn btn-default btn-block" id="addDropdownField" data-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
+                <button class="btn btn-outline-secondary btn-block" id="addDropdownField" data-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
             </div>
             <h4 class="col-xs-8 col-offset-xs-2"><?php eT("Dropdown fields") ?></h4>
         </div>
@@ -80,7 +80,7 @@
                     // echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='".$attribute_value['value']."' />";
                     echo "</div>";
                     echo '<div class="col-xs-1">
-                            <button class="btn btn-default form-group action_delDropdownField">
+                            <button class="btn btn-outline-secondary form-group action_delDropdownField">
                                 <i class="fa fa-trash text-danger"></i>
                             </button>
                         </div>
@@ -92,7 +92,7 @@
                     <input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='' />
                 </div>
                 <div class="col-xs-1">
-                    <button class="btn btn-default form-group action_delDropdownField">
+                    <button class="btn btn-outline-secondary form-group action_delDropdownField">
                         <i class="fa fa-trash text-danger"></i>
                     </button>
                 </div>
@@ -110,7 +110,7 @@
                 </div>
             </div>
             <div class="col-xs-1">
-                <button class="btn btn-default form-group" id="addLanguageField" data-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+                <button class="btn btn-outline-secondary form-group" id="addLanguageField" data-toggle="tooltip" title="<?php eT("Add a new language") ?>">
                     <i class="fa fa-plus-circle text-success"></i>
                 </button>
             </div>
@@ -127,7 +127,7 @@
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
                             </div>
                             <div class="col-xs-1">
-                                <button class="btn btn-default form-group action_delLanguageField">
+                                <button class="btn btn-outline-secondary form-group action_delLanguageField">
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
                             </div>
@@ -144,7 +144,7 @@
                                 <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.$languageOfAttribute.'">
                             </div>
                             <div class="col-xs-1">
-                                <button class="btn btn-default form-group action_delLanguageField">
+                                <button class="btn btn-outline-secondary form-group action_delLanguageField">
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
                             </div>
@@ -166,7 +166,7 @@
                         <input class='form-control' name='dummyParticipantAttributeNamesDropdown' value='' />
                     </div>
                     <div class="col-xs-1">
-                        <button class="btn btn-default form-group action_delDropdownField">
+                        <button class="btn btn-outline-secondary form-group action_delDropdownField">
                             <i class="fa fa-trash text-danger"></i>
                         </button>
                     </div>

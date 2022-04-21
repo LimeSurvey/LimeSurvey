@@ -16,7 +16,7 @@ $aReplacementData=array();
 
                     <!-- test/execute survey -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                         <span class="icon-do" ></span>
                         <?php if($oSurvey->active=='N'):?>
@@ -41,7 +41,7 @@ $aReplacementData=array();
                     <!-- preview group -->
                     <!-- Preview multilangue -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="icon-do"></span>
                         <?php eT("Preview question group"); ?> <span class="caret"></span>
                       </button>
@@ -59,7 +59,7 @@ $aReplacementData=array();
                     <!-- preview question -->
                     <!-- Single button -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="icon-do"></span>
                         <?php eT("Preview question"); ?> <span class="caret"></span>
                       </button>
@@ -77,7 +77,7 @@ $aReplacementData=array();
                 <?php else:?>
 
                     <!-- test/run survey -->
-                    <a class="btn btn-default  btntooltip selector__topbar--previewSurvey" href="<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
+                    <a class="btn btn-outline-secondary  btntooltip selector__topbar--previewSurvey" href="<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
                         <span class="icon-do" ></span>
                         <?php if($oSurvey->active=='N'):?>
                             <?php eT('Preview survey');?>
@@ -88,12 +88,12 @@ $aReplacementData=array();
 
 
                     <!-- preview question group -->
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
+                    <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
                         <span class="icon-do"></span>
                         <?php eT("Preview question group");?>
                     </a>
                     <!-- preview question -->
-                    <a class="btn btn-default" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">
+                    <a class="btn btn-outline-secondary" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">
                         <span class="icon-do"></span>
                         <?php eT("Preview question");?>
                     </a>
@@ -108,7 +108,7 @@ $aReplacementData=array();
 
             <!-- Check logic -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
-                <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>" role="button">
+                <a class="btn btn-outline-secondary pjax" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>" role="button">
                     <span class="icon-expressionmanagercheck"></span>
                     <?php eT("Check logic"); ?>
                 </a>
@@ -117,7 +117,7 @@ $aReplacementData=array();
 
             <!-- Delete -->
             <?php if( $activated != "Y" && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete' )):?>
-                <button class="btn btn-default"
+                <button class="btn btn-outline-secondary"
                    data-toggle="modal"
                    data-target="#confirmation-modal"
                    data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid])); ?>'
@@ -127,7 +127,7 @@ $aReplacementData=array();
                     <?php eT("Delete"); ?>
                 </button>
             <?php elseif (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete')): ?>
-                <button class="btn btn-default btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("It is not possible to add/delete questions if the survey is active."); ?>">
+                <button class="btn btn-outline-secondary btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("It is not possible to add/delete questions if the survey is active."); ?>">
                     <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </button>
@@ -137,7 +137,7 @@ $aReplacementData=array();
 
             <!-- export -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export')):?>
-                <a class="btn btn-default " href="<?php echo $this->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>" role="button">
+                <a class="btn btn-outline-secondary " href="<?php echo $this->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>" role="button">
                     <span class="icon-export"></span>
                     <?php eT("Export "); ?>
                 </a>
@@ -146,7 +146,7 @@ $aReplacementData=array();
             <!-- copy -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create')):?>
                 <?php if(($activated != "Y")):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questions/sa/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>" role="button">
+                    <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("admin/questions/sa/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>" role="button">
                         <span class="icon-copy"></span>
                         <?php eT("Copy"); ?>
                     </a>
@@ -160,7 +160,7 @@ $aReplacementData=array();
 
             <!-- conditions -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')):?>
-                <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+                <a class="btn btn-outline-secondary pjax" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                     <span class="icon-conditions"></span>
                     <?php eT("Set conditions "); ?>
                 </a>
@@ -168,7 +168,7 @@ $aReplacementData=array();
 
             <!-- Default Values -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0):?>
-                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl('questionAdministration/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                    <a class="btn btn-outline-secondary pjax" href="<?php echo $this->createUrl('questionAdministration/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                         <span class="icon-defaultanswers"></span>
                         <?php eT("Edit default answers"); ?>
                     </a>
@@ -179,17 +179,17 @@ $aReplacementData=array();
 
     <?php if(isset($questionbar['buttons']['conditions'])):?>
         <div class="col-sm-12 form form-inline">
-            <a class="btn btn-default pjax <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <a class="btn btn-outline-secondary pjax <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                 <span class="fa fa-info-sign"></span>
                 <?php eT("Show conditions for this question");?>
             </a>
 
-            <a class="btn btn-default pjax <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <a class="btn btn-outline-secondary pjax <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                 <span class="icon-conditions_add"></span>
                 <?php eT("Add and edit conditions");?>
             </a>
 
-            <a class="btn btn-default pjax <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <a class="btn btn-outline-secondary pjax <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                 <span class="icon-copy"></span>
                 <?php eT("Copy conditions");?>
             </a>
@@ -202,7 +202,7 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
                 
-                <a class="btn btn-default" href="<?php echo $this->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
+                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
@@ -221,7 +221,7 @@ $aReplacementData=array();
                 <?php endif;?>
 
                 <?php if(isset($questionbar['returnbutton']['url'])):?>
-                    <a class="btn btn-default" href="<?php echo $questionbar['returnbutton']['url']; ?>" role="button">
+                    <a class="btn btn-outline-secondary" href="<?php echo $questionbar['returnbutton']['url']; ?>" role="button">
                         <span class="fa fa-step-backward"></span>
                         <?php echo $questionbar['returnbutton']['text'];?>
                     </a>
@@ -250,7 +250,7 @@ $aReplacementData=array();
                     <?php eT("Save");?>
 
                 </a>
-                <a class="btn btn-default" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" role="button" id="save-and-close-button">
+                <a class="btn btn-outline-secondary" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" role="button" id="save-and-close-button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>

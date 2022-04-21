@@ -16,7 +16,7 @@
 
             <!-- Add -->
             <?php if (Permission::model()->hasGlobalPermission('usergroups', 'create') && isset($usergroupbar['returnbutton']['url'])) :?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("userGroup/addGroup"); ?>" role="button" title="<?php eT('Add a new user group'); ?>">
+                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("userGroup/addGroup"); ?>" role="button" title="<?php eT('Add a new user group'); ?>">
                     <span class="icon-add text-success"></span>
                     <?php eT("Add user group"); ?>
                 </a>
@@ -24,7 +24,7 @@
 
             <!-- Mail to all Members -->
             <?php if (isset($usergroupbar['edit'])) : ?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroup->ugid); ?>" role="button">
+                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroup->ugid); ?>" role="button">
                     <span class="icon-invite text-success"></span>
                     <?php eT("Mail to all Members"); ?>
                 </a>
@@ -32,7 +32,7 @@
 
             <!-- Edit current user group -->
             <?php if (isset($usergroupbar['edit']) &&  (Yii::app()->session['loginID'] == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("userGroup/edit/ugid/" . $userGroup->ugid); ?>" role="button">
+                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("userGroup/edit/ugid/" . $userGroup->ugid); ?>" role="button">
                     <span class="fa fa-pencil text-success"></span>
                     <?php eT("Edit current user group"); ?>
                 </a>
@@ -40,7 +40,7 @@
 
             <!-- Delete current user group -->
             <?php if (isset($usergroupbar['edit']) &&  (Yii::app()->session['loginID'] == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
-                <a class="btn btn-default" href='#' onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl('userGroup/deleteGroup?ugid=' . $userGroup->ugid)); ?>}'>
+                <a class="btn btn-outline-secondary" href='#' onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl('userGroup/deleteGroup?ugid=' . $userGroup->ugid)); ?>}'>
                     <span class="fa fa-trash text-success"></span>
                     <?php eT("Delete current user group"); ?>
                 </a>
@@ -60,7 +60,7 @@
 
             <!-- Back -->
             <?php if (isset($usergroupbar['returnbutton']['url'])) :?>
-                <a class="btn btn-default" style="margin-left:5px;" href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>" role="button">
+                <a class="btn btn-outline-secondary" style="margin-left:5px;" href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>" role="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
                     <?php echo $usergroupbar['returnbutton']['text']; ?>

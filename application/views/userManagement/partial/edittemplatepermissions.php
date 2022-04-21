@@ -15,12 +15,12 @@ Yii::app()->getController()->renderPartial(
             <input type="hidden" name="userid" value="<?php echo $oUser->uid;?>" />
             <div class="list-group-item row list-group-item-info">
                 <div class="col-xs-6 text-left">
-                    <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-default"> 
+                    <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-outline-secondary"> 
                         <?php eT('Select all');?>
                     </button>
                 </div>
                 <div class="col-xs-6 text-right">
-                    <button id="UserManagement--action-userthemepermissions-select-none" class="btn btn-default"> 
+                    <button id="UserManagement--action-userthemepermissions-select-none" class="btn btn-outline-secondary"> 
                         <?php eT('Select none');?>
                     </button>
                 </div>

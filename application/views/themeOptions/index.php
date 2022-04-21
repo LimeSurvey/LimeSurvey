@@ -117,7 +117,7 @@ echo viewHelper::getViewTestTag('templateOptions');
 
                                                     <!-- Export -->
                                                     <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) :?>
-                                                        <a class="btn btn-default  btn-block" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>" role="button">
+                                                        <a class="btn btn-outline-secondary  btn-block" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>" role="button">
                                                             <span class="icon-export text-success"></span>
                                                             <?php eT("Export"); ?>
                                                         </a>
@@ -173,7 +173,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                 <td class="col-md-10"><?php echo $aDeprecatedTheme['name']; ?></td>
                                                 <td class="col-md-2">
                                                     <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) :?>
-                                                        <a class="btn btn-default" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>" role="button">
+                                                        <a class="btn btn-outline-secondary" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>" role="button">
                                                             <span class="icon-export text-success"></span>
                                                             <?php eT("Export"); ?>
                                                         </a>
@@ -216,7 +216,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                 <?php if ($oTheme->path == getGlobalSetting('admintheme')) :?>
                                                     <h3><strong class="text-info"><?php eT("Selected")?></strong></h3>
                                                 <?php else : ?>
-                                                    <a href="<?php echo $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->path]);?>" class="btn btn-default btn-lg ">
+                                                    <a href="<?php echo $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->path]);?>" class="btn btn-outline-secondary btn-lg ">
                                                         <?php eT("Select");?>
                                                     </a>
                                                 <?php endif; ?>

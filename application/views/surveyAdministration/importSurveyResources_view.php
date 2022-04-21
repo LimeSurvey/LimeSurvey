@@ -32,7 +32,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         </ul>
                     </p>
                     <p>
-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('surveyAdministration/rendersidemenulink/', ['surveyid' => $surveyid, 'subaction' => 'resources']); ?>', '_top')"/>
+                        <input class="btn btn-outline-secondary btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('surveyAdministration/rendersidemenulink/', ['surveyid' => $surveyid, 'subaction' => 'resources']); ?>', '_top')"/>
                     </p>
                 </div>
             </div>
@@ -79,7 +79,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         </ul>
                     </p>
                     <p>
-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>'
+                        <input class="btn btn-outline-secondary btn-lg" type='submit' value='<?php eT("Back"); ?>'
                                onclick="window.open('<?php echo $this->createUrl('surveyAdministration/rendersidemenulink/', ['surveyid' => $surveyid, 'subaction' => 'resources']); ?>', '_top')"/>
                     </p>
                 </div>
@@ -115,7 +115,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         </ul>
                     </p>
                     <p>
-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>'
+                        <input class="btn btn-outline-secondary btn-lg" type='submit' value='<?php eT("Back"); ?>'
                                onclick="window.open('<?php echo $this->createUrl('surveyAdministration/rendersidemenulink/', ['surveyid' => $surveyid, 'subaction' => 'resources']); ?>', '_top')"/>
                     </p>
                 </div>

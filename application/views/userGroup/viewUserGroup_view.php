@@ -49,7 +49,7 @@
                                         if ((isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true || Permission::model()->hasGlobalPermission('superadmin')) && $currentuser["userid"] != '1') { ?>
                                             <?php echo CHtml::form(["userGroup/DeleteUserFromGroup/ugid/{$ugid}/"], 'post'); ?>
                                             <button
-                                                class="btn btn-default btn-sm"
+                                                class="btn btn-outline-secondary btn-sm"
                                                 data-toggle="tooltip"
                                                 data-placement="bottom"
                                                 title="<?php eT('Delete'); ?>"
@@ -89,7 +89,7 @@
                                     <input name='ugid' type='hidden' value='<?php echo $ugid; ?>'/>
                                 </div>
                                 <div class="col-lg-4">
-                                    <input type='submit' value='<?php eT("Add user"); ?>' class="btn btn-default"/>
+                                    <input type='submit' value='<?php eT("Add user"); ?>' class="btn btn-outline-secondary"/>
                                 </div>
                             </div>
                         </td>

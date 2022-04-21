@@ -126,7 +126,7 @@ export default {
     >
       <button
         v-show="!$store.state.isCollapsed"
-        class="btn btn-default"
+        class="btn btn-outline-secondary"
         @mousedown="mousedown"
         @click.prevent="()=>{return false;}"
       >

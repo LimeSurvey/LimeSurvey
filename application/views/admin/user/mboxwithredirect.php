@@ -5,7 +5,7 @@
         <p>
     <?php echo CHtml::form($url, 'post'); ?>
     
-        <input type="submit" class="btn btn-default" value="<?php echo $urlText; ?>" />
+        <input type="submit" class="btn btn-outline-secondary" value="<?php echo $urlText; ?>" />
         <?php
         if (!empty($hiddenVars))
         {

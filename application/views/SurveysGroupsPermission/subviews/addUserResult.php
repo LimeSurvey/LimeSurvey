@@ -13,7 +13,7 @@
         echo CHtml::link(
             gT("Set the permission for this user on this group."),
             array( "surveysGroupsPermission/viewUser", 'id'=>$model->gsid, 'to' => $uid),
-            array('class' => 'btn btn-default')
+            array('class' => 'btn btn-outline-secondary')
         );
     ?> </p>
 </div>

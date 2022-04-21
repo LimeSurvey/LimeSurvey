@@ -39,5 +39,5 @@
     <button role="button" type='submit' class="btn btn-primary saveandreturn hidden"  name="redirection" value="edit">
         <?php eT("Save"); ?>
     </button>
-    <input type='submit' value='<?php eT("Save and close"); ?>'  class="btn btn-default hidden"/>
+    <input type='submit' value='<?php eT("Save and close"); ?>'  class="btn btn-outline-secondary hidden"/>
 </div>

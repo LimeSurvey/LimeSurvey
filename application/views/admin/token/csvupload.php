@@ -125,7 +125,7 @@
                 <!-- Buttons -->
                 <div class="form-group">
                     <div class="">
-                        <?php echo CHtml::htmlButton(gT("Upload"),array('type'=>'submit','name'=>'upload','value'=>'import', 'class'=>'btn btn-default')); ?>
+                        <?php echo CHtml::htmlButton(gT("Upload"),array('type'=>'submit','name'=>'upload','value'=>'import', 'class'=>'btn btn-outline-secondary')); ?>
                     </div>
                 </div>
             </form>

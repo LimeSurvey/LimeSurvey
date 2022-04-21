@@ -144,7 +144,7 @@
                         <div class='form-group'>
                             <div class=''></div>
                             <div class=''>
-                                <?php echo CHtml::submitButton(gT("Send Invitations",'unescaped'), array('class'=>'btn btn-default')); ?>
+                                <?php echo CHtml::submitButton(gT("Send Invitations",'unescaped'), array('class'=>'btn btn-outline-secondary')); ?>
                             </div>
 
                             <?php

@@ -36,7 +36,7 @@
                         <br />
                         <input
                             type="submit"
-                            class="btn btn-default btn-lg limebutton"
+                            class="btn btn-outline-secondary btn-lg limebutton"
                             value="<?php eT("Initialize participant table"); ?>"
                             onclick='<?php echo $onclickAction;?>'
                             />
@@ -59,20 +59,20 @@
                             <br />
                             <input
                                 type='submit'
-                                class='btn btn-default'
+                                class='btn btn-outline-secondary'
                                 id='activateTokenTable__selector--yes'
                                 value='<?php eT("Switch to closed-access mode"); ?>'
                                 />
                             <input
                                 type='submit'
-                                class='btn btn-default'
+                                class='btn btn-outline-secondary'
                                 id='activateTokenTable__selector--no'
                                 value='<?php eT("Continue in open-access mode"); ?>'
                                 />
                         <?php else :?>
                             <input
                                 type='submit'
-                                class='btn btn-default'
+                                class='btn btn-outline-secondary'
                                 id='activateRedirectSurvey__selector'
                                 value='<?php eT("Back to survey home"); ?>'
                                 />

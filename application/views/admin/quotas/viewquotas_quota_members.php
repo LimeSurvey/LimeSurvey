@@ -40,7 +40,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
                     <?php echo CHtml::hiddenField('subaction','newanswer', ['id'=> 'addForm_subaction' ]);?>
                     <?php echo CHtml::submitButton(gT("Add answer"),array(
                         'name'=>'submit',
-                        'class'=>'quota_new btn btn-default',
+                        'class'=>'quota_new btn btn-outline-secondary',
                     ));?>
                     <?php echo CHtml::endForm();?>
                 </th>

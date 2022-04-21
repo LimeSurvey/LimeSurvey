@@ -353,7 +353,8 @@ class PluginManagerController extends SurveyCommonAction
                 ),
                 'redirect' => array(
                     'label' => '<span class="fa fa-check-square"></span> ' . gT('Save and close'),
-                    'class' => array('btn btn-default'),
+                    'class' => array('btn btn-outline-secondary'),
+                    'role'  => 'button',
                     'type'  => 'submit',
                     'value' => $url,
                 ),

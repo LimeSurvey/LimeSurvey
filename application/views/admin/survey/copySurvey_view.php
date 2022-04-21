@@ -12,7 +12,7 @@
         <p class="lead danger"><?php eT("Error"); ?></p>
         <p><?php echo $aImportResults['error']; ?></p>
         <p>
-        <input type='submit' class="btn btn-default btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin'); ?>', '_top')" />
+        <input type='submit' class="btn btn-outline-secondary btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin'); ?>', '_top')" />
         <?php $importerror = true; ?>
         </p>
     </div>
@@ -71,7 +71,7 @@
     <p><strong><?php eT("Copy of survey is completed."); ?></strong></p>
 
     <p>
-        <a class="btn btn-default btn-large" href='<?php echo $this->createUrl("surveyAdministration/view/".$aImportResults['newsid']); ?>'>
+        <a class="btn btn-outline-secondary btn-large" href='<?php echo $this->createUrl("surveyAdministration/view/".$aImportResults['newsid']); ?>'>
             <?php eT("Go to survey"); ?>
         </a>
     </p>

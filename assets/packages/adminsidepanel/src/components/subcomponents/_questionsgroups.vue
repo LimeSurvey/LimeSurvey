@@ -278,14 +278,14 @@ export default {
             </div>
             <div class="scoped-toolbuttons-right">
                 <button
-                    class="btn btn-default"
+                    class="btn btn-outline-secondary"
                     @click="toggleOrganizer"
                     :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
                 >
                     <i :class="allowOrganizer ? 'fa fa-unlock' : 'fa fa-lock'" />
                 </button>
                 <button
-                    class="btn btn-default"
+                    class="btn btn-outline-secondary"
                     @click="collapseAll"
                     :title="translate('collapseAll')"
                 >

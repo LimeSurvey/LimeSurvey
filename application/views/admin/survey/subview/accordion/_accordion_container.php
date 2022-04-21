@@ -21,7 +21,7 @@
     <div class="panel panel-default" id="generaloptionsContainer">
         <div class="panel-heading" role="tab" id="heading-generaloptions">
             <div class="panel-title h4">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                <a class="btn btn-outline-secondary btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
@@ -41,7 +41,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading-presentationoptions">
             <div class="panel-title h4">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                <a class="btn btn-outline-secondary btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
@@ -61,7 +61,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading-publicationoptions">
             <div class="panel-title h4">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                <a class="btn btn-outline-secondary btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
@@ -81,7 +81,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading-notificationoptions">
             <div class="panel-title h4">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                <a class="btn btn-outline-secondary btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
@@ -101,7 +101,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading-tokensoptions">
             <div class="panel-title h4">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                <a class="btn btn-outline-secondary btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
@@ -123,7 +123,7 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading-integrationoptions">
                 <div class="panel-title h4">
-                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                    <a class="btn btn-outline-secondary btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
 			<span class="sr-only">Expand/Collapse</span>
                     </a>
@@ -146,7 +146,7 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading-resourcesoptions">
                 <div class="panel-title h4">
-                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                    <a class="btn btn-outline-secondary btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
                     </a>
                     <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#resourcesoptions" aria-expanded="false" aria-controls="resourcesoptions">

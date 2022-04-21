@@ -1,9 +1,9 @@
 <!-- Quick CSV report -->
-<a class="btn btn-default" role="button" onClick="window.open('<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$surveyid/quickreport/y") ?>', '_top')">
+<button class="btn btn-outline-secondary" type="button" role="button" onClick="window.open('<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$surveyid/quickreport/y") ?>', '_top')">
   <?php eT("Quick CSV report"); ?>
-</a>
+</button>
 
 <!-- Add new quota -->
-<a class="btn btn-default quota_new" type="submit" role="button" href="<?php echo Yii::App()->createUrl("admin/quotas/sa/newquota/surveyid/$surveyid") ?>">
+<button class="btn btn-outline-secondary quota_new" type="submit" role="button" href="<?php echo Yii::App()->createUrl("admin/quotas/sa/newquota/surveyid/$surveyid") ?>">
     <?php eT("Add new quota"); ?>
-</a>
+</button>

@@ -115,7 +115,7 @@
 
                         <div class="form-group">
                             <div class="">
-                                <input type='submit' class='btn btn-default' value='<?php eT("Import label set(s)"); ?>'/>
+                                <input type='submit' class='btn btn-outline-secondary' value='<?php eT("Import label set(s)"); ?>'/>
                                 <input type='hidden' name='action' value='importlabels'/>
                             </div>
                         </div>

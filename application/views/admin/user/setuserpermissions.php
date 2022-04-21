@@ -22,7 +22,7 @@ echo viewHelper::getViewTestTag('setUserPermissions');
                     <tr>
                         <th></th>
                         <th><?php eT("Permission");?></th>
-                        <th><input type='button' class="btn btn-default btn-sm" id='btnToggleAdvanced' value='<<' /></th>
+                        <th><input type='button' class="btn btn-outline-secondary btn-sm" id='btnToggleAdvanced' value='<<' /></th>
                         <th class='extended'><?php eT("Create");?></th>
                         <th class='extended'><?php eT("View/read");?></th>
                         <th class='extended'><?php eT("Update");?></th>

@@ -184,7 +184,7 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <p class='modal-body-text'><?php eT("An error occurred."); ?></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>
@@ -203,7 +203,7 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <p class='modal-body-text'><?php /* This must be set in Javascript */ ?></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>
@@ -225,7 +225,7 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <p class='modal-body-text'></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>

@@ -74,7 +74,7 @@ class WhButtonGroup extends CInputWidget
         foreach( $this->selectOptions as $value=>$caption )
         {
             echo CHtml::openTag('label', array(
-                'class'=>($value==$this->value)?'btn btn-default active':'btn btn-default'
+                'class'=>($value==$this->value)?'btn btn-outline-secondary active':'btn btn-outline-secondary'
             ));
             echo CHtml::radioButton($name,$value==$this->value,array('name'=>$name, 'id'=>$name.'_opt'.$i,
                 'value'=>$value));

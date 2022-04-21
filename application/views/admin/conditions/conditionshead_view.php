@@ -21,7 +21,7 @@
         <?php if ($scenariocount > 1): ?>
             <button
                 id='renumber-scenario'
-                class="btn btn-default pull-right condition-header-button"
+                class="btn btn-outline-secondary pull-right condition-header-button"
                 data-toggle='modal'
                 data-target='#confirmation-modal'
                 data-message='<?php eT('Are you sure you want to renumber the scenarios with incrementing numbers beginning from 1?', 'js'); ?>'

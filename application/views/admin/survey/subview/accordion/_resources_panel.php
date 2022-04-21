@@ -40,17 +40,17 @@ LSYii_ClientScript::POS_BEGIN
                     'flash' =>  gT('Flash', 'unescaped'),
                     'images' =>  gT('Images', 'unescaped')),
                 array(
-                    'class'=>'btn btn-default',
+                    'class'=>'btn btn-outline-secondary',
                     "data-href" => App()->request->getBaseUrl()."/third_party/kcfinder/browse.php?language=".sTranslateLangCode2CK(App()->language)
                 )
             ); 
         ?>
       </div>
       <div class="col-sm-6">
-        <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-default">
+        <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
           <?php  eT("Export resources as ZIP archive") ?>
         </a>
-        <a class="btn btn-default" href="" target='_blank' data-toggle="modal" data-target="#importRessourcesModal">
+        <a class="btn btn-outline-secondary" href="" target='_blank' data-toggle="modal" data-target="#importRessourcesModal">
           <span class="fa fa-download"></span>
           <?php  eT("Import resources ZIP archive"); ?>
         </a>

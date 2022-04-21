@@ -26,7 +26,7 @@
                             <h3><?php echo $key;?></h3>
                             <?php if($key==$oSurvey->template):?>
                                 <button
-                                    class="selectTemplate btn btn-default btn-success  disabled"
+                                    class="selectTemplate btn btn-outline-secondary btn-success  disabled"
                                     data-selectedtext="<?php eT("Selected!");?>"
                                     data-unselectedtext="<?php eT('Select');?> &nbsp; <?php echo $key;?>">
                                         <?php eT('Selected!');?>
@@ -37,7 +37,7 @@
                                     data-unselectedtext="<?php eT('Select');?> &nbsp; <?php echo $key;?>"
                                     data-url="<?php echo Yii::app()->urlManager->createUrl("surveyAdministration/changetemplate/surveyid/$iSurveyId/template/$key" ); ?>"
                                     data-template="<?php echo $key;?>"
-                                    class="selectTemplate btn btn-default">
+                                    class="selectTemplate btn btn-outline-secondary">
                                     <?php eT('Select');?>&nbsp;<?php echo $key;?>
                                 </button>
                             <?php endif;?>

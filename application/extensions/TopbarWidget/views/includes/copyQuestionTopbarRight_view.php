@@ -1,8 +1,8 @@
 <!-- Close -->
-<a class="btn btn-default" href="<?php echo $closeUrl; ?>" role="button">
+<button type="button" class="btn btn-outline-secondary" href="<?php echo $closeUrl; ?>" role="button">
     <span class="fa fa-close"></span>
     <?php eT("Close");?>
-</a>
+</button>
 
 <!-- Save and close -->
 <a id="save-and-close-button-copy-question" class="btn btn-success" role="button">

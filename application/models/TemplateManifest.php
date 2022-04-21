@@ -638,7 +638,7 @@ class TemplateManifest extends TemplateConfiguration
         $sEditorLink = "<a
             id='template_editor_link_" . $this->sTemplateName . "'
             href='" . $sEditorUrl . "'
-            class='btn btn-default btn-block'>
+            class='btn btn-outline-secondary btn-block'>
                 <span class='icon-templates'></span>
                 " . gT('Theme editor') . "
             </a>";
@@ -649,7 +649,7 @@ class TemplateManifest extends TemplateConfiguration
         $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'frmínstalltheme','name' => 'frmínstalltheme', 'class' => 'btn-block')) .
                 "<input type='hidden' name='templatename' value='" . $this->sTemplateName . "'>
                 <button id='template_options_link_" . $this->sTemplateName . "'
-                class='btn btn-default btn-block'>
+                class='btn btn-outline-secondary btn-block'>
                     <span class='fa fa-download text-warning'></span>
                     " . gT('Install') . "
                 </button>

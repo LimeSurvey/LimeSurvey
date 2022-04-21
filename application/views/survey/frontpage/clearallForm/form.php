@@ -11,7 +11,7 @@
                 <button type='submit' name="confirm-clearall" class='btn btn-warning btn-confirm' value='confirm'><?php echo gT("Yes") ?></button>
             </div>
             <div class="btn-group" role="group">
-                <button type='submit' name="move" class='btn btn-default btn-cancel' value='clearcancel'><?php echo gT("No") ?></button>
+                <button type='submit' name="move" class='btn btn-outline-secondary btn-cancel' value='clearcancel'><?php echo gT("No") ?></button>
             </div>
         </div>
     </div>

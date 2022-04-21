@@ -140,7 +140,7 @@ $baseLanguage = $oSurvey->language;
           <iframe id="frame-question-preview" src="" style="zoom:0.60" width="99.6%" height="600" frameborder="0"></iframe>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><?php eT("Close");?></button>
       </div>
     </div>
   </div>

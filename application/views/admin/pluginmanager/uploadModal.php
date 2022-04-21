@@ -40,7 +40,7 @@
                         <i class='fa fa-upload'></i>&nbsp;<?php eT("Upload") ?>
                     </button>
                 <?php endif; ?>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><?php eT("Close");?></button>
             </div>
             </form>
         </div><!-- /.modal-content -->

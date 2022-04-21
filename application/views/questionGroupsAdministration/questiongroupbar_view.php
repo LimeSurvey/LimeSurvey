@@ -16,7 +16,7 @@
                 <!-- test/run survey -->
                 <?php if (count($languagelist) > 1): ?>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                                 <?=($oSurvey->active=='N' ? gT('Preview survey'): gT('Run survey'));?>
@@ -34,7 +34,7 @@
                         </ul>
                     </div>
                 <?php else: ?>
-                    <a class="btn btn-default  btntooltip"
+                    <a class="btn btn-outline-secondary  btntooltip"
                         href="<?php echo $this->createUrl("survey/index", array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>"
                         role="button" accesskey='d' target='_blank'>
                         <span class="icon-do"></span>
@@ -46,7 +46,7 @@
                     <?php if (count($languagelist) > 1): ?>
                         <!-- Preview multilangue -->
                         <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <span class="icon-do"></span>
                                 <?php eT("Preview question group"); ?>
@@ -65,7 +65,7 @@
                         </div>
                     <?php else:?>
                         <!-- Preview simple langue -->
-                        <a class="btn btn-default"
+                        <a class="btn btn-outline-secondary"
                             href="<?=$this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
                             role="button" target="_blank">
                             <span class="icon-do"></span>
@@ -73,7 +73,7 @@
                         </a>
                     <?php endif; ?>
                     <?php if (isset($questiongroupbar['importbutton']) && $questiongroupbar['importbutton']): ?>
-                        <a class="btn btn-default" href="<?php echo App()->createUrl('questionGroupsAdministration/importview/surveyid/' . $surveyid); ?>" role="button">
+                        <a class="btn btn-outline-secondary" href="<?php echo App()->createUrl('questionGroupsAdministration/importview/surveyid/' . $surveyid); ?>" role="button">
                             <span class="icon-import"></span>
                             <?php eT('Import a group'); ?>
                         </a>
@@ -88,7 +88,7 @@
             <div id="questiongroupbar--questiongroupbuttons" class="text-center ls-flex-item grow-2">
                 <!-- Check survey logic -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')): ?>
-                    <a class="btn btn-default pjax"
+                    <a class="btn btn-outline-secondary pjax"
                         href="<?= $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>"
                         role="button">
                         <span class="icon-expressionmanagercheck"></span>
@@ -102,7 +102,7 @@
                         <!-- has question -->
                         <?php if (empty($condarray)):?>
                             <!-- can delete group and question -->
-                            <button class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal"
+                            <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#confirmation-modal"
                                 data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid"=>$gid])); ?>'
                                 data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"); ?>">
                                 <span class="fa fa-trash"></span>
@@ -110,7 +110,7 @@
                             </button>
                         <?php else: ?>
                         <!-- there is at least one question having a condition on its content -->
-                            <button type="button" class="btn btn-default btntooltip" disabled data-toggle="tooltip"
+                            <button type="button" class="btn btn-outline-secondary btntooltip" disabled data-toggle="tooltip"
                                 data-placement="bottom"
                                 title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>">
                                 <span class="fa fa-trash"></span>
@@ -119,7 +119,7 @@
                         <?php endif; ?>
                     <?php else:?>
                         <!-- Activated -->
-                        <button type="button" class="btn btn-default btntooltip" disabled data-toggle="tooltip"
+                        <button type="button" class="btn btn-outline-secondary btntooltip" disabled data-toggle="tooltip"
                             data-placement="bottom"
                             title="<?php eT("You can't delete this question group because the survey is currently active."); ?>">
                             <span class="fa fa-trash"></span>
@@ -130,7 +130,7 @@
 
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'export')):?>
                     <!-- Export -->
-                    <a class="btn btn-default "
+                    <a class="btn btn-outline-secondary "
                         href="<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>"
                         role="button">
 
@@ -150,7 +150,7 @@
                 <?php if (count($languagelist) > 1): ?>
                     <!-- test/run survey -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?=($oSurvey->active=='N' ? gT('Preview survey') : gT('Run survey'));?>
@@ -170,7 +170,7 @@
 
                     <!-- Preview multilangue -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?php eT("Preview question group"); ?>
@@ -190,7 +190,7 @@
 
                     <!-- preview question -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?php eT("Preview question"); ?>
@@ -209,7 +209,7 @@
                     </div>
                     <?php else:?>
                     <!-- Preview/Run survey -->
-                    <a class="btn btn-default  btntooltip selector__topbar--previewSurvey"
+                    <a class="btn btn-outline-secondary  btntooltip selector__topbar--previewSurvey"
                         href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>"
                         role="button" accesskey='d' target='_blank'>
                         <span class="icon-do"></span>
@@ -221,7 +221,7 @@
                     </a>
 
                     <!-- preview question -->
-                    <a class="btn btn-default"
+                    <a class="btn btn-outline-secondary"
                         href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>'
                         role="button" target="_blank">
                         <span class="icon-do"></span>
@@ -229,7 +229,7 @@
                     </a>
 
                     <!-- Preview simple langue -->
-                    <a class="btn btn-default"
+                    <a class="btn btn-outline-secondary"
                         href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
                         role="button" target="_blank">
                         <span class="icon-do"></span>
@@ -251,7 +251,7 @@
 
             <!-- Save and close -->
             <?php if (isset($questiongroupbar['saveandclosebutton'])):?>
-                <a id="save-and-close-button" class="btn btn-default" role="button">
+                <a id="save-and-close-button" class="btn btn-outline-secondary" role="button">
                     <i class="fa fa-check-square"></i>
                     <?php eT("Save and close");?>
                 </a>
@@ -269,7 +269,7 @@
 
             <!-- return -->
             <?php if (isset($questiongroupbar['returnbutton']['url'])):?>
-                <a class="btn btn-default"
+                <a class="btn btn-outline-secondary"
                     href="<?php echo $questiongroupbar['returnbutton']['url']; ?>"
                     role="button">
                     <span class="fa fa-step-backward"></span>

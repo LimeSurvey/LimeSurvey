@@ -739,7 +739,7 @@ class TemplateConfiguration extends TemplateConfig
         $sEditorLink = "<a
             id='template_editor_link_" . $this->template_name . "'
             href='" . $sEditorUrl . "'
-            class='btn btn-default btn-block'>
+            class='btn btn-outline-secondary btn-block'>
                 <span class='icon-templates'></span>
                 " . gT('Theme editor') . "
             </a>";
@@ -749,7 +749,7 @@ class TemplateConfiguration extends TemplateConfig
             $OptionLink .= "<a
                 id='template_options_link_" . $this->template_name . "'
                 href='" . $sOptionUrl . "'
-                class='btn btn-default btn-block'>
+                class='btn btn-outline-secondary btn-block'>
                     <span class='fa fa-tachometer'></span>
                     " . gT('Theme options') . "
                 </a>";

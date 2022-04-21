@@ -42,7 +42,7 @@
     <!-- Multinlinguage -->
     <?php if (count($oSurvey->allLanguages) > 1): ?>
         <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <?php if($oSurvey->active=='N'):?>
                 <span class="fa fa-eye" ></span>
                 <?php eT('Preview survey');?>
@@ -65,7 +65,7 @@
 
     <!-- uniq language -->
     <?php else: ?>
-        <a class="btn btn-default  btntooltip" id='<?= $contextbutton ?>_button' href="<?php echo App()->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
+        <a class="btn btn-outline-secondary  btntooltip" id='<?= $contextbutton ?>_button' href="<?php echo App()->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
             <?php if($oSurvey->active=='N'):?>
                 <span class="fa fa-eye" ></span>
                 <?php eT('Preview survey');?>
@@ -83,7 +83,7 @@
     <div class="btn-group hidden-xs">
 
         <!-- Main button dropdown -->
-        <button id="ls-tools-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button id="ls-tools-button" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-tools" ></span>
             <?php eT('Tools'); ?>&nbsp;<span class="caret"></span>
         </button>
@@ -232,7 +232,7 @@
     <?php foreach ($beforeSurveyBarRender as $menu): ?>
         <div class='btn-group'>
             <?php if ($menu->isDropDown()): ?>
-            <button class="dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
+            <button class="dropdown-toggle btn btn-outline-secondary" data-toggle="dropdown" href="#">
                 <?php if ($menu->getIconClass()): ?>
                     <span class="<?php echo $menu->getIconClass(); ?>"></span>&nbsp;
                 <?php endif; ?>
@@ -260,7 +260,7 @@
                     <?php endforeach; ?>
                 </ul>
             <?php else : ?>
-                <a class='btn btn-default' href="<?php echo $menu->getHref(); ?>">
+                <a class='btn btn-outline-secondary' href="<?php echo $menu->getHref(); ?>">
                     <?php if ($menu->getIconClass()): ?>
                         <span class="<?php echo $menu->getIconClass(); ?>"></span>&nbsp;
                     <?php endif; ?>

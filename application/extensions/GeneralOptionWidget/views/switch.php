@@ -1,6 +1,6 @@
 <div class="btn-group col-12" role="group" data-toggle="buttons">
     <?php if ($this->generalOption->formElement->value === 'Y') : ?>
-        <label class="btn btn-default active <?= $this->generalOption->disabled ? 'disabled' : '' ?>">
+        <label class="btn btn-outline-secondary active <?= $this->generalOption->disabled ? 'disabled' : '' ?>">
             <input
                 type="radio"
                 name="question[<?= $this->generalOption->name ?>]"
@@ -10,7 +10,7 @@
                 />
             <?= gT('On') ?>
         </label>
-        <label class="btn btn-default <?= $this->generalOption->disabled ? 'disabled' : '' ?>">
+        <label class="btn btn-outline-secondary <?= $this->generalOption->disabled ? 'disabled' : '' ?>">
             <input
                 type="radio"
                 name="question[<?= $this->generalOption->name ?>]"
@@ -20,7 +20,7 @@
             <?= gT('Off') ?>
         </label>
     <?php else : ?>
-        <label class="btn btn-default <?= $this->generalOption->disabled ? 'disabled' : '' ?>">
+        <label class="btn btn-outline-secondary <?= $this->generalOption->disabled ? 'disabled' : '' ?>">
             <input
                 type="radio"
                 name="question[<?= $this->generalOption->name ?>]"
@@ -29,7 +29,7 @@
                 />
             <?= gT('On') ?>
         </label>
-        <label class="btn btn-default active <?= $this->generalOption->disabled ? 'disabled' : '' ?>">
+        <label class="btn btn-outline-secondary active <?= $this->generalOption->disabled ? 'disabled' : '' ?>">
             <input
                 type="radio"
                 name="question[<?= $this->generalOption->name ?>]"

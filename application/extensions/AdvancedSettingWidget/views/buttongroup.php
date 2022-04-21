@@ -1,7 +1,7 @@
 <div class="btn-group col-12" role="group" data-toggle="buttons">
     <?php foreach ($this->setting['options'] as $value => $text): ?>
         <?php if ($this->setting['value'] == $value): ?>
-            <label class="btn btn-default active">
+            <label class="btn btn-outline-secondary active">
                 <input 
                     type="radio" 
                     name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
@@ -11,7 +11,7 @@
                 <?= $text; ?>
             </label>
         <?php else: ?>
-            <label class="btn btn-default">
+            <label class="btn btn-outline-secondary">
                 <input 
                     type="radio" 
                     name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"

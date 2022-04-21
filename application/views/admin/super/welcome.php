@@ -84,7 +84,7 @@ echo viewHelper::getViewTestTag('index');
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Close');?></button>
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT('Close');?></button>
                       <button role="button" type="button" href="<?php echo $this->createUrl("surveyAdministration/newSurvey") ?>" class="btn btn-primary">
                         <?php eT('Create a new survey');?>
                       </button>

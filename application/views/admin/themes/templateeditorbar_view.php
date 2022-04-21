@@ -73,7 +73,7 @@ echo viewHelper::getViewTestTag('themeEditor');
             <?php if (is_writable($tempdir)) :?>
                 <!-- Export -->
                 <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) :?>
-                    <a class="btn btn-default" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>" role="button">
+                    <a class="btn btn-outline-secondary" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>" role="button">
                         <span class="icon-export text-success"></span>
                         <?php eT("Export"); ?>
                     </a>
@@ -82,13 +82,13 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <!-- Copy -->
                 <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) :?>
                     <?php if (is_writable($userthemerootdir)) :?>
-                        <a class="btn btn-default" id="button-extend-<?php echo $templatename; ?>" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the new theme:"); ?>', '<?php echo gT("extends_") . "$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
+                        <a class="btn btn-outline-secondary" id="button-extend-<?php echo $templatename; ?>" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the new theme:"); ?>', '<?php echo gT("extends_") . "$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
                             <span class="icon-copy text-success"></span>
                             <?php eT("Extend"); ?>
                         </a>
                     <?php else : ?>
                         <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The theme upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
-                            <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
                                 <span class="icon-copy text-success"></span>
                                 <?php eT("Copy"); ?>
                             </button>
@@ -109,7 +109,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                     }
                     if (Permission::model()->hasGlobalPermission('templates', 'import')) :?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
-                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                        <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
                             <span class="icon-import text-muted"></span>
                                 <?php eT("Import"); ?>
                         </button>
@@ -119,7 +119,7 @@ echo viewHelper::getViewTestTag('themeEditor');
             <!-- export disabled -->
                     <?php if (Permission::model()->hasGlobalPermission('templates', 'export')) :?>
                 <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
-                    <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                    <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
                         <span class="icon-export text-muted"></span>
                         <?php eT("Export"); ?>
                     </button>
@@ -129,7 +129,7 @@ echo viewHelper::getViewTestTag('themeEditor');
             <!-- create disabled -->
                     <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) :?>
                 <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
-                    <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                    <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
                         <span class="icon-copy text-muted"></span>
                         <?php eT("Copy"); ?>
                     </button>
@@ -141,7 +141,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 
             <?php if (is_template_editable($templatename)) :?>
                 <?php if (Permission::model()->hasGlobalPermission('templates', 'update')) :?>
-                    <a class="btn btn-default" id="button-rename-theme" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this theme to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
+                    <a class="btn btn-outline-secondary" id="button-rename-theme" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this theme to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
                         <span class="fa fa-pencil  text-success"></span>
                         <?php eT("Rename"); ?>
                     </a>
@@ -202,7 +202,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 
             <!-- Return to Theme List -->
             <?php if (isset($templateEditorBar['buttons']['returnbutton'])) :?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
+                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
                     <?php eT("Back"); ?>

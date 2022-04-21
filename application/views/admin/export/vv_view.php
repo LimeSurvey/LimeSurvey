@@ -36,17 +36,17 @@
                         </label>
                         <div class="col-sm-8">
                             <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default">
+                                <label class="btn btn-outline-secondary">
                                     <input name="completionstate" value="complete" type="radio" id="completionstate-complete" />
                                     <?php eT("Completed responses only"); ?>
                                 </label>
 
-                                <label class="btn btn-default active">
+                                <label class="btn btn-outline-secondary active">
                                     <input name="completionstate" value="all" type="radio" checked='checked' id="completionstate-all" autofocus="true" />
                                     <?php eT("All responses"); ?>
                                 </label>
 
-                                <label class="btn btn-default">
+                                <label class="btn btn-outline-secondary">
                                     <input name="completionstate" value="incomplete" type="radio" id="completionstate-incomplete" />
                                     <?php eT("Incomplete responses only"); ?>
                                 </label>
@@ -78,12 +78,12 @@
                         </label>
                         <div class="col-sm-4">
                             <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default <?php echo ($vvversionselected == 2 ? "active" : ""); ?>">
+                                <label class="btn btn-outline-secondary <?php echo ($vvversionselected == 2 ? "active" : ""); ?>">
                                     <input name="vvversion" value="2" type="radio" id="vvversion-last" <?php echo ($vvversionselected == 2 ? "checked='checked'" : ""); ?> />
                                     <?php eT("Last VV version"); ?>
                                 </label>
 
-                                <label class="btn btn-default <?php echo ($vvversionselected == 1 ? "active" : ""); ?>">
+                                <label class="btn btn-outline-secondary <?php echo ($vvversionselected == 1 ? "active" : ""); ?>">
                                     <input name="vvversion" value="1" type="radio" id="vvversion-old" <?php echo ($vvversionselected == 1 ? "checked='checked'" : ""); ?> />
                                     <?php eT("Old VV version"); ?>
                                 </label>
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            <?php echo CHtml::submitButton(gT('Export results','unescaped'), array('class'=>'btn btn-default hidden')); ?>
+            <?php echo CHtml::submitButton(gT('Export results','unescaped'), array('class'=>'btn btn-outline-secondary hidden')); ?>
             <?php echo CHtml::hiddenField('subaction','export'); ?>
             <form>
         </div>

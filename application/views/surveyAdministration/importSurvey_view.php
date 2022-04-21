@@ -19,7 +19,7 @@
         </p>
         <!-- buttons -->
         <p>
-            <input type='submit' class="btn btn-default btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/'); ?>', '_top')" />
+            <input type='submit' class="btn btn-outline-secondary btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/'); ?>', '_top')" />
         </p>
     </div>
 
@@ -37,7 +37,7 @@
         </p>
         <!-- buttons -->
         <p>
-            <input type='submit' class="btn btn-default btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/'); ?>', '_top')" />
+            <input type='submit' class="btn btn-outline-secondary btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/'); ?>', '_top')" />
         </p>
     </div>
 
@@ -122,7 +122,7 @@
 
         <!-- Buttons -->
         <p>
-            <input type='submit' class="btn btn-default btn-large" value='<?php eT("Go to survey");?>' onclick="window.open('<?php echo $sLink; ?>', '_top')"><br /><br />
+            <input type='submit' class="btn btn-outline-secondary btn-large" value='<?php eT("Go to survey");?>' onclick="window.open('<?php echo $sLink; ?>', '_top')"><br /><br />
         </p>
 
         <!-- Theme doesn't exist -->
@@ -154,7 +154,7 @@
             <?php echo CHtml::form(array($sLinkApplyThemeOptions), 'post', array());?>
                 <label><?php echo eT('If you want to apply original theme options, click here: '); ?></label>
                 <input type="hidden" name="themeoptions" value='<?php echo $aImportResults['theme_options_original_data']; ?>' />
-                <input type="submit" class="btn btn-default btn-large" value="<?php eT("Apply and go to survey");?>"><br /><br />
+                <input type="submit" class="btn btn-outline-secondary btn-large" value="<?php eT("Apply and go to survey");?>"><br /><br />
             </form>
 
         <?php endif; ?>

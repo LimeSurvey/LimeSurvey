@@ -58,7 +58,7 @@
                 <?php eT("There are no participants to be exported."); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close'); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><?php eT('Close'); ?></button>
             </div>
         </div>
     </div>

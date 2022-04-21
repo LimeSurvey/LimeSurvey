@@ -36,7 +36,7 @@
                         <input class="form-control" type="checkbox" name="LEM_PRETTY_PRINT_ALL_SYNTAX" id="LEM_PRETTY_PRINT_ALL_SYNTAX" value="1" checked="checked"/>
                     </div>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-default"/></td>
+                        <input type="submit" class="btn btn-outline-secondary"/></td>
                     </div>
                 </form>
             </div>

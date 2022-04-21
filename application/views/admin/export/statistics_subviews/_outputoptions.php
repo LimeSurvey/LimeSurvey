@@ -80,17 +80,17 @@
                 eT("Number of columns:") ?></label>
             <div class="">
                 <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default">
+                    <label class="btn btn-outline-secondary">
                         <input name="stats_columns" value="1" type="radio" class="selected">
                         <?php
                         eT('One'); ?>
                     </label>
-                    <label class="btn btn-default active">
+                    <label class="btn btn-outline-secondary active">
                         <input name="stats_columns" value="2" type="radio" checked>
                         <?php
                         eT('Two'); ?>
                     </label>
-                    <label class="btn btn-default">
+                    <label class="btn btn-outline-secondary">
                         <input name="stats_columns" value="3" class="active" type="radio">
                         <?php
                         eT('Three'); ?>
@@ -103,17 +103,17 @@
                 eT("Graph labels:") ?></label>
             <div class="">
                 <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default active">
+                    <label class="btn btn-outline-secondary active">
                         <input name="graph_labels" value="qcode" type="radio" checked="checked">
                         <?php
                         eT('Question code'); ?>
                     </label>
-                    <label class="btn btn-default">
+                    <label class="btn btn-outline-secondary">
                         <input name="graph_labels" value="qtext" type="radio">
                         <?php
                         eT('Question text'); ?>
                     </label>
-                    <label class="btn btn-default">
+                    <label class="btn btn-outline-secondary">
                         <input name="graph_labels" value="both" class="active" type="radio">
                         <?php
                         eT('Both'); ?>

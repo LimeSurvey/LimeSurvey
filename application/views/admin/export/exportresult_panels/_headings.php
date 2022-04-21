@@ -14,7 +14,7 @@
       </label>
       <div class="btn-group col-sm-12" data-toggle="buttons">
         <?php foreach($headexports as $type=>$headexport):?>
-          <label class="btn btn-default <?php if($headexport['checked']=='checked'){ echo 'active';}?>">
+          <label class="btn btn-outline-secondary <?php if($headexport['checked']=='checked'){ echo 'active';}?>">
             <input value="<?php echo $type; ?>" id="headstyle-<?php echo $type; ?>" type="radio" name="headstyle" <?php if($headexport[ 'checked']=='checked' ){ echo 'checked';} ?> />
             <?php echo $headexport['label'];?>
           </label>

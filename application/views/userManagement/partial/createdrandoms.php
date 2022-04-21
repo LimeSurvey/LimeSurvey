@@ -48,7 +48,7 @@ Yii::app()->getController()->renderPartial(
     </div>
 </div>
 <div class="modal-footer">
-    <button id="exitForm" class="btn btn-default">
+    <button id="exitForm" class="btn btn-outline-secondary">
         <?=gT('Close')?>
         </button>
     <button id="exportUsers" data-users='<?=json_encode($randomUsers)?>' class="btn btn-success">

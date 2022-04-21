@@ -42,12 +42,12 @@
                     </select>
                 </td>
                 <td style="padding: 10px;">
-                    <button class="btn btn-default" id="btnAdd" type="button">
+                    <button class="btn btn-outline-secondary" id="btnAdd" type="button">
                         <span class="ui-icon ui-icon-carat-1-<?php if (getLanguageRTL($_SESSION['adminlang'])) { echo 'e'; } else { echo 'w'; } ?>"></span>
                         <?php eT("Add"); ?>
                     </button>
                     <br /><br />
-                    <button class="btn btn-default" type="button" id="btnRemove">
+                    <button class="btn btn-outline-secondary" type="button" id="btnRemove">
                         <?php eT("Remove"); ?>
                         <span class="ui-icon ui-icon-carat-1-<?php if (getLanguageRTL($_SESSION['adminlang'])) { echo 'w'; } else { echo 'e'; } ?>"></span>
                     </button>

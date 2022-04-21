@@ -78,7 +78,7 @@
                     <p><?php eT("Please select a file to import!"); ?></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><?php eT("Close");?></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

@@ -16,7 +16,7 @@
         ); ?>
     </div>
     <div class='col-sm-4 '>
-        <?php echo CHtml::button(gT("Add user"),array('class'=>'btn btn-default', 'type'=>'submit')); ?>
+        <?php echo CHtml::button(gT("Add user"),array('class'=>'btn btn-outline-secondary', 'type'=>'submit')); ?>
     </div>
 </div>
 </form>

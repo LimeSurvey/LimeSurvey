@@ -47,7 +47,7 @@
         </div>
         <?php if (!isset($noButton)): ?>
             <div class="row ls-space margin top-35">
-                <button id="exitForm" class="btn btn-default"><?= gT('Close') ?></button>
+                <button id="exitForm" class="btn btn-outline-secondary"><?= gT('Close') ?></button>
             </div>
         <?php endif; ?>
     </div>

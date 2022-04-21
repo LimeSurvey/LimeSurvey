@@ -29,7 +29,7 @@ if ($hasResponsesReadPermission) {
     // Display Responses Button
     $buttons['display_responses'] = [
         'name' => gT('Display responses'),
-        'class' => 'btn btn-default pjax',
+        'class' => 'btn btn-outline-secondary pjax',
         'icon' => 'fa fa-list-alt',
         'iconclass' => 'text-success',
         'url' => $this->createUrl("responses/browse/", ['surveyId' => $survey->sid]),
@@ -42,7 +42,7 @@ if ($hasResponsesCreatePermission) {
     // Dataentry Screen Button
     $buttons['data_entry'] = [
         'name' => gT('Data entry'),
-        'class' => 'btn btn-default pjax',
+        'class' => 'btn btn-outline-secondary pjax',
         'url' => $this->createUrl("admin/dataentry/sa/view/surveyid/$survey->sid"),
         'icon' => 'fa fa-list-alt',
         'iconclass' => 'text-success',
@@ -57,7 +57,7 @@ if ($hasStatisticsReadPermission) {
         'name' => gT('Statistics'),
         'url' => $this->createUrl("admin/statistics/sa/index/surveyid/$survey->sid"),
         'icon' => 'fa fa-bar-chart',
-        'class' => 'btn btn-default pjax',
+        'class' => 'btn btn-outline-secondary pjax',
         'iconclass' => 'text-success',
     ];
     array_push($topBar['alignment']['left']['buttons'], $buttons['statistics']);
@@ -70,7 +70,7 @@ if($isActive) {
         $buttons['timing_statistics'] = [
             'name' => gT('Timing statistics'),
             'url'  => $this->createUrl("responses/time/", ['surveyId' => $survey->sid]),
-            'class'=> 'btn btn-default pjax',
+            'class'=> 'btn btn-outline-secondary pjax',
             'icon' => 'fa fa-clock-o',
             'iconclass' => 'text-success',
         ];

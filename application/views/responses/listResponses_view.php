@@ -69,7 +69,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         <!-- Filter is on -->
                         <?php eT("Showing filtered results"); ?>
 
-                        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyid, 'filters' => 'reset']); ?>" role="button">
+                        <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyid, 'filters' => 'reset']); ?>" role="button">
                             <?php eT("View without the filter."); ?>
                             <span aria-hidden="true">&times;</span>
                         </a>
@@ -312,7 +312,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><?php eT("Close"); ?></button>
                     <button role="button" type="button" class="btn btn-primary" id="save-edittoken">
                         <?php eT("Save"); ?>
                     </button>

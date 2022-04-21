@@ -13,10 +13,10 @@
         <?php eT("View statistics"); ?>
     </button>
 
-    <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/statistics/sa/index/",array('surveyid'=>$surveyid)) ?>" id="clear-button">
+    <button class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/statistics/sa/index/",array('surveyid'=>$surveyid)) ?>" id="clear-button">
         <span class="fa fa-refresh text-success"></span>
         <?php eT("Clear"); ?>
-    </a>
+    </button>
 <?php endif; ?>
 
 <a class="btn btn-danger" href="<?php echo Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $surveyid]); ?>" role="button">

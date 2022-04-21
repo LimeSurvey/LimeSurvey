@@ -19,7 +19,7 @@
                     <?php eT("You can switch back to closed-access mode at any time. Navigate to Settings --> Survey participants and click on the 'Switch to closed-access mode' button."); ?>
                     <br /><br />
                     <input
-                        class="btn btn-default"
+                        class="btn btn-outline-secondary"
                         type="submit"
                         value="<?php eT('Main Admin Screen'); ?>"
                         onclick="window.open(

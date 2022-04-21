@@ -54,7 +54,7 @@
 
     <div class='form-group load-survey-row load-survey-submit'>
         <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
-            <button type='submit' id='default' name="continue" class='btn btn-default' value='continue'><?php echo gT("Continue") ?></button>
+            <button type='submit' id='default' name="continue" class='btn btn-outline-secondary' value='continue'><?php echo gT("Continue") ?></button>
         </div>
     </div>
 </div>
