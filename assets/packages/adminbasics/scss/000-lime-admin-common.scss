@@ -1612,6 +1612,19 @@ fieldset[disabled] .checkbox label {
     margin-top: 0;
 }
 
+.btn-group label.btn::before {
+    content: "\f1db";
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 14px;
+    font-size: inherit;
+    text-rendering: auto;
+    display:inline-block;
+    margin: 0 0.2em;
+}
+.btn-group label.btn.active::before {
+    content: "\f058";
+}
+
 .radio label,
 .radio-inline label,
 .checkbox label,
