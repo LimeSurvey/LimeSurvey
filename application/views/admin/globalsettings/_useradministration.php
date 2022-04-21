@@ -11,7 +11,7 @@
 ?>
 
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-12">
         <div class="form-group">
             <label class="form-label" for='sendadmincreationemail'><?php eT("Send email to new user administrators:"); ?></label>
             <div>
@@ -38,7 +38,7 @@
 <div class="ls-space margin top-15">
     <div class="row">
 
-        <div class="col-sm-12 col-lg-10">
+        <div class="col-12 col-xl-10">
 
             <div class="form-group">
                 <label class=" form-label" for='admincreationemailsubject'><?php eT("Admin creation email subject"); ?>:</label><br>

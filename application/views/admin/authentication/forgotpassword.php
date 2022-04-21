@@ -18,7 +18,7 @@
 
                 <!-- Action Name -->
                 <div class="row login-title login-content">
-                      <div class="col-lg-12">
+                      <div class="col-12">
                        <h3><?php eT('Recover your password'); ?></h3>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                 <!-- Form -->
                 <?php echo CHtml::form(array("admin/authentication/sa/forgotpassword"), 'post', array('id'=>'forgotpassword','name'=>'forgotpassword'));?>
                     <div class="row login-content login-content-form">
-                        <div class="col-lg-12">
+                        <div class="col-12">
                             <div class="alert alert-info" role="alert">
                                 <?php eT('To receive a new password by email you have to enter your user name and original email address.'); ?>
                             </div>
@@ -45,7 +45,7 @@
 
                     <!-- Buttons -->
                     <div class="row login-submit login-content">
-                        <div class="col-lg-12">
+                        <div class="col-12">
                             <input type="hidden" name="action" value="forgotpass" />
                             <input class="action btn btn-default" type="submit" value="<?php eT('Check data'); ?>" />
                             <br/><br/>

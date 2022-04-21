@@ -35,27 +35,27 @@
         <div class="tab-content">
             <div id="massive-general" class="tab-pane fade show active">
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
                             <?php eT("Modify"); ?>
                         </label>
                     </div>
-                    <div class="col-sm-11"></div>
+                    <div class="col-md-11"></div>
                 </div>
                 <!-- Completed -->
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
-                    <label class="col-sm-3 form-label" for='massedit_completed'><?php eT("Completed?"); ?></label>
-                    <div class="col-sm-8 <?php echo($oSurvey->anonymized != 'Y' ? 'yes-no-date-container' : 'yes-no-container'); ?>" id="massedit_completed-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                    <label class="col-md-3 form-label" for='massedit_completed'><?php eT("Completed?"); ?></label>
+                    <div class="col-md-8 <?php echo($oSurvey->anonymized != 'Y' ? 'yes-no-date-container' : 'yes-no-container'); ?>" id="massedit_completed-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
                         <div class="row">
 
                             <?php if ($oSurvey->anonymized != 'Y'): ?>
 
-                                <div class="col-sm-4">
+                                <div class="col-md-4">
                                     <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch',
                                         [
@@ -72,7 +72,7 @@
 
                             <?php else: ?>
 
-                                <div class="col-sm-4">
+                                <div class="col-md-4">
                                     <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch',
                                         [
@@ -89,7 +89,7 @@
 
                             <?php endif; ?>
 
-                            <div class="col-sm-7 col-sm-offset-1">
+                            <div class="col-md-7 offset-md-1">
                                 <?php if ($oSurvey->anonymized != 'Y'): ?>
                                     <div id="massedit_sent-date-container" class="date-container selector_datechange" style="display: none;">
                                         <div id="completed-date_datetimepicker" class="input-group date">
@@ -113,39 +113,39 @@
 
                 <!-- First name -->
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
-                    <label class="col-sm-3 form-label" for='massedit_firstname'><?php eT("First name:"); ?></label>
-                    <div class="col-sm-8">
+                    <label class="col-md-3 form-label" for='massedit_firstname'><?php eT("First name:"); ?></label>
+                    <div class="col-md-8">
                         <input class='form-control custom-data selector_submitField' type='text' size='30' id='massedit_firstname' name='firstname' value="lskeep" disabled/>
                     </div>
                 </div>
 
                 <!-- Last name -->
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
-                    <label class="col-sm-3 form-label" for='massedit_lastname'><?php eT("Last name:"); ?></label>
-                    <div class="col-sm-8">
+                    <label class="col-md-3 form-label" for='massedit_lastname'><?php eT("Last name:"); ?></label>
+                    <div class="col-md-8">
                         <input class='form-control custom-data selector_submitField' type='text' size='30' id='massedit_lastname' name='lastname' value="lskeep" disabled/>
                     </div>
                 </div>
 
                 <!-- Language -->
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
-                    <label class="col-sm-3 form-label" for='massedit_language'><?php eT("Language:"); ?></label>
-                    <div class="col-sm-8">
+                    <label class="col-md-3 form-label" for='massedit_language'><?php eT("Language:"); ?></label>
+                    <div class="col-md-8">
                         <?php echo CHtml::dropDownList('language', '', array_merge(['lskeep' => ''], $aLanguages), ['id' => 'massedit_language', 'class' => 'form-select custom-data selector_submitField', 'disabled' => 'disabled']); ?>
                     </div>
                 </div>
@@ -153,21 +153,21 @@
                 <!-- Email -->
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-sm-1">
+                        <div class="col-md-1">
                             <label class="">
                                 <input type="checkbox" class="action_check_to_keep_old_value"></input>
                             </label>
                         </div>
-                        <label class="col-sm-3 form-label" for='massedit_email'><?php eT("Email:"); ?></label>
-                        <div class="col-sm-8">
+                        <label class="col-md-3 form-label" for='massedit_email'><?php eT("Email:"); ?></label>
+                        <div class="col-md-8">
                             <input class='form-control custom-data selector_submitField action_validate_email' data-targetfield="#massedit_emailstatus" type='text' maxlength='320' size='50' id='massedit_email' name='email' value="lskeep" disabled/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-1">
+                        <div class="col-md-1">
                         </div>
-                        <label class="col-sm-3 form-label" for='massedit_emailstatus'><?php eT("Email status:"); ?></label>
-                        <div class="col-sm-8">
+                        <label class="col-md-3 form-label" for='massedit_emailstatus'><?php eT("Email status:"); ?></label>
+                        <div class="col-md-8">
                             <input class='form-control custom-data selector_submitField' type='text' maxlength='320' size='50' id='massedit_emailstatus' name='emailstatus' placeholder='OK' value="lskeep" disabled/>
                         </div>
                     </div>
@@ -175,15 +175,15 @@
 
                 <!-- Invitation sent -->
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
-                    <label class="col-sm-3 form-label" for='sent'><?php eT("Invitation sent?"); ?></label>
-                    <div class="col-sm-8 <?php echo $sCointainerClass; ?>" id="massedit_sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                    <label class="col-md-3 form-label" for='sent'><?php eT("Invitation sent?"); ?></label>
+                    <div class="col-md-8 <?php echo $sCointainerClass; ?>" id="massedit_sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-md-4">
 
                                 <?php if ($oSurvey->anonymized != 'Y'): ?>
 
@@ -214,7 +214,7 @@
                                 <?php endif; ?>
                             </div>
 
-                            <div class="col-sm-8">
+                            <div class="col-md-8">
                                 <div id="sent-date-container" class="date-container selector_datechange" style="display: none;">
                                     <!-- Sent Date -->
                                     <div id="sent-date_datetimepicker" class="input-group date">
@@ -236,17 +236,17 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
                     <!-- Reminder sent -->
-                    <label class="col-sm-3 form-label" for='massedit_remindersent'><?php eT("Reminder sent?"); ?></label>
-                    <div class="col-sm-8 <?php echo $sCointainerClass; ?>" id="massedit_remind-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                    <label class="col-md-3 form-label" for='massedit_remindersent'><?php eT("Reminder sent?"); ?></label>
+                    <div class="col-md-8 <?php echo $sCointainerClass; ?>" id="massedit_remind-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
 
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-md-4">
                                 <?php if ($oSurvey->anonymized != 'Y'): ?>
                                     <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch',
@@ -274,7 +274,7 @@
                                 <?php endif; ?>
                             </div>
 
-                            <div class="col-sm-8">
+                            <div class="col-md-8">
 
                                 <div id="massedit_remind-date-container" class="date-container selector_datechange" style="display: none;">
 
@@ -299,42 +299,42 @@
 
                 <!-- Reminder count -->
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
 
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
-                    <label class="col-sm-3 form-label" for='massedit_remindercount'><?php eT("Reminder count:"); ?></label>
-                    <div class="col-sm-8">
+                    <label class="col-md-3 form-label" for='massedit_remindercount'><?php eT("Reminder count:"); ?></label>
+                    <div class="col-md-8">
                         <input class='form-control custom-data selector_submitField' type='text' size='6' id='massedit_remindercount' name='remindercount' value="lskeep" disabled/>
                     </div>
                 </div>
 
                 <!-- Uses left -->
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
 
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
-                    <label class="col-sm-3 form-label" for='massedit_usesleft'><?php eT("Uses left:"); ?></label>
-                    <div class="col-sm-8">
+                    <label class="col-md-3 form-label" for='massedit_usesleft'><?php eT("Uses left:"); ?></label>
+                    <div class="col-md-8">
                         <input class='form-control custom-data selector_submitField' type='text' size='20' id='massedit_usesleft' name='usesleft' value="lskeep" disabled/>
                     </div>
                 </div>
 
                 <!-- Valid from -->
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
 
-                    <label class="col-sm-3 form-label" for='massedit_validfrom'><?php eT("Valid from"); ?>:</label>
-                    <div class="col-sm-8 has-feedback">
+                    <label class="col-md-3 form-label" for='massedit_validfrom'><?php eT("Valid from"); ?>:</label>
+                    <div class="col-md-8 has-feedback">
                         <div id="massedit_validfrom_datetimepicker" class="input-group date">
                             <input
                                 class="YesNoDatePicker form-control action_datepickerUpdateHiddenField"
@@ -354,13 +354,13 @@
 
                 <!-- Valid to -->
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
-                    <label class="col-sm-3 form-label" for='massedit_validuntil'><?php eT('Until:'); ?></label>
-                    <div class="col-sm-8 has-feedback">
+                    <label class="col-md-3 form-label" for='massedit_validuntil'><?php eT('Until:'); ?></label>
+                    <div class="col-md-8 has-feedback">
                         <div id="massedit_validuntil_datetimepicker" class="input-group date">
                             <input
                                 class="YesNoDatePicker form-control action_datepickerUpdateHiddenField"
@@ -382,8 +382,8 @@
                 <?php foreach($aCoreTokenFields as $sCoreTokenField): ?>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-sm-2 form-label"  for='<?php echo $sCoreTokenField; ?>'><?php echo $sCoreTokenField;  ?>:</label>
-                            <div class="col-sm-8">
+                            <label class="col-md-2 form-label"  for='<?php echo $sCoreTokenField; ?>'><?php echo $sCoreTokenField;  ?>:</label>
+                            <div class="col-md-8">
                                 <input type="text" class="custom-data" name="<?php echo $sCoreTokenField;?>" id="<?php echo $sCoreTokenField;?>" value="lskeep" />
                             </div>
                         </div>
@@ -396,24 +396,24 @@
             <!-- Custom attibutes -->
             <div id="massive-custom" class="tab-pane fade">
                 <div class="form-group">
-                    <div class="col-sm-1">
+                    <div class="col-md-1">
                         <label class="">
                             <?php eT("Modify"); ?>
                         </label>
                     </div>
-                    <div class="col-sm-11"></div>
+                    <div class="col-md-11"></div>
                 </div>
                 <!-- Attributes -->
                 <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
                     <div class="form-group">
-                        <div class="col-sm-1">
+                        <div class="col-md-1">
                             <label class="">
 
                                 <input type="checkbox" class="action_check_to_keep_old_value"></input>
                             </label>
                         </div>
-                        <label class="col-sm-3 form-label" for='massedit_<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
-                        <div class="col-sm-8">
+                        <label class="col-md-3 form-label" for='massedit_<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
+                        <div class="col-md-8">
                             <input type='text' class="form-control custom-data selector_submitField" size='55' id='massedit_<?php echo $attr_name; ?>' disabled name='<?php echo $attr_name; ?>' value='lskeep'/>
                         </div>
                     </div>

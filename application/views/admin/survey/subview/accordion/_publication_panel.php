@@ -20,10 +20,10 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
 ", LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- Publication panel -->
-<div id='publication-panel' class="container-fluid">
+<div id='publication-panel'>
     <div class="row">
     <?php if ($bShowAllOptions === true){ ?>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-12 col-lg-6">
 
             <!-- Start date/time -->
             <div class="form-group">
@@ -92,7 +92,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             </div>
         </div>
         <?php } ?>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-12 col-lg-6">
             <!-- List survey publicly -->
             <div class="form-group">
                 <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>

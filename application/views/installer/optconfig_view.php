@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-lg-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
-    <div class="col-md-9">
+    <div class="col-lg-9">
     <h2><?php echo $title; ?></h2>
     <legend><?php echo $descp; ?></legend>
     <?php if (isset($confirmation)) echo "<div class='alert alert-success'>".$confirmation."</div>"; ?>
@@ -12,7 +12,7 @@
     <?php  ?>
     <?php echo CHtml::beginForm($this->createUrl('installer/optional'), 'post', array('class' => '')); ?>
     <div class='form-group'>
-        <div class='col-sm-12'>
+        <div class='col-12'>
             <i class='fa fa-info-circle'></i><?php eT("You can leave these settings blank and change them later"); ?>
         </div>
     </div>
@@ -75,10 +75,10 @@
         }
     ?>
         <div class="row navigator">
-            <div class="col-md-4">
+            <div class="col-lg-4">
             </div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
                 <?php echo CHtml::submitButton(gT("Next",'unescaped'), array('class' => 'btn btn-default')); ?>
             </div>
         </div>

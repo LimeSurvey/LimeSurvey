@@ -24,7 +24,7 @@ echo viewHelper::getViewTestTag('index');
 ?>
 
 <!-- Welcome view -->
-<div class="container-fluid welcome full-page-wrapper">
+<div class="welcome full-page-wrapper">
 
     <!-- Logo & Presentation -->
     <?php if($bShowLogo):?>
@@ -99,10 +99,10 @@ echo viewHelper::getViewTestTag('index');
         <div class="alert alert-danger" role="alert" id="warningIE11">
             <div class="container-fluid">
                 <div class="row">
-                    <h4 class="col-xs-12"><?=gT("Warning!")?></h4>
+                    <h4 class="col-12"><?=gT("Warning!")?></h4>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <?php eT("You are using Microsoft Internet Explorer."); ?><br/><br/>
                         <?php eT("LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work."); ?><br/>
                         <?php eT("If you have any issues, please try using a modern browser first, before reporting it.");?>
@@ -123,7 +123,7 @@ echo viewHelper::getViewTestTag('index');
     <!-- Last visited survey/question -->
     <?php if( $bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
         <div class="row text-end">
-            <div class="col-lg-9 col-sm-9  ">
+            <div class="col-xl-9 col-md-9  ">
                 <div class='pull-right'>
                 <?php if($showLastSurvey):?>
                     <span id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
@@ -154,7 +154,7 @@ echo viewHelper::getViewTestTag('index');
     ?>
 
     <?php if( $bShowSurveyList ): ?>
-        <div class="col-sm-12 list-surveys">
+        <div class="col-12 list-surveys">
             <h2><?php eT('Survey list'); ?></h2>
             <?php
                 $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(

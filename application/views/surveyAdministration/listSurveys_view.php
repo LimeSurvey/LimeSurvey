@@ -10,7 +10,7 @@
 echo viewHelper::getViewTestTag('listSurveys');
 
 ?>
-<div class="container-fluid ls-space row list-surveys">
+<div class="container-fluid ls-space list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
         <li class="nav-item"><a class="nav-link active" href="#surveys" aria-controls="surveys" role="tab" data-bs-toggle="tab"><?php eT('Survey list'); ?></a></li>
         <li class="nav-item"><a class="nav-link" href="#surveygroups" aria-controls="surveygroups" role="tab" data-bs-toggle="tab"><?php eT('Survey groups'); ?></a></li>
@@ -28,7 +28,7 @@ echo viewHelper::getViewTestTag('listSurveys');
         <div id="surveygroups" class="tab-pane">
             <div class="pagetitle h3 ls-space margin top-25"><?php eT('Survey groups'); ?></div>
             <div class="row">
-                <div class="col-sm-12 content-right">
+                <div class="col-12 content-right">
                     <?php
                     $this->widget('application.extensions.admin.grid.CLSGridView', array(
                         'id'           => 'surveygroups--gridview',

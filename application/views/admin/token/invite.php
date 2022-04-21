@@ -10,7 +10,7 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Send email invitations"); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
             <div>
                 <?php if ($oSurvey->active != 'Y'): ?>
@@ -25,7 +25,7 @@
                 <div>
                     <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$oSurvey->sid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'')); ?>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-md-4">
                             <?php if (count($tokenids)>0): ?>
                                 <div class='form-group'>
                                     <label class='form-label '><?php eT("Send invitation email to participant ID(s):"); ?></label>
@@ -37,7 +37,7 @@
                             <?php endif; ?>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-md-4">
                             <div class='form-group'>
 
                                 <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
@@ -54,7 +54,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-md-4">
                             <div class='form-group'>
                                 <?php echo CHtml::label(
                                     gT("Bypass date control before sending email:"),

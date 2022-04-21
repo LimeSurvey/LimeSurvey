@@ -31,7 +31,7 @@ App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderB
     </ul>
     <?php echo CHtml::form(["admin/globalsettings"], 'post', ['class' => '', 'id' => 'frmglobalsettings', 'name' => 'frmglobalsettings', 'autocomplete' => 'off']); ?>
     <div class="tab-content">
-        <div id="overview" class="tab-pane show active col-md-6 col-md-offset-1">
+        <div id="overview" class="tab-pane show active col-lg-6 offset-lg-1">
             <?php $this->renderPartial("./globalsettings/_overview",
                 [
                     'usercount'          => $usercount,
@@ -42,7 +42,7 @@ App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderB
                     'deactivatedtokens'  => $deactivatedtokens,
                 ]); ?>
         </div>
-        <div id="general" class="tab-pane col-md-10 col-md-offset-1">
+        <div id="general" class="tab-pane col-lg-10 offset-lg-1">
             <?php $this->renderPartial("./globalsettings/_general",
                 [
                     'aListOfThemeObjects' => $aListOfThemeObjects,
@@ -52,18 +52,18 @@ App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderB
                 ]); ?>
         </div>
 
-        <div id="email" class="tab-pane col-md-10 col-md-offset-1">
+        <div id="email" class="tab-pane col-lg-10 offset-lg-1">
             <?php $this->renderPartial("./globalsettings/_email"); ?>
         </div>
 
-        <div id="bounce" class="tab-pane col-md-10 col-md-offset-1">
+        <div id="bounce" class="tab-pane col-lg-10-10 offset-lg-1">
             <?php $this->renderPartial("./globalsettings/_bounce"); ?>
         </div>
 
-        <div id="security" class="tab-pane col-md-10 col-md-offset-1">
+        <div id="security" class="tab-pane col-lg-10-10 offset-lg-1">
             <?php $this->renderPartial("./globalsettings/_security"); ?>
         </div>
-        <div id="useradmin" class="tab-pane col-md-10 col-md-offset-1">
+        <div id="useradmin" class="tab-pane col-lg-10-10 offset-lg-1">
             <?php $this->renderPartial("./globalsettings/_useradministration",
                 [
                     'sSendAdminCreationEmail'     => $sGlobalSendAdminCreationEmail,
@@ -72,11 +72,11 @@ App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderB
                 ]); ?>
         </div>
 
-        <div id="presentation" class="tab-pane col-md-10 col-md-offset-1">
+        <div id="presentation" class="tab-pane col-lg-10-10 offset-lg-1">
             <?php $this->renderPartial("./globalsettings/_presentation"); ?>
         </div>
 
-        <div id="language" class="tab-pane col-md-10 col-md-offset-1">
+        <div id="language" class="tab-pane col-lg-10-10 offset-lg-1">
             <?php $this->renderPartial("./globalsettings/_language",
                 [
                     'restrictToLanguages' => $restrictToLanguages,
@@ -85,11 +85,11 @@ App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderB
                 ]); ?>
         </div>
 
-        <div id="interfaces" class="tab-pane col-md-6 col-md-offset-1">
+        <div id="interfaces" class="tab-pane col-lg-10-6 offset-lg-1">
             <?php $this->renderPartial("./globalsettings/_interfaces"); ?>
         </div>
 
-        <div id="storage" class="tab-pane col-md-6 col-md-offset-1">
+        <div id="storage" class="tab-pane col-lg-6 offset-lg-1">
             <?php
             $this->renderPartial("./globalsettings/_storage");
             ?>

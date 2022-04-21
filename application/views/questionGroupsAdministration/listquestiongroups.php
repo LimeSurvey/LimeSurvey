@@ -14,7 +14,7 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT('Groups in this survey'); ?></h3>
     <div class="row">
-        <div class="col-lg-12 ls-flex ls-flex-row">
+        <div class="col-12 ls-flex ls-flex-row">
             <div class="ls-flex-item text-start">
                 <?php App()->getController()->renderPartial(
                     '/admin/survey/surveybar_addgroupquestion', //todo this view must be moved to correct position

@@ -16,7 +16,7 @@
 
 <div class="draggable-container">
     <div class='row'>
-        <div class='col-sm-4'>
+        <div class='col-md-4'>
             <div id="tokenattribute" class="card attribute-column">
                 <div class="card-header bg-primary"><?php eT("Unmapped survey participant attributes") ?></div>
                 <div id="tokenatt" class="tokenatt droppable">
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div class='col-sm-4'>
+        <div class='col-md-4'>
             <div id="newcreated" class="card attribute-column">
                 <div class="card-header bg-primary"><?php eT("Participant attributes to create") ?></div>
                 <div class="card-body newcreate droppable" style ="height: 40px">
@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <div class='col-sm-4'>
+        <div class='col-md-4'>
             <div id="centralattribute" class="card attribute-column">
                 <div class="card-header bg-primary"><?php eT("Existing participant attributes")?></div>
                 <div class="centralatt">
@@ -94,7 +94,7 @@
             </div>
         </div>
     </div>
-    <div class='form-group col-sm-12 text-center'>
+    <div class='form-group col-12 text-center'>
         <input class='btn btn-default' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
         <input class='btn btn-default' type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
         <input class='btn btn-default' type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />

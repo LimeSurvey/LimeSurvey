@@ -5,7 +5,7 @@ $script = array();
 
 <div id='<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>">
     <div class="row">
-        <div class='form-group col-sm-12'>
+        <div class='form-group col-md-12'>
             <label class=' form-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
             <div class=''>
                 <?php
@@ -15,7 +15,7 @@ $script = array();
         </div>
     </div>
     <div class="row">
-        <div class='form-group col-sm-12'>
+        <div class='form-group col-md-12'>
             <label class=' form-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
             <?php if(getEmailFormat($surveyid) != 'html') { ?>
                 <div class="">
@@ -31,10 +31,10 @@ $script = array();
         </div>
     </div>
     <div class="row">
-        <div class='form-group col-sm-12'>
+        <div class='form-group col-md-12'>
             <label class=' form-label'><?php et('Actions:');?></label>
             <div class=''>
-                <a class='btn btn-default' id="validate_expression_<?=$grouplang?>_<?=$tab?>" data-parent-element="#in_survey_common" data-bs-target="modal" data-remote-link="<?=App()->createUrl('admin/validate',['sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab])?>" data-footer="false" data-modal-title="<?=$details['title']?>" > 
+                <a class='btn btn-default' id="validate_expression_<?=$grouplang?>_<?=$tab?>" data-parent-element="#in_survey_common" data-bs-target="modal" data-remote-link="<?=App()->createUrl('admin/validate',['sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab])?>" data-footer="false" data-modal-title="<?=$details['title']?>" >
                     <?=gT("Validate ExpressionScript")?> 
                 </a> 
                 <?php
@@ -51,8 +51,8 @@ $script = array();
     if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
     { ?>
     <div class="row">
-            <label class='form-label col-xs-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
-            <div class="col-xs-12">
+            <label class='form-label col-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
+            <div class="col-12">
                 <button class="add-attachment btn btn-default" data-bs-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
             </div>
     </div>
@@ -71,7 +71,7 @@ $script = array();
     ?>
 
     <div class="row selector__table-container <?=($hideAttacehemtTable===true ? 'd-none' : '')?>">
-        <div class='form-group col-sm-12'>
+        <div class='form-group col-12'>
             <div class='form-group'>
                 <div class=' '>
                     <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]"  data-bs-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments table table-striped" style="width: 100%;">

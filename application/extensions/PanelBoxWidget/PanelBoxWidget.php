@@ -68,7 +68,7 @@ class PanelBoxWidget extends CWidget
     protected function renderBox()
     {
         if (self::canSeeBox()) {
-            $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-' . $this->offset : '';
+            $offset = ($this->offset != '') ? 'offset-md-1 offset-xl-' . $this->offset : '';
 
             $this->render('box', array(
                 'position' => $this->position,
@@ -78,7 +78,7 @@ class PanelBoxWidget extends CWidget
                 'ico' => $this->ico,
                 'description' => $this->description,
                 'external' => $this->external,
-                'sizeClass' => "col-md-".(12/$this->boxesbyrow)." col-sm-".(floor(24/$this->boxesbyrow))
+                'sizeClass' => "col-lg-".(12/$this->boxesbyrow)." col-md-".(floor(24/$this->boxesbyrow))
             ));
         }
     }

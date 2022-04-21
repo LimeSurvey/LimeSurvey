@@ -99,7 +99,7 @@
             <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-sm-12 text-end">
+                        <div class="col-12 text-end">
                             <input 
                                 type="checkbox" 
                                 name="scriptForAllLanguages"

@@ -4,23 +4,23 @@
         <div class="row">
         <!-- Form quick-add condition -->
             <div class='form-group'>
-                <div class='col-sm-2'></div>
-                <div class='col-sm-10'>
+                <div class='col-md-2'></div>
+                <div class='col-md-10'>
                 </div>
             </div>
 
             <!-- Condition -->
             <div class='form-group'>
-                <label class='form-label col-sm-2'><?php eT('Scenario'); ?></label>
-                <div class='col-sm-2 add-scenario-column'>
+                <label class='form-label col-md-2'><?php eT('Scenario'); ?></label>
+                <div class='col-md-2 add-scenario-column'>
                     <input class='form-control' type='number' name='quick-add-scenario' id='quick-add-scenario' value='1' />
                 </div>
             </div>
         </div>
         <div class="row ls-space margin top-10 bottom-5">
             <div class='form-group row'>
-                <label class='form-label col-sm-2'><?php eT("Question"); ?></label>
-                <div class='col-sm-10'>
+                <label class='form-label col-md-2'><?php eT("Question"); ?></label>
+                <div class='col-md-10'>
                     <ul class='nav nav-tabs'>
                         <li role='presentation' class='nav-item src-tab'>
                             <a class="nav-link active" href='#QUICKADD-SRCPREVQUEST' aria-controls='SRCPREVQUEST' role='tab' data-bs-toggle='tab'><?php eT('Previous questions'); ?></a>
@@ -34,8 +34,8 @@
             <div class='tab-content'>
                 <div role='tabpanel' class='tab-pane show active' id='QUICKADD-SRCPREVQUEST'>
                     <div class='form-group question-option'>
-                        <div class='col-sm-2'></div>
-                        <div class='col-sm-10'>
+                        <div class='col-md-2'></div>
+                        <div class='col-md-10'>
                             <select class='form-select' name='quick-add-cquestions' id='quick-add-cquestions' size='7'>
                                 <?php foreach ($cquestions as $cqn): ?>
                                     <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars($cqn[0]); ?>">
@@ -48,8 +48,8 @@
                 </div>
                 <div role='tabpanel' class='tab-pane' id='QUICKADD-SRCTOKENATTRS'>
                     <div class='form-group question-option'>
-                        <div class='col-sm-2'></div>
-                        <div class='col-sm-10'>
+                        <div class='col-md-2'></div>
+                        <div class='col-md-10'>
                             <select class='form-select' name='quick-add-csrctoken' id='quick-add-csrctoken' size='7'>
                                 <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
                                     <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}'): echo ' selected="selected" '; endif; ?>>
@@ -64,8 +64,8 @@
         </div>
         <div class="row ls-space margin top-10">
             <div class='form-group'>
-                <label class='form-label col-sm-2'><?php eT("Comparison operator"); ?></label>
-                <div class='col-sm-4'>
+                <label class='form-label col-md-2'><?php eT("Comparison operator"); ?></label>
+                <div class='col-md-4'>
                     <select class='form-select' name='quick-add-method' id='quick-add-method'>
                         <?php foreach ($method as $methodCode => $methodTxt): ?>
                             <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "=="): echo ' selected="selected" '; endif; ?>>
@@ -78,8 +78,8 @@
         </div>
         <div class="row">
             <div class='form-group row'>
-                <label class='form-label col-sm-2'><?php echo gT("Answer"); ?></label>
-                <div class='col-sm-10'>
+                <label class='form-label col-md-2'><?php echo gT("Answer"); ?></label>
+                <div class='col-md-10'>
                     <ul class='nav nav-tabs'>
                         <li role='presentation' class='nav-item target-tab'>
                             <a class="nav-link active" href='#QUICKADD-CANSWERSTAB' aria-controls='CANSWERSTAB' role='tab' data-bs-toggle='tab'><?php eT('Predefined'); ?></a>
@@ -102,8 +102,8 @@
             <div class='tab-content'>
                 <div role='tabpanel' class='tab-pane show active' id='QUICKADD-CANSWERSTAB'>
                     <div class='form-group answer-option'>
-                        <div class='col-sm-2'></div>
-                        <div class='col-sm-10'>
+                        <div class='col-md-2'></div>
+                        <div class='col-md-10'>
                             <select
                                 class='form-control'
                                 name='quick-add-canswers[]'
@@ -118,8 +118,8 @@
 
                 <div role='tabpanel' class='tab-pane active' id='QUICKADD-CONST'>
                     <div class='form-group answer-option'>
-                        <div class='col-sm-2'></div>
-                        <div class='col-sm-10'>
+                        <div class='col-md-2'></div>
+                        <div class='col-md-10'>
                             <textarea class='form-control' name='quick-add-ConditionConst' id='quick-add-ConditionConst' rows='5' cols='113'></textarea>
                         </div>
                     </div>
@@ -127,8 +127,8 @@
 
                 <div role='tabpanel' class='tab-pane active' id='QUICKADD-PREVQUESTIONS'>
                     <div class='form-group answer-option'>
-                        <div class='col-sm-2'></div>
-                        <div class='col-sm-10'>
+                        <div class='col-md-2'></div>
+                        <div class='col-md-10'>
                             <select class='form-select' name='quick-add-prevQuestionSGQA' id='quick-add-prevQuestionSGQA' size='7'>
                                 <?php foreach ($cquestions as $cqn): ?>
                                     <?php if ($cqn[2] != Question::QT_M_MULTIPLE_CHOICE && $cqn[2] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS): ?>
@@ -149,8 +149,8 @@
 
                 <div role='tabpanel' class='tab-pane' id='QUICKADD-TOKENATTRS'>
                     <div class='form-group answer-option'>
-                        <div class='col-sm-2'></div>
-                        <div class='col-sm-10'>
+                        <div class='col-md-2'></div>
+                        <div class='col-md-10'>
                             <select class='form-select' name='quick-add-tokenAttr' id='quick-add-tokenAttr' size='7'>
                                 <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
                                     <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}'>
@@ -164,8 +164,8 @@
 
                 <div role='tabpanel' class='tab-pane active' id='QUICKADD-REGEXP'>
                     <div class='form-group answer-option'>
-                        <div class='col-sm-2'></div>
-                        <div class='col-sm-10'>
+                        <div class='col-md-2'></div>
+                        <div class='col-md-10'>
                             <textarea name='quick-add-ConditionRegexp' class='form-control' id='quick-add-ConditionRegexp' rows='5' cols='113'></textarea>
                             <div id='quick-add-ConditionRegexpLabel'>
                                 <a href="http://manual.limesurvey.org/Using_regular_expressions" target="_blank">
@@ -179,8 +179,8 @@
         </div>
         <div class="row">
             <div class='form-group '>
-                <div class='col-sm-2'></div>
-                <div class='col-sm-10'>
+                <div class='col-md-2'></div>
+                <div class='col-md-10'>
                     <input type='hidden' name='quick-add-sid' value='<?php echo $iSurveyID; ?>' />
                     <input type='hidden' name='quick-add-gid' value='<?php echo $gid; ?>' />
                     <input type='hidden' name='quick-add-qid' value='<?php echo $qid; ?>' />

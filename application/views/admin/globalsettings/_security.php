@@ -118,7 +118,7 @@
             . gT("If the link does not work and you turn on HTTPS, you will not be able to access and use your LimeSurvey application!"); ?></span>
 </div>
 
-    <div class="ls-flex-column ls-space padding left-5 right-35 col-md-5">
+    <div class="ls-flex-column ls-space padding left-5 right-35 col-lg-5">
         <h3> <?= gt('Brute-force protection for administration') ?></h3>
 
         <div class="form-group">
@@ -152,7 +152,7 @@
 
     </div>
 
-    <div class="ls-flex-column ls-space padding left-5 right-5 col-md-5">
+    <div class="ls-flex-column ls-space padding left-5 right-5 col-lg-5">
         <h3> <?= gt('Brute-force protection for survey participation') ?></h3>
 
         <div class="form-group">

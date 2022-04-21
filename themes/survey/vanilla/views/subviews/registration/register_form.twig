@@ -21,7 +21,7 @@
 
     {{aSurveyInfo.registerform.hiddeninputs}}
 
-    <div class='{{ aSurveyInfo.class.registerformcol }} col-md-8 col-md-offset-2' {{ aSurveyInfo.attr.registerformcol }}>
+    <div class='{{ aSurveyInfo.class.registerformcol }} col-lg-8 offset-lg-2' {{ aSurveyInfo.attr.registerformcol }}>
         <div class="ls-js-hidden form-group row">
             {{ include('./subviews/navigation/language_changer.twig') }}
         </div>
@@ -84,7 +84,7 @@
 
         {# Submit register button #}
         <div class='{{ aSurveyInfo.class.registersave }} form-group row' {{ aSurveyInfo.attr.registersave }} >
-            <div class='{{ aSurveyInfo.class.registersavediv }} col-md-offset-7' {{ aSurveyInfo.attr.registersavediv }} >
+            <div class='{{ aSurveyInfo.class.registersavediv }} offset-lg-7' {{ aSurveyInfo.attr.registersavediv }} >
                 {% set continue = gT("Continue",'unescaped') %}
                 <button {{ aSurveyInfo.attr.registersavedivbutton }}  class='{{ aSurveyInfo.class.registersavedivbutton }} btn btn-default' >
                     {{ continue }}
@@ -94,7 +94,7 @@
 
         {# If there is additional form parts, a.e. trhough a plugin render it out here #}
     </div>
-    <div class='{{ aSurveyInfo.class.registerformcoladdidtions }} col-md-8 col-md-offset-2' {{ aSurveyInfo.attr.registerformcoladdidtions }}>
+    <div class='{{ aSurveyInfo.class.registerformcoladdidtions }} col-lg-8 offset-lg-2' {{ aSurveyInfo.attr.registerformcoladdidtions }}>
         {{ aSurveyInfo.formAdditions | raw  }}
     </div>
 

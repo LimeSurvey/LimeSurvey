@@ -2,7 +2,7 @@
 
 /**@var Question $question */
 ?>
-<div class="form-group col-sm-6 col-lg-5 scoped-responsive-fix-height">
+<div class="form-group col-md-6 col-xl-5 scoped-responsive-fix-height">
     <label for="questionCode"><?= gT('Code'); ?></label>
     <i class="fa fa-question-circle text-success"
         data-bs-toggle="tooltip"
@@ -30,3 +30,4 @@
     </div>
     <p id="question-code-unique-warning" class="d-none text-warning"><?= gT('Question codes must be unique.'); ?></p>
 </div>
+

@@ -5,7 +5,7 @@
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
-        <div class="col-lg-8 content-right">
+        <div class="col-xl-8 content-right">
             <h3>
                 <?php eT("Survey quota");?>: <?php eT("Add answer");?>
             </h3>
@@ -19,7 +19,7 @@
                     </p>
                     <?php echo CHtml::form(array("admin/quotas/sa/newanswer/surveyid/{$oQuota->sid}/subaction/new_answer_two"), 'post', array('class' => '')); ?>
                         <div class='form-group'>
-                            <div class='col-sm-5 col-sm-offset-4'>
+                            <div class='col-md-5 offset-md-4'>
                                 <select class='form-select' name="quota_qid" size="15">
                                     <?php foreach ($oQuota->survey->quotableQuestions as $questionlisting) { ?>
                                         <option value="<?php echo $questionlisting['qid'];?>">
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class='form-group'>
-                            <div class='col-sm-5 col-sm-offset-4'>
+                            <div class='col-md-5 offset-md-4'>
                                 <input name="submit" type="submit" class="submit btn btn-default" value="<?php eT("Next");?>" />
                             </div>
                         </div>

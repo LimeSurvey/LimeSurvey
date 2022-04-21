@@ -52,9 +52,9 @@ foreach ($systemInfos as $key => $systemInfo) {
 <!-- Footer -->
 <footer class='footer'>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row ps-3 pe-3">
             <!-- Link to manual -->
-            <div class="col-xs-6 col-sm-4 ">
+            <div class="col-6 col-md-4">
                 <a href='http://manual.limesurvey.org' onclick='function go(ev) { ev.preventDefault(); var win = window.open("http://manual.limesurvey.org", "_blank"); win.focus(); }; go(event);'>
                     <span class="fa fa-question-circle" id="info-footer"></span>
             <span class="sr-only"><?php eT('Limesurvey online manual'); ?></span>
@@ -62,14 +62,14 @@ foreach ($systemInfos as $key => $systemInfo) {
             </div>
 
             <!-- Support / Donate -->
-            <div  class="col-xs-6 col-sm-4 text-center" >
+            <div  class="col-6 col-md-4 text-center" >
                 <a href='https://donate.limesurvey.org' target="_blank">
                     <img alt='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>' title='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
             </div>
 
             <!-- Lime survey website -->
-            <div class="col-xs-12 col-sm-4 text-end">
+            <div class="col-12 col-md-4 text-end">
                 <a  title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a><br />
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?> 
                     <a href="#modalSystemInformation" data-bs-toggle="modal" title="<?=gT("Get system information")?>"> 

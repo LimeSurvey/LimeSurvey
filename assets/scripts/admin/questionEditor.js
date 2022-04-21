@@ -189,7 +189,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    */
   function bindExpandRelevanceEquation() {
     $('.relevance').off('click').on('click', () => {
-      $('#rel-eq-th').toggleClass('col-md-1 col-md-4', 'fast');
+      $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast');
       $('.relevance').data('toggle', '').tooltip('destroy');
       $('.relevance').off('click');
     });
@@ -239,7 +239,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {boolean} true if relevance equation field is expanded
    */
   function relevanceIsExpanded() {
-    return $('#rel-eq-th').hasClass('col-md-4');
+    return $('#rel-eq-th').hasClass('col-lg-4');
   }
 
   /**
@@ -684,10 +684,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
               isEmpty = false;
               labelSet.labels.forEach((label) => {
                 // Label title is not concatenated directly because it may have non-encoded HTML
-                const $labelTitleDiv = $('<div class="col-md-7"></div>');
+                const $labelTitleDiv = $('<div class="col-lg-7"></div>');
                 $labelTitleDiv.text(label.title);
                 const $listItem = $listItemTemplate.clone();
-                $listItem.append(`<div class="col-md-5 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+                $listItem.append(`<div class="col-lg-5 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
                 $listItem.append($labelTitleDiv);
                 $listItem.attr('data-label', JSON.stringify(label));
                 $itemList.append($listItem);

@@ -7,7 +7,7 @@ $isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == 
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <h3>
                 <?php eT("Survey quota");?>: <?php eT("Add answer");?>
             </h3>
@@ -26,7 +26,7 @@ $isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == 
                         <h2><?php echo sprintf(gT("New answer for quota '%s'"), CHtml::encode($oQuota->name));?></h2>
                         <p class="lead"><?php eT("Select answer:");?></p>
                         <div class='form-group'>
-                            <div class='col-sm-5 col-sm-offset-4'>
+                            <div class='col-md-5 offset-md-4'>
                                 <select class='form-select' name="quota_anscode" size="15">
                                     <?php
                                         foreach ($question_answers as $key=>$value) {
@@ -39,7 +39,7 @@ $isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == 
                 <?php endif;?>
 
                     <div class='form-group'>
-                        <div class='col-sm-5 col-sm-offset-4'>
+                        <div class='col-md-5 offset-md-4'>
                             <input class="btn btn btn-success" name="submit" type="submit" class="submit btn btn-default" value="<?php eT("Next");?>" />
                         </div>
                     </div>

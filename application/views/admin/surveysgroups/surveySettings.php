@@ -1,5 +1,6 @@
 <?php
 /* @var SurveysGroupsController $this */
+
 /* @var SurveysGroups $model */
 /* @var array $jsData */
 /* @var SurveysGroupsettings $oSurvey */
@@ -19,97 +20,95 @@ Yii::app()->getClientScript()->registerScript(
 );
 
 ?>
-
-<div class="col-lg-12 list-surveys">
-    <div class="row">
-        <div id="surveySettingsForThisGroup" style="display: flex; flex-wrap:nowrap;">
-            <div id="global-sidebar-container">
-                <global-sidemenu/>
-            </div>
-            <div id="pjax-content" class="tab-content col-md-10">
-                <?php if ($model->hasPermission('surveysettings', 'update')) : ?>
-                    <div class="row">
-                        <div class="alert alert-info controls col-sm-12" role="alert">
+<div class="container-fluid position-relative">
+    <div class="d-flex flex-wrap flex-lg-nowrap" id="surveySettingsForThisGroup">
+        <div id="global-sidebar-container">
+            <global-sidemenu/>
+        </div>
+        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-3">
+            <?php if ($model->hasPermission('surveysettings', 'update')) : ?>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info controls" role="alert">
                             <?php eT('All changes of survey group settings will have immediate effect on all related surveys that use inherited values.'); ?>
                         </div>
                     </div>
-                <?php endif; ?>
-                <?php echo CHtml::form(["admin/surveysgroups/sa/surveysettings/id/" . $oSurvey->gsid . "/#surveySettingsGeneral"], 'post', ['id' => 'survey-settings-options-form']); ?>
-                <div class="tab-content col-md-10">
-                    <?php if ($partial === '_generaloptions_panel') { ?>
-                        <div id="surveySettingsGeneral" class="row">
-                            <?php $this->renderPartial(
-                                'survey/subview/accordion/_generaloptions_panel',
-                                [
-                                    'oSurvey'         => $oSurvey,
-                                    'oSurveyOptions'  => $oSurvey->oOptionLabels,
-                                    'bShowInherited'  => $oSurvey->showInherited,
-                                    'optionsOnOff'    => $optionsOnOff,
-                                    'bShowAllOptions' => false,
-                                    'users'           => $users,
-                                ]
-                            ); ?>
-                        </div>
-                    <?php } elseif ($partial === '_presentation_panel') { ?>
-                        <div id="surveySettingsPresentation">
-                            <?php $this->renderPartial(
-                                'survey/subview/accordion/_presentation_panel',
-                                [
-                                    'oSurvey'        => $oSurvey,
-                                    'oSurveyOptions' => $oSurvey->oOptionLabels,
-                                    'bShowInherited' => $oSurvey->showInherited,
-                                    'optionsOnOff'   => $optionsOnOff
-                                ]
-                            ); ?>
-                        </div>
-                    <?php } elseif ($partial === '_tokens_panel') { ?>
-                        <div id="surveySettingsParticipants">
-                            <?php $this->renderPartial(
-                                'survey/subview/accordion/_tokens_panel',
-                                [
-                                    'oSurvey'        => $oSurvey,
-                                    'oSurveyOptions' => $oSurvey->oOptionLabels,
-                                    'bShowInherited' => $oSurvey->showInherited,
-                                    'optionsOnOff'   => $optionsOnOff
-                                ]
-                            ); ?>
-                        </div>
-                    <?php } elseif ($partial === '_notification_panel') { ?>
-                        <div id="surveySettingsNotification">
-                            <?php $this->renderPartial(
-                                'survey/subview/accordion/_notification_panel',
-                                [
-                                    'oSurvey'         => $oSurvey,
-                                    'oSurveyOptions'  => $oSurvey->oOptionLabels,
-                                    'bShowInherited'  => $oSurvey->showInherited,
-                                    'optionsOnOff'    => $optionsOnOff,
-                                    'bShowAllOptions' => false,
-                                ]
-                            ); ?>
-                        </div>
-                    <?php } elseif ($partial === '_publication_panel') { ?>
-                        <div id="surveySettingsPublication">
-                            <?php $this->renderPartial(
-                                'survey/subview/accordion/_publication_panel',
-                                [
-                                    'oSurvey'           => $oSurvey,
-                                    'oSurveyOptions'    => $oSurvey->oOptionLabels,
-                                    'bShowInherited'    => $oSurvey->showInherited,
-                                    'optionsOnOff'      => $optionsOnOff,
-                                    'dateformatdetails' => $aDateFormatDetails,
-                                    'bShowAllOptions'   => false,
-                                ]
-                            ); ?>
-                        </div>
-                    <?php } ?>
-
-                    <div class="d-none">
-                        <?php echo TbHtml::submitButton('Save', ['class' => 'btn btn-success col-md-2 col-sm-4', "id" => "survey-settings-options-form"]); ?>
-                    </div>
-
                 </div>
-                <?php echo CHtml::endForm()?>
+            <?php endif; ?>
+            <?php echo CHtml::form(["admin/surveysgroups/sa/surveysettings/id/" . $oSurvey->gsid . "/#surveySettingsGeneral"], 'post', ['id' => 'survey-settings-options-form']); ?>
+            <div class="tab-content">
+                <?php if ($partial === '_generaloptions_panel') { ?>
+                    <div id="surveySettingsGeneral" class="row">
+                        <?php $this->renderPartial(
+                            'survey/subview/accordion/_generaloptions_panel',
+                            [
+                                'oSurvey' => $oSurvey,
+                                'oSurveyOptions' => $oSurvey->oOptionLabels,
+                                'bShowInherited' => $oSurvey->showInherited,
+                                'optionsOnOff' => $optionsOnOff,
+                                'bShowAllOptions' => false,
+                                'users' => $users,
+                            ]
+                        ); ?>
+                    </div>
+                <?php } elseif ($partial === '_presentation_panel') { ?>
+                    <div id="surveySettingsPresentation">
+                        <?php $this->renderPartial(
+                            'survey/subview/accordion/_presentation_panel',
+                            [
+                                'oSurvey' => $oSurvey,
+                                'oSurveyOptions' => $oSurvey->oOptionLabels,
+                                'bShowInherited' => $oSurvey->showInherited,
+                                'optionsOnOff' => $optionsOnOff
+                            ]
+                        ); ?>
+                    </div>
+                <?php } elseif ($partial === '_tokens_panel') { ?>
+                    <div id="surveySettingsParticipants">
+                        <?php $this->renderPartial(
+                            'survey/subview/accordion/_tokens_panel',
+                            [
+                                'oSurvey' => $oSurvey,
+                                'oSurveyOptions' => $oSurvey->oOptionLabels,
+                                'bShowInherited' => $oSurvey->showInherited,
+                                'optionsOnOff' => $optionsOnOff
+                            ]
+                        ); ?>
+                    </div>
+                <?php } elseif ($partial === '_notification_panel') { ?>
+                    <div id="surveySettingsNotification">
+                        <?php $this->renderPartial(
+                            'survey/subview/accordion/_notification_panel',
+                            [
+                                'oSurvey' => $oSurvey,
+                                'oSurveyOptions' => $oSurvey->oOptionLabels,
+                                'bShowInherited' => $oSurvey->showInherited,
+                                'optionsOnOff' => $optionsOnOff,
+                                'bShowAllOptions' => false,
+                            ]
+                        ); ?>
+                    </div>
+                <?php } elseif ($partial === '_publication_panel') { ?>
+                    <div id="surveySettingsPublication">
+                        <?php $this->renderPartial(
+                            'survey/subview/accordion/_publication_panel',
+                            [
+                                'oSurvey' => $oSurvey,
+                                'oSurveyOptions' => $oSurvey->oOptionLabels,
+                                'bShowInherited' => $oSurvey->showInherited,
+                                'optionsOnOff' => $optionsOnOff,
+                                'dateformatdetails' => $aDateFormatDetails,
+                                'bShowAllOptions' => false,
+                            ]
+                        ); ?>
+                    </div>
+                <?php } ?>
+
+                <div class="d-none">
+                    <?php echo TbHtml::submitButton('Save', ['class' => 'btn btn-success col-lg-2 col-md-4', "id" => "survey-settings-options-form"]); ?>
+                </div>
             </div>
+            <?php echo CHtml::endForm() ?>
         </div>
     </div>
 

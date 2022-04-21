@@ -2009,7 +2009,7 @@ class DataEntry extends SurveyCommonAction
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
-                        $showme = '<div class="alert alert-warning col-sm-8 col-sm-offset-2" role="alert">';
+                        $showme = '<div class="alert alert-warning col-md-8 offset-md-2" role="alert">';
                         if ($bgc == "even") {
                             $bgc = "odd";
                         } else {

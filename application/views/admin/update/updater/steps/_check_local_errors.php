@@ -23,9 +23,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="col-sm-10"><?php eT('Available space in directory:');?></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
+            <th class="col-md-10"><?php eT('Available space in directory:');?></th>
+            <th class="col-md-1"  style="text-align: right"></th>
+            <th class="col-md-1"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>
@@ -62,9 +62,9 @@
     <table class="table">
         <thead>
             <tr>
-                <th class="col-sm-10"><?php eT('MYSQL version required:');?></th>
-                <th class="col-sm-1"  style="text-align: right"></th>
-                <th class="col-sm-1"  style="text-align: right"></th>
+                <th class="col-md-10"><?php eT('MYSQL version required:');?></th>
+                <th class="col-md-1"  style="text-align: right"></th>
+                <th class="col-md-1"  style="text-align: right"></th>
             </tr>
         </thead>
         <tbody>
@@ -89,16 +89,16 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="col-sm-10"><?php eT('PHP version required:');?></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
+            <th class="col-md-10"><?php eT('PHP version required:');?></th>
+            <th class="col-md-1"  style="text-align: right"></th>
+            <th class="col-md-1"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td class="col-sm-8"><?php echo $localChecks->php->php_ver;?></td>
+            <td class="col-md-8"><?php echo $localChecks->php->php_ver;?></td>
 
-            <td class="col-sm-1"></td>
+            <td class="col-md-1"></td>
 
             <?php if($localChecks->php->result): ?>
                 <td>
@@ -119,9 +119,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="col-sm-10"><?php eT('Required PHP modules:');?></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
-            <th class="col-sm-1"  style="text-align: right"></th>
+            <th class="col-md-10"><?php eT('Required PHP modules:');?></th>
+            <th class="col-md-1"  style="text-align: right"></th>
+            <th class="col-md-1"  style="text-align: right"></th>
         </tr>
     </thead>
     <tbody>

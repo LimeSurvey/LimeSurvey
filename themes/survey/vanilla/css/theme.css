@@ -535,7 +535,7 @@ only screen and (max-width: 760px),
         right: 0.5em;
     }
 
-    .col-xs-12.question-container {
+    .col-12.question-container {
         padding-right: 0;
         padding-left: 0;
     }
@@ -551,7 +551,7 @@ only screen and (max-width: 760px),
     }
 
     /*
-    .col-sm-12.answer {
+    .col-12.answer {
         padding-left: 0;
         padding-right: 0;
     }

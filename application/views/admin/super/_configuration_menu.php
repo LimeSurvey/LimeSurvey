@@ -29,7 +29,7 @@
         <div class="dropdown-menu mega-dropdown-menu" id="mainmenu-dropdown">
             <div class="row">
                 <!-- System overview -->
-                <div class="mega-dropdown__column col-sm-3">
+                <div class="mega-dropdown__column col-md-3">
                     <!-- System overview -->
                     <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
 
@@ -62,7 +62,7 @@
                     <?php endif; ?>
                 </div>
                 <!-- ExpressionScript Engine -->
-                <div class="mega-dropdown__column col-sm-3">
+                <div class="mega-dropdown__column col-md-3">
                     <?php if (YII_DEBUG): ?>
                         <ul>
 
@@ -131,7 +131,7 @@
                     <?php endif; ?>
                 </div>
                 <!-- Advanced -->
-                <div class="mega-dropdown__column col-sm-2">
+                <div class="mega-dropdown__column col-md-2">
                     <ul>
 
                         <!-- Advanced -->
@@ -186,7 +186,7 @@
 
                 </div>
                 <!-- Users -->
-                <div class="mega-dropdown__column col-sm-2">
+                <div class="mega-dropdown__column col-md-2">
 
                     <!-- Users -->
                     <ul>
@@ -244,7 +244,7 @@
                     </ul>
                 </div>
                 <!-- Settings -->
-                <div class="mega-dropdown__column col-sm-2">
+                <div class="mega-dropdown__column col-md-2">
                     <ul>
 
                         <!-- Settings -->

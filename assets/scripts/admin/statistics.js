@@ -824,7 +824,7 @@ $(document).on('ready  pjax:scriptcomplete', function () {
     $('body').addClass('onStatistics');
     var exportImagesButton = $('#statisticsExportImages');
     exportImagesButton.on('click', exportImages);
-    exportImagesButton.wrap('<div class="col-md-12 text-center"></div>')
+    exportImagesButton.wrap('<div class="col-12 text-center"></div>')
     $('#statisticsview').children('div.row').last().append(exportImagesButton);
     $('body').on('click', '.action_js_export_to_pdf', function () {
 

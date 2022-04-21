@@ -3,7 +3,7 @@
 </div>
 
 <div class='row draggable-container' style='z-index: 1;'>
-    <div class='col-sm-4'>
+    <div class='col-md-4'>
         <div id="csvattribute" class="card">
             <div class="card-header bg-primary">
                 <?php eT("CSV field names "); ?>
@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div class='col-sm-4'>
+    <div class='col-md-4'>
         <div id="newcreated" class="card">
             <div class="card-header bg-primary">
                 <?php eT("Attributes to be created") ?>
@@ -40,15 +40,15 @@
             </div>
         </div>
     </div>
-    <div class='col-sm-4'>
+    <div class='col-md-4'>
         <div id="centralattribute" class="card">
             <div class="card-header bg-primary"><?php eT("Existing attribute"); ?></div>
             <div class='card-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into an existing participant attribute listed below to import your data into it."); ?></p>
                 <div class="centralatt">
                     <?php foreach ($attributes as $key => $value): ?>
-                        <div class='col-sm-12 droppable-map'>
-                            <div class='col-sm-6'>
+                        <div class='col-12 droppable-map'>
+                            <div class='col-md-6'>
                                 <div id='c_<?php echo $value['attribute_id']; ?>' data-name='c_<?php echo $key; ?>' class='well well-sm csv-attribute-item'>
                                     <?php echo $value['attribute_name']; ?>
                                 </div>
@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    <div class='form-group col-sm-12 text-center'>
+    <div class='form-group col-12 text-center'>
         <input class='btn btn-default' type="button" name="attmapcancel" id="attmapcancel" value="<?php eT("Cancel") ?>" />
         <input class='btn btn-default' type="button" name="attreset" id="attreset" value="<?php eT("Reset") ?>" onClick="window.location.reload();" />
         <input class='btn btn-default' type="button" name="attmap" id="attmap" value="<?php eT("Continue"); ?>" />

@@ -1,7 +1,7 @@
 <?php if (isset($step1)): ?>
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
         <div class="row welcome survey-action">
-            <div class="col-sm-12 content-right">
+            <div class="col-12 content-right">
                 <div class="jumbotron message-box message-box-error">
                     <h2>
                         <?php eT("Stop this survey");  echo "<em>($surveyid)</em>" ; ?>
@@ -75,7 +75,7 @@
 <?php else: ?>
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
         <div class="row welcome survey-action">
-            <div class="col-sm-12 content-right">
+            <div class="col-12 content-right">
                 <div class="jumbotron message-box">
                     <h2>
                         <?php eT("Deactivate Survey");

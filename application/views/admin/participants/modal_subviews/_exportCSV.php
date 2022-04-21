@@ -8,8 +8,8 @@
             <div class="modal-body">
                 <div class="form container-center">
                     <div class='form-group row'>
-                        <label class='form-label col-sm-4' for='attributes'><?php eT('Attributes to export:');?></label>
-                        <div class='col-sm-8'>
+                        <label class='form-label col-md-4' for='attributes'><?php eT('Attributes to export:');?></label>
+                        <div class='col-md-8'>
                             <select id="attributes" name="attributes" multiple="multiple" >
                                 <?php
                                 foreach ($aAttributes as $value)

@@ -21,7 +21,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
         if(!Assessment::isAssessmentActive($surveyid)) {
         ?>
           <div class="row text-center">
-            <div class="jumbotron message-box warningheader col-sm-12 col-md-6 col-md-offset-3">
+            <div class="jumbotron message-box warningheader col-md-12 col-lg-6 offset-lg-3">
               <h2><?= gT("Assessment mode not activated"); ?></h2>
               <?php echo $messageLink; ?>
             </div>
@@ -53,14 +53,14 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                         'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                         'ajaxType'                 => 'POST',
                         'ajaxUpdate'               => 'assessments-grid',
-                        'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-md-4\" id=\"massive-action-container\"></div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
                         'afterAjaxUpdate'          => 'bindAction',
                     ));
                 ?>
             </div>
             <?php if ( Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create') ) { ?>
               <div class="row">
-                <div class="col-sm-12">
+                <div class="col-12">
                   <button class="btn btn-success" id="selector__assessment-add-new">
                     <?=eT("Add new assessment rule")?>
                   </button>

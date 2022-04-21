@@ -56,13 +56,13 @@
 foreach ($data as $row) {
 ?>
 <?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
-    <div class='statisticscolumnid col-sm-1 hidden-print'>
+    <div class='statisticscolumnid col-md-1 hidden-print'>
         <a href='<?php echo Yii::app()->getController()->createUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $row['id']]); ?>' target='_blank' title='<?php eT("View response"); ?>' data-bs-toggle="tooltip" data-bs-placement="top">
             <span class="fa fa-search"></span>
         </a>
     </div>
 <?php } ?>
-<div class='statisticscolumndata col-sm-11 text-start' >
+<div class='statisticscolumndata col-md-11 text-start' >
     <?php echo sanitize_html_string($row['value']) ?>
 </div>
 

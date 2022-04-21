@@ -2,13 +2,13 @@
 /**  @var  integer $ugid */
 ?>
 
-<div class="col-lg-12 list-surveys">
+<div class="col-12 list-surveys">
 
     <div class="row">
         <?php echo CHtml::form(
             ["userGroup/MailToAllUsersInGroup/ugid/{$ugid}"],
             'post',
-            ['class' => 'col-md-6 col-md-offset-3', 'id' => 'mailusergroup', 'name' => 'mailusergroup']
+            ['class' => 'col-lg-6 offset-lg-3', 'id' => 'mailusergroup', 'name' => 'mailusergroup']
         ); ?>
         <div class="form-group">
             <label for='copymail'>

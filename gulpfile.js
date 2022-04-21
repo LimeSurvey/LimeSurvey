@@ -17,8 +17,8 @@ const gulpIf = require('gulp-if');
 const useref = require('gulp-useref');
 
 function js_minify() {
-    return src(['third_party/twbs/bootstrap/dist/js/bootstrap.bundle.min.js', 'assets/bootstrap_5/js/custom.js'])
-        .pipe(concat('custom.js'))
+    return src(['third_party/twbs/bootstrap/dist/js/bootstrap.bundle.min.js', 'assets/bootstrap_5/js/bootstrap_5.js'])
+        .pipe(concat('bootstrap_5.js'))
         .pipe(dest('assets/bootstrap_5/build/js/'))
         .pipe(uglify())
         .pipe(rename({extname: '.min.js'}))
@@ -26,9 +26,8 @@ function js_minify() {
 }
 
 function scss_transpile() {
-    return src('assets/bootstrap_5/scss/custom.scss')
-        .pipe(sass())
-        .pipe(dest('assets/bootstrap_5/build/css'));
+    return src('assets/bootstrap_5/scss/bootstrap_5.scss')
+        .pipe(sass());
 }
 
 function scss_minify() {
@@ -37,6 +36,21 @@ function scss_minify() {
         cssnano()
     ];
     return scss_transpile()
+        .pipe(dest('assets/bootstrap_5/build/css'))
+        .pipe(gulppostcss(plugins))
+        .pipe(rename({extname: '.min.css'}))
+        .pipe(dest('assets/bootstrap_5/build/css'));
+}
+
+function scss_minify_rtl() {
+    let plugins = [
+        autoprefixer(),
+        cssnano()
+    ];
+    return scss_transpile()
+        .pipe(rtlcss())
+        .pipe(rename({suffix: '-rtl'}))
+        .pipe(dest('assets/bootstrap_5/build/css'))
         .pipe(gulppostcss(plugins))
         .pipe(rename({extname: '.min.css'}))
         .pipe(dest('assets/bootstrap_5/build/css'));
@@ -44,12 +58,13 @@ function scss_minify() {
 
 exports.watch = function () {
     watch('assets/bootstrap_5/js/**/*.js', js_minify);
-    watch('assets/bootstrap_5/scss/**/*.scss', scss_minify);
+    watch('assets/bootstrap_5/scss/**/*.scss', parallel(scss_minify, scss_minify_rtl));
 };
 
 exports.build = parallel(
     js_minify,
-    scss_minify
+    scss_minify,
+    scss_minify_rtl
 );
 
 function theme() {

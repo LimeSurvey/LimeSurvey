@@ -12,10 +12,10 @@
 #}
 {% if sumRemainingEqn %}
     <li class="form-group ls-group-remaining ls-group-dynamic">
-        <div class="control-label col-xs-12 col-sm-{{sLabelWidth}}">
+        <div class="control-label col-12 col-md-{{sLabelWidth}}">
             {{ gT('Remaining') }}:
         </div>
-        <div class="ls-input-group col-xs-12 col-sm-{{sInputContainerWidth}} {% if sLabelWidth == 0 %} d-none{% endif %}">
+        <div class="ls-input-group col-12 col-md-{{sInputContainerWidth}} {% if sLabelWidth == 0 %} d-none{% endif %}">
             {% if prefix %}
                 <div class="ls-input-group-extra prefix-text prefix">
                     {{ processString(prefix) }}
@@ -36,10 +36,10 @@
 
 {% if sumEqn %}
     <li class="form-group ls-group-total ls-group-dynamic">
-        <div class="control-label col-xs-12 col-sm-{{sLabelWidth}}">
+        <div class="control-label col-12 col-md-{{sLabelWidth}}">
             {{ gT('Total:') }}
         </div>
-       <div class="ls-input-group col-xs-12 col-sm-{{sInputContainerWidth}}">
+       <div class="ls-input-group col-12 col-md-{{sInputContainerWidth}}">
             {% if prefix %}
                 <div class="ls-input-group-extra prefix-text prefix d-none">
                     {{ processString(prefix) }}

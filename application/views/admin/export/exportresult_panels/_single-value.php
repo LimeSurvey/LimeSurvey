@@ -13,14 +13,14 @@
   <div class="card-body">
     <div class="form-group">
         <!-- From -->
-        <label for='export_ids' class="col-sm-2 form-label">
+        <label for='export_ids' class="col-md-2 form-label">
           <?php eT("Selected answers"); ?>
         </label>
 
-        <div class="col-sm-6">
+        <div class="col-md-6">
           <input type="text" readonly value="<?php echo  $sResponsesId; ?>" class="form-control" name="responses_id" id="responses_id" />
         </div>
-        <div class="col-sm-2">
+        <div class="col-md-2">
           <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("responses/setSession/", ['unset' => 'true', 'surveyId' => $surveyid]); ?>" role="button">
             <?php eT("Reset");?>
           </a>

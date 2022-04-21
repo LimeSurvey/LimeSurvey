@@ -16,7 +16,7 @@
     <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"editconditions",'name'=>"editconditions", 'class' => 'form'));?>
         <div class="row ">
         <!-- Form  editconditions -->
-            <div class='col-xs-12 h4'>
+            <div class='col-12 h4'>
                 <u><?php echo $title;?></u>
             </div>
         </div>
@@ -24,11 +24,11 @@
         <div class="row ">
             <!-- Condition -->
             <div class='form-group'>
-                <label class='form-label col-xs-12'><?php eT('Scenario'); ?></label>
-                <div class='add-scenario-column col-xs-12  ls-space padding bottom-15'>
+                <label class='form-label col-12'><?php eT('Scenario'); ?></label>
+                <div class='add-scenario-column col-12  ls-space padding bottom-15'>
                     <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if($showScenario):?> style='display: none;' <?php endif;?>/>
                     <?php if($showScenario):?>
-                        <div id="defaultscenarioshow" class="col-xs-12">
+                        <div id="defaultscenarioshow" class="col-12">
                             <span>
                                 <?php eT("Default scenario"); ?>
                             </span>
@@ -45,7 +45,7 @@
 
         <!-- Comparison operator -->
         <div class="row">
-            <div class='form-group col-xs-12'>
+            <div class='form-group col-12'>
                 <label class='form-label'><?php eT("Comparison operator"); ?></label>
                 <div class=''>
                     <select class='form-select' name='method' id='method'>
@@ -62,7 +62,7 @@
         <!-- Question and answer selection  -->
         <div class="row">
             <!-- Question section -->
-            <div class="col-lg-6">
+            <div class="col-xl-6">
                 <div class='form-group'>
                     <label class='form-label '><?php eT("Question"); ?></label>
                     <div class=''>
@@ -111,7 +111,7 @@
             </div>
 
             <!-- Answer section -->
-            <div class="col-lg-6">
+            <div class="col-xl-6">
                 <div class='form-group'>
                     <label class='form-label'><?php echo gT("Answer"); ?></label>
                     <div class=''>
@@ -215,7 +215,7 @@
             </div>
         </div>
         <div class="row">
-            <div class='form-group col-xs-12'>
+            <div class='form-group col-12'>
                 <div class=''></div>
                 <div class=''>
                     <input type='reset' class='btn btn-default' id='resetForm' value='<?php eT("Clear"); ?>' />

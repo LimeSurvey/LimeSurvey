@@ -17,7 +17,6 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-4 ls-ba">
-
               <div class="accordion" id="accordion_<?=$this->widgetsJsName?>" role="tablist" aria-multiselectable="true">
                 <?php foreach ($this->groupStructureArray as $sGroupTitle => $aGroupArray) { ?>
                   <div class="accordion-item">
@@ -76,7 +75,7 @@
             <div class="col-8">
                 <div class="container-center">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-12">
                             <h3>
                             <p id="selector__<?=$this->widgetsJsName?>-currentSelected"><?=$this->currentSelected?></p>
                             </h3>

@@ -35,7 +35,7 @@
         <?php endif; ?>
     </h3>
      <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
 
 
 <?php echo $conditionsoutput_action_error;?>

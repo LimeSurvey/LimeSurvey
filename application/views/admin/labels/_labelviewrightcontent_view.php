@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-12 content-right text-center">
+  <div class="col-12 content-right text-center">
     <div class="panel-group" id="accordion" role="tablist" style="margin-top: 20px">
       <div class="card" id="up_resmgmt">
 
@@ -61,16 +61,16 @@
                   <ul class="list-unstyled">
                     <li>
                       <br/>
-                      <label class="col-sm-12 label-control" for='the_file'>
+                      <label class="col-12 label-control" for='the_file'>
                         <?php eT("Select ZIP file:") ?>
                       </label>
 
                       <!-- Select ZIP file -->
-                      <div class="col-sm-6"> <input id='the_file' name="the_file" type="file" /> </div>
+                      <div class="col-md-6"> <input id='the_file' name="the_file" type="file" /> </div>
 
 
                       <!-- Import resources ZIP archive -->
-                      <div class="col-sm-6">
+                      <div class="col-md-6">
                         <input class="btn btn-default" type='button' value='<?php eT("Import resources ZIP archive") ?>' <?php 
                         echo !class_exists('ZipArchive') 
                             ? "onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'" 

@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('login');
 
                 <!-- Action Name -->
                 <div class="row login-title login-content">
-                    <div class="col-lg-12">
+                    <div class="col-12">
                         <h3><?php eT("Set password");?></h3>
                     </div>
                 </div>
@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('login');
                 <!-- Form -->
                 <?php echo CHtml::form(array('admin/authentication/sa/newPassword'), 'post', array('id'=>'loginform', 'name'=>'loginform'));?>
                 <div class="row login-content login-content-form">
-                    <div class="col-lg-12">
+                    <div class="col-12">
                         <?php
                         ?>
                         <div class="row ls-space margin top-5">
@@ -57,7 +57,7 @@ echo viewHelper::getViewTestTag('login');
 
                 <!-- Buttons -->
                 <div class="row login-submit login-content">
-                    <div class="col-lg-12">
+                    <div class="col-12">
                         <p>
                             <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Save');?></button><br />
                         </p>

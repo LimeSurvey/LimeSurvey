@@ -273,11 +273,11 @@ hr {
 }
 
 .text-warning {
-  color: #a15426;
+  color: #a15426 !important;
 }
 
 .text-danger {
-  color: #e8afae;
+  color: #e8afae !important;
 }
 
 .bg-primary {

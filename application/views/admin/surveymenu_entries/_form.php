@@ -93,33 +93,33 @@ Yii::app()->getController()->renderPartial(
 
 		<div class="form-group">
 			<div class="list-group">
-				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-end"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel selector__disable_following" data-priority="6" data-option='["render","link","placeholder"]' /></div>
-					<div class="col-sm-10 text-start"><?=gT("Remove link")?></div>
+				<label class="list-group-item col-md-6">
+					<div class="col-md-1 text-end"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel selector__disable_following" data-priority="6" data-option='["render","link","placeholder"]' /></div>
+					<div class="col-md-10 text-start"><?=gT("Remove link")?></div>
 				</label>
-				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-end"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel selector__disable_following" data-priority="5" data-option='["render","link","external"]' /></div>
-					<div class="col-sm-10 text-start"><?=gT("External Link")?></div>
+				<label class="list-group-item col-md-6">
+					<div class="col-md-1 text-end"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel selector__disable_following" data-priority="5" data-option='["render","link","external"]' /></div>
+					<div class="col-md-10 text-start"><?=gT("External Link")?></div>
 				</label>
-				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-end"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel" checked="true" data-priority="4" data-option='["render","link","pjax"]' /></div>
-					<div class="col-sm-10 text-start"><?=gT("Load with pjax")?></div>
+				<label class="list-group-item col-md-6">
+					<div class="col-md-1 text-end"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel" checked="true" data-priority="4" data-option='["render","link","pjax"]' /></div>
+					<div class="col-md-10 text-start"><?=gT("Load with pjax")?></div>
 				</label>
-				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-end"><input type="checkbox" data-value='["survey", "sid"]' class="checkbox selector__dataOptionModel" data-priority="3" data-option='["render","link","data","surveyid"]' /></div>
-					<div class="col-sm-10 text-start"><?=gT("Add SurveyId to link")?></div>
+				<label class="list-group-item col-md-6">
+					<div class="col-md-1 text-end"><input type="checkbox" data-value='["survey", "sid"]' class="checkbox selector__dataOptionModel" data-priority="3" data-option='["render","link","data","surveyid"]' /></div>
+					<div class="col-md-10 text-start"><?=gT("Add SurveyId to link")?></div>
 				</label>
-				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-end"><input type="checkbox" data-value='["survey", "gsid"]' class="checkbox selector__dataOptionModel" data-priority="3" data-option='["render","link","data","gsid"]' /></div>
-					<div class="col-sm-10 text-start"><?=gT("Add survey group ID to link")?></div>
+				<label class="list-group-item col-md-6">
+					<div class="col-md-1 text-end"><input type="checkbox" data-value='["survey", "gsid"]' class="checkbox selector__dataOptionModel" data-priority="3" data-option='["render","link","data","gsid"]' /></div>
+					<div class="col-md-10 text-start"><?=gT("Add survey group ID to link")?></div>
 				</label>
-				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-end"><input type="checkbox" data-value='["questiongroup", "gid"]' class="checkbox selector__dataOptionModel" data-priority="2" data-option='["render","link","data","gid"]' /></div>
-					<div class="col-sm-10 text-start"><?=gT("Add question group ID to link")?></div>
+				<label class="list-group-item col-md-6">
+					<div class="col-md-1 text-end"><input type="checkbox" data-value='["questiongroup", "gid"]' class="checkbox selector__dataOptionModel" data-priority="2" data-option='["render","link","data","gid"]' /></div>
+					<div class="col-md-10 text-start"><?=gT("Add question group ID to link")?></div>
 				</label>
-				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-end"><input type="checkbox" data-value='["question", "qid"]' class="checkbox selector__dataOptionModel" data-priority="1" data-option='["render","link","data","qid"]' /></div>
-					<div class="col-sm-10 text-start"><?=gT("Add question ID to link")?></div>
+				<label class="list-group-item col-md-6">
+					<div class="col-md-1 text-end"><input type="checkbox" data-value='["question", "qid"]' class="checkbox selector__dataOptionModel" data-priority="1" data-option='["render","link","data","qid"]' /></div>
+					<div class="col-md-10 text-start"><?=gT("Add question ID to link")?></div>
 				</label>
 			</div>
 		</div>

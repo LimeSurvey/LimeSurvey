@@ -25,13 +25,13 @@
                 </td>
             <?php endif; ?>
 
-            <td class='col-md-4 questionnamecol'>
+            <td class='col-lg-4 questionnamecol'>
                 <span><?php echo CHtml::encode($name); ?></span>
             </td>
-            <td class='col-md-2 operatornametd'>
+            <td class='col-lg-2 operatornametd'>
                 <span><?php echo $method[trim($row['method'])]; ?> </span>
             </td>
-            <td class='col-md-3 questionanswertd'>
+            <td class='col-lg-3 questionanswertd'>
                 <span><?php echo $target; ?></span>
             </td>
             <td class='text-end'>

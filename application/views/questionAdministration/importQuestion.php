@@ -12,7 +12,7 @@
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Import a question"); ?></h3>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-12">
             <?php echo CHtml::form(
                 ["questionAdministration/import"],
                 'post',

@@ -1,5 +1,6 @@
 <?php
 /* @var AdminController $this */
+
 /* @var CActiveDataProvider $dataProvider */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -18,164 +19,192 @@ App()->getClientScript()->registerScript(
     strOK = '<?php eT('OK', 'js');?>';
 </script>
 
-<div class="col-lg-12 list-surveys">
+<div class="container-fluid">
     <div class="row">
-        <!-- Tabs -->
-        <ul class="nav nav-tabs" id="boxeslist">
-            <li class="nav-item">
-                <a class="nav-link active" href='#boxes' data-bs-toggle="tab">
-                    <?php eT('Boxes') ?>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href='#boxsettings' data-bs-toggle="tab">
-                    <?php eT('Box Settings'); ?>
-                </a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <!-- Boxes -->
-            <div id="boxes" class="tab-pane fade show active">
-                <?php $this->widget(
-                    'application.extensions.admin.grid.CLSGridView',
-                    [
-                        'id'           => 'boxes-grid',
-                        'dataProvider' => $dataProviderBox->search(),
-                        'pager' => [
-                            'class' => 'application.extensions.admin.grid.CLSYiiPager',
-                        ],
-                        'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                            . sprintf(
-                                gT('%s rows per page'),
-                                CHtml::dropDownList(
-                                    'boxes-pageSize',
-                                    Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
-                                    Yii::app()->params['pageSizeOptions'],
-                                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
-                                )
-                            ),
-                        'columns'      => [
-                            [
-                                'header'      => gT('Action'),
-                                'name'        => 'actions',
-                                'value'       => '$data->buttons',
-                                'type'        => 'raw',
-                                'htmlOptions' => ['class' => ''],
+        <div class="col-12 list-surveys">
+            <!-- Tabs -->
+            <ul class="nav nav-tabs" id="boxeslist">
+                <li class="nav-item">
+                    <a class="nav-link active" href='#boxes' data-bs-toggle="tab">
+                        <?php eT('Boxes') ?>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href='#boxsettings' data-bs-toggle="tab">
+                        <?php eT('Box Settings'); ?>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <!-- Boxes -->
+                <div id="boxes" class="tab-pane fade show active">
+                    <?php $this->widget(
+                        'application.extensions.admin.grid.CLSGridView',
+                        [
+                            'id' => 'boxes-grid',
+                            'dataProvider' => $dataProviderBox->search(),
+                            'pager' => [
+                                'class' => 'application.extensions.admin.grid.CLSYiiPager',
                             ],
-                            [
-                                'header'      => gT('Position'),
-                                'name'        => 'position',
-                                'value'       => '$data->position',
-                                'htmlOptions' => ['class' => ''],
+                            'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                                . sprintf(
+                                    gT('%s rows per page'),
+                                    CHtml::dropDownList(
+                                        'boxes-pageSize',
+                                        Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
+                                        Yii::app()->params['pageSizeOptions'],
+                                        array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
+                                    )
+                                ),
+                            'columns' => [
+                                [
+                                    'header' => gT('Action'),
+                                    'name' => 'actions',
+                                    'value' => '$data->buttons',
+                                    'type' => 'raw',
+                                    'htmlOptions' => ['class' => ''],
+                                ],
+                                [
+                                    'header' => gT('Position'),
+                                    'name' => 'position',
+                                    'value' => '$data->position',
+                                    'htmlOptions' => ['class' => ''],
+                                ],
+                                [
+                                    'header' => gT('Title'),
+                                    'name' => 'title',
+                                    'value' => '$data->title',
+                                    'htmlOptions' => ['class' => ''],
+                                ],
+                                [
+                                    'header' => gT('Icon'),
+                                    'name' => 'icon',
+                                    'value' => '$data->spanicon',
+                                    'type' => 'raw',
+                                    'htmlOptions' => ['class' => ''],
+                                ],
+                                [
+                                    'header' => gT('Description'),
+                                    'name' => 'desc',
+                                    'value' => '$data->desc',
+                                    'htmlOptions' => ['class' => ''],
+                                ],
+                                [
+                                    'header' => gT('URL'),
+                                    'name' => 'url',
+                                    'value' => '$data->url',
+                                    'htmlOptions' => ['class' => ''],
+                                ],
+                                [
+                                    'header' => gT('User group'),
+                                    'name' => 'url',
+                                    'value' => '$data->usergroupname',
+                                    'htmlOptions' => ['class' => ''],
+                                ],
                             ],
-                            [
-                                'header'      => gT('Title'),
-                                'name'        => 'title',
-                                'value'       => '$data->title',
-                                'htmlOptions' => ['class' => ''],
-                            ],
-                            [
-                                'header'      => gT('Icon'),
-                                'name'        => 'icon',
-                                'value'       => '$data->spanicon',
-                                'type'        => 'raw',
-                                'htmlOptions' => ['class' => ''],
-                            ],
-                            [
-                                'header'      => gT('Description'),
-                                'name'        => 'desc',
-                                'value'       => '$data->desc',
-                                'htmlOptions' => ['class' => ''],
-                            ],
-                            [
-                                'header'      => gT('URL'),
-                                'name'        => 'url',
-                                'value'       => '$data->url',
-                                'htmlOptions' => ['class' => ''],
-                            ],
-                            [
-                                'header'      => gT('User group'),
-                                'name'        => 'url',
-                                'value'       => '$data->usergroupname',
-                                'htmlOptions' => ['class' => ''],
-                            ],
-                        ],
-                    ]
-                ); ?>
-            </div>
-            <!-- Box Settings -->
-            <div id="boxsettings" class="tab-pane fade">
-
-                <div class="row">
-                    <label class="col-sm-2 form-label"><?php eT("Display logo:"); ?> </label>
-                    <div class="col-sm-2">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_logo', 'id' => 'show_logo', 'value' => $bShowLogo, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
-
-                        <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLogoStatus'); ?>"/>
-                    </div>
-
-                    <label class="col-sm-2 form-label"><?php eT("Show last visited survey and question:"); ?> </label>
-                    <div class="col-sm-2">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_last_survey_and_question', 'id' => 'show_last_survey_and_question', 'value' => $bShowLastSurveyAndQuestion, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
-                        <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLastSurveyAndQuestion'); ?>"/>
-                    </div>
-
-                    <br/><br/>
+                        ]
+                    ); ?>
                 </div>
+                <!-- Box Settings -->
+                <div id="boxsettings" class="tab-pane fade">
 
-                <div class="row">
-                    <label class="col-sm-2 form-label"><?php eT("Show survey list:"); ?> </label>
-                    <div class="col-sm-2">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_survey_list', 'id' => 'show_survey_list', 'value' => $bShowSurveyList, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
-                        <input type="hidden" id="show_survey_list-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyList'); ?>"/>
+                    <div class="row">
+                        <label class="col-md-2 form-label"><?php eT("Display logo:"); ?> </label>
+                        <div class="col-md-2">
+                            <?php $this->widget(
+                                'yiiwheels.widgets.switch.WhSwitch',
+                                ['name' => 'show_logo', 'id' => 'show_logo', 'value' => $bShowLogo, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]
+                            ); ?>
+
+                            <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLogoStatus'); ?>"/>
+                        </div>
+
+                        <label class="col-md-2 form-label"><?php eT("Show last visited survey and question:"); ?> </label>
+                        <div class="col-md-2">
+                            <?php $this->widget(
+                                'yiiwheels.widgets.switch.WhSwitch',
+                                [
+                                    'name' => 'show_last_survey_and_question',
+                                    'id' => 'show_last_survey_and_question',
+                                    'value' => $bShowLastSurveyAndQuestion,
+                                    'onLabel' => gT('On'),
+                                    'offLabel' => gT('Off')
+                                ]
+                            ); ?>
+                            <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLastSurveyAndQuestion'); ?>"/>
+                        </div>
+
+                        <br/><br/>
                     </div>
 
-                    <label class="col-sm-2 form-label"><?php eT("Show search box on survey list:"); ?> </label>
-                    <div class="col-sm-2">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'show_survey_list_search', 'id' => 'show_survey_list_search', 'value' => $bShowSurveyListSearch, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
-                        <input type="hidden" id="show_survey_list_search-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyListSearch'); ?>"/>
+                    <div class="row">
+                        <label class="col-md-2 form-label"><?php eT("Show survey list:"); ?> </label>
+                        <div class="col-md-2">
+                            <?php $this->widget(
+                                'yiiwheels.widgets.switch.WhSwitch',
+                                ['name' => 'show_survey_list', 'id' => 'show_survey_list', 'value' => $bShowSurveyList, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]
+                            ); ?>
+                            <input type="hidden" id="show_survey_list-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyList'); ?>"/>
+                        </div>
+
+                        <label class="col-md-2 form-label"><?php eT("Show search box on survey list:"); ?> </label>
+                        <div class="col-md-2">
+                            <?php $this->widget(
+                                'yiiwheels.widgets.switch.WhSwitch',
+                                [
+                                    'name' => 'show_survey_list_search',
+                                    'id' => 'show_survey_list_search',
+                                    'value' => $bShowSurveyListSearch,
+                                    'onLabel' => gT('On'),
+                                    'offLabel' => gT('Off')
+                                ]
+                            ); ?>
+                            <input type="hidden" id="show_survey_list_search-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyListSearch'); ?>"/>
+                        </div>
+
+                        <br/><br/>
                     </div>
 
-                    <br/><br/>
-                </div>
+                    <div class="row">
+                        <label class="col-md-2 form-label"><?php eT("Wrap container around boxes"); ?> </label>
+                        <div class="col-md-2">
+                            <?php $this->widget(
+                                'yiiwheels.widgets.switch.WhSwitch',
+                                ['name' => 'boxes_in_container', 'id' => 'boxes_in_container', 'value' => $bBoxesInContainer, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]
+                            ); ?>
+                            <input type="hidden" id="boxes_in_container-url" data-url="<?php echo App()->createUrl('homepageSettings/changeBoxesInContainer'); ?>"/>
+                        </div>
+                        <br/><br/>
+                        <br/><br/>
+                    </div>
 
-                <div class="row">
-                    <label class="col-sm-2 form-label"><?php eT("Wrap container around boxes"); ?> </label>
-                    <div class="col-sm-2">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', ['name' => 'boxes_in_container', 'id' => 'boxes_in_container', 'value' => $bBoxesInContainer, 'onLabel' => gT('On'), 'offLabel' => gT('Off')]); ?>
-                        <input type="hidden" id="boxes_in_container-url" data-url="<?php echo App()->createUrl('homepageSettings/changeBoxesInContainer'); ?>"/>
+                    <div class="row">
+                        <label class="col-md-2 form-label"><?php eT("Boxes by row:"); ?></label>
+                        <div class="col-md-1">
+                            <input class="form-control" type="number" id="iBoxesByRow" value="<?php echo $iBoxesByRow; ?>" max="6" min="0" name="boxes_by_row"/>
+                        </div>
+                        <label class="col-md-2 offset-md-1 form-label"><?php eT("Box orientation:"); ?></label>
+                        <div class="col-md-1">
+                            <select class="form-select" id="iBoxesOffset" name="boxes_offset">
+                                <option value="1" <?php if ($iBoxesOffset == '1') {
+                                    echo "selected";
+                                } ?> ><?php eT('Left to right') ?></option>
+                                <option value="2" <?php if ($iBoxesOffset == '2') {
+                                    echo "selected";
+                                } ?> ><?php eT('Right to left') ?></option>
+                                <option value="3" <?php if ($iBoxesOffset == '3') {
+                                    echo "selected";
+                                } ?> ><?php eT('Centered') ?></option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="hidden" id="boxesupdatemessage" data-ajaxsuccessmessage="<?php eT('Box settings updated!'); ?>"/>
+                        </div>
+                        <br/><br/><br/><br/>
                     </div>
-                    <br/><br/>
-                    <br/><br/>
-                </div>
-
-                <div class="row">
-                    <label class="col-sm-2 form-label"><?php eT("Boxes by row:"); ?></label>
-                    <div class="col-sm-1">
-                        <input class="form-control" type="number" id="iBoxesByRow" value="<?php echo $iBoxesByRow; ?>" max="6" min="0" name="boxes_by_row"/>
-                    </div>
-                    <label class="col-sm-2 col-sm-offset-1 form-label"><?php eT("Box orientation:"); ?></label>
-                    <div class="col-sm-1">
-                        <select class="form-select" id="iBoxesOffset" name="boxes_offset">
-                            <option value="1" <?php if ($iBoxesOffset == '1') {
-                                echo "selected";
-                                              } ?> ><?php eT('Left to right') ?></option>
-                            <option value="2" <?php if ($iBoxesOffset == '2') {
-                                echo "selected";
-                                              } ?> ><?php eT('Right to left') ?></option>
-                            <option value="3" <?php if ($iBoxesOffset == '3') {
-                                echo "selected";
-                                              } ?> ><?php eT('Centered') ?></option>
-                        </select>
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="hidden" id="boxesupdatemessage" data-ajaxsuccessmessage="<?php eT('Box settings updated!'); ?>"/>
-                    </div>
-                    <br/><br/><br/><br/>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -199,10 +228,10 @@ App()->getClientScript()->registerScript(
     });
 </script>
 <script type="text/javascript">
-    jQuery(function($) {
+    jQuery(function ($) {
         // To update rows per page via ajax
-        $(document).on("change", '#boxes-pageSize', function() {
-            $.fn.yiiGridView.update('boxes-grid', {data:{pageSize: $(this).val()}});
+        $(document).on("change", '#boxes-pageSize', function () {
+            $.fn.yiiGridView.update('boxes-grid', {data: {pageSize: $(this).val()}});
         });
     });
 </script>

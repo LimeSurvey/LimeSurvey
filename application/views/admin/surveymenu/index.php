@@ -14,59 +14,61 @@ echo viewHelper::getViewTestTag('surveyMenus');
 
 ?>
 
-<div class="col-lg-12">
+<div class="container-fluid">
     <div class="row">
-        <!-- Tabs -->
-        <ul class="nav nav-tabs" id="menueslist" role="tablist">
-            <li class="nav-item">
-				<a class="nav-link active" role="tab" data-bs-toggle="tab" href="#surveymenues" aria-controls="surveymenues">
-                    <?php eT('Survey menus'); ?>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" role="tab" data-bs-toggle="tab" href="#surveymenuentries" aria-controls="surveymenuentries">
-                    <?php eT('Survey menu entries'); ?>
-                </a>
-            </li>
-        </ul>
-        <!-- Tab Content -->
-        <div class="tab-content">
-            <!-- Survey Menu -->
-            <div id="surveymenues" class="tab-pane show active">
-                <div class="col-12 ls-space margin top-15">
-                    <div class="col-12 ls-flex-item">
-                        <?php
-                        $this->widget(
-                            'application.extensions.admin.grid.CLSGridView',
-                            [
-                                'dataProvider'             => $model->search(),
-                                'id'                       => 'surveymenu-grid',
-                                'columns'                  => $model->getColumns(),
-                                'filter'                   => $model,
-                                'emptyText'                => gT('No customizable entries found.'),
-                                'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                                    gT('%s rows per page'),
-                                    CHtml::dropDownList(
-                                        'pageSize',
-                                        $pageSize,
-                                        Yii::app()->params['pageSizeOptions'],
-                                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                                    )
-                                ),
-                                'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
-                                'ajaxType'                 => 'POST',
-                                'ajaxUpdate'               => 'surveymenu-grid',
-                                'massiveActionTemplate' => $massiveAction,
-                                'afterAjaxUpdate'          => 'surveyMenuFunctions',
-                            ]
-                        ); ?>
+        <div class="col-12">
+            <!-- Tabs -->
+            <ul class="nav nav-tabs" id="menueslist" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" role="tab" data-bs-toggle="tab" href="#surveymenues" aria-controls="surveymenues">
+                        <?php eT('Survey menus'); ?>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" role="tab" data-bs-toggle="tab" href="#surveymenuentries" aria-controls="surveymenuentries">
+                        <?php eT('Survey menu entries'); ?>
+                    </a>
+                </li>
+            </ul>
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Survey Menu -->
+                <div id="surveymenues" class="tab-pane show active">
+                    <div class="col-12 ls-space margin top-15">
+                        <div class="col-12 ls-flex-item">
+                            <?php
+                            $this->widget(
+                                'application.extensions.admin.grid.CLSGridView',
+                                [
+                                    'dataProvider' => $model->search(),
+                                    'id' => 'surveymenu-grid',
+                                    'columns' => $model->getColumns(),
+                                    'filter' => $model,
+                                    'emptyText' => gT('No customizable entries found.'),
+                                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                                            gT('%s rows per page'),
+                                            CHtml::dropDownList(
+                                                'pageSize',
+                                                $pageSize,
+                                                Yii::app()->params['pageSizeOptions'],
+                                                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                                            )
+                                        ),
+                                    'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
+                                    'ajaxType' => 'POST',
+                                    'ajaxUpdate' => 'surveymenu-grid',
+                                    'massiveActionTemplate' => $massiveAction,
+                                    'afterAjaxUpdate' => 'surveyMenuFunctions',
+                                ]
+                            ); ?>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Survey Menue Entries -->
-            <div id="surveymenuentries" class="tab-pane">
-                <?php App()->getController()->renderPartial('surveymenu_entries/index', ['model' => $entries_model]); ?>
+                <!-- Survey Menue Entries -->
+                <div id="surveymenuentries" class="tab-pane">
+                    <?php App()->getController()->renderPartial('surveymenu_entries/index', ['model' => $entries_model]); ?>
+                </div>
             </div>
         </div>
     </div>
@@ -117,11 +119,11 @@ echo viewHelper::getViewTestTag('surveyMenus');
                     <?php eT('Cancel'); ?>
                 </button>
                 <button
-                        type="button"
-                        id="reset-menus-confirm"
-                        class="btn btn-danger"
-                        data-urlmenu="<?=Yii::app()->getController()->createUrl('/admin/menus/sa/restore');?>"
-                        data-urlmenuentry="<?= Yii::app()->getController()->createUrl('/admin/menuentries/sa/restore');?>"
+                    type="button"
+                    id="reset-menus-confirm"
+                    class="btn btn-danger"
+                    data-urlmenu="<?= Yii::app()->getController()->createUrl('/admin/menus/sa/restore'); ?>"
+                    data-urlmenuentry="<?= Yii::app()->getController()->createUrl('/admin/menuentries/sa/restore'); ?>"
                 >
                     <?php eT('Restore default'); ?>
                 </button>
@@ -131,7 +133,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
 </div>
 
 <script>
-	$('#menueslist a').on('shown.bs.tab', function () {
+    $('#menueslist a').on('shown.bs.tab', function () {
         var tabId = $(this).attr('href');
         $('.tab-dependent-button:not([data-tab="' + tabId + '"])').hide();
         $('.tab-dependent-button[data-tab="' + tabId + '"]').show();
