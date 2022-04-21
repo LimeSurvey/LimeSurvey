@@ -11,10 +11,10 @@ echo viewHelper::getViewTestTag('login');
 <div class="container-fluid welcome">
     <div class="row text-center">
         <div id="login-panel">
-            <div class="panel panel-primary login-panel" id="panel-1">
+            <div class="card login-panel" id="panel-1">
 
                 <!-- Header -->
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="row">
                           <img alt="logo" id="profile-img" class="profile-img-card center-block" src="<?php echo LOGO_URL;?>" />
                              <p><?php eT("Administration");?></p>

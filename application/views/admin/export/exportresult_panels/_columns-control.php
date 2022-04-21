@@ -1,11 +1,11 @@
 <!-- Column control -->
-<div class="panel panel-primary" id="panel-6">
-  <div class="panel-heading">
-    <div class="panel-title h4">
+<div class="card" id="panel-6">
+  <div class="card-header bg-primary">
+    <div class="">
       <?php eT("Columns");?>
     </div>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <?php if ($SingleResponse): ?>
       <input type='hidden' name='response_id' value="<?php echo $SingleResponse;?>" />

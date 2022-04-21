@@ -135,7 +135,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12" id="accordion-container">
-                                <div class="panel-group" id="accordion" role="tablist">
+                                <div class="accordion" id="accordion" role="tablist">
                                     <!-- General settings -->
                                     <?php $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]); ?>
 

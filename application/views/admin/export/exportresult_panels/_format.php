@@ -1,11 +1,9 @@
 <!-- Format -->
-<div class="panel panel-primary" id="panel-export-format">
-  <div class="panel-heading">
-    <div class="panel-title h4">
+<div class="card" id="panel-export-format">
+  <div class="card-header bg-primary">
       <?php eT("Format");?>
-    </div>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
     <div class="form-group">
       <!-- Format -->
       <label for='export_format' class="col-sm-6 form-label">

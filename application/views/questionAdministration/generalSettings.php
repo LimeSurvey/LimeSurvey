@@ -1,11 +1,26 @@
-<div class="panel panel-default question-option-general-container col-12" id="general-settings">
-    <div class="panel-heading" id="general-setting-heading">
-        <a class="panel-title h4 selector--questionEdit-collapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
+<div class="accordion-item question-option-general-container col-12" id="general-settings">
+    <h2 class="accordion-header" id="general-setting-heading">
+        <button
+            class="accordion-button selector--questionEdit-collapse"
+            type="button"
+            role="button"
+            data-bs-toggle="collapse"
+            data-bs-parent="#accordion"
+            href="#collapse-question"
+            aria-expanded="true"
+            aria-controls="collapse-question"
+        >
             <?= gT('General Settings'); ?>
-        </a>
-    </div>
-    <div id="collapse-question" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="general-setting-heading">
-        <div class="panel-body">
+        </button>
+    </h2>
+    <div
+        id="collapse-question"
+        class="accordion-collapse collapse show"
+        role="tabpanel"
+        data-bs-parent="#accordion"
+        aria-labelledby="general-setting-heading"
+    >
+        <div class="accordion-body collapse show">
             <?php foreach ($generalSettings as $generalOption) : ?>
                 <?php $this->widget(
                     'ext.GeneralOptionWidget.GeneralOptionWidget',

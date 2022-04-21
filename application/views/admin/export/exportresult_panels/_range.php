@@ -1,11 +1,11 @@
 <!-- Range -->
-<div class="panel panel-primary" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
-  <div class="panel-heading">
-    <div class="panel-title h4">
+<div class="card" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
+  <div class="card-header bg-primary">
+    <div class="">
       <?php eT("Range");?>
     </div>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
     <div class="form-group">
       <!-- From -->
       <label for='export_from' class=" form-label">

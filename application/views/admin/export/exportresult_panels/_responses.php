@@ -1,10 +1,10 @@
-<div class="panel panel-primary" id="panel-5">
-    <div class="panel-heading">
-        <div class="panel-title h4">
+<div class="card" id="panel-5">
+    <div class="card-header bg-primary">
+        <div class="">
             <?php eT("Responses");?>
         </div>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <div class='form-group row'>
             <label class="col-sm-12 form-label" for=''>
                 <?php eT("Export responses as:"); ?>

@@ -47,7 +47,7 @@
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
-            <div class="modal-header panel-heading">
+            <div class="modal-header card-header bg-primary">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title"><?php eT('Quick-add conditions'); ?></h4>
             </div>
