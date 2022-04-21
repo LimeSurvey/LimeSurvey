@@ -169,7 +169,7 @@ class User extends LSActiveRecord
     {
         $dateCreated = $this->created;
         $date = new DateTime($dateCreated);
-        return $date->format($this->dateformat);
+        return $date->format($this->getDateFormat());
     }
 
     /**
