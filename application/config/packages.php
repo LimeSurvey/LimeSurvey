@@ -120,10 +120,10 @@ return array(
     ),
 
     'bootstrap-rtl'=>array( /* Adding boostrap rtl package */
-        'devBaseUrl'  => 'assets/packages/bootstrap/',
-        'basePath' => 'core.bootstrap',
+        'devBaseUrl'  => 'assets/bootstrap_5/',
+        'basePath' => 'bootstrap',
         'css'=> array(
-            'bootstrap-rtl.css',
+            'build/css/bootstrap_5-rtl.min.css',
         ),
         'depends' => array(
             'bootstrap',

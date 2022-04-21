@@ -449,10 +449,10 @@ hr {
     color: $primary-bg_info_hover;
 }
 .text-warning {
-    color: $brown-10;
+    color: $brown-10 !important;
 }
 .text-danger {
-    color: $red-10;
+    color: $red-10 !important;
 }
 // Backgrounds
 .bg-primary {

@@ -57,7 +57,7 @@
  * BS use px size, use rem to easily update body font-size : @link http://caniuse.com/rem/embed/
  **/
 @media (max-width: 768px) {
-.ls-answers .text-right,.ls-answers .text-left {text-align:center;}
+.ls-answers .text-end,.ls-answers .text-start {text-align:center;}
 }
 
 /**

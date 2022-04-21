@@ -24,7 +24,7 @@ echo viewHelper::getViewTestTag('index');
 ?>
 
 <!-- Welcome view -->
-<div class="container-fluid welcome full-page-wrapper">
+<div class="welcome full-page-wrapper">
 
     <!-- Logo & Presentation -->
     <?php if($bShowLogo):?>

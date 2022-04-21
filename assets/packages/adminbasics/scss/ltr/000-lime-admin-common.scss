@@ -270,7 +270,6 @@ html {
     width: 350px;
 }
 .surveymanagerbar {
-    margin-top: -20px;
     padding-top: 5px;
 }
 
@@ -1141,22 +1140,9 @@ div.panel.disabled a {
     }
 
 }
-.content-right {
-    padding-left: 0;
-    padding-right: 0;
-}
-.content-right .col-lg-12 {
-    padding-left: 0;
-    padding-right: 0;
-}
 
 .toWhite a:hover {
     font-weight: 700;
-}
-
-.col-lg-12.content-right {
-    padding-left: 0;
-    padding-right: 0;
 }
 
 .container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {

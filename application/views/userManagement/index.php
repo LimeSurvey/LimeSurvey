@@ -21,7 +21,6 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 <?php $this->renderPartial('partial/_menubar'); ?>
 
-<div class="row">
     <?php
     /* Example Datepicker ...
     $this->widget('zii.widgets.jui.CJuiDatePicker',array(
@@ -47,7 +46,7 @@ echo viewHelper::getViewTestTag('usersIndex');
     ));
      */
     ?>
-</div>
+
 <div class="row">
     <div class="container-fluid">
         <?php

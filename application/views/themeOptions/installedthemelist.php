@@ -5,8 +5,6 @@
  */
 ?>
 
-<div class="row">
-    <div class="col-sm-12 content-right">
         <?php
         $massiveAction = App()->getController()->renderPartial(
             './_selector',
@@ -133,5 +131,3 @@
         App()->getClientScript()->registerScript('questionthemes-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
         ?>
 
-    </div>
-</div>

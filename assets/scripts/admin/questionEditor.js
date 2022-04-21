@@ -687,7 +687,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 const $labelTitleDiv = $('<div class="col-md-7"></div>');
                 $labelTitleDiv.text(label.title);
                 const $listItem = $listItemTemplate.clone();
-                $listItem.append(`<div class="col-md-5 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+                $listItem.append(`<div class="col-md-5 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
                 $listItem.append($labelTitleDiv);
                 $listItem.attr('data-label', JSON.stringify(label));
                 $itemList.append($listItem);

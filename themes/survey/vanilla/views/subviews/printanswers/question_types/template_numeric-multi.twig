@@ -3,10 +3,10 @@
  <div class="col-md-8">
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
-            <div class="col-md-4 text-right">
+            <div class="col-md-4 text-end">
                 {{subquestion.answervalue}}
             </div>
-            <div class="col-md-8 text-left">
+            <div class="col-md-8 text-start">
                 <b>{{subquestion.question}} ({{subquestion.qid}})</b>
             </div>
         </div>
