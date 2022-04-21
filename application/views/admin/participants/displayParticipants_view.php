@@ -72,6 +72,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                     'massiveActionTemplate' => $massiveAction,
                     'afterAjaxUpdate'          => 'function(id, data){LS.CPDB.bindButtons;LS.CPDB.participantPanel();bindListItemclick();}',
                     'ajaxType'                 => 'POST',
+                    'rowHtmlOptionsExpression' => '["data-participant_id" => $data->id]',
                     'beforeAjaxUpdate'         => 'insertSearchCondition',
                     'pager' => [
                         'class' => 'application.extensions.admin.grid.CLSYiiPager',

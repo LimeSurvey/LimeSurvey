@@ -20,9 +20,9 @@ echo viewHelper::getViewTestTag('listSurveys');
             <!-- Survey List widget -->
             <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
                         'pageSize' => Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
-                        'model' => $model
+                        'model' => $model,
                 ));
-                                                                                                ?>
+            ?>
         </div>
 
         <div id="surveygroups" class="tab-pane">
@@ -30,11 +30,13 @@ echo viewHelper::getViewTestTag('listSurveys');
             <div class="row">
                 <div class="col-sm-12 content-right">
                     <?php
-                    $this->widget('yiistrap.widgets.TbGridView', array(
+                    $this->widget('application.extensions.admin.grid.CLSGridView', array(
                         'id'           => 'surveygroups--gridview',
                         'dataProvider' => $groupModel->search(),
                         'columns'      => $groupModel->columns,
-                        'template'     => "{items}\n<div id='surveygroupsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'pager' => [
+                            'class' => 'application.extensions.admin.grid.CLSYiiPager',
+                        ],
                         'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                             . sprintf(
                                 gT('%s rows per page'),
@@ -45,7 +47,6 @@ echo viewHelper::getViewTestTag('listSurveys');
                                     array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
                                 )
                             ),
-                        'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                         'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl("admin/surveysgroups/sa/update/id") . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
 
                     ));

@@ -25,7 +25,6 @@
                 'dataProvider' => $model->searchMine(true),
                 'columns' => $model->getManagementButtons(),
                 'emptyText'        => gT('No user groups found.'),
-                'massiveActionTemplate' => '',
                 'ajaxUpdate'       => 'usergroups-grid-mine',
                 'pager' => [
                     'class' => 'application.extensions.admin.grid.CLSYiiPager',

@@ -197,11 +197,15 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <h3><?php eT('Available admin themes:'); ?></h3>
                 <div class="row">
                     <div class="col-sm-12 content-right">
-                        <div id="templates_no_db" class="grid-view">
+                        <div id="templates_no_db" >
                             <table class="items table">
                                 <thead>
                                     <tr>
-                                        <th><?php eT('Preview'); ?></th><th><?php eT('Folder'); ?></th><th><?php eT('Description'); ?></th><th><?php eT('Type'); ?></th><th></th>
+                                        <th><?php eT('Preview'); ?></th>
+                                        <th><?php eT('Folder'); ?></th>
+                                        <th><?php eT('Description'); ?></th>
+                                        <th><?php eT('Type'); ?></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
 
