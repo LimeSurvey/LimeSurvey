@@ -26,9 +26,6 @@
                 'columns' => $model->getManagementButtons(),
                 'emptyText'        => gT('No user groups found.'),
                 'ajaxUpdate'       => 'usergroups-grid-mine',
-                'pager' => [
-                    'class' => 'application.extensions.admin.grid.CLSYiiPager',
-                ],
                 'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                     . sprintf(
                         gT('%s rows per page'),
@@ -55,11 +52,10 @@
         <div class="col-lg-12 content-right">
             <?php
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $this->widget('yiistrap.widgets.TbGridView', array(
+                $this->widget('application.extensions.admin.grid.CLSGridView', array(
                     'dataProvider'     => $model->searchMine(false),
                     'id'               => 'usergroups-grid-belong-to',
                     'emptyText'        => gT('No user groups found.'),
-                    'template'         => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                     'summaryText'      => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                         gT('%s rows per page'),
                         CHtml::dropDownList(
@@ -73,7 +69,6 @@
                         )
                     ),
                     'columns'          => $model->columns,
-                    'htmlOptions'      => ['class' => 'table-responsive grid-view-ls'],
                     'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('userGroup/viewGroup/ugid') . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                     'ajaxUpdate'       => 'usergroups-grid-belong-to',
                 ));

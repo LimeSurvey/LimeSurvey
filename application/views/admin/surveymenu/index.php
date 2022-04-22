@@ -44,9 +44,6 @@ echo viewHelper::getViewTestTag('surveyMenus');
                                 'columns'                  => $model->getColumns(),
                                 'filter'                   => $model,
                                 'emptyText'                => gT('No customizable entries found.'),
-                                'pager' => [
-                                    'class' => 'application.extensions.admin.grid.CLSYiiPager',
-                                ],
                                 'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                     gT('%s rows per page'),
                                     CHtml::dropDownList(

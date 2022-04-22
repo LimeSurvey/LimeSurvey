@@ -31,9 +31,6 @@ echo viewHelper::getViewTestTag('usersIndex');
             'columns' => $model->getManagementColums(),
             'massiveActionTemplate' => $massiveAction,
             'afterAjaxUpdate' => 'LS.UserManagement.bindButtons',
-            'pager' => [
-                'class' => 'application.extensions.admin.grid.CLSYiiPager',
-            ],
             'filter'          => $model,
             'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                 . sprintf(

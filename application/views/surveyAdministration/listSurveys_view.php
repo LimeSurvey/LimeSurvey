@@ -34,9 +34,6 @@ echo viewHelper::getViewTestTag('listSurveys');
                         'id'           => 'surveygroups--gridview',
                         'dataProvider' => $groupModel->search(),
                         'columns'      => $groupModel->columns,
-                        'pager' => [
-                            'class' => 'application.extensions.admin.grid.CLSYiiPager',
-                        ],
                         'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                             . sprintf(
                                 gT('%s rows per page'),
