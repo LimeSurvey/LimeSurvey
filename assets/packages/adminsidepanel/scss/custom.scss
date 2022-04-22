@@ -137,6 +137,7 @@
         }
     }
     .breadcrumb>li+li:before {
+        float: none;
         padding: 0 5px;
         content: "\f061";
         font: normal normal normal 18px/1 FontAwesome;
