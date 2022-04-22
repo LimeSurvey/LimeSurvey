@@ -9115,7 +9115,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if ($bGroupHaveError) {
                     $haveErrors = true;
                     $errClass = 'danger';
-                    $errText = "<br><em class='label label-danger'>" . $LEM->gT("This group has at least 1 error.") . "</em>";
+                    $errText = "<br><em class='badge bg-danger'>" . $LEM->gT("This group has at least 1 error.") . "</em>";
                 }
                 $groupRow = "<tr class='LEMgroup'>"
                     . "<td class='$errClass'>G-$gseq</td>"
@@ -9452,7 +9452,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
             //////
             $errclass = ($errorCount > 0) ? 'danger' : '';
-            $errText = ($errorCount > 0) ? "<br><em class='label label-danger'>" . $LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.", $errorCount) . "</em>" : "";
+            $errText = ($errorCount > 0) ? "<br><em class='badge bg-danger'>" . $LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.", $errorCount) . "</em>" : "";
             /* Construct the warnings */
             $sWarningsText = "";
             if (count($aWarnings) > 0) {
