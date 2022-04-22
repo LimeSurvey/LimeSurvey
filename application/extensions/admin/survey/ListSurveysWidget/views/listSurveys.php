@@ -54,8 +54,8 @@
                         'name' => 'survey_id',
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs text-nowrap'),
-                        'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                        'headerHtmlOptions'=>array('class' => 'd-md-none text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-md-none has-link'),
                     ),
 
 
@@ -64,8 +64,8 @@
                         'name' => 'running',
                         'value'=>'$data->running',
                         'type'=>'raw',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs text-nowrap'),
-                        'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                        'headerHtmlOptions'=>array('class' => 'd-md-none text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-md-none has-link'),
                     ),
 
                     array(
@@ -91,8 +91,8 @@
                         'name' => 'creation_date',
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->creationdate, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs text-nowrap'),
-                        'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                        'headerHtmlOptions'=>array('class' => 'd-md-none text-nowrap'),
+                        'htmlOptions' => array('class' => 'd-md-none has-link'),
                     ),
 
                     array(
@@ -100,8 +100,8 @@
                         'name' => 'owner',
                         'type' => 'raw',
                         'value'=>'CHtml::link(CHtml::encode($data->ownerUserName), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm hidden-xs text-nowrap'),
-                        'htmlOptions' => array('class' => 'hidden-md hidden-sm hidden-xs has-link'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm d-md-none text-nowrap'),
+                        'htmlOptions' => array('class' => 'hidden-md hidden-sm d-md-none has-link'),
                     ),
 
                     array(
@@ -109,8 +109,8 @@
                         'name' => 'anonymized_responses',
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->anonymizedResponses, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs hidden-sm'),
-                        'htmlOptions' => array('class' => 'hidden-xs hidden-sm has-link'),
+                        'headerHtmlOptions'=>array('class' => 'd-md-none hidden-sm'),
+                        'htmlOptions' => array('class' => 'd-md-none hidden-sm has-link'),
                     ),
 
 

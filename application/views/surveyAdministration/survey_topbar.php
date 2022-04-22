@@ -127,7 +127,7 @@ if ($hasSurveyContentPermission) {
 // tools
 // views/admin/surveybar_tools.php
 $buttonsgroup['tools'] = [
-    'class' => 'btn-group hidden-xs',
+    'class' => 'btn-group d-md-none',
     'id' => 'tools_dropdown',
     'main_button' => [
         'id' => 'ls-tools-button',
@@ -325,7 +325,7 @@ if ($hasSurveyTokensPermission) {
 // Statistics
 if ($isActive) {
     $buttonsgroup['statistics'] = [
-        'class' => 'btn-group hidden-xs',
+        'class' => 'btn-group d-md-none',
         'id' => 'statistics_dropdown',
         'main_button' => [
             'class' => 'dropdown-toggle',
@@ -400,7 +400,7 @@ if (!empty($beforeSurveyBarRender)) {
     foreach ($beforeSurveyBarRender as $i => $menu) {
         if ($menu->isDropDown()) {
             $dropdown = [
-                'class' => 'btn-group hidden-xs',
+                'class' => 'btn-group d-md-none',
                 'id' => 'plugin_dropdown' . $i,
                 'main_button' => [
                     'class' => 'dropdown-toggle',

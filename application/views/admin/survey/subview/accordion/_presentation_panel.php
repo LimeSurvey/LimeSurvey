@@ -43,10 +43,10 @@ if ($bShowInherited){
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
                     <label class="form-label"  for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
                         <?php // NB: Do NOT use === when comparing navigationdelay to '-1', it won't work with Postgresql. ?>
-                        <input class="form-control inherit-edit <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'hide' : 'show'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>"/>
-                        <input class="form-control inherit-readonly <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
+                        <input class="form-control inherit-edit <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'd-none' : 'show'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>"/>
+                        <input class="form-control inherit-readonly <?php echo ($bShowInherited && $navigationdelay == '-1' ? 'show' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'd-none'); ?>">
                     <label class="form-label content-center col-sm-12"  for='navigationdelay'><?php  eT("Inherit:"); ?></label>
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'navigationdelaybutton',

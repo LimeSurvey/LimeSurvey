@@ -80,7 +80,7 @@
 
 <?php if ($showToolsMenu): ?>
     <!-- Tools  -->
-    <div class="btn-group hidden-xs">
+    <div class="btn-group d-md-none">
 
         <!-- Main button dropdown -->
         <button id="ls-tools-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

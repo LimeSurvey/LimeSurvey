@@ -21,7 +21,7 @@
     <div class="card" id="generaloptionsContainer">
         <div class="card-header bg-primary" role="tab" id="heading-generaloptions">
             <div class="">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                <a class="btn btn-default btn-xs hide-button opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
@@ -41,7 +41,7 @@
     <div class="card">
         <div class="card-header bg-primary" role="tab" id="heading-presentationoptions">
             <div class="">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                <a class="btn btn-default btn-xs hide-button opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
@@ -61,7 +61,7 @@
     <div class="card">
         <div class="card-header bg-primary" role="tab" id="heading-publicationoptions">
             <div class="">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                <a class="btn btn-default btn-xs hide-button opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
@@ -81,7 +81,7 @@
     <div class="card">
         <div class="card-header bg-primary" role="tab" id="heading-notificationoptions">
             <div class="">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                <a class="btn btn-default btn-xs hide-button opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
@@ -101,7 +101,7 @@
     <div class="card">
         <div class="card-header bg-primary" role="tab" id="heading-tokensoptions">
             <div class="">
-                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                <a class="btn btn-default btn-xs hide-button opened handleAccordion hidden-sm">
                     <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
@@ -123,7 +123,7 @@
         <div class="card">
             <div class="card-header bg-primary" role="tab" id="heading-integrationoptions">
                 <div class="">
-                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                    <a class="btn btn-default btn-xs hide-button opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
 			<span class="sr-only">Expand/Collapse</span>
                     </a>
@@ -146,7 +146,7 @@
         <div class="card">
             <div class="card-header bg-primary" role="tab" id="heading-resourcesoptions">
                 <div class="">
-                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
+                    <a class="btn btn-default btn-xs hide-button opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
                     </a>
                     <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#resourcesoptions" aria-expanded="false" aria-controls="resourcesoptions">
@@ -161,5 +161,4 @@
             </div>
         </div>
     <?php endif;?>
-    */?>
 </div>

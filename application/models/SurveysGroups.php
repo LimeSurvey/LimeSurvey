@@ -124,16 +124,16 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'name' => 'sortorder',
                     'type' => 'raw',
                     'value' => '$data->buttons',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs button-column'),   // Cells that include buttons need the 'button-column' class to avoid triggering the 'selectionChanged' event
+                    'headerHtmlOptions' => array('class' => 'd-md-none'),
+                    'htmlOptions' => array('class' => 'd-md-none button-column'),   // Cells that include buttons need the 'button-column' class to avoid triggering the 'selectionChanged' event
                 ),
                 array(
                     'header' => gT('Survey group ID'),
                     'name' => 'gsid',
                     'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
                     'type' => 'raw',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => 'd-md-none'),
+                    'htmlOptions' => array('class' => 'd-md-none'),
                 ),
 
 
@@ -142,54 +142,54 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'name' => 'name',
                     'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->name',
                     'type' => 'raw',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => 'd-md-none'),
                 ),
 
                 array(
                     'header' => gT('Title'),
                     'name' => 'title',
                     'value' => '$data->title',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => 'd-md-none'),
                 ),
 
                 array(
                     'header' => gT('Description'),
                     'name' => 'description',
                     'value' => '$data->description',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => 'd-md-none'),
+                    'htmlOptions' => array('class' => 'd-md-none'),
                 ),
 
                 array(
                     'header' => gT('Parent group'),
                     'name' => 'parent',
                     'value' => '$data->parentTitle',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => 'd-md-none'),
+                    'htmlOptions' => array('class' => 'd-md-none'),
                 ),
 
                 array(
                     'header' => gT('Available'),
                     'name' => 'alwaysavailable',
                     'value' => '$data->alwaysavailable',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => 'd-md-none'),
+                    'htmlOptions' => array('class' => 'd-md-none'),
                 ),
 
                 array(
                     'header' => gT('Owner'),
                     'name' => 'owner',
                     'value' => '!empty($data->owner) ? $data->owner->users_name : ""',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => 'd-md-none'),
+                    'htmlOptions' => array('class' => 'd-md-none'),
                 ),
 
                 array(
                     'header' => gT('Order'),
                     'name' => 'sortorder',
                     'value' => '$data->sortorder',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'headerHtmlOptions' => array('class' => 'd-md-none'),
+                    'htmlOptions' => array('class' => 'd-md-none'),
                 ),
             );
     }

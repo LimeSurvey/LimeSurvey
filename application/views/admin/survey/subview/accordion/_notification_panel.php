@@ -209,10 +209,10 @@ $googleAnalyticsStyleOptions = array(
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
                         <label class=" form-label"  for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="<?php echo htmlspecialchars($emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailnotificationto; ?>"/>
-                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailnotificationto); ?>" readonly />
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-none' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="<?php echo htmlspecialchars($emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailnotificationto; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'show' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailnotificationto); ?>" readonly />
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'd-none'); ?>">
                         <label class=" form-label content-center col-sm-12"  for='emailnotificationto'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'emailnotificationtobutton',
@@ -233,10 +233,10 @@ $googleAnalyticsStyleOptions = array(
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
                         <label class=" form-label"  for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailresponseto' name='emailresponseto' value="<?php echo htmlspecialchars($emailresponseto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailresponseto; ?>"/>
-                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailresponseto); ?>" readonly />
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'd-none' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailresponseto' name='emailresponseto' value="<?php echo htmlspecialchars($emailresponseto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailresponseto; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'show' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailresponseto); ?>" readonly />
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'd-none'); ?>">
                         <label class=" form-label content-center col-sm-12"  for='emailresponseto'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'emailresponsetobutton',

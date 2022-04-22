@@ -187,7 +187,7 @@ $(document).on('click','.{$this->cssClass}', function(){
 		var td = $('<td/>').html('{$loadingPic}').attr({'colspan':$span});
 		tr = $('<tr/>').prop({'id':'relatedinfo'+rowid}).append(td);
 		/* we need to maintain zebra styles :) */
-		var fake = $('<tr class="hide"/>').append($('<td/>').attr({'colspan':$span}));
+		var fake = $('<tr class="d-none"/>').append($('<td/>').attr({'colspan':$span}));
 		parent.after(tr);
 		tr.after(fake);
 	}

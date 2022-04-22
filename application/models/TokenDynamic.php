@@ -634,8 +634,8 @@ class TokenDynamic extends LSActiveRecord
                 'header' => gT('ID'),
                 'name' => 'tid',
                 'value' => '$data->tid',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-end'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none text-end'),
             ),
 
 
@@ -643,16 +643,16 @@ class TokenDynamic extends LSActiveRecord
                 'header' => gT('First name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'firstname'),
                 'name' => 'firstname',
                 'value' => '$data->firstname',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none name'),
             ),
 
             array(
                 'header' => gT('Last name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'lastname'),
                 'name' => 'lastname',
                 'value' => '$data->lastname',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none name'),
             ),
 
             array(
@@ -660,8 +660,8 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'email',
                 'type' => 'raw',
                 'value' => '$data->emailFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none name'),
             ),
 
             array(
@@ -669,24 +669,24 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'emailstatus',
                 'value' => '$data->emailstatusFormated',
                 'type' => 'raw',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none'),
             ),
 
             array(
                 'header' => gT('Access code'),
                 'name' => 'token',
                 'value' => '$data->token',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none'),
             ),
 
             array(
                 'header' => gT('Language'),
                 'name' => 'language',
                 'value' => '$data->language',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none'),
             ),
 
             array(
@@ -694,8 +694,8 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'sent',
                 'type' => 'raw',
                 'value' => '$data->sentFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs  text-center'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none  text-center'),
             ),
 
             array(
@@ -703,16 +703,16 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'remindersent',
                 'type' => 'raw',
                 'value' => '$data->remindersentFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-center'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none text-center'),
             ),
 
             array(
                 'header' => gT('Reminder count'),
                 'name' => 'remindercount',
                 'value' => '$data->remindercount',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-end'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none text-end'),
             ),
 
             array(
@@ -720,32 +720,32 @@ class TokenDynamic extends LSActiveRecord
                 'name' => 'completed',
                 'type' => 'raw',
                 'value' => '$data->completedFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-center'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none text-center'),
             ),
 
             array(
                 'header' => gT('Uses left'),
                 'name' => 'usesleft',
                 'value' => '$data->usesleft',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs text-end'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none text-end'),
             ),
             array(
                 'header' => gT('Valid from'),
                 'name' => 'validfrom',
                 'type' => 'raw',
                 'value' => '$data->validfromFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none name'),
             ),
             array(
                 'header' => gT('Valid until'),
                 'type' => 'raw',
                 'name' => 'validuntil',
                 'value' => '$data->validuntilFormated',
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs name'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none name'),
             ),
         );
     }
@@ -767,8 +767,8 @@ class TokenDynamic extends LSActiveRecord
                 'header' => $desc . $this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
                 'value' => '$data->' . $sColName,
-                'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                'htmlOptions' => array('class' => 'hidden-xs'),
+                'headerHtmlOptions' => array('class' => 'd-md-none'),
+                'htmlOptions' => array('class' => 'd-md-none'),
             );
         }
 
