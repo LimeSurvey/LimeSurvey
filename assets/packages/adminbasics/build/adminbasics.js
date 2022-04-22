@@ -29706,21 +29706,22 @@
       return true;
     },
     doToolTip: function doToolTip() {
+      // Destroy all tooltips
       try {
-        $(".btntooltip").tooltip("destroy");
-      } catch (e) {}
+        var tooltipDisposeTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipDisposeTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        tooltipList.forEach(function (tooltip) {
+          tooltip.dispose();
+        });
+      } catch (e) {} // Reinit all tooltips
 
-      try {
-        $('[data-tooltip="true"]').tooltip("destroy");
-      } catch (e) {}
 
-      try {
-        $('[data-tooltip="true"]').tooltip("destroy");
-      } catch (e) {}
-
-      $(".btntooltip").tooltip();
-      $('[data-tooltip="true"]').tooltip();
-      $('[data-toggle="tooltip"]').tooltip();
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes: function arrHasDupes(arrayToCheck) {

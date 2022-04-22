@@ -9,7 +9,7 @@
 
 ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','update')) { ?>
-    <a href="<?php echo $editUrl; ?>" class="btn btn-default" data-toggle='tooltip' title='<?php eT("Edit"); ?>'>
+    <a href="<?php echo $editUrl; ?>" class="btn btn-default" data-bs-toggle='tooltip' title='<?php eT("Edit"); ?>'>
         <span class='fa fa-pencil'></span>
     </a>
 <?php } ?>

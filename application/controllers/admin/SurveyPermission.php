@@ -117,7 +117,7 @@ class SurveyPermission extends SurveyCommonAction
                     if ($PermissionRow['uid'] != Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                         // Can not update own security
                         $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$iSurveyID}"), 'post', array('style' => "display:inline;"))
-                        . "<button type='submit' class='btn btn-default btn-sm' data-toggle='tooltip' title='" . gT("Edit permissions") . "'><span class='fa fa-pencil text-success'></span></button>";
+                        . "<button type='submit' class='btn btn-default btn-sm' data-bs-toggle='tooltip' title='" . gT("Edit permissions") . "'><span class='fa fa-pencil text-success'></span></button>";
                         $surveysecurity .= \CHtml::hiddenField('action', 'setsurveysecurity');
                         $surveysecurity .= \CHtml::hiddenField('user', $PermissionRow['users_name']);
                         $surveysecurity .= \CHtml::hiddenField('uid', $PermissionRow['uid']);
@@ -130,7 +130,7 @@ class SurveyPermission extends SurveyCommonAction
                         'uid' => $PermissionRow['uid']
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
-                    $surveysecurity .= "<span data-toggle='tooltip' title='" . gT("Delete") . "'><a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-post-url='{$deleteUrl}' type='submit' class='btn-sm btn btn-default'>
+                    $surveysecurity .= "<span data-bs-toggle='tooltip' title='" . gT("Delete") . "'><a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-post-url='{$deleteUrl}' type='submit' class='btn-sm btn btn-default'>
                         <span class='fa fa-trash text-danger'></span>
                         </a></span>";
                 }
@@ -175,10 +175,10 @@ class SurveyPermission extends SurveyCommonAction
 
                     // Full icon = all permissions
                     if ($iCount == $iPermissionCount) {
-                        $insert = "<div data-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check\">&nbsp;</div>";
+                        $insert = "<div data-bs-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check\">&nbsp;</div>";
                     } elseif ($iCount > 0) {
                         // Blurred icon, meaning only partial permissions
-                        $insert = "<div data-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
+                        $insert = "<div data-bs-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
                     } else {
                         $insert = "<div>&#8211;</div>";
                     }

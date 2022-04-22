@@ -868,7 +868,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
 <?php if (!empty($deqrow->questionl10ns[$sDataEntryLanguage]->help)): ?>
     <div class="col-sm-1">
-        <a href="#" onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" title="<?php eT('Help about this question','html',$sDataEntryLanguage); ?>" data-toggle="tooltip" data-placement="top">
+        <a href="#" onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" title="<?php eT('Help about this question','html',$sDataEntryLanguage); ?>" data-bs-toggle="tooltip" data-bs-placement="top">
             <span class="fa fa-question-circle"></span>
         </a>
     </div>

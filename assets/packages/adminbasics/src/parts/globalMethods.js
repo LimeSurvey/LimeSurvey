@@ -28,21 +28,22 @@ const globalWindowMethods = {
         return true ;
     },
     doToolTip: () => {
+        // Destroy all tooltips
         try {
-            $(".btntooltip").tooltip("destroy");
-        } catch (e) {}
-        try {
-            $('[data-tooltip="true"]').tooltip("destroy");
-        } catch (e) {}
-        try {
-            $('[data-tooltip="true"]').tooltip("destroy");
+            let tooltipDisposeTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            let tooltipList = tooltipDisposeTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            tooltipList.forEach(function (tooltip) {
+                tooltip.dispose();
+            });
         } catch (e) {}
 
-        $(".btntooltip").tooltip();
-        $('[data-tooltip="true"]').tooltip();
-        $('[data-toggle="tooltip"]').tooltip();
-
-
+        // Reinit all tooltips
+        let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes:  ( arrayToCheck ) => {  

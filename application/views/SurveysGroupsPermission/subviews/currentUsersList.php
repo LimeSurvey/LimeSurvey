@@ -47,7 +47,7 @@
                     <?php foreach ($aDefinitionPermissions as $sPermission => $aPermission) : ?>
                         <td class="text-center">
                             <?php if (!empty($aCurrentsUserRights[$oUser->uid][$sPermission])) : ?>
-                                <span data-toggle="tooltip" data-title="<?= implode(", ", $aCurrentsUserRights[$oUser->uid][$sPermission]) ?>"
+                                <span data-bs-toggle="tooltip" data-title="<?= implode(", ", $aCurrentsUserRights[$oUser->uid][$sPermission]) ?>"
                                       class="fa fa-check <?= count($aCurrentsUserRights[$oUser->uid][$sPermission]) < $aPermission['maxCrud'] ? 'mixed' : "" ?>"></span>
                                 <span class="sr-only"><?= implode($aCurrentsUserRights[$oUser->uid][$sPermission]) ?></span>
                             <?php else : ?>

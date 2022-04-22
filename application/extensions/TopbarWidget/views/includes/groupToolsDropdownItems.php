@@ -37,7 +37,7 @@
         <?php else: ?>
             <?php // there is at least one question having a condition on its content ?>
             <li class="disabled">
-                <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>" >
+                <a class="btntooltip" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>" >
                     <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete group"); ?>
                 </a>
@@ -46,7 +46,7 @@
     <?php else:?>
         <!-- Activated -->
         <li class="disabled">
-            <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("It is not possible to add/delete groups if the survey is active."); ?>" >
+            <a class="btntooltip" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("It is not possible to add/delete groups if the survey is active."); ?>" >
                 <span class="fa fa-trash text-danger"></span>
                 <?php eT("Delete group"); ?>
             </a>

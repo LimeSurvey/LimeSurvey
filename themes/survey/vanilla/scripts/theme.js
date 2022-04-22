@@ -193,7 +193,7 @@ var ThemeScripts = function(){
             }
 
             $(function () {
-                $('[data-toggle="tooltip"]').tooltip();
+                $('[data-bs-toggle="tooltip"]').tooltip();
             });
 
             // Bind language changer onclick event.

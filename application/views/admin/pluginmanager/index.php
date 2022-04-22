@@ -35,7 +35,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                         onclick='<?php echo $menu->getOnClick(); ?>'
                     <?php endif; ?>
                     <?php if ($menu->getTooltip()): ?>
-                        data-toggle='tooltip'
+                        data-bs-toggle='tooltip'
                         data-title='<?php echo $menu->getTooltip(); ?>'
                     <?php endif; ?>
                     class='btn btn-default'

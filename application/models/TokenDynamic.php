@@ -625,7 +625,7 @@ class TokenDynamic extends LSActiveRecord
             array(
                 'header' => gT('Action'),
                 'class' => 'yiistrap.widgets.TbButtonColumn',
-                'template' => '{edit}{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{viewparticipant}<span data-toggle="tooltip" title="' . gt('Delete survey participant') . '">{deletetoken}</span>{viewparticipantspacer}',
+                'template' => '{edit}{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{viewparticipant}<span data-bs-toggle="tooltip" title="' . gt('Delete survey participant') . '">{deletetoken}</span>{viewparticipantspacer}',
                 'htmlOptions' => array('class' => 'icon-btn-row'),
                 'buttons' => $this->getGridButtons(),
             ),
@@ -792,7 +792,7 @@ class TokenDynamic extends LSActiveRecord
             'url' => 'App()->createUrl("responses/viewbytoken",array("surveyId"=>' . self::$sid . ',"token"=>$data->token));',
             'options' => array(
                 'class' => "btn btn-default btn-sm",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("View response details")
             ),
             'visible' => $baseView . ' && $data->getHasResponses($data->token)',
@@ -818,7 +818,7 @@ class TokenDynamic extends LSActiveRecord
             'options' => array(
                 'class' => "btn btn-default btn-sm",
                 'target' => "_blank",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Launch the survey with this participant")
             ),
             'visible' => $baseView . ' && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
@@ -844,7 +844,7 @@ class TokenDynamic extends LSActiveRecord
             'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid,));',
             'options' => array(
                 'class' => "btn btn-default btn-sm btn-email",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Send email invitation")
             ),
             'visible' => $baseView . ' && !empty($data->token) && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
@@ -856,7 +856,7 @@ class TokenDynamic extends LSActiveRecord
             'url' => 'App()->createUrl("/admin/tokens/sa/email/action/remind",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid));',
             'options' => array(
                 'class' => "btn btn-default btn-sm btn-email",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Send email reminder")
             ),
             'visible' => $baseView . ' && !empty($data->token) && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
@@ -879,7 +879,7 @@ class TokenDynamic extends LSActiveRecord
             'url' => 'App()->createUrl("/admin/tokens/sa/edit",array("iSurveyId"=>' . self::$sid . ',"iTokenId"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
                 'class' => "btn btn-default btn-sm btn-edit",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT('Edit this survey participant'),
                 'data-sid' => self::$sid
             ),
@@ -893,7 +893,7 @@ class TokenDynamic extends LSActiveRecord
             //'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
                 'class' => "btn btn-default btn-sm btn-delete",
-                ///'data-toggle' => "tooltip",
+                ///'data-bs-toggle' => "tooltip",
                 'data-toggle' => "modal",
                 'data-target' => '#confirmation-modal',
                 'data-message' => gt('Do you really want to delete this participant') . '?',
@@ -913,7 +913,7 @@ class TokenDynamic extends LSActiveRecord
             'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("#" => json_encode(["searchcondition"=>"participant_id||equal||".$data->participant_id],JSON_FORCE_OBJECT)))',
             'options' => array(
                 'class' => "btn btn-default btn-sm btn-participant",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT('View this participant in the central participants database'),
             ),
             'click' => 'function(event){ window.LS.gridButton.postGridAction(event,$(this)); }',
@@ -925,7 +925,7 @@ class TokenDynamic extends LSActiveRecord
             'url' => '#',
             'options' => array(
                 'class' => "btn btn-default btn-sm invisible",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => "",
             ),
             'visible' => $baseVisible . ' && empty($data->participant_id)',

@@ -81,7 +81,7 @@
         </li>
     <?php else : ?>
         <li class="disabled">
-            <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
+            <a class="btntooltip" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
                 <span class="fa fa-trash text-danger"></span>
                 <?php eT("Delete question"); ?>
             </a>

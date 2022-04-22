@@ -266,29 +266,29 @@ class QuestionGroup extends LSActiveRecord
         // Edit
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("questionGroupsAdministration/view/surveyid/$this->sid/gid/$this->gid");
-            $buttons .= '  <a class="btn btn-sm btn-default  list-btn" href="' . $url . '" role="button" data-toggle="tooltip" title="' . gT('Edit group') . '"><i class="fa fa-pencil " ></i></a>';
+            $buttons .= '  <a class="btn btn-sm btn-default  list-btn" href="' . $url . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit group') . '"><i class="fa fa-pencil " ></i></a>';
         }
         // Add question to this group
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("questionAdministration/create/surveyid/$this->sid/gid/$this->gid");
-            $buttons .= '<a class="btn btn-sm btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="top" title="' . gT('Add new question to group') . '" href="' . $url . '" role="button"><i class="fa fa-plus " ></i></a>';
+            $buttons .= '<a class="btn btn-sm btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-bs-toggle="tooltip"  data-bs-placement="top" title="' . gT('Add new question to group') . '" href="' . $url . '" role="button"><i class="fa fa-plus " ></i></a>';
         }
         // View summary
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
             $url = Yii::app()->createUrl("/questionGroupsAdministration/view/surveyid/");
             $url .= '/' . $this->sid . '/gid/' . $this->gid;
-            $buttons .= '  <a class="btn btn-sm btn-default  list-btn" href="' . $url . '" role="button" data-toggle="tooltip" title="' . gT('Group summary') . '"><i class="fa fa-list-alt " ></i></a>';
+            $buttons .= '  <a class="btn btn-sm btn-default  list-btn" href="' . $url . '" role="button" data-bs-toggle="tooltip" title="' . gT('Group summary') . '"><i class="fa fa-list-alt " ></i></a>';
         }
 
         // Delete
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if ($oSurvey->groupsCount == 1) {
-                $buttons .= '<span data-toggle="tooltip" title="' . gT("Cannot delete this group because it's the only group in the survey.") . '">'
+                $buttons .= '<span data-bs-toggle="tooltip" title="' . gT("Cannot delete this group because it's the only group in the survey.") . '">'
                 . '<button class="btn btn-sm btn-default" '
                 . ' disabled '
                 . ' role="button"'
-                . ' data-toggle="popover"'
+                . ' data-bs-toggle="popover"'
                 . ' data-tooltip="true"'
                 . ' title="' . gT("Cannot delete this group because it's the only group in the survey.", "js") . '">'
                     . '<i class="fa fa-trash text-muted "></i>'
@@ -296,7 +296,7 @@ class QuestionGroup extends LSActiveRecord
                 . '</button>'
                 . '</span>';
             } elseif (is_null($condarray)) {
-                $buttons .= '<span data-toggle="tooltip" title="' . gT('Delete question group') . '">'
+                $buttons .= '<span data-bs-toggle="tooltip" title="' . gT('Delete question group') . '">'
                     . '<button class="btn btn-sm btn-default" '
                     . ' data-onclick="(function() { ' . CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid]))) . ' })" '
                     . ' data-target="#confirmation-modal"'
@@ -309,11 +309,11 @@ class QuestionGroup extends LSActiveRecord
                     . '</button>'
                     . '</span>';
             } else {
-                $buttons .= '<span data-toggle="tooltip" title="' . gT('Group cant be deleted, because of depending conditions') . '">'
+                $buttons .= '<span data-bs-toggle="tooltip" title="' . gT('Group cant be deleted, because of depending conditions') . '">'
                     . '<button class="btn btn-sm btn-default" '
                     . ' disabled '
                     . ' role="button"'
-                    . ' data-toggle="popover"'
+                    . ' data-bs-toggle="popover"'
                     . ' data-tooltip="true"'
                     . ' title="' . gT("Impossible to delete this group because there is at least one question having a condition on its content", "js") . '">'
                         . '<i class="fa fa-trash text-muted "></i>'

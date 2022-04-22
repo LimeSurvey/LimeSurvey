@@ -34,7 +34,7 @@
                     <a
                         href='<?php echo $fullpagebar["pluginManager"]["buttons"]["scanFiles"]["url"]; ?>'
                         class='btn btn-default'
-                        data-toggle='tooltip'
+                        data-bs-toggle='tooltip'
                         title='<?php eT('Scan files for available plugins'); ?>'
                     >
                         <i class='fa fa-file '></i>

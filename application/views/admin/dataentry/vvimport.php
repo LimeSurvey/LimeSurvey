@@ -94,7 +94,7 @@
             </div>
 
             <div class="form-group">
-                <label for="dontdeletefirstline" class=" form-label" title='<?php eT("With real vv file : questions code are in second line"); ?>' data-toggle="tooltip" data-placement="right">
+                <label for="dontdeletefirstline" class=" form-label" title='<?php eT("With real vv file : questions code are in second line"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("First line contains the code of questions:"); ?>
                 </label>
                 <div class="">
@@ -109,7 +109,7 @@
             </div>
 
             <div class="form-group">
-                <label for="forceimport" class=" form-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-toggle="tooltip" data-placement="right">
+                <label for="forceimport" class=" form-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("Force import:"); ?>
                 </label>
                 <div class="">

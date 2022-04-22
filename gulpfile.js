@@ -17,7 +17,7 @@ const gulpIf = require('gulp-if');
 const useref = require('gulp-useref');
 
 function js_minify() {
-    return src(['third_party/twbs/bootstrap/dist/js/bootstrap.min.js', 'assets/bootstrap_5/js/custom.js'])
+    return src(['third_party/twbs/bootstrap/dist/js/bootstrap.bundle.min.js', 'assets/bootstrap_5/js/custom.js'])
         .pipe(concat('custom.js'))
         .pipe(dest('assets/bootstrap_5/build/js/'))
         .pipe(uglify())

@@ -66,15 +66,15 @@ $codeids = '';
                                     href='#'
                                     class="btn btn-default btn-sm htmleditor--openmodal"
                                     data-target-field-id="title_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>"
-                                    data-toggle="tooltip"
+                                    data-bs-toggle="tooltip"
                                     title="Open editor">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <?php if ($first) : ?>
-                                    <button class="btn btn-default btn-sm btnaddanswer" data-toggle="tooltip" title="<?php eT("Add label"); ?>">
+                                    <button class="btn btn-default btn-sm btnaddanswer" data-bs-toggle="tooltip" title="<?php eT("Add label"); ?>">
                                         <i class="icon-add text-success"></i>
                                     </button> <?php // eT("Insert a new label after this one") ?>
-                                    <button class="btn btn-default btn-sm btndelanswer" data-toggle="tooltip" title="<?php eT("Delete label"); ?>">
+                                    <button class="btn btn-default btn-sm btndelanswer" data-bs-toggle="tooltip" title="<?php eT("Delete label"); ?>">
                                         <i class="fa fa-minus-circle text-danger "></i>
                                     </button> <?php //eT("Delete this label") ?>
                                 <?php endif; ?>

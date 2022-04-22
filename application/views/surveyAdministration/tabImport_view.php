@@ -49,7 +49,7 @@
                         class="btn btn-primary col-6"
                         value='<?php  eT("Import survey"); ?>'
                         disabled="disabled"
-                        data-toggle="tooltip"
+                        data-bs-toggle="tooltip"
                         data-title="<?= gT('Please choose a file'); ?>"
                     />
                 </div>

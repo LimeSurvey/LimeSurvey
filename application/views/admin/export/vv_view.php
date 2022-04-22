@@ -64,7 +64,7 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="extension" class="col-sm-2 form-label" data-toggle="tooltip" data-placement="right" title='<?php eT("For easy opening in MS Excel, change the extension to 'tab' or 'txt'"); ?>'>
+                        <label for="extension" class="col-sm-2 form-label" data-bs-toggle="tooltip" data-bs-placement="right" title='<?php eT("For easy opening in MS Excel, change the extension to 'tab' or 'txt'"); ?>'>
                             <?php eT("File extension:"); ?>
                         </label>
                         <div class="col-sm-4">
@@ -73,7 +73,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="vvversion" class="col-sm-2 form-label" data-toggle="tooltip" data-placement="right" title='<?php eT("If you want to import survey on old installation or if your survey have problem: use old version (automatically selected if some code are duplicated)."); ?>'>
+                        <label for="vvversion" class="col-sm-2 form-label" data-bs-toggle="tooltip" data-bs-placement="right" title='<?php eT("If you want to import survey on old installation or if your survey have problem: use old version (automatically selected if some code are duplicated)."); ?>'>
                             <?php eT("VV export version:"); ?>
                         </label>
                         <div class="col-sm-4">

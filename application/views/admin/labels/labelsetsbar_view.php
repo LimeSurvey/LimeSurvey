@@ -98,7 +98,7 @@
                 <?php endif; ?>
             <?php else : ?>
                 <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>
-                    <span title="<?php eT("No label sets available"); ?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
+                    <span title="<?php eT("No label sets available"); ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" style="display: inline-block">
                             <a class="btn btn-default disabled" role="button">
                                 <span class="icon-export text-success"></span>
                                 <?php eT("Export multiple label sets"); ?>

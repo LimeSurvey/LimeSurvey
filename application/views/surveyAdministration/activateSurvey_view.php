@@ -114,7 +114,7 @@
                     <div class='form-group'>
                         <label for='anonymized' class='form-label col-sm-7'>
                             <?php eT("Anonymized responses"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, reponses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, reponses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
                             <script type="text/javascript">
                                 <!--
                                 function alertPrivacy()
@@ -149,7 +149,7 @@
                     <div class='form-group'>
                         <label for='datestamp' class='form-label col-sm-7'>
                             <?php eT("Date stamp"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"></i>
                         </label>
                         <div class='col-sm-5'>
                             <select id='datestamp' class='form-control' name='datestamp' onchange='alertDateStampAnonymization();'>
@@ -171,7 +171,7 @@
                     <div class='form-group'>
                         <label for='ipaddr' class='form-label col-sm-7'>
                             <?php eT("Save IP address"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"></i>
                         </label>
 
                         <div class='col-sm-5'>
@@ -191,7 +191,7 @@
                     <div class='form-group'>
                         <label for='ipaddr' class='form-label col-sm-7'>
                             <?php eT("Anonymize IP address"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"></i>
                         </label>
 
                         <div class='col-sm-5'>
@@ -213,7 +213,7 @@
                     <div class='form-group'>
                         <label class='form-label col-sm-7' for='savetimings'>
                             <?php eT("Save timings"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"></i>
                         </label>
                         <div class='col-sm-5'>
                             <select class='form-control' id='savetimings' name='savetimings'>
@@ -233,7 +233,7 @@
                     <div class='form-group'>
                         <label class='form-label col-sm-7' for='refurl'>
                             <?php eT("Save referrer URL"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"></i>
                         </label>
                         <div class='col-sm-5'>
                             <select class='form-control' name='refurl' id='refurl'>

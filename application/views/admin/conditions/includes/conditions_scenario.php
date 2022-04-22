@@ -60,7 +60,7 @@
 
                         <button
                             class='btn btn-default btn-xs'
-                            data-toggle='tooltip'
+                            data-bs-toggle='tooltip'
                             data-title='<?php eT('Change scenario number'); ?>'
                             id='editscenariobtn<?php echo $scenarionr['scenario']; ?>'
                             onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').toggle('slow'); return false"
@@ -70,7 +70,7 @@
 
                         <button
                             class='btn btn-default btn-xs'
-                            data-toggle='tooltip'
+                            data-bs-toggle='tooltip'
                             data-title='<?php eT('Add condition to this scenario'); ?>'
                             onclick='addConditionToScenario("<?php echo $addConditionToScenarioURL; ?>"); return false'
                         >

@@ -96,7 +96,7 @@ $script = array();
 <table id="rowTemplate" class="hidden">
     <tr>
         <td>
-            <button class="btn btn-default btn-xs btnattachmentremove" title="<?php eT('Remove attachment') ?>" data-toggle="tooltip" data-placement="bottom">
+            <button class="btn btn-default btn-xs btnattachmentremove" title="<?php eT('Remove attachment') ?>" data-bs-toggle="tooltip" data-bs-placement="bottom">
                 <i class="fa fa-trash text-danger" aria-hidden="true"></i><span class="sr-only"><?php eT('Remove attachment') ?></span>
             </button>
         </td>
@@ -109,7 +109,7 @@ $script = array();
         </td>
         <td>
             <span class="relevance"></span>
-            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit condition') ?>" data-toggle="tooltip" data-placement="bottom">
+            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit condition') ?>" data-bs-toggle="tooltip" data-bs-placement="bottom">
                 <i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only"><?php eT('Edit condition')?></span>
             </button>
             <input class="relevance" type="hidden">

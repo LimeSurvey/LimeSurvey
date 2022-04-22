@@ -1,5 +1,5 @@
 <?php if ($oSurvey->isActive): ?>
-    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block">
+    <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block">
         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
             <span class="icon-add"></span>
             <?php eT("Add new group"); ?>

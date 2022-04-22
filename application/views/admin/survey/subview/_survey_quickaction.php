@@ -31,7 +31,7 @@
             </div>
         </div>
     </div>
-    <div class="card-body" style="display:<?=($quickactionstate > 0 ? 'block' : 'none')?>" id="survey-action-container"> 
+    <div class="card-body" style="display:<?=($quickactionstate > 0 ? 'block' : 'none')?>" id="survey-action-container">
         <div class="row welcome survey-action">
             <div class="col-sm-12 content-right">
                 <!-- Alerts, infos... -->
@@ -100,7 +100,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="card-body-ico">
-                                                    <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
+                                                    <a  href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-bs-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                                         <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
@@ -120,14 +120,14 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="card-body-ico">
-                                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
+                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-bs-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                                         <span class="sr-only"><?php eT('Add new question');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="card-body-link">
                                                     <p>
-                                                        <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                                                        <a  href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                                                             <?php eT("Add new question"); ?>
                                                         </a>
                                                     </p>
@@ -168,14 +168,14 @@
                                                 </div>
                                                 <div class="card-body  ">
                                                     <div class="card-body-ico">
-                                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                                                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                 <span class="sr-only"><?php eT("You must first create a question group."); ?></span>
                                                         </a>
                                                     </div>
                                                     <div  class="card-body-link">
                                                         <p>
-                                                            <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                                                            <a  href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                                                                 <?php eT("Add new question"); ?>
                                 <span class="sr-only"><?php eT("Add new question"); ?></span>
                                                             </a>
@@ -238,7 +238,7 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="card-body-ico">
-                                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-toggle="tooltip" >
+                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-bs-toggle="tooltip" >
                                                     <span class="icon-edit text-success"  style="font-size: 3em;"></span>
                             <span class="sr-only"><?php eT('Edit text elements and general settings');?></span>
                                                 </a>

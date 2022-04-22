@@ -2,7 +2,7 @@
 <a
     class="btn btn-default"
     data-target="#confirmation-modal"
-    data-toggle="tooltip"
+    data-bs-toggle="tooltip"
     data-title="<?php eT("Delete condition"); ?>"
     data-message="<?php eT("Are you sure you want to delete this condition?"); ?>"
     onclick="$.bsconfirm('<?php eT("Are you sure you want to delete this condition?"); ?>', {'confirm_ok': '<?=gT("Yes")?>', 'confirm_cancel': '<?=gT("No")?>'}, function() {
@@ -16,7 +16,7 @@
 
 <a
     class="btn btn-default"
-    data-toggle="tooltip"
+    data-bs-toggle="tooltip"
     data-title="<?php eT("Edit condition"); ?>"
     onclick='document.getElementById("subaction<?php echo $rows['cid']; ?>").value="editthiscondition"; document.getElementById("conditionaction<?php echo $rows['cid']; ?>").submit();'
 >
