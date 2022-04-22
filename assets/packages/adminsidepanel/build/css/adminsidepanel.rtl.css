@@ -208,6 +208,7 @@
   margin-bottom: 10px;
 }
 .ls-ba .breadcrumb > li + li:before {
+  float: none;
   padding: 0 5px;
   content: "\F061";
   font: normal normal normal 18px/1 FontAwesome;
