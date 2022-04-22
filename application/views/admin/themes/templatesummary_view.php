@@ -45,7 +45,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>
-                                <span class="label label-danger"> <?php eT("inherited"); ?> </span>
+                                <span class="badge bg-danger"> <?php eT("inherited"); ?> </span>
                             <?php }?>
                         </div>
                     </div>
@@ -76,7 +76,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>
-                                <span class="label label-danger"><?php eT("inherited"); ?></span>
+                                <span class="badge bg-danger"><?php eT("inherited"); ?></span>
                             <?php }?>
                         </div>
                     </div>
@@ -106,7 +106,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>
-                                <span class="label label-danger"><?php eT("inherited"); ?></span>
+                                <span class="badge bg-danger"><?php eT("inherited"); ?></span>
                             <?php }?>
                         </div>
                     </div>
@@ -169,7 +169,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>
-                                <span class="label label-danger"><?php eT("inherited"); ?></span>
+                                <span class="badge bg-danger"><?php eT("inherited"); ?></span>
                             <?php }?>
                         </div>
                     </div>
