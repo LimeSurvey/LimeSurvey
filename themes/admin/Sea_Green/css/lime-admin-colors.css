@@ -2518,7 +2518,7 @@ ol.breadcrumb.title-bar-breadcrumb li {
   color: #fff;
 }
 ol.breadcrumb.title-bar-breadcrumb li.active {
-  color: #35363F;
+  color: #fff;
 }
 
 #pjax-content .surveybar {
