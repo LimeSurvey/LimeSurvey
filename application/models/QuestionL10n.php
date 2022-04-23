@@ -78,6 +78,12 @@ class QuestionL10n extends LSActiveRecord
             array('help', 'LSYii_Validators'),
             array('script', 'LSYii_Validators'),
             array('language', 'length', 'min' => 2, 'max' => 20), // in array languages ?
+            array('qid', 'unique', 'criteria' => array(
+                    'condition' => 'language=:language',
+                    'params' => array(':language' => $this->language)
+                ),
+                'message'=>sprintf(gT("Question ID (qid): “%s” is already in use for language “%s”."), $this->qid, $this->language),// Usage of {attribute} need attributeLabels, {value} never exist in message
+            ),
         );
         return $rules;
     }

@@ -67,6 +67,12 @@ class AnswerL10n extends LSActiveRecord
             ['aid','numerical','integerOnly' => true],
             ['answer', 'LSYii_Validators'],
             ['language', 'length', 'min' => 2, 'max' => 20], // in array languages ?
+            array('aid', 'unique', 'criteria' => array(
+                    'condition' => 'language=:language',
+                    'params' => array(':language' => $this->language)
+                ),
+                'message'=>sprintf(gT("Answer ID (aid): “%s” is already in use for language “%s”."), $this->aid, $this->language),// Usage of {attribute} need attributeLabels, {value} never exist in message
+            ),
         ];
     }
 }
