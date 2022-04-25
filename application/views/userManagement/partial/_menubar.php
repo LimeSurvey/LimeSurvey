@@ -37,16 +37,16 @@
                 <?php if (Permission::model()->hasGlobalPermission('users', 'export')) { ?>
                     <div class="btn-group">
                         <!-- Export -->
-                        <button class="btn btn-default" type="button" data-toggle="dropdown" title="<?php eT('Export survey administrators'); ?>">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" title="<?php eT('Export survey administrators'); ?>">
                             <i class="fa fa-upload text-success"></i> <?php eT("Export"); ?>
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
                             <li>
-                                <?= CHtml::link(gT("CSV"), App()->createUrl("userManagement/exportUser", ["outputFormat" => "csv"])); ?>
+                                <?= CHtml::link(gT("CSV"), App()->createUrl("userManagement/exportUser", ["outputFormat" => "csv"]), ["class" => "dropdown-item"]); ?>
                             </li>
                             <li>
-                                <?= CHtml::link(gT("JSON"), App()->createUrl("userManagement/exportUser", ["outputFormat" => "json"])); ?>
+                                <?= CHtml::link(gT("JSON"), App()->createUrl("userManagement/exportUser", ["outputFormat" => "json"]), ["class" => "dropdown-item"]); ?>
                             </li>
                         </ul>
                     </div>
