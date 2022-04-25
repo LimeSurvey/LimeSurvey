@@ -99,8 +99,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             </div>
 
             <p id='vertical_slide2'>
-                <input type='submit' class="hidden" value='<?php eT("View statistics"); ?>' />
-                <input type='button' class="hidden" value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
+                <input type='submit' class="d-none" value='<?php eT("View statistics"); ?>' />
+                <input type='button' class="d-none" value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='display' value='stats' />
             </p>

@@ -463,7 +463,7 @@ foreach ($tokendata as $Key => $Value) {
     switch ($token_subaction)
     {
         case "edit":?>
-          <input type='submit' class="hidden" value='<?php eT("Update participant entry"); ?>' />
+          <input type='submit' class="d-none" value='<?php eT("Update participant entry"); ?>' />
           <input type='hidden' name='subaction' value='updatetoken' />
           <input type='hidden' name='tid' value='<?php echo $tokenid; ?>' />
         <?php break;

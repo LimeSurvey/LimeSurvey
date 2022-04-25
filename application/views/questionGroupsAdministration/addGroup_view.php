@@ -80,7 +80,7 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
 
                         <!-- Save question group -->
                         <p>
-                            <input type='submit' class="hidden" value='<?php eT("Save question group"); ?>' />
+                            <input type='submit' class="d-none" value='<?php eT("Save question group"); ?>' />
                         </p>
                     </div>
                 <?php endforeach; ?>

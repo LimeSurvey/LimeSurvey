@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
                     </div>
                 </div>
 
-                <input type='submit' class="hidden" value='<?php eT("Import question group"); ?>' />
+                <input type='submit' class="d-none" value='<?php eT("Import question group"); ?>' />
                 <input type='hidden' name='action' value='importgroup' />
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
             </form>

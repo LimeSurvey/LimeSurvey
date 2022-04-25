@@ -160,7 +160,7 @@
                 <?php endforeach; ?>
 
                 <!--Hidden Buttons (default action) -->
-                <input type='submit' class="hidden" value='1' />
+                <input type='submit' class="d-none" value='1' />
             </form>
         </div>
     </div>
