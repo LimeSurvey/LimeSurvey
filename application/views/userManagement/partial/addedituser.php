@@ -19,7 +19,7 @@ Yii::app()->getController()->renderPartial(
     <div class="container-center">
 
         <?=$form->hiddenField($oUser, 'uid', ['uid' => 'User_Form_users_id'])?>
-        <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
+        <div class="row ls-space margin top-5 bottom-5 d-none" id="UserManagement--errors">
 
         </div>
         <div class="row ls-space margin top-5">
@@ -69,7 +69,7 @@ Yii::app()->getController()->renderPartial(
             </div>
         <?php } ?>        
 
-        <div class="row ls-space margin top-5 hidden" id="utility_change_password_container">
+        <div class="row ls-space margin top-5 d-none" id="utility_change_password_container">
             <div class="row ls-space margin top-5">
                 <span class="text-warning"><?= gT('If you set a password here, no email will be sent to the new user.')?></span><br><br>
                 <?php echo $form->labelEx($oUser,'password', ['for'=>'User_Form_password']); ?>

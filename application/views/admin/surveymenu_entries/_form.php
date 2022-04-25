@@ -54,14 +54,14 @@ Yii::app()->getController()->renderPartial(
 
 		<div class="form-group">
 			<?php echo $form->labelEx($model, 'menu_description'); ?>
-			<p class="selector_infoBox alert alert-info hidden"><?=gT('This will be shown when hovering over the menu.')?></p>
+			<p class="selector_infoBox alert alert-info d-none"><?=gT('This will be shown when hovering over the menu.')?></p>
 			<?php echo $form->textArea($model, 'menu_description', array('class' => 'selector__hasInfoBox', 'rows'=>6, 'cols'=>50)); ?>
 			<?php echo $form->error($model, 'menu_description'); ?>
 		</div>
 
 		<div class="form-group">
 			<?php echo $form->labelEx($model, 'menu_icon'); ?>
-			<p class="selector_infoBox alert alert-info hidden"><?=gT('Use a fontawesome classname, or a link to the image.')?></p>
+			<p class="selector_infoBox alert alert-info d-none"><?=gT('Use a fontawesome classname, or a link to the image.')?></p>
 			<?php echo $form->textField($model, 'menu_icon', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 			<?php echo $form->error($model, 'menu_icon'); ?>
 		</div>
@@ -74,7 +74,7 @@ Yii::app()->getController()->renderPartial(
 
 		<div class="form-group">
 			<?php echo $form->labelEx($model, 'menu_link'); ?>
-			<p class="selector_infoBox alert alert-warning hidden"><?=gT('If the external-option is not set, this will be appended to the current admin url.')?></p>
+			<p class="selector_infoBox alert alert-warning d-none"><?=gT('If the external-option is not set, this will be appended to the current admin url.')?></p>
 			<?php echo $form->textField($model, 'menu_link', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 			<?php echo $form->error($model, 'menu_link'); ?>
 		</div>
@@ -137,21 +137,21 @@ Yii::app()->getController()->renderPartial(
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'name'); ?>
-				<p class="selector_infoBox alert alert-info hidden"><?=gT('The name must be unique for all menu entries throughout the software.')?></p>
+				<p class="selector_infoBox alert alert-info d-none"><?=gT('The name must be unique for all menu entries throughout the software.')?></p>
 				<?php echo $form->textField($model, 'name', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'name'); ?>
 			</div>
 			
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'menu_title'); ?>
-				<p class="selector_infoBox alert alert-info hidden"><?=gT('This is the content of the menu link - leave blank to use the title.')?></p>
+				<p class="selector_infoBox alert alert-info d-none"><?=gT('This is the content of the menu link - leave blank to use the title.')?></p>
 				<?php echo $form->textField($model, 'menu_title', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'menu_title'); ?>
 			</div>
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'menu_class'); ?>
-				<p class="selector_infoBox alert alert-warning hidden"><?=gT('If the link should have any extra classes, please insert them here.')?></p>
+				<p class="selector_infoBox alert alert-warning d-none"><?=gT('If the link should have any extra classes, please insert them here.')?></p>
 				<?php echo $form->textField($model, 'menu_class', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'menu_class'); ?>
 			</div>

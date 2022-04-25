@@ -56,7 +56,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                     </li>
                 <?php endif; ?>
                 <li role="presentation" class="nav-item">
-                    <button class="nav-link <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>" data-bs-target="#advanced" aria-controls="profile" role="tab" data-bs-toggle="tab" aria-selected="false">
+                    <button class="nav-link <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'd-none'; ?>" data-bs-target="#advanced" aria-controls="profile" role="tab" data-bs-toggle="tab" aria-selected="false">
                         <?php eT('Advanced options') ?>
                     </button>
                 </li>
@@ -68,7 +68,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             <!-- Tab panes -->
             <?php /* Begin theme option form */ ?>
             <form class='form action_update_options_string_form' action=''>
-                <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'hidden action_update_options_string_button']); ?>
+                <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
                 <div class="tab-content">
                     <?php
                     /*
@@ -112,7 +112,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 </div>
             </form>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>" id="advanced">
+                <div role="tabpanel" class="tab-pane <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'd-none'; ?>" id="advanced">
                     <div class="alert alert-info alert-dismissible" role="alert">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <p><?php eT('All fields below (except CSS framework name) must be either a valid JSON array or the string "inherit".'); ?></p>
@@ -258,7 +258,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                         <?php echo $form->error($model, 'packages_to_load'); ?>
                                     </div>
                                 </div>
-                                <div class="row buttons hidden">
+                                <div class="row buttons d-none">
                                     <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class' => 'btn-success']); ?>
                                 </div>
 

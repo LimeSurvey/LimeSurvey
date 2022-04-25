@@ -131,7 +131,7 @@
                                 <div class='form-group'>
                                     <div class='col-sm-2'></div>
                                     <div class='col-sm-4'>
-                                        <input type='submit' class="btn btn-default hidden" value='<?php eT("Save"); ?>'/>
+                                        <input type='submit' class="btn btn-default d-none" value='<?php eT("Save"); ?>'/>
                                     </div>
                                 </div>
                             </div>

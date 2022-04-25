@@ -70,7 +70,7 @@ $script = array();
     }
     ?>
 
-    <div class="row selector__table-container <?=($hideAttacehemtTable===true ? 'hidden' : '')?>">
+    <div class="row selector__table-container <?=($hideAttacehemtTable===true ? 'd-none' : '')?>">
         <div class='form-group col-sm-12'>
             <div class='form-group'>
                 <div class=' '>

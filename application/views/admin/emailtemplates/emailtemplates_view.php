@@ -56,8 +56,8 @@ var LS = LS || {};  // namespace
                 }
                 ?>
                 <p>
-                    <?php echo CHtml::htmlButton(gT('Save'), ['type' => 'submit', 'value' => 'save', 'name' => 'save', 'class' => 'hidden']) ?>
-                    <?php echo CHtml::htmlButton(gT('Save and close'), ['type' => 'submit', 'value' => 'saveclose', 'name' => 'save', 'class' => 'hidden']) ?>
+                    <?php echo CHtml::htmlButton(gT('Save'), ['type' => 'submit', 'value' => 'save', 'name' => 'save', 'class' => 'd-none']) ?>
+                    <?php echo CHtml::htmlButton(gT('Save and close'), ['type' => 'submit', 'value' => 'saveclose', 'name' => 'save', 'class' => 'd-none']) ?>
                     <?php echo CHtml::hiddenField('action', 'tokens'); ?>
                     <?php echo CHtml::hiddenField('language', $esrow->surveyls_language); ?>
                 </p>

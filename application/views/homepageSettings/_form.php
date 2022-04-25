@@ -95,7 +95,7 @@
                             </ul>
                         </div>
                         <span>&nbsp;<?php echo eT('Chosen icon:'); ?></span>&nbsp;<span id='chosen-icon'></span>
-                        <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255, 'class' => 'form-control hidden')); ?>
+                        <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255, 'class' => 'form-control d-none')); ?>
                     </div>
 
                     <?php if ($form->error($model,'ico')):?>
@@ -157,7 +157,7 @@
 
     <p class="note"><?php printf(gT('Fields with %s*%s are required.'),'<span class="required">','</span>'); ?></p>
                 <div class="form-group buttons">
-                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'form-control hidden')); ?>
+                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'form-control d-none')); ?>
                 </div>
 
             <?php $this->endWidget(); ?>

@@ -202,7 +202,7 @@
         echo CHtml::form(array("admin/export/sa/quexmlclear/surveyid/{$surveyid}/"), 'post', array('id'=>'quexmlclearform'));
         echo CHtml::htmlButton(gT('Reset now'), array(
             'type' => 'submit',
-            'class' => 'btn btn-danger col-sm-6 col-xs-12 hidden',
+            'class' => 'btn btn-danger col-sm-6 col-xs-12 d-none',
             ));
     ?>
     </form>

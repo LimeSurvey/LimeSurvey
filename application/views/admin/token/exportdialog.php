@@ -127,7 +127,7 @@
                         </div>
                     </div>                    
                 </div>
-                <button class="btn btn-primary btn-block hidden" type="submit" name="submit">
+                <button class="btn btn-primary btn-block d-none" type="submit" name="submit">
                     <i class="fa fa-download"></i>
                     <?php eT('Export participants'); ?>
                 </button>

@@ -107,7 +107,7 @@
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <input class='form-control custom-data selector_submitField hidden YesNoDateHidden' type='text' size='20' id='massedit_completed' name='completed' value="lskeep"/>
+                        <input class='form-control custom-data selector_submitField d-none YesNoDateHidden' type='text' size='20' id='massedit_completed' name='completed' value="lskeep"/>
                     </div>
                 </div>
 
@@ -231,7 +231,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input class='form-control hidden custom-data selector_submitField YesNoDateHidden' type='text' size='20' id='massedit_sent' name='sent' value="lskeep"/>
+                        <input class='form-control d-none custom-data selector_submitField YesNoDateHidden' type='text' size='20' id='massedit_sent' name='sent' value="lskeep"/>
                     </div>
                 </div>
 
@@ -292,7 +292,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input class='form-control custom-data hidden selector_submitField YesNoDateHidden' type='text' size='20' id='massedit_remindersent' name='remindersent' value="lskeep"/>
+                        <input class='form-control custom-data d-none selector_submitField YesNoDateHidden' type='text' size='20' id='massedit_remindersent' name='remindersent' value="lskeep"/>
                     </div>
                 </div>
 

@@ -147,7 +147,7 @@ echo $oQuestionSelector->getModal();
                                     <br/>
                                 </div>
                             </div>
-                            <div class="row selector__oldpassword-row hidden">
+                            <div class="row selector__oldpassword-row d-none">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="oldpassword" class="form-label">
@@ -160,7 +160,7 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                             </div>
-                            <div class="row selector__password-row hidden">
+                            <div class="row selector__password-row d-none">
                                 <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0"/>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -182,7 +182,7 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                             </div>
-                            <div class="row selector__email-row hidden">
+                            <div class="row selector__email-row d-none">
                                 <input type="hidden" id="newemailshown" name="newemailshown" value="0"/>
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
@@ -420,7 +420,7 @@ echo $oQuestionSelector->getModal();
         <!-- Buttons -->
         <p>
             <?php echo TbHtml::hiddenField('action', 'savepersonalsettings'); ?>
-            <?php echo TbHtml::submitButton(gT("Save settings", 'unescaped'), ['class' => 'hidden']); ?>
+            <?php echo TbHtml::submitButton(gT("Save settings", 'unescaped'), ['class' => 'd-none']); ?>
         </p>
         <?php echo TbHtml::endForm(); ?>
 

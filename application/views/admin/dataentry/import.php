@@ -17,11 +17,11 @@
                 'buttons' => array(
                     gT('Import responses') => array(
                         'name' => 'ok',
-                        'class' => array('hidden')
+                        'class' => array('d-none')
                     ),
                     gT('Cancel') => array(
                         'type' => 'link',
-                        'class' => array('hidden'),
+                        'class' => array('d-none'),
                         'href' => App()->createUrl('plugins/index')
                     )
                 )
