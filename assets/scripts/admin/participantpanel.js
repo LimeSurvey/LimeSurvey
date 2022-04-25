@@ -311,8 +311,8 @@ LS.CPDB = (function() {
         });
         bindListItemclick();
 
-        if($('#export').hasClass('hidden')){
-            $('#export').removeClass('hidden');
+        if($('#export').hasClass('d-none')){
+            $('#export').removeClass('d-none');
         }
     },
     //JS-bindings especially for the attributePanel
@@ -382,8 +382,8 @@ LS.CPDB = (function() {
             $.fn.yiiGridView.update('list_attributes',{ data:{ pageSizeAttributes: $(this).val() }});
         });
 
-        if(!$('#export').hasClass('hidden')){
-            $('#export').addClass('hidden');
+        if(!$('#export').hasClass('d-none')){
+            $('#export').addClass('d-none');
         }
     },
     //JS-bindings especially for the sharePanel
@@ -410,18 +410,18 @@ LS.CPDB = (function() {
         $('#pageSizeShareParticipantView').on("change", function(){
             $.fn.yiiGridView.update('share_central_participants',{ data:{ pageSizeShareParticipantView: $(this).val() }});
         });
-        if($('#export').hasClass('hidden')){
-            $('#export').removeClass('hidden');
+        if($('#export').hasClass('d-none')){
+            $('#export').removeClass('d-none');
         }
     },
     importPanel = function(){
-        if(!$('#export').hasClass('hidden')){
-            $('#export').addClass('hidden');
+        if(!$('#export').hasClass('d-none')){
+            $('#export').addClass('d-none');
         }
     },
     blacklistPanel = function(){
-        if(!$('#export').hasClass('hidden')){
-            $('#export').addClass('hidden');
+        if(!$('#export').hasClass('d-none')){
+            $('#export').addClass('d-none');
         }
     },
     /**

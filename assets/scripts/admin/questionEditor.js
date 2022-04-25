@@ -1780,7 +1780,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @return {void}
      */
     checkQuestionCodeUniqueness: function(code, qid) {
-      $('#question-code-unique-warning').addClass('hidden');
+      $('#question-code-unique-warning').addClass('d-none');
       $.ajax({
         url: languageJson.checkQuestionCodeIsUniqueURL,
         method: 'GET',
@@ -1791,7 +1791,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         },
         success: (data) => {
           if (data !== 'true') {
-            $('#question-code-unique-warning').removeClass('hidden');
+            $('#question-code-unique-warning').removeClass('d-none');
           }
         },
         error: (data) => {
@@ -1966,7 +1966,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               }
             }
           } else {
-            $('#question-code-unique-warning').removeClass('hidden');
+            $('#question-code-unique-warning').removeClass('d-none');
           }
         },
         error: (response) => {

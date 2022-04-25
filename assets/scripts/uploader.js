@@ -224,11 +224,11 @@ function doFileUpload()
                 $('#' + fieldname + '_filecount').val(filecount);
 
                 if (filecount < minfiles) {
-                    $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s', (minfiles - filecount))).removeClass('hidden');
+                    $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s', (minfiles - filecount))).removeClass('d-none');
                 } else if (filecount < maxfiles) {
-                    $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s', (maxfiles - filecount))).removeClass('hidden');
+                    $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s', (maxfiles - filecount))).removeClass('d-none');
                 } else {
-                    $('#uploadstatus').html(uploadLang.errorMaxReached).removeClass('hidden');
+                    $('#uploadstatus').html(uploadLang.errorMaxReached).removeClass('d-none');
                 }
                 fixParentHeigth(fieldname);
                 if (filecount >= maxfiles) {
