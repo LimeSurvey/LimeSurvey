@@ -84,6 +84,7 @@ const AdminCore = function(){
             appendToLoad(questionEdit);
             appendToLoad(confirmDeletemodal);
             appendToLoad(panelClickable);
+            appendToLoad(window.LS.doToolTip);
             appendToLoad(panelsAnimation, null, null, 200);
             appendToLoad(notificationSystem.initNotification);
             appendToLoad(activateSubSubMenues);
