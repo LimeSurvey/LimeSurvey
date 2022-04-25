@@ -468,7 +468,7 @@ foreach ($tokendata as $Key => $Value) {
           <input type='hidden' name='tid' value='<?php echo $tokenid; ?>' />
         <?php break;
         case "addnew": ?>
-          <input type='submit' class='hidden' value='<?php eT("Add participant entry"); ?>' />
+          <input type='submit' class="d-none" value='<?php eT("Add participant entry"); ?>' />
           <input type='hidden' name='subaction' value='inserttoken' />
         <?php break;
     } ?>

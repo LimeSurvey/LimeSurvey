@@ -55,7 +55,7 @@
             <p>
                 <input type='hidden' id='orgdata' name='orgdata' value='' />
                 <input type='hidden' id='close-after-save' name='close-after-save' value='' />
-                <button class='hidden' type="submit" id='btnSave'>
+                <button class="d-none" type="submit" id='btnSave'>
                     <?php echo eT('Save'); ?>
                 </button>
             </p>
