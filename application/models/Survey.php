@@ -2293,13 +2293,20 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return $aSurveys;
     }
 
-    public function getSurveyUrl($language = null, $preferShortUrl = true)
+    /**
+     * Returns the survey URL with the specified params.
+     * If $preferShortUrl is true (default), and an alias is available, it returns the short
+     * version of the URL.
+     * @param string|null $language
+     * @param array<string,mixed> $params   Optional parameters to include in the URL.
+     * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
+     */
+    public function getSurveyUrl($language = null, $params = [], $preferShortUrl = true)
     {
         if (empty($language)) {
             $language = $this->language;
         }
         if ($preferShortUrl) {
-            $langParam = null;
             $alias = isset($this->languagesettings[$language]) ? $this->languagesettings[$language]->surveyls_alias : null;
 
             if (!empty($alias)) {
@@ -2309,29 +2316,30 @@ class Survey extends LSActiveRecord implements PermissionInterface
                         continue;
                     }
                     if ($this->languagesettings[$otherLang]->surveyls_alias == $alias) {
-                        $langParam = $language;
+                        $params['lang'] = $language;
                         break;
                     }
                 }
 
-                $urlFormat = Yii::app()->getUrlManager()->getUrlFormat();
+                $urlManager = Yii::app()->getUrlManager();
+                $urlFormat = $urlManager->getUrlFormat();
                 if ($urlFormat == CUrlManager::GET_FORMAT) {
-                    $url = Yii::app()->getBaseUrl(true) . '?' . Yii::app()->getUrlManager()->routeVar . '=' . $alias;
-                    if (!empty($langParam)) {
-                        $url .= "&lang={$langParam}";
-                    }
+                    $url = Yii::app()->getBaseUrl(true);
+                    $params = [$urlManager->routeVar => $alias] + $params;
                 } else {
                     $url = Yii::app()->getBaseUrl(true) . '/' . $alias;
-                    if (!empty($langParam)) {
-                        $url .= "?lang={$langParam}";
-                    }
+                }
+                $query = $urlManager->createPathInfo($params, '=', '&');
+                if (!empty($query)) {
+                    $url .= "?" . $query;
                 }
                 return $url;
             }
         }
 
         // If short url is not preferred or no alias is found, return a traditional URL
-        $url = Yii::app()->createAbsoluteUrl('survey/index', array('sid' => $this->sid, 'lang' => $language));
+        $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
+        $url = Yii::app()->createAbsoluteUrl('survey/index', $urlParams);
         return $url;
     }
 }
