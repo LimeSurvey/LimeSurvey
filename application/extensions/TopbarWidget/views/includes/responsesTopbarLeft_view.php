@@ -43,7 +43,7 @@
 <!-- Export -->
 <?php if ($hasResponsesExportPermission): ?>
     <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-export text-success"></span>
             <?php eT("Export"); ?> <span class="caret"></span>
         </button>
@@ -78,7 +78,7 @@
 <!-- Import -->
 <?php if ($hasResponsesCreatePermission): ?>
     <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-import text-success"></span>
             <?php eT("Import"); ?> <span class="caret"></span>
         </button>

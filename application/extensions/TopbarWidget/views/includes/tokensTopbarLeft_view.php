@@ -10,7 +10,7 @@
 <?php if ($hasTokensCreatePermission || $hasTokensImportPermission): ?>
     <!-- Create tokens -->
     <div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="icon-add text-success"></span>
         <?php eT("Create...");?> <span class="caret"></span>
     </button>
@@ -81,7 +81,7 @@
 <!-- EMAILS -->
 <?php if ($hasTokensUpdatePermission):?>
     <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-emailtemplates text-success"></span>
             <?php eT("Invitations & reminders");?> <span class="caret"></span>
         </button>
