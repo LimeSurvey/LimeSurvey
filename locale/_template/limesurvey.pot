@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-04-11 08:45:55+00:00\n"
+"POT-Creation-Date: 2022-04-25 08:06:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4431,7 +4431,7 @@ msgstr ""
 
 #: application/controllers/admin/DataEntry.php:279
 #: application/views/admin/pluginmanager/overview.php:62
-#: application/views/admin/pluginmanager/uploadConfirm.php:61
+#: application/views/admin/pluginmanager/uploadConfirm.php:60
 msgid "Compatible"
 msgstr ""
 
@@ -7045,7 +7045,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:9005
 #: application/models/Box.php:59
 #: application/views/admin/pluginmanager/overview.php:20
-#: application/views/admin/pluginmanager/uploadConfirm.php:43
+#: application/views/admin/pluginmanager/uploadConfirm.php:42
 #: application/views/admin/survey/editLocalSettings_view.php:46
 #: application/views/admin/survey/editLocalSettings_view.php:50
 #: application/views/admin/survey/subview/_create_survey_text.php:100
@@ -10065,7 +10065,7 @@ msgstr ""
 #: application/extensions/UserPermissionsWidget/views/table.php:15
 #: application/models/Permission.php:861
 #: application/views/admin/labels/editlabel_view.php:75
-#: application/views/admin/pluginmanager/uploadConfirm.php:74
+#: application/views/admin/pluginmanager/uploadConfirm.php:73
 #: application/views/admin/user/setuserpermissions.php:28
 #: application/views/userManagement/massiveAction/_updatepermissions.php:33
 #: application/views/userManagement/partial/editpermissions.php:20
@@ -15231,7 +15231,7 @@ msgstr ""
 #: application/models/QuestionTheme.php:236
 #: application/models/TemplateManifest.php:654
 #: application/views/admin/pluginmanager/scanFilesResult.php:22
-#: application/views/admin/pluginmanager/uploadConfirm.php:76
+#: application/views/admin/pluginmanager/uploadConfirm.php:75
 #: application/views/themeOptions/import_modal.php:49
 msgid "Install"
 msgstr ""
@@ -17611,7 +17611,7 @@ msgstr ""
 
 #: application/views/admin/export/spss_view.php:29
 #: application/views/admin/pluginmanager/overview.php:44
-#: application/views/admin/pluginmanager/uploadConfirm.php:49
+#: application/views/admin/pluginmanager/uploadConfirm.php:48
 msgid "Version:"
 msgstr ""
 
@@ -19473,7 +19473,7 @@ msgid "This plugin has no settings."
 msgstr ""
 
 #: application/views/admin/pluginmanager/overview.php:14
-#: application/views/admin/pluginmanager/uploadConfirm.php:37
+#: application/views/admin/pluginmanager/uploadConfirm.php:36
 #: application/views/userGroup/addUserGroup_view.php:10
 #: application/views/userGroup/editUserGroup_view.php:12
 #: tmp/runtime/twig_cache/80/80800607e183e38b3c6ff3dac59d5f29c84ae2dd2fac6f727e595ad46d487f26.php:191
@@ -19481,7 +19481,7 @@ msgid "Name:"
 msgstr ""
 
 #: application/views/admin/pluginmanager/overview.php:26
-#: application/views/admin/pluginmanager/uploadConfirm.php:55
+#: application/views/admin/pluginmanager/uploadConfirm.php:54
 msgid "Author:"
 msgstr ""
 
@@ -19529,19 +19529,19 @@ msgstr ""
 msgid "Confirm uploaded plugin"
 msgstr ""
 
-#: application/views/admin/pluginmanager/uploadConfirm.php:23
+#: application/views/admin/pluginmanager/uploadConfirm.php:22
 msgid "The following plugin will be updated. Please click \"Update\" to update the plugin, or \"Abort\" to abort."
 msgstr ""
 
-#: application/views/admin/pluginmanager/uploadConfirm.php:30
+#: application/views/admin/pluginmanager/uploadConfirm.php:29
 msgid "The following plugin will be installed. Please click \"Install\" to install the plugin, or \"Abort\" to abort. Aborting will remove the files from the file system."
 msgstr ""
 
-#: application/views/admin/pluginmanager/uploadConfirm.php:78
+#: application/views/admin/pluginmanager/uploadConfirm.php:77
 msgid "Abort"
 msgstr ""
 
-#: application/views/admin/pluginmanager/uploadConfirm.php:89
+#: application/views/admin/pluginmanager/uploadConfirm.php:87
 msgid "Error: Found no configuration for plugin. Please contact the plugin author."
 msgstr ""
 
