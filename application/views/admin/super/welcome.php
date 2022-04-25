@@ -167,7 +167,7 @@ echo viewHelper::getViewTestTag('index');
 
 
     <!-- Boxes for smartphones -->
-    <div class="row d-sm-none d-md-none d-lg-none">
+    <div class="row d-sm-none  d-lg-none">
         <div class="card card-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/surveyAdministration//listsurveys" style="opacity: 1; top: 0px;">
             <div class="card-header bg-primary">
                 <?php eT('List surveys');?>

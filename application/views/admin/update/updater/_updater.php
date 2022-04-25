@@ -4,7 +4,7 @@
  */
 ?>
 <div id="updaterLayout" style="display: none;" class="row">
-    <div class="col-sm-3 d-md-none">
+    <div class="col-sm-3 ">
         <?php
             // The left bar, with progress (steps such as welcome, or pre-installation check, etc.)
             $this->renderPartial("./update/updater/_progress" );

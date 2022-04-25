@@ -189,7 +189,7 @@
         ]
     ));
 ?>
-<div class="btn-group d-md-none">
+<div class="btn-group ">
     <?=$oExportSelector->getModal(); ?>
 
     <?=$oExportSelector->getButtonOrSelect(); ?>

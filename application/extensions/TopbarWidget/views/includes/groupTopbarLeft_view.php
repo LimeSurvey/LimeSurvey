@@ -4,7 +4,7 @@
 ?>
 <?php if (!empty(trim($toolsDropdownItems))): ?>
     <!-- Tools  -->
-    <div class="btn-group d-md-none">
+    <div class="btn-group ">
 
         <!-- Main button dropdown -->
         <button id="ls-question-group-tools-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
