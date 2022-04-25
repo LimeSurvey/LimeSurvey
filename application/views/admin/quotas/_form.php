@@ -75,7 +75,7 @@
                         'oQuota'=>$oQuota,
                         'aQuotaLanguageSettings' =>$aQuotaLanguageSettings,
                     ));?>
-                <input type="submit" name="submit" class="hidden" />
+                <input type="submit" name="submit" class="d-none" />
             </div>
         </div>
     <?php $this->endWidget(); ?>

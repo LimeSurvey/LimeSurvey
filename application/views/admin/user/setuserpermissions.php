@@ -79,7 +79,7 @@ echo viewHelper::getViewTestTag('setUserPermissions');
 
                 <!-- submit button -->
                 <p>
-                    <input type='submit' class="hidden"  value='<?php eT("Save");?>' />
+                    <input type='submit' class="d-none"  value='<?php eT("Save");?>' />
                     <input type='hidden' name='action' value='surveyrights' />
                     <input type='hidden' name='uid' value='<?php echo $oUser->uid;?>' />
                 </p>

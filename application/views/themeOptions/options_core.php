@@ -220,7 +220,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                                 <div class="col-sm-6">
                                     <span id="fileselector_frontend">
                                         <label class="btn btn-default col-xs-8" for="upload_image_frontend">
-                                            <input class="hidden" id="upload_image_frontend" name="upload_image_frontend" type="file">
+                                            <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
                                             <i class="fa fa-upload ls-space margin right-10"></i>
                                             <?php eT("Upload"); ?>
                                         </label>

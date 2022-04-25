@@ -18,7 +18,7 @@
                 <textarea cols='50' rows='4' id='description' name='description' class="form-control"><?php echo htmlspecialchars($model['description'], ENT_QUOTES, 'UTF-8'); ?></textarea>
             </div>
 
-            <input type='submit' value='<?php eT("Update user group"); ?>' class="hidden" />
+            <input type='submit' value='<?php eT("Update user group"); ?>' class="d-none" />
             <input type='hidden' name='action' value='editusergroupindb' />
             <input type='hidden' name='owner_id' value='<?php echo Yii::app()->session['loginID']; ?>' />
             <input type='hidden' name='ugid' value='<?php echo $ugid; ?>' />

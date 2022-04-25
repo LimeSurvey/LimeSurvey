@@ -154,7 +154,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                         <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'uploadimage', 'name' => 'uploadimage', 'enctype' => 'multipart/form-data']); ?>
                                         <span id="fileselector">
                                             <label class="btn btn-default col-xs-8" for="upload_image">
-                                                <input class="hidden" id="upload_image" name="upload_image" type="file">
+                                                <input class="d-none" id="upload_image" name="upload_image" type="file">
                                                 <i class="fa fa-upload ls-space margin right-10"></i><?php eT("Upload"); ?>
                                             </label>
                                         </span>
@@ -275,7 +275,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
     <?php endif; ?>
 
 <!-- Form for image file upload -->
-<div class="hidden">
+<div class="d-none">
     <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'upload_frontend', 'name' => 'upload_frontend', 'enctype' => 'multipart/form-data']); ?>
     <?php if (isset($aTemplateConfiguration['sid']) && !empty($aTemplateConfiguration['sid'])) : ?>
         <input type='hidden' name='surveyid' value='<?= $aTemplateConfiguration['sid'] ?>'/>

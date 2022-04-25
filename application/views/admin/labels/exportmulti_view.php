@@ -28,7 +28,7 @@
                 </div>
                 <p>
                     <br/>
-                    <input type='submit' id='btnDumpLabelSets' value='<?php eT('Export selected label sets'); ?>' class="hidden"/>
+                    <input type='submit' id='btnDumpLabelSets' value='<?php eT('Export selected label sets'); ?>' class="d-none"/>
                     <input type='hidden' name='action' value='dumplabel'/>
                 </p>
             </div>

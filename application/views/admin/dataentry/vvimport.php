@@ -128,7 +128,7 @@
     </div>
 
         <p>
-            <input type='submit' class="hidden" value='<?php eT("Import"); ?>' />
+            <input type='submit' class="d-none" value='<?php eT("Import"); ?>' />
             <input type='hidden' name='action' value='vvimport' />
             <input type='hidden' name='subaction' value='upload' />
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />

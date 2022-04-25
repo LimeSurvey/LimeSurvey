@@ -88,7 +88,7 @@
                     ?>
                 </div>
             </div>
-            <input type='submit' class="hidden" value='<?php eT("Import question"); ?>'/>
+            <input type='submit' class="d-none" value='<?php eT("Import question"); ?>'/>
             <input type='hidden' name='action' value='importquestion'/>
             <input type='hidden' name='sid' value='<?php echo $sid; ?>'/>
             <?php echo CHtml::endForm(); ?>

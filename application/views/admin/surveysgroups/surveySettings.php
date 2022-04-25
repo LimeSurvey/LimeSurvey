@@ -103,7 +103,7 @@ Yii::app()->getClientScript()->registerScript(
                         </div>
                     <?php } ?>
 
-                    <div class="hidden">
+                    <div class="d-none">
                         <?php echo TbHtml::submitButton('Save', ['class' => 'btn btn-success col-md-2 col-sm-4', "id" => "survey-settings-options-form"]); ?>
                     </div>
 

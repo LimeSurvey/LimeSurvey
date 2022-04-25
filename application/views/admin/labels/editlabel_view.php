@@ -72,7 +72,7 @@
 
 
                     <p>
-                        <input type='submit' class="hidden" value='<?php if ($action === "newlabelset") {
+                        <input type='submit' class="d-none" value='<?php if ($action === "newlabelset") {
                             eT("Save");
                         } else {
                             eT("Update");

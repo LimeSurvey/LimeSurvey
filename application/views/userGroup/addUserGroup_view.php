@@ -27,7 +27,7 @@
 
                 <!-- Buttons -->
                 <p>
-                    <input type='submit' value='<?php eT("Add group"); ?>' class="hidden" />
+                    <input type='submit' value='<?php eT("Add group"); ?>' class="d-none" />
                     <input type='hidden' name='action' value='saveusergroup'  />
                 </p>
             </form>

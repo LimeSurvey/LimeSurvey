@@ -93,7 +93,7 @@ $script = array();
 
 
 
-<table id="rowTemplate" class="hidden">
+<table id="rowTemplate" class="d-none">
     <tr>
         <td>
             <button class="btn btn-default btn-xs btnattachmentremove" title="<?php eT('Remove attachment') ?>" data-bs-toggle="tooltip" data-bs-placement="bottom">

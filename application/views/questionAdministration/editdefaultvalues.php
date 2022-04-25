@@ -191,7 +191,7 @@
                 <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid ?>'/>
                 <input type='hidden' id='gid' name='gid' value='<?php echo $gid ?>'/>
                 <input type='hidden' id='qid' name='qid' value='<?php echo $qid ?>'/>
-                <p><input class="hidden" type='submit' value='<?php eT('Save') ?>'/></p>
+                <p><input class="d-none" type='submit' value='<?php eT('Save') ?>'/></p>
                 <?php echo CHtml::endForm(); ?>
             </div>
         </div>

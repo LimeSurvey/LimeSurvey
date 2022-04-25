@@ -150,7 +150,7 @@
                     </div>';
                 }
             ?>
-            <div class="hidden">
+            <div class="d-none">
                 <div class=" form-group" id="dummyLanguageInputGroup">
                         <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel"></label>
                         <div>

@@ -53,8 +53,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                 <p>
                     <input type='hidden' name='summary[]' value='idG' />
                     <input type='hidden' name='summary[]' value='idL' />
-                    <input class="hidden" type='submit' value='<?php eT("View statistics"); ?>' />
-                    <input class="hidden" type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
+                    <input class="d-none" type='submit' value='<?php eT("View statistics"); ?>' />
+                    <input class="d-none" type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
                 </p>
             </div>
         </div>

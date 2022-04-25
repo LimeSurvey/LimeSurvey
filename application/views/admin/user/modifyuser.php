@@ -62,7 +62,7 @@ echo viewHelper::getViewTestTag('modifyUser');
                 <?php endif; ?>
                 
                 <p>
-                    <input type='submit' class="hidden" value='<?php eT("Save");?>' />
+                    <input type='submit' class="d-none" value='<?php eT("Save");?>' />
                     <input type='hidden' name='action' value='moduser' />
                     <input type='hidden' name='uid' value="<?php echo $oUser->uid;?>" />
                 </p>
