@@ -51,21 +51,21 @@
 
             <!-- Export results to application -->
             <li>
-                <a href='<?php echo Yii::App()->createUrl("admin/export/sa/exportresults/surveyid/$oSurvey->sid"); ?>'>
+                <a class="dropdown-item" href='<?php echo Yii::App()->createUrl("admin/export/sa/exportresults/surveyid/$oSurvey->sid"); ?>'>
                     <?php eT("Export responses"); ?>
                 </a>
             </li>
 
             <!-- Export results to a SPSS/PASW command file -->
             <li>
-                <a href='<?php echo Yii::App()->createUrl("admin/export/sa/exportspss/sid/$oSurvey->sid"); ?>'>
+                <a class="dropdown-item" href='<?php echo Yii::App()->createUrl("admin/export/sa/exportspss/sid/$oSurvey->sid"); ?>'>
                     <?php eT("Export responses to SPSS"); ?>
                 </a>
             </li>
 
             <!-- Export a VV survey file -->
             <li>
-                <a href='<?php echo Yii::App()->createUrl("admin/export/sa/vvexport/surveyid/$oSurvey->sid"); ?>'>
+                <a class="dropdown-item" href='<?php echo Yii::App()->createUrl("admin/export/sa/vvexport/surveyid/$oSurvey->sid"); ?>'>
                     <?php eT("Export a VV survey file"); ?>
                 </a>
             </li>
@@ -86,14 +86,14 @@
 
             <!-- Import responses from a deactivated survey table -->
             <li>
-                <a href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/import/surveyid/$oSurvey->sid"); ?>' role="button">
+                <a class="dropdown-item" href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/import/surveyid/$oSurvey->sid"); ?>' role="button">
                     <?php eT("Import responses from a deactivated survey table"); ?>
                 </a>
             </li>
 
             <!-- Import a VV survey file -->
             <li>
-                <a href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/vvimport/surveyid/$oSurvey->sid"); ?>' role="button">
+                <a class="dropdown-item" href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/vvimport/surveyid/$oSurvey->sid"); ?>' role="button">
                     <?php eT("Import a VV survey file"); ?>
                 </a>
             </li>
