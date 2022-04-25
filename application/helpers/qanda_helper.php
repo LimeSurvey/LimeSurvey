@@ -5422,9 +5422,9 @@ function do_array_dual($ia)
                         // No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "") {
                             $answer .= CHECKED;
-                            $aData['myfname0_notset'] = CHECKED;
+                            $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                         } else {
-                            $aData['myfname0_notset'] = "";
+                            $aData['aSubQuestions'][$i]['myfname0_notset'] = "";
                         }
                     }
 
@@ -5444,16 +5444,16 @@ function do_array_dual($ia)
                     if (count($labelans1) > 0) {
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == "") {
                             $answer .= CHECKED;
-                            $aData['myfname1_notset'] = CHECKED;
+                            $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
                         } else {
-                            $aData['myfname1_notset'] = "";
+                            $aData['aSubQuestions'][$i]['myfname1_notset'] = "";
                         }
                     } else {
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "") {
                             $answer .= CHECKED;
-                            $aData['myfname0_notset'] = CHECKED;
+                            $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                         } else {
-                            $aData['myfname0_notset'] = '';
+                            $aData['aSubQuestions'][$i]['myfname0_notset'] = '';
                         }
                     }
                 }
