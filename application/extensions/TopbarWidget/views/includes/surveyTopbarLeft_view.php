@@ -42,7 +42,7 @@
     <!-- Multinlinguage -->
     <?php if (count($oSurvey->allLanguages) > 1): ?>
         <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <?php if($oSurvey->active=='N'):?>
                 <span class="fa fa-eye" ></span>
                 <?php eT('Preview survey');?>
@@ -83,7 +83,7 @@
     <div class="btn-group ">
 
         <!-- Main button dropdown -->
-        <button id="ls-tools-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button id="ls-tools-button" type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-tools" ></span>
             <?php eT('Tools'); ?>&nbsp;<span class="caret"></span>
         </button>
@@ -94,7 +94,7 @@
 
                 <!-- Delete survey -->
                 <li>
-                    <a href="<?php echo App()->createUrl("surveyAdministration/delete/" , ['iSurveyID' => $sid]); ?>">
+                    <a class="dropdown-item" href="<?php echo App()->createUrl("surveyAdministration/delete/" , ['iSurveyID' => $sid]); ?>">
                         <span class="fa fa-trash text-danger" ></span>
                         <?php eT("Delete survey"); ?>
                     </a>
@@ -108,7 +108,7 @@
 
                     <!-- Quick-translation -->
                     <li>
-                        <a href="<?php echo App()->createUrl("admin/translate/sa/index/surveyid/{$oSurvey->sid}"); ?>">
+                        <a class="dropdown-item" href="<?php echo App()->createUrl("admin/translate/sa/index/surveyid/{$oSurvey->sid}"); ?>">
                         <span class="fa fa-language" ></span>
                         <?php eT("Quick-translation"); ?>
                         </a>
@@ -118,7 +118,7 @@
 
                     <!-- Quick-translation disabled -->
                     <li class="disabled">
-                        <a href="#" class="btntooltip disabled" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Currently there are no additional languages configured for this survey.'); ?>">
+                        <a class="dropdown-item" href="#" class="btntooltip disabled" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Currently there are no additional languages configured for this survey.'); ?>">
                             <span class="fa fa-language" ></span>
                             <?php eT("Quick-translation"); ?>
                         </a>
@@ -130,7 +130,7 @@
                 <?php if ($conditionsCount > 0):?>
                     <li>
                         <!-- condition -->
-                        <a href="<?php echo App()->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$oSurvey->sid}"); ?>">
+                        <a class="dropdown-item" href="<?php echo App()->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$oSurvey->sid}"); ?>">
                             <span class="icon-resetsurveylogic" ></span>
                             <?php eT("Reset conditions"); ?>
                         </a>
@@ -138,7 +138,7 @@
                 <?php else : ?>
                     <li class="disabled">
                         <!-- condition disabled -->
-                        <a href="#" class="btntooltip disabled" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("Currently there are no conditions configured for this survey.", "js");?>">
+                        <a class="dropdown-item" href="#" class="btntooltip disabled" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("Currently there are no conditions configured for this survey.", "js");?>">
                             <span class="icon-resetsurveylogic" ></span>
                             <?php eT("Reset conditions"); ?>
                         </a>
@@ -154,7 +154,7 @@
 
                     <!-- Survey logic file -->
                     <li>
-                        <a href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/"); ?>' >
+                        <a class="dropdown-item" href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/"); ?>' >
                             <span class="icon-expressionmanagercheck" ></span>
                             <?php eT("Survey logic file"); ?>
                         </a>
@@ -170,7 +170,7 @@
                         <!-- Languages -->
 
                         <li>
-                            <a  href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
+                            <a class="dropdown-item"  href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
                                 <span class="icon-expressionmanagercheck" ></span>
                                 <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                             </a>
@@ -189,7 +189,7 @@
 
                 <!-- Straight -->
                 <li>
-                    <a href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/straight"); ?>">
+                    <a class="dropdown-item" href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/straight"); ?>">
                     <span class="icon-resetsurveylogic" ></span>
                     <?php eT("Straight"); ?>
                     </a>
@@ -197,7 +197,7 @@
 
                 <!-- By question group -->
                 <li>
-                <a href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/bygroup"); ?>">
+                <a class="dropdown-item" href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/bygroup"); ?>">
                     <span class="icon-resetsurveylogic" ></span>
                     <?php eT("By question group"); ?>
                 </a>
@@ -212,7 +212,7 @@
                         <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
                     <?php else: ?>
                         <li>
-                            <a href="<?php echo $menuItem->getHref(); ?>">
+                            <a class="dropdown-item" href="<?php echo $menuItem->getHref(); ?>">
                                 <!-- Spit out icon if present -->
                                 <?php if ($menuItem->getIconClass() != ''): ?>
                                     <span class="<?php echo $menuItem->getIconClass(); ?>">&nbsp;</span>
@@ -232,7 +232,7 @@
     <?php foreach ($beforeSurveyBarRender as $menu): ?>
         <div class='btn-group'>
             <?php if ($menu->isDropDown()): ?>
-            <button class="dropdown-toggle btn btn-default" data-toggle="dropdown" href="#">
+            <button class="dropdown-toggle btn btn-default" data-bs-toggle="dropdown" href="#">
                 <?php if ($menu->getIconClass()): ?>
                     <span class="<?php echo $menu->getIconClass(); ?>"></span>&nbsp;
                 <?php endif; ?>
@@ -248,7 +248,7 @@
                             <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
                         <?php else: ?>
                             <li>
-                                <a href="<?php echo $menuItem->getHref(); ?>">
+                                <a class="dropdown-item" href="<?php echo $menuItem->getHref(); ?>">
                                     <!-- Spit out icon if present -->
                                     <?php if ($menuItem->getIconClass() != ''): ?>
                                     <span class="<?php echo $menuItem->getIconClass(); ?>">&nbsp;</span>
