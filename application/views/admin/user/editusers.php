@@ -33,7 +33,12 @@ echo viewHelper::getViewTestTag('usersIndex');
                 </div>
 
                 <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-                <a href="<?php echo Yii::app()->createUrl('admin/user/sa/index');?>" class="btn btn-warning"><?php eT('Reset');?></a>
+                <button 
+                    type="button"
+                    href="<?php echo Yii::app()->createUrl('admin/user/sa/index');?>" 
+                    class="btn btn-warning">
+                    <?php eT('Reset');?>
+                </button>
 
                 <?php $this->endWidget(); ?>
             </div>
@@ -76,7 +81,11 @@ echo viewHelper::getViewTestTag('usersIndex');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
                 <h4 class="modal-title" id="myModalLabel"><?php eT("Add a new survey administrator") ?></h4>
             </div>
             <div class="modal-body">

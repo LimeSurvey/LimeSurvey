@@ -39,10 +39,11 @@
                         <?php echo $form->textField($model, 'group_name', array('class' => 'form-control')); ?>
                     </div>
                     <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>
-                    <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
-                       class="btn btn-warning">
+                    <button 
+                        href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
+                        class="btn btn-warning">
                         <?php eT('Reset');?>
-                    </a>
+                    </button>
                 <?php $this->endWidget(); ?>
             </div>
         </div>

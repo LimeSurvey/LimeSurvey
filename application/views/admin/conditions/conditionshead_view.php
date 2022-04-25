@@ -4,6 +4,7 @@
 
         <?php if ($scenariocount > 0): ?>
             <button
+                type='button'
                 id='delete-all-conditions'
                 data-toggle='modal'
                 data-target='#confirmation-modal'
@@ -20,6 +21,7 @@
 
         <?php if ($scenariocount > 1): ?>
             <button
+                type='button'
                 id='renumber-scenario'
                 class="btn btn-outline-secondary pull-right condition-header-button"
                 data-toggle='modal'
@@ -48,7 +50,12 @@
         <!-- Modal content-->
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
             <div class="modal-header panel-heading">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button 
+                    type="button" 
+                    class="close" 
+                    data-dismiss="modal">
+                    &times;
+                </button>
                 <h4 class="modal-title"><?php eT('Quick-add conditions'); ?></h4>
             </div>
             <div class="modal-body">
@@ -56,8 +63,21 @@
                 <?php echo $quickAddConditionForm; ?>
             </div>
             <div class="modal-footer">
-                <button type="button" id='quick-add-condition-close-button' class="btn btn-cancel" data-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
-                <button role="button" type='submit' id='quick-add-condition-save-button' class='btn btn-primary'><?php eT('Save'); ?></button>
+                <button 
+                    type="button" 
+                    id='quick-add-condition-close-button' 
+                    class="btn btn-cancel" 
+                    data-dismiss="modal">
+                    &nbsp;
+                    <?php eT("Cancel"); ?>
+                </button>
+                <button 
+                    role="button" 
+                    type='submit' 
+                    id='quick-add-condition-save-button' 
+                    class='btn btn-primary'>
+                    <?php eT('Save'); ?>
+                </button>
                 <span id='quick-add-url' class='hidden'><?php echo $quickAddConditionURL; ?></span>
             </div>
         </div>

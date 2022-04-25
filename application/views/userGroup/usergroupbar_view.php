@@ -89,7 +89,13 @@
 
             <!-- Reset -->
             <?php if (isset($usergroupbar['resetbutton']['form'])) :?>
-                <button class="btn btn-warning" type="reset" role="button" form="<?php echo $usergroupbar['resetbutton']['form'] ?>" id="reset-form-button" value="Reset">
+                <button 
+                    class="btn btn-warning" 
+                    type="reset" 
+                    role="button" 
+                    form="<?php echo $usergroupbar['resetbutton']['form'] ?>" 
+                    id="reset-form-button" 
+                    value="Reset">
                     <span class="fa fa-refresh"></span>
                     <?php echo $usergroupbar['resetbutton']['text']; ?>
                 </button>

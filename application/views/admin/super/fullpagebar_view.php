@@ -94,29 +94,35 @@
 
             <!-- Reset -->
             <?php if (isset($fullpagebar['menus']['buttons']['reset']) && $fullpagebar['menus']['buttons']['reset']) :?>
-                <a class="btn btn-warning"
-                   id="restoreBtn"
-                   href="#"
-                >
-                    <i class="fa fa-refresh"></i>&nbsp;
+                <button
+                    type="button"
+                    class="btn btn-warning"
+                    id="restoreBtn"
+                    href="#">
+                    <i class="fa fa-refresh"></i>
+                    &nbsp;
                     <?php eT('Reset') ?>
-                </a>
+                </button>
             <?php endif; ?>
 
             <!-- Reorder -->
             <?php if (isset($fullpagebar['menus']['buttons']['reorder']) && $fullpagebar['menus']['buttons']['reorder']) : ?>
-                <a class="btn btn-warning"
-                   id="reorderentries">
-                    <i class="fa fa-sort"></i>&nbsp;
+                <button
+                    type="button"
+                    class="btn btn-warning"
+                    id="reorderentries">
+                    <i class="fa fa-sort"></i>
+                    &nbsp;
                     <?php eT('Reorder') ?>
-                </a>
+                </button>
             <?php endif; ?>
 
             <!-- Save and Close -->
             <?php if (isset($fullpagebar['saveandclosebutton']['form'])) :?>
                 <button 
                     class="btn btn-outline-secondary" 
-                    href="#" role="button" 
+                    href="#" 
+                    type="button" 
                     id="save-and-close-form-button" 
                     onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" 
                     data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">

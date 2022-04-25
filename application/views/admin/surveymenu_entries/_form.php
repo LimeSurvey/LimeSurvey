@@ -94,37 +94,108 @@ Yii::app()->getController()->renderPartial(
 		<div class="form-group">
 			<div class="list-group">
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel selector__disable_following" data-priority="6" data-option='["render","link","placeholder"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Remove link")?></div>
+					<div class="col-sm-1 text-right">
+						<input 
+							type="checkbox" 
+							data-value="1" 
+							class="checkbox selector__dataOptionModel selector__disable_following" 
+							data-priority="6" 
+							data-option='["render","link","placeholder"]' />
+					</div>
+					<div class="col-sm-10 text-left">
+						<?=gT("Remove link")?>
+					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel selector__disable_following" data-priority="5" data-option='["render","link","external"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("External Link")?></div>
+					<div class="col-sm-1 text-right">
+						<input 
+							type="checkbox" 
+							data-value="1" 
+							class="checkbox selector__dataOptionModel selector__disable_following" 
+							data-priority="5" 
+							data-option='["render","link","external"]' />
+					</div>
+					<div class="col-sm-10 text-left">
+						<?=gT("External Link")?>
+					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel" checked="true" data-priority="4" data-option='["render","link","pjax"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Load with pjax")?></div>
+					<div class="col-sm-1 text-right">
+						<input 
+							type="checkbox" 
+							data-value="1" 
+							class="checkbox selector__dataOptionModel" 
+							checked="true" 
+							data-priority="4" 
+							data-option='["render","link","pjax"]' />
+					</div>
+					<div class="col-sm-10 text-left">
+						<?=gT("Load with pjax")?>
+					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right"><input type="checkbox" data-value='["survey", "sid"]' class="checkbox selector__dataOptionModel" data-priority="3" data-option='["render","link","data","surveyid"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Add SurveyId to link")?></div>
+					<div class="col-sm-1 text-right">
+						<input 
+							type="checkbox" 
+							data-value='["survey", "sid"]' 
+							class="checkbox selector__dataOptionModel" 
+							data-priority="3" 
+							data-option='["render","link","data","surveyid"]' />
+					</div>
+					<div class="col-sm-10 text-left">
+						<?=gT("Add SurveyId to link")?>
+					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right"><input type="checkbox" data-value='["survey", "gsid"]' class="checkbox selector__dataOptionModel" data-priority="3" data-option='["render","link","data","gsid"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Add survey group ID to link")?></div>
+					<div class="col-sm-1 text-right">
+						<input 
+							type="checkbox" 
+							data-value='["survey", "gsid"]' 
+							class="checkbox selector__dataOptionModel" 
+							data-priority="3" 
+							data-option='["render","link","data","gsid"]' />
+					</div>
+					<div class="col-sm-10 text-left">
+						<?=gT("Add survey group ID to link")?>
+					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right"><input type="checkbox" data-value='["questiongroup", "gid"]' class="checkbox selector__dataOptionModel" data-priority="2" data-option='["render","link","data","gid"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Add question group ID to link")?></div>
+					<div class="col-sm-1 text-right">
+						<input 
+							type="checkbox"
+							data-value='["questiongroup", "gid"]' 
+							class="checkbox selector__dataOptionModel" 
+							data-priority="2" 
+							data-option='["render","link","data","gid"]' />
+					</div>
+					<div class="col-sm-10 text-left">
+						<?=gT("Add question group ID to link")?>
+					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right"><input type="checkbox" data-value='["question", "qid"]' class="checkbox selector__dataOptionModel" data-priority="1" data-option='["render","link","data","qid"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Add question ID to link")?></div>
+					<div class="col-sm-1 text-right">
+						<input 
+							type="checkbox" 
+							data-value='["question", "qid"]' 
+							class="checkbox selector__dataOptionModel" 
+							data-priority="1" 
+							data-option='["render","link","data","qid"]' />
+					</div>
+					<div class="col-sm-10 text-left">
+						<?=gT("Add question ID to link")?>
+					</div>
 				</label>
 			</div>
 		</div>
 		<div class="row ls-space margin bottom-10">
-			<button class="btn btn-warning pull-right " type="button" data-toggle="collapse" data-target="#collapseAdvancedOptions"><?php eT('Toggle advanced options') ?></button>
+			<button
+				type="button"
+				class="btn btn-warning pull-right" 
+				type="button" 
+				data-toggle="collapse" 
+				data-target="#collapseAdvancedOptions">
+				<?php eT('Toggle advanced options') ?>
+			</button>
 		</div>
 		<!-- Start collapsed advanced options -->
 		<div class="collapse" id="collapseAdvancedOptions">
@@ -137,21 +208,27 @@ Yii::app()->getController()->renderPartial(
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'name'); ?>
-				<p class="selector_infoBox alert alert-info hidden"><?=gT('The name must be unique for all menu entries throughout the software.')?></p>
+				<p class="selector_infoBox alert alert-info hidden">
+					<?=gT('The name must be unique for all menu entries throughout the software.')?>
+				</p>
 				<?php echo $form->textField($model, 'name', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'name'); ?>
 			</div>
 			
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'menu_title'); ?>
-				<p class="selector_infoBox alert alert-info hidden"><?=gT('This is the content of the menu link - leave blank to use the title.')?></p>
+				<p class="selector_infoBox alert alert-info hidden">
+					<?=gT('This is the content of the menu link - leave blank to use the title.')?>
+				</p>
 				<?php echo $form->textField($model, 'menu_title', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'menu_title'); ?>
 			</div>
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'menu_class'); ?>
-				<p class="selector_infoBox alert alert-warning hidden"><?=gT('If the link should have any extra classes, please insert them here.')?></p>
+				<p class="selector_infoBox alert alert-warning hidden">
+					<?=gT('If the link should have any extra classes, please insert them here.')?>
+				</p>
 				<?php echo $form->textField($model, 'menu_class', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'menu_class'); ?>
 			</div>
@@ -213,7 +290,12 @@ Yii::app()->getController()->renderPartial(
 	</div>
 </div>
 	<div class="modal-footer">
-        <button type="button" class="btn btn-cancel" data-dismiss="modal"><?=gT('Cancel')?></button>
+        <button 
+			type="button" 
+			class="btn btn-cancel" 
+			data-dismiss="modal">
+			<?=gT('Cancel')?>
+		</button>
 		<?php echo TbHtml::submitButton(($model->isNewRecord ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
 
 	</div>

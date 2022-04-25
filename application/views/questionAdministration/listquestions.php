@@ -79,10 +79,11 @@ $baseLanguage = $oSurvey->language;
                                 gT('Search', 'unescaped'),
                                 array('class'=>'btn btn-success')
                             ); ?>
-                            <a href="<?php echo App()->createUrl(
-                                'questionAdministration/listquestions',
-                                ['surveyid'=>$oSurvey->primaryKey]
-                            );?>" class="btn btn-warning"><?php eT('Reset');?></a>
+                            <button 
+                                href="<?php echo App()->createUrl('questionAdministration/listquestions',['surveyid'=>$oSurvey->primaryKey]);?>" 
+                                class="btn btn-warning">
+                                <?php eT('Reset');?>
+                            </button>
 
                         <?php $this->endWidget(); ?>
                     </div><!-- form -->

@@ -79,7 +79,13 @@
                             <?php eT("Install");?>
                         </button>
                     <?php endif; ?>
-                    <a href="<?php echo $abortUrl; ?>" class="btn btn-warning" data-dismiss="modal"><?php eT("Abort");?></a>
+                    <button
+                        type="button"
+                        href="<?php echo $abortUrl; ?>" 
+                        class="btn btn-warning" 
+                        data-dismiss="modal">
+                        <?php eT("Abort");?>
+                    </button>
                 </div>
             </div>
 
