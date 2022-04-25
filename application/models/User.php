@@ -169,7 +169,7 @@ class User extends LSActiveRecord
     {
         $dateCreated = $this->created;
         $date = new DateTime($dateCreated);
-        return $date->format($this->dateformat);
+        return $date->format($this->getDateFormat());
     }
 
     /**
@@ -935,5 +935,17 @@ class User extends LSActiveRecord
         $this->validation_key_expiration = $datePlusMaxExpiration->format('Y-m-d H:i:s');
 
         return $this->save();
+    }
+
+    /**
+     * Get the decription to be used in list
+     * @return $string
+     */
+    public function getDisplayName()
+    {
+        if (empty($this->full_name)) {
+            return $this->users_name;
+        }
+        return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
     }
 }

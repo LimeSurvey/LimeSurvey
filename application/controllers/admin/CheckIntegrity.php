@@ -744,7 +744,7 @@ class CheckIntegrity extends SurveyCommonAction
         /*     Check conditions                                               */
         /**********************************************************************/
         $okQuestion = array();
-        $sQuery = 'SELECT cqid,cid,cfieldname FROM {{conditions}}';
+        $sQuery = 'SELECT cqid,cid,cfieldname,qid FROM {{conditions}}';
         $aConditions = Yii::app()->db->createCommand($sQuery)->queryAll();
         $aDelete = array();
         foreach ($aConditions as $condition) {
