@@ -13,7 +13,7 @@
 <div class="btn-group">
     <!-- main  dropdown header -->
     <?php if ($oSurvey->isActive):?>
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-responses"></span>
             <?php eT("Responses"); ?><span class="caret"></span>
         </button>

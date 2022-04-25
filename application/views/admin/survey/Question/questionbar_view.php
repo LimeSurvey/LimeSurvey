@@ -16,7 +16,7 @@ $aReplacementData=array();
 
                     <!-- test/execute survey -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                         <span class="icon-do" ></span>
                         <?php if($oSurvey->active=='N'):?>
@@ -41,7 +41,7 @@ $aReplacementData=array();
                     <!-- preview group -->
                     <!-- Preview multilangue -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="icon-do"></span>
                         <?php eT("Preview question group"); ?> <span class="caret"></span>
                       </button>
@@ -59,7 +59,7 @@ $aReplacementData=array();
                     <!-- preview question -->
                     <!-- Single button -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="icon-do"></span>
                         <?php eT("Preview question"); ?> <span class="caret"></span>
                       </button>

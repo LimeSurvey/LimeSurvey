@@ -62,7 +62,7 @@
                     <label class='form-label '><?php echo $form->labelEx($model,'ico'); ?></label>
                     <div class=''>
                         <div class='btn-group'>
-                            <button type='button' class='btn btn-default dropdown-toggle limebutton form-control' data-toggle='dropdown' aria-hashpopup='true' aria-expanded='false'>
+                            <button type='button' class='btn btn-default dropdown-toggle limebutton form-control' data-bs-toggle='dropdown' aria-hashpopup='true' aria-expanded='false'>
                                 <?php eT('Select icon'); ?>
                                 <span class='caret'></span>
                             </button>

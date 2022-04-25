@@ -16,7 +16,7 @@
                 <!-- test/run survey -->
                 <?php if (count($languagelist) > 1): ?>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                                 <?=($oSurvey->active=='N' ? gT('Preview survey'): gT('Run survey'));?>
@@ -46,7 +46,7 @@
                     <?php if (count($languagelist) > 1): ?>
                         <!-- Preview multilangue -->
                         <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <span class="icon-do"></span>
                                 <?php eT("Preview question group"); ?>
@@ -150,7 +150,7 @@
                 <?php if (count($languagelist) > 1): ?>
                     <!-- test/run survey -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?=($oSurvey->active=='N' ? gT('Preview survey') : gT('Run survey'));?>
@@ -170,7 +170,7 @@
 
                     <!-- Preview multilangue -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?php eT("Preview question group"); ?>
@@ -190,7 +190,7 @@
 
                     <!-- preview question -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?php eT("Preview question"); ?>

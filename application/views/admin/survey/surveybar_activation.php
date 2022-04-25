@@ -65,7 +65,7 @@
     <!-- Multinlinguage -->
     <?php if (count($oSurvey->allLanguages) > 1): ?>
         <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-do" ></span>
             <?php echo $icontext; ?> <span class="caret"></span>
           </button>
