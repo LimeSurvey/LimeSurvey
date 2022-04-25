@@ -2300,13 +2300,20 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         if ($preferShortUrl) {
             $langParam = null;
-            $baseAlias = isset($this->languagesettings[$this->language]) ? $this->languagesettings[$this->language]->surveyls_alias : null;
             $alias = isset($this->languagesettings[$language]) ? $this->languagesettings[$language]->surveyls_alias : null;
 
             if (!empty($alias)) {
-                if ($alias == $baseAlias && $language != $this->language) {
-                    $langParam = $language;
+                // Check if there is other language with the same alias
+                foreach ($this->languagesettings as $otherLang => $settings) {
+                    if ($otherLang == $language || !isset($this->languagesettings[$otherLang])) {
+                        continue;
+                    }
+                    if ($this->languagesettings[$otherLang]->surveyls_alias == $alias) {
+                        $langParam = $language;
+                        break;
+                    }
                 }
+
                 $urlFormat = Yii::app()->getUrlManager()->getUrlFormat();
                 if ($urlFormat == CUrlManager::GET_FORMAT) {
                     $url = Yii::app()->getBaseUrl(true) . '?' . Yii::app()->getUrlManager()->routeVar . '=' . $alias;
