@@ -209,32 +209,37 @@
                     </div>
                     <?php else:?>
                     <!-- Preview/Run survey -->
-                    <a class="btn btn-outline-secondary  btntooltip selector__topbar--previewSurvey"
+                    <a 
+                        class="btn btn-outline-secondary  btntooltip selector__topbar--previewSurvey"
                         href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>"
-                        role="button" accesskey='d' target='_blank'>
+                        role="button" 
+                        accesskey='d' 
+                        target='_blank'>
                         <span class="icon-do"></span>
                         <?php if ($oSurvey->active=='N'):?>
-                        <?php eT('Preview survey');?>
+                            <?php eT('Preview survey');?>
                         <?php else: ?>
-                        <?php eT('Run survey');?>
+                            <?php eT('Run survey');?>
                         <?php endif;?>
                     </a>
 
                     <!-- preview question -->
-                    <a class="btn btn-outline-secondary"
+                    <button
+                        class="btn btn-outline-secondary"
                         href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>'
                         role="button" target="_blank">
                         <span class="icon-do"></span>
                         <?php eT("Preview");?>
-                    </a>
+                    </button>
 
                     <!-- Preview simple langue -->
-                    <a class="btn btn-outline-secondary"
+                    <button 
+                        class="btn btn-outline-secondary"
                         href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
                         role="button" target="_blank">
                         <span class="icon-do"></span>
                         <?php eT("Preview question group");?>
-                    </a>
+                    </button>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
@@ -259,12 +264,14 @@
 
             <!-- Close -->
             <?php if (isset($questiongroupbar['closebutton']['url'])):?>
-                <a class="btn btn-danger" id="close-button"
+                <button 
+                    class="btn btn-danger"
+                    id="close-button"
                     href="<?php echo $questiongroupbar['closebutton']['url']; ?>"
-                    role="button">
+                    type="button">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- return -->

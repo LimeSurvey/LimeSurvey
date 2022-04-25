@@ -16,34 +16,47 @@
 
             <!-- Add -->
             <?php if (Permission::model()->hasGlobalPermission('usergroups', 'create') && isset($usergroupbar['returnbutton']['url'])) :?>
-                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("userGroup/addGroup"); ?>" role="button" title="<?php eT('Add a new user group'); ?>">
+                <button 
+                    class="btn btn-outline-secondary" 
+                    href="<?php echo $this->createUrl("userGroup/addGroup"); ?>" 
+                    type="button" 
+                    title="<?php eT('Add a new user group'); ?>">
                     <span class="icon-add text-success"></span>
                     <?php eT("Add user group"); ?>
-                </a>
+                </button>
             <?php endif; ?>
 
             <!-- Mail to all Members -->
             <?php if (isset($usergroupbar['edit'])) : ?>
-                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroup->ugid); ?>" role="button">
+                <button 
+                    class="btn btn-outline-secondary"
+                    href="<?php echo $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroup->ugid); ?>" 
+                    type="button">
                     <span class="icon-invite text-success"></span>
                     <?php eT("Mail to all Members"); ?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- Edit current user group -->
             <?php if (isset($usergroupbar['edit']) &&  (Yii::app()->session['loginID'] == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
-                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("userGroup/edit/ugid/" . $userGroup->ugid); ?>" role="button">
+                <button 
+                    class="btn btn-outline-secondary" 
+                    href="<?php echo $this->createUrl("userGroup/edit/ugid/" . $userGroup->ugid); ?>" 
+                    type="button">
                     <span class="fa fa-pencil text-success"></span>
                     <?php eT("Edit current user group"); ?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- Delete current user group -->
             <?php if (isset($usergroupbar['edit']) &&  (Yii::app()->session['loginID'] == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'))) :?>
-                <a class="btn btn-outline-secondary" href='#' onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl('userGroup/deleteGroup?ugid=' . $userGroup->ugid)); ?>}'>
+                <button 
+                    class="btn btn-outline-secondary" 
+                    href='#' 
+                    onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl('userGroup/deleteGroup?ugid=' . $userGroup->ugid)); ?>}'>
                     <span class="fa fa-trash text-success"></span>
                     <?php eT("Delete current user group"); ?>
-                </a>
+                </button>
             <?php endif;?>
         </div>
 
@@ -52,19 +65,26 @@
 
             <!-- Close -->
             <?php if (isset($usergroupbar['closebutton']['url'])) :?>
-                <a class="btn btn-danger" href="<?php echo $usergroupbar['closebutton']['url']; ?>" role="button">
+                <button 
+                    class="btn btn-danger" 
+                    href="<?php echo $usergroupbar['closebutton']['url']; ?>" 
+                    type="button">
                     <span class="fa fa-close" ></span>
                     <?php eT("Close");?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- Back -->
             <?php if (isset($usergroupbar['returnbutton']['url'])) :?>
-                <a class="btn btn-outline-secondary" style="margin-left:5px;" href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>" role="button">
+                <button 
+                    class="btn btn-outline-secondary" 
+                    style="margin-left:5px;" 
+                    href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>" 
+                    type="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
                     <?php echo $usergroupbar['returnbutton']['text']; ?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- Reset -->
@@ -77,7 +97,13 @@
 
             <!-- Save -->
             <?php if (isset($usergroupbar['savebutton']['form'])) :?>
-                <button class="btn btn-primary" type="submit" href="#" role="button" id="save-form-button" data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
+                <button 
+                    class="btn btn-primary" 
+                    type="submit" 
+                    href="#"
+                    type="button" 
+                    id="save-form-button" 
+                    data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
                     <span class="fa fa-envelope" ></span>
                     <?php echo $usergroupbar['savebutton']['text'];?>
                 </button>

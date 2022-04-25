@@ -13,7 +13,12 @@ Yii::app()->getController()->renderPartial(
         <input type="hidden" name="userid" value="<?= $userId ?>" />
         <input type="hidden" name="user" value="<?= $sUserName ?>" />
         <button class="btn btn-cancel" data-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
-        <button class="btn btn-danger btn-ok" id="submitForm">&nbsp;<?php eT("Delete"); ?></button>
+        <button 
+            class="btn btn-danger btn-ok" 
+            id="submitForm">
+            &nbsp;
+            <?php eT("Delete"); ?>
+        </button>
     </form>
 </div>
 

@@ -8,18 +8,30 @@
         <span class="fa fa-bar-chart"></span>
         <?php eT("Simple mode"); ?>
     </a>
-    <button class="btn btn-success" type="button" name="view-button" id="view-button" data-submit-form=1>
+    <button 
+        class="btn btn-success" 
+        type="button" 
+        name="view-button" 
+        id="view-button" 
+        data-submit-form=1>
         <span class="fa"></span>
         <?php eT("View statistics"); ?>
     </button>
 
-    <button class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/statistics/sa/index/",array('surveyid'=>$surveyid)) ?>" id="clear-button">
+    <button 
+        class="btn btn-outline-secondary" 
+        href="<?php echo Yii::app()->createUrl("admin/statistics/sa/index/",array('surveyid'=>$surveyid)) ?>" 
+        id="clear-button"
+        type="button">
         <span class="fa fa-refresh text-success"></span>
         <?php eT("Clear"); ?>
     </button>
 <?php endif; ?>
 
-<a class="btn btn-danger" href="<?php echo Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $surveyid]); ?>" role="button">
+<button 
+    class="btn btn-danger"
+    href="<?php echo Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $surveyid]); ?>" 
+    type="button">
     <span class="fa fa-close"></span>
     <?php eT("Close");?>
-</a>
+</button>

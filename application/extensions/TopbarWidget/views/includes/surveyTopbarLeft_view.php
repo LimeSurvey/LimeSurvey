@@ -30,10 +30,13 @@
 
     <!-- Stop survey -->
     <?php if ($canactivate): ?>
-        <a class="btn btn-danger btntooltip" href="<?php echo App()->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]); ?>" role="button">
+        <button 
+            class="btn btn-danger btntooltip" 
+            href="<?php echo App()->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]); ?>" 
+            type="button">
             <i class="fa fa-stop-circle" ></i>
             <?php eT("Stop this survey"); ?>
-        </a>
+    </button>
     <?php endif; ?>
 <?php endif; ?>
 

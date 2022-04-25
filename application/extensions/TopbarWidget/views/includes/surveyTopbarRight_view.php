@@ -74,8 +74,8 @@
 
 <!-- Close -->
 <?php if (!empty($showCloseButton)): ?>
-    <a class="btn btn-danger" href="<?php echo $closeUrl; ?>" role="button">
+    <button class="btn btn-danger" href="<?php echo $closeUrl; ?>" type="button">
         <span class="fa fa-close"></span>
         <?php eT("Close"); ?>
-    </a>
+    </button>
 <?php endif; ?>

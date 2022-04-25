@@ -117,15 +117,20 @@ echo viewHelper::getViewTestTag('templateOptions');
 
                                                     <!-- Export -->
                                                     <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) :?>
-                                                        <a class="btn btn-outline-secondary  btn-block" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>" role="button">
+                                                        <button 
+                                                            class="btn btn-outline-secondary btn-block" 
+                                                            id="button-export" 
+                                                            href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>" 
+                                                            type="button">
                                                             <span class="icon-export text-success"></span>
                                                             <?php eT("Export"); ?>
-                                                        </a>
+                                                        </button>
                                                     <?php endif;?>
 
                                                     <!-- Delete -->
                                                     <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) :?>
-                                                        <a
+                                                        <button
+                                                            type="button"
                                                             id="button-delete"
                                                             href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
                                                             data-post='{ "templatename": "<?php echo $sName; ?>" }'
@@ -134,7 +139,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                             class="btn btn-danger selector--ConfirmModal">
                                                                 <span class="fa fa-trash"></span>
                                                                 <?php eT('Delete'); ?>
-                                                        </a>
+                                                        </button>
                                                     <?php endif;?>
 
                                                 </td>

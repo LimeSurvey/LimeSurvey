@@ -30,7 +30,9 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                             <?=gt("Activate 2FA now");?>
         </b>
                     <?php if ($force2FA == true) { ?> 
-                        <a class="btn btn-danger TFA--excludefromlock" href="<?=App()->createUrl("admin")?>" id="TFA--excludeNotNow"><?=gT("Not now");?> </a>
+                        <button type="button" class="btn btn-danger TFA--excludefromlock" href="<?=App()->createUrl("admin")?>" id="TFA--excludeNotNow">
+                            <?=gT("Not now");?>
+                        </button>
                     <?php } ?>
                     </p>
                 </div>

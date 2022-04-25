@@ -148,7 +148,8 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <?php endif;?>
 
                 <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) :?>
-                    <a
+                    <button
+                        type="button"
                         id="button-delete"
                         href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/delete/'); ?>"
                         data-post='{ "templatename": "<?php echo $templatename; ?>" }'
@@ -157,7 +158,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                         class="btn btn-danger selector--ConfirmModal">
                             <span class="fa fa-trash"></span>
                             <?php eT('Delete'); ?>
-                        </a>
+                    </button>
                 <?php endif;?>
             <?php endif;?>
         </div>
@@ -186,7 +187,12 @@ echo viewHelper::getViewTestTag('themeEditor');
             </div>
 
             <?php if (isset($fullpagebar['savebutton']['form'])) :?>
-                <button class="btn btn-success" href="#" type="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+                <button 
+                    class="btn btn-success" 
+                    href="#" 
+                    type="button" 
+                    id="save-form-button" 
+                    data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="fa fa-floppy-o" ></span>
                     <?php eT("Save");?>
                 </button>
@@ -194,19 +200,25 @@ echo viewHelper::getViewTestTag('themeEditor');
 
             <!-- Close -->
             <?php if (isset($fullpagebar['closebutton']['url'])) :?>
-                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
+                <button 
+                    class="btn btn-danger"
+                    href="<?php echo $fullpagebar['closebutton']['url']; ?>"
+                    type="button">
                     <span class="fa fa-close" ></span>
                     <?php eT("Close");?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- Return to Theme List -->
             <?php if (isset($templateEditorBar['buttons']['returnbutton'])) :?>
-                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
+                <button 
+                    class="btn btn-outline-secondary" 
+                    href="<?php echo $this->createUrl("themeOptions/index"); ?>" 
+                    type="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
                     <?php eT("Back"); ?>
-                </a>
+                </button>
             <?php endif;?>
         </div>
     </div>

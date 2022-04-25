@@ -10,9 +10,12 @@
 
 <!-- Delete tokens table -->
 <?php if (!empty($showDelButton) && ($hasSurveySettingsUpdatePermission || $hasTokensDeletePermission)) : ?>
-    <a class="btn btn-danger" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/kill/surveyid/$oSurvey->sid"); ?>" role="button">
+    <button 
+        class="btn btn-danger"
+        href="<?php echo Yii::App()->createUrl("admin/tokens/sa/kill/surveyid/$oSurvey->sid"); ?>"
+        type="button">
         <?php eT("Delete participants table"); ?>
-    </a>
+    </button>
 <?php endif; ?>
 
 <!-- Download CSV -->

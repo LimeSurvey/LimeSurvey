@@ -55,10 +55,13 @@
 
     <!-- Stop survey -->
     <?php if ($canactivate): ?>
-        <a class="btn btn-danger btntooltip" href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>" role="button">
+        <button
+            class="btn btn-danger btntooltip"
+            href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>"
+            type="button">
             <i class="fa fa-stop-circle" ></i>
             <?php eT("Stop this survey"); ?>
-        </a>
+        </button>
     <?php endif; ?>
 <?php endif; ?>
 
@@ -69,7 +72,12 @@
     <!-- Multinlinguage -->
     <?php if (count($oSurvey->allLanguages) > 1): ?>
         <div class="btn-group">
-          <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button
+            type="button" 
+            class="btn btn-outline-secondary dropdown-toggle" 
+            data-toggle="dropdown" 
+            aria-haspopup="true" 
+            aria-expanded="false">
             <span class="icon-do" ></span>
             <?php echo $icontext; ?> <span class="caret"></span>
           </button>

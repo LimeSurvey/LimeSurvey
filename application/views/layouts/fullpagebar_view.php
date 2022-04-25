@@ -16,20 +16,23 @@
             <?php if (isset($fullpagebar['themes'])) : ?>
                 <!-- Upload and Install -->
                 <?php if (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && $fullpagebar['themes']['canImport']) : ?>
-                    <a id="uploadandinstall"
-                       class="btn btn-outline-secondary"
-                       href=""
-                       role="button"
-                       data-toggle="modal"
-                       data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
-                    >
+                    <button 
+                        id="uploadandinstall"
+                        class="btn btn-outline-secondary"
+                        href=""
+                        role="button"
+                        data-toggle="modal"
+                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>">
                         <span class="icon-import text-success"></span>
                         <?php eT("Upload & install"); ?>
-                    </a>
+                    </button>
                 <?php elseif (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && !$fullpagebar['themes']['canImport'] && isset($fullpagebar['themes']['importErrorMessage'])) : ?>
                     <!-- import disabled -->
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $fullpagebar['themes']['importErrorMessage']['importErrorMessage']; ?>" style="display: inline-block">
-                    <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
+                    <button 
+                        type="button" 
+                        class="btn btn-outline-secondary btntooltip" 
+                        disabled="disabled">
                         <span class="icon-import text-success"></span>
                         <?php eT("Import"); ?>
                     </button>
@@ -42,14 +45,14 @@
                 isset($fullpagebar['listSurveys']['buttons']['createSurvey']) &&
                 Permission::model()->hasGlobalPermission('surveys', 'create')
             ) : ?>
-                <a class="btn btn-outline-secondary tab-dependent-button"
-                   data-tab="#surveys"
-                   href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>"
-                   role="button"
-                >
+                <button 
+                    class="btn btn-outline-secondary tab-dependent-button"
+                    data-tab="#surveys"
+                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>"
+                    type="button">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create survey");?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- List Surveys - Create a new Survey group -->
@@ -57,24 +60,26 @@
                 isset($fullpagebar['listSurveys']['buttons']['createSurveyGroup']) &&
                 Permission::model()->hasGlobalPermission('surveysgroups', 'create')
             ) : ?>
-                <a class="btn btn-outline-secondary tab-dependent-button"
-                   data-tab="#surveygroups"
-                   href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurveyGroup']['url']; ?>"
-                   role="button"
-                   style="display: none;"
-                >
+                <button 
+                    class="btn btn-outline-secondary tab-dependent-button"
+                    data-tab="#surveygroups"
+                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurveyGroup']['url']; ?>"
+                    type="button"
+                    style="display: none;">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create survey group");?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- Dashboard - Add a new Box -->
             <?php if(isset($fullpagebar['boxbuttons'])): ?>
                 <!-- Create Box Button -->
-                <a href="<?php echo $this->createUrl('homepageSettings/createBox/'); ?>" class="btn btn-outline-secondary">
+                <button 
+                    href="<?php echo $this->createUrl('homepageSettings/createBox/'); ?>"
+                    class="btn btn-outline-secondary">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create box"); ?>
-                </a>
+                </button>
             <?php endif; ?>
         </div>
 
@@ -83,32 +88,47 @@
 
             <!-- Close -->
             <?php if (isset($fullpagebar['closebutton']['url'])) :?>
-                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
+                <button 
+                    class="btn btn-danger" 
+                    href="<?php echo $fullpagebar['closebutton']['url']; ?>"
+                    type="button">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- White Close button -->
             <?php if (isset($fullpagebar['white_closebutton']['url'])) :?>
-                <a class="btn btn-outline-secondary" href="<?php echo $fullpagebar['white_closebutton']['url']; ?>" role="button">
+                <button 
+                    class="btn btn-outline-secondary"
+                    href="<?php echo $fullpagebar['white_closebutton']['url']; ?>"
+                    type="button">
                      <span class="fa fa-close"></span>
                     <?php eT("Close");?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- Return -->
             <?php if (isset($fullpagebar['returnbutton']['url'])) :?>
-                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button">
+                <button 
+                    class="btn btn-outline-secondary"
+                    href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>"
+                    type="button">
                     <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
                     <?php echo $fullpagebar['returnbutton']['text']; ?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- Save and Close -->
             <?php if (isset($fullpagebar['saveandclosebutton']['form'])) :?>
-                <button class="btn btn-outline-secondary" href="#" type="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
+                <button 
+                    class="btn btn-outline-secondary"
+                    href="#" 
+                    type="button" 
+                    id="save-and-close-form-button" 
+                    onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" 
+                    data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
             </button>
@@ -116,7 +136,13 @@
 
             <!-- Save -->
             <?php if (isset($fullpagebar['savebutton']['form'])) :?>
-                <button class="btn btn-success" href="#" type="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+                <button 
+                    class="btn btn-success"
+                    href="#" 
+                    type="button" 
+                    id="save-form-button" 
+                    onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" 
+                    data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="fa fa-check"></span>
                     <?php eT("Save");?>
                 </button>
@@ -129,7 +155,8 @@
                     <?php eT("Reset");?>
                 </a>
                 <!-- Save Box Settings Button -->
-                <button data-url="<?php echo $this->createUrl('homepageSettings/updateBoxesSettings'); ?>"
+                <button 
+                    data-url="<?php echo $this->createUrl('homepageSettings/updateBoxesSettings'); ?>"
                     class="btn btn-success" 
                     type="button" 
                     id="save_boxes_setting">
@@ -139,10 +166,13 @@
 
             <!-- Manage your Key -->
             <?php if (isset($fullpagebar['update'])) :?>
-                <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-outline-secondary">
+                <button 
+                    href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>"
+                    class="btn btn-outline-secondary"
+                    type="button">
                     <span class="fa fa-key text-success"></span>
                     <?php eT("Manage your key");?>
-                </a>
+                </button>
             <?php endif;?>
         </div>
     </div>

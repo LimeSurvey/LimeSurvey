@@ -202,17 +202,23 @@ $aReplacementData=array();
                     </button>
                 <?php endif;?>
                 
-                <button class="btn btn-outline-secondary" href="<?php echo $this->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>" type="button">
+                <button 
+                    class="btn btn-outline-secondary"
+                    href="<?php echo $this->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>"
+                    type="button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </button>
 
                 <!-- Close -->
                 <?php if(isset($questionbar['closebutton']['url'])):?>
-                    <a class="btn btn-danger pull-right margin-left" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
+                    <button 
+                        class="btn btn-danger pull-right margin-left" 
+                        href="<?php echo $questionbar['closebutton']['url']; ?>" 
+                        type="button">
                         <span class="fa fa-close"></span>
                         <?php eT("Close");?>
-                    </a>
+                    </button>
                 <?php endif;?>
 
                 <!-- Condition designer navigator -->
@@ -231,10 +237,13 @@ $aReplacementData=array();
     <?php else: ?>        
         <!-- Close -->
         <?php if(isset($questionbar['closebutton']['url'])):?>
-            <a class="btn btn-danger pull-right margin-left" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
+            <button 
+                class="btn btn-danger pull-right margin-left" 
+                href="<?php echo $questionbar['closebutton']['url']; ?>" 
+                type="button">
                 <span class="fa fa-close"></span>
                 <?php eT("Close");?>
-            </a>
+            </button>
         <?php endif;?>
     <?php endif; ?>
 
@@ -249,7 +258,11 @@ $aReplacementData=array();
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
                 </button>
-                <button class="btn btn-outline-secondary" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" type="button" id="save-and-close-button">
+                <button 
+                    class="btn btn-outline-secondary" 
+                    href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" 
+                    type="button" 
+                    id="save-and-close-button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </button>
