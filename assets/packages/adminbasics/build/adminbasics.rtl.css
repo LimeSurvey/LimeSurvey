@@ -4580,22 +4580,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   min-height: 100px;
 }
 
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: right;
-  padding-bottom: 15px;
-}
-
 #selectable .ui-selecting {
   background: #8CCE00;
 }
@@ -4658,6 +4642,22 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   padding: 10px;
   border-radius: 3px;
   margin: 8px;
+}
+
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+.responses-column-filter-modal-checkbox-buttons {
+  text-align: right;
+  padding-bottom: 15px;
 }
 
 .translate > table {
