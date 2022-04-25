@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.10 (build 220419) to 5.3.11 (build 220425) April 25, 2022
+-Fixed issue: [security] Minor XSS issue in plugin overview - reported by Podalirius (podalirius.net/en/) (Carsten Schmitz)
+-Fixed issue: Creation date not properly shown in user list (Carsten Schmitz)
+#Updated translation: Slovenian by c_schmitz, dusan
+#Updated translation: Slovak by c_schmitz, jelen1
+#Updated translation: Russian by kvolk2lim, vipgroup
+#Updated translation: Japanese by d_inoue
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.3.9 (build 220411) to 5.3.10 (build 220419) April 19, 2022
 -Fixed issue #17902: Question theme error: Missing metadata (Type: M) (#2317) (Gabriel Jenik)
 #Updated translation: Turkish by kayazeren
