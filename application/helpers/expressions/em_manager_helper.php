@@ -5155,14 +5155,13 @@
                         }
 
                         // Set certain variables normally set by StartProcessingGroup()
-                        $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup, See self::InitGroupRelevanceInfo();
+                        $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup
                         $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
                         $LEM->currentQID=$qInfo['qid'];
                         $LEM->currentGroupSeq=$qInfo['gseq'];
                         if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                             $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                         }
-                        self::InitGroupRelevanceInfo();
                         $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                         $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                         $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -5372,14 +5371,13 @@
                         }
 
                         // Set certain variables normally set by StartProcessingGroup()
-                        $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup? see self::InitGroupRelevanceInfo();
+                        $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
                         $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
                         $LEM->currentQID=$qInfo['qid'];
                         $LEM->currentGroupSeq=$qInfo['gseq'];
                         if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                             $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                         }
-                        self::InitGroupRelevanceInfo();;
                         $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                         $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                         $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -5884,7 +5882,7 @@
                         }
 
                         // Set certain variables normally set by StartProcessingGroup()
-                        $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup? see self::InitGroupRelevanceInfo();
+                        $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
                         if (!isset($LEM->questionSeq2relevance[$LEM->currentQuestionSeq])) {
                             return NULL;    // means an invalid question - probably no sub-quetions
                         }
@@ -5894,7 +5892,6 @@
                         if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                             $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                         }
-                        self::InitGroupRelevanceInfo();;
                         $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                         $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                         $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$force);
@@ -7163,33 +7160,6 @@
         }
 
         /**
-         * Init groupRelevanceInfo with qid as 0 for expression not related to question
-         * see issue #17966
-         * @return void
-         */
-        private static function InitGroupRelevanceInfo()
-        {
-            $LEM =& LimeExpressionManager::singleton();
-            if (is_null($LEM->currentGroupSeq)) {
-                return;
-            }
-            $LEM->groupRelevanceInfo = [
-                [
-                    'qid' => 0,
-                    'gseq' => $LEM->currentGroupSeq,
-                    'eqn' => '',
-                    'result' => true,
-                    'numJsVars' => 0,
-                    'relevancejs' => '',
-                    'relevanceVars' => '',
-                    'jsResultVar' => '',
-                    'type' => '',
-                    'hidden' => false,
-                    'hasErrors' => false,
-                ]
-            ];
-        }
-        /**
         * This should be called each time a new group is started, whether on same or different pages. Sets/Clears needed internal parameters.
         * @param int|null $gseq - the group sequence
         * @param boolean|null $anonymized - whether anonymized
@@ -7209,7 +7179,6 @@
             if (!is_null($gseq))
             {
                 $LEM->currentGroupSeq = $gseq;
-                self::InitGroupRelevanceInfo();
                 if (!is_null($surveyid))
                 {
                     $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized);
@@ -7414,7 +7383,22 @@
                         }
                     }
                 }
+                /* Add not related to question javascript at end */
+                $pageRelevanceInfo[] = array(
+                    'qid' => 0,
+                    'gseq' => $LEM->currentGroupSeq,
+                    'eqn' => '',
+                    'result' => true,
+                    'numJsVars' => 0,
+                    'relevancejs' => '',
+                    'relevanceVars' => '',
+                    'jsResultVar' => '',
+                    'type' => '',
+                    'hidden' => false,
+                    'hasErrors' => false,
+                );
             }
+
             $valEqns = array();
             $relEqns = array();
             $relChangeVars = array();
@@ -7502,7 +7486,8 @@
 
                     $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
 
-                    if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars']==0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0)
+                    /* relevance stat on question (need $arg['qid']) and set group always relevant */
+                    if ($arg['qid'] && ($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars']==0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0)
                     {
                         // Only show constitutively true relevances if there is tailoring that should be done.
                         // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
@@ -7807,8 +7792,10 @@
                         // This make same than flattenText to be same in JS and in PHP
                         $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text()));\n";
                     }
-                    $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
-                    $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                    if ($arg['qid']) {
+                        $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
+                        $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                    }
 
                     $relParts[] = "}\n";
                     if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars']==0)))
@@ -7825,7 +7812,7 @@
                         $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                         $relParts[] = "}\n";
                     }
-                    else
+                    elseif($arg['qid'])
                     {
                         // Second time : now if relevance is true: Group is allways visible (see bug #08315).
                         $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
