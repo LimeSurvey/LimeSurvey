@@ -2097,7 +2097,7 @@ progress {
   vertical-align: bottom;
 }
 .table > :not(:first-child) {
-  border-top: 1px solid currentColor;
+  border-top: 2px solid currentColor;
 }
 
 .caption-top {
@@ -12031,4 +12031,10 @@ a {
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
+}
+
+.page-item {
+  border-radius: 25px !important;
+  margin-right: 2px;
+  margin-left: 2px;
 }
