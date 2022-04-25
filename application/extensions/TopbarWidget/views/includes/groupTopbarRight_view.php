@@ -1,7 +1,7 @@
 <!-- Edit button -->
 <?php if($hasSurveyContentUpdatePermission): ?>
-    <a class="btn btn-success pjax" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/edit/surveyid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
+    <button class="btn btn-success pjax" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/edit/surveyid/{$surveyid}/gid/{$gid}/"); ?>" type="button" role="button">
         <span class="icon-edit"></span>
         <?php eT("Edit");?>
-    </a>
+    </button>
 <?php endif; ?>

@@ -36,7 +36,7 @@
             </div>
             <div class='form-group'>
                 <div class='col-sm-12 text-center'>
-                    <button class='btn btn-success' id='btnSaveParams'>
+                    <button class='btn btn-success' id='btnSaveParams' type="button">
                         <span class="fa fa-floppy-o icon"></span>
                         <?php eT('Save'); ?>
                     </button>

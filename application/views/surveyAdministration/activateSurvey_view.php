@@ -270,10 +270,12 @@
             <div class='row'>
                 <div class='col-sm-6 col-sm-offset-4'>
                     <input type='hidden' name='ok' value='Y' />
-                    <input id="activateSurvey__basicSettings--proceed" type='submit' class="btn btn-success btn-lg " value="<?php eT("Save & activate survey"); ?>" />
-                    <a class="btn btn-outline-secondary btn-lg" href="<?php echo $this->createUrl("surveyAdministration/view/", ['surveyid'=> $surveyid]); ?>" role="button">
-                    <?php eT("Cancel"); ?>
-                    </a>
+                    <button id="activateSurvey__basicSettings--proceed" type='submit' class="btn btn-success btn-lg ">
+                        <?php eT("Save & activate survey"); ?>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-lg" href="<?php echo $this->createUrl("surveyAdministration/view/", ['surveyid'=> $surveyid]); ?>" type="button">
+                        <?php eT("Cancel"); ?>
+                    </button>
                 </div>
             </div>
 

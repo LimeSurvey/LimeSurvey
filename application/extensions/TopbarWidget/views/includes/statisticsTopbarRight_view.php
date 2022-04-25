@@ -8,7 +8,7 @@
         <span class="fa fa-bar-chart"></span>
         <?php eT("Simple mode"); ?>
     </a>
-    <button class="btn btn-success" name="view-button" id="view-button" data-submit-form=1>
+    <button class="btn btn-success" type="button" name="view-button" id="view-button" data-submit-form=1>
         <span class="fa"></span>
         <?php eT("View statistics"); ?>
     </button>

@@ -7,9 +7,9 @@
 <?php if (!$oSurvey->isActive): ?>
     <!-- activate -->
     <?php if ($canactivate): ?>
-        <a id='ls-activate-survey' class="btn btn-success" href="<?php echo App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]); ?>" role="button">
+        <button id='ls-activate-survey' type="button" class="btn btn-success" href="<?php echo App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]); ?>" role="button">
             <?php eT("Activate this survey"); ?>
-        </a>
+        </button>
 
     <!-- can't activate -->
     <?php else: ?>

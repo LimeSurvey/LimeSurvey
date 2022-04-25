@@ -18,9 +18,9 @@
 
     <!-- activate -->
     <?php if ($canactivate): ?>
-        <a id='ls-activate-survey' class="btn btn-success" href="<?php echo $this->createUrl("surveyAdministration/activate/surveyid/$oSurvey->sid"); ?>" role="button">
+        <button id='ls-activate-survey' class="btn btn-success" href="<?php echo $this->createUrl("surveyAdministration/activate/surveyid/$oSurvey->sid"); ?>" type="button">
             <?php eT("Activate this survey"); ?>
-        </a>
+        </button>
 
     <!-- can't activate -->
     <?php elseif (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveyactivation', 'update')): ?>
@@ -35,15 +35,19 @@
     <!-- activate expired survey -->
     <?php if ($expired) : ?>
         <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<?php eT('This survey is active but expired.'); ?><br><?php eT('Click to adjust.'); ?>">
-            <a href='<?php echo $this->createUrl("surveyAdministration/rendersidemenulink/subaction/publication", ['surveyid' => $oSurvey->sid]); ?>'class="btn btn-success btntooltip" >
-                <span class="fa fa-ban">&nbsp;</span>
+            <button href='<?php echo $this->createUrl("surveyAdministration/rendersidemenulink/subaction/publication", ['surveyid' => $oSurvey->sid]); ?>'class="btn btn-success btntooltip" >
+                <span class="fa fa-ban">
+                    &nbsp;
+                </span>
                 <?php eT("Expired"); ?>
-            </a>
+            </button>
         </span>
     <?php elseif ($notstarted) : ?>
         <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>
             <button type="button" class="btn btn-success btntooltip" disabled="disabled" >
-                <span class="fa fa-clock-o">&nbsp;</span>
+                <span class="fa fa-clock-o">
+                    &nbsp;
+                </span>
                 <?php eT("Activate this survey"); ?>
             </button>
         </span>

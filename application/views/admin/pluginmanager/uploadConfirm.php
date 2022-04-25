@@ -71,9 +71,13 @@
                 <label class="col-sm-4 control-label"></label>
                 <div class="col-sm-4">
                     <?php if ($isUpdate): ?>
-                        <input type="submit" class="btn btn-success" value="<?php eT("Update");?>" />
+                        <button type="submit" class="btn btn-success">
+                            <?php eT("Update");?>
+                        </button>
                     <?php else: ?>
-                        <input type="submit" class="btn btn-success" value="<?php eT("Install");?>" />
+                        <button type="submit" class="btn btn-success">
+                            <?php eT("Install");?>
+                        </button>
                     <?php endif; ?>
                     <a href="<?php echo $abortUrl; ?>" class="btn btn-warning" data-dismiss="modal"><?php eT("Abort");?></a>
                 </div>

@@ -40,7 +40,9 @@ $isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == 
 
                     <div class='form-group'>
                         <div class='col-sm-5 col-sm-offset-4'>
-                            <input class="btn btn btn-success" name="submit" type="submit" class="submit btn btn-outline-secondary" value="<?php eT("Next");?>" />
+                            <button class="btn btn btn-success" name="submit"  class="submit btn btn-outline-secondary">
+                                <?php eT("Next");?>
+                            </button>
                         </div>
                     </div>
                     <div class='form-group'>

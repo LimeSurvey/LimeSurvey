@@ -61,7 +61,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             <?php if ( Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create') ) { ?>
               <div class="row">
                 <div class="col-sm-12">
-                  <button class="btn btn-success" id="selector__assessment-add-new">
+                  <button class="btn btn-success" type="button" id="selector__assessment-add-new">
                     <?=eT("Add new assessment rule")?>
                   </button>
                 </div>

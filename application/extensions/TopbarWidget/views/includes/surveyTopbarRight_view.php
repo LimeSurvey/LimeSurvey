@@ -37,11 +37,12 @@
 
 <!-- Green Save and Close -->
 <?php if (!empty($showGreenSaveAndCloseButton)): ?>
-    <a class="btn btn-success"
-       href="<?php echo $closeUrl; ?>"
-       role="button"
-       id="save-and-close-button"
-       onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
+    <button 
+        class="btn btn-success"
+        href="<?php echo $closeUrl; ?>"
+        type="button"
+        id="save-and-close-button"
+        onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
         <span class="fa fa-saved"></span>
         <?php eT("Save and close"); ?>
     </a>
@@ -49,15 +50,15 @@
 
 <!-- Save -->
 <?php if (!empty($showSaveButton)): ?>
-    <a id="save-button" class="btn btn-success pull-right" role="button">
+    <button id="save-button" class="btn btn-success pull-right" type="button">
         <i class="fa fa-check"></i>
         <?php eT("Save"); ?>
-    </a>
+    </button>
 <?php endif; ?>
 
 <!-- Export -->
 <?php if (!empty($showExportButton)): ?>
-    <button class="btn btn-success" name="export-button" id="export-button" data-submit-form=1>
+    <button class="btn btn-success" type="button" name="export-button" id="export-button" data-submit-form=1>
         <span class="fa fa-download-alt"></span>
         <?php eT("Export"); ?>
     </button>
@@ -65,7 +66,7 @@
 
 <!-- Import -->
 <?php if (!empty($showImportButton)): ?>
-    <button class="btn btn-success" name="import-button" id="import-button" data-submit-form=1>
+    <button class="btn btn-success" type="button" name="import-button" id="import-button" data-submit-form=1>
         <span class="fa fa-upload"></span>
         <?php eT("Import"); ?>
     </button>

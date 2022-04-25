@@ -29,7 +29,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel'); ?></button>
-                <button type="button" class="btn btn-success exportButton"><?php eT('Export'); ?></button>
+                <button type="button" class="btn btn-success exportButton">
+                    <?php eT('Export'); ?>
+                </button>
             </div>
         </div>
     </div>

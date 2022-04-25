@@ -30,6 +30,8 @@ Yii::app()->getController()->renderPartial(
 
 <div class="modal-footer modal-footer-buttons" style="margin-top: 15px; ">
     <button class="btn btn-cancel" id="exitForm"><?=gT('Cancel')?></button>
-    <button class="btn btn-success" id="submitForm"><?=gT('Import')?></button>
+    <button type="button" class="btn btn-success" id="submitForm">
+        <?=gT('Import')?>
+    </button>
 </div>
 </form>

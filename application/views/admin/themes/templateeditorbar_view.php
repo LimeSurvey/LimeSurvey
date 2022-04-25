@@ -186,10 +186,10 @@ echo viewHelper::getViewTestTag('themeEditor');
             </div>
 
             <?php if (isset($fullpagebar['savebutton']['form'])) :?>
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+                <button class="btn btn-success" href="#" type="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="fa fa-floppy-o" ></span>
                     <?php eT("Save");?>
-                </a>
+                </button>
             <?php endif;?>
 
             <!-- Close -->

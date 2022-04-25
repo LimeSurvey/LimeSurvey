@@ -36,7 +36,9 @@
                 </select>
             </div>
             <div class="row ls-space margin top-25">
-                <button class="btn btn-success col-sm-3 col-xs-5 col-xs-offset-1" id="submitForm"><?=gT('Save')?></button>
+                <button type="button" class="btn btn-success col-sm-3 col-xs-5 col-xs-offset-1" id="submitForm">
+                    <?=gT('Save')?>
+                </button>
                 <button class="btn btn-error col-sm-3 col-xs-5 col-xs-offset-1" id="exitForm"><?=gT('Cancel')?></button>
             </div>
         </form>

@@ -19,16 +19,16 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 ?>
 
                 <!-- Back -->
-                <a class="btn btn-outline-secondary" href="<?php echo $sUrl; ?>" role="button">
+                <button class="btn btn-outline-secondary" href="<?php echo $sUrl; ?>" type="button">
                     <span class="fa fa-backward"></span>
                     <?php eT('Back'); ?>
-                </a>
+                </button>
 
                 <!-- Save -->
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form" style="margin-right: 30px;">
+                <button class="btn btn-success" href="#" type="button" id="save-form-button" data-form-id="template-options-form" style="margin-right: 30px;">
                     <span class="fa fa-floppy-o"></span>
                     <?php eT('Save'); ?>
-                </a>
+                </button>
             </div>
         </div>
     </div>

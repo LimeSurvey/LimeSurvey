@@ -243,18 +243,18 @@
         <div id="questiongroupbar--savebuttons" class="text-right ls-flex-item">
             <!-- Save buttons -->
             <?php if (isset($questiongroupbar['savebutton']['form']) && (!isset($copying) || !$copying)): ?>
-                <a class="btn btn-success" href="#" role="button" id="save-button">
+                <button class="btn btn-success" href="#" type="button" id="save-button">
                     <i class="fa fa-floppy-o"></i>
                     <?php eT("Save");?>
-                </a>
+                </button>
             <?php endif; ?>
 
             <!-- Save and close -->
             <?php if (isset($questiongroupbar['saveandclosebutton'])):?>
-                <a id="save-and-close-button" class="btn btn-outline-secondary" role="button">
+                <button id="save-and-close-button" class="btn btn-outline-secondary" type="button">
                     <i class="fa fa-check-square"></i>
                     <?php eT("Save and close");?>
-                </a>
+                </button>
             <?php endif; ?>
 
             <!-- Close -->
@@ -269,12 +269,12 @@
 
             <!-- return -->
             <?php if (isset($questiongroupbar['returnbutton']['url'])):?>
-                <a class="btn btn-outline-secondary"
+                <button class="btn btn-outline-secondary"
                     href="<?php echo $questiongroupbar['returnbutton']['url']; ?>"
-                    role="button">
+                    type="button">
                     <span class="fa fa-step-backward"></span>
                     <?php echo $questiongroupbar['returnbutton']['text'];?>
-                </a>
+                </button>
             <?php endif;?>
         </div>
     </div>

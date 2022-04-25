@@ -5,10 +5,10 @@
 </button>
 
 <!-- Save and close -->
-<a id="save-and-close-button-copy-question" class="btn btn-success" role="button">
+<button id="save-and-close-button-copy-question" class="btn btn-success" type="button" role="button">
     <i class="fa fa-check"></i>
     <?php eT("Save and close");?>
-</a>
+</button>
 
 <script type="text/javascript">
     $(document).ready(function() {

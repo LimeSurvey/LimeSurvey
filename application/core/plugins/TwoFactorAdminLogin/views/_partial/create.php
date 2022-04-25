@@ -27,7 +27,9 @@
                 <?php echo TbHtml::textField('confirmationKey', null, ['required' => true]); ?>
             </div>
             <div class="row ls-space margin bottom-5 top-5">
-                <button class="btn btn-success ls-space margin left-5" id="TFA--submitform"><?php eT('Confirm & save'); ?></button>
+                <button class="btn btn-success ls-space margin left-5" id="TFA--submitform" type="button">
+                    <?php eT('Confirm & save'); ?>
+                </button>
                 <button class="btn btn-error ls-space margin left-5" id="TFA--cancelform"> <?=gT('Cancel')?> </button>
             </div> 
         </form>

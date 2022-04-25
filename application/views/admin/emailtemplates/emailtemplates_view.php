@@ -98,8 +98,12 @@ var LS = LS || {};  // namespace
                 </div>
             </div>
             <div class='modal-footer'>
-                <button type="button" class='btn btn-outline-secondary' data-dismiss='modal'><?php eT("Close"); ?></button>
-                <button type="button" class='btn btn-success'><?php eT("Add"); ?></button>
+                <button type="button" class='btn btn-outline-secondary' data-dismiss='modal'>
+                    <?php eT("Close"); ?>
+                </button>
+                <button type="button" class='btn btn-success'>
+                    <?php eT("Add"); ?>
+                </button>
             </div>
         </div>
     </div>

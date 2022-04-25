@@ -53,7 +53,9 @@ Yii::app()->getController()->renderPartial(
 </div>
 <div class="modal-footer modal-footer-buttons row ls-space margin top-25">
     <button class="btn btn-error selector--exitForm" id="exitForm"><?=gT('Cancel')?></button>
-    <button class="btn btn-success selector--submitForm" id="submitForm"><?=gT('Save')?></button>
+    <button type="button" class="btn btn-success selector--submitForm" id="submitForm">
+        <?=gT('Save')?>
+    </button>
 </div>
 </form>
 

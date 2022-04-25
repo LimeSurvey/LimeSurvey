@@ -8,7 +8,10 @@
     <div class="modal-footer">
         <button role="button" class="btn btn-primary modal-next">Next <i class="icon-arrow-right icon-white"></i></button>
         <a class="btn btn-info modal-prev"><i class="icon-arrow-left icon-white"></i> Previous</a>
-        <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000"><i class="icon-play icon-white"></i> Slideshow</a>
+        <button class="btn btn-success modal-play modal-slideshow" type="button" data-slideshow="5000">
+            <i class="icon-play icon-white"></i>
+             Slideshow
+        </button>
         <a class="btn modal-download" target="_blank"><i class="icon-download"></i> Download</a>
     </div>
 </div>

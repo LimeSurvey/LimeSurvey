@@ -218,7 +218,9 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <?php eT("Clear assets cache:"); ?> <small>(<?php echo  getGlobalSetting('customassetversionnumber');?>)</small>
                 </label>
                 <div class="col-sm-12">
-                    <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa"=>"refreshAssets")); ?>" class="btn btn-success btn-large"><?php eT("Clear now");?></a>
+                    <button href="<?php echo App()->createUrl('admin/globalsettings', array("sa"=>"refreshAssets")); ?>" type="button" class="btn btn-success btn-large">
+                        <?php eT("Clear now");?>
+                    </button>
                 </div>
             </div>
         </div>

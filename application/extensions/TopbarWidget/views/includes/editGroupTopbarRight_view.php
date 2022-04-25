@@ -21,7 +21,7 @@
 </button>
 
 <!-- Save -->
-<button type="button" id="save-button" class="btn btn-success" role="button">
+<button type="button" id="save-button" class="btn btn-success" type="button" role="button">
     <i class="fa fa-check"></i>
     <?php eT("Save");?>
 </button>

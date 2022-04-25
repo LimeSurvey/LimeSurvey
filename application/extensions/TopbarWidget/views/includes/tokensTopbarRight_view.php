@@ -17,26 +17,26 @@
 
 <!-- Download CSV -->
 <?php if (!empty($showDownloadButton)) : ?>
-    <a class="btn btn-success pull-right" href="#" role="button" id="save-button">
+    <button class="btn btn-success pull-right" href="#" type="button" id="save-button">
         <span class="fa fa fa-export"></span>
         <?php eT("Download CSV file"); ?>
-    </a>
+    </button>
 <?php endif; ?>
 
 <!-- Send invitations buttons -->
 <?php if (!empty($showSendInvitationButton)) : ?>
-    <a class="btn btn-success pull-right" href="#" role="button" id="send-invitation-button">
+    <button class="btn btn-success pull-right" href="#" type="button" id="send-invitation-button">
         <span class="icon-invite"></span>
         <?php eT("Send invitations"); ?>
-    </a>
+    </button>
 <?php endif; ?>
 
 <!-- Send reminder buttons -->
 <?php if (!empty($showSendReminderButton)) : ?>
-    <a class="btn btn-success pull-right" href="#" role="button" id="send-reminders-button">
+    <button class="btn btn-success pull-right" href="#" type="button" id="send-reminders-button">
         <span class="icon-invite"></span>
         <?php eT("Send reminders"); ?>
-    </a>
+    </button>
 <?php endif; ?>
 
 <?php

@@ -2,8 +2,11 @@
 <?php echo CHtml::beginForm($this->url, 'post', $this->htmlOptions); ?>
 <div class="fileupload-buttonbar">
 	<div class="span7">
+		<!-- TODO: What should we do with that one? -->
 		<!-- The fileinput-button span is used to style the file input field as button -->
-		<span class="btn btn-success fileinput-button"> <i class="icon-plus icon-white"></i> <span>Add files...</span>
+		<span class="btn btn-success fileinput-button">
+			<i class="icon-plus icon-white"></i>
+			<span>Add files...</span>
 			<?php
 			if ($this->hasModel()) :
 				echo CHtml::activeFileField($this->model, $this->attribute, $htmlOptions) . "\n"; else :

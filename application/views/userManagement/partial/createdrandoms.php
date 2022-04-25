@@ -48,10 +48,11 @@ Yii::app()->getController()->renderPartial(
     </div>
 </div>
 <div class="modal-footer">
-    <button id="exitForm" class="btn btn-outline-secondary">
+    <button type="button" id="exitForm" class="btn btn-outline-secondary">
         <?=gT('Close')?>
         </button>
-    <button id="exportUsers" data-users='<?=json_encode($randomUsers)?>' class="btn btn-success">
-        &nbsp;<?=gT('Export as CSV')?>
+    <button type="button" id="exportUsers" data-users='<?=json_encode($randomUsers)?>' class="btn btn-success">
+        &nbsp;
+        <?=gT('Export as CSV')?>
     </button>
 </div>

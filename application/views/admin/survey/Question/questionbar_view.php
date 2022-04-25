@@ -179,33 +179,33 @@ $aReplacementData=array();
 
     <?php if(isset($questionbar['buttons']['conditions'])):?>
         <div class="col-sm-12 form form-inline">
-            <a class="btn btn-outline-secondary pjax <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <button class="btn btn-outline-secondary pjax <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" type="button">
                 <span class="fa fa-info-sign"></span>
                 <?php eT("Show conditions for this question");?>
-            </a>
+            </button>
 
-            <a class="btn btn-outline-secondary pjax <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <button class="btn btn-outline-secondary pjax <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" type="button">
                 <span class="icon-conditions_add"></span>
                 <?php eT("Add and edit conditions");?>
-            </a>
+            </button>
 
-            <a class="btn btn-outline-secondary pjax <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+            <button class="btn btn-outline-secondary pjax <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" type="button">
                 <span class="icon-copy"></span>
                 <?php eT("Copy conditions");?>
-            </a>
+            </button>
 
             <?php if(!isset($organizebar)): // TODO: Factor out organizer bar in own view? ?>
                 <?php if(isset($questionbar['savebutton']['form'])):?>
-                    <a class="btn btn-success" href="#" role="button">
+                    <button class="btn btn-success" href="#" type="button">
                         <span class="fa fa-floppy-o"></span>
                         <?php eT("Save");?>
-                    </a>
+                    </button>
                 <?php endif;?>
                 
-                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
+                <button class="btn btn-outline-secondary" href="<?php echo $this->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>" type="button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
-                </a>
+                </button>
 
                 <!-- Close -->
                 <?php if(isset($questionbar['closebutton']['url'])):?>
@@ -221,10 +221,10 @@ $aReplacementData=array();
                 <?php endif;?>
 
                 <?php if(isset($questionbar['returnbutton']['url'])):?>
-                    <a class="btn btn-outline-secondary" href="<?php echo $questionbar['returnbutton']['url']; ?>" role="button">
+                    <button class="btn btn-outline-secondary" href="<?php echo $questionbar['returnbutton']['url']; ?>" type="button">
                         <span class="fa fa-step-backward"></span>
                         <?php echo $questionbar['returnbutton']['text'];?>
-                    </a>
+                </button>
                 <?php endif;?>
             <?php endif;?>
         </div>
@@ -245,23 +245,14 @@ $aReplacementData=array();
             </div>
             <div class='col-md-5 text-right'>
                 <!-- Save buttons -->
-                <a class="btn btn-success" href="#" role="button" id="save-button">
+                <button class="btn btn-success" href="#" type="button" id="save-button">
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
-
-                </a>
-                <a class="btn btn-outline-secondary" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" role="button" id="save-and-close-button">
+                </button>
+                <button class="btn btn-outline-secondary" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" type="button" id="save-and-close-button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
-                </a>
-                <?php
-                /*
-                <a class="btn btn-danger" href="<?php echo $organizebar['closebuttonright']['url']; ?>" role="button">
-                <span class="fa fa-close"></span>
-                <?php eT("Close");?>
-                </a>
-                */
-                ?>
+                </button>
             </div>
         <?php endif;?>
 

@@ -134,23 +134,23 @@
 
             <!-- Save and Close -->
             <?php if (isset($labelbar['saveandclosebutton']['form'])) : ?>
-                <a class="btn btn-outline-secondary" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $labelbar['saveandclosebutton']['form']; ?>">
+                <button class="btn btn-outline-secondary" href="#" type="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $labelbar['saveandclosebutton']['form']; ?>">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close"); ?>
-                </a>
+                </button>
             <?php endif; ?>
 
             <?php if (isset($labelbar['buttons']['edition'])) : ?>
                 <!-- Save -->
-                <a class="btn btn-success"
+                <button class="btn btn-success"
                    href="#"
-                   role="button"
+                   type="button"
                    id="save-form-button"
                    data-form-id="<?php echo $labelbar['savebutton']['form']; ?>"
                 >
                     <span class="fa fa-check"></span>
                     <?php echo $labelbar['savebutton']['text']; ?>
-                </a>
+            </button>
             <?php endif; ?>
         </div>
     </div>
