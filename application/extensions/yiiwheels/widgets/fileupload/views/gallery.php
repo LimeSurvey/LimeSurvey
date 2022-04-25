@@ -6,9 +6,24 @@
     </div>
     <div class="modal-body"><div class="modal-image"></div></div>
     <div class="modal-footer">
-        <button role="button" class="btn btn-primary modal-next">Next <i class="icon-arrow-right icon-white"></i></button>
-        <a class="btn btn-info modal-prev"><i class="icon-arrow-left icon-white"></i> Previous</a>
-        <button class="btn btn-success modal-play modal-slideshow" type="button" data-slideshow="5000">
+        <button 
+            role="button" 
+            class="btn btn-primary modal-next">
+            Next 
+            <i class="icon-arrow-right icon-white"></i>
+        </button>
+
+        <button 
+            class="btn btn-info modal-prev"
+            type="button">
+            <i class="icon-arrow-left icon-white"></i>
+             Previous
+        </button>
+
+        <button 
+            class="btn btn-success modal-play modal-slideshow" 
+            type="button" 
+            data-slideshow="5000">
             <i class="icon-play icon-white"></i>
              Slideshow
         </button>

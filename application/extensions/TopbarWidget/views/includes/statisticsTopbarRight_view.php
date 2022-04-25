@@ -1,13 +1,22 @@
 <?php if (isset($expertstats) && $expertstats =  true):?>
-    <a class="btn btn-info" href="<?php echo Yii::app()->createUrl('/admin/statistics/sa/index/surveyid/'.$surveyid); ?>" id="expert-mode">
+    <button 
+        class="btn btn-info" 
+        href="<?php echo Yii::app()->createUrl('/admin/statistics/sa/index/surveyid/'.$surveyid); ?>" 
+        id="expert-mode"
+        type="button">
         <span class="fa fa-bar-chart"></span>
         <?php eT("Expert mode"); ?>
-    </a>
+    </button>
 <?php else: ?>
-    <a class="btn btn-info" href="<?php echo Yii::app()->createUrl('/admin/statistics/sa/simpleStatistics/surveyid/'.$surveyid); ?>" id="simple-mode">
+    <button 
+        class="btn btn-info" 
+        href="<?php echo Yii::app()->createUrl('/admin/statistics/sa/simpleStatistics/surveyid/'.$surveyid); ?>" 
+        id="simple-mode"
+        type="button">
         <span class="fa fa-bar-chart"></span>
         <?php eT("Simple mode"); ?>
-    </a>
+    </button>
+    
     <button 
         class="btn btn-success" 
         type="button" 
