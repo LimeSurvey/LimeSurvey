@@ -33,7 +33,7 @@
                                 ); ?>
                                 <?php /* @see https://bugs.limesurvey.org/view.php?id=16792 */ ?>
                                 <a class="btn btn-default btn-sm" role="button"
-                                   data-target='#confirmation-modal' data-toggle='modal'
+                                   data-bs-target='#confirmation-modal' data-bs-toggle='modal'
                                    data-message='<?= gT("Are you sure you want to remove all permissions for this user?") ?>'
                                    data-post-url='<?= $deleteUrl ?>'
                                 ><span class="fa fa-trash text-danger" aria-hidden="true" title="<?= gT("Delete") ?>"><span>

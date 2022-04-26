@@ -5,8 +5,8 @@
         <?php if ($scenariocount > 0): ?>
             <button
                 id='delete-all-conditions'
-                data-toggle='modal'
-                data-target='#confirmation-modal'
+                data-bs-toggle='modal'
+                data-bs-target='#confirmation-modal'
                 data-message='<?php eT('Are you sure you want to delete all conditions for this question?', 'js'); ?>'
                 data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
                 class='btn btn-warning pull-right condition-header-button'
@@ -22,8 +22,8 @@
             <button
                 id='renumber-scenario'
                 class="btn btn-default pull-right condition-header-button"
-                data-toggle='modal'
-                data-target='#confirmation-modal'
+                data-bs-toggle='modal'
+                data-bs-target='#confirmation-modal'
                 data-message='<?php eT('Are you sure you want to renumber the scenarios with incrementing numbers beginning from 1?', 'js'); ?>'
                 data-onclick='(function() { document.getElementById("toplevelsubaction").value="renumberscenarios"; document.getElementById("deleteallconditions").submit();})'
                 onclick='return false;'

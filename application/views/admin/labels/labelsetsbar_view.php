@@ -66,9 +66,9 @@
                 <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true) : ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) : ?>
                         <button class="btn btn-default"
-                                data-toggle="modal"
+                                data-bs-toggle="modal"
                                 data-title="<?= gt('Delete label set') ?>"
-                                data-target="#confirmation-modal"
+                                data-bs-target="#confirmation-modal"
                                 data-btnclass='btn-danger'
                                 data-btntext="<?= gt('Delete') ?>"
                                 data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete/", ["lid" => $lid])); ?> })'

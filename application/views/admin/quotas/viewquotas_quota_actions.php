@@ -17,8 +17,8 @@
     <a
             data-post-url="<?php echo $deleteUrl; ?>"
             class="btn btn-default"
-            data-toggle="modal"
-            data-target="#confirmation-modal"
+            data-bs-toggle="modal"
+            data-bs-target="#confirmation-modal"
             data-tooltip="true"
             data-btnclass="btn-danger"
             data-btntext="<?= gt('Delete')?>"
@@ -36,7 +36,7 @@
       data-tooltip="true"
       title="<?=sprintf(gT("Validation of quota %s"),htmlentities($oQuota->name))?>"
       data-toggel="modal"
-      data-target="quotaValidation"
+      data-bs-target="quotaValidation"
     >
         <i class='fa fa-tasks'></i>
     </a>

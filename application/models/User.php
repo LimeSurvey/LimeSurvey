@@ -513,8 +513,8 @@ class User extends LSActiveRecord
                 $deleteUser = "<span style='margin:0;padding:0;display: inline-block;' data-bs-toggle='tooltip' title='" . gT('Delete this user') . "'>
                     <button
                         id='delete_user_" . $this->uid . "'
-                        data-toggle='modal'
-                        data-target='#confirmation-modal'
+                        data-bs-toggle='modal'
+                        data-bs-target='#confirmation-modal'
                         data-url='" . $deleteUrl . "'
                         data-uid='" . $this->uid . "'
                         data-user='" . htmlspecialchars($this->full_name) . "'
@@ -600,8 +600,8 @@ class User extends LSActiveRecord
         . "<button 
                 id='UserManagement--takeown-" . $this->uid . "'
                 class='btn btn-sm btn-default' 
-                data-toggle='modal' 
-                data-target='#confirmation-modal' 
+                data-bs-toggle='modal' 
+                data-bs-target='#confirmation-modal' 
                 data-url='" . $changeOwnershipUrl . "' 
                 data-userid='" . $this->uid . "' 
                 data-user='" . $this->full_name . "' 

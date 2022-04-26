@@ -118,8 +118,8 @@ $aReplacementData=array();
             <!-- Delete -->
             <?php if( $activated != "Y" && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete' )):?>
                 <button class="btn btn-default"
-                   data-toggle="modal"
-                   data-target="#confirmation-modal"
+                   data-bs-toggle="modal"
+                   data-bs-target="#confirmation-modal"
                    data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid])); ?>'
                    data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
                    >

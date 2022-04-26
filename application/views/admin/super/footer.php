@@ -72,7 +72,7 @@ foreach ($systemInfos as $key => $systemInfo) {
             <div class="col-xs-12 col-sm-4 text-end">
                 <a  title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a><br />
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?> 
-                    <a href="#modalSystemInformation" data-toggle="modal" title="<?=gT("Get system information")?>"> 
+                    <a href="#modalSystemInformation" data-bs-toggle="modal" title="<?=gT("Get system information")?>"> 
                 <?php } ?>
                 <?php echo $versiontitle . "  " . $versionnumber . $buildtext;?>
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
@@ -124,8 +124,8 @@ foreach ($systemInfos as $key => $systemInfo) {
     Example of use:
 
     <button
-        data-toggle='modal'
-        data-target='#confirmation-modal'
+        data-bs-toggle='modal'
+        data-bs-target='#confirmation-modal'
         data-onclick='(function() { LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>"); })'
         class='btn btn-warning btn-sm'
     >

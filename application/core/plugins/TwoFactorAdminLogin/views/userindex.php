@@ -26,7 +26,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                         <?=($force2FA == true ? gT("Please activate it now.") : gT("Do you want to activate it now?"))?> 
                     </h2>
                     <p>
-                        <a class="btn btn-default TFA--actionopenmodal TFA--excludefromlock" data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey")?>" data-toggle="modal" id="TFA--register2fa"><?=gt("Activate 2FA now");?> </a>
+                        <a class="btn btn-default TFA--actionopenmodal TFA--excludefromlock" data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey")?>" data-bs-toggle="modal" id="TFA--register2fa"><?=gt("Activate 2FA now");?> </a>
                     <?php if ($force2FA == true) { ?> 
                         <a class="btn btn-danger TFA--excludefromlock" href="<?=App()->createUrl("admin")?>" id="TFA--excludeNotNow"><?=gT("Not now");?> </a>
                     <?php } ?>
@@ -50,7 +50,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                     <a 
                         class="btn btn-default TFA--actionopenmodal" 
                         data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey", ['uid' => $oTFAModel->uid])?>" 
-                        data-toggle="modal" id="TFA--reset2fa"
+                        data-bs-toggle="modal" id="TFA--reset2fa"
                     ><?=gT("Renew 2FA")?></a>
                 </p>
             </div>

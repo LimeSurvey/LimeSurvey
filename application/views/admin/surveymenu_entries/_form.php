@@ -124,7 +124,7 @@ Yii::app()->getController()->renderPartial(
 			</div>
 		</div>
 		<div class="row ls-space margin bottom-10">
-			<button class="btn btn-warning pull-right " type="button" data-toggle="collapse" data-target="#collapseAdvancedOptions"><?php eT('Toggle advanced options') ?></button>
+			<button class="btn btn-warning pull-right " type="button" data-toggle="collapse" data-bs-target="#collapseAdvancedOptions"><?php eT('Toggle advanced options') ?></button>
 		</div>
 		<!-- Start collapsed advanced options -->
 		<div class="collapse" id="collapseAdvancedOptions">

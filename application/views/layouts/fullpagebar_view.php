@@ -20,8 +20,8 @@
                        class="btn btn-default"
                        href=""
                        role="button"
-                       data-toggle="modal"
-                       data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
+                       data-bs-toggle="modal"
+                       data-bs-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
                     >
                         <span class="icon-import text-success"></span>
                         <?php eT("Upload & install"); ?>

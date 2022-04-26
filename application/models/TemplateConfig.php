@@ -635,7 +635,7 @@ class TemplateConfig extends CActiveRecord
 //        $aClassAndAttributes['class']['navbarcollapse'] = ' collapse navbar-collapse ';
 //        $aClassAndAttributes['class']['navbarlink']     = ' nav navbar-nav  navbar-action-link ';
 
-//        $aClassAndAttributes['attr']['navbartoggle']    = ' data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
+//        $aClassAndAttributes['attr']['navbartoggle']    = ' data-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
 //        $aClassAndAttributes['attr']['navbar'] = $aClassAndAttributes['attr']['navbarbrand'] = '';
 
         // Language changer

@@ -128,8 +128,8 @@ class ParticipantAttributeName extends LSActiveRecord
             'trash text-danger'
         );
         $buttons .= "<a href='#' 
-        data-toggle='modal' 
-        data-target='#confirmation-modal' 
+        data-bs-toggle='modal' 
+        data-bs-target='#confirmation-modal' 
         data-title='" . gT("Delete this attribute") . "'
         data-btnclass='btn-danger'
         data-btntext='" . gt("Delete") . "'

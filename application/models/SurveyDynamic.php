@@ -327,8 +327,8 @@ class SurveyDynamic extends LSActiveRecord
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
             $buttons .= "
             <span
-            data-toggle='modal'
-            data-target='#confirmation-modal'
+            data-bs-toggle='modal'
+            data-bs-target='#confirmation-modal'
             data-btnclass='btn-danger'
             data-post-url='" . App()->createUrl("responses/deleteAttachments") . "'
             data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
@@ -347,8 +347,8 @@ class SurveyDynamic extends LSActiveRecord
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
             $buttons .= "
             <span
-            data-toggle='modal'
-            data-target='#confirmation-modal'
+            data-bs-toggle='modal'
+            data-bs-target='#confirmation-modal'
             data-btnclass='btn-danger'
             data-post-url='" . App()->createUrl("responses/deleteSingle") . "'
             data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'

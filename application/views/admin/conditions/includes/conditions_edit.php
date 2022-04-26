@@ -1,7 +1,7 @@
 
 <a
     class="btn btn-default"
-    data-target="#confirmation-modal"
+    data-bs-target="#confirmation-modal"
     data-bs-toggle="tooltip"
     data-title="<?php eT("Delete condition"); ?>"
     data-message="<?php eT("Are you sure you want to delete this condition?"); ?>"

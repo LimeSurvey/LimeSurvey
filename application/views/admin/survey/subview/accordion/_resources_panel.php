@@ -50,7 +50,7 @@ LSYii_ClientScript::POS_BEGIN
         <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-default">
           <?php  eT("Export resources as ZIP archive") ?>
         </a>
-        <a class="btn btn-default" href="" target='_blank' data-toggle="modal" data-target="#importRessourcesModal">
+        <a class="btn btn-default" href="" target='_blank' data-bs-toggle="modal" data-bs-target="#importRessourcesModal">
           <span class="fa fa-download"></span>
           <?php  eT("Import resources ZIP archive"); ?>
         </a>

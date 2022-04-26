@@ -68,8 +68,8 @@
         <li>
             <a href="#" onclick="return false;"
                 class="dropdown-item"
-                data-toggle="modal"
-                data-target="#confirmation-modal"
+                data-bs-toggle="modal"
+                data-bs-target="#confirmation-modal"
                 data-btnclass="btn-danger"
                 data-title="<?= gt('Delete this question') ?>"
                 data-btntext="<?= gt('Delete') ?>"

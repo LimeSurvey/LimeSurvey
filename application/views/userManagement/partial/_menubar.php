@@ -11,24 +11,24 @@
                 <?php if (Permission::model()->hasGlobalPermission('users', 'create')) {
                     ?>
                     <!-- Add User -->
-                    <button data-href="<?= $this->createUrl("userManagement/addEditUser") ?>" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>"
+                    <button data-href="<?= $this->createUrl("userManagement/addEditUser") ?>" data-bs-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>"
                             class="btn btn-default UserManagement--action--openmodal">
                         <i class="fa fa-plus-circle text-success"></i> <?php eT("Add user"); ?>
                     </button>
 
                     <!-- Add Dummy User -->
-                    <button data-href="<?= $this->createUrl("userManagement/addDummyUser") ?>" data-toggle="modal" title="<?php eT('Add a new survey administrator with random values'); ?>"
+                    <button data-href="<?= $this->createUrl("userManagement/addDummyUser") ?>" data-bs-toggle="modal" title="<?php eT('Add a new survey administrator with random values'); ?>"
                             class="btn btn-default UserManagement--action--openmodal">
                         <i class="fa fa-plus-square text-success"></i> <?= gT('Add dummy user') ?>
                     </button>
 
                     <!-- Import CSV -->
-                    <button data-href="<?= $this->createUrl("userManagement/renderUserImport", ["importFormat" => "csv"]) ?>" data-toggle="modal" title="<?php eT('Import survey administrators from CSV'); ?>" class="btn btn-default UserManagement--action--openmodal">
+                    <button data-href="<?= $this->createUrl("userManagement/renderUserImport", ["importFormat" => "csv"]) ?>" data-bs-toggle="modal" title="<?php eT('Import survey administrators from CSV'); ?>" class="btn btn-default UserManagement--action--openmodal">
                         <span class="icon-import text-success"></span> <?php eT("Import (CSV)"); ?>
                     </button>
 
                     <!-- Import JSON -->
-                    <button data-href="<?= App()->createUrl("userManagement/renderUserImport", ["importFormat" => "json"]) ?>" data-toggle="modal" title="<?php eT('Import survey administrators from Json'); ?>" class="btn btn-default UserManagement--action--openmodal">
+                    <button data-href="<?= App()->createUrl("userManagement/renderUserImport", ["importFormat" => "json"]) ?>" data-bs-toggle="modal" title="<?php eT('Import survey administrators from Json'); ?>" class="btn btn-default UserManagement--action--openmodal">
                         <span class="icon-import text-success"></span> <?php eT("Import (JSON)"); ?>
                     </button>
 

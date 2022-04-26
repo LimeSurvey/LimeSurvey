@@ -199,7 +199,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                             if ($category == 'Images' && $attribute['type'] == 'dropdown'){
                                 echo '<div class="col-sm-4 col-md-2">
                                 <br/>
-                                <button class="btn btn-default selector__open_lightbox" data-target="#simple_edit_options_' . $attributeKey .'"> ' . gT('Preview image') . '</button>
+                                <button class="btn btn-default selector__open_lightbox" data-bs-target="#simple_edit_options_' . $attributeKey .'"> ' . gT('Preview image') . '</button>
                             </div>';
                             }
 

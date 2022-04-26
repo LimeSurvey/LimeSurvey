@@ -193,7 +193,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
         </div>
 
         <div class="">
-            <a href="#" data-toggle="modal" data-target="#fileHelp" />
+            <a href="#" data-bs-toggle="modal" data-bs-target="#fileHelp" />
                 <?php eT('Tip: How to embed a picture in your theme?'); ?>
             </a>
         </div>

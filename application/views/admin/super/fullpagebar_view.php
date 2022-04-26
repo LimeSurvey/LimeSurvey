@@ -19,8 +19,8 @@
                     <a
                         href=''
                         class='btn btn-default'
-                        data-toggle='modal'
-                        data-target='#installPluginZipModal'
+                        data-bs-toggle='modal'
+                        data-bs-target='#installPluginZipModal'
                         data-tooltip='true'
                         title='<?php eT('Install plugin by ZIP archive'); ?>'
                     >

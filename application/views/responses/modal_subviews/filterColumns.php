@@ -7,7 +7,7 @@
 ?>
 
 <!-- Button trigger modal -->
-<a class="btn btn-default" data-toggle="modal" data-target="#responses-column-filter-modal" id="responses-column-filter-button">
+<a class="btn btn-default" data-bs-toggle="modal" data-bs-target="#responses-column-filter-modal" id="responses-column-filter-button">
     <span class="fa fa-columns"></span>
 </a>
 
