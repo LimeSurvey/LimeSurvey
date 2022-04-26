@@ -74,7 +74,7 @@ class FunctionStatic extends PluginBase
         /* Just for langiuage po automatic system , core plugin. Translation from core*/
         $lang = array(
             "The function is used to return a static value of any expression." => gT("The function is used to return a static value of any expression."),
-            "Simple usage to get the value of current response before any update : %s" => gT("Simple usage to get the value of current response before any update : %s")
+            "Simple usage to get the value of current response before any update: %s" => gT("Simple usage to get the value of current response before any update: %s")
         );
         return parent::getPluginSettings($getValues);
     }
