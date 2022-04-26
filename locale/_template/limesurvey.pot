@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-04-26 07:39:42+00:00\n"
+"POT-Creation-Date: 2022-04-26 08:01:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9109,7 +9109,7 @@ msgid "The function is used to return a static value of any expression."
 msgstr ""
 
 #: application/core/plugins/FunctionStatic/FunctionStatic.php:77
-msgid "Simple usage to get the value of current response before any update : %s"
+msgid "Simple usage to get the value of current response before any update: %s"
 msgstr ""
 
 #: application/core/plugins/PasswordRequirement/PasswordRequirement.php:141
