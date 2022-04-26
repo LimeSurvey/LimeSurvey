@@ -38,7 +38,7 @@
 <!-- The table listing the files available for upload/download -->
 <div class="row-fluid">
 	<table class="table table-striped">
-		<tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+		<tbody class="files" data-bs-toggle="modal-gallery" data-bs-target="#modal-gallery"></tbody>
 	</table>
 </div>
 <?php echo CHtml::endForm(); ?>
