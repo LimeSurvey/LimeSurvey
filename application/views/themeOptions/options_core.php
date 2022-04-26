@@ -72,13 +72,13 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                         <div class='form-group row'>
                             <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything" ); ?></label>
                             <div class='col-sm-12'>
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default">
-                                        <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
+                                <div class="btn-group" role="group">
+                                    <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
+                                    <label for="general_inherit_on" class="btn btn-outline-primary">
                                         <?php echo gT("Yes"); ?>
                                     </label>
-                                    <label class="btn btn-default">
-                                        <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
+                                    <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='btn-check selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
+                                    <label for="general_inherit_off" class="btn btn-outline-primary">
                                         <?php echo gT("No"); ?>
                                     </label>
                                 </div>
@@ -126,10 +126,11 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                                 }
 
                                 echo '<div class="col-sm-12">
-                                        <div class="btn-group" data-toggle="buttons">';
+                                        <div class="btn-group">';
                                         foreach($options as $optionKey =>$optionValue){
-                                            echo '<label class="btn btn-default">
-                                                <input type="radio" name="' . $attributeKey .'" value="' . $optionKey .'" class="selector_option_radio_field simple_edit_options_' . $attributeKey .' " id="' . $attributeKey .'"/>'
+                                            $id = $attributeKey . "_" . $optionKey;
+                                            echo '<input id="' . $id . '" type="radio" name="' . $attributeKey .'" value="' . $optionKey .'" class="btn-check selector_option_radio_field simple_edit_options_' . $attributeKey .' " id="' . $attributeKey .'"/>';
+                                            echo '<label for="' . $id . '" class="btn btn-outline-primary">'
                                                 . gT($optionValue) . '
                                             </label>';
                                             }
