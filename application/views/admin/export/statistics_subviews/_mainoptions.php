@@ -108,7 +108,7 @@
             <label for='statlang' class="form-label"><?php
                 eT("Statistics report language:"); ?></label>
             <div class=''>
-                <select name="statlang" id="statlang" class="form-control">
+                <select name="statlang" id="statlang" class="form-select">
                     <?php
                     echo $language_options; ?>
                 </select>

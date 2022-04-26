@@ -65,7 +65,7 @@ $baseLanguage = $oSurvey->language;
                             <!-- select group -->
                             <div class="form-group">
                                 <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'form-label')); ?>
-                                    <select name="gid" class="form-control">
+                                    <select name="gid" class="form-select">
                                         <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($oSurvey->groups as $group): ?>
                                             <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->gid){echo 'selected';} ?>>

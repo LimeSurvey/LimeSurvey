@@ -36,7 +36,7 @@
                                                 : printf(gT('Default answer value:'), $scale_id) ?>
                                         </label>
                                         <div class="col-sm-12">
-                                            <select class='form-control' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'
+                                            <select class='form-select' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'
                                                     id='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                                 <option value=''<?php echo is_null($opts['defaultvalue']) ? ' selected="selected"' : '' ?>>
                                                     <?php eT('<No default value>') ?>
@@ -96,7 +96,7 @@
                                                     <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                 </label>
                                                 <div class="col-sm-12">
-                                                    <select class='form-control' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
+                                                    <select class='form-select' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
                                                             id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
                                                         <?php foreach ($aSubquestion['options'] as $value => $label) : ?>
                                                             <option value="<?php echo $value ?>"<?php echo($value == $aSubquestion['defaultvalue'] ? ' selected="selected"' : ''); ?>>

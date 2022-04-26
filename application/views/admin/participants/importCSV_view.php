@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                                 <?php eT("Character set of file:"); ?>
                             </label>
                             <div class="col-sm-12">
-                                <select name="characterset"  class="form-control">
+                                <select name="characterset"  class="form-select">
                                     <?php
                                     foreach (aEncodingsArray() as $key=>$encoding):
                                         ?>
@@ -55,7 +55,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                                     , "semicolon" => gT("Semicolon"));
                                 ?>
 
-                                <select name="separatorused"  class="form-control">
+                                <select name="separatorused"  class="form-select">
                                     <option value="auto" selected="selected"><?php eT("(Autodetect)"); ?></option>
                                     <?php
                                     foreach ($separatorused as $key=>$separator):

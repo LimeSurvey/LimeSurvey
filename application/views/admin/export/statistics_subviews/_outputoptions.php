@@ -55,7 +55,7 @@
                 eT('Chart type:'); ?>
             </label>
             <div class=''>
-                <select name="charttype" id='charttype' class="form-control">
+                <select name="charttype" id='charttype' class="form-select">
                     <option value="default" selected="selected"><?php
                         eT("As defined in question settings"); ?></option>
                     <option value="0"><?php

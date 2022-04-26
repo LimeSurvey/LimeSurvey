@@ -136,7 +136,7 @@ $surveyid = $aTabContents['surveyid'];
                 </label>
 
                 <div class="">
-                    <select size='1' id='dateformat' name='dateformat' class="form-control">
+                    <select size='1' id='dateformat' name='dateformat' class="form-select">
                     <?php foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index=>$dateformatdata): ?>
                         <option value='<?php echo $index; ?>' <?php if ($aSurveyLanguageSettings[ 'surveyls_dateformat']==$index): ?>
                         selected='selected'

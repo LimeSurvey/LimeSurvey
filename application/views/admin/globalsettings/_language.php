@@ -8,7 +8,7 @@
     <div class="form-group">
             <label class=" form-label"  for='defaultlang'><?php eT("Default site language:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
             <div class="">
-                    <select class="form-control"  name='defaultlang' id='defaultlang'>
+                    <select class="form-select"  name='defaultlang' id='defaultlang'>
             <?php
                 $actuallang=getGlobalSetting('defaultlang');
                 foreach (getLanguageData(true) as  $langkey2=>$langname)
@@ -33,7 +33,7 @@
             <tr>
                 <td>
                 <?php eT("Visible:"); ?><br>
-                <select class="form-control"  style='min-width:220px;' size='10' id='includedLanguages' name='includedLanguages' multiple='multiple'><?php
+                <select class="form-select"  style='min-width:220px;' size='10' id='includedLanguages' name='includedLanguages' multiple='multiple'><?php
                             foreach ($restrictToLanguages as $sLanguageCode) {?>
                             <option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option>
                             <?php
@@ -54,7 +54,7 @@
                 </td>
                 <td >
                 <?php eT("Hidden:"); ?><br>
-                <select class="form-control"  size='10' style='min-width:220px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
+                <select class="form-select"  size='10' style='min-width:220px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
                         <?php foreach ($excludedLanguages as $sLanguageCode) {
                             ?><option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option><?php
                         } ?>

@@ -46,7 +46,7 @@
     <div  class="form-group" id="StatisticsGraphType">
         <label class="col-sm-4 form-label" for="statistics_showgraph"><?php eT("Chart type:"); ?></label>
         <div class="col-sm-8">
-            <select class="form-control custom-data attributes-to-update" id="statistics_graphtype" name="statistics_graphtype">
+            <select class="form-select custom-data attributes-to-update" id="statistics_graphtype" name="statistics_graphtype">
                 <option value="0" selected="selected">Bar chart</option>
                 <option value="1"><?php eT('Pie chart'); ?></option>
                 <option value="2"><?php eT('Radar'); ?></option>

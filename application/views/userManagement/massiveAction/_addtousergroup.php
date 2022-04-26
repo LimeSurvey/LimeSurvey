@@ -7,7 +7,7 @@
         <?php if ($aUsergoups) : ?>
             <div class="form-group">
                 <label for="addtousergroup"><?= gT("Select user group to add users to") ?></label>
-                <select class="form-control select post-value" name="addtousergroup" id="addtousergroup" required>
+                <select class="form-select select post-value" name="addtousergroup" id="addtousergroup" required>
                     <?php foreach ($aUsergoups as $oUsergroup) {
                         echo "<option value='" . $oUsergroup->ugid . "'>" . $oUsergroup->name . "</option>";
                     } ?>

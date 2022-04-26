@@ -74,7 +74,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     <label class="form-label "><?php eT("Date format:"); ?></label>
 
                     <div class="">
-                        <select size='1' id='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' name='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' class="form-control">
+                        <select size='1' id='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' name='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' class="form-select">
                             <?php foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index=>$dateformatdata): ?>
                                 <option value='<?php echo $index; ?>'
                                 <?php if ($aSurveyLanguageSettings['surveyls_dateformat']==$index): ?>

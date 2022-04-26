@@ -92,7 +92,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class="form-label" for="showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
             <div class="">
-                <select id="showgroupinfo" name="showgroupinfo"  class="form-control" >
+                <select id="showgroupinfo" name="showgroupinfo"  class="form-select" >
                     <?php if ($bShowInherited){ ?>
                         <option value="I"<?php echo $sel_showgri['I']; ?>><?php echo eT('Inherit').' ['. $oSurveyOptions->showgroupinfo . ']'; ?></option>
                     <?php } ?>
@@ -120,7 +120,7 @@ if ($bShowInherited){
         <div class="form-group">
             <label class="form-label" for="showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
             <div class="">
-                <select class="form-control" id="showqnumcode" name="showqnumcode">
+                <select class="form-select" id="showqnumcode" name="showqnumcode">
                     <?php if ($bShowInherited){ ?>
                         <option value="I"<?php echo $sel_showqnc['I']; ?>><?php echo eT('Inherit').' ['. $oSurveyOptions->showqnumcode . ']'; ?></option>
                     <?php } ?>

@@ -511,7 +511,7 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_checkicon' class='control-label'>{{ gT("Check icon") }}</label>
                         <div class="input-group">
-                            <select name="checkicon" value="" class="selector_option_value_field form-control simple_edit_options_checkicon" data-id="checkicon" id="checkicon" >
+                            <select name="checkicon" value="" class="selector_option_value_field form-select simple_edit_options_checkicon" data-id="checkicon" id="checkicon" >
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     {{ '<option value = "inherit" > Inherit</option>' }}
                                 {% endif %}
@@ -563,7 +563,7 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_backgroundimagefile' class='control-label'>{{ gT("Background image file") }}</label>
                         <div class='col-sm-12'>
-                            <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="backgroundimage" id='simple_edit_options_backgroundimagefile' name='backgroundimagefile'>
+                            <select class='form-select selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="backgroundimage" id='simple_edit_options_backgroundimagefile' name='backgroundimagefile'>
                                 {% set optgroup = '' %}
                                 {% for image in templateConfiguration.imageFileList %}
                                     {% if image.group != optgroup %}
@@ -624,7 +624,7 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_brandlogofile' class='control-label'>{{ gT("Logo file") }}</label>
                         <div class='col-sm-12'>
-                            <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
+                            <select class='form-select selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
                                 {% set optgroup = '' %}
                                 {% for image in templateConfiguration.imageFileList %}
                                     {% if image.group != optgroup %}
@@ -688,7 +688,7 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_bodyanimation' class='control-label'>{{ gT("Body animation") }}</label>
                         <div class='col-sm-12'>
-                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimation' name='bodyanimation'>
+                            <select class='form-select selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimation' name='bodyanimation'>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <option value="inherit">{{ gT("Inherit") }} [{{gT("inherited value:")}} {{oParentOptions.bodyanimation }}]</option>
                                 {% endif %}
@@ -738,7 +738,7 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_questionanimation' class='control-label'>{{ gT("Question animation") }}</label>
                         <div class='col-sm-12'>
-                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimation' name='questionanimation'>
+                            <select class='form-select selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimation' name='questionanimation'>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <option value="inherit">{{ gT("Inherit") }} [{{gT("inherited value:")}} {{ oParentOptions.questionanimation }}]</option>
                                 {% endif %}
@@ -790,7 +790,7 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_alertanimation' class='control-label'>{{ gT("Alert animation") }}</label>
                         <div class='col-sm-12'>
-                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimation' name='alertanimation'>
+                            <select class='form-select selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimation' name='alertanimation'>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <option value="inherit">{{ gT("Inherit") }} [{{gT("inherited value:")}} {{oParentOptions.alertanimation }}]</option>
                                 {% endif %}
@@ -842,7 +842,7 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_checkboxanimation' class='control-label'>{{ gT("Alert animation") }}</label>
                         <div class='col-sm-12'>
-                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatecheckbox" id='simple_edit_options_checkboxanimation' name='checkboxanimation'>
+                            <select class='form-select selector_option_value_field selector_radio_childfield' data-parent="animatecheckbox" id='simple_edit_options_checkboxanimation' name='checkboxanimation'>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <option value="inherit">{{ gT("Inherit") }} [{{gT("inherited value:")}} {{oParentOptions.checkboxanimation }}]</option>
                                 {% endif %}
@@ -896,7 +896,7 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_radioanimation' class='control-label'>{{ gT("Radio button animation") }}</label>
                         <div class='col-sm-12'>
-                            <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimation' name='radioanimation'>
+                            <select class='form-select selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimation' name='radioanimation'>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <option value="inherit">{{ gT("Inherit") }} [{{gT("inherited value:")}} {{oParentOptions.radioanimation }}]</option>
                                 {% endif %}
@@ -927,7 +927,7 @@
                             <div class='form-group row'>
                                 <label for='simple_edit_options_font' class='control-label'>{{ gT("Select font:") }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_option_value_field' id='simple_edit_options_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>
+                                    <select class='form-select selector_option_value_field' id='simple_edit_options_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>
                                         {{ fontOptions }}
                                     </select>
                                 </div>
@@ -949,7 +949,7 @@
                             <div class='form-group row'>
                                 <label for='simple_edit_add_css' class='control-label'>{{ gT("Select variation:") }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework' data-inheritvalue='{{oParentOptions.files_css}}'>
+                                    <select class='form-select selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework' data-inheritvalue='{{oParentOptions.files_css}}'>
                                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                             {{ '<option value="inherit">'~ gT("Inherit")  ~' ['~ gT("inherited value:") ~'</option>' }}
                                         {% endif %}

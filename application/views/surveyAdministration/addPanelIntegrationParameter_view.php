@@ -21,7 +21,7 @@
             <div class='form-group'>
                 <label class='form-label col-sm-3' for='targetquestion'><?php eT('Target (sub-)question:'); ?></label>
                 <div class='col-sm-4'>
-                    <select class='form-control' name='targetquestion' id='targetquestion' size='1'>
+                    <select class='form-select' name='targetquestion' id='targetquestion' size='1'>
                         <option value=''><?php eT('(No target question)'); ?></option>
                         <?php foreach ($questions as $question){?>
                             <option value='<?php echo $question['qid'].'-'.$question['sqid'];?>'><?php echo $question['title'].': '.ellipsize(flattenText($question['question'],true,true),43,.70);

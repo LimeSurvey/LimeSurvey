@@ -155,7 +155,7 @@ App()->getClientScript()->registerScript(
                     </div>
                     <label class="col-sm-2 col-sm-offset-1 form-label"><?php eT("Box orientation:"); ?></label>
                     <div class="col-sm-1">
-                        <select class="form-control" id="iBoxesOffset" name="boxes_offset">
+                        <select class="form-select" id="iBoxesOffset" name="boxes_offset">
                             <option value="1" <?php if ($iBoxesOffset == '1') {
                                 echo "selected";
                                               } ?> ><?php eT('Left to right') ?></option>

@@ -43,7 +43,7 @@
                         </label>
                         <div class='col-sm-10'>
                             <?php if (isset($groups)) { ?>
-                                <select name='gid' id='gid' class="form-control">
+                                <select name='gid' id='gid' class="form-select">
                                     <?php foreach ($groups as $groupId => $groupName) { ?>
                                         <option value="<?= $groupId ?>"><?= flattenText($groupName) ?></option>
                                     <?php } ?>

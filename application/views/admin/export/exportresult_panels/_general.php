@@ -10,7 +10,7 @@
       </label>
 
       <div class="">
-        <select name='completionstate' id='completionstate' class='form-control'>
+        <select name='completionstate' id='completionstate' class='form-select'>
           <option value='complete' <?php echo $selecthide;?>>
             <?php eT("Completed responses only");?>
           </option>

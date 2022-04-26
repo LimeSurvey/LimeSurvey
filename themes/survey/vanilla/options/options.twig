@@ -309,7 +309,7 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_brandlogofile' class='control-label'>Brandlogo file</label>
                         <div class='col-sm-12'>
-                            <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
+                            <select class='form-select selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
                                 {% set optgroup = '' %}
                                 {% for image in templateConfiguration.imageFileList %}
                                     {% if image.group != optgroup %}
@@ -352,7 +352,7 @@
                             <div class='form-group row'>
                                 <label for='simple_edit_options_font' class='control-label'>{{ gT("Select font:") }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_option_value_field' id='simple_edit_options_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>
+                                    <select class='form-select selector_option_value_field' id='simple_edit_options_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>
                                         {{ fontOptions }}
                                     </select>
                                 </div>

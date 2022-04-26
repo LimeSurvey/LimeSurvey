@@ -12,7 +12,7 @@
                             <?php eT('Survey status:'); ?>
                         </label>
                         <div class="default controls">
-                            <select id="tokenstatus" name="tokenstatus" class="form-control">
+                            <select id="tokenstatus" name="tokenstatus" class="form-select">
                                 <option value="0"><?php eT('All participants'); ?></option>
                                 <option value="1"><?php eT('Completed'); ?></option>
                                 <option value="2"><?php eT('Not completed'); ?></option>
@@ -64,7 +64,7 @@
                             <?php eT('Filter by language:'); ?>
                         </label>
                         <div class="default controls">
-                            <select id="tokenlanguage" name="tokenlanguage" class="form-control">
+                            <select id="tokenlanguage" name="tokenlanguage" class="form-select">
                                 <option value="" selected="selected"><?php eT('All'); ?>
                                 <option value="de"><?php eT('German'); ?></option>
                             </select>

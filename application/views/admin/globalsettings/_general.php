@@ -35,7 +35,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 <?php eT("Default theme:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?>
                 </label>
                 <div class="col-sm-12">
-                    <select class="form-control" name="defaulttheme" id="defaulttheme">
+                    <select class="form-select" name="defaulttheme" id="defaulttheme">
                         <?php foreach ($templatenames as $templatename) : ?>
                         <option value='<?php echo $templatename; ?>' <?php echo ($thisdefaulttheme==$templatename) ? "selected='selected'" : ""?> >
                             <?php echo $templatename; ?>
@@ -73,7 +73,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 <?php eT("Administration theme:"); ?>
                 </label>
                 <div class="col-sm-12">
-                    <select class="form-control" name="admintheme" id="admintheme">
+                    <select class="form-select" name="admintheme" id="admintheme">
                         <?php  foreach($aListOfThemeObjects as $templatename => $templateconfig): ?>
                         <option value='<?php echo $templatename; ?>' <?php echo ($thisadmintheme==$templatename)? "selected='selected'" : "" ?> >
                             <?php echo $templateconfig->metadata->name; ?>
@@ -167,7 +167,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                     <?php eT("Character set for file import/export:") ?>
                 </label>
                 <div class='col-sm-12'>
-                    <select class='form-control' name='characterset' id='characterset'>
+                    <select class='form-select' name='characterset' id='characterset'>
                     <?php foreach ($aEncodings as $code => $charset): ?>
                         <option value='<?php echo $code; ?>'
                         <?php if (array_key_exists($thischaracterset, $aEncodings) && $code==$thischaracterset): ?>

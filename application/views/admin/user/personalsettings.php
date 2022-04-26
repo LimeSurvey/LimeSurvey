@@ -301,7 +301,7 @@ echo $oQuestionSelector->getModal();
                                     <div class="form-group">
                                         <?php echo TbHtml::label(gT("Date format:"), 'dateformat', ['class' => " form-label"]); ?>
                                         <div class="">
-                                            <select name='dateformat' id='dateformat' class="form-control">
+                                            <select name='dateformat' id='dateformat' class="form-select">
                                                 <?php foreach (getDateFormatData(0, App()->session['adminlang']) as $index => $dateformatdata) {
                                                     echo "<option value='{$index}'";
                                                     if ($index == App()->session['dateformat']) {

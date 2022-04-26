@@ -168,7 +168,7 @@ echo viewHelper::getViewTestTag('themeEditor');
             <!-- Theme Select Box -->
             <div class="form-group">
                 <label for='templatedir'><?php eT("Theme:"); ?></label>
-                <select class="listboxtemplates form-control btn" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
+                <select class="listboxtemplates form-select btn" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because YIi will then try to use filenames directly in the path because of the route
                     echo $this->createUrl("admin/themes", array('sa' => 'view','editfile' => $relativePathEditfile,'screenname' => $screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
                     <?php echo themeoptions($templates, $templatename); ?>

@@ -18,7 +18,7 @@
                     <?php eT('(Select multiple label sets by using the Ctrl key)'); ?>
                 </label>
                 <div class="col-sm-3">
-                    <select id='labelsets' multiple='multiple' name='lids[]' size='20' class="form-control">
+                    <select id='labelsets' multiple='multiple' name='lids[]' size='20' class="form-select">
                         <?php if (count($labelsets) > 0) {
                             foreach ($labelsets as $lb) {
                                 echo "<option value='{$lb[0]}'>{$lb[0]}: {$lb[1]}</option>\n";

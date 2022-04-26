@@ -14,7 +14,7 @@
         {{ labeltext }}
     </label>
     <div class="col-sm-8">
-        <select  class='form-control' name="{{ myfname }}" id="answer{{ myfname }}">
+        <select  class='form-select' name="{{ myfname }}" id="answer{{ myfname }}">
             {% for option in options %}
                 <option value="{{ option.value }}" {{ option.selected }} class='{{ option.classes }}'>
                     {{ option.optiontext }}

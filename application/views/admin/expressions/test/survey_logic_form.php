@@ -13,7 +13,7 @@
                 <?=TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post')?>
                     <div class="form-group">
                         <label class="form-label" for="sid"> <?=gT('Survey ID (SID)')?></label>
-                        <select name="sid" id="sid" class="form-control">
+                        <select name="sid" id="sid" class="form-select">
                             <?=getSurveyList()?>
                         </select>
                     </div>

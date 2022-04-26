@@ -42,7 +42,7 @@
                             <?php eT("Select the LDAP query you want to run:"); ?>
                         </label>
                         <div class="">
-                            <select name='ldapQueries' class="form-control">
+                            <select name='ldapQueries' class="form-select">
                                 <?php 
                                 uasort ( $ldap_queries , function ($a, $b) {
                                     return strnatcmp($a['name'],$b['name']); // or other function/code

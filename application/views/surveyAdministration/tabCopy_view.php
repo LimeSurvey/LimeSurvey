@@ -10,7 +10,7 @@
             <div class="col-4">
                 <!-- Select survey -->
                 <label for='copysurveylist' class=" form-label"><?php  eT("Select survey to copy:"); ?> </label>
-                <select id='copysurveylist' name='copysurveylist' required="required" class="form-control">
+                <select id='copysurveylist' name='copysurveylist' required="required" class="form-select">
                     <?php echo getSurveyList(false); ?>
                 </select>
                 <p class="form-control-static">

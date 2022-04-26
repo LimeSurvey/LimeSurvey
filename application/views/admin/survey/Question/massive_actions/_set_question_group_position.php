@@ -13,7 +13,7 @@
     <div class="form-group">
         <label class="form-label col-sm-4" for="group_gid"><?php et('Group:'); ?></label>
         <div class="col-sm-8">
-            <select name="group_gid" class="form-control custom-data" id="gid">
+            <select name="group_gid" class="form-select custom-data" id="gid">
                 <?php foreach($model->survey->groups as $group): ?>
                     <option value="<?php echo $group->gid;?>">
                         <?php echo flattenText($group->questiongroupl10ns[$model->survey->language]->group_name);?>

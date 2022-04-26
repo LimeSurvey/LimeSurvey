@@ -35,7 +35,7 @@
             <div class="form-group">
                 <label class=" form-label" for='gid'><?php eT("Destination question group:"); ?></label>
                 <div class="">
-                    <select name='gid' id='gid' class="form-control">
+                    <select name='gid' id='gid' class="form-select">
                         <?php echo getGroupList3($gid, $sid); ?>
                     </select>
                 </div>

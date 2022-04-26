@@ -197,7 +197,7 @@ class SurveyPermission extends SurveyCommonAction
             $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<br/><br/><ul class='list-unstyled'>\n"
             . "<li><label class='col-sm-1 col-md-offset-2 text-end form-label' for='uidselect'>" . gT("User") . ": </label>
                  <div class='col-sm-4'>
-                <select id='uidselect' name='uid'  class='form-control'>\n"
+                <select id='uidselect' name='uid'  class='form-select'>\n"
             . getSurveyUserList(false, $iSurveyID)
             . "</select></div>\n"
             . "<input style='width: 15em;' class='btn btn-default' type='submit' value='" . gT("Add user") . "'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('" . gT("Please select a user first", "js") . "'); return false;}\"/>"
@@ -207,7 +207,7 @@ class SurveyPermission extends SurveyCommonAction
             $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/addusergroup/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<ul class='list-unstyled'><li>\n"
             . "<label  class='col-sm-1 col-md-offset-2  text-end form-label'  for='ugidselect'>" . gT("User group") . ": </label>
                 <div class='col-sm-4'>
-                <select id='ugidselect' name='ugid'  class='form-control'>\n"
+                <select id='ugidselect' name='ugid'  class='form-select'>\n"
             . getSurveyUserGroupList('htmloptions', $iSurveyID)
             . "</select></div>\n"
             . "<input style='width: 15em;' class='btn btn-default'  type='submit' value='" . gT("Add group users") . "' onclick=\"if (document.getElementById('ugidselect').value == -1) { alert('" . gT("Please select a user group first", "js") . "'); return false;}\" />"

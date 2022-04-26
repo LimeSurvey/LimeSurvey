@@ -31,7 +31,7 @@ Yii::app()->getController()->renderPartial(
                 </label>
 
                 <div class='col-sm-12'>
-                    <select class='form-control' id='shareuser' name='shareuser'>
+                    <select class='form-select' id='shareuser' name='shareuser'>
                         <option value=''><?php eT('Share with all users'); ?></option>
                         <?php foreach ($users as $user): ?>
                             <option value='<?php echo $user->uid; ?>'>

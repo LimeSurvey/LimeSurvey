@@ -22,7 +22,7 @@
                     <?php eT('Survey'); ?>
                 </label>
                 <div class='col-sm-8'>
-                    <select name='survey_id' class='form-control'>
+                    <select name='survey_id' class='form-select'>
                         <?php foreach ($surveys as $survey): ?>
                             <?php if ($hasGlobalPermission || Permission::model()->hasSurveyPermission($survey->sid, 'tokens', 'update')): ?>
                                 <option value='<?php echo $survey->sid; ?>'><?php echo $survey->languagesettings[$survey->language]->surveyls_title; ?></option>

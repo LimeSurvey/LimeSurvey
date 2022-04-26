@@ -7,7 +7,7 @@
             </h3>
             <div class="form-group row"><label class=" form-label" for='save_language'><?php eT("Language selection"); ?></label>
                 <div class="">
-                    <select class="form-control" name='save_language'>
+                    <select class="form-select" name='save_language'>
                         <?php foreach ($slangs as $lang)
                         {
                             if ($lang == $baselang) { ?>

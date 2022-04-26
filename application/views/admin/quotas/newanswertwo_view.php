@@ -27,7 +27,7 @@ $isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == 
                         <p class="lead"><?php eT("Select answer:");?></p>
                         <div class='form-group'>
                             <div class='col-sm-5 col-sm-offset-4'>
-                                <select class='form-control' name="quota_anscode" size="15">
+                                <select class='form-select' name="quota_anscode" size="15">
                                     <?php
                                         foreach ($question_answers as $key=>$value) {
                                             if (!isset($value['rowexists'])) echo '<option value="'.$key.'">'.strip_tags(substr($value['Display'],0,40)).'</option>';

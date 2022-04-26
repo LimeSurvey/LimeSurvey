@@ -77,7 +77,7 @@ if ($thissurvey['active'] == "Y")
                             <label class=" form-label" for="save_language"><?php eT("Start language:"); ?></label>
                             <div class="">
 
-                                <select name='save_language' id="save_language" class="form-control">
+                                <select name='save_language' id="save_language" class="form-select">
                                 <?php foreach ($slangs as $lang)
                                 {
                                 if ($lang == $baselang) { ?>

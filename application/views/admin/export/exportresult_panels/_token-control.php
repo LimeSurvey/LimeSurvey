@@ -18,7 +18,7 @@
       <?php eT("Choose participant fields:");?>
     </label>
     <div class="col-sm-8">
-      <select name='attribute_select[]' multiple size='20' class="form-control" id="attribute_select">
+      <select name='attribute_select[]' multiple size='20' class="form-select" id="attribute_select">
         <option value='first_name' id='first_name'>
           <?php eT("First name");?>
         </option>
