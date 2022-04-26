@@ -1,5 +1,5 @@
 <select
-    class="form-control"
+    class="form-select"
     name="question[<?= $this->generalOption->name ?>]"
     id="<?= $this->generalOption->name ?>"
     <?= $this->generalOption->disabled ? 'disabled' : '' ?>
