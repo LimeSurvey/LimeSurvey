@@ -36,6 +36,12 @@ class index extends CAction
         $thisstep    = $param['thisstep'];
         $move        = getMove();
 
+        /* reset all session before all other action */
+        if (isset($param['newtest']) && $param['newtest'] == "Y") {
+            killSurveySession($surveyid);
+            resetQuestionTimers($surveyid);
+        }
+
         /* Get client token by POST or GET value */
         $clienttoken = trim($param['token']);
         /* If not set : get by SESSION to avoid multiple submit of same token in different navigator */
@@ -74,11 +80,6 @@ class index extends CAction
         $loadname = $param['loadname'];
         $loadpass = $param['loadpass'];
         $sitename = Yii::app()->getConfig('sitename');
-
-        if (isset($param['newtest']) && $param['newtest'] == "Y") {
-            killSurveySession($surveyid);
-            resetQuestionTimers($surveyid);
-        }
 
         $surveyExists   = ($oSurvey != null);
         $isSurveyActive = ($surveyExists && $oSurvey->isActive);
