@@ -638,7 +638,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       url: languageJson.lsdetailurl,
       data: {sid, lid},
       cache: true,
-      success(json /*: {results: Array<{label_name: string, labels: Array<{code: string, title: string}>}>, languages: {}} */) {
+        success(json /*: {success: bool, results: Array<{label_name: string, labels: Array<{code: string, title: string}>}>, languages: {}} */) {
         if (json.success !== true) {
           $('#labelsetpreview').empty();
           showLabelSetAlert(languageJson.labelSetNotFound, 'danger'); // This could mean the label set is not found or it has no languages
@@ -725,10 +725,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * Shows an alert in the label set's modal
    *
    * @param {string} message The message to show
-   * @param {string} type Alert type (eg. 'danger')
+   * @param {?string} type Alert type (eg. 'danger')
    * @return {void}
    */
-  function showLabelSetAlert(message /*: string */, type /*: string */) /*: void */ {
+  function showLabelSetAlert(message /*: mixed */, type /*?: string */) /*: void */ {
+    if (typeof message !== 'string') {
+        throw 'expected string';
+    }
     const alertType = type ?? 'warning';
     const alert = $('#labelsetalert');
     const alertHtml = '<div class="alert alert-' + alertType + ' ls-space margin bottom-0 top-15">' + message + '</div>';
