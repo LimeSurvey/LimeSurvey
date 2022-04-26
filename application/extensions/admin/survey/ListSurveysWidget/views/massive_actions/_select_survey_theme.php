@@ -8,7 +8,7 @@
 <div id='select-theme-modal' >
     <label class="" for='theme'><?php  eT("Survey theme:"); ?></label>
         <div class=" ">
-            <select id='theme' class="form-control custom-data"  name='theme' >
+            <select id='theme' class="form-select custom-data"  name='theme' >
                 <?php
                     $athemeList = Template::getTemplateListWithPreviews();
                     foreach ($athemeList as $themeName => $preview) {

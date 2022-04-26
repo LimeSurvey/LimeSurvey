@@ -35,7 +35,7 @@
             <!-- select state -->
             <div class="form-group">
                 <?php echo $form->label($this->model, 'active', array('label'=>gT('Status:'),'class'=>'form-label')); ?>
-                <select name="active" id='Survey_active' class="form-control">
+                <select name="active" id='Survey_active' class="form-select">
                     <option value="" <?php if( $this->model->active==""){echo "selected";}?>><?php eT('(Any)');?></option>
                     <option value="Y" <?php if( $this->model->active=="Y"){echo "selected";}?>><?php eT('Active');?></option>
                     <option value="R" <?php if( $this->model->active=="R"){echo "selected";}?>><?php eT('Active and running');?></option>
@@ -49,7 +49,7 @@
             <!-- select group -->
             <div class="form-group">
                 <?php echo $form->label($this->model, 'group', array('label'=>gT('Group:'),'class'=>'form-label')); ?>
-                    <select name="gsid" id='Survey_gsid' class="form-control">
+                    <select name="gsid" id='Survey_gsid' class="form-select">
                         <option value=""><?php eT('(Any group)');?></option>
                         <?php foreach( SurveysGroups::getSurveyGroupsList() as $gsid=>$group_title): ?>
                             <option value="<?php echo $gsid;?>" <?php if( $gsid == $this->model->gsid){echo 'selected';} ?>>
