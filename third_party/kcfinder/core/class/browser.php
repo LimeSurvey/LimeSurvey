@@ -921,6 +921,20 @@ class browser extends uploader {
     protected function htmlData($str) {
         return htmlentities($str, null, strtoupper($this->charset));
     }
+
+    /**
+     * Returns the base URL
+     * Note: Added to solve Limesurvey issue #18042
+     */
+    public function getBaseUrl()
+    {
+        $dirname = dirname($_SERVER['PHP_SELF']);
+        $dirname = rtrim($dirname, "/") . "/";
+        
+        $schema = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
+        $baseurl = $schema . $_SERVER['HTTP_HOST'] . $dirname;
+        return $baseurl;
+    }
 }
 
 ?>
