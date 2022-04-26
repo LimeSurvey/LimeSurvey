@@ -3,8 +3,8 @@
     <button
         type="button"
         class="btn btn-block <?= implode(" ", $this->buttonClasses) ?>"
-        data-target="#selector__<?=$this->widgetsJsName?>-modal"
-        data-toggle="modal"
+        data-bs-target="#selector__<?=$this->widgetsJsName?>-modal"
+        data-bs-toggle="modal"
         aria-haspopup="true"
         aria-expanded="false"
         <?php
