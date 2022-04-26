@@ -29,12 +29,20 @@
                             data-bs-toggle="collapse"
                             data-bs-parent="#accordion_<?=$this->widgetsJsName?>"
                             href="#collapsible_<?=$sGroupTitle?>"
+                            aria-expanded="true"
+                            aria-controls="collapse-question"
                         >
                             <?=$aGroupArray[$this->groupTitleKey]?>
                         </button>
                     </h2>
 
-                    <div id="collapsible_<?=$sGroupTitle?>" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="<?=$sGroupTitle?>">
+                    <div
+                        id="collapsible_<?=$sGroupTitle?>"
+                        class="accordion-collapse collapse"
+                        role="tabpanel"
+                        aria-labelledby="<?=$sGroupTitle?>"
+                        data-bs-parent="#accordion_<?=$this->widgetsJsName?>"
+                    >
                       <div class="accordion-body ls-space padding all-0">
                         <div class="list-group ls-space margin all-0">
                           <?php foreach ($aGroupArray[$this->groupItemsKey] as $aItemContent) { ?>
