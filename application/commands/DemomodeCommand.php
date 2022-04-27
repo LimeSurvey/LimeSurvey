@@ -80,6 +80,10 @@ class DemomodeCommand extends CConsoleCommand
         //Now delete the basics in all other tables
         $actquery = "delete from {{permissions}} where uid<>1";
         Yii::app()->db->createCommand($actquery)->execute();
+        $actquery = "delete from {{surveys_groupsettings}} where gsid>1";
+        Yii::app()->db->createCommand($actquery)->execute();
+        $actquery = "delete from {{surveys_groups}} where gsid>1";
+        Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "delete from {{users}} where uid<>1";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "update {{users}} set lang='en'";
