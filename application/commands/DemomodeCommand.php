@@ -82,6 +82,10 @@ class DemomodeCommand extends CConsoleCommand
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "delete from {{surveys_groupsettings}} where gsid>1";
         Yii::app()->db->createCommand($actquery)->execute();
+        $actquery = "update {{surveys_groupsettings}} set template = 'fruity' where gsid=0";
+        Yii::app()->db->createCommand($actquery)->execute();
+        $actquery = "update {{surveys_groupsettings}} set template = 'inherit' where gsid=1";
+        Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "delete from {{surveys_groups}} where gsid>1";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "delete from {{users}} where uid<>1";
