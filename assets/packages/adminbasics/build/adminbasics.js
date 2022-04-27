@@ -29708,13 +29708,7 @@
     doToolTip: function doToolTip() {
       // Destroy all tooltips
       try {
-        var tooltipDisposeTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipDisposeTriggerList.map(function (tooltipTriggerEl) {
-          return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-        tooltipList.forEach(function (tooltip) {
-          tooltip.dispose();
-        });
+        $('.tooltip').tooltip('dispose');
       } catch (e) {} // Reinit all tooltips
 
 
