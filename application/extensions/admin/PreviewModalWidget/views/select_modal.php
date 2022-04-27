@@ -6,17 +6,17 @@
 <?php //The hidden input ?>
 <input id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" value="<?=$this->value?>" type="hidden" />
 <?php //The modal ?>
-<div class="modal fade previewModalWidget" tabindex="-1" role="dialog" id="selector__<?=$this->widgetsJsName?>-modal" data-backdrop="false">
+<div class="modal fade previewModalWidget" tabindex="-1" id="selector__<?=$this->widgetsJsName?>-modal">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"><?=gT($this->modalTitle)?></h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-xs-4 ls-ba">
+            <div class="col-4 ls-ba">
               <div class="panel-body ls-space padding all-0">
                 <div class="list-group ls-space margin all-0">
                   <?php foreach ($this->itemsArray as $sItemKey => $aItemContent) { ?>
@@ -43,7 +43,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-xs-8">
+            <div class="col-8">
                 <div class="container-center">
                     <div class="row">
                         <div class="col-sm-12">
@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-cancel" data-dismiss="modal">
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal">
           <?=gT($this->closeButton)?>
         </button>
         <button type="button" id="selector__select-this-<?=$this->widgetsJsName?>" class="btn btn-primary">
