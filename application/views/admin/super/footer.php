@@ -93,8 +93,8 @@ foreach ($systemInfos as $key => $systemInfo) {
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-                <div class="h3 modal-title"><?php eT("System information"); ?></div>
+                <h5 class="modal-title"><?php eT("System information"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
@@ -139,8 +139,8 @@ foreach ($systemInfos as $key => $systemInfo) {
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-                <div class="h4 modal-title"><?php eT("Confirm"); ?></div>
+                <h5 class="modal-title"><?php eT("Confirm"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
@@ -159,7 +159,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 
             </div>
             <div class="modal-footer modal-footer-yes-no">
-                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
                 <a id="actionBtn" class="btn btn-ok" data-actionbtntext="<?php eT('Confirm'); ?>" ></a>
             </div>
             <div class="modal-footer-close modal-footer" style="display: none;">
@@ -177,8 +177,8 @@ foreach ($systemInfos as $key => $systemInfo) {
         <!-- Modal content-->
         <div class="modal-content panel-danger">
             <div class="modal-header card-header bg-primary">
-                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-                <div class="h3 modal-title"><?php eT("Error"); ?></div>
+                <h5 class="modal-title"><?php eT("Error"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("An error occurred."); ?></p>
@@ -196,8 +196,8 @@ foreach ($systemInfos as $key => $systemInfo) {
         <!-- Modal content-->
         <div class="modal-content panel-success">
             <div class="modal-header card-header bg-primary">
-                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-                <div class="h3 modal-title"><?php eT("Success"); ?></div>
+                <h5 class="modal-title"><?php eT("Success"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php /* This must be set in Javascript */ ?></p>
