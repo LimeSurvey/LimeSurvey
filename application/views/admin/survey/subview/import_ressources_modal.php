@@ -10,7 +10,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
           <h4 class="modal-title" id="importRessourcesModalLabel">
@@ -28,7 +28,7 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-cancel" data-dismiss="modal">
+            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
               <?php  eT("Cancel");?>
             </button>
             <input type='button' class="btn btn-primary" value='<?php  eT("Import"); ?>' <?php echo $ZIPimportAction; ?> />

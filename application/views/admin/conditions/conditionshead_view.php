@@ -48,7 +48,7 @@
         <!-- Modal content-->
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
             <div class="modal-header card-header bg-primary">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
                 <h4 class="modal-title"><?php eT('Quick-add conditions'); ?></h4>
             </div>
             <div class="modal-body">
@@ -56,7 +56,7 @@
                 <?php echo $quickAddConditionForm; ?>
             </div>
             <div class="modal-footer">
-                <button type="button" id='quick-add-condition-close-button' class="btn btn-cancel" data-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
+                <button type="button" id='quick-add-condition-close-button' class="btn btn-cancel" data-bs-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
                 <button type='submit' id='quick-add-condition-save-button' class='btn btn-primary'><?php eT('Save'); ?></button>
                 <span id='quick-add-url' class="d-none"><?php echo $quickAddConditionURL; ?></span>
             </div>

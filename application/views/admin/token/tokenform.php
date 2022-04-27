@@ -502,14 +502,14 @@ LS.renderBootstrapSwitch();
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><?= gT('Create empty participant') ?></h4>
                 </div>
                 <div class="modal-body">
                     <?= gT("You are about to create a participant without the basic details. Are you sure you want to proceed?") ?>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel");?></button>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel");?></button>
                     <button type="button" class="btn btn-primary" id="save-empty-token"><?php eT("Save");?></button>
                 </div>
             </div><!-- /.modal-content -->

@@ -250,7 +250,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title selector__title"> </h4>
             </div>

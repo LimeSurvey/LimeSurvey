@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"><?php eT("Export participants"); ?> </h4>
             </div>
             <div class="modal-body">
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel'); ?></button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
                 <button type="button" class="btn btn-success exportButton"><?php eT('Export'); ?></button>
             </div>
         </div>
@@ -51,14 +51,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"><?php eT("Export participants"); ?></h4>
             </div>
             <div class="modal-body">
                 <?php eT("There are no participants to be exported."); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close'); ?></button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Close'); ?></button>
             </div>
         </div>
     </div>

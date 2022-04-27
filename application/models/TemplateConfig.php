@@ -660,8 +660,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['modalfooterlink']   = ' btn btn-default ';
 
         $aClassAndAttributes['attr']['modalheader']       = ' style="min-height:40px;" '; // Todo: move to CSS
-        $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-dismiss="modal" aria-hidden="true" ';
-        $aClassAndAttributes['attr']['modalfooterlink']   = ' href="#" data-dismiss="modal" ';
+        $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-bs-dismiss="modal" aria-hidden="true" ';
+        $aClassAndAttributes['attr']['modalfooterlink']   = ' href="#" data-bs-dismiss="modal" ';
 
         $aClassAndAttributes['attr']['alertmodal'] = $aClassAndAttributes['attr']['modaldialog'] = $aClassAndAttributes['attr']['modalcontent'] = $aClassAndAttributes['attr']['modaltitle'] = $aClassAndAttributes['attr']['modalbody'] = $aClassAndAttributes['attr']['modalfooter'] = '';
 

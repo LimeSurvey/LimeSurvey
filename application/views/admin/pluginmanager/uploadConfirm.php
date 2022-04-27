@@ -74,7 +74,7 @@
                     <?php else : ?>
                         <input type="submit" class="btn btn-success" value="<?php eT("Install");?>" />
                     <?php endif; ?>
-                    <a href="<?php echo $abortUrl; ?>" class="btn btn-warning" data-dismiss="modal"><?php eT("Abort");?></a>
+                    <a href="<?php echo $abortUrl; ?>" class="btn btn-warning" data-bs-dismiss="modal"><?php eT("Abort");?></a>
                 </div>
             </div>
 

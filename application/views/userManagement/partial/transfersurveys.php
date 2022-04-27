@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
     <div class="h3 modal-title"><?php eT("Delete user"); ?></div>
 </div>
 <div class="modal-body">

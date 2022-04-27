@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="participant_edit_modal"><?php if ($editType == 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h4>
 </div>
 <div class="modal-body ">
@@ -243,7 +243,7 @@
     </script>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel') ?></button>
+    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
     <button type="button" class="btn btn-primary action_save_modal_editAttributeName"><?php eT("Save")?></button>
 </div>
 <?php

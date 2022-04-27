@@ -213,7 +213,7 @@ Yii::app()->getController()->renderPartial(
 	</div>
 </div>
 	<div class="modal-footer">
-        <button type="button" class="btn btn-cancel" data-dismiss="modal"><?=gT('Cancel')?></button>
+        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?=gT('Cancel')?></button>
 		<?php echo TbHtml::submitButton(($model->isNewRecord ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
 
 	</div>
