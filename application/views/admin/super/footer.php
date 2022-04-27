@@ -214,11 +214,8 @@ foreach ($systemInfos as $key => $systemInfo) {
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
-            <div class="modal-header card-header bg-primary">
-                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-                <div class="h3 modal-title">
-            <span class="sr-only"><?php eT("Notifications"); ?></span>
-        </div>
+            <div class="modal-header">
+                <h5 class="modal-title"><?php eT("Notifications"); ?></h5>
                 <span class='notification-date'></span>
             </div>
             <div class="modal-body">

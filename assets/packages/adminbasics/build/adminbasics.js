@@ -33161,7 +33161,8 @@
         $('#admin-notification-modal .modal-body-text').html(not.message);
         $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
         $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
-        $('#admin-notification-modal').modal(); // TODO: Will this work in message includes a link that is clicked?
+        var modal = new bootstrap.Modal(document.getElementById('admin-notification-modal'));
+        modal.show(); // TODO: Will this work in message includes a link that is clicked?
 
         $('#admin-notification-modal').off('hidden.bs.modal');
         $('#admin-notification-modal').on('hidden.bs.modal', function (e) {
