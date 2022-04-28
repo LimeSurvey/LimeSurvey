@@ -5,7 +5,7 @@
 ?>
 
 <div class="modal-header">
-    <?= gT('Saved successfully') ?>
+    <h5 class="modal-title"><?= gT('Saved successfully') ?></h5>
 </div>
 <div class="modal-body">
     <div class="container-center">

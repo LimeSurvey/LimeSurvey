@@ -8,7 +8,7 @@
  */
 ?>
 <div class="modal-header">
-    <?=gT('Error')?>
+    <h5 class="modal-title"><?=gT('Error')?></h5>
 </div>
 <div class="modal-body">
     <div class="container-center">

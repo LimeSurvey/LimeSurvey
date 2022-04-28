@@ -49,7 +49,7 @@ echo viewHelper::getViewTestTag('index');
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title" id="welcome-modal-title"><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h4>
+                      <h5 class="modal-title" id="welcome-modal-title"><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-hidden="true"></button>
                     </div>
                     <div class="modal-body">

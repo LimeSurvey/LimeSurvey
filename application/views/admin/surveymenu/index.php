@@ -86,13 +86,13 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><?php eT("Delete this survey menu?"); ?></h4>
+                <h5 class="modal-title"><?php eT("Delete this survey menu?"); ?></h5>
             </div>
             <div class="modal-body">
                 <?php eT("All menu entries of this menu will also be deleted."); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
                 <button type="button" id="deletemodal-confirm" class="btn btn-danger"><?php eT('Delete'); ?></button>
             </div>
         </div>
@@ -103,7 +103,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><?php eT("Really restore the default survey menus (survey menu entries)?"); ?></h4>
+                <h5 class="modal-title"><?php eT("Really restore the default survey menus (survey menu entries)?"); ?></h5>
             </div>
             <div class="modal-body">
                 <p>

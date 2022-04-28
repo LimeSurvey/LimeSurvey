@@ -2,15 +2,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span >&times;</span></button>
-        <h4 class="modal-title"><?php eT('Enter your labels:') ?></h4>
+        <h5 class="modal-title"><?php eT('Enter your labels:') ?></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
           <p><?php eT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab.') ?></p>
           <textarea id='quickaddarea' name='quickaddarea' class='tipme' title='<?php eT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab.') ?>' rows='10' cols='100' style='width:570px;'></textarea>
       </div>
       <div class="modal-footer button-list">
-          <button id='btnqacancel' type='button' class="btn btn-cancel"  data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
+          <button id='btnqacancel' type='button' class="btn btn-default"  data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
           <button id='btnqareplace' type='button' class="btn btn-default"><?php eT('Replace') ?></button>
           <button id='btnqainsert' type='button' class="btn btn-primary"><?php eT('Add') ?></button>
       </div>
