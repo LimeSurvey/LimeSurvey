@@ -71,7 +71,12 @@ class AnswerL10n extends LSActiveRecord
                     'condition' => 'language=:language',
                     'params' => array(':language' => $this->language)
                 ),
-                'message'=>sprintf(gT("Answer ID (aid): “%s” is already in use for language “%s”."), $this->aid, $this->language),// Usage of {attribute} need attributeLabels, {value} never exist in message
+                'message' => sprintf(
+                    // Usage of {attribute} need attributeLabels, {value} never exist in message
+                    gT("Answer ID (aid): “%s” is already in use for language “%s”."),
+                    $this->aid,
+                    $this->language
+                ),
             ),
         ];
     }

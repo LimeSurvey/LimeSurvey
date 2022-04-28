@@ -2809,7 +2809,7 @@ function TSVImportSurvey($sFullFilePath)
                     $group['group_order'] = $ginfo[$sGroupseq]['group_order'];
                 } else {
                     /* Get the new gid from file if it's number and not already set*/
-                    if (!empty($row['id']) && ctype_digit($row['id']) && !in_array($row['id'],$groupIds)) {
+                    if (!empty($row['id']) && ctype_digit($row['id']) && !in_array($row['id'], $groupIds)) {
                         $gid = $row['id'];
                     } else {
                         $gidNew += 1;
@@ -2858,7 +2858,7 @@ function TSVImportSurvey($sFullFilePath)
                     $question['question_order'] = $qseq;
                 } else {
                     /* Get the new qid from file if it's number and not already set*/
-                    if (!empty($row['id']) && ctype_digit($row['id']) && !in_array($row['id'],$questionsIds)) {
+                    if (!empty($row['id']) && ctype_digit($row['id']) && !in_array($row['id'], $questionsIds)) {
                         $qid = $row['id'];
                     } else {
                         $qidNew += 1;
@@ -2968,7 +2968,7 @@ function TSVImportSurvey($sFullFilePath)
                     } else {
                         $subquestion['question_order'] = $qseq;
                         /* Get the new qid from file if it's number and not already set : subquestion are question*/
-                        if (!empty($row['id']) && ctype_digit($row['id']) && !in_array($row['id'],$questionsIds)) {
+                        if (!empty($row['id']) && ctype_digit($row['id']) && !in_array($row['id'], $questionsIds)) {
                             $sqid = $row['id'];
                         } else {
                             $qidNew += 1;
