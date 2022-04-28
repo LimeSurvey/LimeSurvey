@@ -2129,7 +2129,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
             }
         } else {
-            return array('status' => 'Invalid S ession Key');
+            return array('status' => self::INVALID_SESSION_KEY);
         }
     }
 
