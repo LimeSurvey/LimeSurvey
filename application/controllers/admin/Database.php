@@ -578,6 +578,7 @@ class Database extends SurveyCommonAction
 
         Yii::app()->loadHelper('database');
 
+        $hasSurveyLanguageSettingError = false;
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
             foreach ($languagelist as $langname) {
                 if ($langname) {
@@ -647,7 +648,21 @@ class Database extends SurveyCommonAction
                     if (count($data) > 0) {
                         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $langname));
                         $oSurveyLanguageSetting->setAttributes($data);
-                        $oSurveyLanguageSetting->save(); // save the change to database
+                        if (!$oSurveyLanguageSetting->save()) { // save the change to database
+                            $languageDescription = getLanguageNameFromCode($langname, false);
+                            Yii::app()->setFlashMessage(
+                                Chtml::errorSummary(
+                                    $oSurveyLanguageSetting,
+                                    Chtml::tag(
+                                        "p",
+                                        ['class' => 'strong'],
+                                        sprintf(gT("Texts for %s language could not be updated:"), $languageDescription)
+                                    )
+                                ),
+                                "error"
+                            );
+                            $hasSurveyLanguageSettingError = true;
+                        }
                     }
                 }
             }
@@ -770,7 +785,11 @@ class Database extends SurveyCommonAction
             $aAfterApplyAttributes = $oSurvey->attributes;
 
             if ($oSurvey->save()) {
-                Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+                if (!$hasSurveyLanguageSettingError) {
+                    Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+                } else {
+                    Yii::app()->setFlashMessage(gT("Survey settings were saved, but there where errors with some languages."), "warning");
+                }
             } else {
                 Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey, Chtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
             }
