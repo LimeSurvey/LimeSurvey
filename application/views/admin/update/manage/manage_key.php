@@ -38,10 +38,22 @@
                              <?php endif;?>
                         </td>
                         <td>
-                            <?php echo convertToGlobalSettingFormat($updateKeyInfos->validuntil); ?>
+                            <?php 
+                            if ($updateKeyInfos->result === false) {
+                                eT($updateKeyInfos->error);
+                            } else {
+                                echo convertToGlobalSettingFormat($updateKeyInfos->validuntil);
+                            }
+                            ?>
                         </td>
                         <td>
-                            <?php echo $updateKeyInfos->remaining_updates; ?>
+                        <?php 
+                        if ($updateKeyInfos->result === false) {
+                                echo '-';
+                            } else {
+                                echo $updateKeyInfos->remaining_updates; 
+                            };
+                        ?>
                         </td>
                         <td>
                             <a data-post-url="<?php echo App()->createUrl('/admin/update/sa/deleteKey');?>" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
