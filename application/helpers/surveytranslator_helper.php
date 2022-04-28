@@ -528,7 +528,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     // Kurdish (Kurmanji)
     $supportedLanguages['kmr']['description'] = gT('Kurdish (Kurmanji)');
     $supportedLanguages['kmr']['nativedescription'] = 'Kurmanc&#xEE;';
-    $supportedLanguages['kmr']['rtl'] = true;
+    $supportedLanguages['kmr']['rtl'] = false;
     $supportedLanguages['kmr']['dateformat'] = 1;
     $supportedLanguages['kmr']['radixpoint'] = 1;
     $supportedLanguages['kmr']['cldr'] = 'ku';
