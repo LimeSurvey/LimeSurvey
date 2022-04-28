@@ -12,8 +12,7 @@
     <div  class="form-group" id="PublicStatistcs">
         <label class="col-sm-4 control-label" for="public_statistics"><?php eT("Show in public statistics:"); ?></label>
         <div class="col-sm-8">
-            <!-- TODO: Replace with Bootstrap Button Group -->
-            <?php /* $this->widget(
+            <?php $this->widget(
                     'yiiwheels.widgets.switch.WhSwitch',
                     array(
                         'name' => 'public_statistics',
@@ -22,7 +21,7 @@
                         ),
                     'value'=> '',
                     'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off'))); */
+                    'offLabel'=>gT('Off')));
             ?>
         </div>
     </div>
@@ -30,8 +29,7 @@
     <div  class="form-group" id="StatisticsShowgraph">
         <label class="col-sm-4 control-label" for="statistics_showgraph"><?php eT("Display chart:"); ?></label>
         <div class="col-sm-8">
-            <!-- TODO: Replace with Bootstrap Button Group -->
-            <?php /* $this->widget(
+            <?php $this->widget(
                 'yiiwheels.widgets.switch.WhSwitch',
                 array(
                     'name' => 'statistics_showgraph',
@@ -40,7 +38,7 @@
                     ),
                 'value'=> '',
                 'onLabel'=>gT('On'),
-                'offLabel'=>gT('Off'))); */
+                'offLabel'=>gT('Off')));
             ?>
         </div>
     </div>

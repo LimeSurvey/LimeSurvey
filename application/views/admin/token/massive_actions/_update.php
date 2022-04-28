@@ -56,8 +56,7 @@
                             <?php if ($oSurvey->anonymized != 'Y'): ?>
 
                                 <div class="col-sm-4">
-                                    <!-- TODO: Replace with Bootstrap Button Group -->
-                                    <?php /*
+                                    <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch',
                                         [
                                             'name'        => "completed-switch",
@@ -67,15 +66,14 @@
                                             'onLabel'     => gT('Yes'),
                                             'offLabel'    => gT('No')
                                         ]
-                                    ); */
+                                    );
                                     ?>
                                 </div>
 
                             <?php else: ?>
 
                                 <div class="col-sm-4">
-                                    <!-- TODO: Replace with Bootstrap Button Group -->
-                                    <?php /*
+                                    <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch',
                                         [
                                             'name'        => "completed-switch",
@@ -85,7 +83,7 @@
                                             'onLabel'     => gT('Yes'),
                                             'offLabel'    => gT('No')
                                         ]
-                                    ); */
+                                    );
                                     ?>
                                 </div>
 
@@ -188,8 +186,7 @@
                             <div class="col-sm-4">
 
                                 <?php if ($oSurvey->anonymized != 'Y'): ?>
-                                    <!-- TODO: Replace with Bootstrap Button Group -->
-                                    <?php /*
+                                    <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch',
                                         [
                                             'name'        => "sent-switch",
@@ -198,11 +195,10 @@
                                             'value'       => 0,
                                             'onLabel'     => gT('Yes'),
                                             'offLabel'    => gT('No')
-                                        ]); */
+                                        ]);
                                     ?>
                                 <?php else: ?>
-                                    <!-- TODO: Replace with Bootstrap Button Group -->
-                                    <?php /*
+                                    <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch',
                                         [
                                             'name'        => "sent-switch",
@@ -211,7 +207,7 @@
                                             'value'       => 0,
                                             'onLabel'     => gT('Yes'),
                                             'offLabel'    => gT('No')
-                                        ]); */
+                                        ]);
                                     ?>
                                 <?php endif; ?>
                             </div>
@@ -250,8 +246,7 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <?php if ($oSurvey->anonymized != 'Y'): ?>
-                                    <!-- TODO: Replace with Bootstrap Button Group -->
-                                    <?php /*
+                                    <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch',
                                         [
                                             'name'        => "remind-switch",
@@ -260,11 +255,10 @@
                                             'value'       => 0,
                                             'onLabel'     => gT('Yes'),
                                             'offLabel'    => gT('No')
-                                        ]); */
+                                        ]);
                                     ?>
                                 <?php else: ?>
-                                    <!-- TODO: Replace with Bootstrap Button Group -->
-                                    <?php /*
+                                    <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch',
                                         [
                                             'name'        => "sent-switch",
@@ -273,7 +267,7 @@
                                             'value'       => 0,
                                             'onLabel'     => gT('Yes'),
                                             'offLabel'    => gT('No')
-                                        ]); */
+                                        ]);
                                     ?>
                                 <?php endif; ?>
                             </div>
@@ -299,7 +293,6 @@
                         <input class='form-control custom-data hidden selector_submitField YesNoDateHidden' type='text' size='20' id='massedit_remindersent' name='remindersent' value="lskeep"/>
                     </div>
                 </div>
-
 
                 <!-- Reminder count -->
                 <div class="form-group">

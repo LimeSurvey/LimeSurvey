@@ -103,14 +103,13 @@
                             <label class=" control-label" for='checkforduplicates'>
                                 <?php eT("Don't import if label set already exists:"); ?>
                             </label>
-                            <!-- TODO: Replace with Bootstrap Button Group -->
-                            <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', [
-                                // 'name'     => 'checkforduplicates',
-                                // 'id'       => 'checkforduplicates',
-                                // 'value'    => 1,
-                                // 'onLabel'  => gT('On'),
-                                // 'offLabel' => gT('Off')
-                            ]); ?> -->
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', [
+                                'name'     => 'checkforduplicates',
+                                'id'       => 'checkforduplicates',
+                                'value'    => 1,
+                                'onLabel'  => gT('On'),
+                                'offLabel' => gT('Off')
+                            ]); ?>
                         </div>
 
                         <div class="form-group">

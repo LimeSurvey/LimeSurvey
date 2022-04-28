@@ -51,84 +51,78 @@
         <div class="form-group">
             <label class=" control-label"  for='pdfshowsurveytitle'><?php eT("Show survey title in export PDFs:") ; ?></label>
             <div class="">
-                <!-- TODO: Replace with Bootstrap Button Group -->
-                <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    // 'name' => 'pdfshowsurveytitle',
-                    // 'id'=>'pdfshowsurveytitle',
-                    // 'value' => getGlobalSetting('pdfshowsurveytitle')=='Y'?'1':0,
-                    // 'onLabel'=>gT('On'),
-                    // 'offLabel' => gT('Off')));
-                ?> -->
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'pdfshowsurveytitle',
+                    'id'=>'pdfshowsurveytitle',
+                    'value' => getGlobalSetting('pdfshowsurveytitle')=='Y'?'1':0,
+                    'onLabel'=>gT('On'),
+                    'offLabel' => gT('Off')));
+                ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class=" control-label"  for='pdfshowheader'><?php eT("Show header in answers export PDFs:") ; ?></label>
             <div class="">
-                <!-- TODO: Replace with Bootstrap Button Group -->
-                <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    // 'name' => 'pdfshowheader',
-                    // 'id'=>'pdfshowheader',
-                    // 'value' => getGlobalSetting('pdfshowheader')=='Y'?'1':0,
-                    // 'onLabel'=>gT('On'),
-                    // 'offLabel' => gT('Off')));
-                ?> -->
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'pdfshowheader',
+                    'id'=>'pdfshowheader',
+                    'value' => getGlobalSetting('pdfshowheader')=='Y'?'1':0,
+                    'onLabel'=>gT('On'),
+                    'offLabel' => gT('Off')));
+                ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class=" control-label"  for='bPdfQuestionFill'><?php eT("Add gray background to questions in PDF:"); ?></label>
             <div class="">
-                <!-- TODO: Replace with Bootstrap Button Group -->
-                <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    // 'name' => 'bPdfQuestionFill',
-                    // 'id'=>'bPdfQuestionFill',
-                    // 'value' => getGlobalSetting('bPdfQuestionFill'),
-                    // 'onLabel'=>gT('On'),
-                    // 'offLabel' => gT('Off')));
-                ?> -->
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'bPdfQuestionFill',
+                    'id'=>'bPdfQuestionFill',
+                    'value' => getGlobalSetting('bPdfQuestionFill'),
+                    'onLabel'=>gT('On'),
+                    'offLabel' => gT('Off')));
+                ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class=" control-label"  for='bPdfQuestionBold'><?php eT("PDF questions in bold:"); ?></label>
             <div class="">
-                <!-- TODO: Replace with Bootstrap Button Group -->
-                <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    // 'name' => 'bPdfQuestionBold',
-                    // 'id'=>'bPdfQuestionBold',
-                    // 'value' => getGlobalSetting('bPdfQuestionBold'),
-                    // 'onLabel'=>gT('On'),
-                    // 'offLabel' => gT('Off')));
-                ?>-->
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'bPdfQuestionBold',
+                    'id'=>'bPdfQuestionBold',
+                    'value' => getGlobalSetting('bPdfQuestionBold'),
+                    'onLabel'=>gT('On'),
+                    'offLabel' => gT('Off')));
+                ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class=" control-label"  for='bPdfQuestionBorder'><?php eT("Borders around questions in PDF:"); ?></label>
             <div class="">
-                <!-- TODO: Replace with Bootstrap Button Group -->
-                <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    // 'name' => 'bPdfQuestionBorder',
-                    // 'id'=>'bPdfQuestionBorder',
-                    // 'value' => getGlobalSetting('bPdfQuestionBorder'),
-                    // 'onLabel'=>gT('On'),
-                    // 'offLabel' => gT('Off')));
-                ?> -->
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'bPdfQuestionBorder',
+                    'id'=>'bPdfQuestionBorder',
+                    'value' => getGlobalSetting('bPdfQuestionBorder'),
+                    'onLabel'=>gT('On'),
+                    'offLabel' => gT('Off')));
+                ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class=" control-label"  for='bPdfResponseBorder'><?php eT("Borders around responses in PDF:"); ?></label>
             <div class="">
-                <!-- TODO: Replace with Bootstrap Button Group -->
-                <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    // 'name' => 'bPdfResponseBorder',
-                    // 'id'=>'bPdfResponseBorder',
-                    // 'value' => getGlobalSetting('bPdfResponseBorder'),
-                    // 'onLabel'=>gT('On'),
-                    // 'offLabel' => gT('Off')));
-                ?> -->
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'bPdfResponseBorder',
+                    'id'=>'bPdfResponseBorder',
+                    'value' => getGlobalSetting('bPdfResponseBorder'),
+                    'onLabel'=>gT('On'),
+                    'offLabel' => gT('Off')));
+                ?>
             </div>
         </div>
 

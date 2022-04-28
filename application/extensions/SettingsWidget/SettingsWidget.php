@@ -333,20 +333,24 @@ class SettingsWidget extends CWidget
     /***********************************************************************
      * Settings renderers.
      **********************************************************************/
-
+    /**
+     * Render Boolean.
+     * @param string $name
+     * @param array  $metaData
+     * @param mixed  $form
+     */
     public function renderBoolean($name, array $metaData, $form = null)
     {
         $htmlOptions = $this->htmlOptions($metaData, $form);
         $value = isset($metaData['current']) ? $metaData['current'] : '';
-        // TODO: Replace with Bootstrap Button Group
         return CHtml::tag('div', $htmlOptions,
-            /** $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                 'name' => $name,
                 'value' => $value,
                 'onLabel'=>gT('On'),
                 'offLabel' => gT('Off'),
                 'htmlOptions' => $htmlOptions,
-            ), true) **/
+            ), true)
         );
     }
 

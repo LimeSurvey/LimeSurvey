@@ -42,14 +42,13 @@
 
                                 <label class='control-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
                                 <div class=''>
-                                    <!-- TODO: Replace with Bootstrap Button Group -->
-                                    <?php /*
+                                    <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                         'name' => "bypassbademails",
                                         'id'=>"bypassbademails",
                                         'value' => '1',
                                         'onLabel'=>gT('On'),
-                                        'offLabel' => gT('Off'))); */
+                                        'offLabel' => gT('Off')));
                                     ?>
                                 </div>
                             </div>
@@ -66,14 +65,13 @@
                                         'class' => 'control-label ')
                                     ); ?>
                                 <div class=''>
-                                <!-- TODO: Replace with Bootstrap Button Group -->
-                                <?php /*
+                                <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                         'name' => "bypassdatecontrol",
                                         'id'=>"bypassdatecontrol",
                                         'value' => '0',
                                         'onLabel'=>gT('On'),
-                                        'offLabel' => gT('Off'))); */
+                                        'offLabel' => gT('Off')));
                                     ?>
                                 </div>
                             </div>

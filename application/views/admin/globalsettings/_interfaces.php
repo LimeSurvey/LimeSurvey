@@ -31,28 +31,26 @@
 <div class="form-group">
     <label class=" control-label"  for='rpc_publish_api'><?php eT("Publish API on /admin/remotecontrol:"); ?></label>
     <div class="">
-        <!-- TODO: Replace with Bootstrap Button Group -->
-        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            // 'name' => 'rpc_publish_api',
-            // 'id'=>'rpc_publish_api',
-            // 'value' => getGlobalSetting('rpc_publish_api'),
-            // 'onLabel'=>gT('On'),
-            // 'offLabel' => gT('Off')));
-        ?>-->
+        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            'name' => 'rpc_publish_api',
+            'id'=>'rpc_publish_api',
+            'value' => getGlobalSetting('rpc_publish_api'),
+            'onLabel'=>gT('On'),
+            'offLabel' => gT('Off')));
+        ?>
     </div>
 </div>
 
 <div class="form-group">
     <label class=" control-label"  for='add_access_control_header'><?php eT("Set Access-Control-Allow-Origin header:"); ?></label>
     <div class="">
-        <!-- TODO: Replace with Bootstrap Button Group -->
-        <!-- <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            // 'name' => 'add_access_control_header',
-            // 'id'=>'add_access_control_header',
-            // 'value' => getGlobalSetting('add_access_control_header'),
-            // 'onLabel'=>gT('On'),
-            // 'offLabel' => gT('Off')));
-        ?> -->
+        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            'name' => 'add_access_control_header',
+            'id'=>'add_access_control_header',
+            'value' => getGlobalSetting('add_access_control_header'),
+            'onLabel'=>gT('On'),
+            'offLabel' => gT('Off')));
+        ?>
     </div>
 </div>
 

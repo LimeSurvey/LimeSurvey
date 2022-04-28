@@ -32,32 +32,30 @@
     <div class=" form-group" id="">
         <label class='control-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
         <div>
-            <!-- TODO: Replace with Bootstrap Button Group -->
-            <?php /** 
+            <?php 
             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                'name' => "ParticipantAttributeName[visible]",
-                'id'=>"visible",
-                'value' => $model['visible']=='TRUE'?'1':'0',
-                'onLabel'=>gT('On'),
-                'offLabel' => gT('Off')));
-            */?>
+                'name'      => "ParticipantAttributeName[visible]",
+                'id'        => "visible",
+                'value'     => $model['visible']=='TRUE'?'1':'0',
+                'onLabel'   => gT('On'),
+                'offLabel'  => gT('Off')));
+            ?>
         </div>
     </div>
     <div class=" form-group" id="">
         <label class=" control-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
         <div>
-            <!-- TODO: Replace with Bootstrap Button Group -->
-            <?php /** 
+            <?php 
             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                'name' => "ParticipantAttributeName[encrypted]",
-                'id'=>"encrypted",
-                'value' => $model['encrypted']=='Y'?'1':'0',
-                'onLabel'=>gT('On'),
-                'offLabel' => gT('Off'),
-                'htmlOptions'=>array(
-                    'disabled'=>!$bEncrypted,
+                'name'      => "ParticipantAttributeName[encrypted]",
+                'id'        => "encrypted",
+                'value'     => $model['encrypted']=='Y'?'1':'0',
+                'onLabel'   => gT('On'),
+                'offLabel'  => gT('Off'),
+                'htmlOptions' =>array(
+                    'disabled' => !$bEncrypted,
                 )
-            )); */
+            ));
             ?>
         </div>
     </div>

@@ -34,15 +34,14 @@ Yii::app()->getController()->renderPartial(
                     <div class="list-group-item row">
                         <div class="col-xs-6"><?=$aTemplate['folder']?></div>
                         <div class="col-xs-6">
-                            <!-- TODO: Replace with Bootstrap Button Group -->
-                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'TemplatePermissions['.$aTemplate['folder'].']',
                                 'id'=>$aTemplate['folder'].'_use',
                                 'value' => $aTemplate['value'],
                                 'onLabel'=>gT('On'),
                                 'offLabel' => gT('Off'),
                                 'htmlOptions' => ['class' => 'UserManagement--themepermissions-themeswitch']
-                            )); */
+                            ));
                             ?>
                         </div>
                     </div>

@@ -32,13 +32,12 @@
             <div class='form-group'>
                 <label class='control-label ' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
                 <div class=''>
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'translinksfields',
                     'value'=> "1",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
-                    )); */
+                    ));
                 ?>
                 </div>
             </div>

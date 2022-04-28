@@ -84,12 +84,11 @@
                     <div class="form-group row">
                         <label class=" control-label" for='queXMLAllowSplittingSingleChoiceHorizontal'><?php eT("Allow array style questions to be split over multiple pages"); ?></label>
                         <div class="">
-                            <!-- TODO: Replace with Bootstrap Button Group -->
-                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => 'queXMLAllowSplittingSingleChoiceHorizontal',
-                                'value'=> $queXMLAllowSplittingSingleChoiceHorizontal == 1,
-                                'onLabel'=>gT('Yes'),
-                                'offLabel'=>gT('No'))); */
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name'    => 'queXMLAllowSplittingSingleChoiceHorizontal',
+                                'value'   => $queXMLAllowSplittingSingleChoiceHorizontal == 1,
+                                'onLabel' => gT('Yes'),
+                                'offLabel'=> gT('No')));
                             ?>
                         </div>
                     </div>
@@ -97,12 +96,11 @@
                     <div class="form-group row">
                         <label class=" control-label" for='queXMLAllowSplittingSingleChoiceVertical'><?php eT("Allow single choice questions to be split over multiple pages"); ?></label>
                         <div class="">
-                            <!-- TODO: Replace with Bootstrap Button Group -->
-                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => 'queXMLAllowSplittingSingleChoiceVertical',
-                                'value'=> $queXMLAllowSplittingSingleChoiceVertical == 1,
-                                'onLabel'=>gT('Yes'),
-                                'offLabel'=>gT('No'))); */
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name'      => 'queXMLAllowSplittingSingleChoiceVertical',
+                                'value'     => $queXMLAllowSplittingSingleChoiceVertical == 1,
+                                'onLabel'   => gT('Yes'),
+                                'offLabel'  => gT('No')));
                             ?>
                         </div>
                     </div>
@@ -110,27 +108,24 @@
                     <div class="form-group row">
                         <label class=" control-label" for='queXMLAllowSplittingMatrixText'><?php eT("Allow Multiple short text / numeric questions to be split over multiple pages"); ?></label>
                         <div class="">
-                            <!-- TODO: Replace with Bootstrap Button Group -->
-                            <?php  /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => 'queXMLAllowSplittingMatrixText',
-                                'value'=> $queXMLAllowSplittingMatrixText == 1,
-                                'onLabel'=>gT('Yes'),
-                                'offLabel'=>gT('No'))); */
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name'    => 'queXMLAllowSplittingMatrixText',
+                                'value'   => $queXMLAllowSplittingMatrixText == 1,
+                                'onLabel' => gT('Yes'),
+                                'offLabel'=> gT('No')));
                             ?>
 
                         </div>
                     </div>
 
-
                     <div class="form-group row">
                         <label class=" control-label" for='queXMLAllowSplittingVas'><?php eT("Allow slider questions to be split over multiple pages"); ?></label>
                         <div class="">
-                            <!-- TODO: Replace with Bootstrap Button Group -->
-                            <?php /* $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => 'queXMLAllowSplittingVas',
-                                'value'=> $queXMLAllowSplittingVas == 1,
-                                'onLabel'=>gT('Yes'),
-                                'offLabel'=>gT('No'))); */
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name'      => 'queXMLAllowSplittingVas',
+                                'value'     => $queXMLAllowSplittingVas == 1,
+                                'onLabel'   => gT('Yes'),
+                                'offLabel'  => gT('No')));
                             ?>
 
                         </div>
@@ -149,7 +144,6 @@
                             ));?>
                         </div>
                     </div>
-
 
                     <div class="form-group row">
                         <label class=" control-label" for='queXMLPageFormat'><?php eT("Page format:"); ?></label>

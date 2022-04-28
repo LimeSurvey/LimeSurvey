@@ -79,8 +79,7 @@
                                             <?php } ?>
                                         </td>
                                         <td>
-                                            <!-- TODO: Replace with Bootstrap Button Group -->
-                                            <?php /*
+                                            <?php
                                                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                     'name' => "show_register_{$sTokenField}",
                                                     'id'=>"show_register_{$sTokenField}",
@@ -90,12 +89,11 @@
                                                     'htmlOptions'=>array(
                                                         'disabled'=>empty($tokenvalues['coreattribute']) ? false : true,
                                                     )
-                                                )); */
+                                                ));
                                             ?>
                                         </td>
                                         <td>
-                                            <!-- TODO: Replace with Bootstrap Button Group -->
-                                            <?php /*
+                                            <?php 
                                                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                     'name' => "mandatory_{$sTokenField}",
                                                     'id'=>"mandatory_{$sTokenField}",
@@ -105,12 +103,11 @@
                                                     'htmlOptions'=>array(
                                                         'disabled'=>empty($tokenvalues['coreattribute']) ? false : true,
                                                     )
-                                                )); */
+                                                ));
                                             ?>
                                         </td>
                                         <td>
-                                            <!-- TODO: Replace with Bootstrap Button Group -->
-                                            <?php /*
+                                            <?php
                                                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                     'name' => "encrypted_{$sTokenField}",
                                                     'id'=>"encrypted_{$sTokenField}",
@@ -120,7 +117,7 @@
                                                     'htmlOptions'=>array(
                                                         'disabled' => !$bEncrypted,
                                                     )
-                                                )); */
+                                                ));
                                             ?>
                                         </td>
                                         <?php
