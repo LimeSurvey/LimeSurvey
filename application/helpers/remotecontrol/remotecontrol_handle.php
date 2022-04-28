@@ -2307,10 +2307,10 @@ class remotecontrol_handle
                     if ($oGroup->sid != $oSurvey->sid) {
                         return ['status' => 'Error: Mismatch in surveyid and groupid'];
                     } else {
-                        $aQuestionList = $oGroup->questions;
+                        $aQuestionList = $oGroup->allQuestions;
                     }
                 } else {
-                    $aQuestionList = $oSurvey->baseQuestions;
+                    $aQuestionList = $oSurvey->allQuestions;
                 }
 
                 if (count($aQuestionList) == 0) {
