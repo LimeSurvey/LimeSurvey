@@ -30,7 +30,7 @@ Yii::app()->getController()->renderPartial(
 </div>
 
 <div class="modal-footer modal-footer-buttons">
-    <button id="exitForm" class="btn btn-cancel  "><?=gT('Cancel')?></button>
+    <button id="exitForm" class="btn btn-close  "><?=gT('Cancel')?></button>
     <button type="button" class="btn btn-success" id="submitForm">
         <?=gT('Add')?>
     </button>
