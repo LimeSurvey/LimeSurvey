@@ -382,19 +382,6 @@
                     </div>
                 </div>
 
-                <?php /*                            
-                <?php foreach($aCoreTokenFields as $sCoreTokenField): ?>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label"  for='<?php echo $sCoreTokenField; ?>'><?php echo $sCoreTokenField;  ?>:</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="custom-data" name="<?php echo $sCoreTokenField;?>" id="<?php echo $sCoreTokenField;?>" value="lskeep" />
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach;?>
-                */ ?>
-
             </div>
 
             <!-- Custom attibutes -->
