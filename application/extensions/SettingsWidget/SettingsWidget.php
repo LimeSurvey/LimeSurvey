@@ -338,10 +338,6 @@ class SettingsWidget extends CWidget
     {
         $htmlOptions = $this->htmlOptions($metaData, $form);
         $value = isset($metaData['current']) ? $metaData['current'] : '';
-        //~ return CHtml::radioButtonList($name, $value, array(
-            //~ 0 => 'False',
-            //~ 1 => 'True'
-        //~ ), $htmlOptions);
         // TODO: Replace with Bootstrap Button Group
         return CHtml::tag('div', $htmlOptions,
             /** $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
