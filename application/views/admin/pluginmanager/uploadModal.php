@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="modal-title h4"><?php eT("Install plugin ZIP file") ?></div>
             </div>
             <?php echo CHtml::form(
@@ -42,7 +42,7 @@
                         <?php eT("Upload") ?>
                     </button>
                 <?php endif; ?>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     <?php eT("Close");?>
                 </button>
             </div>

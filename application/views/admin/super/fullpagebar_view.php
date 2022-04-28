@@ -11,7 +11,7 @@
     <div class='row'>
 
         <!-- Left actions -->
-        <div class="col-md-6 text-left">
+        <div class="col-md-6 text-start">
             <!-- Plugin Manager -->
             <?php if (isset($fullpagebar['pluginManager'])) : ?>
                 <!-- Install Plugin Zip -->
@@ -19,8 +19,8 @@
                     <a
                         href=''
                         class='btn btn-outline-secondary'
-                        data-toggle='modal'
-                        data-target='#installPluginZipModal'
+                        data-bs-toggle='modal'
+                        data-bs-target='#installPluginZipModal'
                         data-tooltip='true'
                         title='<?php eT('Install plugin by ZIP archive'); ?>'
                     >
@@ -34,7 +34,7 @@
                     <a
                         href='<?php echo $fullpagebar["pluginManager"]["buttons"]["scanFiles"]["url"]; ?>'
                         class='btn btn-outline-secondary'
-                        data-toggle='tooltip'
+                        data-bs-toggle='tooltip'
                         title='<?php eT('Scan files for available plugins'); ?>'
                     >
                         <i class='fa fa-file '></i>
@@ -73,7 +73,7 @@
         </div>
 
         <!-- Right actions -->
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 text-end">
 
             <!-- White Close button -->
             <?php if (isset($fullpagebar['white_closebutton']['url'])) :?>

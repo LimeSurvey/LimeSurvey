@@ -22,6 +22,7 @@ echo viewHelper::getViewTestTag('tutorials');
         <div class="col-12 h1 pagetitle">
             <?php eT('Tutorials')?> 
         </div>
+            <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-bs-toggle="modal">
 		<div class="col-xs-12 jumbotron well">
 			<h3><?=gT("We will soon add the functionality to create your own tutorials and download them from our store.")?></h3>
 		</div>

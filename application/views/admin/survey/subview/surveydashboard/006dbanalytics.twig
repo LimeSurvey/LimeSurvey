@@ -1,8 +1,8 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card m-2">
+    <div class="card-header">
         <strong>{{gT("Database usage")}}:</strong>
     </div>
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <!-- usage -->
         {% if tableusage != false %}
             {% if tableusage.dbtype == 'mysql' or tableusage.dbtype == 'mysqli' %}

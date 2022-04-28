@@ -45,7 +45,7 @@ $templateModel = Template::model()->findByPk($oSurvey->oOptions->template);
     </div>
 </div>
 */ ?>
-<div class="row ls-space margin top-10">
+<div class="row ls-space top-10">
 <?php
     $possiblePanelFolder = realpath(Yii::app()->getConfig('rootdir').'/application/views/admin/survey/subview/surveydashboard/'); 
     $possiblePanels = scandir($possiblePanelFolder); 
@@ -58,7 +58,7 @@ $templateModel = Template::model()->findByPk($oSurvey->oOptions->template);
         //every two entries close it up 
         if($i%2 === 0 ) { ?> 
             </div> 
-            <div class="row ls-space margin top-10">
+            <div class="row ls-space top-10">
         <?php } ?> 
         <div class="col-md-12 col-lg-6"> 
             <?php $surveyTextContent = $oSurvey->currentLanguageSettings->attributes; ?>

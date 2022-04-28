@@ -112,9 +112,9 @@
             <div class='row'>
                 <div class="col-sm-4 col-sm-offset-2">
                     <div class='form-group'>
-                        <label for='anonymized' class='control-label col-sm-7'>
+                        <label for='anonymized' class='form-label col-sm-7'>
                             <?php eT("Anonymized responses"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, reponses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, reponses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
                             <script type="text/javascript">
                                 <!--
                                 function alertPrivacy()
@@ -129,7 +129,7 @@
                         </label>
 
                         <div class='col-sm-5'>
-                            <select id='anonymized' class='form-control' name='anonymized' onchange='alertPrivacy();'>
+                            <select id='anonymized' class='form-select' name='anonymized' onchange='alertPrivacy();'>
                                 <option value='Y'
                                 <?php if ($aSurveysettings['anonymized'] == "Y") { ?>
                                     selected='selected'
@@ -147,12 +147,12 @@
 
                 <div class="col-sm-4">
                     <div class='form-group'>
-                        <label for='datestamp' class='control-label col-sm-7'>
+                        <label for='datestamp' class='form-label col-sm-7'>
                             <?php eT("Date stamp"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"></i>
                         </label>
                         <div class='col-sm-5'>
-                            <select id='datestamp' class='form-control' name='datestamp' onchange='alertDateStampAnonymization();'>
+                            <select id='datestamp' class='form-select' name='datestamp' onchange='alertDateStampAnonymization();'>
                                 <option value='Y' <?php if ($aSurveysettings['datestamp'] == "Y"){echo 'selected="selected"';}?>>
                                     <?php eT("Yes"); ?>
                                 </option>
@@ -169,13 +169,13 @@
             <div class='row'>
                 <div class="col-sm-4 col-sm-offset-2">
                     <div class='form-group'>
-                        <label for='ipaddr' class='control-label col-sm-7'>
+                        <label for='ipaddr' class='form-label col-sm-7'>
                             <?php eT("Save IP address"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"></i>
                         </label>
 
                         <div class='col-sm-5'>
-                            <select name='ipaddr' id='ipaddr' class='form-control'>
+                            <select name='ipaddr' id='ipaddr' class='form-select'>
                                 <option value='Y' <?php if ($aSurveysettings['ipaddr'] == "Y") {echo "selected='selected'";} ?>>
                                     <?php eT("Yes"); ?>
                                 </option>
@@ -189,13 +189,13 @@
 
                 <div class="col-sm-4 ">
                     <div class='form-group'>
-                        <label for='ipaddr' class='control-label col-sm-7'>
+                        <label for='ipaddr' class='form-label col-sm-7'>
                             <?php eT("Anonymize IP address"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"></i>
                         </label>
 
                         <div class='col-sm-5'>
-                            <select name='ipanonymize' id='ipanonymize' class='form-control'>
+                            <select name='ipanonymize' id='ipanonymize' class='form-select'>
                                 <option value='Y' <?php if ($aSurveysettings['ipanonymize'] == "Y") {echo "selected='selected'";} ?>>
                                     <?php eT("Yes"); ?>
                                 </option>
@@ -211,12 +211,12 @@
             <div class='row'>
                 <div class="col-sm-4 col-sm-offset-2">
                     <div class='form-group'>
-                        <label class='control-label col-sm-7' for='savetimings'>
+                        <label class='form-label col-sm-7' for='savetimings'>
                             <?php eT("Save timings"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"></i>
                         </label>
                         <div class='col-sm-5'>
-                            <select class='form-control' id='savetimings' name='savetimings'>
+                            <select class='form-select' id='savetimings' name='savetimings'>
                                 <option value='Y' <?php if (!isset($aSurveysettings['savetimings']) || !$aSurveysettings['savetimings'] || $aSurveysettings['savetimings'] == "Y") { ?> selected='selected' <?php } ?>>
                                     <?php eT("Yes"); ?>
                                 </option>
@@ -231,12 +231,12 @@
 
                 <div class="col-sm-4">
                     <div class='form-group'>
-                        <label class='control-label col-sm-7' for='refurl'>
+                        <label class='form-label col-sm-7' for='refurl'>
                             <?php eT("Save referrer URL"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"></i>
                         </label>
                         <div class='col-sm-5'>
-                            <select class='form-control' name='refurl' id='refurl'>
+                            <select class='form-select' name='refurl' id='refurl'>
                                 <option value='Y' <?php if ($aSurveysettings['refurl'] == "Y"){echo "selected='selected'";} ?>>
                                     <?php eT("Yes"); ?>
                                 </option>

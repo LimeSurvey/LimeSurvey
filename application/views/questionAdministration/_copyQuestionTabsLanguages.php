@@ -36,8 +36,8 @@
 </div>
 
 <div id='questionactioncopy' class='extra-action'>
-    <button role="button" type='submit' class="btn btn-primary saveandreturn hidden"  name="redirection" value="edit">
+    <button role="button" type='submit' class="btn btn-primary saveandreturn d-none"  name="redirection" value="edit">
         <?php eT("Save"); ?>
     </button>
-    <input type='submit' value='<?php eT("Save and close"); ?>'  class="btn btn-outline-secondary hidden"/>
+    <input type='submit' value='<?php eT("Save and close"); ?>'  class="btn btn-outline-secondary d-none"/>
 </div>

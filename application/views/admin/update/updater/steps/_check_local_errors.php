@@ -38,7 +38,7 @@
                         <td><span class="fa fa-check text-success" alt="right"></span></td>
                     <?php else: ?>
                         <td>
-                            <h3 class="label label-danger">
+                            <h3 class="badge bg-danger">
                                 <?php eT('Not enough space'); ?>
                             </h3>
                         </td>
@@ -75,7 +75,7 @@
                     <td><span class="fa fa-check text-success" alt="right"></span></td>
                 <?php else: ?>
                     <td>
-                        <h3 class="label label-danger">
+                        <h3 class="badge bg-danger">
                             <?php printf(gT('MYSQL version is only %s'),$localChecks->mysql->local_mysql_ver);?>
                         </h3>
                     </td>
@@ -106,7 +106,7 @@
                 </td>
             <?php else: ?>
                 <td>
-                    <span class="label label-danger">
+                    <span class="badge bg-danger">
                         <?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?>
                     </span>
                 </td>
@@ -136,14 +136,14 @@
                 </td>
             <?php elseif(isset($module->required)): ?>
                 <td>
-                    <span class="label label-danger">
+                    <span class="badge bg-danger">
                         <?php eT('Not found!'); ?>
                     </span>
                 </td>
                 <?php $errors = TRUE; $cant_ignore = true; $ignore = false;?>
             <?php else: ?>
                 <td>
-                    <span class="label label-danger">
+                    <span class="badge bg-danger">
                         <?php eT('No (but optional)'); ?>
                     </span>
                 </td>

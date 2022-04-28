@@ -12,11 +12,11 @@
     <div class='ls-flex ls-flex-row wrap align-content-space-between ls-space padding left-10 right-10'>
 
         <?php if (isset($questiongroupbar['buttonspreview']) || isset($questiongroupbar['buttons']['view'])):?>
-            <div id="questiongroupbar--previewbar" class="text-left ls-flex-item">
+            <div id="questiongroupbar--previewbar" class="text-start ls-flex-item">
                 <!-- test/run survey -->
                 <?php if (count($languagelist) > 1): ?>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                                 <?=($oSurvey->active=='N' ? gT('Preview survey'): gT('Run survey'));?>
@@ -46,7 +46,7 @@
                     <?php if (count($languagelist) > 1): ?>
                         <!-- Preview multilangue -->
                         <div class="btn-group">
-                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <span class="icon-do"></span>
                                 <?php eT("Preview question group"); ?>
@@ -102,7 +102,7 @@
                         <!-- has question -->
                         <?php if (empty($condarray)):?>
                             <!-- can delete group and question -->
-                            <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#confirmation-modal"
+                            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmation-modal"
                                 data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid"=>$gid])); ?>'
                                 data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"); ?>">
                                 <span class="fa fa-trash"></span>
@@ -110,8 +110,8 @@
                             </button>
                         <?php else: ?>
                         <!-- there is at least one question having a condition on its content -->
-                            <button type="button" class="btn btn-outline-secondary btntooltip" disabled data-toggle="tooltip"
-                                data-placement="bottom"
+                            <button type="button" class="btn btn-outline-secondary btntooltip" disabled data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
                                 title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>">
                                 <span class="fa fa-trash"></span>
                                 <?php eT("Delete current question group"); ?>
@@ -119,8 +119,8 @@
                         <?php endif; ?>
                     <?php else:?>
                         <!-- Activated -->
-                        <button type="button" class="btn btn-outline-secondary btntooltip" disabled data-toggle="tooltip"
-                            data-placement="bottom"
+                        <button type="button" class="btn btn-outline-secondary btntooltip" disabled data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
                             title="<?php eT("You can't delete this question group because the survey is currently active."); ?>">
                             <span class="fa fa-trash"></span>
                             <?php eT("Delete current question group"); ?>
@@ -145,12 +145,12 @@
         <?php if (isset($questiongroupbar['savebutton']['form'])&&isset($qid)
             && (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))): ?>
             <!-- ####### This is only shown when editing questions -->
-            <div id="questiongroupbar--questionbuttons" class="text-left ls-flex-item">
+            <div id="questiongroupbar--questionbuttons" class="text-start ls-flex-item">
             <!-- Previews while editing a question -->
                 <?php if (count($languagelist) > 1): ?>
                     <!-- test/run survey -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?=($oSurvey->active=='N' ? gT('Preview survey') : gT('Run survey'));?>
@@ -170,7 +170,7 @@
 
                     <!-- Preview multilangue -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?php eT("Preview question group"); ?>
@@ -190,7 +190,7 @@
 
                     <!-- preview question -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown"
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?php eT("Preview question"); ?>
@@ -245,7 +245,7 @@
         <?php endif; ?>
 
         <!-- Right Buttons (shown for questions and questiongroups) -->
-        <div id="questiongroupbar--savebuttons" class="text-right ls-flex-item">
+        <div id="questiongroupbar--savebuttons" class="text-end ls-flex-item">
             <!-- Save buttons -->
             <?php if (isset($questiongroupbar['savebutton']['form']) && (!isset($copying) || !$copying)): ?>
                 <button class="btn btn-success" href="#" type="button" id="save-button">

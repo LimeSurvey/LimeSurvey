@@ -66,9 +66,9 @@
                 <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true) : ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) : ?>
                         <button class="btn btn-outline-secondary"
-                                data-toggle="modal"
+                                data-bs-toggle="modal"
                                 data-title="<?= gt('Delete label set') ?>"
-                                data-target="#confirmation-modal"
+                                data-bs-target="#confirmation-modal"
                                 data-btnclass='btn-danger'
                                 data-btntext="<?= gt('Delete') ?>"
                                 data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete/", ["lid" => $lid])); ?> })'
@@ -84,7 +84,7 @@
         </div>
 
         <!-- Right action buttons -->
-        <div class="col-lg-6 text-right">
+        <div class="col-lg-6 text-end">
             <!-- Export Multiple -->
             <?php if (count($labelsets) > 0) : ?>
                 <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>
@@ -98,7 +98,7 @@
                 <?php endif; ?>
             <?php else : ?>
                 <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>
-                    <span title="<?php eT("No label sets available"); ?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
+                    <span title="<?php eT("No label sets available"); ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" style="display: inline-block">
                             <a class="btn btn-outline-secondary disabled" role="button">
                                 <span class="icon-export text-success"></span>
                                 <?php eT("Export multiple label sets"); ?>

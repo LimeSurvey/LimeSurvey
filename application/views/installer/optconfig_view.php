@@ -20,31 +20,31 @@
     <?php
         $rows = array();
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminLoginName', array('class' => 'control-label ', 'label' => gT("Admin login name"), 'autofocus' => 'autofocus')),
+            'label' => CHtml::activeLabelEx($model, 'adminLoginName', array('class' => 'form-label ', 'label' => gT("Admin login name"), 'autofocus' => 'autofocus')),
             'description' => gT("This will be the userid by which admin of board will login."),
             'control' => CHtml::activeTextField($model, 'adminLoginName', array('class' => 'form-control'))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminLoginPwd', array('class' => 'control-label ', 'label' => gT("Admin login password"))),
+            'label' => CHtml::activeLabelEx($model, 'adminLoginPwd', array('class' => 'form-label ', 'label' => gT("Admin login password"))),
             'description' => gT("This will be the password of admin user."),
             'control' => CHtml::activePasswordField($model, 'adminLoginPwd', array('class' => 'form-control'))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'confirmPwd', array('class' => 'control-label ', 'label' => gT("Confirm your admin password"))),
+            'label' => CHtml::activeLabelEx($model, 'confirmPwd', array('class' => 'form-label ', 'label' => gT("Confirm your admin password"))),
             'control' => CHtml::activePasswordField($model, 'confirmPwd', array('class' => 'form-control'))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminName', array('class' => 'control-label ', 'label' => gT("Administrator name"))),
+            'label' => CHtml::activeLabelEx($model, 'adminName', array('class' => 'form-label ', 'label' => gT("Administrator name"))),
             'description' => gT("This is the default name of the site administrator and used for system messages and contact options."),
             'control' => CHtml::activeTextField($model, 'adminName', array('class' => 'form-control'))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminEmail', array('class' => 'control-label ', 'label' => gT("Administrator email"))),
+            'label' => CHtml::activeLabelEx($model, 'adminEmail', array('class' => 'form-label ', 'label' => gT("Administrator email"))),
             'description' => gT("This is the default email address of the site administrator and used for system messages, contact options and default bounce email."),
             'control' => CHtml::activeTextField($model, 'adminEmail', array('class' => 'form-control'))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'siteName', array('class' => 'control-label ', 'label' => gT("Site name"))),
+            'label' => CHtml::activeLabelEx($model, 'siteName', array('class' => 'form-label ', 'label' => gT("Site name"))),
             'description' => gT("This name will appear in the survey list overview and in the administration header."),
             'control' => CHtml::activeTextField($model, 'siteName', array('class' => 'form-control'))
         );
@@ -54,7 +54,7 @@
         }
 
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'surveylang', array('class' => 'control-label ', 'label' => gT("Default language"))),
+            'label' => CHtml::activeLabelEx($model, 'surveylang', array('class' => 'form-label ', 'label' => gT("Default language"))),
             'description' => gT("This will be your default language."),
             'control' => CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => '', 'class'=>'form-control', 'encode' => false, 'options'=>array('en' => array('selected' => true))))
         );

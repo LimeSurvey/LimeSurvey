@@ -9,9 +9,9 @@
     </script>
 <?php endif; ?>
 
-<div class='panel panel-primary'>
+<div class='card'>
 
-    <div class='panel-heading scenario-heading'>
+    <div class='card-header bg-primary scenario-heading'>
 
         <div class='row'>
             <div class='col-sm-2'>
@@ -49,8 +49,8 @@
                             class='btn btn-outline-secondary btn-xs'
                             data-tooltip='true'
                             data-title='<?php eT('Delete all conditions in this scenario'); ?>'
-                            data-toggle='modal'
-                            data-target='#confirmation-modal'
+                            data-bs-toggle='modal'
+                            data-bs-target='#confirmation-modal'
                             data-message='<?php eT('Are you sure you want to delete all conditions set in this scenario?', 'js'); ?>'
                             data-onclick='(function() { document.getElementById("deletescenario<?php echo $scenarionr["scenario"]; ?>").submit(); })'
                             onclick='return false;'
@@ -60,7 +60,7 @@
 
                         <button
                             class='btn btn-outline-secondary btn-xs'
-                            data-toggle='tooltip'
+                            data-bs-toggle='tooltip'
                             data-title='<?php eT('Change scenario number'); ?>'
                             id='editscenariobtn<?php echo $scenarionr['scenario']; ?>'
                             onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').toggle('slow'); return false"
@@ -70,7 +70,7 @@
 
                         <button
                             class='btn btn-outline-secondary btn-xs'
-                            data-toggle='tooltip'
+                            data-bs-toggle='tooltip'
                             data-title='<?php eT('Add condition to this scenario'); ?>'
                             onclick='addConditionToScenario("<?php echo $addConditionToScenarioURL; ?>"); return false'
                         >
@@ -91,7 +91,7 @@
         </div>
     </div>
 
-    <div class='panel-body'>
+    <div class='card-body'>
         <?php echo $conditionHtml; ?>
     </div>
 </div>

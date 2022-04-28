@@ -46,7 +46,7 @@
                         'name'        => 'actions',
                         'type'        => 'raw',
                         'value'       => '$data->buttons',
-                        'htmlOptions' => array('class' => 'text-left'),
+                        'htmlOptions' => array('class' => 'text-start'),
                     ),
                     array(
                         'header'      => gT('User group ID'),
@@ -149,7 +149,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?= gT('Cancel') ?></button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?= gT('Cancel') ?></button>
                 <button 
                     type="button" 
                     class="btn btn-danger" 

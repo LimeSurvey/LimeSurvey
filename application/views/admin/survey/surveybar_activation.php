@@ -24,7 +24,7 @@
 
     <!-- can't activate -->
     <?php elseif (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveyactivation', 'update')): ?>
-        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+        <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
             <button id='ls-activate-survey' type="button" class="btn btn-success btntooltip" disabled="disabled">
                 <?php eT("Activate this survey"); ?>
             </button>
@@ -34,7 +34,7 @@
 
     <!-- activate expired survey -->
     <?php if ($expired) : ?>
-        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<?php eT('This survey is active but expired.'); ?><br><?php eT('Click to adjust.'); ?>">
+        <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="<?php eT('This survey is active but expired.'); ?><br><?php eT('Click to adjust.'); ?>">
             <button href='<?php echo $this->createUrl("surveyAdministration/rendersidemenulink/subaction/publication", ['surveyid' => $oSurvey->sid]); ?>'class="btn btn-success btntooltip" >
                 <span class="fa fa-ban">
                     &nbsp;
@@ -43,7 +43,7 @@
             </button>
         </span>
     <?php elseif ($notstarted) : ?>
-        <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>
+        <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>
             <button type="button" class="btn btn-success btntooltip" disabled="disabled" >
                 <span class="fa fa-clock-o">
                     &nbsp;
@@ -75,7 +75,7 @@
           <button
             type="button" 
             class="btn btn-outline-secondary dropdown-toggle" 
-            data-toggle="dropdown" 
+            data-bs-toggle="dropdown" 
             aria-haspopup="true" 
             aria-expanded="false">
             <span class="icon-do" ></span>

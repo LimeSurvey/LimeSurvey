@@ -2166,7 +2166,7 @@ class Tokens extends SurveyCommonAction
                                     $oToken->$key = $value;
                             }
                             if (!$oToken->encryptSave(true)) {
-                                $aModelErrorList[] = array('line' => $iRecordCount, 'errors' => CHtml::errorSummary($oToken, '', '', ['class' => 'text-left']));
+                                $aModelErrorList[] = array('line' => $iRecordCount, 'errors' => CHtml::errorSummary($oToken, '', '', ['class' => 'text-start']));
                             } else {
                                 $bImportDone = true;
                             }

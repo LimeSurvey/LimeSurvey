@@ -10,7 +10,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
     <!-- This is only visible when we're not in survey view. -->
     <div class='menubar surveybar' id='theme-options-bar'>
         <div class='row'>
-            <div class='text-right'>
+            <div class='text-end'>
 
                 <?php
                 $sThemeOptionUrl = App()->createUrl("themeOptions");
@@ -56,7 +56,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                     </li>
                 <?php endif; ?>
                 <li role="presentation" class="nav-item">
-                    <button class="nav-link <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>" data-bs-target="#advanced" aria-controls="profile" role="tab" data-bs-toggle="tab" aria-selected="false">
+                    <button class="nav-link <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'd-none'; ?>" data-bs-target="#advanced" aria-controls="profile" role="tab" data-bs-toggle="tab" aria-selected="false">
                         <?php eT('Advanced options') ?>
                     </button>
                 </li>
@@ -68,7 +68,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             <!-- Tab panes -->
             <?php /* Begin theme option form */ ?>
             <form class='form action_update_options_string_form' action=''>
-                <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'hidden action_update_options_string_button']); ?>
+                <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
                 <div class="tab-content">
                     <?php
                     /*
@@ -112,7 +112,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 </div>
             </form>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>" id="advanced">
+                <div role="tabpanel" class="tab-pane <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'd-none'; ?>" id="advanced">
                     <div class="alert alert-info alert-dismissible" role="alert">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <p><?php eT('All fields below (except CSS framework name) must be either a valid JSON array or the string "inherit".'); ?></p>
@@ -154,7 +154,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                         <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'uploadimage', 'name' => 'uploadimage', 'enctype' => 'multipart/form-data']); ?>
                                         <span id="fileselector">
                                             <label class="btn btn-outline-secondary col-xs-8" for="upload_image">
-                                                <input class="hidden" id="upload_image" name="upload_image" type="file">
+                                                <input class="d-none" id="upload_image" name="upload_image" type="file">
                                                 <i class="fa fa-upload ls-space margin right-10"></i><?php eT("Upload"); ?>
                                             </label>
                                         </span>
@@ -258,7 +258,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                         <?php echo $form->error($model, 'packages_to_load'); ?>
                                     </div>
                                 </div>
-                                <div class="row buttons hidden">
+                                <div class="row buttons d-none">
                                     <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class' => 'btn-success']); ?>
                                 </div>
 
@@ -275,7 +275,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
     <?php endif; ?>
 
 <!-- Form for image file upload -->
-<div class="hidden">
+<div class="d-none">
     <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'upload_frontend', 'name' => 'upload_frontend', 'enctype' => 'multipart/form-data']); ?>
     <?php if (isset($aTemplateConfiguration['sid']) && !empty($aTemplateConfiguration['sid'])) : ?>
         <input type='hidden' name='surveyid' value='<?= $aTemplateConfiguration['sid'] ?>'/>

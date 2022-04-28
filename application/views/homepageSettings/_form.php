@@ -23,7 +23,7 @@
 
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'position'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'position'); ?></label>
                     <div class=''>
                         <?php echo $form->numberField($model,'position', array('class' => 'form-control')); ?>
                     </div>
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'url'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'url'); ?></label>
                     <div class=''>
                         <?php echo $form->textField($model,'url',array('class' => 'form-control')); ?>
                     </div>
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'title'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'title'); ?></label>
                     <div class=''>
                         <?php echo $form->textField($model,'title',array('class' => 'form-control')); ?>
                     </div>
@@ -59,10 +59,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'ico'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'ico'); ?></label>
                     <div class=''>
                         <div class='btn-group'>
-                            <button type='button' class='btn btn-outline-secondary dropdown-toggle limebutton form-control' data-toggle='dropdown' aria-hashpopup='true' aria-expanded='false'>
+                            <button type='button' class='btn btn-outline-secondary dropdown-toggle limebutton form-control' data-bs-toggle='dropdown' aria-hashpopup='true' aria-expanded='false'>
                                 <?php eT('Select icon'); ?>
                                 <span class='caret'></span>
                             </button>
@@ -95,7 +95,7 @@
                             </ul>
                         </div>
                         <span>&nbsp;<?php echo eT('Chosen icon:'); ?></span>&nbsp;<span id='chosen-icon'></span>
-                        <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255, 'class' => 'form-control hidden')); ?>
+                        <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255, 'class' => 'form-control d-none')); ?>
                     </div>
 
                     <?php if ($form->error($model,'ico')):?>
@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'desc'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'desc'); ?></label>
                     <div class=''>
                         <?php echo $form->textArea($model,'desc',array('rows'=>6, 'cols'=>50, 'class' => 'form-control')); ?>
                     </div>
@@ -127,7 +127,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class='control-label '><?php echo $form->labelEx($model,'usergroup'); ?></label>
+                    <label class='form-label '><?php echo $form->labelEx($model,'usergroup'); ?></label>
                     <div class=''>
                         <?php
                             $options_array = CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name');
@@ -157,7 +157,7 @@
 
     <p class="note"><?php printf(gT('Fields with %s*%s are required.'),'<span class="required">','</span>'); ?></p>
                 <div class="form-group buttons">
-                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'form-control hidden')); ?>
+                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'form-control d-none')); ?>
                 </div>
 
             <?php $this->endWidget(); ?>

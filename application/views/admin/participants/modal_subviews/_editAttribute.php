@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="participant_edit_modal"><?php if ($editType == 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h4>
 </div>
 <div class="modal-body ">
@@ -30,7 +30,7 @@
         echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, $baseControlGroupHtmlOptions);
     ?>
     <div class=" form-group" id="">
-        <label class='control-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
+        <label class='form-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
         <div>
             <?php 
             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class=" form-group" id="">
-        <label class=" control-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
+        <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
         <div>
             <?php 
             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -62,7 +62,7 @@
     <div id="ParticipantAttributeNamesDropdownEdit" class="row form-group" style="display: none;">
         <div class="row">
             <div class="col-xs-2">
-                <button class="btn btn-outline-secondary btn-block" id="addDropdownField" data-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
+                <button class="btn btn-outline-secondary btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
             </div>
             <h4 class="col-xs-8 col-offset-xs-2"><?php eT("Dropdown fields") ?></h4>
         </div>
@@ -98,7 +98,7 @@
     </div>
      <legend><?php eT("Languages") ?></legend>
         <div class="row form-group">
-            <label class=" col-xs-12 control-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
+            <label class=" col-xs-12 form-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
             <div>
                 <div class=" col-xs-11">
                 <?php
@@ -107,7 +107,7 @@
                 </div>
             </div>
             <div class="col-xs-1">
-                <button class="btn btn-outline-secondary form-group" id="addLanguageField" data-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+                <button class="btn btn-outline-secondary form-group" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
                     <i class="fa fa-plus-circle text-success"></i>
                 </button>
             </div>
@@ -118,7 +118,7 @@
                     $languageKey = Yii::app()->getLanguage();
                     echo 
                     '<div class="form-group" data-lang="'.$languageKey .'">
-                        <label class="col-sm-12 control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
+                        <label class="col-sm-12 form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
                             <div class=" col-xs-11">
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
@@ -135,7 +135,7 @@
                 {
                     echo 
                     '<div class="col-sm-12 form-group" data-lang="'.$languageKey.'">
-                        <label class=" control-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
+                        <label class=" form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
                             <div class=" col-xs-11">
                                 <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.$languageOfAttribute.'">
@@ -149,9 +149,9 @@
                     </div>';
                 }
             ?>
-            <div class="hidden">
+            <div class="d-none">
                 <div class=" form-group" id="dummyLanguageInputGroup">
-                        <label class=" control-label selector_languageAddLabel" for="dummyNameForInputLabel"></label>
+                        <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel"></label>
                         <div>
                             <div class="">
                                 <input class="form-control selector_languageAddInput" name="dummyParticipantAttributeNameLanguages" type="text" value="">
@@ -242,7 +242,7 @@
     </script>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel') ?></button>
+    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
     <button role="button" type="button" class="btn btn-primary action_save_modal_editAttributeName">
         <?php eT("Save")?>
     </button>

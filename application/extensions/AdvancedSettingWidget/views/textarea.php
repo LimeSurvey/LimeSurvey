@@ -1,4 +1,3 @@
-</pre>
 <div class="input-group col-12">
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['prefix'])) : ?>
         <div class="input-group-addon">

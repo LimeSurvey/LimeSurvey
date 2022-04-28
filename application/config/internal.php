@@ -44,7 +44,7 @@ $internalConfig = array(
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
         // bootstrap 5 configuration
-        'bootstrap' => realpath(__DIR__ . '/../assets/bootstrap_5'),
+        'bootstrap' => realpath(__DIR__ . '/../../assets/bootstrap_5'),
         // yiistrap configuration
         // TODO: remove yiistrap/yiiwheels
         'yiistrap' => realpath(__DIR__ . '/../extensions/bootstrap'),

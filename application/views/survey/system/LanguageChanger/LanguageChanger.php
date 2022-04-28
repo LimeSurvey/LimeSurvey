@@ -12,7 +12,7 @@
 <!-- views/survey/system/LanguageChanger -->
     <div class="form-inline form-change-lang <?php echo $sClass ?>" >
         <label class="form-group">
-            <span class="control-label"><?php eT("Language:");?></span>
+            <span class="form-label"><?php eT("Language:");?></span>
             <?php echo CHtml::dropDownList('lang', $sSelected,$aListLang,array('id'=>false,'class'=>"form-control",'data-targeturl'=>$targetUrl));?>
         </label>
             <!-- for no js functionality use LanguageChangerForm: @see makeLanguageChangerSurvey -->

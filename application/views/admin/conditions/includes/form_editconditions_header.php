@@ -24,7 +24,7 @@
         <div class="row ">
             <!-- Condition -->
             <div class='form-group'>
-                <label class='control-label col-xs-12'><?php eT('Scenario'); ?></label>
+                <label class='form-label col-xs-12'><?php eT('Scenario'); ?></label>
                 <div class='add-scenario-column col-xs-12  ls-space padding bottom-15'>
                     <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if($showScenario):?> style='display: none;' <?php endif;?>/>
                     <?php if($showScenario):?>
@@ -46,9 +46,9 @@
         <!-- Comparison operator -->
         <div class="row">
             <div class='form-group col-xs-12'>
-                <label class='control-label'><?php eT("Comparison operator"); ?></label>
+                <label class='form-label'><?php eT("Comparison operator"); ?></label>
                 <div class=''>
-                    <select class='form-control' name='method' id='method'>
+                    <select class='form-select' name='method' id='method'>
                         <?php foreach ($method as $methodCode => $methodTxt): ?>
                             <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "=="): echo ' selected="selected" '; endif; ?>>
                                 <?php echo $methodTxt; ?>
@@ -64,7 +64,7 @@
             <!-- Question section -->
             <div class="col-lg-6">
                 <div class='form-group'>
-                    <label class='control-label '><?php eT("Question"); ?></label>
+                    <label class='form-label '><?php eT("Question"); ?></label>
                     <div class=''>
                         <ul class='nav nav-tabs'>
                             <li class='nav-item src-tab' role='presentation'>
@@ -81,7 +81,7 @@
                     <div role='tabpanel' class='tab-pane show active' id='SRCPREVQUEST'>
                         <div class='form-group question-option'>
                             <div class=''>
-                                <select class='form-control' name='cquestions' id='cquestions' size='7'>
+                                <select class='form-select' name='cquestions' id='cquestions' size='7'>
                                     <?php foreach ($cquestions as $cqn): ?>
                                         <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars($cqn[0]); ?>">
                                             <?php echo $cqn[0]; ?>
@@ -97,7 +97,7 @@
                         }?>
                         <div class='form-group question-option'>
                             <div class=''>
-                                <select class='form-control' name='csrctoken' id='csrctoken' size='7'>
+                                <select class='form-select' name='csrctoken' id='csrctoken' size='7'>
                                     <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
                                         <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}'): echo ' selected="selected" '; endif; ?>>
                                             <?php echo HTMLEscape($tokenattrName['description']); ?>
@@ -113,7 +113,7 @@
             <!-- Answer section -->
             <div class="col-lg-6">
                 <div class='form-group'>
-                    <label class='control-label'><?php echo gT("Answer"); ?></label>
+                    <label class='form-label'><?php echo gT("Answer"); ?></label>
                     <div class=''>
                         <ul class='nav nav-tabs'>
                             <li role='presentation' class='nav-item target-tab'>
@@ -165,7 +165,7 @@
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>
-                                <select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>
+                                <select class='form-select' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>
                                     <?php foreach ($cquestions as $cqn): ?>
                                     <?php if ($cqn[2] != Question::QT_M_MULTIPLE_CHOICE && $cqn[2] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS): ?>
                                             <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
@@ -187,7 +187,7 @@
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>
-                                <select class='form-control' name='tokenAttr' id='tokenAttr' size='7'>
+                                <select class='form-select' name='tokenAttr' id='tokenAttr' size='7'>
                                     <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
                                         <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}'>
                                             <?php echo HTMLEscape($tokenattrName['description']); ?>

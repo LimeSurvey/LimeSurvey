@@ -25,7 +25,7 @@
                 ]
             ); ?>
             <div class="form-group">
-                <label class=" control-label" for='the_file'><?php eT("Select question file (*.lsq):");
+                <label class=" form-label" for='the_file'><?php eT("Select question file (*.lsq):");
                     echo '<br>' . sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                 </label>
                 <div class="">
@@ -33,15 +33,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class=" control-label" for='gid'><?php eT("Destination question group:"); ?></label>
+                <label class=" form-label" for='gid'><?php eT("Destination question group:"); ?></label>
                 <div class="">
-                    <select name='gid' id='gid' class="form-control">
+                    <select name='gid' id='gid' class="form-select">
                         <?php echo getGroupList3($gid, $sid); ?>
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class=" control-label" for='translinksfields'><?php eT("Automatically rename question code if already exists?"); ?></label>
+                <label class=" form-label" for='translinksfields'><?php eT("Automatically rename question code if already exists?"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'yiiwheels.widgets.switch.WhSwitch',
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class=" control-label" for='translinksfields'><?php eT("Convert resource links?"); ?></label>
+                <label class=" form-label" for='translinksfields'><?php eT("Convert resource links?"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'yiiwheels.widgets.switch.WhSwitch',
@@ -73,7 +73,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class=" control-label" for='jumptoquestion'><?php eT("Jump to question after import?"); ?></label>
+                <label class=" form-label" for='jumptoquestion'><?php eT("Jump to question after import?"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'yiiwheels.widgets.switch.WhSwitch',
@@ -88,7 +88,7 @@
                     ?>
                 </div>
             </div>
-            <input type='submit' class="hidden" value='<?php eT("Import question"); ?>'/>
+            <input type='submit' class="d-none" value='<?php eT("Import question"); ?>'/>
             <input type='hidden' name='action' value='importquestion'/>
             <input type='hidden' name='sid' value='<?php echo $sid; ?>'/>
             <?php echo CHtml::endForm(); ?>

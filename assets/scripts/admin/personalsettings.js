@@ -15,7 +15,7 @@ $(document).on('click', '#selector__showChangeEmail', function(e){
 });
 
 function showHiddenRow(selector) {
-    $(selector).removeClass('hidden').find('input').each(
+    $(selector).removeClass('d-none').find('input').each(
         function(i,item){
             $(item).prop('disabled', false);
        }

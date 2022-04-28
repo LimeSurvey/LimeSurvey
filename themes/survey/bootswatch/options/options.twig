@@ -319,7 +319,7 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_brandlogofile' class='control-label'>{{ gT("Brandlogo file")}}</label>
                         <div class='col-sm-12'>
-                            <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
+                            <select class='form-select selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
                                 {% set optgroup = '' %}
                                 {% for image in templateConfiguration.imageFileList %}
                                     {% if image.group != optgroup %}
@@ -361,7 +361,7 @@
                             <div class='form-group row'>
                                 <label for='simple_edit_cssframework' class='control-label'>{{ gT("Bootswatch theme") }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_cssframework_value_field' id='simple_edit_cssframework' name='cssframework'>
+                                    <select class='form-select selector_cssframework_value_field' id='simple_edit_cssframework' name='cssframework'>
                                         {{bootswatchOption}}
                                     </select>
                                 </div>

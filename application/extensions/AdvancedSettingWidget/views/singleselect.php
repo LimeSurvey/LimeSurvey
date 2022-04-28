@@ -1,5 +1,5 @@
 <select 
-    class="form-control" 
+    class="form-select" 
     name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
     id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
 >

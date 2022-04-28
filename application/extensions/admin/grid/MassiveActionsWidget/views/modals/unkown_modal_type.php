@@ -4,14 +4,14 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
                 <h4 class="modal-title">ERROR!</h4>
             </div>
             <div class="modal-body">
                 UNKNOW MODAL VIEW TYPE IN MASSSIVE ACTIONS WIDGET !
             </div>
             <div class="modal-footer modal-footer-buttons">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                     <span class='fa fa-ban'></span>
                     &nbsp;
                     <?php eT("Close"); ?>

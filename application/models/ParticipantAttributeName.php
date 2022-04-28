@@ -106,7 +106,7 @@ class ParticipantAttributeName extends LSActiveRecord
         }
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
             . "<span class='fa fa-%s' ></span>" //icon class
             . "</button>";
         $buttons .= "";
@@ -128,8 +128,8 @@ class ParticipantAttributeName extends LSActiveRecord
             'trash text-danger'
         );
         $buttons .= "<a href='#' 
-        data-toggle='modal' 
-        data-target='#confirmation-modal' 
+        data-bs-toggle='modal' 
+        data-bs-target='#confirmation-modal' 
         data-title='" . gT("Delete this attribute") . "'
         data-btnclass='btn-danger'
         data-btntext='" . gt("Delete") . "'

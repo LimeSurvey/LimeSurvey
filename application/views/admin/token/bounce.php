@@ -9,7 +9,7 @@
 
                             <!-- Survey bounce email -->
                             <div class="form-group setting control-group setting-email">
-                                <label class="default control-label" for="bounce_email">
+                                <label class="default form-label" for="bounce_email">
                                     <?php eT('Survey bounce email address:'); ?>
                                 </label>
                                 <div class="default controls">
@@ -19,7 +19,7 @@
 
                             <!-- Bounce settings to be used -->
                             <div class="form-group setting control-group setting-select">
-                                <label class="default control-label" for="bounceprocessing">
+                                <label class="default form-label" for="bounceprocessing">
                                     <?php eT('Used bounce settings:');?>
                                 </label>
                                 <div class="default controls">
@@ -39,7 +39,7 @@
 
                             <!-- Server type -->
                             <div class=" form-group setting control-group setting-select">
-                                <label class="default control-label" for="bounceaccounttype">
+                                <label class="default form-label" for="bounceaccounttype">
                                     <?php eT("Server type:"); ?>
                                 </label>
                                 <div class="default controls">
@@ -56,7 +56,7 @@
 
                             <!-- Server name port -->
                             <div class=" form-group setting control-group setting-string">
-                                <label class="default control-label" for="bounceaccounthost">
+                                <label class="default form-label" for="bounceaccounthost">
                                     <?php eT('Server name & port:'); ?>
                                 </label>
                                 <div class="default controls">
@@ -69,7 +69,7 @@
 
                             <!-- User name -->
                             <div class=" form-group setting control-group setting-string">
-                                <label class="default control-label" for="bounceaccountuser">
+                                <label class="default form-label" for="bounceaccountuser">
                                     <?php eT('User name:'); ?>
                                 </label>
                                 <div class="default controls">
@@ -79,7 +79,7 @@
 
                             <!-- Password -->
                             <div class=" form-group setting control-group setting-password">
-                                <label class="default control-label" for="bounceaccountpass">
+                                <label class="default form-label" for="bounceaccountpass">
                                     <?php eT('Password:'); ?>
                                 </label>
 
@@ -90,7 +90,7 @@
 
                             <!-- Encryption type  -->
                             <div class=" form-group setting control-group setting-select">
-                                <label class="default control-label" for="bounceaccountencryption">
+                                <label class="default form-label" for="bounceaccountencryption">
                                     <?php eT('Encryption type:'); ?>
                                 </label>
                                 <div class="default controls">
@@ -109,7 +109,7 @@
                     </div>
 
                     <!-- buttons -->
-                    <div class="buttons control-group  hidden">
+                    <div class="buttons control-group d-none">
                         <button name="save" value="save" class="btn" type="submit">Save bounce settings</button>
                         <a class="btn btn-link button" href="/LimeSurveyNext/index.php/admin/tokens?sa=index&amp;surveyid=274928">
                             Cancel

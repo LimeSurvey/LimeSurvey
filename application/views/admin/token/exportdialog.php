@@ -8,11 +8,11 @@
                 <div class="settings-list col-sm-12 col-md-6">
                     <!--Survey status -->
                     <div class=" form-group control-group" data-name="tokenstatus">
-                        <label class="default control-label" for="tokenstatus">
+                        <label class="default form-label" for="tokenstatus">
                             <?php eT('Survey status:'); ?>
                         </label>
                         <div class="default controls">
-                            <select id="tokenstatus" name="tokenstatus" class="form-control">
+                            <select id="tokenstatus" name="tokenstatus" class="form-select">
                                 <option value="0"><?php eT('All participants'); ?></option>
                                 <option value="1"><?php eT('Completed'); ?></option>
                                 <option value="2"><?php eT('Not completed'); ?></option>
@@ -24,7 +24,7 @@
 
                     <!--Invitation status -->
                     <div class=" form-group control-group" data-name="invitationstatus">
-                        <label class="default control-label" for="invitationstatus">
+                        <label class="default form-label" for="invitationstatus">
                             <?php eT('Invitation status:'); ?>
                         </label>
                         <div class="default controls">
@@ -42,7 +42,7 @@
 
                     <!--Reminder status -->
                     <div class=" form-group control-group" data-name="reminderstatus">
-                        <label class="default control-label" for="reminderstatus">
+                        <label class="default form-label" for="reminderstatus">
                             <?php eT('Reminder status:'); ?>
                         </label>
                         <div class="default controls">
@@ -60,11 +60,11 @@
 
                     <!--Filter by language -->
                     <div class=" form-group control-group" data-name="tokenlanguage">
-                        <label class="default control-label" for="tokenlanguage">
+                        <label class="default form-label" for="tokenlanguage">
                             <?php eT('Filter by language:'); ?>
                         </label>
                         <div class="default controls">
-                            <select id="tokenlanguage" name="tokenlanguage" class="form-control">
+                            <select id="tokenlanguage" name="tokenlanguage" class="form-select">
                                 <option value="" selected="selected"><?php eT('All'); ?>
                                 <option value="de"><?php eT('German'); ?></option>
                             </select>
@@ -76,7 +76,7 @@
                     <!--Filter by email address -->
                     <div class=" form-group control-group" data-name="filteremail">
 
-                        <label class="default control-label" for="filteremail">
+                        <label class="default form-label" for="filteremail">
                             <?php eT('Filter by email address:'); ?>
                         </label>
                         <div class="default controls">
@@ -92,7 +92,7 @@
                     <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')) { ?>
 
                     <div class="form-group control-group " data-name="tokendeleteexported">
-                        <label class="default control-label" for="tokendeleteexported">
+                        <label class="default form-label" for="tokendeleteexported">
                             <?php eT('Delete exported participants:'); ?>
                         </label>
                         <div class="default controls">
@@ -110,7 +110,7 @@
                     </div>
                     <?php } ?>
                     <div class="form-group control-group " data-name="maskequations">
-                        <label class="default control-label" for="maskequations">
+                        <label class="default form-label" for="maskequations">
                             <?php eT('Quote equations:'); ?>
                         </label>
                         <div class="default controls">
@@ -127,7 +127,7 @@
                         </div>
                     </div>                    
                 </div>
-                <button role="button" class="btn btn-primary btn-block hidden" type="submit" name="submit">
+                <button role="button" class="btn btn-primary btn-block d-none" type="submit" name="submit">
                     <i class="fa fa-download"></i>
                     <?php eT('Export participants'); ?>
                 </button>

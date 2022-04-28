@@ -33,7 +33,7 @@
                                 ); ?>
                                 <?php /* @see https://bugs.limesurvey.org/view.php?id=16792 */ ?>
                                 <a class="btn btn-outline-secondary btn-sm" role="button"
-                                   data-target='#confirmation-modal' data-toggle='modal'
+                                   data-bs-target='#confirmation-modal' data-bs-toggle='modal'
                                    data-message='<?= gT("Are you sure you want to remove all permissions for this user?") ?>'
                                    data-post-url='<?= $deleteUrl ?>'
                                 ><span class="fa fa-trash text-danger" aria-hidden="true" title="<?= gT("Delete") ?>"><span>
@@ -47,7 +47,7 @@
                     <?php foreach ($aDefinitionPermissions as $sPermission => $aPermission) : ?>
                         <td class="text-center">
                             <?php if (!empty($aCurrentsUserRights[$oUser->uid][$sPermission])) : ?>
-                                <span data-toggle="tooltip" data-title="<?= implode(", ", $aCurrentsUserRights[$oUser->uid][$sPermission]) ?>"
+                                <span data-bs-toggle="tooltip" data-title="<?= implode(", ", $aCurrentsUserRights[$oUser->uid][$sPermission]) ?>"
                                       class="fa fa-check <?= count($aCurrentsUserRights[$oUser->uid][$sPermission]) < $aPermission['maxCrud'] ? 'mixed' : "" ?>"></span>
                                 <span class="sr-only"><?= implode($aCurrentsUserRights[$oUser->uid][$sPermission]) ?></span>
                             <?php else : ?>

@@ -11,7 +11,7 @@
 
             <!-- Condition -->
             <div class='form-group'>
-                <label class='control-label col-sm-2'><?php eT('Scenario'); ?></label>
+                <label class='form-label col-sm-2'><?php eT('Scenario'); ?></label>
                 <div class='col-sm-2 add-scenario-column'>
                     <input class='form-control' type='number' name='quick-add-scenario' id='quick-add-scenario' value='1' />
                 </div>
@@ -19,7 +19,7 @@
         </div>
         <div class="row ls-space margin top-10 bottom-5">
             <div class='form-group row'>
-                <label class='control-label col-sm-2'><?php eT("Question"); ?></label>
+                <label class='form-label col-sm-2'><?php eT("Question"); ?></label>
                 <div class='col-sm-10'>
                     <ul class='nav nav-tabs'>
                         <li role='presentation' class='nav-item src-tab'>
@@ -36,7 +36,7 @@
                     <div class='form-group question-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='quick-add-cquestions' id='quick-add-cquestions' size='7'>
+                            <select class='form-select' name='quick-add-cquestions' id='quick-add-cquestions' size='7'>
                                 <?php foreach ($cquestions as $cqn): ?>
                                     <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars($cqn[0]); ?>">
                                         <?php echo $cqn[0]; ?>
@@ -50,7 +50,7 @@
                     <div class='form-group question-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='quick-add-csrctoken' id='quick-add-csrctoken' size='7'>
+                            <select class='form-select' name='quick-add-csrctoken' id='quick-add-csrctoken' size='7'>
                                 <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
                                     <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}'): echo ' selected="selected" '; endif; ?>>
                                         <?php echo HTMLEscape($tokenattrName['description']); ?>
@@ -64,9 +64,9 @@
         </div>
         <div class="row ls-space margin top-10">
             <div class='form-group'>
-                <label class='control-label col-sm-2'><?php eT("Comparison operator"); ?></label>
+                <label class='form-label col-sm-2'><?php eT("Comparison operator"); ?></label>
                 <div class='col-sm-4'>
-                    <select class='form-control' name='quick-add-method' id='quick-add-method'>
+                    <select class='form-select' name='quick-add-method' id='quick-add-method'>
                         <?php foreach ($method as $methodCode => $methodTxt): ?>
                             <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "=="): echo ' selected="selected" '; endif; ?>>
                                 <?php echo $methodTxt; ?>
@@ -78,7 +78,7 @@
         </div>
         <div class="row">
             <div class='form-group row'>
-                <label class='control-label col-sm-2'><?php echo gT("Answer"); ?></label>
+                <label class='form-label col-sm-2'><?php echo gT("Answer"); ?></label>
                 <div class='col-sm-10'>
                     <ul class='nav nav-tabs'>
                         <li role='presentation' class='nav-item target-tab'>
@@ -129,7 +129,7 @@
                     <div class='form-group answer-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='quick-add-prevQuestionSGQA' id='quick-add-prevQuestionSGQA' size='7'>
+                            <select class='form-select' name='quick-add-prevQuestionSGQA' id='quick-add-prevQuestionSGQA' size='7'>
                                 <?php foreach ($cquestions as $cqn): ?>
                                     <?php if ($cqn[2] != Question::QT_M_MULTIPLE_CHOICE && $cqn[2] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS): ?>
                                         <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
@@ -151,7 +151,7 @@
                     <div class='form-group answer-option'>
                         <div class='col-sm-2'></div>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='quick-add-tokenAttr' id='quick-add-tokenAttr' size='7'>
+                            <select class='form-select' name='quick-add-tokenAttr' id='quick-add-tokenAttr' size='7'>
                                 <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
                                     <option value='{TOKEN:<?php echo strtoupper($tokenattr); ?>}'>
                                         <?php echo HTMLEscape($tokenattrName['description']); ?>

@@ -12,8 +12,8 @@
                 <h3>Generate a logic file for the survey</h3>
                 <?=TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post')?>
                     <div class="form-group">
-                        <label class="control-label" for="sid"> <?=gT('Survey ID (SID)')?></label>
-                        <select name="sid" id="sid" class="form-control">
+                        <label class="form-label" for="sid"> <?=gT('Survey ID (SID)')?></label>
+                        <select name="sid" id="sid" class="form-select">
                             <?=getSurveyList()?>
                         </select>
                     </div>

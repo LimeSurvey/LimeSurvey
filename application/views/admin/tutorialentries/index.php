@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('tutorialentries');
 				type="button"
 				class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" 
 				href="#restoremodal" 
-				data-toggle="modal">
+				data-bs-toggle="modal">
                 <i class="fa fa-refresh"></i>&nbsp;
                 <?php eT('Reset'); ?>
 			</button>

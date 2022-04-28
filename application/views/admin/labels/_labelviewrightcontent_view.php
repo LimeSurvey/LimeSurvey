@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-sm-12 content-right text-center">
     <div class="panel-group" id="accordion" role="tablist" style="margin-top: 20px">
-      <div class="panel panel-default" id="up_resmgmt">
+      <div class="card" id="up_resmgmt">
 
         <!-- Uploaded resources management -->
-        <div class="panel-heading" role="tab" id="headingOne">
-          <div class="panel-title h4">
+        <div class="card-header bg-primary" role="tab" id="headingOne">
+          <div class="">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <?php eT("Uploaded resources management"); ?>
             </a>
@@ -15,7 +15,7 @@
 
         <!-- Body -->
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
+          <div class="card-body">
             <div id="upload-form-container">
 
               <!-- Form browselabelresources -->
@@ -85,7 +85,7 @@
             </div>
             <!-- upload-form-container -->
           </div>
-          <!-- panel-body -->
+          <!-- card-body -->
         </div>
         <!-- collapseOne -->
       </div>

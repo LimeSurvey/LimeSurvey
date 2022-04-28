@@ -17,7 +17,7 @@
                 <!-- Scope, Total, Group -->
                 <div class='row'>
                     <div class='form-group col-md-12'>
-                        <label class='control-label col-sm-2'>
+                        <label class='form-label col-sm-2'>
                             <?php eT("Scope:"); ?>
                         </label>
                         <div class='col-sm-10 ls-flex wrap'>
@@ -38,12 +38,12 @@
                     </div>
                     <!-- Question group -->
                     <div class='form-group col-md-12'>
-                        <label class='control-label col-sm-2' for='gid'>
+                        <label class='form-label col-sm-2' for='gid'>
                             <?php eT("Question group:"); ?>
                         </label>
                         <div class='col-sm-10'>
                             <?php if (isset($groups)) { ?>
-                                <select name='gid' id='gid' class="form-control">
+                                <select name='gid' id='gid' class="form-select">
                                     <?php foreach ($groups as $groupId => $groupName) { ?>
                                         <option value="<?= $groupId ?>"><?= flattenText($groupName) ?></option>
                                     <?php } ?>
@@ -59,7 +59,7 @@
                 <div class='row'>
                     <!-- Minimum -->
                     <div class='form-group col-md-12'>
-                        <label class='control-label col-sm-2' for='minimum'>
+                        <label class='form-label col-sm-2' for='minimum'>
                             <?php eT("Minimum:"); ?>
                         </label>
                         <div class='col-sm-10'>
@@ -70,7 +70,7 @@
 
                     <!-- Maximum -->
                     <div class='form-group col-md-12'>
-                        <label class='control-label col-sm-2' for='maximum'>
+                        <label class='form-label col-sm-2' for='maximum'>
                             <?php eT("Maximum:"); ?>
                         </label>
                         <div class='col-sm-10'>
@@ -112,14 +112,14 @@
                             } ?>">
                                 <div class='col-sm-12'></div>
                                 <div class='form-group col-sm-12'>
-                                    <label class='control-label col-sm-12' for='name_<?= $assessmentlang ?>'>
+                                    <label class='form-label col-sm-12' for='name_<?= $assessmentlang ?>'>
                                         <?php eT("Heading"); ?>:</label>
                                     <div class='col-sm-12'>
                                         <input class='form-control' type='text' name='name_<?= $assessmentlang ?>' id='name_<?= $assessmentlang ?>>' size='80' value='<?= $heading ?>'/>
                                     </div>
                                 </div>
                                 <div class='form-group col-sm-12'>
-                                    <label class='control-label col-sm-12' for='assessmentmessage_<?= $assessmentlang ?>'>
+                                    <label class='form-label col-sm-12' for='assessmentmessage_<?= $assessmentlang ?>'>
                                         <?php eT("Message"); ?>:</label>
                                     <div class='col-sm-12'>
                                         <div class="htmleditor input-group">
@@ -131,7 +131,7 @@
                                 <div class='form-group'>
                                     <div class='col-sm-2'></div>
                                     <div class='col-sm-4'>
-                                        <input type='submit' class="btn btn-outline-secondary hidden" value='<?php eT("Save"); ?>'/>
+                                        <input type='submit' class="btn btn-outline-secondary d-none" value='<?php eT("Save"); ?>'/>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel"); ?></button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
                 <button type="button" class="btn btn-success" id="selector__assessments-save-modal">
                     <?php eT('Add'); ?>
                 </button>

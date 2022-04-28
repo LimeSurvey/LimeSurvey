@@ -26,12 +26,12 @@ Yii::app()->getController()->renderPartial(
     <div class="row">
         <div class="col-md-6">
             <div class='form-group'>
-                <label class='control-label'>
+                <label class='form-label'>
                     <?php eT("User with whom the participants are to be shared:"); ?>
                 </label>
 
                 <div class='col-sm-12'>
-                    <select class='form-control' id='shareuser' name='shareuser'>
+                    <select class='form-select' id='shareuser' name='shareuser'>
                         <option value=''><?php eT('Share with all users'); ?></option>
                         <?php foreach ($users as $user): ?>
                             <option value='<?php echo $user->uid; ?>'>
@@ -46,7 +46,7 @@ Yii::app()->getController()->renderPartial(
 
         <div class="col-md-6">
             <div class='form-group'>
-                <label class='control-label text-left'>
+                <label class='form-label text-start'>
                     <?php eT("Other users may edit this participant"); ?>
                 </label>
                 <div class='col-sm-12'>
@@ -58,7 +58,7 @@ Yii::app()->getController()->renderPartial(
 
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel') ?></button>
+    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
     <button role="button" type="button" class="btn btn-primary action_save_modal_shareparticipant">
         <?php eT("Share")?>
     </button>

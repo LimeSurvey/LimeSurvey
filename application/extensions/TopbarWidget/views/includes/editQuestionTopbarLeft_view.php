@@ -2,7 +2,7 @@
     <!-- test/execute survey -->
     <?php if (count($surveyLanguages) > 1): ?>
         <div class="btn-group">
-            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <?php if($oSurvey->active=='N'):?>
                     <span class="fa fa-eye" ></span>
                     <?php eT('Preview survey');?>
@@ -39,7 +39,7 @@
 
             <!-- Preview group multilanguage -->
             <div class="btn-group">
-                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-eye"></span>
                 <?php eT("Preview question group"); ?> <span class="caret"></span>
                 </button>
@@ -65,7 +65,7 @@
 
         <!-- Preview question multilanguage -->
         <div class="btn-group">
-            <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa fa-eye"></span>
             <?php eT("Preview question"); ?> <span class="caret"></span>
             </button>
@@ -97,7 +97,7 @@
                 <?php eT("Import question"); ?>
             </button>
         <?php else: ?>
-            <button type="button" role="button" class="btn btn-outline-secondary btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
+            <button type="button" role="button" class="btn btn-outline-secondary btntooltip" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
                 <span class="icon-import icon"></span>
                 <?php eT("Import question"); ?>
             </button>

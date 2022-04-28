@@ -17,7 +17,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
     <div class="h1 visible-print-block text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?></div>
     <div class="row hidden-print">
         <div class="col-md-12">
-            <div class="col-md-3 text-left">
+            <div class="col-md-3 text-start">
                 <h4 class="hidden-print">
                     <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
                     <?php eT("Statistics"); ?>
@@ -53,8 +53,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                 <p>
                     <input type='hidden' name='summary[]' value='idG' />
                     <input type='hidden' name='summary[]' value='idL' />
-                    <input class="hidden" type='submit' value='<?php eT("View statistics"); ?>' />
-                    <input class="hidden" type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
+                    <input class="d-none" type='submit' value='<?php eT("View statistics"); ?>' />
+                    <input class="d-none" type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
                 </p>
             </div>
         </div>
@@ -99,8 +99,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             </div>
 
             <p id='vertical_slide2'>
-                <input type='submit' class="hidden" value='<?php eT("View statistics"); ?>' />
-                <input type='button' class="hidden" value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
+                <input type='submit' class="d-none" value='<?php eT("View statistics"); ?>' />
+                <input type='button' class="d-none" value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='display' value='stats' />
             </p>

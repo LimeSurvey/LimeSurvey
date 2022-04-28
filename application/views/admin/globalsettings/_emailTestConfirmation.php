@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
     <div class="h3 modal-title"><?php eT("Test email settings"); ?></div>
 </div>
 <div class="modal-body">
@@ -13,7 +13,6 @@
         <span class='fa fa-check'></span>
         &nbsp;<?php eT("Send email"); ?>
     </button>
-    <button type="button" class="btn btn-danger" data-dismiss="modal">
         <?php eT("Close"); ?>
     </button>
 </div>

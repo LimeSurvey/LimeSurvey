@@ -7,7 +7,7 @@
             role="button"
             class="fa fa-question-circle text-success"
             onclick="jQuery('#general-setting-help-<?= $this->generalOption->name; ?>').slideToggle()"
-            data-toggle="tooltip"
+            data-bs-toggle="tooltip"
             title="<?= gT("See help"); ?>"
             ></i>
         <?= $content; ?>

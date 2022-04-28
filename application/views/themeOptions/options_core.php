@@ -70,15 +70,15 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                     if ($bInherit){ ?>
                     <div class='row' id="general_inherit_active">
                         <div class='form-group row'>
-                            <label for='simple_edit_options_general_inherit' class='control-label'><?php echo gT("Inherit everything" ); ?></label>
+                            <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything" ); ?></label>
                             <div class='col-sm-12'>
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-outline-secondary">
-                                        <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
+                                <div class="btn-group" role="group">
+                                    <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
+                                    <label for="general_inherit_on" class="btn btn-outline-primary">
                                         <?php echo gT("Yes"); ?>
                                     </label>
-                                    <label class="btn btn-outline-secondary">
-                                        <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
+                                    <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='btn-check selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
+                                    <label for="general_inherit_off" class="btn btn-outline-primary">
                                         <?php echo gT("No"); ?>
                                     </label>
                                 </div>
@@ -116,7 +116,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
 
                             echo '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-' . $attribute['width'] . '">
                             <div class="form-group row">
-                                <label for="simple_edit_options_' . $attributeKey . '" class="control-label">' . gT($attribute['title']) . '</label>';
+                                <label for="simple_edit_options_' . $attributeKey . '" class="form-label">' . gT($attribute['title']) . '</label>';
                             if ($attribute['type'] == 'buttons'){
                                 $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : array();
                                 $optionLabels = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : array();
@@ -126,10 +126,11 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                                 }
 
                                 echo '<div class="col-sm-12">
-                                        <div class="btn-group" data-toggle="buttons">';
+                                        <div class="btn-group">';
                                         foreach($options as $optionKey =>$optionValue){
-                                            echo '<label class="btn btn-outline-secondary">
-                                                <input type="radio" name="' . $attributeKey .'" value="' . $optionKey .'" class="selector_option_radio_field simple_edit_options_' . $attributeKey .' " id="' . $attributeKey .'"/>'
+                                            $id = $attributeKey . "_" . $optionKey;
+                                            echo '<input id="' . $id . '" type="radio" name="' . $attributeKey .'" value="' . $optionKey .'" class="btn-check selector_option_radio_field simple_edit_options_' . $attributeKey .' " id="' . $attributeKey .'"/>';
+                                            echo '<label for="' . $id . '" class="btn btn-outline-primary">'
                                                 . gT($optionValue) . '
                                             </label>';
                                             }
@@ -153,7 +154,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                                     $sParentOption = 'N/A';
                                 }
                                 echo ' <div class="col-sm-12">
-                                <select class="form-control selector_option_value_field selector_radio_childfield selector_image_selector" data-parent="' . $attribute['parent'] . '" data-inheritvalue=\'' . ($attributeKey == 'font' && isset($sPackagesToLoad) ? $sPackagesToLoad : $sParentOption) . '\' id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"  >';
+                                <select class="form-select selector_option_value_field selector_radio_childfield selector_image_selector" data-parent="' . $attribute['parent'] . '" data-inheritvalue=\'' . ($attributeKey == 'font' && isset($sPackagesToLoad) ? $sPackagesToLoad : $sParentOption) . '\' id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"  >';
                                 if ($bInherit){
                                     if ($attributeKey == 'backgroundimagefile'){
                                         $inheritedValue = isset($backgroundfileInheritPreview) ? $backgroundfileInheritPreview : '';
@@ -171,7 +172,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
 
                             } elseif ($attribute['type'] == 'icon'){
                                 echo ' <div class="col-sm-12 input-group">
-                                <select class="selector_option_value_field form-control simple_edit_options_checkicon" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '" >';
+                                <select class="selector_option_value_field form-select simple_edit_options_checkicon" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '" >';
                                 if ($bInherit){
                                     echo '<option value="inherit">' . gT("Inherit") . ' [' . gT("inherited value:") . ' ' . (isset($sParentOption) ? $sParentOption : '') . ']</option>';
                                 }
@@ -199,7 +200,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                             if ($category == 'Images' && $attribute['type'] == 'dropdown'){
                                 echo '<div class="col-sm-4 col-md-2">
                                 <br/>
-                                <button class="btn btn-outline-secondary selector__open_lightbox" data-target="#simple_edit_options_' . $attributeKey .'"> ' . gT('Preview image') . '</button>
+                                <button class="btn btn-outline-secondary selector__open_lightbox" data-bs-target="#simple_edit_options_' . $attributeKey .'"> ' . gT('Preview image') . '</button>
                             </div>';
                             }
 
@@ -220,7 +221,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                                 <div class="col-sm-6">
                                     <span id="fileselector_frontend">
                                         <label class="btn btn-outline-secondary col-xs-8" for="upload_image_frontend">
-                                            <input class="hidden" id="upload_image_frontend" name="upload_image_frontend" type="file">
+                                            <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
                                             <i class="fa fa-upload ls-space margin right-10"></i>
                                             <?php eT("Upload"); ?>
                                         </label>
@@ -249,7 +250,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title selector__title"> </h4>
             </div>

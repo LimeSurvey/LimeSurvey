@@ -38,11 +38,11 @@
 
                     <!-- LDAP query  -->
                     <div class="form-group">
-                        <label for="ldapQueries" class=" control-label">
+                        <label for="ldapQueries" class=" form-label">
                             <?php eT("Select the LDAP query you want to run:"); ?>
                         </label>
                         <div class="">
-                            <select name='ldapQueries' class="form-control">
+                            <select name='ldapQueries' class="form-select">
                                 <?php 
                                 uasort ( $ldap_queries , function ($a, $b) {
                                     return strnatcmp($a['name'],$b['name']); // or other function/code
@@ -57,7 +57,7 @@
 
                     <!-- Filter blank email -->
                     <div class="form-group">
-                        <label for='filterblankemail' class=" control-label"><?php echo eT("Filter blank email addresses:"); ?></label>
+                        <label for='filterblankemail' class=" form-label"><?php echo eT("Filter blank email addresses:"); ?></label>
                         <div class="">
                             <input type='checkbox' id='filterblankemail' name='filterblankemail' checked='checked' />
                         </div>
@@ -65,7 +65,7 @@
 
                     <!-- Filter duplicate -->
                     <div class="form-group">
-                        <label for='filterduplicatetoken'  class=" control-label"><?php echo eT("Filter duplicate records:"); ?></label>
+                        <label for='filterduplicatetoken'  class=" form-label"><?php echo eT("Filter duplicate records:"); ?></label>
                         <div class="">
                             <input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' />
                         </div>

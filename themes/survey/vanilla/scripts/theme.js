@@ -193,7 +193,11 @@ var ThemeScripts = function(){
             }
 
             $(function () {
-                $('[data-toggle="tooltip"]').tooltip();
+                //show tooltips
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl)
+                });
             });
 
             // Bind language changer onclick event.

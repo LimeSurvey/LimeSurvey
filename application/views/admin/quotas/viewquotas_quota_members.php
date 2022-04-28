@@ -18,7 +18,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
 
 <?php /*echo "<pre>".print_r($oQuota->mainLanguagesetting->attributes,true)."</pre>";*/ ?>
 <div class="panel panel-<?php echo ($oQuota->active==1 ? 'primary' : 'default') ?>">
-    <div class="panel-heading">
+    <div class="card-header bg-primary">
         <div class="pull-right small">
             <span><span class="fa <?php echo $icon?>"></span> <?php echo $tooltip;?></span>
             <?php if($oQuota->autoload_url == 1):?>
@@ -32,7 +32,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
             <tr>
                 <th><?php eT('Question');?></th>
                 <th><?php eT('Answer');?></th>
-                <th class="text-right">
+                <th class="text-end">
                     <?php echo CHtml::beginForm(array("admin/quotas/sa/newanswer/surveyid/{$oSurvey->getPrimaryKey()}"), 'post');?>
                     <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey(), ['id'=> 'addForm_sid' ]);?>
                     <?php echo CHtml::hiddenField('action','quotas', ['id'=> 'addForm_action' ]);?>

@@ -14,9 +14,9 @@ Yii::app()->getController()->renderPartial(
 
 <div class="modal-body">
     <div class="container-center">
-        <div class="row ls-space margin top-5 bottom-5 hidden" id="RoleControl--errors">
+        <div class="row ls-space margin top-5 bottom-5 d-none" id="RoleControl--errors">
         </div>
-        <div class="row ls-space margin top-5 bottom-5 hidden" id="RoleControl--errors">
+        <div class="row ls-space margin top-5 bottom-5 d-none" id="RoleControl--errors">
         </div>
         <div class="row ls-space margin top-5 bottom-15">
             <label for="the_file"><?=gT('Select role-XML file')?></label>

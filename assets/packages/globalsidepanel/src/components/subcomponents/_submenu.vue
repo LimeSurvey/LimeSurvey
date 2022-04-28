@@ -66,7 +66,7 @@ export default {
 
             <div class="col-12" :class="menuItem.menu_class" 
             v-bind:title="reConvertHTML(menuItem.menu_description)"  
-            data-toggle="tooltip" >
+            data-bs-toggle="tooltip" >
                 <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
                     <span v-html="menuItem.menu_title"></span>

@@ -2,8 +2,7 @@
     <div class='pagetitle h3'><?php eT('Confirm uploaded plugin'); ?></div>
 
     <?php // Only show config summary if config could be found. ?>
-    <?php if (isset($config)): ?>
-
+    <?php if (isset($config)) : ?>
         <?php echo CHtml::form(
             Yii::app()->getController()->createUrl(
                 '/admin/pluginmanager',
@@ -16,14 +15,14 @@
 
             <input type="hidden" name="isUpdate" value="<?php echo json_encode($isUpdate); ?>" />
 
-            <?php if ($isUpdate): ?>
+            <?php if ($isUpdate) : ?>
                 <div class='alert alert-info'>
                     <p>
                         <i class='fa fa-info'></i>&nbsp;
                         <?php eT('The following plugin will be updated. Please click "Update" to update the plugin, or "Abort" to abort.'); ?>
                     </p>
                 </div>
-            <?php else: ?>
+            <?php else : ?>
                 <div class='alert alert-info'>
                     <p>
                         <i class='fa fa-info'></i>&nbsp;
@@ -34,47 +33,47 @@
 
             <!-- Name -->
             <div class="form-group col-sm-12">
-                <label class="col-sm-4 control-label"><?php eT("Name:"); ?></label>
-                <div class="col-sm-4"><?php echo $config->getName(); ?></div>
+                <label class="col-sm-4 form-label"><?php eT("Name:"); ?></label>
+                <div class="col-sm-4"><?=htmlentities($config->getName()); ?></div>
             </div>
 
             <!-- Description -->
             <div class="form-group col-sm-12">
-                <label class="col-sm-4 control-label"><?php eT("Description:"); ?></label>
-                <div class="col-sm-8"><?php echo $config->getDescription(); ?></div>
+                <label class="col-sm-4 form-label"><?php eT("Description:"); ?></label>
+                <div class="col-sm-8"><?=htmlentities($config->getDescription()); ?></div>
             </div>
 
             <!-- Version -->
             <div class="form-group col-sm-12">
-                <label class="col-sm-4 control-label"><?php eT("Version:"); ?></label>
-                <div class="col-sm-4"><?php echo $config->getVersion(); ?></div>
+                <label class="col-sm-4 form-label"><?php eT("Version:"); ?></label>
+                <div class="col-sm-4"><?=htmlentities($config->getVersion()); ?></div>
             </div>
 
             <!-- Author -->
             <div class="form-group col-sm-12">
-                <label class="col-sm-4 control-label"><?php eT("Author:"); ?></label>
-                <div class="col-sm-4"><?php echo $config->getAuthor(); ?></div>
+                <label class="col-sm-4 form-label"><?php eT("Author:"); ?></label>
+                <div class="col-sm-4"><?=htmlentities($config->getAuthor()); ?></div>
             </div>
 
             <!-- Compatible -->
             <div class="form-group col-sm-12">
-                <label class="col-sm-4 control-label"><?php eT("Compatible"); ?></label>
-                <?php if ($config->isCompatible()): ?>
+                <label class="col-sm-4 form-label"><?php eT("Compatible"); ?></label>
+                <?php if ($config->isCompatible()) : ?>
                     <div class="col-sm-4"><span class="fa fa-check text-success"></span></div>
-                <?php else: ?>
+                <?php else : ?>
                     <div class="col-sm-4"><span class="fa fa-times text-warning"></span></div>
                 <?php endif; ?>
             </div>
 
             <!-- Buttons -->
             <div class="form-group col-sm-12">
-                <label class="col-sm-4 control-label"></label>
+                <label class="col-sm-4 form-label"></label>
                 <div class="col-sm-4">
-                    <?php if ($isUpdate): ?>
+                    <?php if ($isUpdate) : ?>
                         <button type="submit" class="btn btn-success">
                             <?php eT("Update");?>
                         </button>
-                    <?php else: ?>
+                    <?php else : ?>
                         <button type="submit" class="btn btn-success">
                             <?php eT("Install");?>
                         </button>
@@ -83,7 +82,7 @@
                         type="button"
                         href="<?php echo $abortUrl; ?>" 
                         class="btn btn-warning" 
-                        data-dismiss="modal">
+                        data-bs-dismiss="modal">
                         <?php eT("Abort");?>
                     </button>
                 </div>
@@ -91,8 +90,7 @@
 
         </form>
 
-    <?php else: ?>
-
+    <?php else : ?>
         <div class='alert alert-warning'>
             <p>
             <i class='fa fa-warning'></i>&nbsp;

@@ -46,7 +46,7 @@ $surveyid = $aTabContents['surveyid'];
         <div class="col-md-6">
             <!-- Survey title -->
             <div class="form-group">
-                <label class=" question-group-title control-label" for="surveyls_title">
+                <label class=" question-group-title form-label" for="surveyls_title">
                     <?php eT("Survey title:"); ?>
                 </label>
                 <div class="">
@@ -61,7 +61,7 @@ $surveyid = $aTabContents['surveyid'];
             <!-- Base language -->
             <div class="form-group">
 
-                <label class=" control-label" ><?php  eT("Base language:") ; ?></label>
+                <label class=" form-label" ><?php  eT("Base language:") ; ?></label>
                 <div class="" style="padding-top: 7px;">
                     <?php if($oSurvey->isNewRecord):?>
                     <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
@@ -79,7 +79,7 @@ $surveyid = $aTabContents['surveyid'];
         </div>
         <div class="col-md-6">
              <div class="form-group">
-                <label for="createsample" class=" control-label"><?php eT("Create example question group and question?") ?></label>
+                <label for="createsample" class=" form-label"><?php eT("Create example question group and question?") ?></label>
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'createsample',
@@ -95,7 +95,7 @@ $surveyid = $aTabContents['surveyid'];
         <div class="col-sm-12 col-md-6">
             <!-- Description -->
             <div class="form-group">
-                <label class=" control-label" for="description">
+                <label class=" form-label" for="description">
                     <?php eT("Description:"); ?>
                 </label>
                 <div class="">
@@ -110,7 +110,7 @@ $surveyid = $aTabContents['surveyid'];
 
             <!-- End URL -->
             <div class="form-group">
-                <label class="control-label ">
+                <label class="form-label ">
                     <?php eT("End URL:"); ?>
                 </label>
                 <div class="">
@@ -120,7 +120,7 @@ $surveyid = $aTabContents['surveyid'];
 
             <!-- URL description -->
             <div class="form-group">
-                <label class="control-label ">
+                <label class="form-label ">
                     <?php eT("URL description:"); ?>
                 </label>
                 <div class="">
@@ -130,12 +130,12 @@ $surveyid = $aTabContents['surveyid'];
 
             <!-- Date format -->
             <div class="form-group">
-                <label class="control-label ">
+                <label class="form-label ">
                     <?php eT("Date format:"); ?>
                 </label>
 
                 <div class="">
-                    <select size='1' id='dateformat' name='dateformat' class="form-control">
+                    <select size='1' id='dateformat' name='dateformat' class="form-select">
                     <?php foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index=>$dateformatdata): ?>
                         <option value='<?php echo $index; ?>' <?php if ($aSurveyLanguageSettings[ 'surveyls_dateformat']==$index): ?>
                         selected='selected'
@@ -150,7 +150,7 @@ $surveyid = $aTabContents['surveyid'];
 
             <!-- Decimal mark -->
             <div class="form-group">
-                <label class="control-label ">
+                <label class="form-label ">
                     <?php eT("Decimal mark:"); ?>
                 </label>
                 <div class="">
@@ -177,7 +177,7 @@ $surveyid = $aTabContents['surveyid'];
         <div class="col-sm-12 col-md-6">
             <!-- Welcome message -->
             <div class="form-group">
-                <label class=" control-label" for='welcome'>
+                <label class=" form-label" for='welcome'>
                     <?php eT("Welcome message:"); ?>
                 </label>
                 <div class="">
@@ -191,7 +191,7 @@ $surveyid = $aTabContents['surveyid'];
         <div class="col-sm-12 col-md-6">
             <!-- End message -->
             <div class="form-group">
-                <label class=" control-label" for='endtext'>
+                <label class=" form-label" for='endtext'>
                     <?php eT("End message:"); ?>
                 </label>
                 <div class="">

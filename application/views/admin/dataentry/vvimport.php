@@ -3,7 +3,7 @@
     <?php if($tableExists):?>
         <div class="row">
         <div class="col-md-12">
-            <div class="col-md-6 text-left">
+            <div class="col-md-6 text-start">
                 <h4>
                     <?php  eT("Import a VV response data file"); ?>
                 </h4>
@@ -22,16 +22,16 @@
     ?>
     
     
-    <div class="panel panel-primary" id="panel-1">
-        <div class="panel-heading">
-            <div class="panel-title h4">
+    <div class="card" id="panel-1">
+        <div class="card-header bg-primary">
+            <div class="">
                 <?php eT("General");?>
             </div>
         </div>
 
-        <div class="panel-body">
+        <div class="card-body">
             <div class="form-group">
-                <label for="csv_vv_file" class=" control-label">
+                <label for="csv_vv_file" class=" form-label">
                     <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
                 <div class="">
@@ -40,7 +40,7 @@
             </div>
 
             <div class="form-group">
-                <label for="noid" class=" control-label">
+                <label for="noid" class=" form-label">
                     <?php eT("Exclude record IDs?"); ?>
                 </label>
                 <div class="">
@@ -55,7 +55,7 @@
             </div>
 
             <div class="form-group" id="insertmethod-container">
-                <label for="insertmethod" class=" control-label">
+                <label for="insertmethod" class=" form-label">
                     <?php eT("When an imported record matches an existing record ID:"); ?>
                 </label>
                 <div class="">
@@ -70,7 +70,7 @@
             </div>
 
             <div class="form-group">
-                <label for="notfinalized" class=" control-label">
+                <label for="notfinalized" class=" form-label">
                     <?php eT("Import as not finalized answers?"); ?>
                 </label>
                 <div class="">
@@ -85,7 +85,7 @@
             </div>
 
             <div class="form-group">
-                <label for="vvcharset" class=" control-label">
+                <label for="vvcharset" class=" form-label">
                     <?php eT("Character set of the file:"); ?>
                 </label>
                 <div class="">
@@ -94,7 +94,7 @@
             </div>
 
             <div class="form-group">
-                <label for="dontdeletefirstline" class=" control-label" title='<?php eT("With real vv file : questions code are in second line"); ?>' data-toggle="tooltip" data-placement="right">
+                <label for="dontdeletefirstline" class=" form-label" title='<?php eT("With real vv file : questions code are in second line"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("First line contains the code of questions:"); ?>
                 </label>
                 <div class="">
@@ -109,7 +109,7 @@
             </div>
 
             <div class="form-group">
-                <label for="forceimport" class=" control-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-toggle="tooltip" data-placement="right">
+                <label for="forceimport" class=" form-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("Force import:"); ?>
                 </label>
                 <div class="">
@@ -128,7 +128,7 @@
     </div>
 
         <p>
-            <input type='submit' class="hidden" value='<?php eT("Import"); ?>' />
+            <input type='submit' class="d-none" value='<?php eT("Import"); ?>' />
             <input type='hidden' name='action' value='vvimport' />
             <input type='hidden' name='subaction' value='upload' />
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />

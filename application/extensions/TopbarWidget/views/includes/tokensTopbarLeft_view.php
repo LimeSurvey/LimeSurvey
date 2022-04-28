@@ -10,7 +10,7 @@
 <?php if ($hasTokensCreatePermission || $hasTokensImportPermission): ?>
     <!-- Create tokens -->
     <div class="btn-group">
-    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="icon-add text-success"></span>
         <?php eT("Create...");?> <span class="caret"></span>
     </button>
@@ -19,7 +19,7 @@
     <ul class="dropdown-menu">
     <?php if ($hasTokensCreatePermission): ?>
     <li>
-        <a class="pjax" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/addnew/surveyid/$oSurvey->sid"); ?>" >
+        <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/addnew/surveyid/$oSurvey->sid"); ?>" >
             <span class="icon-add"></span>
             <?php eT("Add participant"); ?>
         </a>
@@ -27,7 +27,7 @@
 
     <!-- Create dummy tokens -->
     <li>
-        <a class="pjax"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/adddummies/surveyid/$oSurvey->sid"); ?>" >
+        <a class="pjax dropdown-item"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/adddummies/surveyid/$oSurvey->sid"); ?>" >
             <span class="fa fa-plus-square"></span>
             <?php eT("Create dummy participants"); ?>
         </a>
@@ -40,12 +40,12 @@
     <?php if ($hasTokensImportPermission): ?>
         
         <li>
-            <small><?php eT("Import participants from:"); ?></small>
+            <h6 class="dropdown-header"><?php eT("Import participants from:"); ?></h6>
         </li>
 
         <!-- from CSV file -->
         <li>
-            <a class="pjax"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/import/surveyid/$oSurvey->sid") ?>" >
+            <a class="pjax dropdown-item"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/import/surveyid/$oSurvey->sid") ?>" >
                 <span class="icon-importcsv"></span>
                 <?php eT("CSV file"); ?>
             </a>
@@ -53,7 +53,7 @@
 
         <!-- from LDAP query -->
         <li>
-            <a class="pjax"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/importldap/surveyid/$oSurvey->sid") ?>" >
+            <a class="pjax dropdown-item"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/importldap/surveyid/$oSurvey->sid") ?>" >
                 <span class="icon-importldap"></span>
                 <?php eT("LDAP query"); ?>
             </a>
@@ -81,7 +81,7 @@
 <!-- EMAILS -->
 <?php if ($hasTokensUpdatePermission):?>
     <div class="btn-group">
-        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-emailtemplates text-success"></span>
             <?php eT("Invitations & reminders");?> <span class="caret"></span>
         </button>
@@ -91,7 +91,7 @@
 
             <!-- Send email invitation -->
             <li>
-                <a class="pjax" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/email/surveyid/$oSurvey->sid"); ?>" >
+                <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/email/surveyid/$oSurvey->sid"); ?>" >
                     <span class="icon-invite"></span>
                     <?php eT("Send email invitation"); ?>
                 </a>
@@ -99,7 +99,7 @@
 
             <!-- Send email reminder -->
             <li>
-                <a class="pjax" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/email/action/remind/surveyid/$oSurvey->sid"); ?>" >
+                <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/email/action/remind/surveyid/$oSurvey->sid"); ?>" >
                     <span class="icon-remind"></span>
                     <?php eT("Send email reminder"); ?>
                 </a>
@@ -108,7 +108,7 @@
             <!-- Edit email template -->
             <!-- Send email invitation -->
             <li>
-                <a class="pjax" href="<?php echo Yii::App()->createUrl("admin/emailtemplates/sa/index/surveyid/$oSurvey->sid"); ?>" >
+                <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/emailtemplates/sa/index/surveyid/$oSurvey->sid"); ?>" >
                     <span class="fa fa-envelope-o"></span>
                     <?php eT("Edit email templates"); ?>
                 </a>
@@ -122,7 +122,7 @@
                 <?php if($oSurvey->bounceprocessing != 'N' ||  ($oSurvey->bounceprocessing == 'G' && App()->getConfig('bounceaccounttype') != 'off')):?>
                     <?php if (function_exists('imap_open')):?>
                         <li>
-                            <a href="#" id="startbounceprocessing" data-url="<?php echo Yii::App()->createUrl("admin/tokens/sa/bounceprocessing/surveyid/$oSurvey->sid"); ?>" >
+                            <a class="dropdown-item" href="#" id="startbounceprocessing" data-url="<?php echo Yii::App()->createUrl("admin/tokens/sa/bounceprocessing/surveyid/$oSurvey->sid"); ?>" >
                                 <span class="ui-bounceprocessing"></span>
                                 <?php eT("Start bounce processing"); ?>
                             </a>
@@ -139,7 +139,7 @@
 
             <?php if (isset($eMessage)):?>
                 <li class="disabled">
-                    <a  href="#" class="disabled" data-toggle="tooltip" data-placement="bottom" title='<?php echo $eMessage; ?>'>
+                    <a  class="dropdown-item" href="#" class="disabled" data-bs-toggle="tooltip" data-bs-placement="bottom" title='<?php echo $eMessage; ?>'>
                         <span class="ui-bounceprocessing"></span>
                         <?php eT("Start bounce processing"); ?>
                     </a>
@@ -148,7 +148,7 @@
 
             <!-- Bounce settings -->
             <li>
-                <a href="<?php echo Yii::App()->createUrl("admin/tokens/sa/bouncesettings/surveyid/$oSurvey->sid"); ?>" >
+                <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/bouncesettings/surveyid/$oSurvey->sid"); ?>" >
                     <span class="icon-settings"></span>
                     <?php eT("Bounce settings"); ?>
                 </a>

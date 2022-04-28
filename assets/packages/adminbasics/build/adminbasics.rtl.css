@@ -78,6 +78,17 @@ a {
   text-decoration: none;
 }
 
+/*
+ * btn-xs was removed from Bootstrap 4.
+ * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
+ */
+.btn-group-xs > .btn, .btn-xs {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
 #ls-loading {
   width: 100%;
   height: 100%;
@@ -367,7 +378,6 @@ html {
 }
 
 .surveymanagerbar {
-  margin-top: -20px;
   padding-top: 5px;
 }
 
@@ -385,7 +395,6 @@ html {
   width: 100%;
   padding: 13px 0 8px;
   margin: 0 auto 15px;
-  z-index: 100;
   box-shadow: -3px 3px 3px #35363f;
 }
 
@@ -661,35 +670,11 @@ html {
   animation: fadein 1s;
 }
 
-.welcome .panel {
-  position: relative;
-  top: 50px;
-  opacity: 0;
-}
-
-.welcome .panel-body {
-  text-align: center;
-}
-
-.welcome .panel-body img {
-  height: 4em;
-  margin-bottom: 1em;
-}
-
-.welcome .login-panel .panel-body img {
-  margin-bottom: 0;
-}
-
 .alert {
   position: relative;
   animation: slidefromtop 1s;
 }
 
-@media screen and (min-width: 1280px) and (max-width: 1440px) {
-  .welcome .panel {
-    min-height: 188px;
-  }
-}
 #welcomeModal {
   z-index: 20000;
 }
@@ -724,6 +709,25 @@ html {
     min-height: 0;
   }
 }
+.welcome .card {
+  position: relative;
+  top: 50px;
+  opacity: 0;
+}
+
+.welcome .card-body {
+  text-align: center;
+}
+
+.welcome .card-body img {
+  height: 4em;
+  margin-bottom: 1em;
+}
+
+.welcome .login-card .card-body img {
+  margin-bottom: 0;
+}
+
 .login-panel {
   margin-top: 40px;
 }
@@ -805,21 +809,21 @@ html {
   font-size: 9px;
 }
 
-.survey-action .panel-body img {
+.survey-action .card-body img {
   height: 3em;
 }
 
-div.panel.disabled {
+div.card.disabled {
   opacity: 0.5;
   border: none;
 }
 
-div.panel.disabled * {
+div.card.disabled * {
   opacity: 0.5;
   border: none;
 }
 
-div.panel.disabled a {
+div.card.disabled a {
   cursor: default;
 }
 
@@ -827,7 +831,7 @@ div.panel.disabled a {
   padding: 1em;
 }
 
-.panel-clickable:hover {
+.card-clickable:hover {
   cursor: pointer;
   cursor: hand;
 }
@@ -939,20 +943,20 @@ div.panel.disabled a {
   float: left;
 }
 
-.side-menu #dropdown .panel-body {
+.side-menu #dropdown .card-body {
   padding: 0;
 }
 
-.side-menu #dropdown .panel-body .navbar-nav {
+.side-menu #dropdown .card-body .navbar-nav {
   width: 100%;
 }
 
-.side-menu #dropdown .panel-body .navbar-nav li {
+.side-menu #dropdown .card-body .navbar-nav li {
   padding-right: 15px;
   border: none;
 }
 
-.side-menu #dropdown .panel-body .navbar-nav li.panel {
+.side-menu #dropdown .card-body .navbar-nav li.card {
   margin-bottom: 0;
   background-color: transparent;
   border: none;
@@ -960,20 +964,20 @@ div.panel.disabled a {
   box-shadow: none;
 }
 
-.side-menu #dropdown .panel-body .navbar-nav li.panel-default {
+.side-menu #dropdown .card-body .navbar-nav li.card-default {
   padding-right: 15px;
   border: none;
 }
 
-.side-menu #dropdown .panel-body .navbar-nav li:last-child {
+.side-menu #dropdown .card-body .navbar-nav li:last-child {
   border-bottom: none;
 }
 
-.side-menu #dropdown .panel-body .panel-body {
+.side-menu #dropdown .card-body .card-body {
   margin-right: -15px;
 }
 
-.side-menu #dropdown .panel-body .panel > a {
+.side-menu #dropdown .card-body .card > a {
   margin-right: -20px;
   padding-right: 35px;
 }
@@ -1002,11 +1006,11 @@ div.panel.disabled a {
   z-index: 1000;
 }
 
-.side-menu #search .panel-body {
+.side-menu #search .card-body {
   padding: 0;
 }
 
-.side-menu #search .panel-body .navbar-form {
+.side-menu #search .card-body .navbar-form {
   padding: 0;
   padding-left: 50px;
   width: 100%;
@@ -1014,12 +1018,12 @@ div.panel.disabled a {
   position: relative;
 }
 
-.side-menu #search .panel-body .navbar-form .form-group {
+.side-menu #search .card-body .navbar-form .form-group {
   width: 100%;
   position: relative;
 }
 
-.side-menu #search .panel-body .navbar-form input {
+.side-menu #search .card-body .navbar-form input {
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -1027,7 +1031,7 @@ div.panel.disabled a {
   height: 50px;
 }
 
-.side-menu #search .panel-body .navbar-form .btn {
+.side-menu #search .card-body .navbar-form .btn {
   position: absolute;
   left: 0;
   top: 0;
@@ -1357,15 +1361,15 @@ div.panel.disabled a {
     transform-style: preserve-3d;
   }
 
-  #search .panel-body .navbar-form {
+  #search .card-body .navbar-form {
     border-bottom: 0;
   }
 
-  #search .panel-body .navbar-form .form-group {
+  #search .card-body .navbar-form .form-group {
     margin: 0;
   }
 
-  #dropdown .panel-body .navbar-nav {
+  #dropdown .card-body .navbar-nav {
     margin: 0;
   }
 }
@@ -1686,56 +1690,12 @@ input[type=radio]:focus,
   outline: none;
 }
 
-input[type=radio]:before,
-.radio input[type=radio]:before,
-.radio-inline input[type=radio]:before,
-input[type=radio]:after,
-.radio input[type=radio]:after,
-.radio-inline input[type=radio]:after {
-  content: "";
-  display: block;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  -webkit-transition: 240ms;
-  -o-transition: 240ms;
-  transition: 240ms;
-}
-
-input[type=radio]:before,
-.radio input[type=radio]:before,
-.radio-inline input[type=radio]:before {
-  position: absolute;
-  right: 0;
-  top: -3px;
-  background-color: #2196f3;
-  -webkit-transform: scale(0);
-  -ms-transform: scale(0);
-  -o-transform: scale(0);
-  transform: scale(0);
-}
-
 input[type=radio]:after,
 .radio input[type=radio]:after,
 .radio-inline input[type=radio]:after {
   position: relative;
   top: -3px;
   border: 2px solid #666666;
-}
-
-input[type=radio]:checked:before,
-.radio input[type=radio]:checked:before,
-.radio-inline input[type=radio]:checked:before {
-  -webkit-transform: scale(0.5);
-  -ms-transform: scale(0.5);
-  -o-transform: scale(0.5);
-  transform: scale(0.5);
-}
-
-input[type=radio]:disabled:checked:before,
-.radio input[type=radio]:disabled:checked:before,
-.radio-inline input[type=radio]:disabled:checked:before {
-  background-color: #bbbbbb;
 }
 
 input[type=radio]:checked:after,
@@ -2103,7 +2063,7 @@ h3 .glyphicon-chevron-right {
   left: -20px;
 }
 
-#carousel-example-generic .panel-title {
+#carousel-example-generic .card-title {
   text-align: center;
   padding-top: 0px;
 }
@@ -2349,7 +2309,7 @@ span[data-tooltip] {
   margin-right: 3px;
 }
 
-#statisticsview .panel {
+#statisticsview .card {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
@@ -2623,7 +2583,7 @@ div#gview_displayresponses th#displayresponses_cb {
 }
 
 /* Needed for DateTimePicker in survey settings */
-.panel-group .panel {
+.card-group .card {
   overflow: visible;
 }
 
@@ -2988,46 +2948,6 @@ table#responsedetail tr td {
   margin-bottom: 30px;
 }
 
-.welcome .panel {
-  height: 110%;
-}
-
-.welcome .panel-body {
-  padding: 0px;
-}
-
-.welcome .panel-heading {
-  height: 25%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.welcome .panel-title {
-  font-weight: 500;
-}
-
-.welcome .panel-body {
-  height: 75%;
-  width: 100%;
-}
-
-.welcome .panel-body .panel-body-ico,
-.welcome .panel-body .panel-body-link {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.welcome .panel-body .panel-body-ico {
-  height: 70%;
-}
-
-.welcome .panel-body .panel-body-link {
-  height: 30%;
-}
-
 input[type=file].form-control {
   border: none;
   padding-right: 0px;
@@ -3169,12 +3089,12 @@ body.onStatistics .ls-flex .col-11 {
   max-width: 100%;
 }
 
-#accordion-container .panel-heading > a {
+#accordion-container .card-header > a {
   width: 100%;
   display: block;
 }
 
-#accordion_questionTypeSelector .panel-title > a {
+#accordion_questionTypeSelector .card-title > a {
   width: 100%;
   display: block;
 }
@@ -4431,6 +4351,86 @@ html[dir=rtl] th {
   text-align: initial;
 }
 
+#selectable .ui-selecting {
+  background: #8CCE00;
+}
+
+#selectable .ui-selected {
+  background: #C1DD7F;
+  color: #000000;
+}
+
+#selectable {
+  list-style-type: none;
+  margin: 2px;
+  padding: 0;
+  width: 90%;
+}
+
+#selectable li {
+  padding: 1em;
+  font-size: 1em;
+  height: 9px;
+  text-align: center;
+  margin: 4px;
+}
+
+.ui-icon.exporticon {
+  background-image: url("images/export.gif");
+}
+
+#feedback {
+  font-size: 1.4em;
+}
+
+#selectableadd .ui-selecting {
+  background: #0066CC;
+}
+
+#selectableadd .ui-selected {
+  background: #0066CC;
+  color: white;
+}
+
+#selectableadd {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 90%;
+  text-align: center;
+}
+
+#selectableadd li {
+  margin: 3px;
+  padding: 0.4em;
+  font-size: 1 em;
+  height: 18px;
+  text-align: center;
+}
+
+.popupgroup {
+  border: 1px solid #DAE5F4;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 8px;
+}
+
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+.responses-column-filter-modal-checkbox-buttons {
+  text-align: right;
+  padding-bottom: 15px;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -4546,207 +4546,6 @@ html[dir=rtl] th {
 
 .item.inactive {
   display: none;
-}
-
-.draggable-container {
-  min-height: 300px;
-}
-
-#newcreated,
-#tokenattribute,
-#csvattribute,
-#centralattribute {
-  margin-right: 0.75%;
-  margin-left: 0.75%;
-  margin-bottom: 20px;
-}
-
-#tokenattribute {
-  margin-right: 1.5%;
-}
-
-#centralattribute {
-  margin-left: 1.5%;
-}
-
-#centralattribute .centralatt {
-  padding-bottom: 15px;
-}
-
-#newcreated .attribute-item input {
-  display: block;
-  margin: 2px auto;
-  width: 80%;
-}
-
-#centralattribute div.centralatt div.token-attribute {
-  margin-top: -5px;
-  min-height: 20px;
-}
-
-#newcreated,
-#tokenattribute {
-  height: 100%;
-}
-
-.heading {
-  height: auto;
-  padding-top: 7px;
-  font-weight: bold;
-}
-
-div.mappable-attribute-wrapper {
-  width: 80%;
-  margin: 6px auto;
-  padding: 6px;
-}
-
-div.attribute-item, .already-mapped-attribute {
-  width: 80%;
-  margin: 6px auto;
-  padding: 4px;
-  text-align: center;
-}
-
-#centralattribute .explanation {
-  width: 90%;
-  margin: 0 auto;
-  text-align: right;
-}
-
-#centralattribute .explanation-row {
-  display: table-row;
-}
-
-#centralattribute .explanation input,
-#centralattribute .explanation label {
-  display: table-cell;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#centralattribute .explanation label {
-  padding-right: 8px;
-}
-
-.attribute-item.draggable {
-  cursor: move;
-}
-
-div.mappable-attribute-wrapper.target-hover {
-  padding-bottom: 27px;
-}
-
-div.mappable-attribute-wrapper.paired.target-hover {
-  padding-bottom: 4px;
-}
-
-div.mappable-attribute-wrapper.paired.ui-state-disabled {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-
-.draggable-container .attribute-column .ui-draggable-dragging {
-  z-index: 100;
-}
-
-/* Existing attribute column in CSV CPDB import */
-.centralatt {
-  min-height: 100px;
-}
-
-#selectable .ui-selecting {
-  background: #8CCE00;
-}
-
-#selectable .ui-selected {
-  background: #C1DD7F;
-  color: #000000;
-}
-
-#selectable {
-  list-style-type: none;
-  margin: 2px;
-  padding: 0;
-  width: 90%;
-}
-
-#selectable li {
-  padding: 1em;
-  font-size: 1em;
-  height: 9px;
-  text-align: center;
-  margin: 4px;
-}
-
-.ui-icon.exporticon {
-  background-image: url("images/export.gif");
-}
-
-#feedback {
-  font-size: 1.4em;
-}
-
-#selectableadd .ui-selecting {
-  background: #0066CC;
-}
-
-#selectableadd .ui-selected {
-  background: #0066CC;
-  color: white;
-}
-
-#selectableadd {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 90%;
-  text-align: center;
-}
-
-#selectableadd li {
-  margin: 3px;
-  padding: 0.4em;
-  font-size: 1 em;
-  height: 18px;
-  text-align: center;
-}
-
-.popupgroup {
-  border: 1px solid #DAE5F4;
-  padding: 10px;
-  border-radius: 3px;
-  margin: 8px;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: right;
-  padding-bottom: 15px;
-}
-
-.translate > table {
-  table-layout: fixed;
-}
-
-.translate td._from_ > .question-text-from {
-  width: 100%;
-  overflow: auto;
-  word-wrap: break-word;
-}
-
-#cpdbatt {
-  min-height: 100px;
 }
 
 .grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {
@@ -4877,4 +4676,125 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   margin: 0;
   border: none;
   display: inline-block;
+}
+
+.draggable-container {
+  min-height: 300px;
+}
+
+#newcreated,
+#tokenattribute,
+#csvattribute,
+#centralattribute {
+  margin-right: 0.75%;
+  margin-left: 0.75%;
+  margin-bottom: 20px;
+}
+
+#tokenattribute {
+  margin-right: 1.5%;
+}
+
+#centralattribute {
+  margin-left: 1.5%;
+}
+
+#centralattribute .centralatt {
+  padding-bottom: 15px;
+}
+
+#newcreated .attribute-item input {
+  display: block;
+  margin: 2px auto;
+  width: 80%;
+}
+
+#centralattribute div.centralatt div.token-attribute {
+  margin-top: -5px;
+  min-height: 20px;
+}
+
+#newcreated,
+#tokenattribute {
+  height: 100%;
+}
+
+.heading {
+  height: auto;
+  padding-top: 7px;
+  font-weight: bold;
+}
+
+div.mappable-attribute-wrapper {
+  width: 80%;
+  margin: 6px auto;
+  padding: 6px;
+}
+
+div.attribute-item, .already-mapped-attribute {
+  width: 80%;
+  margin: 6px auto;
+  padding: 4px;
+  text-align: center;
+}
+
+#centralattribute .explanation {
+  width: 90%;
+  margin: 0 auto;
+  text-align: right;
+}
+
+#centralattribute .explanation-row {
+  display: table-row;
+}
+
+#centralattribute .explanation input,
+#centralattribute .explanation label {
+  display: table-cell;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#centralattribute .explanation label {
+  padding-right: 8px;
+}
+
+.attribute-item.draggable {
+  cursor: move;
+}
+
+div.mappable-attribute-wrapper.target-hover {
+  padding-bottom: 27px;
+}
+
+div.mappable-attribute-wrapper.paired.target-hover {
+  padding-bottom: 4px;
+}
+
+div.mappable-attribute-wrapper.paired.ui-state-disabled {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.draggable-container .attribute-column .ui-draggable-dragging {
+  z-index: 100;
+}
+
+/* Existing attribute column in CSV CPDB import */
+.centralatt {
+  min-height: 100px;
+}
+
+.translate > table {
+  table-layout: fixed;
+}
+
+.translate td._from_ > .question-text-from {
+  width: 100%;
+  overflow: auto;
+  word-wrap: break-word;
+}
+
+#cpdbatt {
+  min-height: 100px;
 }

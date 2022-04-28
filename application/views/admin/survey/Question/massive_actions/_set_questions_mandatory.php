@@ -10,7 +10,7 @@ $surveyid = App()->request->getParam('surveyid', 0);
 ?>
 <form class="custom-modal-datas form-horizontal">
     <div id='MandatorySelection' class="form-group">
-        <label class="col-sm-4 control-label"><?php eT("Mandatory:"); ?></label>
+        <label class="col-sm-4 form-label"><?php eT("Mandatory:"); ?></label>
         <div class="col-sm-8">
         <?php
             $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(

@@ -10,7 +10,7 @@
 <div class="menubar surveybar" id="fullpagebar">
     <div class="row">
         <!-- Left actions -->
-        <div class="col-md-6 text-left">
+        <div class="col-md-6 text-start">
 
             <!-- Themes -->
             <?php if (isset($fullpagebar['themes'])) : ?>
@@ -21,14 +21,14 @@
                         class="btn btn-outline-secondary"
                         href=""
                         role="button"
-                        data-toggle="modal"
-                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>">
+                       data-bs-toggle="modal"
+                       data-bs-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
                         <span class="icon-import text-success"></span>
                         <?php eT("Upload & install"); ?>
                     </button>
                 <?php elseif (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && !$fullpagebar['themes']['canImport'] && isset($fullpagebar['themes']['importErrorMessage'])) : ?>
                     <!-- import disabled -->
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $fullpagebar['themes']['importErrorMessage']['importErrorMessage']; ?>" style="display: inline-block">
+                    <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $fullpagebar['themes']['importErrorMessage']['importErrorMessage']; ?>" style="display: inline-block">
                     <button 
                         type="button" 
                         class="btn btn-outline-secondary btntooltip" 
@@ -84,7 +84,7 @@
         </div>
 
         <!-- Right actions -->
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 text-end">
 
             <!-- Close -->
             <?php if (isset($fullpagebar['closebutton']['url'])) :?>

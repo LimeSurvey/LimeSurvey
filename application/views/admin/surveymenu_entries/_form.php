@@ -54,14 +54,14 @@ Yii::app()->getController()->renderPartial(
 
 		<div class="form-group">
 			<?php echo $form->labelEx($model, 'menu_description'); ?>
-			<p class="selector_infoBox alert alert-info hidden"><?=gT('This will be shown when hovering over the menu.')?></p>
+			<p class="selector_infoBox alert alert-info d-none"><?=gT('This will be shown when hovering over the menu.')?></p>
 			<?php echo $form->textArea($model, 'menu_description', array('class' => 'selector__hasInfoBox', 'rows'=>6, 'cols'=>50)); ?>
 			<?php echo $form->error($model, 'menu_description'); ?>
 		</div>
 
 		<div class="form-group">
 			<?php echo $form->labelEx($model, 'menu_icon'); ?>
-			<p class="selector_infoBox alert alert-info hidden"><?=gT('Use a fontawesome classname, or a link to the image.')?></p>
+			<p class="selector_infoBox alert alert-info d-none"><?=gT('Use a fontawesome classname, or a link to the image.')?></p>
 			<?php echo $form->textField($model, 'menu_icon', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 			<?php echo $form->error($model, 'menu_icon'); ?>
 		</div>
@@ -74,7 +74,7 @@ Yii::app()->getController()->renderPartial(
 
 		<div class="form-group">
 			<?php echo $form->labelEx($model, 'menu_link'); ?>
-			<p class="selector_infoBox alert alert-warning hidden"><?=gT('If the external-option is not set, this will be appended to the current admin url.')?></p>
+			<p class="selector_infoBox alert alert-warning d-none"><?=gT('If the external-option is not set, this will be appended to the current admin url.')?></p>
 			<?php echo $form->textField($model, 'menu_link', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 			<?php echo $form->error($model, 'menu_link'); ?>
 		</div>
@@ -94,7 +94,7 @@ Yii::app()->getController()->renderPartial(
 		<div class="form-group">
 			<div class="list-group">
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right">
+					<div class="col-sm-1 text-end">
 						<input 
 							type="checkbox" 
 							data-value="1" 
@@ -102,12 +102,12 @@ Yii::app()->getController()->renderPartial(
 							data-priority="6" 
 							data-option='["render","link","placeholder"]' />
 					</div>
-					<div class="col-sm-10 text-left">
+					<div class="col-sm-10 text-start">
 						<?=gT("Remove link")?>
 					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right">
+					<div class="col-sm-1 text-end">
 						<input 
 							type="checkbox" 
 							data-value="1" 
@@ -115,12 +115,12 @@ Yii::app()->getController()->renderPartial(
 							data-priority="5" 
 							data-option='["render","link","external"]' />
 					</div>
-					<div class="col-sm-10 text-left">
+					<div class="col-sm-10 text-start">
 						<?=gT("External Link")?>
 					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right">
+					<div class="col-sm-1 text-end">
 						<input 
 							type="checkbox" 
 							data-value="1" 
@@ -129,12 +129,12 @@ Yii::app()->getController()->renderPartial(
 							data-priority="4" 
 							data-option='["render","link","pjax"]' />
 					</div>
-					<div class="col-sm-10 text-left">
+					<div class="col-sm-10 text-start">
 						<?=gT("Load with pjax")?>
 					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right">
+					<div class="col-sm-1 text-end">
 						<input 
 							type="checkbox" 
 							data-value='["survey", "sid"]' 
@@ -142,12 +142,12 @@ Yii::app()->getController()->renderPartial(
 							data-priority="3" 
 							data-option='["render","link","data","surveyid"]' />
 					</div>
-					<div class="col-sm-10 text-left">
+					<div class="col-sm-10 text-start">
 						<?=gT("Add SurveyId to link")?>
 					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right">
+					<div class="col-sm-1 text-end">
 						<input 
 							type="checkbox" 
 							data-value='["survey", "gsid"]' 
@@ -155,12 +155,12 @@ Yii::app()->getController()->renderPartial(
 							data-priority="3" 
 							data-option='["render","link","data","gsid"]' />
 					</div>
-					<div class="col-sm-10 text-left">
+					<div class="col-sm-10 text-start">
 						<?=gT("Add survey group ID to link")?>
 					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right">
+					<div class="col-sm-1 text-end">
 						<input 
 							type="checkbox"
 							data-value='["questiongroup", "gid"]' 
@@ -168,12 +168,12 @@ Yii::app()->getController()->renderPartial(
 							data-priority="2" 
 							data-option='["render","link","data","gid"]' />
 					</div>
-					<div class="col-sm-10 text-left">
+					<div class="col-sm-10 text-start">
 						<?=gT("Add question group ID to link")?>
 					</div>
 				</label>
 				<label class="list-group-item col-sm-6">
-					<div class="col-sm-1 text-right">
+					<div class="col-sm-1 text-end">
 						<input 
 							type="checkbox" 
 							data-value='["question", "qid"]' 
@@ -181,7 +181,7 @@ Yii::app()->getController()->renderPartial(
 							data-priority="1" 
 							data-option='["render","link","data","qid"]' />
 					</div>
-					<div class="col-sm-10 text-left">
+					<div class="col-sm-10 text-start">
 						<?=gT("Add question ID to link")?>
 					</div>
 				</label>
@@ -192,8 +192,8 @@ Yii::app()->getController()->renderPartial(
 				type="button"
 				class="btn btn-warning pull-right" 
 				type="button" 
-				data-toggle="collapse" 
-				data-target="#collapseAdvancedOptions">
+				data-bs-toggle="collapse" 
+				data-bs-target="#collapseAdvancedOptions">
 				<?php eT('Toggle advanced options') ?>
 			</button>
 		</div>
@@ -208,7 +208,7 @@ Yii::app()->getController()->renderPartial(
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'name'); ?>
-				<p class="selector_infoBox alert alert-info hidden">
+				<p class="selector_infoBox alert alert-info d-none">
 					<?=gT('The name must be unique for all menu entries throughout the software.')?>
 				</p>
 				<?php echo $form->textField($model, 'name', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
@@ -217,7 +217,7 @@ Yii::app()->getController()->renderPartial(
 			
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'menu_title'); ?>
-				<p class="selector_infoBox alert alert-info hidden">
+				<p class="selector_infoBox alert alert-info d-none">
 					<?=gT('This is the content of the menu link - leave blank to use the title.')?>
 				</p>
 				<?php echo $form->textField($model, 'menu_title', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
@@ -226,7 +226,7 @@ Yii::app()->getController()->renderPartial(
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'menu_class'); ?>
-				<p class="selector_infoBox alert alert-warning hidden">
+				<p class="selector_infoBox alert alert-warning d-none">
 					<?=gT('If the link should have any extra classes, please insert them here.')?>
 				</p>
 				<?php echo $form->textField($model, 'menu_class', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
@@ -293,7 +293,7 @@ Yii::app()->getController()->renderPartial(
         <button 
 			type="button" 
 			class="btn btn-cancel" 
-			data-dismiss="modal">
+			data-bs-dismiss="modal">
 			<?=gT('Cancel')?>
 		</button>
 		<?php echo TbHtml::submitButton(($model->isNewRecord ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>

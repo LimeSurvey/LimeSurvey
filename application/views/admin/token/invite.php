@@ -28,7 +28,7 @@
                         <div class="col-sm-4">
                             <?php if (count($tokenids)>0): ?>
                                 <div class='form-group'>
-                                    <label class='control-label '><?php eT("Send invitation email to participant ID(s):"); ?></label>
+                                    <label class='form-label '><?php eT("Send invitation email to participant ID(s):"); ?></label>
                                     <div class=''>
                                         <?php echo short_implode(", ", "-", (array) $tokenids); ?>
                                     </div>
@@ -40,7 +40,7 @@
                         <div class="col-sm-4">
                             <div class='form-group'>
 
-                                <label class='control-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
+                                <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
                                 <div class=''>
                                     <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -62,7 +62,7 @@
                                     array(
                                         'title'=>gt("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
                                         'unescaped' => 'unescaped', 
-                                        'class' => 'control-label ')
+                                        'class' => 'form-label ')
                                     ); ?>
                                 <div class=''>
                                 <?php
@@ -112,14 +112,14 @@
                             <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c){$c=false;echo 'show active';}?>">
 
                                 <div class='form-group'>
-                                    <label class='control-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
+                                    <label class='form-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
                                     <div class=''>
                                         <?php echo CHtml::textField("from_{$language}",$admin_name." <".$admin_email.">",array('class' => 'form-control')); ?>
                                     </div>
                                 </div>
 
                                 <div class='form-group'>
-                                    <label class='control-label ' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
+                                    <label class='form-label ' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
                                     <div class=''>
                                         <?php echo CHtml::textField("subject_{$language}",$subject,array('class' => 'form-control')); ?>
                                     </div>
@@ -127,7 +127,7 @@
 
                                 <div class='form-group'>
 
-                                    <label class='control-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
+                                    <label class='form-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                     <div class=''>
                                         <div class="htmleditor">
                                             <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>

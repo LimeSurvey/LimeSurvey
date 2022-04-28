@@ -44,8 +44,6 @@ define('LEM_DEBUG_VALIDATION_SUMMARY', 2);   // also includes  SQL error message
 define('LEM_DEBUG_VALIDATION_DETAIL', 4);
 define('LEM_PRETTY_PRINT_ALL_SYNTAX', 32);
 
-define('LEM_DEFAULT_PRECISION', 12);
-
 class LimeExpressionManager
 {
     /**
@@ -1692,7 +1690,7 @@ class LimeExpressionManager
                             $validationEqn[$questionNum] = [];
                         }
                         // sumEqn and sumRemainingEqn may need to be rounded if using sliders
-                        $precision = LEM_DEFAULT_PRECISION;    // default is not to round
+                        $precision = null;    // default is not to round
                         if (isset($qattr['slider_layout']) && $qattr['slider_layout'] == '1') {
                             $precision = 0;   // default is to round to whole numbers
                             if (isset($qattr['slider_accuracy']) && trim($qattr['slider_accuracy']) != '') {
@@ -1704,7 +1702,7 @@ class LimeExpressionManager
                             }
                         }
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                        $sumRemainingEqn = '(' . $equals_num_value . ' - sum(' . implode(', ', $sq_names) . '))';
+                        $sumRemainingEqn = 'sum(' . $equals_num_value . ', sum(' . implode(', ', $sq_names) . ') * -1)';
                         $mainEqn = 'sum(' . implode(', ', $sq_names) . ')';
 
                         if (!is_null($precision)) {
@@ -2193,11 +2191,6 @@ class LimeExpressionManager
                         }
 
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                        $precision = LEM_DEFAULT_PRECISION;
-                        if (!is_null($precision)) {
-                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
-                        }
-
                         $noanswer_option = '';
                         if ($value_range_allows_missing) {
                             $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
@@ -2247,10 +2240,6 @@ class LimeExpressionManager
                         }
 
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                        $precision = LEM_DEFAULT_PRECISION;
-                        if (!is_null($precision)) {
-                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
-                        }
 
                         $noanswer_option = '';
                         if ($value_range_allows_missing) {
@@ -4765,7 +4754,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) { // Did we need it ?
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -4980,7 +4968,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -5481,7 +5468,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq, $force);
@@ -6744,34 +6730,6 @@ class LimeExpressionManager
     }
 
     /**
-     * Init groupRelevanceInfo with qid as 0 for expression not related to question
-     * see issue #17966
-     * @return void
-     */
-    private static function InitGroupRelevanceInfo()
-    {
-        $LEM =& LimeExpressionManager::singleton();
-        if (is_null($LEM->currentGroupSeq)) {
-            return;
-        }
-        $LEM->groupRelevanceInfo = [
-            [
-                'qid' => 0,
-                'gseq' => $LEM->currentGroupSeq,
-                'eqn' => '',
-                'result' => true,
-                'numJsVars' => 0,
-                'relevancejs' => '',
-                'relevanceVars' => '',
-                'jsResultVar' => '',
-                'type' => '',
-                'hidden' => false,
-                'hasErrors' => false,
-            ]
-        ];
-    }
-
-    /**
      * This should be called each time a new group is started, whether on same or different pages. Sets/Clears needed internal parameters.
      * @param int|null $gseq - the group sequence
      * @param boolean|null $anonymized - whether anonymized
@@ -6790,7 +6748,6 @@ class LimeExpressionManager
         $LEM->groupRelevanceInfo = [];
         if (!is_null($gseq)) {
             $LEM->currentGroupSeq = $gseq;
-            self::InitGroupRelevanceInfo();
             if (!is_null($surveyid)) {
                 $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized);
                 if ($gseq > $LEM->maxGroupSeq) {
@@ -6996,15 +6953,26 @@ class LimeExpressionManager
                     }
                 }
             }
+            $pageRelevanceInfo[] = array(
+                'qid' => 0,
+                'gseq' => $LEM->currentGroupSeq,
+                'eqn' => '',
+                'result' => true,
+                'numJsVars' => 0,
+                'relevancejs' => '',
+                'relevanceVars' => '',
+                'jsResultVar' => '',
+                'type' => '',
+                'hidden' => false,
+                'hasErrors' => false,
+            );
         }
-
         $valEqns = [];
         $relEqns = [];
         $relChangeVars = [];
 
         $dynamicQinG = []; // array of questions, per group, that might affect group-level visibility in all-in-one mode
         $GalwaysRelevant = []; // checks whether a group is always relevant (e.g. has at least one question that is always shown)
-
         if (is_array($pageRelevanceInfo)) {
             foreach ($pageRelevanceInfo as $arg) {
                 if (!$LEM->allOnOnePage && $LEM->currentGroupSeq != $arg['gseq']) {
@@ -7069,10 +7037,8 @@ class LimeExpressionManager
 
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
-
                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
-
-                if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
+                if ($arg['qid'] && ($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
@@ -7347,8 +7313,10 @@ class LimeExpressionManager
                     // Launch updated event after update value to allow equation update propagation
                     $relParts[] = "  $('#" . substr($jsResultVar, 1, -1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('updated');\n";
                 }
-                $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
-                $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                if ($arg['qid']) {
+                    $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
+                    $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                }
 
                 $relParts[] = "}\n";
                 if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
@@ -7363,10 +7331,10 @@ class LimeExpressionManager
                     $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
-                } else {
+                } elseif ($arg['qid']) {
                     // Second time : now if relevance is true: Group is allways visible (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
-                    if (!($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                    if ($arg['qid'] && !($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
                         $GalwaysRelevant[$arg['gseq']] = true;
                     }
                 }
@@ -9126,7 +9094,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if ($bGroupHaveError) {
                     $haveErrors = true;
                     $errClass = 'danger';
-                    $errText = "<br><em class='label label-danger'>" . $LEM->gT("This group has at least 1 error.") . "</em>";
+                    $errText = "<br><em class='badge bg-danger'>" . $LEM->gT("This group has at least 1 error.") . "</em>";
                 }
                 $groupRow = "<tr class='LEMgroup'>"
                     . "<td class='$errClass'>G-$gseq</td>"
@@ -9463,7 +9431,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
             //////
             $errclass = ($errorCount > 0) ? 'danger' : '';
-            $errText = ($errorCount > 0) ? "<br><em class='label label-danger'>" . $LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.", $errorCount) . "</em>" : "";
+            $errText = ($errorCount > 0) ? "<br><em class='badge bg-danger'>" . $LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.", $errorCount) . "</em>" : "";
             /* Construct the warnings */
             $sWarningsText = "";
             if (count($aWarnings) > 0) {

@@ -29,7 +29,7 @@ Yii::app()->getController()->renderPartial(
                 <?=$note?>
             </div>
         </div>
-        <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
+        <div class="row ls-space margin top-5 bottom-5 d-none" id="UserManagement--errors">
         </div>
         <div class="row ls-space margin top-5 bottom-5" >
             <input type="checkbox" name="overwrite" value="overwrite"> <?= eT("Overwrite existing users")?>

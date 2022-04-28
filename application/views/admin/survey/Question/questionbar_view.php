@@ -16,7 +16,7 @@ $aReplacementData=array();
 
                     <!-- test/execute survey -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                         <span class="icon-do" ></span>
                         <?php if($oSurvey->active=='N'):?>
@@ -41,7 +41,7 @@ $aReplacementData=array();
                     <!-- preview group -->
                     <!-- Preview multilangue -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="icon-do"></span>
                         <?php eT("Preview question group"); ?> <span class="caret"></span>
                       </button>
@@ -59,7 +59,7 @@ $aReplacementData=array();
                     <!-- preview question -->
                     <!-- Single button -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="icon-do"></span>
                         <?php eT("Preview question"); ?> <span class="caret"></span>
                       </button>
@@ -118,8 +118,8 @@ $aReplacementData=array();
             <!-- Delete -->
             <?php if( $activated != "Y" && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete' )):?>
                 <button class="btn btn-outline-secondary"
-                   data-toggle="modal"
-                   data-target="#confirmation-modal"
+                   data-bs-toggle="modal"
+                   data-bs-target="#confirmation-modal"
                    data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid])); ?>'
                    data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
                    >
@@ -127,7 +127,7 @@ $aReplacementData=array();
                     <?php eT("Delete"); ?>
                 </button>
             <?php elseif (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete')): ?>
-                <button class="btn btn-outline-secondary btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("It is not possible to add/delete questions if the survey is active."); ?>">
+                <button class="btn btn-outline-secondary btntooltip" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("It is not possible to add/delete questions if the survey is active."); ?>">
                     <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </button>
@@ -151,7 +151,7 @@ $aReplacementData=array();
                         <?php eT("Copy"); ?>
                     </a>
                 <?php else:?>
-                    <a class="btn readonly  btntooltip" href="#" role="button" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't copy a question if the survey is active."); ?>" >
+                    <a class="btn readonly  btntooltip" href="#" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can't copy a question if the survey is active."); ?>" >
                         <span class="icon-copy"></span>
                         <?php eT("Copy"); ?>
                     </a>
@@ -252,7 +252,7 @@ $aReplacementData=array();
             <!-- Organize bar -->
             <div class='col-md-7'>
             </div>
-            <div class='col-md-5 text-right'>
+            <div class='col-md-5 text-end'>
                 <!-- Save buttons -->
                 <button class="btn btn-success" href="#" type="button" id="save-button">
                     <span class="fa fa-floppy-o"></span>

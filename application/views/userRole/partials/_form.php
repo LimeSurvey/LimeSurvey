@@ -25,7 +25,7 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body">
     <div class="container-center">
 
-            <div class="row ls-space margin top-5 bottom-5 hidden" id="RoleControl--errors">
+            <div class="row ls-space margin top-5 bottom-5 d-none" id="RoleControl--errors">
             </div>
             <?php echo $form->hiddenField($model,'ptid'); ?>
 

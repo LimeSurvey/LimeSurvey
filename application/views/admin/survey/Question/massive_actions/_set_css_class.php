@@ -8,7 +8,7 @@
 ?>
 <form class="custom-modal-datas  form-horizontal">
     <div class="form-group" id="CssClass">
-        <label class="col-sm-4 control-label"><?php eT("CSS class(es):"); ?></label>
+        <label class="col-sm-4 form-label"><?php eT("CSS class(es):"); ?></label>
         <div class="col-sm-8">
             <input type="text" class="form-control custom-data attributes-to-update" id="cssclass" name="cssclass" value="">
         </div>

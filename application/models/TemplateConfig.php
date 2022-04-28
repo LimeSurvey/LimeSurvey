@@ -571,9 +571,9 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registerformcaptchainput'] = '  ';
         $aClassAndAttributes['class']['registersuccessblock'] = ' col-sm-12 ';
         $aClassAndAttributes['attr']['registersuccessblock'] = ' ';
-        $aClassAndAttributes['class']['registersuccesslistlabel'] = ' col-sm-4 text-right  ';
+        $aClassAndAttributes['class']['registersuccesslistlabel'] = ' col-sm-4 text-end  ';
         $aClassAndAttributes['attr']['registersuccesslistlabel'] = ' ';
-        $aClassAndAttributes['class']['registersuccesslistcontent'] = ' col-sm-8 text-left ';
+        $aClassAndAttributes['class']['registersuccesslistcontent'] = ' col-sm-8 text-start ';
         $aClassAndAttributes['attr']['registersuccesslistcontent'] = ' ';
         $aClassAndAttributes['attr']['registersuccesslist'] = ' ';
         $aClassAndAttributes['class']['registersuccesslist'] = ' list-group ';
@@ -635,7 +635,7 @@ class TemplateConfig extends CActiveRecord
 //        $aClassAndAttributes['class']['navbarcollapse'] = ' collapse navbar-collapse ';
 //        $aClassAndAttributes['class']['navbarlink']     = ' nav navbar-nav  navbar-action-link ';
 
-//        $aClassAndAttributes['attr']['navbartoggle']    = ' data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
+//        $aClassAndAttributes['attr']['navbartoggle']    = ' data-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
 //        $aClassAndAttributes['attr']['navbar'] = $aClassAndAttributes['attr']['navbarbrand'] = '';
 
         // Language changer
@@ -660,8 +660,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['modalfooterlink']   = ' btn btn-outline-secondary ';
 
         $aClassAndAttributes['attr']['modalheader']       = ' style="min-height:40px;" '; // Todo: move to CSS
-        $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-dismiss="modal" aria-hidden="true" ';
-        $aClassAndAttributes['attr']['modalfooterlink']   = ' href="#" data-dismiss="modal" ';
+        $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-bs-dismiss="modal" aria-hidden="true" ';
+        $aClassAndAttributes['attr']['modalfooterlink']   = ' href="#" data-bs-dismiss="modal" ';
 
         $aClassAndAttributes['attr']['alertmodal'] = $aClassAndAttributes['attr']['modaldialog'] = $aClassAndAttributes['attr']['modalcontent'] = $aClassAndAttributes['attr']['modaltitle'] = $aClassAndAttributes['attr']['modalbody'] = $aClassAndAttributes['attr']['modalfooter'] = '';
 

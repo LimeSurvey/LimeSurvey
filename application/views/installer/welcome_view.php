@@ -11,7 +11,7 @@
                 <div class='form-group'>
                     <div class="span6 col-md-12">
                         <?php
-                            echo CHtml::label(gT('Please select your preferred language:'), 'installerLang', array('class' => 'control-label'));
+                            echo CHtml::label(gT('Please select your preferred language:'), 'installerLang', array('class' => 'form-label'));
                         ?>
                         <br/><br/>
                     </div>

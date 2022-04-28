@@ -189,7 +189,7 @@
         ]
     ));
 ?>
-<div class="btn-group hidden-xs">
+<div class="btn-group ">
     <?=$oExportSelector->getModal(); ?>
 
     <?=$oExportSelector->getButtonOrSelect(); ?>

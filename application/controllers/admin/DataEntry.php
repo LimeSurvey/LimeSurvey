@@ -709,7 +709,7 @@ class DataEntry extends SurveyCommonAction
                                 . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                             } else {
                                 $lresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $fname['qid'], 'language' => $sDataEntryLanguage)));
-                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n"
                                 . "<option value=''";
                                 if ($idrow[$fname['fieldname']] == "") {
                                     $aDataentryoutput .= " selected='selected'";
@@ -768,7 +768,7 @@ class DataEntry extends SurveyCommonAction
                             break;
                         case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                             $lresult = Answer::model()->findAll("qid={$fname['qid']}");
-                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n"
                             . "<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {
                                 $aDataentryoutput .= " selected='selected'";
@@ -815,7 +815,7 @@ class DataEntry extends SurveyCommonAction
                                 }
 
                                 $aDataentryoutput .= "</label>";
-                                $aDataentryoutput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\" class='form-control'>\n";
+                                $aDataentryoutput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\" class='form-select'>\n";
                                 (!isset($currentvalues[$i - 1])) ? $selected = " selected=\"selected\"" : $selected = "";
                                 $aDataentryoutput .= "\t<option value=\"\" $selected>" . gT('None') . "</option>\n";
                                 foreach ($ansresult as $ansrow) {
@@ -881,7 +881,7 @@ class DataEntry extends SurveyCommonAction
                             $slangs = $oSurvey->allLanguages;
                             $baselang = $oSurvey->language;
 
-                            $aDataentryoutput .= "<select name='{$fname['fieldname']}' class='form-control'>\n";
+                            $aDataentryoutput .= "<select name='{$fname['fieldname']}' class='form-select'>\n";
                             $aDataentryoutput .= "<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {
                                 $aDataentryoutput .= " selected='selected'";
@@ -998,7 +998,7 @@ class DataEntry extends SurveyCommonAction
                             $aDataentryoutput .= CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 70,'rows' => 50));
                             break;
                         case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
-                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n"
                             . "<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {
                                 $aDataentryoutput .= " selected='selected'";
@@ -1197,7 +1197,7 @@ class DataEntry extends SurveyCommonAction
                                 if ($qidattributes['input_boxes'] != 0) {
                                     $aDataentryoutput .= CHtml::numberField($fname['fieldname'], $idrow[$fname['fieldname']], array('step' => 'any'));
                                 } else {
-                                    $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n";
+                                    $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n";
                                     $aDataentryoutput .= "<option value=''>...</option>\n";
                                     for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue) {
                                         $aDataentryoutput .= "<option value='$ii'";
@@ -1981,12 +1981,12 @@ class DataEntry extends SurveyCommonAction
             Yii::app()->loadHelper('database');
 
             // SURVEY NAME AND DESCRIPTION TO GO HERE
-            $aGroups = QuestionGroup::model()->findAllByAttributes(['sid' => $surveyid]);
+            $aGroups = $survey->groups;
             $aDataentryoutput = '';
             foreach ($aGroups as $arGroup) {
                 LimeExpressionManager::StartProcessingGroup($arGroup->gid, ($thissurvey['anonymized'] != "N"), $surveyid);
 
-                $aQuestions = Question::model()->findAllByAttributes(['sid' => $surveyid, 'parent_qid' => 0, 'gid' => $arGroup['gid']]);
+                $aQuestions = $arGroup->questions;
                 $aDataentryoutput .= "\t<tr class='info'>\n"
                 . "<!-- Inside controller dataentry.php -->"
                 . "<td colspan='3'><h4>" . flattenText($arGroup->questiongroupl10ns[$sDataEntryLanguage]->group_name, true) . "</h4></td>\n"

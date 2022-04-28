@@ -94,7 +94,7 @@
             <?php endif; ?>
 
             <!-- button -->
-            <td class="text-right">
+            <td class="text-end">
                 <!-- The form launching an update process. First step is the welcome message. The form is not submitted, but catch by the javascript inserted in the end of this file -->
                 <?php echo CHtml::beginForm(App()->createUrl('admin/update/sa/getwelcome'), 'post', array('class'=>'launchUpdateForm')); ?>
                     <?php echo CHtml::hiddenField('destinationBuild' , $aUpdateVersion['build']); ?>

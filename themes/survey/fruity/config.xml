@@ -105,7 +105,7 @@
         <backgroundimage type="buttons" category="Images" width="4" title="Background image" options="on|off" optionlabels="Yes|No">off</backgroundimage>
         <backgroundimagefile type="dropdown" category="Images" width="6" title="Background image file" parent="backgroundimage">./files/pattern.png</backgroundimagefile>
         <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
-        <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">themes/survey/fruity/files/logo.png</brandlogofile>
+        <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">./files/logo.png</brandlogofile>
         <!-- animations -->
         <animatebody type="buttons" category="Animations" width="4" title="Animate body" options="on|off" optionlabels="Yes|No">off</animatebody>
         <bodyanimation type="dropdown" category="Animations" width="6" title="Body animation" parent="animatebody">fadeInRight

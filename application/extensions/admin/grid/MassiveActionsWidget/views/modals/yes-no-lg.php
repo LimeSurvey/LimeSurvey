@@ -4,7 +4,7 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
                 <div class="modal-title h4"><?php echo $aAction['sModalTitle']; ?></div>
             </div>
             <div class="modal-body">
@@ -36,7 +36,7 @@
                         <?php eT("Yes"); ?>
                     <?php endif;?>
                 </button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                     <span class='fa fa-ban'></span>
                     &nbsp;
                     <?php if(isset($aAction['no'])):?>
@@ -49,7 +49,7 @@
 
             <?php if($aAction['keepopen']=="yes"):?>
                 <div class="modal-footer modal-footer-close" style="display: none;">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                         <span class='fa fa-ban'></span>
                         &nbsp;
                         <?php eT("Close"); ?>

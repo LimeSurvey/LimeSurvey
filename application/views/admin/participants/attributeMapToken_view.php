@@ -17,15 +17,15 @@
 <div class="draggable-container">
     <div class='row'>
         <div class='col-sm-4'>
-            <div id="tokenattribute" class="panel panel-primary attribute-column">
-                <div class="panel-heading"><?php eT("Unmapped survey participant attributes") ?></div>
+            <div id="tokenattribute" class="card attribute-column">
+                <div class="card-header bg-primary"><?php eT("Unmapped survey participant attributes") ?></div>
                 <div id="tokenatt" class="tokenatt droppable">
                     <?php
                         if (!empty($tokenattribute))
                         {
                             foreach ($tokenattribute as $key => $value)
                             {
-                                echo "<div id='t_" . $value . "' data-name='" . $key . "' class='panel panel-default token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"panel-body\">" . $key . "</div></div>";
+                                echo "<div id='t_" . $value . "' data-name='" . $key . "' class='card token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"card-body\">" . $key . "</div></div>";
                             }
                         }
                     ?>
@@ -35,23 +35,23 @@
         </div>
 
         <div class='col-sm-4'>
-            <div id="newcreated" class="panel panel-primary attribute-column">
-                <div class="panel-heading"><?php eT("Participant attributes to create") ?></div>
-                <div class="panel-body newcreate droppable" style ="height: 40px">
+            <div id="newcreated" class="card attribute-column">
+                <div class="card-header bg-primary"><?php eT("Participant attributes to create") ?></div>
+                <div class="card-body newcreate droppable" style ="height: 40px">
                 </div>
             </div>
         </div>
 
         <div class='col-sm-4'>
-            <div id="centralattribute" class="panel panel-primary attribute-column">
-                <div class="panel-heading"><?php eT("Existing participant attributes")?></div>
+            <div id="centralattribute" class="card attribute-column">
+                <div class="card-header bg-primary"><?php eT("Existing participant attributes")?></div>
                 <div class="centralatt">
                     <?php
                     if (!empty($attribute))
                     {
                         foreach ($attribute as $key => $value)
                         {
-                            echo "<div class='panel panel-default mappable-attribute-wrapper droppable'><div class=\"panel-body mappable-attribute attribute-item\" id='c_" . $key . "' data-name='c_" . $key . "'>" . $value . "</div></div>";
+                            echo "<div class='card mappable-attribute-wrapper droppable'><div class=\"card-body mappable-attribute attribute-item\" id='c_" . $key . "' data-name='c_" . $key . "'>" . $value . "</div></div>";
                         }
                     }
                     ?>
@@ -115,13 +115,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"><?php eT("Map survey participant attributes"); ?></h4>
             </div>
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><?php eT("Close");?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT("Close");?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

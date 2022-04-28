@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row ls-space margin top-25 bottom-25">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="the_file" id="fileupload" class='control-label '>
+                            <label for="the_file" id="fileupload" class='form-label '>
                                 <?php eT("Choose the file to upload:"); ?>
                             </label>
                             <div class="col-sm-12">
@@ -28,11 +28,11 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row ls-space margin top-25 bottom-25">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="characterset" id="characterset" class='control-label '>
+                            <label for="characterset" id="characterset" class='form-label '>
                                 <?php eT("Character set of file:"); ?>
                             </label>
                             <div class="col-sm-12">
-                                <select name="characterset"  class="form-control">
+                                <select name="characterset"  class="form-select">
                                     <?php
                                     foreach (aEncodingsArray() as $key=>$encoding):
                                         ?>
@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="separatorused" id="separatorused" class='control-label '>
+                            <label for="separatorused" id="separatorused" class='form-label '>
                                 <?php eT("Separator used:"); ?>
                             </label>
                             <div class="col-sm-12">
@@ -55,7 +55,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                                     , "semicolon" => gT("Semicolon"));
                                 ?>
 
-                                <select name="separatorused"  class="form-control">
+                                <select name="separatorused"  class="form-select">
                                     <option value="auto" selected="selected"><?php eT("(Autodetect)"); ?></option>
                                     <?php
                                     foreach ($separatorused as $key=>$separator):
@@ -73,7 +73,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row  ls-space margin top-25 bottom-25">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="filter" id="filter" class='control-label '>
+                            <label for="filter" id="filter" class='form-label '>
                                 <?php
                                 eT("Filter blank email addresses:");
                                 ?>
@@ -93,11 +93,11 @@ echo viewHelper::getViewTestTag('importParticipants');
     
 
                 <div class="col-sm-12  ls-space margin top-25 bottom-25">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
+                    <div class="card">
+                        <div class="card-header bg-primary">
                             <?php eT("CSV input format") ?>
                         </div>
-                        <div class='panel-body'>
+                        <div class='card-body'>
 
                             <p>
                                 <?php eT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for most spreadsheet tools). The first line must contain the field names. The fields can be in any order."); ?>

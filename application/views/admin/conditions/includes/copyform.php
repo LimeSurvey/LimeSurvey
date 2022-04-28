@@ -12,7 +12,7 @@
         <div class='conditioncopy-tbl-row'>
             <div class='condition-tbl-left'><?php eT("Copy the selected conditions to:"); ?></div>
             <div class='condition-tbl-right'>
-                <select class='form-control' name='copyconditionsto[]' id='copytomultiselect'  multiple='multiple' >
+                <select class='form-select' name='copyconditionsto[]' id='copytomultiselect'  multiple='multiple' >
 
                     <?php foreach ($pquestions as $pq): ?>
                         <option value='<?php echo $pq['fieldname']; ?>'><?php echo $pq['text']; ?></option>

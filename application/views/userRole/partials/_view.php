@@ -4,7 +4,7 @@
 ?>
 
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="modalTitle-addedit">
         <?=sprintf(gT('Permission role %s'), $oModel->name);?>
     </h4>
@@ -31,7 +31,7 @@
     </div>
 </div>
 <div class="modal-footer modal-footer-buttons">
-    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
         &nbsp
         <?php
         eT("Close"); ?>

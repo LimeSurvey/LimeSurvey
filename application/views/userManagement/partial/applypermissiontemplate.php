@@ -17,19 +17,19 @@
                 </div>
             </div>
             <div class="row form-group ls-space margin top-5 bottom-5">
-                <label class="control-label">
+                <label class="form-label">
                     Permission level: 
                 </label>
-                <select class="form-control" name="permissionclass" id="smk--selector--permissionclass">
+                <select class="form-select" name="permissionclass" id="smk--selector--permissionclass">
                     <option value="surveymanager">Survey manager</option>
                     <option value="classmanager">Group manager</option>
                 </select>
             </div>
             <div class="row form-group ls-space margin top-5 bottom-5" id="smk--selector--surveypermission" style="display:none;">
-                <label class="control-label">
+                <label class="form-label">
                     Umfragen zur Berechtigung auswählen: 
                 </label>
-                <select class="form-control" name="entity_ids[]" multiple="multiple" id="smk--selector--entity-ids">
+                <select class="form-select" name="entity_ids[]" multiple="multiple" id="smk--selector--entity-ids">
                     <?php foreach($aMySurveys as $oSurvey) {
                         echo "<option value='".$oSurvey->sid."'>".$oSurvey->currentLanguageSettings->surveyls_title."</option>";
                     } ?>

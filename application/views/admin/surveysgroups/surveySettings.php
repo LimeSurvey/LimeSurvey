@@ -103,7 +103,7 @@ Yii::app()->getClientScript()->registerScript(
                         </div>
                     <?php } ?>
 
-                    <div class="hidden">
+                    <div class="d-none">
                         <?php echo TbHtml::submitButton('Save', ['class' => 'btn btn-success col-md-2 col-sm-4', "id" => "survey-settings-options-form"]); ?>
                     </div>
 
@@ -126,19 +126,19 @@ Yii::app()->getClientScript()->registerScript(
             $(this).tab('show');       
         });
     
-        $('.text-option-inherit').on('change', function(e){
-            var newValue = $(this).find('.btn.active input').val();
+        $('.text-option-inherit input').on('change', function(e){
+            var newValue = $(this).find('.btn-check:checked').val();
             var parent = $(this).parent().parent();
             var inheritValue = parent.find('.inherit-edit').data('inherit-value');
             var savedValue = parent.find('.inherit-edit').data('saved-value');
     
             if (newValue == 'Y'){
-                parent.find('.inherit-edit').addClass('hide').removeClass('show').val(inheritValue);
-                parent.find('.inherit-readonly').addClass('show').removeClass('hide');
+                parent.find('.inherit-edit').addClass('d-none').removeClass('show').val(inheritValue);
+                parent.find('.inherit-readonly').addClass('show').removeClass('d-none');
             } else {
                 var inputValue = (savedValue === inheritValue) ? \"\" : savedValue;
-                parent.find('.inherit-edit').addClass('show').removeClass('hide').val(inputValue);
-                parent.find('.inherit-readonly').addClass('hide').removeClass('show');
+                parent.find('.inherit-edit').addClass('show').removeClass('d-none').val(inputValue);
+                parent.find('.inherit-readonly').addClass('d-none').removeClass('show');
             }
         });
     

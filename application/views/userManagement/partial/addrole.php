@@ -22,7 +22,7 @@ Yii::app()->getController()->renderPartial(
         </div>
         <div class="form-group">
             <label for="roleselector"><?=gT("Select role(s):")?></label>
-            <select name="roleselector[]" id="roleselector"  class="form-control select" style="width:150px;" multiple>
+            <select name="roleselector[]" id="roleselector"  class="form-select select" style="width:150px;" multiple>
                 <?php
                 foreach ($aPossibleRoles as $key => $name) {
                     echo sprintf(

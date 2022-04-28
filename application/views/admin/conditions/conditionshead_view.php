@@ -6,8 +6,8 @@
             <button
                 type='button'
                 id='delete-all-conditions'
-                data-toggle='modal'
-                data-target='#confirmation-modal'
+                data-bs-toggle='modal'
+                data-bs-target='#confirmation-modal'
                 data-message='<?php eT('Are you sure you want to delete all conditions for this question?', 'js'); ?>'
                 data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
                 class='btn btn-warning pull-right condition-header-button'
@@ -24,8 +24,8 @@
                 type='button'
                 id='renumber-scenario'
                 class="btn btn-outline-secondary pull-right condition-header-button"
-                data-toggle='modal'
-                data-target='#confirmation-modal'
+                data-bs-toggle='modal'
+                data-bs-target='#confirmation-modal'
                 data-message='<?php eT('Are you sure you want to renumber the scenarios with incrementing numbers beginning from 1?', 'js'); ?>'
                 data-onclick='(function() { document.getElementById("toplevelsubaction").value="renumberscenarios"; document.getElementById("deleteallconditions").submit();})'
                 onclick='return false;'
@@ -49,11 +49,11 @@
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
-            <div class="modal-header panel-heading">
+            <div class="modal-header card-header bg-primary">
                 <button 
                     type="button" 
                     class="close" 
-                    data-dismiss="modal">
+                    data-bs-dismiss="modal">
                     &times;
                 </button>
                 <h4 class="modal-title"><?php eT('Quick-add conditions'); ?></h4>
@@ -67,7 +67,7 @@
                     type="button" 
                     id='quick-add-condition-close-button' 
                     class="btn btn-cancel" 
-                    data-dismiss="modal">
+                    data-bs-dismiss="modal">
                     &nbsp;
                     <?php eT("Cancel"); ?>
                 </button>
@@ -78,7 +78,6 @@
                     class='btn btn-primary'>
                     <?php eT('Save'); ?>
                 </button>
-                <span id='quick-add-url' class='hidden'><?php echo $quickAddConditionURL; ?></span>
             </div>
         </div>
     </div>

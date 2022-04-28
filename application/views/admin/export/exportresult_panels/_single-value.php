@@ -6,16 +6,14 @@
     }
 ?>
 
-<div class="panel panel-primary" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
-  <div class="panel-heading">
-    <h4 class="panel-title">
-<?php eT("Selection");?>
-</h4>
+<div class="card" id="panel-2" <?php if ($SingleResponse) { echo 'style="display:none"';} ?> >
+  <div class="card-header bg-primary">
+    <?php eT("Selection");?>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
     <div class="form-group">
         <!-- From -->
-        <label for='export_ids' class="col-sm-2 control-label">
+        <label for='export_ids' class="col-sm-2 form-label">
           <?php eT("Selected answers"); ?>
         </label>
 

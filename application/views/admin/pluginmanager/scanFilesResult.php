@@ -8,7 +8,7 @@
     <div class='col-sm-12'>
         <?php foreach ($result as $name => $scannedPlugin) : ?>
             <div class='form-group col-lg-12'>
-                <label class='control-label col-sm-4'>
+                <label class='form-label col-sm-4'>
                     <?php echo $name; ?>
                 </label>
                 <?php if ($scannedPlugin['load_error'] == 0 && $scannedPlugin['extensionConfig'] == null) : ?>
@@ -17,7 +17,7 @@
                 <?php elseif ($scannedPlugin['isCompatible']) : ?>
                     <?php echo CHtml::beginForm($installUrl, 'post', ['style' => 'display: inline-block;']); ?>
                     <input type='hidden' name='pluginName' value='<?php echo $name; ?>'/>
-                    <button href='' type="button" class='btn btn-success' data-toggle='tooltip' title='<?php eT('Install this plugin'); ?>'>
+                    <button href='' type="button" class='btn btn-success' data-bs-toggle='tooltip' title='<?php eT('Install this plugin'); ?>'>
                         <i class='fa fa-download'></i>
                         &nbsp;
                         <?php eT('Install'); ?>
@@ -36,9 +36,9 @@
                 <?php endif; ?>
 
                 <?php if (isset($scannedPlugin['deleteUrl'])) : ?>
-                    <a href='#' class='btn btn-outline-secondary' data-target='#confirmation-modal' data-toggle='modal' data-post-url='<?= $scannedPlugin['deleteUrl'] ?>' data-message='<?php eT('Are you sure you want to delete this plugin from the file system?'); ?>' type='submit'>
+                    <a href='#' class='btn btn-outline-secondary' data-bs-target='#confirmation-modal' data-bs-toggle='modal' data-post-url='<?= $scannedPlugin['deleteUrl'] ?>' data-message='<?php eT('Are you sure you want to delete this plugin from the file system?'); ?>' type='submit'>
                         <i class='fa fa-trash text-danger'></i>&nbsp;
-                        <span data-toggle='tooltip' title='<?php eT('Delete this plugin from the file system'); ?>'>Delete files</span>
+                        <span data-bs-toggle='tooltip' title='<?php eT('Delete this plugin from the file system'); ?>'>Delete files</span>
                     </a>
                 <?php endif; ?>
             </div>

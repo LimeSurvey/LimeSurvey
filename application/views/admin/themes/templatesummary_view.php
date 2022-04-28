@@ -45,7 +45,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>
-                                <span class="label label-danger"> <?php eT("inherited"); ?> </span>
+                                <span class="badge bg-danger"> <?php eT("inherited"); ?> </span>
                             <?php }?>
                         </div>
                     </div>
@@ -76,7 +76,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>
-                                <span class="label label-danger"><?php eT("inherited"); ?></span>
+                                <span class="badge bg-danger"><?php eT("inherited"); ?></span>
                             <?php }?>
                         </div>
                     </div>
@@ -106,7 +106,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>
-                                <span class="label label-danger"><?php eT("inherited"); ?></span>
+                                <span class="badge bg-danger"><?php eT("inherited"); ?></span>
                             <?php }?>
                         </div>
                     </div>
@@ -169,7 +169,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>
-                                <span class="label label-danger"><?php eT("inherited"); ?></span>
+                                <span class="badge bg-danger"><?php eT("inherited"); ?></span>
                             <?php }?>
                         </div>
                     </div>
@@ -193,7 +193,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
         </div>
 
         <div class="">
-            <a href="#" data-toggle="modal" data-target="#fileHelp" />
+            <a href="#" data-bs-toggle="modal" data-bs-target="#fileHelp" />
                 <?php eT('Tip: How to embed a picture in your theme?'); ?>
             </a>
         </div>
@@ -204,7 +204,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <div class="modal-title h4" id="myModalLabel">
                         <?php eT('Tip: How to display a picture in your theme?'); ?>
                     </div>
@@ -217,7 +217,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                     <br/>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <?php eT("Close");?>
                     </button>
                 </div>

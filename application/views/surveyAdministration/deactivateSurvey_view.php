@@ -12,7 +12,7 @@
                     <p>
                         <?php eT("There are two ways to stop a survey. Please read the Expiration and Deactivation points below before proceeding."); ?>
                     </p>
-                    <table id='deactivation' class="text-left">
+                    <table id='deactivation' class="text-start">
                         <tr>
                             <th width='50%'>
                                 <?php eT("Expiration"); ?>
