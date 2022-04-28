@@ -77,7 +77,6 @@
                         'class' => 'form-control',
                         'id' => ''
                     ]);
-                    // echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='".$attribute_value['value']."' />";
                     echo "</div>";
                     echo '<div class="col-xs-1">
                             <button class="btn btn-outline-secondary form-group action_delDropdownField">
