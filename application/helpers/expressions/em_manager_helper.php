@@ -6892,6 +6892,7 @@ class LimeExpressionManager
 
         $jsParts = [];
         $inputParts = [];
+        /* string[] all needed variable for LEMalias2varName and LEMvarNameAttr */
         $allJsVarsUsed = [];
         $rowdividList = [];   // list of subquestions needing relevance entries
         /* All function for expression manager */
@@ -7518,27 +7519,18 @@ class LimeExpressionManager
         $jsParts[] = "\n}\n";
         /* ailoring out of question scope for global action */
         if (!empty($pageTailorInfo[0])) {
-            $allJsVarsUsed = array();
+            $tailorParts = [];
+            $tailorJsVarsUsed = [];
             foreach ($pageTailorInfo[0] as $tailor) {
                 $tailorParts[] = $tailor['js'];
                 $vars = array_filter(explode('|', $tailor['vars']));
                 if (!empty($vars)) {
-                    $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
+                    $tailorJsVarsUsed = array_unique(array_merge($tailorJsVarsUsed, $vars));
                 }
             }
-            /* Alternative way : array_map */
-            //~ $relJsVarsUse = array_map( function($tailor) {
-                    //~ return $tailor['vars'];
-                //~ },
-                //~ $globalTailorParts
-            //~ );
-            //~ $tailorJs = array_map( function($tailor) {
-                    //~ return $tailor['js'];
-                //~ },
-                //~ $globalTailorParts
-            //~ );
+            $allJsVarsUsed = array_merge($allJsVarsUsed, $tailorJsVarsUsed);
             $globalJS = "function LEMrel0(sgqa){\n";
-            $globalJS .= "  var UsesVars = ' " . implode(' ', $allJsVarsUsed) . " ';\n";
+            $globalJS .= "  var UsesVars = ' " . implode(' ', $tailorJsVarsUsed) . " ';\n";
             $globalJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
             $globalJS .= "    return;\n";
             $globalJS .= "  }\n";
