@@ -55,8 +55,8 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header file-upload-modal-header">
-                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-                <div class="h4 modal-title"> {{ ngT("Upload file|Upload files", maxFiles) }}</div>
+                <h5 class="modal-title"> {{ ngT("Upload file|Upload files", maxFiles) }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body file-upload-modal-body">
                 <div id="uploader{{fileid}}" name="uploader{{fileid}}" class="uploader-frame" data-src="{{uploadurl}}" title="{{gT("Upload")}}"></div>

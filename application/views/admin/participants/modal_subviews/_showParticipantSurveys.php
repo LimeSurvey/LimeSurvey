@@ -1,6 +1,6 @@
 <div class="modal-header">
-    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="participant_edit_modal"><?php eT('List active surveys'); ?></h4>
+    <h5 class="modal-title" id="participant_edit_modal"><?php eT('List active surveys'); ?></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body ">
 <?php

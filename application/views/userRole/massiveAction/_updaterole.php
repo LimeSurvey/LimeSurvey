@@ -3,9 +3,7 @@
 ?>
 
 <div class="modal-header">
-    <h3>
-        <?php eT("Apply role to user");?>
-    </h3>
+    <h5 class="modal-title"><?php eT("Apply role to user");?></h5>
 </div>
 <div class="modal-body selector--edit-role-container">
     <div class="container-center form">        

@@ -1,6 +1,6 @@
 <div class="modal-header">
-    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-    <div class="h3 modal-title"><?php eT("Delete user"); ?></div>
+    <h5 class="modal-title"><?php eT("Delete user"); ?></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 <div class="modal-body">
     <?=TbHtml::formTb(null, App()->createUrl('userManagement/deleteUser'), 'post', ["id"=>"UserManagement--modalform"])?>

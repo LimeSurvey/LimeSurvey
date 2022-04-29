@@ -56,7 +56,6 @@
                     data-bs-dismiss="modal">
                     &times;
                 </button>
-                <h4 class="modal-title"><?php eT('Quick-add conditions'); ?></h4>
             </div>
             <div class="modal-body">
                 <!-- Condition form is in file quickAddConditionForm.php -->
@@ -78,6 +77,9 @@
                     class='btn btn-primary'>
                     <?php eT('Save'); ?>
                 </button>
+                <span id='quick-add-url' class="d-none">
+                	<?php echo $quickAddConditionURL; ?>
+                </span>
             </div>
         </div>
     </div>

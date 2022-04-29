@@ -16,7 +16,7 @@
                         $sType='success';
                     }
                     echo CHtml::openTag("div",array('class'=>"alert alert-{$sType} alert-dismissible",'role'=>'alert'));
-                    echo CHtml::htmlButton("<span >&times;</span>",array('type'=>'button','class'=>'close','data-dismiss'=>'alert','aria-label'=>gT("Close")));
+                    echo CHtml::htmlButton("<span></span>",array('type'=>'button','class'=>'btn-close','data-bs-dismiss'=>'alert','aria-label'=>gT("Close")));
                     echo $message['message'];
                     echo CHtml::closeTag("div");
                 ?>
