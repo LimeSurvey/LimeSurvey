@@ -85,7 +85,7 @@
                         <td>
                             <div class="row">
                                 <div class="col-lg-8">
-                                    <?php echo CHtml::dropDownList('uid', '-1', $addableUsers, ['class' => "form-control col-lg-4"]); ?>
+                                    <?php echo CHtml::dropDownList('uid', '-1', $addableUsers, ['class' => "form-select col-lg-4"]); ?>
                                     <input name='ugid' type='hidden' value='<?php echo $ugid; ?>'/>
                                 </div>
                                 <div class="col-lg-4">

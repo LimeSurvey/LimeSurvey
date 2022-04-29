@@ -146,7 +146,7 @@
                     </div>
                     <label class="col-sm-3 form-label" for='massedit_language'><?php eT("Language:"); ?></label>
                     <div class="col-sm-8">
-                        <?php echo CHtml::dropDownList('language', '', array_merge(['lskeep' => ''], $aLanguages), ['id' => 'massedit_language', 'class' => 'form-control custom-data selector_submitField', 'disabled' => 'disabled']); ?>
+                        <?php echo CHtml::dropDownList('language', '', array_merge(['lskeep' => ''], $aLanguages), ['id' => 'massedit_language', 'class' => 'form-select custom-data selector_submitField', 'disabled' => 'disabled']); ?>
                     </div>
                 </div>
 

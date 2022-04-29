@@ -94,7 +94,7 @@ Yii::app()->getController()->renderPartial(
                     // When we add a new user, owner is default to current user
                     $selected = ($editType == 'add') ? Yii::app()->user->id : $model->owner_uid;
                     $listUsers = CHtml::listData($users,'uid','full_name');
-                    echo CHtml::dropDownList('Participant[owner_uid]',$selected,$listUsers,array('id'=>'owner_uid','class'=>'form-control'));
+                    echo CHtml::dropDownList('Participant[owner_uid]',$selected,$listUsers,array('id'=>'owner_uid','class'=>'form-select'));
                 ?>
                 </div>
                 <div class=''></div>

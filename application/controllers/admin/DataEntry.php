@@ -612,7 +612,7 @@ class DataEntry extends SurveyCommonAction
                                 'Y' => gT('Yes', 'unescaped')
                             );
 
-                            $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options, array('class' => 'form-control'));
+                            $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options, array('class' => 'form-select'));
 
                             break;
                         case Question::QT_X_TEXT_DISPLAY: //Boilerplate question
@@ -1289,7 +1289,7 @@ class DataEntry extends SurveyCommonAction
                             foreach ($slangs as $lang) {
                                 $LanguageList[$lang] = getLanguageNameFromCode($lang, false);
                             }
-                            $aDataentryoutput .= CHtml::dropDownList($fname['fieldname'], $idrow[$fname['fieldname']], $LanguageList, array('class' => 'form-control'));
+                            $aDataentryoutput .= CHtml::dropDownList($fname['fieldname'], $idrow[$fname['fieldname']], $LanguageList, array('class' => 'form-select'));
                             break;
                         default:
                             $aDataentryoutput .= CHtml::textField(

@@ -142,7 +142,7 @@
                                     <td><?php
                                         if ($sLanguage == $oSurvey->language){
                                             if (empty($tokenvalues['coreattribute'])){
-                                                echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-control'));
+                                                echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-select'));
                                             }
                                         }
                                         else
@@ -198,7 +198,7 @@
                 <p>
                     <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
                     <div class=''>
-                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-control')); ?>
+                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-select')); ?>
                     </div>
                 </p>
                 <p>
