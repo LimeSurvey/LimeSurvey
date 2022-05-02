@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <div class="col-lg-12 list-surveys" id="comfortUpdateGeneralWrap">
+    <div class="col-12 list-surveys" id="comfortUpdateGeneralWrap">
         <h3>
             <span id="comfortUpdateIcon" class="icon-shield text-success"></span>
             <?php eT('ComfortUpdate'); ?>

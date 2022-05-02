@@ -7,7 +7,7 @@ App()->getClientScript()->registerScriptFile(
 <div class='menubar surveybar' id="usermanagementbar">
     <div class="container-fluid">
         <div class='row'>
-            <div class="col-md-9">
+            <div class="col-lg-9">
                 <?php if (!isset($inImportView)) { ?>
                     <?php if (Permission::model()->hasGlobalPermission('users', 'create')) {
                         ?>
@@ -63,7 +63,7 @@ App()->getClientScript()->registerScriptFile(
                 } ?>
             </div>
 
-            <div class="col-md-3 text-end">
+            <div class="col-lg-3 text-end">
                 <?php if (!isset($inImportView)): ?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
                         <span class="fa fa-backward"></span>

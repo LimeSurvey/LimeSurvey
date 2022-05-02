@@ -8,7 +8,7 @@
 
 <div class="container-fluid">
 
-    <div class="col-sm-12 labels">
+    <div class="col-12 labels">
         <div class="pagetitle h3">
             <?php eT("Labels") ?>
             <?php if (isset($model->label_name)) : ?>
@@ -17,7 +17,7 @@
         </div>
 
         <!-- Left content -->
-        <div class="col-sm-12 content-right text-center">
+        <div class="col-12 content-right text-center">
 
             <!-- tabs -->
             <ul class="nav nav-tabs">
@@ -41,7 +41,7 @@
         </div>
 
         <!-- Right content -->
-        <div class="col-sm-4">
+        <div class="col-md-4">
             <?php if (Permission::model()->hasGlobalPermission('labelsets', 'update')) { ?>
                 <?php $this->renderPartial("./labels/_labelviewrightcontent_view", ['lid' => $lid]); ?>
             <?php }; ?>

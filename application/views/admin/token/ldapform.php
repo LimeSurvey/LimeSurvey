@@ -8,7 +8,7 @@
     <h3><?php eT("Import survey participants from LDAP"); ?></h3>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
 
             <!-- Alert error -->
             <?php if (!empty($sError)): ?>

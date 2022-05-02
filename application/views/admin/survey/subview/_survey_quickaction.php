@@ -21,22 +21,22 @@
 <div class="panel panel-default">
     <div id="survey-action-title" class="panel-heading" >
         <div class="row">
-            <div class="col-xs-2 col-sm-1">
+            <div class="col-2 col-md-1">
                 <button id="survey-action-chevron" class="btn btn-default btn-tiny" data-active="<?=$quickactionstate?>" data-url="<?php echo Yii::app()->urlManager->createUrl("surveyAdministration/toggleQuickAction/");?>">
                     <i class="fa <?=($quickactionstate > 0 ?  'fa-caret-up' : 'fa-caret-down')?>"></i>
                 </button>
             </div>
-            <div class="col-xs-10 col-sm-11 h4">
+            <div class="col-10 col-md-11 h4">
                 <?php eT('Survey quick actions'); ?>
             </div>
         </div>
     </div>
     <div class="panel-body" style="display:<?=($quickactionstate > 0 ? 'block' : 'none')?>" id="survey-action-container"> 
         <div class="row welcome survey-action">
-            <div class="col-sm-12 content-right">
+            <div class="col-12 content-right">
                 <!-- Alerts, infos... -->
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-12">
                         <!-- While survey is activated, you can't add or remove group or question -->
                         <?php if ($oSurvey->isActive): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
@@ -66,13 +66,13 @@
                 <div class="row">
 
                     <!-- Boxes -->
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
 
                         <!-- Switch : Show questions group by group -->
                         <?php $switchvalue = ($oSurvey->format=='G') ? 1 : 0 ; ?>
                         <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid,'surveycontent','update')): ?>
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-12">
                                     <label for="switch"><?php eT('Format:');?></label>
                                     <div id='switchchangeformat' class="btn-group" role="group">
                                         <button id='switch' type="button" data-value='S' class="btn btn-default <?php if($oSurvey->format=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>
@@ -93,7 +93,7 @@
                             <?php if ($oSurvey->isActive): ?>
 
                                     <!-- Can't add new group to survey  -->
-                                    <div class="col-sm-6">
+                                    <div class="col-md-6">
                                         <div class="panel panel-primary disabled" id="panel-1">
                                             <div class="panel-heading">
                                                 <div class="panel-title h4"><?php eT('Add group');?></div>
@@ -113,7 +113,7 @@
                                     </div>
 
                                     <!-- Can't add a new question -->
-                                    <div class="col-sm-6" >
+                                    <div class="col-md-6" >
                                         <div class="panel panel-primary disabled" id="panel-2">
                                             <div class="panel-heading">
                                                 <div class="panel-title h4 disabled"><?php eT('Add question');?></div>
@@ -140,7 +140,7 @@
                                 <?php elseif(Permission::model()->hasSurveyPermission($oSurvey->sid,'surveycontent','create')): ?>
 
                                     <!-- Add group -->
-                                    <div class="col-sm-6">
+                                    <div class="col-md-6">
                                         <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>">
                                             <div class="panel-heading">
                                                 <div class="panel-title h4"><?php eT('Add group');?></div>
@@ -161,7 +161,7 @@
 
                                     <!-- Survey has no group, so can't add a question -->
                                     <?php if(!$groups_count > 0): ?>
-                                        <div class="col-sm-6" >
+                                        <div class="col-md-6" >
                                             <div class="panel panel-primary disabled" id="panel-2">
                                                 <div class="panel-heading">
                                                     <div class="panel-title h4 disabled"><?php eT('Add question');?></div>
@@ -187,7 +187,7 @@
 
                                         <!-- Survey has a group, so can add a question -->
                                     <?php else:?>
-                                        <div class="col-sm-6">
+                                        <div class="col-md-6">
                                             <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>">
                                                 <div class="panel-heading">
                                                     <div class="panel-title h4"><?php eT('Add question');?></div>
@@ -210,7 +210,7 @@
                         </div>
 
                         <div class="row row-eq-height">
-                            <div class="col-sm-6">
+                            <div class="col-md-6">
 
 
                                 <!-- Edit text elements and general settings -->
@@ -254,7 +254,7 @@
 
                             <!-- Stats -->
                             <?php if($respstatsread && $activated=="Y"):?>
-                                <div class="col-sm-6">
+                                <div class="col-md-6">
                                     <div class="panel panel-primary panel-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>">
                                         <div class="panel-heading">
                                             <div class="panel-title h4"><?php eT("Statistics");?></div>
@@ -277,7 +277,7 @@
                                     </div>
                                 </div>
                             <?php else: ?>
-                                <div class="col-sm-6">
+                                <div class="col-md-6">
                                     <div class="panel panel-primary disabled" id="panel-4">
                                         <div class="panel-heading">
                                             <div class="panel-title h4"><?php eT("Responses & statistics");?></div>
@@ -303,7 +303,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid,'surveycontent','update')): ?>
                             <!-- Template carroussel -->
                             <?php $this->renderPartial( "/admin/survey/subview/_template_carousel", array(
@@ -317,7 +317,7 @@
                     <!-- last visited question -->
                     <?php if($showLastQuestion):?>
                         <div class="row text-start">
-                            <div class="col-sm-12">
+                            <div class="col-12">
                                 <?php eT("Last visited question:");?>
                                 <a href="<?php echo $last_question_link;?>" class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
                                 <br/><br/>

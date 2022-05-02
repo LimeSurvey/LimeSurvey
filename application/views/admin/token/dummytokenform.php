@@ -8,7 +8,7 @@
     <h3><?php eT("Create dummy participants"); ?></h3>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id'=>'edittoken', 'name'=>'edittoken', 'class'=>'form30 ')); ?>
 
                 <!-- ID  -->

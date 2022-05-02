@@ -19,7 +19,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <h3>
                 <?php eT("Survey quotas");?>
             </h3>
@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             <?php if($oDataProvider->itemCount > 0):?>
             <!-- Grid -->
             <div class="row">
-                <div class="col-sm-12 content-right">
+                <div class="col-12 content-right">
                     <?php $this->widget('yiistrap.widgets.TbGridView', array(
                         'dataProvider'  => $oDataProvider,
                         'id'            => 'quota-grid',

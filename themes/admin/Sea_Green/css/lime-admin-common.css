@@ -614,10 +614,6 @@ div.panel.disabled a {
   cursor: default;
 }
 
-#edit-group .tab-pane {
-  padding: 1em;
-}
-
 .panel-clickable:hover {
   cursor: pointer;
   cursor: hand;
@@ -1065,7 +1061,7 @@ div.panel.disabled a {
 .content-right {
   animation: fadein 1s;
 }
-.content-right .col-lg-12 {
+.content-right .col-12 {
   animation: fadein 1s;
 }
 .content-right.content-right {

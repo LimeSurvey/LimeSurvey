@@ -25,7 +25,7 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body">
     <div class="container-center">
         <div class="row">
-            <div class="col-sm-12 well">
+            <div class="col-12 well">
                 <?=$note?>
             </div>
         </div>

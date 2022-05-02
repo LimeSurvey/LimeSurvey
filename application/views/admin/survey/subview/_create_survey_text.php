@@ -43,7 +43,7 @@ $surveyid = $aTabContents['surveyid'];
 <!-- Edition container -->
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <!-- Survey title -->
             <div class="form-group">
                 <label class=" question-group-title form-label" for="surveyls_title">
@@ -55,9 +55,9 @@ $surveyid = $aTabContents['surveyid'];
             </div>
         </div>
     </div>
-    <hr class="col-sm-12" />
+    <hr class="col-12" />
     <div class="row">
-        <div class="col-sm-12 col-md-6">
+        <div class="col-12 col-lg-6">
             <!-- Base language -->
             <div class="form-group">
 
@@ -77,7 +77,7 @@ $surveyid = $aTabContents['surveyid'];
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
              <div class="form-group">
                 <label for="createsample" class=" form-label"><?php eT("Create example question group and question?") ?></label>
                 <!--<input type="checkbox" name="createsample" id="createsample" />-->
@@ -93,7 +93,7 @@ $surveyid = $aTabContents['surveyid'];
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-6">
+        <div class="col-12 col-lg-6">
             <!-- Description -->
             <div class="form-group">
                 <label class=" form-label" for="description">
@@ -107,7 +107,7 @@ $surveyid = $aTabContents['surveyid'];
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-12 col-lg-6">
 
             <!-- End URL -->
             <div class="form-group">
@@ -175,7 +175,7 @@ $surveyid = $aTabContents['surveyid'];
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-6">
+        <div class="col-12 col-lg-6">
             <!-- Welcome message -->
             <div class="form-group">
                 <label class=" form-label" for='welcome'>
@@ -189,7 +189,7 @@ $surveyid = $aTabContents['surveyid'];
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-12 col-lg-6">
             <!-- End message -->
             <div class="form-group">
                 <label class=" form-label" for='endtext'>

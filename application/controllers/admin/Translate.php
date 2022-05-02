@@ -885,9 +885,9 @@ class Translate extends SurveyCommonAction
         $translateoutput = "<table class='table table-striped'>";
             $translateoutput .= '<thead>';
             $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
-            $translateoutput .= $threeRows ? '<th class="col-md-2 text-strong">' . gT('Question code / ID') . "</th>" : '';
-            $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $baselangdesc . "</th>";
-            $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $tolangdesc . "</th>";
+            $translateoutput .= $threeRows ? '<th class="col-lg-2 text-strong">' . gT('Question code / ID') . "</th>" : '';
+            $translateoutput .= '<th class="' . ($threeRows ? "col-md-5 text-strong" : "col-md-6") . '" >' . $baselangdesc . "</th>";
+            $translateoutput .= '<th class="' . ($threeRows ? "col-md-5 text-strong" : "col-md-6") . '" >' . $tolangdesc . "</th>";
             $translateoutput .= '</thead>';
 
         return $translateoutput;
@@ -931,19 +931,19 @@ class Translate extends SurveyCommonAction
             // Display text in original language
             // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
         if ($type == 'answer') {
-            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['answer']) . " (" . $rowfrom['qid'] . ") </td>";
+            $translateoutput .= "<td class='col-md-2'>" . htmlspecialchars($rowfrom['answer']) . " (" . $rowfrom['qid'] . ") </td>";
         }
         if ($type == 'question_help' || $type == 'question') {
-            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['title']) . " ({$rowfrom['qid']}) </td>";
+            $translateoutput .= "<td class='col-md-2'>" . htmlspecialchars($rowfrom['title']) . " ({$rowfrom['qid']}) </td>";
         } elseif ($type == 'subquestion') {
-            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['parent']['title']) . " ({$rowfrom['parent']['qid']}) </td>";
+            $translateoutput .= "<td class='col-md-2'>" . htmlspecialchars($rowfrom['parent']['title']) . " ({$rowfrom['parent']['qid']}) </td>";
         }
 
-            $translateoutput .= "<td class='_from_ col-sm-5' id='" . $type . "_from_" . $i . "'><div class='question-text-from'>"
+            $translateoutput .= "<td class='_from_ col-md-5' id='" . $type . "_from_" . $i . "'><div class='question-text-from'>"
                                     . showJavaScript($textfrom)
                                 . "</div></td>";
 
-            $translateoutput .= "<td class='col-sm-5'>";
+            $translateoutput .= "<td class='col-md-5'>";
 
             $translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
             $translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
@@ -960,7 +960,7 @@ class Translate extends SurveyCommonAction
             $minHeight = "30px";
         }
             $aDisplayOptions = array(
-                'class' => 'col-sm-10',
+                'class' => 'col-md-10',
                 'cols' => '75',
                 'rows' => $nrows,
                 'readonly' => !Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update')

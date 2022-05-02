@@ -16,7 +16,7 @@
       <div class="modal-body">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-xs-4 ls-ba">
+            <div class="col-4 ls-ba">
               <div class="panel-body ls-space padding all-0">
                 <div class="list-group ls-space margin all-0">
                   <?php foreach ($this->itemsArray as $sItemKey => $aItemContent) { ?>
@@ -43,10 +43,10 @@
                 </div>
               </div>
             </div>
-            <div class="col-xs-8">
+            <div class="col-8">
                 <div class="container-center">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-12">
                             <h3>
                               <p id="selector__<?=$this->widgetsJsName?>-currentSelected"><?=$this->currentSelected?></p>
                             </h3>

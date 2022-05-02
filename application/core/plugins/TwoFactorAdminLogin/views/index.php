@@ -22,7 +22,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
 
 <div class="container-fluid ls-space padding left-50 right-50">
     <div class="row">
-        <div class="col-xs-12 h1 pagetitle">
+        <div class="col-12 h1 pagetitle">
             2-Factor-Authentication | User management
         </div>
     </div>
@@ -40,8 +40,8 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                         'afterAjaxUpdate' => 'window.TFA.bind',
                         'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                         'summaryText'   => "<div class='row'>"
-                        ."<div class='col-xs-6'></div>"
-                        ."<div class='col-xs-6'>"
+                        ."<div class='col-6'></div>"
+                        ."<div class='col-6'>"
                         .gT('Displaying {start}-{end} of {count} result(s).').' '
                             . sprintf(gT('%s rows per page'),
                                 CHtml::dropDownList(

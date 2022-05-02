@@ -35,7 +35,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
                 'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                 'ajaxType'                 => 'POST',
                 'ajaxUpdate'               => 'surveymenu-entries-grid',
-                'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-md-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
                 'afterAjaxUpdate'          => 'surveyMenuEntryFunctions',
             ]
         );

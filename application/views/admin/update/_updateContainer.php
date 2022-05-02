@@ -19,7 +19,7 @@ echo viewHelper::getViewTestTag('update');
 $this->renderPartial("./update/_ajaxVariables");
 ?>
 <div class="container-fluid">
-    <div class="col-lg-12 list-surveys" id="comfortUpdateGeneralWrap">
+    <div class="col-12 list-surveys" id="comfortUpdateGeneralWrap">
         <h3>
             <span id="comfortUpdateIcon" class="icon-shield text-success"></span>
             <?php if (YII_DEBUG): ?>
@@ -28,7 +28,7 @@ $this->renderPartial("./update/_ajaxVariables");
         </h3>
 
         <div class="row">
-            <div class="col-lg-12 content-right">
+            <div class="col-12 content-right">
                 <div id="updaterWrap">
                     <div id="preUpdaterContainer">
                         <!-- The check buttons : render by ajax only if no step is required by url or post -->

@@ -14,7 +14,7 @@
 
 
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-12">
 <?php if ($html_from_server != "") :?>
     <div>
         <?php echo $html_from_server;?>
@@ -49,7 +49,7 @@ echo $changelog;
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-12" style="margin-top : 1em">
+    <div class="col-12" style="margin-top : 1em">
 
         <?php
             $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/filesystem/");

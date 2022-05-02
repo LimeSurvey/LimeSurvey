@@ -8,7 +8,7 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body">
     <div class="container-center">
         <div class="row">
-            <div class="col-xs-12 text-center">
+            <div class="col-12 text-center">
                 <div class="check_mark">
                     <div class="sa-icon sa-success animate">
                         <span class="sa-line sa-tip animateSuccessTip"></span>
@@ -25,18 +25,18 @@ Yii::app()->getController()->renderPartial(
                 <li class="list-group-item">
                     <div class="container-center">
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-6">
                                 <?=gT('Username')?>   
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-6">
                                 <?=gT('Password')?>   
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-6">
                                 <?=$randomUser['username']?>
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-6">
                                 <?=$randomUser['password']?>
                             </div>
                         </div>

@@ -16,7 +16,7 @@ Yii::app()->getController()->renderPartial(
     <div class="container-center form">
         <input type="hidden" name="userid" value="<?=$oUser->uid?>" />
         <div class="row">
-            <div class="col-xs-12 alert alert-info">
+            <div class="col-12 alert alert-info">
                 <?=gT("Note: Adding role(s) to a user will overwrite any individual user permissions!")?>
             </div>
         </div>

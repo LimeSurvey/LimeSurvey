@@ -124,12 +124,12 @@ echo viewHelper::getViewTestTag('usersIndex');
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-12 text-end">
+                        <div class="col-12 text-end">
                             <?php eT("The password will be generated and sent by email.") ?>
                         </div>
                     </div>
-                    <div class="col-md-12">&nbsp;</div>
-                    <div class="col-md-4 col-md-offset-8">
+                    <div class="col-12">&nbsp;</div>
+                    <div class="col-lg-4 offset-lg-8">
                         <input type='submit' id='add_user_btn' class="btn btn-primary btn-block" value='<?php eT("Save");?>' />
                         <input type='hidden' name='action' value='adduser' />
                     </div>

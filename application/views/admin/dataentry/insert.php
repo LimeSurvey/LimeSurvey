@@ -1,7 +1,7 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-<div class="col-lg-12 list-surveys">
+<div class="col-12 list-surveys">
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
 
     <div class="jumbotron message-box <?php if($errormsg){echo 'message-box-error';}?>">
 

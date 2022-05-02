@@ -5,7 +5,7 @@
  */
 ?>
 <div class="container-fluid">
-    <div class="col-sm-12 list-surveys" id="comfortUpdateGeneralWrap">
+    <div class="col-12 list-surveys" id="comfortUpdateGeneralWrap">
         <h3><span id="comfortUpdateIcon" class="icon-shield text-success"></span><?php eT("Subscribe to ComfortUpdate!"); ?></h3>
 
         <div class="container">
@@ -29,9 +29,9 @@
             ?>
             <div class="form-group">
                 <?php
-                echo CHtml::label(gT('Enter your update key:'), 'inputKey', ['class' => 'col-sm-2']);
+                echo CHtml::label(gT('Enter your update key:'), 'inputKey', ['class' => 'col-md-2']);
                 ?>
-                <div class='col-sm-2'>
+                <div class='col-md-2'>
                     <?php
                     echo CHtml::textField('keyid', '', ["id" => "inputKey", 'class' => 'form-control', 'required' => true]);
                     ?>

@@ -11,7 +11,7 @@ $aReplacementData = [];
         <div class='row'>
 
             <?php if (isset($questionbar['buttons']['view'])): ?>
-                <div class="col-md-12">
+                <div class="col-12">
                     <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')): ?>
                         <?php if (count($languagelist) > 1): ?>
 
@@ -179,7 +179,7 @@ $aReplacementData = [];
 
 
             <?php if (isset($questionbar['buttons']['conditions'])): ?>
-                <div class="col-sm-12 form form-inline">
+                <div class="col-12 form form-inline">
                     <a class="btn btn-default pjax <?php if (isset($questionbar['buttons']['condition']['conditions'])) {
                         echo 'active';
                     } ?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
@@ -248,9 +248,9 @@ $aReplacementData = [];
             <?php // TODO: Factor out in own view? ?>
             <?php if (isset($organizebar)): ?>
                 <!-- Organize bar -->
-                <div class='col-md-7'>
+                <div class='col-lg-7'>
                 </div>
-                <div class='col-md-5 text-end'>
+                <div class='col-lg-5 text-end'>
                     <!-- Save buttons -->
                     <a class="btn btn-success" href="#" role="button" id="save-button">
                         <span class="fa fa-floppy-o"></span>

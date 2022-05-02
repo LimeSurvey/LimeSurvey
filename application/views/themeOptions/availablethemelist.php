@@ -22,12 +22,12 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
             <tbody>
             <?php foreach ($aQuestionThemes['available_themes'] as $oTheme): ?>
                 <tr class="odd">
-                    <td class="col-md-1">preview</td>
-                    <td class="col-md-2"><?php echo $oTheme->name; ?></td>
-                    <td class="col-md-3"><?php echo $oTheme->description; ?></td>
-                    <td class="col-md-2"><?php eT('XML themes'); ?></td>
-                    <td class="col-md-2"><?php echo $oTheme->extends; ?></td>
-                    <td class="col-md-1"><?php echo $oTheme->manifestbuttons; ?></td>
+                    <td class="col-lg-1">preview</td>
+                    <td class="col-lg-2"><?php echo $oTheme->name; ?></td>
+                    <td class="col-lg-3"><?php echo $oTheme->description; ?></td>
+                    <td class="col-lg-2"><?php eT('XML themes'); ?></td>
+                    <td class="col-lg-2"><?php echo $oTheme->extends; ?></td>
+                    <td class="col-lg-1"><?php echo $oTheme->manifestbuttons; ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -51,8 +51,8 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
             <?php foreach ($aQuestionThemes['broken_themes'] as $oTheme): ?>
                 <?php // echo $oTemplate; ?>
                 <tr class="odd">
-                    <td class="col-md-1 text-danger"><?php echo $oTheme['path']; ?></td>
-                    <td class="col-md-10 ">
+                    <td class="col-lg-1 text-danger"><?php echo $oTheme['path']; ?></td>
+                    <td class="col-lg-10 ">
                         <blockquote><?php echo $oTheme['exception']->getMessage(); ?></blockquote>
                     </td>
                     <td></td>

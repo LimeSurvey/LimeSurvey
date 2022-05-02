@@ -12,15 +12,15 @@
 <div class="modal-body">
     <div class="container-center">
         <div class="row">
-            <div class="col-xs-12 well">
+            <div class="col-12 well">
                 <?=$oModel->description?>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4 col-sm-12">
+            <div class="col-lg-4 col-12">
                 <?=gT('Users assigned to this role')?>
             </div>
-            <div class="col-md-8 col-sm-12">
+            <div class="col-lg-8 col-12">
                 <ul class="list-group">
                     <?php foreach( $oModel->connectedUserobjects as $oUser) {
                         echo sprintf('<li class="list-group-item">%s - %s (%s)</li>', $oUser->uid, $oUser->full_name, $oUser->users_name);

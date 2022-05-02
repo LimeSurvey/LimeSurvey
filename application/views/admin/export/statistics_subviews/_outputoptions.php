@@ -1,7 +1,7 @@
 <h4 class="h4"><?php
     eT("Output options"); ?></h4>
 <div class="row">
-    <div class="col-md-6 col-sm-12">
+    <div class="col-lg-6 col-md-12">
         <div class='form-group'>
             <label for='showtextinline' class="form-label"><?php
                 eT("Show text responses inline:") ?></label>
@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-sm-12">
+    <div class="col-lg-6 col-md-12">
         <div class='form-group'>
             <label for='stats_columns' class="form-label"><?php
                 eT("Number of columns:") ?></label>

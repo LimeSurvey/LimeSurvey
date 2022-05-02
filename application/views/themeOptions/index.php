@@ -70,12 +70,12 @@ echo viewHelper::getViewTestTag('templateOptions');
                             <?php foreach ($oSurveyTheme->templatesWithNoDb as $oTemplate) : ?>
                                 <?php // echo $oTemplate; ?>
                                 <tr class="odd">
-                                    <td class="col-md-1"><?php echo $oTemplate->preview; ?></td>
-                                    <td class="col-md-2"><?php echo $oTemplate->sTemplateName; ?></td>
-                                    <td class="col-md-3"><?php echo $oTemplate->description; ?></td>
-                                    <td class="col-md-2"><?php eT('XML themes'); ?></td>
-                                    <td class="col-md-2"><?php echo $oTemplate->config->metadata->extends; ?></td>
-                                    <td class="col-md-1"><?php echo $oTemplate->buttons; ?></td>
+                                    <td class="col-lg-1"><?php echo $oTemplate->preview; ?></td>
+                                    <td class="col-lg-2"><?php echo $oTemplate->sTemplateName; ?></td>
+                                    <td class="col-lg-3"><?php echo $oTemplate->description; ?></td>
+                                    <td class="col-lg-2"><?php eT('XML themes'); ?></td>
+                                    <td class="col-lg-2"><?php echo $oTemplate->config->metadata->extends; ?></td>
+                                    <td class="col-lg-1"><?php echo $oTemplate->buttons; ?></td>
                                 </tr>
                             <?php endforeach; ?>
 
@@ -107,11 +107,11 @@ echo viewHelper::getViewTestTag('templateOptions');
                             <?php foreach ($aBrokenThemes as $sName => $oBrokenTheme) : ?>
                                 <?php // echo $oTemplate; ?>
                                 <tr class="odd">
-                                    <td class="col-md-1 text-danger"><?php echo $sName; ?></td>
-                                    <td class="col-md-10 ">
+                                    <td class="col-lg-1 text-danger"><?php echo $sName; ?></td>
+                                    <td class="col-lg-10 ">
                                         <blockquote><?php echo $oBrokenTheme->getMessage(); ?></blockquote>
                                     </td>
-                                    <td class="col-md-1">
+                                    <td class="col-lg-1">
 
                                         <!-- Export -->
                                         <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
@@ -159,8 +159,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                             <tbody>
                             <?php foreach ($aDeprecatedThemes as $aDeprecatedTheme) : ?>
                                 <tr class="odd">
-                                    <td class="col-md-10"><?php echo $aDeprecatedTheme['name']; ?></td>
-                                    <td class="col-md-2">
+                                    <td class="col-lg-10"><?php echo $aDeprecatedTheme['name']; ?></td>
+                                    <td class="col-lg-2">
                                         <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
                                             <a class="btn btn-default" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>" role="button">
                                                 <span class="icon-export text-success"></span>
@@ -194,11 +194,11 @@ echo viewHelper::getViewTestTag('templateOptions');
                         <tbody>
                         <?php foreach ($oAdminTheme->adminThemeList as $oTheme) : ?>
                             <tr class="odd">
-                                <td class="col-md-1"><?php echo $oTheme->preview; ?></td>
-                                <td class="col-md-2"><?php echo $oTheme->metadata->name; ?></td>
-                                <td class="col-md-3"><?php echo $oTheme->metadata->description; ?></td>
-                                <td class="col-md-2"><?php eT('Core admin theme'); ?></td>
-                                <td class="col-md-1">
+                                <td class="col-lg-1"><?php echo $oTheme->preview; ?></td>
+                                <td class="col-lg-2"><?php echo $oTheme->metadata->name; ?></td>
+                                <td class="col-lg-3"><?php echo $oTheme->metadata->description; ?></td>
+                                <td class="col-lg-2"><?php eT('Core admin theme'); ?></td>
+                                <td class="col-lg-1">
                                     <?php if ($oTheme->path == getGlobalSetting('admintheme')) : ?>
                                         <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
                                     <?php else : ?>
@@ -215,7 +215,7 @@ echo viewHelper::getViewTestTag('templateOptions');
             </div>
         </div>
         <div id="questionthemes" class="tab-pane">
-            <div class="col-lg-12 list-surveys">
+            <div class="col-12 list-surveys">
                 <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                 <!-- Installed Question Themes -->
                 <?php $this->renderPartial(

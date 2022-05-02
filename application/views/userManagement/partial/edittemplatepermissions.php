@@ -14,12 +14,12 @@ Yii::app()->getController()->renderPartial(
     <div class="container-center">
             <input type="hidden" name="userid" value="<?php echo $oUser->uid;?>" />
             <div class="list-group-item row list-group-item-info">
-                <div class="col-xs-6 text-start">
+                <div class="col-6 text-start">
                     <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-default"> 
                         <?php eT('Select all');?>
                     </button>
                 </div>
-                <div class="col-xs-6 text-end">
+                <div class="col-6 text-end">
                     <button id="UserManagement--action-userthemepermissions-select-none" class="btn btn-default"> 
                         <?php eT('Select none');?>
                     </button>
@@ -27,13 +27,13 @@ Yii::app()->getController()->renderPartial(
             </div>
             <div class="list-group">
                 <div class="list-group-item row">
-                    <div class="col-xs-6"><?php eT('Theme name');?></div>
-                    <div class="col-xs-6"><?php eT('Access');?></div>
+                    <div class="col-6"><?php eT('Theme name');?></div>
+                    <div class="col-6"><?php eT('Access');?></div>
                 </div>
                 <?php foreach ($aTemplates as $aTemplate) {?>
                     <div class="list-group-item row">
-                        <div class="col-xs-6"><?=$aTemplate['folder']?></div>
-                        <div class="col-xs-6">
+                        <div class="col-6"><?=$aTemplate['folder']?></div>
+                        <div class="col-6">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'TemplatePermissions['.$aTemplate['folder'].']',
                                 'id'=>$aTemplate['folder'].'_use',

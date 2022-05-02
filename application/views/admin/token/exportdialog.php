@@ -2,10 +2,10 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Survey participant export options"); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
             <div class="row">
-                <div class="settings-list col-sm-12 col-md-6">
+                <div class="settings-list col-12 col-lg-6">
                     <!--Survey status -->
                     <div class=" form-group control-group" data-name="tokenstatus">
                         <label class="default form-label" for="tokenstatus">
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6">
+                <div class="col-12 col-lg-6">
 
                     <!--Filter by email address -->
                     <div class=" form-group control-group" data-name="filteremail">

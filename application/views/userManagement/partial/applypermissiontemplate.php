@@ -12,7 +12,7 @@
         <?=TbHtml::formTb(null, App()->createUrl('admin/usermanagement', ['sa' => 'saveUserPermissions']), 'post', ["id"=>"UserManagement--modalform"])?>
             <input type='hidden' name='userid' value='<?php echo $oUser->uid;?>' />
             <div class="row ls-space margin top-5">
-                <div class="col-sm-12">
+                <div class="col-12">
                     Assign permission level to user:
                 </div>
             </div>
@@ -36,8 +36,8 @@
                 </select>
             </div>
             <div class="row ls-space margin top-25">
-                <button class="btn btn-success col-sm-3 col-xs-5 col-xs-offset-1" id="submitForm"><?=gT('Save')?></button>
-                <button class="btn btn-error col-sm-3 col-xs-5 col-xs-offset-1" id="exitForm"><?=gT('Cancel')?></button>
+                <button class="btn btn-success col-md-3 col-5 offset-1 offset-sm-1" id="submitForm"><?=gT('Save')?></button>
+                <button class="btn btn-error col-md-3 col-5 offset-1 offset-sm-1" id="exitForm"><?=gT('Cancel')?></button>
             </div>
         </form>
     </div>

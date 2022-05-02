@@ -7,12 +7,16 @@ echo viewHelper::getViewTestTag('expressionsConditions2Relevance');
 
 <?php
 $aSurveys = Survey::model()->findAll();
-$data= array();
-foreach ($aSurveys as $aSurvey){
+$data     = array();
+foreach ($aSurveys as $aSurvey) {
     $data += LimeExpressionManager::UnitTestConvertConditionsToRelevance($aSurvey->sid);
 }
-echo count($data) . " question(s) in your database contain conditions.  Below is the mapping of question ID number to generated relevance equation<br/>";
-echo "<pre>";
-print_r($data);
-echo "</pre>";
 ?>
+<div class="container-fluid">
+    <?php
+    echo count($data) . " question(s) in your database contain conditions.  Below is the mapping of question ID number to generated relevance equation<br/>";
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+    ?>
+</div>

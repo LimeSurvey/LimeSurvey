@@ -15,7 +15,7 @@
 
 <!-- Grid -->
 <div class="row">
-    <div class="col-lg-12 content-right">
+    <div class="col-12 content-right">
         <?php
             $surveyGrid = $this->widget('yiistrap.widgets.TbGridView', array(
             'dataProvider' => $this->model->search(),

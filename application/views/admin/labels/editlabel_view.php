@@ -11,12 +11,12 @@
     var quickaddtitle = '<?php eT('Quick-add subquestion or answer items', 'js'); ?>';
 </script>
 <div class="container-fluid">
-    <div class="col-lg-12 list-surveys">
+    <div class="col-12 list-surveys">
         <?= // DO NOT REMOVE This is for automated testing to validate we see that page
         viewHelper::getViewTestTag('createLabelSets') ?>
 
         <div class="row">
-            <div class="col-lg-12 content-right">
+            <div class="col-12 content-right">
                 <!-- Tabs -->
                 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
                     <li class="nav-item">
@@ -41,7 +41,7 @@
                         <?php echo CHtml::form(["admin/labels/sa/process"], 'post', ['class' => 'form form30 ', 'id' => 'labelsetform', 'onsubmit' => "return isEmpty(document.getElementById('label_name'), '" . gT("Error: You have to enter a name for this label set.", "js") . "')"]); ?>
                         <!-- Set name -->
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-lg-6">
                                 <label class="form-label" for='label_name'><?php eT("Set name:"); ?></label>
                                 <div class="">
                                     <?php echo CHtml::textField('label_name', $lbname ?? "", ['maxlength' => 100, 'size' => 50, 'class' => 'form-control']); ?>
@@ -49,7 +49,7 @@
                             </div>
 
                             <!-- Languages -->
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-lg-6">
                                 <label class=" form-label"><?php eT("Languages:"); ?></label>
                                 <div class="">
                                     <?php

@@ -24,11 +24,11 @@ $baseLanguage = $oSurvey->language;
 
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
 
             <!-- Search Box -->
             <div class="row">
-                <div class="col-lg-12 ls-flex ls-flex-row">
+                <div class="col-12 ls-flex ls-flex-row">
                     <div class="ls-flex-item text-start">
                         <?php App()->getController()->renderPartial(
                             '/admin/survey/surveybar_addgroupquestion',
@@ -91,7 +91,7 @@ $baseLanguage = $oSurvey->language;
             <hr/>
             <!-- Grid -->
             <div class="row ls-space margin top-10">
-                <div class="col-lg-12">
+                <div class="col-12">
                     <?php
                         $massiveAction = Yii::app()->getController()->renderPartial(
                             '/admin/survey/Question/massive_actions/_selector',
@@ -104,7 +104,7 @@ $baseLanguage = $oSurvey->language;
                             'id'           => 'question-grid',
                             'emptyText'    => gT('No questions found.'),
                             'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
-                            'template'     => "{items}\n<div id='questionListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                            'template'     => "{items}\n<div id='questionListPager'><div class=\"col-md-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
                             'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                                 . sprintf(
                                     gT('%s rows per page'),

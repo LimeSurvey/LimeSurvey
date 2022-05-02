@@ -8,7 +8,7 @@
     <h3><?php eT("Edit survey settings");?></h3>
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 content-right">
+            <div class="col-12 content-right">
                 <h3>Generate a logic file for the survey</h3>
                 <?=TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post')?>
                     <div class="form-group">

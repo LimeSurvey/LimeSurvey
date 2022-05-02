@@ -15,29 +15,29 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
 ?>
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "userControl.js" ?>" type="text/javascript"></script>
 <div id="pjax-content">
-    <div class="col-lg-12 list-surveys">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-12 content-right">
+            <div class="col-12 list-surveys">
                 <div id='usercontrol-1'>
                     <?php
                     if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                        $attribute = ['class' => 'col-md-6 col-md-offset-1 '];
+                        $attribute = ['class' => 'col-lg-6 offset-lg-1 '];
                         echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeBlacklistValues'), 'post', $attribute);
                         $options = ['Y' => gT('Yes', 'unescaped'), 'N' => gT('No', 'unescaped')];
                         ?>
                         <div class="row ls-space margin top-10 bottom-10">
                             <div class="form-group">
-                                <label class='form-label col-sm-8'>
+                                <label class='form-label col-md-8'>
                                     <?php eT('Blacklist all current surveys for participant once the global field is set:'); ?>
                                 </label>
-                                <div class='col-sm-3'>
+                                <div class='col-md-3'>
                                     <?php $this->widget(
                                         'yiiwheels.widgets.switch.WhSwitch',
                                         [
-                                            'name'     => 'blacklistallsurveys',
-                                            'onLabel'  => gT('Yes'),
+                                            'name' => 'blacklistallsurveys',
+                                            'onLabel' => gT('Yes'),
                                             'offLabel' => gT('No'),
-                                            'value'    => $blacklistallsurveys === 'Y' ? '1' : 0
+                                            'value' => $blacklistallsurveys === 'Y' ? '1' : 0
                                         ]
                                     ); ?>
                                 </div>
@@ -45,17 +45,17 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                         </div>
                         <div class="row ls-space margin top-10 bottom-10">
                             <div class="form-group">
-                                <label class='form-label col-sm-8'>
+                                <label class='form-label col-md-8'>
                                     <?php eT('Blacklist participant for any new added survey once the global field is set:'); ?>
                                 </label>
-                                <div class='col-sm-3'>
+                                <div class='col-md-3'>
                                     <?php $this->widget(
                                         'yiiwheels.widgets.switch.WhSwitch',
                                         [
-                                            'name'     => 'blacklistnewsurveys',
-                                            'onLabel'  => gT('Yes'),
+                                            'name' => 'blacklistnewsurveys',
+                                            'onLabel' => gT('Yes'),
                                             'offLabel' => gT('No'),
-                                            'value'    => $blacklistnewsurveys === 'Y' ? '1' : 0
+                                            'value' => $blacklistnewsurveys === 'Y' ? '1' : 0
                                         ]
                                     ); ?>
                                 </div>
@@ -63,17 +63,17 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                         </div>
                         <div class="row ls-space margin top-10 bottom-10">
                             <div class="form-group">
-                                <label class='form-label col-sm-8'>
+                                <label class='form-label col-md-8'>
                                     <?php eT('Prevent blacklisted participants from being added to a survey:'); ?>
                                 </label>
-                                <div class='col-sm-3'>
+                                <div class='col-md-3'>
                                     <?php $this->widget(
                                         'yiiwheels.widgets.switch.WhSwitch',
                                         [
-                                            'name'     => 'blockaddingtosurveys',
-                                            'onLabel'  => gT('Yes'),
+                                            'name' => 'blockaddingtosurveys',
+                                            'onLabel' => gT('Yes'),
                                             'offLabel' => gT('No'),
-                                            'value'    => $blockaddingtosurveys === 'Y' ? '1' : 0
+                                            'value' => $blockaddingtosurveys === 'Y' ? '1' : 0
                                         ]
                                     ); ?>
                                 </div>
@@ -81,17 +81,17 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                         </div>
                         <div class="row ls-space margin top-10 bottom-10">
                             <div class="form-group">
-                                <label class='form-label col-sm-8'>
+                                <label class='form-label col-md-8'>
                                     <?php eT('Hide blacklisted participants:'); ?>
                                 </label>
-                                <div class='col-sm-3'>
+                                <div class='col-md-3'>
                                     <?php $this->widget(
                                         'yiiwheels.widgets.switch.WhSwitch',
                                         [
-                                            'name'     => 'hideblacklisted',
-                                            'onLabel'  => gT('Yes'),
+                                            'name' => 'hideblacklisted',
+                                            'onLabel' => gT('Yes'),
                                             'offLabel' => gT('No'),
-                                            'value'    => $hideblacklisted === 'Y' ? '1' : 0
+                                            'value' => $hideblacklisted === 'Y' ? '1' : 0
                                         ]
                                     ); ?>
                                 </div>
@@ -99,17 +99,17 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                         </div>
                         <div class="row ls-space margin top-10 bottom-10">
                             <div class="form-group">
-                                <label class='form-label col-sm-8'>
-                                    <?php eT('Delete globally blacklisted participant from the database:'); ?>
+                                <label class='form-label col-md-8'>
+                                    <?php eT( 'Delete globally blacklisted participant from the database:'); ?>
                                 </label>
-                                <div class='col-sm-3'>
+                                <div class='col-md-3'>
                                     <?php $this->widget(
                                         'yiiwheels.widgets.switch.WhSwitch',
                                         [
-                                            'name'     => 'deleteblacklisted',
-                                            'onLabel'  => gT('Yes'),
+                                            'name' => 'deleteblacklisted',
+                                            'onLabel' => gT('Yes'),
                                             'offLabel' => gT('No'),
-                                            'value'    => $deleteblacklisted === 'Y' ? '1' : 0
+                                            'value' => $deleteblacklisted === 'Y' ? '1' : 0
                                         ]
                                     ); ?>
                                 </div>
@@ -117,17 +117,17 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                         </div>
                         <div class="row ls-space margin top-10 bottom-10">
                             <div class="form-group">
-                                <label class='form-label col-sm-8'>
+                                <label class='form-label col-md-8'>
                                     <?php eT('Allow participant to unblacklist himself/herself:'); ?>
                                 </label>
-                                <div class='col-sm-3'>
+                                <div class='col-md-3'>
                                     <?php $this->widget(
                                         'yiiwheels.widgets.switch.WhSwitch',
                                         [
-                                            'name'     => 'allowunblacklist',
-                                            'onLabel'  => gT('Yes'),
+                                            'name' => 'allowunblacklist',
+                                            'onLabel' => gT('Yes'),
                                             'offLabel' => gT('No'),
-                                            'value'    => $allowunblacklist === 'Y' ? '1' : 0
+                                            'value' => $allowunblacklist === 'Y' ? '1' : 0
                                         ]
                                     ); ?>
                                 </div>
@@ -135,10 +135,10 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                         </div>
                         <div class="row ls-space margin top-25 bottom-10">
                             <div class="form-group">
-                                <div class='col-sm-8'>
+                                <div class='col-md-8'>
                                 </div>
-                                <div class='col-sm-3'>
-                                    <?php echo CHtml::submitButton('submit', ['value' => gT('Save'), 'class' => 'btn btn-success col-sm-12']); ?>
+                                <div class='col-md-3'>
+                                    <?php echo CHtml::submitButton('submit', ['value' => gT('Save'), 'class' => 'btn btn-success col-12']); ?>
                                 </div>
                             </div>
                         </div>

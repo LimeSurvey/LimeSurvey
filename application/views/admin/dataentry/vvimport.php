@@ -2,8 +2,8 @@
 <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>''));?>
     <?php if($tableExists):?>
         <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-6 text-start">
+        <div class="col-12">
+            <div class="col-lg-6 text-start">
                 <h4>
                     <?php  eT("Import a VV response data file"); ?>
                 </h4>
@@ -15,7 +15,7 @@
     
 
         <div class="row">
-            <div class="col-lg-12 content-right">
+            <div class="col-12 content-right">
 
 <?php
     if ($tableExists) {

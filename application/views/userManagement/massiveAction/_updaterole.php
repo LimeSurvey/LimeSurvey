@@ -5,7 +5,7 @@
 <div class="modal-body selector--edit-role-container">
     <div class="container-center form">        
         <div class="row">
-            <div class="col-xs-12 alert alert-info">
+            <div class="col-12 alert alert-info">
                 <?=gT("Careful: Applying a role to the user will overwrite any individual permissions given to the user!")?>
             </div>
         </div>

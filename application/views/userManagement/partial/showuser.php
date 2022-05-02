@@ -8,20 +8,20 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body">
     <div class="container-center list-group">
         <div class="row list-group-item">
-            <div class="col-sm-4"><?=gT('User groups')?>:</div>
-            <div class="col-sm-8"><?=join(', ',$usergroups)?></div>
+            <div class="col-md-4"><?=gT('User groups')?>:</div>
+            <div class="col-md-8"><?=join(', ',$usergroups)?></div>
         </div>
         <div class="row list-group-item">
-            <div class="col-sm-4"><?=gT('Created by')?>:</div>
-            <div class="col-sm-8"><?=$oUser->parentUser['full_name']?></div>
+            <div class="col-md-4"><?=gT('Created by')?>:</div>
+            <div class="col-md-8"><?=$oUser->parentUser['full_name']?></div>
         </div>
         <div class="row list-group-item">
-            <div class="col-sm-4"><?=gT('Survey created')?>:</div>
-            <div class="col-sm-8"><?=$oUser->surveysCreated?></div>
+            <div class="col-md-4"><?=gT('Survey created')?>:</div>
+            <div class="col-md-8"><?=$oUser->surveysCreated?></div>
         </div>
         <div class="row list-group-item">
-            <div class="col-sm-4"><?=gT('Last login')?>:</div>
-            <div class="col-sm-8"><?=$oUser->lastloginFormatted?></div>
+            <div class="col-md-4"><?=gT('Last login')?>:</div>
+            <div class="col-md-8"><?=$oUser->lastloginFormatted?></div>
         </div>
         <div class="row ls-space margin top-15 bottom-15">
         </div>

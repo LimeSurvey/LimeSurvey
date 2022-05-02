@@ -1,7 +1,7 @@
 <?php
-$colClass = 'col-md-4 col-sm-12';
+$colClass = 'col-lg-4 col-md-12';
 if (!isset($datestamp) || $datestamp == "N"){
-    $colClass = 'col-md-6 col-sm-12';
+    $colClass = 'col-lg-6 col-md-12';
 }
 ?>
 <h4 class="h4"><?php
@@ -35,7 +35,7 @@ if (!isset($datestamp) || $datestamp == "N"){
 <?php
 if (isset($datestamp) && $datestamp == "Y"): ?>
     <div class="row">
-        <div class="col-md-4 col-sm-12">
+        <div class="col-lg-4 col-md-12">
             <div class='form-group'>
                 <label class="form-label" for='datestampE'><?php
                     eT("Submission date equals:"); ?></label>
@@ -70,7 +70,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-lg-4 col-md-12">
             <div class='form-group'>
                 <label class="form-label" for='datestampG'><?php
                     eT("Submission date later than:"); ?></label>
@@ -106,7 +106,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-lg-4 col-md-12">
             <div class='form-group top-5'>
                 <label class="form-label" for='datestampL'><?php
                     eT("Submission date earlier than:"); ?></label>

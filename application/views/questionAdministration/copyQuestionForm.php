@@ -34,7 +34,7 @@
                 value='<?php eT("Copy question"); ?>'
         />
         <!-- The tabs & tab-fanes -->
-        <div class="col-sm-12 col-md-7 content-right">
+        <div class="col-12 col-lg-7 content-right">
             <?php
             //rendering the language tabs (questioncode, questiontext, questionhelp)
             $this->renderPartial(
@@ -49,7 +49,7 @@
         </div>
 
         <!-- The Accordion -->
-        <div class="col-sm-12 col-md-5" id="accordion-container" style="background-color: #fff; z-index: 2;">
+        <div class="col-12 col-lg-5" id="accordion-container" style="background-color: #fff; z-index: 2;">
             <?php // TODO : find why the $groups can't be generated from controller?>
             <div id='questionbottom'>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">

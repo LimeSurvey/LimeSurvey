@@ -23,7 +23,7 @@
             'filter'          => $oQuestionTheme,
             'id'              => 'questionthemes-grid',
             'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
-            'template'                 => "{items}\n<div id='questionthemeListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+            'template'                 => "{items}\n<div id='questionthemeListPager'><div class=\"col-md-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
             'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                 gT('%s rows per page'),
                 CHtml::dropDownList(
@@ -44,14 +44,14 @@
                     'header'      => gT('Name'),
                     'name'        => 'name',
                     'value'       => '$data->name',
-                    'htmlOptions' => array('class' => 'col-md-2'),
+                    'htmlOptions' => array('class' => 'col-lg-2'),
                 ),
 
                 array(
                     'header'      => gT('Description'),
                     'name'        => 'description',
                     'value'       => '$data->description',
-                    'htmlOptions' => array('class' => 'col-md-3'),
+                    'htmlOptions' => array('class' => 'col-lg-3'),
                     'type'        => 'raw',
                 ),
 
@@ -60,7 +60,7 @@
                     'name'        => 'core_theme',
                     'value'       => '($data->core_theme == 1) ? gT("Core Theme") : gT("User Theme")',
                     'type'        => 'raw',
-                    'htmlOptions' => array('class' => 'col-md-2'),
+                    'htmlOptions' => array('class' => 'col-lg-2'),
                     "filter"      => array(1 => gT("Core Theme"), 0 => gT('User Theme'))
                 ),
 
@@ -68,7 +68,7 @@
                     'header'      => gT('Extends'),
                     'name'        => 'extends',
                     'value'       => '$data->extends',
-                    'htmlOptions' => array('class' => 'col-md-2'),
+                    'htmlOptions' => array('class' => 'col-lg-2'),
                 ),
                 array(
                     'header'            => gT('Visibility'),
@@ -76,7 +76,7 @@
                     'name'              => 'visible',
                     'value'             => '$data->getVisibilityButton()',
                     'type'              => 'raw',
-                    'htmlOptions'       => array('class' => 'col-md-1'),
+                    'htmlOptions'       => array('class' => 'col-lg-1'),
                     "filter"            => array('N' => gT("Off"), 'Y' => gT('On')),
                 )
             ),

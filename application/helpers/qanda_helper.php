@@ -2315,7 +2315,7 @@ function do_numerical($ia)
     }
     if (trim($aQuestionAttributes['text_input_width']) != '') {
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
-        $extraclass .= " col-sm-" . trim($col);
+        $extraclass .= " col-md-" . trim($col);
         $withColumn = true;
     } else {
         $withColumn = false;
@@ -2413,7 +2413,7 @@ function do_shortfreetext($ia)
 
     if (trim($aQuestionAttributes['text_input_width']) != '' && intval(trim($aQuestionAttributes['location_mapservice'])) == 0) {
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
-        $extraclass .= " col-sm-" . trim($col);
+        $extraclass .= " col-md-" . trim($col);
         $withColumn = true;
     } else {
         $withColumn = false;
@@ -2714,7 +2714,7 @@ function do_longfreetext($ia)
     if (trim($aQuestionAttributes['text_input_width']) != '') {
         // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
         $col         = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
-        $extraclass .= " col-sm-" . trim($col);
+        $extraclass .= " col-md-" . trim($col);
         $withColumn = true;
     } else {
         $withColumn = false;
@@ -2791,7 +2791,7 @@ function do_hugefreetext($ia)
     }
     if (trim($aQuestionAttributes['text_input_width']) != '') {
         $col = ($aQuestionAttributes['text_input_width'] <= 12) ? $aQuestionAttributes['text_input_width'] : 12;
-        $extraclass .= " col-sm-" . trim($col);
+        $extraclass .= " col-md-" . trim($col);
         $withColumn = true;
     } else {
         $withColumn = false;

@@ -9,7 +9,7 @@
  */
 ?>
 <!-- _statisticsoutput_header -->
-<div class="col-lg-<?php echo $nbcols; ?> col-sm-12 statisticsbloc" >
+<div class="col-xl-<?php echo $nbcols; ?> col-md-12 statisticsbloc" >
 <table class='statisticstable table table-bordered printable' id="quid_<?php echo $outputs['parentqid'];?>">
     <thead>
         <tr class='success'>

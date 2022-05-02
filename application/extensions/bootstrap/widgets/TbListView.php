@@ -39,7 +39,7 @@ class TbListView extends CListView
     /**
      * @var string the template to be used to control the layout of various sections in the view.
      */
-    public $template = "<div class=\"row\"><div class=\"col-md-offset-6 col-md-6\">{sorter}</div></div>{items}\n<div class=\"row\"><div class=\"col-md-6\">{pager}</div><div class=\"col-md-6\">{summary}</div></div>";
+    public $template = "<div class=\"row\"><div class=\"offset-lg-6 col-lg-6\">{sorter}</div></div>{items}\n<div class=\"row\"><div class=\"col-md-6\">{pager}</div><div class=\"col-md-6\">{summary}</div></div>";
 
     /**
      * Renders the empty message when there is no data.

@@ -363,29 +363,6 @@ class HomepageSettingsController extends LSBaseController
     }
 
     /**
-     * Manages all models.
-     *
-     * todo: remove this action, see comments below
-     * Action is not accessible via homepagesetting site ..(user can't accees it)
-     * Maybe it was for research/testing/experimental reason ?!?
-     *
-     * Furthermore it does not work (problems with breadcrumbs )
-     */
-    /*
-    public function actionAdmin()
-    {
-        $model = new Box('search');
-        $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['Box'])) {
-            $model->attributes = $_GET['Box'];
-        }
-
-        $this->render('admin',[
-            'model' => $model
-        ]);
-    } */
-
-    /**
      * Performs the AJAX validation.
      *
      * @param Box $model the model to be validated

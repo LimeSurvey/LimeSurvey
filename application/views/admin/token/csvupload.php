@@ -9,7 +9,7 @@
     <h3><?php eT("Import survey participants from CSV file"); ?></h3>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/import/surveyid/{$iSurveyId}"), 'post', array('id'=>'tokenimport', 'name'=>'tokenimport', 'class'=>'', 'enctype'=>'multipart/form-data')); ?>
 
                 <!-- Choose the CSV file to upload -->

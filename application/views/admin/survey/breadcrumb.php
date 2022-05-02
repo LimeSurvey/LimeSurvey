@@ -3,7 +3,7 @@
     $title = isset($title) ? $title : '';
 ?>
 <div class='row container-fluid  ls-space padding left-0'>
-    <div class="col-sm-12 ls-space padding left-0">
+    <div class="col-12 ls-space padding left-0">
         <div id="breadcrumb-container" class="ls-ba">
             <div class="">
                 <ol class="breadcrumb ls-flex-row align-items-center align-content-flex-start <?php echo $extraClass?>">

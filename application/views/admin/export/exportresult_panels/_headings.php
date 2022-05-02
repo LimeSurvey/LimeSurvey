@@ -9,10 +9,10 @@
 
     <!-- Headers -->
     <div class="form-group row">
-        <label class="col-sm-12 form-label" for=''>
+        <label class="col-md-12 form-label" for=''>
         <?php eT("Export questions as:"); ?>
       </label>
-      <div class="btn-group col-sm-12" data-toggle="buttons">
+      <div class="btn-group col-md-12" data-toggle="buttons">
         <?php foreach($headexports as $type=>$headexport):?>
           <label class="btn btn-default <?php if($headexport['checked']=='checked'){ echo 'active';}?>">
             <input value="<?php echo $type; ?>" id="headstyle-<?php echo $type; ?>" type="radio" name="headstyle" <?php if($headexport[ 'checked']=='checked' ){ echo 'checked';} ?> />
@@ -24,10 +24,10 @@
 
     <!-- Strip HTML -->
     <div class="form-group row">
-      <label class="col-sm-12 form-label" for='striphtmlcode'>
+      <label class="col-md-12 form-label" for='striphtmlcode'>
         <?php eT("Strip HTML code:"); ?>
       </label>
-      <div class='col-sm-12'>
+      <div class='col-md-12'>
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'striphtmlcode',
             'id'=>'striphtmlcode',
@@ -40,10 +40,10 @@
 
     <!-- Convert spaces -->
     <div class="form-group row">
-      <label class="col-sm-12 form-label" for='headspacetounderscores'>
+      <label class="col-md-12 form-label" for='headspacetounderscores'>
         <?php eT("Convert spaces in question text to underscores:"); ?>
       </label>
-      <div class='col-sm-12'>
+      <div class='col-md-12'>
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'headspacetounderscores',
             'id'=>'headspacetounderscores',
@@ -56,10 +56,10 @@
 
     <!-- Text abbreviated-->
     <div class="form-group row">
-      <label class="col-sm-12 form-label" for='abbreviatedtext'>
+      <label class="col-md-12 form-label" for='abbreviatedtext'>
         <?php eT("Text abbreviated:"); ?>
       </label>
-      <div class='col-sm-12'>
+      <div class='col-md-12'>
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'abbreviatedtext',
             'id'=>'abbreviatedtext',
@@ -72,10 +72,10 @@
 
     <!-- Use ExpressionScript Engine code-->
     <div class="form-group row">
-      <label class="col-sm-12 form-label" for='emcode'>
+      <label class="col-md-12 form-label" for='emcode'>
         <?php eT("Use ExpressionScript code:"); ?>
       </label>
-      <div class='col-sm-12'>
+      <div class='col-md-12'>
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'emcode',
             'id'=>'emcode',
@@ -87,19 +87,19 @@
     </div>
 
     <div class="form-group row">
-      <label for='abbreviatedtextto' class="col-sm-12 form-label">
+      <label for='abbreviatedtextto' class="col-md-12 form-label">
         <?php eT("Number of characters:"); ?>
       </label>
-      <div class="col-sm-12">
+      <div class="col-md-12">
         <input min="1" step="1" type="number" value="15" name="abbreviatedtextto" id="abbreviatedtextto" class="form-control" />
       </div>
     </div>
 
     <div class="form-group row">
-      <label for='codetextseparator' class="col-sm-12 form-label">
+      <label for='codetextseparator' class="col-md-12 form-label">
         <?php eT("Code/text separator:"); ?>
       </label>
-      <div class="col-sm-12">
+      <div class="col-md-12">
         <input size="4" type="text" value=". " name="codetextseparator" id="codetextseparator" class="form-control" />
       </div>
     </div>

@@ -24,7 +24,7 @@ App()->getClientScript()->registerScriptFile(
     <div class="container-fluid">
         <div class='row'>
 
-            <div class="col-lg-6">
+            <div class="col-xl-6">
 
                 <!-- View buttons -->
                 <?php if (isset($labelbar['buttons']['view'])) : ?>
@@ -85,7 +85,7 @@ App()->getClientScript()->registerScriptFile(
             </div>
 
             <!-- Right action buttons -->
-            <div class="col-lg-6 text-end">
+            <div class="col-xl-6 text-end">
                 <!-- Export Multiple -->
                 <?php if (count($labelsets) > 0) : ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>

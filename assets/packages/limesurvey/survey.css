@@ -36,8 +36,8 @@
   clip: rect(0, 0, 0, 0);
 }
 
-.form-horizontal .control-label.col-sm-12 {text-align: left;}
-.dir-rtl .form-horizontal .control-label.col-sm-12 {text-align: right;}
+.form-horizontal .control-label.col-12 {text-align: left;}
+.dir-rtl .form-horizontal .control-label.col-12 {text-align: right;}
 /** ls-label-xs-visibility : set sr-only by default : template can reinit it with initial */
 .ls-label-xs-visibility{
   position:absolute;

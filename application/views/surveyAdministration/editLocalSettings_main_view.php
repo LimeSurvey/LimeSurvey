@@ -6,11 +6,11 @@
  * @var Survey $oSurvey
  */
 
-$templateData['oSurvey'] = $oSurvey;
-$templateData['oSurveyOptions'] = $oSurvey->oOptionLabels;
-$templateData['bShowInherited'] = $oSurvey->showInherited;
+$templateData['oSurvey']         = $oSurvey;
+$templateData['oSurveyOptions']  = $oSurvey->oOptionLabels;
+$templateData['bShowInherited']  = $oSurvey->showInherited;
 $templateData['bShowAllOptions'] = true;
-$templateData['optionsOnOff'] = $optionsOnOff;
+$templateData['optionsOnOff']    = $optionsOnOff;
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyGeneralSettings');
@@ -19,7 +19,8 @@ Yii::app()->getClientScript()->registerScript("editLocalSettings_formid_" . $ent
     "
 var formId = '" . $entryData['name'] . "';
 ",
-    LSYii_ClientScript::POS_BEGIN);
+    LSYii_ClientScript::POS_BEGIN
+);
 
 $count = 0;
 if (isset($scripts)) {
@@ -27,13 +28,11 @@ if (isset($scripts)) {
 }
 ?>
 <!-- START editLocalSettings -->
-<div class="row col-12">
-    <h3 class="pagetitle"><?php eT($entryData['title']); ?></h3>
-
-    <!-- Edition container -->
-
-    <!-- Form -->
-    <div class="col-xs-12">
+<div class="row">
+    <div class="col-12">
+        <h3 class="pagetitle"><?php eT($entryData['title']); ?></h3>
+        <!-- Edition container -->
+        <!-- Form -->
         <?php
         if (empty($templateData['noform']) || $templateData['noform'] !== true) {
             echo CHtml::form(["admin/database/index/" . $entryData['action']], 'post', ['id' => $entryData['name'], 'name' => $entryData['name'], 'class' => ' form30']);
@@ -112,6 +111,7 @@ $('.text-option-inherit').on('change', function(e){
     }
 });
 ",
-    LSYii_ClientScript::POS_POSTSCRIPT);
+    LSYii_ClientScript::POS_POSTSCRIPT
+);
 
 ?>

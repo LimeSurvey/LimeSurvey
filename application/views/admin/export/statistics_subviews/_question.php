@@ -86,14 +86,14 @@
                         ."</div>
 
                         <div class='form-group row'>
-                        <label for='".$myfield2."' class='col-sm-4 form-label'>".gT("Number greater than:")."</label>
-                        <div class='col-sm-6'>"
+                        <label for='".$myfield2."' class='col-md-4 form-label'>".gT("Number greater than:")."</label>
+                        <div class='col-md-6'>"
                         .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
                         ."</div>
                         </div>
                         <div class='form-group row'>
-                        <label for='N".$myfield3."' class='col-sm-4 form-label'>".gT("Number less than:")."</label>
-                        <div class='col-sm-6'>"
+                        <label for='N".$myfield3."' class='col-md-4 form-label'>".gT("Number less than:")."</label>
+                        <div class='col-md-6'>"
                         .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
                         ."</div>
                         </div>";                
@@ -114,7 +114,7 @@
                 $count = 0;
                 foreach($result[$key1] as $row)
                 {
-                    echo '<div class="row"><div class="col-sm-12">';
+                    echo '<div class="row"><div class="col-md-12">';
 
                     //we have one input field for each answer
                     $myfield2 = "Q".$myfield.$row['title'];
@@ -198,14 +198,14 @@
                 $myfield3="N{$myfield}L";
                 echo " 
                 <div class='form-group row'>
-                <label for='".$myfield2."' class='col-sm-4 form-label'>".gT("Number greater than:")."</label>
-                <div class='col-sm-6'>"
+                <label for='".$myfield2."' class='col-md-4 form-label'>".gT("Number greater than:")."</label>
+                <div class='col-md-6'>"
                 .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>
                 <div class='form-group row'>
-                <label for='N".$myfield3."' class='col-sm-4 form-label'>".gT("Number less than:")."</label>
-                <div class='col-sm-6'>"
+                <label for='N".$myfield3."' class='col-md-4 form-label'>".gT("Number less than:")."</label>
+                <div class='col-md-6'>"
                 .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>";                
@@ -219,14 +219,14 @@
                 $myfield3 = "{$myfield}L";
                 echo"
                 <div class='form-group row'>
-                <label for='".$myfield2."' class='col-sm-4 form-label'>".gT("Number of files greater than:")."</label>
-                <div class='col-sm-6'>"
+                <label for='".$myfield2."' class='col-md-4 form-label'>".gT("Number of files greater than:")."</label>
+                <div class='col-md-6'>"
                 .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>
                 <div class='form-group row'>
-                <label for='N".$myfield3."' class='col-sm-4 form-label'>".gT("Number of files less than:")."</label>
-                <div class='col-sm-6'>"
+                <label for='N".$myfield3."' class='col-md-4 form-label'>".gT("Number of files less than:")."</label>
+                <div class='col-md-6'>"
                 .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>";                
@@ -264,8 +264,8 @@
                 echo $oStatisticsHelper::_showSpeaker($niceqtext)."
 
                 <div class='form-group row' style='margin-top:1em;'>
-                <label for='".$myfield3."' class='col-sm-4 col-form-label smalltext'>".gT("Date equals:")."</label>
-                <div class='col-sm-8'>";
+                <label for='".$myfield3."' class='col-md-4 col-form-label smalltext'>".gT("Date equals:")."</label>
+                <div class='col-md-8'>";
                 Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                     'name' => $myfield3,
                     'id' => $myfield3,
@@ -295,8 +295,8 @@
                 </div>
               </div>
               <div class='form-group row'>
-              <label for='".$myfield4."' class='col-sm-4 col-form-label smalltext'>".gT("Date is >= :")."</label>
-              <div class='col-sm-8'>";
+              <label for='".$myfield4."' class='col-md-4 col-form-label smalltext'>".gT("Date is >= :")."</label>
+              <div class='col-md-8'>";
               Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                   'name' => $myfield4,
                   'id' => $myfield4,
@@ -326,8 +326,8 @@
               </div>
             </div>
             <div class='form-group row'>
-            <label for='".$myfield5."' class='col-sm-4 col-form-label smalltext'>".gT("And/or Date is <= :")."</label>
-            <div class='col-sm-8'>";
+            <label for='".$myfield5."' class='col-md-4 col-form-label smalltext'>".gT("And/or Date is <= :")."</label>
+            <div class='col-md-8'>";
             Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                 'name' => $myfield5,
                 'id' => $myfield5,

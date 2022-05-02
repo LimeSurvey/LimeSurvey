@@ -10,7 +10,7 @@
     <?php echo $form->errorSummary($oQuota); ?>
         
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-xl-4">
                 <?php echo $form->hiddenField($oQuota,'id'); ?>
                 <div class="form-group">
                     <?php echo $form->labelEx($oQuota,'name',array('class'=>'form-label ')); ?>
@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="form-group col-sm-6">
+                <div class="form-group col-md-6">
                     <?php echo $form->labelEx($oQuota,'active',array('class'=>'form-label ')); ?>
                     <div class=''>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 
-                <div class="form-group col-sm-6">
+                <div class="form-group col-md-6">
                     <?php echo $form->labelEx($oQuota,'autoload_url',array('class'=>'form-label ')); ?>
                     <div class=''>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -68,7 +68,7 @@
                 </div>
 
             </div>
-            <div class="col-lg-8">
+            <div class="col-xl-8">
                 <?php $this->renderPartial('/admin/quotas/_form_langsettings',
                     array(
                         'form'=>$form,

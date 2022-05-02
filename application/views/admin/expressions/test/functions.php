@@ -8,12 +8,12 @@ $aFunctions = ExpressionManager::GetAllowableFunctions();
 ?>
 <div class="container container-center">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-12">
             <h3>Functions available within ExpressionScript Engine</h3>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-12">
             <table border='1' class='table' id="selector__EmAvailFunctions">
                 <thead>
                     <tr>

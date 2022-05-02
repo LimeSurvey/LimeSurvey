@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 <div class="row ls-flex-row align-content-center align-items-center">
-<div class="form col-sm-10">
+<div class="form col-md-10">
 <?php $updateRigth = $aRigths['update'] ?>
 
 <?php
@@ -79,7 +79,7 @@
 
     <?php if ($updateRigth) : ?>
     <div class="hidden">
-            <?php echo TbHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn btn-success col-md-2 col-sm-4', "id"=>"surveys-groups-form-submit")); ?>
+            <?php echo TbHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn btn-success col-lg-2 col-md-4', "id"=>"surveys-groups-form-submit")); ?>
     </div>
     <?php endif?>
 
