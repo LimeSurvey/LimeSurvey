@@ -45,7 +45,7 @@ echo viewHelper::getViewTestTag('exportSpss');
         <div class="form-group row">
             <label for='exportlang'  class='col-sm-2  form-form-label'><?php eT("Language:");?></label>
             <div class="col-sm-2">
-                <?php echo CHtml::dropDownList('exportlang', $sBaseLanguage, $aLanguages, array('class'=>'form-control')); ?>
+                <?php echo CHtml::dropDownList('exportlang', $sBaseLanguage, $aLanguages, array('class'=>'form-select')); ?>
             </div>
         </div>
         <?php } else { ?>

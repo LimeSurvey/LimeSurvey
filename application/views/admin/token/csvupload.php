@@ -25,7 +25,7 @@
                     <label class=" form-label" for='csvcharset'><?php eT("Character set of the file:"); ?></label>
                     <div class="">
                         <?php
-                            echo CHtml::dropDownList('csvcharset', $thischaracterset, $aEncodings, array('size' => '1', 'class'=>'form-control'));
+                            echo CHtml::dropDownList('csvcharset', $thischaracterset, $aEncodings, array('size' => '1', 'class'=>'form-select'));
                         ?>
                     </div>
                 </div>

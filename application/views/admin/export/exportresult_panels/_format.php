@@ -28,7 +28,7 @@
         <?php eT("CSV field separator:");?>
       </label>
       <div class="">
-        <?php echo CHtml::dropDownList('csvfieldseparator', null, $aCsvFieldSeparator, array('class'=>'form-control')); ?>
+        <?php echo CHtml::dropDownList('csvfieldseparator', null, $aCsvFieldSeparator, array('class'=>'form-select')); ?>
       </div>
     </div>
     </div>

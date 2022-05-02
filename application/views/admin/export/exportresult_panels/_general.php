@@ -29,7 +29,7 @@
         <?php eT("Export language:"); ?>
       </label>
       <div class=''>
-        <?php echo CHtml::dropDownList('exportlang', null, $aLanguages, array('class'=>'form-control')); ?>
+        <?php echo CHtml::dropDownList('exportlang', null, $aLanguages, array('class'=>'form-select')); ?>
       </div>
     </div>
   </div>

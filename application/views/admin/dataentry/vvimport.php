@@ -89,7 +89,7 @@
                     <?php eT("Character set of the file:"); ?>
                 </label>
                 <div class="">
-                    <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('class'=>'form-control', 'empty' => gT('Automatic (UTF-8)'))); ?>
+                    <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('class'=>'form-select', 'empty' => gT('Automatic (UTF-8)'))); ?>
                 </div>
             </div>
 
