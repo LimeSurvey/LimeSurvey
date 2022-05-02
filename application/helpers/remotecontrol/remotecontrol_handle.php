@@ -1457,7 +1457,7 @@ class remotecontrol_handle
                     fixLanguageConsistency($iSurveyID);
                     $iNewqid = $aImportResults['newqid'];
 
-                    $oQuestion = Question::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid));
+                    $oQuestion = Question::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid, 'language' => $oSurvey->language));
                     if ($sNewQuestionTitle != null) {
                                             $oQuestion->setAttribute('title', $sNewQuestionTitle);
                     }
@@ -1482,6 +1482,17 @@ class remotecontrol_handle
                     } catch (Exception $e) {
                         // no need to throw exception
                     }
+
+                    // Set title for other languages
+                    $additionalLanguages = $oSurvey->getAdditionalLanguages();
+                    if ($sNewQuestionTitle != null && !empty($additionalLanguages)) {
+                        foreach ($additionalLanguages as $language) {
+                            $oQuestion = Question::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid, 'language' => $language));
+                            $oQuestion->setAttribute('title', $sNewQuestionTitle);
+                            $oQuestion->save();
+                        }
+                    }
+
                     return (int) $aImportResults['newqid'];
                 }
             } else {
