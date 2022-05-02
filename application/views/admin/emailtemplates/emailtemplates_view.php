@@ -92,11 +92,13 @@ var LS = LS || {};  // namespace
         <div class='modal-content'>
             <div class='modal-header'>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
-                <h4 class="modal-title"><?php eT("Condition");?></h4>
+                <label for='attachment-relevance-condition' class="h4 modal-title"><?php eT("Condition");?></label>
             </div>
             <div class='modal-body'>
-                <div class='form-group'>
-                    <textarea class='form-control'></textarea>
+                <div class='input-group'>
+                    <div class="input-group-addon">{</div>
+                    <textarea class='form-control' id='attachment-relevance-condition'></textarea>
+                    <div class="input-group-addon">}</div>
                 </div>
             </div>
             <div class='modal-footer'>
