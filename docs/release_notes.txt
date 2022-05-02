@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.8 (build 220426) to 3.28.9 (build 220503) May 2, 2022
+-Fixed issue: Kurdish (Kurmanji) is shown as RTL language but it is LTR (Carsten Schmitz)
+-Fixed issue #17804: InputOnDemand is not loading all prior rows when navigating back (#2342) (Gabriel Jenik)
+-Fixed issue #17174: Array dual scale doesn't show previously selected value when come back to same page (#2372) (Gabriel Jenik)
+#Updated translation: Thai by adzpire, tomzt
+#Updated translation: Swedish by c_schmitz, maxzomborszki
+#Updated translation: Spanish (Chile) by c_schmitz, corzel, eddylackmann, ireneoh, jmlopez, larjona, oleggorfinkel, segui, SirCrovax
+#Updated translation: Portuguese (Portugal) by brownst, c_schmitz, pmduque, samarta, soniagouveia, tamiel
+#Updated translation: Hungarian by c_schmitz, kkd, pivostar, vargazsoltivan
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 3.28.7 (build 220420) to 3.28.8 (build 220426) April 26, 2022
 -Fixed issue #18048: Error message when managing ComfortUpdate key and key is expired (Carsten Schmitz)
 -Fixed issue #18046: Conditions not working as expected in All in One (#2366) (Denis Chenu)
