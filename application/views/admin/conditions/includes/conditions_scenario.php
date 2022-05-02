@@ -31,7 +31,7 @@
                 <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/updatescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'display: none','id'=>'editscenario'.$scenarionr['scenario']));?>
                     <label>
                         <?php eT("New scenario number:"); ?>&nbsp;
-                        <input type='text' name='newscenarionum' size='3'/>
+                        <input type='text' name='newscenarionum' size='3' value='<?php echo $scenarionr['scenario']; ?>' required/>
                     </label>
                     <input type='hidden' name='scenario' value='<?php echo $scenarionr['scenario']; ?>'/>
                     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />

@@ -1183,10 +1183,13 @@ class ConditionsAction extends SurveyCommonAction
                 break;
             // Update scenario
             case "updatescenario":
-                // TODO: Check if $p_newscenarionum is null
-                Condition::model()->insertRecords(array('scenario' => $p_newscenarionum), true, array(
-                    'qid' => $qid, 'scenario' => $p_scenario));
-                LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+                if (is_null($p_newscenarionum)) {
+                    Yii::app()->setFlashMessage(gT("No scenario number specified"), 'error');
+                } else {
+                    Condition::model()->insertRecords(array('scenario' => $p_newscenarionum), true, array(
+                        'qid' => $qid, 'scenario' => $p_scenario));
+                    LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+                }
                 break;
             // Delete all conditions for this question
             case "deleteallconditions":
