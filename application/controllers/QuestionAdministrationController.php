@@ -548,15 +548,36 @@ class QuestionAdministrationController extends LSBaseController
             }
         } catch (CException $ex) {
             $transaction->rollback();
-            throw new LSJsonException(
-                500,
-                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
-                0,
-                App()->createUrl(
-                    'surveyAdministration/view/',
-                    ["surveyid" => $iSurveyId]
-                )
-            );
+            if ($calledWithAjax) {
+                throw new LSJsonException(
+                    500,
+                    gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
+                    0,
+                    App()->createUrl(
+                        'surveyAdministration/view/',
+                        ["surveyid" => $iSurveyId]
+                    )
+                );
+            } else {
+                if (empty($question)) {
+                    $sRedirectUrl = $this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId]);
+                } else {
+                    $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
+                    if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {
+                        $tabOverviewEditorValue = 'overview';
+                    }
+                    $sRedirectUrl = $this->createUrl(
+                        'questionAdministration/edit/',
+                        [
+                            'questionId' => $question->qid,
+                            'landOnSideMenuTab' => 'structure',
+                            'tabOverviewEditor' => $tabOverviewEditorValue,
+                        ]
+                    );
+                }
+                Yii::app()->setFlashMessage($ex->getMessage(), 'error');
+                $this->redirect($sRedirectUrl);
+            }
         }
     }
 
