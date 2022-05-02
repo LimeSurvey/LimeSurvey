@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
                                     'pageSizeAttributes',
                                     Yii::app()->user->getState('pageSizeAttributes', Yii::app()->params['defaultPageSize']),
                                     App()->params['pageSizeOptions'],
-                                    array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
+                                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
                                 )
                             ),
                     ]);

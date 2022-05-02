@@ -34,7 +34,7 @@
                     'pageSize',
                     $pageSize,
                     App()->params['pageSizeOptions'],
-                    ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                 )
             ),
             'columns'         => array(

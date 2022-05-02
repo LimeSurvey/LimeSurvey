@@ -50,7 +50,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                                         'pageSize',
                                         $pageSize,
                                         Yii::app()->params['pageSizeOptions'],
-                                        ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                                     )
                                 ),
                                 'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',

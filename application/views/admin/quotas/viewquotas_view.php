@@ -48,7 +48,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                     $iGridPageSize,
                                     Yii::app()->params['pageSizeOptions'],
                                     array(
-                                        'class' => 'changePageSize form-control',
+                                        'class' => 'changePageSize form-select',
                                         'style' => 'display: inline; width: auto',
                                         'onchange' => "$.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }})"
                                     )

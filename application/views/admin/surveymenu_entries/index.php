@@ -28,7 +28,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
                             'surveymenuentriesPageSize',
                             $pageSize,
                             Yii::app()->params['pageSizeOptions'],
-                            ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                         )
                     ),
                 'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',

@@ -52,7 +52,7 @@ echo viewHelper::getViewTestTag('tutorials');
 							'pageSize',
 							$pageSize,
 							Yii::app()->params['pageSizeOptions'],
-							array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+							array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto')
 						)
 					),
 					'rowHtmlOptionsExpression' => '["data-tutorial-id" => $data->tid]',

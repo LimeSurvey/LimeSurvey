@@ -112,7 +112,7 @@ $baseLanguage = $oSurvey->language;
                                         $pageSize,
                                         App()->params['pageSizeOptions'],
                                         array(
-                                            'class' => 'changePageSize form-control',
+                                            'class' => 'changePageSize form-select',
                                             'style' => 'display: inline; width: auto'
                                         )
                                     )

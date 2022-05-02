@@ -124,7 +124,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                         $pageSize,
                         Yii::app()->params['pageSizeOptions'],
                         [
-                            'class' => 'changePageSize form-control',
+                            'class' => 'changePageSize form-select',
                             'style' => 'display: inline; width: auto'
                         ]
                     )

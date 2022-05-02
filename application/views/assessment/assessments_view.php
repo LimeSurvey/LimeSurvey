@@ -46,7 +46,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                                 'pageSize',
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
-                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+                                array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto')
                             )
                         ),
                         'rowHtmlOptionsExpression' => '["data-assessment-id" => $data->id]',

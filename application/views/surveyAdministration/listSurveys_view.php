@@ -41,7 +41,7 @@ echo viewHelper::getViewTestTag('listSurveys');
                                     'surveygroups--pageSize',
                                     Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
                                     App()->params['pageSizeOptions'],
-                                    array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
+                                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
                                 )
                             ),
                         'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl("admin/surveysgroups/sa/update/id") . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",

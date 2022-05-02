@@ -36,7 +36,7 @@ echo viewHelper::getViewTestTag('roles');
                             'pageSize',
                             $pageSize,
                             App()->params['pageSizeOptions'],
-                            array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
+                            array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
                         )
                     ),
             ]);

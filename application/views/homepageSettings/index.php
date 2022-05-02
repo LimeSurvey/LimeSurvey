@@ -51,7 +51,7 @@ App()->getClientScript()->registerScript(
                                     'boxes-pageSize',
                                     Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
                                     Yii::app()->params['pageSizeOptions'],
-                                    array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
+                                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
                                 )
                             ),
                         'columns'      => [

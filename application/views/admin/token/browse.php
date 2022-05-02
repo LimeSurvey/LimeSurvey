@@ -40,7 +40,7 @@
                                 'pageSizeTokenView',
                                 $pageSizeTokenView,
                                 Yii::app()->params['pageSizeOptionsTokens'],
-                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
+                                array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto'))),
                         'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                         'columns'                  => $model->attributesForGrid,
                         'ajaxUpdate'               => 'token-grid',
