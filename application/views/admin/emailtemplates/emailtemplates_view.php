@@ -93,8 +93,10 @@ var LS = LS || {};  // namespace
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class='modal-body'>
-                <div class='form-group'>
-                    <textarea class='form-control'></textarea>
+                <div class='input-group'>
+                    <div class="input-group-addon">{</div>
+                    <textarea class='form-control' id='attachment-relevance-condition'></textarea>
+                    <div class="input-group-addon">}</div>
                 </div>
             </div>
             <div class='modal-footer'>

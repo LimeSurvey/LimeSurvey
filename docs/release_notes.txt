@@ -34,6 +34,51 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.11 (build 220425) to 5.3.12 (build 220502) May 2, 2022
++New feature #18017: Have a solution to force expression as static (#2327) (Denis Chenu)
+-Fixed issue: Kurdish (Kurmanji) is shown as RTL language but it is LTR (Carsten Schmitz)
+-Fixed issue #18056: On the data entry screen, questions are scattered- in random order (#2375) (Gabriel Jenik)
+-Fixed issue #18050: Admin notification email sent out evem when disabled (#2370) (Gabriel Jenik)
+-Fixed issue #18048: Error message when managing ComfortUpdate key and key is expired (Carsten Schmitz)
+-Fixed issue #18047: Conditional filters attachments for confirmation mail doesn't work (#2367) (Denis Chenu)
+-Fixed issue #18036: Database error when renumbering a scenario (#2354) (Gabriel Jenik)
+-Fixed issue #18035: Conditions does not work for all in one surveys  (#2355) (Denis Chenu)
+-Fixed issue #18019: 500 error in question edition (bad code on question) (#2343) (Gabriel Jenik)
+-Fixed issue #17984: Using RemoteControl method list_questions does not return subquestions (#2345) (Gabriel Jenik)
+-Fixed issue #17972: events are dispatched if the plugin is deactivated (#2334) (Denis Chenu)
+-Fixed issue #17955: newtest/Y in URL is not clearing session (#2295) (Denis Chenu)
+-Fixed issue #17869: User list in Survey group permission management is unclear (#2227) (Denis Chenu)
+-Fixed issue #17864: Regenerate questions codes returns CDbCommand failed to execute the SQL statement: Incorrect syntax near the keyword 'group' (#2344) (Gabriel Jenik)
+-Fixed issue #17862: Invalid url in admin (usage of HTTP_HOST) (#2282) (Gabriel Jenik)
+-Fixed issue #17811: Theme options for logo and background images are not saved (#2336) (Gabriel Jenik)
+-Fixed issue #17739: list_surveys JSON-RPC API method does not obey  if set (#2346) (Gabriel Jenik)
+-Fixed issue #17174: Array dual scale doesn't show previously selected value when come back to same page (#2371) (Gabriel Jenik)
+-Fixed issue #14123: Slider left/right labels not displayed correctly on iPad (#2369) (Gabriel Jenik)
+#Updated translation: Thai by tomzt
+#Updated translation: Swedish by joho1968, maxzomborszki
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by c_schmitz, dusanm, jelen1, klingja, sweetakasha
+#Updated translation: Russian by kvolk2lim, vipgroup
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by samarta, tamiel
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by c_schmitz, kkd, pivostar
+#Updated translation: Hindi by ajparag, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by AlainR, aschwey, b00z00, c_schmitz, DenisChenu, eddylackmann, janolap1, riqcles
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+
+
 Changes from 5.3.10 (build 220419) to 5.3.11 (build 220425) April 25, 2022
 -Fixed issue: [security] Minor XSS issue in plugin overview - reported by Podalirius (podalirius.net/en/) (Carsten Schmitz)
 -Fixed issue: Creation date not properly shown in user list (Carsten Schmitz)
