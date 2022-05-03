@@ -11,29 +11,25 @@ Yii::app()->getController()->renderPartial(
         array('name'=>'UserManagement--modalform', 'id'=>'UserManagement--modalform')
 ); ?>
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
             <input type="hidden" name="userid" value="<?php echo $oUser->uid;?>" />
-            <div class="list-group-item row list-group-item-info">
-                <div class="col-xs-6 text-start">
-                    <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-default"> 
-                        <?php eT('Select all');?>
-                    </button>
-                </div>
-                <div class="col-xs-6 text-end">
-                    <button id="UserManagement--action-userthemepermissions-select-none" class="btn btn-default"> 
-                        <?php eT('Select none');?>
-                    </button>
-                </div>
+            <div class="mb-3">
+            <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-default"> 
+                <?php eT('Select all');?>
+            </button>
+            <button id="UserManagement--action-userthemepermissions-select-none" class="btn btn-default"> 
+                <?php eT('Select none');?>
+            </button>
             </div>
-            <div class="list-group">
-                <div class="list-group-item row">
-                    <div class="col-xs-6"><?php eT('Theme name');?></div>
-                    <div class="col-xs-6"><?php eT('Access');?></div>
-                </div>
+            <table class="table">
+                <tr>
+                    <th><?php eT('Theme name');?></th>
+                    <th><?php eT('Access');?></th>
+                </tr>
                 <?php foreach ($aTemplates as $aTemplate) {?>
-                    <div class="list-group-item row">
-                        <div class="col-xs-6"><?=$aTemplate['folder']?></div>
-                        <div class="col-xs-6">
+                    <tr>
+                        <td><?=$aTemplate['folder']?></td>
+                        <td>
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'TemplatePermissions['.$aTemplate['folder'].']',
                                 'id'=>$aTemplate['folder'].'_use',
@@ -43,16 +39,15 @@ Yii::app()->getController()->renderPartial(
                                 'htmlOptions' => ['class' => 'UserManagement--themepermissions-themeswitch']
                             ));
                             ?>
-                        </div>
-                    </div>
+                        </td>
+                    </tr>
                 <?php } ?>
-            </div>
-
+            </table>
     </div>
 </div>
-<div class="modal-footer modal-footer-buttons row ls-space margin top-25">
-    <button class="btn btn-error selector--exitForm" id="exitForm"><?=gT('Cancel')?></button>
-    <button class="btn btn-success selector--submitForm" id="submitForm"><?=gT('Save')?></button>
+<div class="modal-footer">
+    <button class="btn btn-outline-secondary selector--exitForm" id="exitForm"><?=gT('Cancel')?></button>
+    <button class="btn btn-primary selector--submitForm" id="submitForm"><?=gT('Save')?></button>
 </div>
 </form>
 

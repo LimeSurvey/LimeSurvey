@@ -70,7 +70,7 @@ Yii::app()->getController()->renderPartial(
                 </table>
             <div class="row ls-space margin top-25">
                 <?php if (safecount(Permission::model()->getUserRole($oUser->uid)) > 0 ): ?>
-                    <div class="col-xs-12 alert alert-warning">
+                    <div class="col-12 alert alert-warning">
                         <?= gT("Warning: The user has at least one role assigned. Setting individual user permissions will remove all roles from this user!") ?>
                     </div>
                 <?php endif; ?>
@@ -78,8 +78,8 @@ Yii::app()->getController()->renderPartial(
     </div>
 </div>
 
-<div class="modal-footer modal-footer-buttons">
-    <button class="btn btn-cancel  selector--exitForm" id="permission-modal-exitForm"><?=gT('Cancel')?></button>
+<div class="modal-footer">
+    <button class="btn btn-outline-secondary selector--exitForm" id="permission-modal-exitForm"><?=gT('Cancel')?></button>
     <button class="btn btn-success selector--submitForm" id="permission-modal-submitForm"><?=gT('Save')?></button>
 </div>
 </form>

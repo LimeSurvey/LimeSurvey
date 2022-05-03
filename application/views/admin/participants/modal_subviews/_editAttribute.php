@@ -23,11 +23,10 @@
         $baseControlGroupHtmlOptions = array(
              'groupOptions'=> array('class'=>''),
              'labelOptions'=> array('class'=> ''),
-             'class' => '',
              'required' => 'required'
         );
         echo $form->textFieldControlGroup($model,'defaultname', $baseControlGroupHtmlOptions);
-        echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, $baseControlGroupHtmlOptions);
+        echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, array_merge($baseControlGroupHtmlOptions, ['class' => 'form-select']));
     ?>
     <div class=" form-group" id="">
         <label class='form-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
@@ -103,7 +102,7 @@
             <div>
                 <div class=" col-xs-11">
                 <?php
-                    echo TbHtml::dropDownList("ParticipantAttributeName_addLanguage_language", '', $languagesForDropdown,array('encode' => false));
+                    echo TbHtml::dropDownList("ParticipantAttributeName_addLanguage_language", '', $languagesForDropdown,array('encode' => false, 'class' => 'form-select'));
                 ?>
                 </div>
             </div>

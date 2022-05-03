@@ -77,8 +77,12 @@ var UserManagement = function () {
 
     var wireForm = function () {
         $('#UserManagement--modalform').on('submit.USERMANAGERMODAL', function (e) {
-            console.log(e);
             e.preventDefault();
+            const buttonClassName = e.originalEvent.submitter.className;
+            // Do nothing for outline-secondary (close) button.
+            if (buttonClassName.includes('outline-secondary')) {
+                return false;
+            }
             startSubmit();
             var data = $('#UserManagement--modalform').serializeArray();
             $.ajax({
