@@ -204,10 +204,8 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <div class="modal-title h4" id="myModalLabel">
-                        <?php eT('Tip: How to display a picture in your theme?'); ?>
-                    </div>
+                    <h5 class="modal-title" id="myModalLabel"> <?php eT('Tip: How to display a picture in your theme?'); ?> </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <?php eT('To use a picture in a .twig file:');?>

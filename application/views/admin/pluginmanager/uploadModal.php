@@ -2,8 +2,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <div class="modal-title h4"><?php eT("Install plugin ZIP file") ?></div>
+                <h5 class="modal-title"><?php eT("Install plugin ZIP file") ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <?php echo CHtml::form(
                 Yii::app()->getController()->createUrl(
