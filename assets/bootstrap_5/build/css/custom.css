@@ -12032,3 +12032,9 @@ a {
   line-height: 1.5;
   border-radius: 3px;
 }
+
+.page-item {
+  border-radius: 25px !important;
+  margin-right: 2px;
+  margin-left: 2px;
+}

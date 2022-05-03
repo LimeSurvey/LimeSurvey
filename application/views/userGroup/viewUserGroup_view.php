@@ -30,7 +30,7 @@
             <br/><br/>
             <?php if (!empty($userloop)) { ?>
                 <div class="table-responsive">
-                    <table class='users table table-hover'>
+                    <table class='items table'>
                         <thead>
                         <tr>
                             <th><?php eT("Action"); ?></th>

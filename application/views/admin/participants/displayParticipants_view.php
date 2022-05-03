@@ -64,31 +64,32 @@ echo viewHelper::getViewTestTag('displayParticipants');
             <div class="row">
                 <?php
                 echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='" . join("||", $searchcondition) . "' />";
-                $this->widget(
-                    'yiistrap.widgets.TbGridView',
-                    [
-                        'id'                       => 'list_central_participants',
-                        'emptyText'                => gT('No participants found.'),
-                        'dataProvider'             => $model->search(),
-                        'columns'                  => $model->columns,
-                        'rowHtmlOptionsExpression' => '["data-participant_id" => $data->id]',
-                        'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
-                        'filter'                   => $model,
-                        'afterAjaxUpdate'          => 'function(id, data){LS.CPDB.bindButtons;LS.CPDB.participantPanel();bindListItemclick();}',
-                        'ajaxType'                 => 'POST',
-                        'beforeAjaxUpdate'         => 'insertSearchCondition',
-                        'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+
+                $this->widget('application.extensions.admin.grid.CLSGridView', [
+                    'id' => 'list_central_participants',
+                    'dataProvider' => $model->search(),
+                    'columns' => $model->columns,
+                    'massiveActionTemplate' => $massiveAction,
+                    'afterAjaxUpdate'          => 'function(id, data){LS.CPDB.bindButtons;LS.CPDB.participantPanel();bindListItemclick();}',
+                    'ajaxType'                 => 'POST',
+                    'rowHtmlOptionsExpression' => '["data-participant_id" => $data->id]',
+                    'beforeAjaxUpdate'         => 'insertSearchCondition',
+                    'pager' => [
+                        'class' => 'application.extensions.admin.grid.CLSYiiPager',
+                    ],
+                    'filter' => $model,
+                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                        . sprintf(
                             gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSizeParticipantView',
                                 Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']),
-                                Yii::app()->params['pageSizeOptionsTokens'],
-                                ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                                App()->params['pageSizeOptions'],
+                                array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
                             )
                         ),
-                    ]
-                );
+                ]);
+
                 ?>
             </div>
         </div>

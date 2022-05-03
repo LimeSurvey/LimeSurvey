@@ -13,18 +13,20 @@
             ),
             true,
             false);
-        $this->widget('yiistrap.widgets.TbGridView', array(
+        $this->widget('application.extensions.admin.grid.CLSGridView', array(
             'dataProvider' => $oSurveyTheme->searchGrid(),
             'filter'       => $oSurveyTheme,
             'id'           => 'themeoptions-grid',
-            'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
+            'pager' => [
+                'class' => 'application.extensions.admin.grid.CLSYiiPager',
+            ],
+            'massiveActionTemplate' => $massiveAction,
             'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
-                "<div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div>",
                 CHtml::dropDownList(
                     'pageSize',
                     $pageSize,
                     Yii::app()->params['pageSizeOptions'],
-                    array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+                    array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto')
                 )
             ),
             'columns' => array(

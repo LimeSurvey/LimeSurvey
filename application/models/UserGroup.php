@@ -317,6 +317,9 @@ class UserGroup extends LSActiveRecord
 
     /**
      * Returns the buttons for grid view
+     *
+     * @todo where is this used??
+     *
      * @return string
      */
     public function getButtons()
@@ -343,6 +346,58 @@ class UserGroup extends LSActiveRecord
         }
         $button .= "</div>";
         return $button;
+    }
+
+    /**
+     * Returns the buttons for grid view
+     * @return array
+     */
+    public function getManagementButtons(): array
+    {
+        return [
+            array(
+                'header'      => gT('Actions'),
+                'name'        => 'buttons',
+                'type'        => 'raw',
+                'value'       => '$data->buttons',
+                'htmlOptions' => array('class' => 'text-start'),
+            ),
+            array(
+                'header'      => gT('User group ID'),
+                'name'        => 'usergroup_id',
+                'value'       => '$data->ugid',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+
+            array(
+                'header'      => gT('Name'),
+                'name'        => 'name',
+                'value'       => '$data->name',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+            array(
+                'header'      => gT('Description'),
+                'name'        => 'description',
+                'value'       => '$data->description',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+            array(
+                'header'      => gT('Owner'),
+                'name'        => 'owner',
+                'value'       => '$data->owner->users_name',
+                'htmlOptions' => array('class' => ''),
+            ),
+
+            array(
+                'header'      => gT('Members'),
+                'name'        => 'members',
+                'value'       => '$data->countUsers',
+                'htmlOptions' => array('class' => ''),
+            ),
+        ];
     }
 
 

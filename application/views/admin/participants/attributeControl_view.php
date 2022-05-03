@@ -11,40 +11,31 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
 <div id="pjax-content">
     <div class="row">
         <div class="container-fluid">
-            <div class="row">
-
-            </div>
-            <div class="row">
-                <?php
-                $this->widget(
-                    'yiistrap.widgets.TbGridView',
-                    [
-                        'id'                       => 'list_attributes',
-                        'dataProvider'             => $model->search(),
-                        'columns'                  => $model->columns,
-                        'filter'                   => $model,
-                        'emptyText'                => gT('No attributes found.'),
+                    <?php
+                    $this->widget('application.extensions.admin.grid.CLSGridView', [
+                        'id' => 'list_attributes',
+                        'dataProvider' => $model->search(),
+                        'columns' => $model->columns,
+                        'filter' => $model,
                         'rowHtmlOptionsExpression' => '["data-attribute_id" => $data->attribute_id]',
-                        'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
-                        'afterAjaxUpdate'          => 'LS.CPDB.bindButtons',
-                        'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                            gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSizeAttributes',
-                                Yii::app()->user->getState('pageSizeAttributes', Yii::app()->params['defaultPageSize']),
-                                Yii::app()->params['pageSizeOptions'],
-                                ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
-                            )
-                        ),
-                    ]
-                );
-                ?>
-            </div>
-        </div>
-
-        <div id="pager">
-
+                        'massiveActionTemplate' => $massiveAction,
+                        'emptyText'                => gT('No attributes found.'),
+                        'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
+                        'pager' => [
+                            'class' => 'application.extensions.admin.grid.CLSYiiPager',
+                        ],
+                        'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                            . sprintf(
+                                gT('%s rows per page'),
+                                CHtml::dropDownList(
+                                    'pageSizeAttributes',
+                                    Yii::app()->user->getState('pageSizeAttributes', Yii::app()->params['defaultPageSize']),
+                                    App()->params['pageSizeOptions'],
+                                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
+                                )
+                            ),
+                    ]);
+                    ?>
         </div>
     </div>
 </div>

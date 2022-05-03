@@ -37,7 +37,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                     <div class="col-12 ls-flex-item">
                         <?php
                         $this->widget(
-                            'yiistrap.widgets.TbGridView',
+                            'application.extensions.admin.grid.CLSGridView',
                             [
                                 'dataProvider'             => $model->search(),
                                 'id'                       => 'surveymenu-grid',
@@ -50,14 +50,13 @@ echo viewHelper::getViewTestTag('surveyMenus');
                                         'pageSize',
                                         $pageSize,
                                         Yii::app()->params['pageSizeOptions'],
-                                        ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                                     )
                                 ),
                                 'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
-                                'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                                 'ajaxType'                 => 'POST',
                                 'ajaxUpdate'               => 'surveymenu-grid',
-                                'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                                'massiveActionTemplate' => $massiveAction,
                                 'afterAjaxUpdate'          => 'surveyMenuFunctions',
                             ]
                         ); ?>

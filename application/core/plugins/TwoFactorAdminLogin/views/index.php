@@ -48,7 +48,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                                     'pageSize',
                                     $pageSize,
                                     Yii::app()->params['pageSizeOptions'],
-                                    array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
+                                    array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto'))
                             )
                         ."</div></div>",
                         ));

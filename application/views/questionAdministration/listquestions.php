@@ -104,8 +104,7 @@ $baseLanguage = $oSurvey->language;
                             'dataProvider' => $model->search(),
                             'id'           => 'question-grid',
                             'emptyText'    => gT('No questions found.'),
-                            'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
-                            'template'     => "{items}\n<div id='questionListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                            'massiveActionTemplate' => $massiveAction,
                             'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                                 . sprintf(
                                     gT('%s rows per page'),
@@ -114,7 +113,7 @@ $baseLanguage = $oSurvey->language;
                                         $pageSize,
                                         App()->params['pageSizeOptions'],
                                         array(
-                                            'class' => 'changePageSize form-control',
+                                            'class' => 'changePageSize form-select',
                                             'style' => 'display: inline; width: auto'
                                         )
                                     )

@@ -109,12 +109,13 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
     ];
 
     $this->widget(
-        'yiistrap.widgets.TbGridView',
+        'application.extensions.admin.grid.CLSGridView',
         [
             'id'                       => 'plugins-grid',
             'dataProvider'             => $dataProvider,
-            'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
-            'template'                 => "{items}\n<div id='pluginsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+            'pager' => [
+                'class' => 'application.extensions.admin.grid.CLSYiiPager',
+            ],
             'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                 . sprintf(
                     gT('%s rows per page'),
@@ -123,7 +124,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                         $pageSize,
                         Yii::app()->params['pageSizeOptions'],
                         [
-                            'class' => 'changePageSize form-control',
+                            'class' => 'changePageSize form-select',
                             'style' => 'display: inline; width: auto'
                         ]
                     )

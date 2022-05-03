@@ -20,19 +20,21 @@
             false
         );
 
-        $this->widget('yiistrap.widgets.TbGridView', array(
+        $this->widget('application.extensions.admin.grid.CLSGridView', array(
             'dataProvider'    => $oQuestionTheme->search(),
             'filter'          => $oQuestionTheme,
             'id'              => 'questionthemes-grid',
-            'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
-            'template'                 => "{items}\n<div id='questionthemeListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+            'massiveActionTemplate' => $massiveAction,
+            'pager' => [
+                'class' => 'application.extensions.admin.grid.CLSYiiPager',
+            ],
             'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                 gT('%s rows per page'),
                 CHtml::dropDownList(
                     'pageSize',
                     $pageSize,
                     App()->params['pageSizeOptions'],
-                    ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                 )
             ),
             'columns'         => array(

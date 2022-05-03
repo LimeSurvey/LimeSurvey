@@ -17,23 +17,22 @@
 <div class="row">
     <div class="col-lg-12 content-right">
         <?php
-            $surveyGrid = $this->widget('yiistrap.widgets.TbGridView', array(
+            $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', array(
             'dataProvider' => $this->model->search(),
-
                 // Number of row per page selection
                 'id' => 'survey-grid',
-                'emptyText'=>gT('No surveys found.'),
-                'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                'emptyText' => gT('No surveys found.'),
+                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                     CHtml::dropDownList(
                         'surveygrid--pageSize',
                         $this->pageSize,
                         Yii::app()->params['pageSizeOptions'],
-                        array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-                'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
-                'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/iSurveyID' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                        array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto'))),
+                'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/iSurveyID' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => 'survey-grid',
                 'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
-                'template'  => $this->template,
+               // 'template'  => $this->template,
+                'massiveActionTemplate' => $this->render('massive_actions/_selector', array(), true, false),
                 'columns' => array(
 
                     array(
@@ -41,7 +40,6 @@
                         'class'=>'CCheckBoxColumn',
                         'selectableRows' => '100',
                     ),
-
                      array(
                         'header' => gT('Action'),
                         'name' => 'actions',
@@ -57,8 +55,6 @@
                         'headerHtmlOptions'=>array('class' => ' text-nowrap'),
                         'htmlOptions' => array('class' => ' has-link'),
                     ),
-
-
                     array(
                         'header' => gT('Status'),
                         'name' => 'running',
@@ -67,7 +63,6 @@
                         'headerHtmlOptions'=>array('class' => ' text-nowrap'),
                         'htmlOptions' => array('class' => ' has-link'),
                     ),
-
                     array(
                         'header' => gT('Title'),
                         'name' => 'title',
@@ -76,7 +71,6 @@
                         'htmlOptions' => array('class' => 'has-link'),
                         'headerHtmlOptions'=>array('class' => 'text-nowrap'),
                     ),
-
                     array(
                         'header' => gT('Group'),
                         'name' => 'group',
@@ -85,7 +79,6 @@
                         'htmlOptions' => array('class' => 'has-link'),
                         'headerHtmlOptions'=>array('class' => 'text-nowrap'),
                     ),
-
                     array(
                         'header' => gT('Created'),
                         'name' => 'creation_date',
@@ -94,7 +87,6 @@
                         'headerHtmlOptions'=>array('class' => ' text-nowrap'),
                         'htmlOptions' => array('class' => ' has-link'),
                     ),
-
                     array(
                         'header' => gT('Owner'),
                         'name' => 'owner',
