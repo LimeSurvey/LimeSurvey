@@ -21,6 +21,7 @@ CKEDITOR.editorConfig = function (a) {
         a.basicEntities = !1;
         a.entities = !1;
         a.uiColor = "#f1f1f1";
+        a.fullPage = true;
 
         "rtl" == $("html").attr("dir") && (a.contentsLangDirection = "rtl");
         a.toolbar_popup = [
