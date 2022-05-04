@@ -116,6 +116,7 @@
             <sortorder>100</sortorder>
             <inputtype>textarea</inputtype>
             <expression>1</expression>
+            <xssfilter>0</xssfilter>
             <help>Final equation to set in database, defaults to question text.</help>
             <caption>Equation</caption>
             <default></default>
