@@ -506,7 +506,7 @@ LS.renderBootstrapSwitch();
                     <?= gT("You are about to create a participant without the basic details. Are you sure you want to proceed?") ?>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT("Cancel");?></button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT("Cancel");?></button>
                     <button role="button" type="button" class="btn btn-primary" id="save-empty-token">
                         <?php eT("Save");?>
                     </button>

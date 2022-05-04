@@ -271,7 +271,7 @@ export default {
                     id="adminsidepanel__sidebar--selectorCreateQuestion" 
                     v-if="createQuestionAllowed" 
                     :href="createFullQuestionLink()" 
-                    class="btn btn-small btn-default ls-space margin right-10 pjax"
+                    class="btn btn-small btn-outline-secondary ls-space margin right-10 pjax"
                 >
                     <i class="fa fa-plus-circle"></i>&nbsp;
                     {{"createQuestion"|translate}}

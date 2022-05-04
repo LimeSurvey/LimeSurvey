@@ -241,8 +241,8 @@
     </script>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
-    <button role="button" type="button" class="btn btn-primary action_save_modal_editAttributeName">
+    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
+    <button role="button" type="buttobtn-outline-secondarytn btn-primary action_save_modal_editAttributeName">
         <?php eT("Save")?>
     </button>
 </div>

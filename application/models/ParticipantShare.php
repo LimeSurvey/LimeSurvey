@@ -164,7 +164,7 @@ class ParticipantShare extends LSActiveRecord
                 ]
             );
             $buttons .= "<span data-bs-toggle='tooltip' title='" . gT("Delete sharing") . "'><a href='#'
-            class='btn btn-sm btn-default action_delete_shareParticipant'
+            class='btn btn-sm btn-outline-secondary action_delete_shareParticipant'
             data-bs-toggle='modal' 
             data-bs-target='#confirmation-modal'
             data-title='" . gt('Unshare this participant') . "'

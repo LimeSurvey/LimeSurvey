@@ -109,7 +109,7 @@ $script = array();
         </td>
         <td>
             <span class="relevance"></span>
-            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit condition') ?>" data-bs-toggle="tooltip" data-bs-placement="bottom">
+            <button class="btn btn-xs btn-outline-secondary edit-relevance-equation" title="<?php eT('Edit condition') ?>" data-bs-toggle="tooltip" data-bs-placement="bottom">
                 <i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only"><?php eT('Edit condition')?></span>
             </button>
             <input class="relevance" type="hidden">

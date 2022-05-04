@@ -31,7 +31,7 @@
         {# Previous button must be set to ON in survey settings (and it's not shown in first page, in All in One survey mode, etc) #}
         {% if aNavigator.aMovePrev.show %}
             <!-- Button previous -->
-            <button {{ aSurveyInfo.attr.navigatorbuttonprev }} accesskey="p" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-default " >
+            <button {{ aSurveyInfo.attr.navigatorbuttonprev }} accesskey="p" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-outline-secondary " >
                 {{ gT("Previous") }}
             </button>
         {% endif %}

@@ -5,14 +5,14 @@ var defineActions = function (dataArray) {
     var buttonDelete = $('<button><i class="fa fa-trash text-danger"></i></button>');
     var container = $('<div><div class="icon-btn-row"></div></div>');
     buttonEdit
-        .addClass('btn btn-sm btn-default surveysettings_edit_intparameter')
+        .addClass('btn btn-sm btn-outline-secondary surveysettings_edit_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
         .data('sqid', (dataArray.qid || null))
         .appendTo(iconRow);
     buttonDelete
-        .addClass('btn btn-sm btn-default surveysettings_delete_intparameter')
+        .addClass('btn btn-sm btn-outline-secondary surveysettings_delete_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
