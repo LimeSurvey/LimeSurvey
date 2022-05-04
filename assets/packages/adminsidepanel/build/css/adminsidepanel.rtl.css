@@ -206,6 +206,7 @@
   margin-bottom: 10px;
 }
 .ls-ba .breadcrumb > li + li:before {
+  float: none;
   padding: 0 5px;
   content: "\F061";
   font: normal normal normal 18px/1 FontAwesome;
@@ -292,6 +293,7 @@ footer.footer {
 
 ol.breadcrumb.title-bar-breadcrumb {
   margin-bottom: 0px;
+  padding: 8px 15px;
 }
 ol.breadcrumb.title-bar-breadcrumb > :first-child a.animate::after {
   margin-right: 0px;
