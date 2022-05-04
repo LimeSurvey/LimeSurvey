@@ -266,18 +266,18 @@ class QuestionGroup extends LSActiveRecord
         // Edit
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("questionGroupsAdministration/view/surveyid/$this->sid/gid/$this->gid");
-            $buttons .= '  <a class="btn btn-sm btn-default  list-btn" href="' . $url . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit group') . '"><i class="fa fa-pencil " ></i></a>';
+            $buttons .= '  <a class="btn btn-sm btn-outline-secondary  list-btn" href="' . $url . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit group') . '"><i class="fa fa-pencil " ></i></a>';
         }
         // Add question to this group
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("questionAdministration/create/surveyid/$this->sid/gid/$this->gid");
-            $buttons .= '<a class="btn btn-sm btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-bs-toggle="tooltip"  data-bs-placement="top" title="' . gT('Add new question to group') . '" href="' . $url . '" role="button"><i class="fa fa-plus " ></i></a>';
+            $buttons .= '<a class="btn btn-sm btn-outline-secondary list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-bs-toggle="tooltip"  data-bs-placement="top" title="' . gT('Add new question to group') . '" href="' . $url . '" role="button"><i class="fa fa-plus " ></i></a>';
         }
         // View summary
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
             $url = Yii::app()->createUrl("/questionGroupsAdministration/view/surveyid/");
             $url .= '/' . $this->sid . '/gid/' . $this->gid;
-            $buttons .= '  <a class="btn btn-sm btn-default  list-btn" href="' . $url . '" role="button" data-bs-toggle="tooltip" title="' . gT('Group summary') . '"><i class="fa fa-list-alt " ></i></a>';
+            $buttons .= '  <a class="btn btn-sm btn-outline-secondary  list-btn" href="' . $url . '" role="button" data-bs-toggle="tooltip" title="' . gT('Group summary') . '"><i class="fa fa-list-alt " ></i></a>';
         }
 
         // Delete
@@ -285,7 +285,7 @@ class QuestionGroup extends LSActiveRecord
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if ($oSurvey->groupsCount == 1) {
                 $buttons .= '<span data-bs-toggle="tooltip" title="' . gT("Cannot delete this group because it's the only group in the survey.") . '">'
-                . '<button class="btn btn-sm btn-default" '
+                . '<button class="btn btn-sm btn-outline-secondary" '
                 . ' disabled '
                 . ' role="button"'
                 . ' data-bs-toggle="popover"'
@@ -297,7 +297,7 @@ class QuestionGroup extends LSActiveRecord
                 . '</span>';
             } elseif (is_null($condarray)) {
                 $buttons .= '<span data-bs-toggle="tooltip" title="' . gT('Delete question group') . '">'
-                    . '<button class="btn btn-sm btn-default" '
+                    . '<button class="btn btn-sm btn-outline-secondary" '
                     . ' data-onclick="(function() { ' . CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid]))) . ' })" '
                     . ' data-bs-target="#confirmation-modal"'
                     . ' role="button"'
@@ -310,7 +310,7 @@ class QuestionGroup extends LSActiveRecord
                     . '</span>';
             } else {
                 $buttons .= '<span data-bs-toggle="tooltip" title="' . gT('Group cant be deleted, because of depending conditions') . '">'
-                    . '<button class="btn btn-sm btn-default" '
+                    . '<button class="btn btn-sm btn-outline-secondary" '
                     . ' disabled '
                     . ' role="button"'
                     . ' data-bs-toggle="popover"'

@@ -12,7 +12,7 @@
                         <button 
                             id="adminsidepanel__sidebar--selectorSettingsButton" 
                             class="btn col-6 force color white onhover tabbutton" 
-                            :class="currentTab =='settings' ? 'btn-primary' : 'btn-default'" 
+                            :class="currentTab =='settings' ? 'btn-primary' : 'btn-outline-secondary'" 
                             @click="currentTab='settings'"
                         >
                             {{"settings"|translate}}
@@ -20,7 +20,7 @@
                         <button 
                             id="adminsidepanel__sidebar--selectorStructureButton" 
                             class="btn col-6 force color white onhover tabbutton" 
-                            :class="currentTab =='questiontree' ? 'btn-primary' : 'btn-default'" 
+                            :class="currentTab =='questiontree' ? 'btn-primary' : 'btn-outline-secondary'" 
                             @click="currentTab='questiontree'"
                         >
                             {{"structure"|translate}}

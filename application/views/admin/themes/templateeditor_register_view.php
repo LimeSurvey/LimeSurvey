@@ -12,5 +12,5 @@
     <?php echo CHtml::textField('register_email', '', array('id'=>'register_email','class'=>'form-control')); ?>
 </div>
 <div class='form-group'>
-    <?php echo CHtml::submitButton(gT("Continue",'unescaped'),array('class'=>'btn-default btn','id'=>'register','name'=>'register')); ?>
+    <?php echo CHtml::submitButton(gT("Continue",'unescaped'),array('class'=>'btn-outline-secondary btn','id'=>'register','name'=>'register')); ?>
 </div>

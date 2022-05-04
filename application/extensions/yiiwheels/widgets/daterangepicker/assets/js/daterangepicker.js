@@ -147,7 +147,7 @@
 
             this.buttonClasses = ['btn', 'btn-small btn-sm'];
             this.applyClass = 'btn-success';
-            this.cancelClass = 'btn-default';
+            this.cancelClass = 'btn-outline-secondary';
 
             this.format = 'MM/DD/YYYY';
             this.separator = ' - ';

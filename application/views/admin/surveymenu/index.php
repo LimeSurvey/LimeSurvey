@@ -91,7 +91,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                 <?php eT("All menu entries of this menu will also be deleted."); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
                 <button type="button" id="deletemodal-confirm" class="btn btn-danger">
                     <?php eT('Delete'); ?>
                 </button>

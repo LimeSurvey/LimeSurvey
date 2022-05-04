@@ -5,7 +5,7 @@ var defineActions = function (dataArray) {
     var buttonDelete = $('<button><i class="fa fa-trash"></i></button>');
     var container = $('<div></div>');
     buttonEdit
-        .addClass('btn btn-xs btn-default surveysettings_edit_intparameter')
+        .addClass('btn btn-xs btn-outline-secondary surveysettings_edit_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))

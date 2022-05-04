@@ -35,7 +35,7 @@ export default {
             if(this.$store.state.lastMenuItemOpen == menuItem.id){
                 classes+=' btn-primary ';
             } else {
-                classes+=' btn-default ';
+                classes+=' btn-outline-secondary ';
             }
             if(!menuItem.link_external){
                 classes+=' pjax ';
