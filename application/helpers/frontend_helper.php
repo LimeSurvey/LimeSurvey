@@ -1727,7 +1727,7 @@ function checkCompletedQuota($surveyid, $return = false)
 
             if ($iMatchedAnswers == count($aQuotaFields) && ($bPostedField || $bAllHidden)) {
                 if ($oQuota->qlimit == 0) {
-// Always add the quota if qlimit==0
+                    // Always add the quota if qlimit==0
                     $aMatchedQuotas[] = $oQuota->viewArray;
                 } else {
                     $iCompleted = $oQuota->completeCount;
@@ -1823,7 +1823,9 @@ function checkCompletedQuota($surveyid, $return = false)
         killSurveySession($surveyid);
 
         if ($sAutoloadUrl == 1 && $sUrl != "") {
-            header("Location: " . $sUrl);
+            /* Same than end url of survey */
+            $headToSurveyUrl = htmlspecialchars_decode($sUrl);
+            header("Location: " . $headToSurveyUrl);
         }
     }
     $thissurvey['include_content'] = 'quotas';
