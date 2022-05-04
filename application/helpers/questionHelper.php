@@ -272,14 +272,15 @@ class questionHelper
         );
 
         self::$attributes["equation"] = array(
-            "types"=>"*",
-            'category'=>gT('Logic'),
-            'sortorder'=>100,
-            'inputtype'=>'textarea',
-            'expression'=>1,
-            "help"=>gT('Final equation to set in database, defaults to question text.'),
-            "caption"=>gT('Equation'),
-            "default"=>""
+            "types" => "*",
+            'category' => gT('Logic'),
+            'sortorder' => 100,
+            'inputtype' => 'textarea',
+            'expression' => 1,
+            'xssfilter' => 0,
+            "help" => gT('Final equation to set in database, defaults to question text.'),
+            "caption" => gT('Equation'),
+            "default" => ""
         );
 
         self::$attributes["equals_num_value"] = array(
