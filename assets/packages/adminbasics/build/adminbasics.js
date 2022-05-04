@@ -32861,7 +32861,7 @@
         buttonType = $item.data('button-type') || 'btn-primary',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
     var closeIconHTML = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-        closeButtonHTML = '<button type="button" class="btn btn-cancel" data-dismiss="modal">' + buttonNo + '</button>',
+        closeButtonHTML = '<button type="button" class="btn btn-close" data-dismiss="modal">' + buttonNo + '</button>',
         confirmButtonHTML = '<button type="button" class="btn ' + buttonType + ' selector--button-confirm">' + buttonYes + '</button>'; //Define all the blocks and combine them by jquery methods
 
     var outerBlock = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),

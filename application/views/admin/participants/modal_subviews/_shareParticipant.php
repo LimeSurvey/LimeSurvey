@@ -58,7 +58,7 @@ Yii::app()->getController()->renderPartial(
 
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
+    <button type="button" class="btn btn-close" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
     <button role="button" type="button" class="btn btn-primary action_save_modal_shareparticipant">
         <?php eT("Share")?>
     </button>

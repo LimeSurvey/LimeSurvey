@@ -147,7 +147,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
+                <button type="button" class="btn btn-close" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
                 <button type="button" class="btn btn-success" id="selector__assessments-save-modal">
                     <?php eT('Add'); ?>
                 </button>

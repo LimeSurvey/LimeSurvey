@@ -65,7 +65,7 @@
                 <button 
                     type="button" 
                     id='quick-add-condition-close-button' 
-                    class="btn btn-cancel" 
+                    class="btn btn-close" 
                     data-bs-dismiss="modal">
                     &nbsp;
                     <?php eT("Cancel"); ?>
