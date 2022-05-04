@@ -2,13 +2,13 @@
   --LS-admintheme-basecolor: #328637;
 }
 
-.open .dropdown-toggle.btn-default, .btn-default.active, .btn-default:active, .btn-default:focus, .btn-default:hover {
+.open .dropdown-toggle.btn-default, .btn-outline-secondary.active, .btn-outline-secondary:active, .btn-outline-secondary:focus, .btn-outline-secondary:hover {
   color: #333333;
   background-color: #ebebeb;
   border: 1px solid #adadad;
 }
 
-.open .active.dropdown-toggle.btn-default, .active.btn-default {
+.open .active.dropdown-toggle.btn-default, .active.btn-outline-secondary {
   background-color: #c0e3c2;
 }
 
@@ -814,53 +814,53 @@ fieldset[disabled] .btn-link:focus {
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 
-.btn-default {
+.btn-outline-secondary {
   color: #333333;
+  background-color: #ebebeb;
+  border: 1px solid #cccccc;
+}
+.btn-outline-secondary.disabled {
   background-color: #fff;
   border: 1px solid #cccccc;
 }
-.btn-default.disabled {
+.btn-outline-secondary.disabled:hover {
   background-color: #fff;
   border: 1px solid #cccccc;
 }
-.btn-default.disabled:hover {
+.btn-outline-secondary.disabled:focus {
   background-color: #fff;
   border: 1px solid #cccccc;
 }
-.btn-default.disabled:focus {
+.btn-outline-secondary.disabled:active {
   background-color: #fff;
   border: 1px solid #cccccc;
 }
-.btn-default.disabled:active {
+.btn-outline-secondary.disabled.active {
   background-color: #fff;
   border: 1px solid #cccccc;
 }
-.btn-default.disabled.active {
-  background-color: #fff;
-  border: 1px solid #cccccc;
-}
-.btn-default .badge {
+.btn-outline-secondary .badge {
   color: #fff;
   background-color: #333333;
 }
 
-.btn-default[disabled] {
+.btn-outline-secondary[disabled] {
   background-color: #fff;
   border: 1px solid #cccccc;
 }
-.btn-default[disabled]:hover {
+.btn-outline-secondary[disabled]:hover {
   background-color: #fff;
   border: 1px solid #cccccc;
 }
-.btn-default[disabled]:focus {
+.btn-outline-secondary[disabled]:focus {
   background-color: #fff;
   border: 1px solid #cccccc;
 }
-.btn-default[disabled]:active {
+.btn-outline-secondary[disabled]:active {
   background-color: #fff;
   border: 1px solid #cccccc;
 }
-.btn-default[disabled].active {
+.btn-outline-secondary[disabled].active {
   background-color: #fff;
   border: 1px solid #cccccc;
 }
