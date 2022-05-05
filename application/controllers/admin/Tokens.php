@@ -1417,10 +1417,11 @@ class Tokens extends SurveyCommonAction
                     $mail->setFrom(Yii::app()->request->getPost('from_' . $emrow['language']));
                     $mail->rawSubject = $sSubject[$emrow['language']];
                     $mail->rawBody = $sMessage[$emrow['language']];
-                    if (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
+                    $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                    if (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validfrom']) != '' && strtotime($emrow['validfrom']) > strtotime($now)) {
                         $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Access code is not yet valid.", 'unescaped'), $fieldsarray)) . "<br />";
                         $bInvalidDate = true;
-                    } elseif (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validuntil']) != '' && convertDateTimeFormat($emrow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1) {
+                    } elseif (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validuntil']) != '' && strtotime($emrow['validuntil']) < strtotime($now)) {
                         $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Access code is not valid anymore.", 'unescaped'), $fieldsarray)) . "<br />";
                         $bInvalidDate = true;
                     } else {
