@@ -15,13 +15,13 @@
                 <?php if (isset($headercfg)) : ?>
                     <?php if ($headercfg["type"] === "success") : ?>
                         <div class="alert alert-success alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             <?php echo $headercfg["message"]; ?>
                         </div>
 
                     <?php else : ?>
                         <div class="alert alert-warning alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             <?php echo $headercfg["message"]; ?>
                         </div>
 

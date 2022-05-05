@@ -116,12 +116,12 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'd-none'; ?>" id="advanced">
                     <div class="alert alert-info alert-dismissible" role="alert">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <button href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                         <p><?php eT('All fields below (except CSS framework name) must be either a valid JSON array or the string "inherit".'); ?></p>
                     </div>
 
                     <div class="alert alert-warning alert-dismissible" role="alert">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <button href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                         <p><strong><?php eT('Warning!'); ?></strong> <?php eT("Don't touch the values below unless you know what you're doing."); ?></p>
                     </div>
 

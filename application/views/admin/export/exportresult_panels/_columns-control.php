@@ -24,8 +24,7 @@
         <?php if (count($aFields) + 20 > (int) ini_get('max_input_vars')): ?>
           <div class="col-md-12">
             <div class="alert alert-warning alert-dismissible" role="alert">
-                <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>X</span>
-                </button>
+                <button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>
                 <?php
                 eT("The number of fields in your survey exceeds the maximum numbers of fields you can export."); ?>
                 <br/>

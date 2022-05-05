@@ -13,7 +13,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
 
             <?php if (!is_writable($templates[$templatename])) { ?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     <?php eT("You can't save changes because the theme directory is not writable."); ?>
                 </div>
             <?php } ?>

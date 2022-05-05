@@ -25,7 +25,7 @@
     ?>
     <div id="edittoken-error-container" class="row" style="display: none;">
         <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" aria-label="Close" onclick="$('#edittoken-error-container').hide();"><span>×</span></button>
+            <button type="button" class="btn-close" aria-label="Close" onclick="$('#edittoken-error-container').hide();"></button>
             <span class="alert-content"></span>
         </div>
     </div>

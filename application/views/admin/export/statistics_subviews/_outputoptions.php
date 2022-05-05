@@ -123,8 +123,7 @@
         </div>
         <div class="form-group">
             <div class="alert alert-info alert-dismissible" role="alert">
-                <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>X</span>
-                </button>
+                <button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>
                 <?php
                 eT("Each question has its own graph type defined in its advanced settings."); ?>
                 <br/>

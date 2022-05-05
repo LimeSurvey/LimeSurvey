@@ -42,7 +42,7 @@ $groups_count   = count($oSurvey->groups);
                         <!-- While survey is activated, you can't add or remove group or question -->
                         <?php if ($oSurvey->isActive): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <strong><?php eT('Warning!'); ?></strong> <?php eT("While the survey is activated, you can't add or remove a group or question."); ?>
                             </div>
 
@@ -50,13 +50,13 @@ $groups_count   = count($oSurvey->groups);
 
                             <!-- To add questions, first, you must add a question group -->
                             <div class="alert alert-warning alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <strong><?php eT('Warning!'); ?></strong> <?php eT('Before you can add questions you must add a question group first.'); ?>
                             </div>
 
                             <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->
                             <div class="alert alert-info alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 <span class="fa fa-info-sign"></span>&nbsp;&nbsp;&nbsp;
                                 <?php eT('Set below if your questions are shown one at a time, group by group or all on one page.'); ?>
                             </div>
