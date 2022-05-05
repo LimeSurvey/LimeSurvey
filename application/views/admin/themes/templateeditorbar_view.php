@@ -154,31 +154,31 @@ App()->getClientScript()->registerScriptFile(
             </div>
 
             <!-- Right Menu -->
-            <div class="col-lg-7 text-end form-inline">
-
+            <div class="col-lg-7 row text-end">
                 <!-- Theme Select Box -->
-                <div class="form-group">
-                    <label for='templatedir'><?php eT("Theme:"); ?></label>
-                <select class="listboxtemplates form-select" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
-                    // Don't put 'sa' into the URL dirctly because YIi will then try to use filenames directly in the path because of the route
+                <div class="mb-3 col row">
+                    <label class="col col-form-label" for='templatedir'><?php eT("Theme:"); ?></label>
+                    <select class="col listboxtemplates form-select" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
+                    // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
                     echo $this->createUrl("admin/themes", ['sa' => 'view', 'editfile' => $relativePathEditfile, 'screenname' => $screenname]); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
                         <?php echo themeoptions($templates, $templatename); ?>
                     </select>
                 </div>
 
                 <!-- Screen Select Box -->
-                <div class="form-group">
-                    <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
+                <div class="mb-3 col row">
+                    <label class="col col-form-label" for='listboxtemplates'><?php eT("Screen:"); ?></label>
                     <?php echo CHtml::dropDownList('screenname',
                         $screenname,
                         $screens,
                         [
                             'id'       => 'listboxtemplates',
-                            'class'    => "listboxtemplates form-select",
+                            'class'    => "col listboxtemplates form-select",
                             'onchange' => "javascript:  var uri = new Uri('" . $this->createUrl("admin/themes", ['sa' => 'view', 'editfile' => $relativePathEditfile, 'templatename' => $templatename]) . "'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
                         ]); ?>
                 </div>
 
+                <div class="col">
                 <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
                     <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                         <span class="fa fa-floppy-o"></span>
@@ -202,6 +202,7 @@ App()->getClientScript()->registerScriptFile(
                         <?php eT("Back"); ?>
                     </a>
                 <?php endif; ?>
+                </div>
             </div>
         </div>
     </div>
