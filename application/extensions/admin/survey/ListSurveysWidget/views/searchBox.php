@@ -18,54 +18,66 @@
     <div class="pull-right">
         <div class="form text-end">
             <!-- Begin Form -->
-            <?php $form  =  $this->beginWidget('CActiveForm', array(
+            <?php $form = $this->beginWidget('CActiveForm', array(
                 'action' => Yii::app()->createUrl($this->formUrl),
                 'method' => 'get',
-                'htmlOptions'=>array(
-                    'class'=>'form-inline',
+                'htmlOptions' => array(
+                    'class' => 'form-inline',
                 ),
             )); ?>
 
             <!-- search input -->
             <div class="form-group">
-                <?php echo $form->label($this->model, 'searched_value', array('label'=>gT('Search:'),'class'=>'form-label')); ?>
-                <?php echo $form->textField($this->model, 'searched_value', array('class'=>'form-control')); ?>
+                <?php echo $form->label($this->model, 'searched_value', array('label' => gT('Search:'), 'class' => 'form-label')); ?>
+                <?php echo $form->textField($this->model, 'searched_value', array('class' => 'form-control')); ?>
             </div>
 
             <!-- select state -->
             <div class="form-group">
-                <?php echo $form->label($this->model, 'active', array('label'=>gT('Status:'),'class'=>'form-label')); ?>
+                <?php echo $form->label($this->model, 'active', array('label' => gT('Status:'), 'class' => 'form-label')); ?>
                 <select name="active" id='Survey_active' class="form-select">
-                    <option value="" <?php if( $this->model->active==""){echo "selected";}?>><?php eT('(Any)');?></option>
-                    <option value="Y" <?php if( $this->model->active=="Y"){echo "selected";}?>><?php eT('Active');?></option>
-                    <option value="R" <?php if( $this->model->active=="R"){echo "selected";}?>><?php eT('Active and running');?></option>
-                    <option value="N" <?php if( $this->model->active=="N"){echo "selected";}?>><?php eT('Inactive');?></option>
-                    <option value="E" <?php if( $this->model->active=="E"){echo "selected";}?>><?php eT('Active but expired');?></option>
-                    <option value="S" <?php if( $this->model->active=="S"){echo "selected";}?>><?php eT('Active but not yet started');?></option>
+                    <option value="" <?php if ($this->model->active == "") {
+                        echo "selected";
+                    } ?>><?php eT('(Any)'); ?></option>
+                    <option value="Y" <?php if ($this->model->active == "Y") {
+                        echo "selected";
+                    } ?>><?php eT('Active'); ?></option>
+                    <option value="R" <?php if ($this->model->active == "R") {
+                        echo "selected";
+                    } ?>><?php eT('Active and running'); ?></option>
+                    <option value="N" <?php if ($this->model->active == "N") {
+                        echo "selected";
+                    } ?>><?php eT('Inactive'); ?></option>
+                    <option value="E" <?php if ($this->model->active == "E") {
+                        echo "selected";
+                    } ?>><?php eT('Active but expired'); ?></option>
+                    <option value="S" <?php if ($this->model->active == "S") {
+                        echo "selected";
+                    } ?>><?php eT('Active but not yet started'); ?></option>
                 </select>
             </div>
 
 
             <!-- select group -->
             <div class="form-group">
-                <?php echo $form->label($this->model, 'group', array('label'=>gT('Group:'),'class'=>'form-label')); ?>
-                    <select name="gsid" id='Survey_gsid' class="form-select">
-                        <option value=""><?php eT('(Any group)');?></option>
-                        <?php foreach( SurveysGroups::getSurveyGroupsList() as $gsid=>$group_title): ?>
-                            <option value="<?php echo $gsid;?>" <?php if( $gsid == $this->model->gsid){echo 'selected';} ?>>
-                                <?php echo flattenText($group_title);?>
-                            </option>
-                        <?php endforeach?>
-                    </select>
+                <?php echo $form->label($this->model, 'group', array('label' => gT('Group:'), 'class' => 'form-label')); ?>
+                <select name="gsid" id='Survey_gsid' class="form-select">
+                    <option value=""><?php eT('(Any group)'); ?></option>
+                    <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title): ?>
+                        <option value="<?php echo $gsid; ?>" <?php if ($gsid == $this->model->gsid) {
+                            echo 'selected';
+                        } ?>>
+                            <?php echo flattenText($group_title); ?>
+                        </option>
+                    <?php endforeach ?>
+                </select>
             </div>
 
-            <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-            <button
-                href="<?php echo Yii::app()->createUrl('surveyAdministration/listsurveys');?>" 
-                class="btn btn-warning">
-                <span class="fa fa-refresh" ></span>
-                <?php eT('Reset');?>
-            </button>
+            <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>
+            <a href="<?php echo Yii::app()->createUrl('surveyAdministration/listsurveys'); ?>" class="btn btn-warning">
+                <span class="fa fa-refresh"></span>
+                <?php eT('Reset'); ?>
+            </a>
 
             <?php $this->endWidget(); ?>
         </div>

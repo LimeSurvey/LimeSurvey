@@ -46,9 +46,7 @@
                     <?php if (!class_exists('ZipArchive')) {?>
                         <?php eT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") ?>
                     <?php } else {?>
-                        <button class="btn btn-success" type='button'onclick='if (window.LS.validatefilename(this.form,"<?php eT(' Please select a file to import! ', 'js ') ?>")) { this.form.submit();}'>
-                            <?php eT("Install") ?>
-                        </button>
+                        <input class="btn btn-success" type='button' value='<?php eT("Install") ?>' onclick='if (window.LS.validatefilename(this.form,"<?php eT(' Please select a file to import! ', 'js ') ?>")) { this.form.submit();}' />
                     <?php }?>
                 </div>
             </form>

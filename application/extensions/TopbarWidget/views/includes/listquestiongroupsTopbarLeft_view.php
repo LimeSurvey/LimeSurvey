@@ -11,13 +11,13 @@
     </span>
 <?php elseif ($hasSurveyContentCreatePermission): ?>
     <!-- Add group -->
-    <button type="button" class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/add/surveyid/".$surveyid); ?>" role="button">
+    <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/add/surveyid/".$surveyid); ?>">
         <span class="icon-add"></span>
         <?php eT('Add new group'); ?>
-    </button>
+    </a>
     <!-- Import -->
-    <button type="button" class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/importview/surveyid/".$surveyid); ?>" role="button">
+    <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/importview/surveyid/".$surveyid); ?>">
         <span class="icon-import"></span>
         <?php eT('Import group'); ?>
-    </button>
+    </a>
 <?php endif; ?>

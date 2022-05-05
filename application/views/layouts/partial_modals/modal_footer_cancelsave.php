@@ -6,7 +6,7 @@
         <?php
         eT("Cancel"); ?>
     </button>
-    <button role="button" type="button" class="btn btn-primary btn-ok">
+    <a role="button" class="btn btn-primary btn-ok">
         <?php eT("Save"); ?>
-    </button>
+    </a>
 </div>

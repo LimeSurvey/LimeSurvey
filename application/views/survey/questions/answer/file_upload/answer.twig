@@ -12,22 +12,20 @@
 <!--answer -->
 <div class="{{ coreClass }}">
     <div class='upload-button'>
-        <button
-            role="button"
-            type="button"
-            id='upload_{{ fileid }}'
-            class='btn btn-primary upload'
-            href='{{uploadurl}}'
-            data-bs-toggle="modal"
-            data-bs-target="file-upload-modal-{{fileid}}"
-            data-showtitle="{{showTitle}}"
-            data-showcomment="{{showComment}}"
-            data-fieldname="{{basename}}"
+        <a role="button"
+           id='upload_{{ fileid }}'
+           class='btn btn-primary upload'
+           href='{{ uploadurl }}'
+           data-bs-toggle="modal"
+           data-bs-target="file-upload-modal-{{ fileid }}"
+           data-showtitle="{{ showTitle }}"
+           data-showcomment="{{ showComment }}"
+           data-fieldname="{{ basename }}"
         >
             <span class='fa fa-upload'></span>
             &nbsp;
             {{ uploadButtonLabel }}
-        </button>
+        </a>
     </div>
     <input type='hidden' id='java{{ fileid }}' name='{{ fileid }}' value='{{ value }}' />
     <input type='hidden' id='java{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
@@ -133,11 +131,11 @@
         <td class="upload comment">{comment}</td>
         <td class="upload edit">{name}</td>
         <td>
-            <button role="button" type="button" class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">
+            <a role="button" class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">
                 <i class="fa fa-pencil"></i> 
                 &nbsp; 
                 {{ "Edit" | gT }}
-            </button>
+            </a>
         </td>
     </tr>
 </script>

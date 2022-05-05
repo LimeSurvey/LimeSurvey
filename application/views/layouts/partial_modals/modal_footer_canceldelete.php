@@ -5,8 +5,8 @@
     <button type="button" class="btn btn-close" data-bs-dismiss="modal">
         <?php eT("Cancel"); ?>
     </button>
-    <button type="button" class="btn btn-danger btn-ok">
+    <a role="button" class="btn btn-danger btn-ok">
         <?php eT("Delete"); ?>
-    </button>
+    </a>
 </div>
 

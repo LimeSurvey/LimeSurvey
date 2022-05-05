@@ -46,9 +46,9 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
         </div>
     <?php else:?>
         <!-- Preview question single language -->
-        <button class="btn btn-outline-secondary" role="button" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button" target="_blank">
+        <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"); ?>" target="_blank">
             <span class="fa fa-eye"></span>
             <?php eT("Preview question");?>
-        </button>
+        </a>
     <?php endif; ?>
 <?php endif; ?>

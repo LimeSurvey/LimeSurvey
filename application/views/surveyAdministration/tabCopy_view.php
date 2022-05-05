@@ -33,9 +33,7 @@
 
                 <!-- Submit -->
                 <div class="text-center">
-                    <button role="button" type='submit' class='btn btn-primary col-4'>
-                        <?php  eT("Copy survey"); ?>
-                    </button>
+                    <input type='submit' class='btn btn-primary col-4' value='<?php eT("Copy survey"); ?>' />
                     <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
                     <input type='hidden' name='action' value='copysurvey' />
                 </div>

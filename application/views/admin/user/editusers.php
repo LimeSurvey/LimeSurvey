@@ -33,13 +33,9 @@ echo viewHelper::getViewTestTag('usersIndex');
                 </div>
 
                 <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-                <button 
-                    type="button"
-                    href="<?php echo Yii::app()->createUrl('admin/user/sa/index');?>" 
-                    class="btn btn-warning">
-                    <?php eT('Reset');?>
-                </button>
-
+                <a href="<?php echo Yii::app()->createUrl('admin/user/sa/index'); ?>" class="btn btn-warning">
+                    <?php eT('Reset'); ?>
+                </a>
                 <?php $this->endWidget(); ?>
             </div>
         </div>
@@ -141,9 +137,7 @@ echo viewHelper::getViewTestTag('usersIndex');
                     </div>
                     <div class="col-md-12">&nbsp;</div>
                     <div class="col-md-4 col-md-offset-8">
-                        <button role="button" type='submit' id='add_user_btn' class="btn btn-primary btn-block">
-                            <?php eT("Save");?>
-                        </button>
+                        <input type='submit' id='add_user_btn' class="btn btn-primary btn-block" value='<?php eT("Save");?>' />
                         <input type='hidden' name='action' value='adduser' />
                     </div>
                 </div>

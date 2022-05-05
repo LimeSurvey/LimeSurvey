@@ -735,28 +735,26 @@ class TemplateConfiguration extends TemplateConfig
         $sUninstallUrl = Yii::app()->getController()->createUrl('themeOptions/uninstall/');
         $sResetUrl     = Yii::app()->getController()->createUrl('themeOptions/reset/', array("gsid" => (int) $gsid));
 
-        $sEditorLink = "<button
-            type='button'
+        $sEditorLink = "<a
             id='template_editor_link_" . $this->template_name . "'
             href='" . $sEditorUrl . "'
             class='btn btn-outline-secondary btn-block'>
                 <span class='icon-templates'></span>
                 " . gT('Theme editor') . "
-            </button>";
+            </a>";
 
         $OptionLink = '';
         if ($this->getHasOptionPage()) {
-            $OptionLink .= "<button
-                type='button'
+            $OptionLink .= "<a
                 id='template_options_link_" . $this->template_name . "'
                 href='" . $sOptionUrl . "'
                 class='btn btn-outline-secondary btn-block'>
                     <span class='fa fa-tachometer'></span>
                     " . gT('Theme options') . "
-                </button>";
+                </a>";
         }
 
-        $sExtendLink = '<button
+        $sExtendLink = '<a
             id="extendthis_' . $this->template_name . '"
             href="' . $sExtendUrl . '"
             data-post=\''
@@ -777,10 +775,9 @@ class TemplateConfiguration extends TemplateConfig
             role="button" class="btn btn-primary btn-block selector--ConfirmModal">
                 <i class="fa fa-copy"></i>
                 ' . gT('Extend') . '
-            </button>';
+            </a>';
 
-        $sUninstallLink = '<button
-            type="button"
+        $sUninstallLink = '<a
             id="remove_fromdb_link_' . $this->template_name . '"
             href="' . $sUninstallUrl . '"
             data-post=\'{ "templatename": "' . $this->template_name . '" }\'
@@ -792,10 +789,9 @@ class TemplateConfiguration extends TemplateConfig
             class="btn btn-danger btn-block selector--ConfirmModal">
                 <span class="fa fa-trash"></span>
                 ' . gT('Uninstall') . '
-            </button>';
+            </a>';
 
-        $sResetLink = '<button
-                type="button"
+        $sResetLink = '<a
                 id="remove_fromdb_link_' . $this->template_name . '"
                 href="' . $sResetUrl . '"
                 data-post=\'{ "templatename": "' . $this->template_name . '" }\'
@@ -807,7 +803,7 @@ class TemplateConfiguration extends TemplateConfig
                 class="btn btn-warning btn-block selector--ConfirmModal">
                     <span class="fa fa-refresh"></span>
                     ' . gT('Reset') . '
-            </button>';
+            </a>';
 
         if (App()->getController()->action->id == "surveysgroups") {
             $sButtons = $OptionLink;
@@ -818,7 +814,7 @@ class TemplateConfiguration extends TemplateConfig
                 $sButtons .= $sUninstallLink;
             } else {
                 $sButtons .= '
-                    <button
+                    <a
                         class="btn btn-danger btn-block disabled"
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
@@ -826,7 +822,7 @@ class TemplateConfiguration extends TemplateConfig
                     >
                         <span class="fa fa-trash"></span>
                         ' . gT('Uninstall') . '
-                    </button>
+                    </a>
                 ';
             }
         }

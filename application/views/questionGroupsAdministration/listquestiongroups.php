@@ -19,8 +19,8 @@
                 <?php App()->getController()->renderPartial(
                     '/admin/survey/surveybar_addgroupquestion', //todo this view must be moved to correct position
                     [
-                        'surveybar'      => $surveybar,
-                        'oSurvey'        => $oSurvey,
+                        'surveybar' => $surveybar,
+                        'oSurvey' => $oSurvey,
                         'surveyHasGroup' => isset($oSurvey->groups) ? $oSurvey->groups : false
                     ]
                 ); ?>
@@ -34,16 +34,15 @@
                         'class' => 'form-inline',
                     ),
                 )); ?>
-                    <div class="form-group">
-                        <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => ' form-label text-end')); ?>
-                        <?php echo $form->textField($model, 'group_name', array('class' => 'form-control')); ?>
-                    </div>
-                    <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>
-                    <button 
-                        href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
-                        class="btn btn-warning">
-                        <?php eT('Reset');?>
-                    </button>
+                <div class="form-group">
+                    <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => ' form-label text-end')); ?>
+                    <?php echo $form->textField($model, 'group_name', array('class' => 'form-control')); ?>
+                </div>
+                <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>
+                <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid); ?>"
+                   class="btn btn-warning">
+                    <?php eT('Reset'); ?>
+                </a>
                 <?php $this->endWidget(); ?>
             </div>
         </div>

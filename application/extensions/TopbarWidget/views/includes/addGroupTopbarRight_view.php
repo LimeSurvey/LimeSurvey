@@ -11,7 +11,7 @@
     <?php eT('Save'); ?>
 </button>
 <!-- Back Button -->
-<button type="button" class="btn btn-outline-secondary" href="<?php echo $backUrl ?>" role="button">
+<a class="btn btn-outline-secondary" href="<?php echo $backUrl ?>">
     <span class="fa fa-backward"></span>
     &nbsp;&nbsp;
     <?php eT('Back') ?>
