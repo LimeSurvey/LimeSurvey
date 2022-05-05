@@ -47,7 +47,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             //5 POINT CHOICE radio-buttons
             case Question::QT_5_POINT_CHOICE: ?>
             <div class="col-md-10">
-                <select name='<?php echo $fieldname; ?>' class='form-control'>
+                <select name='<?php echo $fieldname; ?>' class='form-select'>
                     <option value=''><?php eT("No answer",'html',$sDataEntryLanguage); ?></option>
                     <?php for ($x=1; $x<=5; $x++)
                     { ?>

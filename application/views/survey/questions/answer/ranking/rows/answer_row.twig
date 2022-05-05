@@ -14,7 +14,7 @@
         {{ processString(labeltext) }}
     </label>
     <div class="col-md-8">
-        <select  class='form-control' name="{{myfname}}" id="answer{{myfname}}">
+        <select  class='form-select' name="{{myfname}}" id="answer{{myfname}}">
             {% for option in options %}
                 <option value="{{ option.value }}" {{ option.selected }} class='{{option.classes}}'>
                     {{ flatString(processString(option.optiontext,1)) }}
