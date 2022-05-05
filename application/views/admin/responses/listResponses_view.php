@@ -244,7 +244,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 $script = '
                     var postUrl = "'.Yii::app()->getController()->createUrl("admin/responses/", array("sa" => "setSession")).'"; // For massive export
                     jQuery(document).on("change", "#pageSize", function(){
-                        $.fn.yiiGridView.update("responses-grid",{ data:{ pageSize: $(this).val() }});
+                        var data = $("#responses-grid .filters input, #responses-grid .filters select").serialize();
+                        data += (data ? "&" : "") + "pageSize=" + $(this).val();
+                        $.fn.yiiGridView.update("responses-grid", {data: data});
                     });
                     $(".grid-view [data-toggle=\'popover\']").popover();
                     ';
