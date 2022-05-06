@@ -1458,41 +1458,50 @@ class remotecontrol_handle
         }
         $aImportResults = XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID, $importOptions);
         unlink($sFullFilePath);
-
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        }
         if (isset($aImportResults['fatalerror'])) {
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-            }
             return array('status' => 'Error: '.$aImportResults['fatalerror']);
         }
 
         fixLanguageConsistency($iSurveyID);
         $iNewqid = $aImportResults['newqid'];
-
-        $oQuestion = Question::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid));
-        if (!empty($sNewQuestionTitle)) {
-            $oQuestion->setAttribute('title', $sNewQuestionTitle);
+        $oQuestions = Question::model()->findAll(
+            "sid = :sid AND qid = :qid",
+            array(':sid' => $iSurveyID, ':qid' => $iNewqid)
+        );
+        $mandatory = 'N';
+        if (!in_array($sMandatory, array('Y', 'N'))) {
+            $sMandatory = 'N';
         }
-        if ($sNewqQuestion != '') {
-            $oQuestion->setAttribute('question', $sNewqQuestion);
-        }
-        if ($sNewQuestionHelp != '') {
-            $oQuestion->setAttribute('help', $sNewQuestionHelp);
-        }
-        if (in_array($sMandatory, array('Y', 'N'))) {
+        $errors = [];
+        $count = 0;
+        foreach ($oQuestions as $oQuestion) {
+            $count++;
+            if (!empty($sNewQuestionTitle)) {
+                $oQuestion->setAttribute('title', $sNewQuestionTitle);
+            }
+            if (!empty($sNewqQuestion)) {
+                $oQuestion->setAttribute('question', $sNewqQuestion);
+            }
+            if (!empty($sNewQuestionHelp)) {
+                $oQuestion->setAttribute('help', $sNewQuestionHelp);
+            }
             $oQuestion->setAttribute('mandatory', $sMandatory);
-        } else {
-            $oQuestion->setAttribute('mandatory', 'N');
+            
+            if (!$oQuestion->save()) {
+                $errors = array_merge(
+                    $errors,
+                    $oQuestion->getErrors()
+                );
+            }
         }
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-        }
-
-        try {
-            $oQuestion->save();
-        } catch (Exception $e) {
-            // no need to throw exception
+        if (!empty($errors)) {
+            return array(
+                'status' => 'Error when update question',
+                'errors' => $errors
+            );
         }
         return (int) $aImportResults['newqid'];
      }
