@@ -180,6 +180,9 @@ export default {
                     regTest.test(currentUrl) || LS.ld.endsWith(currentUrl, itm.link)
                         ? itm
                         : lastQuestionGroupObject;
+                if (lastQuestionGroupObject !== false) {
+                    return false;
+                }
             });
 
             //check for corresponding question group
@@ -199,8 +202,13 @@ export default {
                             : lastQuestionObject;
                     if (lastQuestionObject != false) {
                         lastQuestionGroupObject = itm;
+                        return false;
                     }
                 });
+                if (lastQuestionObject != false) {
+                    lastQuestionGroupObject = itm;
+                    return false;
+                }
             });
 
             //unload every selection
@@ -215,8 +223,6 @@ export default {
                 this.$store.getters.isCollapsed == true
             )
                 this.$store.commit("lastMenuItemOpen", lastQuickMenuItemObject);
-            if (lastQuestionObject != false)
-                this.$store.commit("lastQuestionOpen", lastQuestionObject);
             if (lastQuestionGroupObject != false) {
                 this.$store.commit(
                     "lastQuestionGroupOpen",
@@ -227,6 +233,8 @@ export default {
                     lastQuestionGroupObject
                 );
             }
+            if (lastQuestionObject != false)
+                this.$store.commit("lastQuestionOpen", lastQuestionObject);
         },
         editEntity() {
             this.setActiveMenuIndex(null, "question");
