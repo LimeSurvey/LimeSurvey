@@ -1325,7 +1325,7 @@ class remotecontrol_handle
             $iQuestionID = (int) $iQuestionID;
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion)) {
-                            return array('status' => 'Error: Invalid question ID');
+                return array('status' => 'Error: Invalid question ID');
             }
 
             $iSurveyID = $oQuestion['sid'];
@@ -1334,13 +1334,13 @@ class remotecontrol_handle
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
 
                 if ($oSurvey['active'] == 'Y') {
-                                    return array('status' => 'Survey is active and not editable');
+                    return array('status' => 'Survey is active and not editable');
                 }
                 $iGroupID = $oQuestion['gid'];
 
                 $oCondition = Condition::model()->findAllByAttributes(array('cqid' => $iQuestionID));
                 if (count($oCondition) > 0) {
-                                return array('status' => 'Cannot delete Question. Others rely on this question');
+                    return array('status' => 'Cannot delete Question. Others rely on this question');
                 }
 
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $iQuestionID);
@@ -1357,7 +1357,7 @@ class remotecontrol_handle
 
                     DefaultValue::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
                     QuotaMember::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-                    Question::updateQuestionOrder($iGroupID);
+                    Question::updateSortOrder($iGroupID, $iSurveyID);
 
                     return (int) $iQuestionID;
                 } catch (Exception $e) {
@@ -1365,10 +1365,10 @@ class remotecontrol_handle
                 }
 
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid session key');
+            return array('status' => 'Invalid session key');
         }
     }
 
