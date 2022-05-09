@@ -1,7 +1,7 @@
 <h4 class="h4"><?php
     eT("Output options"); ?></h4>
 <div class="row">
-    <div class="col-md-6 col-sm-12">
+    <div class="col-lg-6 col-md-12">
         <div class='form-group'>
             <label for='showtextinline' class="form-label"><?php
                 eT("Show text responses inline:") ?></label>
@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-sm-12">
+    <div class="col-lg-6 col-md-12">
         <div class='form-group'>
             <label for='stats_columns' class="form-label"><?php
                 eT("Number of columns:") ?></label>
@@ -123,8 +123,7 @@
         </div>
         <div class="form-group">
             <div class="alert alert-info alert-dismissible" role="alert">
-                <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>X</span>
-                </button>
+                <button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>
                 <?php
                 eT("Each question has its own graph type defined in its advanced settings."); ?>
                 <br/>

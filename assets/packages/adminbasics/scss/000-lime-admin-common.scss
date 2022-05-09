@@ -777,10 +777,6 @@ div.card.disabled a {
     cursor: default;
 }
 
-#edit-group .tab-pane {
-    padding: 1em;
-}
-
 .card-clickable:hover {
     cursor: pointer;
     cursor: hand;
@@ -1348,23 +1344,8 @@ div.card.disabled a {
 
 }
 
-.content-right {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.content-right .col-lg-12 {
-    padding-left: 0;
-    padding-right: 0;
-}
-
 .toWhite a:hover {
     font-weight: 700;
-}
-
-.col-lg-12.content-right {
-    padding-left: 0;
-    padding-right: 0;
 }
 
 .container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
@@ -2743,8 +2724,8 @@ h3,
     max-width: 12px;
 }
 
-#edittoken .tab-content #general .form-group .col-sm-4 .col-sm-4,
-#edittoken .tab-content #general .form-group .col-sm-4 .col-sm-8 {
+#edittoken .tab-content #general .form-group .col-md-4 .col-md-4,
+#edittoken .tab-content #general .form-group .col-md-4 .col-md-8 {
     padding: 0;
 }
 
@@ -2976,7 +2957,7 @@ table#responsedetail tr td {
     #vue-apps-main-container #vue-sidebar-container {
         display: none
     }
-    #statisticsview .col-lg-12 {
+    #statisticsview .col-12 {
         float: none;
         width: 100%;
         display: block;
@@ -3026,14 +3007,14 @@ table#responsedetail tr td {
         width: 30%;
         float: left
     }
-    body.onStatistics .legend .col-sm-1 {
+    body.onStatistics .legend .col-md-1 {
         display: inline-block;
         width: auto;
         padding: 0;
         padding-right: 3pt;
         padding-left: 3pt;
     }
-    body.onStatistics .legend .col-sm-10 {
+    body.onStatistics .legend .col-md-10 {
         display: inline-block;
         width: auto;
         padding: 0;
@@ -4267,18 +4248,6 @@ table.dataTable thead .sorting_desc:after {
 }
 
 /* Reduce margins for question editor */
-#edit-question-form {
-    margin-left: -15px;
-    margin-right: -15px;
-}
-#advanced-question-editor {
-    margin-left: -15px;
-    margin-right: -15px;
-}
-#advanced-question-editor > div > .container-center > .row {
-    margin-left: -15px;
-    margin-right: -15px;
-}
 
 /* Scrollable subquestion/answer tables*/
 .subquestions-table-wrapper,

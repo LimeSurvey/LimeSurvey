@@ -17,6 +17,7 @@ if (count($_POST) == 0) {
 
     $form = <<< EOD
 $sFormTag    
+<div class="container-fluid">
 <h3>Enter the following variables to test navigation for a survey using different styles</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
@@ -43,13 +44,14 @@ Specify which debugging features to use
 </tr>
 <tr><td colspan='2'><input type='submit'/></td></tr>
 </table>
+</div>
 </form>
 EOD;
     echo $form;
 }
 else {
 
-    
+
 
     // $surveyInfo = explode('|',Yii::app()->request->getParam('sid'));
     // $surveyid = sanitize_int($surveyInfo[0]);
@@ -61,7 +63,7 @@ else {
             ((isset($_POST['LEM_DEBUG_VALIDATION_DETAIL']) && $_POST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
             ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
             );
-    $deletenonvalues = ((isset($_POST['deletenonvalues']) && $_POST['deletenonvalues']=='Y') ? 1 : 0);            
+    $deletenonvalues = ((isset($_POST['deletenonvalues']) && $_POST['deletenonvalues']=='Y') ? 1 : 0);
 
     $surveyOptions = array(
         'active'=>false,

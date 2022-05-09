@@ -34,7 +34,7 @@ var uploadHandler = function (qid, options) {
 
             if ($('#' + fieldname + '_show_title').val() == 1) {
                 var previewTitleContainer = $('<div class="form-group"></div>');
-                $('<label class="control-label col-xs-4"></label>')
+                $('<label class="control-label col-4"></label>')
                     .attr('for', fieldname + '_title_' + i)
                     .text(options.uploadLang.titleFld)
                     .appendTo(previewTitleContainer);
@@ -47,7 +47,7 @@ var uploadHandler = function (qid, options) {
 
             if ($('#' + fieldname + '_show_comment').val() == 1) {
                 var previewCommentContainer = $('<div class="form-group"></div>');
-                $('<label class="control-label col-xs-4"></label>')
+                $('<label class="control-label col-4"></label>')
                     .attr('for', fieldname + '_comment_' + i)
                     .text(options.uploadLang.commentFld)
                     .appendTo(previewCommentContainer);

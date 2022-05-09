@@ -33,20 +33,20 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
 ?>
 
 <!-- tokens panel -->
-<div id='tokens-panel' class="container-fluid">
+<div id='tokens-panel'>
     <div class="row">
-        <div class="col-sm-12 col-md-6">
+        <div class="col-12 col-lg-6">
             <!--  Set token length to -->
             <div class="form-group">
                 <?php $tokenlength = $oSurvey->tokenlength; ?>
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                    <div class="col-12 col-lg-8 content-right">
                         <label class=" form-label"  for='tokenlength'><?php  eT("Set access code length to:"); ?></label>
                             <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-none' : 'show'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars($tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
                             <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength == '-1' ? 'show' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->tokenlength); ?>" readonly />
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'd-none'); ?>">
-                        <label class=" form-label content-center col-sm-12"  for='tokenlength'><?php  eT("Inherit:"); ?></label>
+                    <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'd-none'); ?>">
+                        <label class=" form-label content-center col-12"  for='tokenlength'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'tokenlengthbutton',
                             'value'=> ($bShowInherited && $tokenlength == '-1' ? 'Y' : 'N'),
@@ -60,7 +60,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-12 col-lg-6">
             <!-- Anonymized responses -->
             <div class="form-group">
                 <label  class=" form-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between survey participants table and survey responses table. You won't be able to identify responses by their access code."); ?>'>

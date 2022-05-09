@@ -41,10 +41,10 @@ return array(
         'devBaseUrl' => 'assets/bootstrap_5/',
         'basePath' => 'bootstrap',
         'css'=> array(
-            'build/css/custom.min.css',
+            'build/css/bootstrap_5.min.css',
         ),
         'js'=>array(
-            'build/js/custom.min.js',
+            'build/js/bootstrap_5.min.js',
         ),
     ),
 
@@ -54,10 +54,10 @@ return array(
         'devBaseUrl' => 'assets/bootstrap_5/',
         'basePath' => 'bootstrap',
         'css'=> array(
-            'build/css/custom.min.css',
+            'build/css/bootstrap_5.min.css',
         ),
         'js'=>array(
-            'build/js/custom.min.js',
+            'build/js/bootstrap_5.min.js',
         ),
     ),
 

@@ -11,7 +11,7 @@
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <div class="jumbotron message-box">
                 <h2 class="text-success"><?php eT("Import question") ?></h2>
                 <p class="lead text-success"><?php eT("Success") ?></p>

@@ -73,7 +73,7 @@
                     </div>
                 {% endif %}
                 <select
-                    class='form-control'
+                    class='form-select'
                     name="{{ ansrow.myfname0 }}"
                     id="answer{{ ansrow.myfid0 }}"
                     aria-labelledby="answertext{{ ansrow.myfname }}"
@@ -129,7 +129,7 @@
                 {% if ddprefix != '' %}
                     <div class="ddprefix ls-input-group-extra">{{ processString(ddprefix) }}</div>
                 {% endif %}
-                <select class='form-control' name="{{ ansrow.myfname1 }}" id="answer{{ ansrow.myfid1 }}" aria-labelledby="label-{{ ansrow.myfname }}">
+                <select class='form-select' name="{{ ansrow.myfname1 }}" id="answer{{ ansrow.myfid1 }}" aria-labelledby="label-{{ ansrow.myfname }}">
                     <!-- Please choose... -->
                     {% if ansrow.sActualAnswer1 is empty %}
                         <option value="" selected="selected">{{ gT('Please choose...') }}</option>

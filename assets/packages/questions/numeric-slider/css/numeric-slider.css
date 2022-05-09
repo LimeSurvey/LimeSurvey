@@ -40,8 +40,8 @@ font-family: FontAwesome;
 }
 
  /* different line */
-.slider-list .slider-item .control-label.col-sm-12{margin-top:0.5em;margin-bottom: 2em;}
-.slider-list .slider-item .col-sm-12 .ls-input-group{margin-top:0.5em;margin-bottom: 2em;}
+.slider-list .slider-item .control-label.col-12{margin-top:0.5em;margin-bottom: 2em;}
+.slider-list .slider-item .col-12 .ls-input-group{margin-top:0.5em;margin-bottom: 2em;}
 /* reset button */
 .ls-input-group-reset{margin-top:1em}
 .btn-slider-reset{text-align:center;position:relative;}

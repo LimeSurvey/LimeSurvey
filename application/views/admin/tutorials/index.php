@@ -22,8 +22,7 @@ echo viewHelper::getViewTestTag('tutorials');
         <div class="col-12 h1 pagetitle">
             <?php eT('Tutorials')?> 
         </div>
-            <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-bs-toggle="modal">
-		<div class="col-xs-12 jumbotron well">
+		<div class="col-12 jumbotron well">
 			<h3><?=gT("We will soon add the functionality to create your own tutorials and download them from our store.")?></h3>
 		</div>
 		<div class="col-12 ls-space margin top-15">
@@ -47,7 +46,7 @@ echo viewHelper::getViewTestTag('tutorials');
                     'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                     'ajaxType'                 => 'POST',
                     'ajaxUpdate'               => 'tutorial-grid',
-                    'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-md-4\" id=\"massive-action-container\"></div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
                     'afterAjaxUpdate'          => 'bindAction',
 				));
 				?>

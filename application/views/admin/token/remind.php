@@ -7,7 +7,7 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Send email reminder"); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
 
             <?php if ($thissurvey['active'] != 'Y'):?>
@@ -23,7 +23,7 @@
 
             <?php echo CHtml::form(array("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"), 'post', array('id'=>'sendreminder', 'class'=>'')); ?>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-md-6">
                 <?php if (count($tokenids)>0): ?>
                         <div class='form-group'>
                             <label class='form-label '><?php eT("Send reminder to participant ID(s):"); ?></label>
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-md-6">
                     <!-- Max reminders -->
                     <div class='form-group'>
                         <label class='form-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>

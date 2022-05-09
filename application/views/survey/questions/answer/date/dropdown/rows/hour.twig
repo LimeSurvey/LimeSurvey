@@ -10,7 +10,7 @@
 <label for="hour{{ hourId }}" class="sr-only control-label">
     {{ gT('Hour') }}
 </label>
-<select id="hour{{ hourId }}" name="hour{{ hourId }}" class="hour form-control">
+<select id="hour{{ hourId }}" name="hour{{ hourId }}" class="hour form-select">
     <option value="">{{ gT('Hour') }}</option>
     {% for i in 0..23 %}
         {# currenthour are sent as padded integer ( '00','01'), i is integer, need testing !== '' and intval #}

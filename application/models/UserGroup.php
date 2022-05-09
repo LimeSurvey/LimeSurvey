@@ -273,7 +273,7 @@ class UserGroup extends LSActiveRecord
                 'header' => gT('User group ID'),
                 'name' => 'usergroup_id',
                 'value' => '$data->ugid',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
             array(
@@ -287,21 +287,21 @@ class UserGroup extends LSActiveRecord
                 'header' => gT('Description'),
                 'name' => 'description',
                 'value' => '$data->description',
-                'htmlOptions' => array('class' => 'col-md-5'),
+                'htmlOptions' => array('class' => 'col-lg-5'),
             ),
 
             array(
                 'header' => gT('Owner'),
                 'name' => 'owner',
                 'value' => '$data->owner->users_name',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
             array(
                 'header' => gT('Members'),
                 'name' => 'members',
                 'value' => '$data->countUsers',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => 'col-lg-1'),
             ),
 
             array(

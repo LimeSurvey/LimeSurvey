@@ -11,11 +11,10 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
 
 ?>
 <div id="pjax-content">
-    <div class="col-lg-12 list-surveys">
-        <div class="row">
-            <div class="container-fluid">
-                <div class="row">
-                    <?php
+    <div class="container-fluid">
+        <div class="col-12 list-surveys">
+            <div class="row">
+                <?php
                     $this->widget('application.extensions.admin.grid.CLSGridView', [
                         'id' => 'share_central_participants',
                         'dataProvider' => $model->search(),
@@ -24,7 +23,7 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
                         'rowHtmlOptionsExpression' => '["data-participant_id" => $data->participant_id, "data-share_uid" => $data->share_uid]',
                         'massiveActionTemplate' => $massiveAction,
                         'emptyText'                => gT('No shared participants found.'),
-                        'ajaxType'                 => 'POST',
+                        'ajaxType' => 'POST',
                         'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
                         'pager' => [
                             'class' => 'application.extensions.admin.grid.CLSYiiPager',
@@ -40,10 +39,9 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
                                 )
                             ),
                     ]);
-                    ?>
-                </div>
+                ?>
             </div>
         </div>
+        <span id="locator" data-location="sharepanel">&nbsp;</span>
     </div>
-    <span id="locator" data-location="sharepanel">&nbsp;</span>
 </div>

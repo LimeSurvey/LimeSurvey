@@ -30,11 +30,10 @@
     }
     .resize-handle {
         position: absolute;
-        right: 14px;
+        right: 0;
         top: 0;
         bottom: 0;
         height: 100%;
-        width: 4px;
         cursor: col-resize;
         button {
             outline: 0;
@@ -48,10 +47,9 @@
             height:100%;
             text-align: left;
             border-radius: 0;
-            padding: 0px 7px 0px 4px;
+            padding: 0 4px;
             i {
                 font-size: 12px;
-                width: 5px;
             }
         }
     }

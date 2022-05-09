@@ -14,7 +14,7 @@
             <?php eT('Edit default answer values') ?>
         </h3>
         <div class="row">
-            <div class="col-lg-8 content-right">
+            <div class="col-xl-8 content-right">
                 <?php echo CHtml::form(["admin/database/index"], 'post', ['class' => '', 'id' => 'frmdefaultvalues', 'name' => 'frmdefaultvalues']); ?>
                 <ul class="nav nav-tabs">
                     <?php foreach ($oSurvey->allLanguages as $i => $language) : ?>
@@ -29,13 +29,13 @@
                             <?php if ((int)$questionMetaData->answerscales > 0) : ?>
                                 <?php for ($scale_id = 0; $scale_id < (int)$questionMetaData->answerscales; $scale_id++) : ?>
                                     <?php $opts = $langopts[$language][$questionrow['type']][$scale_id]; ?>
-                                    <div class="form-group col-sm-12">
+                                    <div class="form-group col-12">
                                         <label class=" form-label" for='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                             <?php (int)$questionMetaData->answerscales > 1
                                                 ? printf(gT('Default answer for scale %s:'), $scale_id)
                                                 : printf(gT('Default answer value:'), $scale_id) ?>
                                         </label>
-                                        <div class="col-sm-12">
+                                        <div class="col-12">
                                             <select class='form-select' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'
                                                     id='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                                 <option value=''<?php echo is_null($opts['defaultvalue']) ? ' selected="selected"' : '' ?>>
@@ -55,10 +55,10 @@
                                     </div>
                                     <?php if ($questionrow['other'] == 'Y'): ?>
                                         <div class="form-group">
-                                            <label class="col-sm-12 form-label" for='other_<?php echo "{$scale_id}_{$language}" ?>'>
+                                            <label class="col-12 form-label" for='other_<?php echo "{$scale_id}_{$language}" ?>'>
                                                 <?php eT("Default value for option 'Other':") ?>
                                             </label>
-                                            <div class="col-sm-12">
+                                            <div class="col-12">
                                                 <input type='text' name='other_<?php echo "{$scale_id}_{$language}" ?>'
                                                        value='<?php echo $langopts[$language][$questionrow['type']]['Ydefaultvalue'] ?>' id='other_<?php echo "{$scale_id}_{$language}" ?>'>
                                             </div>
@@ -92,10 +92,10 @@
                                     <?php if ($inputStyle == 'enum') : ?>
                                         <?php foreach ($opts['sqresult'] as $aSubquestion) : ?>
                                             <div class="form-group">
-                                                <label class="col-sm-12 form-label" for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
+                                                <label class="col-12 form-label" for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
                                                     <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                 </label>
-                                                <div class="col-sm-12">
+                                                <div class="col-12">
                                                     <select class='form-select' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
                                                             id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
                                                         <?php foreach ($aSubquestion['options'] as $value => $label) : ?>
@@ -112,10 +112,10 @@
                                     <?php if ($inputStyle == 'text') : ?>
                                         <?php foreach ($opts['sqresult'] as $aSubquestion) : ?>
                                             <div class="form-group">
-                                                <label class="col-sm-12 form-label" for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
+                                                <label class="col-12 form-label" for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
                                                     <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                 </label>
-                                                <div class="col-sm-12">
+                                                <div class="col-12">
                                                         <textarea cols='50' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
                                                                   id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'><?php echo $aSubquestion['defaultvalue'] ?></textarea>
                                                 </div>
@@ -146,7 +146,7 @@
                                 ?>
                                 <?php if ($questionrow['type'] != Question::QT_Y_YES_NO_RADIO): //temporary solution - until everything is move to widgets?>
                                     <div class="form-group">
-                                        <label class="col-sm-12 form-label" for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
+                                        <label class="col-12 form-label" for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
                                             <?php eT("Default value:") ?>
                                         </label>
                                         <?php
@@ -163,7 +163,7 @@
                                                 $defaultValueLanguageText = '';
                                             }
                                         ?>
-                                        <div class="col-sm-12">
+                                        <div class="col-12">
                                             <textarea <?php echo $hasUpdatePermission; ?>
                                                 cols='50'
                                                 name='defaultanswerscale_<?php echo "0_{$language}_0" ?>'

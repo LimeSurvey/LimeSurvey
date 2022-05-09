@@ -3,7 +3,7 @@
     <h3><?php eT("Import survey participants from CSV file"); ?></h3>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php if (empty($sError)) : ?>
                 <div class="jumbotron message-box">
                     <h2>gT("Participant file upload")</h2>

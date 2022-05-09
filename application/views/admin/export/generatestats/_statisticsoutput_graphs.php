@@ -20,7 +20,7 @@
     <?php if(count($labels) < 70): ?>
         <!-- Charts -->
         <div class="row">
-            <div class="col-lg-8 col-md-12 chartjs-container text-center" id="chartjs-container-<?php echo $qqid; ?>"
+            <div class="col-xl-8 col-12 chartjs-container text-center" id="chartjs-container-<?php echo $qqid; ?>"
                 data-chartname="<?php echo $sChartname; // The name of the jschart object ?>"
                 data-qid="<?php echo $qqid; // the question id ?>"
                 data-type="<?php echo $charttype; // the chart start type (bar, donut, etc.) ?>"
@@ -40,15 +40,15 @@
 
             </div>
             <!-- legends -->
-            <div class="legend legend-no-percent col-lg-4 col-md-12" id="legend-no-percent-<?php echo $qqid;?>">
+            <div class="legend legend-no-percent col-xl-4 col-12" id="legend-no-percent-<?php echo $qqid;?>">
                 <?php foreach($labels as $i=>$label): ?>
                     <?php $colorindex = $color+$i; $colorindex = ($colorindex < 72)?$colorindex:0;?>
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-sm-1">
+                        <div class="col-md-1">
                             <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex];?>,0.6) !important; display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
                             </span>
                         </div>
-                        <div class="col-sm-10">
+                        <div class="col-md-10">
                             <?php echo $label;?>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
         </div>
     <?php else: ?>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
                 <div class="alert alert-warning" role="alert">
                     <?php eT("Too many labels, can't generate chart");?>
                 </div>

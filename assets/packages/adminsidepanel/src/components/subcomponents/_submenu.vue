@@ -94,12 +94,12 @@ export default {
             <div class="col-12" :class="menuItem.menu_class" 
             v-bind:title="reConvertHTML(menuItem.menu_description)"  
             data-bs-toggle="tooltip" >
-                <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
+                <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-md-10' : 'col-12' ">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
                     <span v-html="menuItem.menu_title"></span>
                     <i class="fa fa-external-link" v-if="menuItem.link_external == true">&nbsp;</i>
                 </div>
-                <div class="col-sm-2 text-center ls-space padding all-0 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
+                <div class="col-md-2 text-center ls-space padding all-0 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
                     <i class="fa fa-chevron-right">&nbsp;</i>
                 </div>
                 
@@ -107,11 +107,11 @@ export default {
         </a>
         <li v-for="(submenu) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.capture.stop="setActiveMenuIndex(submenu)" >
             <a href="#" v-bind:title="reConvertHTML(submenu.description)" data-bs-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center" :class="checkIsOpen(submenu) ? 'ls-space margin bottom-5' : ''">
-                <div class="ls-space col-sm-10 padding all-0">
+                <div class="ls-space col-md-10 padding all-0">
                     <menuicon icon-type="fontawesome" icon="arrow-right"></menuicon>
                     <span v-html="submenu.title"></span>
                 </div>
-                <div class="col-sm-2 text-center ls-space padding all-0"  v-bind:class="(checkIsOpen(submenu) ? 'menu-open' : '')">
+                <div class="col-md-2 text-center ls-space padding all-0"  v-bind:class="(checkIsOpen(submenu) ? 'menu-open' : '')">
                     <i class="fa fa-level-down"></i>
                 </div>
             </a>

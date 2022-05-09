@@ -7,7 +7,7 @@
 /** @var array<string,array<mixed>> $advancedSettings */
 ?>
 
-<div class="container-fluid" id="question-overview"<?= empty($visibilityOverview) ? ' style="display:none;"' : '' ?>>
+<div id="question-overview"<?= empty($visibilityOverview) ? ' style="display:none;"' : '' ?>>
     <?php if ($question->qid !== 0): ?>
         <form>
         <!-- Question summary -->
@@ -34,10 +34,10 @@
             <?php if (Permission::model()->hasSurveyPermission($survey->sid, 'surveycontent', 'update')): ?>
                 <div id="survey-action-title" class="pagetitle h3"><?php eT('Question quick actions'); ?></div>
                 <div class="row welcome survey-action">
-                    <div class="col-lg-12 content-right">
+                    <div class="col-12 content-right">
 
                         <!-- create question in this group -->
-                        <div class="col-lg-3">
+                        <div class="col-xl-3">
                             <div class="card text-center <?php if ($survey->isActive) { echo 'disabled'; } else { echo 'card-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create/surveyid/'.$survey->sid.'/gid/'.$question->gid); ?>">
                                 <div class="card-header bg-primary">
                                     <div class=""><?php eT("Add new question to group");?></div>

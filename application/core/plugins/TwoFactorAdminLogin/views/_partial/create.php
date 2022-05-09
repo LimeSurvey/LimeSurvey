@@ -19,8 +19,8 @@
                 <?php echo TbHtml::activeTextField($model, 'secretKey', ['readonly' => true]); ?>
             </div>
             <div class="row ls-space margin bottom-5 top-5">
-                <label class="col-sm-12 ls-space margin bottom-5"><?php eT('QR code'); ?></label>
-                <div class="col-sm-6 col-sm-offset-3"><?=$sQRCodeContent?></div>
+                <label class="col-12 ls-space margin bottom-5"><?php eT('QR code'); ?></label>
+                <div class="col-md-6 offset-md-3"><?=$sQRCodeContent?></div>
             </div>
             <div class="row ls-space margin bottom-5 top-5">
                 <?php echo TbHtml::label(gt('Confirmation key'), 'confirmationKey'); ?>

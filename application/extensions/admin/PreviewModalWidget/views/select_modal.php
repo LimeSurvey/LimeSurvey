@@ -46,7 +46,7 @@
             <div class="col-8">
                 <div class="container-center">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-12">
                             <h3>
                               <p id="selector__<?=$this->widgetsJsName?>-currentSelected"><?=$this->currentSelected?></p>
                             </h3>

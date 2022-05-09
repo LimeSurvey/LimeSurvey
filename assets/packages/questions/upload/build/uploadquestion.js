@@ -851,13 +851,13 @@
 
           if ($('#' + fieldname + '_show_title').val() == 1) {
             var previewTitleContainer = $('<div class="form-group"></div>');
-            $('<label class="control-label col-xs-4"></label>').attr('for', fieldname + '_title_' + i).text(options.uploadLang.titleFld).appendTo(previewTitleContainer);
+            $('<label class="control-label col-4"></label>').attr('for', fieldname + '_title_' + i).text(options.uploadLang.titleFld).appendTo(previewTitleContainer);
             $('<input class="form-control" type="text"/>').attr('id', fieldname + "_title_" + i).val(item.title).wrap('<div class="input-container"></div>').appendTo(previewTitleContainer);
           }
 
           if ($('#' + fieldname + '_show_comment').val() == 1) {
             var previewCommentContainer = $('<div class="form-group"></div>');
-            $('<label class="control-label col-xs-4"></label>').attr('for', fieldname + '_comment_' + i).text(options.uploadLang.commentFld).appendTo(previewCommentContainer);
+            $('<label class="control-label col-4"></label>').attr('for', fieldname + '_comment_' + i).text(options.uploadLang.commentFld).appendTo(previewCommentContainer);
             $('<input class="form-control" type="text"/>').attr('id', fieldname + "_comment_" + i).val(item.comment).wrap('<div class="input-container"></div>').appendTo(previewCommentContainer);
           }
         }

@@ -51,7 +51,7 @@
         <!-- Import result messages -->
         <div class="container-fluid">
             <div class="row center-block">
-            <div class="col-md-2 col-md-offset-5">
+            <div class="col-lg-2 offset-lg-5">
             <table class="table table-striped table-condensed ">
                 <tr><td><?php eT("Surveys");?>:</td><td><?php echo $aImportResults['surveys'];?></td></tr>
                 <tr><td><?php eT("Languages");?>:</td><td><?php echo $aImportResults['languages'];?></td></tr>
@@ -137,7 +137,7 @@
             <h2 class="warning"><?php eT("Theme options differences");?>:</h2>
             <div class="container-fluid">
             <div class="row center-block">
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-lg-4 offset-lg-4">
             <table class="table table-striped table-condensed ">
                 <tr><th class="text-center"><?php echo gT('Option');?></th><th class="text-center"><?php echo gT('Current value');?></th><th class="text-center"><?php echo gT('Original value');?></th></tr>
                 <?php

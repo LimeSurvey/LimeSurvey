@@ -29,10 +29,10 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th class='col-md-1'>{{ gT("Code") }}</th>
+                            <th class='col-lg-1'>{{ gT("Code") }}</th>
 
                             {% if assessmentvisible %}
-                                <th class='col-md-1'>
+                                <th class='col-lg-1'>
                                     {{ gT("Assessment value") }}
                                 </th>
                             {% else %}
@@ -41,12 +41,12 @@
                                 </th>
                             {% endif %}
 
-                            <th class='col-md-8'>
+                            <th class='col-lg-8'>
                                 {{ gT("Answer options") }}
                                 <i class="fa fa-globe" data-bs-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
                             </th>
 
-                            <th class='col-md-1'>
+                            <th class='col-lg-1'>
                                 {% if first %}
                                     {{ gT("Actions") }}
                                 {% endif %}

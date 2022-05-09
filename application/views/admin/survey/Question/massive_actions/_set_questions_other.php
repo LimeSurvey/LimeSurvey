@@ -9,8 +9,8 @@
 ?>
 <form class="custom-modal-datas form-horizontal">
     <div  class="form-group" id="OtherSelection">
-        <label class="col-sm-4 form-label"><?php eT("Option 'Other':"); ?></label>
-        <div class="col-sm-8">
+        <label class="col-md-4 form-label"><?php eT("Option 'Other':"); ?></label>
+        <div class="col-md-8">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                 'name' => 'other', 
                 'value'=> '', 

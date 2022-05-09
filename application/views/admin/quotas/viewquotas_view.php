@@ -19,14 +19,14 @@ echo viewHelper::getViewTestTag('surveyQuotas');
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <h3>
                 <?php eT("Survey quotas");?>
             </h3>
 
             <?php if( isset($sShowError) ):?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     <strong><?php eT("Quota could not be added!", 'js'); ?></strong><br/> <?php eT("It is missing a quota message for the following languages:", 'js'); ?><br/><?php echo $sShowError; ?>
                 </div>
             <?php endif; ?>
@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             <?php if($oDataProvider->itemCount > 0):?>
             <!-- Grid -->
             <div class="row">
-                <div class="col-sm-12 content-right">
+                <div class="col-12 content-right">
                     <?php $this->widget('yiistrap.widgets.TbGridView', array(
                         'dataProvider'  => $oDataProvider,
                         'id'            => 'quota-grid',

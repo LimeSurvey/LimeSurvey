@@ -14,7 +14,7 @@
     <div class='card-header bg-primary scenario-heading'>
 
         <div class='row'>
-            <div class='col-sm-2'>
+            <div class='col-md-2'>
             <!-- Scenario header -->
             <?php if ($showScenarioText == 'normal'): ?>
                 <h5>Scenario <?php echo $scenarionr['scenario']; ?></h5>
@@ -25,7 +25,7 @@
             <?php endif; ?>
             </div>
 
-            <div class='col-sm-10'>
+            <div class='col-md-10'>
                 <div class="container-fluid">
                 <!-- Small form to change scenario number -->
                 <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/updatescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'display: none','id'=>'editscenario'.$scenarionr['scenario']));?>

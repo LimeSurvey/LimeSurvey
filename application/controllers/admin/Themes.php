@@ -550,15 +550,15 @@ class Themes extends SurveyCommonAction
         }
 
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
-        $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
         $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
-        Yii::app()->clientScript->packages['bootstrap'] = $aBootstrapPackage;
+        App()->getClientScript()->registerPackage('bootstrap-admin');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js');
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
+        AdminTheme::getInstance()->registerStylesAndScripts();
 
         // Green SurveyManagerBar Page Title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;

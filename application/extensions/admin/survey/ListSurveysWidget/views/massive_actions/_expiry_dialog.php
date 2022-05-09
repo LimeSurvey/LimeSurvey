@@ -10,8 +10,8 @@ $dateFormatDetails=getDateFormatData(Yii::app()->session['dateformat']);
         <!-- Expiry date/time -->
         <div class="form-group">
 
-            <label class="col-sm-6 form-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
-            <div class='col-sm-6'>
+            <label class="col-md-6 form-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
+            <div class='col-md-6'>
 
                 <input class="form-control" name="datepickerInputField" id="datepickerInputField" type="text" value="">
                 <input class="form-control custom-data" name="expires" id="expires" type="hidden" value="">

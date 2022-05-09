@@ -766,7 +766,7 @@ class TemplateConfiguration extends TemplateConfig
                 "newname" => [
                     "value" => "extends_" . $this->template_name,
                     "type" => "text",
-                    "class" => "form-control col-sm-12"
+                    "class" => "form-control col-md-12"
                 ]
             ])
             . '\'

@@ -10,7 +10,7 @@
 ?>
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-12">
             
                 <!-- Jumbotron -->
                 <div class="jumbotron message-box">

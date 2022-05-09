@@ -1,5 +1,5 @@
 <div id='remotecontrol' class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
     <div class="pagetitle h3"><?php echo sprintf(gT('RemoteControl is available using %s for transport and exposes the following functionality:'),$method); ?></div>
     <dl>
     <?php

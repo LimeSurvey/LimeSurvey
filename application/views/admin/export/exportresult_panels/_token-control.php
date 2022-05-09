@@ -10,14 +10,14 @@
   </div>
   <div class="card-body">
     <div class="alert alert-info alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       <?php eT('Your survey can export associated participant data with each response. Select any additional fields you would like to export.'); ?>
     </div>
 
-    <label for='attribute_select' class="col-sm-4 form-label">
+    <label for='attribute_select' class="col-md-4 form-label">
       <?php eT("Choose participant fields:");?>
     </label>
-    <div class="col-sm-8">
+    <div class="col-md-8">
       <select name='attribute_select[]' multiple size='20' class="form-select" id="attribute_select">
         <option value='first_name' id='first_name'>
           <?php eT("First name");?>

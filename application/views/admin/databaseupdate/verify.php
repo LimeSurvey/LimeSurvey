@@ -3,7 +3,7 @@
     <p class="lead"><?php eT('Make sure to make a database backup before proceeding.'); ?></p>
     <p class="lead"><?php eT('Please verify the following information before continuing with the database upgrade:'); ?></p>
     <div class="row">
-        <div class="col-md-offset-4 col-md-4">
+        <div class="offset-lg-4 col-lg-4">
             <table class="table table-striped">
                 <tr><th><?php eT('Database type:'); ?></th><td><?php echo  Yii::app()->db->getDriverName(); ?></td></tr>
                 <tr><th><?php eT('Database name:'); ?></th><td><?php echo  getDBConnectionStringProperty('dbname'); ?></td></tr>

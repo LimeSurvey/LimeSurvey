@@ -12,7 +12,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Import question group"); ?></h3>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-12">
             <!-- form -->
             <?php echo CHtml::form(array("questionGroupsAdministration/import"), 'post', array(
                 'id'=>'importgroup',
@@ -34,8 +34,8 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
 
                 <!-- Convert resource links -->
                 <div class="form-group">
-                    <label for='translinksfields' class="form-label col-sm-2"><?php eT("Convert resource links?"); ?></label>
-                    <div class="col-sm-10">
+                    <label for='translinksfields' class="form-label col-md-2"><?php eT("Convert resource links?"); ?></label>
+                    <div class="col-md-10">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'translinksfields',
                             'id'=>'translinksfields',

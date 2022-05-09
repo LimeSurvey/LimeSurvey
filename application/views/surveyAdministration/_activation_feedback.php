@@ -14,7 +14,7 @@
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <div class='jumbotron message-box'>
                 <h3>
                     <?php eT('Activate Survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>)

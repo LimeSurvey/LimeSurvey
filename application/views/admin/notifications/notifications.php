@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div id="notif-container" class="col-sm-12 content-right" style="z-index: 999">
+        <div id="notif-container" class="col-12 content-right" style="z-index: 999">
             <?php foreach($aMessage as $message):?>
                 <?php
                     if(isset($message['type']) && in_array($message['type'],array('error','success','danger','warning','info')))

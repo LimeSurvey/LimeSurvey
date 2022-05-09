@@ -8,7 +8,7 @@
 
 ?>
 
-<div class=" col-md-4 text-end">
+<div class=" col-lg-4 text-end">
     <?php if (isset($surveybar['savebutton']['form'])):?>
 
         <!-- Save -->

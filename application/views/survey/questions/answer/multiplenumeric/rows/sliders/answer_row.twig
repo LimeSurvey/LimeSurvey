@@ -31,15 +31,15 @@
 #}
 
 <li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item slider-item form-group {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
-    <label id="label-{{ myfname }}" class='control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth == 0 %} d-none {% endif %}' for="answer{{myfname}}">
+    <label id="label-{{ myfname }}" class='control-label col-12 col-md-{{ sLabelWidth }}{% if sLabelWidth == 0 %} d-none{% endif %}' for="answer{{myfname}}">
         {{ processString(labelText) }}
     </label>
-    <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} container-fluid">
+    <div class="col-12 col-md-{{ sInputContainerWidth }} container-fluid">
             {% if sliderleft is not empty %}
-                <div class='col-xs-12 col-sm-2 slider-left text-end'>{{ sliderleft }}</div>
+                <div class='col-12 col-md-2 slider-left text-end'>{{ sliderleft }}</div>
             {% endif %}
 
-            <div class="slider-container slider-{{slider_orientation}} ls-input-group col-xs-12 col-sm-{{sliderWidth}}" id="answer{{myfname}}slid-container">
+            <div class="slider-container slider-{{slider_orientation}} ls-input-group col-12 col-md-{{sliderWidth}}" id="answer{{myfname}}slid-container">
                     {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
                             'class': 'form-control answer-item numeric-item d-none',
                             'id' : "answer" ~ myfname ~ "slid", 
@@ -66,7 +66,7 @@
                 {% endif %}
             </div>
             {% if sliderright is not empty %}
-                <div class='col-xs-12 col-sm-2 slider-right text-start'>{{ sliderright }}</div>
+                <div class='col-12 col-md-2 slider-right text-start'>{{ sliderright }}</div>
             {% endif %}
     </div>
 </li>

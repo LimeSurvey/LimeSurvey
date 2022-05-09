@@ -37,7 +37,6 @@
         notice: the css/js files from third party extension use the package system. It means that the asset manager will publish them on the base of the directory logic.
         So, if you update any css/js file from a third party extension, make sure that the modification date of the root directory is updated.
     -->
-
     <?php if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')): ?>
         <!-- Debug mode is off, so the asset manager will be used-->
     <?php else: ?>

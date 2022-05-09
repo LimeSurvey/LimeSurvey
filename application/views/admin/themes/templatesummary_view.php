@@ -6,14 +6,14 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
 
   <?php if (is_template_editable($templatename)==true) { ?>
     <div class="row template-sum">
-        <div class="col-lg-12">
+        <div class="col-12">
             <div class="h4">
                 <?php echo sprintf(gT("Viewing file '%s'"), $filedisplayname); ?>
             </div>
 
             <?php if (!is_writable($templates[$templatename])) { ?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     <?php eT("You can't save changes because the theme directory is not writable."); ?>
                 </div>
             <?php } ?>
@@ -21,18 +21,18 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
     </div>
 
     <div class="row template-sum">
-        <div class="col-sm-2" id='templateleft'>
+        <div class="col-md-2" id='templateleft'>
             <div>
                 <?php eT("Screen part files:"); ?>
-                <div class="col-sm-12 well" style="padding-left: 0;">
+                <div class="col-12 well" style="padding-left: 0;">
                 <?php foreach ($files as $file) { ?>
                     <div class="row">
-                        <div class="col-sm-9">
+                        <div class="col-md-9">
                             <a href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>" class="<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>">
                                 <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
                             </a>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                             <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate,false) && $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
                                 <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
@@ -54,16 +54,16 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
             </div>
             <div>
                 <?php eT("JavaScript files:"); ?>
-                <div class="col-sm-12 well">
+                <div class="col-12 well">
 
                 <?php foreach ($jsfiles as $file) { ?>
                     <div class="row">
-                        <div class="col-sm-9">
+                        <div class="col-md-9">
                             <a href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>" class="<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>">
                                 <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
                             </a>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                             <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {?>
                                 <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
@@ -85,15 +85,15 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
         </div>
         <div>
             <?php eT("CSS files:"); ?>
-            <div class="col-sm-12 well">
+            <div class="col-12 well">
                 <?php foreach ($cssfiles as $file) { ?>
                     <div class="row">
-                        <div class="col-sm-9">
+                        <div class="col-md-9">
                             <a href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>" class="<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>">
                                 <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
                             </a>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                             <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
                                 <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
@@ -115,7 +115,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
         </div>
     </div>
 
-    <div class="col-lg-8 templateeditor">
+    <div class="col-xl-8 templateeditor">
         <?=CHtml::form(['admin/themes/sa/templatesavechanges'], 'POST', ['id'=>'editTemplate', 'name'=>'editTemplate'])?>
             <?php
                 echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
@@ -145,17 +145,17 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
             </p>
         </form>
     </div>
-    <div class="col-lg-2" style="overflow-x: hidden">
+    <div class="col-xl-2" style="overflow-x: hidden">
         <div>
             <?php eT("Other files:"); ?>
             <br/>
-            <div class="col-sm-12 well other-files-list">
+            <div class="col-12 well other-files-list">
                 <?php foreach ($otherfiles as $fileName => $file) { ?>
                     <div class="row other-files-row">
-                        <div class="col-sm-9 other-files-filename">
+                        <div class="col-md-9 other-files-filename">
                             <?php echo CHtml::encode($fileName) ;?>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                             <?php //TODO: make it ajax and less messy ?>
                             <?php if ( $oEditedTemplate->getTemplateForFile($fileName, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {
                                 if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
@@ -226,7 +226,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
 
 <?php }?>
 <div class="row template-sum" style="margin-bottom: 100px;">
-    <div class="col-lg-12">
+    <div class="col-12">
         <div class="h4">
             <?php eT("Preview:"); ?>
         </div>

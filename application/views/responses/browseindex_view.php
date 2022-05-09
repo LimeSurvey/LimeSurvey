@@ -15,7 +15,7 @@ echo viewHelper::getViewTestTag('surveyResponsesIndex');
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT("Response summary"); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <table class='statisticssummary table'>
                 <tbody>
                 <tr>
@@ -37,7 +37,7 @@ echo viewHelper::getViewTestTag('surveyResponsesIndex');
     <?php if (isset($with_token)): ?>
         <h3><?php eT("Survey participant summary"); ?></h3>
         <div class="row">
-            <div class="col-lg-12 content-right">
+            <div class="col-12 content-right">
                 <table class='statisticssummary table'>
                     <tbody>
                     <tr>

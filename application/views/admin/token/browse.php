@@ -15,7 +15,7 @@
     <h3><?php eT("Survey participants"); ?></h3>
 
         <p class="alert alert-info alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <span class="fa fa-info-circle"></span>
             <?php eT("You can use operators in the search filters (eg: >, <, >=, <=, = )");?>
         </p>
@@ -34,7 +34,7 @@
                         'filter'       => $model,
                         'id'           => 'token-grid',
                         'emptyText'    => gT('No survey participants found.'),
-                        'template'     => "<div class='push-grid-pager'>{items}\n</div><div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'template'     => "<div class='push-grid-pager'>{items}\n</div><div id='tokenListPager'><div class=\"col-md-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
                         'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSizeTokenView',

@@ -10,7 +10,7 @@ if(isset($nosidebodyblock) && $nosidebodyblock === true ){ ?>
 <?php } ?>
 
 <div class="row" id="token-emailpost-messagebox">
-    <div class="col-sm-12 content-right">
+    <div class="col-12 content-right">
         <div class="jumbotron message-box">
             <h2><?php if ($bEmail) eT("Sending invitations..."); else eT("Sending reminders...");?></h2>
             <div style='border: 1px solid #ccc; max-height: 80em; overflow: scroll; text-align:left; padding-left:0.5em;'>

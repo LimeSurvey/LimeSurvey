@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('setUserPermissions');
 <div class="pagetitle h3"><?php printf(gT("Edit user permissions for user %s"),"<em>".\CHtml::encode($oUser->users_name)."</em>"); ?></div>
 
 <div class="row" style="margin-bottom: 100px">
-    <div class="col-lg-10 col-lg-offset-1">
+    <div class="col-xl-10 offset-xl-1">
 
         <!-- Form -->
         <?php echo CHtml::form(array("admin/user/sa/savepermissions"), 'post', array('id'=>'savepermissions'));?>

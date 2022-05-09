@@ -3,10 +3,10 @@
 /** @var integer $ugid */
 ?>
 
-<div class="col-lg-12 list-surveys">
+<div class="col-12 list-surveys">
 
     <div class="row">
-        <?php echo CHtml::form(array("userGroup/edit/ugid/{$ugid}"), 'post', array('class' => 'col-md-6 col-md-offset-3', 'id' => 'usergroupform', 'name' => 'usergroupform')); ?>
+        <?php echo CHtml::form(array("userGroup/edit/ugid/{$ugid}"), 'post', array('class' => 'col-lg-6 offset-lg-3', 'id' => 'usergroupform', 'name' => 'usergroupform')); ?>
             
             <div class="form-group">
                 <label for='name'><?php eT("Name:"); ?></label>
