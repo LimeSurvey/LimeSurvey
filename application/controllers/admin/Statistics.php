@@ -438,7 +438,7 @@ class Statistics extends SurveyCommonAction
                      */
                 default:
                     //get answers
-                    $result = Answer::model()->findAll("qid=" . $flt[0]);
+                    $result = Answer::model()->getAnswersForStatistics('*', "qid=$flt[0]", 'sortorder, code');
                     $aData['result'][$key1] = $result;
                     break;
             }    //end switch -> check question types and create filter forms

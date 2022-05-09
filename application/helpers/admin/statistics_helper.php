@@ -1273,7 +1273,13 @@ class statistics_helper
                     $qresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
                     //loop through answers
                     foreach ($qresult as $qrow) {
-                        $fresult = Answer::model()->findAllByAttributes(['qid' => $qiqid, 'scale_id' => 0]);
+                        $fresult = Answer::model()->findAll(
+                            [
+                                'condition' => 'qid=:qid AND scale_id=0',
+                                'params' => array(":qid" => $qiqid),
+                                'order' => 'sortorder, code'
+                            ]
+                        );
                         //this question type uses its own labels
                         //add code and title to results for outputting them later
                         foreach ($fresult as $frow) {
@@ -1387,7 +1393,13 @@ class statistics_helper
 
                 default:
                     //get answer code and title
-                    $qresult = Answer::model()->findAllByAttributes(['qid' => $qqid, 'scale_id' => 0]);
+                    $qresult = Answer::model()->findAll(
+                        [
+                            'condition' => 'qid=:qid AND scale_id=0',
+                            'params' => array(":qid" => $qiqid),
+                            'order' => 'sortorder, code'
+                        ]
+                    );
                     //put answer code and title into array
                     foreach ($qresult as $qrow) {
                         $alist[] = array($qrow->code, flattenText($qrow->answerl10ns[$language]->answer));
