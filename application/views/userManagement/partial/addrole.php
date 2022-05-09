@@ -16,13 +16,13 @@ Yii::app()->getController()->renderPartial(
     <div class="container-center form">
         <input type="hidden" name="userid" value="<?=$oUser->uid?>" />
         <div class="row">
-            <div class="col-xs-12 alert alert-info">
+            <div class="col-12 alert alert-info">
                 <?=gT("Note: Adding role(s) to a user will overwrite any individual user permissions!")?>
             </div>
         </div>
         <div class="form-group">
             <label for="roleselector"><?=gT("Select role(s):")?></label>
-            <select name="roleselector[]" id="roleselector"  class="form-control select" style="width:150px;" multiple>
+            <select name="roleselector[]" id="roleselector"  class="form-select select" style="width:150px;" multiple>
                 <?php
                 foreach ($aPossibleRoles as $key => $name) {
                     echo sprintf(

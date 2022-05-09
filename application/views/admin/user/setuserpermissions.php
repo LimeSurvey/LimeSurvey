@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('setUserPermissions');
 <div class="pagetitle h3"><?php printf(gT("Edit user permissions for user %s"),"<em>".\CHtml::encode($oUser->users_name)."</em>"); ?></div>
 
 <div class="row" style="margin-bottom: 100px">
-    <div class="col-lg-10 col-lg-offset-1">
+    <div class="col-xl-10 offset-xl-1">
 
         <!-- Form -->
         <?php echo CHtml::form(array("admin/user/sa/savepermissions"), 'post', array('id'=>'savepermissions'));?>
@@ -79,7 +79,7 @@ echo viewHelper::getViewTestTag('setUserPermissions');
 
                 <!-- submit button -->
                 <p>
-                    <input type='submit' class="hidden"  value='<?php eT("Save");?>' />
+                    <input type='submit' class="d-none"  value='<?php eT("Save");?>' />
                     <input type='hidden' name='action' value='surveyrights' />
                     <input type='hidden' name='uid' value='<?php echo $oUser->uid;?>' />
                 </p>

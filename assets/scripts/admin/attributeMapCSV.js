@@ -95,7 +95,7 @@ $(document).on('ready  pjax:scriptcomplete', function() {
         drop: function(event, ui) {
 
             // Insert nice arrow
-            var col = $(this).find('.col-sm-6:first-child');
+            var col = $(this).find('.col-md-6:first-child');
             col.append('<span class="fa fa-arrows-h csvatt-arrow"></span>');
 
             // Physically  move the draggable to the target (the plugin just visually moves it)
@@ -142,7 +142,7 @@ $(document).on('ready  pjax:scriptcomplete', function() {
                 $(newDraggable).text($(newDraggable).attr('data-name'));
             }        
 
-            newDraggable.wrap("<div class='col-sm-6'></div>");
+            newDraggable.wrap("<div class='col-md-6'></div>");
 
             adjustHeights();
         }

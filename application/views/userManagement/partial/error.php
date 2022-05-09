@@ -8,12 +8,12 @@
  */
 ?>
 <div class="modal-header">
-    <?=gT('Error')?>
+    <h5 class="modal-title"><?=gT('Error')?></h5>
 </div>
 <div class="modal-body">
     <div class="container-center">
         <div class="row selector--animated_row">
-            <div class="col-xs-12 text-center">
+            <div class="col-12 text-center">
                 <div class="cross_mark">
                     <div class="sa-icon sa-error animate">
                         <span class="sa-line sa-tip animateerrorTip"></span>

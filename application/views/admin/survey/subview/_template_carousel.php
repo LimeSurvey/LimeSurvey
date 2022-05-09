@@ -14,9 +14,9 @@
 ?>
 
 <div class="row template-caroussel">
-    <div class="col-sm-12" id='carrousel-container'>
+    <div class="col-12" id='carrousel-container'>
         <div class="row">
-            <div class="col-sm-12" id="item-container"> <!-- width defined in css -->
+            <div class="col-12" id="item-container"> <!-- width defined in css -->
                 <div class="h4"><?php eT('Select your theme:'); ?></div>
 
                 <?php foreach($templates as $key=>$template):?>
@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12" id="jcarousel-wrapper-container"> <!-- width defined in css -->
+            <div class="col-12" id="jcarousel-wrapper-container"> <!-- width defined in css -->
                 <div class="jcarousel-wrapper" >
                     <div class="jcarousel">
                         <ul >

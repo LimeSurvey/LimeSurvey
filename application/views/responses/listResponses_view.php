@@ -48,7 +48,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             ?>
                             <input type="hidden" name="surveyid" value="<?= $surveyid ?>"/>
                             <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>"/>
-                            <input type="submit" class="hidden" name="submit" value="submit"/>
+                            <input type="submit" class="d-none" name="submit" value="submit"/>
                         </div>
                     </form>
                 </div>
@@ -99,7 +99,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 //                        [
 //                            'header'      => gT('Action'),
 //                            'class'       => 'yiistrap.widgets.TbButtonColumn',
-//                            'template'    => '{edit}{detail}{quexmlpdf}{downloadfiles}{deletefiles}<span data-toggle="tooltip" title="' . gT("Delete this response") . '">{deleteresponse}</span>',
+//                            'template'    => '{edit}{detail}{quexmlpdf}{downloadfiles}{deletefiles}<span data-bs-toggle="tooltip" title="' . gT("Delete this response") . '">{deleteresponse}</span>',
 //                            'htmlOptions' => ['class' => 'icon-btn-row'],
 //                            'buttons'     => $model->getGridButtons(),
 //                        ],
@@ -213,7 +213,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             /* Add encryption symbole to question title for table header (if question is encrypted) */
                             $encryptionSymbol = '';
                             if (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y') {
-                                $encryptionSymbol = ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
+                                $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
                             }
 
                             $colName = viewHelper::getFieldCode($fieldmap[$column->name], ['LEMcompat' => true]); // This must be unique ......
@@ -225,7 +225,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
                             if (!isset($filteredColumns) || in_array($column->name, $filteredColumns)) {
                                 $aColumns[] = [
-                                    'header'            => '<div data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="' . $colName . '" data-content="' . CHtml::encode($colTitle) . '" data-html="1" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',
+                                    'header'            => '<div data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" title="' . $colName . '" data-bs-content="' . CHtml::encode($colTitle) . '" data-bs-html="true" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',
                                     'headerHtmlOptions' => ['style' => 'min-width: 350px;'],
                                     'name'              => $column->name,
                                     'type'              => 'raw',
@@ -249,15 +249,15 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'id'              => 'responses-grid',
                             'ajaxUpdate'      => 'responses-grid',
                             'ajaxType'        => 'POST',
-                            'afterAjaxUpdate' => 'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-toggle=\'popover\']").popover(); }',
-                            'template'        => "{items}\n<div id='reponsesListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                            'afterAjaxUpdate' => 'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-bs-toggle=\'popover\']").popover(); }',
+                            'template'        => "{items}\n<div id='reponsesListPager'><div class=\"col-md-4\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
                             'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                 gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'pageSize',
                                     $pageSize,
                                     Yii::app()->params['pageSizeOptions'],
-                                    ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                                 )
                             ),
                         ]
@@ -277,7 +277,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     jQuery(document).on("change", "#pageSize", function(){
                         $.fn.yiiGridView.update("responses-grid",{ data:{ pageSize: $(this).val() }});
                     });
-                    $(".grid-view [data-toggle=\'popover\']").popover();
+                    $(".grid-view [data-bs-toggle=\'popover\']").popover();
                     ';
                 App()->getClientScript()->registerScript('listresponses', $scriptVars, LSYii_ClientScript::POS_BEGIN);
                 App()->getClientScript()->registerScript('listresponses', $script, LSYii_ClientScript::POS_POSTSCRIPT);
@@ -292,8 +292,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         <div class="modal-dialog" style="width: 1100px">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><?php eT('Edit survey participant'); ?></h4>
+                    <h5 class="modal-title"><?php eT('Edit survey participant'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- the ajax loader -->
@@ -312,7 +312,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT("Close"); ?></button>
                     <button type="button" class="btn btn-primary" id="save-edittoken"><?php eT("Save"); ?></button>
                 </div>
             </div><!-- /.modal-content -->

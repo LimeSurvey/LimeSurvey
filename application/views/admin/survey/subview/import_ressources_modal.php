@@ -10,12 +10,8 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title" id="importRessourcesModalLabel">
-              <?php  eT("Import resources ZIP archive"); ?>
-          </h4>
+          <h5 class="modal-title" id="importRessourcesModalLabel"><?php eT("Import resources ZIP archive"); ?></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <?php echo CHtml::form(array('surveyAdministration/importsurveyresources'), 'post', array('id'=>'importsurveyresources', 'name'=>'importsurveyresources', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return window.LS.validatefilename(this,"'. gT('Please select a file to import!', 'js').'");')); ?>
           <div class="modal-body">
@@ -28,9 +24,7 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-cancel" data-dismiss="modal">
-              <?php  eT("Cancel");?>
-            </button>
+            <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php  eT("Cancel");?></button>
             <input type='button' class="btn btn-primary" value='<?php  eT("Import"); ?>' <?php echo $ZIPimportAction; ?> />
           </div>
         </form>

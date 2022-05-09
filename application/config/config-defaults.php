@@ -795,12 +795,15 @@ $config['force_xmlsettings_for_survey_rendering'] = false;
 /**
  * When this setting is true, plugins that are not in the white list (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
  * already installed plugins.
- * Core plugins are not affected by this setting.
+ * Core plugins are implicitly whitelisted, but can be excluded using the black list.
  */
 $config['usePluginWhitelist'] = false;
 
 // List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly whitelisted.
 $config['pluginWhitelist'] = [];
+
+// List of core plugin names forbidden when 'usePluginWhitelist' is true.
+$config['corePluginBlacklist'] = [];
 
 // When this setting is true, the "Plugin Upload" feature is disabled.
 $config['disablePluginUpload'] = false;

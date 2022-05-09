@@ -7,7 +7,7 @@
 <div id='change-surveygroup-modal' >
     <label class="" for='surveygroupid'><?php  eT("Survey group:"); ?></label>
         <div class=" ">
-            <select id='surveygroupid' class="form-control custom-data"  name='surveygroupid' >
+            <select id='surveygroupid' class="form-select custom-data"  name='surveygroupid' >
                 <?php
                     $aSurveyGroupList = SurveysGroups::model()->findAll();
                     foreach ($aSurveyGroupList as $oSurveyGroup) { ?>

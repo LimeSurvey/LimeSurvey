@@ -4754,7 +4754,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) { // Did we need it ?
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -4969,7 +4968,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -5470,7 +5468,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq, $force);
@@ -6733,34 +6730,6 @@ class LimeExpressionManager
     }
 
     /**
-     * Init groupRelevanceInfo with qid as 0 for expression not related to question
-     * see issue #17966
-     * @return void
-     */
-    private static function InitGroupRelevanceInfo()
-    {
-        $LEM =& LimeExpressionManager::singleton();
-        if (is_null($LEM->currentGroupSeq)) {
-            return;
-        }
-        $LEM->groupRelevanceInfo = [
-            [
-                'qid' => 0,
-                'gseq' => $LEM->currentGroupSeq,
-                'eqn' => '',
-                'result' => true,
-                'numJsVars' => 0,
-                'relevancejs' => '',
-                'relevanceVars' => '',
-                'jsResultVar' => '',
-                'type' => '',
-                'hidden' => false,
-                'hasErrors' => false,
-            ]
-        ];
-    }
-
-    /**
      * This should be called each time a new group is started, whether on same or different pages. Sets/Clears needed internal parameters.
      * @param int|null $gseq - the group sequence
      * @param boolean|null $anonymized - whether anonymized
@@ -6779,7 +6748,6 @@ class LimeExpressionManager
         $LEM->groupRelevanceInfo = [];
         if (!is_null($gseq)) {
             $LEM->currentGroupSeq = $gseq;
-            self::InitGroupRelevanceInfo();
             if (!is_null($surveyid)) {
                 $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized);
                 if ($gseq > $LEM->maxGroupSeq) {
@@ -6886,7 +6854,7 @@ class LimeExpressionManager
             $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
             Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
             Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
@@ -6898,7 +6866,7 @@ class LimeExpressionManager
             $LEM =& LimeExpressionManager::singleton();
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
             Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
             Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
@@ -6941,7 +6909,7 @@ class LimeExpressionManager
         );
 
         if (!$bReturnArray) {
-            $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+            $jsParts[] = "\n<script type='text/javascript' id='lemscripts'>\n<!--\n";
         }
 
         $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
@@ -6985,15 +6953,26 @@ class LimeExpressionManager
                     }
                 }
             }
+            $pageRelevanceInfo[] = array(
+                'qid' => 0,
+                'gseq' => $LEM->currentGroupSeq,
+                'eqn' => '',
+                'result' => true,
+                'numJsVars' => 0,
+                'relevancejs' => '',
+                'relevanceVars' => '',
+                'jsResultVar' => '',
+                'type' => '',
+                'hidden' => false,
+                'hasErrors' => false,
+            );
         }
-
         $valEqns = [];
         $relEqns = [];
         $relChangeVars = [];
 
         $dynamicQinG = []; // array of questions, per group, that might affect group-level visibility in all-in-one mode
         $GalwaysRelevant = []; // checks whether a group is always relevant (e.g. has at least one question that is always shown)
-
         if (is_array($pageRelevanceInfo)) {
             foreach ($pageRelevanceInfo as $arg) {
                 if (!$LEM->allOnOnePage && $LEM->currentGroupSeq != $arg['gseq']) {
@@ -7058,10 +7037,8 @@ class LimeExpressionManager
 
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
-
                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
-
-                if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
+                if ($arg['qid'] && ($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
@@ -7336,8 +7313,10 @@ class LimeExpressionManager
                     // Launch updated event after update value to allow equation update propagation
                     $relParts[] = "  $('#" . substr($jsResultVar, 1, -1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('updated');\n";
                 }
-                $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
-                $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                if ($arg['qid']) {
+                    $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
+                    $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                }
 
                 $relParts[] = "}\n";
                 if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
@@ -7352,10 +7331,10 @@ class LimeExpressionManager
                     $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
-                } else {
+                } elseif ($arg['qid']) {
                     // Second time : now if relevance is true: Group is allways visible (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
-                    if (!($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                    if ($arg['qid'] && !($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
                         $GalwaysRelevant[$arg['gseq']] = true;
                     }
                 }
@@ -7861,6 +7840,7 @@ var job='{TOKEN:ATTRIBUTE_1}';
             }
         }
 
+        print "<div class='container-fluid'>";
         print "<h3>Note, if the <i>Vars Used</i> column is red, then at least one error was found in the <b>Source</b>. In such cases, the <i>Vars Used</i> list may be missing names of variables from sub-expressions containing errors</h3>";
         print '<table class="table" border="1"><tr><th>Source</th><th>Pretty Print</th><th>Result</th><th>Vars Used</th></tr>';
         $iTestCount = count($alltests);
@@ -7888,6 +7868,7 @@ var job='{TOKEN:ATTRIBUTE_1}';
             print "</tr>\n";
         }
         print '</table>';
+        print '</div>';
         LimeExpressionManager::FinishProcessingGroup();
         LimeExpressionManager::FinishProcessingPage();
     }
@@ -8022,6 +8003,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
         // Print Table of questions
+        print "<div class='container-fluid'>";
         print "<div class='h3'>This is a test of dynamic relevance.</div>";
         print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br />\n";
         print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br />";
@@ -8050,6 +8032,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             print "</div>\n";
         }
         print "</table>";
+        print "</div>";
         LimeExpressionManager::SetDirtyFlag();  // so subsequent tests don't try to access these variables
     }
 
@@ -9115,7 +9098,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if ($bGroupHaveError) {
                     $haveErrors = true;
                     $errClass = 'danger';
-                    $errText = "<br><em class='label label-danger'>" . $LEM->gT("This group has at least 1 error.") . "</em>";
+                    $errText = "<br><em class='badge bg-danger'>" . $LEM->gT("This group has at least 1 error.") . "</em>";
                 }
                 $groupRow = "<tr class='LEMgroup'>"
                     . "<td class='$errClass'>G-$gseq</td>"
@@ -9452,7 +9435,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
             //////
             $errclass = ($errorCount > 0) ? 'danger' : '';
-            $errText = ($errorCount > 0) ? "<br><em class='label label-danger'>" . $LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.", $errorCount) . "</em>" : "";
+            $errText = ($errorCount > 0) ? "<br><em class='badge bg-danger'>" . $LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.", $errorCount) . "</em>" : "";
             /* Construct the warnings */
             $sWarningsText = "";
             if (count($aWarnings) > 0) {

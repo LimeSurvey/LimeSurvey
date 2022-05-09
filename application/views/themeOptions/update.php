@@ -9,37 +9,39 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php if (empty($model->sid)) : ?>
     <!-- This is only visible when we're not in survey view. -->
     <div class='menubar surveybar' id='theme-options-bar'>
-        <div class='row'>
-            <div class='text-end'>
+        <div class="container-fluid">
+            <div class='row'>
+                <div class='text-end'>
 
-                <?php
-                $sThemeOptionUrl = App()->createUrl("themeOptions");
-                $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", ["id" => $gsid, "#" => 'templateSettingsFortThisGroup']);
-                $sUrl = (is_null($gsid)) ? $sThemeOptionUrl : $sGroupEditionUrl;
-                ?>
+                    <?php
+                    $sThemeOptionUrl = App()->createUrl("themeOptions");
+                    $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", ["id" => $gsid, "#" => 'templateSettingsFortThisGroup']);
+                    $sUrl = (is_null($gsid)) ? $sThemeOptionUrl : $sGroupEditionUrl;
+                    ?>
 
-                <!-- Back -->
-                <a class="btn btn-default" href="<?php echo $sUrl; ?>" role="button">
-                    <span class="fa fa-backward"></span>
-                    <?php eT('Back'); ?>
-                </a>
+                    <!-- Back -->
+                    <a class="btn btn-default" href="<?php echo $sUrl; ?>" role="button">
+                        <span class="fa fa-backward"></span>
+                        <?php eT('Back'); ?>
+                    </a>
 
-                <!-- Save -->
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form" style="margin-right: 30px;">
-                    <span class="fa fa-floppy-o"></span>
-                    <?php eT('Save'); ?>
-                </a>
+                    <!-- Save -->
+                    <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form" style="margin-right: 30px;">
+                        <span class="fa fa-floppy-o"></span>
+                        <?php eT('Save'); ?>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 <?php else : ?>
-<div class="col-sm-12 side-body <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
-<?php endif; ?>
+<div class="col-12 side-body <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
+    <?php endif; ?>
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-12">
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs" id="theme-options-tabs" role="tablist">
+            <ul class="nav nav-tabs test" id="theme-options-tabs" role="tablist">
                 <?php if ($aOptionAttributes['optionsPage'] === 'core'): ?>
                     <?php foreach ($aOptionAttributes['categories'] as $key => $category): ?>
                         <li role="presentation" class="nav-item">
@@ -56,7 +58,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                     </li>
                 <?php endif; ?>
                 <li role="presentation" class="nav-item">
-                    <button class="nav-link <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>" data-bs-target="#advanced" aria-controls="profile" role="tab" data-bs-toggle="tab" aria-selected="false">
+                    <button class="nav-link <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'd-none'; ?>" data-bs-target="#advanced" aria-controls="profile" role="tab" data-bs-toggle="tab" aria-selected="false">
                         <?php eT('Advanced options') ?>
                     </button>
                 </li>
@@ -64,11 +66,11 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-12">
             <!-- Tab panes -->
             <?php /* Begin theme option form */ ?>
             <form class='form action_update_options_string_form' action=''>
-                <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'hidden action_update_options_string_button']); ?>
+                <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
                 <div class="tab-content">
                     <?php
                     /*
@@ -112,14 +114,14 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 </div>
             </form>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>" id="advanced">
+                <div role="tabpanel" class="tab-pane <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'd-none'; ?>" id="advanced">
                     <div class="alert alert-info alert-dismissible" role="alert">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <button href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                         <p><?php eT('All fields below (except CSS framework name) must be either a valid JSON array or the string "inherit".'); ?></p>
                     </div>
 
                     <div class="alert alert-warning alert-dismissible" role="alert">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <button href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                         <p><strong><?php eT('Warning!'); ?></strong> <?php eT("Don't touch the values below unless you know what you're doing."); ?></p>
                     </div>
 
@@ -147,14 +149,14 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                         <div class="row ls-space margin bottom-15">
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-sm-6 h4">
+                                    <div class="col-md-6 h4">
                                         <?php printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-md-6">
                                         <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'uploadimage', 'name' => 'uploadimage', 'enctype' => 'multipart/form-data']); ?>
                                         <span id="fileselector">
-                                            <label class="btn btn-default col-xs-8" for="upload_image">
-                                                <input class="hidden" id="upload_image" name="upload_image" type="file">
+                                            <label class="btn btn-default col-8" for="upload_image">
+                                                <input class="d-none" id="upload_image" name="upload_image" type="file">
                                                 <i class="fa fa-upload ls-space margin right-10"></i><?php eT("Upload"); ?>
                                             </label>
                                         </span>
@@ -258,7 +260,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                         <?php echo $form->error($model, 'packages_to_load'); ?>
                                     </div>
                                 </div>
-                                <div class="row buttons hidden">
+                                <div class="row buttons d-none">
                                     <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class' => 'btn-success']); ?>
                                 </div>
 
@@ -270,12 +272,12 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </div>
         </div>
     </div>
-    <?php if (!empty($model->sid)) : // If we are in survey view, we have an additional div that we need to close  ?>
+    <?php if (!empty($model->sid)) : // If we are in survey view, we have an additional div that we need to close    ?>
 </div>
-    <?php endif; ?>
+<?php endif; ?>
 
 <!-- Form for image file upload -->
-<div class="hidden">
+<div class="d-none">
     <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'upload_frontend', 'name' => 'upload_frontend', 'enctype' => 'multipart/form-data']); ?>
     <?php if (isset($aTemplateConfiguration['sid']) && !empty($aTemplateConfiguration['sid'])) : ?>
         <input type='hidden' name='surveyid' value='<?= $aTemplateConfiguration['sid'] ?>'/>

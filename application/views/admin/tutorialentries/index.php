@@ -11,11 +11,11 @@ echo viewHelper::getViewTestTag('tutorialentries');
             <?php eT('Tutorial entries')?> 
         </div>
         <div class="col-12">
-            <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewtutorialentry" >
+            <a class="btn btn-primary pull-right col-6 col-md-3 col-lg-2" id="createnewtutorialentry" >
                 <i class="fa fa-plus"></i>&nbsp;<?php eT('New') ?>
             </a>	
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
-            <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
+            <a class="btn btn-danger pull-right ls-space margin right-10 col-6 col-md-3 col-lg-2" href="#restoremodal" data-bs-toggle="modal">
                 <i class="fa fa-refresh"></i>&nbsp;
                 <?php eT('Reset') ?>
             </a>
@@ -35,14 +35,14 @@ echo viewHelper::getViewTestTag('tutorialentries');
 							'pageSize',
 							$pageSize,
 							Yii::app()->params['pageSizeOptions'],
-							array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+							array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto')
 						)
 					),
 					'rowHtmlOptionsExpression' => '["data-tutorialentry-id" => $data->teid]',
                     'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                     'ajaxType'                 => 'POST',
                     'ajaxUpdate'               => true,
-                    'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-md-4\" id=\"massive-action-container\"></div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
                     'afterAjaxUpdate'          => 'bindAction',
 				));
 				?>

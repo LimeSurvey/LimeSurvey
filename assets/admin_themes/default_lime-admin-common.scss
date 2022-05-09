@@ -216,7 +216,6 @@ html {
     background-color: transparent;
 }
 .surveymanagerbar {
-    margin-top: -20px;
     padding-top: 5px;
     h3 {
         margin-top: 5px;
@@ -586,9 +585,6 @@ div.panel.disabled {
     a {
         cursor: default;
     }
-}
-#edit-group .tab-pane {
-    padding: 1em;
 }
 .panel-clickable:hover {
     cursor: pointer;
@@ -1076,22 +1072,17 @@ div.panel.disabled {
     }
 }
 .content-right {
-    padding-left: 0;
-    padding-right: 0;
     animation: fadein 1s;
-    .col-lg-12 {
-        padding-left: 0;
-        padding-right: 0;
+    .col-12 {
+        animation: fadein 1s;
+    }
+    &.content-right {
         animation: fadein 1s;
     }
 }
+
 .toWhite a:hover {
     font-weight: 700;
-}
-.col-lg-12.content-right {
-    padding-left: 0;
-    padding-right: 0;
-    animation: fadein 1s;
 }
 
 .container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {

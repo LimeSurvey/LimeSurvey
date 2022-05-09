@@ -121,7 +121,7 @@ class SavedControl extends LSActiveRecord
             'url' => 'App()->createUrl("admin/dataentry/sa/editdata/subaction/edit",array("surveyid"=>$data->sid,"id"=>$data->srid));',
             'options' => array(
                 'class' => "btn btn-default btn-sm btn-edit",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Edit response"),
             ),
             'visible' => 'boolval(' . Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update') . ')',
@@ -132,7 +132,7 @@ class SavedControl extends LSActiveRecord
             'url' => 'App()->createUrl("admin/saved/sa/resend_accesscode",array("surveyid"=>$data->sid,"id"=>$data->srid));',
             'options' => array(
                 'class' => "btn btn-default btn-sm btn-edit",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Resend access code"),
             ),
             // 'visible'=> 'boolval('.Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update').')',
@@ -145,7 +145,7 @@ class SavedControl extends LSActiveRecord
             'url' => 'App()->createUrl("admin/saved/sa/actionDelete",array("surveyid"=>$data->sid,"scid"=>$data->scid,"srid"=>$data->srid));',
             'options' => array(
                 'class' => "btn btn-default btn-sm btn-delete",
-                'data-toggle' => "tooltip",
+                'data-bs-toggle' => "tooltip",
                 'title' => gT("Delete this entry and related response"),
             ),
             'visible' => 'boolval(' . Permission::model()->hasSurveyPermission($this->sid, 'responses', 'delete') . ')',

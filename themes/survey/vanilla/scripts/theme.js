@@ -67,9 +67,9 @@ var ThemeScripts = function(){
                 colWidth = '6';
             }
 
-            $(this).clone().removeClass('col-xs-12').addClass('visible-xs-block col-xs-'+colWidth).prop('aria-hidden',true).insertBefore($(this).prev('.slider-container'));
-            $(this).addClass('hidden-xs');
-            $(this).closest('.slider-item').find('.slider-left').removeClass('col-xs-12').addClass('col-xs-6');
+            $(this).clone().removeClass('col-12').addClass('d-block col-'+colWidth).prop('aria-hidden',true).insertBefore($(this).prev('.slider-container'));
+            $(this).addClass('d-none d-md-block');
+            $(this).closest('.slider-item').find('.slider-left').removeClass('col-12').addClass('col-12');
         });
 
     };
@@ -193,7 +193,11 @@ var ThemeScripts = function(){
             }
 
             $(function () {
-                $('[data-toggle="tooltip"]').tooltip();
+                //show tooltips
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl)
+                });
             });
 
             // Bind language changer onclick event.

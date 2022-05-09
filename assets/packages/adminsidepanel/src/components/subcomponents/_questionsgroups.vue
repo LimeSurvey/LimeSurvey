@@ -64,10 +64,11 @@ export default {
             this.active = [];
         },
         createFullQuestionLink() { 
-            if(LS.reparsedParameters().combined.gid) {
-                return LS.createUrl(this.createQuestionLink, {gid: LS.reparsedParameters().combined.gid}); 
+            if (LS.reparsedParameters().combined.gid) {
+                return this.createQuestionLink + '&gid=' + LS.reparsedParameters().combined.gid;
+            } else {
+                return this.createQuestionLink;
             }
-            return LS.createUrl(this.createQuestionLink, {}); 
         },
         questionHasCondition(question) {
             return question.relevance !== '1';
@@ -329,7 +330,7 @@ export default {
                                 {{questiongroup.group_name}} 
                             </span>
                             <span 
-                                :class="$store.getters.isRTL ? 'badge ls-space margin right-5 pull-left' : 'badge ls-space margin right-5 pull-right'"
+                                :class="$store.getters.isRTL ? 'badge rounded-pill ls-space margin right-5 pull-left' : 'badge rounded-pill ls-space margin right-5 pull-right'"
                             >
                                 {{questiongroup.questions.length}}
                             </span>
@@ -346,7 +347,7 @@ export default {
                                 v-for="question in orderQuestions(questiongroup.questions)" 
                                 v-bind:key="question.qid" 
                                 v-bind:class="questionItemClasses(question)" 
-                                data-toggle="tootltip" 
+                                data-bs-toggle="tooltip"
                                 class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-start" 
                                 :data-is-hidden="question.hidden"
                                 :data-questiontype="question.type"

@@ -7,7 +7,7 @@
         <?php if (isset($this->setting['i18n']) && $this->setting['i18n'] == 1): ?>
             <i
                 class="fa fa-globe"
-                data-toggle="tooltip"
+                data-bs-toggle="tooltip"
                 title="<?= gT("This setting is localized") ?>"
             ></i>
         <?php endif; ?>
@@ -15,7 +15,7 @@
             role="button"
             class="fa fa-question-circle text-success"
             onclick="jQuery('#general-setting-help-<?= $this->setting['name'] ?>').slideToggle()"
-            data-toggle="tooltip"
+            data-bs-toggle="tooltip"
             title="<?= gT("See help") ?>"
         ></i>
         <?= $content ?>

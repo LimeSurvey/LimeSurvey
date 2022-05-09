@@ -14,7 +14,7 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT('Groups in this survey'); ?></h3>
     <div class="row">
-        <div class="col-lg-12 ls-flex ls-flex-row">
+        <div class="col-12 ls-flex ls-flex-row">
             <div class="ls-flex-item text-start">
                 <?php App()->getController()->renderPartial(
                     '/admin/survey/surveybar_addgroupquestion', //todo this view must be moved to correct position
@@ -57,8 +57,6 @@
                 'id'              => 'question-group-grid',
                 'dataProvider'    => $model->search(),
                 'emptyText'       => gT('No question groups found.'),
-                'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
-                'template'        => "{items}\n<div id='questiongroupListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                 'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                     gT('%s rows per page'),
                     CHtml::dropDownList(
@@ -66,7 +64,7 @@
                         $pageSize,
                         Yii::app()->params['pageSizeOptions'],
                         [
-                            'class' => 'changePageSize form-control',
+                            'class' => 'changePageSize form-select',
                             'style' => 'display: inline; width: auto'
                         ]
                     )

@@ -10,7 +10,7 @@
     <h3><?php eT("Manage attribute fields"); ?></h3>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
             <div>
                 <ul class="nav nav-tabs">
@@ -142,7 +142,7 @@
                                     <td><?php
                                         if ($sLanguage == $oSurvey->language){
                                             if (empty($tokenvalues['coreattribute'])){
-                                                echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-control'));
+                                                echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-select'));
                                             }
                                         }
                                         else
@@ -177,7 +177,7 @@
     <h3><?php eT("Add/delete survey participant attributes"); ?></h3>
 
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <p><?php neT('There is {n} user attribute field in this survey participants table.|There are {n} user attribute fields in this survey participants table.', $nrofattributes); ?></p>
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
             <p>
@@ -198,7 +198,7 @@
                 <p>
                     <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
                     <div class=''>
-                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-control')); ?>
+                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-select')); ?>
                     </div>
                 </p>
                 <p>

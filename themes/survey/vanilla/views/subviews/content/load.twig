@@ -84,25 +84,25 @@
 
                 <!-- Saved name  -->
                 <div class="{{ aSurveyInfo.class.saveformrow }} row form-group " {{ aSurveyInfo.attr.saveformrow }}>
-                    <label class="{{ aSurveyInfo.class.saveformrowlabel }} control-label col-sm-3 " {{ aSurveyInfo.attr.saveformrowlabel }}>
+                    <label class="{{ aSurveyInfo.class.saveformrowlabel }} control-label col-md-3 " {{ aSurveyInfo.attr.saveformrowlabel }}>
                         {{ gT("Saved name:") }}
                         <small class="{{ aSurveyInfo.class.saveformrowlabelsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformrowlabelsmall }} ></small>
                         <span class="{{ aSurveyInfo.class.saveformrowlabelspan }} sr-only text-danger asterisk"  {{ aSurveyInfo.attr.saveformrowlabelspan }} >{{ gT("Mandatory") }}<span>
                     </label>
-                    <div class="{{ aSurveyInfo.class.saveformrowcol }} col-sm-7 input-cell" {{ aSurveyInfo.attr.saveformrowcol }}>
+                    <div class="{{ aSurveyInfo.class.saveformrowcol }} col-md-7 input-cell" {{ aSurveyInfo.attr.saveformrowcol }}>
                         <input class="{{ aSurveyInfo.class.saveformrowcolinput }} form-control" {{ aSurveyInfo.attr.saveformrowcolinput }} id="{{ aSurveyInfo.id.saveformrowcolinput }}" >
                     </div>
                 </div>
 
                 <!-- Password -->
                 <div class="{{ aSurveyInfo.class.passwordrow }} row form-group " {{ aSurveyInfo.attr.passwordrow }}>
-                    <label class='{{ aSurveyInfo.class.passwordrowcol }} control-label col-sm-3 '  {{ aSurveyInfo.attr.passwordrowcol }} >
+                    <label class='{{ aSurveyInfo.class.passwordrowcol }} control-label col-md-3 '  {{ aSurveyInfo.attr.passwordrowcol }} >
                         {{ gT("Password:") }}
                         <small class="{{ aSurveyInfo.class.passwordrowcolsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.passwordrowcolsmall }}></small>
                         <span class="{{ aSurveyInfo.class.passwordrowcolspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.passwordrowcolspan }}>{{ gT("Mandatory") }}<span>
                     </label>
 
-                    <div class='{{ aSurveyInfo.class.passwordrowinput }} col-sm-7'>
+                    <div class='{{ aSurveyInfo.class.passwordrowinput }} col-md-7'>
                         <input class='form-control' {{ aSurveyInfo.attr.passwordrowinputi }} >
                     </div>
                 </div>
@@ -110,10 +110,10 @@
                 {% if aSurveyInfo.aLoadForm.aCaptcha.show %}
                     <!-- Captcha -->
                     <div class='{{ aSurveyInfo.class.captcharow }} row form-group ' {{ aSurveyInfo.attr.captcharow }}>
-                        <label class='{{ aSurveyInfo.class.captcharowlabel }} control-label col-sm-3 '  {{ aSurveyInfo.attr.captcharowlabel }}>
+                        <label class='{{ aSurveyInfo.class.captcharowlabel }} control-label col-md-3 '  {{ aSurveyInfo.attr.captcharowlabel }}>
                             {{ gT("Security question:") }}
                         </label>
-                        <div class='{{ aSurveyInfo.class.captcharowcol }} col-sm-7 ' {{ aSurveyInfo.attr.captcharowcol }}>
+                        <div class='{{ aSurveyInfo.class.captcharowcol }} col-md-7 ' {{ aSurveyInfo.attr.captcharowcol }}>
                             <div class='{{ aSurveyInfo.class.captcharowcoldiv }}' {{ aSurveyInfo.attr.captcharowcoldiv }}>
                                 <div class='{{ aSurveyInfo.class.captcharowcoldivdiv }}' {{ aSurveyInfo.attr.captcharowcoldivdiv }} >
                                     <img src="{{ aSurveyInfo.aLoadForm.aCaptcha.sImageUrl }}" {{ aSurveyInfo.attr.captcharowcoldivdivimg }} />
@@ -126,7 +126,7 @@
 
                 <!-- load button -->
                 <div class='{{ aSurveyInfo.class.loadrow }} row form-group ' {{ aSurveyInfo.attr.loadrow }}>
-                    <div class='{{ aSurveyInfo.class.loadrowcol }} col-sm-7 col-md-offset-3 ' {{ aSurveyInfo.attr.loadrowcol }}>
+                    <div class='{{ aSurveyInfo.class.loadrowcol }} col-md-7 offset-lg-3 ' {{ aSurveyInfo.attr.loadrowcol }}>
                         <button class='{{ aSurveyInfo.class.loadrowcolbutton }} btn btn-default' {{ aSurveyInfo.attr.loadrowcolbutton }} >
                             {{ gT("Load now") }}
                         </button>

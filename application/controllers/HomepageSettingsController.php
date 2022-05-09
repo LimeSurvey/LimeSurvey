@@ -283,7 +283,7 @@ class HomepageSettingsController extends LSBaseController
             $this->redirect(array('homepageSettings/index'));
         }
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $bNewShowLogo = (App()->getConfig('show_logo') == "show") ? "hide" : "show";
+            $bNewShowLogo = (App()->getConfig('show_logo') == "show") ? "d-none" : "show";
             SettingGlobal::setSetting('show_logo', $bNewShowLogo);
             echo $bNewShowLogo;
         }
@@ -301,7 +301,7 @@ class HomepageSettingsController extends LSBaseController
             $this->redirect(array('homepageSettings/index'));
         }
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $bNewShowLastSurveyAndQuestion = (App()->getConfig('show_last_survey_and_question') == "show") ? "hide" : "show";
+            $bNewShowLastSurveyAndQuestion = (App()->getConfig('show_last_survey_and_question') == "show") ? "d-none" : "show";
             SettingGlobal::setSetting('show_last_survey_and_question', $bNewShowLastSurveyAndQuestion);
             echo $bNewShowLastSurveyAndQuestion;
         }
@@ -320,7 +320,7 @@ class HomepageSettingsController extends LSBaseController
         }
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $bShowSurveyList = (App()->getConfig('show_survey_list') == "show") ? "hide" : "show";
+            $bShowSurveyList = (App()->getConfig('show_survey_list') == "show") ? "d-none" : "show";
             SettingGlobal::setSetting('show_survey_list', $bShowSurveyList);
             echo $bShowSurveyList;
         }
@@ -337,7 +337,7 @@ class HomepageSettingsController extends LSBaseController
         }
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $bShowSurveyListSearch = (App()->getConfig('show_survey_list_search') == "show") ? "hide" : "show";
+            $bShowSurveyListSearch = (App()->getConfig('show_survey_list_search') == "show") ? "d-none" : "show";
             SettingGlobal::setSetting('show_survey_list_search', $bShowSurveyListSearch);
             echo $bShowSurveyListSearch;
         }
@@ -361,29 +361,6 @@ class HomepageSettingsController extends LSBaseController
             echo $changeBoxesInContainer;
         }
     }
-
-    /**
-     * Manages all models.
-     *
-     * todo: remove this action, see comments below
-     * Action is not accessible via homepagesetting site ..(user can't accees it)
-     * Maybe it was for research/testing/experimental reason ?!?
-     *
-     * Furthermore it does not work (problems with breadcrumbs )
-     */
-    /*
-    public function actionAdmin()
-    {
-        $model = new Box('search');
-        $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['Box'])) {
-            $model->attributes = $_GET['Box'];
-        }
-
-        $this->render('admin',[
-            'model' => $model
-        ]);
-    } */
 
     /**
      * Performs the AJAX validation.

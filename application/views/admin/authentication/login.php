@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('login');
 
                 <!-- Action Name -->
                 <div class="row login-title login-content">
-                      <div class="col-lg-12">
+                      <div class="col-12">
                        <h3><?php eT("Log in");?></h3>
                     </div>
                 </div>
@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('login');
                 <!-- Form -->
                 <?php echo CHtml::form(array('admin/authentication/sa/login'), 'post', array('id'=>'loginform', 'name'=>'loginform'));?>
                     <div class="row login-content login-content-form">
-                        <div class="col-lg-12">
+                        <div class="col-12">
                             <?php
                                 $pluginNames = array_keys($pluginContent);
                                 if (!isset($defaultAuth))
@@ -125,7 +125,7 @@ echo viewHelper::getViewTestTag('login');
 
                     <!-- Buttons -->
                     <div class="row login-submit login-content">
-                        <div class="col-lg-12">
+                        <div class="col-12">
                                 <p><input type='hidden' name='action' value='login' />
                                    <input type='hidden' id='width' name='width' value='' />
                                     <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Log in');?></button><br />

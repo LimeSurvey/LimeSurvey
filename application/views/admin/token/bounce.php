@@ -1,7 +1,7 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Bounce settings"); ?></h3>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-12">
             <div id='bouncesettingsdiv'>
                 <?php echo CHtml::form(array("admin/tokens/sa/bouncesettings/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
 
@@ -109,7 +109,7 @@
                     </div>
 
                     <!-- buttons -->
-                    <div class="buttons control-group  hidden">
+                    <div class="buttons control-group d-none">
                         <button name="save" value="save" class="btn" type="submit">Save bounce settings</button>
                         <a class="btn btn-link button" href="/LimeSurveyNext/index.php/admin/tokens?sa=index&amp;surveyid=274928">
                             Cancel

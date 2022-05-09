@@ -17,8 +17,8 @@
 <button
     id='quick-add-condition-button'
     class='btn btn-default'
-    data-toggle='modal'
-    data-target='#quick-add-condition-modal'
+    data-bs-toggle='modal'
+    data-bs-target='#quick-add-condition-modal'
     data-tooltip='true'
     data-title='<?php eT('Add multiple conditions without a page reload'); ?>'>
         <span class="fa fa-plus-circle"></span>

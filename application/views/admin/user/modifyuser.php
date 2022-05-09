@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('modifyUser');
 
 <div class="container container-center">
     <div class="row" style="margin-bottom: 100px">
-      <div class="col-lg-12 content-right">
+      <div class="col-12 content-right">
         <?php $form=$this->beginWidget('TbActiveForm', array(
                 'id'    => 'moduserform',
                 'action'=> array("admin/user/sa/moduser"),
@@ -62,7 +62,7 @@ echo viewHelper::getViewTestTag('modifyUser');
                 <?php endif; ?>
                 
                 <p>
-                    <input type='submit' class="hidden" value='<?php eT("Save");?>' />
+                    <input type='submit' class="d-none" value='<?php eT("Save");?>' />
                     <input type='hidden' name='action' value='moduser' />
                     <input type='hidden' name='uid' value="<?php echo $oUser->uid;?>" />
                 </p>

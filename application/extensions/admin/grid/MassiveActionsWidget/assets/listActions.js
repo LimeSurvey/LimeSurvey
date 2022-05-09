@@ -234,8 +234,10 @@ var onClickListAction =  function () {
         });
     });
 
-    // open the modal
-    $modal.modal();
+    // Open the modal
+    const modalId = $that.data('modal-id');
+    var modal = new bootstrap.Modal(document.getElementById(modalId), {})
+    modal.show();
 };
 
 /**
@@ -344,4 +346,3 @@ $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listA
     });
     bindListItemclick();
 });
-

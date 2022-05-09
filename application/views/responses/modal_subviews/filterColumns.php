@@ -7,7 +7,7 @@
 ?>
 
 <!-- Button trigger modal -->
-<a class="btn btn-default" data-toggle="modal" data-target="#responses-column-filter-modal" id="responses-column-filter-button">
+<a class="btn btn-default" data-bs-toggle="modal" data-bs-target="#responses-column-filter-modal" id="responses-column-filter-button">
     <span class="fa fa-columns"></span>
 </a>
 
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="responses-column-filter-modal-cancel" type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel"); ?></button>
+                    <button id="responses-column-filter-modal-cancel" type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
                     <button id="responses-column-filter-modal-submit" class="btn btn-primary"><?php eT('Select'); ?></button>
                 </div>
             </form>

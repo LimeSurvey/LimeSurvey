@@ -23,7 +23,7 @@
 
 <!-- Welcome Message -->
 <div class="row">
-    <div id="welcomeMessage" class="col-sm-12 col-lg-6">
+    <div id="welcomeMessage" class="col-12 col-xl-6">
         <?php
             echo gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br /><br />';
             echo '<ul><li>'.gT('The following steps will be done by this update:').'</li>';
@@ -34,7 +34,7 @@
     </div>
 
     <!-- The key informations-->
-    <div  class="col-lg-6 hidden-sm">
+    <div  class="col-xl-6 hidden-sm">
         <h4><?php eT('ComfortUpdate key information'); ?></h4>
 
         <?php if( isset($serverAnswer->html) ): ?>
@@ -70,7 +70,7 @@
 </div>
 
 <div class="row">
-    <div id="btn-container" class="col-sm-12 col-lg-6">
+    <div id="btn-container" class="col-12 col-xl-6">
         <!-- The form launching the first step : control local errors. -->
         <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/update/sa/checkLocalErrors'), 'post', array('id'=>'launchCheckLocalErrorsForm')); ?>
             <?php  echo CHtml::hiddenField('destinationBuild' , $serverAnswer->destinationBuild); ?>

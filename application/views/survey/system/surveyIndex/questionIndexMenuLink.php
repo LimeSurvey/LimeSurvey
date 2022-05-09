@@ -6,7 +6,7 @@
  */
 ?>
 <li class="dropdown ls-no-js-hidden index-menu-<?php echo ($type>1)? 'full':'incremental' ?>">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
         <?php echo gT("Question index"); ?>
         <span class="caret"></span>
     </a>

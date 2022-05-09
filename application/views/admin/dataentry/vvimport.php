@@ -2,8 +2,8 @@
 <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>''));?>
     <?php if($tableExists):?>
         <div class="row">
-        <div class="col-md-12">
-            <div class="col-md-6 text-start">
+        <div class="col-12">
+            <div class="col-lg-6 text-start">
                 <h4>
                     <?php  eT("Import a VV response data file"); ?>
                 </h4>
@@ -15,7 +15,7 @@
     
 
         <div class="row">
-            <div class="col-lg-12 content-right">
+            <div class="col-12 content-right">
 
 <?php
     if ($tableExists) {
@@ -89,12 +89,12 @@
                     <?php eT("Character set of the file:"); ?>
                 </label>
                 <div class="">
-                    <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('class'=>'form-control', 'empty' => gT('Automatic (UTF-8)'))); ?>
+                    <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('class'=>'form-select', 'empty' => gT('Automatic (UTF-8)'))); ?>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="dontdeletefirstline" class=" form-label" title='<?php eT("With real vv file : questions code are in second line"); ?>' data-toggle="tooltip" data-placement="right">
+                <label for="dontdeletefirstline" class=" form-label" title='<?php eT("With real vv file : questions code are in second line"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("First line contains the code of questions:"); ?>
                 </label>
                 <div class="">
@@ -109,7 +109,7 @@
             </div>
 
             <div class="form-group">
-                <label for="forceimport" class=" form-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-toggle="tooltip" data-placement="right">
+                <label for="forceimport" class=" form-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("Force import:"); ?>
                 </label>
                 <div class="">
@@ -128,7 +128,7 @@
     </div>
 
         <p>
-            <input type='submit' class="hidden" value='<?php eT("Import"); ?>' />
+            <input type='submit' class="d-none" value='<?php eT("Import"); ?>' />
             <input type='hidden' name='action' value='vvimport' />
             <input type='hidden' name='subaction' value='upload' />
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />

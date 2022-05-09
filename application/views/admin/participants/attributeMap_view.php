@@ -38,7 +38,7 @@
 ?>
 
 <div class='row'>
-    <div class='col-sm-4'>
+    <div class='col-md-4'>
         <div id="centralattribute" class="card <?php echo $columnstyle ?>">
             <div class="card-header bg-primary"><?php eT("Unmapped participant attributes"); ?></div>
             <div class='card-body'>
@@ -47,7 +47,7 @@
                     foreach ($selectedcentralattribute as $key => $value)
                     {
                         ?>
-                        <div class='card col-sm-12' id='c_<?php echo $key; ?>'><div class='card-body'><?php echo $value; ?></div></div>
+                        <div class='card col-12' id='c_<?php echo $key; ?>'><div class='card-body'><?php echo $value; ?></div></div>
                         <?php
                     }
                     ?>
@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div class='col-sm-4'>
+    <div class='col-md-4'>
         <div id="newcreated" class="card <?php echo $columnstyle ?>">
             <div class="card-header bg-primary"><?php eT("Survey participant attributes to create"); ?></div>
             <div class='card-body' style="height:100%;">
@@ -64,7 +64,7 @@
             </div>
         </div>
     </div>
-    <div class='col-sm-4'>
+    <div class='col-md-4'>
         <div id='tokenattribute'>
             <div class='card'>
                 <div class="card-header bg-primary">
@@ -75,7 +75,7 @@
                         <?php foreach ($selectedtokenattribute as $id => $name): ?>
                                 <?php if (isset($automaticallyMappedAttributes[$id])): ?>
                                     <?php $autoAttr = $automaticallyMappedAttributes[$id]; // Short-hand... ?>
-                                    <div class='tokenatt-container col-sm-12'>
+                                    <div class='tokenatt-container col-12'>
                                         <div class='col-sm-6'>
                                             <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
                                                 <div class='card-body'>
@@ -84,7 +84,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class='col-sm-6'>
+                                        <div class='col-md-6'>
                                             <div class='card ui-state-disabled cpdb-attribute' id='c_<?php echo $autoAttr['cpdbAttribute']['attribute_id']; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo $autoAttr['cpdbAttribute']['attribute_name']; ?>
@@ -93,8 +93,8 @@
                                         </div>
                                     </div>
                                 <?php else: ?>
-                                    <div class='tokenatt-container col-sm-12'>
-                                        <div class='col-sm-6'>
+                                    <div class='tokenatt-container col-12'>
+                                        <div class='col-md-6'>
                                             <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
@@ -109,14 +109,14 @@
                     <?php if(!empty($selectedtokenattribute)): ?>
                         <div class='explanation row'>
                             <div class='form-group'>
-                                <label class='form-label col-sm-10 text-end' for='overwriteman'><?php eT("Overwrite existing participant attribute values if a participant already exists?") ?></label>
-                                <div class='col-sm-2'>
+                                <label class='form-label col-md-10 text-end' for='overwriteman'><?php eT("Overwrite existing participant attribute values if a participant already exists?") ?></label>
+                                <div class='col-md-2'>
                                     <input type='checkbox' id='overwriteman' name='overwriteman' />
                                 </div>
                             </div>
                             <div class='form-group'>
-                                <label class='form-label col-sm-10 text-end' for='createautomap'><?php eT("Make these mappings automatic in future") ?></label>
-                                <div class='col-sm-2'>
+                                <label class='form-label col-md-10 text-end' for='createautomap'><?php eT("Make these mappings automatic in future") ?></label>
+                                <div class='col-md-2'>
                                     <input type='checkbox' id='createautomap' name='createautomap' />
                                 </div>
                             </div>
@@ -151,8 +151,8 @@
                 <div class='card-header bg-primary'><?php eT("Standard participant fields") ?></div>
                 <div class='card-body'>
                     <div class="standardfields">
-                        <div class='tokenatt-container col-sm-12'>
-                            <div class='col-sm-6'>
+                        <div class='tokenatt-container col-12'>
+                            <div class='col-md-6'>
                                 <div class='card ui-state-disabled token-attribute' id='t_token'>
                                     <div class='card-body'>
                                         <?php eT("Participant") ?>
@@ -164,14 +164,14 @@
                     </div>
                     <div class='explanation'>
                         <div class='form-group'>
-                            <label class='form-label col-sm-10 text-end' for='overwritest'>
+                            <label class='form-label col-md-10 text-end' for='overwritest'>
                                 <?php eT("Overwrite existing standard field values if a participant already exists?") ?>
                             </label>
-                            <div class='col-sm-2'>
+                            <div class='col-md-2'>
                                 <input type='checkbox' id='overwritest' name='overwritest' />
                             </div>
                         </div>
-                        <span class='help-block col-sm-10 text-end'><?php eT("Note: Standard participant fields cannot be automatically mapped") ?></span>
+                        <span class='help-block col-md-10 text-end'><?php eT("Note: Standard participant fields cannot be automatically mapped") ?></span>
                     </div>
                 </div>
             </div>
@@ -180,7 +180,7 @@
     </div>
 </div>
 
-<div class='form-group col-sm-12 text-center'>
+<div class='form-group col-12 text-center'>
     <input class='btn btn-default' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
     <input class='btn btn-default' type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
     <input class='btn btn-default' type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />
@@ -201,13 +201,13 @@ $ajaxloader = array(
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><?php eT("Map participant attributes"); ?></h4>
+                <h5 class="modal-title"><?php eT("Map participant attributes"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT("Close");?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

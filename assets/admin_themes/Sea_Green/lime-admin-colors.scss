@@ -449,10 +449,10 @@ hr {
     color: $primary-bg_info_hover;
 }
 .text-warning {
-    color: $brown-10;
+    color: $brown-10 !important;
 }
 .text-danger {
-    color: $red-10;
+    color: $red-10 !important;
 }
 // Backgrounds
 .bg-primary {
@@ -469,7 +469,7 @@ hr {
     background-color: $warning-bg;
 }
 .bg-danger {
-    background-color: $danger-bg;
+    background-color: $red-90!important;
 }
 // Page header
 .page-header {
@@ -3043,7 +3043,7 @@ ol.breadcrumb.title-bar-breadcrumb {
         background: transparent;
         color: $white;
         &.active {
-            color: $primary-2;
+            color: $white;
         }
     }
 }

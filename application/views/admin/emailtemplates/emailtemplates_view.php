@@ -26,7 +26,7 @@ var LS = LS || {};  // namespace
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <h3><?php eT("Edit email templates"); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo CHtml::form(['admin/emailtemplates/sa/update/surveyid/' . $surveyid], 'post', ['name' => 'emailtemplates', 'class' => '', 'id' => 'emailtemplates']); ?>
             <ul class="nav nav-tabs">
                 <?php foreach ($oSurvey->allLanguages as $grouplang): ?>
@@ -56,8 +56,8 @@ var LS = LS || {};  // namespace
                 }
                 ?>
                 <p>
-                    <?php echo CHtml::htmlButton(gT('Save'), ['type' => 'submit', 'value' => 'save', 'name' => 'save', 'class' => 'hidden']) ?>
-                    <?php echo CHtml::htmlButton(gT('Save and close'), ['type' => 'submit', 'value' => 'saveclose', 'name' => 'save', 'class' => 'hidden']) ?>
+                    <?php echo CHtml::htmlButton(gT('Save'), ['type' => 'submit', 'value' => 'save', 'name' => 'save', 'class' => 'd-none']) ?>
+                    <?php echo CHtml::htmlButton(gT('Save and close'), ['type' => 'submit', 'value' => 'saveclose', 'name' => 'save', 'class' => 'd-none']) ?>
                     <?php echo CHtml::hiddenField('action', 'tokens'); ?>
                     <?php echo CHtml::hiddenField('language', $esrow->surveyls_language); ?>
                 </p>
@@ -72,14 +72,14 @@ var LS = LS || {};  // namespace
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><?= gT("Choose file to add") ?></h4>
+                <h5 class="modal-title"><?= gT("Choose file to add") ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="padding: 0;">
                 <iframe frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
             </div>
             <div class='modal-footer'>
-                <button type="button" class='btn btn-default' data-dismiss='modal'><?php eT("Cancel"); ?></button>
+                <button type="button" class='btn btn-default' data-bs-dismiss='modal'><?php eT("Cancel"); ?></button>
             </div>
         </div>
     </div>
@@ -89,16 +89,18 @@ var LS = LS || {};  // namespace
     <div class='modal-dialog'>
         <div class='modal-content'>
             <div class='modal-header'>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
-                <h4 class="modal-title"><?php eT("Condition"); ?></h4>
+                <h5 class="modal-title"><?php eT("Condition"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class='modal-body'>
-                <div class='form-group'>
-                    <textarea class='form-control'></textarea>
+                <div class='input-group'>
+                    <div class="input-group-addon">{</div>
+                    <textarea class='form-control' id='attachment-relevance-condition'></textarea>
+                    <div class="input-group-addon">}</div>
                 </div>
             </div>
             <div class='modal-footer'>
-                <button type="button" class='btn btn-default' data-dismiss='modal'><?php eT("Close"); ?></button>
+                <button type="button" class='btn btn-default' data-bs-dismiss='modal'><?php eT("Close"); ?></button>
                 <button type="button" class='btn btn-success'><?php eT("Add"); ?></button>
             </div>
         </div>

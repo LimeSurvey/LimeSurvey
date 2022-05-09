@@ -1,6 +1,6 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="participant_edit_modal"><?php if ($editType == 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h4>
+    <h5 class="modal-title" id="participant_edit_modal"><?php if ($editType == 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body ">
 <?php
@@ -23,11 +23,10 @@
         $baseControlGroupHtmlOptions = array(
              'groupOptions'=> array('class'=>''),
              'labelOptions'=> array('class'=> ''),
-             'class' => '',
              'required' => 'required'
         );
         echo $form->textFieldControlGroup($model,'defaultname', $baseControlGroupHtmlOptions);
-        echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, $baseControlGroupHtmlOptions);
+        echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, array_merge($baseControlGroupHtmlOptions, ['class' => 'form-select']));
     ?>
     <div class=" form-group" id="">
         <label class='form-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
@@ -61,23 +60,23 @@
     </div>
     <div id="ParticipantAttributeNamesDropdownEdit" class="row form-group" style="display: none;">
         <div class="row">
-            <div class="col-xs-2">
-                <button class="btn btn-default btn-block" id="addDropdownField" data-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
+            <div class="col-2">
+                <button class="btn btn-default btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
             </div>
-            <h4 class="col-xs-8 col-offset-xs-2"><?php eT("Dropdown fields") ?></h4>
+            <h4 class="col-8 col-offset-2"><?php eT("Dropdown fields") ?></h4>
         </div>
         <div id='ParticipantAttributeNamesDropdownEditList'>
             <?php 
                 foreach($model->getAttributesValues($model->attribute_id) as $attribute_value){
                     echo "<div class='control-group'>";
-                    echo "<div class='dropDownContainer col-xs-8 col-offset-xs-2'>";
+                    echo "<div class='dropDownContainer col-8 col-offset-2'>";
                     echo TbHtml::textField('ParticipantAttributeNamesDropdown[]', $attribute_value['value'], [
                         'class' => 'form-control',
                         'id' => ''
                     ]);
                     // echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='".$attribute_value['value']."' />";
                     echo "</div>";
-                    echo '<div class="col-xs-1">
+                    echo '<div class="col-1">
                             <button class="btn btn-default form-group action_delDropdownField">
                                 <i class="fa fa-trash text-danger"></i>
                             </button>
@@ -86,10 +85,10 @@
                 }
             ?>
             <div class='control-group'>
-                <div class='dropDownContainer col-xs-8 col-offset-xs-2'>
+                <div class='dropDownContainer col-8 col-offset-2'>
                     <input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='' />
                 </div>
-                <div class="col-xs-1">
+                <div class="col-1">
                     <button class="btn btn-default form-group action_delDropdownField">
                         <i class="fa fa-trash text-danger"></i>
                     </button>
@@ -99,16 +98,16 @@
     </div>
      <legend><?php eT("Languages") ?></legend>
         <div class="row form-group">
-            <label class=" col-xs-12 form-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
+            <label class=" col-12 form-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
             <div>
-                <div class=" col-xs-11">
+                <div class=" col-11">
                 <?php
-                    echo TbHtml::dropDownList("ParticipantAttributeName_addLanguage_language", '', $languagesForDropdown,array('encode' => false));
+                    echo TbHtml::dropDownList("ParticipantAttributeName_addLanguage_language", '', $languagesForDropdown,array('encode' => false, 'class' => 'form-select'));
                 ?>
                 </div>
             </div>
-            <div class="col-xs-1">
-                <button class="btn btn-default form-group" id="addLanguageField" data-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+            <div class="col-1">
+                <button class="btn btn-default form-group" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
                     <i class="fa fa-plus-circle text-success"></i>
                 </button>
             </div>
@@ -119,12 +118,12 @@
                     $languageKey = Yii::app()->getLanguage();
                     echo 
                     '<div class="form-group" data-lang="'.$languageKey .'">
-                        <label class="col-sm-12 form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
+                        <label class="col-12 form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
-                            <div class=" col-xs-11">
+                            <div class=" col-11">
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
                             </div>
-                            <div class="col-xs-1">
+                            <div class="col-1">
                                 <button class="btn btn-default form-group action_delLanguageField">
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
@@ -135,13 +134,13 @@
                 foreach($languagesOfAttribute as $languageKey => $languageOfAttribute)
                 {
                     echo 
-                    '<div class="col-sm-12 form-group" data-lang="'.$languageKey.'">
+                    '<div class="col-12 form-group" data-lang="'.$languageKey.'">
                         <label class=" form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
-                            <div class=" col-xs-11">
+                            <div class=" col-11">
                                 <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.$languageOfAttribute.'">
                             </div>
-                            <div class="col-xs-1">
+                            <div class="col-1">
                                 <button class="btn btn-default form-group action_delLanguageField">
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
@@ -150,7 +149,7 @@
                     </div>';
                 }
             ?>
-            <div class="hidden">
+            <div class="d-none">
                 <div class=" form-group" id="dummyLanguageInputGroup">
                         <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel"></label>
                         <div>
@@ -160,10 +159,10 @@
                         </div>
                     </div>
                 <div class='control-group'  id="dummyDropdownInputGroup">
-                    <div class='dropDownContainer col-xs-8 col-offset-xs-2'>
+                    <div class='dropDownContainer col-8 col-offset-2'>
                         <input class='form-control' name='dummyParticipantAttributeNamesDropdown' value='' />
                     </div>
-                    <div class="col-xs-1">
+                    <div class="col-1">
                         <button class="btn btn-default form-group action_delDropdownField">
                             <i class="fa fa-trash text-danger"></i>
                         </button>
@@ -243,11 +242,9 @@
     </script>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel') ?></button>
+    <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
     <button type="button" class="btn btn-primary action_save_modal_editAttributeName"><?php eT("Save")?></button>
 </div>
 <?php
 $this->endWidget();
 ?>
-
-

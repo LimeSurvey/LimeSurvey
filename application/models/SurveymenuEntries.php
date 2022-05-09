@@ -308,7 +308,7 @@ class SurveymenuEntries extends LSActiveRecord
     {
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-default btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
@@ -442,7 +442,7 @@ class SurveymenuEntries extends LSActiveRecord
             array(
                 'header' => gT('Menu'),
                 'value' => ''
-                . '"<a class=\"".$data->menu_class."\" title=\"".$data->menu_description."\" data-toggle="tooltip" >'
+                . '"<a class=\"".$data->menu_class."\" title=\"".$data->menu_description."\" data-bs-toggle="tooltip" >'
                 . '".SurveymenuEntries::returnMenuIcon($data)." ".$data->menu_title."</a>"',
                 'type' => 'raw'
             ),

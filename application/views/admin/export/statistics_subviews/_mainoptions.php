@@ -1,7 +1,7 @@
 <h4 class=""><?php
     eT("Main options"); ?></h4>
 <div class="row">
-    <div class="col-md-6 col-sm-12">
+    <div class="col-lg-6 col-md-12">
         <div class='form-group'>
             <label for='completionstate' class="form-label"><?php
                 eT("Include:"); ?> </label>
@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-sm-12">
+    <div class="col-lg-6 col-md-12">
         <div class='form-group'>
             <?php
             $sViewsummaryall = (int)Yii::app()->request->getPost('viewsummaryall'); ?>
@@ -108,7 +108,7 @@
             <label for='statlang' class="form-label"><?php
                 eT("Statistics report language:"); ?></label>
             <div class=''>
-                <select name="statlang" id="statlang" class="form-control">
+                <select name="statlang" id="statlang" class="form-select">
                     <?php
                     echo $language_options; ?>
                 </select>

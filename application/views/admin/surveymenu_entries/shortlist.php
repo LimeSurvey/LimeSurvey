@@ -15,14 +15,14 @@
                     'columns'      => $model->getShortListColumns(),
                     'emptyText'    => gT('No customizable entries found.'),
                     'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
-                    'template'     => "{items}\n<div id='surveymenuentriesshortlistListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'template'     => "{items}\n<div id='surveymenuentriesshortlistListPager'><div class=\"col-md-4\" id=\"massive-action-container\"></div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
                     'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                         gT('%s rows per page'),
                         CHtml::dropDownList(
                             'surveymenuentriesshortlistPageSize',
                             $pageSize,
                             Yii::app()->params['pageSizeOptions'],
-                            ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                         )
                     ),
                     'ajaxUpdate' => 'surveymenu-entries-shortlist-grid'

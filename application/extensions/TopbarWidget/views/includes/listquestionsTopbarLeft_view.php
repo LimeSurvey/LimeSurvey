@@ -1,5 +1,5 @@
 <?php if ($oSurvey->isActive): ?>
-    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block">
+    <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block">
         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
             <span class="icon-add"></span>
             <?php eT("Add new question"); ?>
@@ -11,7 +11,7 @@
     </span>
 <?php elseif ($hasSurveyContentCreatePermission): ?>
     <?php if (!$oSurvey->groups): ?>
-        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block">
+        <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block">
             <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                 <span class="icon-add"></span>
                 <?php eT("Add new question"); ?>

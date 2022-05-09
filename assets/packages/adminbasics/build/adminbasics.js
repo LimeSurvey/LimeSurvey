@@ -29706,21 +29706,16 @@
       return true;
     },
     doToolTip: function doToolTip() {
+      // Destroy all tooltips
       try {
-        $(".btntooltip").tooltip("destroy");
-      } catch (e) {}
+        $('.tooltip').tooltip('dispose');
+      } catch (e) {} // Reinit all tooltips
 
-      try {
-        $('[data-tooltip="true"]').tooltip("destroy");
-      } catch (e) {}
 
-      try {
-        $('[data-tooltip="true"]').tooltip("destroy");
-      } catch (e) {}
-
-      $(".btntooltip").tooltip();
-      $('[data-tooltip="true"]').tooltip();
-      $('[data-toggle="tooltip"]').tooltip();
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes: function arrHasDupes(arrayToCheck) {
@@ -33166,7 +33161,8 @@
         $('#admin-notification-modal .modal-body-text').html(not.message);
         $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
         $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
-        $('#admin-notification-modal').modal(); // TODO: Will this work in message includes a link that is clicked?
+        var modal = new bootstrap.Modal(document.getElementById('admin-notification-modal'));
+        modal.show(); // TODO: Will this work in message includes a link that is clicked?
 
         $('#admin-notification-modal').off('hidden.bs.modal');
         $('#admin-notification-modal').on('hidden.bs.modal', function (e) {
@@ -41899,6 +41895,7 @@
       appendToLoad(bindAdvancedAttribute);
       appendToLoad(confirmDeletemodal);
       appendToLoad(panelClickable);
+      appendToLoad(window.LS.doToolTip);
       appendToLoad(panelsAnimation, null, null, 200);
       appendToLoad(notificationSystem.initNotification);
       appendToLoad(activateSubSubMenues);

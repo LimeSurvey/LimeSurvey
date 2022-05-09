@@ -59,7 +59,7 @@ class RenderHugeFreeText extends QuestionBaseRenderer
         // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
         if (trim($this->getQuestionAttribute('text_input_width')) != '') {
             $col         = ($this->getQuestionAttribute('text_input_width') <= 12) ? $this->getQuestionAttribute('text_input_width') : 12;
-            $extraclass .= " col-sm-" . trim($col);
+            $extraclass .= " col-md-" . trim($col);
             $withColumn = true;
         }
         

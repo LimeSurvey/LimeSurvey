@@ -30,11 +30,10 @@
     }
     .resize-handle {
         position: absolute;
-        right: 14px;
+        right: 0;
         top: 0;
         bottom: 0;
         height: 100%;
-        width: 4px;
         cursor: col-resize;
         button {
             outline: 0;
@@ -48,10 +47,9 @@
             height:100%;
             text-align: left;
             border-radius: 0;
-            padding: 0px 7px 0px 4px;
+            padding: 0 4px;
             i {
                 font-size: 12px;
-                width: 5px;
             }
         }
     }
@@ -137,6 +135,7 @@
         }
     }
     .breadcrumb>li+li:before {
+        float: none;
         padding: 0 5px;
         content: "\f061";
         font: normal normal normal 18px/1 FontAwesome;
@@ -240,6 +239,7 @@ footer.footer {
 
 ol.breadcrumb.title-bar-breadcrumb {
     margin-bottom: 0px;
+    padding: 8px 15px;
     > :first-child {
         a {
             &.animate::after {

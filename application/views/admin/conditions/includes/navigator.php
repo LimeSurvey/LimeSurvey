@@ -1,6 +1,6 @@
 <div class="form-group form-inline pull-left" style="margin-left: 150px;">
     <label for='questionNav'><?php eT("Move to question:");?></label>
-    <select id='questionNav' class="form-control"  >
+    <select id='questionNav' class="form-select"  >
 
         <optgroup class='activesurveyselect' label='<?php eT("Before"); ?>' >
             <?php foreach ($theserows as $row): ?>

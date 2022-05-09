@@ -9,7 +9,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-default"><span class="icon-add text-success"></span> <?php eT("Add user");?></button>
+            <button id="add_user_admin" data-bs-target="#adduser-modal" data-bs-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-default"><span class="icon-add text-success"></span> <?php eT("Add user");?></button>
         </div>
     </div>
 <div class="pagetitle h3"><?php eT("User control");?></div>
@@ -55,7 +55,7 @@ echo viewHelper::getViewTestTag('usersIndex');
                                 'pageSize',
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
-                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
+                                array('class'=>'changePageSize form-select', 'style'=>'display: inline; width: auto'))
                             ),
                     ));
 
@@ -76,8 +76,8 @@ echo viewHelper::getViewTestTag('usersIndex');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel"><?php eT("Add a new survey administrator") ?></h4>
+                <h5 class="modal-title" id="myModalLabel"><?php eT("Add a new survey administrator") ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -124,12 +124,12 @@ echo viewHelper::getViewTestTag('usersIndex');
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-12 text-end">
+                        <div class="col-12 text-end">
                             <?php eT("The password will be generated and sent by email.") ?>
                         </div>
                     </div>
-                    <div class="col-md-12">&nbsp;</div>
-                    <div class="col-md-4 col-md-offset-8">
+                    <div class="col-12">&nbsp;</div>
+                    <div class="col-lg-4 offset-lg-8">
                         <input type='submit' id='add_user_btn' class="btn btn-primary btn-block" value='<?php eT("Save");?>' />
                         <input type='hidden' name='action' value='adduser' />
                     </div>

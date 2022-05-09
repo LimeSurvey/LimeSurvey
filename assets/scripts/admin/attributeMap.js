@@ -107,9 +107,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             }
             else {
                 // Change CSS
-                $(ui.item).removeClass('col-sm-12');
+                $(ui.item).removeClass('col-12');
                 $(ui.item).addClass('cpdb-attribute');
-                $(ui.item).wrap('<div class="col-sm-6"></div>');
+                $(ui.item).wrap('<div class="col-md-6"></div>');
 
                 // Insert nice arrows
                 //var t = $(ui.item).parent('.tokenatt-container');  // Does not work.

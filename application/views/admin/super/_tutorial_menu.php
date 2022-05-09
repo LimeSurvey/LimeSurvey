@@ -7,7 +7,7 @@
 <?php
 if (!empty($aTutorials) && Permission::model()->hasGlobalPermission('surveys', 'create')) { ?>
 <li class="dropdown dropdown-submenu">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
         <span class="fa fa-rocket" ></span>
         <?php eT('Tutorials');?>
         <i class="fa fa-chevron-right pull-right"></i>

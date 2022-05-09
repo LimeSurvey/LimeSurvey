@@ -2,17 +2,17 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Survey participant export options"); ?></h3>
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
             <div class="row">
-                <div class="settings-list col-sm-12 col-md-6">
+                <div class="settings-list col-12 col-lg-6">
                     <!--Survey status -->
                     <div class=" form-group control-group" data-name="tokenstatus">
                         <label class="default form-label" for="tokenstatus">
                             <?php eT('Survey status:'); ?>
                         </label>
                         <div class="default controls">
-                            <select id="tokenstatus" name="tokenstatus" class="form-control">
+                            <select id="tokenstatus" name="tokenstatus" class="form-select">
                                 <option value="0"><?php eT('All participants'); ?></option>
                                 <option value="1"><?php eT('Completed'); ?></option>
                                 <option value="2"><?php eT('Not completed'); ?></option>
@@ -64,14 +64,14 @@
                             <?php eT('Filter by language:'); ?>
                         </label>
                         <div class="default controls">
-                            <select id="tokenlanguage" name="tokenlanguage" class="form-control">
+                            <select id="tokenlanguage" name="tokenlanguage" class="form-select">
                                 <option value="" selected="selected"><?php eT('All'); ?>
                                 <option value="de"><?php eT('German'); ?></option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6">
+                <div class="col-12 col-lg-6">
 
                     <!--Filter by email address -->
                     <div class=" form-group control-group" data-name="filteremail">
@@ -127,7 +127,7 @@
                         </div>
                     </div>                    
                 </div>
-                <button class="btn btn-primary btn-block hidden" type="submit" name="submit">
+                <button class="btn btn-primary btn-block d-none" type="submit" name="submit">
                     <i class="fa fa-download"></i>
                     <?php eT('Export participants'); ?>
                 </button>

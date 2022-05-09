@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Default configuration for the multiplechoice question template.
+-->
+
+<config>
+    <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
+    <metadata>
+        <name>bootstrap_buttons_multi</name>
+        <type>question_theme</type>
+        <title>Bootstrap buttons</title>
+        <creationDate>22/05/2018</creationDate>
+        <author>LimeSurvey GmbH</author>
+        <authorEmail>info@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2018 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.1</version>
+        <apiVersion>1</apiVersion>
+        <description>New implementation of the Bootstrap buttons question theme</description>
+        <questionType>M</questionType>
+        <group>Multiple choice questions</group>
+        <subquestions>1</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>1</hasdefaultvalues>
+        <assessable>1</assessable>
+        <class>multiple-opt</class>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+        <version>5.0</version>
+    </compatibility>
+
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
+    -->
+    <files>
+        <css>
+            <filename>scripts/bootstrapbuttons.css</filename>
+        </css>
+        <js>
+            <filename>scripts/bootstrapbuttons.js</filename>
+        </js>
+        <preview>
+            <filename>bootstrap_buttons_multiplechoice.png</filename>
+        </preview>
+    </files>
+
+    <attributes>
+        <attribute>
+            <name>button_size</name>
+            <category>Display theme options</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <default>Default</default>
+                <lg>Large</lg>
+                <sm>Small</sm>
+                <xs>Extra small</xs>
+            </options>
+            <default></default>
+            <help>Change button size</help>
+            <caption>Button size</caption>
+        </attribute>
+        <attribute>
+            <name>max_buttons_row</name>
+            <category>Display theme options</category>
+            <sortorder>91</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <default>Default</default>
+                <col-md-12>1</col-md-12>
+                <col-md-6>2</col-md-6>
+                <col-md-4>3</col-md-4>
+                <col-md-3>4</col-md-3>
+                <col-md-2>6</col-md-2>
+                <col-md-1>12</col-md-1>
+            </options>
+            <default></default>
+            <help>Choose maximum number of buttons in a row</help>
+            <caption>Maximum number of buttons in a row</caption>
+        </attribute>
+        <!-- hidden attributes -->
+        <attribute>
+            <name>display_columns</name>
+            <inputtype></inputtype>
+            <help>hide display_columns</help>
+            <caption>hide display_columns</caption>
+        </attribute>
+        <attribute>
+            <name>input_size</name>
+            <inputtype></inputtype>
+            <help>hide input_size</help>
+            <caption>hide input_size</caption>
+        </attribute>
+    </attributes>
+
+    <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
+    <engine>
+        <load_core_css>true</load_core_css>
+        <load_core_js>true</load_core_js>
+        <show_as_template>true</show_as_template>
+        <show_as_question_type>true</show_as_question_type>
+    </engine>
+</config>

@@ -4,7 +4,7 @@
 ?>
 <div id='edit-group' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
-        <div class="col-sm-12 content-right">
+        <div class="col-12 content-right">
             <div class="pagetitle h3"><?php eT("Edit Group"); ?></div>
             <ul class="nav nav-tabs" id="edit-group-language-selection">
                 <?php foreach ($tabtitles as $i=>$eachtitle):?>
@@ -17,7 +17,7 @@
             </ul>
         </div>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-12">
                 <?php echo CHtml::form(array("questionGroupsAdministration/saveQuestionGroupData/sid/{$surveyid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30 ')); ?>
                     <input type="hidden" name="questionGroup[gid]" id="questionGroup[gid]" value="<?=$oQuestionGroup['gid']?>">
                     <input type="hidden" name="questionGroup[sid]" id="questionGroup[sid]" value="<?=$oQuestionGroup['sid']?>"> 
@@ -59,7 +59,7 @@
                             <div class="input-group-addon">}</div>
                           </div>
                         </div>
-                    <input type="submit" class="btn btn-primary hidden" value="Save" role="button" aria-disabled="false">
+                    <input type="submit" class="btn btn-primary d-none" value="Save" role="button" aria-disabled="false">
                 <?php echo CHtml::endForm() ?>
             </div>
         </div>

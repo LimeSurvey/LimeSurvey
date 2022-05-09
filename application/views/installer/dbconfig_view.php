@@ -42,10 +42,10 @@ function checkDbEngine(){
 ?>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-lg-4">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
-    <div class="col-md-8">
+    <div class="col-lg-8">
         <?= CHtml::beginForm($this->createUrl('installer/database'), 'post', array('class' => '')); ?>
         <h2><?= $title; ?></h2>
         <p><?= $descp; ?></p>
@@ -97,12 +97,12 @@ function checkDbEngine(){
         </div>
 
         <div class="row">
-            <div class="col-md-4" >
+            <div class="col-lg-4" >
                 <input id="ls-previous" class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
-            <div class="col-md-4" style="text-align: center;">
+            <div class="col-lg-4" style="text-align: center;">
             </div>
-            <div class="col-md-4" style="text-align: right;">
+            <div class="col-lg-4" style="text-align: right;">
                 <?php echo CHtml::submitButton(gT("Next", "unescaped"), array("class" => "btn btn-default", "id" => "ls-next")); ?>
             </div>
         </div>

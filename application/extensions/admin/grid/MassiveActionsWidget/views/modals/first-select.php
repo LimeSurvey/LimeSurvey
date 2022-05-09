@@ -10,7 +10,7 @@
                 <?php eT('Please select at least one item');?>
             </div>
             <div class="modal-footer modal-footer-buttons">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                     <?php eT("Ok"); ?>
                 </button>
             </div>

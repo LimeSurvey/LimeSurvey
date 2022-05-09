@@ -54,7 +54,7 @@ class UserManagementController extends LSBaseController
         $model = new User('search');
         $model->setAttributes(Yii::app()->getRequest()->getParam('User'), false);
         $aData['model'] = $model;
-        $aData['columnDefinition'] = $model->getManagementColums();
+       // $aData['columnDefinition'] = $model->getManagementColums();
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $aData['formUrl'] = $this->createUrl('userManagement/index');
 
@@ -73,7 +73,7 @@ class UserManagementController extends LSBaseController
 
         return $this->render('index', [
             'model' => $aData['model'],
-            'columnDefinition' => $aData['columnDefinition'],
+            //'columnDefinition' => $aData['columnDefinition'],
             'pageSize' => $aData['pageSize'],
             'formUrl' => $aData['formUrl'],
             'massiveAction' => $aData['massiveAction'],
@@ -629,7 +629,7 @@ class UserManagementController extends LSBaseController
         $allowFileType = ".csv";
 
         if ($importFormat == 'json') {
-            $importNote = sprintf(gT("Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+            $importNote = sprintf(gT("Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
             $allowFileType = ".json,application/json";
         }
 
@@ -656,11 +656,7 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $overwriteUsers = false;
-
-        if (isset($_POST['overwrite'])) {
-            $overwriteUsers = true;
-        }
+        $overwriteUsers = boolval(App()->getRequest()->getPost('overwrite'));
 
         switch ($importFormat) {
             case "json":
@@ -670,7 +666,11 @@ class UserManagementController extends LSBaseController
             default:
                 $aNewUsers = UserParser::getDataFromCSV($_FILES); //importFormat default is csv ...
         }
-
+        if (empty($aNewUsers)) {
+            Yii::app()->setFlashMessage(gT("No user definition found in file."), 'error');
+            $this->redirect(['userManagement/index']);
+            App()->end();
+        }
         $created = [];
         $updated = [];
 
@@ -723,7 +723,7 @@ class UserManagementController extends LSBaseController
         }
 
         Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
-        $this->redirect('index');
+        $this->redirect(['userManagement/index']);
     }
 
 

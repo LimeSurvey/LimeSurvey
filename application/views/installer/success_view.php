@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-lg-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
-    <div class="col-md-9">
+    <div class="col-lg-9">
         <h2><?php echo $title; ?></h2>
         <div class='alert alert-success'><?php echo $descp; ?></div>
         <legend> <?php eT("Administrator credentials"); ?></legend>

@@ -77,7 +77,7 @@ if ($thissurvey['active'] == "Y")
                             <label class=" form-label" for="save_language"><?php eT("Start language:"); ?></label>
                             <div class="">
 
-                                <select name='save_language' id="save_language" class="form-control">
+                                <select name='save_language' id="save_language" class="form-select">
                                 <?php foreach ($slangs as $lang)
                                 {
                                 if ($lang == $baselang) { ?>
@@ -96,7 +96,7 @@ if ($thissurvey['active'] == "Y")
                 <?php } ?>
                 <tr>
                 <td colspan='3' align='center'>
-                <input type='submit' id='submitdata' class="btn btn-default hidden" value='<?php eT("Submit"); ?>' />
+                <input type='submit' id='submitdata' class="btn btn-default d-none" value='<?php eT("Submit"); ?>' />
                 </td>
                 </tr>
             <?php }

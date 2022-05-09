@@ -5,12 +5,12 @@
 ?>
 
 <div class="modal-header">
-    <?= gT('Saved successfully') ?>
+    <h5 class="modal-title"><?= gT('Saved successfully') ?></h5>
 </div>
 <div class="modal-body">
     <div class="container-center">
         <div class="row">
-            <div class="col-xs-12 text-center">
+            <div class="col-12 text-center">
                 <div class="check_mark">
                     <div class="sa-icon sa-success animate">
                         <span class="sa-line sa-tip animateSuccessTip"></span>
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-12">
                 <ul class="list-group">
                     <?php foreach ($results as $type => $result) { ?>
                         <?php /*<?='<pre>'.print_r([$type,$result],true).'</pre>';?> */ ?>

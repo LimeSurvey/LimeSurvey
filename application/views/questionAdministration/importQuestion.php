@@ -12,7 +12,7 @@
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Import a question"); ?></h3>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-12">
             <?php echo CHtml::form(
                 ["questionAdministration/import"],
                 'post',
@@ -35,7 +35,7 @@
             <div class="form-group">
                 <label class=" form-label" for='gid'><?php eT("Destination question group:"); ?></label>
                 <div class="">
-                    <select name='gid' id='gid' class="form-control">
+                    <select name='gid' id='gid' class="form-select">
                         <?php echo getGroupList3($gid, $sid); ?>
                     </select>
                 </div>
@@ -88,7 +88,7 @@
                     ?>
                 </div>
             </div>
-            <input type='submit' class="hidden" value='<?php eT("Import question"); ?>'/>
+            <input type='submit' class="d-none" value='<?php eT("Import question"); ?>'/>
             <input type='hidden' name='action' value='importquestion'/>
             <input type='hidden' name='sid' value='<?php echo $sid; ?>'/>
             <?php echo CHtml::endForm(); ?>

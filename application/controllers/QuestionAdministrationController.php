@@ -483,6 +483,7 @@ class QuestionAdministrationController extends LSBaseController
 
             // All done, redirect to edit form.
             $question->refresh();
+            LimeExpressionManager::SetDirtyFlag();
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             //only those two values are valid
             if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {
@@ -548,15 +549,36 @@ class QuestionAdministrationController extends LSBaseController
             }
         } catch (CException $ex) {
             $transaction->rollback();
-            throw new LSJsonException(
-                500,
-                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
-                0,
-                App()->createUrl(
-                    'surveyAdministration/view/',
-                    ["surveyid" => $iSurveyId]
-                )
-            );
+            if ($calledWithAjax) {
+                throw new LSJsonException(
+                    500,
+                    gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
+                    0,
+                    App()->createUrl(
+                        'surveyAdministration/view/',
+                        ["surveyid" => $iSurveyId]
+                    )
+                );
+            } else {
+                if (empty($question)) {
+                    $sRedirectUrl = $this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId]);
+                } else {
+                    $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
+                    if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {
+                        $tabOverviewEditorValue = 'overview';
+                    }
+                    $sRedirectUrl = $this->createUrl(
+                        'questionAdministration/edit/',
+                        [
+                            'questionId' => $question->qid,
+                            'landOnSideMenuTab' => 'structure',
+                            'tabOverviewEditor' => $tabOverviewEditorValue,
+                        ]
+                    );
+                }
+                Yii::app()->setFlashMessage($ex->getMessage(), 'error');
+                $this->redirect($sRedirectUrl);
+            }
         }
     }
 
@@ -2987,12 +3009,12 @@ class QuestionAdministrationController extends LSBaseController
             $questionThemeData['name'] = $questionTheme->name;
             $questionThemeData['type'] = $questionTheme->question_type;
             $questionThemeData['detailpage'] = '
-                <div class="col-sm-12 currentImageContainer">
+                <div class="col-12 currentImageContainer">
                 <img src="' . $questionTheme->image_path . '" />
                 </div>';
             if ($imageName == 'S') {
                 $questionThemeData['detailpage'] = '
-                    <div class="col-sm-12 currentImageContainer">
+                    <div class="col-12 currentImageContainer">
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
                     </div>';

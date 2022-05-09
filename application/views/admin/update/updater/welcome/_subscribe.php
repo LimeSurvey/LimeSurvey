@@ -32,9 +32,9 @@ if( isset($serverAnswer->html) )
     echo CHtml::hiddenField('destinationBuild', Yii::app()->request->getParam('destinationBuild',''));?>
     <div class="form-group">
         <?php
-        echo CHtml::label(gT('Enter your update key:'),'inputKey', array('class'=>'col-sm-2'));
+        echo CHtml::label(gT('Enter your update key:'),'inputKey', array('class'=>'col-md-2'));
         ?>
-        <div class='col-sm-2'>
+        <div class='col-md-2'>
             <?php
             echo CHtml::textField('keyid', '', array("id"=>"inputKey",'class'=>'form-control','required' => true));
             ?>

@@ -49,7 +49,7 @@
                         class="btn btn-primary col-6"
                         value='<?php  eT("Import survey"); ?>'
                         disabled="disabled"
-                        data-toggle="tooltip"
+                        data-bs-toggle="tooltip"
                         data-title="<?= gT('Please choose a file'); ?>"
                     />
                 </div>
@@ -67,14 +67,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><?php eT("No file selected"); ?></h4>
+                    <h5 class="modal-title"><?php eT("No file selected"); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p><?php eT("Please select a file to import!"); ?></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT("Close");?></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

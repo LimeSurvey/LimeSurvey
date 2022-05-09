@@ -94,7 +94,7 @@ Yii::app()->getController()->renderPartial(
                     // When we add a new user, owner is default to current user
                     $selected = ($editType == 'add') ? Yii::app()->user->id : $model->owner_uid;
                     $listUsers = CHtml::listData($users,'uid','full_name');
-                    echo CHtml::dropDownList('Participant[owner_uid]',$selected,$listUsers,array('id'=>'owner_uid','class'=>'form-control'));
+                    echo CHtml::dropDownList('Participant[owner_uid]',$selected,$listUsers,array('id'=>'owner_uid','class'=>'form-select'));
                 ?>
                 </div>
                 <div class=''></div>
@@ -138,7 +138,7 @@ Yii::app()->getController()->renderPartial(
     <?php endif; ?>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel') ?></button>
+    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
     <button type="button" class="btn btn-primary action_save_modal_editParticipant"><?php echo $buttonTitle; ?></button>
 </div>
 <script>

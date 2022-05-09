@@ -5,7 +5,7 @@
 ?>
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <div class="row welcom survey-action">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <div class="jumbotron message-box">
                 <h3 class="lead"><?php eT('Survey participants table deleted'); ?></h3>
                 <br /> <br />

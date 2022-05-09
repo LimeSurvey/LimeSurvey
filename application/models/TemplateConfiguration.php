@@ -33,7 +33,6 @@
  * @property string $packages_to_load
  * @property string $packages_ltr
  * @property string $packages_rtl
- * @property string $packages_rtl
  * @property Template $template
  *
  * @package       LimeSurvey
@@ -765,7 +764,7 @@ class TemplateConfiguration extends TemplateConfig
                 "newname" => [
                     "value" => "extends_" . $this->template_name,
                     "type" => "text",
-                    "class" => "form-control col-sm-12"
+                    "class" => "form-control col-md-12"
                 ]
             ])
             . '\'
@@ -817,8 +816,8 @@ class TemplateConfiguration extends TemplateConfig
                 $sButtons .= '
                     <a
                         class="btn btn-danger btn-block disabled"
-                        data-toggle="tooltip"
-                        data-placement="top"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
                         title="' . gT('You cannot uninstall the default template.') . '"
                     >
                         <span class="fa fa-trash"></span>

@@ -58,7 +58,7 @@ class SurveyPermission extends SurveyCommonAction
         $surveysecurity .= viewHelper::getViewTestTag('surveyPermissions');
 
         $surveysecurity .= "<h3>" . gT("Survey permissions") . "</h3>\n";
-        $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
+        $surveysecurity .= '<div class="row"><div class="col-12 content-right">';
         $result2 = Permission::model()->getUserDetails($iSurveyID);
         if (count($result2) > 0) {
                 $surveysecurity .= ""
@@ -117,7 +117,7 @@ class SurveyPermission extends SurveyCommonAction
                     if ($PermissionRow['uid'] != Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                         // Can not update own security
                         $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$iSurveyID}"), 'post', array('style' => "display:inline;"))
-                        . "<button type='submit' class='btn btn-default btn-sm' data-toggle='tooltip' title='" . gT("Edit permissions") . "'><span class='fa fa-pencil text-success'></span></button>";
+                        . "<button type='submit' class='btn btn-default btn-sm' data-bs-toggle='tooltip' title='" . gT("Edit permissions") . "'><span class='fa fa-pencil text-success'></span></button>";
                         $surveysecurity .= \CHtml::hiddenField('action', 'setsurveysecurity');
                         $surveysecurity .= \CHtml::hiddenField('user', $PermissionRow['users_name']);
                         $surveysecurity .= \CHtml::hiddenField('uid', $PermissionRow['uid']);
@@ -130,7 +130,7 @@ class SurveyPermission extends SurveyCommonAction
                         'uid' => $PermissionRow['uid']
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
-                    $surveysecurity .= "<span data-toggle='tooltip' title='" . gT("Delete") . "'><a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-post-url='{$deleteUrl}' type='submit' class='btn-sm btn btn-default'>
+                    $surveysecurity .= "<span data-bs-toggle='tooltip' title='" . gT("Delete") . "'><a data-target='#confirmation-modal' data-bs-toggle='modal' data-message='{$deleteConfirmMessage}' data-post-url='{$deleteUrl}' type='submit' class='btn-sm btn btn-default'>
                         <span class='fa fa-trash text-danger'></span>
                         </a></span>";
                 }
@@ -175,10 +175,10 @@ class SurveyPermission extends SurveyCommonAction
 
                     // Full icon = all permissions
                     if ($iCount == $iPermissionCount) {
-                        $insert = "<div data-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check\">&nbsp;</div>";
+                        $insert = "<div data-bs-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check\">&nbsp;</div>";
                     } elseif ($iCount > 0) {
                         // Blurred icon, meaning only partial permissions
-                        $insert = "<div data-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
+                        $insert = "<div data-bs-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
                     } else {
                         $insert = "<div>&#8211;</div>";
                     }
@@ -194,25 +194,25 @@ class SurveyPermission extends SurveyCommonAction
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'create')) {
-            $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<br/><br/><ul class='list-unstyled'>\n"
-            . "<li><label class='col-sm-1 col-md-offset-2 text-end form-label' for='uidselect'>" . gT("User") . ": </label>
-                 <div class='col-sm-4'>
-                <select id='uidselect' name='uid'  class='form-control'>\n"
+            $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<br/><br/><div class='row'>\n"
+            . "<label class='col-md-3 text-end form-label' for='uidselect'>" . gT("User") . ": </label>
+                 <div class='col-md-4'>
+                <select id='uidselect' name='uid'  class='form-select'>\n"
             . getSurveyUserList(false, $iSurveyID)
             . "</select></div>\n"
             . "<input style='width: 15em;' class='btn btn-default' type='submit' value='" . gT("Add user") . "'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('" . gT("Please select a user first", "js") . "'); return false;}\"/>"
             . "<input type='hidden' name='action' value='addsurveysecurity' />"
-            . "</li></ul></form>\n";
+            . "</div></form>\n";
 
-            $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/addusergroup/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<ul class='list-unstyled'><li>\n"
-            . "<label  class='col-sm-1 col-md-offset-2  text-end form-label'  for='ugidselect'>" . gT("User group") . ": </label>
-                <div class='col-sm-4'>
-                <select id='ugidselect' name='ugid'  class='form-control'>\n"
+            $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/addusergroup/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<div class='row'>\n"
+            . "<label  class='col-md-3 text-end form-label'  for='ugidselect'>" . gT("User group") . ": </label>
+                <div class='col-md-4'>
+                <select id='ugidselect' name='ugid'  class='form-select'>\n"
             . getSurveyUserGroupList('htmloptions', $iSurveyID)
             . "</select></div>\n"
             . "<input style='width: 15em;' class='btn btn-default'  type='submit' value='" . gT("Add group users") . "' onclick=\"if (document.getElementById('ugidselect').value == -1) { alert('" . gT("Please select a user group first", "js") . "'); return false;}\" />"
             . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
-            . "</li></ul></form>";
+            . "</div></form>";
         }
 
 
@@ -250,7 +250,7 @@ class SurveyPermission extends SurveyCommonAction
         if ($action == "addusergroupsurveysecurity") {
             //////////////////
             $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
-            $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
+            $addsummary .= '<div class="row"><div class="col-12 content-right">';
 
             $result = Survey::model()->findAll('sid = :surveyid AND owner_id = :owner_id', array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID']));
             if (
@@ -347,7 +347,7 @@ class SurveyPermission extends SurveyCommonAction
 
         if ($action == "addsurveysecurity") {
             $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
-            $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
+            $addsummary .= '<div class="row"><div class="col-12 content-right">';
 
 
             $result = Survey::model()->findAll('sid = :sid AND owner_id = :owner_id AND owner_id != :postuserid', array(':sid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
@@ -452,7 +452,7 @@ class SurveyPermission extends SurveyCommonAction
             $sUsergroupName = $resrow['name'];
             $usersummary .= "<h3>" . sprintf(gT("Edit survey permissions for group %s"), "<em>" . \CHtml::encode($sUsergroupName) . "</em>") . "</h3>";
         }
-        $usersummary .= '<div class="row"><div class="col-lg-12 content-right">';
+        $usersummary .= '<div class="row"><div class="col-12 content-right">';
         $usersummary .= "<br />"
         . CHtml::form(array("admin/surveypermission/sa/surveyright/surveyid/{$surveyid}"), 'post');
         $PermissionManagerService = new PermissionManager(
@@ -521,7 +521,7 @@ class SurveyPermission extends SurveyCommonAction
 
         if ($action == "delsurveysecurity") {
             $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
-            $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
+            $addsummary .= '<div class="row"><div class="col-12 content-right">';
             $addsummary .= "<div class=\"jumbotron message-box\">\n";
             $addsummary .= "<h2>" . gT("Deleting User") . "</h2>\n";
 
@@ -618,7 +618,7 @@ class SurveyPermission extends SurveyCommonAction
         }
 
         $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
-        $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
+        $addsummary .= '<div class="row"><div class="col-12 content-right">';
 
         $addsummary .= "<div class=\"jumbotron message-box\">\n";
         $addsummary .= "<h2>" . gT("Edit survey permissions") . "</h2>\n";

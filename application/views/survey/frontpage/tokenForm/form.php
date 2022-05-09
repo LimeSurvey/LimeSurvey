@@ -6,8 +6,8 @@
 ?>
 <div class=''>
     <div class='form-group'>
-        <label class='form-label col-sm-3' for='loadname'><?php echo gT("Access code:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
-        <div class='col-sm-7 load-survey-input input-cell'>
+        <label class='form-label col-md-3' for='loadname'><?php echo gT("Access code:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
+        <div class='col-md-7 load-survey-input input-cell'>
             <?php if(!isset($token)): ?>
                 <input class='form-control' type='password' id='token' name='token' value='' required>
             <?php else: ?>
@@ -24,8 +24,8 @@
     <?php if (isset($bCaptchaEnabled)): ?>
         <div class='form-group captcha-item'>
             <!-- Don't seems aria capable -->
-            <label class='form-label col-sm-3' for='loadsecurity'><?php echo gT("Please solve the following equation:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
-            <div class='col-sm-7'>
+            <label class='form-label col-md-3' for='loadsecurity'><?php echo gT("Please solve the following equation:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
+            <div class='col-md-7'>
                 <div class='ls-input-group'>
                     <div class='ls-input-group-extra captcha-widget' >
                           <?php $this->widget('CCaptcha',array(
@@ -53,7 +53,7 @@
     <?php endif; ?>
 
     <div class='form-group load-survey-row load-survey-submit'>
-        <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
+        <div class='col-md-7 offset-lg-3 load-survey-input input-cell'>
             <button type='submit' id='default' name="continue" class='btn btn-default' value='continue'><?php echo gT("Continue") ?></button>
         </div>
     </div>
