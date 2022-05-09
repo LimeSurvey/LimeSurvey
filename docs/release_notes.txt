@@ -34,6 +34,33 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.12 (build 220502) to 5.3.13 (build 220509) May 9, 2022
+-Fixed issue: beforeActivate plugin event doesn't happen (#2406) (Denis Chenu)
+-Fixed issue #18066: Method upload_file does not honor $FileName argument in response (Edgar Ramírez)
+-Fixed issue #18063: Expression manager show false error when editing question (#2388) (Denis Chenu)
+-Fixed issue #18061: Import users via JSON always shows "Wrong definition!" (#2400) (Denis Chenu)
+-Fixed issue #18031: Broken theme broke with 500 error (#2390)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by c_schmitz, dusanm, jelen1, sweetakasha
+#Updated translation: Romansh by fhgraubuenden
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Lithuanian by simasj
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: French (France) by DenisChenu, frederic93190
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bulgarian by deananiev
+
+
 Changes from 5.3.11 (build 220425) to 5.3.12 (build 220502) May 2, 2022
 +New feature #18017: Have a solution to force expression as static (#2327) (Denis Chenu)
 -Fixed issue: Kurdish (Kurmanji) is shown as RTL language but it is LTR (Carsten Schmitz)
