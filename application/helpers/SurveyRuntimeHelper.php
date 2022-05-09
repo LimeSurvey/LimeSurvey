@@ -835,7 +835,10 @@ class SurveyRuntimeHelper
     private function checkIfUseBrowserNav()
     {
         // Possibility to suppress the warning when Ajax is used to get survey content.
-        if (isset($_GET['ignorebrowsernavigationwarning'])) {
+        if (isset($_GET['ignorebrowsernavigationwarning'])
+            || isset($_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'])
+        ) {
+            $_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'] = 1;
             return;
         }
 
