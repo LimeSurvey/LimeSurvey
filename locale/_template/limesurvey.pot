@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-05-02 08:30:47+00:00\n"
+"POT-Creation-Date: 2022-05-09 10:35:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -251,10 +251,10 @@ msgstr ""
 #: application/controllers/PrintanswersController.php:154
 #: application/controllers/QuestionAdministrationController.php:188
 #: application/controllers/QuestionAdministrationController.php:309
-#: application/controllers/QuestionAdministrationController.php:1083
-#: application/controllers/QuestionAdministrationController.php:1194
-#: application/controllers/QuestionAdministrationController.php:1245
-#: application/controllers/QuestionAdministrationController.php:1636
+#: application/controllers/QuestionAdministrationController.php:1084
+#: application/controllers/QuestionAdministrationController.php:1195
+#: application/controllers/QuestionAdministrationController.php:1246
+#: application/controllers/QuestionAdministrationController.php:1637
 #: application/controllers/QuestionGroupsAdministrationController.php:135
 #: application/controllers/QuestionGroupsAdministrationController.php:233
 #: application/controllers/QuestionGroupsAdministrationController.php:304
@@ -819,7 +819,7 @@ msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:397
 #: application/controllers/LimereplacementfieldsController.php:412
-#: application/controllers/QuestionAdministrationController.php:1527
+#: application/controllers/QuestionAdministrationController.php:1528
 #: application/models/Question.php:893
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:10
 msgid "Question ID"
@@ -955,7 +955,7 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:131
 #: application/controllers/QuestionAdministrationController.php:387
 #: application/controllers/QuestionAdministrationController.php:392
-#: application/controllers/QuestionAdministrationController.php:1220
+#: application/controllers/QuestionAdministrationController.php:1221
 #: application/controllers/QuestionGroupsAdministrationController.php:100
 #: application/controllers/QuestionGroupsAdministrationController.php:169
 #: application/controllers/QuestionGroupsAdministrationController.php:279
@@ -993,9 +993,9 @@ msgid "Access denied"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:127
-#: application/controllers/QuestionAdministrationController.php:1343
-#: application/controllers/QuestionAdministrationController.php:3090
-#: application/controllers/QuestionAdministrationController.php:3116
+#: application/controllers/QuestionAdministrationController.php:1344
+#: application/controllers/QuestionAdministrationController.php:3091
+#: application/controllers/QuestionAdministrationController.php:3117
 #: application/core/SurveyCommonAction.php:151
 msgid "Invalid question id"
 msgstr ""
@@ -1009,32 +1009,32 @@ msgstr ""
 msgid "The data received seems incomplete. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:493
-#: application/controllers/QuestionAdministrationController.php:496
+#: application/controllers/QuestionAdministrationController.php:494
+#: application/controllers/QuestionAdministrationController.php:497
 msgid "Question saved"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:554
+#: application/controllers/QuestionAdministrationController.php:555
 msgid "An error happened:"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:699
-#: application/controllers/QuestionAdministrationController.php:771
-#: application/controllers/QuestionAdministrationController.php:3075
+#: application/controllers/QuestionAdministrationController.php:700
+#: application/controllers/QuestionAdministrationController.php:772
+#: application/controllers/QuestionAdministrationController.php:3076
 #: application/core/SurveyCommonAction.php:180
 msgid "Invalid survey id"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:702
-#: application/controllers/QuestionAdministrationController.php:774
-#: application/controllers/QuestionAdministrationController.php:1576
-#: application/controllers/QuestionAdministrationController.php:1584
-#: application/controllers/QuestionAdministrationController.php:1777
-#: application/controllers/QuestionAdministrationController.php:1785
-#: application/controllers/QuestionAdministrationController.php:1819
-#: application/controllers/QuestionAdministrationController.php:1827
-#: application/controllers/QuestionAdministrationController.php:3070
-#: application/controllers/QuestionAdministrationController.php:3119
+#: application/controllers/QuestionAdministrationController.php:703
+#: application/controllers/QuestionAdministrationController.php:775
+#: application/controllers/QuestionAdministrationController.php:1577
+#: application/controllers/QuestionAdministrationController.php:1585
+#: application/controllers/QuestionAdministrationController.php:1778
+#: application/controllers/QuestionAdministrationController.php:1786
+#: application/controllers/QuestionAdministrationController.php:1820
+#: application/controllers/QuestionAdministrationController.php:1828
+#: application/controllers/QuestionAdministrationController.php:3071
+#: application/controllers/QuestionAdministrationController.php:3120
 #: application/controllers/SurveyAdministrationController.php:684
 #: application/controllers/SurveyAdministrationController.php:1034
 #: application/controllers/SurveyAdministrationController.php:1106
@@ -1057,7 +1057,7 @@ msgstr ""
 msgid "No permission"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1068
+#: application/controllers/QuestionAdministrationController.php:1069
 #: application/controllers/SurveyAdministrationController.php:2141
 #: application/controllers/ThemeOptionsController.php:221
 #: application/controllers/ThemeOptionsController.php:290
@@ -1092,7 +1092,7 @@ msgstr ""
 msgid "We are sorry but you don't have permissions to do this."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1077
+#: application/controllers/QuestionAdministrationController.php:1078
 #: application/extensions/TopbarWidget/views/includes/importGroupTopbarRight_view.php:4
 #: application/extensions/TopbarWidget/views/includes/importQuestionTopbarRight_view.php:4
 #: application/extensions/TopbarWidget/views/includes/responsesTopbarLeft_view.php:83
@@ -1119,36 +1119,36 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1128
+#: application/controllers/QuestionAdministrationController.php:1129
 #: application/controllers/QuestionGroupsAdministrationController.php:434
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1132
+#: application/controllers/QuestionAdministrationController.php:1133
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1156
+#: application/controllers/QuestionAdministrationController.php:1157
 #: application/controllers/QuestionGroupsAdministrationController.php:453
 msgid "Unknown file extension"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1178
+#: application/controllers/QuestionAdministrationController.php:1179
 msgid "Question imported successfully"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1321
+#: application/controllers/QuestionAdministrationController.php:1322
 #: application/controllers/SurveyAdministrationController.php:259
 #: application/controllers/UserManagementController.php:848
 msgid "Deleted"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1348
+#: application/controllers/QuestionAdministrationController.php:1349
 #: application/controllers/QuestionGroupsAdministrationController.php:555
 msgid "You are not authorized to delete questions."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1351
+#: application/controllers/QuestionAdministrationController.php:1352
 #: application/controllers/QuestionGroupsAdministrationController.php:542
 #: application/controllers/ResponsesController.php:564
 #: application/controllers/ResponsesController.php:771
@@ -1162,20 +1162,20 @@ msgstr ""
 msgid "Invalid action"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1384
+#: application/controllers/QuestionAdministrationController.php:1385
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1390
+#: application/controllers/QuestionAdministrationController.php:1391
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1527
+#: application/controllers/QuestionAdministrationController.php:1528
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:11
 msgid "Question title"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1527
+#: application/controllers/QuestionAdministrationController.php:1528
 #: application/controllers/SurveyAdministrationController.php:273
 #: application/controllers/ThemeOptionsController.php:209
 #: application/controllers/ThemeOptionsController.php:251
@@ -1200,7 +1200,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1553
+#: application/controllers/QuestionAdministrationController.php:1554
 #: application/controllers/SurveyAdministrationController.php:287
 #: application/controllers/ThemeOptionsController.php:248
 #: application/controllers/ThemeOptionsController.php:257
@@ -1211,52 +1211,52 @@ msgstr ""
 msgid "Selected"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1615
+#: application/controllers/QuestionAdministrationController.php:1616
 msgid "Access denied! You don't have permission to copy a question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1625
+#: application/controllers/QuestionAdministrationController.php:1626
 #: application/libraries/PluginManager/LimesurveyApi.php:626
 msgid "Question does not exist."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1660
+#: application/controllers/QuestionAdministrationController.php:1661
 msgid "Duplicate question code"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1715
+#: application/controllers/QuestionAdministrationController.php:1716
 msgid "Saved copied question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1728
+#: application/controllers/QuestionAdministrationController.php:1729
 msgid "Could not save copied question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1942
+#: application/controllers/QuestionAdministrationController.php:1943
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1942
+#: application/controllers/QuestionAdministrationController.php:1943
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1945
+#: application/controllers/QuestionAdministrationController.php:1946
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1945
+#: application/controllers/QuestionAdministrationController.php:1946
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1951
+#: application/controllers/QuestionAdministrationController.php:1952
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1953
+#: application/controllers/QuestionAdministrationController.php:1954
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1955
+#: application/controllers/QuestionAdministrationController.php:1956
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_change_survey_group.php:20
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_select_survey_theme.php:24
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:114
@@ -1266,52 +1266,52 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2200
+#: application/controllers/QuestionAdministrationController.php:2201
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:67
 #: application/views/questionAdministration/editdefaultvalues.php:42
 msgid "<No default value>"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2200
+#: application/controllers/QuestionAdministrationController.php:2201
 msgid "Checked"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2513
+#: application/controllers/QuestionAdministrationController.php:2514
 msgid "Question creation failed - input was malformed or invalid"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2524
-#: application/controllers/QuestionAdministrationController.php:2667
+#: application/controllers/QuestionAdministrationController.php:2525
+#: application/controllers/QuestionAdministrationController.php:2668
 msgid "Could not save question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2577
+#: application/controllers/QuestionAdministrationController.php:2578
 msgid "Question update failed, input array malformed or invalid"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2628
+#: application/controllers/QuestionAdministrationController.php:2629
 msgid "Could not store translation"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2660
+#: application/controllers/QuestionAdministrationController.php:2661
 msgid "Could not save question attributes"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2722
-#: application/controllers/QuestionAdministrationController.php:2734
-#: application/controllers/QuestionAdministrationController.php:2740
+#: application/controllers/QuestionAdministrationController.php:2723
+#: application/controllers/QuestionAdministrationController.php:2735
+#: application/controllers/QuestionAdministrationController.php:2741
 msgid "Could not store advanced options"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2834
-#: application/controllers/QuestionAdministrationController.php:2847
-#: application/controllers/QuestionAdministrationController.php:2899
-#: application/controllers/QuestionAdministrationController.php:2920
+#: application/controllers/QuestionAdministrationController.php:2835
+#: application/controllers/QuestionAdministrationController.php:2848
+#: application/controllers/QuestionAdministrationController.php:2900
+#: application/controllers/QuestionAdministrationController.php:2921
 msgid "Could not save subquestion"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2962
-#: application/controllers/QuestionAdministrationController.php:2975
+#: application/controllers/QuestionAdministrationController.php:2963
+#: application/controllers/QuestionAdministrationController.php:2976
 msgid "Could not save answer option"
 msgstr ""
 
@@ -3228,7 +3228,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:250
 #: application/controllers/UploaderController.php:278
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3138
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3137
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -3526,8 +3526,11 @@ msgid "Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s'
 msgstr ""
 
 #: application/controllers/UserManagementController.php:632
-#: application/models/UserParser.php:87
-msgid "Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"
+msgid "Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"
+msgstr ""
+
+#: application/controllers/UserManagementController.php:670
+msgid "No user definition found in file."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:725
@@ -16440,6 +16443,10 @@ msgstr ""
 
 #: application/models/UserGroup.php:515
 msgid "Error: "
+msgstr ""
+
+#: application/models/UserParser.php:87
+msgid "Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
 #: application/models/services/CopySurveyResources.php:52

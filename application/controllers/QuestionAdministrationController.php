@@ -483,6 +483,7 @@ class QuestionAdministrationController extends LSBaseController
 
             // All done, redirect to edit form.
             $question->refresh();
+            LimeExpressionManager::SetDirtyFlag();
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             //only those two values are valid
             if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {

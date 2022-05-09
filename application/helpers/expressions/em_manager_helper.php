@@ -6854,7 +6854,7 @@ class LimeExpressionManager
             $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
             Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
             Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
@@ -6866,7 +6866,7 @@ class LimeExpressionManager
             $LEM =& LimeExpressionManager::singleton();
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
             Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
             Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
@@ -6909,7 +6909,7 @@ class LimeExpressionManager
         );
 
         if (!$bReturnArray) {
-            $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+            $jsParts[] = "\n<script type='text/javascript' id='lemscripts'>\n<!--\n";
         }
 
         $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
