@@ -834,8 +834,8 @@ class SurveyRuntimeHelper
      */
     private function checkIfUseBrowserNav()
     {
-        // Don't show the warning if we're in preview.
-        if ($this->aSurveyInfo['active'] != "Y") {
+        // Possibility to suppress the warning when Ajax is used to get survey content.
+        if (isset($_GET['ignorebrowsernavigationwarning'])) {
             return;
         }
 
