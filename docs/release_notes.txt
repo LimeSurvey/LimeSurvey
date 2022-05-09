@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.9 (build 220503) to 3.28.10 (build 220510) May 9, 2022
+-Fixed issue #18051: RemoteControl API: Deleting a question crashes  (#2377) (Denis Chenu)
+-Fixed issue #17889: Setting to correct server time not taken into account when sending email invitations (#2356) (Gabriel Jenik)
+#Updated translation: Uighur by walkingdead
+#Updated translation: Hungarian by kkd
+
+
 Changes from 3.28.8 (build 220426) to 3.28.9 (build 220503) May 2, 2022
 -Fixed issue: Kurdish (Kurmanji) is shown as RTL language but it is LTR (Carsten Schmitz)
 -Fixed issue #17804: InputOnDemand is not loading all prior rows when navigating back (#2342) (Gabriel Jenik)
