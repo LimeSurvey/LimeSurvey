@@ -113,8 +113,8 @@ class PluginManagerController extends Survey_Common_Action
         if (!is_null($oPlugin)) {
             $iStatus = $oPlugin->active;
             if ($iStatus == 0) {
-                // Load the plugin:
-                App()->getPluginManager()->loadPlugin($oPlugin->name, $id, false);
+                // Load the plugin (and init)
+                App()->getPluginManager()->loadPlugin($oPlugin->name, $id, true); 
                 $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeActivate', $this), $oPlugin->name);
                 if ($result->get('success', true)) {
                     $iStatus = 1;
