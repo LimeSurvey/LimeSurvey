@@ -54,7 +54,7 @@
                 <span class="icon-add"></span>
                 <?php eT("Add new question"); ?>
             </a>
-            <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/importview/surveyid/".$oSurvey->sid); ?>' role="button">
+            <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/importview", ['surveyid' => $oSurvey->sid]); ?>' role="button">
                 <span class="icon-import"></span>
                 <?php eT("Import a question"); ?>
             </a>
