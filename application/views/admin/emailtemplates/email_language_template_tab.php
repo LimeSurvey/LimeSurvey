@@ -126,14 +126,3 @@ App()->getClientScript()->registerScript("ScriptEmailTemplateLanguageTemplate_<?
     {close: '".gT('Close')."', save: '".gT('Save')."'}, '".App()->getController()->createUrl('admin/emailtemplates/getTemplateOfType', array('type' => $tab, 'language' => $grouplang, 'survey' => $surveyid ))."');\n
     ".implode("\n", $script), LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
-
-
-
-    <script >
-        $(document).ready(function(){
-            // Change fullPage configuration for each CKEDITOR instance loaded in this view.
-            $.each(CKEDITOR.instances, function(index, editor){
-                editor.config.fullPage = true;
-            });
-        })
-    </script>

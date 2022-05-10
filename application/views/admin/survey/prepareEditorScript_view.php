@@ -28,6 +28,14 @@ $script = "
 * See https://stackoverflow.com/questions/2851068/prevent-ckeditor-from-formatting-code-in-source-mode
 */ 
 $script.="CKEDITOR.on('instanceReady', function(event) {
+
+        // Change config. for editors with name like email_*
+        // Those editors are initialized for email templates.
+        // It doesn't have effects on popup Editors.
+        if(event.editor.name.startsWith('email_')){
+            event.editor.config.fullPage = true;
+        }
+        
         event.editor.dataProcessor.writer.setRules( 'br', { breakAfterOpen: 0 } );
     });    
 
