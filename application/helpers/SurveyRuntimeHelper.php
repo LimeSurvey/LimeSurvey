@@ -831,10 +831,17 @@ class SurveyRuntimeHelper
     /**
      * It checks if user used the browser navigation (prev, next, reload page etc)
      * and feed te backpopup variable if needed
-     *
      */
     private function checkIfUseBrowserNav()
     {
+        // Possibility to suppress the warning when Ajax is used to get survey content.
+        if (isset($_GET['ignorebrowsernavigationwarning'])
+            || isset($_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'])
+        ) {
+            $_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'] = 1;
+            return;
+        }
+
         // retrieve datas from local variable
         if (isset($_SESSION[$this->LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey', $_SESSION[$this->LEMsessid]['LEMpostKey']) != $_SESSION[$this->LEMsessid]['LEMpostKey']) {
             // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page

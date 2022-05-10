@@ -529,7 +529,7 @@ class QuestionTheme extends LSActiveRecord
         }
 
         // todo optimize function for very big surveys, eventually in yii 2 or 3 with batch processing / if this is breaking in Yii 1 use CDbDataReader $query = new CDbDataReader($command), $query->read()
-        $aQuestions = Question::model()->findAll(
+        $aQuestions = Question::model()->count(
             'type = :type AND question_theme_name = :theme AND parent_qid = :parent_qid',
             [
                 ':type'       => $oQuestionTheme->question_type,
