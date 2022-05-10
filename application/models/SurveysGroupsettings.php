@@ -349,7 +349,7 @@ class SurveysGroupsettings extends LSActiveRecord
         // set instance options only if option needs to be inherited
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)) {
             foreach ($instance->optionAttributes as $key => $attribute) {
-                if ((!$bRealValues && empty($instance->oOptions->$attribute)) || $instance->shouldInherit($attribute)) {
+                if ($instance->shouldInherit($attribute)) {
                     $instance->oOptions->{$attribute} = $model->$attribute;
                     $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);
                 }
@@ -468,6 +468,11 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     private function shouldInherit($attribute)
     {
+        // If the attribute is not defined
+        if (!property_exists($this->oOptions, $attribute)) {
+            return true;
+        }
+
         // The attribute should be inherited if its value is 'inherit', 'I' or '-1'.
         if (
             !empty($this->oOptions->{$attribute})
