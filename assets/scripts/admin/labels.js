@@ -240,14 +240,10 @@ function add_label(event) {
         row_id = -1;
     } else {
         row_id = $(event.target)
-            .parent()
-            .parent()
-            .parent()
+            .closest('tbody')
             .children()
             .index(
-                $(event.target)
-                    .parent()
-                    .parent()
+                $(event.target).closest('tr')
             );
     }
 
@@ -261,7 +257,7 @@ function add_label(event) {
     if (typeof(event) == "undefined") {
         $(".first tbody").append(html);
     } else {
-        $(event.target).parent().parent().after(html);
+        $(event.target).closest('tr').after(html);
     }
     html = createNewLabelTR(true,false);
 
