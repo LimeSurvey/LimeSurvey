@@ -101,7 +101,8 @@ $codeids = '';
                             data-bs-target="#quickadd">
                         <?php eT('Quick add labels') ?>
                     </button>
-                <?php }; ?>
+            <?php endif; ?>
+            </div>
             </div>
         </div>
         <?php $first = false; ?>
