@@ -23,7 +23,7 @@
             </ul>
         </div>
     <?php else: ?>
-        <button type="button" class="btn btn-outline-secondary btntooltip" href="<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
+        <a class="btn btn-outline-secondary btntooltip" href="<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" accesskey='d' target='_blank'>
             <?php if($oSurvey->active=='N'):?>
                 <span class="fa fa-eye" ></span>
                 <?php eT('Preview survey');?>
@@ -31,7 +31,7 @@
                 <span class="fa fa-play" ></span>
                 <?php eT('Run survey');?>
             <?php endif;?>
-        </button>
+        </a>
     <?php endif;?>
 
     <?php if($hasSurveyContentUpdatePermission): ?>
@@ -53,22 +53,23 @@
                     <?php endforeach; ?>
                 </ul>
             </div>
-        <?php else:?>
-
+        <?php else: ?>
             <!-- Preview group single language -->
-            <button type="button" class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
+            <a class="btn btn-outline-secondary"
+               href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
+               target="_blank">
                 <span class="fa fa-eye"></span>
-                <?php eT("Preview question group");?>
-            </button>
+                <?php eT("Preview question group"); ?>
+            </a>
         <?php endif; ?>
         <?php if (count($surveyLanguages) > 1): ?>
 
         <!-- Preview question multilanguage -->
         <div class="btn-group">
-            <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa fa-eye"></span>
             <?php eT("Preview question"); ?> <span class="caret"></span>
-            </button>
+            </a>
             <ul class="dropdown-menu" style="min-width : 252px;">
                 <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
                     <li>
@@ -82,25 +83,25 @@
         <?php else:?>
 
         <!-- Preview question single language -->
-        <button type="button" class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button" target="_blank">
+        <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"); ?>" target="_blank">
             <span class="fa fa-eye"></span>
             <?php eT("Preview question");?>
-        </button>
+        </a>
         <?php endif; ?>
     <?php endif; ?>
 <?php else: ?>
     <!-- Import -->
     <?php if($hasSurveyContentCreatePermission):?>
         <?php if($oSurvey->active!='Y'): ?>
-            <button type="button" class="btn btn-outline-secondary" id="import-button" href="<?php echo Yii::App()->createUrl("questionAdministration/importView", ["surveyid" => $surveyid, "groupid" => $gid]); ?>" role="button">
+            <a class="btn btn-outline-secondary" id="import-button" href="<?php echo Yii::App()->createUrl("questionAdministration/importView", ["surveyid" => $surveyid, "groupid" => $gid]); ?>" role="button">
                 <span class="icon-import icon"></span>
                 <?php eT("Import question"); ?>
-            </button>
+            </a>
         <?php else: ?>
-            <button type="button" role="button" class="btn btn-outline-secondary btntooltip" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
+            <a role="button" class="btn btn-outline-secondary btntooltip" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
                 <span class="icon-import icon"></span>
                 <?php eT("Import question"); ?>
-            </button>
+            </a>
         <?php endif; ?>
     <?php endif;?>
 <?php endif; ?>

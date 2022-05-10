@@ -341,15 +341,10 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     } ?>
                 </ul>
                 <p>
-                    <input type='hidden' name='ok' value='Y'/>
-                        <button
-                            type='submit' 
-                            disabled="true" 
-                            id='delete-checked-items-button' 
-                            class="btn btn-danger">
-                            <?php eT("Delete checked items!"); ?>
-                        </button>
-                    <br/>
+                        <input type='hidden' name='ok' value='Y'/>
+                        <input type='submit' disabled="true" id='delete-checked-items-button' class="btn btn-danger"
+                               value="<?php eT("Delete checked items!"); ?>">
+                        <br/>
                     <span class='hint warning'>
                             <?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?>
                         </span>

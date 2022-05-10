@@ -28,14 +28,14 @@
                 <?php endif; ?>
             </div>
             <div class="modal-footer modal-footer-buttons">
-                <button role="button" class="btn btn-primary btn-ok"><span class='fa fa-check'></span>
+                <a role="button" class="btn btn-primary btn-ok"><span class='fa fa-check'></span>
                     &nbsp;
-                    <?php if(isset($aAction['yes'])):?>
-                        <?php echo $aAction['yes'];?>
-                    <?php else:?>
+                    <?php if (isset($aAction['yes'])): ?>
+                        <?php echo $aAction['yes']; ?>
+                    <?php else: ?>
                         <?php eT("Yes"); ?>
-                    <?php endif;?>
-                    </button>
+                    <?php endif; ?>
+                </a>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                     <span class='fa fa-ban'></span>
                     &nbsp;

@@ -21,15 +21,16 @@
                 <?php eT("Import a question"); ?>
             </button>
         </span>
-    <?php else :?>
-        <button class="btn btn-outline-secondary" href='<?php echo Yii::App()->createUrl("questionAdministration/create/surveyid/".$oSurvey->sid);
-?>' type="button" role="button">
+    <?php else : ?>
+        <a class="btn btn-outline-secondary"
+           href='<?php echo Yii::App()->createUrl("questionAdministration/create/surveyid/" . $oSurvey->sid); ?>'>
             <span class="icon-add"></span>
             <?php eT("Add new question"); ?>
-        </button>
-        <button class="btn btn-outline-secondary" href='<?php echo Yii::App()->createUrl("questionAdministration/importView/surveyid/".$oSurvey->sid); ?>' role="button">
+        </a>
+        <a class="btn btn-outline-secondary"
+           href='<?php echo Yii::App()->createUrl("questionAdministration/importView/surveyid/" . $oSurvey->sid); ?>'>
             <span class="icon-import"></span>
             <?php eT("Import a question"); ?>
-        </button>
+        </a>
     <?php endif; ?>
 <?php endif; ?>

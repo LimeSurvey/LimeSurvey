@@ -26,13 +26,13 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                         <?=($force2FA == true ? gT("Please activate it now.") : gT("Do you want to activate it now?"))?> 
                     </h2>
                     <p>
-                        <button type="button" role="button" class="btn btn-outline-secondary TFA--actionopenmodal TFA--excludefromlock" data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey")?>" data-bs-toggle="modal" id="TFA--register2fa">
+                        <a role="button" class="btn btn-outline-secondary TFA--actionopenmodal TFA--excludefromlock" data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey")?>" data-bs-toggle="modal" id="TFA--register2fa">
                             <?=gt("Activate 2FA now");?>
-        </b>
-                    <?php if ($force2FA == true) { ?> 
-                        <button type="button" class="btn btn-danger TFA--excludefromlock" href="<?=App()->createUrl("admin")?>" id="TFA--excludeNotNow">
+                        </a>
+                    <?php if ($force2FA == true) { ?>
+                        <a role="button" class="btn btn-danger TFA--excludefromlock" href="<?=App()->createUrl("admin")?>" id="TFA--excludeNotNow">
                             <?=gT("Not now");?>
-                        </button>
+                        </a>
                     <?php } ?>
                     </p>
                 </div>

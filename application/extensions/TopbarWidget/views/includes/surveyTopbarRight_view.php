@@ -37,12 +37,10 @@
 
 <!-- Green Save and Close -->
 <?php if (!empty($showGreenSaveAndCloseButton)): ?>
-    <button 
-        class="btn btn-success"
-        href="<?php echo $closeUrl; ?>"
-        type="button"
-        id="save-and-close-button"
-        onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
+    <a class="btn btn-success"
+       href="<?php echo $closeUrl; ?>"
+       id="save-and-close-button"
+       onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
         <span class="fa fa-saved"></span>
         <?php eT("Save and close"); ?>
     </a>
@@ -50,10 +48,10 @@
 
 <!-- Save -->
 <?php if (!empty($showSaveButton)): ?>
-    <button id="save-button" class="btn btn-success pull-right" type="button">
+    <a id="save-button" class="btn btn-success pull-right">
         <i class="fa fa-check"></i>
         <?php eT("Save"); ?>
-    </button>
+    </a>
 <?php endif; ?>
 
 <!-- Export -->
@@ -74,8 +72,8 @@
 
 <!-- Close -->
 <?php if (!empty($showCloseButton)): ?>
-    <button class="btn btn-danger" href="<?php echo $closeUrl; ?>" type="button">
+    <a class="btn btn-danger" href="<?php echo $closeUrl; ?>" type="button">
         <span class="fa fa-close"></span>
         <?php eT("Close"); ?>
-    </button>
+    </a>
 <?php endif; ?>

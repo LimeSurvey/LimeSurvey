@@ -22,7 +22,7 @@
         </ul>
     </div>
 <?php else: ?>
-    <button type="button" class="btn btn-outline-secondary btntooltip" href="<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank' role="button">
+    <a class="btn btn-outline-secondary btntooltip" href="<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank' role="button">
         <?php if($oSurvey->active=='N'):?>
             <span class="fa fa-eye" ></span>
             <?php eT('Preview survey');?>
@@ -30,7 +30,7 @@
             <span class="fa fa-play" ></span>
             <?php eT('Run survey');?>
         <?php endif;?>
-    </button>
+    </a>
 <?php endif;?>
 
 <?php if($hasSurveyContentUpdatePermission): ?>
@@ -51,11 +51,13 @@
                 <?php endforeach; ?>
             </ul>
         </div>
-    <?php else:?>
+    <?php else: ?>
         <!-- Preview group single language -->
-        <button type="button" class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
-            <span class="fa fa-eye" ></span>
-            <?php eT("Preview question group");?>
-    </button>
+        <a type="button" class="btn btn-outline-secondary"
+           href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
+           target="_blank">
+            <span class="fa fa-eye"></span>
+            <?php eT("Preview question group"); ?>
+        </a>
     <?php endif; ?>
 <?php endif; ?>

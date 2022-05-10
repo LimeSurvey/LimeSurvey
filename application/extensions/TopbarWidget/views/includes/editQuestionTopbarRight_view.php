@@ -19,10 +19,10 @@
 
 <!-- Close -->
 <?php if(!empty($showCloseButton)): ?>
-    <button type="button" class="btn btn-outline-secondary" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
+    <a class="btn btn-outline-secondary" href="#" onclick="LS.questionEditor.showOverview(); return false;">
         <span class="fa fa-close"></span>
         <?php eT("Close");?>
-    </button>
+    </a>
 <?php endif;?>
 
 <!-- Save and close -->

@@ -1,14 +1,14 @@
 <!-- Close -->
-<button type="button" class="btn btn-outline-secondary" href="<?php echo $closeUrl; ?>" role="button">
+<a class="btn btn-outline-secondary" href="<?php echo $closeUrl; ?>">
     <span class="fa fa-close"></span>
     <?php eT("Close");?>
-</button>
+</a>
 
 <!-- Save and close -->
-<button id="save-and-close-button-copy-question" class="btn btn-success" type="button" role="button">
+<a id="save-and-close-button-copy-question" class="btn btn-success">
     <i class="fa fa-check"></i>
     <?php eT("Save and close");?>
-</button>
+</a>
 
 <script type="text/javascript">
     $(document).ready(function() {

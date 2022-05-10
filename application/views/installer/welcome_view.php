@@ -29,9 +29,7 @@
             <div class="row navigator">
                 <div class="col-lg-8"></div>
                 <div class="col-lg-4">
-                    <button role="button" id="ls-start-installation" class='btn btn-outline-secondary' type="submit">
-                        <?php eT('Start installation'); ?>
-                    </button>
+                    <input id="ls-start-installation" class='btn btn-default' role="button" type="submit" value="<?php eT('Start installation'); ?>" />
                 </div>
             </div>
         <?php echo CHtml::endForm(); ?>

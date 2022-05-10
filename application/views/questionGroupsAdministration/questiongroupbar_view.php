@@ -11,23 +11,24 @@
 <div class='menubar surveybar' id="questiongroupbarid" style="display:none">
     <div class='ls-flex ls-flex-row wrap align-content-space-between ls-space padding left-10 right-10'>
 
-        <?php if (isset($questiongroupbar['buttonspreview']) || isset($questiongroupbar['buttons']['view'])):?>
+        <?php if (isset($questiongroupbar['buttonspreview']) || isset($questiongroupbar['buttons']['view'])): ?>
             <div id="questiongroupbar--previewbar" class="text-start ls-flex-item">
                 <!-- test/run survey -->
                 <?php if (count($languagelist) > 1): ?>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
-                                <?=($oSurvey->active=='N' ? gT('Preview survey'): gT('Run survey'));?>
+                            <?= ($oSurvey->active == 'N' ? gT('Preview survey') : gT('Run survey')); ?>
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" style="min-width : 252px;">
                             <?php foreach ($languagelist as $tmp_lang): ?>
                                 <li>
                                     <a target='_blank'
-                                        href='<?=$this->createUrl("survey/index", array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
-                                        <?=getLanguageNameFromCode($tmp_lang, false); ?>
+                                       href='<?= $this->createUrl("survey/index", array('sid' => $surveyid, 'newtest' => "Y", 'lang' => $tmp_lang)); ?>'>
+                                        <?= getLanguageNameFromCode($tmp_lang, false); ?>
                                     </a>
                                 </li>
                             <?php endforeach; ?>
@@ -35,104 +36,110 @@
                     </div>
                 <?php else: ?>
                     <a class="btn btn-outline-secondary  btntooltip"
-                        href="<?php echo $this->createUrl("survey/index", array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>"
-                        role="button" accesskey='d' target='_blank'>
+                       href="<?php echo $this->createUrl("survey/index", array('sid' => $surveyid, 'newtest' => "Y", 'lang' => $oSurvey->language)); ?>"
+                       role="button" accesskey='d' target='_blank'>
                         <span class="icon-do"></span>
-                        <?=($oSurvey->active=='N' ? gT('Preview survey'): gT('Run survey'));?>
+                        <?= ($oSurvey->active == 'N' ? gT('Preview survey') : gT('Run survey')); ?>
                     </a>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')): ?>
                     <?php if (count($languagelist) > 1): ?>
                         <!-- Preview multilangue -->
                         <div class="btn-group">
-                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                    data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
                                 <span class="icon-do"></span>
                                 <?php eT("Preview question group"); ?>
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" style="min-width : 252px;">
                                 <?php foreach ($languagelist as $tmp_lang): ?>
-                                <li>
-                                    <a target="_blank"
-                                        href="<?=$this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>">
-                                        <?=getLanguageNameFromCode($tmp_lang, false); ?>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a target="_blank"
+                                           href="<?= $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>">
+                                            <?= getLanguageNameFromCode($tmp_lang, false); ?>
+                                        </a>
+                                    </li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
-                    <?php else:?>
+                    <?php else: ?>
                         <!-- Preview simple langue -->
                         <a class="btn btn-outline-secondary"
-                            href="<?=$this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
-                            role="button" target="_blank">
+                           href="<?= $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
+                           role="button" target="_blank">
                             <span class="icon-do"></span>
-                            <?=gT("Preview question group");?>
+                            <?= gT("Preview question group"); ?>
                         </a>
                     <?php endif; ?>
                     <?php if (isset($questiongroupbar['importbutton']) && $questiongroupbar['importbutton']): ?>
-                        <a class="btn btn-outline-secondary" href="<?php echo App()->createUrl('questionGroupsAdministration/importview/surveyid/' . $surveyid); ?>" role="button">
+                        <a class="btn btn-outline-secondary"
+                           href="<?php echo App()->createUrl('questionGroupsAdministration/importview/surveyid/' . $surveyid); ?>"
+                           role="button">
                             <span class="icon-import"></span>
                             <?php eT('Import a group'); ?>
                         </a>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
-        <?php endif;?>
+        <?php endif; ?>
 
         <!-- Left Buttons (only shown for question groups) -->
-        <?php if (isset($questiongroupbar['buttons']['view'])):?>
+        <?php if (isset($questiongroupbar['buttons']['view'])): ?>
             <!-- Buttons -->
             <div id="questiongroupbar--questiongroupbuttons" class="text-center ls-flex-item grow-2">
                 <!-- Check survey logic -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')): ?>
                     <a class="btn btn-outline-secondary pjax"
-                        href="<?= $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>"
-                        role="button">
+                       href="<?= $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>"
+                       role="button">
                         <span class="icon-expressionmanagercheck"></span>
                         <?php eT("Check survey logic for current question group"); ?>
                     </a>
                 <?php endif; ?>
 
-                <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')):?>
+                <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')): ?>
                     <!-- Delete -->
-                    <?php if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y"):?>
+                    <?php if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y"): ?>
                         <!-- has question -->
-                        <?php if (empty($condarray)):?>
+                        <?php if (empty($condarray)): ?>
                             <!-- can delete group and question -->
-                            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmation-modal"
-                                data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid"=>$gid])); ?>'
-                                data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"); ?>">
+                            <button class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#confirmation-modal"
+                                    data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $gid])); ?>'
+                                    data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"); ?>">
                                 <span class="fa fa-trash"></span>
                                 <?php eT("Delete current question group"); ?>
                             </button>
                         <?php else: ?>
-                        <!-- there is at least one question having a condition on its content -->
-                            <button type="button" class="btn btn-outline-secondary btntooltip" disabled data-bs-toggle="tooltip"
-                                data-bs-placement="bottom"
-                                title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>">
+                            <!-- there is at least one question having a condition on its content -->
+                            <button type="button" class="btn btn-outline-secondary btntooltip" disabled
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>">
                                 <span class="fa fa-trash"></span>
                                 <?php eT("Delete current question group"); ?>
                             </button>
                         <?php endif; ?>
-                    <?php else:?>
+                    <?php else: ?>
                         <!-- Activated -->
-                        <button type="button" class="btn btn-outline-secondary btntooltip" disabled data-bs-toggle="tooltip"
-                            data-bs-placement="bottom"
-                            title="<?php eT("You can't delete this question group because the survey is currently active."); ?>">
+                        <button type="button" class="btn btn-outline-secondary btntooltip" disabled
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                title="<?php eT("You can't delete this question group because the survey is currently active."); ?>">
                             <span class="fa fa-trash"></span>
                             <?php eT("Delete current question group"); ?>
                         </button>
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'export')):?>
+                <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'export')): ?>
                     <!-- Export -->
                     <a class="btn btn-outline-secondary "
-                        href="<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>"
-                        role="button">
+                       href="<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid"); ?>"
+                       role="button">
 
                         <span class="icon-export"></span>
                         <?php eT("Export this question group"); ?>
@@ -142,25 +149,26 @@
             </div>
         <?php endif; ?>
 
-        <?php if (isset($questiongroupbar['savebutton']['form'])&&isset($qid)
+        <?php if (isset($questiongroupbar['savebutton']['form']) && isset($qid)
             && (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))): ?>
             <!-- ####### This is only shown when editing questions -->
             <div id="questiongroupbar--questionbuttons" class="text-start ls-flex-item">
-            <!-- Previews while editing a question -->
+                <!-- Previews while editing a question -->
                 <?php if (count($languagelist) > 1): ?>
                     <!-- test/run survey -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
-                            <?=($oSurvey->active=='N' ? gT('Preview survey') : gT('Run survey'));?>
+                            <?= ($oSurvey->active == 'N' ? gT('Preview survey') : gT('Run survey')); ?>
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" style="min-width : 252px;">
                             <?php foreach ($languagelist as $tmp_lang): ?>
                                 <li>
                                     <a target='_blank'
-                                        href='<?= $this->createUrl("survey/index", array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
+                                       href='<?= $this->createUrl("survey/index", array('sid' => $surveyid, 'newtest' => "Y", 'lang' => $tmp_lang)); ?>'>
                                         <?= getLanguageNameFromCode($tmp_lang, false); ?>
                                     </a>
                                 </li>
@@ -170,8 +178,9 @@
 
                     <!-- Preview multilangue -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?php eT("Preview question group"); ?>
                             <span class="caret"></span>
@@ -180,7 +189,7 @@
                             <?php foreach ($languagelist as $tmp_lang): ?>
                                 <li>
                                     <a target="_blank"
-                                        href="<?= $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>">
+                                       href="<?= $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $tmp_lang); ?>">
                                         <?= getLanguageNameFromCode($tmp_lang, false); ?>
                                     </a>
                                 </li>
@@ -190,8 +199,9 @@
 
                     <!-- preview question -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
                             <?php eT("Preview question"); ?>
                             <span class="caret"></span>
@@ -200,46 +210,42 @@
                             <?php foreach ($languagelist as $tmp_lang): ?>
                                 <li>
                                     <a target="_blank"
-                                        href='<?= $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>'>
+                                       href='<?= $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>'>
                                         <?= getLanguageNameFromCode($tmp_lang, false); ?>
                                     </a>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
-                    <?php else:?>
+                <?php else: ?>
                     <!-- Preview/Run survey -->
-                    <a 
-                        class="btn btn-outline-secondary  btntooltip selector__topbar--previewSurvey"
-                        href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>"
-                        role="button" 
-                        accesskey='d' 
-                        target='_blank'>
+                    <a class="btn btn-outline-secondary btntooltip selector__topbar--previewSurvey"
+                       href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>"
+                       accesskey='d'
+                       target='_blank'>
                         <span class="icon-do"></span>
-                        <?php if ($oSurvey->active=='N'):?>
-                            <?php eT('Preview survey');?>
+                        <?php if ($oSurvey->active == 'N'): ?>
+                            <?php eT('Preview survey'); ?>
                         <?php else: ?>
-                            <?php eT('Run survey');?>
-                        <?php endif;?>
+                            <?php eT('Run survey'); ?>
+                        <?php endif; ?>
                     </a>
 
                     <!-- preview question -->
-                    <button
-                        class="btn btn-outline-secondary"
-                        href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>'
-                        role="button" target="_blank">
+                    <a class="btn btn-outline-secondary"
+                       href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>'
+                       target="_blank">
                         <span class="icon-do"></span>
-                        <?php eT("Preview");?>
-                    </button>
+                        <?php eT("Preview"); ?>
+                    </a>
 
                     <!-- Preview simple langue -->
-                    <button 
-                        class="btn btn-outline-secondary"
-                        href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
-                        role="button" target="_blank">
+                    <a class="btn btn-outline-secondary"
+                       href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
+                       target="_blank">
                         <span class="icon-do"></span>
-                        <?php eT("Preview question group");?>
-                    </button>
+                        <?php eT("Preview question group"); ?>
+                    </a>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
@@ -248,41 +254,37 @@
         <div id="questiongroupbar--savebuttons" class="text-end ls-flex-item">
             <!-- Save buttons -->
             <?php if (isset($questiongroupbar['savebutton']['form']) && (!isset($copying) || !$copying)): ?>
-                <button class="btn btn-success" href="#" type="button" id="save-button">
+                <a class="btn btn-success" href="#" role="button" id="save-button">
                     <i class="fa fa-floppy-o"></i>
-                    <?php eT("Save");?>
-                </button>
+                    <?php eT("Save"); ?>
+                </a>
             <?php endif; ?>
 
             <!-- Save and close -->
-            <?php if (isset($questiongroupbar['saveandclosebutton'])):?>
-                <button id="save-and-close-button" class="btn btn-outline-secondary" type="button">
+            <?php if (isset($questiongroupbar['saveandclosebutton'])): ?>
+                <a id="save-and-close-button" class="btn btn-outline-secondary" role="button">
                     <i class="fa fa-check-square"></i>
-                    <?php eT("Save and close");?>
-                </button>
+                    <?php eT("Save and close"); ?>
+                </a>
             <?php endif; ?>
 
             <!-- Close -->
-            <?php if (isset($questiongroupbar['closebutton']['url'])):?>
-                <button 
-                    class="btn btn-danger"
-                    id="close-button"
-                    href="<?php echo $questiongroupbar['closebutton']['url']; ?>"
-                    type="button">
+            <?php if (isset($questiongroupbar['closebutton']['url'])): ?>
+                <a class="btn btn-danger"
+                   id="close-button"
+                   href="<?php echo $questiongroupbar['closebutton']['url']; ?>">
                     <span class="fa fa-close"></span>
-                    <?php eT("Close");?>
-                </button>
-            <?php endif;?>
+                    <?php eT("Close"); ?>
+                </a>
+            <?php endif; ?>
 
             <!-- return -->
-            <?php if (isset($questiongroupbar['returnbutton']['url'])):?>
-                <button class="btn btn-outline-secondary"
-                    href="<?php echo $questiongroupbar['returnbutton']['url']; ?>"
-                    type="button">
+            <?php if (isset($questiongroupbar['returnbutton']['url'])): ?>
+                <a class="btn btn-outline-secondary" href="<?php echo $questiongroupbar['returnbutton']['url']; ?>">
                     <span class="fa fa-step-backward"></span>
-                    <?php echo $questiongroupbar['returnbutton']['text'];?>
-                </button>
-            <?php endif;?>
+                    <?php echo $questiongroupbar['returnbutton']['text']; ?>
+                </a>
+            <?php endif; ?>
         </div>
     </div>
 </div>

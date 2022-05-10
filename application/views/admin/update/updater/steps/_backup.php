@@ -21,9 +21,9 @@
         <strong><?php echo sprintf(gT("File backup created: %s"),''); ?></strong>
         <br/>
         <?php echo $tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'; ?><br/>
-        <button type="button" class="btn btn-success" href="<?php echo Yii::app()->getBaseUrl(true);?>/tmp/LimeSurvey_files_backup_<?php echo $basefilename;?>.zip" title="<?php eT('Download this file');?>">
+        <a class="btn btn-success" href="<?php echo Yii::app()->getBaseUrl(true);?>/tmp/LimeSurvey_files_backup_<?php echo $basefilename;?>.zip" title="<?php eT('Download this file');?>">
             <?php eT('Download this file');?>
-        </button>
+        </a>
     </p>
 
 
