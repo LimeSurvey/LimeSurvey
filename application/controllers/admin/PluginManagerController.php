@@ -302,7 +302,7 @@ class PluginManagerController extends SurveyCommonAction
         }
 
         $plugin      = Plugin::model()->findByPk($id);
-        $oPluginObject = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id);
+        $oPluginObject = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id, false);
 
         if (empty($oPluginObject)) {
             Yii::app()->user->setFlash('error', gT('Could not load plugin'));

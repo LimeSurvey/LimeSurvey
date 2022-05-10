@@ -1981,12 +1981,12 @@ class DataEntry extends SurveyCommonAction
             Yii::app()->loadHelper('database');
 
             // SURVEY NAME AND DESCRIPTION TO GO HERE
-            $aGroups = QuestionGroup::model()->findAllByAttributes(['sid' => $surveyid]);
+            $aGroups = $survey->groups;
             $aDataentryoutput = '';
             foreach ($aGroups as $arGroup) {
                 LimeExpressionManager::StartProcessingGroup($arGroup->gid, ($thissurvey['anonymized'] != "N"), $surveyid);
 
-                $aQuestions = Question::model()->findAllByAttributes(['sid' => $surveyid, 'parent_qid' => 0, 'gid' => $arGroup['gid']]);
+                $aQuestions = $arGroup->questions;
                 $aDataentryoutput .= "\t<tr class='info'>\n"
                 . "<!-- Inside controller dataentry.php -->"
                 . "<td colspan='3'><h4>" . flattenText($arGroup->questiongroupl10ns[$sDataEntryLanguage]->group_name, true) . "</h4></td>\n"
