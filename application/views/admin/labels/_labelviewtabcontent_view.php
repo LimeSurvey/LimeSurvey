@@ -6,7 +6,7 @@ $codeids = '';
 ?>
 
 <div class="tab-content">
-    <?php foreach ($lslanguages as $lslanguage): ?>
+    <?php foreach ($lslanguages as $lslanguage) : ?>
         <div id='neweditlblset<?php echo $i ?>' class="table-responsive tab-pane <?= $i === 0 ? "active show first" : "not_first" ?>">
             <input type='hidden' class='lslanguage' value='<?= $lslanguage ?>' <?= $i === 0 ? 'id="lslanguagemain"' : '' ?>/>
             <table class='answertable table table-hover'>
@@ -101,8 +101,7 @@ $codeids = '';
                             data-bs-target="#quickadd">
                         <?php eT('Quick add labels') ?>
                     </button>
-            <?php endif; ?>
-            </div>
+                <?php endif; ?>
             </div>
         </div>
         <?php $first = false; ?>
