@@ -585,6 +585,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
+        // Make sure we have the latest groups data
+        $survey->refresh();
         if (!empty($survey->groups)) {
             $this->redirect(
                 Yii::app()->createUrl(
