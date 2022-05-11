@@ -105,7 +105,7 @@ class ParticipantAttribute extends LSActiveRecord
 
     /**
      * @inheritdoc
-     * But without filter on attributes (not same than activerecords) 
+     * But without filter on attributes (not same than activerecords)
      * @param string $action
      * @return void
      */
