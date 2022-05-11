@@ -38,6 +38,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * @inheritdoc
      * @return SurveyDynamic
+     * @psalm-suppress ParamNameMismatch Ignore that $sid is $className in parent class
      */
     public static function model($sid = null)
     {
@@ -324,30 +325,42 @@ class SurveyDynamic extends LSActiveRecord
 
         /* deletefiles button */
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
-            $buttons .= "<a
-            href='" . App()->createUrl("responses/deleteAttachments", ["surveyId" => self::$sid, "responseId" => $this->id]) . "'
-            class='btn btn-default btn-sm btn-deletefiles'
+            $buttons .= "
+            <span
+            data-toggle='modal'
+            data-target='#confirmation-modal'
+            data-btnclass='btn-danger'
+            data-post-url='" . App()->createUrl("responses/deleteAttachments") . "'
+            data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
+            data-btntext='" . gt("Delete") . "'
+            data-message='" . gt("Do you want to delete all files of this response?") . "'>
+            <button
             data-toggle='tooltip'
-            title='" . gt("Delete all files of this response") . "'
-            onclick='function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }'>
-                <i class='fa fa-paperclip text-danger'></i>
-            </a>";
+            class='btn btn-default btn-sm btn-deletefiles'
+            title='" . gt("Delete all files of this response") . "'>
+            <i class='fa fa-paperclip text-danger'></i>
+            </button>
+            </span>";
         }
 
         /* delete  button */
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $buttons .= "<button
-            class='btn btn-default btn-sm btn-delete'
+            $buttons .= "
+            <span
             data-toggle='modal'
             data-target='#confirmation-modal'
             data-btnclass='btn-danger'
             data-post-url='" . App()->createUrl("responses/deleteSingle") . "'
             data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
             data-btntext='" . gt("Delete") . "'
-            title='" . gt("Delete this response") . "'
             data-message='" . gt("Do you want to delete this response?") . "<br/>" . gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.") . "'>
-                <i class='fa fa-trash text-danger'></i>
-            </button>";
+            <button
+            data-toggle='tooltip'
+            class='btn btn-default btn-sm btn-delete'
+            title='" . gt("Delete this response") . "'>
+            <i class='fa fa-trash text-danger'></i>
+            </button>
+            </span>";
         }
         return $buttons;
     }
@@ -385,7 +398,7 @@ class SurveyDynamic extends LSActiveRecord
 
         // Upload question
         if ($oFieldMap->type == Question::QT_VERTICAL_FILE_UPLOAD && strpos($oFieldMap->fieldname, 'filecount') === false) {
-            $sSurveyEntry = "<table class='table table-condensed upload-question'><tr>";
+            $sSurveyEntry = "<table class='table table-condensed upload-question'>";
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
@@ -617,6 +630,7 @@ class SurveyDynamic extends LSActiveRecord
      * @see: http://www.yiiframework.com/wiki/324/cgridview-keep-state-of-page-and-sort/
      * @see: http://www.yiiframework.com/forum/index.php?/topic/8994-dropdown-for-pagesize-in-cgridview
      */
+    // phpcs:ignore
     public function getEllipsize_header_value()
     {
         return Yii::app()->user->getState('defaultEllipsizeHeaderValue', Yii::app()->params['defaultEllipsizeHeaderValue']);
@@ -628,6 +642,7 @@ class SurveyDynamic extends LSActiveRecord
      * @see: http://www.yiiframework.com/wiki/324/cgridview-keep-state-of-page-and-sort/
      * @see: http://www.yiiframework.com/forum/index.php?/topic/8994-dropdown-for-pagesize-in-cgridview
      */
+    // phpcs:ignore
     public function getEllipsize_question_value()
     {
         return Yii::app()->user->getState('defaultEllipsizeQuestionValue', Yii::app()->params['defaultEllipsizeQuestionValue']);
@@ -910,15 +925,11 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['fileinfo'] = json_decode($aQuestionAttributes['answervalue'], true);
         }
 
-
         if ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "1") {
             $aAnswers = (
-                $oQuestion->parent_qid == 0
-                    ? $oQuestion->answers
-                    : ($oQuestion->parent != null
-                        ? $oQuestion->parent->answers
-                        : []
-                    )
+                $oQuestion->parent != null
+                ? $oQuestion->parent->answers
+                : []
             );
 
             foreach ($aAnswers as $key => $value) {
@@ -936,7 +947,7 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['answervalues'][1] = $sAnswerText;
         }
 
-        // array dual scale headers
+        // Array dual scale headers
         if (isset($attributes['dualscale_headerA']) && !empty($attributes['dualscale_headerA'][$sLanguage])) {
             $aQuestionAttributes['dualscale_header'][0] =  $attributes['dualscale_headerA'][$sLanguage];
         }

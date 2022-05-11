@@ -828,7 +828,8 @@ class remotecontrol_handle
                     return array('status' => 'Cannot remove base language');
                 }
                 $aLanguages = $oSurvey->getAdditionalLanguages();
-                unset($aLanguages[$sLanguage]);
+                $iLanguageKey = array_search($sLanguage, $aLanguages, true);
+                unset($aLanguages[$iLanguageKey]);
                 $oSurvey->additional_languages = implode(' ', $aLanguages);
                 try {
                     $oSurvey->save(); // save the change to database
@@ -1454,7 +1455,7 @@ class remotecontrol_handle
 
                     return (int) $iQuestionID;
                 } catch (Exception $e) {
-                    return array('status' => 'Error');
+                    return array('status' => $e->getMessage());
                 }
             } else {
                             return array('status' => 'No permission');
@@ -2184,12 +2185,12 @@ class remotecontrol_handle
                 $oCriteria = new CDbCriteria();
                 $oCriteria->order = 'tid';
                 $oCriteria->limit = $iLimit;
+                $oCriteria->compare('tid', '>=' . $iStart);
 
                 $aAttributeValues = array();
                 if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
-                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
-                    $oCriteria->compare('tid', '>=' . $iStart);
+                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].                    
                     foreach ($aConditions as $columnName => $valueOrTuple) {
                         if (is_array($valueOrTuple)) {
                             /** @var string[] List of operators allowed in query. */
@@ -2306,10 +2307,10 @@ class remotecontrol_handle
                     if ($oGroup->sid != $oSurvey->sid) {
                         return ['status' => 'Error: Mismatch in surveyid and groupid'];
                     } else {
-                        $aQuestionList = $oGroup->questions;
+                        $aQuestionList = $oGroup->allQuestions;
                     }
                 } else {
-                    $aQuestionList = $oSurvey->baseQuestions;
+                    $aQuestionList = $oSurvey->allQuestions;
                 }
 
                 if (count($aQuestionList) == 0) {
@@ -3130,8 +3131,7 @@ class remotecontrol_handle
         return array(
             "success"   => true,
             "size"      => $size,
-            //FIXME $filename not defined!!!
-            "name"      => rawurlencode(basename($filename)),
+            "name"      => rawurlencode(basename($sFileName)),
             "ext"       => $ext,
             "filename"  => $randfilename,
             "msg"       => gT("The file has been successfully uploaded.")
@@ -3471,7 +3471,7 @@ class remotecontrol_handle
                 if (isset($participant['participant_id'])) {
                     $model->participant_id = $participant['participant_id'];
                 } else {
-                    $model->participant_id = Participant::gen_uuid();
+                    $model->participant_id = Participant::genUuid();
                 }
             }
 

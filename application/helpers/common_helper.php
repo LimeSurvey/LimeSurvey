@@ -838,7 +838,6 @@ function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 * and returns -1, 0 or 1 depending on the result of the comparison of
 * the sort order of the group_order and question_order field
 * Used by :
-* - conditionsaction->getQuestionRows with merging group and question attributes (all in same array)
 * - remotecontrol_handle->export_statistics with merging group and question attributes (all in same array)
 * - checkQuestions() in activate_helper function with ?
 * @param mixed $a
@@ -847,8 +846,8 @@ function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 */
 function groupOrderThenQuestionOrder($a, $b)
 {
-    if (isset($a['group_order']) && isset($b['group_order'])) {
-        $GroupResult = strnatcasecmp($a['group_order'], $b['group_order']);
+    if (isset($a->group['group_order']) && isset($b->group['group_order'])) {
+        $GroupResult = strnatcasecmp($a->group['group_order'], $b->group['group_order']);
     } else {
         $GroupResult = "";
     }
@@ -994,7 +993,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate']);
                 }
                 break;
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_K_MULTIPLE_NUMERICAL:
             case Question::QT_N_NUMERICAL:
                 // Fix the value : Value is stored as decimal in SQL
                 if ($sValue[0] === ".") {
@@ -1011,7 +1010,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:
             case Question::QT_O_LIST_WITH_COMMENT:
             case Question::QT_I_LANGUAGE:
-            case Question::QT_R_RANKING_STYLE:
+            case Question::QT_R_RANKING:
                 $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
@@ -1037,7 +1036,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                         $this_answer = gT("No answer", null, $sLanguage);
                 }
                 break;
-            case Question::QT_G_GENDER_DROPDOWN:
+            case Question::QT_G_GENDER:
                 switch ($sValue) {
                     case "M":
                         $this_answer = gT("Male", null, $sLanguage);
@@ -1062,7 +1061,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                         break;
                 }
                 break;
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
                 switch ($sValue) {
                     case "I":
                         $this_answer = gT("Increase", null, $sLanguage);
@@ -1075,9 +1074,9 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                         break;
                 }
                 break;
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW:
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
-            case Question::QT_1_ARRAY_MULTISCALE:
+            case Question::QT_F_ARRAY:
+            case Question::QT_H_ARRAY_COLUMN:
+            case Question::QT_1_ARRAY_DUAL:
                 if (isset($fields['scale_id'])) {
                     $iScaleID = $fields['scale_id'];
                 } else {
@@ -1159,7 +1158,7 @@ function validateEmailAddresses($aEmailAddressList)
 
 /**
  * This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
- * It can be used for the generation of statistics. Derived from Statistics_userController
+ * It can be used for the generation of statistics. Derived from StatisticsUserController
  * @param int $iSurveyID Id of the Survey in question
  * @param array $aFilters an array which is the result of a query in Questions model
  * @param string $sLanguage
@@ -1177,8 +1176,8 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
             $sLanguage = $oSurvey->language;
         }
         switch ($flt['type']) {
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
-            case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
+            case Question::QT_K_MULTIPLE_NUMERICAL: // Multiple Numerical
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple short text
                 //get answers
                 $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
 
@@ -1188,12 +1187,12 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                     $allfields[] = $myfield2;
                 }
                 break;
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
-            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // ARRAY OF 10 POINT CHOICE QUESTIONS
+            case Question::QT_A_ARRAY_5_POINT: // Array of 5 point choice questions
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array of 10 point choice questions
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // ARRAY OF Increase/Same/Decrease QUESTIONS
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW: // FlEXIBLE ARRAY
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: // ARRAY (By Column)
+            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array of Increase/Same/Decrease questions
+            case Question::QT_F_ARRAY: // Array
+            case Question::QT_H_ARRAY_COLUMN: // Array (By Column)
                 //get answers
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
 
@@ -1210,8 +1209,8 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 $myfield = "T$myfield";
                 $allfields[] = $myfield;
                 break;
-            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
-            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
+            case Question::QT_SEMICOLON_ARRAY_TEXT:  // Array (Text)
+            case Question::QT_COLON_ARRAY_NUMBERS:  // Array (Numbers)
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
 
                 foreach ($result as $row) {
@@ -1222,7 +1221,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                     }
                 }
                 break;
-            case Question::QT_R_RANKING_STYLE: //RANKING
+            case Question::QT_R_RANKING: // Ranking
                 //get some answers
                 $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
                 //get number of answers
@@ -1236,9 +1235,9 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-            case Question::QT_X_BOILERPLATE_QUESTION:  //This is a boilerplate question and it has no business in this script
+            case Question::QT_X_TEXT_DISPLAY:  //This is a boilerplate question and it has no business in this script
                 break;
-            case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
+            case Question::QT_1_ARRAY_DUAL: // Dual scale
                 //get answers
                 $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
                 //loop through answers
@@ -1484,7 +1483,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
-        if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING_STYLE && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
+        if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
             if (isset($fieldmap[$fieldname])) {
                 $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
             }
@@ -1631,7 +1630,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
             unset($answerset);
-        } elseif ($arow['type'] == Question::QT_1_ARRAY_MULTISCALE) {
+        } elseif ($arow['type'] == Question::QT_1_ARRAY_DUAL) {
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow) {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
@@ -1683,7 +1682,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     // TODO SQrelevance for different scales? $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                 }
             }
-        } elseif ($arow['type'] == Question::QT_R_RANKING_STYLE) {
+        } elseif ($arow['type'] == Question::QT_R_RANKING) {
             // Sub question by answer number OR attribute
             $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'])));
             $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
@@ -2049,16 +2048,6 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName, $lan
     } else {
         return '';
     }
-}
-
-
-function categorySort($a, $b)
-{
-    $result = strnatcasecmp($a['category'], $b['category']);
-    if ($result == 0) {
-        $result = $a['sortorder'] - $b['sortorder'];
-    }
-    return $result;
 }
 
 function questionTitleSort($a, $b)
@@ -3663,9 +3652,10 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 * fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
 * @param string $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
+* @param string $baselang - language to use as base (useful when changing the base language) - if empty, it will be picked from the survey
 * @return bool - always returns true
 */
-function fixLanguageConsistency($sid, $availlangs = '')
+function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
     if (trim($availlangs) != '') {
@@ -3680,7 +3670,9 @@ function fixLanguageConsistency($sid, $availlangs = '')
     if (count($langs) == 0) {
         return true; // Survey only has one language
     }
-    $baselang = Survey::model()->findByPk($sid)->language;
+    if (empty($baselang)) {
+        $baselang = Survey::model()->findByPk($sid)->language;
+    }
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $query = "SELECT * FROM $quotedGroups g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid='{$sid}' AND language='{$baselang}'  ";
     $result = Yii::app()->db->createCommand($query)->query();
@@ -4531,7 +4523,7 @@ function fixSubquestions()
 */
 function ls_json_encode($content)
 {
-    $ans = json_encode($content);
+    $ans = json_encode($content, JSON_UNESCAPED_UNICODE);
     $ans = str_replace(array('{', '}'), array('{ ', ' }'), $ans);
     return $ans;
 }
@@ -4635,24 +4627,39 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
 }
 
 /**
-* This function tries to returns the 'real' IP address under all configurations
-* Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
-*/
+ * This function tries to returns the 'real' IP address under all configurations
+ * Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
+ *
+ * @return	string	Client's IP Address
+ */
 function getIPAddress()
 {
     $sIPAddress = '127.0.0.1';
     if (!empty($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP) !== false) {
         //check IP address from share internet
         $sIPAddress = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
-        //Check IP address passed from proxy
-        $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        //Check IP Address passed from proxy
+        $vComma = strpos($_SERVER['HTTP_X_FORWARDED_FOR'], ',');
+        if (false === $vComma && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
+            // Single forward 
+            $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+		// Multitple forward
+		// see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+		// TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
+            $aForwarded = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            if (false !== filter_var($aForwarded[0], FILTER_VALIDATE_IP)) {
+                $sIPAddress = $aForwarded[0];
+            }
+        }
     } elseif (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
+        // Check IP Address from remote host
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
     }
+
     return $sIPAddress;
 }
-
 
 /**
 * This function tries to find out a valid language code for the language of the browser used

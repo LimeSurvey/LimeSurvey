@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -10,6 +10,8 @@
 
 /**
  * Manages plugins registration and loading.
+ *
+ * **Note** This object is an instance of {@link CKEDITOR.resourceManager}.
  *
  * @class
  * @extends CKEDITOR.resourceManager
@@ -47,6 +49,12 @@ CKEDITOR.plugins.load = CKEDITOR.tools.override( CKEDITOR.plugins.load, function
 										'.png' );
 								}
 							}
+
+							// Plugin is supported by default (#2692).
+							plugin.isSupportedEnvironment = plugin.isSupportedEnvironment || function() {
+								return true;
+							};
+
 							initialized[ pluginName ] = 1;
 						}
 
@@ -117,3 +125,16 @@ CKEDITOR.plugins.setLang = function( pluginName, languageCode, languageEntries )
 
 	pluginLangEntries[ languageCode ] = languageEntries;
 };
+
+/**
+ * Virtual class that illustrates the API of {@link CKEDITOR.editor} instance plugins dictionary.
+ *
+ * Such object contains references to all plugins used by a related editor instance.
+ *
+ * See {@link CKEDITOR.editor#property-plugins} for example use.
+ *
+ * This class is not really a part of the API, so its constructor can not be called.
+ *
+ * @abstract
+ * @class CKEDITOR.editor.plugins
+ */

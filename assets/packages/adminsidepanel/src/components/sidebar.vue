@@ -9,8 +9,6 @@ import Quickmenu from "./subcomponents/_quickmenu.vue";
 export default {
     props: {
         landOnTab: String,
-        isSideMenuElementActive: Boolean,
-        activeSideMenuElement: String,
     },
     components: {
         questionexplorer: Questionexplorer,
@@ -324,7 +322,7 @@ export default {
                 self.isMouseDownTimeOut = null;
             }
         },
-        setBaseMenuPosition(entries, position) {
+        setBaseMenuPosition(entries, position){
             switch(position) {
                 case 'side' : 
                     this.sidemenus = LS.ld.orderBy(
@@ -354,23 +352,7 @@ export default {
             }
 
             this.currentTab = tab;
-        },
-        /**
-         * Filters against the active menus in sidemenu.
-         * It will return the actual index of it.
-         * @param {bool} isSideMenuActive Activity state of the sidemenu 
-         * @return int
-         */
-        filterAgainstMenus(isSideMenuActive) {
-            let result = 0;
-            if (isSideMenuActive) {
-                let sidemenu = self.sidemenus;
-                result = _.findIndex(sidemenu, function(element) {
-                    return element.name == self.activeSideMenuElement;
-                });
-            }
-            return result;
-        },
+        }
     },
     created() {
         const self = this;
@@ -378,16 +360,14 @@ export default {
             this.$store.commit("changeIsCollapsed", false);
         }
         self.$store.commit('setSurveyActiveState', (parseInt(this.isActive)===1));
+        // self.$log.debug(this.$store.state);
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
         if (this.$store.getters.isCollapsed) {
             this.sideBarWidth = "98";
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
-        LS.ld.each(window.SideMenuData.basemenus, this.setBaseMenuPosition);
-
-        // select right menu entry
-        this.activeMenuIndex = this.filterAgainstMenus(this.isSideMenuActive);
+        LS.ld.each(window.SideMenuData.basemenus, this.setBaseMenuPosition)
     },
     mounted() {
         const self = this;
@@ -464,7 +444,7 @@ export default {
             this.controlActiveLink();
         });
     }
-}
+};
 </script>
 <template>
     <div 

@@ -20,6 +20,10 @@ if (!isset($argv[0])) {
 }
 
 define('BASEPATH', '.');
+
+// The PHP file extension
+define('EXT', '.php');
+
 require_once __DIR__ . '/../../third_party/autoload.php';
 require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
 

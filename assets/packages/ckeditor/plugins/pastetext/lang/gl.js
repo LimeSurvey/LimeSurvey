@@ -1,8 +1,9 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'pastetext', 'gl', {
 	button: 'Pegar como texto simple',
-	pasteNotification: 'O seu navegador non permite pegar texto simple deste xeito. Prema %1 para pegar.'
+	pasteNotification: 'Prema %1 para pegar. O seu navegador non admite pegar co botón da barra de ferramentas ou coa opción do menú contextual.',
+	title: 'Pegar como texto simple'
 } );

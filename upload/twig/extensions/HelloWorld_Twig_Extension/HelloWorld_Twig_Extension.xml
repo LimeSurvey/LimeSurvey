@@ -13,8 +13,8 @@
           <name>HelloWorld_Twig_Extension</name>
           <title>HelloWorld Twig Extension</title>
           <creationDate>26/07/2019</creationDate>
-          <author>Louis-Sébastien Gac Artigas</author>
-          <authorEmail>louis.gac@limesurvey.org</authorEmail>
+          <author>LimeSurvey GmbH</author>
+          <authorEmail>info@limesurvey.org</authorEmail>
           <authorUrl>http://www.limesurvey.org</authorUrl>
           <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
           <license>GNU General Public License version 2 or later</license>

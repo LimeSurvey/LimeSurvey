@@ -622,6 +622,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   function labelSetDestruct() {
     $('#labelsets').select2('destroy');
     $('#labelsetpreview').empty();
+    $('#labelsetalert').hide();
   }
 
   /**
@@ -631,63 +632,119 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function showLabelSetPreview(lid /*: number */) /*: void */ {
+    $('#labelsetpreview').html($('#labelsetsLoader').html());
+    hideLabelSetAlert();
     return $.ajax({
       url: languageJson.lsdetailurl,
       data: {sid, lid},
       cache: true,
-      success(json /*: {results: Array<{label_name: string, labels: Array<{code: string, title: string}>}>, languages: {}} */) {
-        if (json.languages === []) {
-          alert('Internal error: No languages');
-          throw 'abort';
-        }
+        success(json /*: {success: bool, results: Array<{label_name: string, labels: Array<{code: string, title: string}>}>, languages: {}} */) {
+        if (json.success !== true) {
+          $('#labelsetpreview').empty();
+          showLabelSetAlert(languageJson.labelSetNotFound, 'danger'); // This could mean the label set is not found or it has no languages
+        } else {
+          if (json.languages === []) {
+            alert('Internal error: No languages');
+            throw 'abort';
+          }
 
-        const $liTemplate = $('<li role="presentation"></li>');
-        const $aTemplate = $('<a data-toggle="tab"></a>');
-        const $tabTodyTemplate = $('<div></div>');
-        const $listTemplate = $('<div class="list-group selector_label-list"></div>');
-        const $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
-        const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
-        const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
+          const $liTemplate = $('<li role="presentation"></li>');
+          const $aTemplate = $('<a data-toggle="tab"></a>');
+          const $tabTodyTemplate = $('<div></div>');
+          const $listTemplate = $('<div class="list-group selector_label-list"></div>');
+          const $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
+          const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
+          const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
 
-        const i = 0;
-        $.each(json.languages, (language, languageName) => {
-          const $linkItem = $aTemplate.clone();
-          const $bodyItem = $tabTodyTemplate.clone();
-          let $itemList = $listTemplate.clone();
+          $('#labelsetpreview').empty();
 
-          const classLink = i === 0 ? 'active' : '';
-          const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
+          let hasInvalidCodes = false;
+          let isEmpty = true;
+          const source = $('#labelsetbrowserModal').data('source');
+          const i = 0;
+          $.each(json.languages, (language, languageName) => {
+            const $linkItem = $aTemplate.clone();
+            const $bodyItem = $tabTodyTemplate.clone();
+            let $itemList = $listTemplate.clone();
 
-          $linkItem.addClass(classLink).attr('href', `#language_${language}`).text(languageName);
-          $liTemplate.clone().append($linkItem).appendTo($tabindex);
+            const classLink = i === 0 ? 'active' : '';
+            const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
 
-          $bodyItem.addClass(classBody).attr('id', `language_${language}`);
-          $tabbody.append($bodyItem);
+            $linkItem.addClass(classLink).attr('href', `#language_${language}`).text(languageName);
+            $liTemplate.clone().append($linkItem).appendTo($tabindex);
 
-          const labelSet = json.results[language];
+            $bodyItem.addClass(classBody).attr('id', `language_${language}`);
+            $tabbody.append($bodyItem);
 
-          $itemList = $listTemplate.clone();
+            const labelSet = json.results[language];
 
-          labelSet.labels.forEach((label) => {
-            // Label title is not concatenated directly because it may have non-encoded HTML
-            const $labelTitleDiv = $('<div class="col-md-8"></div>');
-            $labelTitleDiv.text(label.title);
-            const $listItem = $listItemTemplate.clone();
-            $listItem.append(`<div class="col-md-3 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
-            $listItem.append($labelTitleDiv);
-            $listItem.append('<div class="col-md-1"></div>');
-            $listItem.attr('data-label', JSON.stringify(label));
-            $itemList.append($listItem);
+            $itemList = $listTemplate.clone();
+
+            if (labelSet.labels) {
+              isEmpty = false;
+              labelSet.labels.forEach((label) => {
+                // Label title is not concatenated directly because it may have non-encoded HTML
+                const $labelTitleDiv = $('<div class="col-md-7"></div>');
+                $labelTitleDiv.text(label.title);
+                const $listItem = $listItemTemplate.clone();
+                $listItem.append(`<div class="col-md-5 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+                $listItem.append($labelTitleDiv);
+                $listItem.attr('data-label', JSON.stringify(label));
+                $itemList.append($listItem);
+
+                if (source === 'answeroptions' && label.code.length > 5) {
+                  hasInvalidCodes = true;
+                }
+              });
+            }
+
+            $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
+            $itemList.appendTo($bodyItem);
           });
-
-          $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
-          $itemList.appendTo($bodyItem);
-        });
+          
+          if (isEmpty) {
+            showLabelSetAlert(languageJson.labelSetEmpty);
+          } else {
+            if (hasInvalidCodes) {
+              showLabelSetAlert(languageJson.answeroptions.truncationWarning);
+            }
+            $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
+            $tabindex.find('li').first().find('a').trigger('click');
+          }
+        }
+      },
+      error(jqXHR, textStatus, errorThrown) {
         $('#labelsetpreview').empty();
-        $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
-        $tabindex.find('li').first().find('a').trigger('click');
+        showLabelSetAlert(languageJson.labelSetFail, 'danger');
+        console.error(errorThrown);
       },
     });
+  }
+
+  /**
+   * Shows an alert in the label set's modal
+   *
+   * @param {string} message The message to show
+   * @param {?string} type Alert type (eg. 'danger')
+   * @return {void}
+   */
+  function showLabelSetAlert(message /*: mixed */, type /*?: string */) /*: void */ {
+    if (typeof message !== 'string') {
+        throw 'expected string';
+    }
+    const alertType = type ?? 'warning';
+    const alert = $('#labelsetalert');
+    const alertHtml = '<div class="alert alert-' + alertType + ' ls-space margin bottom-0 top-15">' + message + '</div>';
+    alert.html(alertHtml).show();
+  }
+
+  /**
+   * Hides the alert in the label set's modal
+   * 
+   * @return {void}
+   */
+  function hideLabelSetAlert() /*: void */ {
+    $('#labelsetalert').empty().hide();
   }
 
   /**
@@ -708,6 +765,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
       throw 'abort';
     }
 
+    $('#labelsetsModalContent').hide();
+    $('#labelsetsLoader').show();
+
     // TODO: Send as input, not in DOM.
     if ($('#current_scale_id').length === 0) {
         $('body').append(`<input type="hidden" id="current_scale_id" value="${scaleId}" name="current_scale_id" />`);
@@ -717,12 +777,18 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     $('#labelsets').select2();
     $('#labelsetpreview').html('');
+    $('#labelsetsSelectorContainer').hide();
+    hideLabelSetAlert();
     $.ajax({
       url: languageJson.lspickurl,
-      data: { sid, match: 1 },
+      data: {
+        sid,
+        match: 1,
+        language: languageJson.langs.split(';')[0]
+      },
       success(jsonString) {
         if (jsonString.success !== true) {
-          $('#labelsetpreview').html(`<p class='alert'>${languageJson.strNoLabelSet}</p>`);
+          showLabelSetAlert(languageJson.strNoLabelSet);
           $('#btnlsreplace').addClass('disabled');
           $('#btnlsinsert').addClass('disabled');
           $('#btnlsreplace').attr('disabled', 'disabled');
@@ -733,13 +799,25 @@ $(document).on('ready pjax:scriptcomplete', function () {
             const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);  // jshint ignore: line
             $('#labelsets').append(newOption).trigger('change');
           });
+          $('#labelsetsSelectorContainer').show();
+          $('#btnlsreplace').removeClass('disabled');
+          $('#btnlsinsert').removeClass('disabled');
+          $('#btnlsreplace').removeAttr('disabled');
+          $('#btnlsinsert').removeAttr('disabled');
         }
+      },
+      error(jqXHR, textStatus, errorThrown) {
+        showLabelSetAlert(languageJson.labelSetFail, 'danger');
+        console.error(errorThrown);
+      },
+      complete() {
+        $('#labelsetsLoader').hide();
+        $('#labelsetsModalContent').show();
       }
-      // TODO: error?
     });
 
     // Label set select2 element.
-    $('#labelsets').on('change', function () {
+    $('#labelsets').off('select2:select').on('select2:select', function () {
       const value = $(this).val();
       showLabelSetPreview(parseInt(value));
     });
@@ -784,15 +862,20 @@ $(document).on('ready pjax:scriptcomplete', function () {
           throw 'abort';
         }
 
+        var currentIds = [];
         if (type === 'replace') {
           $table.find('tbody').find('tr').each((i, tableRow) => {
             $(tableRow).remove();
+          });
+        } else {
+          $table.find('tbody').find('tr').each((i, tableRow) => {
+            currentIds.push($(tableRow).data('common-id').split('_').shift());
           });
         }
 
         // Answer option IDs are generated randomly, so they repeat sometimes.
         // We keep track of the generated numbers to make sure they don't repeat.
-        var generatedIds = [];
+        var generatedIds = currentIds;
 
         // Loop the preview table and copy rows to destination (subquestions or answer options).
         $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
@@ -806,6 +889,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $tr = $row.eq(4);
             } else if (source === 'answeroptions') {
               $tr = $row.eq(2);
+
+              // Make sure codes are limited to 5 characters
+              label.code = label.code.substr(0, 5);
             } else {
               throw 'source is not subquestions or answeroptions: ' + source;
             }
@@ -829,8 +915,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
               langIds[i] = randId;
             }
 
-            $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', langIds[i]));
-            $tr.attr('id', $tr.attr('id').replace('/new[0-9]{3-6}/', langIds[i]));
+            $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/, langIds[i]));
+            $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3,6}/, langIds[i]));
 
             $row.find('input').each((j /*: number */, inputField) => {
               $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/, langIds[i]));
@@ -924,6 +1010,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
     */
 
+    var currentIds = [];
     if ($closestTable.find('.code').length < 0) {
       $closestTable.find('.code-title').each(function () {
         codes.push($(this).text());
@@ -931,6 +1018,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     } else {
       $closestTable.find('.code').each(function () {
         codes.push($(this).val());
+        currentIds.push($(this).closest('tr').data('common-id').split('_').shift());
       });
     }
 
@@ -964,7 +1052,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     // Answer option IDs are generated randomly, so they repeat sometimes.
     // We keep track of the generated numbers to make sure they don't repeat.
-    var generatedIds = [];
+    var generatedIds = currentIds;
 
     // TODO: Document value
     // NB: splitCSV is added to string prototype in adminbasics.
@@ -1450,7 +1538,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {boolean}
    * @todo Dual scale
    */
-  function checkSubquestionCodeUnique(table /*: HTMLElement */) /*: boolean */ {
+  function checkSubquestionCodeUnique(table /*: HTMLElement */, msg /*: string */) /*: boolean */ {
     const codeInputs = table.querySelectorAll('input.code');
     // Get all codes from code input node list.
     const codes = [...codeInputs].map((input) => {
@@ -1460,8 +1548,18 @@ $(document).on('ready pjax:scriptcomplete', function () {
         throw 'input is not an HTMLInputElement';
       }
     });
-    const uniqueCodes = codes.filter((value, index, self) => self.indexOf(value) === index);
-    return codes.length === uniqueCodes.length;
+    const duplicateCodes = codes.filter((value, index, self) => self.indexOf(value) !== index);
+    codeInputs.forEach((input, key) => {
+      if (input instanceof HTMLInputElement) {
+        const parent = $(input.parentElement);
+        if (duplicateCodes.includes(input.value)) {
+          parent.addClass('has-error');
+        } else {
+          parent.removeClass('has-error');
+        }
+      }
+    });
+    return duplicateCodes.length == 0;
   }
 
   /**
@@ -1478,14 +1576,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
         throw 'Found no table';
       }
 
+      var hasError = false;
+
       // Check uniqueness.
-      if (!checkSubquestionCodeUnique(table)) {
-        $(that.parentElement).addClass('has-error');
+      if (!checkSubquestionCodeUnique(table, msg)) {
         LS.LsGlobalNotifier.create(
           msg,
           'well-lg bg-danger text-center'
         );
-        return false;
+        hasError = true;
       }
 
       // Check too long subquestion code.
@@ -1500,11 +1599,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
             'Subquestion code is too long. Maximal number of characters is: 20.',
             'well-lg bg-danger text-center'
           );
-          return false;
+          hasError = true;
         }
       }
 
-      $(that.parentElement).removeClass('has-error');
+      if (hasError) {
+        return false;
+      }
+
+      $(that.parentElement).removeClass('has-error duplicate-code');
       return true;
     };
   }
@@ -1651,6 +1754,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
       $('#labelsetbrowserModal').modal('show');
 
       initLabelSetModal(event);
+
+      $('#labelsetbrowserModal').data('source', source);
     },
 
     /**
@@ -2011,7 +2116,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       });
     });
 
-    $('#labelsets').click(showLabelSetPreview);
     $('.bthsaveaslabel').click(getLabel);
     $('input[name=savelabeloption]:radio').click(saveAsLabelSetOptionClick);
     updateRowProperties();

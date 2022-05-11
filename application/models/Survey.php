@@ -273,9 +273,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             // pgsql need casting, unsure for mssql
             if (Yii::app()->db->getDriverName() == 'pgsql') {
                 $oCriteria->addInCondition('CAST(stg_value as ' . App()->db->schema->getColumnType("integer") . ')', $aGroupId);
-            }
-            //mysql App()->db->schema->getColumnType("integer") give int(11), mssql seems to have issue if cast alpha to numeric
-            else {
+            } else {
+                //mysql App()->db->schema->getColumnType("integer") give int(11), mssql seems to have issue if cast alpha to numeric
                 $oCriteria->addInCondition('stg_value', $aGroupId);
             }
             SettingGlobal::model()->deleteAll($oCriteria);
@@ -423,10 +422,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @inheritdoc
      * @return Survey
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var Survey $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -601,7 +600,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $loginID = (int) $loginID;
         $criteria = $this->getDBCriteria();
-        $criteriaPerm = self::getPermissionCriteria();
+        $criteriaPerm = self::getPermissionCriteria($loginID);
         $criteria->mergeWith($criteriaPerm, 'AND');
         return $this;
     }
@@ -1131,9 +1130,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // If the survey is not active, no date test is needed
         if ($this->active == 'N') {
             $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('Inactive') . '"><span class="fa fa-stop text-warning"></span><span class="sr-only">' . gT('Inactive') . '"</span></a>';
-        }
-        // If it's active, then we check if not expired
-        elseif ($this->expires != '' || $this->startdate != '') {
+        } elseif ($this->expires != '' || $this->startdate != '') {
+            // If it's active, then we check if not expired
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
             $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
@@ -1162,9 +1160,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             } else {
                 $running = $sIconRunning;
             }
-        }
-        // If it's active, and doesn't have expire date, it's running
-        else {
+        } else {
+            // If it's active, and doesn't have expire date, it's running
             $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-toggle="tooltip" title="' . gT('Active') . '"><span class="fa fa-play text-success"></span><span class="sr-only">' . gT('Active') . '"</span></a>';
             //$running = '<div class="survey-state"><span class="fa fa-play text-success"></span></div>';
         }
@@ -2029,31 +2026,24 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return $result !== false;
     }
 
+    /**
+     * Get the final label for survey id
+     * @param string $dataSecurityNoticeLabel current label
+     * @param integer $surveyId unused
+     * @return string
+     */
     public static function replacePolicyLink($dataSecurityNoticeLabel, $surveyId)
     {
-
-        $STARTPOLICYLINK = "";
-        $ENDPOLICYLINK = "";
-
-        if (self::model()->findByPk($surveyId)->showsurveypolicynotice == 2) {
-            $STARTPOLICYLINK = "<a href='#data-security-modal-" . $surveyId . "' data-toggle='collapse'>";
-            $ENDPOLICYLINK = "</a>";
-            if (!preg_match('/(\{STARTPOLICYLINK\}|\{ENDPOLICYLINK\})/', $dataSecurityNoticeLabel)) {
-                $dataSecurityNoticeLabel .= "<br/> {STARTPOLICYLINK}" . gT("Show policy") . "{ENDPOLICYLINK}";
-            }
-        }
-
-
-
-        $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK, $dataSecurityNoticeLabel);
-
-        $countEndLabel = 0;
-        $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK, $dataSecurityNoticeLabel, -1, $countEndLabel);
-        if ($countEndLabel == 0) {
-            $dataSecurityNoticeLabel .= '</a>';
-        }
-
-        return $dataSecurityNoticeLabel;
+        /* @var string[] to go to automatic translation */
+        $translation = [
+            gT("Show policy")
+        ];
+        return App()->twigRenderer->renderPartial(
+            '/subviews/privacy/privacy_datasecurity_notice_label.twig',
+            [
+                'dataSecurityNoticeLabel' => $dataSecurityNoticeLabel,
+            ]
+        );
     }
 
     /**

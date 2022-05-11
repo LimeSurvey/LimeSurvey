@@ -4,7 +4,7 @@
  * Exception used by EmCacheHelper.
  *
  * @since 2019-05-23
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 class EmCacheException extends CException
 {

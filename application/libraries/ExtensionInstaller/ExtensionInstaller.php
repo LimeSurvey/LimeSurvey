@@ -17,7 +17,7 @@ use ExtensionConfig;
  * -- Insert database row (depends on extension type)
  *
  * @since 2018-09-24
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 abstract class ExtensionInstaller
 {

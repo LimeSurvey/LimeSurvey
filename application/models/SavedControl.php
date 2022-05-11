@@ -29,7 +29,6 @@
  */
 class SavedControl extends LSActiveRecord
 {
-
     /**
      * Set defaults
      * @inheritdoc
@@ -54,9 +53,9 @@ class SavedControl extends LSActiveRecord
      * @inheritdoc
      * @return CActiveRecord
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
-        return parent::model($class);
+        return parent::model($className);
     }
 
     public function getAllRecords($condition = false)

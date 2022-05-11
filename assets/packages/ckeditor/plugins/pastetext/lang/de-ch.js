@@ -1,8 +1,9 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'pastetext', 'de-ch', {
 	button: 'Als Klartext einfügen',
-	pasteNotification: 'Your browser does not allow you to paste plain text this way. Press %1 to paste.' // MISSING
+	pasteNotification: 'Drücken Sie %1 zum Einfügen. Ihr Browser unterstützt nicht das Einfügen über dem Knopf in der Werkzeugleiste oder dem Kontextmenü.',
+	title: 'Als Klartext einfügen'
 } );

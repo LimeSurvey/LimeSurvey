@@ -29,15 +29,16 @@
                     // Use $.ajaxPrefilter() instead of $.ajaxSetup({beforeSend: ...}) to add the CSRF token because beforeSend is
                     // executed after the content type is determined. So, if the request had no data when beforeSend is executed,
                     // the content type is 'text/plain', which is wrong.
+                    // urlencode for security (encode simple and double quote and antislash)
                     $.ajaxPrefilter(function(settings) {
                         if(!csrfSafeMethod(settings.type)) {
                             // Data could be passed as string or object, so we add the token depending on the data type
                             if (typeof settings.data == 'string') {
                                 // NB: This sometimes includes the CSRF token twice, when already added to data.
-                                settings.data +=  '&" . Yii::app()->request->csrfTokenName . "=" . Yii::app()->request->csrfToken ."';
+                                settings.data +=  '&" . urlencode(Yii::app()->request->csrfTokenName) . "=" . urlencode(Yii::app()->request->csrfToken) ."';
                             } else {
                                 settings.data = settings.data || {};
-                                settings.data." . Yii::app()->request->csrfTokenName . " = '" . Yii::app()->request->csrfToken . "';
+                                settings.data." . urlencode(Yii::app()->request->csrfTokenName) . " = '" . urlencode(Yii::app()->request->csrfToken) . "';
                             }
                         }
                     });";

@@ -113,66 +113,12 @@ div.menubar input {
 }
 
 
-
-/* Superfish menu */
-
-.sf-menu {
-    float: right;
-}
-
-.sf-menu li {
-    float: right;
-}
-
-.sf-menu li:hover ul,
-    .sf-menu li.sfHover ul {
-    right: 0;
-    left: auto;
-}
-
-ul.sf-menu li li:hover ul,
-    ul.sf-menu li li.sfHover ul {
-    right: 99%;
-    left: auto;
-}
-
-ul.sf-menu li li li:hover ul,
-    ul.sf-menu li li li.sfHover ul {
-    right: 10em;
-    left: auto;
-}
-
-.sf-menu a.sf-with-ul {
-    padding-right: 1em;
-    padding-left: 1.7em;
-}
-
-.sf-sub-indicator {
-    right: auto;
-    left: 0.75em;
-}
-
-.sf-sub-indicator {
-    background-image: url("images/arrows_rtl.png");
-}
-
-.sf-shadow ul {
-    background-position: left bottom;
-    border-bottom-right-radius: 17px;
-    border-top-left-radius: 17px;
-    border-bottom-left-radius: 0;
-    border-top-right-radius: 0;
-    padding: 0 0 9px 8px;
-}
-
-
 /* Tabs */
 
 .ui-tabs .ui-tabs-nav li {
     float: right;
     margin: 0 0 -1px 0.2em;
 }
-
 
 
 /* Question type preview combobox */

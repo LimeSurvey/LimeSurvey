@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'tt', {
 	acccessKey: 'Access Key', // MISSING
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'tt', {
 	noAnchors: '(Әлеге документта якорьләр табылмады)',
 	noEmail: 'Электрон почта адресын языгыз',
 	noUrl: 'Сылталаманы языгыз',
+	noTel: 'Телефон номерыгызны языгыз',
 	other: '<бүтән>',
+	phoneNumber: 'Телефон номеры',
 	popupDependent: 'Бәйле (Netscape)',
 	popupFeatures: 'Popup Window Features', // MISSING
 	popupFullScreen: 'Тулы экран (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'tt', {
 	toAnchor: 'Якорьне текст белән бәйләү',
 	toEmail: 'Электрон почта',
 	toUrl: 'Сылталама',
+	toPhone: 'Телефон',
 	toolbar: 'Сылталама',
 	type: 'Сылталама төре',
 	unlink: 'Сылталаманы бетерү',

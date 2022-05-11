@@ -83,7 +83,7 @@ class PluginManager extends \CApplicationComponent
     }
     /**
      * Return a list of installed plugins, but only if the files are still there
-     *
+     * @deprecated unused in 5.3.8
      * This prevents errors when a plugin was installed but the files were removed
      * from the server.
      *
@@ -98,7 +98,7 @@ class PluginManager extends \CApplicationComponent
 
         foreach ($records as $record) {
             // Only add plugins we can find
-            if ($this->loadPlugin($record->name) !== false) {
+            if ($this->loadPlugin($record->name, $record->id, $record->active) !== false) {
                 $plugins[$record->id] = $record;
             }
         }
@@ -137,6 +137,10 @@ class PluginManager extends \CApplicationComponent
         }
 
         $newName = (string) $extensionConfig->xml->metadata->name;
+        if (!$this->isWhitelisted($newName)) {
+            return [false, gT('The plugin is not in the plugin whitelist.')];
+        }
+
         $otherPlugin = Plugin::model()->findAllByAttributes(['name' => $newName]);
         if (!empty($otherPlugin)) {
             return [false, sprintf(gT('Extension "%s" is already installed.'), $newName)];
@@ -298,7 +302,7 @@ class PluginManager extends \CApplicationComponent
                             empty($plugin)
                             || ($includeInstalledPlugins && $plugin->load_error == 0)
                         ) {
-                            if (file_exists($file) && $this->_checkWhitelist($pluginName)) {
+                            if (file_exists($file) && $this->isWhitelisted($pluginName)) {
                                 try {
                                     $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
                                     // getPluginInfo returns false instead of an array when config is not found.
@@ -419,10 +423,11 @@ class PluginManager extends \CApplicationComponent
      *
      * @param string $pluginName
      * @param int $id Identifier used for identifying a specific plugin instance.
+     * @param boolean $init launch init function (if exist)
      * If ommitted will return the first instantiated plugin with the given name.
      * @return iPlugin|null The plugin or null when missing
      */
-    public function loadPlugin($pluginName, $id = null)
+    public function loadPlugin($pluginName, $id = null, $init = true)
     {
         $return = null;
         $this->shutdownObject->enable();
@@ -437,10 +442,10 @@ class PluginManager extends \CApplicationComponent
                 }
             } else {
                 if (!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName) {
-                    if ($this->getPluginInfo($pluginName) !== false) {
+                    if ($this->isWhitelisted($pluginName) && $this->getPluginInfo($pluginName) !== false) {
                         if (class_exists($pluginName)) {
                             $this->plugins[$id] = new $pluginName($this, $id);
-                            if (method_exists($this->plugins[$id], 'init')) {
+                            if ($init && method_exists($this->plugins[$id], 'init')) {
                                 $this->plugins[$id]->init();
                             }
                         } else {
@@ -518,7 +523,7 @@ class PluginManager extends \CApplicationComponent
         $records = Plugin::model()->findAll();
         foreach ($records as $record) {
             if ($record->load_error == 0) {
-                $this->loadPlugin($record->name, $record->id);
+                $this->loadPlugin($record->name, $record->id, $record->active);
             }
         }
     }
@@ -634,17 +639,62 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
+     * Returns true if the plugin name is whitelisted or the whitelist is disabled.
      * @param string $pluginName
      * @return boolean
      */
-    private function _checkWhitelist($pluginName)
+    public function isWhitelisted($pluginName)
     {
         if (App()->getConfig('usePluginWhitelist')) {
+            // Get the user plugins whitelist
             $whiteList = App()->getConfig('pluginWhitelist');
-            $coreList = App()->getConfig('pluginCoreList');
-            $allowedPlugins =  array_merge($coreList, $whiteList);
+            // Get the list of allowed core plugins
+            $coreList = $this->getAllowedCorePluginList();
+            $allowedPlugins = array_merge($coreList, $whiteList);
             return array_search($pluginName, $allowedPlugins) !== false;
         }
         return true;
+    }
+
+    /**
+     * Return the core plugin list
+     * No way to update by php or DB
+     * @return string[]
+     */
+    private static function getCorePluginList()
+    {
+        return [
+            'AuditLog',
+            'Authdb',
+            'AuthLDAP',
+            'Authwebserver',
+            'ComfortUpdateChecker',
+            'customToken',
+            'ExportR',
+            'ExportSPSSsav',
+            'ExportSTATAxml',
+            'expressionFixedDbVar',
+            'expressionQuestionForAll',
+            'expressionQuestionHelp',
+            'mailSenderToFrom',
+            'oldUrlCompat',
+            'PasswordRequirement',
+            'statFunctions',
+            'TwoFactorAdminLogin',
+            'UpdateCheck'
+        ];
+    }
+
+    /**
+     * Return the list of core plugins allowed to be loaded.
+     * That is, all core plugins not in the black list.
+     * @return string[]
+     */
+    private function getAllowedCorePluginList()
+    {
+        $corePlugins = self::getCorePluginList();
+        $blackList = Yii::app()->getConfig('corePluginBlacklist');
+        $allowedCorePlugins = array_diff($corePlugins, $blackList);
+        return $allowedCorePlugins;
     }
 }
