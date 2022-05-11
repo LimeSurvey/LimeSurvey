@@ -35,9 +35,8 @@
  */
 class Quota extends LSActiveRecord
 {
-
-    const ACTION_TERMINATE = 1;
-    const ACTION_CONFIRM_TERMINATE = 2;
+    public const ACTION_TERMINATE = 1;
+    public const ACTION_CONFIRM_TERMINATE = 2;
 
     /* Default attributes */
     public $active = 1;
@@ -46,14 +45,12 @@ class Quota extends LSActiveRecord
     /**
      * Returns the static model of Settings table
      *
-     * @static
-     * @access public
-     * @param string $class
+     * @param string $className
      * @return CActiveRecord
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
-        return parent::model($class);
+        return parent::model($className);
     }
 
     /** @inheritdoc */
@@ -108,7 +105,7 @@ class Quota extends LSActiveRecord
      * @return bool|int
      * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
      */
-    function insertRecords($data)
+    public function insertRecords($data)
     {
         $quota = new self();
         foreach ($data as $k => $v) {
@@ -126,7 +123,7 @@ class Quota extends LSActiveRecord
      * @param mixed|bool $condition
      * @param bool $recursive
      */
-    function deleteQuota($condition = false, $recursive = true)
+    public function deleteQuota($condition = false, $recursive = true)
     {
         if ($recursive == true) {
             $oResult = Quota::model()->findAllByAttributes($condition);

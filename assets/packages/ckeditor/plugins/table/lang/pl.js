@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'table', 'pl', {
 	border: 'Grubość obramowania',
@@ -50,6 +50,7 @@ CKEDITOR.plugins.setLang( 'table', 'pl', {
 	headersColumn: 'Pierwsza kolumna',
 	headersNone: 'Brak',
 	headersRow: 'Pierwszy wiersz',
+	heightUnit: 'jednostka wysokości',
 	invalidBorder: 'Wartość obramowania musi być liczbą.',
 	invalidCellPadding: 'Dopełnienie komórek musi być liczbą dodatnią.',
 	invalidCellSpacing: 'Odstęp pomiędzy komórkami musi być liczbą dodatnią.',

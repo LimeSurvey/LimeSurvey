@@ -61,10 +61,6 @@ function loadanswers()
         $md5_code = md5($sLoadPass);
         $sha256_code = hash('sha256', $sLoadPass);
         if ($md5_code === $access_code || $sha256_code === $access_code || password_verify($sLoadPass, $access_code)) {
-            //A match has been found. Let's load the values!
-            //If this is from an email, build surveysession first
-            $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
-
             // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
             if (Yii::app()->request->getParam('loadall') === "reload") {
                 // We don't need to control if we have one, because we do the test before
@@ -93,7 +89,7 @@ function loadanswers()
                 $_SESSION['survey_' . $surveyid]['step'] = ($value > 1 ? $value : 1);
                 $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1;
             } else {
-                $_SESSION['survey_' . $surveyid]['maxstep'] = ($value > 1 ? $value : 1);
+                $_SESSION['survey_' . $surveyid]['maxstep'] = $_SESSION['survey_' . $surveyid]['totalsteps'];
             }
         } elseif ($column === "datestamp") {
             $_SESSION['survey_' . $surveyid]['datestamp'] = $value;
@@ -105,7 +101,7 @@ function loadanswers()
             if (in_array($column, $_SESSION['survey_' . $surveyid]['insertarray']) && isset($_SESSION['survey_' . $surveyid]['fieldmap'][$column])) {
                 if (
                     ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_N_NUMERICAL ||
-                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION ||
+                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL ||
                         $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) && $value == null
                 ) {
                     // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
@@ -123,6 +119,7 @@ function loadanswers()
             }  // if (in_array(
         }  // else
     } // foreach
+    $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
     return true;
 }
 
@@ -424,7 +421,13 @@ function submittokens($quotaexit = false)
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
             $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {
-                templatereplace("{SID}", $thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+                /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+                $reData = array('thissurvey' => $thissurvey);
+                templatereplace(
+                    "{SID}",
+                    array(), /* No tempvars update */
+                    $reData /* Be sure to use current survey */
+                );
                 $mail = new \LimeMailer();
                 $mail->setSurvey($surveyid);
                 $mail->setToken($token->token);
@@ -483,7 +486,13 @@ function sendSubmitNotifications($surveyid)
         }
     }
     if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {
-        templatereplace("{SID}", $thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+        /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+        $reData = array('thissurvey' => $thissurvey);
+        templatereplace(
+            "{SID}",
+            array(), /* No tempvars update (except old Replacement like */
+            $reData /* Be surre to use current survey */
+        );
     }
     if (count($aEmailResponseTo)) {
         // there was no token used so lets remove the token field from insertarray
@@ -669,9 +678,6 @@ function buildsurveysession($surveyid, $preview = false)
     if (($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0) && !$preview) {
         breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, $thissurvey);
     }
-
-    //Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    //    usort($arows, 'groupOrderThenQuestionOrder');
 
     //3. SESSION VARIABLE - insertarray
     //An array containing information about used to insert the data into the db at the submit stage
@@ -1104,7 +1110,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
 {
     $FlashError = '';
     if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
-        $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
+        $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
         $renderToken = 'main';
     } else {
         if (!$subscenarios['tokenValid']) {
@@ -1120,7 +1126,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
                 $errorMsg    = gT("The access code you have provided is either not valid, or has already been used.");
                 $FlashError .= $errorMsg;
                 $renderToken = 'main';
-                FailedLoginAttempt::model()->addAttempt();
+                FailedLoginAttempt::model()->addAttempt(FailedLoginAttempt::TYPE_TOKEN);
             }
         } else {
             $aEnterTokenData['visibleToken'] = $clienttoken;
@@ -1335,7 +1341,7 @@ function getNavigatorDatas()
 
     // Previous ?
     if (
-        $thissurvey['format'] != Question::QT_A_ARRAY_5_CHOICE_QUESTIONS && ($thissurvey['allowprev'] != "N")
+        $thissurvey['format'] != Question::QT_A_ARRAY_5_POINT && ($thissurvey['allowprev'] != "N")
         && $iSessionStep
         && !($iSessionStep == 1 && $thissurvey['showwelcome'] == 'N')
         && !Yii::app()->getConfig('previewmode')

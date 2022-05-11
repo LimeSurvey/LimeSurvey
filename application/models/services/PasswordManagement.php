@@ -256,7 +256,7 @@ class PasswordManagement
      */
     public function getRenderArray()
     {
-        $absolutUrl = \Yii::app()->getController()->createAbsoluteUrl("/admin");
+        $absoluteUrl = \Yii::app()->getController()->createAbsoluteUrl("/admin");
         $passwordResetUrl = \Yii::app()->getController()->createAbsoluteUrl(
             'admin/authentication/sa/newPassword/param/' . $this->user->validation_key
         );
@@ -271,10 +271,10 @@ class PasswordManagement
             ),
             'credentialsText' => gT("Here are your new credentials."),
             'siteadminemail' => \Yii::app()->getConfig("siteadminemail"),
-            'linkToAdminpanel' => $absolutUrl,
+            'linkToAdminpanel' => $absoluteUrl,
             'username' => $this->user->users_name,
             'password' => $passwordResetUrl,
-            'mainLogoFile' => LOGO_URL,
+            'mainLogoFile' => \Yii::app()->getController()->createAbsoluteUrl(LOGO_URL),
             'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false
             && \Permission::model() ->hasGlobalPermission('auth_db', 'read', $this->user->uid),
             'showPassword' => \Yii::app()->getConfig("display_user_password_in_email") === true,

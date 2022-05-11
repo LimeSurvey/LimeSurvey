@@ -2,7 +2,7 @@
 /**
  * HelloWorldModule class file.
  *
- * @author Louis Gac  <louis.gac@limesurvey.org>
+ * @author LimeSurvey GmbH  <info@limesurvey.org>
  * @link http://www.limesurvey.org.com/
  * @copyright 2007-2019  The LimeSurvey Project Team / Carsten Schmitz
  * @license GNU General Public License See COPYRIGHT.php for copyright notices and details.

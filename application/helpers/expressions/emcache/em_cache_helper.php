@@ -5,7 +5,7 @@
  * PR: https://github.com/LimeSurvey/LimeSurvey/pull/1273
  *
  * @since 2019-05-23
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 class EmCacheHelper
 {

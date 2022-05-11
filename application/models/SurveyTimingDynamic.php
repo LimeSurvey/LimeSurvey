@@ -27,7 +27,9 @@ class SurveyTimingDynamic extends LSActiveRecord
 
     /**
      * @inheritdoc
+     * @param string $sid
      * @return SurveyTimingDynamic
+     * @psalm-suppress ParamNameMismatch
      */
     public static function model($sid = null)
     {

@@ -1,0 +1,12 @@
+<div class="well">
+    <p>{{ gT("The function can be used with question id or question code. The result are not updated on same page.") }}</p>
+    <p>{{ gT("Each parameters can use expression, the expression are checked before send to function.") }}</p>
+    <p>{{ gT("The function use the result of the expression then, for question parameter: if it's a numeric value : start to check if the question id exist in this survey, and get the primary question if it's a sub question; if it's a string search the primary question title in this survey.") }}</p>
+    <p>{{ gT("For the anwser code : the result of the expression is used directly.") }}</p>
+    <p>{{ gT("Some example") }}</p>
+    <ul>
+        <li>{{ sprintf(gT("Get the answer text of option A1 of current single choice question : %s"), '<code>getAnswerOptionText(self.qid,"A1")</code>') }}</li>
+        <li>{{ sprintf(gT("Get the answer text of option A1 of array question with code  : %s"), '<code>getAnswerOptionText("Qcode","A1")</code>') }}</li>
+        <li>{{ sprintf(gT("Get the answer text of same option choice done in a previous question with code prev of current single choice question  : %s"), '<code>getAnswerOptionText(self.qid,prev.NAOK)</code>') }}</li>
+    </ul>
+</div>

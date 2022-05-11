@@ -622,6 +622,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   function labelSetDestruct() {
     $('#labelsets').select2('destroy');
     $('#labelsetpreview').empty();
+    $('#longcodesalert').hide();
   }
 
   /**
@@ -649,6 +650,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
         const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
 
+        var hasInvalidCodes = false;
+        const source = $('#labelsetbrowserModal').data('source');
         const i = 0;
         $.each(json.languages, (language, languageName) => {
           const $linkItem = $aTemplate.clone();
@@ -670,18 +673,27 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
           labelSet.labels.forEach((label) => {
             // Label title is not concatenated directly because it may have non-encoded HTML
-            const $labelTitleDiv = $('<div class="col-md-8"></div>');
+            const $labelTitleDiv = $('<div class="col-md-7"></div>');
             $labelTitleDiv.text(label.title);
             const $listItem = $listItemTemplate.clone();
-            $listItem.append(`<div class="col-md-3 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+            $listItem.append(`<div class="col-md-5 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
             $listItem.append($labelTitleDiv);
-            $listItem.append('<div class="col-md-1"></div>');
             $listItem.attr('data-label', JSON.stringify(label));
             $itemList.append($listItem);
+
+            if (source === 'answeroptions' && label.code.length > 5) {
+              hasInvalidCodes = true;
+            }
           });
 
           $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
           $itemList.appendTo($bodyItem);
+
+          if (hasInvalidCodes) {
+              $('#longcodesalert').show();
+          } else {
+              $('#longcodesalert').hide();
+          }
         });
         $('#labelsetpreview').empty();
         $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
@@ -731,7 +743,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           $('#labelsets').find('option').each((i, option) => { if ($(option).attr('value')) { $(option).remove(); } });
           jsonString.labelsets.forEach((item) => {
             const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);  // jshint ignore: line
-            $('#labelsets').append(newOption).trigger('change');
+            $('#labelsets').append(newOption);
           });
         }
       }
@@ -739,7 +751,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
 
     // Label set select2 element.
-    $('#labelsets').on('change', function () {
+    $('#labelsets').off('change').on('change', function () {
       const value = $(this).val();
       showLabelSetPreview(parseInt(value));
     });
@@ -784,11 +796,20 @@ $(document).on('ready pjax:scriptcomplete', function () {
           throw 'abort';
         }
 
+        var currentIds = [];
         if (type === 'replace') {
           $table.find('tbody').find('tr').each((i, tableRow) => {
             $(tableRow).remove();
           });
+        } else {
+          $table.find('tbody').find('tr').each((i, tableRow) => {
+            currentIds.push($(tableRow).data('common-id').split('_').shift());
+          });
         }
+
+        // Answer option IDs are generated randomly, so they repeat sometimes.
+        // We keep track of the generated numbers to make sure they don't repeat.
+        var generatedIds = currentIds;
 
         // Loop the preview table and copy rows to destination (subquestions or answer options).
         $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
@@ -802,6 +823,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $tr = $row.eq(4);
             } else if (source === 'answeroptions') {
               $tr = $row.eq(2);
+
+              // Make sure codes are limited to 5 characters
+              label.code = label.code.substr(0, 5);
             } else {
               throw 'source is not subquestions or answeroptions: ' + source;
             }
@@ -812,11 +836,21 @@ $(document).on('ready pjax:scriptcomplete', function () {
             // Only define random ids the FIRST language we loop for.
             // Different translations still use the same question code in the input name.
             if (langIds[i] === undefined) {
-              langIds[i] = `new${Math.floor(Math.random() * 10000)}`;
+              var randId = `new${Math.floor(Math.random() * 99999)}`;
+              var tries = 1;
+              while (generatedIds.includes(randId)) {
+                if (tries > 100) {
+                  throw 'Couldn\'t generate a unique ID';
+                }
+                randId = `new${Math.floor(Math.random() * 99999)}`;
+                tries++;
+              }
+              generatedIds.push(randId);
+              langIds[i] = randId;
             }
 
-            $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', langIds[i]));
-            $tr.attr('id', $tr.attr('id').replace('/new[0-9]{3-6}/', langIds[i]));
+            $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/, langIds[i]));
+            $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3,6}/, langIds[i]));
 
             $row.find('input').each((j /*: number */, inputField) => {
               $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/, langIds[i]));
@@ -910,6 +944,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
     */
 
+    var currentIds = [];
     if ($closestTable.find('.code').length < 0) {
       $closestTable.find('.code-title').each(function () {
         codes.push($(this).text());
@@ -917,6 +952,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     } else {
       $closestTable.find('.code').each(function () {
         codes.push($(this).val());
+        currentIds.push($(this).closest('tr').data('common-id').split('_').shift());
       });
     }
 
@@ -948,6 +984,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
       codeSigil.push(currentCharacter);
     }
 
+    // Answer option IDs are generated randomly, so they repeat sometimes.
+    // We keep track of the generated numbers to make sure they don't repeat.
+    var generatedIds = currentIds;
+
     // TODO: Document value
     // NB: splitCSV is added to string prototype in adminbasics.
     lsrows.forEach((value /*: string & {splitCSV: string => Array<string>} */, k /*: number */) => {
@@ -967,7 +1007,17 @@ $(document).on('ready pjax:scriptcomplete', function () {
       } else {
         thisrow[0] = thisrow[0].replace(/[^A-Za-z0-9]/g, '').substr(0, 20);
       }
-      const quid = `new${Math.floor(Math.random() * 10000)}`;
+
+      var quid = `new${Math.floor(Math.random() * 99999)}`;
+      var tries = 1;
+      while (generatedIds.includes(quid)) {
+        if (tries > 100) {
+          throw 'Couldn\'t generate a unique ID';
+        }
+        quid = `new${Math.floor(Math.random() * 99999)}`;
+        tries++;
+      }
+      generatedIds.push(quid);
 
       // TODO: What's happening here?
       languages.forEach((language, x) => {
@@ -1422,7 +1472,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {boolean}
    * @todo Dual scale
    */
-  function checkSubquestionCodeUnique(table /*: HTMLElement */) /*: boolean */ {
+  function checkSubquestionCodeUnique(table /*: HTMLElement */, msg /*: string */) /*: boolean */ {
     const codeInputs = table.querySelectorAll('input.code');
     // Get all codes from code input node list.
     const codes = [...codeInputs].map((input) => {
@@ -1432,8 +1482,18 @@ $(document).on('ready pjax:scriptcomplete', function () {
         throw 'input is not an HTMLInputElement';
       }
     });
-    const uniqueCodes = codes.filter((value, index, self) => self.indexOf(value) === index);
-    return codes.length === uniqueCodes.length;
+    const duplicateCodes = codes.filter((value, index, self) => self.indexOf(value) !== index);
+    codeInputs.forEach((input, key) => {
+      if (input instanceof HTMLInputElement) {
+        const parent = $(input.parentElement);
+        if (duplicateCodes.includes(input.value)) {
+          parent.addClass('has-error');
+        } else {
+          parent.removeClass('has-error');
+        }
+      }
+    });
+    return duplicateCodes.length == 0;
   }
 
   /**
@@ -1450,14 +1510,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
         throw 'Found no table';
       }
 
+      var hasError = false;
+
       // Check uniqueness.
-      if (!checkSubquestionCodeUnique(table)) {
-        $(that.parentElement).addClass('has-error');
+      if (!checkSubquestionCodeUnique(table, msg)) {
         LS.LsGlobalNotifier.create(
           msg,
           'well-lg bg-danger text-center'
         );
-        return false;
+        hasError = true;
       }
 
       // Check too long subquestion code.
@@ -1472,11 +1533,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
             'Subquestion code is too long. Maximal number of characters is: 20.',
             'well-lg bg-danger text-center'
           );
-          return false;
+          hasError = true;
         }
       }
 
-      $(that.parentElement).removeClass('has-error');
+      if (hasError) {
+        return false;
+      }
+
+      $(that.parentElement).removeClass('has-error duplicate-code');
       return true;
     };
   }
@@ -1622,6 +1687,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
       $('#labelsetbrowserModal').modal('show');
 
       initLabelSetModal(event);
+
+      $('#labelsetbrowserModal').data('source', source);
     },
 
     /**
@@ -1895,7 +1962,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       });
     });
 
-    $('#labelsets').click(showLabelSetPreview);
     $('.bthsaveaslabel').click(getLabel);
     $('input[name=savelabeloption]:radio').click(saveAsLabelSetOptionClick);
     updateRowProperties();

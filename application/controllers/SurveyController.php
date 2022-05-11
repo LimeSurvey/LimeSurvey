@@ -45,9 +45,9 @@ class SurveyController extends LSYii_Controller
      * @access protected
      * @return void
      */
-    protected function _init()
+    protected function customInit()
     {
-        parent::_init();
+        parent::customInit();
 
         unset(Yii::app()->session['FileManagerContext']);
 
@@ -88,7 +88,7 @@ class SurveyController extends LSYii_Controller
      * @access protected
      * @return void
      */
-    protected function _sessioncontrol()
+    protected function sessioncontrol()
     {
         if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"] == '') {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");

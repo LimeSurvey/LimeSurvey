@@ -5,7 +5,6 @@
  */
 class QuestionAdministrationController extends LSBaseController
 {
-
     /**
      * It's import to have the accessRules set (security issue).
      * Only logged in users should have access to actions. All other permissions
@@ -31,7 +30,7 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * This part comes from _renderWrappedTemplate
+     * This part comes from renderWrappedTemplate
      *
      * @param string $view View
      *
@@ -484,6 +483,7 @@ class QuestionAdministrationController extends LSBaseController
 
             // All done, redirect to edit form.
             $question->refresh();
+            LimeExpressionManager::SetDirtyFlag();
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             //only those two values are valid
             if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {
@@ -549,15 +549,36 @@ class QuestionAdministrationController extends LSBaseController
             }
         } catch (CException $ex) {
             $transaction->rollback();
-            throw new LSJsonException(
-                500,
-                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
-                0,
-                App()->createUrl(
-                    'surveyAdministration/view/',
-                    ["surveyid" => $iSurveyId]
-                )
-            );
+            if ($calledWithAjax) {
+                throw new LSJsonException(
+                    500,
+                    gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
+                    0,
+                    App()->createUrl(
+                        'surveyAdministration/view/',
+                        ["surveyid" => $iSurveyId]
+                    )
+                );
+            } else {
+                if (empty($question)) {
+                    $sRedirectUrl = $this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId]);
+                } else {
+                    $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
+                    if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {
+                        $tabOverviewEditorValue = 'overview';
+                    }
+                    $sRedirectUrl = $this->createUrl(
+                        'questionAdministration/edit/',
+                        [
+                            'questionId' => $question->qid,
+                            'landOnSideMenuTab' => 'structure',
+                            'tabOverviewEditor' => $tabOverviewEditorValue,
+                        ]
+                    );
+                }
+                Yii::app()->setFlashMessage($ex->getMessage(), 'error');
+                $this->redirect($sRedirectUrl);
+            }
         }
     }
 
@@ -1357,7 +1378,6 @@ class QuestionAdministrationController extends LSBaseController
         LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
 
         // Check if any other questions have conditions which rely on this question. Don't delete if there are.
-        // TMSW Condition->Relevance:  Allow such deletes - can warn about missing relevance separately.
         $oConditions = Condition::model()->findAllByAttributes(['cqid' => $qid]);
         $iConditionsCount = count($oConditions);
         // There are conditions dependent on this question
@@ -1611,7 +1631,7 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid' => $questionGroupId));
         $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
 
-        //array elements for frontend (topbar etc.)
+        // Array elements for frontend (topbar etc.)
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyId . ")";
@@ -2015,7 +2035,7 @@ class QuestionAdministrationController extends LSBaseController
             $iQid = (int)$sQid;
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
             // These are the questions types that have no mandatory property - so ignore them
-            if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
+            if ($oQuestion->type != Question::QT_X_TEXT_DISPLAY && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $oQuestion->mandatory = $sMandatory;
                 $oQuestion->save();
             }

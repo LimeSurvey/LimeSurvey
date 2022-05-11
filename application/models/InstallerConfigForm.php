@@ -104,6 +104,9 @@ class InstallerConfigForm extends CFormModel
     public $isPhpMbStringPresent = false;
 
     /** @var bool */
+    public $isPhpFileInfoPresent = false;
+
+    /** @var bool */
     public $isPhpZlibPresent = false;
 
     /** @var bool */
@@ -204,6 +207,7 @@ class InstallerConfigForm extends CFormModel
     private function checkStatus()
     {
         $this->isPhpMbStringPresent = function_exists('mb_convert_encoding');
+        $this->isPhpFileInfoPresent = function_exists('finfo_open');
         $this->isPhpZlibPresent = function_exists('zlib_get_coding_type');
         $this->isPhpJsonPresent = function_exists('json_encode');
         $this->isMemoryLimitOK = $this->checkMemoryLimit();
@@ -234,6 +238,7 @@ class InstallerConfigForm extends CFormModel
             or !$this->isConfigDirWriteable
             or !$this->isPhpVersionOK
             or !$this->isPhpMbStringPresent
+            or !$this->isPhpFileInfoPresent
             or !$this->isPhpZlibPresent
             or !$this->isPhpJsonPresent
         ) {
@@ -280,12 +285,17 @@ class InstallerConfigForm extends CFormModel
         }
 
         if ($this->isMysql && $this->dbengine === self::ENGINE_TYPE_INNODB) {
-            $mariadb = preg_match('/MariaDB/i', $this->getMySqlConfigValue('version'));
-            $match = preg_match('/^\d+\.\d+\.\d+/', $this->getMySqlConfigValue('version'), $version);
+            $version = $this->getMySqlConfigValue('version');
+            if (is_null($version)) {
+                $this->addError($attribute, gT('Could not determine the database engine version. Please check your credentials.'));
+                return;
+            }
+            $mariadb = preg_match('/MariaDB/i', $version);
+            $match = preg_match('/^\d+\.\d+\.\d+/', $version, $matchedVersion);
             if (
                 !$match
-                    || (!$mariadb && version_compare($version[0], '5.7.0') <= 0)
-                    || ($mariadb && version_compare($version[0], '10.2.0') < 0)
+                    || (!$mariadb && version_compare($matchedVersion[0], '8.0.0') < 0)
+                    || ($mariadb && version_compare($matchedVersion[0], '10.2.2') < 0)
             ) {
                 // Only for older db-engine
                 if (!$this->isInnoDbLargeFilePrefixEnabled()) {
@@ -401,8 +411,8 @@ class InstallerConfigForm extends CFormModel
      */
     private function isInnoDbBarracudaFileFormat()
     {
-        $check1 = $this->getMySqlConfigValue('innodb_file_format') == 'Barracuda';
-        $check2 = $this->getMySqlConfigValue('innodb_file_format_max') == 'Barracuda';
+        $check1 = $this->getMySqlConfigValue('innodb_file_format') == 'Barracuda' || $this->getMySqlConfigValue('innodb_file_format') == null;
+        $check2 = $this->getMySqlConfigValue('innodb_file_format_max') == 'Barracuda' || $this->getMySqlConfigValue('innodb_file_format_max') == null;
         return $check1 && $check2;
     }
 
@@ -521,8 +531,8 @@ class InstallerConfigForm extends CFormModel
         $port = $this->getDbPort();
 
         // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
-        if (substr($this->dblocation, 0, 1) == "/") {
-            $sDSN = "mysql:unix_socket={$this->dblocation}";
+        if (substr($this->dblocation, 0, 1) === "/") {
+            $sDSN = "mysql:unix_socket={$this->dblocation};";
         } else {
             $sDSN = "mysql:host={$this->dblocation};port={$port};";
         }

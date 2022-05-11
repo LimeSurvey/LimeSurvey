@@ -34,12 +34,12 @@ class QuestionTest extends TestCase
     {
         $question = new Question();
         $question->type = "M";
-        $question->question_theme_name = 'bootstrap_buttons';
+        $question->question_theme_name = 'bootstrap_buttons_multi';
         $question->save();
 
         $questionTheme = $question->questionTheme;
 
         $this->assertNotEmpty($questionTheme);
-        $this->assertEquals("bootstrap_buttons", $questionTheme->name);
+        $this->assertEquals("bootstrap_buttons_multi", $questionTheme->name);
     }
 }

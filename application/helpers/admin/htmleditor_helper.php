@@ -27,8 +27,11 @@ function initKcfinder()
         'flash' => $sAllowedExtensions,
         'images' => $sAllowedExtensions
     );
-    if (Yii::app()->getRequest()->enableCsrfValidation && !empty(Yii::app()->getRequest()->csrfCookie->domain)) {
-        $_SESSION['KCFINDER']['cookieDomain'] = Yii::app()->getRequest()->csrfCookie->domain;
+    if (!empty(App()->getSession()->cookieParams['domain'])) {
+        $_SESSION['KCFINDER']['cookieDomain'] = App()->getSession()->cookieParams['domain'];
+    }
+    if (App()->getRequest()->enableCsrfValidation && !empty(App()->getRequest()->csrfCookie['domain'])) {
+        $_SESSION['KCFINDER']['cookieDomain'] = Yii::app()->getRequest()->csrfCookie['domain'];
     }
 
     if (
@@ -270,10 +273,8 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
         $sFakeBrowserURL = Yii::app()->getController()->createUrl('admin/survey/sa/fakebrowser');
         $sFileBrowserAvailable = ",filebrowserBrowseUrl:'{$sFakeBrowserURL}'
             ,filebrowserImageBrowseUrl:'{$sFakeBrowserURL}'
-            ,filebrowserFlashBrowseUrl:'{$sFakeBrowserURL}'
             ,filebrowserUploadUrl:'{$sFakeBrowserURL}'
-            ,filebrowserImageUploadUrl:'{$sFakeBrowserURL}'
-            ,filebrowserFlashUploadUrl:'{$sFakeBrowserURL}'";
+            ,filebrowserImageUploadUrl:'{$sFakeBrowserURL}'";
     }
 
     $loaderHTML = getLoaderHTML($fieldname);

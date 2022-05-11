@@ -2,7 +2,7 @@
 
 /**
  * Plugin to enable two factor authentication for LimeSurvey Admin Backend
- * @author Markus FLür | Eddy Lackmann <support@limesurvey.org>
+ * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL 2.0 or later
  */
 

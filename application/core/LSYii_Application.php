@@ -136,7 +136,7 @@ class LSYii_Application extends CWebApplication
 
         // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
 
-        /* Default config */
+        /* Default config */ 
         $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
         $emailConfig = require(__DIR__ . '/../config/email.php');
         $versionConfig = require(__DIR__ . '/../config/version.php');
@@ -303,7 +303,6 @@ class LSYii_Application extends CWebApplication
         }
 
         $sLanguage = preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
-        $this->messages->catalog = $sLanguage;
         App()->session['_lang'] = $sLanguage; // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
         parent::setLanguage($sLanguage);
     }

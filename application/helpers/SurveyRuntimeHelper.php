@@ -420,7 +420,7 @@ class SurveyRuntimeHelper
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1);
+            $aGroup['name']        = $gl['group_name'];
             LimeExpressionManager::updateReplacementFields(array(
                 'GROUPNAME' => $aGroup['name'],
             ));
@@ -439,7 +439,7 @@ class SurveyRuntimeHelper
 
             $aGroup['showgroupinfo'] = $showgroupinfo_;
             $aGroup['showdescription']  = (!$this->previewquestion && trim($gl['description']) != "" && $showgroupdesc_);
-            $aGroup['description']      = LimeExpressionManager::ProcessString($gl['description'], null, null, 3, 1);
+            $aGroup['description']      = $gl['description'];
 
             // one entry per QID
             foreach ($qanda as $qa) {
@@ -800,6 +800,16 @@ class SurveyRuntimeHelper
         //$_SESSION[$this->LEMsessid]['step'] can not be less than 0, fix it always #09772
         $_SESSION[$this->LEMsessid]['step'] = $_SESSION[$this->LEMsessid]['step'] < 0 ? 0 : $_SESSION[$this->LEMsessid]['step'];
         LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
+        if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])) {
+            /* Move to max step in all condition with force */
+            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step']) {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['maxstep']);
+                LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['maxstep'], false, false);
+            } else {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['step']);
+            }
+            unset($_SESSION[$this->LEMsessid]['LEMtokenResume']);
+        }
         LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
     }
 
@@ -911,14 +921,14 @@ class SurveyRuntimeHelper
         // retrieve datas from local variable
         if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])) {
             LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
-
-            // Do it only if needed : we don't need it if we don't have index
-            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step'] && $this->aSurveyInfo['questionindex']) {
+            /* Move to max step in all condition with force */
+            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step']) {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['maxstep']);
                 LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['maxstep'], false, false);
+            } else {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['step']);
             }
-
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false); // if late in the survey, will re-validate contents, which may be overkill
-
             unset($_SESSION[$this->LEMsessid]['LEMtokenResume']);
         } elseif (!$this->LEMskipReprocessing) {
             //Move current step ###########################################################################
@@ -1255,7 +1265,7 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show'] = false;
             if ($this->aSurveyInfo['publicstatistics'] == 'Y') {
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show']  = true;
-                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sUrl']  = $surveyActive ? Yii::app()->getController()->createUrl("/statistics_user/action/", array('surveyid' => $this->iSurveyid, 'language' => App()->getLanguage())) : "#";
+                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sUrl']  = $surveyActive ? Yii::app()->getController()->createUrl("/StatisticsUser/action/", array('surveyid' => $this->iSurveyid, 'language' => App()->getLanguage())) : "#";
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sText'] =  gT("View the statistics for this survey.");
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sTitle'] =  $surveyActive ? $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sText'] : gT("Note: This link only works if the survey is activated.");
             }

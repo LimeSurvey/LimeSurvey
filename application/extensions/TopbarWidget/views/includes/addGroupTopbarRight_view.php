@@ -6,10 +6,10 @@
 ?>
 
 <!-- Save -->
-<a id="save-button" class="btn btn-success pull-right" role="button">
+<button id="save-button" class="btn btn-success pull-right" type="button">
     <i class="fa fa-check"></i>
     <?php eT('Save'); ?>
-</a>
+</button>
 <!-- Back Button -->
 <a class="btn btn-default" href="<?php echo $backUrl ?>" role="button">
     <span class="fa fa-backward"></span>
@@ -17,12 +17,12 @@
     <?php eT('Back') ?>
 </a>
 <!-- Save and add question -->
-<a class="btn btn-default" id='save-and-new-question-button' role="button">
+<button class="btn btn-default" id='save-and-new-question-button' type="button">
     <span class="fa fa-plus"></span>
     <?php eT('Save & add question'); ?>
-</a>
+</button>
 <!-- Save and new group -->
-<a class="btn btn-default" id='save-and-new-button' role="button">
+<button class="btn btn-default" id='save-and-new-button' type="button">
     <span class="fa fa-plus"></span>
     <?php eT('Save & add group'); ?>
-</a>
+</button>

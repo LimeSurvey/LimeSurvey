@@ -17,7 +17,7 @@
  * Used by VersionFetcher to push around update info.
  *
  * @since 2018-10-01
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 class ExtensionUpdateInfo
 {

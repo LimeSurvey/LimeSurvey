@@ -6,19 +6,19 @@
     //All paths relative from /application/views
 
 //headers will be generated with the template file /admin/super/header.php
-$this->_showHeaders($aData, false);
+$this->showHeaders($aData, false);
 //The adminmenu bar will be generated from /admin/super/adminmenu.php
-$this->_showadminmenu($aData);
+$this->showadminmenu($aData);
 
 // Generated through /admin/usergroup/usergroupbar_view
-$this->_userGroupBar($aData);
+$this->userGroupBar($aData);
 
 echo "<!-- BEGIN LAYOUT_INSURVEY -->";
 // Needed to evaluate EM expressions in question summary
 // See bug #11845
 LimeExpressionManager::StartProcessingPage(false, true);
 $aData['debug'] = $aData;
-$this->_titlebar($aData);
+$this->titlebar($aData);
 
 //The load indicator for pjax
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
@@ -26,12 +26,12 @@ echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style=
 // echo "<pre>".print_r($aData, true)."</pre>";
 
 //The container to hold the vuejs application
-echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_template() -->
+echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() -->
     <div id="vue-apps-main-container" '
 . 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12" '
 . '>';
     //Rendered through /admin/super/sidemenu
-    $this->_surveysidemenu($aData);
+    $this->surveysidemenu($aData);
     echo '<div '
     . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';
@@ -42,25 +42,25 @@ echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_templat
             //Rendered through /admin/responses/browsemenubar_view
             //$this->_browsemenubar($aData);
             //Rendered through /admin/survey/Question/questionbar_view
-            $this->_organizequestionbar($aData);
+            $this->organizequestionbar($aData);
 
             echo '<div id="in_survey_common" '
             . 'class="container-fluid ls-flex-column col-12"'
             . '>';
 
                 //Rendered through /admin/update/_update_notification
-                $this->_updatenotification();
+                $this->updatenotification();
                 //Rendered through /notifications/notifications
-                $this->_notifications();
+                $this->notifications();
 
                 //// Here the main content views.
                 //Rendered through /admin/survey/QuestionGroups/listquestiongroups
-                $this->_listquestiongroups($aData);
+                $this->listquestiongroups($aData);
                 //Rendered through /admin/survey/Question/listquestions
-                $this->_listquestions($aData);
+                $this->listquestions($aData);
                 //Rendered through /admin/super/sidebody
                 //With content of /admin/survey/surveySummary_view
-                $this->_nsurveysummary($aData);
+                $this->nsurveysummary($aData);
 
                 echo $content;
 
@@ -72,12 +72,12 @@ echo "<!-- END LAYOUT_INSURVEY -->";
 
 // Footer
 if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false) {
-    Yii::app()->getController()->_loadEndScripts();
+    Yii::app()->getController()->loadEndScripts();
 }
 
 if (!Yii::app()->user->isGuest) {
     if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
-        Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+        Yii::app()->getController()->getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
     }
 } else {
     echo '</body>

@@ -38,10 +38,10 @@ class QuestionGroup extends LSActiveRecord
      * @inheritdoc
      * @return QuestionGroup
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -237,7 +237,7 @@ class QuestionGroup extends LSActiveRecord
 
     /**
      * @param mixed|array $condition
-     * @param string[] $order
+     * @param string[]|false $order
      * @return CDbDataReader
      */
     public function getAllGroups($condition, $order = false)
@@ -459,7 +459,7 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function getTotalGroupsWithQuestions($surveyid)
     {
-        $cacheKey = 'getTotalGroupsWithoutQuestions_' . $surveyid;
+        $cacheKey = 'getTotalGroupsWithQuestions_' . $surveyid;
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
             return $value;
@@ -474,5 +474,16 @@ class QuestionGroup extends LSActiveRecord
         EmCacheHelper::set($cacheKey, $result);
 
         return $result;
+    }
+
+    /**
+     * Returns all group questions (including subquestions)
+     * @return Question[]
+     */
+    public function getAllQuestions()
+    {
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAllByAttributes(['gid' => $this->gid]);
+        return $questions;
     }
 }

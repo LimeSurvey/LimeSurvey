@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'ar', {
 	acccessKey: 'مفاتيح الإختصار',
@@ -19,8 +19,8 @@ CKEDITOR.plugins.setLang( 'link', 'ar', {
 	anchorName: 'حسب إسم الإشارة المرجعية',
 	charset: 'ترميز المادة المطلوبة',
 	cssClasses: 'فئات التنسيق',
-	download: 'Force Download', // MISSING
-	displayText: 'Display Text', // MISSING
+	download: 'فرض التحميل',
+	displayText: 'نص العرض',
 	emailAddress: 'البريد الإلكتروني',
 	emailBody: 'محتوى الرسالة',
 	emailSubject: 'موضوع الرسالة',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'ar', {
 	noAnchors: '(لا توجد علامات مرجعية في هذا المستند)',
 	noEmail: 'الرجاء كتابة الريد الإلكتروني',
 	noUrl: 'الرجاء كتابة رابط الموقع',
+	noTel: 'Please type the phone number', // MISSING
 	other: '<أخرى>',
+	phoneNumber: 'Phone number', // MISSING
 	popupDependent: 'تابع (Netscape)',
 	popupFeatures: 'خصائص النافذة المنبثقة',
 	popupFullScreen: 'ملئ الشاشة (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'ar', {
 	toAnchor: 'مكان في هذا المستند',
 	toEmail: 'بريد إلكتروني',
 	toUrl: 'الرابط',
+	toPhone: 'Phone', // MISSING
 	toolbar: 'رابط',
 	type: 'نوع الربط',
 	unlink: 'إزالة رابط',

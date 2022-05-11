@@ -29,8 +29,12 @@ function populateDatabase($oDB)
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('update.updatedb');
     $options = '';
-    if (in_array($oDB->driverName, ['mysql','mysqli'])) {
-        $options = 'ROW_FORMAT=DYNAMIC'; // Same than create-database
+    // The engine has to be explicitely set because MYSQL 8 switches the default engine to INNODB
+    if ($oDB->driverName == 'mysql') {
+        $options = 'ENGINE=' . Yii::app()->getConfig('mysqlEngine') . ' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+        if (Yii::app()->getConfig('mysqlEngine') == 'INNODB') {
+            $options .= ' ROW_FORMAT=DYNAMIC'; // Same than create-database
+        }
     }
 
     $oTransaction = $oDB->beginTransaction();
@@ -119,7 +123,7 @@ function populateDatabase($oDB)
             'dvid' =>  "integer NOT NULL default '0'",
             'language' =>  "string(20) NOT NULL",
             'defaultvalue' =>  "text",
-        ));
+        ), $options);
         $oDB->createCommand()->createIndex('{{idx1_defaultvalue_ls}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], false);
 
         // expression_errors
@@ -142,6 +146,7 @@ function populateDatabase($oDB)
             'ip' =>  "string(40) NOT NULL",
             'last_attempt' =>  "string(20) NOT NULL",
             'number_attempts' =>  "integer NOT NULL",
+            'is_frontend' => "boolean NOT NULL"
         ), $options);
 
 
@@ -168,7 +173,7 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createTable('{{labels}}', array(
             'id' =>  "pk",
             'lid' =>  "integer NOT NULL DEFAULT 0",
-            'code' =>  "string(5) NOT NULL default ''",
+            'code' =>  "string(20) NOT NULL default ''",
             'sortorder' =>  "integer NOT NULL",
             'assessment_value' =>  "integer NOT NULL default '0'",
         ), $options);
@@ -331,7 +336,7 @@ function populateDatabase($oDB)
             'renewed_last' =>  "datetime NULL",
             'created_at' =>  "datetime NOT NULL",
             'created_by' =>  "int NOT NULL"
-        ]);
+        ], $options);
 
         $oDB->createCommand()->createIndex('{{idx1_name}}', '{{permissiontemplates}}', 'name', true);
 
@@ -1120,6 +1125,31 @@ function populateDatabase($oDB)
             'properties' => "text NOT NULL",
             'attributes' => "text NULL",
         ], $options);
+
+        // language tables: sourcemessage + message and constraint
+        $oDB->createCommand()->createTable(
+            '{{source_message}}',
+            [
+                'id' => "pk",
+                'category' => "string(35)",
+                'message' => "text",
+            ],
+            $options
+        );
+        $oDB->createCommand()->createTable(
+            '{{message}}',
+            [
+                'id' => "integer NOT NULL",
+                'language' => "string(50) NOT NULL default ''",
+                'translation' => "text",
+            ],
+            $options
+        );
+        $oDB->createCommand()->addPrimaryKey(
+            '{{message_pk}}',
+            '{{message}}',
+            ['id', 'language']
+        );
 
         // Install default plugins.
         foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {

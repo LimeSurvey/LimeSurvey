@@ -29,13 +29,13 @@ abstract class Response extends Dynamic
     }
     /**
      *
-     * @param int $surveyId
+     * @param int $id Survey id in this class
      * @param string $scenario
      * @return Response Description
      */
-    public static function create($surveyId, $scenario = 'insert')
+    public static function create($id, $scenario = 'insert')
     {
-        return parent::create($surveyId, $scenario);
+        return parent::create($id, $scenario);
     }
 
     /** @inheritdoc

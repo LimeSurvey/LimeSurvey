@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 ( function() {
@@ -53,7 +53,7 @@
 	}
 
 	CKEDITOR.plugins.add( 'copyformatting', {
-		lang: 'az,de,en,it,ja,nb,nl,oc,pl,pt-br,ru,sv,tr,zh,zh-cn',
+		lang: 'ar,az,bg,cs,da,de,de-ch,el,en,en-au,eo,es-mx,et,eu,fa,fr,gl,hr,hu,it,ja,ko,ku,lv,nb,nl,oc,pl,pt,pt-br,ro,ru,sk,sq,sr,sr-latn,sv,tr,uk,vi,zh,zh-cn',
 		icons: 'copyformatting',
 		hidpi: true,
 
@@ -91,7 +91,8 @@
 			} );
 
 			editor.on( 'contentDom', function() {
-				var editable = editor.editable(),
+				var cmd = editor.getCommand( 'copyFormatting' ),
+					editable = editor.editable(),
 					// Host element for apply formatting click. In case of classic element it needs to be entire
 					// document, otherwise clicking in body margins would not trigger the event.
 					// Editors with divarea plugin enabled should be treated like inline one – otherwise
@@ -101,14 +102,13 @@
 					copyFormattingButtonEl;
 
 				editable.attachListener( mouseupHost, 'mouseup', function( evt ) {
-					if ( getMouseButton( evt ) === CKEDITOR.MOUSE_BUTTON_LEFT ) {
+					// Apply formatting only if any styles are copied (#2780, #2655, #2470).
+					if ( getMouseButton( evt ) === CKEDITOR.MOUSE_BUTTON_LEFT && cmd.state === CKEDITOR.TRISTATE_ON ) {
 						editor.execCommand( 'applyFormatting' );
 					}
 				} );
 
 				editable.attachListener( CKEDITOR.document, 'mouseup', function( evt ) {
-					var cmd = editor.getCommand( 'copyFormatting' );
-
 					if ( getMouseButton( evt ) === CKEDITOR.MOUSE_BUTTON_LEFT && cmd.state === CKEDITOR.TRISTATE_ON &&
 						!editable.contains( evt.data.getTarget() ) ) {
 						editor.execCommand( 'copyFormatting' );
@@ -260,7 +260,7 @@
 		 * @member CKEDITOR.plugins.copyformatting.state
 		 * @property {CKEDITOR.filter}
 		 */
-		this.filter = new CKEDITOR.filter( editor.config.copyFormatting_allowRules );
+		this.filter = new CKEDITOR.filter( editor, editor.config.copyFormatting_allowRules );
 
 		if ( editor.config.copyFormatting_allowRules === true ) {
 			this.filter.disabled = true;
@@ -414,7 +414,7 @@
 			},
 
 			applyFormatting: {
-				editorFocus: false,
+				editorFocus: CKEDITOR.env.ie && !CKEDITOR.env.edge ? false : true,
 				exec: function( editor, data ) {
 					var cmd = editor.getCommand( 'copyFormatting' ),
 						isFromKeystroke = data ? data.from == 'keystrokeHandler' : false,
@@ -424,10 +424,7 @@
 						documentElement = CKEDITOR.document.getDocumentElement(),
 						isApplied;
 
-					if ( !isFromKeystroke && cmd.state !== CKEDITOR.TRISTATE_ON ) {
-						return;
-
-					} else if ( isFromKeystroke && !copyFormatting.styles ) {
+					if ( isFromKeystroke && !copyFormatting.styles ) {
 						plugin._putScreenReaderMessage( editor, 'failed' );
 						plugin._detachPasteKeystrokeHandler( editor );
 						return false;
@@ -1109,8 +1106,8 @@
 	 *
 	 *		config.copyFormatting_outerCursor = false;
 	 *
-	 * Read more in the [documentation](#!/guide/dev_copyformatting)
-	 * and see the [SDK sample](http://sdk.ckeditor.com/samples/copyformatting.html).
+	 * Read more in the {@glink features/copyformatting documentation}
+	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
 	 * @cfg [copyFormatting_outerCursor=true]
@@ -1123,14 +1120,14 @@
 	 * filtering.
 	 *
 	 * This property is using Advanced Content Filter syntax. You can learn more about it in the
-	 * [Content Filtering (ACF)](http://docs.ckeditor.com/#!/guide/dev_acf) documentation.
+	 * [Content Filtering (ACF)](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_acf.html) documentation.
 	 *
 	 *		config.copyFormatting_allowRules = 'span(*)[*]{*}'; // Allows only spans.
 	 *		config.copyFormatting_allowRules = true; // Disables filtering.
 	 *
 	 *
-	 * Read more in the [documentation](#!/guide/dev_copyformatting)
-	 * and see the [SDK sample](http://sdk.ckeditor.com/samples/copyformatting.html).
+	 * Read more in the {@glink features/copyformatting documentation}
+	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
 	 * @cfg [copyFormatting_allowRules='b; s; u; strong; span; p; div; table; thead; tbody; ' +
@@ -1143,13 +1140,13 @@
 	 * Defines rules for the elements from which fetching styles is explicitly forbidden (eg. widgets).
 	 *
 	 * This property is using Advanced Content Filter syntax. You can learn more about it in the
-	 * [Content Filtering (ACF)](http://docs.ckeditor.com/#!/guide/dev_acf) documentation.
+	 * [Content Filtering (ACF)](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_acf.html) documentation.
 	 *
 	 *		config.copyFormatting_disallowRules = 'span(important)'; // Disallows spans with "important" class.
 	 *
 	 *
-	 * Read more in the [documentation](#!/guide/dev_copyformatting)
-	 * and see the [SDK sample](http://sdk.ckeditor.com/samples/copyformatting.html).
+	 * Read more in the {@glink features/copyformatting documentation}
+	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
 	 * @cfg [copyFormatting_disallowRules='*[data-cke-widget*,data-widget*,data-cke-realelement](cke_widget*)']
@@ -1172,8 +1169,8 @@
 	 *		// If set to "true", enables all contexts.
 	 *		config.copyFormatting_allowedContexts = true;
 	 *
-	 * Read more in the [documentation](#!/guide/dev_copyformatting)
-	 * and see the [SDK sample](http://sdk.ckeditor.com/samples/copyformatting.html).
+	 * Read more in the {@glink features/copyformatting documentation}
+	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
 	 * @cfg {Boolean/String[]} [copyFormatting_allowedContexts=true]
@@ -1190,8 +1187,8 @@
 	 *
 	 *		config.copyFormatting_keystrokeCopy = false;
 	 *
-	 * Read more in the [documentation](#!/guide/dev_copyformatting)
-	 * and see the [SDK sample](http://sdk.ckeditor.com/samples/copyformatting.html).
+	 * Read more in the {@glink features/copyformatting documentation}
+	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
 	 * @cfg {Number} [copyFormatting_keystrokeCopy=CKEDITOR.CTRL + CKEDITOR.SHIFT + 67]
@@ -1208,8 +1205,8 @@
 	 *
 	 *		config.copyFormatting_keystrokePaste = false;
 	 *
-	 * Read more in the [documentation](#!/guide/dev_copyformatting)
-	 * and see the [SDK sample](http://sdk.ckeditor.com/samples/copyformatting.html).
+	 * Read more in the {@glink features/copyformatting documentation}
+	 * and see the {@glink examples/copyformatting example}.
 	 *
 	 * @since 4.6.0
 	 * @cfg {Number} [copyFormatting_keystrokePaste=CKEDITOR.CTRL + CKEDITOR.SHIFT + 86]

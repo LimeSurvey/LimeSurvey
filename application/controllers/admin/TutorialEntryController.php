@@ -1,6 +1,6 @@
 <?php
 
-class TutorialEntryController extends Survey_Common_Action
+class TutorialEntryController extends SurveyCommonAction
 {
     /**
      * @return string[] action filters
@@ -50,7 +50,7 @@ class TutorialEntryController extends Survey_Common_Action
         $data = array();
         $data['model'] = TutorialEntry::model();
         //App()->getClientScript()->registerPackage('surveymenufunctions');
-        $this->_renderWrappedTemplate(null, array('tutorialentries/index'), $data);
+        $this->renderWrappedTemplate(null, array('tutorialentries/index'), $data);
     }
 
     /**

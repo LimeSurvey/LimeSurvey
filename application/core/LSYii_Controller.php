@@ -42,7 +42,7 @@ abstract class LSYii_Controller extends CController
         $this->loadHelper('common');
         $this->loadHelper('expressions.em_manager');
         $this->loadHelper('replacements');
-        $this->_init();
+        $this->customInit();
     }
 
     /**
@@ -84,7 +84,7 @@ abstract class LSYii_Controller extends CController
         Yii::app()->loadLibrary($library);
     }
 
-    protected function _init()
+    protected function customInit()
     {
         // Check for most necessary requirements
         // Now check for PHP & db version
