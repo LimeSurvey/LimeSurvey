@@ -1716,7 +1716,7 @@ class DataEntry extends SurveyCommonAction
                 $beforeDataEntryCreate->set('iSurveyID', $surveyid);
                 $beforeDataEntryCreate->set('oModel', $new_response);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryCreate);
-                if($new_response->encryptSave()) {
+                if ($new_response->encryptSave()) {
                     $last_db_id = $new_response->getPrimaryKey();
                     if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') {
                         // submittoken
