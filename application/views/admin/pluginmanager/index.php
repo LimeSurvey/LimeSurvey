@@ -6,7 +6,11 @@
  *
  * @since 2015-10-02
  * @author LimeSurvey GmbH
+ *
+ * @param Plugin[] $plugins
  */
+
+use LimeSurvey\PluginManager\LimeStoreDataProvider;
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('pluginManager');
@@ -108,35 +112,96 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
         ],
     ];
 
-    $this->widget(
-        'bootstrap.widgets.TbGridView',
-        [
-            'id'                       => 'plugins-grid',
-            'dataProvider'             => $dataProvider,
-            'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
-            'template'                 => "{items}\n<div id='pluginsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-            'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        [
-                            'class' => 'changePageSize form-control',
-                            'style' => 'display: inline; width: auto'
-                        ]
-                    )
-                ),
-            'columns'                  => $gridColumns,
-            'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
-            'ajaxUpdate'               => 'plugins-grid'
-        ]
-    );
-
-    $this->renderPartial('./pluginmanager/uploadModal', []);
     ?>
+
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#tab-installed" role="tab" data-toggle="tab">Installed</a></li>
+        <li role="presentation"><a href="#tab-file" role="tab" data-toggle="tab">File</a></li>
+        <li role="presentation"><a href="#tab-limestore" role="tab" data-toggle="tab">LimeStore</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="tab-installed">
+            <?php $this->widget(
+                'bootstrap.widgets.TbGridView',
+                [
+                    'id'                       => 'plugins-grid',
+                    'dataProvider'             => $dataProvider,
+                    'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
+                    'template'                 => "{items}\n<div id='pluginsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                        . sprintf(
+                            gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                [
+                                    'class' => 'changePageSize form-control',
+                                    'style' => 'display: inline; width: auto'
+                                ]
+                            )
+                        ),
+                    'columns'                  => $gridColumns,
+                    'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
+                    'ajaxUpdate'               => 'plugins-grid'
+                ]
+            );
+            ?>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="tab-file"></div>
+
+        <div role="tabpanel" class="tab-pane" id="tab-limestore">
+            <?php $this->widget(
+                'bootstrap.widgets.TbGridView',
+                [
+                    'id'                       => 'limestore-grid',
+                    'dataProvider'             => new LimeStoreDataProvider([]),
+                    'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
+                    //{ ["extension_type"]=> string(1) "p" ["extension_name"]=> string(10) "MassAction" ["status"]=> string(8) "disabled" ["version"]=> string(5) "1.0.5" ["last_security_version"]=> NULL ["created"]=> string(19) "2018-12-12 17:13:33" ["owner"]=> object(stdClass)#2071 (3) { ["id"]=> string(5) "49797" ["name"]=> string(14) "Olle Haerstedt" ["username"]=> string(7) "ollehar" } } 
+                    'columns'                  => [
+                        [
+                            'header' => gT('Action'),
+                            'type'   => 'raw',
+                            'name'   => 'action',
+                            'value'  => fn() => '<button class="btn btn-primary">Install</button>'
+                        ],
+                        [
+                            'header' => gT('Plugin'),
+                            'name'   => 'extension_name',
+                            'type'   => 'html',
+                            'value'  => '$data->extension_name'
+                        ],
+                        [
+                            'header' => gT('Author'),
+                            'name'   => 'name',
+                            'type'   => 'html',
+                            'value'  => '$data->owner->name'
+                        ],
+                        [
+                            'header' => gT('Status'),
+                            'name'   => 'name',
+                            'type'   => 'html',
+                            'value'  => '$data->status'
+                        ],
+                        [
+                            'header' => gT('Created'),
+                            'name'   => 'name',
+                            'type'   => 'html',
+                            'value'  => '$data->created'
+                        ]
+                    ]
+                    //'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
+                    //'ajaxUpdate'               => 'plugins-grid'
+                ]
+            ); ?>
+        </div>
+    </div>
+
 </div>
+
+<?php $this->renderPartial('./pluginmanager/uploadModal', []); ?>
 
 <script type="text/javascript">
     jQuery(function ($) {
