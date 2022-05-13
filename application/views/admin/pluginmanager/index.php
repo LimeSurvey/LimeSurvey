@@ -10,12 +10,16 @@
  * @param Plugin[] $plugins
  */
 
-use LimeSurvey\PluginManager\LimeStoreDataProvider;
-
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('pluginManager');
 
 $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
+$fetchLimestoreListUrl = Yii::app()->getController()->createUrl(
+    'admin/pluginmanager',
+    [
+        'sa' => 'getLimestoreTabHtml'
+    ]
+);
 
 ?>
 <div class='container-fluid'>
@@ -115,9 +119,19 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
     ?>
 
     <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="#tab-installed" role="tab" data-toggle="tab">Installed</a></li>
-        <li role="presentation"><a href="#tab-file" role="tab" data-toggle="tab">File</a></li>
-        <li role="presentation"><a href="#tab-limestore" role="tab" data-toggle="tab">LimeStore</a></li>
+        <li role="presentation" class="active"><a href="#tab-installed" role="tab" data-toggle="tab"><?= gT('Installed'); ?></a></li>
+        <!-- TODO <li role="presentation"><a href="#tab-file" role="tab" data-toggle="tab">File</a></li>-->
+        <li role="presentation">
+            <a
+                id="nav-tab-limestore"
+                href="#tab-limestore"
+                role="tab"
+                data-toggle="tab"
+                onclick="LS.pluginManager.populateLimestoreList('<?= $fetchLimestoreListUrl; ?>');"
+            >
+                <?= gT('LimeStore'); ?>
+            </a>
+        </li>
     </ul>
 
     <div class="tab-content">
@@ -153,49 +167,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
         <div role="tabpanel" class="tab-pane" id="tab-file"></div>
 
         <div role="tabpanel" class="tab-pane" id="tab-limestore">
-            <?php $this->widget(
-                'bootstrap.widgets.TbGridView',
-                [
-                    'id'                       => 'limestore-grid',
-                    'dataProvider'             => new LimeStoreDataProvider([]),
-                    'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
-                    //{ ["extension_type"]=> string(1) "p" ["extension_name"]=> string(10) "MassAction" ["status"]=> string(8) "disabled" ["version"]=> string(5) "1.0.5" ["last_security_version"]=> NULL ["created"]=> string(19) "2018-12-12 17:13:33" ["owner"]=> object(stdClass)#2071 (3) { ["id"]=> string(5) "49797" ["name"]=> string(14) "Olle Haerstedt" ["username"]=> string(7) "ollehar" } } 
-                    'columns'                  => [
-                        [
-                            'header' => gT('Action'),
-                            'type'   => 'raw',
-                            'name'   => 'action',
-                            'value'  => fn() => '<button class="btn btn-primary">Install</button>'
-                        ],
-                        [
-                            'header' => gT('Plugin'),
-                            'name'   => 'extension_name',
-                            'type'   => 'html',
-                            'value'  => '$data->extension_name'
-                        ],
-                        [
-                            'header' => gT('Author'),
-                            'name'   => 'name',
-                            'type'   => 'html',
-                            'value'  => '$data->owner->name'
-                        ],
-                        [
-                            'header' => gT('Status'),
-                            'name'   => 'name',
-                            'type'   => 'html',
-                            'value'  => '$data->status'
-                        ],
-                        [
-                            'header' => gT('Created'),
-                            'name'   => 'name',
-                            'type'   => 'html',
-                            'value'  => '$data->created'
-                        ]
-                    ]
-                    //'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
-                    //'ajaxUpdate'               => 'plugins-grid'
-                ]
-            ); ?>
+            <i class="fa fa-spinner fa-spin"></i>
         </div>
     </div>
 

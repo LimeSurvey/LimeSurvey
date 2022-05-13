@@ -660,6 +660,12 @@ class PluginManagerController extends SurveyCommonAction
         $this->getController()->redirect($this->getPluginManagerUrl());
     }
 
+    public function getLimestoreTabHtml()
+    {
+        echo $this->getController()->renderPartial('pluginmanager/tabLimestore', []);
+        Yii::app()->end();
+    }
+
     /**
      * @return PluginInstaller
      * @todo Might have different file fetcher.

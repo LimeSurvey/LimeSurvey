@@ -30,6 +30,16 @@ LS.pluginManager = (function() {
         //$('.ls-pm-uninstall-plugin').on('click', module.uninstallPlugin);
     };
 
+    /**
+     * Fetch HTML and put it in limestore tab
+     *
+     * @param {string} url
+     */
+    module.populateLimestoreList = function(url) {
+        $('#nav-tab-limestore').prop('onclick', null);
+        $.get(url, {}, function(data) { $('#tab-limestore').html(data); });
+    };
+
     return module;
 })();
 
