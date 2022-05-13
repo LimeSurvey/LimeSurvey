@@ -48,7 +48,6 @@
                 ) : ?>
                 <a class="btn btn-outline-secondary tab-dependent-button" data-tab="#surveys"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>">
-                    >
                         <span class="icon-add text-success"></span>
                     <?php eT("Create survey"); ?>
                 </a>
@@ -62,7 +61,6 @@
                 <a class="btn btn-outline-secondary tab-dependent-button d-none"
                    data-tab="#surveygroups"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurveyGroup']['url']; ?>">
-                    >
                         <span class="icon-add text-success"></span>
                     <?php eT("Create survey group"); ?>
                 </a>

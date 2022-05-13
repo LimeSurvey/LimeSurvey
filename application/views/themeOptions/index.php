@@ -112,28 +112,25 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <blockquote><?php echo $oBrokenTheme->getMessage(); ?></blockquote>
                                         </td>
                                         <td class="col-lg-1">
-
                                             <!-- Export -->
-                                            <?php if (Permission::model()->hasGlobalPermission('templates',
-                                                        <a class="btn btn-outline-secondary btn-block"
-                                                           id="button-export"
-                                                           href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>">
+                                            <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
+                                                <a class="btn btn-outline-secondary btn-block" id="button-export"
+                                                   href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>">
                                                     <span class="icon-export text-success"></span>
                                                     <?php eT("Export"); ?>
-                                                        </a>
+                                                </a>
                                             <?php endif; ?>
-
                                             <!-- Delete -->
                                             <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
-                                                        <a id="button-delete"
-                                                           href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
-                                                           data-post='{ "templatename": "<?php echo $sName; ?>" }'
-                                                           data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
-                                                           title="<?php eT('Delete'); ?>"
-                                                           class="btn btn-danger selector--ConfirmModal">
-                                                            <span class="fa fa-trash"></span>
-                                                            <?php eT('Delete'); ?>
-                                                        </a>
+                                                <a id="button-delete"
+                                                   href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
+                                                   data-post='{ "templatename": "<?php echo $sName; ?>" }'
+                                                   data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
+                                                   title="<?php eT('Delete'); ?>"
+                                                   class="btn btn-danger selector--ConfirmModal">
+                                                    <span class="fa fa-trash"></span>
+                                                    <?php eT('Delete'); ?>
+                                                </a>
                                             <?php endif; ?>
 
                                         </td>
