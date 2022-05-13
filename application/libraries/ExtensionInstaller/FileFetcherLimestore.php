@@ -9,14 +9,15 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 /**
- * Extension file fetcher for upload ZIP file.
- * Must work for all extension types: plugins, theme, question theme, etc.
+ * Extension file fetcher for LimeStore ZIP file
+ * Same logic as for upload, except where the file is fetched from (curl, in this case)
  *
  * @since 2022-05-013
  * @author LimeSurvey GmbH
  */
 class FileFetcherLimestore extends FileFetcherUploadZip
 {
+    /** @var string */
     private $url;
 
     public function fetch()
@@ -26,11 +27,24 @@ class FileFetcherLimestore extends FileFetcherUploadZip
         $this->extractZipFile($this->getTempdir());
     }
 
+    /**
+     * Set download URL to limestore
+     *
+     * @param string $url
+     * @return void
+     */
     public function setUrl($url)
     {
         $this->url = $url;
     }
 
+    /**
+     * Curl to limestore and unzip the file.
+     *
+     * @param string $tempdir
+     * @return void
+     * @throws Exception
+     */
     protected function extractZipFile($tempdir)
     {
         \Yii::import('application.helpers.common_helper', true);
@@ -50,7 +64,11 @@ class FileFetcherLimestore extends FileFetcherUploadZip
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         // get curl response
         curl_exec($ch); 
-        var_dump(curl_error($ch));
+        $error = curl_error($ch);
+        if (!empty($error)) {
+            throw new Exception($error);
+        }
+
         curl_close($ch);
         fclose($fp);
 
@@ -63,6 +81,7 @@ class FileFetcherLimestore extends FileFetcherUploadZip
         );
 
         if ($aExtractResult === 0) {
+            // NB: Can fail with text "No permission" if extension is disabled in limestore.
             throw new Exception(
                 gT("This file is not a valid ZIP file archive. Import failed.")
                 . ' ' . $zip->error_string

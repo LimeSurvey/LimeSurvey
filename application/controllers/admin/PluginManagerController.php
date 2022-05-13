@@ -693,22 +693,12 @@ class PluginManagerController extends SurveyCommonAction
         /** @var ExtensionConfig */
         $config = $installer->getConfig();
 
-        if (empty($config)) {
-            $installer->abort();
-            $this->errorAndRedirect(gT('Could not read plugin configuration file.'));
-        }
-
-        if (!$config->isCompatible()) {
-            $installer->abort();
-            $this->errorAndRedirect(gT('The plugin is not compatible with your version of LimeSurvey.'));
-        }
-
         try {
             $installer->install();
             echo 'done';
         } catch (Throwable $ex) {
             $installer->abort();
-            echo 'failed';
+            echo 'failed: ' . $ex->getMessage();
         }
 
         Yii::app()->end();
