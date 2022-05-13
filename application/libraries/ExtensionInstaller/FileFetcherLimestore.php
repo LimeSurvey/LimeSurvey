@@ -60,10 +60,10 @@ class FileFetcherLimestore extends FileFetcherUploadZip
         // if this is too low the download will be interrupted
         curl_setopt($ch, CURLOPT_TIMEOUT, 600);
         // write curl response to file
-        curl_setopt($ch, CURLOPT_FILE, $fp); 
+        curl_setopt($ch, CURLOPT_FILE, $fp);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         // get curl response
-        curl_exec($ch); 
+        curl_exec($ch);
         $error = curl_error($ch);
         if (!empty($error)) {
             throw new Exception($error);
