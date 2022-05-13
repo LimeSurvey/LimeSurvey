@@ -16,9 +16,7 @@ echo viewHelper::getViewTestTag('pluginManager');
 $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
 $fetchLimestoreListUrl = Yii::app()->getController()->createUrl(
     'admin/pluginmanager',
-    [
-        'sa' => 'getLimestoreTabHtml'
-    ]
+    ['sa' => 'getLimestoreTabHtml']
 );
 
 ?>

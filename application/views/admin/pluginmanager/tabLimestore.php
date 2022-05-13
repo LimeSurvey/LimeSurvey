@@ -2,19 +2,30 @@
 
 use LimeSurvey\PluginManager\LimeStoreDataProvider;
 
+$installLimestorePluginUrl = Yii::app()->getController()->createUrl(
+    'admin/pluginmanager',
+    ['sa' => 'installLimestorePlugin']
+);
+
 $this->widget(
     'bootstrap.widgets.TbGridView',
     [
         'id'                       => 'limestore-grid',
         'dataProvider'             => new LimeStoreDataProvider([]),
+        'template'                 => "{items}\n<div id='pluginsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
         'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
-        //{ ["extension_type"]=> string(1) "p" ["extension_name"]=> string(10) "MassAction" ["status"]=> string(8) "disabled" ["version"]=> string(5) "1.0.5" ["last_security_version"]=> NULL ["created"]=> string(19) "2018-12-12 17:13:33" ["owner"]=> object(stdClass)#2071 (3) { ["id"]=> string(5) "49797" ["name"]=> string(14) "Olle Haerstedt" ["username"]=> string(7) "ollehar" } } 
         'columns'                  => [
             [
                 'header' => gT('Action'),
                 'type'   => 'raw',
                 'name'   => 'action',
-                'value'  => function () { return '<button class="btn btn-primary">Install</button>'; }
+                'value'  => function ($data) use ($installLimestorePluginUrl) {
+                    return sprintf(
+                        '<a href="%s" class="btn btn-primary">%s</a>',
+                        $installLimestorePluginUrl . '&extension_name=' . $data->extension_name,
+                        gT('Install')
+                    );
+                }
             ],
             [
                 'header' => gT('Plugin'),
@@ -40,8 +51,8 @@ $this->widget(
                 'type'   => 'html',
                 'value'  => '$data->created'
             ]
-        ]
-        //'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
-        //'ajaxUpdate'               => 'plugins-grid'
+        ],
+        //'rowHtmlOptionsExpression' => 'array("data-id" => $data->id)',
+        'ajaxUpdate'               => 'plugins-grid'
     ]
 ); ?>

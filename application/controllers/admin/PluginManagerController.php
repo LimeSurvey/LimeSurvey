@@ -662,7 +662,15 @@ class PluginManagerController extends SurveyCommonAction
 
     public function getLimestoreTabHtml()
     {
+        $this->checkUpdatePermission();
         echo $this->getController()->renderPartial('pluginmanager/tabLimestore', []);
+        Yii::app()->end();
+    }
+
+    public function installLimestorePlugin()
+    {
+        $this->checkUpdatePermission();
+        echo 'here';
         Yii::app()->end();
     }
 

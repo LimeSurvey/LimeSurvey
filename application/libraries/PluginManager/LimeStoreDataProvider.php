@@ -8,7 +8,14 @@ class LimeStoreDataProvider extends CArrayDataProvider
 {
     public function __construct($rawData, $config = [])
     {
-        error_log('constr');
+        $this->rawData = $this->getLimestoreExtensions();
+    }
+
+    /**
+     * @return array[]
+     */
+    public function getLimestoreExtensions()
+    {
         $url = 'https://comfortupdate.limesurvey.org/index.php?r=limestorerest&extension_type=p';
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -16,8 +23,7 @@ class LimeStoreDataProvider extends CArrayDataProvider
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
         $result = json_decode(curl_exec($ch));
         curl_close($ch);
-
-        $this->rawData = $result;
+        return $result;
     }
 
     protected function fetchKeys()
