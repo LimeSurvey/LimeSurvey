@@ -13,6 +13,7 @@
  */
 
 use LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
+use LimeSurvey\ExtensionInstaller\FileFetcherLimestore;
 use LimeSurvey\ExtensionInstaller\PluginInstaller;
 use LimeSurvey\Menu\Menu;
 use LimeSurvey\Menu\MenuItem;
@@ -667,10 +668,49 @@ class PluginManagerController extends SurveyCommonAction
         Yii::app()->end();
     }
 
-    public function installLimestorePlugin()
+    /**
+     * @param string $id Extension id on limestore
+     */
+    public function installLimestorePlugin($id)
     {
         $this->checkUpdatePermission();
-        echo 'here';
+        $id = (int) $id;
+
+        // TODO: Put URL in config
+        $url = 'https://account.limesurvey.org/limestore?task=limestore.downloadzipfile&extension_id=' . $id;
+
+        // Custom Limestore file fetcher.
+        $fileFetcher = new FileFetcherLimestore();
+        $fileFetcher->setUrl($url);
+        $fileFetcher->setUnzipFilter('pluginExtractFilter');
+        $installer = new PluginInstaller();
+        $installer->setFileFetcher($fileFetcher);
+        // Use upload folder for plugins.
+        $installer->setPluginType('upload');
+
+        $installer->fetchFiles();
+
+        /** @var ExtensionConfig */
+        $config = $installer->getConfig();
+
+        if (empty($config)) {
+            $installer->abort();
+            $this->errorAndRedirect(gT('Could not read plugin configuration file.'));
+        }
+
+        if (!$config->isCompatible()) {
+            $installer->abort();
+            $this->errorAndRedirect(gT('The plugin is not compatible with your version of LimeSurvey.'));
+        }
+
+        try {
+            $installer->install();
+            echo 'done';
+        } catch (Throwable $ex) {
+            $installer->abort();
+            echo 'failed';
+        }
+
         Yii::app()->end();
     }
 

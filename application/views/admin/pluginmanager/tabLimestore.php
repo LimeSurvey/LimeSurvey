@@ -22,7 +22,7 @@ $this->widget(
                 'value'  => function ($data) use ($installLimestorePluginUrl) {
                     return sprintf(
                         '<a href="%s" class="btn btn-primary">%s</a>',
-                        $installLimestorePluginUrl . '&extension_name=' . $data->extension_name,
+                        $installLimestorePluginUrl . '&id=' . $data->id,
                         gT('Install')
                     );
                 }
