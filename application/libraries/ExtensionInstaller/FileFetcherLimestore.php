@@ -65,12 +65,12 @@ class FileFetcherLimestore extends FileFetcherUploadZip
         // get curl response
         curl_exec($ch);
         $error = curl_error($ch);
+        curl_close($ch);
+        fclose($fp);
+
         if (!empty($error)) {
             throw new Exception($error);
         }
-
-        curl_close($ch);
-        fclose($fp);
 
         $zip = new \PclZip($zipFile);
         $aExtractResult = $zip->extract(
