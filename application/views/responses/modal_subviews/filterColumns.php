@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="responses-column-filter-modal-cancel" type="button" class="btn btn-close" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
+                    <button id="responses-column-filter-modal-cancel" type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
                     <button role="button" type="button"id="responses-column-filter-modal-submit" class="btn btn-primary">
                         <?php eT('Select'); ?>
                     </button>

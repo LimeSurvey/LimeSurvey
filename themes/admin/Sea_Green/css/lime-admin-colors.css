@@ -816,7 +816,7 @@ fieldset[disabled] .btn-link:focus {
 
 .btn-outline-secondary {
   color: #333333;
-  background-color: #ebebeb;
+  background-color: #fff;
   border: 1px solid #cccccc;
 }
 .btn-outline-secondary.disabled {

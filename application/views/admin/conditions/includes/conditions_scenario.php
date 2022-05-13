@@ -39,7 +39,7 @@
                     <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
                     <input type='hidden' name='subaction' value='updatescenario' />&nbsp;&nbsp;
                     <input type='submit' class="btn btn-outline-secondary" name='scenarioupdated' value='<?php eT("Update scenario"); ?>' />
-                    <input type='button' class="btn btn-outline-secondary" name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
+                    <input type='button' class="btn btn-cancel" name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
                 </form>
 
                 <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deletescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;', 'class' => 'delete-scenario-form', 'id'=>'deletescenario'.$scenarionr['scenario'],'name'=>'deletescenario'.$scenarionr['scenario']));?>

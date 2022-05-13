@@ -20,7 +20,7 @@
                 <button 
                     type='submit' 
                     name="move" 
-                    class='btn btn-outline-secondary btn-close' 
+                    class='btn btn-cancel'
                     value='clearcancel'>
                     <?php echo gT("No") ?>
                 </button>

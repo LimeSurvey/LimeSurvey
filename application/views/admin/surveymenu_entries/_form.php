@@ -281,7 +281,7 @@ Yii::app()->getController()->renderPartial(
 	<div class="modal-footer">
         <button 
 			type="button" 
-			class="btn btn-close" 
+			class="btn btn-cancel"
 			data-bs-dismiss="modal">
 			<?=gT('Cancel')?>
 		</button>

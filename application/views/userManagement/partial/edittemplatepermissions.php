@@ -15,10 +15,10 @@ Yii::app()->getController()->renderPartial(
     <div class="container">
         <input type="hidden" name="userid" value="<?php echo $oUser->uid; ?>"/>
         <div class="mb-3">
-            <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-default">
+            <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-outline-secondary">
                 <?php eT('Select all'); ?>
             </button>
-            <button id="UserManagement--action-userthemepermissions-select-none" class="btn btn-default">
+            <button id="UserManagement--action-userthemepermissions-select-none" class="btn btn-outline-secondary">
                 <?php eT('Select none'); ?>
             </button>
         </div>
@@ -48,7 +48,7 @@ Yii::app()->getController()->renderPartial(
 </div>
 </div>
 <div class="modal-footer modal-footer-buttons row ls-space margin top-25">
-    <button class="btn btn-outline-secondary selector--exitForm" id="exitForm"><?= gT('Cancel') ?></button>
+    <button class="btn btn-cancel selector--exitForm" id="exitForm"><?= gT('Cancel') ?></button>
     <button type="button" class="btn btn-primary selector--submitForm" id="submitForm">
         <?=gT('Save')?>
     </button>

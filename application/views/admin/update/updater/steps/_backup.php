@@ -75,7 +75,7 @@
         <?php echo CHtml::hiddenField('datasupdateinfo' , $datasupdateinfo);?>
         <?php  echo CHtml::hiddenField('access_token' , $access_token); ?>
 
-        <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+        <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
             <?php eT("Cancel"); ?>
         </a>
 
