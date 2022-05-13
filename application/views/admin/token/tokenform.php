@@ -40,7 +40,7 @@
                 )
             ); ?>
             <!-- Tabs -->
-            <?php if (true): ?>
+            <?php if( count($attrfieldnames) > 0 ):?>
                 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
                     <!-- Common  -->
                     <li role="presentation" class="nav-item">
