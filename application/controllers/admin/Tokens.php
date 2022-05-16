@@ -680,24 +680,29 @@ class Tokens extends SurveyCommonAction
             }
 
             // completed
-            if (trim($request->getPost('completed')) === 'N') {
+            if (trim($request->getPost('completed')) == 'N' || trim($request->getPost('completed')) == '') {
                 $_POST['completed'] = 'N';
-            } else {
+            } elseif (trim($request->getPost('completed')) == 'Y') {
                 $_POST['completed'] = 'Y';
+            } else {
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed')), $dateformatdetails['phpdate'] . ' H:i');
+                $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             //sent
-            if (trim($request->getPost('sent')) === 'N') {
+            if (trim($request->getPost('sent')) == 'N') {
                 $_POST['sent'] = 'N';
             } else {
-                 $_POST['sent'] = 'Y';
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('sent')), $dateformatdetails['phpdate'] . ' H:i');
+                $_POST['sent'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             // remindersent
-            if (trim($request->getPost('remindersent')) === 'N') {
+            if (trim($request->getPost('remindersent')) == 'N') {
                 $_POST['remindersent'] = 'N';
             } else {
-                $_POST['remindersent'] = 'Y';
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('remindersent')), $dateformatdetails['phpdate'] . ' H:i');
+                $_POST['remindersent'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             $aTokenData['firstname'] = $request->getPost('firstname');
