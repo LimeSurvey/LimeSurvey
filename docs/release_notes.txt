@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.10 (build 220510) to 3.28.11 (build 220517) May 16, 2022
+-Fixed issue #17991: Importing a question from the "List questions" menu fails with 400 error (#2349) (Gabriel Jenik)
+#Updated translation: Portuguese (Brazil) by effgarces, mauriciofurtado, samarta, soniagouveia, tamiel
+#Updated translation: French (France) by frederic93190
+
+
 Changes from 3.28.9 (build 220503) to 3.28.10 (build 220510) May 9, 2022
 -Fixed issue #18051: RemoteControl API: Deleting a question crashes  (#2377) (Denis Chenu)
 -Fixed issue #17889: Setting to correct server time not taken into account when sending email invitations (#2356) (Gabriel Jenik)
