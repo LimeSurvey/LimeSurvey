@@ -46,10 +46,10 @@ var ThemeOptions = function () {
         if (!inheritPossible) return false;
 
         if (generalInherit()) {
-            //$('#general_inherit_on').prop('checked', true).trigger('change').closest('label').addClass('active');
+            $('#general_inherit_on').prop('checked', true).trigger('change').closest('label').addClass('active');
             $('.action_hide_on_inherit').addClass('d-none');
         } else {
-            //$('#general_inherit_off').prop('checked', true).trigger('change').closest('label').addClass('active');
+            $('#general_inherit_off').prop('checked', true).trigger('change').closest('label').addClass('active');
         }
     };
 
