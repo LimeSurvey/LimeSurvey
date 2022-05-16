@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-05-09 10:35:11+00:00\n"
+"POT-Creation-Date: 2022-05-16 09:16:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -272,7 +272,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2437
 #: application/controllers/SurveyAdministrationController.php:3174
 #: application/controllers/admin/EmailTemplates.php:84
-#: application/controllers/admin/Export.php:1227
+#: application/controllers/admin/Export.php:1243
 #: application/controllers/admin/Expressions.php:134
 #: application/controllers/admin/PluginHelper.php:31
 #: application/controllers/admin/Quotas.php:150
@@ -1063,7 +1063,7 @@ msgstr ""
 #: application/controllers/ThemeOptionsController.php:290
 #: application/controllers/ThemeOptionsController.php:579
 #: application/controllers/ThemeOptionsController.php:605
-#: application/controllers/admin/Export.php:1001
+#: application/controllers/admin/Export.php:1017
 #: application/controllers/admin/QuestionThemes.php:13
 #: application/controllers/admin/SurveymenuController.php:168
 #: application/controllers/admin/SurveymenuEntryController.php:214
@@ -5053,7 +5053,7 @@ msgstr ""
 #: application/controllers/admin/Export.php:293
 #: application/controllers/admin/Export.php:435
 #: application/views/admin/export/exportresults_view.php:23
-#: application/views/admin/export/vv_view.php:96
+#: application/views/admin/export/vv_view.php:108
 msgid "Export results"
 msgstr ""
 
@@ -5101,17 +5101,17 @@ msgstr ""
 msgid "Export a VV survey file"
 msgstr ""
 
-#: application/controllers/admin/Export.php:966
-#: application/controllers/admin/Export.php:984
+#: application/controllers/admin/Export.php:982
+#: application/controllers/admin/Export.php:1000
 msgid "Unknown error"
 msgstr ""
 
-#: application/controllers/admin/Export.php:969
+#: application/controllers/admin/Export.php:985
 msgid "Not active."
 msgstr ""
 
-#: application/controllers/admin/Export.php:1225
-#: application/controllers/admin/Export.php:1226
+#: application/controllers/admin/Export.php:1241
+#: application/controllers/admin/Export.php:1242
 #: application/views/admin/survey/queXMLSurvey_view.php:5
 #: application/views/admin/survey/queXMLSurvey_view.php:6
 #: application/views/admin/survey/surveybar_displayexport.php:70
@@ -5119,7 +5119,7 @@ msgstr ""
 msgid "queXML PDF export"
 msgstr ""
 
-#: application/controllers/admin/Export.php:1289
+#: application/controllers/admin/Export.php:1305
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
@@ -12887,7 +12887,7 @@ msgid "IP as default location"
 msgstr ""
 
 #: application/helpers/questionHelper.php:498
-msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
+msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude. Latitude and longtitude should be in decimal dot notation (for example \"-3.1234 5.1424\")."
 msgstr ""
 
 #: application/helpers/questionHelper.php:499
@@ -17414,7 +17414,7 @@ msgid "If data is missing in the exported file, please contact your system admin
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_format.php:5
-#: application/views/admin/export/vv_view.php:62
+#: application/views/admin/export/vv_view.php:51
 msgid "Format"
 msgstr ""
 
@@ -17431,7 +17431,7 @@ msgid "Completion state:"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_general.php:17
-#: application/views/admin/export/vv_view.php:41
+#: application/views/admin/export/vv_view.php:39
 msgid "Completed responses only"
 msgstr ""
 
@@ -17439,12 +17439,12 @@ msgstr ""
 #: application/views/admin/export/spss_view.php:21
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:14
 #: application/views/admin/export/statistics_user_view.php:30
-#: application/views/admin/export/vv_view.php:46
+#: application/views/admin/export/vv_view.php:40
 msgid "All responses"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_general.php:23
-#: application/views/admin/export/vv_view.php:51
+#: application/views/admin/export/vv_view.php:41
 msgid "Incomplete responses only"
 msgstr ""
 
@@ -17477,6 +17477,7 @@ msgid "Use ExpressionScript code:"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_headings.php:91
+#: application/views/admin/export/vv_view.php:99
 msgid "Number of characters:"
 msgstr ""
 
@@ -17919,28 +17920,48 @@ msgstr ""
 msgid "Export:"
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:67
-msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
-msgstr ""
-
-#: application/views/admin/export/vv_view.php:68
+#: application/views/admin/export/vv_view.php:57
 msgid "File extension:"
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:76
-msgid "If you want to import survey on old installation or if your survey have problem: use old version (automatically selected if some code are duplicated)."
+#: application/views/admin/export/vv_view.php:61
+msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:77
+#: application/views/admin/export/vv_view.php:67
 msgid "VV export version:"
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:83
+#: application/views/admin/export/vv_view.php:73
 msgid "Last VV version"
 msgstr ""
 
-#: application/views/admin/export/vv_view.php:88
+#: application/views/admin/export/vv_view.php:78
 msgid "Old VV version"
+msgstr ""
+
+#: application/views/admin/export/vv_view.php:81
+msgid "If you want to import the response data in older version or if your survey has integrity problem, please use the old export version (automatically selected if there are duplicate codes)."
+msgstr ""
+
+#: application/views/admin/export/vv_view.php:87
+msgid "Separator between question and subquestion:"
+msgstr ""
+
+#: application/views/admin/export/vv_view.php:91
+msgid "New line (use with care)"
+msgstr ""
+
+#: application/views/admin/export/vv_view.php:92
+msgid "Subquestion wrapped by parentheses"
+msgstr ""
+
+#: application/views/admin/export/vv_view.php:93
+msgid "Single dash (%s)"
+msgstr ""
+
+#: application/views/admin/export/vv_view.php:103
+msgid "Leave empty if you want complete question text."
 msgstr ""
 
 #: application/views/admin/expressions/test/survey_logic_file.php:15
@@ -18637,7 +18658,7 @@ msgstr ""
 msgid "Delete label"
 msgstr ""
 
-#: application/views/admin/labels/_labelviewtabcontent_view.php:96
+#: application/views/admin/labels/_labelviewtabcontent_view.php:95
 msgid "Quick add labels"
 msgstr ""
 
