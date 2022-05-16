@@ -37,7 +37,14 @@ LS.pluginManager = (function() {
      */
     module.populateLimestoreList = function(url) {
         $('#nav-tab-limestore').prop('onclick', null);
-        $.get(url, {}, function(data) { $('#tab-limestore').html(data); });
+        $.get(
+            url,
+            {},
+            function(data) {
+                $('#tab-limestore').html(data);
+                $('#limestore-grid').yiiGridView({'ajaxUpdate':['limestore\x2Dgrid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid\x2Dview\x2Dloading','filterClass':'filters','tableClass':'items\x20table\x20table\x2Dhover','selectableRows':1,'enableHistory':false,'updateSelector':'\x7Bpage\x7D,\x20\x7Bsort\x7D','filterSelector':'\x7Bfilter\x7D','pageVar':'page'});
+            }
+        );
     };
 
     return module;

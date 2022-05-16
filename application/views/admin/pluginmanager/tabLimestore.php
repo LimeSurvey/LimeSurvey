@@ -12,7 +12,7 @@ $this->widget(
     [
         'id'                       => 'limestore-grid',
         'dataProvider'             => new LimeStoreDataProvider([]),
-        'template'                 => "{items}\n<div id='pluginsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+        'template'                 => "{items}\n<div id='limestoreListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
         'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
         'columns'                  => [
             [
@@ -40,10 +40,10 @@ $this->widget(
                 'value'  => '$data->owner->name'
             ],
             [
-                'header' => gT('Status'),
+                'header' => gT('Version'),
                 'name'   => 'name',
                 'type'   => 'html',
-                'value'  => '$data->status'
+                'value'  => '$data->version'
             ],
             [
                 'header' => gT('Created'),
@@ -53,6 +53,6 @@ $this->widget(
             ]
         ],
         //'rowHtmlOptionsExpression' => 'array("data-id" => $data->id)',
-        'ajaxUpdate'               => 'plugins-grid'
+        'ajaxUpdate'               => 'limestore-grid'
     ]
 ); ?>
