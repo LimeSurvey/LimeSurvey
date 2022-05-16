@@ -695,13 +695,14 @@ class PluginManagerController extends SurveyCommonAction
 
         try {
             $installer->install();
-            echo 'done';
+            Yii::app()->user->setFlash(
+                'success',
+                gT('The plugin was successfully installed. You need to activate it before you can use it.')
+            );
         } catch (Throwable $ex) {
             $installer->abort();
-            echo 'failed: ' . $ex->getMessage();
+            $this->errorAndRedirect($ex->getMessage());
         }
-
-        Yii::app()->end();
     }
 
     /**
