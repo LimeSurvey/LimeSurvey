@@ -111,12 +111,9 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
     $this->widget(
         'application.extensions.admin.grid.CLSGridView',
         [
-            'id' => 'plugins-grid',
-            'dataProvider' => $dataProvider,
-            'pager' => [
-                'class' => 'application.extensions.admin.grid.CLSYiiPager',
-            ],
-            'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+            'id'                       => 'plugins-grid',
+            'dataProvider'             => $dataProvider,
+            'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                 . sprintf(
                     gT('%s rows per page'),
                     CHtml::dropDownList(
