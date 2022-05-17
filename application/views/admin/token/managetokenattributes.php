@@ -79,6 +79,13 @@
                                             <?php } ?>
                                         </td>
                                         <td>
+                                                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                                    <input type="radio" class="btn-check" name="allowinvalidemail" id="allowinvalidemail-on" autocomplete="off" <?= $tokenvalues['show_register'] === 'Y' ? 'checked' : '' ?>>
+                                                    <label class="btn btn-outline-primary" for="allowinvalidemail-on"><?= gT('On') ?></label>
+
+                                                    <input type="radio" class="btn-check" name="allowinvalidemail" id="allowinvalidemail-off" autocomplete="off" <?= $tokenvalues['show_register'] === 'Y' ? '' : 'checked' ?>>
+                                                    <label class="btn btn-outline-primary" for="allowinvalidemail-off"><?= gT('Off') ?></label>
+                                                </div>
                                             <?php
                                                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                     'name' => "show_register_{$sTokenField}",
