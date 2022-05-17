@@ -527,6 +527,29 @@ class SurveyCommonAction extends CAction
     }
 
     /**
+     * Render the save/cancel bar for Organize question groups/questions
+     *
+     * REFACTORED in LayoutHelper
+     *
+     * @param array $aData
+     *
+     * @since 2014-09-30
+     * @author LimeSurvey GmbH
+     */
+    protected function organizequestionbar($aData)
+    {
+        if (isset($aData['organizebar'])) {
+            if (isset($aData['questionbar']['closebutton']['url'])) {
+                $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
+                $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
+            }
+
+            $aData['questionbar'] = $aData['organizebar'];
+            $this->getController()->renderPartial("/admin/survey/Question/questionbar_view", $aData);
+        }
+    }
+
+    /**
      * REFACTORED in LayoutHelper
      *
      * @param $aData
@@ -547,6 +570,90 @@ class SurveyCommonAction extends CAction
         );
 
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
+    }
+
+    /**
+     * Shows admin menu for question
+     *
+     * @deprecated not in use anymore
+     *
+     * @param array $aData
+     */
+    public function questionbar($aData)
+    {
+        if (isset($aData['questionbar'])) {
+            if (is_object($aData['oSurvey'])) {
+                $iSurveyID = $aData['surveyid'];
+                /** @var Survey $oSurvey */
+                $oSurvey = $aData['oSurvey'];
+                $gid = $aData['gid'];
+                $qid = $aData['qid'];
+
+                // action
+                $action = (!empty($aData['display']['menu_bars']['qid_action'])) ? $aData['display']['menu_bars']['qid_action'] : null;
+                $baselang = $oSurvey->language;
+
+                //Show Question Details
+                //Count answer-options for this question
+                $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid));
+
+                //Count sub-questions for this question
+                $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid));
+
+                $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
+                if (is_null($qrrow)) {
+                    return;
+                }
+                $questionsummary = "";
+
+                // Check if other questions in the Survey are dependent upon this question
+                $condarray = getQuestDepsForConditions($iSurveyID, "all", "all", $qid, "by-targqid", "outsidegroup");
+
+                // $surveyinfo = $oSurvey->attributes;
+                // $surveyinfo = array_map('flattenText', $surveyinfo);
+                $aData['activated'] = $oSurvey->active;
+
+                $qrrow = $qrrow->attributes;
+                $aData['languagelist'] = $oSurvey->getAllLanguages();
+                $aData['qtypes'] = Question::typeList();
+                $aData['action'] = $action;
+                $aData['surveyid'] = $iSurveyID;
+                $aData['qid'] = $qid;
+                $aData['gid'] = $gid;
+                $aData['qrrow'] = $qrrow;
+                $aData['baselang'] = $baselang;
+
+                // TODO: Don't call getAdvancedSettingsWithValues without a question object.
+                $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
+
+                $DisplayArray = array();
+                foreach ($aAttributesWithValues as $aAttribute) {
+                    if (
+                        ($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default']) ||
+                        ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])
+                    ) {
+                        if ($aAttribute['inputtype'] == 'singleselect') {
+                            if (isset($aAttribute['options'][$aAttribute['value']])) {
+                                                            $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+                            }
+                        }
+                        $DisplayArray[] = $aAttribute;
+                    }
+                }
+
+                $aData['advancedsettings'] = $DisplayArray;
+                $aData['condarray'] = $condarray;
+                if (isset($aData['questionbar']['closebutton']['url'])) {
+                    $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
+                    $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
+                }
+                $questionsummary .= $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
+                $this->getController()->renderPartial('/survey_view', ['display' => $questionsummary]);
+            } else {
+                Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
+                $this->getController()->redirect(array("admin/index"));
+            }
+        }
     }
 
     /**
