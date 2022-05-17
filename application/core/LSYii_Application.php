@@ -402,9 +402,10 @@ class LSYii_Application extends CWebApplication
             Yii::app()->request->isAjaxRequest &&
             $event->exception instanceof CHttpException
         ) {
-            header('Content-Type: application/json');
-            http_response_code($event->exception->statusCode);
-            die(json_encode(['message' => $event->exception->getMessage()]));
+            $this->outputJsonError($event->exception);
+        } elseif ($event->exception instanceof LSFriendlyException) {
+            // Handle "friendly" exceptions (redirect + flash)
+            $this->handleFriendlyException($event->exception);
         }
         $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
@@ -513,5 +514,62 @@ class LSYii_Application extends CWebApplication
         }
 
         return $aApplicationConfig;
+    }
+
+    /**
+     * Handles "friendly" exceptions by setting a flash message and redirecting.
+     * If the exception doesn't specify a redirect URL, the referrer is used.
+     *
+     * @param array $error
+     * @param LSFriendlyException $exception
+     * @return void
+     */
+    private function handleFriendlyException($exception)
+    {
+        $message = $exception->getMessage();
+        $errors = $exception->getDetailedErrors();
+        if (!empty($errors)) {
+            $message .= "<br>" . implode("<br>", $errors);
+        }
+        Yii::app()->setFlashMessage($message, 'error');
+        if ($exception->getRedirectUrl() != null) {
+            $redirectTo = $exception->getRedirectUrl();
+        } else {
+            $redirectTo = Yii::app()->request->urlReferrer;
+        }
+        Yii::app()->request->redirect($redirectTo);
+    }
+
+    /**
+     * Outputs an exception as JSON.
+     *
+     * @param CHttpException $exception
+     * @return void
+     */
+    private function outputJsonError($exception)
+    {
+        $outputData = [
+            'success' => false,
+            'message' => $exception->getMessage(),
+        ];
+        if ($exception instanceof LSFriendlyException) {
+            if ($exception->getRedirectUrl() != null) {
+                $outputData['redirectTo'] = $exception->getRedirectUrl();
+            }
+            if ($exception->getNoReload() != null) {
+                $outputData['noReload'] = $exception->getNoReload();
+            }
+            $errors = $exception->getDetailedErrors();
+
+            // Add the detailed errors to the message, so simple handlers can just show it.
+            $outputData['message'] .= "<br>" . implode("<br>", $errors);
+            // But save the "simpler" message on 'error', and the list of errors on "detailedErrors"
+            // so that more complex handlers can decide what to show.
+            $outputData['error'] = $exception->getMessage();
+            $outputData['detailedErrors'] = $errors;
+        }
+        header('Content-Type: application/json');
+        http_response_code($exception->statusCode);
+        die(json_encode($outputData));
     }
 }
