@@ -4292,3 +4292,9 @@ html[dir="rtl"] .dropdown-menu,
 html[dir="rtl"] th {
     text-align: initial;
 }
+
+.list-group-item.disabled {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #eee;
+}
