@@ -604,8 +604,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['errorHtml']         = ' ls-questions-have-errors ';
         $aClassAndAttributes['class']['activealertbutton'] = '  ';
         $aClassAndAttributes['class']['errorHtmlbutton']   = ' ';
-        $aClassAndAttributes['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="' . gT("Close") . '" ';
-        $aClassAndAttributes['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="' . gT("Close") . '" ';
+        $aClassAndAttributes['attr']['activealertbutton']  = ' type="button"  data-bs-dismiss="alert" aria-label="' . gT("Close") . '" ';
+        $aClassAndAttributes['attr']['errorHtmlbutton']    = ' type="button"  data-bs-dismiss="alert" aria-label="' . gT("Close") . '" ';
 
         $aClassAndAttributes['attr']['activealert'] = 'role="alert"';
 
@@ -653,7 +653,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['modaldialog']       = ' modal-dialog ';
         $aClassAndAttributes['class']['modalcontent']      = ' modal-content ';
         $aClassAndAttributes['class']['modalheader']       = ' modal-header ';
-        $aClassAndAttributes['class']['modalclosebutton']  = ' close ';
+        $aClassAndAttributes['class']['modalclosebutton']  = ' btn-close ';
         $aClassAndAttributes['class']['modaltitle']        = ' modal-title h4 ';
         $aClassAndAttributes['class']['modalbody']         = ' modal-body ';
         $aClassAndAttributes['class']['modalfooter']       = ' modal-footer ';

@@ -37,16 +37,6 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <div class="list-surveys">
                     <?php echo '<h3>' . gT('Installed survey themes:') . '</h3>'; ?>
                     <?php $this->renderPartial(
-                        './surveythememenu',
-                        [
-                            'canImport'          => $canImport,
-                            'importErrorMessage' => $importErrorMessage,
-                            'importModal'        => 'importSurveyModal',
-                            'importTemplate'     => 'importSurveyTemplate',
-                            'themeType'          => 'survey'
-                        ]
-                    ); ?>
-                    <?php $this->renderPartial(
                         './surveythemelist',
                         ['oSurveyTheme' => $oSurveyTheme, 'pageSize' => $pageSize]
                     ); ?>
@@ -131,6 +121,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                     href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
                                                     data-post='{ "templatename": "<?php echo $sName; ?>" }'
                                                     data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
+                                                data-button-no="<?= gT('Cancel'); ?>"
+                                                data-button-yes="<?= gT('Delete'); ?>"
                                                     title="<?php eT('Delete'); ?>"
                                                     class="btn btn-danger selector--ConfirmModal">
                                                     <span class="fa fa-trash"></span>
@@ -225,32 +217,44 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <div class="col-12 list-surveys">
                     <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                     <!-- Installed Question Themes -->
-                    <?php $this->renderPartial(
-                        './surveythememenu',
-                        [
-                            'canImport'          => $canImport,
-                            'importErrorMessage' => $importErrorMessage,
-                            'importModal'        => 'importQuestionModal',
-                            'importTemplate'     => 'importQuestionTemplate',
-                            'themeType'          => 'question'
-                        ]
-                    ); ?>
-                    <?php $this->renderPartial('./installedthemelist', ['oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize]); ?>
-                    <!-- Available Quesiton Themes-->
-                    <?php $this->renderPartial('./availablethemelist', ['oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize]); ?>
-                </div>
+                <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <!-- Available Quesiton Themes-->
+                <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
             </div>
         </div>
     </div>
+</div>
+
+<?php $this->renderPartial(
+        './surveythememenu',
+        [
+            'canImport'=>$canImport,
+            'importErrorMessage'=>$importErrorMessage,
+            'importModal' => 'importSurveyModal',
+            'importTemplate' => 'importSurveyTemplate',
+            'themeType' => 'survey'
+        ]
+); ?>
+
+<?php $this->renderPartial(
+        './surveythememenu',
+        [
+            'canImport' => $canImport,
+            'importErrorMessage' => $importErrorMessage,
+            'importModal' => 'importQuestionModal',
+            'importTemplate' => 'importQuestionTemplate',
+            'themeType' => 'question'
+        ]
+); ?>
 </div>
 <script>
     $('#themelist a').click(function (e) {
         var target = $(e.target).attr("href");
         if (target === "#questionthemes") {
-            $("#uploadandinstall").attr('data-target', '#importQuestionModal');
+            $("#uploadandinstall").attr('data-bs-target', '#importQuestionModal');
         }
         if (target === "#surveythemes") {
-            $("#uploadandinstall").attr('data-target', '#importSurveyModal');
+            $("#uploadandinstall").attr('data-bs-target', '#importSurveyModal');
         }
     });
 </script>

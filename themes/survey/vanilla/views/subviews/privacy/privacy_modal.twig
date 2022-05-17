@@ -17,7 +17,7 @@
 
 {% if aSurveyInfo.datasecurity_error %}
 <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible fade in alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }} id="datasecurity_error">
-	<a {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} close" aria-hidden="true">&times;</a>
+	<a {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" aria-hidden="true"></a>
 	{{ aSurveyInfo.datasecurity_error }}
 </div>
 	{% if aSurveyInfo.datasecuritynotaccepted %}
@@ -36,7 +36,7 @@
             {{ aSurveyInfo.datasecurity_notice }}
         </div>
         <div class="ls-no-js-hidden panel-footer">
-            <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true).trigger('change');" data-dismiss="modal">{{gT("Accept")}}</button>
+            <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true).trigger('change');" data-bs-dismiss="modal">{{gT("Accept")}}</button>
             <button type="button" class="btn btn-default" onclick="$('#data-security-modal-{{aSurveyInfo.sid}}').collapse('hide');">{{gT("Close")}}</button>
         </div>
     </div>

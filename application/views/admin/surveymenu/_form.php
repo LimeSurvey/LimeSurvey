@@ -34,26 +34,26 @@ Yii::app()->getController()->renderPartial(
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'parent_id'); ?>
-				<?php echo $form->dropDownList($model,'parent_id', $model->getMenuIdOptions(), []); ?>
+				<?php echo $form->dropDownList($model,'parent_id', $model->getMenuIdOptions(), ['class' => 'form-select']); ?>
 				<?php echo $form->error($model,'parent_id'); ?>
 			</div>
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'survey_id'); ?>
-				<?php echo $form->dropDownList($model,'survey_id', $model->getSurveyIdOptions()); ?>
+				<?php echo $form->dropDownList($model,'survey_id', $model->getSurveyIdOptions(), ['class' => 'form-select']); ?>
 				<?php echo $form->error($model,'survey_id'); ?>
             </div>
             
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'user_id'); ?>
-				<?php echo $form->dropDownList($model,'user_id', $model->getUserIdOptions()); ?>
+				<?php echo $form->dropDownList($model,'user_id', $model->getUserIdOptions(), ['class' => 'form-select']); ?>
 				<?php echo $form->error($model,'user_id'); ?>
 			</div>
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'ordering'); ?>
 				<?php $model->ordering = $model->getNextOrderPosition(); ?>
-				<?php echo $form->dropDownList($model,'ordering', $model->getOrderOptions()); ?>
+				<?php echo $form->dropDownList($model,'ordering', $model->getOrderOptions(), ['class' => 'form-select']); ?>
 				<?php echo $form->error($model,'ordering'); ?>
 			</div>
 			
@@ -83,7 +83,7 @@ Yii::app()->getController()->renderPartial(
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'position'); ?>
-				<?php echo $form->dropDownList($model,'position',$model->getPositionOptions()); ?>
+				<?php echo $form->dropDownList($model,'position',$model->getPositionOptions(), ['class' => 'form-select']); ?>
 				<?php echo $form->error($model,'position'); ?>
 			</div>
 

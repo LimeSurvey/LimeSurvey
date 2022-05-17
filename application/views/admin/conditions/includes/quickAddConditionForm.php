@@ -3,22 +3,22 @@
     
         <div class="row">
         <!-- Form quick-add condition -->
-            <div class='form-group'>
+            <div class='mb-3 row'>
                 <div class='col-md-2'></div>
                 <div class='col-md-10'>
                 </div>
             </div>
 
             <!-- Condition -->
-            <div class='form-group'>
+            <div class='mb-3 row'>
                 <label class='form-label col-md-2'><?php eT('Scenario'); ?></label>
-                <div class='col-md-2 add-scenario-column'>
+                <div class='col-md-4 add-scenario-column'>
                     <input class='form-control' type='number' name='quick-add-scenario' id='quick-add-scenario' value='1' />
                 </div>
             </div>
         </div>
         <div class="row ls-space margin top-10 bottom-5">
-            <div class='form-group row'>
+            <div class='mb-3 row'>
                 <label class='form-label col-md-2'><?php eT("Question"); ?></label>
                 <div class='col-md-10'>
                     <ul class='nav nav-tabs'>
@@ -33,7 +33,7 @@
             </div>
             <div class='tab-content'>
                 <div role='tabpanel' class='tab-pane show active' id='QUICKADD-SRCPREVQUEST'>
-                    <div class='form-group question-option'>
+                    <div class='mb-3 question-option row'>
                         <div class='col-md-2'></div>
                         <div class='col-md-10'>
                             <select class='form-select' name='quick-add-cquestions' id='quick-add-cquestions' size='7'>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div role='tabpanel' class='tab-pane' id='QUICKADD-SRCTOKENATTRS'>
-                    <div class='form-group question-option'>
+                    <div class='mb-3 question-option row'>
                         <div class='col-md-2'></div>
                         <div class='col-md-10'>
                             <select class='form-select' name='quick-add-csrctoken' id='quick-add-csrctoken' size='7'>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="row ls-space margin top-10">
-            <div class='form-group'>
+            <div class='mb-3 row'>
                 <label class='form-label col-md-2'><?php eT("Comparison operator"); ?></label>
                 <div class='col-md-4'>
                     <select class='form-select' name='quick-add-method' id='quick-add-method'>
@@ -77,7 +77,7 @@
             </div>
         </div>
         <div class="row">
-            <div class='form-group row'>
+            <div class='mb-3 row'>
                 <label class='form-label col-md-2'><?php echo gT("Answer"); ?></label>
                 <div class='col-md-10'>
                     <ul class='nav nav-tabs'>
@@ -101,7 +101,7 @@
             </div>
             <div class='tab-content'>
                 <div role='tabpanel' class='tab-pane show active' id='QUICKADD-CANSWERSTAB'>
-                    <div class='form-group answer-option'>
+                    <div class='mb-3 answer-option row'>
                         <div class='col-md-2'></div>
                         <div class='col-md-10'>
                             <select
@@ -116,8 +116,8 @@
                     </div>
                 </div>
 
-                <div role='tabpanel' class='tab-pane active' id='QUICKADD-CONST'>
-                    <div class='form-group answer-option'>
+                <div role='tabpanel' class='tab-pane' id='QUICKADD-CONST'>
+                    <div class='mb-3 answer-option row'>
                         <div class='col-md-2'></div>
                         <div class='col-md-10'>
                             <textarea class='form-control' name='quick-add-ConditionConst' id='quick-add-ConditionConst' rows='5' cols='113'></textarea>
@@ -126,7 +126,7 @@
                 </div>
 
                 <div role='tabpanel' class='tab-pane active' id='QUICKADD-PREVQUESTIONS'>
-                    <div class='form-group answer-option'>
+                    <div class='mb-3 answer-option row'>
                         <div class='col-md-2'></div>
                         <div class='col-md-10'>
                             <select class='form-select' name='quick-add-prevQuestionSGQA' id='quick-add-prevQuestionSGQA' size='7'>
@@ -148,7 +148,7 @@
                 </div>
 
                 <div role='tabpanel' class='tab-pane' id='QUICKADD-TOKENATTRS'>
-                    <div class='form-group answer-option'>
+                    <div class='mb-3 answer-option row'>
                         <div class='col-md-2'></div>
                         <div class='col-md-10'>
                             <select class='form-select' name='quick-add-tokenAttr' id='quick-add-tokenAttr' size='7'>
@@ -162,8 +162,8 @@
                     </div>
                 </div>
 
-                <div role='tabpanel' class='tab-pane active' id='QUICKADD-REGEXP'>
-                    <div class='form-group answer-option'>
+                <div role='tabpanel' class='tab-pane' id='QUICKADD-REGEXP'>
+                    <div class='mb-3 answer-option row'>
                         <div class='col-md-2'></div>
                         <div class='col-md-10'>
                             <textarea name='quick-add-ConditionRegexp' class='form-control' id='quick-add-ConditionRegexp' rows='5' cols='113'></textarea>
@@ -178,7 +178,7 @@
             </div>
         </div>
         <div class="row">
-            <div class='form-group '>
+            <div class='mb-3 row'>
                 <div class='col-md-2'></div>
                 <div class='col-md-10'>
                     <input type='hidden' name='quick-add-sid' value='<?php echo $iSurveyID; ?>' />

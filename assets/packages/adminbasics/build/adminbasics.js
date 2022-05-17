@@ -29117,6 +29117,39 @@
     }
   });
 
+  $.fn.extend({
+    bsconfirm: function bsconfirm(text, i18n, cbok, cbcancel) {
+      cbok = cbok || function () {
+        $('#identity__bsconfirmModal').modal('hide');
+      };
+
+      cbcancel = cbcancel || function () {
+        $('#identity__bsconfirmModal').modal('hide');
+      };
+
+      i18n = i18n || {};
+      var modalHtml = $("\n            <div id=\"identity__bsconfirmModal\" class=\"modal fade\">\n                <div class=\"modal-dialog\">\n                    <div class=\"modal-content\">\n                        <div class=\"modal-header\">\n                            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>\n                        </div>\n                        <div class=\"modal-body\">\n                            ".concat(text, "               \n                        </div>\n                        <div class=\"modal-footer\">\n                            <button id=\"identity__bsconfirmModal_button_cancel\" type=\"button\" data-bs-dismiss=\"modal\" class=\"btn btn-default\">\n                                ").concat(i18n.confirm_cancel, "\n                            </button>\n                            <button id=\"identity__bsconfirmModal_button_ok\" type=\"button\" class=\"btn btn-danger\">\n                                ").concat(i18n.confirm_ok, "\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        "));
+
+      if ($('body').find('#identity__bsconfirmModal').length == 0) {
+        $('body').append(modalHtml);
+      } else {
+        $('body').find('#identity__bsconfirmModal').remove();
+        $('body').append(modalHtml);
+      }
+
+      var modal = new bootstrap.Modal(document.getElementById('identity__bsconfirmModal'));
+      modal.show();
+      var modalElement = document.getElementById('identity__bsconfirmModal');
+      modalElement.addEventListener('hidden.bs.modal', function () {
+        modal.dispose();
+      });
+      modalElement.addEventListener('shown.bs.modal', function () {
+        $('#identity__bsconfirmModal_button_ok').on('click', cbok);
+        $('#identity__bsconfirmModal_button_cancel').on('click', cbcancel);
+      });
+    }
+  });
+
   String.prototype.splitCSV = function (sep) {
     for (var foo = this.split(sep = sep || ","), x = foo.length - 1, tl; x >= 0; x--) {
       if (foo[x].replace(/"\s+$/, '"').charAt(foo[x].length - 1) == '"') {
@@ -29156,16 +29189,16 @@
       blocking: presetOptions.blocking || false
     };
     ({
-      closeIcon: templateOptions.closeIcon || '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-      closeButton: templateOptions.closeButton || '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+      closeIcon: templateOptions.closeIcon || '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
+      closeButton: templateOptions.closeButton || '<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>',
       saveButton: templateOptions.saveButton || '<button type="button" class="btn btn-primary">Save changes</button>'
     }); //Define all the blocks and combine them by jquery methods
 
-    var outerBlock = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
+    var outerBlock = $('<div id="bootstrap-remote-modal" class="modal fade" tabindex="-1" role="dialog"></div>'),
         innerBlock = $('<div class="modal-dialog" role="document"></div>'),
         contentBlock = $('<div class="modal-content"></div>'),
         headerBlock = $('<div class="modal-header"></div>'),
-        headlineBlock = $('<h4 class="modal-title"></h4>'),
+        headlineBlock = $('<h5 class="modal-title"></h5>'),
         bodyBlock = $('<div class="modal-body"></div>'),
         footerBlock = $('<div class="modal-footer"></div>'),
         closeIcon = $(templateOptions.closeIcon),
@@ -29221,8 +29254,8 @@
       if (options.header === true) {
         var thisHeader = headerBlock.clone();
         headlineBlock.text(options.modalTitle);
-        thisHeader.append(closeIcon.clone());
         thisHeader.append(headlineBlock);
+        thisHeader.append(closeIcon.clone());
         thisContent.prepend(thisHeader);
       }
 
@@ -32860,15 +32893,15 @@
         buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="fa fa-check"></i>',
         buttonType = $item.data('button-type') || 'btn-primary',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
-    var closeIconHTML = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-        closeButtonHTML = '<button type="button" class="btn btn-cancel" data-dismiss="modal">' + buttonNo + '</button>',
+    var closeIconHTML = '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
+        closeButtonHTML = '<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">' + buttonNo + '</button>',
         confirmButtonHTML = '<button type="button" class="btn ' + buttonType + ' selector--button-confirm">' + buttonYes + '</button>'; //Define all the blocks and combine them by jquery methods
 
-    var outerBlock = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
+    var outerBlock = $('<div id="confirm-delete-modal" class="modal fade" tabindex="-1" role="dialog"></div>'),
         innerBlock = $('<div class="modal-dialog" role="document"></div>'),
         contentBlock = $('<div class="modal-content"></div>'),
         headerBlock = $('<div class="modal-header"></div>'),
-        headlineBlock = $('<h4 class="modal-title"></h4>'),
+        headlineBlock = $('<h5 class="modal-title"></h5>'),
         bodyBlock = $('<div class="modal-body"></div>'),
         footerBlock = $('<div class="modal-footer"></div>'),
         closeIcon = $(closeIconHTML),
@@ -32883,8 +32916,8 @@
       if (confirmTitle !== '') {
         var thisHeader = headerBlock.clone();
         headlineBlock.text(confirmTitle);
-        thisHeader.append(closeIcon.clone());
         thisHeader.append(headlineBlock);
+        thisHeader.append(closeIcon.clone());
         thisContent.prepend(thisHeader);
       }
 

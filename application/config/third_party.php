@@ -95,16 +95,16 @@ return array(
         )
     ),
 
-    // Bootstrap Multiselect2
-    'bootstrap-select2' => array(
-        'devBaseUrl' => 'assets/packages/bootstrap/plugins/select2',
-        'basePath' => 'core.bootstrap.plugins.select2',
+    // Bootstrap select2
+    'select2' => array(
+        'devBaseUrl' => 'third_party/',
+        'basePath' => 'third_party',
         'js' => array(
-            'js/select2.full'.$minVersion.'.js',
+            'select2/select2/dist/js/select2.full.min.js'
         ),
         'css' => array(
-            'css/select2.css',
-            'css/select2-bootstrap.css',
+            'select2/select2/dist/css/select2.min.css',
+            'apalfrey/select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css'
         ),
         'depends' => array(
             'jquery',

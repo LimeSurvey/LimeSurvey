@@ -144,6 +144,9 @@ App()->getClientScript()->registerScriptFile(
                             href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/delete/'); ?>"
                             data-post='{ "templatename": "<?php echo $templatename; ?>" }'
                             data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
+                            data-button-no="<?= gT('Cancel'); ?>"
+                            data-button-yes="<?= gT('Delete'); ?>"
+                            data-button-type="btn-danger"
                             title="<?php eT('Delete'); ?>"
                             class="btn btn-danger selector--ConfirmModal">
                             <span class="fa fa-trash"></span>

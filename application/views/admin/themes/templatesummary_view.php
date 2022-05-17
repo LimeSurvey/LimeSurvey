@@ -182,7 +182,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                 <?php echo CHtml::form(array('admin/themes/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
                     <?php printf(gT("Upload a file (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                     <br>
-                    <input name='upload_file' id="upload_file" type="file" required="required" />
+                    <input name='upload_file' id="upload_file" type="file" class="form-control" required="required" />
                     <input type='submit' value='<?php eT("Upload"); ?>' class='btn btn-default' <?=(!is_template_editable($templatename) ? "disabled='disabled'" : '') ?> />
                     <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>' />
                     <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />

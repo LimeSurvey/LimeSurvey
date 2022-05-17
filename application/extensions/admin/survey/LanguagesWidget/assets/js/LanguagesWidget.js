@@ -169,7 +169,7 @@ $.fn.select2.amd.define(
         );
         return;
       } else {
-        $.bsconfirm(
+        $.fn.bsconfirm(
           this.messages.removeLanguageConfirmation,
           {
             confirm_cancel: this.messages.cancel,

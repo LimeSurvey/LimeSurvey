@@ -665,8 +665,8 @@ class Question extends LSActiveRecord
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $buttons .= '<a class="btn btn-sm btn-default"  data-bs-toggle="tooltip" title="' . gT("Delete question") . '" href="#" role="button"'
-                . " onclick='$.bsconfirm(\"" . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
-                            . "\", {\"confirm_ok\": \"" . gT("Yes") . "\", \"confirm_cancel\": \"" . gT("No") . "\"}, function() {"
+                . " onclick='$.fn.bsconfirm(\"" . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
+                            . "\", {\"confirm_ok\": \"" . gT("Delete") . "\", \"confirm_cancel\": \"" . gT("Cancel") . "\"}, function() {"
                             . convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $this->qid]))
                         . "});'>"
                     . ' <i class="fa fa-trash text-danger"></i>

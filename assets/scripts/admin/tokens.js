@@ -131,6 +131,7 @@ function submitEditToken(){
     var $datas      = $form.serialize();
     var $actionUrl  = $form.attr('action');
     var $modal      = $('#editTokenModal');
+    const modal = new bootstrap.Modal(document.getElementById('editTokenModal'));
     var $gridId     = '';
 
     if (!$form[0].reportValidity()) {
@@ -152,7 +153,7 @@ function submitEditToken(){
 
         success : function(result, stat) {
             if (result.success) {
-                $modal.modal('hide');
+                modal.hide();
             } else {
                 var errorMsg = result.error.message ? result.error.message : result.error;
                 if (!errorMsg) errorMsg = "Unexpected error";
@@ -164,14 +165,14 @@ function submitEditToken(){
             try {
                 $.fn.yiiGridView.update($gridId, {
                     complete: function(s){
-                        $modal.modal('hide');
+                        modal.hide();
                     } // Update the surveys list
                 });
             }
             catch (e){
                 if (e) {
                     console.ls.error(e);
-                    $modal.modal('hide');
+                    modal.hide();
                 }
             }
         },
@@ -218,7 +219,8 @@ function validateNotEmptyTokenForm() {
     }
     var isFormEmpty = $('#email').val() == '' && $('#firstname').val() == '' && $('#lastname').val() == '';
     if (isFormEmpty) {
-        $('#emptyTokenConfirmationModal').modal('show');
+        const modal = new bootstrap.Modal(document.getElementById('emptyTokenConfirmationModal'));
+        modal.show();
         return false;
     }
     return true;
@@ -279,7 +281,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
         $modal.data('ajax-url', actionUrl);
         $modal.data('href', "#");
-        $modal.modal('show');
+        const modal = new bootstrap.Modal(document.getElementById('confirmation-modal'));
+        modal.show();
         $modal.find('.modal-footer-yes-no').find('a.btn-ok').on('click', function(click){
             $.ajax({
                 url: actionUrl,
@@ -288,7 +291,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                     
                     $('#token-grid').yiiGridView('update',{
                         complete: function(s){
-                            $modal.modal('hide');
+                            modal.hide();
                         } // Update the surveys list
                     });
                 }
@@ -336,6 +339,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         var $that               = $(this);
         var $url                = $that.data('url');
         var $modal              = $('#tokenBounceModal');
+        const modal             = new bootstrap.Modal(document.getElementById('tokenBounceModal'));
         var $ajaxLoader         = $('#ajaxContainerLoading');
         var $modalBodyText      = $modal.find('.modal-body-text');
         var $limebutton         = $modal.find('.modal-footer .limebutton');
@@ -343,7 +347,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $modalBodyText.empty();
         $limebutton.empty().append('close');
         $ajaxLoader.show();
-        $modal.modal();
+        modal.show();
 
         $.ajax({
             url: $url,
@@ -425,7 +429,8 @@ var startEditToken = function(){
         modalContent = $modal.find('#modal-content');
     $ajaxLoader.show();
     modalContent.empty();
-    $modal.modal('show');
+    const modal = new bootstrap.Modal(document.getElementById('editTokenModal'));
+    modal.show();
 
     // Ajax request
     $.ajax({

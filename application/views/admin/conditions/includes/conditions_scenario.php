@@ -11,21 +11,21 @@
 
 <div class='card'>
 
-    <div class='card-header bg-primary scenario-heading'>
+    <div class='card-header bg-primary'>
 
         <div class='row'>
-            <div class='col-md-2'>
+            <div class='col-md-4'>
             <!-- Scenario header -->
             <?php if ($showScenarioText == 'normal'): ?>
-                <h5>Scenario <?php echo $scenarionr['scenario']; ?></h5>
+                <h5 class="card-title">Scenario <?php echo $scenarionr['scenario']; ?></h5>
             <?php elseif ($showScenarioText == 'withOr'): ?>
-                <h5><?php eT('OR'); ?> Scenario <?php echo $scenarionr['scenario']; ?></h5>
+                <h5 class="card-title"><?php eT('OR'); ?> Scenario <?php echo $scenarionr['scenario']; ?></h5>
             <?php else: ?>
-                <h5><?php eT('Default scenario'); ?></h5>
+                <h5 class="card-title"><?php eT('Default scenario'); ?></h5>
             <?php endif; ?>
             </div>
 
-            <div class='col-md-10'>
+            <div class='col-md-8'>
                 <div class="container-fluid">
                 <!-- Small form to change scenario number -->
                 <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/updatescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'display: none','id'=>'editscenario'.$scenarionr['scenario']));?>

@@ -21,17 +21,17 @@ const ConfirmDeleteModal = function (options) {
         buttonType = $item.data('button-type') || 'btn-primary',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
 
-    const closeIconHTML = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-        closeButtonHTML = '<button type="button" class="btn btn-cancel" data-dismiss="modal">' + buttonNo + '</button>',
+    const closeIconHTML = '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
+        closeButtonHTML = '<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">' + buttonNo + '</button>',
         confirmButtonHTML = '<button type="button" class="btn ' + buttonType + ' selector--button-confirm">' + buttonYes + '</button>';
 
 
     //Define all the blocks and combine them by jquery methods
-    const outerBlock = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
+    const outerBlock = $('<div id="confirm-delete-modal" class="modal fade" tabindex="-1" role="dialog"></div>'),
         innerBlock = $('<div class="modal-dialog" role="document"></div>'),
         contentBlock = $('<div class="modal-content"></div>'),
         headerBlock = $('<div class="modal-header"></div>'),
-        headlineBlock = $('<h4 class="modal-title"></h4>'),
+        headlineBlock = $('<h5 class="modal-title"></h5>'),
         bodyBlock = $('<div class="modal-body"></div>'),
         footerBlock = $('<div class="modal-footer"></div>'),
         closeIcon = $(closeIconHTML),
@@ -48,8 +48,8 @@ const ConfirmDeleteModal = function (options) {
             if (confirmTitle !== '') {
                 const thisHeader = headerBlock.clone();
                 headlineBlock.text(confirmTitle);
-                thisHeader.append(closeIcon.clone());
                 thisHeader.append(headlineBlock);
+                thisHeader.append(closeIcon.clone());
                 thisContent.prepend(thisHeader);
             }
 
