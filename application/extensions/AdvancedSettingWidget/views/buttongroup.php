@@ -4,7 +4,8 @@
             <label class="btn btn-default active">
                 <input 
                     type="radio" 
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
+                    id="<?= CHtml::getIdByName($inputBaseName); ?>"
                     value="<?= CHtml::encode($value); ?>"
                     checked
                 />
@@ -14,7 +15,8 @@
             <label class="btn btn-default">
                 <input 
                     type="radio" 
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
+                    id="<?= CHtml::getIdByName($inputBaseName); ?>"
                     value="<?= CHtml::encode($value); ?>"
                 />
                 <?= $text; ?>

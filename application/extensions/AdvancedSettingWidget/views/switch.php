@@ -4,7 +4,7 @@
             <label class="btn btn-default active">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                     value="1"
                     checked
                     />
@@ -13,7 +13,7 @@
             <label class="btn btn-default">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                     value="0"
                     />
                 <?= gT('Off'); ?>
@@ -22,7 +22,7 @@
             <label class="btn btn-default">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                     value="1"
                     />
                 <?= gT('On'); ?>
@@ -30,7 +30,7 @@
             <label class="btn btn-default active">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                     value="0"
                     checked
                     />
