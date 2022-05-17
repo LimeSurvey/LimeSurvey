@@ -12,6 +12,7 @@
                     class="form-control" 
                     name="<?= $inputBaseName; ?>[<?= $lang; ?>]"
                     id="<?= CHtml::getIdByName($inputBaseName . "[" . $lang ."]"); ?>"
+                    aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>"
                     ><?= $this->setting[$lang]['value']; ?></textarea>
             </div>
         <?php endforeach; ?>

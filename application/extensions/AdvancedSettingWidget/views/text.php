@@ -16,6 +16,7 @@
                     name="<?= $inputBaseName; ?>[<?= $lang ?>]"
                     id="<?= CHtml::getIdByName($inputBaseName . "[" . $lang ."]"); ?>"
                     value="<?= CHtml::encode($this->setting[$lang]['value']); ?>"
+                    aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>"
                 />
             </div>
         <?php endforeach; ?>

@@ -1,11 +1,10 @@
-<div class="btn-group col-12" role="group" data-toggle="buttons">
+<div class="btn-group col-12" role="group" data-toggle="buttons" aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>">
     <?php foreach ($this->setting['options'] as $value => $text): ?>
         <?php if ($this->setting['value'] == $value): ?>
             <label class="btn btn-default active">
                 <input 
                     type="radio" 
                     name="<?= $inputBaseName ?>"
-                    id="<?= CHtml::getIdByName($inputBaseName); ?>"
                     value="<?= CHtml::encode($value); ?>"
                     checked
                 />
@@ -16,7 +15,6 @@
                 <input 
                     type="radio" 
                     name="<?= $inputBaseName ?>"
-                    id="<?= CHtml::getIdByName($inputBaseName); ?>"
                     value="<?= CHtml::encode($value); ?>"
                 />
                 <?= $text; ?>
