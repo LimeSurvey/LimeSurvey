@@ -24,7 +24,7 @@
                         value="<?php eT('Main Admin Screen'); ?>"
                         onclick="window.open(
                             '<?php echo $this->createUrl("surveyAdministration/view/surveyid/{$iSurveyId}"); ?>',
-                            '_top'" />
+                            '_top');" />
             </div>
         </div>
     </div>

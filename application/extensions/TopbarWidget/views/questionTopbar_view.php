@@ -16,7 +16,7 @@ $rightSideContentSummary = $this->render('includes/questionSummaryTopbarRight_vi
 <div class='menubar surveybar' id="<?= !(empty($topbarId)) ? $topbarId : 'surveybarid' ?>">
     <div class="container-fluid">
         <?php if ($oQuestion->qid !== 0) : ?>
-            <div id="question-summary-topbar" class='row'>
+            <div id="question-summary-topbar" class='row' <?= empty($tabOverviewEditor) || $tabOverviewEditor == 'editor' ? 'style="display: none;"' : "" ?>>
                 <!-- Left Side -->
                 <div class="col-lg-8">
                     <?= $leftSideContentSummary ?>
@@ -27,7 +27,7 @@ $rightSideContentSummary = $this->render('includes/questionSummaryTopbarRight_vi
                 </div>
             </div>
         <?php endif; ?>
-        <div id="question-create-edit-topbar" class='row' style="display: none;">
+        <div id="question-create-edit-topbar" class='row' <?= !empty($tabOverviewEditor) && $tabOverviewEditor != 'editor' ? 'style="display: none;"' : "" ?>>
             <!-- Left Side -->
             <div class="<?= !empty($rightSideContent) ? 'col-lg-6' : 'col-12' ?>">
                 <?= $leftSideContentEditor ?>

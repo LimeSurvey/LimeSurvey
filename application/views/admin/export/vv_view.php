@@ -35,22 +35,11 @@
                             <?php eT("Export:"); ?>
                         </label>
                         <div class="col-md-8">
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default">
-                                    <input name="completionstate" value="complete" type="radio" id="completionstate-complete" />
-                                    <?php eT("Completed responses only"); ?>
-                                </label>
-
-                                <label class="btn btn-default active">
-                                    <input name="completionstate" value="all" type="radio" checked='checked' id="completionstate-all" autofocus="true" />
-                                    <?php eT("All responses"); ?>
-                                </label>
-
-                                <label class="btn btn-default">
-                                    <input name="completionstate" value="incomplete" type="radio" id="completionstate-incomplete" />
-                                    <?php eT("Incomplete responses only"); ?>
-                                </label>
-                            </div>
+                            <select class="form-control" name="completionstate" id="completionstate">
+                                <option value="complete"  id="completionstate-complete"><?php eT("Completed responses only"); ?></option>
+                                <option value="all" id="completionstate-all" selected><?php eT("All responses"); ?></option>
+                                <option value="incomplete" id="completionstate-incomplete"><?php eT("Incomplete responses only"); ?></option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -69,6 +58,7 @@
                         </label>
                         <div class="col-md-4">
                             <?php echo CHtml::textField('extension', 'csv', array('size' => 3, 'class' => 'form-control')); ?>
+                            <p class="help-block"><?php eT("For easy opening in MS Excel, change the extension to 'tab' or 'txt'"); ?></p>
                         </div>
                     </div>
 
@@ -88,8 +78,30 @@
                                     <?php eT("Old VV version"); ?>
                                 </label>
                             </div>
+                            <p class="help-block"><?php eT("If you want to import the response data in older version or if your survey has integrity problem, please use the old export version (automatically selected if there are duplicate codes)."); ?></p>
                         </div>
+                    </div>
 
+                    <div class="form-group">
+                        <label for="qseparator" class="col-sm-4 control-label">
+                            <?php eT("Separator between question and subquestion:"); ?>
+                        </label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="qseparator" id="qseparator">
+                                <option value="newline"><?php eT("New line (use with care)"); ?></option>
+                                <option value="parenthesis" selected><?php eT("Subquestion wrapped by parentheses"); ?></option>
+                                <option value="dash"><?php printf(gT("Single dash (%s)"), ' - '); ?></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="abbreviatedtextto" class="col-sm-4 control-label">
+                            <?php eT("Number of characters:"); ?>
+                        </label>
+                        <div class="col-sm-8">
+                            <?php echo CHtml::numberField('abbreviatedtextto', '', array('min' => "1", 'step' => "1", 'class' => 'form-control')); ?>
+                            <p class="help-block"><?php eT("Leave empty if you want complete question text."); ?></p>
+                        </div>
                     </div>
                 </div>
             </div>

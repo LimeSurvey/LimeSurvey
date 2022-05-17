@@ -1,0 +1,71 @@
+{
+  "name": "select2-bootstrap-5-theme",
+  "description": "Select2 v4 theme for Bootstrap 5",
+  "version": "1.3.0",
+  "license": "MIT",
+  "author": "Andrew Palfrey <apalfrey@apalfrey.me>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apalfrey/select2-bootstrap-5-theme.git"
+  },
+  "bugs": "https://github.com/apalfrey/select2-bootstrap-5-theme/issues",
+  "files": [
+    "dist/",
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "select2",
+    "theme",
+    "select2-theme",
+    "bootstrap",
+    "bootstrap5",
+    "css",
+    "scss",
+    "sass"
+  ],
+  "main": "",
+  "style": "dist/select2-bootstrap-5-theme.css",
+  "sass": "src/select2-bootstrap-5-theme.scss",
+  "scripts": {
+    "start": "gulp",
+    "start:full": "npm-run-all -p start docs docs:serve",
+    "clean": "gulp clean",
+    "lint": "gulp lint",
+    "compile": "gulp compile",
+    "compile:main": "gulp compile:main",
+    "compile:rtl": "gulp compile:rtl",
+    "watch": "gulp watch",
+    "docs": "gulp docs",
+    "docs:clean": "gulp docs:clean",
+    "docs:lint": "gulp docs:lint",
+    "docs:compile": "gulp docs:compile",
+    "docs:compile:main": "gulp docs:compile:main",
+    "docs:compile:rtl": "gulp docs:compile:rtl",
+    "docs:watch": "gulp docs:watch",
+    "docs:build": "cd docs && bundle exec jekyll build",
+    "docs:serve": "cd docs && bundle exec jekyll serve --config _config_dev.yml"
+  },
+  "dependencies": {
+    "bootstrap": "^5.1.3"
+  },
+  "devDependencies": {
+    "@ronilaukkarinen/gulp-stylelint": "^14.0.5",
+    "autoprefixer": "^10.4.2",
+    "cssnano": "^5.1.0",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-if": "^3.0.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^9.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.6",
+    "rtlcss": "^3.5.0",
+    "sass": "^1.49.8",
+    "stylelint": "^14.5.2",
+    "stylelint-config-twbs-bootstrap": "^3.0.1"
+  }
+}

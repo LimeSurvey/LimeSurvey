@@ -648,29 +648,31 @@ $(document).on('ready pjax:scriptcomplete', function () {
             throw 'abort';
           }
 
-        const $liTemplate = $('<li class="nav-item" role="presentation"></li>');
-        const $aTemplate = $('<a class="nav-link" data-bs-toggle="tab"></a>');
+          const $liTemplate = $('<li class="nav-item" role="presentation"></li>');
+          const $aTemplate = $('<button type="button" role="tab" class="nav-link" data-bs-toggle="tab" data-bs-target=""></button>');
           const $tabTodyTemplate = $('<div></div>');
           const $listTemplate = $('<div class="list-group selector_label-list"></div>');
-          const $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
+          const $listItemTemplate = $('<div class="row mb-3 selector_label-list-row"></div>');
           const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
-          const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
+          const $tabbody = $('<div class="tab-content" id="label-set-tab-content" style="max-height: 50vh; overflow:auto;"></div>');
 
           $('#labelsetpreview').empty();
 
           let hasInvalidCodes = false;
           let isEmpty = true;
           const source = $('#labelsetbrowserModal').data('source');
-          const i = 0;
+          let i = 0;
           $.each(json.languages, (language, languageName) => {
             const $linkItem = $aTemplate.clone();
             const $bodyItem = $tabTodyTemplate.clone();
             let $itemList = $listTemplate.clone();
 
             const classLink = i === 0 ? 'active' : '';
-          const classBody = i === 0 ? 'tab-pane tab-pane fade show active' : 'tab-page tab-pane fade';
+            const classBody = i === 0 ? 'tab-pane fade show active' : 'tab-pane fade';
+            i++;
 
             $linkItem.addClass(classLink).attr('href', `#language_${language}`).text(languageName);
+            $linkItem.data('bs-target', languageName);
             $liTemplate.clone().append($linkItem).appendTo($tabindex);
 
             $bodyItem.addClass(classBody).attr('id', `language_${language}`);
@@ -775,7 +777,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#current_scale_id').val(scaleId);
     }
 
-    $('#labelsets').select2();
+    $('#labelsets').select2({
+        dropdownParent: $('#labelsetbrowserModal'),
+        theme: 'bootstrap-5'
+    });
     $('#labelsetpreview').html('');
     $('#labelsetsSelectorContainer').hide();
     hideLabelSetAlert();
@@ -1237,10 +1242,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
     switch (target.getAttribute('id')) {
         // Save as new label set.
         case 'newlabel':
-            template.innerHTML = `<p id="lasets" class="label-name-wrapper">
-                 <label for="laname">${languageJson.sLabelSetName}:</label>
-                 <input type="text" name="laname" id="laname">
-               </p>`;
+            template.innerHTML = `<div id="lasets" class="mb-3 label-name-wrapper">
+                 <label class="form-label" for="laname">${languageJson.sLabelSetName}:</label>
+                 <input class="form-control"" type="text" name="laname" id="laname">
+               </div>`;
             child = template.content.firstElementChild;
             if (child) {
               targetParent.after(child);
@@ -1249,11 +1254,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
         // Replace an existing label set.
         case 'replacelabel':
             template.innerHTML = `
-              <p id="laname" class="label-name-wrapper">
-                <select name="laname">
+              <div id="laname" class="mb-3 label-name-wrapper">
+                <select class="form-select" name="laname">
                   <option value=""></option>
                 </select>
-              </p>' 
+              </div>' 
             `;
             // 
             child = template.content.firstElementChild;
@@ -1431,7 +1436,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       success(successMessage) {
         LS.LsGlobalNotifier.create(
           successMessage,
-          'well-lg bg-success text-center'
+          'card-body bg-primary text-center'
         );
       },
       /**
@@ -1442,7 +1447,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         if (data.responseJSON) {
           LS.LsGlobalNotifier.create(
             data.responseJSON.message,
-            'well-lg bg-danger text-center'
+            'card-body bg-danger text-center'
           );
         } else {
           alert('Internal eror from Ajax call');
@@ -1456,17 +1461,17 @@ $(document).on('ready pjax:scriptcomplete', function () {
      if (xhr.status === 500) {
        LS.LsGlobalNotifier.create(
          errorThrown,
-         'well-lg bg-danger text-center'
+         'card-body bg-danger text-center'
        );
      } else if (xhr.status === 401) {
        LS.LsGlobalNotifier.create(
          "Not logged in",
-         'well-lg bg-warning text-center'
+         'card-body bg-warning text-center'
        );
      } else {
        LS.LsGlobalNotifier.create(
          xhr.responseJSON.message,
-         'well-lg bg-danger text-center'
+         'card-body bg-danger text-center'
        );
      }
    }).complete((xhr) => {
@@ -1582,7 +1587,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       if (!checkSubquestionCodeUnique(table, msg)) {
         LS.LsGlobalNotifier.create(
           msg,
-          'well-lg bg-danger text-center'
+          'card-body bg-danger text-center'
         );
         hasError = true;
       }
@@ -1597,7 +1602,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           LS.LsGlobalNotifier.create(
             // TODO: Translation
             'Subquestion code is too long. Maximal number of characters is: 20.',
-            'well-lg bg-danger text-center'
+            'card-body bg-danger text-center'
           );
           hasError = true;
         }
@@ -1861,7 +1866,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             // Quick action buttons are hidden in the html, and normally made visible by panelsAnimation() function of adminbasics.js,
             // which is triggered on document ready or pjax:scriptcomplete. To avoid messing with other things, we just do the animation
             // again here.
-            $('.card').each(function (i) {
+            $('.card-body').each(function (i) {
               $(this).delay(i++ * 200).animate({
                 opacity: 1,
                 top: '0px'
@@ -1916,13 +1921,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
               // Show confirm message.
               LS.LsGlobalNotifier.create(
                 json.message,
-                'well-lg bg-primary text-center'
+                'card-body bg-primary text-center'
               );
             } else {
               // Show error message.
               LS.LsGlobalNotifier.create(
                 json.message,
-                'well-lg bg-danger text-center'
+                'card-body bg-danger text-center'
               );
             }
             updateQuestionSummary();
@@ -1932,7 +1937,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             if (data.responseJSON) {
               LS.LsGlobalNotifier.create(
                 data.responseJSON.message,
-                'well-lg bg-danger text-center'
+                'card-body bg-danger text-center'
               );
             } else {
               alert('Internal error from saveFormWithAjax: no data.responseJSON found');

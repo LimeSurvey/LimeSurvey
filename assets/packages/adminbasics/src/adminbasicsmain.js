@@ -29,6 +29,7 @@ import _ from 'lodash';
 //import jquery additions and prototypes
 import './jqueryAdditions/center.js';
 import './jqueryAdditions/isEmpty.js';
+import './jqueryAdditions/bootstrapconfirm.js';
 import './parts/prototypeDefinition';
 import './components/bootstrap-remote-modals';
 

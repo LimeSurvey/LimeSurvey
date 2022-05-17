@@ -107,19 +107,15 @@
                                             ?>
 
                                             <div class="btn-group btn-group-sm" role="group" aria-label="Completed radio toggle button group">
-                                                <input type="radio" class="btn-check" name="btnradio" id="completed-switch-yes" autocomplete="off" checked>
-                                                <label class="btn btn-outline-success" for="completed-switch-yes">Yes</label>
-                                                <input type="radio" class="btn-check" name="btnradio" id="completed-switch-no" autocomplete="off">
-                                                <label class="btn btn-outline-danger" for="completed-switch-no">No</label>
-                                                <!-- <?php
-                                                //  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                //  'name' => "completed-switch",
-                                                //  'id'=>"completed-switch",
-                                                //  'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
-                                                //  'value' => $bCompletedValue,
-                                                //  'onLabel'=>gT('Yes'),
-                                                //  'offLabel' => gT('No')));
-                                                ?> -->
+                                                <?php
+                                                  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                  'name' => "completed-switch",
+                                                  'id'=>"completed-switch",
+                                                  'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
+                                                  'value' => $bCompletedValue,
+                                                  'onLabel'=>gT('Yes'),
+                                                  'offLabel' => gT('No')));
+                                                ?>
                                             </div>
                                         <?php else: ?>
                                             <div class="">
@@ -129,15 +125,15 @@
                                                 $completed         = (isset($completed) && $completed != 'N') ? 'Y' : 'N';
                                                 ?>
 
-                                                <!--<?php
-                                                //$this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                //'name' => "completed-switch",
-                                                //'id'=>"completed-switch",
-                                                //'htmlOptions'=>array('class'=>"YesNoSwitch action_toggle_bootstrap_switch"),
-                                                //'value' => $bCompletedValue,
-                                                //'onLabel'=>gT('Yes'),
-                                                //'offLabel' => gT('No')));
-                                                ?> -->
+                                                <?php
+                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                'name' => "completed-switch",
+                                                'id'=>"completed-switch",
+                                                'htmlOptions'=>array('class'=>"YesNoSwitch action_toggle_bootstrap_switch"),
+                                                'value' => $bCompletedValue,
+                                                'onLabel'=>gT('Yes'),
+                                                'offLabel' => gT('No')));
+                                                ?>
                                             </div>
                                         <?php endif; ?>
 
@@ -153,8 +149,7 @@
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <!--                                <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="-->
-                                    <?php //if (isset($completed)) {echo $completed; } else {echo "N"; }?><!--" /> -->
+                                    <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)) {echo $completed; } else {echo "N"; }?>" />
                                 </div>
                             </div>
                         </div>
@@ -291,21 +286,23 @@
                                             }
                                             ?>
 
+                                            <!--
                                             <div class="btn-group btn-group-sm" role="group" aria-label="Invitation sent radio toggle button group">
                                                 <input type="radio" class="btn-check" name="btnradio" id="invitation-sent-yes" autocomplete="off" checked>
                                                 <label class="btn btn-outline-success" for="invitation-sent-yes">Yes</label>
                                                 <input type="radio" class="btn-check" name="btnradio" id="invitation-sent-no" autocomplete="off">
                                                 <label class="btn btn-outline-danger" for="invitation-sent-no">No</label>
                                             </div>
-                                            <!-- <?php
-                                            //  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            //  'name' => "sent-switch",
-                                            //  'id'=>"sent-switch",
-                                            //  'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
-                                            //  'value' => $bSwitchValue,
-                                            //  'onLabel'=>gT('Yes'),
-                                            //  'offLabel' => gT('No')));
-                                            ?> -->
+                                            -->
+                                            <?php
+                                              $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                              'name' => "sent-switch",
+                                              'id'=>"sent-switch",
+                                              'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
+                                              'value' => $bSwitchValue,
+                                              'onLabel'=>gT('Yes'),
+                                              'offLabel' => gT('No')));
+                                            ?>
                                         <?php else: ?>
                                             <?php
                                             $sentDBValue         = $sent;
@@ -342,8 +339,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--                        <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="-->
-                                <?php //if (isset($sent)) {echo $sent; } else {echo "N"; }?><!--" /> -->
+                                <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo "N"; }?>" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -359,21 +355,23 @@
                                         <?php if ($oSurvey->anonymized != 'Y') {
                                             ?>
 
+                                            <!--
                                             <div class="btn-group btn-group-sm" role="group" aria-label="Reminder sent radio toggle button group" id="remind-switch">
                                                 <input type="radio" class="btn-check" name="btnradio" id="reminder-sent-yes" autocomplete="off" checked>
                                                 <label class="btn btn-outline-success" for="reminder-sent-yes">Yes</label>
                                                 <input type="radio" class="btn-check" name="btnradio" id="reminder-sent-no" autocomplete="off">
                                                 <label class="btn btn-outline-danger" for="reminder-sent-no">No</label>
                                             </div>
-                                            <!-- <?php
-                                            //$this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            //'name' => "remind-switch",
-                                            //'id'=>"remind-switch",
-                                            //'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
-                                            //'value' => $bRemindSwitchValue,
-                                            //'onLabel'=>gT('Yes'),
-                                            //'offLabel' => gT('No')));
-                                            ?> -->
+                                            -->
+                                            <?php
+                                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => "remind-switch",
+                                            'id'=>"remind-switch",
+                                            'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
+                                            'value' => $bRemindSwitchValue,
+                                            'onLabel'=>gT('Yes'),
+                                            'offLabel' => gT('No')));
+                                            ?>
                                         <?php } else { ?>
                                             <?php
                                             $this->widget('yiiwheels.widgets.switch.WhSwitch',
@@ -404,8 +402,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--                            <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="-->
-                                <?php //if (isset($remindersent) && $remindersent!='N') {echo $remindersent; } else {echo "N"; }?><!--" /> -->
+                                <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent) && $remindersent!='N') {echo $remindersent; } else {echo "N"; }?>" />
                             </div>
 
                             <!-- Reminder count, Uses left -->
@@ -565,4 +562,3 @@ LS.renderBootstrapSwitch();
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 <?php endif; ?>
-

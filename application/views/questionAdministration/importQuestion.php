@@ -12,7 +12,7 @@
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Import a question"); ?></h3>
     <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <?php echo CHtml::form(
                 ["questionAdministration/import"],
                 'post',
@@ -24,15 +24,13 @@
                     'onsubmit' => "return window.LS.validatefilename(this, '" . gT("Please select a file to import!", 'js') . "');"
                 ]
             ); ?>
-            <div class="form-group">
-                <label class=" form-label" for='the_file'><?php eT("Select question file (*.lsq):");
+            <div class="mb-3">
+                <label class="form-label" for='the_file'><?php eT("Select question file (*.lsq):");
                     echo '<br>' . sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                 </label>
-                <div class="">
-                    <input name='the_file' id='the_file' type="file" required="required" accept=".lsq"/>
-                </div>
+                <input name='the_file' id='the_file' class="form-control" type="file" required="required" accept=".lsq"/>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='gid'><?php eT("Destination question group:"); ?></label>
                 <div class="">
                     <select name='gid' id='gid' class="form-select">
@@ -40,8 +38,8 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
-                <label class=" form-label" for='translinksfields'><?php eT("Automatically rename question code if already exists?"); ?></label>
+            <div class="mb-3">
+                <label class=" form-label" for='autorename'><?php eT("Automatically rename question code if already exists?"); ?></label>
                 <div class="">
                     <?php $this->widget(
                         'yiiwheels.widgets.switch.WhSwitch',
@@ -56,7 +54,7 @@
                     ?>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='translinksfields'><?php eT("Convert resource links?"); ?></label>
                 <div class="">
                     <?php $this->widget(
@@ -72,7 +70,7 @@
                     ?>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='jumptoquestion'><?php eT("Jump to question after import?"); ?></label>
                 <div class="">
                     <?php $this->widget(

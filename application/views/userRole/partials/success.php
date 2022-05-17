@@ -1,6 +1,7 @@
 
 <div class="modal-header">
     <h5 class="modal-title"><?=gT('Saved successfully')?></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
     <div class="container-center">
@@ -27,10 +28,10 @@
             </div>
         </div>
         
-        <?php if(!isset($noButton)): ?>
-        <div class="row ls-space margin top-35">
-            <button id="exitForm" data-bs-dismiss="modal" class="btn btn-default"><?=gT('Close')?></button>
-        </div>
-        <?php endif;?>
     </div>
+</div>
+<div class="modal-footer">
+    <?php if(!isset($noButton)): ?>
+        <button id="exitForm" data-bs-dismiss="modal" class="btn btn-outline-secondary"><?=gT('Close')?></button>
+    <?php endif;?>
 </div>

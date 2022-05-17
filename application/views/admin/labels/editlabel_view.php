@@ -96,13 +96,15 @@
                     <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')): ?>
                         <div id='neweditlblset1' class="tab-pane fade">
                             <?php echo CHtml::form(["admin/labels/sa/import"], 'post', ['enctype' => 'multipart/form-data', 'class' => 'form', 'id' => 'importlabels', 'name' => "importlabels"]); ?>
-                            <div class="form-group">
+                            <div class="mb-3 row">
                                 <label class="form-label" for='the_file'>
                                     <?php echo gT("Select label set file (*.lsl):") . '<br>' . sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                                 </label>
-                                <input id='the_file' name='the_file' type='file' accept=".lsl"/>
+                                <input id='the_file' class="form-control col" name='the_file' type='file' accept=".lsl"/>
+                                <div class="col"></div>
+                                <div class="col"></div>
                             </div>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class=" form-label" for='checkforduplicates'>
                                     <?php eT("Don't import if label set already exists:"); ?>
                                 </label>

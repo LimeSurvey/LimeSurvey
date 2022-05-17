@@ -245,12 +245,12 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'dataProvider'    => $model->search(),
                             'filter'          => $model,
                             'columns'         => $aColumns,
-                            //'htmlOptions'     => ['class' => 'table-responsive'],
                             'id'              => 'responses-grid',
                             'ajaxUpdate'      => 'responses-grid',
                             'ajaxType'        => 'POST',
                             'afterAjaxUpdate' => 'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-bs-toggle=\'popover\']").popover(); }',
-                            'template'        => "{items}\n<div id='reponsesListPager'><div class=\"col-md-4\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-md-4 pager-container ls-ba \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>",
+                            'massiveActionTemplate' => $massiveAction,
+                            //'template'        => "{items}\n<div id='reponsesListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                             'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                 gT('%s rows per page'),
                                 CHtml::dropDownList(

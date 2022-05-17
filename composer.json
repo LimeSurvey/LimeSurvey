@@ -41,7 +41,9 @@
 		"phpseclib/bcmath_compat": "1.0.4",
 		"tiamo/spss": "^2.2",
         "yiiext/twig-renderer":"dev-master",
-		"twbs/bootstrap": "5.1.3"
+		"twbs/bootstrap": "5.1.3",
+		"select2/select2": "^4.0",
+		"apalfrey/select2-bootstrap-5-theme": "^1.3"
 	},
     "config": {
         "vendor-dir": "third_party",

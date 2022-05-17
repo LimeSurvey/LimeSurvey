@@ -13,12 +13,12 @@ echo viewHelper::getViewTestTag('importParticipants');
 
                 <div class="row ls-space margin top-25 bottom-25">
                     <div class="col-12">
-                        <div class="form-group">
-                            <label for="the_file" id="fileupload" class='form-label '>
+                        <div class="mb-3">
+                            <label for="the_file" id="fileupload" class='form-label'>
                                 <?php eT("Choose the file to upload:"); ?>
                             </label>
-                            <div class="col-12">
-                                <input type="file" name="the_file" accept='.csv'/>
+                            <div class="col-6">
+                                <input type="file" class="form-control" name="the_file" accept='.csv'/>
                             </div>
                         </div>
                     </div>

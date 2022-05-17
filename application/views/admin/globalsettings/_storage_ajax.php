@@ -42,7 +42,7 @@
                 <?php if ($survey['deleted']) : ?>
                     (<?php echo $survey['sid']; ?>)
                 <?php else : ?>
-                    (<a href="<?php echo $this->createUrl('admin/survey', array('sa' => 'view', 'surveyid' => $survey['sid'])); ?>"><?php echo $survey['sid']; ?></a>)
+                    (<a href="<?php echo $this->createUrl('surveyAdministration/view', array('surveyid' => $survey['sid'])); ?>"><?php echo $survey['sid']; ?></a>)
                 <?php endif; ?>
             </td>
             <td>

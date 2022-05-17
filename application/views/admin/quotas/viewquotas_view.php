@@ -24,36 +24,51 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                 <?php eT("Survey quotas");?>
             </h3>
 
-            <?php if( isset($sShowError) ):?>
+            <?php if (isset($sShowError)) :?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     <strong><?php eT("Quota could not be added!", 'js'); ?></strong><br/> <?php eT("It is missing a quota message for the following languages:", 'js'); ?><br/><?php echo $sShowError; ?>
                 </div>
             <?php endif; ?>
 
-            <?php if($oDataProvider->itemCount > 0):?>
+            <?php
+            $massiveAction = '';
+            if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) {
+                $massiveAction =  $this->renderPartial(
+                    '/admin/quotas/viewquotas_massive_selector',
+                    array(
+                       'oSurvey' => $oSurvey,
+                       'oQuota' => $oQuota,
+                       'aQuotaLanguageSettings' => $aQuotaLanguageSettings,
+                    ),
+                    true
+                );
+            }
+            ?>
+
+            <?php if ($oDataProvider->itemCount > 0) :?>
             <!-- Grid -->
             <div class="row">
                 <div class="col-12 content-right">
-                    <?php $this->widget('yiistrap.widgets.TbGridView', array(
+                    <?php $this->widget('application.extensions.admin.grid.CLSGridView', array(
                         'dataProvider'  => $oDataProvider,
                         'id'            => 'quota-grid',
-                        'htmlOptions'   => ['class' => 'table-responsive grid-view-ls'],
-                        'itemsCssClass' => 'table-quotas table-striped table-condensed',
                         'ajaxUpdate'    => 'quota-grid',
                         'emptyText'     => gT('No quotas'),
-                        'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
-                                CHtml::dropDownList(
-                                    'pageSize',
-                                    $iGridPageSize,
-                                    Yii::app()->params['pageSizeOptions'],
-                                    array(
+                        'massiveActionTemplate' => $massiveAction,
+                        'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                            gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $iGridPageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                array(
                                         'class' => 'changePageSize form-select',
                                         'style' => 'display: inline; width: auto',
                                         'onchange' => "$.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }})"
                                     )
-                                )
-                            ),
+                            )
+                        ),
                         'columns'       => array(
                             array(
                                 'id'             => 'id',
@@ -62,17 +77,38 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'htmlOptions'    => array('style' => 'vertical-align:top'),
                             ),
                             array(
+                                'header'            => gT("Action"),
+                                'value'             => function ($oQuota) use ($oSurvey, $aEditUrls, $aDeleteUrls, $aQuotaItems) {
+                                    /** @var Quota $oQuota */
+                                    return $this->renderPartial(
+                                        '/admin/quotas/viewquotas_quota_actions',
+                                        array(
+                                            'oSurvey'     => $oSurvey,
+                                            'oQuota'      => $oQuota,
+                                            'editUrl'     => $aEditUrls[$oQuota->getPrimaryKey()],
+                                            'deleteUrl'   => $aDeleteUrls[$oQuota->getPrimaryKey()],
+                                            'aQuotaItems' => $aQuotaItems,
+                                        ),
+                                        true
+                                    );
+                                },
+                                'type'              => 'raw',
+                            ),
+                            array(
                                 'name'        => gT('Quota members'),
                                 'type'        => 'raw',
                                 'htmlOptions' => array('style' => 'vertical-align:top'),
                                 'value'       => function ($oQuota) use ($oSurvey, $aQuotaItems) {
                                     /** @var Quota $oQuota */
-                                    $out = '<p>' . $this->renderPartial('/admin/quotas/viewquotas_quota_members',
-                                            array(
+                                    $out = '<p>' . $this->renderPartial(
+                                        '/admin/quotas/viewquotas_quota_members',
+                                        array(
                                                 'oSurvey'     => $oSurvey,
                                                 'oQuota'      => $oQuota,
                                                 'aQuotaItems' => $aQuotaItems,
-                                            ), true) . '<p>';
+                                        ),
+                                        true
+                                    ) . '<p>';
                                     return $out;
                                 },
                             ),
@@ -89,50 +125,18 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'htmlOptions' => array('style' => 'vertical-align:top'),
                                 'footer'      => $totalquotas,
                             ),
-                            array(
-                                'header'            => gT("Action"),
-                                'value'             => function ($oQuota) use ($oSurvey, $aEditUrls, $aDeleteUrls, $aQuotaItems) {
-                                    /** @var Quota $oQuota */
-                                    return $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
-                                        array(
-                                            'oSurvey'     => $oSurvey,
-                                            'oQuota'      => $oQuota,
-                                            'editUrl'     => $aEditUrls[$oQuota->getPrimaryKey()],
-                                            'deleteUrl'   => $aDeleteUrls[$oQuota->getPrimaryKey()],
-                                            'aQuotaItems' => $aQuotaItems,
-                                        ), true);
-                                },
-                                'type'              => 'raw',
-                                'headerHtmlOptions' => array(
-                                    'style' => 'text-align:right;',
-                                ),
-                                'htmlOptions'       => array(
-                                    'style' => 'text-align: right; vertical-align:top',
-                                ),
-                            ),
 
                         ),
                     ));
                     ?>
                 </div>
-                <?php endif; ?>
-
-                <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','create')):?>
-                    <?php if($oDataProvider->itemCount > 0):?>
-                        <div class="pull-left">
-                            <?php $this->renderPartial('/admin/quotas/viewquotas_massive_selector',
-                                array(
-                                    'oSurvey'=>$oSurvey,
-                                    'oQuota'=>$oQuota,
-                                    'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
-                                ));?>
-                        </div>
-                    <?php endif; ?>
+            <?php endif; ?>
+                <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) :?>
                     <div class="pull-right">
                         <?php echo CHtml::beginForm(array("admin/quotas/sa/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
-                        <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey());?>
-                        <?php echo CHtml::hiddenField('action','quotas');?>
-                        <?php echo CHtml::hiddenField('subaction','new_quota');?>
+                        <?php echo CHtml::hiddenField('sid', $oSurvey->getPrimaryKey());?>
+                        <?php echo CHtml::hiddenField('action', 'quotas');?>
+                        <?php echo CHtml::hiddenField('subaction', 'new_quota');?>
                         <?php echo CHtml::endForm();?>
                     </div>
                 <?php endif; ?>

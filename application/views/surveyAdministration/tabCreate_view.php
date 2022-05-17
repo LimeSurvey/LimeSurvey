@@ -14,7 +14,7 @@ extract($data);
 Yii::app()->loadHelper('admin.htmleditor');
 
 $cs = Yii::app()->getClientScript();
-$cs->registerPackage('bootstrap-select2');
+$cs->registerPackage('select2');
 
 App()->getClientScript()->registerScript("tabCreate-view-variables", "
     var jsonUrl = '';
@@ -54,7 +54,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                         extract($edittextdata);
                     }
                     $cs = Yii::app()->getClientScript();
-                    $cs->registerPackage('bootstrap-select2');
+                    $cs->registerPackage('select2');
 
                     ?>
 

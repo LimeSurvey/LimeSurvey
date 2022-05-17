@@ -12,8 +12,8 @@
         ?>
 
         <div class="alert alert-<?php echo $message['type'];?> alert-dismissible col-12" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
-                 <?php echo $message['message'];?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             <?php echo $message['message'];?>
         </div>
     <?php endforeach;?>
 </div>

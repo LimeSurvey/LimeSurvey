@@ -16,7 +16,9 @@
  *      perform an ajax request and show the result in the modal
  */
 var onClickListAction =  function () {
+    console.log('onClickListAction');
     if($(this).data('disabled')) {
+        console.log('disabled');
         return;
     }
     var $that          = $(this);                                                             // The clicked link
@@ -32,7 +34,9 @@ var onClickListAction =  function () {
     if ($oCheckedItems == '[]') {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
-        $('#error-first-select' + $grididvalue).modal();
+        console.log('error first');
+        const modal = new bootstrap.Modal(document.getElementById('error-first-select' + $grididvalue), {})
+        modal.show();
         return;
     }
     
@@ -60,6 +64,7 @@ var onClickListAction =  function () {
             'type': 'hidden'
         })).appendTo('body');
         newForm.submit();
+        console.log('redirect');
         return;
     }
 
@@ -73,12 +78,14 @@ var onClickListAction =  function () {
             itemsid:$oCheckedItems},function(){
                 $(location).attr('href',$actionUrl);
             });
+        console.log('fill session');
         return;
     }
 
     // Set window location href. Used by download files in responses list view.
     if (actionType == 'window-location-href') {
         var $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
+        console.log('href = ...');
         window.location.href = $actionUrl + $oCheckedItems.join(',');
         return;
     }
@@ -92,6 +99,7 @@ var onClickListAction =  function () {
         var func = eval(js);
         var itemIds = $gridid.yiiGridView('getChecked', $('.listActions').data('pk'));
         func(itemIds);
+        console.log('func itemIds');
         return;
     }
 
@@ -122,6 +130,7 @@ var onClickListAction =  function () {
         //clear selected list view 
         selectedList.empty();
 
+        console.log('before ajax');
         //ajaxpost to set data in the selected items div 
         $.ajax({
             url :$modalSelectedUrl,
@@ -236,6 +245,7 @@ var onClickListAction =  function () {
 
     // Open the modal
     const modalId = $that.data('modal-id');
+    console.log('modalId = ', modalId);
     var modal = new bootstrap.Modal(document.getElementById(modalId), {})
     modal.show();
 };

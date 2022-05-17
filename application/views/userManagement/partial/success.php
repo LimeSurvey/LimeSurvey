@@ -29,10 +29,10 @@ Yii::app()->getController()->renderPartial(
             </div>
         </div>
         
-        <?php if(!isset($noButton)): ?>
-        <div class="modal-footer">
-            <button id="exitForm" class="btn btn-outline-secondary"><?=gT('Close')?></button>
-        </div>
-        <?php endif;?>
     </div>
+</div>
+<div class="modal-footer">
+    <?php if(!isset($noButton)): ?>
+        <button id="exitForm" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?=gT('Close')?></button>
+    <?php endif;?>
 </div>

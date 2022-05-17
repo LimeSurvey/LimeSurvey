@@ -5,8 +5,7 @@
  * Needed to set Scriptfile and script to good position
  */
 
-//Yii::import('yiistrap.widgets.TbGridView');
-Yii::import('application.extensions.admin.grid.CLSGridView');
+Yii::import('application.extensions.admin.grid.CLSGridView'); //changed for bt5
 
 /**
  * LimeSurvey Zii grid view.
