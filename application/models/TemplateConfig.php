@@ -654,7 +654,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['modalcontent']      = ' modal-content ';
         $aClassAndAttributes['class']['modalheader']       = ' modal-header ';
         $aClassAndAttributes['class']['modalclosebutton']  = ' btn-close ';
-        $aClassAndAttributes['class']['modaltitle']        = ' modal-title h4 ';
+        $aClassAndAttributes['class']['modaltitle']        = ' modal-title';
         $aClassAndAttributes['class']['modalbody']         = ' modal-body ';
         $aClassAndAttributes['class']['modalfooter']       = ' modal-footer ';
         $aClassAndAttributes['class']['modalfooterlink']   = ' btn btn-default ';

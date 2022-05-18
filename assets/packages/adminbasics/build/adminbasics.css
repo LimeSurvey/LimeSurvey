@@ -833,6 +833,10 @@ div.card.disabled a {
   cursor: default;
 }
 
+#edit-group .tab-pane {
+  padding: 1em;
+}
+
 .card-clickable:hover {
   cursor: pointer;
   cursor: hand;
@@ -2931,6 +2935,11 @@ table#responsedetail tr td {
   margin-bottom: 30px;
 }
 
+input[type=file].form-control {
+  border: none;
+  padding-left: 0px;
+}
+
 #insertmethod-container {
   display: none;
 }
@@ -4314,8 +4323,10 @@ html[dir=rtl] th {
   text-align: initial;
 }
 
-#cpdbatt {
-  min-height: 100px;
+.list-group-item.disabled {
+  color: #777;
+  cursor: not-allowed;
+  background-color: #eee;
 }
 
 .jcarousel-wrapper {
@@ -4433,6 +4444,10 @@ html[dir=rtl] th {
 
 .item.inactive {
   display: none;
+}
+
+#cpdbatt {
+  min-height: 100px;
 }
 
 .draggable-container {

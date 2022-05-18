@@ -176,7 +176,7 @@ foreach ($systemInfos as $key => $systemInfo) {
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content panel-danger">
-            <div class="modal-header card-header bg-primary">
+            <div class="modal-header card-header">
                 <h5 class="modal-title"><?php eT("Error"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -195,7 +195,7 @@ foreach ($systemInfos as $key => $systemInfo) {
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content panel-success">
-            <div class="modal-header card-header bg-primary">
+            <div class="modal-header card-header">
                 <h5 class="modal-title"><?php eT("Success"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -214,7 +214,7 @@ foreach ($systemInfos as $key => $systemInfo) {
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
-            <div class="modal-header">
+            <div class="modal-header card-header">
                 <h5 class="modal-title"><?php eT("Notifications"); ?></h5>
                 <span class='notification-date'></span>
             </div>

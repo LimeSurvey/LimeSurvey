@@ -12031,10 +12031,13 @@ a {
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
+<<<<<<< HEAD
+=======
 }
 
 .page-item {
   border-radius: 25px !important;
   margin-right: 2px;
   margin-left: 2px;
+>>>>>>> epic/L41-T1684_Epic_Bootstrap_5_upgrade
 }
