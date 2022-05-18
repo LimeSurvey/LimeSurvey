@@ -417,8 +417,8 @@ function resetQuestionTimers(sid) {
         return;
     }
     // We only care about the final submit, not normal forward/backward navigation.
-    var submitter = $(e.originalEvent.submitter);
-    if (submitter.attr('value') != 'movesubmit') {
+    var submitter = e.originalEvent ? $(e.originalEvent.submitter) : null;
+    if (!submitter || submitter.attr('value') != 'movesubmit') {
         return;
     }
     // Still, we disable all submit buttons to make sure the "back" button is not
