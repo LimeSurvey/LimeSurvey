@@ -52,22 +52,27 @@
         <div class="col-12 col-lg-5" id="accordion-container" style="background-color: #fff; z-index: 2;">
             <?php // TODO : find why the $groups can't be generated from controller?>
             <div id='questionbottom'>
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
                     <!-- Copy options -->
-                    <div class="card">
-                        <div class="card-header bg-primary" role="tab" id="heading-copy">
-                            <a class=" selector--questionEdit-collapse" role="button"
-                               data-toggle="collapse" data-parent="#accordion" href="#collapse-copy"
-                               aria-expanded="false" aria-controls="collapse-copy">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" role="tab" id="heading-copy">
+                            <button
+                                class="accordion-button collapsed selector--questionEdit-collapse" 
+                                type="button"
+                                role="button"
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#collapse-copy"
+                                aria-expanded="false"
+                                aria-controls="collapse-copy"
+                            >
                                 <?php eT("Copy options"); ?>
-                            </a>
-                        </div>
-                        <div id="collapse-copy" class="panel-collapse collapse  in" role="tabpanel"
-                             aria-labelledby="heading-copy">
-                            <div class="card-body">
+                            </button>
+                        </h2>
+                        <div id="collapse-copy" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-copy">
+                            <div class="accordion-body">
                                 <div class="form-group">
-                                    <label class=" form-label"
-                                           for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
+                                    <label class=" form-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?>
+                                    </label>
                                     <div class="">
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'copysubquestions',
@@ -80,8 +85,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-label"
-                                           for='copyanswers'><?php eT("Copy answer options?"); ?></label>
+                                    <label class=" form-label" for='copyanswers'><?php eT("Copy answer options?"); ?>
+                                    </label>
                                     <div class="">
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'copyanswers',
@@ -94,8 +99,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-label"
-                                           for='copydefaultanswers'><?php eT("Copy default answers?"); ?></label>
+                                    <label class=" form-label" for='copydefaultanswers'><?php eT("Copy default answers?"); ?>
+                                    </label>
                                     <div class="">
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'copydefaultanswers',
@@ -108,8 +113,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-label"
-                                           for='copyattributes'><?php eT("Copy question settings?"); ?></label>
+                                    <label class="form-label" for='copyattributes'><?php eT("Copy question settings?"); ?>
+                                    </label>
                                     <div class="">
                                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                             'name' => 'copyattributes',
