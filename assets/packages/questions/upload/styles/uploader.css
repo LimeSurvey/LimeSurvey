@@ -99,3 +99,13 @@ img.uploaded {
 .uploadedfiles thead tr th {
     font-weight: bold;
 }
+
+.uploadedfiles:not(.show_title) th.title,
+.uploadedfiles:not(.show_title) td.title {
+    display: none;
+}
+
+.uploadedfiles:not(.show_comment) th.comment,
+.uploadedfiles:not(.show_comment) td.comment {
+    display: none;
+}
