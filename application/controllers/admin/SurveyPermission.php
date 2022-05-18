@@ -467,7 +467,7 @@ class SurveyPermission extends SurveyCommonAction
             ['aPermissions' => $aPermissions],
             true
         );
-        $usersummary .= "<p><input class='btn btn-default hidden'  type='submit' value='" . gT("Save Now") . "' />"
+        $usersummary .= "<p><input class='btn btn-default d-none'  type='submit' value='" . gT("Save now") . "' />"
         . "<input type='hidden' name='perm_survey_read' value='1' />"
         . "<input type='hidden' name='action' value='surveyrights' />";
 
