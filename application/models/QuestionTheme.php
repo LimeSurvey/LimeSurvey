@@ -389,6 +389,9 @@ class QuestionTheme extends LSActiveRecord
 
         // read all metadata from the provided $pathToXmlFolder
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
+        if (!isset($questionMetaData['questionType'])) {
+            throw new Exception(gT('Missing questionType in metadata'));
+        }
 
         $aQuestionThemes = QuestionTheme::model()->findAll(
             '(question_type = :question_type AND extends = :extends)',
