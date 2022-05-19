@@ -127,7 +127,7 @@ _.uploadFile = function(form) {
     $('<iframe id="uploadResponse" name="uploadResponse" src="javascript:;"></iframe>').prependTo(document.body);
     $('#loading').html(_.label("Uploading file...")).show();
     form.submit();
-    $('#uploadResponse').load(function() {
+    $('#uploadResponse').on('load', function() {
         var response = $(this).contents().find('body').text();
         $('#loading').hide();
         response = response.split("\n");
