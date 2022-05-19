@@ -930,8 +930,16 @@ class browser extends uploader {
     {
         $dirname = dirname($_SERVER['PHP_SELF']);
         $dirname = rtrim($dirname, "/") . "/";
-        
-        $schema = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
+
+        $schema = 'http://';
+        if (
+            (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
+            || (isset($_SERVER['HTTP_FORWARDED_PROTO']) && $_SERVER['HTTP_FORWARDED_PROTO'] == "https")
+            || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == "https")
+        ) {
+            $schema = 'https://';
+        }
+
         $baseurl = $schema . $_SERVER['HTTP_HOST'] . $dirname;
         return $baseurl;
     }
