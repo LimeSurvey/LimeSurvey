@@ -91,11 +91,10 @@ class UploadQuestionController {
     displayUploadedFiles(filecount, fieldname, show_title, show_comment) {
         const jsonstring = $("#java" + fieldname).val();
         let display = '';
-        const uploadedFilesTable = $('#' + this.fieldname + '_uploadedfiles').find('table.uploadedfiles');
 
         if (jsonstring == '[]' || jsonstring == '') {
             $('#' + this.fieldname + '_uploadedfiles').addClass('hidden');
-            uploadedFilesTable.find('tbody').html('');
+            $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
             return;
         }
 
@@ -105,18 +104,8 @@ class UploadQuestionController {
                 jsonobj = JSON.parse(jsonstring);
             } catch (e) {};
 
-            uploadedFilesTable.find('tbody').html('');
-            if (show_title != 0) {  // Compare with 0 because sometimes it's "0", which is true
-                uploadedFilesTable.addClass('show_title');
-            } else {
-                uploadedFilesTable.removeClass('show_title');
-            }
-            if (show_comment != 0) {
-                uploadedFilesTable.addClass('show_comment');
-            } else {
-                uploadedFilesTable.removeClass('show_comment');
-            }
             $('#' + this.fieldname + '_uploadedfiles').removeClass('hidden');
+            $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
 
             const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
             const templateHtml = $('#filerowtemplate_'+this.fieldname).html();
