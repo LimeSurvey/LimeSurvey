@@ -523,10 +523,15 @@ function sendSubmitNotifications($surveyid)
             $aReplacementVars['ANSWERTABLE'] = $ResultTableText;
         }
     }
+
+    $emailLanguage = null;
+    if (isset($_SESSION['survey_' . $surveyid]['s_lang'])) {
+        $emailLanguage = $_SESSION['survey_' . $surveyid]['s_lang'];
+    }
     LimeExpressionManager::updateReplacementFields($aReplacementVars);
     if (count($aEmailNotificationTo) > 0) {
         $mailer = \LimeMailer::getInstance();
-        $mailer->setTypeWithRaw('admin_notification');
+        $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
         foreach ($aEmailNotificationTo as $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
@@ -540,7 +545,7 @@ function sendSubmitNotifications($surveyid)
 
     if (count($aEmailResponseTo) > 0) {
         $mailer = \LimeMailer::getInstance();
-        $mailer->setTypeWithRaw('admin_responses');
+        $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
         foreach ($aEmailResponseTo as $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
