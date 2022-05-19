@@ -190,7 +190,7 @@ class SurveysController extends LSYii_Controller
             ]
         ];
 
-        if ($oException instanceof LSFriendlyException) {
+        if ($oException instanceof LSUserException) {
             if ($oException->getRedirectUrl() != null) {
                 $dataArray['data']['redirectTo'] = $oException->getRedirectUrl();
             }

@@ -398,15 +398,8 @@ class LSYii_Application extends CWebApplication
             /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
             return;
         }
-        if (
-            Yii::app()->request->isAjaxRequest &&
-            $event->exception instanceof CHttpException
-        ) {
-            $this->outputJsonError($event->exception);
-        } elseif ($event->exception instanceof LSFriendlyException) {
-            // Handle "friendly" exceptions (redirect + flash)
-            $this->handleFriendlyException($event->exception);
-        }
+        // Handle specific exception cases, like "user friendly" exceptions and exceptions on ajax requests
+        $this->handleSpecificExceptions($event->exception);
         $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
             /* Can restrict to admin ? */
@@ -517,11 +510,29 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
+     * Handles specific exception cases, like "user friendly" exceptions and exceptions on ajax requests.
+     *
+     * @param CException $exception
+     * @return void
+     */
+    private function handleSpecificExceptions($exception)
+    {
+        if (
+            Yii::app()->request->isAjaxRequest &&
+            $exception instanceof CHttpException
+        ) {
+            $this->outputJsonError($exception);
+        } elseif ($exception instanceof LSUserException) {
+            $this->handleFriendlyException($exception);
+        }
+    }
+
+    /**
      * Handles "friendly" exceptions by setting a flash message and redirecting.
      * If the exception doesn't specify a redirect URL, the referrer is used.
      *
      * @param array $error
-     * @param LSFriendlyException $exception
+     * @param LSUserException $exception
      * @return void
      */
     private function handleFriendlyException($exception)
@@ -552,7 +563,7 @@ class LSYii_Application extends CWebApplication
             'success' => false,
             'message' => $exception->getMessage(),
         ];
-        if ($exception instanceof LSFriendlyException) {
+        if ($exception instanceof LSUserException) {
             if ($exception->getRedirectUrl() != null) {
                 $outputData['redirectTo'] = $exception->getRedirectUrl();
             }

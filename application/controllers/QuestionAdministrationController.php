@@ -570,11 +570,11 @@ class QuestionAdministrationController extends LSBaseController
 
             // If we are already dealing with a friendly exception (may include detailed errors),
             // just set the redirect URL and rethrow.
-            if ($ex instanceof LSFriendlyException) {
+            if ($ex instanceof LSUserException) {
                 throw $ex->setRedirectUrl($redirectUrl);
             }
 
-            throw new LSFriendlyException(
+            throw new LSUserException(
                 500,
                 $ex->getMessage(),
                 0,
@@ -2506,7 +2506,7 @@ class QuestionAdministrationController extends LSBaseController
 
 
         if ($oQuestion == null) {
-            throw new LSFriendlyException(
+            throw new LSUserException(
                 500,
                 gT("Question creation failed - input was malformed or invalid"),
                 0,
@@ -2517,7 +2517,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $saved = $oQuestion->save();
         if ($saved == false) {
-            throw (new LSFriendlyException(
+            throw (new LSUserException(
                 500,
                 gT('Could not save question'),
                 0,
@@ -2569,7 +2569,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
-            throw new LSFriendlyException(
+            throw new LSUserException(
                 500,
                 gT("Question update failed, input array malformed or invalid"),
                 0,
@@ -2580,7 +2580,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $saved = $oQuestion->save();
         if ($saved == false) {
-            throw (new LSFriendlyException(
+            throw (new LSUserException(
                 500,
                 gT("Update failed, could not save."),
                 0,
@@ -2658,7 +2658,7 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         if (!$oQuestion->save()) {
-            throw (new LSFriendlyException(500, gT("Could not save question")))
+            throw (new LSUserException(500, gT("Could not save question")))
                 ->setDetailedErrorsFromModel($oQuestion);
         }
 
@@ -2823,7 +2823,7 @@ class QuestionAdministrationController extends LSBaseController
                 }
                 $subquestion->scale_id   = $scaleId;
                 if (!$subquestion->save()) {
-                    throw (new LSFriendlyException(500, gT("Could not save subquestion")))
+                    throw (new LSUserException(500, gT("Could not save subquestion")))
                         ->setDetailedErrorsFromModel($subquestion);
                 }
                 $subquestion->refresh();
@@ -2833,7 +2833,7 @@ class QuestionAdministrationController extends LSBaseController
                     $l10n->language = $lang;
                     $l10n->question = $questionText;
                     if (!$l10n->save()) {
-                        throw (new LSFriendlyException(500, gT("Could not save subquestion")))
+                        throw (new LSUserException(500, gT("Could not save subquestion")))
                             ->setDetailedErrorsFromModel($l10n);
                     }
                 }
@@ -2882,7 +2882,7 @@ class QuestionAdministrationController extends LSBaseController
                 }
                 $subquestion->scale_id   = $scaleId;
                 if (!$subquestion->update()) {
-                    throw (new LSFriendlyException(500, gT("Could not save subquestion")))
+                    throw (new LSUserException(500, gT("Could not save subquestion")))
                         ->setDetailedErrorsFromModel($subquestion);
                 }
                 $subquestion->refresh();
@@ -2900,7 +2900,7 @@ class QuestionAdministrationController extends LSBaseController
                     $l10n->language = $lang;
                     $l10n->question = $questionText;
                     if (!$l10n->save()) {
-                        throw (new LSFriendlyException(500, gT("Could not save subquestion")))
+                        throw (new LSUserException(500, gT("Could not save subquestion")))
                             ->setDetailedErrorsFromModel($l10n);
                     }
                 }
@@ -2939,7 +2939,7 @@ class QuestionAdministrationController extends LSBaseController
                 }
                 $answer->scale_id = $scaleId;
                 if (!$answer->save()) {
-                    throw (new LSFriendlyException(500, gT("Could not save answer option")))
+                    throw (new LSUserException(500, gT("Could not save answer option")))
                         ->setDetailedErrorsFromModel($answer);
                 }
                 $answer->refresh();
@@ -2949,7 +2949,7 @@ class QuestionAdministrationController extends LSBaseController
                     $l10n->language = $lang;
                     $l10n->answer = $answerOptionText;
                     if (!$l10n->save()) {
-                        throw (new LSFriendlyException(500, gT("Could not save answer option")))
+                        throw (new LSUserException(500, gT("Could not save answer option")))
                             ->setDetailedErrorsFromModel($l10n);
                     }
                 }

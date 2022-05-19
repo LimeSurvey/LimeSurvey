@@ -1,6 +1,6 @@
 <?php
 
-class LSFriendlyException extends CHttpException
+class LSUserException extends CHttpException
 {
     /** @var string */
     private $redirectUrl = null;
