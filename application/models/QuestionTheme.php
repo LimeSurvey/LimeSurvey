@@ -658,7 +658,11 @@ class QuestionTheme extends LSActiveRecord
         $baseQuestionsModified = [];
         foreach ($baseQuestions as $baseQuestion) {
             //TODO: should be moved into DB column (question_theme_settings table)
-            $sQuestionConfigFile = file_get_contents($baseQuestion->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = @file_get_contents($baseQuestion->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            if (!$sQuestionConfigFile) {
+                /* Not readable file : don't break */
+                continue;
+            }
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionEngineData = json_decode(json_encode($oQuestionConfig->engine), true);
             $showAsQuestionType = $questionEngineData['show_as_question_type'];
