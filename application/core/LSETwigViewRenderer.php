@@ -288,14 +288,17 @@ window.addEventListener('message', function(event) {
 
             // check if this method is called from theme editor
             if (empty($aData['bIsThemeEditor'])) {
-                    $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+                    // Add 'question_template_attribute' globally so it's available on includes.
+                    $this->_twig->addGlobal("question_template_attribute", $oQuestionTemplate->getCustomAttributes());
                     $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
                     $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
                     $aData['this'] = App()->getController();
             } else {
-                $aData['question_template_attribute'] = null;
+                $this->_twig->addGlobal("question_template_attribute", null);
             }
             $template = $this->_twig->loadTemplate($sView . '.twig')->render($aData);
+            // Clear 'question_template_attribute' just in case.
+            $this->_twig->addGlobal("question_template_attribute", null);
             return $template;
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
