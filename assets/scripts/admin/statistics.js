@@ -396,9 +396,8 @@ LS.Statistics2 = function () {
     /***
      * Select all questions
      */
-    $("[name='viewsummaryall']").on('switchChange.bootstrapSwitch', function (event, state) {
-
-        if (state == true) {
+    $("[name='viewsummaryall']").on('change', function (event) {
+        if (this.value == '1') {
             $('#filterchoices input[type=checkbox]').prop('checked', true);
         } else {
             $('#filterchoices input[type=checkbox]').prop('checked', false);

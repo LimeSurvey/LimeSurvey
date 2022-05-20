@@ -3,7 +3,7 @@
 namespace LimeSurvey\Helpers\Update;
 
 /**
- * Copy of update 453 which has been skipped on some installations
+ * Som it if it is a copy of update 453 which has been skipped on some installations
  */
 class Update_487 extends DatabaseUpdateBase
 {
@@ -19,5 +19,14 @@ class Update_487 extends DatabaseUpdateBase
                 }
             }
         }
+        // Adjust permissions for "Survey Participants" menu entry
+        $this->db->createCommand()->update(
+            '{{surveymenu_entries}}',
+            [
+                'permission' => 'tokens',
+                'permission_grade' => 'read'
+            ],
+            "name='participants'"
+        );
     }
 }

@@ -2129,7 +2129,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission');
             }
         } else {
-            return array('status' => 'Invalid S ession Key');
+            return array('status' => self::INVALID_SESSION_KEY);
         }
     }
 
@@ -3131,8 +3131,7 @@ class remotecontrol_handle
         return array(
             "success"   => true,
             "size"      => $size,
-            //FIXME $filename not defined!!!
-            "name"      => rawurlencode(basename($filename)),
+            "name"      => rawurlencode(basename($sFileName)),
             "ext"       => $ext,
             "filename"  => $randfilename,
             "msg"       => gT("The file has been successfully uploaded.")
