@@ -2935,11 +2935,6 @@ table#responsedetail tr td {
   margin-bottom: 30px;
 }
 
-input[type=file].form-control {
-  border: none;
-  padding-right: 0px;
-}
-
 #insertmethod-container {
   display: none;
 }
@@ -4329,6 +4324,10 @@ html[dir=rtl] th {
   background-color: #eee;
 }
 
+label {
+  font-weight: bold;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -4444,10 +4443,6 @@ html[dir=rtl] th {
 
 .item.inactive {
   display: none;
-}
-
-#cpdbatt {
-  min-height: 100px;
 }
 
 .draggable-container {
@@ -4771,4 +4766,8 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   margin: 0;
   border: none;
   display: inline-block;
+}
+
+#cpdbatt {
+  min-height: 100px;
 }
