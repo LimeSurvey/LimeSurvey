@@ -194,7 +194,7 @@ class SurveyPermission extends SurveyCommonAction
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'create')) {
-            $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<br/><br/><div class='row'>\n"
+            $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<br/><br/><div class='row mb-3'>\n"
             . "<label class='col-md-3 text-end form-label' for='uidselect'>" . gT("User") . ": </label>
                  <div class='col-md-4'>
                 <select id='uidselect' name='uid'  class='form-select'>\n"
