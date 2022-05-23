@@ -62,7 +62,7 @@ class SurveyPermission extends SurveyCommonAction
         $result2 = Permission::model()->getUserDetails($iSurveyID);
         if (count($result2) > 0) {
                 $surveysecurity .= ""
-                . "<table class='surveysecurity table table-hover'><thead>"
+                . "<div class='overflow-auto'><table class='surveysecurity table table-hover'><thead>"
                 . "<tr>\n"
                 . "<th>" . gT("Action") . "</th>\n"
                 . "<th>" . gT("Username") . "</th>\n"
@@ -190,7 +190,7 @@ class SurveyPermission extends SurveyCommonAction
                 $row++;
             }
             $surveysecurity .= "</tbody>\n"
-            . "</table>\n";
+            . "</table></div>\n";
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'create')) {
