@@ -14,29 +14,28 @@
 ?>
 
 <!-- Search Box -->
-<div class="container">
 <div class="row float-end">
         <!-- Begin Form -->
         <?php $form  =  $this->beginWidget('CActiveForm', array(
             'action' => Yii::app()->createUrl($this->formUrl),
             'method' => 'get',
             'htmlOptions'=>array(
-                'class'=>'row row-cols-lg-auto',
+                'class'=>'row ms-auto'
             ),
         )); ?>
 
             <!-- search input -->
-            <div class="row mb-3">
-                <?php echo $form->label($this->model, 'searched_value', array('label'=>gT('Search:'),'class'=>'col-sm-2 col-form-label col-form-label-sm')); ?>
-                <div class="col-sm-10">
+            <div class="col row mb-3">
+                <?php echo $form->label($this->model, 'searched_value', array('label'=>gT('Search:'),'class'=>'col-sm-3 col-form-label col-form-label-sm')); ?>
+                <div class="col-sm-9">
                     <?php echo $form->textField($this->model, 'searched_value', array('class'=>'form-control')); ?>
                 </div>
             </div>
 
             <!-- select state -->
-            <div class="row mb-3">
-                <?php echo $form->label($this->model, 'active', array('label'=>gT('Status:'),'class'=>'col-sm-2 col-form-label col-form-label-sm')); ?>
-                <div class="col-sm-10">
+            <div class="col row mb-3">
+                <?php echo $form->label($this->model, 'active', array('label'=>gT('Status:'),'class'=>'col-sm-3 col-form-label col-form-label-sm')); ?>
+                <div class="col-sm-9">
                     <select name="active" id='Survey_active' class="form-select">
                         <option value="" <?php if( $this->model->active==""){echo "selected";}?>><?php eT('(Any)');?></option>
                         <option value="Y" <?php if( $this->model->active=="Y"){echo "selected";}?>><?php eT('Active');?></option>
@@ -49,9 +48,9 @@
             </div>
 
             <!-- select group -->
-            <div class="row mb-3">
-                <?php echo $form->label($this->model, 'group', array('label'=>gT('Group:'),'class'=>'col-sm-4 col-form-label col-form-label-sm')); ?>
-                <div class="col-sm-8">
+            <div class="col row mb-3">
+                <?php echo $form->label($this->model, 'group', array('label'=>gT('Group:'),'class'=>'col-sm-3 col-form-label col-form-label-sm')); ?>
+                <div class="col-sm-9">
                     <select name="gsid" id='Survey_gsid' class="form-select">
                         <option value=""><?php eT('(Any group)');?></option>
                         <?php foreach( SurveysGroups::getSurveyGroupsList() as $gsid=>$group_title): ?>
@@ -63,7 +62,7 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="col row mb-3">
                 <div class="col-12">
                     <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
                     <a href="<?php echo Yii::app()->createUrl('surveyAdministration/listsurveys');?>" class="btn btn-warning">
@@ -74,5 +73,4 @@
             </div>
 
         <?php $this->endWidget(); ?>
-</div>
 </div>
