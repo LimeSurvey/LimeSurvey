@@ -175,10 +175,10 @@ class SurveyPermission extends SurveyCommonAction
 
                     // Full icon = all permissions
                     if ($iCount == $iPermissionCount) {
-                        $insert = "<div data-bs-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check\">&nbsp;</div>";
+                        $insert = "<div data-bs-toggle='tooltip' title='" . $sTooltip . "' class=\"fa fa-check\">&nbsp;</div>";
                     } elseif ($iCount > 0) {
                         // Blurred icon, meaning only partial permissions
-                        $insert = "<div data-bs-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
+                        $insert = "<div data-bs-toggle='tooltip' title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
                     } else {
                         $insert = "<div>&#8211;</div>";
                     }
