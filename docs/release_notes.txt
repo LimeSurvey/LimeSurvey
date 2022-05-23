@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.11 (build 220517) to 3.28.12 (build 220524) May 23, 2022
+-Fixed issue #18074: Exit and clear survey doesn't work (#2397) (Gabriel Jenik)
+-Fixed issue #17987: Quota url needs to be decoded (#2395) (Denis Chenu)
+-Fixed issue #17962: Export fails when called from a cron process or console application (#2417) (Gabriel Jenik)
+-Fixed issue #17872: Answer filters reset after pagination changed (#2403) (Gabriel Jenik)
+-Fixed issue #17709: GUI setting for DB session lifetime does not apply (#2415) (Denis Chenu)
+
+
 Changes from 3.28.10 (build 220510) to 3.28.11 (build 220517) May 16, 2022
 -Fixed issue #17991: Importing a question from the "List questions" menu fails with 400 error (#2349) (Gabriel Jenik)
 #Updated translation: Portuguese (Brazil) by effgarces, mauriciofurtado, samarta, soniagouveia, tamiel
