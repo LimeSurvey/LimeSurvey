@@ -1716,10 +1716,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @param {number} qid Question id (0 when creating new question)
      * @return {void}
      */
-    checkQuestionCodeUniqueness: function(code, qid) {
-      $('#question-code-unique-warning').addClass('hidden');
+    checkQuestionValidateTitle: function(code, qid) {
+      $('#question-title-warning').text("");
+      $('#question-title-warning').addClass('hidden');
       $.ajax({
-        url: languageJson.checkQuestionCodeIsUniqueURL,
+        url: languageJson.checkQuestionValidateTitleURL,
         method: 'GET',
         data: {
           sid,
@@ -1727,8 +1728,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data !== 'true') {
-            $('#question-code-unique-warning').removeClass('hidden');
+          if (data) {
+              $('#question-title-warning').text(data);
+              $('#question-title-warning').removeClass('hidden');
+          } else {
+              // Continue
           }
         },
         error: (data) => {
@@ -1877,7 +1881,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       };
 
       $.ajax({
-        url: languageJson.checkQuestionCodeIsUniqueURL,
+        url: languageJson.checkQuestionValidateTitleURL,
         method: 'GET',
         data: {
           sid,
@@ -1885,7 +1889,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data === 'true') {
+          if (data) {
+              $('#question-title-warning').text(data);
+              $('#question-title-warning').removeClass('hidden');
+          } else {
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
@@ -1902,12 +1909,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 button.click();
               }
             }
-          } else {
-            $('#question-code-unique-warning').removeClass('hidden');
           }
         },
         error: (response) => {
-          alert('Internal error in checkIfSaveIsValid: ' + response);
+          alert('Internal error in checkQuestionValidateTitle: ' + response);
           throw 'abort';
         }
       });

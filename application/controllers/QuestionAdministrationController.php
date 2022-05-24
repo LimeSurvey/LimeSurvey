@@ -3022,6 +3022,15 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * @deprecated in 5.3.17
+     * replaced by better name actionValidateQuestionTitle
+     */
+    public function actionCheckQuestionCodeUniqueness($sid, int $qid, string $code)
+    {
+        $this->actionCheckQuestionValidateTitle($sid, $qid, $code);
+    }
+
+    /**
      * Checks if given Question Code is unique.
      * Echo 'true' if code is unique, otherwise 'false'.
      *
@@ -3030,7 +3039,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param string $code Question code (title in db)
      * @return void
      */
-    public function actionCheckQuestionCodeUniqueness($sid, $qid, string $code)
+    public function actionCheckQuestionValidateTitle($sid, int $qid, string $code)
     {
         $sid = (int) $sid;
         $qid = (int) $qid;
@@ -3042,30 +3051,24 @@ class QuestionAdministrationController extends LSBaseController
         if (empty($survey)) {
             throw new CHttpException(404, gT("Invalid survey id"));
         }
-
-        if ($qid === 0) {
-            // TODO: Per survey, not globally.
-            $count = Question::model()->countByAttributes(
-                [
-                    'title' => $code,
-                    'sid'   => $sid
-                ]
-            );
-            echo $count > 0 ? 'false' : 'true';
-        } else {
-            $question = Question::model()->findByPk($qid);
-            if (empty($question)) {
+        if ($qid) {
+            $oQuestion = Question::model()->findByPk($qid);
+            if (empty($oQuestion)) {
                 throw new CHttpException(404, gT("Invalid question id"));
             }
-            // TODO: Use validate().
-            $count = Question::model()->countByAttributes(
-                [
-                    'title' => $code,
-                    'sid'   => $sid
-                ],
-                'qid <> ' . (int) $qid
-            );
-            echo $count > 0 ? 'false' : 'true';
+            if (!empty($oQuestion->parent_qid)) {
+                throw new CHttpException(400, gT("Invalid question id"));
+            }
+            if ($oQuestion->sid != $sid) {
+                throw new CHttpException(400, gT("Invalid question id"));
+            }
+        } else {
+            $oQuestion = $this->getQuestionObject();
+            $oQuestion->parent_qid = 0; // Unsure needed it, but we need it's a parent_qid=0
+        }
+        $oQuestion->title = $code;
+        if (!$oQuestion->validate(['title'])) {
+            echo $oQuestion->getError('title');
         }
         Yii::app()->end();
     }
