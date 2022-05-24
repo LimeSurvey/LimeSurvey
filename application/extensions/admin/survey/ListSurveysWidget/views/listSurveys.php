@@ -14,8 +14,7 @@
 ?>
 
 <!-- Grid -->
-<div class="row">
-    <div class="col-12 content-right">
+<div class="row col-12">
         <?php
             $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', array(
             'dataProvider' => $this->model->search(),
@@ -142,4 +141,3 @@
             ));
         ?>
     </div>
-</div>
