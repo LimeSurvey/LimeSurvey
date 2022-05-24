@@ -2287,7 +2287,6 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                 }
                             }
                         }
-
                         if (!SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData)) {
                             throw new Exception(gT("Error") . ": Failed to insert data[16]<br />");
                         }
@@ -2635,6 +2634,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     if (!isset($xml->timings->rows)) {
         return $results;
     }
+    switchMSSQLIdentityInsert('survey_' . $iSurveyID . '_timings', true);
     foreach ($xml->timings->rows->row as $row) {
         $insertdata = array();
 
@@ -2649,11 +2649,12 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
         }
 
         if (!SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata)) {
-            throw new Exception(gT("Error") . ": Failed to insert data[17]<br />");
+            throw new Exception(gT("Error") . ": Failed to insert timings data");
         }
 
         $results['responses']++;
     }
+    switchMSSQLIdentityInsert('survey_' . $iSurveyID . '_timings', false);
     return $results;
 }
 
