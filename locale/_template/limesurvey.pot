@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-05-23 09:27:07+00:00\n"
+"POT-Creation-Date: 2022-05-24 09:12:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3525,7 +3525,7 @@ msgid "Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s'
 msgstr ""
 
 #: application/controllers/UserManagementController.php:632
-msgid "Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"
+msgid "Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
 #: application/controllers/UserManagementController.php:670
@@ -14631,7 +14631,7 @@ msgid "Answer codes must be unique by question."
 msgstr ""
 
 #: application/models/AnswerL10n.php:77
-msgid "Answer ID (aid): “%s” is already in use for language “%s”."
+msgid "Answer ID '%s' is already in use for language '%s'."
 msgstr ""
 
 #: application/models/Assessment.php:86 application/models/Notification.php:161
@@ -15286,7 +15286,7 @@ msgid "Group name"
 msgstr ""
 
 #: application/models/QuestionL10n.php:88
-msgid "Question ID (qid): “%s” is already in use for language “%s”."
+msgid "Question ID '%s' is already in use for language '%s'."
 msgstr ""
 
 #: application/models/QuestionTheme.php:236
@@ -16488,7 +16488,7 @@ msgid "Error: "
 msgstr ""
 
 #: application/models/UserParser.php:87
-msgid "Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"
+msgid "Wrong definition! Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
 #: application/models/services/CopySurveyResources.php:52
@@ -17983,7 +17983,7 @@ msgid "Old VV version"
 msgstr ""
 
 #: application/views/admin/export/vv_view.php:81
-msgid "If you want to import the response data in older version or if your survey has integrity problem, please use the old export version (automatically selected if there are duplicate codes)."
+msgid "If you want to import the response data from an older version or if your survey has an integrity problem, please use the old export version (automatically selected if there are duplicate codes)."
 msgstr ""
 
 #: application/views/admin/export/vv_view.php:87
@@ -18003,7 +18003,7 @@ msgid "Single dash (%s)"
 msgstr ""
 
 #: application/views/admin/export/vv_view.php:103
-msgid "Leave empty if you want complete question text."
+msgid "Leave empty if you want the complete question text."
 msgstr ""
 
 #: application/views/admin/expressions/test/survey_logic_file.php:15
