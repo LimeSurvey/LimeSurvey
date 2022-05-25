@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.16 (build 220523) to 5.3.17 (build 220525) May 25, 2022
+-Fixed issue: Export responses does not work on MSSQL (Carsten Schmitz)
+-Fixed issue: Cannot import a survey archive with timings on MSSQL (Carsten Schmitz)
+#Updated translation: Swedish by joho1968, maxzomborszki
+#Updated translation: Spanish (Spain) by aesteban, albertodominguez, Ignacio, ireneoh
+#Updated translation: Slovak by c_schmitz, jelen1
+#Updated translation: Mongolian by amidral
+#Updated translation: Maltese by gabrieljenik
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.3.15 (build 220519) to 5.3.16 (build 220523) May 23, 2022
 -Fixed issue: Invalid session key error message when listing groups with RemoteControl (#2376) (hanszoons)
 -Fixed issue #18113: [security] Any admin user can read any question attributes (Patricia Stell)
