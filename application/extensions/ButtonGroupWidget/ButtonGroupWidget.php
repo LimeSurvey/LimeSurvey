@@ -37,6 +37,7 @@ class ButtonGroupWidget extends CInputWidget
         $this->render('buttongroup', [
             'ariaLabel' => $this->ariaLabel,
             'name' => $this->name,
+            'id' => $this->id ?? $this->name,
             'selectOptions' => $this->selectOptions,
             'checkedOption' => $this->checkedOption,
             'htmlOptions' => $this->htmlOptions

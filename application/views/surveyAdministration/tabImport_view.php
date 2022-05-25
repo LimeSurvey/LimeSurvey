@@ -30,13 +30,14 @@
 
             <!-- Convert resource links and INSERTANS fields? -->
             <div class='mb-3 form-check'>
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'translinksfields',
-                    'value'=> "1",
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
-                    ));
-                ?>
+                    'checkedOption' => '1',
+                    'selectOptions' => [
+                        '1' => gT('On'),
+                        '0' => gT('Off'),
+                    ]
+                ]); ?>
                 <label class='form-label ' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
             </div>
 

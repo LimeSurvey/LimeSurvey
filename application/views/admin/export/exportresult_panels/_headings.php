@@ -26,13 +26,14 @@
         <?php eT("Strip HTML code:"); ?>
       </label>
       <div class='col-md-12'>
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'striphtmlcode',
-            'id'=>'striphtmlcode',
-            'value' => 1,
-            'onLabel'=>gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+          <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+              'name' => 'striphtmlcode',
+              'checkedOption' => '1',
+              'selectOptions' => [
+                  '1' => gT('On'),
+                  '0' => gT('Off'),
+              ]
+          ]); ?>
       </div>
     </div>
 

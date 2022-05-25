@@ -48,6 +48,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', array(
             'name' => 'name',
             'value' => '$data->name',
             'htmlOptions' => array('class' => 'col-lg-2'),
+
         ),
 
         array(

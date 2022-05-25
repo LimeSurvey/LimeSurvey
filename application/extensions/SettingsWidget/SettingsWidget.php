@@ -336,22 +336,25 @@ class SettingsWidget extends CWidget
     /**
      * Render Boolean.
      * @param string $name
-     * @param array  $metaData
-     * @param mixed  $form
+     * @param array $metaData
+     * @param mixed $form
+     *
+     * @return string
+     * @throws Exception
      */
     public function renderBoolean($name, array $metaData, $form = null)
     {
         $htmlOptions = $this->htmlOptions($metaData, $form);
-        $value = isset($metaData['current']) ? $metaData['current'] : '';
-        return CHtml::tag('div', $htmlOptions,
-            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                'name' => $name,
-                'value' => $value,
-                'onLabel'=>gT('On'),
-                'offLabel' => gT('Off'),
-                'htmlOptions' => $htmlOptions,
-            ), true)
-        );
+        $value = $metaData['current'] ?? '';
+        return $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name' => $name,
+            'checkedOption' => $value,
+            'selectOptions' => [
+                '1' => gT('On'),
+                '0' => gT('Off'),
+            ],
+            'htmlOptions' => $htmlOptions,
+        ], true);
     }
 
     public function renderCheckbox($name, array $metaData, $form = null)
