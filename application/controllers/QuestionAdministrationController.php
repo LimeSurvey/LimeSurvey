@@ -1618,7 +1618,6 @@ class QuestionAdministrationController extends LSBaseController
         $aData['oSurvey'] = $oSurvey;
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['oQuestion'] = $oQuestion;
-        $aData['action'] = 'copy';
 
         //save the copy ...savecopy (submitbtn pressed ...)
         $savePressed = Yii::app()->request->getParam('savecopy');

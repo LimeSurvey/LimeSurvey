@@ -15,6 +15,7 @@
         [
             'question' => $oQuestion,
             'newTitle' => $oQuestion->title . "Copy",
+            'newQid' => true
         ]
     ); ?>
     <!-- Language selector -->
