@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-05-24 09:12:41+00:00\n"
+"POT-Creation-Date: 2022-05-25 10:29:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,10 +52,10 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:1984
 #: application/helpers/admin/import_helper.php:2007
 #: application/helpers/admin/import_helper.php:2110
-#: application/helpers/admin/import_helper.php:2292
+#: application/helpers/admin/import_helper.php:2291
 #: application/helpers/admin/import_helper.php:2652
-#: application/helpers/admin/import_helper.php:3280
-#: application/helpers/admin/import_helper.php:3325
+#: application/helpers/admin/import_helper.php:3281
+#: application/helpers/admin/import_helper.php:3326
 #: application/models/TemplateManifest.php:171
 #: application/models/TemplateManifest.php:418
 #: application/models/services/PasswordManagement.php:85
@@ -10659,57 +10659,57 @@ msgstr ""
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2311
+#: application/helpers/admin/import_helper.php:2310
 #: application/views/surveyAdministration/_activation_error.php:13
 msgid "The survey response table could not be created."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2311
+#: application/helpers/admin/import_helper.php:2310
 #: application/views/surveyAdministration/_activation_error.php:14
 msgid "Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2359
+#: application/helpers/admin/import_helper.php:2358
 msgid "File is empty or you selected an invalid character set (%s)."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2372
+#: application/helpers/admin/import_helper.php:2371
 msgid "File seems empty or has only one line"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2422
+#: application/helpers/admin/import_helper.php:2421
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2429
+#: application/helpers/admin/import_helper.php:2428
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2589
+#: application/helpers/admin/import_helper.php:2588
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2591
+#: application/helpers/admin/import_helper.php:2590
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2594
+#: application/helpers/admin/import_helper.php:2593
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2598
+#: application/helpers/admin/import_helper.php:2597
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2601
+#: application/helpers/admin/import_helper.php:2600
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2604
+#: application/helpers/admin/import_helper.php:2603
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2621
+#: application/helpers/admin/import_helper.php:2620
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
