@@ -1495,7 +1495,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     return duplicateCodes.length == 0;
   }
-
+  
   /**
    * Return a function that can be used to check code uniqueness.
    * Used by subquestions and answer options.
@@ -1931,6 +1931,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showSubquestionCodeUniqueError: createCheckUniqueFunction(languageJson.subquestions.duplicatesubquestioncode),
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
+
+  $("#questionCode").on('blur', function() {
+    let qid = 0;
+    if ($(this).data('qid')) {
+      qid = $(this).data('qid');
+    }
+    LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
+  });
 
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {

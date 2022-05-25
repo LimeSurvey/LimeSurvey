@@ -1618,23 +1618,12 @@ class QuestionAdministrationController extends LSBaseController
         $aData['oSurvey'] = $oSurvey;
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['oQuestion'] = $oQuestion;
+        $aData['action'] = 'copy';
 
         //save the copy ...savecopy (submitbtn pressed ...)
         $savePressed = Yii::app()->request->getParam('savecopy');
         if (isset($savePressed) && $savePressed !== null) {
             $newTitle = Yii::app()->request->getParam('question')['title'];
-            $oldQuestion = Question::model()->findByAttributes(['title' => $newTitle, 'sid' => $surveyId]);
-            if (!empty($oldQuestion)) {
-                Yii::app()->user->setFlash('error', gT("Duplicate question code"));
-                $this->redirect(
-                    $this->createUrl(
-                        'surveyAdministration/view/',
-                        [
-                            'surveyid' => $surveyId,
-                        ]
-                    )
-                );
-            }
 
             $newQuestionL10n = Yii::app()->request->getParam('questionI10N');
             $copyQuestionTextValues = [];
@@ -1720,7 +1709,6 @@ class QuestionAdministrationController extends LSBaseController
             ],
             true
         );
-
         $this->aData = $aData;
         $this->render('copyQuestionForm', $aData);
     }

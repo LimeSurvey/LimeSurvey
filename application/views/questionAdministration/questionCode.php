@@ -17,7 +17,7 @@
             value="<?= !empty($newTitle) ? $newTitle : $question->title; ?>"
             required="true"
             maxlength="20"
-            onfocusout="LS.questionEditor.checkQuestionValidateTitle($(this).val(), <?= $question->qid; ?>)"
+            data-qid="<?= (empty($question->qid) || empty($action) || $action == 'copy') ? 0 : $question->qid; ?>"
         />
 
         <!--
