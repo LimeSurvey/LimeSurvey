@@ -77,6 +77,9 @@ class CreateQuestionTest extends TestBaseClassWeb
             $questionCode = 'question' . rand(1, 10000);
             $input = $web->findById('questionCode');
             $input->clear()->sendKeys($questionCode);
+            /* blur out action : ajax call */
+            $web->findById('relevance')->clear();
+            sleep(1);
 
             $questionTypeSelector = $web->findById('trigger_questionTypeSelector_button');
             $questionTypeSelector->click();
