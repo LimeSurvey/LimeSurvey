@@ -442,6 +442,10 @@ footer.footer,
     margin-right: 22px;
   }
 }
+.black-caret {
+  color: black;
+}
+
 .ls-flex, .ls-flex-column, .ls-flex-row {
   display: -moz-flex;
   display: -webkit-box;

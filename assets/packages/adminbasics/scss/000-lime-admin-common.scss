@@ -294,7 +294,7 @@ body {
     max-width: 100%;
 }
 
-.jumbotronls.message-box {
+.jumbotron.message-box {
     margin-top: 1em;
 }
 
@@ -2279,10 +2279,6 @@ html body .nav-tabs > li.active > a:focus {
     cursor: pointer;
 }
 
-.jumbotron p {
-    font-weight: 300;
-}
-
 span[data-tooltip] {
     display: inline-block;
 }
@@ -2939,11 +2935,6 @@ table#responsedetail tr td {
     display: -ms-flexbox;
     display: flex;
     margin-bottom: 30px;
-}
-
-input[type="file"].form-control {
-    border: none;
-    padding-left: 0px;
 }
 
 #insertmethod-container {
@@ -4317,4 +4308,6 @@ html[dir="rtl"] th {
     background-color: #eee;
 }
 
-
+label {
+    font-weight: bold;
+}

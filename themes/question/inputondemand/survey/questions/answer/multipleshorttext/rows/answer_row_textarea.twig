@@ -17,7 +17,7 @@
 <!-- answer_row_textarea -->
 <!-- Multiple short texts question, item text area Html -->
 <!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
-<li id="javatbd{{ myfname }}" class="question-item answer-item text-item form-group {% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }}>
+<li id="javatbd{{ myfname }}" class="selector--inputondemand-list-item hidden question-item answer-item text-item form-group {% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }}>
         <!--  color code missing mandatory questions red -->
         <label class="control-label col-12 col-md-{{ sLabelWidth }}{% if sLabelWidth==0 %} hidden {% endif %}" for="answer{{ myfname }}">
             {{ question }}
@@ -34,7 +34,7 @@
                 </div>
             {% endif %}
             <textarea
-                class="form-control {{ kpclass }}"
+                class="form-control {{ kpclass }} selector--inputondemand-list-input"
                 name="{{ myfname }}"
                 id="answer{{ myfname }}"
                 rows="{{ rows }}"
