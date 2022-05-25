@@ -25,27 +25,22 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     <form action="<?= App()->createUrl('/responses/browse/', ['surveyId' => $surveyid]) ?>" class="pjax" method="POST" id="change-display-mode-form">
                         <div class="form-group">
                             <label for="display-mode">
-                                <?php
-                                eT('Display mode:');
-                                ?>
+                                <?php eT('Display mode:'); ?>
                             </label>
-                            <?php
-                            $state = App()->user->getState('responsesGridSwitchDisplayState') == "" ? 'compact' : App()->user->getState('responsesGridSwitchDisplayState');
-                            $this->widget(
-                                'yiiwheels.widgets.buttongroup.WhButtonGroup',
-                                [
-                                    'name'          => 'displaymode',
-                                    'value'         => $state,
-                                    'selectOptions' => [
-                                        'extended' => gT('Extended'),
-                                        'compact'  => gT('Compact')
-                                    ],
-                                    'htmlOptions'   => [
-                                        'classes' => 'selector__action-change-display-mode'
-                                    ]
+                            <?php $state = App()->user->getState('responsesGridSwitchDisplayState') == ""
+                                ? 'compact'
+                                : App()->user->getState('responsesGridSwitchDisplayState');
+                            $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                'name'          => 'displaymode',
+                                'checkedOption' => $state,
+                                'selectOptions' => [
+                                    'extended' => gT('Extended'),
+                                    'compact'  => gT('Compact')
+                                ],
+                                'htmlOptions'   => [
+                                    'classes' => 'selector__action-change-display-mode'
                                 ]
-                            );
-                            ?>
+                            ]); ?>
                             <input type="hidden" name="surveyid" value="<?= $surveyid ?>"/>
                             <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>"/>
                             <input type="submit" class="d-none" name="submit" value="submit"/>

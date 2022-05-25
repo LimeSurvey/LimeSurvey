@@ -8,16 +8,16 @@
 <?php $RPCInterface=getGlobalSetting('RPCInterface'); ?>
 <div class="form-group">
     <label class=" form-label"  for='RPCInterface'><?php eT("RPC interface enabled:"); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-            'name' => 'RPCInterface',
-            'value'=> $RPCInterface ,
-            'selectOptions'=>array(
-                "off"=>gT("Off",'unescaped'),
-                "json"=>gT("JSON-RPC",'unescaped'),
-                "xml"=>gT("XML-RPC",'unescaped')
-            )
-        ));?>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'RPCInterface',
+            'checkedOption' => $RPCInterface,
+            'selectOptions' => [
+                "off"  => gT("Off", 'unescaped'),
+                "json" => gT("JSON-RPC", 'unescaped'),
+                "xml"  => gT("XML-RPC", 'unescaped')
+            ]
+        ]); ?>
     </div>
 </div>
 

@@ -159,17 +159,14 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 </div>
                 <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='admin'><?php eT("Inherit:"); ?></label>
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                        array(
-                            'name' => 'adminbutton',
-                            'value' => ($bShowInherited && $admin === 'inherit' ? 'Y' : 'N'),
-                            'selectOptions' => $optionsOnOff,
-                            'htmlOptions' => array(
-                                'class' => 'text-option-inherit'
-                            )
-                        )
-                    );
-                    ?>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'adminbutton',
+                        'checkedOption' => ($bShowInherited && $admin === 'inherit' ? 'Y' : 'N'),
+                        'selectOptions' => $optionsOnOff,
+                        'htmlOptions'   => [
+                            'class' => 'text-option-inherit'
+                        ]
+                    ]); ?>
                 </div>
             </div>
         </div>
@@ -188,16 +185,14 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 </div>
                 <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='adminemail'><?php eT("Inherit:"); ?></label>
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                            'name' => 'adminemailbutton',
-                            'value' => ($bShowInherited && $adminemail === 'inherit' ? 'Y' : 'N'),
-                            'selectOptions' => $optionsOnOff,
-                            'htmlOptions' => array(
-                                'class' => 'text-option-inherit'
-                            )
-                        )
-                    );
-                    ?>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'adminemailbutton',
+                        'checkedOption' => ($bShowInherited && $adminemail === 'inherit' ? 'Y' : 'N'),
+                        'selectOptions' => $optionsOnOff,
+                        'htmlOptions'   => [
+                            'class' => 'text-option-inherit'
+                        ]
+                    ]); ?>
                 </div>
             </div>
         </div>
@@ -217,16 +212,14 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 </div>
                 <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='bounce_email'><?php eT("Inherit:"); ?></label>
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                            'name' => 'bounce_emailbutton',
-                            'value' => ($bShowInherited && $bounce_email === 'inherit' ? 'Y' : 'N'),
-                            'selectOptions' => $optionsOnOff,
-                            'htmlOptions' => array(
-                                'class' => 'text-option-inherit '
-                            )
-                        )
-                    );
-                    ?>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'bounce_emailbutton',
+                        'checkedOption' => ($bShowInherited && $bounce_email === 'inherit' ? 'Y' : 'N'),
+                        'selectOptions' => $optionsOnOff,
+                        'htmlOptions'   => [
+                            'class' => 'text-option-inherit '
+                        ]
+                    ]); ?>
                 </div>
             </div>
         </div>
@@ -332,14 +325,12 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         <!-- Format -->
         <div class="form-group">
             <label class=" form-label" for='format'><?php eT("Format:"); ?></label>
-            <div class="">
-                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'format',
-                        'value' => $oSurvey->format,
-                        'selectOptions' => $formatSelectOptions,
-                    )
-                ); ?>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'format',
+                    'checkedOption'         => $oSurvey->format,
+                    'selectOptions' => $formatSelectOptions,
+                ]); ?>
             </div>
         </div>
         <!-- Template -->

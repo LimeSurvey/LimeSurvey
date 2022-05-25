@@ -95,13 +95,13 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="administrator"><?= gT("Administrator:")?></label>
+                            <label class="form-label" for="administrator"><?= gT("Administrator:") ?></label>
                             <div>
-                                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                                    'name' => 'administrator',
-                                    'value'=> 'default',
-                                    'selectOptions' => isset($optionsAdmin) ?  $optionsAdmin : [],
-                                ));?>
+                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'name'          => 'administrator',
+                                    'checkedOption' => 'default',
+                                    'selectOptions' => $optionsAdmin ?? [],
+                                ]); ?>
                             </div>
                         </div>
                         <div id="conditional-administrator-fields" style="display: none;">

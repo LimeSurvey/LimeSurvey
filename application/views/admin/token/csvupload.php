@@ -36,9 +36,9 @@
             <div class="form-group">
                 <label class=" form-label" for='separator'><?php eT("Separator used:"); ?> </label>
                 <div class="">
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', [
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'separator',
-                        'value'         => 'auto',
+                        'checkedOption'         => 'auto',
                         'selectOptions' => [
                             "auto"      => gT("Automatic", 'unescaped'),
                             "comma"     => gT("Comma", 'unescaped'),
@@ -52,13 +52,14 @@
             <div class="form-group">
                 <label class="form-label" for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
                 <div>
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="filterblankemail" id="filterblankemail-on" autocomplete="off" value="1" checked>
-                        <label class="btn btn-outline-primary" for="filterblankemail-on"><?= gT('On') ?></label>
-
-                        <input type="radio" class="btn-check" name="filterblankemail" id="filterblankemail-off" autocomplete="off" value="0">
-                        <label class="btn btn-outline-primary" for="filterblankemail-off"><?= gT('Off') ?></label>
-                    </div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'filterblankemail',
+                        'checkedOption' => '1',
+                        'selectOptions' => [
+                            "1" => gT('On'),
+                            "0" => gT('Off')
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
@@ -66,13 +67,14 @@
             <div class="form-group">
                 <label class=" form-label" for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
                 <div>
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="allowinvalidemail" id="allowinvalidemail-on" autocomplete="off" value="1">
-                        <label class="btn btn-outline-primary" for="allowinvalidemail-on"><?= gT('On') ?></label>
-
-                        <input type="radio" class="btn-check" name="allowinvalidemail" id="allowinvalidemail-off" autocomplete="off" value="0" checked>
-                        <label class="btn btn-outline-primary" for="allowinvalidemail-off"><?= gT('Off') ?></label>
-                    </div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'allowinvalidemail',
+                        'checkedOption' => '0',
+                        'selectOptions' => [
+                            "1" => gT('On'),
+                            "0" => gT('Off')
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
@@ -80,13 +82,14 @@
             <div class="form-group">
                 <label class=" form-label" for='showwarningtoken'><?php eT("Display attribute warnings:"); ?></label>
                 <div>
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="showwarningtoken" id="showwarningtoken-on" autocomplete="off" value="1">
-                        <label class="btn btn-outline-primary" for="showwarningtoken-on"><?= gT('On') ?></label>
-
-                        <input type="radio" class="btn-check" name="showwarningtoken" id="showwarningtoken-off" autocomplete="off" value="0" checked>
-                        <label class="btn btn-outline-primary" for="showwarningtoken-off"><?= gT('Off') ?></label>
-                    </div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'showwarningtoken',
+                        'checkedOption' => '0',
+                        'selectOptions' => [
+                            "1" => gT('On'),
+                            "0" => gT('Off')
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
@@ -94,13 +97,14 @@
             <div class="form-group">
                 <label class=" form-label" for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
                 <div>
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="filterduplicatetoken" id="filterduplicatetoken-on" autocomplete="off" value="1" checked>
-                        <label class="btn btn-outline-primary" for="filterduplicatetoken-on"><?= gT('On') ?></label>
-
-                        <input type="radio" class="btn-check" name="filterduplicatetoken" id="filterduplicatetoken-off" autocomplete="off" value="0">
-                        <label class="btn btn-outline-primary" for="filterduplicatetoken-off"><?= gT('Off') ?></label>
-                    </div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'filterduplicatetoken',
+                        'checkedOption' => '1',
+                        'selectOptions' => [
+                            "1" => gT('On'),
+                            "0" => gT('Off')
+                        ]
+                    ]); ?>
                 </div>
                 <div class="help-block"><?php eT("The access code field is always checked for duplicates."); ?></div>
             </div>

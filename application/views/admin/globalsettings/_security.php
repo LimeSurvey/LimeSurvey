@@ -80,15 +80,15 @@
         <?php }; ?>
         <?php eT('IFrame embedding allowed:');
         echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-            'name' => 'x_frame_options',
-            'value' => Yii::app()->getConfig('x_frame_options'),
-            'selectOptions' => array(
-                "allow" => gT("Allow", 'unescaped'),
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'x_frame_options',
+            'checkedOption' => Yii::app()->getConfig('x_frame_options'),
+            'selectOptions' => [
+                "allow"      => gT("Allow", 'unescaped'),
                 "sameorigin" => gT("Same origin", 'unescaped')
-            )
-        )); ?>
+            ]
+        ]); ?>
     </div>
 </div>
 
@@ -99,15 +99,15 @@
         <?php }; ?>
         <?php eT('Force HTTPS:');
         echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-            'name' => 'force_ssl',
-            'value' => Yii::app()->getConfig('force_ssl'),
-            'selectOptions' => array(
-                "on" => gT("On", 'unescaped'),
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'force_ssl',
+            'checkedOption' => Yii::app()->getConfig('force_ssl'),
+            'selectOptions' => [
+                "on"  => gT("On", 'unescaped'),
                 "off" => gT("Off", 'unescaped')
-            )
-        )); ?>
+            ]
+        ]); ?>
     </div>
 </div>
 <div class="form-group">

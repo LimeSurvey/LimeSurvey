@@ -23,9 +23,9 @@
                                     <?php eT('Used bounce settings:');?>
                                 </label>
                                 <div class="default controls">
-                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceprocessing',
-                                        'value'=> $settings['bounceprocessing'] ,
+                                        'checkedOption'=> $settings['bounceprocessing'] ,
                                         'selectOptions'=>array(
                                             "N"=>gT("None",'unescaped'),
                                             "L"=>gT("Use settings below",'unescaped'),
@@ -43,9 +43,9 @@
                                     <?php eT("Server type:"); ?>
                                 </label>
                                 <div class="default controls">
-                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccounttype',
-                                        'value'=> $settings['bounceaccounttype'] ,
+                                        'checkedOption'=> $settings['bounceaccounttype'] ,
                                         'selectOptions'=>array(
                                             "IMAP"=>gT("IMAP",'unescaped'),
                                             "POP"=>gT("POP",'unescaped')
@@ -94,9 +94,9 @@
                                     <?php eT('Encryption type:'); ?>
                                 </label>
                                 <div class="default controls">
-                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccountencryption',
-                                        'value'=> strtolower($settings['bounceaccountencryption']),
+                                        'checkedOption'=> strtolower($settings['bounceaccountencryption']),
                                         'selectOptions'=>array(
                                             "off"=>gT("Off (unsafe)",'unescaped'),
                                             "ssl"=>gT("SSL/TLS",'unescaped'),

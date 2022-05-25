@@ -28,9 +28,9 @@
                             <?php eT('Invitation status:'); ?>
                         </label>
                         <div class="default controls">
-                            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'invitationstatus',
-                                'value'=> 0 ,
+                                'checkedOption'=> 0 ,
                                 'selectOptions'=>array(
                                     "0"=>gT("All",'unescaped'),
                                     "1"=>gT("Invited",'unescaped'),
@@ -46,9 +46,9 @@
                             <?php eT('Reminder status:'); ?>
                         </label>
                         <div class="default controls">
-                            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'reminderstatus',
-                                'value'=> 0 ,
+                                'checkedOption'=> 0 ,
                                 'selectOptions'=>array(
                                     "0"=>gT("All",'unescaped'),
                                     "1"=>gT("Reminder(s) sent",'unescaped'),

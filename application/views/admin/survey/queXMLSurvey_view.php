@@ -133,10 +133,10 @@
 
                     <div class="form-group row">
                         <label class=" form-label" for='queXMLPageOrientation'><?php eT("Page orientation:"); ?></label>
-                        <div class="">
-                            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                        <div>
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'queXMLPageOrientation',
-                                'value'=> $queXMLPageOrientation ,
+                                'checkedOption'=> $queXMLPageOrientation ,
                                 'selectOptions'=>array(
                                     "P"=>gT("Portrait",'unescaped'),
                                     "L"=>gT("Landscape",'unescaped')
@@ -147,10 +147,10 @@
 
                     <div class="form-group row">
                         <label class=" form-label" for='queXMLPageFormat'><?php eT("Page format:"); ?></label>
-                        <div class="">
-                            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                        <div>
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'queXMLPageFormat',
-                                'value'=> $queXMLPageFormat ,
+                                'checkedOption'=> $queXMLPageFormat ,
                                 'selectOptions'=>array(
                                     "A4"=>gT("A4",'unescaped'),
                                     "A3"=>gT("A3",'unescaped'),
@@ -162,10 +162,10 @@
 
                     <div class="form-group row">
                         <label class=" form-label" for='queXMLEdgeDetectionFormat'><?php eT("Edge detection format:"); ?></label>
-                        <div class="">
-                            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                        <div>
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'queXMLEdgeDetectionFormat',
-                                'value'=> $queXMLEdgeDetectionFormat ,
+                                'checkedOption'=> $queXMLEdgeDetectionFormat ,
                                 'selectOptions'=>array(
                                     "lines"=>gT("Corner lines",'unescaped'),
                                     "boxes"=>gT("Corner boxes",'unescaped')

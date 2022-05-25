@@ -110,23 +110,19 @@ echo viewHelper::getViewTestTag('surveyTexts');
         <!-- Decimal mark -->
         <div class="form-group">
             <label class="form-label "><?php eT("Decimal mark:"); ?></label>
-            <div class="">
-                <?php
-                $aRadixPoint = array();
+            <div>
+                <?php $aRadixPoint = [];
                 foreach (getRadixPointData() as $index => $radixptdata) {
                     $aRadixPoint[$index] = html_entity_decode($radixptdata['desc']);
                 }
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'],
-                        'value' => $aSurveyLanguageSettings['surveyls_numberformat'],
-                        'selectOptions' => $aRadixPoint,
-                        'htmlOptions' => array(
-                            "style" => "z-index:0"
-                        )
-                    )
-                );
-                ?>
+                $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'],
+                    'checkedOption' => $aSurveyLanguageSettings['surveyls_numberformat'],
+                    'selectOptions' => $aRadixPoint,
+                    'htmlOptions'   => [
+                        "style" => "z-index:0"
+                    ]
+                ]); ?>
             </div>
         </div>
     </div>

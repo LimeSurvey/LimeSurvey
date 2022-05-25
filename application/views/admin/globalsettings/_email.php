@@ -23,19 +23,17 @@
         </div>
         <div class="form-group">
             <label class="  form-label" for='emailmethod'><?php eT("Email method:"); ?></label>
-            <div class="">
-                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'emailmethod',
-                        'value' => getGlobalSetting('emailmethod'),
-                        'selectOptions' => array(
-                            "mail" => "PHP",
-                            "smtp" => "SMTP",
-                            "sendmail" => "Sendmail",
-                            "qmail" => "qmail"
-                        )
-                    )
-                ); ?>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'emailmethod',
+                    'checkedOption' => getGlobalSetting('emailmethod'),
+                    'selectOptions' => [
+                        "mail"     => "PHP",
+                        "smtp"     => "SMTP",
+                        "sendmail" => "Sendmail",
+                        "qmail"    => "qmail"
+                    ]
+                ]); ?>
             </div>
         </div>
         <div class="form-group">
@@ -60,10 +58,10 @@
         <div class="form-group">
             <label class="  form-label" for='emailsmtpssl'><?php eT("SMTP encryption:"); ?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                     array(
                         'name' => 'emailsmtpssl',
-                        'value' => getGlobalSetting('emailsmtpssl'),
+                        'checkedOption' => getGlobalSetting('emailsmtpssl'),
                         'selectOptions' => array(
                             "" => gT("Off (unsafe)", 'unescaped'),
                             "ssl" => gT("SSL/TLS", 'unescaped'),
@@ -75,19 +73,16 @@
         </div>
         <div class="form-group">
             <label class="  form-label" for='emailsmtpdebug'><?php eT("SMTP debug mode:"); ?></label>
-            <div class="">
-                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'emailsmtpdebug',
-                        'value' => getGlobalSetting('emailsmtpdebug'),
-                        'selectOptions' => array(
-                            "0" => gT("Off", 'unescaped'),
-                            "1" => gT("On errors", 'unescaped'),
-                            "2" => gT("Always", 'unescaped')
-                        )
-                    )
-                ); ?>
-
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'emailsmtpdebug',
+                    'checkedOption' => getGlobalSetting('emailsmtpdebug'),
+                    'selectOptions' => [
+                        "0" => gT("Off", 'unescaped'),
+                        "1" => gT("On errors", 'unescaped'),
+                        "2" => gT("Always", 'unescaped')
+                    ]
+                ]); ?>
                 <br/>&nbsp;
             </div>
         </div>

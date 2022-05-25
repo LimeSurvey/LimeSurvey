@@ -204,19 +204,15 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <?php eT("Maintenance mode:"); ?>
             </label>
             <div class="col-12">
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'maintenancemode',
-                        'value' => $thismaintenancemode,
-                        'selectOptions' => array(
-                            "off" => gT("Off", 'unescaped'),
-                            "soft" => gT("Soft lock", 'unescaped'),
-                            "hard" => gT("Full lock", 'unescaped')
-                        )
-                    )
-                );
-                ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'maintenancemode',
+                    'checkedOption' => $thismaintenancemode,
+                    'selectOptions' => [
+                        "off"  => gT("Off", 'unescaped'),
+                        "soft" => gT("Soft lock", 'unescaped'),
+                        "hard" => gT("Full lock", 'unescaped')
+                    ]
+                ]); ?>
             </div>
         </div>
     </div>
@@ -243,19 +239,16 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'defaulthtmleditormode',
-                        'value' => $thisdefaulthtmleditormode,
-                        'selectOptions' => array(
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
+                    [
+                        'name'          => 'defaulthtmleditormode',
+                        'checkedOption' => $thisdefaulthtmleditormode,
+                        'selectOptions' => [
                             "inline" => gT("Inline", 'unescaped'),
-                            "popup" => gT("Popup", 'unescaped'),
-                            "none" => gT("HTML source", 'unescaped')
-                        )
-                    )
-                );
-                ?>
+                            "popup"  => gT("Popup", 'unescaped'),
+                            "none"   => gT("HTML source", 'unescaped')
+                        ]
+                    ]); ?>
             </div>
         </div>
     </div>
@@ -267,19 +260,15 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <?php eT("Side-menu behaviour:"); ?>
             </label>
             <div class='col-md-4'>
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'sideMenuBehaviour',
-                        'value' => $sideMenuBehaviour,
-                        'selectOptions' => array(
-                            "adaptive" => gT("Adaptive", 'unescaped'),
-                            "alwaysOpen" => gT("Always open", 'unescaped'),
-                            "alwaysClosed" => gT("Always closed", 'unescaped')
-                        )
-                    )
-                );
-                ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'sideMenuBehaviour',
+                    'checkedOption' => $sideMenuBehaviour,
+                    'selectOptions' => [
+                        "adaptive"     => gT("Adaptive", 'unescaped'),
+                        "alwaysOpen"   => gT("Always open", 'unescaped'),
+                        "alwaysClosed" => gT("Always closed", 'unescaped')
+                    ]
+                ]); ?>
             </div>
         </div>
     </div>
@@ -291,18 +280,14 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'defaultquestionselectormode',
-                        'value' => $thisdefaultquestionselectormode,
-                        'selectOptions' => array(
-                            "default" => gT("Full", 'unescaped'),
-                            "none" => gT("Simple", 'unescaped')
-                        )
-                    )
-                );
-                ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'defaultquestionselectormode',
+                    'checkedOption' => $thisdefaultquestionselectormode,
+                    'selectOptions' => [
+                        "default" => gT("Full", 'unescaped'),
+                        "none"    => gT("Simple", 'unescaped')
+                    ]
+                ]); ?>
             </div>
         </div>
     </div>
@@ -314,18 +299,14 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'defaultthemeteeditormode',
-                        'value' => $thisdefaultthemeteeditormode,
-                        'selectOptions' => array(
-                            "default" => gT("Full", 'unescaped'),
-                            "none" => gT("Simple", 'unescaped')
-                        )
-                    )
-                );
-                ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'defaultthemeteeditormode',
+                    'checkedOption' => $thisdefaultthemeteeditormode,
+                    'selectOptions' => [
+                        "default" => gT("Full", 'unescaped'),
+                        "none"    => gT("Simple", 'unescaped')
+                    ]
+                ]); ?>
             </div>
         </div>
     </div>

@@ -3,15 +3,21 @@
 /**
  * Creates a Buttongroup that behaves like a switch with radio input type
  */
-class ButtonGroup extends CInputWidget
+class ButtonGroupWidget extends CInputWidget
 {
     /**
      * @var array Available buttons as value=>caption array
      */
-    public $selectOptions = array();
+    public $selectOptions = [];
+
+    /** @var string aria label for btn-group */
+    public $ariaLabel = '';
 
     /** @var array html options */
-    public $htmlOptions = array();
+    public $htmlOptions = [];
+
+    /** @var array the value that is currently checked/selected */
+    public $checkedOption = '';
 
     /** Initializes the widget */
     public function init()
@@ -28,46 +34,18 @@ class ButtonGroup extends CInputWidget
     /** Renders the button group */
     public function renderButtons()
     {
-        
-        list($name, $id) = $this->resolveNameID();
-
-        $html_array = $this->htmlOptions;
-        $html_array['class'] = isset($html_array['class']) ? $html_array['class']." btn-group" : "btn-group";
-        $html_array['id'] = $id;
-        $html_array['role'] = 'group';
-        $html_array['aria-label'] = 'Administrator button group';
-
-        echo CHtml::openTag('div', $html_array). "\n";
-
-        $i=1;
-        foreach( $this->selectOptions as $checkedValue=>$caption )
-        {
-            echo CHtml::radioButton(
-                $name,
-                $checkedValue == $this->value,
-                array(
-                    'name'  => $name,
-                    'id'    => $name.'_opt'.$i,
-                    'value' => $checkedValue,
-                    'class' => 'btn-check',
-                    'autocomplete' => 'off'
-                )
-            );
-            echo CHtml::openTag('label', array(
-                'class'=>($checkedValue==$this->value)?'btn btn-outline-secondary active':'btn btn-outline-secondary',
-                'for' => $name.'_opt'.$i
-            ));
-            echo CHtml::encode($caption);
-            echo CHtml::closeTag('label') . "\n";
-            $i++;
-        }
-        echo CHtml::closeTag('div') . "\n";
+        $this->render('buttongroup', [
+            'ariaLabel' => $this->ariaLabel,
+            'name' => $this->name,
+            'selectOptions' => $this->selectOptions,
+            'checkedOption' => $this->checkedOption,
+            'htmlOptions' => $this->htmlOptions
+        ]);
     }
 
 
     /** Registers required script files */
     public function registerClientScript()
     {
-
     }
 }
