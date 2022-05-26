@@ -182,7 +182,7 @@ class Question extends LSActiveRecord
                 $aRules[] = array('title', 'match', 'pattern' => '/comment$/', 'not' => true, 'message' => gT("'comment' suffix can not be used with multiple choice with comments."));
             }
         } else {
-            if($this->getAsSubquestions()) {
+            if ($this->getAsSubquestions()) {
                 // Disallow other if sub question have 'other' for title
                 $oSubquestionOther = Question::model()->find("parent_qid=:parent_qid and LOWER(title)='other'", array("parent_qid" => $this->qid));
                 if ($oSubquestionOther) {
