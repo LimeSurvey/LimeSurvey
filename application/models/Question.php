@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013-2022 The LimeSurvey Project Team / Carsten Schmitz
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -144,6 +144,12 @@ class Question extends LSActiveRecord
             array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly' => true),
             array('qid', 'unique','message' => sprintf(gT("Question id (qid) : '%s' is already in use."), $this->qid)),// Still needed ?
             array('other', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
+            array('other', 'filter', 'filter' => function ($value) {
+                if ($this->getAllowOther()) {
+                    return $value;
+                }
+                return 'N';
+            }),
             array('mandatory', 'in', 'range' => array('Y', 'S', 'N'), 'allowEmpty' => true),
             array('encrypted', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
             array('question_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
@@ -176,10 +182,12 @@ class Question extends LSActiveRecord
                 $aRules[] = array('title', 'match', 'pattern' => '/comment$/', 'not' => true, 'message' => gT("'comment' suffix can not be used with multiple choice with comments."));
             }
         } else {
-            // Disallow other if sub question have 'other' for title
-            $oSubquestionOther = Question::model()->find("parent_qid=:parent_qid and LOWER(title)='other'", array("parent_qid" => $this->qid));
-            if ($oSubquestionOther) {
-                $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'), 'except' => 'archiveimport');
+            if($this->getAsSubquestions()) {
+                // Disallow other if sub question have 'other' for title
+                $oSubquestionOther = Question::model()->find("parent_qid=:parent_qid and LOWER(title)='other'", array("parent_qid" => $this->qid));
+                if ($oSubquestionOther) {
+                    $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'), 'except' => 'archiveimport');
+                }
             }
         }
         if (!$this->isNewRecord) {
@@ -822,14 +830,63 @@ class Question extends LSActiveRecord
         return $sIcon;
     }
 
+    /**
+     * Return other icon according to state
+     * @return boolean
+     */
     public function getOtherIcon()
     {
-        if (($this->type == Question::QT_L_LIST) || ($this->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($this->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($this->type == Question::QT_M_MULTIPLE_CHOICE)) {
+        if ($this->getAllowOther()) {
             $sIcon = ($this->other === "Y") ? '<span class="fa fa-dot-circle-o"></span>' : '<span></span>';
         } else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
         }
         return $sIcon;
+    }
+
+
+    /**
+     * Return if question allow other
+     * @return boolean
+     */
+    public function getAllowOther()
+    {
+        return (
+            !$this->parent_qid
+            && (
+                $this->type == Question::QT_L_LIST
+                || $this->type == Question::QT_EXCLAMATION_LIST_DROPDOWN
+                || $this->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+                || $this->type == Question::QT_M_MULTIPLE_CHOICE
+            )
+        );
+    }
+
+    /**
+     * Return if question has managed subquestions
+     * usage in rules : allow set other even if existing subquestions 'other' exist (but deleted after)
+     * @return boolean
+     */
+    public function getAsSubquestions()
+    {
+        return (
+            !$this->parent_qid
+            && (
+                $this->type == QT_1_ARRAY_DUAL
+                || $this->type == QT_A_ARRAY_5_POINT
+                || $this->type == QT_B_ARRAY_10_CHOICE_QUESTIONS
+                || $this->type == QT_C_ARRAY_YES_UNCERTAIN_NO
+                || $this->type == QT_E_ARRAY_INC_SAME_DEC
+                || $this->type == QT_F_ARRAY
+                || $this->type == QT_H_ARRAY_COLUMN
+                || $this->type == QT_K_MULTIPLE_NUMERICAL
+                || $this->type == QT_M_MULTIPLE_CHOICE
+                || $this->type == QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+                || $this->type == QT_Q_MULTIPLE_SHORT_TEXT
+                || $this->type == QT_COLON_ARRAY_NUMBERS
+                || $this->type == QT_SEMICOLON_ARRAY_TEXT
+            )
+        );
     }
 
     /**
