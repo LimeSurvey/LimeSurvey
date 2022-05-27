@@ -853,12 +853,7 @@ class Question extends LSActiveRecord
     {
         return (
             !$this->parent_qid
-            && (
-                $this->type == self::QT_L_LIST
-                || $this->type == self::QT_EXCLAMATION_LIST_DROPDOWN
-                || $this->type == self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
-                || $this->type == self::QT_M_MULTIPLE_CHOICE
-            )
+            && $this->getQuestionType()->other
         );
     }
 
@@ -871,21 +866,7 @@ class Question extends LSActiveRecord
     {
         return (
             !$this->parent_qid
-            && (
-                $this->type == self::QT_1_ARRAY_DUAL
-                || $this->type == self::QT_A_ARRAY_5_POINT
-                || $this->type == self::QT_B_ARRAY_10_CHOICE_QUESTIONS
-                || $this->type == self::QT_C_ARRAY_YES_UNCERTAIN_NO
-                || $this->type == self::QT_E_ARRAY_INC_SAME_DEC
-                || $this->type == self::QT_F_ARRAY
-                || $this->type == self::QT_H_ARRAY_COLUMN
-                || $this->type == self::QT_K_MULTIPLE_NUMERICAL
-                || $this->type == self::QT_M_MULTIPLE_CHOICE
-                || $this->type == self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
-                || $this->type == self::QT_Q_MULTIPLE_SHORT_TEXT
-                || $this->type == self::QT_COLON_ARRAY_NUMBERS
-                || $this->type == self::QT_SEMICOLON_ARRAY_TEXT
-            )
+            && $this->getQuestionType()->subquestions
         );
     }
 

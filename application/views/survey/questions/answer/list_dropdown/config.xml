@@ -18,6 +18,7 @@
         <questionType>!</questionType>
         <group>Single choice questions</group>
         <subquestions>0</subquestions>
+        <other>1</other>
         <answerscales>1</answerscales>
         <hasdefaultvalues>1</hasdefaultvalues>
         <assessable>1</assessable>
