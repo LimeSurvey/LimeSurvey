@@ -277,7 +277,6 @@ LS.Statistics2 = function () {
     });
 
     $('#generate-statistics').submit(function () {
-
         hideSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters'));
         hideSection($('#responsefilters-chevron'), $('#filterchoices'))
         $('#statisticsoutput').show();
@@ -285,6 +284,12 @@ LS.Statistics2 = function () {
         $('#statistics-render-chevron').addClass('fa-chevron-down');
         $('#view-stats-alert-info').hide();
         $('#statsContainerLoading').show();
+        if ($('input[name=outputtype]:checked').val() != 'html') {
+            var data = new FormData($(this).get(0));
+            var url = $(this).attr('action');
+            ajaxDownloadStats(url, data);
+            return false;
+        }
         //alert('ok');
     });
 
@@ -590,6 +595,27 @@ LS.Statistics2 = function () {
     $(".stats-showpie").click(function () {
         changeGraphType('showpie', this.parentNode);
     });
+
+    var ajaxDownloadStats = function (url, data) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.responseType = 'blob';
+        xhr.onload = function (e) {
+            const blob = xhr.response;
+            const contentDisposition = xhr.getResponseHeader('Content-Disposition');
+            const fileName = contentDisposition.match(/filename[^;=\n]*=['"](.*?|[^;\n]*)['"]/)[1];
+            const tempEl = document.createElement("a");
+            document.body.appendChild(tempEl);
+            tempEl.style = "display: none";
+            const dataUrl = window.URL.createObjectURL(blob);
+            tempEl.href = dataUrl;
+            tempEl.download = fileName;
+            tempEl.click();
+            window.URL.revokeObjectURL(dataUrl);
+            $('#statsContainerLoading').hide();
+        };
+        xhr.send(data);
+    };
 };
 
 var isWaiting = {};
