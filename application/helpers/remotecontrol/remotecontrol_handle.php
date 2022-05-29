@@ -1444,7 +1444,7 @@ class remotecontrol_handle
                     Question::model()->deleteAll($sCriteria);
 
                     // delete defaultvalues and defaultvalueL10ns
-                    $oDefaultValues = DefaultValue::model()->findAll(array('qid' => $iQuestionID));
+                    $oDefaultValues = DefaultValue::model()->findAllByAttributes(array('qid' => $iQuestionID));
                     foreach ($oDefaultValues as $defaultvalue) {
                         DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
                         DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
