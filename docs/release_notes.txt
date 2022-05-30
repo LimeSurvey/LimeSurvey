@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.12 (build 220524) to 3.28.13 (build 220531) May 30, 2022
+-Fixed issue #18160: [security] Update jquery-ui to 1.13.1 (Carsten Schmitz)
+#Updated translation: Maltese by gabrieljenik
+#Updated translation: Malay by lucas_encuesta.biz
+#Updated translation: Italian (Informal) by lucas_encuesta.biz
+
+
 Changes from 3.28.11 (build 220517) to 3.28.12 (build 220524) May 23, 2022
 -Fixed issue #18074: Exit and clear survey doesn't work (#2397) (Gabriel Jenik)
 -Fixed issue #17987: Quota url needs to be decoded (#2395) (Denis Chenu)
