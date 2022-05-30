@@ -27,8 +27,6 @@
                 data-toggle="tooltip"
                 title="<?= CHtml::encode(strip_tags($this->setting['help'])) ?>"
             > </i><span class="sr-only"><?= gT("Show help"); ?></span> </a>
-        <?php endif; ?>
-        <?php if ($this->setting['help']): ?>
             <div class="help-block collapse" id="help-<?= CHtml::getIdByName($inputBaseName); ?>" aria-expanded="false"><?= $this->setting['help']; ?></div>
         <?php endif; ?>
         <?= $content ?>

@@ -1,21 +1,26 @@
 <div class="form-group">
     <div class="question-option-general-setting-block">
-        <label class="form-label">
-            <?= $this->generalOption->title; ?>
-        </label>
-        <i
-            role="button"
-            class="fa fa-question-circle text-success"
-            onclick="jQuery('#general-setting-help-<?= $this->generalOption->name; ?>').slideToggle()"
-            data-toggle="tooltip"
-            title="<?= gT("See help"); ?>"
-            ></i>
+        <?php if (in_array($this->generalOption->inputType, GeneralOptionWidget::SINGLEINPUTTYPE)): ?>
+            <label class="form-label" for="<?= CHtml::getIdByName($this->generalOption->name); ?>">
+                <?= $this->generalOption->title; ?>
+            </label>
+        <?php else: ?>
+            <strong class="form-label" id="label-<?= CHtml::getIdByName($this->generalOption->name); ?>">
+                <?= $this->generalOption->title; ?>
+            </strong>
+        <?php endif; ?>
+        <?php if ($this->generalOption->formElement->help): ?>
+            <a
+                role="button"
+                data-toggle="collapse"
+                href="#help-<?= CHtml::getIdByName($this->generalOption->name); ?>"
+            ><i
+                class="fa fa-question-circle text-info"
+                data-toggle="tooltip"
+                title="<?= CHtml::encode(strip_tags($this->generalOption->formElement->help)) ?>"
+            > </i><span class="sr-only"><?= gT("Show help"); ?></span> </a>
+            <div class="help-block collapse" id="help-<?= CHtml::getIdByName($this->generalOption->name); ?>" aria-expanded="false"><?= $this->generalOption->formElement->help; ?></div>
+        <?php endif; ?>
         <?= $content; ?>
-        <div
-            id="general-setting-help-<?= $this->generalOption->name; ?>"
-            class="question-option-help well"
-            >
-            <?= $this->generalOption->formElement->help; ?>
-        </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="btn-group col-12" role="group" data-toggle="buttons">
+<div class="btn-group col-12" role="group" data-toggle="buttons" aria-labelled-by="label-<?= CHtml::getIdByName($this->generalOption->name); ?>">
     <?php if ($this->generalOption->formElement->value === 'Y') : ?>
         <label class="btn btn-default active <?= $this->generalOption->disabled ? 'disabled' : '' ?>">
             <input

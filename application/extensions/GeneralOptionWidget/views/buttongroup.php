@@ -1,11 +1,11 @@
-<div class="btn-group col-12" role="group" data-toggle="buttons">
+<div class="btn-group col-12" role="group" data-toggle="buttons" aria-labelled-by="label-<?= CHtml::getIdByName($this->generalOption->name); ?>">
     <?php foreach ($this->generalOption->formElement->options['options'] as $i => $option): ?>
         <?php if ($this->generalOption->formElement->value == $option->value) : ?>
             <label class="btn btn-default active">
                 <input 
                     type="radio" 
                     name="question[<?= $this->generalOption->name; ?>]" 
-                    value="<?= $option->value; ?>"
+                    value="<?= Chtml::encode($option->value); ?>"
                     checked="checked"
                 />
                 <?= $option->text; ?>
@@ -15,7 +15,7 @@
                 <input 
                     type="radio" 
                     name="question[<?= $this->generalOption->name; ?>]" 
-                    value="<?= $option->value; ?>"
+                    value="<?= Chtml::encode($option->value); ?>"
                 />
                 <?= $option->text; ?>
             </label>
