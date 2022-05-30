@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-12 content-right">
             <?php
-            echo CHtml::form(["admin/translate/sa/index", 'surveyid' => $surveyid], 'get', ['id' => 'translatemenu', 'class' => 'form-inline']);
+            echo CHtml::form(["admin/translate/sa/index", 'surveyid' => $surveyid], 'get', ['id' => 'translatemenu']);
             ?>
             <?php echo $adminmenu; ?>
             </form>
