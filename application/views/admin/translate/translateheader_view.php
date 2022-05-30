@@ -11,8 +11,3 @@
     </div>
 
     <div class="row">
-        <div class="col-12 content-right">
-            <h4>
-                <?php eT("Translate survey"); ?>
-            </h4>
-        </div>
