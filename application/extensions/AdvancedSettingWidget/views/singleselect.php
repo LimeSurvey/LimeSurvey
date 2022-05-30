@@ -2,6 +2,7 @@
     class="form-control" 
     name="<?= $inputBaseName ?>"
     id="<?= CHtml::getIdByName($inputBaseName); ?>"
+    <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
 >
     <?php foreach ($this->setting['options'] as $value => $text) : ?>
         <?php if ($this->setting['value'] == $value): ?>

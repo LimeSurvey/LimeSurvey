@@ -13,6 +13,7 @@
         class="form-control" 
         name="<?= $inputBaseName ?>"
         id="<?= CHtml::getIdByName($inputBaseName); ?>"
+        <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
         value="<?= CHtml::encode($this->setting['value']); ?>"
     />
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['suffix'])) : ?>

@@ -6,6 +6,7 @@
     class="form-control"
     name="advancedSettings[question_template][<?= $this->generalOption->name; ?>]"
     id="<?= CHtml::getIdByName($this->generalOption->name); ?>"
+    <?= ($this->generalOption->formElement->help) ? 'aria-describedby="help-' . CHtml::getIdByName($this->generalOption->name) . '"' : "" ?>
     style="display:none"
 >
     <?php foreach ($this->generalOption->formElement->options as $option) : ?>

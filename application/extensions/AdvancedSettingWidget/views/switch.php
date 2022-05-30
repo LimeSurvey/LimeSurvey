@@ -1,5 +1,8 @@
 <div class="inputtype--toggle-container">
-    <div class="btn-group" role="group" data-toggle="buttons" aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>">
+    <div class="btn-group" role="group" data-toggle="buttons"
+    aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>"
+    <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
+    >
         <?php if ($this->setting['value'] == "1") : ?>
             <label class="btn btn-default active">
                 <input

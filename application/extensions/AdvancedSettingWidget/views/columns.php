@@ -9,6 +9,7 @@
         class="form-control" 
         name="<?= $inputBaseName ?>"
         id="<?= CHtml::getIdByName($inputBaseName); ?>"
+        <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
         value="<?= CHtml::encode($this->setting['value']); ?>"
         max="12"
         min="1"

@@ -2,6 +2,7 @@
     class="form-control"
     name="question[<?= $this->generalOption->name ?>]"
     id="<?= CHtml::getIdByName($this->generalOption->name) ?>"
+    <?= ($this->generalOption->formElement->help) ? 'aria-describedby="help-' . CHtml::getIdByName($this->generalOption->name) . '"' : "" ?>
     <?= $this->generalOption->disabled ? 'disabled' : '' ?>
 >
     <!-- TODO: Fix weird object reference. -->
