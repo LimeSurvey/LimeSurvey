@@ -335,7 +335,7 @@ class Translate extends SurveyCommonAction
         $langs = $oSurvey->additionalLanguages;
         $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
 
-        $language_list .= CHtml::openTag('div', array('class' => 'form-group')); // Opens .menubar-right div
+        $language_list .= CHtml::openTag('div', array('class' => 'mb-3 col-6')); // Opens .menubar-right div
 
         $language_list .= CHtml::tag('label', array('for' => 'translationlanguage', 'class' => 'form-label'), gT("Translate to") . ":");
         $language_list .= CHtml::openTag(
@@ -343,7 +343,7 @@ class Translate extends SurveyCommonAction
             array(
                 'id' => 'translationlanguage',
                 'name' => 'lang',
-                'class' => 'form-control',
+                'class' => 'form-select',
                 'onchange' => "$(this).closest('form').submit();"
             )
         );
