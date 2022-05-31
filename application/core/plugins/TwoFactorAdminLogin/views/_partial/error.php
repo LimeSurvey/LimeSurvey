@@ -30,9 +30,10 @@
             }
             ?>
         </div>
-        <div class="row ls-space margin top-35">
-            <button type="button" role="button" id="exitForm" class="btn btn-outline-secondary">
-                <?=gT('Close')?></button>
-        </div>
     </div>
+</div>
+<div class="modal-footer">
+    <button id="exitForm" class="btn btn-cancel" data-bs-dismiss="modal">
+        <?=gT('Close')?>
+    </button>
 </div>

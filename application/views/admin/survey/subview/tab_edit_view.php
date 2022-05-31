@@ -22,7 +22,7 @@ if (isset($scripts)) {
 }
 
 $cs = Yii::app()->getClientScript();
-$cs->registerPackage('bootstrap-select2');
+$cs->registerPackage('select2');
 
 $adminlang = Yii::app()->session['adminlang'];
 $aTabContents = $this->aData['aTabContents'];

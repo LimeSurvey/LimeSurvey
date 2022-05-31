@@ -6,18 +6,18 @@
 
 <!-- quickaddModal -->
 <div class="modal fade labelsets-update" id="quickaddModal" tabindex="-1" role="dialog" aria-labelledby="quickaddModal">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ gT('quick-add labels') }}</h5>
+                <h5 class="modal-title">{{ gT('Quick-add labels') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body row">
                 <p>
                     {{ gT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab.') }}
                 </p>
-                <textarea id='quickaddarea' class='tipme' title='' cols='100' rows='10' style='width:570px;'></textarea>
+                <textarea id='quickaddarea' class='tipme' title='' cols='100' rows='10'></textarea>
             </div>
             <div class="modal-footer button-list">
                 <button class='btn btn-cancel' id='btnqacancel' type='button'  data-bs-dismiss="modal">{{ gT('Cancel') }}</button>
@@ -34,7 +34,7 @@
 
 <!--labelset browser Modal -->
 <div class="modal fade labelsets-update" id="labelsetbrowserModal" tabindex="-1" role="dialog" aria-labelledby="labelsetbrowserModal">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ gT('Manage label sets') }}</h5>
@@ -102,14 +102,12 @@
             </div>
 
             <div class="modal-body">
-                <p>
-                    <input type="radio" name="savelabeloption" id="newlabel">
-                    <label for="newlabel">{{ gT('New label set') }}</label>
-                </p>
-                <p>
-                    <input type="radio" name="savelabeloption" id="replacelabel">
-                    <label for="replacelabel">{{ gT('Replace the existing record.') }}
-                </p>
+                <div class="btn-group mb-3">
+                    <input class="btn-check" type="radio" name="savelabeloption" id="newlabel">
+                    <label class="btn btn-outline-primary" for="newlabel">{{ gT('New label set') }}</label>
+                    <input class="btn-check" type="radio" name="savelabeloption" id="replacelabel">
+                    <label class="btn btn-outline-primary" for="replacelabel">{{ gT('Replace the existing record.') }}
+                </div>
             </div>
 
             <div class="modal-footer button-list">

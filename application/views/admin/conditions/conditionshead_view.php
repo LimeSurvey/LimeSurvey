@@ -46,35 +46,22 @@
 
 <!-- Modal for quick add -->
 <div id="quick-add-condition-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
-            <div class="modal-header card-header bg-primary">
-                <button 
-                    type="button" 
-                    class="close" 
-                    data-bs-dismiss="modal">
-                    &times;
-                </button>
+            <div class="modal-header">
+                <h5 class="modal-title"><?php eT('Quick-add conditions'); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <!-- Condition form is in file quickAddConditionForm.php -->
                 <?php echo $quickAddConditionForm; ?>
             </div>
             <div class="modal-footer">
-                <button 
-                    type="button" 
-                    id='quick-add-condition-close-button' 
-                    class="btn btn-cancel"
-                    data-bs-dismiss="modal">
-                    &nbsp;
+                <button type="button" id='quick-add-condition-close-button' class="btn btn-cancel" data-bs-dismiss="modal">
                     <?php eT("Cancel"); ?>
                 </button>
-                <button 
-                    role="button" 
-                    type='submit' 
-                    id='quick-add-condition-save-button' 
-                    class='btn btn-primary'>
+                <button role="button" type='submit' id='quick-add-condition-save-button' class='btn btn-primary'>
                     <?php eT('Save'); ?>
                 </button>
                 <span id='quick-add-url' class="d-none">

@@ -150,8 +150,9 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'htmlemail',
                         'checkedOption' => $oSurvey->htmlemail,
-                        'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
-                            ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->htmlemail . ']']) : $optionsOnOff,
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->htmlemail . ']'])
+                            : $optionsOnOff,
                     ]);
                     $this->widget('yiistrap.widgets.TbModal', [
                         'id'      => 'htmlemailModal',
@@ -182,12 +183,12 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
         'id' => 'alertPrivacy1',
         'header' => gT('Warning','unescaped'),                    
         'content' => '<p>'.gT("You can't use 'Anonymized responses' when participant-based response persistence is enabled.").'</p>',
-        'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
+        'footer' => TbHtml::button('Close', array('data-bs-dismiss' => 'modal'))
     ));
     $this->widget('yiistrap.widgets.TbModal', array(
         'id' => 'alertPrivacy2',
         'header' => gT('Warning','unescaped'),
         'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
-        'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
+        'footer' => TbHtml::button('Close', array('data-bs-dismiss' => 'modal'))
     ));
     ?>

@@ -620,7 +620,8 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo Not used?
+     * Returns the last login formatted for displaying.
+     * @return string
      */
     public function getLastloginFormatted()
     {
@@ -630,7 +631,7 @@ class User extends LSActiveRecord
         }
 
         $date = new DateTime($lastLogin);
-        return $date->format($this->dateformat) . ' ' . $date->format('H:i');
+        return $date->format($this->getDateFormat()) . ' ' . $date->format('H:i');
     }
 
     public function getManagementCheckbox()

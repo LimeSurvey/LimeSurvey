@@ -81,7 +81,6 @@ class LSYii_Application extends CWebApplication
             $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'] . DIRECTORY_SEPARATOR . 'runtime';
         } /* No need to test runtimePath validity : Yii return an exception without issue */
 
-
         /* If LimeSurvey is configured to load custom Twig exstensions, add them to Twig Component */
         if (array_key_exists('use_custom_twig_extensions', $baseConfig) && $baseConfig ['use_custom_twig_extensions']) {
             $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
@@ -92,7 +91,8 @@ class LSYii_Application extends CWebApplication
 
         /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl) */
         $this->setConfigs();
-
+        /* Since session can be set by DB : need to be set again … */
+        $this->setSessionByDB($aApplicationConfig);
 
         /* Update asset manager path and url only if not directly set in aApplicationConfig (from config.php),
          *  must do after reloading to have valid publicurl (the tempurl) */
@@ -136,7 +136,7 @@ class LSYii_Application extends CWebApplication
 
         // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
 
-        /* Default config */ 
+        /* Default config */
         $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
         $emailConfig = require(__DIR__ . '/../config/email.php');
         $versionConfig = require(__DIR__ . '/../config/version.php');
@@ -439,7 +439,6 @@ class LSYii_Application extends CWebApplication
         }
         $realFilePath = realpath($filePath);
         $baseDir = realpath($baseDir);
-        
         if (!is_file($realFilePath)) {
             /* Not existing file */
             Yii::log("Try to read invalid file " . $filePath, 'warning', 'application.security.files.is_file');
@@ -513,5 +512,31 @@ class LSYii_Application extends CWebApplication
         }
 
         return $aApplicationConfig;
+    }
+
+    /**
+     * Set the session after start,
+     * Limited to DbHttpSession
+     * @param array Application config
+     * @return void
+     */
+    private function setSessionByDB($aApplicationConfig)
+    {
+        if (empty($aApplicationConfig['components']['session']['class'])) {
+            /* No specific session */
+            return;
+        }
+        if ($aApplicationConfig['components']['session']['class'] != "application.core.web.DbHttpSession") {
+            /* Not included DbHttpSession */
+            return;
+        }
+        if (!empty($aApplicationConfig['components']['session']['cookieParams']['lifetime'])) {
+            /* lifetime already updated */
+            return;
+        }
+        $lifetime = intval(App()->getConfig('iSessionExpirationTime', ini_get('session.cookie_lifetime')));
+        App()->getSession()->setCookieParams([
+            'lifetime' => $lifetime
+        ]);
     }
 }

@@ -19,29 +19,26 @@ $massiveAction = App()->getController()->renderPartial(
     false
 );
 
-$this->widget('application.extensions.admin.grid.CLSGridView', array(
-    'dataProvider' => $oQuestionTheme->search(),
-    'filter' => $oQuestionTheme,
-    'id' => 'questionthemes-grid',
-    'massiveActionTemplate' => $massiveAction,
-    'pager' => [
-        'class' => 'application.extensions.admin.grid.CLSYiiPager',
-    ],
-    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-            gT('%s rows per page'),
-            CHtml::dropDownList(
-                'pageSize',
-                $pageSize,
-                App()->params['pageSizeOptions'],
-                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-            )
-        ),
-    'columns' => array(
-        array(
-            'id' => 'questionId',
-            'class' => 'CCheckBoxColumn',
-            'selectableRows' => '100',
-        ),
+        $this->widget('application.extensions.admin.grid.CLSGridView', array(
+            'dataProvider'    => $oQuestionTheme->search(),
+            'filter'          => $oQuestionTheme,
+            'id'              => 'questionthemes-grid',
+            'massiveActionTemplate' => $massiveAction,
+            'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                gT('%s rows per page'),
+                CHtml::dropDownList(
+                    'pageSize',
+                    $pageSize,
+                    App()->params['pageSizeOptions'],
+                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                )
+            ),
+            'columns'         => array(
+                array(
+                    'id'             => 'questionId',
+                    'class'          => 'CCheckBoxColumn',
+                    'selectableRows' => '100',
+                ),
 
         array(
             'header' => gT('Name'),

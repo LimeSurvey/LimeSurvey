@@ -19,7 +19,7 @@ var confirmButtonAction = function(additionalCB) {
     return function(e){
         e.preventDefault();
         var $self = $(this);
-        $.bsconfirm($self.data('confirmtext'), $self.data('buttons'), function(){
+        $.fn.bsconfirm($self.data('confirmtext'), $self.data('buttons'), function(){
             $.ajax({
                 url: $self.data('href'),
                 data: $.merge({uid: $self.data('uid')}, LS.data.csrfTokenData),

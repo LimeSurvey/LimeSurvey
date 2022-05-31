@@ -20,7 +20,7 @@ $groups_count   = count($oSurvey->groups);
 <!-- Quick Actions -->
 
 <div class="card">
-    <div id="survey-action-title" class="card-header bg-primary">
+    <div id="survey-action-title" class="card-header bg-primary" >
         <div class="row">
             <div class="col-2 col-md-1">
                 <button id="survey-action-chevron" 
@@ -35,7 +35,7 @@ $groups_count   = count($oSurvey->groups);
             </div>
         </div>
     </div>
-    <div class="card-body" style="display:<?= ($quickactionstate > 0 ? 'block' : 'none') ?>" id="survey-action-container">
+    <div class="card-body" style="display:<?=($quickactionstate > 0 ? 'block' : 'none')?>" id="survey-action-container"> 
         <div class="row welcome survey-action">
             <div class="col-12 content-right">
                 <!-- Alerts, infos... -->
@@ -102,8 +102,8 @@ $groups_count   = count($oSurvey->groups);
                                         <div class="card-header bg-primary">
                                             <div class=""><?php eT('Add group'); ?></div>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="card-body-ico">
+                                            <div class="card-body">
+                                                <div class="card-body-ico">
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block"
                                                    data-bs-toggle="tooltip">
                                                     <span class="icon-add text-success" style="font-size: 3em;"></span>

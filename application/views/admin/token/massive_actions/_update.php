@@ -34,7 +34,7 @@
         <!-- Tabs content-->
         <div class="tab-content">
             <div id="massive-general" class="tab-pane fade show active">
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
                             <?php eT("Modify"); ?>
@@ -43,7 +43,7 @@
                     <div class="col-md-11"></div>
                 </div>
                 <!-- Completed -->
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -112,7 +112,7 @@
                 </div>
 
                 <!-- First name -->
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -125,7 +125,7 @@
                 </div>
 
                 <!-- Last name -->
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -138,7 +138,7 @@
                 </div>
 
                 <!-- Language -->
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -151,7 +151,7 @@
                 </div>
 
                 <!-- Email -->
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="row">
                         <div class="col-md-1">
                             <label class="">
@@ -174,7 +174,7 @@
                 </div>
 
                 <!-- Invitation sent -->
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -230,7 +230,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -290,7 +290,7 @@
                 </div>
 
                 <!-- Reminder count -->
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
 
@@ -304,7 +304,7 @@
                 </div>
 
                 <!-- Uses left -->
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
 
@@ -318,7 +318,7 @@
                 </div>
 
                 <!-- Valid from -->
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -345,7 +345,7 @@
                 </div>
 
                 <!-- Valid to -->
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
@@ -373,7 +373,7 @@
                 <?php /*                            
                 <?php foreach($aCoreTokenFields as $sCoreTokenField): ?>
                     <div class="row">
-                        <div class="form-group">
+                        <div class="mb-3 row">
                             <label class="col-md-2 form-label"  for='<?php echo $sCoreTokenField; ?>'><?php echo $sCoreTokenField;  ?>:</label>
                             <div class="col-md-8">
                                 <input type="text" class="custom-data" name="<?php echo $sCoreTokenField;?>" id="<?php echo $sCoreTokenField;?>" value="lskeep" />
@@ -387,7 +387,7 @@
 
             <!-- Custom attibutes -->
             <div id="massive-custom" class="tab-pane fade">
-                <div class="form-group">
+                <div class="mb-3 row">
                     <div class="col-md-1">
                         <label class="">
                             <?php eT("Modify"); ?>
@@ -397,7 +397,7 @@
                 </div>
                 <!-- Attributes -->
                 <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
-                    <div class="form-group">
+                    <div class="mb-3 row">
                         <div class="col-md-1">
                             <label class="">
 
@@ -449,19 +449,19 @@
 
     $('.action_check_to_keep_old_value').on('click', function(){
         var currentValue = !$(this).prop('checked');
-        var myFormGroup = $(this).closest('.form-group');
+        var myFormGroup = $(this).closest('.mb-3');
         
-        $(this).closest('.form-group').find('input:not(.action_check_to_keep_old_value),select:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
+        $(this).closest('.mb-3').find('input:not(.action_check_to_keep_old_value),select:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
 
-        if($(this).closest('.form-group').find('.bootstrap-switch-container').length > 0){
-            $(this).closest('.form-group').find('.bootstrap-switch-container input[type=checkbox]').bootstrapSwitch('disabled', currentValue);
+        if($(this).closest('.mb-3').find('.bootstrap-switch-container').length > 0){
+            $(this).closest('.mb-3').find('.bootstrap-switch-container input[type=checkbox]').bootstrapSwitch('disabled', currentValue);
 
         }
 
         if(currentValue){
-            $(this).closest('.form-group').find('.selector_submitField').val('lskeep');
+            $(this).closest('.mb-3').find('.selector_submitField').val('lskeep');
         } else {
-            $(this).closest('.form-group').find('.selector_submitField').val('');
+            $(this).closest('.mb-3').find('.selector_submitField').val('');
             bindBSSwitch(myFormGroup);
             bindDatepicker(myFormGroup);
         }

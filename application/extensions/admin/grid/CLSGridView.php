@@ -19,8 +19,8 @@ class CLSGridView extends CGridView
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = '';
-        $classes = array('table');
-        $this->template = "{items}\n<div class=\"row\" id='userListPager'><div class=\"col-4\" id=\"massive-action-container\">$this->massiveActionTemplate</div><div class=\"col-4 \">{pager}</div><div class=\"col-4 summary-container\">{summary}</div></div>";
+        $classes = array('table', 'table-hover');
+        $this->template = "{items}\n<div class=\"row mx-auto\" id='userListPager'><div class=\"col-md-4\" id=\"massive-action-container\">$this->massiveActionTemplate</div><div class=\"col-md-4 \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>";
         if (!empty($classes)) {
             $classes = implode(' ', $classes);
             if (isset($this->itemsCssClass)) {

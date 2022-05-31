@@ -9,16 +9,17 @@
 </div>
 <div class="modal-body">
     <div class="container-center">
-        <div class="row">
-            <div class="col-12 well">
+        <div class="card">
+            <div class="col-12 card-body">
                 <?=$oModel->description?>
             </div>
         </div>
+        <br/>
         <div class="row">
-            <div class="col-lg-4 col-12">
+            <div class="col-4">
                 <?=gT('Users assigned to this role')?>
             </div>
-            <div class="col-lg-8 col-12">
+            <div class="col-8">
                 <ul class="list-group">
                     <?php foreach( $oModel->connectedUserobjects as $oUser) {
                         echo sprintf('<li class="list-group-item">%s - %s (%s)</li>', $oUser->uid, $oUser->full_name, $oUser->users_name);
@@ -30,8 +31,6 @@
 </div>
 <div class="modal-footer modal-footer-buttons">
     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-        &nbsp
-        <?php
-        eT("Close"); ?>
+        <?php eT("Close"); ?>
     </button>
 </div>

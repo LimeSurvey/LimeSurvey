@@ -24,7 +24,7 @@
                         <button
                             role="button"
                             type="button"
-                            class="accordion-button"
+                            class="accordion-button collapsed"
                             data-bs-toggle="collapse"
                             data-bs-parent="#accordion_<?=$this->widgetsJsName?>"
                             href="#collapsible_<?=$sGroupTitle?>"

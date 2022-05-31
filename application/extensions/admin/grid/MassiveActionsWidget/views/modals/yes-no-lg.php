@@ -1,5 +1,5 @@
 <!-- Modal confirmation for <?php echo $aAction['action'];?> -->
-<div id="massive-actions-modal-<?php echo $this->gridid;?>-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>"" data-show-selected="<?php if(isset($aAction['showSelected'])){echo $aAction['showSelected'];}else{ echo 'no'; }?>" data-selected-url="<?php if(isset($aAction['selectedUrl'])){ echo $aAction['selectedUrl'];}else{ echo '#'; }?>">
+<div id="massive-actions-modal-<?php echo $this->gridid;?>-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>" data-show-selected="<?php if(isset($aAction['showSelected'])){echo $aAction['showSelected'];}else{ echo 'no'; }?>" data-selected-url="<?php if(isset($aAction['selectedUrl'])){ echo $aAction['selectedUrl'];}else{ echo '#'; }?>">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">

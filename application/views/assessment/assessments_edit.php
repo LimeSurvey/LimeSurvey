@@ -16,28 +16,22 @@
             <div class="modal-body">
                 <!-- Scope, Total, Group -->
                 <div class='row'>
-                    <div class='form-group col-12'>
+                    <div class='mb-3 col-12 row'>
                         <label class='form-label col-md-2'>
                             <?php eT("Scope:"); ?>
                         </label>
                         <div class='col-md-10 ls-flex wrap'>
-                            <div class='col-lg-4 col-md-5 col-6'>
-                                <label class='radio-inline'>
-                                    <input class='' type='radio' id='radiototal' name='scope' value='T' checked='checked'/>
-                                    <?php eT("Total"); ?>
-                                </label>
-                            </div>
+                            <div class="btn-group" role="group">
+                                <input class='btn-check' type='radio' id='radiototal' name='scope' value='T' checked='checked'/>
+                                <label class='btn btn-outline-primary' for="radiototal"><?php eT("Total"); ?></label>
 
-                            <div class='col-lg-4 col-md-5 col-6'>
-                                <label class='radio-inline'>
-                                    <input class='' type='radio' id='radiogroup' name='scope' value='G'/>
-                                    <?php eT("Group"); ?>
-                                </label>
+                                <input class='btn-check' type='radio' id='radiogroup' name='scope' value='G'/>
+                                <label class='btn btn-outline-primary' for="radiogroup"><?php eT("Group"); ?></label>
                             </div>
                         </div>
                     </div>
                     <!-- Question group -->
-                    <div class='form-group col-12'>
+                    <div class='mb-3 col-12 row'>
                         <label class='form-label col-md-2' for='gid'>
                             <?php eT("Question group:"); ?>
                         </label>
@@ -56,28 +50,27 @@
                     </div>
 
                 </div>
-                <div class='row'>
-                    <!-- Minimum -->
-                    <div class='form-group col-12'>
-                        <label class='form-label col-md-2' for='minimum'>
-                            <?php eT("Minimum:"); ?>
-                        </label>
-                        <div class='col-md-10'>
-                            <input class='form-control numbersonly' type='text' id='minimum' name='minimum'/>
-                        </div>
-                        <div class='col-md-2 hide-xs'></div>
-                    </div>
 
-                    <!-- Maximum -->
-                    <div class='form-group col-12'>
-                        <label class='form-label col-md-2' for='maximum'>
-                            <?php eT("Maximum:"); ?>
-                        </label>
-                        <div class='col-md-10'>
-                            <input class='form-control numbersonly' type='text' id='maximum' name='maximum'/>
-                        </div>
-                        <div class='col-md-2 hide-xs'></div>
+                <!-- Minimum -->
+                <div class='mb-3 col-12 row'>
+                    <label class='form-label col-md-2' for='minimum'>
+                        <?php eT("Minimum:"); ?>
+                    </label>
+                    <div class='col-md-10'>
+                        <input class='form-control numbersonly' type='text' id='minimum' name='minimum'/>
                     </div>
+                    <div class='col-md-2 hide-xs'></div>
+                </div>
+
+                <!-- Maximum -->
+                <div class='mb-3 col-12 row'>
+                    <label class='form-label col-md-2' for='maximum'>
+                        <?php eT("Maximum:"); ?>
+                    </label>
+                    <div class='col-md-10'>
+                        <input class='form-control numbersonly' type='text' id='maximum' name='maximum'/>
+                    </div>
+                    <div class='col-md-2 hide-xs'></div>
                 </div>
 
                 <!-- Languages tabs -->
@@ -111,14 +104,14 @@
                                 $count++;
                             } ?>">
                                 <div class='col-12'></div>
-                                <div class='form-group col-12'>
+                                <div class='mb-3 col-12'>
                                     <label class='form-label col-12' for='name_<?= $assessmentlang ?>'>
                                         <?php eT("Heading"); ?>:</label>
                                     <div class='col-12'>
                                         <input class='form-control' type='text' name='name_<?= $assessmentlang ?>' id='name_<?= $assessmentlang ?>>' size='80' value='<?= $heading ?>'/>
                                     </div>
                                 </div>
-                                <div class='form-group col-12'>
+                                <div class='mb-3 col-12'>
                                     <label class='form-label col-12' for='assessmentmessage_<?= $assessmentlang ?>'>
                                         <?php eT("Message"); ?>:</label>
                                     <div class='col-12'>
@@ -128,7 +121,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class='form-group'>
+                                <div class='mb-3'>
                                     <div class='col-md-2'></div>
                                     <div class='col-md-4'>
                                         <input type='submit' class="btn btn-outline-secondary d-none" value='<?php eT("Save"); ?>'/>

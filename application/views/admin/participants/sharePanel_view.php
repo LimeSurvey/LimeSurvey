@@ -25,9 +25,6 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
                         'emptyText'                => gT('No shared participants found.'),
                         'ajaxType' => 'POST',
                         'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
-                        'pager' => [
-                            'class' => 'application.extensions.admin.grid.CLSYiiPager',
-                        ],
                         'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                             . sprintf(
                                 gT('%s rows per page'),

@@ -1449,6 +1449,12 @@ class userstatistics_helper
         } elseif (incompleteAnsFilterState() == "complete") {
             $criteria->addCondition("submitdate is not null");
         }
+
+        //check for any "sql" that has been passed from another script
+        if (!empty($sql)) {
+            $criteria->addCondition($sql);
+        }
+        
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
         foreach ($oResponses as $key => $oResponse) {
@@ -1564,21 +1570,6 @@ class userstatistics_helper
                     }
                 }
             }
-
-            //check filter option
-            if (incompleteAnsFilterState() == "incomplete") {
-                $query .= " AND submitdate is null";
-            } elseif (incompleteAnsFilterState() == "complete") {
-                $query .= " AND submitdate is not null";
-            }
-
-            //check for any "sql" that has been passed from another script
-            if (!empty($sql)) {
-                $query .= " AND $sql";
-            }
-
-
-            // $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
 
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero

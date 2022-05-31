@@ -47,9 +47,9 @@
     $('.selector__quota_open_validation').remoteModal({
         saveButton: false,
     }, {
-        closeIcon : '<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>',
-        closeButton : '<button type=\"button\" class=\"btn btn-outline-secondary\" data-dismiss=\"modal\">".gT("Close")."</button>',
-        saveButton : '<button role=\"button\" type=\"button\" class=\"btn btn-primary\">".gT("Close")."</button>'
+        closeIcon : '<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>',
+        closeButton : '<button type=\"button\" class=\"btn btn-cancel\" data-bs-dismiss=\"modal\">".gT("Close")."</button>',
+        saveButton : '<button type=\"button\" class=\"btn btn-primary\">".gT("Close")."</button>'
     })
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 

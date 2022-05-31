@@ -17,10 +17,10 @@
           <div class="modal-body">
             <input type='hidden' name='surveyid' value='<?php echo $surveyid; ?>' />
             <input type='hidden' name='action' value='importsurveyresources' />
-            <label for='the_file'>
-              <?php  eT("Select ZIP file:"); ?>
-            </label>
-            <input id='the_file' name='the_file' type='file' />
+            <div class="mb-3">
+                <label class="form-label" for='the_file'><?php  eT("Select ZIP file:"); ?></label>
+                <input id='the_file' class="form-control" name='the_file' type='file' />
+            </div>
           </div>
 
           <div class="modal-footer">

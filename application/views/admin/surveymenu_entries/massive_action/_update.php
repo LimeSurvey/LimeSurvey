@@ -26,7 +26,7 @@
             </div>
             <label class="col-md-3 form-label"  for='menu_id'><?php eT("Menu ID?"); ?></label>
             <div class="col-md-8">
-                <?php echo TbHtml::dropDownList('menu_id', 'lskeep', (['lskeep' => gT('Keep old value')]+$model->getMenuIdOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
+                <?php echo TbHtml::dropDownList('menu_id', 'lskeep', (['lskeep' => gT('Keep old value')]+$model->getMenuIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
             </div>
         </div>
 
@@ -67,15 +67,11 @@
             </div>
 		</div>
 
-		<div class="row ls-space margin bottom-10">
-			<button
-                class="btn btn-warning pull-right" 
-                type="button" 
-                data-toggle="collapse" 
-                data-bs-target="#collapseAdvancedOptionsMassEdit">
+        <div class="row ls-space margin bottom-10">
+            <button class="btn btn-warning pull-right" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdvancedOptionsMassEdit">
                 <?php eT('Toggle advanced options') ?>
             </button>
-		</div>
+        </div>
 		<!-- Start collapsed advanced options -->
 		<div class="collapse" id="collapseAdvancedOptionsMassEdit">
 
@@ -87,7 +83,7 @@
                 </div>
                 <label class="col-md-3 form-label"  for='permission_grade'><?php eT("User?"); ?></label>
                 <div class="col-md-8">
-                    <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
+                    <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
                 </div>
             </div>
             

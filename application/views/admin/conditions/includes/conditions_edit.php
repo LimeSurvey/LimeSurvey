@@ -5,7 +5,7 @@
     data-bs-toggle="tooltip"
     data-title="<?php eT("Delete condition"); ?>"
     data-message="<?php eT("Are you sure you want to delete this condition?"); ?>"
-    onclick="$.bsconfirm('<?php eT("Are you sure you want to delete this condition?"); ?>', {'confirm_ok': '<?=gT("Yes")?>', 'confirm_cancel': '<?=gT("No")?>'}, function() {
+    onclick="$.fn.bsconfirm('<?php eT("Are you sure you want to delete this condition?"); ?>', {'confirm_ok': '<?=gT("Delete")?>', 'confirm_cancel': '<?=gT("Cancel")?>'}, function() {
             $('#editModeTargetVal<?php echo $rows['cid']; ?>').remove();
             $('#cquestions<?php echo $rows['cid']; ?>').remove();
             document.getElementById('conditionaction<?php echo $rows['cid']; ?>').submit();

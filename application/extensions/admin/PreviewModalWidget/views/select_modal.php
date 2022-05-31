@@ -1,6 +1,7 @@
 <?php
 /**
  * View for a selector modal with preview capabilities and a grouped structure
+ * Used by "Export" modal on survey overview page.
  */
 ?>
 <?php //The hidden input ?>
@@ -17,7 +18,7 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-4 ls-ba">
-              <div class="panel-body ls-space padding all-0">
+              <div class="ls-space padding all-0">
                 <div class="list-group ls-space margin all-0">
                   <?php foreach ($this->itemsArray as $sItemKey => $aItemContent) { ?>
                     <a 

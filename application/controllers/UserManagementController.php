@@ -48,7 +48,7 @@ class UserManagementController extends LSBaseController
             Yii::app()->user->setState('pageSize', Yii::app()->request->getParam('pageSize'));
         }
         App()->getClientScript()->registerPackage('usermanagement');
-        App()->getClientScript()->registerPackage('bootstrap-select2');
+        App()->getClientScript()->registerPackage('select2');
 
         $aData = [];
         $model = new User('search');
@@ -629,7 +629,7 @@ class UserManagementController extends LSBaseController
         $allowFileType = ".csv";
 
         if ($importFormat == 'json') {
-            $importNote = sprintf(gT("Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+            $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
             $allowFileType = ".json,application/json";
         }
 
