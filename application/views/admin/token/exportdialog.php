@@ -96,13 +96,14 @@
                             <?php eT('Delete exported participants:'); ?>
                         </label>
                         <div class="default controls">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name' => 'tokendeleteexported',
-                                'id'=>'tokendeleteexported',
-                                'value' => 0,
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
+                                'checkedOption' => 0,
+                                'selectOptions' => [
+                                    '1' => gT('On'),
+                                    '0' => gT('Off'),
+                                ],
+                            ]); ?>
                         </div>
                         <div class="alert alert-warning controls" role="alert">
                             <?php eT('Warning: Deleted participants entries cannot be recovered.'); ?>
@@ -114,13 +115,14 @@
                             <?php eT('Quote equations:'); ?>
                         </label>
                         <div class="default controls">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name' => 'maskequations',
-                                'id'=>'maskequations',
-                                'value' => 1,
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
+                                'checkedOption' => 1,
+                                'selectOptions' => [
+                                    '1' => gT('On'),
+                                    '0' => gT('Off'),
+                                ],
+                            ]); ?>
                         </div>
                         <div class="alert alert-warning controls" role="alert">
                             <?php eT('Important: Quote all content that starts with an equal sign to prevent CSV injections.'); ?>

@@ -36,13 +36,14 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
                 <div class="form-group">
                     <label for='translinksfields' class="form-label col-md-2"><?php eT("Convert resource links?"); ?></label>
                     <div class="col-md-10">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'translinksfields',
-                            'id'=>'translinksfields',
-                            'value' => 1,
-                            'onLabel'=>gT('On'),
-                            'offLabel' => gT('Off')));
-                        ?>
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'name'          => 'translinksfields',
+                            'checkedOption' => 1,
+                            'selectOptions' => [
+                                '1' => gT('On'),
+                                '0' => gT('Off'),
+                            ],
+                        ]); ?>
                     </div>
                 </div>
 

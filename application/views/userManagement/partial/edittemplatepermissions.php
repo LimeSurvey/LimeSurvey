@@ -31,15 +31,16 @@ Yii::app()->getController()->renderPartial(
                 <tr>
                     <td><?= $aTemplate['folder'] ?></td>
                     <td>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'TemplatePermissions[' . $aTemplate['folder'] . ']',
-                            'id' => $aTemplate['folder'] . '_use',
-                            'value' => $aTemplate['value'],
-                            'onLabel' => gT('On'),
-                            'offLabel' => gT('Off'),
-                            'htmlOptions' => ['class' => 'UserManagement--themepermissions-themeswitch']
-                        ));
-                        ?>
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'name'          => 'TemplatePermissions[' . $aTemplate['folder'] . ']',
+                            'id'            => $aTemplate['folder'] . '_use',
+                            'checkedOption' => $aTemplate['value'],
+                            'selectOptions' => [
+                                '1' => gT('On'),
+                                '0' => gT('Off'),
+                            ],
+                            'htmlOptions'   => ['class' => 'UserManagement--themepermissions-themeswitch']
+                        ]); ?>
                     </td>
                 </tr>
             <?php } ?>

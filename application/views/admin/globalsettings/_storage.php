@@ -25,14 +25,15 @@
         </div>
         <div class="form-group">
             <label class="form-label"  for='overwritefiles'><?php eT("Overwrite files with the same name when uploaded, moved or copied through the editor/file-manager?");?></label>
-            <div class="">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    'name' => 'overwritefiles',
-                    'id' => 'overwritefiles',
-                    'value' => getGlobalSetting('overwritefiles') == 'Y' ? '1' : 0,
-                    'onLabel' => gT('On'),
-                    'offLabel' => gT('Off')));
-                ?>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'overwritefiles',
+                    'checkedOption' => App()->getConfig('overwritefiles') === 'Y' ? '1' : 0,
+                    'selectOptions' => [
+                        '1' => gT('On'),
+                        '0' => gT('Off'),
+                    ]
+                ]); ?>
             </div>
         </div>
     </div>

@@ -34,10 +34,11 @@ class ButtonGroupWidget extends CInputWidget
     /** Renders the button group */
     public function renderButtons()
     {
+        list($name, $id) = $this->resolveNameID();
         $this->render('buttongroup', [
             'ariaLabel' => $this->ariaLabel,
-            'name' => $this->name,
-            'id' => $this->id ?? $this->name,
+            'name' => $name,
+            'id' => $id,
             'selectOptions' => $this->selectOptions,
             'checkedOption' => $this->checkedOption,
             'htmlOptions' => $this->htmlOptions

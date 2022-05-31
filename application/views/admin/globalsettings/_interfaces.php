@@ -30,27 +30,29 @@
 
 <div class="form-group">
     <label class=" form-label"  for='rpc_publish_api'><?php eT("Publish API on /admin/remotecontrol:"); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'rpc_publish_api',
-            'id'=>'rpc_publish_api',
-            'value' => getGlobalSetting('rpc_publish_api'),
-            'onLabel'=>gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => "rpc_publish_api",
+            'checkedOption' => App()->getConfig('rpc_publish_api'),
+            'selectOptions' => [
+                '1' => gT('On'),
+                '0' => gT('Off'),
+            ]
+        ]); ?>
     </div>
 </div>
 
 <div class="form-group">
     <label class=" form-label"  for='add_access_control_header'><?php eT("Set Access-Control-Allow-Origin header:"); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'add_access_control_header',
-            'id'=>'add_access_control_header',
-            'value' => getGlobalSetting('add_access_control_header'),
-            'onLabel'=>gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'add_access_control_header',
+            'checkedOption' => App()->getConfig('add_access_control_header'),
+            'selectOptions' => [
+                '1' => gT('On'),
+                '0' => gT('Off'),
+            ]
+        ]) ?>
     </div>
 </div>
 

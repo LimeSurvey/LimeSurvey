@@ -54,18 +54,14 @@ $dateformatdata                  = getDateFormatData(Yii::app()->session['datefo
                 <?php eT("Create example question group and question:"); ?>
             </label>
             <div class="col-12">
-                <?php
-                $this->widget(
-                    'yiiwheels.widgets.switch.WhSwitch',
-                    [
-                        'name' => 'createsample',
-                        'id' => 'createsample',
-                        'value' => Yii::app()->getConfig('createsample'),
-                        'onLabel' => gT('On'),
-                        'offLabel' => gT('Off')
-                    ]
-                );
-                ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name' => 'createsample',
+                    'checkedOption' => App()->getConfig('createsample'),
+                    'selectOptions' => [
+                        '1' => gT('On'),
+                        '0' => gT('Off'),
+                    ],
+                ]); ?>
             </div>
         </div>
     </div>
@@ -318,16 +314,14 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                    array(
-                        'name' => 'javascriptdebugbcknd',
-                        'id' => 'javascriptdebugbcknd',
-                        'value' => getGlobalSetting('javascriptdebugbcknd'),
-                        'onLabel' => gT('On'),
-                        'offLabel' => gT('Off')
-                    )
-                );
-                ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name' => 'javascriptdebugbcknd',
+                    'checkedOption' => App()->getConfig('javascriptdebugbcknd'),
+                    'selectOptions' => [
+                        '1' => gT('On'),
+                        '0' => gT('Off'),
+                    ],
+                ]); ?>
             </div>
         </div>
     </div>
@@ -339,16 +333,14 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                    array(
-                        'name' => 'javascriptdebugfrntnd',
-                        'id' => 'javascriptdebugfrntnd',
-                        'value' => getGlobalSetting('javascriptdebugfrntnd'),
-                        'onLabel' => gT('On'),
-                        'offLabel' => gT('Off')
-                    )
-                );
-                ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name' => 'javascriptdebugfrntnd',
+                    'checkedOption' => App()->getConfig('javascriptdebugfrntnd'),
+                    'selectOptions' => [
+                        '1' => gT('On'),
+                        '0' => gT('Off'),
+                    ],
+                ]); ?>
             </div>
         </div>
     </div>
@@ -361,16 +353,14 @@ Full lock - none of participants are allowed to take survey, even if they alread
                     <?php eT('Allow unstable extension updates:'); ?>
                 </label>
                 <div class="col-12">
-                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                        array(
-                            'name' => 'allow_unstable_extension_update',
-                            'id' => 'allow_unstable_extension_update',
-                            'value' => getGlobalSetting('allow_unstable_extension_update'),
-                            'onLabel' => gT('On'),
-                            'offLabel' => gT('Off')
-                        )
-                    );
-                    ?>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name' => 'allow_unstable_extension_update',
+                        'checkedOption' => App()->getConfig('allow_unstable_extension_update'),
+                        'selectOptions' => [
+                            '1' => gT('On'),
+                            '0' => gT('Off'),
+                        ],
+                    ]); ?>
                 </div>
                 <div class="col-12 form-label ">
                         <span class="hint">

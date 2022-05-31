@@ -56,32 +56,32 @@
                             <?php if ($oSurvey->anonymized != 'Y'): ?>
 
                                 <div class="col-md-4">
-                                    <?php
-                                    $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name'        => "completed-switch",
-                                            'id'          => "massedit_completed-switch",
-                                            'htmlOptions' => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
-                                            'value'       => 0,
-                                            'onLabel'     => gT('Yes'),
-                                            'offLabel'    => gT('No')
-                                        ]
-                                    );
-                                    ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => "completed-switch",
+                                        'id'            => "massedit_completed-switch",
+                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'checkedOption' => 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 </div>
 
                             <?php else: ?>
 
                                 <div class="col-md-4">
                                     <?php
-                                    $this->widget('yiiwheels.widgets.switch.WhSwitch',
+                                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                                         [
                                             'name'        => "completed-switch",
                                             'id'          => "massedit_completed-switch",
                                             'htmlOptions' => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
-                                            'value'       => 0,
-                                            'onLabel'     => gT('Yes'),
-                                            'offLabel'    => gT('No')
+                                            'checkedOption'       => 0,
+                                            'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
                                         ]
                                     );
                                     ?>
@@ -184,31 +184,28 @@
                     <div class="col-md-8 <?php echo $sCointainerClass; ?>" id="massedit_sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
                         <div class="row">
                             <div class="col-md-4">
-
-                                <?php if ($oSurvey->anonymized != 'Y'): ?>
-                                    <?php
-                                    $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name'        => "sent-switch",
-                                            'id'          => "massedit_sent-switch",
-                                            'htmlOptions' => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
-                                            'value'       => 0,
-                                            'onLabel'     => gT('Yes'),
-                                            'offLabel'    => gT('No')
-                                        ]);
-                                    ?>
+                                <?php if ($oSurvey->anonymized !== 'Y'): ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => "sent-switch",
+                                        'id'            => "massedit_sent-switch",
+                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'checkedOption' => 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 <?php else: ?>
-                                    <?php
-                                    $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name'        => "sent-switch",
-                                            'id'          => "massedit_sent-switch",
-                                            'htmlOptions' => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
-                                            'value'       => 0,
-                                            'onLabel'     => gT('Yes'),
-                                            'offLabel'    => gT('No')
-                                        ]);
-                                    ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => "sent-switch",
+                                        'id'            => "massedit_sent-switch",
+                                        'htmlOptions'   => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'checkedOption' => 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 <?php endif; ?>
                             </div>
 
@@ -245,30 +242,28 @@
 
                         <div class="row">
                             <div class="col-md-4">
-                                <?php if ($oSurvey->anonymized != 'Y'): ?>
-                                    <?php
-                                    $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name'        => "remind-switch",
-                                            'id'          => "massedit_remind-switch",
-                                            'htmlOptions' => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
-                                            'value'       => 0,
-                                            'onLabel'     => gT('Yes'),
-                                            'offLabel'    => gT('No')
-                                        ]);
-                                    ?>
+                                <?php if ($oSurvey->anonymized !== 'Y'): ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => "remind-switch",
+                                        'id'            => "massedit_remind-switch",
+                                        'htmlOptions'   => ['class' => "YesNoSwitch YesNoDateSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'checkedOption' => 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 <?php else: ?>
-                                    <?php
-                                    $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name'        => "sent-switch",
-                                            'id'          => "massedit_sent-switch",
-                                            'htmlOptions' => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
-                                            'value'       => 0,
-                                            'onLabel'     => gT('Yes'),
-                                            'offLabel'    => gT('No')
-                                        ]);
-                                    ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => "sent-switch",
+                                        'id'            => "massedit_sent-switch",
+                                        'htmlOptions'   => ['class' => "YesNoSwitch bootstrap-switch-integer", 'disabled' => true],
+                                        'checkedOption' => 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 <?php endif; ?>
                             </div>
 

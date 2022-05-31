@@ -15,22 +15,17 @@
         <div class="form-group">
             <label class="form-label" for='sendadmincreationemail'><?php eT("Send email to new user administrators:"); ?></label>
             <div>
-                <?php
-                $this->widget(
-                    'yiiwheels.widgets.switch.WhSwitch',
-                    array(
-                        'name' => 'sendadmincreationemail',
-                        'htmlOptions' => array(
-                            'class' => 'custom-data bootstrap-switch-boolean',
-                            'uncheckValue' => false,
-                        ),
-
-                        'value' => isset($sSendAdminCreationEmail) ? $sSendAdminCreationEmail : 0,
-                        'onLabel' => gT('On'),
-                        'offLabel' => gT('Off')
-                    )
-                );
-                ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'sendadmincreationemail',
+                    'checkedOption' => $sSendAdminCreationEmail ?? 0,
+                    'selectOptions' => [
+                        '1' => gT('On'),
+                        '0' => gT('Off'),
+                    ],
+                    'htmlOptions'   => [
+                        'class'        => 'custom-data bootstrap-switch-boolean',
+                    ]
+                ]); ?>
             </div>
         </div>
     </div>

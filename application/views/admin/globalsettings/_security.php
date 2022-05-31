@@ -10,48 +10,48 @@
 
     <label class=" form-label"
            for='surveyPreview_require_Auth'><?php eT("Survey preview only for administration users:"); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'surveyPreview_require_Auth',
-            'id' => 'surveyPreview_require_Auth',
-            'value' => Yii::app()->getConfig('surveyPreview_require_Auth'),
-            'onLabel' => gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'surveyPreview_require_Auth',
+            'checkedOption' => App()->getConfig('surveyPreview_require_Auth'),
+            'selectOptions' => [
+                '1' => gT('On'),
+                '0' => gT('Off'),
+            ]
+        ]); ?>
     </div>
 </div>
 
 <div class="form-group">
     <label class=" form-label" for='filterxsshtml'><?php eT("Filter HTML for XSS:");
         echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'filterxsshtml',
-            'id' => 'filterxsshtml',
-            'value' => Yii::app()->getConfig('filterxsshtml'),
-            'onLabel' => gT('On'),
-            'offLabel' => gT('Off')
-        ));
-        ?>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'filterxsshtml',
+            'checkedOption' => App()->getConfig('filterxsshtml'),
+            'selectOptions' => [
+                '1' => gT('On'),
+                '0' => gT('Off'),
+            ]
+        ]); ?>
     </div>
     <div class="help-block">
-        <span
-            class='text-success'><?php eT("Note: XSS filtering is always disabled for the superadministrator."); ?></span>
+        <span class='text-success'><?php eT("Note: XSS filtering is always disabled for the superadministrator."); ?></span>
     </div>
 </div>
 
 <div class="form-group">
     <label class=" form-label"
            for='disablescriptwithxss'><?php eT("Disable question script for XSS restricted user:"); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'disablescriptwithxss',
-            'id' => 'disablescriptwithxss',
-            'value' => Yii::app()->getConfig('disablescriptwithxss'),
-            'onLabel' => gT('On'),
-            'offLabel' => gT('Off')
-        ));
-        ?>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'disablescriptwithxss',
+            'checkedOption' => App()->getConfig('disablescriptwithxss'),
+            'selectOptions' => [
+                '1' => gT('On'),
+                '0' => gT('Off'),
+            ]
+        ]); ?>
     </div>
     <div class="help-block">
         <span
@@ -60,16 +60,17 @@
 </div>
 
 <div class="form-group">
-    <label class=" form-label"
-           for='usercontrolSameGroupPolicy'><?php eT("Group member can only see own group:"); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'usercontrolSameGroupPolicy',
-            'id' => 'usercontrolSameGroupPolicy',
-            'value' => Yii::app()->getConfig('usercontrolSameGroupPolicy'),
-            'onLabel' => gT('On'),
-            'offLabel' => gT('Off')));
-        ?>
+    <label class=" form-label" for='usercontrolSameGroupPolicy'><?php eT("Group member can only see own group:"); ?></label>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'usercontrolSameGroupPolicy',
+            'id'            => 'usercontrolSameGroupPolicy',
+            'checkedOption' => App()->getConfig('usercontrolSameGroupPolicy'),
+            'selectOptions' => [
+                '1' => gT('On'),
+                '0' => gT('Off'),
+            ]
+        ]); ?>
     </div>
 </div>
 
@@ -102,7 +103,7 @@
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'force_ssl',
-            'checkedOption' => Yii::app()->getConfig('force_ssl'),
+            'checkedOption' => App()->getConfig('force_ssl'),
             'selectOptions' => [
                 "on"  => gT("On", 'unescaped'),
                 "off" => gT("Off", 'unescaped')

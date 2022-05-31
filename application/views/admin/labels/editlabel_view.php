@@ -106,14 +106,14 @@
                                 <label class=" form-label" for='checkforduplicates'>
                                     <?php eT("Don't import if label set already exists:"); ?>
                                 </label>
-                                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                                    [
-                                        'name'     => 'checkforduplicates',
-                                        'id'       => 'checkforduplicates',
-                                        'value'    => 1,
-                                        'onLabel'  => gT('On'),
-                                        'offLabel' => gT('Off')
-                                    ]); ?>
+                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'name' => 'checkforduplicates',
+                                    'checkedOption' => 1,
+                                    'selectOptions' => [
+                                        '1' => gT('On'),
+                                        '0' => gT('Off'),
+                                    ],
+                                ]); ?>
                             </div>
 
                             <div class="form-group">

@@ -50,100 +50,87 @@
 <div class="ls-flex-column ls-space padding left-5 right-5 col-lg-5">
     <div class="form-group">
         <label class=" form-label" for='pdfshowsurveytitle'><?php eT("Show survey title in export PDFs:"); ?></label>
-        <div class="">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                array(
-                    'name' => 'pdfshowsurveytitle',
-                    'id' => 'pdfshowsurveytitle',
-                    'value' => getGlobalSetting('pdfshowsurveytitle') == 'Y' ? '1' : 0,
-                    'onLabel' => gT('On'),
-                    'offLabel' => gT('Off')
-                )
-            );
-            ?>
+        <div>
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'pdfshowsurveytitle',
+                'checkedOption' => App()->getConfig('pdfshowsurveytitle') === 'Y' ? '1' : 0,
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ]
+            ]); ?>
         </div>
     </div>
 
     <div class="form-group">
         <label class=" form-label" for='pdfshowheader'><?php eT("Show header in answers export PDFs:"); ?></label>
-        <div class="">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                array(
-                    'name' => 'pdfshowheader',
-                    'id' => 'pdfshowheader',
-                    'value' => getGlobalSetting('pdfshowheader') == 'Y' ? '1' : 0,
-                    'onLabel' => gT('On'),
-                    'offLabel' => gT('Off')
-                )
-            );
-            ?>
+        <div>
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'pdfshowheader',
+                'checkedOption' => App()->getConfig('pdfshowheader') === 'Y' ? '1' : 0,
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ]
+            ]); ?>
         </div>
     </div>
 
     <div class="form-group">
         <label class=" form-label" for='bPdfQuestionFill'><?php eT("Add gray background to questions in PDF:"); ?></label>
-        <div class="">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                array(
-                    'name' => 'bPdfQuestionFill',
-                    'id' => 'bPdfQuestionFill',
-                    'value' => getGlobalSetting('bPdfQuestionFill'),
-                    'onLabel' => gT('On'),
-                    'offLabel' => gT('Off')
-                )
-            );
-            ?>
+        <div>
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'bPdfQuestionFill',
+                'checkedOption' => App()->getConfig('bPdfQuestionFill'),
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ]
+            ]); ?>
         </div>
     </div>
 
     <div class="form-group">
         <label class=" form-label" for='bPdfQuestionBold'><?php eT("PDF questions in bold:"); ?></label>
-        <div class="">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                array(
-                    'name' => 'bPdfQuestionBold',
-                    'id' => 'bPdfQuestionBold',
-                    'value' => getGlobalSetting('bPdfQuestionBold'),
-                    'onLabel' => gT('On'),
-                    'offLabel' => gT('Off')
-                )
-            );
-            ?>
+        <div>
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'bPdfQuestionBold',
+                'checkedOption' => App()->getConfig('bPdfQuestionBold'),
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ]
+            ]); ?>
         </div>
     </div>
 
     <div class="form-group">
         <label class=" form-label" for='bPdfQuestionBorder'><?php eT("Borders around questions in PDF:"); ?></label>
-        <div class="">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                array(
-                    'name' => 'bPdfQuestionBorder',
-                    'id' => 'bPdfQuestionBorder',
-                    'value' => getGlobalSetting('bPdfQuestionBorder'),
-                    'onLabel' => gT('On'),
-                    'offLabel' => gT('Off')
-                )
-            );
-            ?>
+        <div>
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'bPdfQuestionBorder',
+                'checkedOption' => App()->getConfig('bPdfQuestionBorder'),
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ]
+            ]); ?>
         </div>
     </div>
 
     <div class="form-group">
         <label class=" form-label" for='bPdfResponseBorder'><?php eT("Borders around responses in PDF:"); ?></label>
-        <div class="">
-            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                array(
-                    'name' => 'bPdfResponseBorder',
-                    'id' => 'bPdfResponseBorder',
-                    'value' => getGlobalSetting('bPdfResponseBorder'),
-                    'onLabel' => gT('On'),
-                    'offLabel' => gT('Off')
-                )
-            );
-            ?>
+        <div>
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'bPdfResponseBorder',
+                'checkedOption' => App()->getConfig('bPdfResponseBorder'),
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ]
+            ]); ?>
         </div>
     </div>
-
 </div>
 
 

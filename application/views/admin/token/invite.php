@@ -41,15 +41,15 @@
                             <div class='form-group'>
 
                                 <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
-                                <div class=''>
-                                    <?php
-                                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                        'name' => "bypassbademails",
-                                        'id'=>"bypassbademails",
-                                        'value' => '1',
-                                        'onLabel'=>gT('On'),
-                                        'offLabel' => gT('Off')));
-                                    ?>
+                                <div>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => "bypassbademails",
+                                        'checkedOption' => '1',
+                                        'selectOptions' => [
+                                            '1' => gT('On'),
+                                            '0' => gT('Off'),
+                                        ],
+                                    ]); ?>
                                 </div>
                             </div>
                         </div>
@@ -64,15 +64,15 @@
                                         'unescaped' => 'unescaped', 
                                         'class' => 'form-label ')
                                     ); ?>
-                                <div class=''>
-                                <?php
-                                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                        'name' => "bypassdatecontrol",
-                                        'id'=>"bypassdatecontrol",
-                                        'value' => '0',
-                                        'onLabel'=>gT('On'),
-                                        'offLabel' => gT('Off')));
-                                    ?>
+                                <div>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => "bypassdatecontrol",
+                                        'checkedOption' => '0',
+                                        'selectOptions' => [
+                                            '1' => gT('On'),
+                                            '0' => gT('Off'),
+                                        ],
+                                    ]); ?>
                                 </div>
                             </div>
                         </div>

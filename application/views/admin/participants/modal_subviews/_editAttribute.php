@@ -31,31 +31,31 @@
     <div class=" form-group" id="">
         <label class='form-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
         <div>
-            <?php 
-            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                'name'      => "ParticipantAttributeName[visible]",
-                'id'        => "visible",
-                'value'     => $model['visible']=='TRUE'?'1':'0',
-                'onLabel'   => gT('On'),
-                'offLabel'  => gT('Off')));
-            ?>
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => "ParticipantAttributeName[visible]",
+                'checkedOption' => $model['visible'] === 'TRUE' ? '1' : '0',
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ],
+            ]); ?>
         </div>
     </div>
     <div class=" form-group" id="">
         <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
         <div>
-            <?php 
-            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                'name'      => "ParticipantAttributeName[encrypted]",
-                'id'        => "encrypted",
-                'value'     => $model['encrypted']=='Y'?'1':'0',
-                'onLabel'   => gT('On'),
-                'offLabel'  => gT('Off'),
-                'htmlOptions' =>array(
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => "ParticipantAttributeName[encrypted]",
+                'id'            => "encrypted",
+                'checkedOption' => $model['encrypted'] === 'Y' ? '1' : '0',
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ],
+                'htmlOptions'   => [
                     'disabled' => !$bEncrypted,
-                )
-            ));
-            ?>
+                ]
+            ]); ?>
         </div>
     </div>
     <div id="ParticipantAttributeNamesDropdownEdit" class="row form-group" style="display: none;">

@@ -96,47 +96,37 @@
                                      data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
                                     <div class="row">
                                         <?php if ($oSurvey->anonymized != 'Y'): ?>
-
-                                            <?php
-                                            $bCompletedValue = "0";
+                                            <?php $bCompletedValue = "0";
                                             if (isset($completed) && $completed != 'N') {
                                                 $completedDBFormat = $completed;
                                                 $bCompletedValue   = "1";
                                                 $completed         = convertToGlobalSettingFormat($completed, true);
-                                            }
-                                            ?>
-
-                                            <div class="btn-group btn-group-sm" role="group" aria-label="Completed radio toggle button group">
-                                                <input type="radio" class="btn-check" name="btnradio" id="completed-switch-yes" autocomplete="off" checked>
-                                                <label class="btn btn-outline-success" for="completed-switch-yes">Yes</label>
-                                                <input type="radio" class="btn-check" name="btnradio" id="completed-switch-no" autocomplete="off">
-                                                <label class="btn btn-outline-danger" for="completed-switch-no">No</label>
-                                                <!-- <?php
-                                                //  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                //  'name' => "completed-switch",
-                                                //  'id'=>"completed-switch",
-                                                //  'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
-                                                //  'value' => $bCompletedValue,
-                                                //  'onLabel'=>gT('Yes'),
-                                                //  'offLabel' => gT('No')));
-                                                ?> -->
+                                            } ?>
+                                            <div>
+                                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                    'name'          => "completed-switch",
+                                                    'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch"],
+                                                    'checkedOption' => $bCompletedValue,
+                                                    'selectOptions' => [
+                                                        '1' => gT('Yes'),
+                                                        '0' => gT('No'),
+                                                    ],
+                                                ]); ?>
                                             </div>
                                         <?php else: ?>
-                                            <div class="">
-                                                <?php
-                                                $completedDBFormat = $completed;
-                                                $bCompletedValue   = (isset($completed) && $completed != 'N') ? "1" : "0";
-                                                $completed         = (isset($completed) && $completed != 'N') ? 'Y' : 'N';
-                                                ?>
-                                                <!--<?php
-                                                //$this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                //'name' => "completed-switch",
-                                                //'id'=>"completed-switch",
-                                                //'htmlOptions'=>array('class'=>"YesNoSwitch action_toggle_bootstrap_switch"),
-                                                //'value' => $bCompletedValue,
-                                                //'onLabel'=>gT('Yes'),
-                                                //'offLabel' => gT('No')));
-                                                ?> -->
+                                            <div>
+                                                <?php $completedDBFormat = $completed;
+                                                $bCompletedValue = (isset($completed) && $completed != 'N') ? "1" : "0";
+                                                $completed = (isset($completed) && $completed != 'N') ? 'Y' : 'N'; ?>
+                                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                    'name'          => "completed-switch",
+                                                    'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch"],
+                                                    'checkedOption' => $bCompletedValue,
+                                                    'selectOptions' => [
+                                                        '1' => gT('Yes'),
+                                                        '0' => gT('No'),
+                                                    ],
+                                                ]); ?>
                                             </div>
                                         <?php endif; ?>
 
@@ -287,23 +277,16 @@
                                                 $bRemindSwitchValue  = "1";
                                                 $remindersentDBValue = $remindersent;
                                                 $remindersent        = convertToGlobalSettingFormat($remindersent, true);
-                                            }
-                                            ?>
-                                            <div class="btn-group btn-group-sm" role="group" aria-label="Invitation sent radio toggle button group">
-                                                <input type="radio" class="btn-check" name="btnradio" id="invitation-sent-yes" autocomplete="off" checked>
-                                                <label class="btn btn-outline-success" for="invitation-sent-yes">Yes</label>
-                                                <input type="radio" class="btn-check" name="btnradio" id="invitation-sent-no" autocomplete="off">
-                                                <label class="btn btn-outline-danger" for="invitation-sent-no">No</label>
-                                            </div>
-                                            <!-- <?php
-                                            //  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            //  'name' => "sent-switch",
-                                            //  'id'=>"sent-switch",
-                                            //  'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
-                                            //  'value' => $bSwitchValue,
-                                            //  'onLabel'=>gT('Yes'),
-                                            //  'offLabel' => gT('No')));
-                                            ?> -->
+                                            } ?>
+                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'name'          => "sent-switch",
+                                                'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch"],
+                                                'checkedOption' => $bSwitchValue,
+                                                'selectOptions' => [
+                                                    '1' => gT('Yes'),
+                                                    '0' => gT('No'),
+                                                ],
+                                            ]); ?>
                                         <?php else: ?>
                                             <?php
                                             $sentDBValue         = $sent;
@@ -311,18 +294,15 @@
                                             $bSwitchValue        = (isset($sent) && $sent != 'N') ? "1" : "0";
                                             $bRemindSwitchValue  = (isset($remindersent) && $remindersent != 'N') ? "1" : "0";
                                             ?>
-                                            <?php
-                                            $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                                                array(
-                                                    'name' => "sent-switch",
-                                                    'id' => "sent-switch",
-                                                    'htmlOptions' => array('class' => "YesNoSwitch action_toggle_bootstrap_switch"),
-                                                    'value' => $bSwitchValue,
-                                                    'onLabel' => gT('Yes'),
-                                                    'offLabel' => gT('No')
-                                                )
-                                            );
-                                            ?>
+                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'name'          => "sent-switch",
+                                                'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch"],
+                                                'checkedOption' => $bSwitchValue,
+                                                'selectOptions' => [
+                                                    '1' => gT('Yes'),
+                                                    '0' => gT('No'),
+                                                ],
+                                            ]); ?>
                                         <?php endif; ?>
                                     </div>
 
@@ -352,39 +332,28 @@
                                  data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
 
                                 <div class="row">
-                                    <div class="">
-                                        <?php if ($oSurvey->anonymized != 'Y') {
-                                            ?>
-
-                                            <div class="btn-group btn-group-sm" role="group" aria-label="Reminder sent radio toggle button group" id="remind-switch">
-                                                <input type="radio" class="btn-check" name="btnradio" id="reminder-sent-yes" autocomplete="off" checked>
-                                                <label class="btn btn-outline-success" for="reminder-sent-yes">Yes</label>
-                                                <input type="radio" class="btn-check" name="btnradio" id="reminder-sent-no" autocomplete="off">
-                                                <label class="btn btn-outline-danger" for="reminder-sent-no">No</label>
-                                            </div>
-                                            <!-- <?php
-                                            //$this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            //'name' => "remind-switch",
-                                            //'id'=>"remind-switch",
-                                            //'htmlOptions'=>array('class'=>"YesNoDateSwitch action_toggle_bootstrap_switch"),
-                                            //'value' => $bRemindSwitchValue,
-                                            //'onLabel'=>gT('Yes'),
-                                            //'offLabel' => gT('No')));
-                                            ?> -->
-                                        <?php } else { ?>
-                                            <?php
-                                            $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                                                array(
-                                                    'name' => "remind-switch",
-                                                    'id' => "remind-switch",
-                                                    'htmlOptions' => array('class' => "YesNoSwitch action_toggle_bootstrap_switch"),
-                                                    'value' => $bRemindSwitchValue,
-                                                    'onLabel' => gT('Yes'),
-                                                    'offLabel' => gT('No')
-                                                )
-                                            );
-                                            ?>
-                                        <?php } ?>
+                                    <div>
+                                        <?php if ($oSurvey->anonymized !== 'Y'): ?>
+                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'name'          => "remind-switch",
+                                                'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch"],
+                                                'checkedOption' => $bRemindSwitchValue,
+                                                'selectOptions' => [
+                                                    '1' => gT('Yes'),
+                                                    '0' => gT('No'),
+                                                ],
+                                            ]); ?>
+                                        <?php else: ?>
+                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'name'          => "remind-switch",
+                                                'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch"],
+                                                'checkedOption' => $bRemindSwitchValue,
+                                                'selectOptions' => [
+                                                    '1' => gT('Yes'),
+                                                    '0' => gT('No'),
+                                                ],
+                                            ]); ?>
+                                        <?php endif; ?>
                                     </div>
 
                                     <div class="">

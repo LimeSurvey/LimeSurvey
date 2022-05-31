@@ -63,25 +63,16 @@ Yii::app()->getController()->renderPartial(
         </div>
         <div class='form-group'>
             <label class='form-label '><?php eT("Blacklist user:"); ?></label>
-            <div class=''>
-                <!-- TODO: Replace with Bootstrap Button Group -->
-                &nbsp;
-                <?php /* $this->widget(
-                'yiiwheels.widgets.switch.WhSwitch',
-                array(
-                    'attribute' => 'blacklisted',
-                    'model' => $model,
-                    'htmlOptions'=>array(
-                        'class'=>'bootstrap-switch',
-                        'value' => 'Y'
-                    ),
-                    'onLabel'=>gT('Yes'),
-                    'offLabel'=>gT('No'),
-                    'onColor'=> 'primary',
-                    'offColor'=> 'warning'
-                )
-            ); */
-            ?>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'model'         => $model,
+                    'attribute'     => 'blacklisted',
+                    'checkedOption' => $model->blacklisted,
+                    'selectOptions' => [
+                        'Y' => gT('Yes'),
+                        'N' => gT('No'),
+                    ]
+                ]); ?>
             </div>
         </div>
 

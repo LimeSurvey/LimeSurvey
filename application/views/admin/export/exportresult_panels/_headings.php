@@ -43,13 +43,14 @@
         <?php eT("Convert spaces in question text to underscores:"); ?>
       </label>
       <div class='col-md-12'>
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-          'name' => 'headspacetounderscores',
-          'id'=>'headspacetounderscores',
-          'value' => 0,
-          'onLabel'=>gT('On'),
-          'offLabel' => gT('Off')));
-        ?>
+          <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+              'name' => 'headspacetounderscores',
+              'checkedOption' => 0,
+              'selectOptions' => [
+                  '1' => gT('On'),
+                  '0' => gT('Off'),
+              ],
+          ]); ?>
       </div>
     </div>
 
@@ -59,13 +60,14 @@
         <?php eT("Text abbreviated:"); ?>
       </label>
       <div class='col-md-12'>
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-          'name' => 'abbreviatedtext',
-          'id'=>'abbreviatedtext',
-          'value' => 0,
-          'onLabel'=>gT('On'),
-          'offLabel' => gT('Off')));
-        ?>
+          <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+              'name' => 'abbreviatedtext',
+              'checkedOption' => 0,
+              'selectOptions' => [
+                  '1' => gT('On'),
+                  '0' => gT('Off'),
+              ],
+          ]); ?>
       </div>
     </div>
 
@@ -75,13 +77,14 @@
         <?php eT("Use ExpressionScript code:"); ?>
       </label>
       <div class='col-md-12'>
-        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-          'name' => 'emcode',
-          'id'=>'emcode',
-          'value' => 0,
-          'onLabel'=>gT('On'),
-          'offLabel' => gT('Off')));
-        ?>
+          <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+              'name' => 'emcode',
+              'checkedOption' => 0,
+              'selectOptions' => [
+                  '1' => gT('On'),
+                  '0' => gT('Off'),
+              ],
+          ]); ?>
       </div>
     </div>
 

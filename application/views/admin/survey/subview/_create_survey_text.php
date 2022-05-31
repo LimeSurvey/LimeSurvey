@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * TODO: this file seems unused
  * General container for create survey action
  * @var AdminController $this
  * @var Survey $oSurvey
