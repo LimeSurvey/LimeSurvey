@@ -5555,9 +5555,9 @@
                             if (!preg_match('/_filecount$/', $key))
                             {
                                 $aFiles = json_decode($val);
-                                $iSize=@count($aFiles);
-                                if (!is_null($aFiles) && $iSize > 0)
+                                if (!empty($aFiles) && is_array($aFiles))
                                 {
+                                    $iSize = count($aFiles);
                                     for ($i = 0; $i < $iSize; $i++)
                                     {
                                         // Decode html entities
@@ -8967,13 +8967,13 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 {
                                     $json = $value;
                                     $aFiles = json_decode($json);
-                                    $iSize=@count($aFiles);
                                     // if the files have not been saved already,
                                     // move the files from tmp to the files folder
-
                                     $tmp = $LEM->surveyOptions['tempdir'] . 'upload'. DIRECTORY_SEPARATOR;
-                                    if (!is_null($aFiles) && $iSize > 0)
+                                    /* json return null, true or false, and here : must return an array */
+                                    if (!empty($aFiles) && is_array($aFiles))
                                     {
+                                        $iSize = count($aFiles);
                                         // Move the (unmoved, temp) files from temp to files directory.
                                         // Check all possible file uploads
                                         for ($i = 0; $i < $iSize; $i++)
