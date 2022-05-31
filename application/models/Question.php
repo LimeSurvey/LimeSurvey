@@ -1512,10 +1512,11 @@ class Question extends LSActiveRecord
 
     /**
      * Remove subquestion if needed when update question type
+     * @return void
      */
     protected function removeInvalidSubquestions()
     {
-        if (!$this->getAllowSubquestions()) {
+        if ($this->getAllowSubquestions()) {
             return;
         }
 
