@@ -28,7 +28,7 @@
 
 .jcarousel li {
   width: 200px;
-  float: right;
+  float: left;
   border: 1px solid #fff;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -64,21 +64,21 @@
 }
 
 .jcarousel-control-prev {
-  right: 15px;
+  left: 15px;
 }
 
 .jcarousel-control-next {
-  left: 15px;
+  right: 15px;
 }
 
 /** Carousel Pagination **/
 .jcarousel-pagination {
   position: absolute;
   bottom: -40px;
-  right: 50%;
-  -webkit-transform: translate(50%, 0);
-  -ms-transform: translate(50%, 0);
-  transform: translate(50%, 0);
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
   margin: 0;
 }
 
@@ -93,7 +93,7 @@
   color: #4E443C;
   border-radius: 10px;
   text-indent: -9999px;
-  margin-left: 7px;
+  margin-right: 7px;
   -webkit-box-shadow: 0 0 2px #4E443C;
   -moz-box-shadow: 0 0 2px #4E443C;
   box-shadow: 0 0 2px #4E443C;
@@ -124,17 +124,17 @@
 #tokenattribute,
 #csvattribute,
 #centralattribute {
-  margin-right: 0.75%;
   margin-left: 0.75%;
+  margin-right: 0.75%;
   margin-bottom: 20px;
 }
 
 #tokenattribute {
-  margin-right: 1.5%;
+  margin-left: 1.5%;
 }
 
 #centralattribute {
-  margin-left: 1.5%;
+  margin-right: 1.5%;
 }
 
 #centralattribute .centralatt {
@@ -179,7 +179,7 @@ div.attribute-item, .already-mapped-attribute {
 #centralattribute .explanation {
   width: 90%;
   margin: 0 auto;
-  text-align: right;
+  text-align: left;
 }
 
 #centralattribute .explanation-row {
@@ -194,7 +194,7 @@ div.attribute-item, .already-mapped-attribute {
 }
 
 #centralattribute .explanation label {
-  padding-right: 8px;
+  padding-left: 8px;
 }
 
 .attribute-item.draggable {
@@ -239,7 +239,7 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 }
 
 .responses-column-filter-modal-checkbox-buttons {
-  text-align: right;
+  text-align: left;
   padding-bottom: 15px;
 }
 
@@ -344,15 +344,15 @@ a {
 
 .page-item {
   border-radius: 25px;
-  margin-left: 2px;
   margin-right: 2px;
+  margin-left: 2px;
 }
 
 #ls-loading {
   width: 100%;
   height: 100%;
   top: 0;
-  right: 0;
+  left: 0;
   position: fixed;
   display: block;
   opacity: 0.7;
@@ -371,7 +371,7 @@ a {
 #notif-container {
   position: fixed;
   top: 5%;
-  right: 20%;
+  left: 20%;
   width: 60%;
   z-index: 3500;
   background: rgba(255, 255, 255, 0.1);
@@ -415,27 +415,27 @@ a {
 }
 
 .ui-datepicker .ui-datepicker-prev {
-  right: 2px;
+  left: 2px;
 }
 
 .ui-datepicker .ui-datepicker-next {
-  left: 10px;
+  right: 10px;
 }
 
 .ui-datepicker .ui-datepicker-prev-hover {
-  right: 1px;
+  left: 1px;
 }
 
 .ui-datepicker .ui-datepicker-next-hover {
-  left: 10px;
+  right: 10px;
 }
 
 .ui-datepicker .ui-datepicker-next span,
 .ui-datepicker .ui-datepicker-prev span {
   display: block;
   position: absolute;
-  right: 50%;
-  margin-right: -8px;
+  left: 50%;
+  margin-left: -8px;
   top: 50%;
   margin-top: -8px;
 }
@@ -479,7 +479,7 @@ a {
 .ui-datepicker td span {
   display: block;
   padding: .2em;
-  text-align: left;
+  text-align: right;
   text-decoration: none;
 }
 
@@ -487,13 +487,13 @@ a {
   background-image: none;
   margin: .7em 0 0;
   padding: 0 .2em;
-  border-right: 0;
   border-left: 0;
+  border-right: 0;
   border-bottom: 0;
 }
 
 .ui-datepicker .ui-datepicker-buttonpane button {
-  float: left;
+  float: right;
   margin: .5em .2em .4em;
   cursor: pointer;
   padding: .2em .6em .3em;
@@ -504,7 +504,7 @@ a {
 .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current,
 .ui-datepicker-multi .ui-datepicker-group,
 .ui-datepicker-rtl .ui-datepicker-buttonpane button {
-  float: right;
+  float: left;
 }
 
 .ui-datepicker.ui-datepicker-multi {
@@ -530,11 +530,11 @@ a {
 
 .ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header,
 .ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
-  border-right-width: 0;
+  border-left-width: 0;
 }
 
 .ui-datepicker-multi .ui-datepicker-buttonpane {
-  clear: right;
+  clear: left;
 }
 
 .ui-datepicker-row-break {
@@ -544,42 +544,42 @@ a {
 }
 
 .ui-datepicker-rtl {
-  direction: ltr;
+  direction: rtl;
 }
 
 .ui-datepicker-rtl .ui-datepicker-prev {
-  left: 2px;
-  right: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-next {
   right: 2px;
   left: auto;
 }
 
-.ui-datepicker-rtl .ui-datepicker-prev:hover {
-  left: 1px;
+.ui-datepicker-rtl .ui-datepicker-next {
+  left: 2px;
   right: auto;
 }
 
-.ui-datepicker-rtl .ui-datepicker-next:hover {
+.ui-datepicker-rtl .ui-datepicker-prev:hover {
   right: 1px;
   left: auto;
 }
 
+.ui-datepicker-rtl .ui-datepicker-next:hover {
+  left: 1px;
+  right: auto;
+}
+
 .ui-datepicker-rtl .ui-datepicker-buttonpane {
-  clear: left;
+  clear: right;
 }
 
 .ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,
 .ui-datepicker-rtl .ui-datepicker-group {
-  float: left;
+  float: right;
 }
 
 .ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,
 .ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
-  border-left-width: 0;
-  border-right-width: 1px;
+  border-right-width: 0;
+  border-left-width: 1px;
 }
 
 .side-body,
@@ -654,7 +654,7 @@ html {
   width: 100%;
   padding: 13px 0 8px;
   margin: 0 auto 15px;
-  box-shadow: -3px 3px 3px #35363f;
+  box-shadow: 3px 3px 3px #35363f;
 }
 
 .surveybar .btn, .surveybar button {
@@ -662,7 +662,7 @@ html {
 }
 
 .btn.pull-right {
-  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .list-surveys {
@@ -712,7 +712,7 @@ html {
   line-height: 15px;
   position: absolute;
   display: block;
-  left: 5px;
+  right: 5px;
   top: 10px;
 }
 
@@ -727,15 +727,15 @@ html {
 }
 
 .mega-dropdown-menu {
-  margin-right: auto;
   margin-left: auto;
+  margin-right: auto;
   padding: 1.5rem var(--bs-gutter-x, 0.75rem);
   width: 100%;
 }
 
 .mega-dropdown-menu .dropdown-header {
   font-size: 18px;
-  padding: 5px 5px 5px 60px;
+  padding: 5px 60px 5px 5px;
   line-height: 30px;
 }
 
@@ -803,7 +803,7 @@ html {
 .box {
   border-radius: 3px;
   padding: 10px 25px;
-  text-align: left;
+  text-align: right;
   display: block;
   margin-top: 10px;
 }
@@ -1009,12 +1009,12 @@ html {
 }
 
 .login-content {
-  text-align: right;
+  text-align: left;
   padding: 1em;
 }
 
 .login-submit {
-  text-align: left;
+  text-align: right;
 }
 
 #s2id_loginlang {
@@ -1080,7 +1080,7 @@ html {
 }
 
 .checkbox label:after {
-  padding-right: 4px;
+  padding-left: 4px;
   padding-top: 2px;
   font-size: 9px;
 }
@@ -1128,7 +1128,7 @@ div.card.disabled a {
 
 .absolute-wrapper {
   position: fixed;
-  right: 0;
+  left: 0;
   width: 300px;
   height: 100%;
 }
@@ -1137,7 +1137,7 @@ div.card.disabled a {
   position: absolute;
   width: 300px;
   padding: 0;
-  right: 0;
+  left: 0;
 }
 
 .side-menu .navbar {
@@ -1159,14 +1159,14 @@ div.card.disabled a {
 }
 
 .side-menu .navbar-nav li a .glyphicon {
-  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .side-menu .navbar-nav .question-link.active {
   background-color: transparent;
-  padding: 15px 0px 15px 15px;
+  padding: 15px 15px 15px 0px;
   margin-bottom: 5px;
-  margin-left: -1px;
+  margin-right: -1px;
 }
 
 .side-menu .navbar-nav .question-link.active:hover {
@@ -1176,11 +1176,11 @@ div.card.disabled a {
 
 .side-menu .navbar-nav .question-link {
   display: block;
-  padding-right: 0px;
+  padding-left: 0px;
 }
 
 .side-menu .navbar-nav .question-link .question-collapse-title {
-  padding-right: 25px;
+  padding-left: 25px;
 }
 
 .side-menu #dropdown {
@@ -1198,7 +1198,7 @@ div.card.disabled a {
 .side-menu #dropdown li.active:hover {
   cursor: default;
   background-color: transparent;
-  margin-left: -1px;
+  margin-right: -1px;
 }
 
 .side-menu #dropdown li.disabled:hover {
@@ -1207,12 +1207,12 @@ div.card.disabled a {
 }
 
 .side-menu #dropdown .caret {
-  float: left;
+  float: right;
   margin: 9px 5px 0;
 }
 
 .side-menu #dropdown .indicator {
-  float: left;
+  float: right;
 }
 
 .side-menu #dropdown .card-body {
@@ -1224,7 +1224,7 @@ div.card.disabled a {
 }
 
 .side-menu #dropdown .card-body .navbar-nav li {
-  padding-right: 15px;
+  padding-left: 15px;
   border: none;
 }
 
@@ -1237,7 +1237,7 @@ div.card.disabled a {
 }
 
 .side-menu #dropdown .card-body .navbar-nav li.card-default {
-  padding-right: 15px;
+  padding-left: 15px;
   border: none;
 }
 
@@ -1246,12 +1246,12 @@ div.card.disabled a {
 }
 
 .side-menu #dropdown .card-body .card-body {
-  margin-right: -15px;
+  margin-left: -15px;
 }
 
 .side-menu #dropdown .card-body .card > a {
-  margin-right: -20px;
-  padding-right: 35px;
+  margin-left: -20px;
+  padding-left: 35px;
 }
 
 .side-menu #dropdown .question-group-collapse .caret {
@@ -1284,7 +1284,7 @@ div.card.disabled a {
 
 .side-menu #search .card-body .navbar-form {
   padding: 0;
-  padding-left: 50px;
+  padding-right: 50px;
   width: 100%;
   margin: 0;
   position: relative;
@@ -1305,7 +1305,7 @@ div.card.disabled a {
 
 .side-menu #search .card-body .navbar-form .btn {
   position: absolute;
-  left: 0;
+  right: 0;
   top: 0;
   border: 0;
   border-radius: 0;
@@ -1429,7 +1429,7 @@ div.card.disabled a {
 }
 
 .side-menu-hidden {
-  right: -250px;
+  left: -250px;
 }
 
 .side-body {
@@ -1437,17 +1437,17 @@ div.card.disabled a {
 }
 
 .side-body-margin {
-  margin-right: 70px;
+  margin-left: 70px;
 }
 
 .question-group-collapse-title {
   display: block;
-  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .question-collapse-title {
   display: block;
-  padding-right: 30px;
+  padding-left: 30px;
 }
 
 .main-content-container {
@@ -1484,109 +1484,109 @@ div.card.disabled a {
     position: relative;
     width: 100%;
     height: 0;
-    border-left: 0;
+    border-right: 0;
   }
   .side-menu .brand-name-wrapper .navbar-brand {
     display: inline-block;
   }
   @-moz-keyframes slidein {
     0% {
-      right: -300px;
+      left: -300px;
     }
     100% {
-      right: 10px;
+      left: 10px;
     }
   }
   @-webkit-keyframes slidein {
     0% {
-      right: -300px;
+      left: -300px;
     }
     100% {
-      right: 10px;
+      left: 10px;
     }
   }
   @keyframes slidein {
     0% {
-      right: -300px;
+      left: -300px;
     }
     100% {
-      right: 10px;
+      left: 10px;
     }
   }
   @-moz-keyframes slideout {
     0% {
-      right: 0;
+      left: 0;
     }
     100% {
-      right: -300px;
+      left: -300px;
     }
   }
   @-webkit-keyframes slideout {
     0% {
-      right: 0;
+      left: 0;
     }
     100% {
-      right: -300px;
+      left: -300px;
     }
   }
   @keyframes slideout {
     0% {
-      right: 0;
+      left: 0;
     }
     100% {
-      right: -300px;
+      left: -300px;
     }
   }
   @-moz-keyframes bodyslidein {
     0% {
-      right: 0;
+      left: 0;
     }
     100% {
-      right: 300px;
+      left: 300px;
     }
   }
   @-webkit-keyframes bodyslidein {
     0% {
-      right: 0;
+      left: 0;
     }
     100% {
-      right: 300px;
+      left: 300px;
     }
   }
   @keyframes bodyslidein {
     0% {
-      right: 0;
+      left: 0;
     }
     100% {
-      right: 300px;
+      left: 300px;
     }
   }
   @-moz-keyframes bodyslideout {
     0% {
-      right: 300px;
+      left: 300px;
     }
     100% {
-      right: 0;
+      left: 0;
     }
   }
   @-webkit-keyframes bodyslideout {
     0% {
-      right: 300px;
+      left: 300px;
     }
     100% {
-      right: 0;
+      left: 0;
     }
   }
   @keyframes bodyslideout {
     0% {
-      right: 300px;
+      left: 300px;
     }
     100% {
-      right: 0;
+      left: 0;
     }
   }
   .side-body {
-    margin-right: 5px;
+    margin-left: 5px;
     margin-top: 70px;
     position: relative;
     animation: bodyslideout 300ms forwards;
@@ -1598,7 +1598,7 @@ div.card.disabled a {
   }
   .navbar-toggle {
     border: 0;
-    float: right;
+    float: left;
     padding: 16px;
     margin: 0;
     border-radius: 0;
@@ -1613,7 +1613,7 @@ div.card.disabled a {
   }
   .side-menu-container > .navbar-nav {
     position: fixed;
-    right: -300px;
+    left: -300px;
     width: 300px;
     top: 43px;
     height: 100%;
@@ -1661,34 +1661,34 @@ div.card.disabled a {
 
 .icon-btn-row .btn.btn-lg {
   width: 46px;
-  padding-right: 0;
   padding-left: 0;
+  padding-right: 0;
 }
 
 .icon-btn-row .btn {
   width: 34px;
-  padding-right: 0;
   padding-left: 0;
+  padding-right: 0;
 }
 
 .icon-btn-row .btn.btn-sm {
   width: 30px;
-  padding-right: 0;
   padding-left: 0;
+  padding-right: 0;
 }
 
 .icon-btn-row .btn.btn-xs {
   width: 22px;
-  padding-right: 0;
   padding-left: 0;
+  padding-right: 0;
 }
 
 .icon-btn-row :not(:first-child).btn, .icon-btn-row :not(:first-child) .btn {
-  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .icon-btn-row :not(:first-child).btn.btn-xs, .icon-btn-row :not(:first-child) .btn.btn-xs {
-  margin-right: 3px;
+  margin-left: 3px;
 }
 
 /**
@@ -1732,7 +1732,7 @@ input[type="checkbox"]:focus {
 .radio label,
 .checkbox label {
   min-height: 23px;
-  padding-right: 20px;
+  padding-left: 20px;
   margin-bottom: 0;
   font-weight: normal;
   cursor: pointer;
@@ -1743,7 +1743,7 @@ input[type="checkbox"]:focus {
 .checkbox input[type="checkbox"],
 .checkbox-inline input[type="checkbox"] {
   position: absolute;
-  margin-right: -20px;
+  margin-left: -20px;
   margin-top: 4px;
 }
 
@@ -1756,7 +1756,7 @@ input[type="checkbox"]:focus {
 .checkbox-inline {
   position: relative;
   display: inline-block;
-  padding-right: 20px;
+  padding-left: 20px;
   margin-bottom: 0;
   vertical-align: middle;
   font-weight: normal;
@@ -1766,7 +1766,7 @@ input[type="checkbox"]:focus {
 .radio-inline + .radio-inline,
 .checkbox-inline + .checkbox-inline {
   margin-top: 0;
-  margin-right: 10px;
+  margin-left: 10px;
 }
 
 input[type="radio"][disabled],
@@ -1841,12 +1841,12 @@ fieldset[disabled] .checkbox label {
   }
   .form-inline .radio label,
   .form-inline .checkbox label {
-    padding-right: 0;
+    padding-left: 0;
   }
   .form-inline .radio input[type="radio"],
   .form-inline .checkbox input[type="checkbox"] {
     position: relative;
-    margin-right: 0;
+    margin-left: 0;
   }
   .form-inline .has-feedback .form-control-feedback {
     top: 0;
@@ -1860,12 +1860,12 @@ fieldset[disabled] .checkbox label {
   }
   .navbar-form .radio label,
   .navbar-form .checkbox label {
-    padding-right: 0;
+    padding-left: 0;
   }
   .navbar-form .radio input[type="radio"],
   .navbar-form .checkbox input[type="checkbox"] {
     position: relative;
-    margin-right: 0;
+    margin-left: 0;
   }
   .navbar .navbar-nav .nav-link {
     padding: 1rem;
@@ -1907,7 +1907,7 @@ fieldset[disabled] .checkbox label {
 .radio-inline label,
 .checkbox label,
 .checkbox-inline label {
-  padding-right: 25px;
+  padding-left: 25px;
 }
 
 .radio input[type="radio"],
@@ -1918,7 +1918,7 @@ fieldset[disabled] .checkbox label {
 .radio-inline input[type="checkbox"],
 .checkbox input[type="checkbox"],
 .checkbox-inline input[type="checkbox"] {
-  margin-right: -25px;
+  margin-left: -25px;
 }
 
 input[type="radio"],
@@ -1926,7 +1926,7 @@ input[type="radio"],
 .radio-inline input[type="radio"] {
   position: relative;
   margin-top: 6px;
-  margin-left: 4px;
+  margin-right: 4px;
   vertical-align: top;
   border: none;
   background-color: transparent;
@@ -1995,7 +1995,7 @@ input[type="checkbox"]:after,
   width: 18px;
   height: 18px;
   margin-top: -2px;
-  margin-left: 5px;
+  margin-right: 5px;
   border: 2px solid #666666;
   border-radius: 2px;
   -webkit-transition: 240ms;
@@ -2009,17 +2009,17 @@ input[type="checkbox"]:checked:before,
   content: "";
   position: absolute;
   top: 0;
-  right: 6px;
+  left: 6px;
   display: table;
   width: 6px;
   height: 12px;
   border: 2px solid #fff;
   border-top-width: 0;
-  border-right-width: 0;
-  -webkit-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  transform: rotate(-45deg);
+  border-left-width: 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 input[type="checkbox"]:indeterminate:before,
@@ -2028,7 +2028,7 @@ input[type="checkbox"]:indeterminate:before,
   content: "";
   position: absolute;
   top: 6px;
-  right: 2px;
+  left: 2px;
   display: table;
   width: 12px;
   height: 0;
@@ -2180,19 +2180,19 @@ textarea:focus {
 #displayparticipants_firstname,
 #displayparticipants_lastname,
 #displayparticipants_owner_uid {
-  padding-right: 40px;
+  padding-left: 40px;
 }
 
 #displayparticipants_language {
-  padding-right: 50px;
+  padding-left: 50px;
 }
 
 #jqgh_displayparticipants_email {
-  padding-right: 140px;
+  padding-left: 140px;
 }
 
 #displayparticipants_survey {
-  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .navtable {
@@ -2200,7 +2200,7 @@ textarea:focus {
 }
 
 .ui-jqgrid-title {
-  padding: 1em 1em 1em 0em;
+  padding: 1em 0em 1em 1em;
   font-style: italic;
   font-weight: 700;
 }
@@ -2239,7 +2239,7 @@ textarea:focus {
 .ui-dialog-titlebar-close {
   border: 1px solid transparent;
   border-radius: 4px;
-  float: left;
+  float: right;
   color: #333;
   background-color: #fff;
   border-color: #ccc;
@@ -2284,7 +2284,7 @@ h3 .glyphicon-chevron-up,
 h3 .glyphicon-chevron-down,
 h3 .glyphicon-chevron-right {
   position: absolute;
-  left: 1em;
+  right: 1em;
   top: 10px;
 }
 
@@ -2298,7 +2298,7 @@ h3 .glyphicon-chevron-right {
  * Template selector
  */
 #carousel-example-generic {
-  margin-right: 20px;
+  margin-left: 20px;
 }
 
 #carousel-example-generic .carousel-control {
@@ -2307,11 +2307,11 @@ h3 .glyphicon-chevron-right {
 }
 
 #carousel-example-generic .left.carousel-control {
-  right: -20px;
+  left: -20px;
 }
 
 #carousel-example-generic .right.carousel-control {
-  left: -20px;
+  right: -20px;
 }
 
 #carousel-example-generic .card-title {
@@ -2328,13 +2328,13 @@ h3 .glyphicon-chevron-right {
 #carousel-example-generic .selectTemplate {
   display: inline-block;
   position: relative;
-  right: 0px;
+  left: 0px;
   top: 320px;
 }
 
 #carousel-example-generic .carousel-caption {
   width: 100%;
-  right: 0;
+  left: 0;
   top: 0px;
   padding-top: 0px;
 }
@@ -2347,7 +2347,7 @@ h3 .glyphicon-chevron-right {
 #carousel-example-generic .carousel-indicators {
   top: 370px;
   width: 80%;
-  right: 39%;
+  left: 39%;
 }
 
 #carousel-example-generic .carousel-indicators li {
@@ -2385,56 +2385,56 @@ h3 .glyphicon-chevron-right {
 .preloader {
   position: absolute;
   top: 50%;
-  right: 50%;
+  left: 50%;
   font-size: 20px;
   display: block;
   width: 3.75em;
   height: 4.25em;
-  margin-right: -1.875em;
+  margin-left: -1.875em;
   margin-top: -2.125em;
   transform-origin: center center;
-  transform: rotateY(-180deg) rotateZ(60deg);
+  transform: rotateY(180deg) rotateZ(-60deg);
 }
 
 .preloader .slice {
   border-top: 1.125em solid transparent;
-  border-left: none;
+  border-right: none;
   border-bottom: 1em solid transparent;
-  border-right: 1.875em solid #f7484e;
+  border-left: 1.875em solid #f7484e;
   position: absolute;
   top: 0px;
-  right: 50%;
-  transform-origin: right bottom;
+  left: 50%;
+  transform-origin: left bottom;
   border-radius: 3px 3px 0 0;
 }
 
 .preloader .slice:nth-child(1) {
-  transform: rotateZ(-60deg) rotateY(0deg) rotateX(0);
+  transform: rotateZ(60deg) rotateY(0deg) rotateX(0);
   animation: 0.15s linear 0.82s preload-hide-1 both 1;
 }
 
 .preloader .slice:nth-child(2) {
-  transform: rotateZ(-120deg) rotateY(0deg) rotateX(0);
+  transform: rotateZ(120deg) rotateY(0deg) rotateX(0);
   animation: 0.15s linear 0.74s preload-hide-2 both 1;
 }
 
 .preloader .slice:nth-child(3) {
-  transform: rotateZ(-180deg) rotateY(0deg) rotateX(0);
+  transform: rotateZ(180deg) rotateY(0deg) rotateX(0);
   animation: 0.15s linear 0.66s preload-hide-3 both 1;
 }
 
 .preloader .slice:nth-child(4) {
-  transform: rotateZ(-240deg) rotateY(0deg) rotateX(0);
+  transform: rotateZ(240deg) rotateY(0deg) rotateX(0);
   animation: 0.15s linear 0.58s preload-hide-4 both 1;
 }
 
 .preloader .slice:nth-child(5) {
-  transform: rotateZ(-300deg) rotateY(0deg) rotateX(0);
+  transform: rotateZ(300deg) rotateY(0deg) rotateX(0);
   animation: 0.15s linear 0.5s preload-hide-5 both 1;
 }
 
 .preloader .slice:nth-child(6) {
-  transform: rotateZ(-360deg) rotateY(0deg) rotateX(0);
+  transform: rotateZ(360deg) rotateY(0deg) rotateX(0);
   animation: 0.15s linear 0.42s preload-hide-6 both 1;
 }
 
@@ -2443,32 +2443,32 @@ h3 .glyphicon-chevron-right {
 }
 
 .preloader.loading .slice:nth-child(1) {
-  transform: rotateZ(-60deg) rotateY(-90deg) rotateX(0);
+  transform: rotateZ(60deg) rotateY(90deg) rotateX(0);
   animation: 2s preload-cycle-1 linear infinite both;
 }
 
 .preloader.loading .slice:nth-child(2) {
-  transform: rotateZ(-120deg) rotateY(-90deg) rotateX(0);
+  transform: rotateZ(120deg) rotateY(90deg) rotateX(0);
   animation: 2s preload-cycle-2 linear infinite both;
 }
 
 .preloader.loading .slice:nth-child(3) {
-  transform: rotateZ(-180deg) rotateY(-90deg) rotateX(0);
+  transform: rotateZ(180deg) rotateY(90deg) rotateX(0);
   animation: 2s preload-cycle-3 linear infinite both;
 }
 
 .preloader.loading .slice:nth-child(4) {
-  transform: rotateZ(-240deg) rotateY(-90deg) rotateX(0);
+  transform: rotateZ(240deg) rotateY(90deg) rotateX(0);
   animation: 2s preload-cycle-4 linear infinite both;
 }
 
 .preloader.loading .slice:nth-child(5) {
-  transform: rotateZ(-300deg) rotateY(-90deg) rotateX(0);
+  transform: rotateZ(300deg) rotateY(90deg) rotateX(0);
   animation: 2s preload-cycle-5 linear infinite both;
 }
 
 .preloader.loading .slice:nth-child(6) {
-  transform: rotateZ(-360deg) rotateY(-90deg) rotateX(0);
+  transform: rotateZ(360deg) rotateY(90deg) rotateX(0);
   animation: 2s preload-cycle-6 linear infinite both;
 }
 
@@ -2486,7 +2486,7 @@ h3 .glyphicon-chevron-right {
 
 #comfortUpdateIcon {
   height: 1em;
-  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
 #comfortUpdateGeneralWrap h3.maintitle {
@@ -2496,30 +2496,30 @@ h3 .glyphicon-chevron-right {
 #comfortUpdateGeneralWrap .on {
   font-weight: bold;
   font-size: 1em;
-  padding-right: 0.5em;
+  padding-left: 0.5em;
   padding-top: 0.5em;
 }
 
 #comfortUpdateGeneralWrap .on span {
   display: block;
   padding: 0.1em;
-  padding-right: 0.5em;
+  padding-left: 0.5em;
   width: 40%;
 }
 
 #comfortUpdateGeneralWrap .off {
   font-size: 0.9em;
-  padding-right: 0.5em;
+  padding-left: 0.5em;
   padding-top: 0.5em;
 }
 
 #comfortUpdateGeneralWrap #welcomeMessage,
 #comfortUpdateGeneralWrap #btn-container {
-  border-left: 1px solid #EEE;
+  border-right: 1px solid #EEE;
 }
 
 #comfortUpdateGeneralWrap #key-actions {
-  padding-right: 1em;
+  padding-left: 1em;
 }
 
 #update-alert.unstable-update {
@@ -2558,7 +2558,7 @@ span[data-tooltip] {
 }
 
 .answertable .glyphicon-pencil {
-  margin-right: 3px;
+  margin-left: 3px;
 }
 
 #statisticsview .card {
@@ -2658,8 +2658,8 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
 
 /* RTL stuff (right-to-left locale) */
 .no-gutter > [class*='col-'] {
-  padding-left: 0;
   padding-right: 0;
+  padding-left: 0;
 }
 
 .inputbuttons {
@@ -2669,12 +2669,12 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
 .inputbuttons-square {
   width: 20px;
   height: 16px;
-  float: right;
+  float: left;
 }
 
 /* Avoid numerical right aligned to be too close to word left aligned */
 .jqgrid-tokens-number-padding {
-  padding-left: 4px;
+  padding-right: 4px;
 }
 
 /* z-index fix */
@@ -2710,8 +2710,8 @@ iframe#dialog {
 .ui-jqgrid-pager {
   min-width: 100%;
   max-width: 100%;
-  margin-left: 0;
   margin-right: 0;
+  margin-left: 0;
   box-sizing: border-box;
 }
 
@@ -2730,13 +2730,13 @@ iframe#dialog {
 /** Arrow between mapped attributes in CPDB */
 .tokenatt-arrow {
   position: absolute;
-  left: -0.5em;
+  right: -0.5em;
 }
 
 /** Arrow between mapped attributes in CPDB when doing CSV import */
 .csvatt-arrow {
   position: absolute;
-  left: -0.5em;
+  right: -0.5em;
   top: 1em;
 }
 
@@ -2811,13 +2811,13 @@ div#gview_displayresponses th#displayresponses_cb {
 }
 
 #sidemenu-home {
-  padding-right: 15px;
+  padding-left: 15px;
 }
 
 #quick-menu-container {
   position: absolute;
   width: 50px;
-  left: 0;
+  right: 0;
   top: 50px;
 }
 
@@ -2915,14 +2915,14 @@ h3,
 }
 
 .summary-container {
-  text-align: left;
+  text-align: right;
 }
 
 #massive-action-container,
 #surveyListActions,
 .listActions {
-  padding-right: 0px;
-  text-align: right;
+  padding-left: 0px;
+  text-align: left;
 }
 
 .push-grid-pager {
@@ -3025,8 +3025,8 @@ div[id^="alertmod_"] {
   background-image: none;
   border-width: 1px 0 0;
   margin-top: 0.5em;
-  padding: 0.3em 0.4em 0.5em 1em;
-  text-align: right;
+  padding: 0.3em 1em 0.5em 0.4em;
+  text-align: left;
 }
 
 .ui-helper-clearfix::before,
@@ -3048,7 +3048,7 @@ div[id^="alertmod_"] {
 }
 
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
-  float: left;
+  float: right;
 }
 
 .yiiLog {
@@ -3063,7 +3063,7 @@ table#responsedetail tr td {
 .in-title {
   position: relative;
   top: -65px;
-  left: 15px;
+  right: 15px;
 }
 
 .input-group-addon {
@@ -3071,14 +3071,14 @@ table#responsedetail tr td {
 }
 
 .multiselect-container > li > a > label > input[type="checkbox"] {
-  margin-right: 0;
+  margin-left: 0;
 }
 
 .notification-list {
   top: 100%;
-  right: 0;
+  left: 0;
   z-index: 1000;
-  float: right;
+  float: left;
   min-width: 160px;
   padding: 5px 0;
   margin: 2px 0 0;
@@ -3160,12 +3160,12 @@ table#responsedetail tr td {
 
 .condition-header-button {
   margin-top: -10px;
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 /* Needed for buttons that are pulled right in the conditions bar */
 .margin-left {
-  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .conditions-table {
@@ -3173,7 +3173,7 @@ table#responsedetail tr td {
 }
 
 .condition-and-or-or {
-  margin-right: 20px;
+  margin-left: 20px;
 }
 
 /* Tabs used within form in condition designer */
@@ -3184,8 +3184,8 @@ table#responsedetail tr td {
 
 #login-panel {
   max-width: 400px;
-  margin-right: auto;
   margin-left: auto;
+  margin-right: auto;
 }
 
 /*
@@ -3212,7 +3212,7 @@ table#responsedetail tr td {
     max-width: none;
   }
   body {
-    text-align: right;
+    text-align: left;
     margin: 0;
     padding: 0;
     width: 100% !important;
@@ -3277,18 +3277,18 @@ table#responsedetail tr td {
   /* Chartjs and legend width */
   body.onStatistics .chartjs-container {
     width: 70%;
-    float: right;
+    float: left;
   }
   body.onStatistics .legend {
     width: 30%;
-    float: right;
+    float: left;
   }
   body.onStatistics .legend .col-md-1 {
     display: inline-block;
     width: auto;
     padding: 0;
-    padding-left: 3pt;
     padding-right: 3pt;
+    padding-left: 3pt;
   }
   body.onStatistics .legend .col-md-10 {
     display: inline-block;
@@ -3339,11 +3339,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding.left-5 {
-  padding-right: 5px;
+  padding-left: 5px;
 }
 
 .custom.custom-padding.right-5 {
-  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .custom.custom-padding.top-5 {
@@ -3359,11 +3359,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding.left-10 {
-  padding-right: 10px;
+  padding-left: 10px;
 }
 
 .custom.custom-padding.right-10 {
-  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .custom.custom-padding.top-10 {
@@ -3379,11 +3379,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding.left-15 {
-  padding-right: 15px;
+  padding-left: 15px;
 }
 
 .custom.custom-padding.right-15 {
-  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .custom.custom-padding.top-15 {
@@ -3399,11 +3399,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding.left-20 {
-  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .custom.custom-padding.right-20 {
-  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .custom.custom-padding.top-20 {
@@ -3419,11 +3419,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding.left-25 {
-  padding-right: 25px;
+  padding-left: 25px;
 }
 
 .custom.custom-padding.right-25 {
-  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .custom.custom-padding.top-25 {
@@ -3439,11 +3439,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding.left-30 {
-  padding-right: 30px;
+  padding-left: 30px;
 }
 
 .custom.custom-padding.right-30 {
-  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .custom.custom-padding.top-30 {
@@ -3459,11 +3459,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding.left-35 {
-  padding-right: 35px;
+  padding-left: 35px;
 }
 
 .custom.custom-padding.right-35 {
-  padding-left: 35px;
+  padding-right: 35px;
 }
 
 .custom.custom-padding.top-35 {
@@ -3479,10 +3479,10 @@ table#responsedetail tr td {
     padding: 5px;
   }
   .custom.custom-padding-responsive.large.left-5 {
-    padding-right: 5px;
+    padding-left: 5px;
   }
   .custom.custom-padding-responsive.large.right-5 {
-    padding-left: 5px;
+    padding-right: 5px;
   }
   .custom.custom-padding-responsive.large.top-5 {
     padding-top: 5px;
@@ -3494,10 +3494,10 @@ table#responsedetail tr td {
     padding: 10px;
   }
   .custom.custom-padding-responsive.large.left-10 {
-    padding-right: 10px;
+    padding-left: 10px;
   }
   .custom.custom-padding-responsive.large.right-10 {
-    padding-left: 10px;
+    padding-right: 10px;
   }
   .custom.custom-padding-responsive.large.top-10 {
     padding-top: 10px;
@@ -3509,10 +3509,10 @@ table#responsedetail tr td {
     padding: 15px;
   }
   .custom.custom-padding-responsive.large.left-15 {
-    padding-right: 15px;
+    padding-left: 15px;
   }
   .custom.custom-padding-responsive.large.right-15 {
-    padding-left: 15px;
+    padding-right: 15px;
   }
   .custom.custom-padding-responsive.large.top-15 {
     padding-top: 15px;
@@ -3524,10 +3524,10 @@ table#responsedetail tr td {
     padding: 20px;
   }
   .custom.custom-padding-responsive.large.left-20 {
-    padding-right: 20px;
+    padding-left: 20px;
   }
   .custom.custom-padding-responsive.large.right-20 {
-    padding-left: 20px;
+    padding-right: 20px;
   }
   .custom.custom-padding-responsive.large.top-20 {
     padding-top: 20px;
@@ -3539,10 +3539,10 @@ table#responsedetail tr td {
     padding: 25px;
   }
   .custom.custom-padding-responsive.large.left-25 {
-    padding-right: 25px;
+    padding-left: 25px;
   }
   .custom.custom-padding-responsive.large.right-25 {
-    padding-left: 25px;
+    padding-right: 25px;
   }
   .custom.custom-padding-responsive.large.top-25 {
     padding-top: 25px;
@@ -3554,10 +3554,10 @@ table#responsedetail tr td {
     padding: 30px;
   }
   .custom.custom-padding-responsive.large.left-30 {
-    padding-right: 30px;
+    padding-left: 30px;
   }
   .custom.custom-padding-responsive.large.right-30 {
-    padding-left: 30px;
+    padding-right: 30px;
   }
   .custom.custom-padding-responsive.large.top-30 {
     padding-top: 30px;
@@ -3569,10 +3569,10 @@ table#responsedetail tr td {
     padding: 35px;
   }
   .custom.custom-padding-responsive.large.left-35 {
-    padding-right: 35px;
+    padding-left: 35px;
   }
   .custom.custom-padding-responsive.large.right-35 {
-    padding-left: 35px;
+    padding-right: 35px;
   }
   .custom.custom-padding-responsive.large.top-35 {
     padding-top: 35px;
@@ -3587,10 +3587,10 @@ table#responsedetail tr td {
     padding: 5px;
   }
   .custom.custom-padding-responsive.medium.left-5 {
-    padding-right: 5px;
+    padding-left: 5px;
   }
   .custom.custom-padding-responsive.medium.right-5 {
-    padding-left: 5px;
+    padding-right: 5px;
   }
   .custom.custom-padding-responsive.medium.top-5 {
     padding-top: 5px;
@@ -3602,10 +3602,10 @@ table#responsedetail tr td {
     padding: 10px;
   }
   .custom.custom-padding-responsive.medium.left-10 {
-    padding-right: 10px;
+    padding-left: 10px;
   }
   .custom.custom-padding-responsive.medium.right-10 {
-    padding-left: 10px;
+    padding-right: 10px;
   }
   .custom.custom-padding-responsive.medium.top-10 {
     padding-top: 10px;
@@ -3617,10 +3617,10 @@ table#responsedetail tr td {
     padding: 15px;
   }
   .custom.custom-padding-responsive.medium.left-15 {
-    padding-right: 15px;
+    padding-left: 15px;
   }
   .custom.custom-padding-responsive.medium.right-15 {
-    padding-left: 15px;
+    padding-right: 15px;
   }
   .custom.custom-padding-responsive.medium.top-15 {
     padding-top: 15px;
@@ -3632,10 +3632,10 @@ table#responsedetail tr td {
     padding: 20px;
   }
   .custom.custom-padding-responsive.medium.left-20 {
-    padding-right: 20px;
+    padding-left: 20px;
   }
   .custom.custom-padding-responsive.medium.right-20 {
-    padding-left: 20px;
+    padding-right: 20px;
   }
   .custom.custom-padding-responsive.medium.top-20 {
     padding-top: 20px;
@@ -3647,10 +3647,10 @@ table#responsedetail tr td {
     padding: 25px;
   }
   .custom.custom-padding-responsive.medium.left-25 {
-    padding-right: 25px;
+    padding-left: 25px;
   }
   .custom.custom-padding-responsive.medium.right-25 {
-    padding-left: 25px;
+    padding-right: 25px;
   }
   .custom.custom-padding-responsive.medium.top-25 {
     padding-top: 25px;
@@ -3662,10 +3662,10 @@ table#responsedetail tr td {
     padding: 30px;
   }
   .custom.custom-padding-responsive.medium.left-30 {
-    padding-right: 30px;
+    padding-left: 30px;
   }
   .custom.custom-padding-responsive.medium.right-30 {
-    padding-left: 30px;
+    padding-right: 30px;
   }
   .custom.custom-padding-responsive.medium.top-30 {
     padding-top: 30px;
@@ -3677,10 +3677,10 @@ table#responsedetail tr td {
     padding: 35px;
   }
   .custom.custom-padding-responsive.medium.left-35 {
-    padding-right: 35px;
+    padding-left: 35px;
   }
   .custom.custom-padding-responsive.medium.right-35 {
-    padding-left: 35px;
+    padding-right: 35px;
   }
   .custom.custom-padding-responsive.medium.top-35 {
     padding-top: 35px;
@@ -3695,11 +3695,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding-responsive.small.left-5 {
-  padding-right: 5px;
+  padding-left: 5px;
 }
 
 .custom.custom-padding-responsive.small.right-5 {
-  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .custom.custom-padding-responsive.small.top-5 {
@@ -3715,11 +3715,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding-responsive.small.left-10 {
-  padding-right: 10px;
+  padding-left: 10px;
 }
 
 .custom.custom-padding-responsive.small.right-10 {
-  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .custom.custom-padding-responsive.small.top-10 {
@@ -3735,11 +3735,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding-responsive.small.left-15 {
-  padding-right: 15px;
+  padding-left: 15px;
 }
 
 .custom.custom-padding-responsive.small.right-15 {
-  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .custom.custom-padding-responsive.small.top-15 {
@@ -3755,11 +3755,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding-responsive.small.left-20 {
-  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .custom.custom-padding-responsive.small.right-20 {
-  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .custom.custom-padding-responsive.small.top-20 {
@@ -3775,11 +3775,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding-responsive.small.left-25 {
-  padding-right: 25px;
+  padding-left: 25px;
 }
 
 .custom.custom-padding-responsive.small.right-25 {
-  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .custom.custom-padding-responsive.small.top-25 {
@@ -3795,11 +3795,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding-responsive.small.left-30 {
-  padding-right: 30px;
+  padding-left: 30px;
 }
 
 .custom.custom-padding-responsive.small.right-30 {
-  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .custom.custom-padding-responsive.small.top-30 {
@@ -3815,11 +3815,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-padding-responsive.small.left-35 {
-  padding-right: 35px;
+  padding-left: 35px;
 }
 
 .custom.custom-padding-responsive.small.right-35 {
-  padding-left: 35px;
+  padding-right: 35px;
 }
 
 .custom.custom-padding-responsive.small.top-35 {
@@ -3835,11 +3835,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin.left-5 {
-  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .custom.custom-margin.right-5 {
-  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .custom.custom-margin.top-5 {
@@ -3855,11 +3855,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin.left-10 {
-  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .custom.custom-margin.right-10 {
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .custom.custom-margin.top-10 {
@@ -3875,11 +3875,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin.left-15 {
-  margin-right: 15px;
+  margin-left: 15px;
 }
 
 .custom.custom-margin.right-15 {
-  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .custom.custom-margin.top-15 {
@@ -3895,11 +3895,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin.left-20 {
-  margin-right: 20px;
+  margin-left: 20px;
 }
 
 .custom.custom-margin.right-20 {
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .custom.custom-margin.top-20 {
@@ -3915,11 +3915,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin.left-25 {
-  margin-right: 25px;
+  margin-left: 25px;
 }
 
 .custom.custom-margin.right-25 {
-  margin-left: 25px;
+  margin-right: 25px;
 }
 
 .custom.custom-margin.top-25 {
@@ -3935,11 +3935,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin.left-30 {
-  margin-right: 30px;
+  margin-left: 30px;
 }
 
 .custom.custom-margin.right-30 {
-  margin-left: 30px;
+  margin-right: 30px;
 }
 
 .custom.custom-margin.top-30 {
@@ -3955,11 +3955,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin.left-35 {
-  margin-right: 35px;
+  margin-left: 35px;
 }
 
 .custom.custom-margin.right-35 {
-  margin-left: 35px;
+  margin-right: 35px;
 }
 
 .custom.custom-margin.top-35 {
@@ -3971,11 +3971,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-child-margin.left-to-right * {
-  margin-right: 3px;
+  margin-left: 3px;
 }
 
 .custom.custom-child-margin.right-to-left * {
-  margin-left: 3px;
+  margin-right: 3px;
 }
 
 @media only screen and (min-width: 961px) {
@@ -3983,10 +3983,10 @@ table#responsedetail tr td {
     margin: 5px;
   }
   .custom.custom-margin-responsive.large.left-5 {
-    margin-right: 5px;
+    margin-left: 5px;
   }
   .custom.custom-margin-responsive.large.right-5 {
-    margin-left: 5px;
+    margin-right: 5px;
   }
   .custom.custom-margin-responsive.large.top-5 {
     margin-top: 5px;
@@ -3998,10 +3998,10 @@ table#responsedetail tr td {
     margin: 10px;
   }
   .custom.custom-margin-responsive.large.left-10 {
-    margin-right: 10px;
+    margin-left: 10px;
   }
   .custom.custom-margin-responsive.large.right-10 {
-    margin-left: 10px;
+    margin-right: 10px;
   }
   .custom.custom-margin-responsive.large.top-10 {
     margin-top: 10px;
@@ -4013,10 +4013,10 @@ table#responsedetail tr td {
     margin: 15px;
   }
   .custom.custom-margin-responsive.large.left-15 {
-    margin-right: 15px;
+    margin-left: 15px;
   }
   .custom.custom-margin-responsive.large.right-15 {
-    margin-left: 15px;
+    margin-right: 15px;
   }
   .custom.custom-margin-responsive.large.top-15 {
     margin-top: 15px;
@@ -4028,10 +4028,10 @@ table#responsedetail tr td {
     margin: 20px;
   }
   .custom.custom-margin-responsive.large.left-20 {
-    margin-right: 20px;
+    margin-left: 20px;
   }
   .custom.custom-margin-responsive.large.right-20 {
-    margin-left: 20px;
+    margin-right: 20px;
   }
   .custom.custom-margin-responsive.large.top-20 {
     margin-top: 20px;
@@ -4043,10 +4043,10 @@ table#responsedetail tr td {
     margin: 25px;
   }
   .custom.custom-margin-responsive.large.left-25 {
-    margin-right: 25px;
+    margin-left: 25px;
   }
   .custom.custom-margin-responsive.large.right-25 {
-    margin-left: 25px;
+    margin-right: 25px;
   }
   .custom.custom-margin-responsive.large.top-25 {
     margin-top: 25px;
@@ -4058,10 +4058,10 @@ table#responsedetail tr td {
     margin: 30px;
   }
   .custom.custom-margin-responsive.large.left-30 {
-    margin-right: 30px;
+    margin-left: 30px;
   }
   .custom.custom-margin-responsive.large.right-30 {
-    margin-left: 30px;
+    margin-right: 30px;
   }
   .custom.custom-margin-responsive.large.top-30 {
     margin-top: 30px;
@@ -4073,10 +4073,10 @@ table#responsedetail tr td {
     margin: 35px;
   }
   .custom.custom-margin-responsive.large.left-35 {
-    margin-right: 35px;
+    margin-left: 35px;
   }
   .custom.custom-margin-responsive.large.right-35 {
-    margin-left: 35px;
+    margin-right: 35px;
   }
   .custom.custom-margin-responsive.large.top-35 {
     margin-top: 35px;
@@ -4091,10 +4091,10 @@ table#responsedetail tr td {
     margin: 5px;
   }
   .custom.custom-margin-responsive.medium.left-5 {
-    margin-right: 5px;
+    margin-left: 5px;
   }
   .custom.custom-margin-responsive.medium.right-5 {
-    margin-left: 5px;
+    margin-right: 5px;
   }
   .custom.custom-margin-responsive.medium.top-5 {
     margin-top: 5px;
@@ -4106,10 +4106,10 @@ table#responsedetail tr td {
     margin: 10px;
   }
   .custom.custom-margin-responsive.medium.left-10 {
-    margin-right: 10px;
+    margin-left: 10px;
   }
   .custom.custom-margin-responsive.medium.right-10 {
-    margin-left: 10px;
+    margin-right: 10px;
   }
   .custom.custom-margin-responsive.medium.top-10 {
     margin-top: 10px;
@@ -4121,10 +4121,10 @@ table#responsedetail tr td {
     margin: 15px;
   }
   .custom.custom-margin-responsive.medium.left-15 {
-    margin-right: 15px;
+    margin-left: 15px;
   }
   .custom.custom-margin-responsive.medium.right-15 {
-    margin-left: 15px;
+    margin-right: 15px;
   }
   .custom.custom-margin-responsive.medium.top-15 {
     margin-top: 15px;
@@ -4136,10 +4136,10 @@ table#responsedetail tr td {
     margin: 20px;
   }
   .custom.custom-margin-responsive.medium.left-20 {
-    margin-right: 20px;
+    margin-left: 20px;
   }
   .custom.custom-margin-responsive.medium.right-20 {
-    margin-left: 20px;
+    margin-right: 20px;
   }
   .custom.custom-margin-responsive.medium.top-20 {
     margin-top: 20px;
@@ -4151,10 +4151,10 @@ table#responsedetail tr td {
     margin: 25px;
   }
   .custom.custom-margin-responsive.medium.left-25 {
-    margin-right: 25px;
+    margin-left: 25px;
   }
   .custom.custom-margin-responsive.medium.right-25 {
-    margin-left: 25px;
+    margin-right: 25px;
   }
   .custom.custom-margin-responsive.medium.top-25 {
     margin-top: 25px;
@@ -4166,10 +4166,10 @@ table#responsedetail tr td {
     margin: 30px;
   }
   .custom.custom-margin-responsive.medium.left-30 {
-    margin-right: 30px;
+    margin-left: 30px;
   }
   .custom.custom-margin-responsive.medium.right-30 {
-    margin-left: 30px;
+    margin-right: 30px;
   }
   .custom.custom-margin-responsive.medium.top-30 {
     margin-top: 30px;
@@ -4181,10 +4181,10 @@ table#responsedetail tr td {
     margin: 35px;
   }
   .custom.custom-margin-responsive.medium.left-35 {
-    margin-right: 35px;
+    margin-left: 35px;
   }
   .custom.custom-margin-responsive.medium.right-35 {
-    margin-left: 35px;
+    margin-right: 35px;
   }
   .custom.custom-margin-responsive.medium.top-35 {
     margin-top: 35px;
@@ -4199,11 +4199,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin-responsive.small.left-5 {
-  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .custom.custom-margin-responsive.small.right-5 {
-  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .custom.custom-margin-responsive.small.top-5 {
@@ -4219,11 +4219,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin-responsive.small.left-10 {
-  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .custom.custom-margin-responsive.small.right-10 {
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .custom.custom-margin-responsive.small.top-10 {
@@ -4239,11 +4239,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin-responsive.small.left-15 {
-  margin-right: 15px;
+  margin-left: 15px;
 }
 
 .custom.custom-margin-responsive.small.right-15 {
-  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .custom.custom-margin-responsive.small.top-15 {
@@ -4259,11 +4259,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin-responsive.small.left-20 {
-  margin-right: 20px;
+  margin-left: 20px;
 }
 
 .custom.custom-margin-responsive.small.right-20 {
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .custom.custom-margin-responsive.small.top-20 {
@@ -4279,11 +4279,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin-responsive.small.left-25 {
-  margin-right: 25px;
+  margin-left: 25px;
 }
 
 .custom.custom-margin-responsive.small.right-25 {
-  margin-left: 25px;
+  margin-right: 25px;
 }
 
 .custom.custom-margin-responsive.small.top-25 {
@@ -4299,11 +4299,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin-responsive.small.left-30 {
-  margin-right: 30px;
+  margin-left: 30px;
 }
 
 .custom.custom-margin-responsive.small.right-30 {
-  margin-left: 30px;
+  margin-right: 30px;
 }
 
 .custom.custom-margin-responsive.small.top-30 {
@@ -4319,11 +4319,11 @@ table#responsedetail tr td {
 }
 
 .custom.custom-margin-responsive.small.left-35 {
-  margin-right: 35px;
+  margin-left: 35px;
 }
 
 .custom.custom-margin-responsive.small.right-35 {
-  margin-left: 35px;
+  margin-right: 35px;
 }
 
 .custom.custom-margin-responsive.small.top-35 {
@@ -4411,12 +4411,12 @@ table.dataTable thead .sorting_desc:after {
 
 .subquestions-table > tbody > tr > td:first-of-type,
 .answeroptions-table > tbody > tr > td:first-of-type {
-  padding-right: 0;
+  padding-left: 0;
 }
 
 .subquestions-table > tbody > tr > td:last-of-type,
 .answeroptions-table > tbody > tr > td:last-of-type {
-  padding-left: 0;
+  padding-right: 0;
 }
 
 /** Surveys Grid View **/
@@ -4496,7 +4496,7 @@ html[dir="rtl"] th {
 }
 
 .grid-view .table th > .sort-link .caret, .grid-view-ls .table th > .sort-link .caret {
-  left: -10px;
+  right: -10px;
 }
 
 .grid-view .table .filters > td .filter-container, .grid-view-ls .table .filters > td .filter-container {
@@ -4509,7 +4509,7 @@ html[dir="rtl"] th {
 
 .grid-view-ls .table td input[type="checkbox"]:after {
   margin-top: -3px;
-  margin-left: -3px;
+  margin-right: -3px;
 }
 
 .grid-view-ls .table .button-column {
@@ -4521,11 +4521,11 @@ html[dir="rtl"] th {
 .grid-view-ls .summary {
   color: #999999;
   font-size: 12px;
-  text-align: left;
+  text-align: right;
 }
 
 .grid-view-ls.grid-view-loading {
-  background: url(../img/loader.gif) no-repeat 0% 10px;
+  background: url(../img/loader.gif) no-repeat 100% 10px;
 }
 
 .grid-view-ls.grid-view-loading .table {
@@ -4546,16 +4546,16 @@ html[dir="rtl"] th {
 
 .dropdown-submenu > .dropdown-menu {
   top: 0;
-  right: 100%;
+  left: 100%;
   margin-top: -6px;
-  margin-right: -1px;
-  -webkit-border-radius: 6px 0 6px 6px;
-  -moz-border-radius: 6px 0 6px 6px;
-  border-radius: 6px 0 6px 6px;
+  margin-left: -1px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px 6px;
+  border-radius: 0 6px 6px 6px;
 }
 
 .dropdown-submenu:hover > a:after {
-  border-right-color: #555;
+  border-left-color: #555;
 }
 
 .dropdown-submenu.pull-left {
@@ -4563,11 +4563,11 @@ html[dir="rtl"] th {
 }
 
 .dropdown-submenu.pull-left > .dropdown-menu {
-  right: -100%;
-  margin-right: 10px;
-  -webkit-border-radius: 0 6px 6px 6px;
-  -moz-border-radius: 0 6px 6px 6px;
-  border-radius: 0 6px 6px 6px;
+  left: -100%;
+  margin-left: 10px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
 }
 
 #vue-apps-main-container {
