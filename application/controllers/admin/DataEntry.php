@@ -790,7 +790,7 @@ class DataEntry extends SurveyCommonAction
                         case Question::QT_R_RANKING: // Ranking TYPE QUESTION
                             $thisqid = $fname['qid'];
                             $currentvalues = array();
-                            $myfname = $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid'];
+                            $myfname = 'Q' . $fname['qid'];
                             $aDataentryoutput .= '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
                             while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
                                 //Let's get all the existing values into an array

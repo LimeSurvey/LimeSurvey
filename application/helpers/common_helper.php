@@ -1475,13 +1475,13 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         }
 
         // Field identifier
-        // GXQXSXA
+        // SXGXQXSXA
         // G=Group  Q=Question S=Subquestion A=Answer Option
         // If S or A don't exist then set it to 0
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
         // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
-        $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+        $fieldname = "Q{$arow['qid']}";
 
         if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
             if (isset($fieldmap[$fieldname])) {
@@ -1964,13 +1964,13 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
-            $fieldname = "{$field['sid']}X{$field['gid']}time";
+            $fieldname = "G{$field['gid']}time";
             if (!isset($fieldmap[$fieldname])) {
                 $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "page_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => '', 'aid' => '', 'title' => 'groupTime' . $field['gid'], 'question' => gT('Group time') . ": " . $field['group_name']);
             }
 
             // field for time spent on answering a question
-            $fieldname = "{$field['sid']}X{$field['gid']}X{$field['qid']}time";
+            $fieldname = "Q{$field['qid']}time";
             if (!isset($fieldmap[$fieldname])) {
                 $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "answer_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => $field['qid'], 'aid' => '', "title" => $field['title'] . 'Time', "question" => gT('Question time') . ": " . $field['title']);
             }

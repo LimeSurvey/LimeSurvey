@@ -42,9 +42,9 @@ class JsPhpCompareTest extends TestBaseClassWeb
         $HiddenByRelevanceQuestion = $questions['HiddenByRelevance'];
         $singleChoiceQuestion1 = $questions['Q00'];
         $singleChoiceQuestion2 = $questions['Q01'];
-        $sgqaHiddenByRelevance = $HiddenByRelevanceQuestion->sid."X".$HiddenByRelevanceQuestion->gid."X".$HiddenByRelevanceQuestion->qid;
-        $sgqaQuestion1 = $singleChoiceQuestion1->sid."X".$singleChoiceQuestion1->gid."X".$singleChoiceQuestion1->qid;
-        $sgqaQuestion2 = $singleChoiceQuestion2->sid."X".$singleChoiceQuestion2->gid."X".$singleChoiceQuestion2->qid;
+        $sgqaHiddenByRelevance = "Q".$HiddenByRelevanceQuestion->qid;
+        $sgqaQuestion1 = "Q".$singleChoiceQuestion1->qid;
+        $sgqaQuestion2 = "Q".$singleChoiceQuestion2->qid;
         try {
 
             self::$webDriver->get($url);

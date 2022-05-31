@@ -603,71 +603,6 @@ class CheckIntegrity extends SurveyCommonAction
                 $bDirectlyFixed = true;
             }
         }
-
-        /** Check for active surveys if questions are in the correct group **/
-        foreach ($oSurveys as $oSurvey) {
-            // We get the active surveys
-            if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
-                $model    = SurveyDynamic::model($oSurvey->sid);
-                $aColumns = $model->getMetaData()->columns;
-                $aQids    = array();
-
-                // We get the columns of the reponses table
-                foreach ($aColumns as $oColumn) {
-                    // Question columns start with the SID
-                    if (strpos($oColumn->name, (string)$oSurvey->sid) !== false) {
-                        // Fileds are separated by X
-                        $aFields = explode('X', $oColumn->name);
-
-                        if (isset($aFields[1])) {
-                            $sGid = $aFields[1];
-
-                            // QID field can be more than just QID, like: 886other or 886A1
-                            // So we clean it by finding the first alphabetical character
-                            $sDirtyQid = $aFields[2];
-                            preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
-
-                            if (isset($match[0][1])) {
-                                $sQID = substr($sDirtyQid, 0, $match[0][1]);
-                            } else {
-                                // It was just the QID....
-                                $sQID = $sDirtyQid;
-                            }
-                            if ((string) intval($sQID) !== $sQID) {
-                                throw new \Exception('sQID is not an integer: ' . $sQID);
-                            }
-
-                            // Here, we get the question as defined in backend
-                            $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'sid' => $oSurvey->sid ]);
-                            if (is_a($oQuestion, 'Question')) {
-                                // We check if its GID is the same as the one defined in the column name
-                                if ($oQuestion->gid != $sGid) {
-                                    // If not, we change the column name
-                                    $sNvColName = $oSurvey->sid . 'X' . $oQuestion->group->gid . 'X' . $sDirtyQid;
-
-                                    if (array_key_exists($sNvColName, $aColumns)) {
-                                        // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
-                                        // So we'll change the group of the question question group table (so in admin interface, not in frontend)
-                                        $oQuestion->gid = $sGid;
-                                        $oQuestion->save();
-                                    } else {
-                                        $oTransaction = $oDB->beginTransaction();
-                                        $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name, $sNvColName);
-                                        $oTransaction->commit();
-                                    }
-                                }
-                            } else {
-                                // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
-                                // So for certain question types (for example Text Array) the field name cannot be properly derived
-                                // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
-                                // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         $oDB->schemaCachingDuration = 3600;
         $oDB->schema->getTables();
         $oDB->schema->refresh();
@@ -769,20 +704,7 @@ class CheckIntegrity extends SurveyCommonAction
                 }
             }
             //Only do this if there actually is a 'cfieldname'
-            if ($condition['cfieldname']) {
-                // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
-                if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', $condition['cfieldname'])) {
-                    list ($surveyid, $gid, $rest) = explode('X', $condition['cfieldname']);
-
-                    $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid' => $gid)));
-                    if (!$iRowCount) {
-                        $aDelete['conditions'][] = array(
-                            'cid'    => $condition['cid'],
-                            'reason' => gT('No matching CFIELDNAME group!') . " ($gid) ({$condition['cfieldname']})"
-                        );
-                    }
-                }
-            } elseif (!$condition['cfieldname']) {
+            if (!$condition['cfieldname']) {
                 $aDelete['conditions'][] = array(
                     'cid'    => $condition['cid'],
                     'reason' => gT('No CFIELDNAME field set!') . " ({$condition['cfieldname']})"
