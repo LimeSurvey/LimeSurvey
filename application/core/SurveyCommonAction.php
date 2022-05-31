@@ -657,47 +657,6 @@ class SurveyCommonAction extends CAction
     }
 
     /**
-     * Show admin menu for question group view
-     *
-     * @param array $aData ?
-     */
-    public function nquestiongroupbar($aData)
-    {
-        if (isset($aData['questiongroupbar'])) {
-            if (!isset($aData['gid'])) {
-                if (isset($_GET['gid'])) {
-                    $aData['gid'] = $_GET['gid'];
-                }
-            }
-
-            $aData['surveyIsActive'] = $aData['oSurvey']->active !== 'N';
-
-            $surveyid = $aData['surveyid'];
-            $gid = $aData['gid'];
-            $oSurvey = $aData['oSurvey'];
-
-            $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid));
-
-            $sumresult1 = Survey::model()->with(array(
-                'languagesettings' => array('condition' => 'surveyls_language=language')))->findByPk($surveyid);
-            $aData['activated'] = $activated = $sumresult1->active;
-            if ($gid !== null) {
-                $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
-            }
-            $aData['condarray'] = $condarray ?? [];
-
-            $aData['languagelist'] = $oSurvey->getAllLanguages();
-
-            if (isset($aData['questiongroupbar']['closebutton']['url'])) {
-                $sAlternativeUrl = $aData['questiongroupbar']['closebutton']['url'];
-                $aData['questiongroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-
-            $this->getController()->renderPartial("/questionGroupsAdministration/questiongroupbar_view", $aData);
-        }
-    }
-
-    /**
      * Renders the fullpager bar
      * That's the white bar with action buttons example: 'Back' Button
      * @param array $aData
