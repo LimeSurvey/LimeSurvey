@@ -315,7 +315,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_sq"] = array(
-            "types"=>";:KQSTUN",
+            "types"=>";:KQTUN",
             'category'=>gT('Logic'),
             'sortorder'=>220,
             'inputtype'=>'textarea',
@@ -326,7 +326,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_sq_tip"] = array(
-            "types"=>";:KQSTUN",
+            "types"=>";:KQTUN",
             'category'=>gT('Logic'),
             'sortorder'=>230,
             'inputtype'=>'textarea',
