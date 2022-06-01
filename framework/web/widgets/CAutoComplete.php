@@ -134,7 +134,7 @@ class CAutoComplete extends CInputWidget
 	 */
 	public $multiple;
 	/**
-	 * @var string seperator to put between values when using multiple option. Defaults to ", ".
+	 * @var string separator to put between values when using multiple option. Defaults to ", ".
 	 */
 	public $multipleSeparator;
 	/**

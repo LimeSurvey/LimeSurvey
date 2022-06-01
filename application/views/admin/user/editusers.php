@@ -48,7 +48,7 @@ echo viewHelper::getViewTestTag('usersIndex');
                 'itemsCssClass'   => 'table table-striped items',
                 'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
                 'dataProvider'    => $model->search(),
-                'columns'         => $model->colums,
+                'columns'         => $model->columns,
                 'afterAjaxUpdate' => 'bindButtons',
                 'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(

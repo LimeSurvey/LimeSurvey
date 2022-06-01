@@ -149,7 +149,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
             "sid" => $surveyid,
         );
 
-        // retreive the route of url in preview mode
+        // retrieve the route of url in preview mode
         if (substr($sAction, 0, 7) == 'preview') {
             $routeParams["action"] = $sAction;
             if (intval(Yii::app()->request->getParam('gid', 0))) {
@@ -1361,7 +1361,7 @@ function getNavigatorDatas()
         $sMoveNext = "movesubmit";
     }
 
-    // todo Remove Next if needed (exemple quota show previous only: maybe other, but actually don't use surveymover)
+    // todo Remove Next if needed (example quota show previous only: maybe other, but actually don't use surveymover)
     if (Yii::app()->getConfig('previewmode')) {
         $sMoveNext = "";
     }
@@ -1406,7 +1406,7 @@ function getNavigatorDatas()
 
             $aNavigator['save']['show'] = true;
         } elseif (getMove() != "movelast") {
-            // Not on last page or submited survey
+            // Not on last page or submitted survey
             $aNavigator['save']['show'] = true;
         }
     }
@@ -1768,7 +1768,7 @@ function checkCompletedQuota($surveyid, $return = false)
     // If a token is used then mark the token as completed, do it before event : this allow plugin to update token information
     $event = new PluginEvent('afterSurveyQuota');
     $event->set('surveyId', $surveyid);
-    $event->set('responseId', $_SESSION['survey_' . $surveyid]['srid']); // We allways have a responseId
+    $event->set('responseId', $_SESSION['survey_' . $surveyid]['srid']); // We always have a responseId
     $event->set('aMatchedQuotas', $aMatchedQuotas); // Give all the matched quota : the first is the active
     App()->getPluginManager()->dispatchEvent($event);
     $blocks = array();

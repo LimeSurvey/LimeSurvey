@@ -48,8 +48,8 @@ echo $scripts;
           <!--
     This hidden button is now necessary to save the form.
     Before, there where several nested forms in Global settings, which is invalid in html
-    The submit button from the "import ressources" was submitting the whole form.
-    Now, the "import ressources" is outside the global form, in a modal ( subview/import_ressources_modal.php)
+    The submit button from the "import resources" was submitting the whole form.
+    Now, the "import resources" is outside the global form, in a modal ( subview/import_ressources_modal.php)
     So the globalsetting form needs its own submit button
     -->
           <input type="hidden" name="action" value="<?=$entryData['action']?>" />

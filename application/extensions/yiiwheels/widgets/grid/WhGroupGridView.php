@@ -171,7 +171,7 @@ class WhGroupGridView extends TbGridView
 			foreach ($current as $colName => $curValue) {
 				//value changed
 				$valueChanged = ($curValue != $lastStored[$colName]['value']);
-				//change already occured in this loop and mergeType set to MERGETYPE_NESTED
+				//change already occurred in this loop and mergeType set to MERGETYPE_NESTED
 				$saveChange = $valueChanged || ($changeOccurred && $this->mergeType == self::MERGE_NESTED);
 
 				if ($saveChangeForAllColumns || $saveChange) {

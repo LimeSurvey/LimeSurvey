@@ -421,7 +421,7 @@ class STATAxmlWriter extends Writer
                     */
                     $numberresponse = trim($response);
                     if ($this->customFieldmap['info']['surveyls_numberformat'] == 1) {
-// if settings: decimal seperator==','
+// if settings: decimal separator==','
                         $numberresponse = str_replace(',', '.', $response); // replace comma with dot so STATA can use float variables
                     }
 

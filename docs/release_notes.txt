@@ -5895,7 +5895,7 @@ Changes from 2.05+ (build 131209) to 2.05+ (build 150520) May 20, 2015
 
 Changes from 2.00+ (build 131206) to 2.05 (build 131209) Dec 06, 2013
 -New feature #5740: Improve VV response import (Denis Chenu)
--New feature #6477: optionnal comment place with  "multi choice with comment" (Denis Chenu)
+-New feature #6477: optional comment place with  "multi choice with comment" (Denis Chenu)
 -New feature #6880: Allow adaptation of 5 point slider (Denis Chenu)
 -New feature #7002: allow return to email template in email template edition (Denis Chenu)
 -New feature #7371: Allow to reset slider answer (Denis Chenu)

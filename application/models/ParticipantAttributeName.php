@@ -16,7 +16,7 @@
 /**
  * This is the model class for table "{{{{participant_attribute_names}}}}".
  *
- * The followings are the available columns in table '{{{{participant_attribute_names}}}}':
+ * The following are the available columns in table '{{{{participant_attribute_names}}}}':
  * @property integer $attribute_id
  * @property string $attribute_type
  * @property string $defaultname
