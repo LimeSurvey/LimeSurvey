@@ -1411,9 +1411,9 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iQuestionID = (int) $iQuestionID;
-            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
+            $oQuestion = Question::model()->findByPk($iQuestionID);
             if (!isset($oQuestion)) {
-                            return array('status' => 'Error: Invalid question ID');
+                return array('status' => 'Error: Invalid question ID');
             }
 
             $iSurveyID = $oQuestion['sid'];
@@ -1424,44 +1424,25 @@ class remotecontrol_handle
                 if ($oSurvey->isActive) {
                     return array('status' => 'Survey is active and not editable');
                 }
-                $iGroupID = $oQuestion['gid'];
 
                 $oCondition = Condition::model()->findAllByAttributes(array('cqid' => $iQuestionID));
                 if (count($oCondition) > 0) {
-                                return array('status' => 'Cannot delete Question. Others rely on this question');
+                    return array('status' => 'Cannot delete Question. Others rely on this question');
                 }
 
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $iQuestionID);
 
                 try {
-                    Condition::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-                    QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-                    Answer::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-
-                    $sCriteria = new CDbCriteria();
-                    $sCriteria->addCondition('qid = :qid or parent_qid = :qid');
-                    $sCriteria->params[':qid'] = $iQuestionID;
-                    Question::model()->deleteAll($sCriteria);
-
-                    // delete defaultvalues and defaultvalueL10ns
-                    $oDefaultValues = DefaultValue::model()->findAll(array('qid' => $iQuestionID));
-                    foreach ($oDefaultValues as $defaultvalue) {
-                        DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
-                        DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
-                    }
-
-                    QuotaMember::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-                    Question::updateSortOrder($iGroupID, $iSurveyID);
-
+                    $oQuestion->delete();
                     return (int) $iQuestionID;
                 } catch (Exception $e) {
                     return array('status' => $e->getMessage());
                 }
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY);
         }
     }
 
