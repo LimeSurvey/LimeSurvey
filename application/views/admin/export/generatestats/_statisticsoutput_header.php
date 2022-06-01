@@ -17,7 +17,7 @@
                 <strong>
                     <?php echo sprintf(gT("Summary for %s"),$outputs['qtitle']); ?>
                 </strong>
-                <button class="pull-right action_js_export_to_pdf btn btn-default btn-sm hidden-print" data-question-id="quid_<?php echo $outputs['parentqid'];?>" data-toggle="tooltip" title="<?php eT('Export this question to PDF.'); ?>">
+                <button class="pull-right action_js_export_to_pdf btn btn-default btn-sm hidden-print" type="button" data-question-id="quid_<?php echo $outputs['parentqid'];?>" data-toggle="tooltip" title="<?php eT('Export this question to PDF.'); ?>">
                     <i class="fa fa-file-pdf-o"></i>
                 </button>
             </th>
