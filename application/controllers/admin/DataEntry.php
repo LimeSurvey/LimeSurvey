@@ -1252,7 +1252,7 @@ class DataEntry extends SurveyCommonAction
                                 }
                             }
                             $aDataentryoutput .= App()->getController()->widget(
-                                'yiiwheels.widgets.datetimepicker.WhDateTimePicker',
+                                'ext.DateTimePickerWidget.DateTimePicker',
                                 array(
                                     'name' => $fname['fieldname'],
                                     'id' => $fname['fieldname'],
