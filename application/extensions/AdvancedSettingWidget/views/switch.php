@@ -1,5 +1,5 @@
 <div class="inputtype--toggle-container">
-    <div class="btn-group" role="group">
+    <div class="btn-group" role="group"
     aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>"
     <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
     >
