@@ -153,10 +153,20 @@
         private $pageRelevanceInfo;
 
         /**
-        *
-        * @var array
+        * @var array|null $pageTailorInfo
+        * Array of array of information about HTML id to update with javascript function
+        * [[
+        *   'questionNum' : question number
+        *   'num' : internal number of javascript function
+        *   'id' : id of HTML element
+        *   'raw' : Raw Expression
+        *   'result' :
+        *   'vars' : var used in javascript function
+        *   'js' : final javascript function
+        * ]]
         */
         private $pageTailorInfo;
+
         /**
         * internally set to true (1) for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
         * @var boolean
@@ -7387,16 +7397,19 @@
             }
             /**
              * @var array[] the javascript and related variable,
-             * reconstruct from $LEM->pageTailorInfoto get questionId as key
+             * reconstruct from $LEM->pageTailorInfo to get questionId as key
              **/
             $pageTailorInfo = array();
-            foreach ($LEM->pageTailorInfo as $tailors) {
-                if (is_array($tailors)) {
-                    foreach ($tailors as $tailor) {
-                        $pageTailorInfo[$tailor['questionNum']][] = $tailor;
+            if (!empty($LEM->pageTailorInfo)) {
+                foreach ($LEM->pageTailorInfo as $tailors) {
+                    if (is_array($tailors)) {
+                        foreach ($tailors as $tailor) {
+                            $pageTailorInfo[$tailor['questionNum']][] = $tailor;
+                        }
                     }
                 }
             }
+
             $valEqns = array();
             $relEqns = array();
             $relChangeVars = array();
