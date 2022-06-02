@@ -1,11 +1,14 @@
 <div class="inputtype--toggle-container">
     <div class="btn-group" role="group">
+    aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>"
+    <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
+    >
         <?php if ($this->setting['value'] == "1") : ?>
             <input
                 class="btn-check"
                 type="radio"
                 id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
-                name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                 value="1"
                 checked
                 />
@@ -18,8 +21,8 @@
             <input
                 class="btn-check"
                 type="radio"
+                    name="<?= $inputBaseName ?>"
                 id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
-                name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
                 value="0"
                 />
             <label
@@ -31,8 +34,8 @@
             <input
                 class="btn-check"
                 type="radio"
+                    name="<?= $inputBaseName ?>"
                 id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
-                name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
                 value="1"
                 />
             <label
@@ -44,7 +47,7 @@
                 class="btn-check"
                 type="radio"
                 id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
-                name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                 value="0"
                 checked
                 />

@@ -654,7 +654,7 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <!-- Timer Attributes END -->
-        <!-- Input Atributes START -->
+        <!-- Input Attributes START -->
         <attribute>
             <name>maximum_chars</name>
             <category>Input</category>
@@ -668,8 +668,8 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <!-- Input Atributes END -->
-        <!-- Location Atributes START -->
+        <!-- Input Attributes END -->
+        <!-- Location Attributes START -->
         <attribute>
             <name>location_mapservice</name>
             <category>Location</category>
@@ -863,7 +863,7 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <!-- Location Atributes END -->
+        <!-- Location Attributes END -->
     </attributes>
 
     <!-- Core question js/css configuration -->

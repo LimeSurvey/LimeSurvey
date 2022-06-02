@@ -11,8 +11,9 @@
     <input 
         type="number" 
         class="form-control" 
-        name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-        id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+        name="<?= $inputBaseName ?>"
+        id="<?= CHtml::getIdByName($inputBaseName); ?>"
+        <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
         value="<?= CHtml::encode($this->setting['value']); ?>"
     />
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['suffix'])) : ?>
