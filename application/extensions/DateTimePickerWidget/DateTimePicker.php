@@ -131,31 +131,12 @@ class DateTimePicker extends CInputWidget
 
         $id = $this->getId();
         $allowInputToggle = $this->getValue('data-allowInputToggle', $this->htmlOptions, false);
-        $dateFormat = $this->getValue('data-format', $this->htmlOptions, 'DD.MM.YYYY HH:mm');
-        $config = $this->getTempusConfig();
-        $date = $this->value;
-        $script = "const picker = new tempusDominus.TempusDominus(document.getElementById('$this->mainId'),
-            $config
-        );
-        //formatting when selected via datepicker
-        picker.dates.formatInput = function(date) { 
-            return convertToGivenFormat(date); 
-        };
-        // formatting when typed in input field
-        picker.dates.parseInput = function(date) { 
-            return convertToGivenFormat(date); 
-        };
-        //formatting when value is loaded on pageload
-        var DateTimeVal = moment('$date', '$dateFormat').toDate();
-        picker.dates.setValue(tempusDominus.DateTime.convert(DateTimeVal));
-        // bug locale needs to be reset after value set...
-        picker.updateOptions($config);
-        
-        function convertToGivenFormat(date) {
-            return moment(date).format('$dateFormat');
-        }
-         ";
-        // workaround allowInputToggle
+        $config = $this->getTempusConfigString();
+        $script = "const picker = new tempusDominus.TempusDominus(document.getElementById('$this->mainId'), $config);
+        ";
+        $script .= $this->getMomentJsOverrideString();
+
+        // bug workaround allowInputToggle
         if ($allowInputToggle) {
             $script .= "
             document.getElementById('$id').onfocus = function () {
@@ -200,6 +181,7 @@ class DateTimePicker extends CInputWidget
     }
 
     /**
+     * Generates and returns the localization part of the Tempus Dominus datepicker config
      * @return string
      */
     private function getLocalizationOptionsString()
@@ -213,10 +195,10 @@ class DateTimePicker extends CInputWidget
           ";
         }
         $localeScript .= "dayViewHeaderFormat: { month: 'long', year: 'numeric' },
-            locale: '$locale'";
+          locale: '$locale'";
 
         return "{
-        $localeScript
+          $localeScript
         }";
     }
 
@@ -236,7 +218,7 @@ class DateTimePicker extends CInputWidget
     }
 
     /**
-     * exchanges old bootstrap datepicker options which are named different with this tempus dominus datepicker.
+     * Exchanges old bootstrap datepicker options which are named different with this Tempus Dominus datepicker.
      * If there is nothing found in $tempusConvertOptions array, given $option is returned unchanged.
      * @param string $option
      * @return string
@@ -254,13 +236,17 @@ class DateTimePicker extends CInputWidget
     }
 
     /**
+     * Creates and returns the main config object for the Tempus Dominus datepicker
      * @return string
      */
-    private function getTempusConfig()
+    private function getTempusConfigString()
     {
         $clear = $this->getValue('data-showClear', $this->htmlOptions, 'false') == 1 ? 'true' : 'false';
+        $today = $this->getValue('data-showToday', $this->htmlOptions, 'false') == 1 ? 'true' : 'false';
+        $close = $this->getValue('data-showClose', $this->htmlOptions, 'false') == 1 ? 'true' : 'false';
         $localization = $this->getLocalizationOptionsString();
-        return "{
+        return "
+        {
             localization: $localization,
             display: {
                 components: {
@@ -268,8 +254,55 @@ class DateTimePicker extends CInputWidget
                 },
                 buttons: {
                     clear: $clear,
+                    today: $today,
+                    close: $close,
                 },
             },
         }";
+    }
+
+    /**
+     * to be able to use the custom buttons of future designs, we need this function
+     * to set those.
+     * @return string
+     */
+    private function getCustomButtons() {
+
+
+        return '';
+    }
+
+    /**
+     * Returns function overrides for correct date format.
+     * @return string
+     */
+    private function getMomentJsOverrideString()
+    {
+        $date = $this->value;
+        $dateFormat = $this->getValue('data-format', $this->htmlOptions, 'DD.MM.YYYY HH:mm');
+
+        return "
+        //formatting when selected via datepicker
+        picker.dates.formatInput = function(date) { 
+            if(date !== null) {
+                return moment(date).format('$dateFormat');
+            }
+            return null;     
+        };
+
+        picker.dates.setFromInput = function(value, index) {
+            let converted = moment(value, '$dateFormat');
+            if (converted.isValid()) {
+                let date = tempusDominus.DateTime.convert(converted.toDate(), this.optionsStore.options.localization.locale);
+                this.setValue(date, index);
+            }
+            else {
+                console.log('Momentjs failed to parse the input date.');
+            }
+        };
+        //formatting when value is loaded on pageload
+        var DateTimeVal = moment('$date', '$dateFormat').toDate();
+        picker.dates.setValue(tempusDominus.DateTime.convert(DateTimeVal));
+         ";
     }
 }
