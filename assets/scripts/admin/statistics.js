@@ -600,18 +600,19 @@ LS.Statistics2 = function () {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', url, true);
         xhr.responseType = 'blob';
-        xhr.onload = function (e) {
-            const blob = xhr.response;
+        xhr.onload = () => {
             const contentDisposition = xhr.getResponseHeader('Content-Disposition');
-            const fileName = contentDisposition.match(/filename[^;=\n]*=['"](.*?|[^;\n]*)['"]/)[1];
-            const tempEl = document.createElement("a");
-            document.body.appendChild(tempEl);
-            tempEl.style = "display: none";
-            const dataUrl = window.URL.createObjectURL(blob);
-            tempEl.href = dataUrl;
-            tempEl.download = fileName;
-            tempEl.click();
-            window.URL.revokeObjectURL(dataUrl);
+            const fileName = contentDisposition ? contentDisposition.match(/filename[^;=\n]*=['"](.*?|[^;\n]*)['"]/)[1] : '';
+            if (fileName.length > 0) {
+                // saveAs is implemented by jszip/fileSaver.js
+                saveAs(xhr.response, fileName);
+            } else {
+                ajaxError();
+            }
+            $('#statsContainerLoading').hide();
+        };
+        xhr.onerror = () => {
+            ajaxError();
             $('#statsContainerLoading').hide();
         };
         xhr.send(data);
@@ -641,6 +642,7 @@ function graphQuery(id, cmd, success) {
 }
 
 function ajaxError() {
+    // TODO: Use NotifyFader?
     alert("An error occured! Please reload the page!");
 }
 
