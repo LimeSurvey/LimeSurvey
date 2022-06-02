@@ -8,7 +8,7 @@
                 class="btn-check"
                 type="radio"
                 id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
-                    name="<?= $inputBaseName ?>"
+                name="<?= $inputBaseName ?>"
                 value="1"
                 checked
                 />
@@ -21,7 +21,7 @@
             <input
                 class="btn-check"
                 type="radio"
-                    name="<?= $inputBaseName ?>"
+                name="<?= $inputBaseName ?>"
                 id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
                 value="0"
                 />
@@ -34,7 +34,7 @@
             <input
                 class="btn-check"
                 type="radio"
-                    name="<?= $inputBaseName ?>"
+                name="<?= $inputBaseName ?>"
                 id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
                 value="1"
                 />
@@ -47,7 +47,7 @@
                 class="btn-check"
                 type="radio"
                 id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
-                    name="<?= $inputBaseName ?>"
+                name="<?= $inputBaseName ?>"
                 value="0"
                 checked
                 />

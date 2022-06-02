@@ -7,21 +7,23 @@
             <input 
                 class="btn-check"
                 type="radio" 
-                    name="<?= $inputBaseName ?>"
+                name="<?= $inputBaseName ?>"
+                id="<?= $inputBaseName . $value ?>"
                 value="<?= CHtml::encode($value); ?>"
                 checked
             />
-            <label class="btn btn-outline-default">
+            <label class="btn btn-outline-primary" for="<?= $inputBaseName  . $value ?>">
                 <?= $text; ?>
             </label>
         <?php else: ?>
             <input 
                 class="btn-check"
                 type="radio" 
-                    name="<?= $inputBaseName ?>"
+                name="<?= $inputBaseName ?>"
+                id="<?= $inputBaseName . $value ?>"
                 value="<?= CHtml::encode($value); ?>"
             />
-            <label class="btn btn-outline-default">
+            <label class="btn btn-outline-primary" for="<?= $inputBaseName . $value ?>">
                 <?= $text; ?>
             </label>
         <?php endif; ?>
