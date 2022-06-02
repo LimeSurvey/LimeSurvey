@@ -23,7 +23,7 @@
 /**
 *
 * This controller performs updates, it is highly ajax oriented
-* Methods are only called from JavaScript controller (wich is called from the global_setting view). comfortupdate.js is the first registered script.
+* Methods are only called from JavaScript controller (which is called from the global_setting view). comfortupdate.js is the first registered script.
 *
 *
 *
@@ -45,7 +45,7 @@
 *
 * so they will call an url such as : globalsettings?update=methodToCall&neededVariable=value.
 * So the globalsetting controller will render the view as usual, but : the _ajaxVariables view will parse those url datas to some hidden field.
-* The comfortupdate.js check the value of the hidden field update, and if the update's one contain a step, it call displayComfortStep.js wich will display the right step instead of the 'check update' buttons.
+* The comfortupdate.js check the value of the hidden field update, and if the update's one contain a step, it call displayComfortStep.js which will display the right step instead of the 'check update' buttons.
 *
 * Most steps are retrieving datas from the comfort update server thanks to the model UpdateForm's methods.
 * The server return an answer object, with a property 'result' to tell if the process was succesfull or if it failed. This object contains in general all the necessary datas for the views.
@@ -56,7 +56,7 @@
 * - Warning message (like : modified files, etc.) : they don't stop the process, they are parsed to the step view, and the view manage how to display them. They can be generated from the ComfortUpdate server ($answer_from_server->result == TRUE ; and something like $answer_from_server->error == message or anything else that the step view manage ), or in the LimeSurvey update controller/model
 * - Error while processing a request on the server part : should never happen, but if something goes wrong in the server side (like generating an object from model), the server returns an error object ($answer_from_server->result == FALSE ; $answer_from_server->error == message )
 *   Those errors stop the process, and are display in _error view. Very usefull to debug. They are parsed directly to $this->renderError
-* - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->renderErrorString($error), wich generate the error object, and then render the error view
+* - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->renderErrorString($error), which generate the error object, and then render the error view
 *
 * @package       LimeSurvey
 * @subpackage    Backend
@@ -147,7 +147,6 @@ class Update extends DynamicSurveyCommonAction
 
     public function manageSubmitkey()
     {
-        $buttons = 1;
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
@@ -170,27 +169,23 @@ class Update extends DynamicSurveyCommonAction
                 } else {
                     switch ($check->error) {
                         case 'out_of_updates':
-                            $title = "Your update key is out of update !";
-                            $message = "you should first renew this key before using it, or try to enter a new one !";
-                            $buttons = 1;
+                            $title = gT("Your update key has exceeded the maximum number of updates!");
+                            $message = gT("Please buy/enter a new one!");
                             break;
 
                         case 'expired':
-                            $title = "Your update key has expired!";
-                            $message = "you should first renew this key before using it, or try to enter a new one !";
-                            $buttons = 1;
+                            $title = gT("Your update key has expired!");
+                            $message = gT("Please buy/enter a new one!");
                             break;
 
                         case 'not_found':
-                            $title = "Unknown update key !";
-                            $message = "Your key is unknown by the update server.";
-                            $buttons = 3;
+                            $title = gT("Unknown update key!");
+                            $message = gT("Your key is unknown to the update server.");
                             break;
 
                         case 'key_null':
-                            $title = "key can't be null !";
+                            $title = gT("Key can't be empty!");
                             $message = "";
-                            $buttons = 3;
                             break;
                     }
 

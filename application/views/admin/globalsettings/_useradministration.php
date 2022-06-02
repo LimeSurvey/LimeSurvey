@@ -10,13 +10,14 @@
 
 ?>
 
-<div class="row">
-    <div class="col-12">
-        <div class="form-group">
-            <label class="form-label" for='sendadmincreationemail'><?php eT("Send email to new user administrators:"); ?></label>
-            <div>
-                <?php
-                $this->widget(
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+
+            <div class="mb-3">
+                <label class="form-label" for='sendadmincreationemail'><?php eT("Send email to new user administrators:"); ?></label>
+                <br/>
+                <?php $this->widget(
                     'yiiwheels.widgets.switch.WhSwitch',
                     array(
                         'name' => 'sendadmincreationemail',
@@ -24,32 +25,24 @@
                             'class' => 'custom-data bootstrap-switch-boolean',
                             'uncheckValue' => false,
                         ),
-
                         'value' => isset($sSendAdminCreationEmail) ? $sSendAdminCreationEmail : 0,
                         'onLabel' => gT('On'),
                         'offLabel' => gT('Off')
                     )
-                );
-                ?>
+                ); ?>
             </div>
-        </div>
-    </div>
-</div>
-<div class="ls-space margin top-15">
-    <div class="row">
 
-        <div class="col-12 col-xl-10">
-
-            <div class="form-group">
-                <label class=" form-label" for='admincreationemailsubject'><?php eT("Admin creation email subject"); ?>:</label><br>
-                <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME} </small>
-                <div class="">
-                    <input class="form-control" type='text' size='50' id='admincreationemailsubject' name='admincreationemailsubject' value="<?php echo htmlspecialchars($sAdminCreationEmailSubject); ?>" />
-                </div>
+            <div class="mb-3">
+                <label class="form-label" for='admincreationemailsubject'><?php eT("Admin creation email subject"); ?>:</label>
+                <br/>
+                <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME}</small>
+                <input class="form-control" type='text' size='50' id='admincreationemailsubject' name='admincreationemailsubject' value="<?php echo htmlspecialchars($sAdminCreationEmailSubject); ?>" />
             </div>
+
             <!-- admin default email template -->
-            <div class="form-group">
-                <label class=" form-label" for='admincreationemailtemplate'><?php eT("Admin creation email template"); ?>: </label><br>
+            <div class="mb-3">
+                <label class=" form-label" for='admincreationemailtemplate'><?php eT("Admin creation email template"); ?>: </label>
+                <br/>
                 <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME}, {SITEADMINEMAIL}, {USERNAME}, {FULLNAME}, {LOGINURL} </small>
                 <div class="top-15">
                     <div class="htmleditor input-group">
@@ -59,6 +52,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>

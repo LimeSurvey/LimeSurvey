@@ -85,7 +85,7 @@ class Question extends LSActiveRecord
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
     public $gid;
-    /** Set defaut relevance **/
+    /** Set default relevance **/
     public $relevance = '';
 
     /** @var QuestionTheme cached question theme*/
@@ -125,7 +125,7 @@ class Question extends LSActiveRecord
             'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
             'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
-            'answers' => array(self::HAS_MANY, 'Answer', 'qid', 'order' => App()->getDb()->quoteColumnName('answers.sortorder') . ' ASC'),
+            'answers' => array(self::HAS_MANY, 'Answer', 'qid'),
             // This relation will fail for non saved questions, which is often the case
             // when using question editor on create mode. Better use getQuestionTheme()
             'question_theme' => [self::HAS_ONE, 'QuestionTheme', ['question_type' => 'type', 'name' => 'question_theme_name']],
@@ -834,7 +834,7 @@ class Question extends LSActiveRecord
 
     /**
      * Get an new title/code for a question
-     * @param integer $index base for question code (exemple : inde of question when survey import)
+     * @param integer $index base for question code (example : inde of question when survey import)
      * @return string|null : new title, null if impossible
      */
     public function getNewTitle($index = 0)
@@ -1505,7 +1505,6 @@ class Question extends LSActiveRecord
             if (!empty($this->qid)) {
                 $criteria = new CDbCriteria();
                 $criteria->condition = 'qid = :qid AND scale_id = :scale_id';
-                $criteria->order = 'sortorder, code ASC';
                 $criteria->params = [':qid' => $this->qid, ':scale_id' => $scale_id];
                 $results[$scale_id] = Answer::model()->findAll($criteria);
             }

@@ -237,7 +237,7 @@ class CCubridSchema extends CDbSchema
 	{
 		// CUBRID does not allow to look into another database from within another connection.
 		// If necessary user has to establish a connection to that particular database and
-		// query to show all tables. For this reason if a user executes this funtion
+		// query to show all tables. For this reason if a user executes this function
 		// we will return all table names of the currently connected database.
 		return $this->getDbConnection()->createCommand('SHOW TABLES')->queryColumn();
 	}

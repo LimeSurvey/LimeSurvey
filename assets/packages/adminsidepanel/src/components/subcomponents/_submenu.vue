@@ -48,7 +48,7 @@ export default {
             return JSON.stringify(obj);
         },
         getLinkClass(menuItem){
-            let classes = "ls-flex-row nowrap ";
+            let classes = "nowrap ";
             classes += (menuItem.pjax ? 'pjax ' : ' ');
             classes += (this.$store.state.lastMenuItemOpen==menuItem.id ? 'selected ' : ' ' );
             return classes;
@@ -88,19 +88,23 @@ export default {
             :href="menuItem.link" 
             :target="menuItem.link_external == true ? '_blank' : ''"
             :id="'sidemenu_'+menuItem.name" 
-            class="list-group-item"
+            class="list-group-item w-100"
             :class="getLinkClass(menuItem)" >
 
-            <div class="col-12" :class="menuItem.menu_class" 
+            <div class="d-flex" :class="menuItem.menu_class"
             v-bind:title="reConvertHTML(menuItem.menu_description)"  
             data-bs-toggle="tooltip" >
-                <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-md-10' : 'col-12' ">
+                <div
+                    :class="$store.getters.isRTL ? 'ls-space padding all-0 ms-auto' : 'ls-space padding all-0 me-auto'"
+                >
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
                     <span v-html="menuItem.menu_title"></span>
                     <i class="fa fa-external-link" v-if="menuItem.link_external == true">&nbsp;</i>
                 </div>
-                <div class="col-md-2 text-center ls-space padding all-0 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
-                    <i class="fa fa-chevron-right">&nbsp;</i>
+                <div class="text-center ls-space padding right-15 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
+                    <i
+                        :class="$store.getters.isRTL ? 'fa fa-chevron-left' : 'fa fa-chevron-right'"
+                    >&nbsp;</i>
                 </div>
                 
             </div>

@@ -146,8 +146,16 @@ class ResponsesController extends LSBaseController
                 $fnames[] = ["firstname", gT("First name"), 'code' => 'firstname']; // or token:firstname ?
                 $fnames[] = ["lastname", gT("Last name"), 'code' => 'lastname'];
                 $fnames[] = ["email", gT("Email"), 'code' => 'email'];
+
+                $customTokenAttributes = $survey->tokenAttributes;
+                foreach ($customTokenAttributes as $attributeName => $tokenAttribute) {
+                    $tokenAttributeDescription = ($tokenAttribute['description'] != '') ? $tokenAttribute['description'] : $attributeName;
+                    $fnames[] = [$attributeName, $tokenAttributeDescription, 'code' => $attributeName];
+                }
             }
-            $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
+            if ($survey->isDateStamp) {
+                $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
+            }
             $fnames[] = ["completed", gT("Completed"), "0"];
 
             foreach ($fieldmap as $field) {
@@ -914,7 +922,7 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * Change the value of the max characters to elipsize headers/questions in reponse grid.
+     * Change the value of the max characters to elipsize headers/questions in response grid.
      * It's called via ajax request
      *
      * @param string $displaymode
@@ -938,15 +946,15 @@ class ResponsesController extends LSBaseController
      * and it will be be spit out on success
      *
      * @param int $surveyId
-     * @param array $reponseId
+     * @param array $responseId
      * @param string $zipfilename
      */
-    private function zipFiles(int $surveyId, array $reponseId, string $zipfilename): void
+    private function zipFiles(int $surveyId, array $responseId, string $zipfilename): void
     {
         $tmpdir = App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR;
 
         $filelist = [];
-        $responses = Response::model($surveyId)->findAllByPk($reponseId);
+        $responses = Response::model($surveyId)->findAllByPk($responseId);
         $filecount = 0;
         foreach ($responses as $response) {
             foreach ($response->getFiles() as $fileInfo) {

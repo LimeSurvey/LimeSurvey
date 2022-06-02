@@ -608,39 +608,6 @@ class QuestionAdministrationController extends LSBaseController
 
 
     /**
-     * Action (called by ajaxrequest and returning json)
-     * Returns a preformatted json of advanced settings.
-     *
-     * @param int $iQuestionId
-     * @param string $sQuestionType
-     * @param boolean $returnArray
-     * @param string $questionThemeName
-     *
-     * @return void|array
-     * @throws CException
-     * @todo Delete when Vue is gone?
-     */
-    public function actionGetAdvancedOptions(
-        $iQuestionId = null,
-        $sQuestionType = null,
-        $returnArray = false, //todo see were this ajaxrequest is done and take out the parameter there and here
-        $questionThemeName = null
-    ) {
-        //here we get a Question object (also if question is new --> QuestionCreate)
-        // TODO: this object doesn't seem to be needed here.
-        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, null, $questionThemeName);
-        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $questionThemeName);
-
-        $this->renderJSON(
-            [
-                'advancedSettings'       => $aAdvancedOptionsArray,
-                'questionTypeDefinition' => $oQuestion->questionType,
-            ]
-        );
-    }
-
-
-    /**
      * Collect initial question data
      * This either creates a temporary question object, or calls a question object from the database
      *
@@ -939,7 +906,7 @@ class QuestionAdministrationController extends LSBaseController
         $greatestNumCode          = max($numCodes); // greatest code
         $key                      = array_keys($numCodes, max($numCodes)); // its key (same key in all tables)
         $greatesNumCodeWithZeros  = (isset($numCodesWithZero)) ? $numCodesWithZero[$key[0]] : ''; // its value with prefixed 0 (like : 001)
-        $stringCodeOfGreatestCode = $stringCodes[$key[0]]; // its original submited  string (like: SQ001)
+        $stringCodeOfGreatestCode = $stringCodes[$key[0]]; // its original submitted  string (like: SQ001)
 
         // We get the string part of it: it's the original string code, without the greates code with its 0 :
         // like  substr ("SQ001", (strlen(SQ001)) - strlen(001) ) ==> "SQ"

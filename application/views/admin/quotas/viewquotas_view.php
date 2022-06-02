@@ -33,16 +33,18 @@ echo viewHelper::getViewTestTag('surveyQuotas');
 
             <?php
             $massiveAction = '';
-            if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) {
-                $massiveAction =  $this->renderPartial(
-                    '/admin/quotas/viewquotas_massive_selector',
-                    array(
-                       'oSurvey' => $oSurvey,
-                       'oQuota' => $oQuota,
-                       'aQuotaLanguageSettings' => $aQuotaLanguageSettings,
-                    ),
-                    true
-                );
+            if ($oDataProvider->itemCount > 0) {
+                if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) {
+                    $massiveAction =  $this->renderPartial(
+                        '/admin/quotas/viewquotas_massive_selector',
+                        array(
+                           'oSurvey' => $oSurvey,
+                           'oQuota' => $oQuota,
+                           'aQuotaLanguageSettings' => $aQuotaLanguageSettings,
+                        ),
+                        true
+                    );
+                }
             }
             ?>
 

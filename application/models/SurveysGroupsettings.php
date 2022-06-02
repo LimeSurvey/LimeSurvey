@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{surveys_groupsettings}}".
  *
- * The followings are the available columns in table '{{surveys_groupsettings}}':
+ * The following are the available columns in table '{{surveys_groupsettings}}':
  * @property integer $gsid
  * @property integer $owner_id
  * @property string $admin
@@ -468,6 +468,11 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     private function shouldInherit($attribute)
     {
+        // If the attribute is not defined
+        if (!property_exists($this->oOptions, $attribute)) {
+            return true;
+        }
+
         // The attribute should be inherited if its value is 'inherit', 'I' or '-1'.
         if (
             !empty($this->oOptions->{$attribute})

@@ -94,9 +94,9 @@ class Saved extends SurveyCommonAction
             throw new CHttpException(401, gT("Saved response not found"));
         }
         if ($oSavedControl->delete()) {
-            $oReponse = Response::model($surveyid)->findByPk($oSavedControl->srid);
-            if ($oReponse) {
-                $oReponse->delete();
+            $oResponse = Response::model($surveyid)->findByPk($oSavedControl->srid);
+            if ($oResponse) {
+                $oResponse->delete();
             }
         } else {
             if (Yii::app()->getRequest()->isAjaxRequest) {
