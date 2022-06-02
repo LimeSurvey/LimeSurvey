@@ -612,7 +612,7 @@ class CheckIntegrity extends SurveyCommonAction
                 $aColumns = $model->getMetaData()->columns;
                 $aQids    = array();
 
-                // We get the columns of the reponses table
+                // We get the columns of the responses table
                 foreach ($aColumns as $oColumn) {
                     // Question columns start with the SID
                     if (strpos($oColumn->name, (string)$oSurvey->sid) !== false) {

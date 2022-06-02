@@ -359,7 +359,7 @@ class Labels extends SurveyCommonAction
         }
         if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             if (LabelSet::model()->deleteLabelSet($lid)) {
-                Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."), 'success');
+                Yii::app()->setFlashMessage(gT("Label set successfully deleted."), 'success');
                 $lid = 0;
             }
         }
@@ -388,7 +388,7 @@ class Labels extends SurveyCommonAction
         $oLabelSet->label_name = $label_name;
         $oLabelSet->languages = implode(' ', $languageids);
         if ($oLabelSet->save()) {
-            Yii::app()->setFlashMessage(gT("Label set sucessfully created."), 'success');
+            Yii::app()->setFlashMessage(gT("Label set successfully created."), 'success');
             $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $oLabelSet->lid));
         } else {
             Yii::app()->setFlashMessage(gT("Label could not be created."), 'error');

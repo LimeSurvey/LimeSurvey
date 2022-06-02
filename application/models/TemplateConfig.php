@@ -67,7 +67,7 @@ class TemplateConfig extends CActiveRecord
     protected $apiVersion;
 
     /**
-     * @var int? $iSurveyId The current Survey Id. It can be void. It's use only to retreive
+     * @var int? $iSurveyId The current Survey Id. It can be void. It's use only to retrieve
      * the current template of a given survey
      */
     protected $iSurveyId = '';
@@ -214,7 +214,7 @@ class TemplateConfig extends CActiveRecord
         $sFile = trim($sFile, '.');
         $sFile = trim($sFile, '/');
 
-        // Retreive the correct template for this file (can be a mother template)
+        // Retrieve the correct template for this file (can be a mother template)
         $oTemplate = $this->getTemplateForFile($sFile, $oTemplate, false);
 
         if ($oTemplate instanceof TemplateConfiguration) {

@@ -453,7 +453,7 @@ $result = CMap::mergeArray($internalConfig, $userConfig);
  */
 $result['defaultController'] = ($result['defaultController'] == 'survey') ? $internalConfig['defaultController'] : $result['defaultController'];
 /**
- * Allways add needed routes at end
+ * Always add needed routes at end
  */
 $result['components']['urlManager']['rules']['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 

@@ -27,7 +27,17 @@
                 <a class="dropdown-item" href="#" onclick="return false;"
                     data-bs-toggle="modal"
                     data-bs-target="#confirmation-modal"
-                    data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["asJson" => true, "surveyid" => $surveyid, "gid"=>$gid])); ?> })'
+                    data-onclick='(function() { <?php echo convertGETtoPOST(
+                        Yii::app()->createUrl(
+                            "questionGroupsAdministration/delete/",
+                            [
+                                "asJson" => true,
+                                "surveyid" => $surveyid,
+                                "gid" => $gid,
+                                "landOnSideMenuTab" => 'structure'
+                            ]
+                        )
+                    ); ?> })'
                     data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>"
                 >
                     <span class="fa fa-trash text-danger"></span>
