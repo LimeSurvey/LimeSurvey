@@ -105,7 +105,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
 
             sleep(1);
 
-            $attribute1 = $web->findElement(WebDriverBy::id('advancedSettings[display][cssclass]'));
+            $attribute1 = $web->findElement(WebDriverBy::id('advancedSettings_display_cssclass'));
             $attribute1->sendKeys('test-class<script>console.log("Test");</script>');
 
             $testCategoryTitle = $web->findElement(WebDriverBy::id('button-collapse-Test'));
@@ -113,7 +113,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
 
             sleep(1);
 
-            $attribute2 = $web->findElement(WebDriverBy::id('advancedSettings[test][nonFilteredAttribute]'));
+            $attribute2 = $web->findElement(WebDriverBy::id('advancedSettings_test_nonFilteredAttribute'));
             $attribute2->sendKeys('<script>console.log(1);</script>');
 
             $savebutton = $web->findElement(WebDriverBy::id('save-and-close-button-create-question'));
