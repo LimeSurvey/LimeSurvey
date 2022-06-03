@@ -16,6 +16,14 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public $allowedPublicMethods = array();
 
     protected $settings = [
+        'adminPart' => array(
+            'content' => 'Administration login',
+            'type' => 'info',
+            'class' => "h3",
+            'controlOptions' => array(
+                'class' => "col-md-offset-4 col-md-6"
+            ),
+        ),
         'needsNumber' => array(
             'label' => 'Require at least one digit',
             'type' => 'checkbox',
@@ -35,6 +43,15 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             'label' => 'Minimum password length',
             'type' => 'int',
             'default' => 12,
+        ),
+        'surveyPart' => array(
+            'content' => 'Saving survey',
+            'type' => 'info',
+            'class' => "h3",
+            'controlOptions' => array(
+                'class' => "col-md-offset-4 col-md-6"
+            ),
+            'type' => 'info',
         ),
         'surveySaveActive' => array(
             'type' => 'boolean',
@@ -177,7 +194,18 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
      */
     public function getPluginSettings($getValues = true)
     {
-        $settings = parent::getPluginSettings();
+        $settings = parent::getPluginSettings($getValues);
+        //~ $settings = array_merge(
+            //~ $settings,
+            //~ array(
+                //~ 'adminPart' => array(
+                    //~ 'content' => CHtml::tag('div', array('h3'), gT('Administration login'))
+                //~ ),
+                //~ 'surveyPart' => array(
+                    //~ 'content' => CHtml::tag('div', array('h3'), gT('Saving survey'))
+                //~ ),
+            //~ )
+        //~ );
         return $settings;
     }
 
