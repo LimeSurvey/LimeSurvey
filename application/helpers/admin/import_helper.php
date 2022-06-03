@@ -1878,6 +1878,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
 /**
 * This function imports a CSV file into the response table
+* csv file is deleted during process
 *
 * @param string $sFullFilePath
 * @param integer $iSurveyId
@@ -2780,6 +2781,7 @@ function createXMLfromData($aData = array()){
 
 /**
  * Read a csv file and resturn a tmp ressources to same file in utf8
+ * csv file is deleted during process
  * @param string $fullfilepath
  * @param string $encoding from
  * @return resource
