@@ -13,8 +13,6 @@ const concat = require('gulp-concat');
 function js_minify() {
     return src([
         '../../../node_modules/@popperjs/core/dist/umd/popper.js',
-        '../../../node_modules/@fortawesome/fontawesome-free/js/solid.min.js',
-        '../../../node_modules/@fortawesome/fontawesome-free/js/fontawesome.min.js',
         '../../../node_modules/@eonasdan/tempus-dominus/dist/js/tempus-dominus.js'
     ])
         .pipe(concat('popper-tempus.js'))
@@ -30,7 +28,11 @@ function css_minify() {
         autoprefixer(),
         cssnano()
     ];
-    return src(['../../../node_modules/@eonasdan/tempus-dominus/dist/css/tempus-dominus.css'])
+    return src([
+        '../../../node_modules/@eonasdan/tempus-dominus/dist/css/tempus-dominus.css',
+        'custom.css'
+    ])
+        .pipe(concat('tempus-dominus.css'))
         .pipe(gulppostcss(plugins))
         .pipe(rename({extname: '.min.css'}))
         .pipe(dest('build'));

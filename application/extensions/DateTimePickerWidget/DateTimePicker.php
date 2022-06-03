@@ -188,8 +188,7 @@ class DateTimePicker extends CInputWidget
     {
         $localeScript = '';
         $locale = $this->getValue('locale', $this->pluginOptions, 'en');
-        $tooltips = $this->getValue('tooltips', $this->pluginOptions, []);
-        $tooltips = $this->getConvertedTempusOptions($tooltips);
+        $tooltips = $this->getConvertedTempusOptions($this->getTranslatedTooltips());
         foreach ($tooltips as $key => $tooltip) {
             $localeScript .= "$key: '$tooltip',
           ";
@@ -245,10 +244,12 @@ class DateTimePicker extends CInputWidget
         $today = $this->getValue('data-showToday', $this->htmlOptions, 'false') == 1 ? 'true' : 'false';
         $close = $this->getValue('data-showClose', $this->htmlOptions, 'false') == 1 ? 'true' : 'false';
         $localization = $this->getLocalizationOptionsString();
+        $icons = $this->getCustomIconsString();
         return "
         {
             localization: $localization,
             display: {
+                $icons
                 components: {
                     useTwentyfourHour: true,    
                 },
@@ -263,13 +264,21 @@ class DateTimePicker extends CInputWidget
 
     /**
      * to be able to use the custom buttons of future designs, we need this function
-     * to set those.
+     * to set those. By default this datepicker uses Font Awesome 6, with this function we use FA4 icons as before.
      * @return string
      */
-    private function getCustomButtons() {
-
-
-        return '';
+    private function getCustomIconsString() {
+        return "icons: {
+                   time: 'fa fa-clock-o text-success',
+                   date: 'fa fa-calendar text-success',
+                   up: 'fa fa-caret-up',
+                   down: 'fa fa-caret-down',
+                   previous: 'fa fa-caret-left',
+                   next: 'fa fa-caret-right',
+                   today: 'fa fa-today text-success',
+                   clear: 'fa fa-trash text-success',
+                   close: 'fa fa-close text-success',
+                },";
     }
 
     /**
@@ -280,7 +289,6 @@ class DateTimePicker extends CInputWidget
     {
         $date = $this->value;
         $dateFormat = $this->getValue('data-format', $this->htmlOptions, 'DD.MM.YYYY HH:mm');
-
         return "
         //formatting when selected via datepicker
         picker.dates.formatInput = function(date) { 
@@ -290,6 +298,7 @@ class DateTimePicker extends CInputWidget
             return null;     
         };
 
+        //converting with moment.js
         picker.dates.setFromInput = function(value, index) {
             let converted = moment(value, '$dateFormat');
             if (converted.isValid()) {
@@ -300,9 +309,36 @@ class DateTimePicker extends CInputWidget
                 console.log('Momentjs failed to parse the input date.');
             }
         };
-        //formatting when value is loaded on pageload
-        var DateTimeVal = moment('$date', '$dateFormat').toDate();
-        picker.dates.setValue(tempusDominus.DateTime.convert(DateTimeVal));
+        //workaround: formatting when value is loaded on pageload
+        picker.dates.setFromInput('$date');
          ";
+    }
+
+    /**
+     * Returns the default tooltips for the datepicker, using the LS translation.
+     * If there are tooltips defined in the widget call as well, they will also be added
+     * and even prioritized over the defaults.
+     * @return array
+     */
+    private function getTranslatedTooltips()
+    {
+        $defaultToolTips = [
+            'clear' => gT('Clear selection'),
+            'prevMonth' => gT('Previous month'),
+            'nextMonth' => gT('Next month'),
+            'selectYear' => gT('Select year'),
+            'prevYear' => gT('Previous year'),
+            'nextYear' => gT('Next year'),
+            'selectDecade' => gT('Select decade'),
+            'prevDecade' => gT('Previous decade'),
+            'nextDecade' => gT('Next decade'),
+            'prevCentury' => gT('Previous century'),
+            'nextCentury' => gT('Next century'),
+            'selectTime' => gT('Select time'),
+            'selectDate' => gT('Select date')
+        ];
+        $tooltipsFromCall = $this->getValue('tooltips', $this->pluginOptions, []);
+
+        return array_merge($defaultToolTips, $tooltipsFromCall);
     }
 }
