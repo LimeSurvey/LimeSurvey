@@ -279,6 +279,9 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionListQuestions($surveyid, $landOnSideMenuTab = 'settings')
     {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
         $iSurveyID = sanitize_int($surveyid);
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
