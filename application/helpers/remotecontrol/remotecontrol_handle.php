@@ -1674,7 +1674,7 @@ class remotecontrol_handle
                         }
                     } elseif ($sPropertyName == 'attributes') {
                         $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
-                        $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion);
+                        $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, null, null, true);
                         $data = [];
                         foreach ($questionAttributes as $attributeName => $attributeData) {
                             if (empty($attributeData['i18n'])) {
@@ -1689,7 +1689,7 @@ class remotecontrol_handle
                         }
                     } elseif ($sPropertyName == 'attributes_lang') {
                         $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
-                        $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, $sLanguage);
+                        $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, $sLanguage, null, true);
                         $data = [];
                         foreach ($questionAttributes as $attributeName => $attributeData) {
                             if (!empty($attributeData['i18n'])) {
