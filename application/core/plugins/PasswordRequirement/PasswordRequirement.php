@@ -195,17 +195,6 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public function getPluginSettings($getValues = true)
     {
         $settings = parent::getPluginSettings($getValues);
-        //~ $settings = array_merge(
-            //~ $settings,
-            //~ array(
-                //~ 'adminPart' => array(
-                    //~ 'content' => CHtml::tag('div', array('h3'), gT('Administration login'))
-                //~ ),
-                //~ 'surveyPart' => array(
-                    //~ 'content' => CHtml::tag('div', array('h3'), gT('Saving survey'))
-                //~ ),
-            //~ )
-        //~ );
         return $settings;
     }
 
