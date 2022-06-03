@@ -165,12 +165,12 @@ class Permission extends LSActiveRecord
          * Using $event->append('globalBasePermissions', $newGlobalBasePermissions);
          * $newGlobalBasePermissions=[
          *  permissionName=>[
-         *       'create' : create (optionnal)
-         *       'read' : read (optionnal)
-         *       'update' : update (optionnal)
-         *       'delete' : delete (optionnal)
-         *       'import' : import (optionnal)
-         *       'export' : export (optionnal)
+         *       'create' : create (optional)
+         *       'read' : read (optional)
+         *       'update' : update (optional)
+         *       'delete' : delete (optional)
+         *       'import' : import (optional)
+         *       'export' : export (optional)
          *       'title' : translated title/name
          *       'description' : translated description
          *       'img': icon name class

@@ -305,7 +305,7 @@ function activateActionLink(){
 /**
  * function for replacing submit after confirm
  * @var string text : the text to be shown
- * @var string optionnal title
+ * @var string optional title
  * @var object[] submits : name.value to submit
  */
 function confirmSurveyDialog(text,title,submits){
@@ -434,3 +434,27 @@ function resetQuestionTimers(sid) {
     });
     window.localStorage.removeItem(surveyTimersItemName);
 }
+
+/**
+ * Disable submit button to prevent multiple submits
+ * This is done on 'document' instead of the '#limesurvey' form in order to allow
+ * other scripts (custom themes?) to cancel the submit before we disable the button.
+ */
+$(document).on('submit', function (e) {
+    // If the target is not the '#limesurvey' form, don't do anything.
+    if (e.target.id != 'limesurvey') {
+        return;
+    }
+    // We only care about the final submit, not normal forward/backward navigation.
+    var submitter = e.originalEvent ? $(e.originalEvent.submitter) : null;
+    if (!submitter || submitter.attr('value') != 'movesubmit') {
+        return;
+    }
+    // Still, we disable all submit buttons to make sure the "back" button is not
+    // pressed while submitting.
+    $('#limesurvey button[type="submit"]').prop('disabled', true);
+
+    // We also add a hidden input with the button's value, because it's not included
+    // in the request when the button is disabled.
+    $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + submitter.attr('name') + '\' value=\'' + submitter.attr('value') + '\' type=\'hidden\' />');
+});

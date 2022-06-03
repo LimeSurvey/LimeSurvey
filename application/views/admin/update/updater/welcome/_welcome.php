@@ -33,7 +33,7 @@
         ?>
     </div>
 
-    <!-- The key informations-->
+    <!-- The key information-->
     <div  class="col-xl-6 hidden-sm">
         <h4><?php eT('ComfortUpdate key information'); ?></h4>
 
