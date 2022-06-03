@@ -17,7 +17,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
     protected $settings = [
         'adminPart' => array(
-            'content' => 'Administration login',
+            'content' => 'Password requirements for administration login',
             'type' => 'info',
             'class' => "h3",
             'controlOptions' => array(
@@ -45,7 +45,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             'default' => 12,
         ),
         'surveyPart' => array(
-            'content' => 'Saving survey',
+            'content' => 'Password requirements for “Save and return later” feature',
             'type' => 'info',
             'class' => "h3",
             'controlOptions' => array(
@@ -195,6 +195,17 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public function getPluginSettings($getValues = true)
     {
         $settings = parent::getPluginSettings($getValues);
+        $settings['adminPart']['content'] = $this->gT("Password requirements for administration login");
+        $settings['needsNumber']['label'] = $this->gT("Require at least one digit");
+        $settings['needsUppercase']['label'] = $this->gT("Require at least one uppercase character");
+        $settings['needsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
+        $settings['minimumSize']['label'] = $this->gT("Minimum password length");
+        $settings['surveyPart']['content'] = $this->gT("Password requirements for “Save and return later” feature");
+        $settings['surveySaveActive']['label'] = $this->gT("Check password when use “Save and return later” feature");
+        $settings['surveySaveNeedsNumber']['label'] = $this->gT("Require at least one digit");
+        $settings['surveySaveNeedsUppercase']['label'] = $this->gT("Require at least one uppercase character");
+        $settings['surveySaveNeedsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
+        $settings['surveySaveMinimumSize']['label'] = $this->gT("Minimum password length");
         return $settings;
     }
 
