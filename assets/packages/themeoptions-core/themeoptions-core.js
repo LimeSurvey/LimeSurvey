@@ -205,9 +205,11 @@ var ThemeOptions = function () {
                 console.error('No valid monochrom theme field!');
             }
 
-            $('#simple_edit_add_css').val(currentThemeObject.add.filter(function (item, i) {
-                return /^css\/variations\/.*$/.test(item);
-            }));
+            if (currentThemeObject.add) {
+                $('#simple_edit_add_css').val(currentThemeObject.add.filter(function (item, i) {
+                    return /^css\/variations\/.*$/.test(item);
+                }));
+            }
         }
 
     };
