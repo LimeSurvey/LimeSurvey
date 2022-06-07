@@ -143,7 +143,7 @@
                 'usergroup',
                 $options_array,
                 array(
-                    'class' => 'form-control',
+                    'class' => 'form-select',
                     'options' => array(
                         $model['usergroup'] => array('selected' => true)
                     )

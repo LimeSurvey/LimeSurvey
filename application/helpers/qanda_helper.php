@@ -625,7 +625,7 @@ function do_language($ia)
     $answerlangs            = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs[]          = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
     $sLang                  = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
-    $coreClass              = "ls-answers answer-item dropdow-item langage-item";
+    $coreClass              = "ls-answers answer-item dropdow-item language-item";
     $inputnames = [];
 
     if (!in_array($sLang, $answerlangs)) {
@@ -4709,7 +4709,7 @@ function do_array_dual($ia)
         $useDropdownLayout = true;
         $coreClass .= " dropdown-array";
         $answertypeclass .= " dropdown";
-        $doDualScaleFunction = "doDualScaleDropDown"; // javascript funtion to lauch at end of answers
+        $doDualScaleFunction = "doDualScaleDropDown"; // javascript function to lauch at end of answers
     } else {
         $useDropdownLayout = false;
         $coreClass .= " radio-array";
@@ -4730,7 +4730,7 @@ function do_array_dual($ia)
         $answerwidth = 33;
         $defaultWidth = false;
     }
-    // Find if we have rigth and center text
+    // Find if we have right and center text
     /* All of this part seem broken actually : we don't send it to view and don't explode it */
     $sQuery         = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=" . $ia[0] . " and scale_id=0 AND question like '%|%'";
     $rigthCount     = Yii::app()->db->createCommand($sQuery)->queryScalar();

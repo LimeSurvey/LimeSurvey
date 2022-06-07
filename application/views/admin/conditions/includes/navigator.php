@@ -1,6 +1,7 @@
-<div class="form-group form-inline pull-left" style="margin-left: 150px;">
-    <label for='questionNav'><?php eT("Move to question:");?></label>
-    <select id='questionNav' class="form-select"  >
+<div class="row ms-auto">
+    <label for='questionNav' class="text-nowrap col-sm-7 col-form-label col-form-label-sm"><?php eT("Move to question:");?></label>
+    <div class="col-5">
+    <select id='questionNav' class="form-select">
 
         <optgroup class='activesurveyselect' label='<?php eT("Before"); ?>' >
             <?php foreach ($theserows as $row): ?>
@@ -25,7 +26,8 @@
         </optgroup>
 
     </select>
-    <a href="#" id="selector__hiddenNavigation" class="hidden pjax">hidden</a>
+    <a href="#" id="selector__hiddenNavigation" class="d-none pjax">hidden</a>
+    </div>
 </div>
 
 <?php

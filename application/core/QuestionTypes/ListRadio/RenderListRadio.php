@@ -228,7 +228,8 @@ class RenderListRadio extends QuestionBaseRenderer
             'name'      => $this->sSGQA,
             'basename'  => $this->sSGQA,
             'value'     => $this->mSessionValue,
-            'coreClass' => $this->sCoreClass
+            'coreClass' => $this->sCoreClass,
+            'othertext' => $this->sOthertext
         ), true);
 
         $this->registerAssets();

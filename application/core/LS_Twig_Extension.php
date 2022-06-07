@@ -184,7 +184,7 @@ class LS_Twig_Extension extends Twig_Extension
         return 0;
     }
     /**
-     * Retreive the question classes for a given question id
+     * Retrieve the question classes for a given question id
      * Use in survey template question.twig file.
      * TODO: we'd rather provide a oQuestion object to the twig view with a method getAllQuestion(). But for now, this public static function respect the old way of doing
      *
@@ -574,7 +574,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @deprecated (4.0)
      * @param string $sString :the string
      * @param boolean $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
-     * @param integer $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
+     * @param integer $iAbbreviated : max string text (if true : always flat), 0 or false : don't abbreviated
      * @param string $sEllipsis if abbreviated : the char to put at end (or middle)
      * @param integer $fPosition if abbreviated position to split (in % : 0 to 1)
      * @return string
@@ -656,7 +656,7 @@ class LS_Twig_Extension extends Twig_Extension
 
 
     /**
-     * Retreive all the previous answers from a given token
+     * Retrieve all the previous answers from a given token
      * To use it:
      *  {% set aResponses = getAllTokenAnswers(aSurveyInfo.sid) %}
      *  {{ dump(aResponses) }}

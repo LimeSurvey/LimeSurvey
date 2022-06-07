@@ -444,7 +444,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             if ($this->get('autocreate', null, null, false) == true) {
                 $autoCreateFlag = true;
             } else {
-                // If the user doesnt exist in the LS database, he can not login
+                // If the user doesn't exist in the LS database, he can not login
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID); // Error shown : user or password invalid
                 return;
             }

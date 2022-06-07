@@ -1,6 +1,6 @@
 <?php
 /**
- * Optionnal plugins options panels
+ * optional plugins options panels
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
