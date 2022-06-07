@@ -530,11 +530,11 @@ abstract class PluginBase implements iPlugin
 
     /**
      * Saves the new version from config into database
-     * @return boolean
+     * @return void
      */
     protected function saveNewVersion()
     {
-        return \Yii::app()->db->createCommand()->update(
+        \Yii::app()->db->createCommand()->update(
             '{{plugins}}',
             ['version' => (string)$this->config->metadata->version],
             'id=:id',
