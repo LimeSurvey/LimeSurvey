@@ -1624,6 +1624,7 @@ function do_list_radio($ia)
         'basename' => $ia[1],
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'coreClass'=>$coreClass,
+        'othertext' => $othertext,
         ), true);
 
     $inputnames[] = $ia[1];
