@@ -71,7 +71,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
         if ($nrOfImportedThemes == 0) {
             rmdirr($destdir);
             App()->setFlashMessage(
-                gT("An error occured while generating the Question theme"),
+                gT("An error occurred while generating the Question theme"),
                 'error'
             );
             $this->getController()->redirect(array("themeOptions/index#questionthemes"));

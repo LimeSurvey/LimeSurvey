@@ -105,7 +105,7 @@ class Update_325 extends DatabaseUpdateBase
                     '3.0',
                     'views',
                     'files',
-                    '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>',
+                    '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differing from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>',
                     null,
                     1,
                     'default'

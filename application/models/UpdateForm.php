@@ -26,7 +26,7 @@ class UpdateForm extends CFormModel
     /** @var string $build The build id */
     public $build;
 
-    /** @var  string $view The view to display : used only for welcome type views to let the server choose wich view will be displayed */
+    /** @var  string $view The view to display : used only for welcome type views to let the server choose which view will be displayed */
     public $view;
 
     // Proxy infos

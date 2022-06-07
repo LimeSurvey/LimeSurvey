@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{settings_user}}".
  *
- * The followings are the available columns in table '{{settings_user}}':
+ * The following are the available columns in table '{{settings_user}}':
  * @property integer $uid User id
  * @property string $entity Entity name
  * @property string $entity_id Entity ID

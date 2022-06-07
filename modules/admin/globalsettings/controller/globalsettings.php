@@ -17,7 +17,7 @@
 
 // First we define a namespace to avoid collision with core class.
 // Since we do that, all our call to the core/framework classes will need the global name space: /
-// For exemple:  \Yii::app()->getController()->renderPartial...
+// For example:  \Yii::app()->getController()->renderPartial...
 namespace lsadminmodules\globalsettings\controller;
 
 if (!defined('BASEPATH')) {
