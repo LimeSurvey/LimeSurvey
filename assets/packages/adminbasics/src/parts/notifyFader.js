@@ -85,6 +85,51 @@ class NotifyFader {
             }
         );
     };
+
+    createFlash(text, classes, styles, customOptions){
+        customOptions = customOptions || {};
+
+        const options = {
+            useHtml : customOptions.useHtml || true,
+            timeout : customOptions.timeout || 3500,
+            dismissable: customOptions.dismissable || true
+        };
+
+        styles = styles || {};
+        classes = classes || "alert-success";
+
+        if (options.dismissable) {
+            classes = "alert " + classes;
+        }
+
+        const container = $("<div></div>");
+
+        container.addClass(classes);
+        container.css(styles);
+
+        if(options.useHtml){
+            container.html(text);
+        } else {
+            container.text(text);
+        }
+
+        if (options.dismissable) {
+            $('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>×</span></button>').appendTo(container);
+        }
+
+        let timeoutRef;
+        if(options.timeout) {
+            timeoutRef = setTimeout(() => { container.alert('close') }, options.timeout);
+        }
+
+        container.on('closed.bs.alert', () => {
+            if(options.timeout) {
+                clearTimeout(timeoutRef);
+            }
+        });
+
+        container.appendTo($('#notif-container'));
+    };
 };
 
 window.LS.LsGlobalNotifier = window.LS.LsGlobalNotifier || new NotifyFader();
