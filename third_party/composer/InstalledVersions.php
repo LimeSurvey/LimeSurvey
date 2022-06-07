@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'b4fe7fd6941c4b3c97eda73dafa786fa02ecd23a',
+    'reference' => 'a71b463ecacc8912444df68b68cea66ec8927415',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'b4fe7fd6941c4b3c97eda73dafa786fa02ecd23a',
+      'reference' => 'a71b463ecacc8912444df68b68cea66ec8927415',
     ),
     'paragonie/constant_time_encoding' => 
     array (
@@ -97,6 +97,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4',
+    ),
+    'symfony/polyfill-mbstring' => 
+    array (
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
     ),
     'tiamo/spss' => 
     array (
