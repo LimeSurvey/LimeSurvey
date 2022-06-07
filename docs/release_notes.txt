@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.13 (build 220531) to 3.28.14 (build 220608) June 7, 2022
+-Fixed issue: Question organizer not working (Carsten Schmitz)
+-Fixed issue #18140: Cannot import vv file (with debug set) (#2453) (Denis Chenu)
+-Fixed issue #18129: Potential 500 error in file upload (#2434) (Denis Chenu)
+-Fixed issue #18128: JS error on 1st survey page (Denis Chenu)
+-Fixed issue #18043: Subquestion attributes shown in Short Free text quesiton type (Carsten Schmitz)
+-Fixed issue #18029: Removed html tags in emails (#2411) (François Charles Hébert)
+#Updated translation: Uighur by walkingdead
+#Updated translation: French (France) by DenisChenu
+
+
 Changes from 3.28.12 (build 220524) to 3.28.13 (build 220531) May 30, 2022
 -Fixed issue #18160: [security] Update jquery-ui to 1.13.1 (Carsten Schmitz)
 #Updated translation: Maltese by gabrieljenik
