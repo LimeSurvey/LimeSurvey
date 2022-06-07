@@ -1654,26 +1654,32 @@ class remotecontrol_handle
                             $aResult[$sPropertyName] = 'No available answers';
                         }
                     } elseif ($sPropertyName == 'attributes') {
-                        $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language' => null), array('order' => 'attribute'));
-                        if (count($oAttributes) > 0) {
-                            $aData = array();
-                            foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['attribute']] = $oAttribute['value'];
+                        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+                        $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, null, null, true);
+                        $data = [];
+                        foreach ($questionAttributes as $attributeName => $attributeData) {
+                            if (empty($attributeData['i18n'])) {
+                                $data[$attributeName] = $attributeData['value'];
                             }
-
-                            $aResult['attributes'] = $aData;
+                        }
+                        if (count($data) > 0) {
+                            ksort($data, SORT_NATURAL | SORT_FLAG_CASE);
+                            $aResult['attributes'] = $data;
                         } else {
                             $aResult['attributes'] = 'No available attributes';
                         }
                     } elseif ($sPropertyName == 'attributes_lang') {
-                        $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language' => $sLanguage), array('order' => 'attribute'));
-                        if (count($oAttributes) > 0) {
-                            $aData = array();
-                            foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['attribute']] = $oAttribute['value'];
+                        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+                        $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, $sLanguage, null, true);
+                        $data = [];
+                        foreach ($questionAttributes as $attributeName => $attributeData) {
+                            if (!empty($attributeData['i18n'])) {
+                                $data[$attributeName] = $attributeData[$sLanguage]['value'];
                             }
-
-                            $aResult['attributes_lang'] = $aData;
+                        }
+                        if (count($data) > 0) {
+                            ksort($data, SORT_NATURAL | SORT_FLAG_CASE);
+                            $aResult['attributes_lang'] = $data;
                         } else {
                             $aResult['attributes_lang'] = 'No available attributes';
                         }
