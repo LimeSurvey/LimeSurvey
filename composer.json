@@ -38,9 +38,11 @@
 	"require": {
         "paragonie/sodium_compat": "^1.14",
 		"twig/twig": "1.44.2",
-		"phpseclib/bcmath_compat": "1.0.4",
+		"phpseclib/bcmath_compat": "^2.0",
+		"phpseclib/phpseclib": "^3.0",
 		"tiamo/spss": "^2.2",
-        "yiiext/twig-renderer":"dev-master"
+        "yiiext/twig-renderer":"dev-master",
+		"symfony/polyfill-mbstring": "^1.26"
 	},
     "config": {
         "vendor-dir": "third_party",
