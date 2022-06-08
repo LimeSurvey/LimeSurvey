@@ -493,6 +493,12 @@ class DataEntry extends SurveyCommonAction
         if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+        if (!$oSurvey->hasResponsesTable) {
+            /* Same than ResponsesController->getData */
+            App()->setFlashMessage(gT("This survey has not been activated. There are no results to browse."), 'warning');
+            $this->getController()->redirect(["surveyAdministration/view", 'surveyid' => $surveyid]);
+            App()->end();
+        }
         $idresult = Response::model($surveyid)->findByPk($id);
         if (empty($idresult)) {
             throw new CHttpException(404, gT("Invalid response id."));
