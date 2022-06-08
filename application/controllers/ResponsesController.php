@@ -1005,7 +1005,7 @@ class ResponsesController extends LSBaseController
     private function getData(int $surveyId = null, int $responseId = null, string $language = null): array
     {
         if (!isset($surveyId)) {
-            App()->session['flashmessage'] = gT("Invalid survey ID");
+            App()->setFlashMessage(gT("Invalid survey ID"), 'warning');
             $this->redirect(["admin/index"]);
         }
 
@@ -1028,7 +1028,10 @@ class ResponsesController extends LSBaseController
         // Set the variables in an array
         $aData['surveyId'] = $aData['surveyid'] = $aData['iSurveyId'] = $surveyId;
         if (!empty($responseId)) {
-            /* Check it here ? */
+            /* Check if exists  */
+            if (empty(SurveyDynamic::model($surveyId)->findByPk($responseId))) {
+                throw new CHttpException(404, gT("Invalid response id."));
+            }
             $aData['iId'] = $responseId;
         }
         $aData['imageurl'] = App()->getConfig('imageurl');
