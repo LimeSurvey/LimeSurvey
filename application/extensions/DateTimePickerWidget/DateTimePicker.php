@@ -85,10 +85,8 @@ class DateTimePicker extends CInputWidget
             $this->htmlOptions['data-' . $key] = $pluginOption;
         }
         $this->htmlOptions['data-td-target'] = '#' . $this->mainId;
-        $this->htmlOptions['data-bs-placement'] = "right"; // @todo problem
         $this->htmlOptions['class'] = 'form-control';
-//        $this->htmlOptions['data-widgetPositioning'] = '["vertical": "bottom", "horizontal": "right"]';
-//        echo '<pre>';var_dump($this->pluginOptions);echo '</pre>';exit;
+        $this->format = $this->getValue('data-format', $this->htmlOptions, 'DD.MM.YYYY HH:mm');
     }
 
     /**
@@ -141,18 +139,8 @@ class DateTimePicker extends CInputWidget
             $script .= "
             document.getElementById('$id').onfocus = function () {
                 picker.show();
-                // reposition();
             };";
         }
-        $script .= "
-        function reposition() {
-            var popperWidgets = document.getElementsByClassName('tempus-dominus-widget');
-            for (let widget of popperWidgets) {
-                widget.setAttribute('data-popper-placement', 'bottom-end');
-                console.log(widget.dataset);
-            }
-        }"; // @todo problem
-
 
         Yii::app()->clientScript->registerScript('datetimepicker', $script, CClientScript::POS_END);
     }
@@ -175,7 +163,7 @@ class DateTimePicker extends CInputWidget
      * @param mixed $defaultValue the default value.
      * @return mixed the value.
      */
-    private function getValue(string $key, array $array, $defaultValue = null)
+    private function getValue(string $key, array $array, $defaultValue = 'false')
     {
         return array_key_exists($key, $array) ? $array[$key] : $defaultValue;
     }
@@ -190,15 +178,59 @@ class DateTimePicker extends CInputWidget
         $locale = $this->getValue('locale', $this->pluginOptions, 'en');
         $tooltips = $this->getConvertedTempusOptions($this->getTranslatedTooltips());
         foreach ($tooltips as $key => $tooltip) {
-            $localeScript .= "$key: '$tooltip',
+            $localeScript .= "      $key: '$tooltip',
           ";
         }
-        $localeScript .= "dayViewHeaderFormat: { month: 'long', year: 'numeric' },
-          locale: '$locale'";
+        $localeScript .= "      dayViewHeaderFormat: { month: 'long', year: 'numeric' },
+                locale: '$locale'";
 
         return "{
           $localeScript
         }";
+    }
+
+    /**
+     * Generates and returns the restrictions part of the Tempus Dominus datepicker config
+     * @return string
+     */
+    private function getRestrictionsOptionsString()
+    {
+        $minDate = $this->getValue('data-minDate', $this->htmlOptions, 'undefined');
+        $minDate = $minDate != 'undefined' ? "'$minDate'" : $minDate;
+        $maxDate = $this->getValue('data-maxDate', $this->htmlOptions, 'undefined');
+        $maxDate = $maxDate != 'undefined' ? "'$maxDate'" : $maxDate;
+
+        return "{
+                minDate: $minDate, 
+                maxDate: $maxDate,
+        }";
+    }
+
+    /**
+     * Generates and returns the components part of the Tempus Dominus datepicker config
+     * @return string
+     */
+    private function getComponentsOptionsString()
+    {
+        $clock = $this->getShowComponent('clock') ? 'true' : 'false';
+        $date = $this->getShowComponent('date') ? 'true' : 'false';
+        $month = $this->getShowComponent('month') ? 'true' : 'false';
+        $year = $this->getShowComponent('year') ? 'true' : 'false';
+        $decades = $this->getShowComponent('decades') ? 'true' : 'false';
+        $hours = $this->getShowComponent('hours') ? 'true' : 'false';
+        $minutes = $this->getShowComponent('minutes') ? 'true' : 'false';
+        $seconds = $this->getShowComponent('seconds') ? 'true' : 'false';
+        return "{
+                    useTwentyfourHour: true,
+                    date: $date,
+                    month: $month,
+                    year: $year,
+                    decades: $decades,
+                    clock: $clock,
+                    hours: $hours,
+                    minutes: $minutes,
+                    seconds: $seconds,    
+                }";
     }
 
     /**
@@ -240,25 +272,34 @@ class DateTimePicker extends CInputWidget
      */
     private function getTempusConfigString()
     {
-        $clear = $this->getValue('data-showClear', $this->htmlOptions, 'false') == 1 ? 'true' : 'false';
-        $today = $this->getValue('data-showToday', $this->htmlOptions, 'false') == 1 ? 'true' : 'false';
-        $close = $this->getValue('data-showClose', $this->htmlOptions, 'false') == 1 ? 'true' : 'false';
+        $clear = $this->getValue('data-showClear', $this->htmlOptions) == 1 ? 'true' : 'false';
+        $today = $this->getValue('data-showToday', $this->htmlOptions) == 1 ? 'true' : 'false';
+        $close = $this->getValue('data-showClose', $this->htmlOptions) == 1 ? 'true' : 'false';
+        $sideBySide = $this->getValue('data-sideBySide', $this->htmlOptions) == 1 && $this->getShowComponent(
+            'clock'
+        ) ? 'true' : 'false';
+        $stepping = $this->getValue('data-stepping', $this->htmlOptions, 1);
+        $stepping = $stepping != 0 ? $stepping : 1;
+
         $localization = $this->getLocalizationOptionsString();
+        $restrictions = $this->getRestrictionsOptionsString();
+        $calendarComponents = $this->getComponentsOptionsString();
         $icons = $this->getCustomIconsString();
         return "
         {
             localization: $localization,
+            restrictions: $restrictions,
             display: {
                 $icons
-                components: {
-                    useTwentyfourHour: true,    
-                },
+                components: $calendarComponents,
                 buttons: {
                     clear: $clear,
                     today: $today,
                     close: $close,
                 },
+                sideBySide: $sideBySide,
             },
+            stepping: $stepping,
         }";
     }
 
@@ -267,7 +308,8 @@ class DateTimePicker extends CInputWidget
      * to set those. By default this datepicker uses Font Awesome 6, with this function we use FA4 icons as before.
      * @return string
      */
-    private function getCustomIconsString() {
+    private function getCustomIconsString()
+    {
         return "icons: {
                    time: 'fa fa-clock-o text-success',
                    date: 'fa fa-calendar text-success',
@@ -288,7 +330,7 @@ class DateTimePicker extends CInputWidget
     private function getMomentJsOverrideString()
     {
         $date = $this->value;
-        $dateFormat = $this->getValue('data-format', $this->htmlOptions, 'DD.MM.YYYY HH:mm');
+        $dateFormat = $this->format;
         return "
         //formatting when selected via datepicker
         picker.dates.formatInput = function(date) { 
@@ -340,5 +382,41 @@ class DateTimePicker extends CInputWidget
         $tooltipsFromCall = $this->getValue('tooltips', $this->pluginOptions, []);
 
         return array_merge($defaultToolTips, $tooltipsFromCall);
+    }
+
+    /**
+     * Regarding the format of the displayed date, it is determined if the calendar component will be shown
+     * @return bool
+     */
+    private function getShowComponent($component)
+    {
+        switch ($component) {
+            case 'clock':
+                $formatMatch = preg_match('/[Hhms]/', $this->format);
+                break;
+            case 'date':
+                $formatMatch = preg_match('/[D]/', $this->format);
+                break;
+            case 'month':
+                $formatMatch = preg_match('/[M]/', $this->format);
+                break;
+            case 'year':
+            case 'decades':
+                $formatMatch = preg_match('/[yY]/', $this->format);
+                break;
+            case 'hours':
+                $formatMatch = preg_match('/[Hh]/', $this->format);
+                break;
+            case 'minutes':
+                $formatMatch = preg_match('/[m]/', $this->format);
+                break;
+            case 'seconds':
+                $formatMatch = preg_match('/[sS]/', $this->format);
+                break;
+            default:
+                $formatMatch = preg_match('/.*/', $this->format);
+        }
+
+        return $formatMatch !== false && $formatMatch !== 0;
     }
 }
