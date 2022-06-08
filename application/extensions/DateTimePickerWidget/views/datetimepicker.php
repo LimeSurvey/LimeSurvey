@@ -15,7 +15,6 @@
     data-td-target-toggle='nearest'
 >
     <?php
-//    echo '<pre>';var_dump($htmlOptions);echo '</pre>';exit;
     if ($hasModel) : ?>
         <?= CHtml::activeTextField($model, $attribute, $htmlOptions) ?>
     <?php else : ?>
