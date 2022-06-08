@@ -744,7 +744,7 @@ class CheckIntegrity extends SurveyCommonAction
         /*     Check conditions                                               */
         /**********************************************************************/
         $okQuestion = array();
-        $sQuery = 'SELECT cqid,cid,cfieldname FROM {{conditions}}';
+        $sQuery = 'SELECT cqid,cid,cfieldname,qid FROM {{conditions}}';
         $aConditions = Yii::app()->db->createCommand($sQuery)->queryAll();
         $aDelete = array();
         foreach ($aConditions as $condition) {
@@ -757,6 +757,15 @@ class CheckIntegrity extends SurveyCommonAction
                     } else {
                         $okQuestion[$condition['cqid']] = $condition['cqid'];
                     }
+                }
+            }
+            // Check that QID exists
+            if (!array_key_exists($condition['qid'], $okQuestion)) {
+                $iRowCount = Question::model()->countByAttributes(array('qid' => $condition['qid']));
+                if (!$iRowCount) {
+                    $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No matching QID'));
+                } else {
+                    $okQuestion[$condition['qid']] = $condition['qid'];
                 }
             }
             //Only do this if there actually is a 'cfieldname'

@@ -89,7 +89,7 @@ class UploadQuestionController {
     }
 
     displayUploadedFiles(filecount, fieldname, show_title, show_comment) {
-        const jsonstring = $("#" + fieldname).val();
+        const jsonstring = $("#java" + fieldname).val();
         let display = '';
 
         if (jsonstring == '[]' || jsonstring == '') {

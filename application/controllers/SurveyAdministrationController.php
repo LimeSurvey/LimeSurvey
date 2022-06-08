@@ -325,12 +325,12 @@ class SurveyAdministrationController extends LSBaseController
         $iGroupNumber = 0;
         $iGroupSequence = 0;
         $oQuestions = Question::model()
-            ->with(['group', 'questionl10ns'])
+            ->with(['group' => ['alias' => 'g'], 'questionl10ns'])
             ->findAll(
                 array(
                     'select' => 't.qid,t.gid',
                     'condition' => "t.sid=:sid and questionl10ns.language=:language and parent_qid=0",
-                    'order' => 'group.group_order, question_order',
+                    'order' => 'g.group_order, question_order',
                     'params' => array(':sid' => $iSurveyID, ':language' => $oSurvey->language)
                 )
             );
@@ -396,13 +396,10 @@ class SurveyAdministrationController extends LSBaseController
             'custom' => gT('Custom', 'unescaped'),
         );
 
-        $defaultLanguage = App()->getConfig('defaultlang');
-
         $testLanguages = getLanguageDataRestricted(true, 'short');
 
         $aData['edittextdata']['listLanguagesCode'] = $testLanguages;
         $aData['edittextdata']['aSurveyGroupList'] = SurveysGroups::getSurveyGroupsList();
-        $aData['edittextdata']['defaultLanguage'] =  getLanguageCodefromLanguage($defaultLanguage);
 
         $arrayed_data = array();
         $arrayed_data['oSurvey'] = $survey;

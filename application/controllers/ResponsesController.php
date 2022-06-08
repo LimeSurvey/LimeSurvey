@@ -147,7 +147,9 @@ class ResponsesController extends LSBaseController
                 $fnames[] = ["lastname", gT("Last name"), 'code' => 'lastname'];
                 $fnames[] = ["email", gT("Email"), 'code' => 'email'];
             }
-            $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
+            if ($survey->isDateStamp) {
+                $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
+            }
             $fnames[] = ["completed", gT("Completed"), "0"];
 
             foreach ($fieldmap as $field) {
@@ -671,7 +673,7 @@ class ResponsesController extends LSBaseController
                 // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
                 $sDir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
-                $sRealUserPath = realpath($sFileRealName);
+                $sRealUserPath = get_absolute_path($sFileRealName);
                 if ($sRealUserPath === false) {
                     throw new CHttpException(404, "File not found.");
                 } elseif (strpos($sRealUserPath, $sDir) !== 0) {

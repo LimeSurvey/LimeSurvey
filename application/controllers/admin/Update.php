@@ -61,8 +61,38 @@
 * @package       LimeSurvey
 * @subpackage    Backend
 */
-class Update extends SurveyCommonAction
+
+// Backward compatibility function for updates to 5.3 from any previous version
+// Psalm does not like that the classes are in the same file
+if (class_exists('SurveyCommonAction')) {
+// phpcs:disable
+    class DynamicSurveyCommonAction extends SurveyCommonAction
+    {
+    }
+} else {
+    // try to include the old one
+    class DynamicSurveyCommonAction extends Survey_Common_Action
+    {
+    }
+}
+
+class Update extends DynamicSurveyCommonAction
 {
+// phpcs:enable
+    /**
+     * Backward compatibility function for updates to 5.3 from any previous version
+     *
+     * @inheritDoc
+     */
+    protected function renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    {
+        if (method_exists(get_parent_class($this), 'renderWrappedTemplate')) {
+            parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        } else {
+            parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        }
+    }
+
     /**
      * First function to be called, when coming to admin/update
      *
@@ -117,7 +147,6 @@ class Update extends SurveyCommonAction
 
     public function manageSubmitkey()
     {
-        $buttons = 1;
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
@@ -140,27 +169,23 @@ class Update extends SurveyCommonAction
                 } else {
                     switch ($check->error) {
                         case 'out_of_updates':
-                            $title = "Your update key is out of update !";
-                            $message = "you should first renew this key before using it, or try to enter a new one !";
-                            $buttons = 1;
+                            $title = gT("Your update key has exceeded the maximum number of updates!");
+                            $message = gT("Please buy/enter a new one!");
                             break;
 
                         case 'expired':
-                            $title = "Your update key has expired!";
-                            $message = "you should first renew this key before using it, or try to enter a new one !";
-                            $buttons = 1;
+                            $title = gT("Your update key has expired!");
+                            $message = gT("Please buy/enter a new one!");
                             break;
 
                         case 'not_found':
-                            $title = "Unknown update key !";
-                            $message = "Your key is unknown by the update server.";
-                            $buttons = 3;
+                            $title = gT("Unknown update key!");
+                            $message = gT("Your key is unknown to the update server.");
                             break;
 
                         case 'key_null':
-                            $title = "key can't be null !";
+                            $title = gT("Key can't be empty!");
                             $message = "";
-                            $buttons = 3;
                             break;
                     }
 
@@ -367,30 +392,29 @@ class Update extends SurveyCommonAction
                     $updateinfos = json_decode(base64_decode(App()->request->getPost('datasupdateinfo')), true);
 
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
-                    $updateModel = new UpdateForm();
-                    $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
 
+                    $updateModel = new UpdateForm();
+
+                    $remove = $updateModel->removeDeletedFiles($updateinfos);
+                    if (!$remove->result) {
+                        return $this->_renderErrorString($remove->error);
+                    };
+                    $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
                     if ($file->result) {
                         $unzip = $updateModel->unzipUpdateFile();
                         if ($unzip->result) {
-                            $remove = $updateModel->removeDeletedFiles($updateinfos);
-                            if ($remove->result) {
-                                // Should never bug (version.php is checked before))
-                                $updateModel->updateVersion($destinationBuild);
-                                $updateModel->destroyGlobalSettings();
-                                $updateModel->removeTmpFile('update.zip');
-                                $updateModel->removeTmpFile('comfort_updater_cookie.txt');
+                            // Should never bug (version.php is checked before))
+                            $updateModel->updateVersion($destinationBuild);
+                            $updateModel->destroyGlobalSettings();
+                            $updateModel->removeTmpFile('update.zip');
+                            $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
-                                App()->session['update_result'] = null;
-                                App()->session['security_update'] = null;
-                                $today = new DateTime("now");
-                                App()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
+                            App()->session['update_result'] = null;
+                            App()->session['security_update'] = null;
+                            $today = new DateTime("now");
+                            App()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
-                                // TODO : aData should contains information about each step
-                                return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild' => $destinationBuild), false, false);
-                            } else {
-                                $error = $remove->error;
-                            }
+                            return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild' => $destinationBuild), false, false);
                         } else {
                             $error = $unzip->error;
                         }

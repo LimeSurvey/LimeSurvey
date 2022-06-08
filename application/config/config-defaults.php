@@ -56,9 +56,13 @@ $config['admintheme']         = 'Sea_Green'; // This setting specifys the direct
 $config['adminthemeiconsize'] = 32; // This settings describes the icon size for a normal toolbar icon - default for gringegreen is 32
 
 
-// If the user enters password incorrectly
+// If the user (admins) enters password incorrectly
 $config['maxLoginAttempt']    = 3; // Lock them out after 3 attempts
 $config['timeOutTime']        = 60 * 10; // Lock them out for 10 minutes.
+
+// If participant enters wrong access token
+$config['maxLoginAttemptParticipants']    = 3; // Lock them out after 3 attempts
+$config['timeOutParticipants']        = 60 * 10; // Lock them out for 10 minutes.
 
 // Site Settings
 $config['printanswershonorsconditions'] = 1; // If set to 1, only relevant answers to questions can be printed by user. If set to 0, also questions not shown are printed
@@ -87,7 +91,7 @@ $config['customassetversionnumber']  = 1;        // Used to generate the path of
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
 $config['allowedthemeimageformats'] = 'gif,ico,jpg,png'; // Image file types allowed to be uploaded in the themes section.
-$config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig'; // Other file types allowed to be uploaded in the themes section.
+$config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
 $config['allowedfileuploads'] = [
     //Documents
     'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',

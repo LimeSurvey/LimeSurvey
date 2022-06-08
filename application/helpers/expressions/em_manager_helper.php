@@ -44,8 +44,6 @@ define('LEM_DEBUG_VALIDATION_SUMMARY', 2);   // also includes  SQL error message
 define('LEM_DEBUG_VALIDATION_DETAIL', 4);
 define('LEM_PRETTY_PRINT_ALL_SYNTAX', 32);
 
-define('LEM_DEFAULT_PRECISION', 12);
-
 class LimeExpressionManager
 {
     /**
@@ -1692,7 +1690,7 @@ class LimeExpressionManager
                             $validationEqn[$questionNum] = [];
                         }
                         // sumEqn and sumRemainingEqn may need to be rounded if using sliders
-                        $precision = LEM_DEFAULT_PRECISION;    // default is not to round
+                        $precision = null;    // default is not to round
                         if (isset($qattr['slider_layout']) && $qattr['slider_layout'] == '1') {
                             $precision = 0;   // default is to round to whole numbers
                             if (isset($qattr['slider_accuracy']) && trim($qattr['slider_accuracy']) != '') {
@@ -1704,7 +1702,7 @@ class LimeExpressionManager
                             }
                         }
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                        $sumRemainingEqn = '(' . $equals_num_value . ' - sum(' . implode(', ', $sq_names) . '))';
+                        $sumRemainingEqn = 'sum(' . $equals_num_value . ', sum(' . implode(', ', $sq_names) . ') * -1)';
                         $mainEqn = 'sum(' . implode(', ', $sq_names) . ')';
 
                         if (!is_null($precision)) {
@@ -2193,11 +2191,6 @@ class LimeExpressionManager
                         }
 
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                        $precision = LEM_DEFAULT_PRECISION;
-                        if (!is_null($precision)) {
-                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
-                        }
-
                         $noanswer_option = '';
                         if ($value_range_allows_missing) {
                             $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
@@ -2247,10 +2240,6 @@ class LimeExpressionManager
                         }
 
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                        $precision = LEM_DEFAULT_PRECISION;
-                        if (!is_null($precision)) {
-                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
-                        }
 
                         $noanswer_option = '';
                         if ($value_range_allows_missing) {
@@ -3708,7 +3697,7 @@ class LimeExpressionManager
                     ;
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
-                    $jsVarName = $sgqa;
+                    $jsVarName = 'java' . $sgqa;
                     $jsVarName_on = $jsVarName;
                     break;
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
@@ -4202,16 +4191,8 @@ class LimeExpressionManager
         if ($groupSeq > -1 && $questionSeq == -1 && isset($LEM->groupSeqInfo[$groupSeq]['qend'])) {
             $questionSeq = $LEM->groupSeqInfo[$groupSeq]['qend'];
         }
-        // EM core need questionSeq + question id â€¦ */
-        $qid = 0;
-        if ($questionSeq > -1 && !is_null($questionSeq)) {
-            $aQid = array_keys($LEM->questionId2questionSeq, $questionSeq);
-            if (isset($aQid[0])) {
-                $qid = $aQid[0];
-            }
-        }
         // Replace in string
-        $string = $LEM->em->sProcessStringContainingExpressions($string, $qid, $numRecursionLevels, 1, $groupSeq, $questionSeq, $static);
+        $string = $LEM->em->sProcessStringContainingExpressions($string, 0, $numRecursionLevels, 1, $groupSeq, $questionSeq, $static);
         return $string;
     }
 
@@ -4773,7 +4754,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) { // Did we need it ?
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -4988,7 +4968,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -5489,7 +5468,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq, $force);
@@ -6770,7 +6748,6 @@ class LimeExpressionManager
         $LEM->groupRelevanceInfo = [];
         if (!is_null($gseq)) {
             $LEM->currentGroupSeq = $gseq;
-
             if (!is_null($surveyid)) {
                 $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized);
                 if ($gseq > $LEM->maxGroupSeq) {
@@ -6976,15 +6953,26 @@ class LimeExpressionManager
                     }
                 }
             }
+            $pageRelevanceInfo[] = array(
+                'qid' => 0,
+                'gseq' => $LEM->currentGroupSeq,
+                'eqn' => '',
+                'result' => true,
+                'numJsVars' => 0,
+                'relevancejs' => '',
+                'relevanceVars' => '',
+                'jsResultVar' => '',
+                'type' => '',
+                'hidden' => false,
+                'hasErrors' => false,
+            );
         }
-
         $valEqns = [];
         $relEqns = [];
         $relChangeVars = [];
 
         $dynamicQinG = []; // array of questions, per group, that might affect group-level visibility in all-in-one mode
         $GalwaysRelevant = []; // checks whether a group is always relevant (e.g. has at least one question that is always shown)
-
         if (is_array($pageRelevanceInfo)) {
             foreach ($pageRelevanceInfo as $arg) {
                 if (!$LEM->allOnOnePage && $LEM->currentGroupSeq != $arg['gseq']) {
@@ -7049,10 +7037,8 @@ class LimeExpressionManager
 
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
-
                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
-
-                if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
+                if ($arg['qid'] && ($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
@@ -7327,8 +7313,10 @@ class LimeExpressionManager
                     // Launch updated event after update value to allow equation update propagation
                     $relParts[] = "  $('#" . substr($jsResultVar, 1, -1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('updated');\n";
                 }
-                $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
-                $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                if ($arg['qid']) {
+                    $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
+                    $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                }
 
                 $relParts[] = "}\n";
                 if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
@@ -7343,10 +7331,10 @@ class LimeExpressionManager
                     $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
-                } else {
+                } elseif ($arg['qid']) {
                     // Second time : now if relevance is true: Group is allways visible (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
-                    if (!($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                    if ($arg['qid'] && !($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
                         $GalwaysRelevant[$arg['gseq']] = true;
                     }
                 }
@@ -8462,13 +8450,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             if (!preg_match('/_filecount$/', $sq)) {
                                 $json = $value;
                                 $aFiles = json_decode($json);
-                                $iSize = (is_null($aFiles)) ? 0 : @count($aFiles);
                                 // if the files have not been saved already,
                                 // move the files from tmp to the files folder
-
-                                $tmp = $LEM->surveyOptions['tempdir'] . 'upload' . DIRECTORY_SEPARATOR;
-                                if (!is_null($aFiles) && $iSize > 0) {
+                                if (!empty($aFiles) && is_array($aFiles)) {
+                                    $iSize = count($aFiles);
                                     // Move the (unmoved, temp) files from temp to files directory.
+                                    $tmp = $LEM->surveyOptions['tempdir'] . 'upload' . DIRECTORY_SEPARATOR;
                                     // Check all possible file uploads
                                     for ($i = 0; $i < $iSize; $i++) {
                                         $aFiles[$i]->name = sanitize_filename($aFiles[$i]->name, false, false, true);

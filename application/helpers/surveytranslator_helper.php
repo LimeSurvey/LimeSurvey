@@ -543,7 +543,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     // Kurdish (Kurmanji)
     $supportedLanguages['kmr']['description'] = gT('Kurdish (Kurmanji)');
     $supportedLanguages['kmr']['nativedescription'] = 'Kurmanc&#xEE;';
-    $supportedLanguages['kmr']['rtl'] = true;
+    $supportedLanguages['kmr']['rtl'] = false;
     $supportedLanguages['kmr']['dateformat'] = 1;
     $supportedLanguages['kmr']['radixpoint'] = 1;
     $supportedLanguages['kmr']['cldr'] = 'ku';
@@ -761,8 +761,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ru']['momentjs'] = 'ru';
 
     // Sami
-    $supportedLanguages['smi']['description'] = gT('Sami');
-    $supportedLanguages['smi']['nativedescription'] = 'Sámi';
+    $supportedLanguages['smi']['description'] = gT('Sami (Northern)');
+    $supportedLanguages['smi']['nativedescription'] = 'Davvisámegiella';
     $supportedLanguages['smi']['rtl'] = false;
     $supportedLanguages['smi']['dateformat'] = 4;
     $supportedLanguages['smi']['radixpoint'] = 1;
@@ -1197,9 +1197,9 @@ function canShowDatePicker($dateformatdetails, $dateformats = null)
 }
 
 /**
+ * Returns a language code from the name
  *
- *
- * @param string $languagetosearch this is the shortname for the language (e.g. 'en' see array in getLanguageData())
+ * @param string $languagetosearch this is the name of the language (e.g. 'English' see array in getLanguageData())
  * @return int|string
  */
 function getLanguageCodefromLanguage($languagetosearch)

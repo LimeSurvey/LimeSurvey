@@ -600,7 +600,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $loginID = (int) $loginID;
         $criteria = $this->getDBCriteria();
-        $criteriaPerm = self::getPermissionCriteria();
+        $criteriaPerm = self::getPermissionCriteria($loginID);
         $criteria->mergeWith($criteriaPerm, 'AND');
         return $this;
     }
@@ -2026,31 +2026,24 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return $result !== false;
     }
 
+    /**
+     * Get the final label for survey id
+     * @param string $dataSecurityNoticeLabel current label
+     * @param integer $surveyId unused
+     * @return string
+     */
     public static function replacePolicyLink($dataSecurityNoticeLabel, $surveyId)
     {
-
-        $STARTPOLICYLINK = "";
-        $ENDPOLICYLINK = "";
-
-        if (self::model()->findByPk($surveyId)->showsurveypolicynotice == 2) {
-            $STARTPOLICYLINK = "<a href='#data-security-modal-" . $surveyId . "' data-toggle='collapse'>";
-            $ENDPOLICYLINK = "</a>";
-            if (!preg_match('/(\{STARTPOLICYLINK\}|\{ENDPOLICYLINK\})/', $dataSecurityNoticeLabel)) {
-                $dataSecurityNoticeLabel .= "<br/> {STARTPOLICYLINK}" . gT("Show policy") . "{ENDPOLICYLINK}";
-            }
-        }
-
-
-
-        $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK, $dataSecurityNoticeLabel);
-
-        $countEndLabel = 0;
-        $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK, $dataSecurityNoticeLabel, -1, $countEndLabel);
-        if ($countEndLabel == 0) {
-            $dataSecurityNoticeLabel .= '</a>';
-        }
-
-        return $dataSecurityNoticeLabel;
+        /* @var string[] to go to automatic translation */
+        $translation = [
+            gT("Show policy")
+        ];
+        return App()->twigRenderer->renderPartial(
+            '/subviews/privacy/privacy_datasecurity_notice_label.twig',
+            [
+                'dataSecurityNoticeLabel' => $dataSecurityNoticeLabel,
+            ]
+        );
     }
 
     /**

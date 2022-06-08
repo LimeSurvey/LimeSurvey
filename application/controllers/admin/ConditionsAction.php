@@ -1183,10 +1183,13 @@ class ConditionsAction extends SurveyCommonAction
                 break;
             // Update scenario
             case "updatescenario":
-                // TODO: Check if $p_newscenarionum is null
-                Condition::model()->insertRecords(array('scenario' => $p_newscenarionum), true, array(
-                    'qid' => $qid, 'scenario' => $p_scenario));
-                LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+                if (is_null($p_newscenarionum)) {
+                    Yii::app()->setFlashMessage(gT("No scenario number specified"), 'error');
+                } else {
+                    Condition::model()->insertRecords(array('scenario' => $p_newscenarionum), true, array(
+                        'qid' => $qid, 'scenario' => $p_scenario));
+                    LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+                }
                 break;
             // Delete all conditions for this question
             case "deleteallconditions":
@@ -1309,18 +1312,13 @@ class ConditionsAction extends SurveyCommonAction
      */
     protected function getQuestionRows()
     {
-        $qresult = Question::model()->findAllByAttributes(array(
-            'parent_qid' => 0,
-            'sid' => $this->iSurveyID));
+        $qresult = Question::model()->primary()->getQuestionList($this->iSurveyID);
 
         //'language' => $this->language
         $qrows = array();
         foreach ($qresult as $k => $v) {
             $qrows[$k] = array_merge($v->attributes, $v->group->attributes);
         }
-
-        // Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
-        usort($qrows, 'groupOrderThenQuestionOrder');
 
         return $qrows;
     }

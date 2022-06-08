@@ -838,7 +838,6 @@ function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 * and returns -1, 0 or 1 depending on the result of the comparison of
 * the sort order of the group_order and question_order field
 * Used by :
-* - conditionsaction->getQuestionRows with merging group and question attributes (all in same array)
 * - remotecontrol_handle->export_statistics with merging group and question attributes (all in same array)
 * - checkQuestions() in activate_helper function with ?
 * @param mixed $a
@@ -2184,13 +2183,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         }
     }
     $mail->Subject = $subject;
-
-    $sent = $mail->Send();
-    $maildebug = $mail->ErrorInfo;
-    if (Yii::app()->getConfig("emailsmtpdebug") > 0 && $mail->getDebug()) {
-        $maildebug .= '<br><strong>' . gT('SMTP debug output:') . '</strong>' . $mail->getDebug('html');
-    }
-    return $sent;
+    return $mail->Send();
 }
 
 
