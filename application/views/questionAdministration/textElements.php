@@ -32,7 +32,7 @@
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
             <div class="form-group">
-                <div class="input-group">
+                <div class="input-group col-12">
                     <?= CHtml::textArea(
                         "questionI10N[$lang][question]",
                         $question->questionl10ns[$lang]->question ?? '',
@@ -65,7 +65,7 @@
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
             <div class="form-group">
-                <div class="input-group">
+                <div class="input-group col-12">
                     <?= CHtml::textArea(
                         "questionI10N[$lang][help]",
                         $question->questionl10ns[$lang]->help ?? '',
