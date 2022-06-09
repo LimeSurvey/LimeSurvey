@@ -4342,3 +4342,10 @@ html[dir="rtl"] .dropdown-menu,
 html[dir="rtl"] th {
     text-align: initial;
 }
+
+/**
+ * Ported from Bootstrap 5. Can be removed on migration.
+ */
+.w-100 {
+    width: 100% !important;
+}
