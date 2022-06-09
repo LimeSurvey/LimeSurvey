@@ -13,6 +13,8 @@ class LayoutHelper
      */
     public function showHeaders(array $aData, bool $sendHTTPHeader = true)
     {
+        Yii::app()->setConfig('pageTitle', $aData['pageTitle'] ? : $aData['title_bar']['title']);
+
         if (!isset($aData['display']['header']) || $aData['display']['header'] !== false) {
             // Send HTTP header
             if ($sendHTTPHeader) {
