@@ -1343,10 +1343,12 @@ class ParticipantsAction extends SurveyCommonAction
     {
         $participantId = Yii::app()->request->getPost('participant_id');
         $blacklistStatus = Yii::app()->request->getPost('blacklist');
-        $blacklistValue = ($blacklistStatus == "true" ? "Y" : "N");
+        $blacklistValue = $blacklistStatus == true ? "Y" : "N";
         $participant = Participant::model()->findByPk($participantId);
-        $participant->blacklisted = $blacklistValue;
-        $participant->update(array('blacklisted'));
+        if ($participant) {
+            $participant->blacklisted = $blacklistValue;
+            $participant->update(['blacklisted']);
+        }
         echo json_encode(array(
             "success" => true,
             "newValue" => $blacklistValue
@@ -1406,10 +1408,12 @@ class ParticipantsAction extends SurveyCommonAction
     {
         $attributeId = Yii::app()->request->getPost('attribute_id');
         $visible = Yii::app()->request->getPost('visible');
-        $visible_value = ($visible == "true" ? "TRUE" : "FALSE");
+        $visible_value = ($visible ? "TRUE" : "FALSE");
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
-        $attributeName->visible = $visible_value;
-        $attributeName->update(array('visible'));
+        if (isset($attributeName)) {
+            $attributeName->visible = $visible_value;
+            $attributeName->update(['visible']);
+        }
         echo json_encode(array(
             "debug" => Yii::app()->request,
             "debug_p1" => Yii::app()->request->getPost('attribute_id'),
@@ -2255,7 +2259,7 @@ class ParticipantsAction extends SurveyCommonAction
         ];
         $participantIds = Yii::app()->request->getPost('participant_id');
         $iShareUserId = (int) Yii::app()->request->getPost('shareuser');
-        $bCanEdit = Yii::app()->request->getPost('can_edit') == 'on';
+        $bCanEdit = Yii::app()->request->getPost('can_edit') == true;
 
         if (!is_array($participantIds)) {
             $participantIds = array($participantIds);

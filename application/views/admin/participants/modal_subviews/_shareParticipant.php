@@ -50,7 +50,14 @@ Yii::app()->getController()->renderPartial(
                     <?php eT("Other users may edit this participant"); ?>
                 </label>
                 <div class='col-12'>
-                    <input name='can_edit' type='checkbox' data-size='small' data-on-color='primary' data-off-color='warning' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='ls-bootstrap-switch ls-space margin left-15' />
+                    <?php App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => "can_edit",
+                        'checkedOption' => "0",
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
         </div>

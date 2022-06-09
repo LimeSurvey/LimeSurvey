@@ -38,7 +38,14 @@
                     <?php eT('Display survey participant table after addition?'); ?>
                 </label>
                 <div class='col-md-8'>
-                    <input name='redirect' type='checkbox' data-size='small' data-on-color='primary' data-off-color='warning' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='ls-bootstrap-switch' />
+                    <?php App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => "redirect",
+                        'checkedOption' => "0",
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
         </div>

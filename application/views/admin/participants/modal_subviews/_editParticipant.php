@@ -67,7 +67,7 @@ Yii::app()->getController()->renderPartial(
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'model'         => $model,
                     'attribute'     => 'blacklisted',
-                    'checkedOption' => $model->blacklisted,
+                    'checkedOption' => $model->blacklisted ?? 'N',
                     'selectOptions' => [
                         'Y' => gT('Yes'),
                         'N' => gT('No'),

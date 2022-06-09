@@ -196,11 +196,19 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getVisibleSwitch()
     {
-        $inputHtml = "<input type='checkbox' data-size='small' data-visible='" . $this->visible . "' data-on-color='primary' data-off-color='warning' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeAttributeVisibility' "
-            . ($this->visible == "TRUE" ? "checked" : "")
-            . ($this->core_attribute == "Y" ? " disabled" : "")
-            . "/>";
-        return  $inputHtml;
+        $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'visible_' . $this->attribute_id,
+            'checkedOption' => $this->visible === "TRUE" ? "1" : "0",
+            'selectOptions' => [
+                '1' => gT('Yes'),
+                '0' => gT('No'),
+            ],
+            'htmlOptions'   => [
+                'class' => 'action_changeAttributeVisibility',
+                'disabled' => $this->core_attribute === "Y" ? true : false
+            ]
+        ], true);
+        return $inputHtml;
     }
 
     /**
