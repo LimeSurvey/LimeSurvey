@@ -242,7 +242,7 @@ class RenderDate extends QuestionBaseRenderer
                     'value' => $dateoutput,
                     'pluginOptions' => array(
                         'format' => $this->aDateformatDetails['jsdate'],
-                        'allowInputToggle' => false,
+                        'allowInputToggle' => true,
                         'showClear' => true,
                         'sideBySide' => true,
                         'minDate' => $this->minDate,

@@ -50,16 +50,6 @@ class DateTimePicker extends CInputWidget
      * - disabledHours: undefined, Disallows the user to select any of the provided hours.
      * - disabledTimeIntervals: undefined, Disables time selection between the given DateTimes.
      * - daysOfWeekDisabled, undefined, Disallow the user to select weekdays that exist in this array. This has lower priority over the options.minDate, options.maxDate, options.disabledDates and options.enabledDates configuration settings.
-     *
-     *
-     * OLD:
-     * - maskInput: true, disables the text input mask
-     * - pickDate: true,  disables the date picker
-     * - pickTime: true,  disables de time picker
-     * - pick12HourFormat: false, enables the 12-hour format time picker
-     * - pickSeconds: true, disables seconds in the time picker
-     * - startDate: -Infinity, set a minimum date
-     * - endDate: Infinity, set a maximum date
      */
     public $pluginOptions = array();
 
@@ -137,9 +127,13 @@ class DateTimePicker extends CInputWidget
         // bug workaround allowInputToggle
         if ($allowInputToggle) {
             $script .= "
-            document.getElementById('$id').onfocus = function () {
-                picker.show();
-            };";
+            var input = document.getElementById('$id');
+            if(input.value !== '') {
+                document.getElementById('$id').onfocus = function () {
+                    picker.show();
+                };
+            } 
+            ";
         }
 
         Yii::app()->clientScript->registerScript('datetimepicker', $script, CClientScript::POS_END);
@@ -348,12 +342,27 @@ class DateTimePicker extends CInputWidget
                 this.setValue(date, index);
             }
             else {
-                console.log('Momentjs failed to parse the input date.');
+                // console.log('Momentjs failed to parse the input date.');
             }
         };
         //workaround: formatting when value is loaded on pageload
         picker.dates.setFromInput('$date');
-         ";
+         
+        //workaround for correct minDate, maxDate settings
+        var minDate = picker.optionsStore.options.restrictions.minDate;
+        var maxDate = picker.optionsStore.options.restrictions.maxDate;
+        var locale = picker.optionsStore.options.localization.locale;
+        if(minDate) {
+           var min = moment(minDate);
+           min.set({h: 0, m: 0, s: 0});
+           picker.optionsStore.options.restrictions.minDate = tempusDominus.DateTime.convert(min.toDate(), locale);
+        }
+        if(maxDate) {
+           var max = moment(maxDate);
+           max.set({h: 23, m: 59, s: 59});
+           picker.optionsStore.options.restrictions.maxDate = tempusDominus.DateTime.convert(max.toDate(), locale);
+        }
+        ";
     }
 
     /**
