@@ -40,16 +40,27 @@ class DateTimePicker extends CInputWidget
     public $name = '';
 
     /**
+     * https://getdatepicker.com/6/options.html
      * @var array pluginOptions to be passed to datetimepicker plugin. Defaults are:
      *
+     * - format (custom, introduced by us)
+     * - allowInputToggle: false
+     * - showClear: false
+     * - showToday: false
+     * - showClose: false
+     * - sideBySide: false
+     * - stepping: 1, Controls how much the minutes are changed by
+     * - locale: default
      * - minDate: undefined, Prevents the user from selecting a date/time before this value
      * - maxDate: undefined, Prevents the user from selecting a date/time after this value
-     * - enabledDates: undefined, Allows the user to select only from the provided days. Setting this takes precedence over options.minDate, options.maxDate configuration.
-     * - disabledDates: undefined, Disallows the user to select any of the provided days.
-     * - enabledHours: undefined, Allows the user to select only from the provided hours.
-     * - disabledHours: undefined, Disallows the user to select any of the provided hours.
-     * - disabledTimeIntervals: undefined, Disables time selection between the given DateTimes.
-     * - daysOfWeekDisabled, undefined, Disallow the user to select weekdays that exist in this array. This has lower priority over the options.minDate, options.maxDate, options.disabledDates and options.enabledDates configuration settings.
+     * - @TODO enabledDates: undefined
+     * - @TODO disabledDates: undefined
+     * - @TODO enabledHours: undefined
+     * - @TODO disabledHours: undefined
+     * - @TODO disabledTimeIntervals: undefined
+     * - @TODO daysOfWeekDisabled, undefined
+     *
+     * Display of components like "calendar", "clock", "years", etc is set dynamically via format setting
      */
     public $pluginOptions = array();
 
@@ -120,23 +131,24 @@ class DateTimePicker extends CInputWidget
         $id = $this->getId();
         $allowInputToggle = $this->getValue('data-allowInputToggle', $this->htmlOptions, false);
         $config = $this->getTempusConfigString();
-        $script = "const picker = new tempusDominus.TempusDominus(document.getElementById('$this->mainId'), $config);
+        $script = "const picker_$id = new tempusDominus.TempusDominus(document.getElementById('$this->mainId'), $config);
         ";
         $script .= $this->getMomentJsOverrideString();
 
-        // bug workaround allowInputToggle
         if ($allowInputToggle) {
             $script .= "
-            var input = document.getElementById('$id');
-            if(input.value !== '') {
-                document.getElementById('$id').onfocus = function () {
-                    picker.show();
+            // bug workaround allowInputToggle
+            var id_$id = '$id';
+            var input_$id = document.getElementById('$id');
+            if((id_$id.indexOf('answer') >= 0 && input_$id.value !== '') || id_$id.indexOf('answer') < 0) {
+                    document.getElementById('$id').onfocus = function () {
+                    picker_$id.show();
                 };
             } 
             ";
         }
 
-        Yii::app()->clientScript->registerScript('datetimepicker', $script, CClientScript::POS_END);
+        Yii::app()->clientScript->registerScript('datetimepicker_' . $id, $script, CClientScript::POS_END);
     }
 
     /**
@@ -323,11 +335,12 @@ class DateTimePicker extends CInputWidget
      */
     private function getMomentJsOverrideString()
     {
+        $id = $this->getId();
         $date = $this->value;
         $dateFormat = $this->format;
         return "
         //formatting when selected via datepicker
-        picker.dates.formatInput = function(date) { 
+        picker_$id.dates.formatInput = function(date) { 
             if(date !== null) {
                 return moment(date).format('$dateFormat');
             }
@@ -335,7 +348,7 @@ class DateTimePicker extends CInputWidget
         };
 
         //converting with moment.js
-        picker.dates.setFromInput = function(value, index) {
+        picker_$id.dates.setFromInput = function(value, index) {
             let converted = moment(value, '$dateFormat');
             if (converted.isValid()) {
                 let date = tempusDominus.DateTime.convert(converted.toDate(), this.optionsStore.options.localization.locale);
@@ -346,21 +359,21 @@ class DateTimePicker extends CInputWidget
             }
         };
         //workaround: formatting when value is loaded on pageload
-        picker.dates.setFromInput('$date');
+        picker_$id.dates.setFromInput('$date');
          
         //workaround for correct minDate, maxDate settings
-        var minDate = picker.optionsStore.options.restrictions.minDate;
-        var maxDate = picker.optionsStore.options.restrictions.maxDate;
-        var locale = picker.optionsStore.options.localization.locale;
+        var minDate = picker_$id.optionsStore.options.restrictions.minDate;
+        var maxDate = picker_$id.optionsStore.options.restrictions.maxDate;
+        var locale = picker_$id.optionsStore.options.localization.locale;
         if(minDate) {
            var min = moment(minDate);
            min.set({h: 0, m: 0, s: 0});
-           picker.optionsStore.options.restrictions.minDate = tempusDominus.DateTime.convert(min.toDate(), locale);
+           picker_$id.optionsStore.options.restrictions.minDate = tempusDominus.DateTime.convert(min.toDate(), locale);
         }
         if(maxDate) {
            var max = moment(maxDate);
            max.set({h: 23, m: 59, s: 59});
-           picker.optionsStore.options.restrictions.maxDate = tempusDominus.DateTime.convert(max.toDate(), locale);
+           picker_$id.optionsStore.options.restrictions.maxDate = tempusDominus.DateTime.convert(max.toDate(), locale);
         }
         ";
     }
