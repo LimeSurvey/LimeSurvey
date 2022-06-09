@@ -376,8 +376,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     public function newLoginForm()
     {
         $this->getEvent()->getContent($this)
-        ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', '', array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))))
-        ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', '', array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))));
+        ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', App()->request->getPost('user'), array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))))
+        ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', App()->request->getPost('password'), array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))));
     }
 
     /**
