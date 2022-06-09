@@ -75,12 +75,12 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                             <div class="btn-group" role="group">
                                 <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit '
                                        data-id='simple_edit_options_general_inherit'/>
-                                <label for="general_inherit_on" class="btn btn-outline-primary">
+                                <label for="general_inherit_on" class="btn btn-outline-secondary">
                                     <?php echo gT("Yes"); ?>
                                 </label>
                                 <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='btn-check selector_option_general_inherit '
                                        data-id='simple_edit_options_general_inherit'/>
-                                <label for="general_inherit_off" class="btn btn-outline-primary">
+                                <label for="general_inherit_off" class="btn btn-outline-secondary">
                                     <?php echo gT("No"); ?>
                                 </label>
                             </div>
@@ -132,7 +132,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     foreach ($options as $optionKey => $optionValue) {
                         $id = $attributeKey . "_" . $optionKey;
                         echo '<input id="' . $id . '" type="radio" name="' . $attributeKey . '" value="' . $optionKey . '" class="btn-check selector_option_radio_field simple_edit_options_' . $attributeKey . ' " id="' . $attributeKey . '"/>';
-                        echo '<label for="' . $id . '" class="btn btn-outline-primary">'
+                        echo '<label for="' . $id . '" class="btn btn-outline-secondary">'
                             . gT($optionValue) . '
                                             </label>';
                     }

@@ -13,7 +13,7 @@
                 checked
             />
             <label
-                class="btn btn-outline-primary"
+                class="btn btn-outline-secondary"
                 for="question[<?= $this->generalOption->name; ?>]_<?= $option->value; ?>" 
             >
                 <?= $option->text; ?>
@@ -27,7 +27,7 @@
                     value="<?= Chtml::encode($option->value); ?>"
             />
             <label
-                class="btn btn-outline-primary"
+                class="btn btn-outline-secondary"
                 for="question[<?= $this->generalOption->name; ?>]_<?= $option->value; ?>" 
             >
                 <?= $option->text; ?>

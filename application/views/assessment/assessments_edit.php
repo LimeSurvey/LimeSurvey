@@ -23,10 +23,10 @@
                         <div class='col-md-10 ls-flex wrap'>
                             <div class="btn-group" role="group">
                                 <input class='btn-check' type='radio' id='radiototal' name='scope' value='T' checked='checked'/>
-                                <label class='btn btn-outline-primary' for="radiototal"><?php eT("Total"); ?></label>
+                                <label class='btn btn-outline-secondary' for="radiototal"><?php eT("Total"); ?></label>
 
                                 <input class='btn-check' type='radio' id='radiogroup' name='scope' value='G'/>
-                                <label class='btn btn-outline-primary' for="radiogroup"><?php eT("Group"); ?></label>
+                                <label class='btn btn-outline-secondary' for="radiogroup"><?php eT("Group"); ?></label>
                             </div>
                         </div>
                     </div>

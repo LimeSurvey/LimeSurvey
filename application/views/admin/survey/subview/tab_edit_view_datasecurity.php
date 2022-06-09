@@ -28,15 +28,15 @@ PrepareEditorScript(false, $this);
     <div class="">
                 <div class="btn-group" data-bs-toggle="buttons">
                     <input class="btn-check" type="radio" id="showsurveypolicynotice_0" name="showsurveypolicynotice" value="0" <?=$oSurvey->showsurveypolicynotice==0 ? 'checked' : ''?> autocomplete="off">
-                    <label for="showsurveypolicynotice_0" class="btn btn-outline-primary">
+                    <label for="showsurveypolicynotice_0" class="btn btn-outline-secondary">
                         <?=gT("Don't show");?>
             </label>
                     <input class="btn-check" type="radio" id="showsurveypolicynotice_1" name="showsurveypolicynotice" value="1" <?=$oSurvey->showsurveypolicynotice==1 ? 'checked' : ''?> autocomplete="off">
-                    <label for="showsurveypolicynotice_1" class="btn btn-outline-primary">
+                    <label for="showsurveypolicynotice_1" class="btn btn-outline-secondary">
                         <?=gT("Inline text");?>
             </label>
                     <input class="btn-check" type="radio" id="showsurveypolicynotice_2" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off">
-                    <label for="showsurveypolicynotice_2" class="btn btn-outline-primary">
+                    <label for="showsurveypolicynotice_2" class="btn btn-outline-secondary">
                         <?=gT("Collapsible text");?>
             </label>
         </div>

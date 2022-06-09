@@ -1066,7 +1066,7 @@ fieldset[disabled] {
     }
 }
 .btn-outline-secondary {
-    color: $gray-20;
+    color: $primary-hover_2;
     background-color: $white;
     border: 1px solid $gray-09;
     &:hover {
@@ -1124,6 +1124,15 @@ fieldset[disabled] {
     &.active {
         background-color: $white;
         border: 1px solid $gray-09;
+    }
+}
+.btn-check{
+    &:active+.btn-outline-secondary,
+    &:checked+.btn-outline-secondary,
+    &.active {
+        background-color: $primary-bg-success;
+        border-color: $gray-11;
+        color: $primary-hover_2
     }
 }
 .btn-primary {
@@ -1447,9 +1456,6 @@ fieldset[disabled] {
     &:focus {
         color: $gray-15;
     }
-}
-.btn.btn-outline-secondary {
-    color: $primary-hover_2;
 }
 .btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover {
     color: $white;

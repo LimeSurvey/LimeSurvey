@@ -17,7 +17,7 @@
     <?php foreach ($selectOptions as $value => $caption) : ?>
         <input type="radio" class="btn-check" name="<?= $name ?>" id="<?= $id . '_' . $count ?>" autocomplete="off"
                value="<?= $value ?>" <?= $checkedOption == $value ? 'checked' : '' ?> <?= isset($htmlOptions['disabled']) && $htmlOptions['disabled'] ? 'disabled' : '' ?>>
-        <label class="btn btn-outline-primary" for="<?= $id . '_' . $count ?>"><?= $caption ?></label>
+        <label class="btn btn-outline-secondary" for="<?= $id . '_' . $count ?>"><?= $caption ?></label>
         <?php $count++ ?>
     <?php endforeach; ?>
 </div>

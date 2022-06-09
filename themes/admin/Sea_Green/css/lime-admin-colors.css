@@ -815,7 +815,7 @@ fieldset[disabled] .btn-link:focus {
 }
 
 .btn-outline-secondary {
-  color: #333333;
+  color: #0f3e12;
   background-color: #fff;
   border: 1px solid #cccccc;
 }
@@ -863,6 +863,12 @@ fieldset[disabled] .btn-link:focus {
 .btn-outline-secondary[disabled].active {
   background-color: #fff;
   border: 1px solid #cccccc;
+}
+
+.btn-check:active + .btn-outline-secondary, .btn-check:checked + .btn-outline-secondary, .btn-check.active {
+  background-color: #c0e3c2;
+  border-color: #adadad;
+  color: #0f3e12;
 }
 
 .btn-primary {
@@ -1135,10 +1141,6 @@ fieldset[disabled] .btn-link:focus {
 }
 .btn-link[disabled]:focus {
   color: #858585;
-}
-
-.btn.btn-outline-secondary {
-  color: #0f3e12;
 }
 
 .btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover {
