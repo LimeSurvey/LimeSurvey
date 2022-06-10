@@ -89,7 +89,7 @@ var RoleControl = function () {
 
                         if (!result.hasOwnProperty('html')){
                             triggerModalClose();
-                            window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? 'bg-primary' : 'bg-danger'));
+                            window.LS.ajaxAlerts(result.message, 'success');
                             return;
                         }
                         $('#exitForm').on('click.ROLECONTROLMODAL', function (e) {
