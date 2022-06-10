@@ -1431,7 +1431,7 @@ class ParticipantsAction extends SurveyCommonAction
     {
         $attributeId = Yii::app()->request->getPost('attribute_id');
         $encrypted = Yii::app()->request->getPost('encrypted');
-        $encrypted_value = $encrypted == "true" ? 'Y' : 'N';
+        $encrypted_value = $encrypted ? 'Y' : 'N';
         $attributeName = ParticipantAttributeName::model()->findByPk($attributeId);
         $sEncryptedBeforeChange = $attributeName->encrypted;
         $attributeName->encrypted = $encrypted_value;
@@ -2423,7 +2423,7 @@ class ParticipantsAction extends SurveyCommonAction
         $shareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id, 'share_uid' => $share_uid));
 
         if ($shareModel) {
-            $shareModel->can_edit = ($can_edit == 'true' ? 1 : 0);
+            $shareModel->can_edit = $can_edit ? 1 : 0;
             $success = $shareModel->save();
         } else {
             $success = false;

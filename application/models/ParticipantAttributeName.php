@@ -216,12 +216,21 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getEncryptedSwitch()
     {
-        // load sodium library
         $sodium = Yii::app()->sodium;
         $bEncrypted = $sodium->bLibraryExists;
-        $inputHtml = "<input type='checkbox' data-size='small' data-encrypted='" . $this->encrypted . "' data-on-color='primary' data-off-color='warning' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeAttributeEncrypted' " . ($bEncrypted === true ? " " : "disabled='' ") . ($this->encrypted == "Y" ? "checked" : "")
-            . "/>";
-        return  $inputHtml;
+        $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'encrypted_' . $this->attribute_id,
+            'checkedOption' => $this->encrypted === "Y" ? "1" : "0",
+            'selectOptions' => [
+                '1' => gT('Yes'),
+                '0' => gT('No'),
+            ],
+            'htmlOptions'   => [
+                'class' => 'action_changeAttributeEncrypted',
+                'disabled' => !$bEncrypted
+            ]
+        ], true);
+        return $inputHtml;
     }
 
     /**
@@ -229,11 +238,8 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getCoreAttributeSwitch()
     {
-        $inputHtml = "<input type='checkbox' data-size='small' data-encrypted='" . $this->encrypted . "' data-on-color='primary' data-off-color='warning' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeAttributeEncrypted' "
-            . ($this->core_attribute == "Y" ? "checked" : "")
-            . " disabled"
-            . "/>";
-        return  $inputHtml;
+        $inputHtml = $this->core_attribute === "Y" ? gT("Yes") : gT("No");
+        return $inputHtml;
     }
 
     /**

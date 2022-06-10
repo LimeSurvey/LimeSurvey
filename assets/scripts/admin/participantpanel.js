@@ -350,19 +350,19 @@ LS.CPDB = (function() {
             });
         }
 
-        $('.action_changeAttributeEncrypted').bootstrapSwitch();
-        $('.action_changeAttributeEncrypted').on('switchChange.bootstrapSwitch', function(event,state){
-            var self = this;
-            $.ajax({
-                url: editValueParticipantPanel, 
-                method: "POST",
-                data: { actionTarget: 'changeAttributeEncrypted', 'attribute_id': $(self).closest('tr').data('attribute_id'), 'encrypted': state},
-                dataType: 'json', 
-                success: function(resolve){
-                    $(self).prop("checked", (resolve.newValue == "Y"));
-                }
-            })
-        });
+        let changeAttributeEncryptedButtons = document.querySelectorAll('.action_changeAttributeEncrypted input');
+        for (let changeAttributeEncryptedButton of changeAttributeEncryptedButtons) {
+            changeAttributeEncryptedButton.addEventListener("change", (event) => {
+                let params = "actionTarget=changeAttributeEncrypted"
+                    + "&attribute_id=" + event.target.closest("tr").dataset.attribute_id
+                    + "&encrypted=" + event.target.value
+                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
+                let xhttp = new XMLHttpRequest();
+                xhttp.open("POST", editValueParticipantPanel, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(params);
+            });
+        }
 
         $('#pageSizeAttributes').on("change", function(){
             $.fn.yiiGridView.update('list_attributes',{ data:{ pageSizeAttributes: $(this).val() }});
@@ -378,20 +378,20 @@ LS.CPDB = (function() {
             $('.selector_participantCheckbox').prop('checked', $('#action_toggleAllParticipant').prop('checked'));
         });
 
-        $('.action_changeEditableStatus').bootstrapSwitch();
-
-        $('.action_changeEditableStatus').on('switchChange.bootstrapSwitch', function(event, state){
-            var self = this;
-            $.ajax({
-                url: editValueParticipantPanel, 
-                method: "POST",
-                data: {actionTarget: 'changeSharedEditableStatus', 'participant_id': $(self).closest('tr').data('participant_id'), 'can_edit': state, 'share_uid': $(self).closest('tr').data('share_uid')},
-                dataType: 'json', 
-                success: function(resolve){
-                    $(self).prop("checked", resolve.newValue);
-                }
+        let changeSharedEditableStatusButtons = document.querySelectorAll('.action_changeEditableStatus input');
+        for (let changeSharedEditableStatusButton of changeSharedEditableStatusButtons) {
+            changeSharedEditableStatusButton.addEventListener("change", (event) => {
+                let params = "actionTarget=changeSharedEditableStatus"
+                    + "&participant_id=" + event.target.closest("tr").dataset.participant_id
+                    + "&can_edit=" + event.target.value
+                    + "&share_uid=" + event.target.closest('tr').dataset.share_uid
+                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
+                let xhttp = new XMLHttpRequest();
+                xhttp.open("POST", editValueParticipantPanel, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(params);
             });
-        });
+        }
 
         $('#pageSizeShareParticipantView').on("change", function(){
             $.fn.yiiGridView.update('share_central_participants',{ data:{ pageSizeShareParticipantView: $(this).val() }});
