@@ -525,7 +525,8 @@ class UserManagementController extends LSBaseController
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => gT("Saved template permissions successfully.")
+                //'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
             ]
         ]);
     }
@@ -605,7 +606,6 @@ class UserManagementController extends LSBaseController
             "data" => [
                 'success' => true,
                 'message' => 'Saved user roles successfuly',
-               // 'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
             ]
         ]);
     }
