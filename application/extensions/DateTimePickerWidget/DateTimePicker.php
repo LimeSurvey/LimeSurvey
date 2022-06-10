@@ -129,6 +129,17 @@ class DateTimePicker extends CInputWidget
         $cs->registerPackage('tempus-dominus');
 
         $id = $this->getId();
+        $script = $this->getClientScript($id);
+
+        Yii::app()->clientScript->registerScript('datetimepicker_' . $id, $script, CClientScript::POS_END);
+    }
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public function getClientScript($id)
+    {
         $allowInputToggle = $this->getValue('data-allowInputToggle', $this->htmlOptions, false);
         $config = $this->getTempusConfigString();
         $script = "const picker_$id = new tempusDominus.TempusDominus(document.getElementById('$this->mainId'), $config);
@@ -140,16 +151,19 @@ class DateTimePicker extends CInputWidget
             // bug workaround allowInputToggle
             var id_$id = '$id';
             var input_$id = document.getElementById('$id');
-            if((id_$id.indexOf('answer') >= 0 && input_$id.value !== '') || id_$id.indexOf('answer') < 0) {
-                    document.getElementById('$id').onfocus = function () {
-                    picker_$id.show();
-                };
-            } 
+            if(input_$id != null) {
+                if((id_$id.indexOf('answer') >= 0 && input_$id.value !== '') || id_$id.indexOf('answer') < 0) {
+                        input_$id.onfocus = function () {
+                        picker_$id.show();
+                    };
+                } 
+            }    
             ";
         }
 
-        Yii::app()->clientScript->registerScript('datetimepicker_' . $id, $script, CClientScript::POS_END);
+        return $script;
     }
+
 
     /**
      * If id contains brackets, we need to double escape it with \\

@@ -66,6 +66,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <?php if(canShowDatePicker($dateformatdetails)): ?>
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                         'name' => $fieldname,
+                        'id' => 'q_date_' . $fieldname,
                         'pluginOptions' => array(
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' =>true,
