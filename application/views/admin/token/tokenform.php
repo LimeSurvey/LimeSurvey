@@ -130,9 +130,9 @@
                                             </div>
                                         <?php endif; ?>
 
-                                        <?php if ($oSurvey->anonymized != 'Y'): ?>
+                                        <?php if ($oSurvey->anonymized !== 'Y'): ?>
                                             <div class="">
-                                                <div id="sent-date-container" class="date-container" <?php if (!$bCompletedValue): ?>style="display: none;"<?php endif; ?>>
+                                                <div id="sent-date-container" class="date-container <?= !$bCompletedValue ? "d-none" : "" ?>">
                                                     <div id="completed-date_datetimepicker" class="input-group date">
                                                         <input class="YesNoDatePicker form-control" id="completed-date" type="text" value="<?php echo isset($completed) ? $completed : '' ?>"
                                                                name="completed-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
@@ -306,9 +306,7 @@
                                     </div>
 
                                     <div class="">
-                                        <div id="sent-date-container" data-parent="#sent-switch" class="selector__date-container_hidden date-container" <?php if (!$bSwitchValue) {
-                                            echo "style='display:none;'";
-                                        } ?> >
+                                        <div id="sent-date-container" data-parent="#sent-switch" class="selector__date-container_hidden date-container <?= !$bSwitchValue ? "d-none" : "" ?>">
                                             <!-- Sent Date -->
                                             <div id="sent-date_datetimepicker" class="input-group date">
                                                 <input class="YesNoDatePicker form-control" id="sent-date" type="text" value="<?php echo isset($sent) ? $sent : '' ?>" name="sent-date"
@@ -355,10 +353,7 @@
                                     </div>
 
                                     <div class="">
-                                        <div id="remind-date-container" data-parent="#remind-switch" class="selector__date-container_hidden date-container" <?php if (!$bRemindSwitchValue) {
-                                            echo "style='display:none;'";
-                                        } ?> >
-
+                                        <div id="remind-date-container" data-parent="#remind-switch" class="selector__date-container_hidden date-container <?= !$bRemindSwitchValue ? "d-none" : "" ?>">
                                             <div id="remind-date_datetimepicker" class="input-group date">
                                                 <input class="YesNoDatePicker form-control" id="remind-date" type="text"
                                                        value="<?php echo isset($remindersent) && $remindersent != 'N' ? $remindersent : '' ?>" name="remind-date"
