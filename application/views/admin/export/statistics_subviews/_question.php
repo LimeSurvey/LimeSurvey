@@ -266,28 +266,14 @@
                 <div class='form-group row' style='margin-top:1em;'>
                 <label for='".$myfield3."' class='col-md-4 col-form-label smalltext'>".gT("Date equals:")."</label>
                 <div class='col-md-8'>";
-                Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                     'name' => $myfield3,
                     'id' => $myfield3,
                     'value' => isset($_POST[$myfield3]) ? $_POST[$myfield3] : '',
                     'pluginOptions' => array(
                         'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                        'allowInputToggle' =>true,
+                        'allowInputToggle' => true,
                         'showClear' => true,
-                        'tooltips' => array(
-                            'clear'=> gT('Clear selection'),
-                            'prevMonth'=> gT('Previous month'),
-                            'nextMonth'=> gT('Next month'),
-                            'selectYear'=> gT('Select year'),
-                            'prevYear'=> gT('Previous year'),
-                            'nextYear'=> gT('Next year'),
-                            'selectDecade'=> gT('Select decade'),
-                            'prevDecade'=> gT('Previous decade'),
-                            'nextDecade'=> gT('Next decade'),
-                            'prevCentury'=> gT('Previous century'),
-                            'nextCentury'=> gT('Next century'),
-                        'selectTime'=> gT('Select time')
-                        ),
                         'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                     )
                 ));                
@@ -297,28 +283,14 @@
               <div class='form-group row'>
               <label for='".$myfield4."' class='col-md-4 col-form-label smalltext'>".gT("Date is >= :")."</label>
               <div class='col-md-8'>";
-              Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+              Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                   'name' => $myfield4,
                   'id' => $myfield4,
                   'value' => isset($_POST[$myfield4]) ? $_POST[$myfield4] : '',
                   'pluginOptions' => array(
                       'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                      'allowInputToggle' =>true,
+                      'allowInputToggle' => true,
                       'showClear' => true,
-                      'tooltips' => array(
-                          'clear'=> gT('Clear selection'),
-                          'prevMonth'=> gT('Previous month'),
-                          'nextMonth'=> gT('Next month'),
-                          'selectYear'=> gT('Select year'),
-                          'prevYear'=> gT('Previous year'),
-                          'nextYear'=> gT('Next year'),
-                          'selectDecade'=> gT('Select decade'),
-                          'prevDecade'=> gT('Previous decade'),
-                          'nextDecade'=> gT('Next decade'),
-                          'prevCentury'=> gT('Previous century'),
-                          'nextCentury'=> gT('Next century'),
-                      'selectTime'=> gT('Select time')
-                      ),
                       'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                   )
               ));                
@@ -328,28 +300,14 @@
             <div class='form-group row'>
             <label for='".$myfield5."' class='col-md-4 col-form-label smalltext'>".gT("And/or Date is <= :")."</label>
             <div class='col-md-8'>";
-            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+            Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                 'name' => $myfield5,
                 'id' => $myfield5,
                 'value' => isset($_POST[$myfield5]) ? $_POST[$myfield5] : '',
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                    'allowInputToggle' =>true,
+                    'allowInputToggle' => true,
                     'showClear' => true,
-                    'tooltips' => array(
-                        'clear'=> gT('Clear selection'),
-                        'prevMonth'=> gT('Previous month'),
-                        'nextMonth'=> gT('Next month'),
-                        'selectYear'=> gT('Select year'),
-                        'prevYear'=> gT('Previous year'),
-                        'nextYear'=> gT('Next year'),
-                        'selectDecade'=> gT('Select decade'),
-                        'prevDecade'=> gT('Previous decade'),
-                        'nextDecade'=> gT('Next decade'),
-                        'prevCentury'=> gT('Previous century'),
-                        'nextCentury'=> gT('Next century'),
-                    'selectTime'=> gT('Select time')
-                    ),
                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 )
             ));                

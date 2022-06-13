@@ -41,7 +41,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                     eT("Submission date equals:"); ?></label>
                 <div class="has-feedback">
                     <?php
-                    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                         'name' => "datestampE",
                         'id' => 'datestampE',
                         'value' => isset($_POST['datestampE']) ? $_POST['datestampE'] : '',
@@ -49,20 +49,6 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                             'format' => ($dateformatdetails['jsdate']),
                             'allowInputToggle' => true,
                             'showClear' => true,
-                            'tooltips' => array(
-                                'clear' => gT('Clear selection'),
-                                'prevMonth' => gT('Previous month'),
-                                'nextMonth' => gT('Next month'),
-                                'selectYear' => gT('Select year'),
-                                'prevYear' => gT('Previous year'),
-                                'nextYear' => gT('Next year'),
-                                'selectDecade' => gT('Select decade'),
-                                'prevDecade' => gT('Previous decade'),
-                                'nextDecade' => gT('Next decade'),
-                                'prevCentury' => gT('Previous century'),
-                                'nextCentury' => gT('Next century'),
-                                'selectTime' => gT('Select time')
-                            ),
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     ));
@@ -76,7 +62,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                     eT("Submission date later than:"); ?></label>
                 <div class="has-feedback">
                     <?php
-                    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                         'name' => "datestampG",
                         'id' => 'datestampG',
                         'value' => isset($_POST['datestampG']) ? $_POST['datestampG'] : '',
@@ -84,21 +70,6 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' => true,
                             'showClear' => true,
-                            'tooltips' => array(
-                                'clear' => gT('Clear selection'),
-                                'prevMonth' => gT('Previous month'),
-                                'nextMonth' => gT('Next month'),
-                                'selectYear' => gT('Select year'),
-                                'prevYear' => gT('Previous year'),
-                                'nextYear' => gT('Next year'),
-                                'selectDecade' => gT('Select decade'),
-                                'prevDecade' => gT('Previous decade'),
-                                'nextDecade' => gT('Next decade'),
-                                'prevCentury' => gT('Previous century'),
-                                'nextCentury' => gT('Next century'),
-                                'selectTime' => gT('Select time')
-                            ),
-
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     ));
@@ -112,7 +83,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                     eT("Submission date earlier than:"); ?></label>
                 <div class="has-feedback">
                     <?php
-                    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                         'name' => "datestampL",
                         'id' => 'datestampL',
                         'value' => isset($_POST['datestampL']) ? $_POST['datestampL'] : '',
@@ -120,20 +91,6 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' => true,
                             'showClear' => true,
-                            'tooltips' => array(
-                                'clear' => gT('Clear selection'),
-                                'prevMonth' => gT('Previous month'),
-                                'nextMonth' => gT('Next month'),
-                                'selectYear' => gT('Select year'),
-                                'prevYear' => gT('Previous year'),
-                                'nextYear' => gT('Next year'),
-                                'selectDecade' => gT('Select decade'),
-                                'prevDecade' => gT('Previous decade'),
-                                'nextDecade' => gT('Next decade'),
-                                'prevCentury' => gT('Previous century'),
-                                'nextCentury' => gT('Next century'),
-                                'selectTime' => gT('Select time')
-                            ),
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     ));
