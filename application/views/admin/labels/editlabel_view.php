@@ -108,14 +108,8 @@
                                 <label class=" form-label" for='checkforduplicates'>
                                     <?php eT("Don't import if label set already exists:"); ?>
                                 </label>
-                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                    'name' => 'checkforduplicates',
-                                    'checkedOption' => 1,
-                                    'selectOptions' => [
-                                        '1' => gT('On'),
-                                        '0' => gT('Off'),
-                                    ],
-                                ]); ?>
+                                <input id="ytcheckforduplicates" name="checkforduplicates" type="hidden" value="0" >
+                                <input id="checkforduplicates" name="checkforduplicates" type="checkbox" value="1" checked>
                             </div>
 
                             <div class="form-group">

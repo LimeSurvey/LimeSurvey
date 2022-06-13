@@ -42,91 +42,49 @@
             <div class="col">
                 <!-- Convert resource links -->
                 <div class="form-check">
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'copysurveytranslinksfields',
-                        'checkedOption' => "1",
-                        'selectOptions' => [
-                            '1' => gT('On'),
-                            '0' => gT('Off'),
-                        ],
-                    ]); ?>
+                    <input id="ytcopysurveytranslinksfields" name="copysurveytranslinksfields" type="hidden" value="0" >
+                    <input id="copysurveytranslinksfields" name="copysurveytranslinksfields" type="checkbox" value="1" checked>
                     <label class=" form-label" for='copysurveytranslinksfields'><?php echo  eT("Copy survey resource files and adapt links"); ?> </label>
                 </div>
 
                 <!-- Exclude quotas -->
                 <div class="form-check">
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'copysurveyexcludequotas',
-                        'checkedOption' => "0",
-                        'selectOptions' => [
-                            '1' => gT('On'),
-                            '0' => gT('Off'),
-                        ],
-                    ]); ?>
+                    <input id="ytcopysurveyexcludequotas" name="copysurveyexcludequotas" type="hidden" value="0" >
+                    <input id="copysurveyexcludequotas" name="copysurveyexcludequotas" type="checkbox" value="1" checked>
                     <label class=" form-label" for='copysurveyexcludequotas'><?php echo  eT("Exclude quotas"); ?> </label>
                 </div>
 
                 <!-- Exclude survey permissions -->
                 <div class="form-check">
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'copysurveyexcludepermissions',
-                        'checkedOption' => "0",
-                        'selectOptions' => [
-                            '1' => gT('On'),
-                            '0' => gT('Off'),
-                        ],
-                    ]); ?>
+                    <input id="ytcopysurveyexcludepermissions" name="copysurveyexcludepermissions" type="hidden" value="0" >
+                    <input id="copysurveyexcludepermissions" name="copysurveyexcludepermissions" type="checkbox" value="1" checked>
                     <label class=" form-label" for='copysurveyexcludepermissions'><?php echo  eT("Exclude survey permissions"); ?> </label>
                 </div>
 
                 <!-- Exclude answers -->
                 <div class="form-check">
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'copysurveyexcludeanswers',
-                        'checkedOption' => "0",
-                        'selectOptions' => [
-                            '1' => gT('On'),
-                            '0' => gT('Off'),
-                        ],
-                    ]); ?>
+                    <input id="ytcopysurveyexcludeanswers" name="copysurveyexcludeanswers" type="hidden" value="0" >
+                    <input id="copysurveyexcludeanswers" name="copysurveyexcludeanswers" type="checkbox" value="1" checked>
                     <label class=" form-label" for='copysurveyexcludeanswers'><?php echo  eT("Exclude answers"); ?> </label>
                 </div>
 
                 <!-- Reset conditions/relevance -->
                 <div class="form-check">
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'copysurveyresetconditions',
-                        'checkedOption' => "0",
-                        'selectOptions' => [
-                            '1' => gT('On'),
-                            '0' => gT('Off'),
-                        ],
-                    ]); ?>
+                    <input id="ytcopysurveyresetconditions" name="copysurveyresetconditions" type="hidden" value="0" >
+                    <input id="copysurveyresetconditions" name="copysurveyresetconditions" type="checkbox" value="1" checked>
                     <label class=" form-label" for='copysurveyresetconditions'><?php echo  eT("Reset conditions"); ?> </label>
                 </div>
 
                 <!-- Reset start/end date/time -->
                 <div class="form-check">
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'copysurveyresetstartenddate',
-                        'checkedOption' => "0",
-                        'selectOptions' => [
-                            '1' => gT('On'),
-                            '0' => gT('Off'),
-                        ],
-                    ]); ?>
+                    <input id="ytcopysurveyresetstartenddate" name="copysurveyresetstartenddate" type="hidden" value="0" >
+                    <input id="copysurveyresetstartenddate" name="copysurveyresetstartenddate" type="checkbox" value="1" checked>
                     <label class=" form-label" for='copysurveyresetstartenddate'><?php echo  eT("Reset start/end date/time"); ?> </label>
                 </div>
 
                 <div class="form-check">
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name'          => 'copysurveyresetresponsestartid',
-                        'checkedOption' => "0",
-                        'selectOptions' => [
-                            '1' => gT('On'),
-                            '0' => gT('Off'),
-                        ],
-                    ]); ?>
+                    <input id="ytcopysurveyresetresponsestartid" name="copysurveyresetresponsestartid" type="hidden" value="0" >
+                    <input id="copysurveyresetresponsestartid" name="copysurveyresetresponsestartid" type="checkbox" value="1" checked>
                     <label class=" form-label" for='copysurveyresetresponsestartid'><?php echo  eT("Reset response start ID"); ?> </label>
                 </div>
             </div>

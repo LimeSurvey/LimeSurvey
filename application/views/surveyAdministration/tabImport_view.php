@@ -31,14 +31,8 @@
 
             <!-- Convert resource links and INSERTANS fields? -->
             <div class='mb-3 form-check'>
-                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                    'name' => 'translinksfields',
-                    'checkedOption' => '1',
-                    'selectOptions' => [
-                        '1' => gT('On'),
-                        '0' => gT('Off'),
-                    ]
-                ]); ?>
+                <input id="yttranslinksfields" name="translinksfields" type="hidden" value="0" >
+                <input id="translinksfields" name="translinksfields" type="checkbox" value="1" checked>
                 <label class='form-label ' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
             </div>
 
