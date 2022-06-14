@@ -49,42 +49,42 @@
 
                 <!-- Exclude quotas -->
                 <div class="form-check">
-                    <input id="ytcopysurveyexcludequotas" name="copysurveyexcludequotas" type="hidden" value="0" >
-                    <input id="copysurveyexcludequotas" name="copysurveyexcludequotas" type="checkbox" value="1" checked>
+                    <input id="ytcopysurveyexcludequotas" name="copysurveyexcludequotas" type="hidden" value="0" checked>
+                    <input id="copysurveyexcludequotas" name="copysurveyexcludequotas" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyexcludequotas'><?php echo  eT("Exclude quotas"); ?> </label>
                 </div>
 
                 <!-- Exclude survey permissions -->
                 <div class="form-check">
-                    <input id="ytcopysurveyexcludepermissions" name="copysurveyexcludepermissions" type="hidden" value="0" >
-                    <input id="copysurveyexcludepermissions" name="copysurveyexcludepermissions" type="checkbox" value="1" checked>
+                    <input id="ytcopysurveyexcludepermissions" name="copysurveyexcludepermissions" type="hidden" value="0" checked>
+                    <input id="copysurveyexcludepermissions" name="copysurveyexcludepermissions" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyexcludepermissions'><?php echo  eT("Exclude survey permissions"); ?> </label>
                 </div>
 
                 <!-- Exclude answers -->
                 <div class="form-check">
-                    <input id="ytcopysurveyexcludeanswers" name="copysurveyexcludeanswers" type="hidden" value="0" >
-                    <input id="copysurveyexcludeanswers" name="copysurveyexcludeanswers" type="checkbox" value="1" checked>
+                    <input id="ytcopysurveyexcludeanswers" name="copysurveyexcludeanswers" type="hidden" value="0" checked>
+                    <input id="copysurveyexcludeanswers" name="copysurveyexcludeanswers" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyexcludeanswers'><?php echo  eT("Exclude answers"); ?> </label>
                 </div>
 
                 <!-- Reset conditions/relevance -->
                 <div class="form-check">
-                    <input id="ytcopysurveyresetconditions" name="copysurveyresetconditions" type="hidden" value="0" >
-                    <input id="copysurveyresetconditions" name="copysurveyresetconditions" type="checkbox" value="1" checked>
+                    <input id="ytcopysurveyresetconditions" name="copysurveyresetconditions" type="hidden" value="0" checked>
+                    <input id="copysurveyresetconditions" name="copysurveyresetconditions" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyresetconditions'><?php echo  eT("Reset conditions"); ?> </label>
                 </div>
 
                 <!-- Reset start/end date/time -->
                 <div class="form-check">
-                    <input id="ytcopysurveyresetstartenddate" name="copysurveyresetstartenddate" type="hidden" value="0" >
-                    <input id="copysurveyresetstartenddate" name="copysurveyresetstartenddate" type="checkbox" value="1" checked>
+                    <input id="ytcopysurveyresetstartenddate" name="copysurveyresetstartenddate" type="hidden" value="0" checked>
+                    <input id="copysurveyresetstartenddate" name="copysurveyresetstartenddate" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyresetstartenddate'><?php echo  eT("Reset start/end date/time"); ?> </label>
                 </div>
 
                 <div class="form-check">
-                    <input id="ytcopysurveyresetresponsestartid" name="copysurveyresetresponsestartid" type="hidden" value="0" >
-                    <input id="copysurveyresetresponsestartid" name="copysurveyresetresponsestartid" type="checkbox" value="1" checked>
+                    <input id="ytcopysurveyresetresponsestartid" name="copysurveyresetresponsestartid" type="hidden" value="0" checked>
+                    <input id="copysurveyresetresponsestartid" name="copysurveyresetresponsestartid" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyresetresponsestartid'><?php echo  eT("Reset response start ID"); ?> </label>
                 </div>
             </div>
