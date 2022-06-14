@@ -2,7 +2,7 @@
 
 /**
  * This file is part of statFunctions plugin
- * @version 0.1.1
+ * @version 0.1.2
  */
 
 namespace statFunctions;
@@ -26,8 +26,8 @@ class countFunctions
      */
     public static function statCountIf($qCode, $comparaison, $submitted = true)
     {
-        $surveyId = LimeExpressionManager::getLEMsurveyId();
-        if (!Survey::model()->findByPk($surveyId)->getIsActive()) {
+        $surveyId = self::getCurrentSurveyId();;
+        if (!$surveyId) {
             return 0;
         }
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
@@ -56,8 +56,8 @@ class countFunctions
      */
     public static function statCount($qCode, $submitted = true)
     {
-        $surveyId = LimeExpressionManager::getLEMsurveyId();
-        if (!Survey::model()->findByPk($surveyId)->getIsActive()) {
+        $surveyId = self::getCurrentSurveyId();;
+        if (!$surveyId) {
             return 0;
         }
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
@@ -79,5 +79,26 @@ class countFunctions
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
+    }
+
+    /**
+     * Get the current valid survey id : Need to exist and activated
+     * Sometimes ExpressionManager don't get a valid survey id @see https://bugs.limesurvey.org/view.php?id=18191
+     * @return false[interger
+     */
+    private function getCurrentSurveyId()
+    {
+        $surveyId = LimeExpressionManager::getLEMsurveyId();
+        if (empty($surveyId)) {
+            return false;
+        }
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            return false;
+        }
+        if (!$survey->getIsActive()) {
+            return false;
+        }
+        return $surveyId;
     }
 }
