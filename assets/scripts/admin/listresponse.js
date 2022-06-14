@@ -110,13 +110,15 @@ function reinstallResponsesFilterDatePicker() {
             },
         };
 
-        const picker_SurveyDynamic_startdate = new tempusDominus.TempusDominus(startdateElement, config);
-        setDatePickerFormat(picker_SurveyDynamic_startdate, dateFormatDetails.jsdate, startdateElement.value);
-        startdateElement.addEventListener("change.td", function () {
-            var data = document.querySelectorAll('#responses-grid .filters input, #responses-grid .filters select');
-            data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
-            $.fn.yiiGridView.update('responses-grid', {data: data});
-        });
+        if (startdateElement) {
+            const picker_SurveyDynamic_startdate = new tempusDominus.TempusDominus(startdateElement, config);
+            setDatePickerFormat(picker_SurveyDynamic_startdate, dateFormatDetails.jsdate, startdateElement.value);
+            startdateElement.addEventListener("change.td", function () {
+                var data = document.querySelectorAll('#responses-grid .filters input, #responses-grid .filters select');
+                data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
+                $.fn.yiiGridView.update('responses-grid', {data: data});
+            });
+        }
 
         // $('#SurveyDynamic_datestamp').on('focusout', function() {
         //     var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
