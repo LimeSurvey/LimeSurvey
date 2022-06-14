@@ -26,7 +26,7 @@ class countFunctions
      */
     public static function statCountIf($qCode, $comparaison, $submitted = true)
     {
-        $surveyId = self::getCurrentSurveyId();;
+        $surveyId = self::getCurrentSurveyId();
         if (!$surveyId) {
             return 0;
         }
@@ -56,7 +56,7 @@ class countFunctions
      */
     public static function statCount($qCode, $submitted = true)
     {
-        $surveyId = self::getCurrentSurveyId();;
+        $surveyId = self::getCurrentSurveyId();
         if (!$surveyId) {
             return 0;
         }
@@ -86,7 +86,7 @@ class countFunctions
      * Sometimes ExpressionManager don't get a valid survey id @see https://bugs.limesurvey.org/view.php?id=18191
      * @return false[interger
      */
-    private function getCurrentSurveyId()
+    private static function getCurrentSurveyId()
     {
         $surveyId = LimeExpressionManager::getLEMsurveyId();
         if (empty($surveyId)) {
