@@ -131,13 +131,13 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
         $oResponse = Response::model($iSurveyID);
         $oResponse->setAttributes($row, false);
         $oResponse->decrypt();
-        $row = $oResponse->attributes;
+        $row = array_merge($row, $oResponse->attributes);
 
         if ($survey->hasTokensTable) {
             $oToken = Token::model($iSurveyID);
             $oToken->setAttributes($row, false);
             $oToken->decrypt();
-            $row = array_merge($oToken->attributes, $oResponse->attributes);
+            $row = array_merge($row, $oToken->attributes);
         }
 
         $rownr++;

@@ -468,6 +468,11 @@ class SurveysGroupsettings extends LSActiveRecord
      */
     private function shouldInherit($attribute)
     {
+        // If the attribute is not defined
+        if (!property_exists($this->oOptions, $attribute)) {
+            return true;
+        }
+
         // The attribute should be inherited if its value is 'inherit', 'I' or '-1'.
         if (
             !empty($this->oOptions->{$attribute})

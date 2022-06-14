@@ -46,7 +46,7 @@ class SurveyDao
         $survey->questions = Question::model()->findAll(array("condition" => 'sid=' . $intId, 'order' => 'question_order'));
         $aAnswers = Answer::model()->with('answerl10ns', 'question')->findAll(array('condition' => 'question.sid=' . $intId . ' AND ' . Yii::app()->db->quoteTableName('answerl10ns') . '.language = \'' . $lang . '\'', 'order' => 'question.question_order, t.scale_id, sortorder'));
         foreach ($aAnswers as $aAnswer) {
-            if (!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1  && Yii::app()->controller->action->id != 'remotecontrol') {
+            if (!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1) {
                 $answer = stripTagsFull($aAnswer->answerl10ns[$lang]->answer);
             } else {
                 $answer = $aAnswer->answerl10ns[$lang]->answer;

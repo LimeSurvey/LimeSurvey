@@ -34,6 +34,45 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.15 (build 220519) to 5.3.16 (build 220523) May 23, 2022
+-Fixed issue: Invalid session key error message when listing groups with RemoteControl (#2376) (hanszoons)
+-Fixed issue #18113: [security] Any admin user can read any question attributes (Patricia Stell)
+-Fixed issue #18100: Custom question attributes not available in some twig files (#2418) (Gabriel Jenik)
+-Fixed issue #18064:  'Notification & data' dialog does not load when debug  mode is active (#2412) (Gabriel Jenik)
+-Fixed issue #18045: User details last login is not shown completed (#2402) (Gabriel Jenik)
+-Fixed issue #18039: Survey participant menu entry not shown even though participant survey permission was given (#2414) (Gabriel Jenik)
+-Fixed issue #18031: Question editing broke with PHP warning with deleted questionthemes (#2425) (Denis Chenu)
+-Fixed issue #18020: Notification emails are sent in the base language (#2364) (Gabriel Jenik)
+-Fixed issue #17994: Comments at question type "List with comments" are missing at print answer overview (#2362) (Gabriel Jenik)
+-Fixed issue #17987: Quota url needs to be decoded (#2396) (Denis Chenu)
+-Fixed issue #17980: Text import crashing with just exported survey  (#2378) (Denis Chenu)
+-Fixed issue #17978: Public stat show all response and not only submitted (#2389) (Gabriel Jenik)
+-Fixed issue #17852: SPSS data file doesn't include participants records (#2383) (Gabriel Jenik)
+-Fixed issue #17709: GUI setting for DB session lifetime does not apply (#2416) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+
+
+Changes from 5.3.14 (build 220516) to 5.3.15 (build 220519) May 19, 2022
+-Fixed issue #18127: Unable to view questions using answer options when using MSSQL (Carsten Schmitz)
+-Fixed issue #18076: Input on demand question type not working when setting multiple rows (#2408) (Gabriel Jenik)
+-Fixed issue #17962: Export fails when called from a Cron process or console application (#2419) (Gabriel Jenik)
+-Fixed issue #17900: Response date is incorrect when there is a mis-match in date format (#2361) (Gabriel Jenik)
+-Fixed issue #17889: Setting to correct server time not taken into account when sending email invitations (#2401) (Gabriel Jenik)
+-Fixed issue #16154: Not all files imported with custom question theme (#2409) (Gabriel Jenik)
+-Fixed issue #14909: Improve language consistency (Carsten Schmitz)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by c_schmitz, jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: French (France) by DenisChenu, Xave
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.3.13 (build 220509) to 5.3.14 (build 220516) May 16, 2022
 -Fixed issue: Wrong link to survey in storage overview and in permission error in email templates (Carsten Schmitz)
 -Fixed issue: "View summary of all available fields" JS was broken (Tim Willig)
