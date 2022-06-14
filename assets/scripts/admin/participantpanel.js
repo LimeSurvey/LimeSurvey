@@ -181,11 +181,16 @@ LS.CPDB = (function() {
             var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                openModalParticipantPanel, 
+                openModalParticipantPanel,
                 data,
                 'action_save_modal_editParticipant',
-                'editPartcipantActiveForm', 
-                'list_central_participants' 
+                'editPartcipantActiveForm',
+                'list_central_participants',
+                function(result) {
+                    if (!result.error) {
+                        window.LS.ajaxAlerts(result.success, 'success');
+                    }
+                }
             ).done(function(result) {
                 console.ls.log(result);
                 var val = $('#participantPanel_edit_modal .ls-bootstrap-switch').attr('checked');
@@ -198,12 +203,17 @@ LS.CPDB = (function() {
             var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                    openModalParticipantPanel, 
-                    data,
-                    'action_save_modal_deleteParticipant',
-                    'deleteParticipantActiveForm', 
-                    'list_central_participants' 
-                    );
+                openModalParticipantPanel,
+                data,
+                'action_save_modal_deleteParticipant',
+                'deleteParticipantActiveForm',
+                'list_central_participants',
+                function (result) {
+                    if (!result.error) {
+                        window.LS.ajaxAlerts(result.success, 'success');
+                    }
+                }
+                );
         });
         $('#list_central_participants').on('click', '.action_participant_infoModal', function(e) {
             e.preventDefault();
@@ -229,7 +239,12 @@ LS.CPDB = (function() {
                 data,
                 'action_save_modal_shareparticipant',
                 'shareParticipantActiveForm',
-                'list_central_participants'
+                'list_central_participants',
+                function(result) {
+                    if (!result.error) {
+                        window.LS.ajaxAlerts(result.success, 'success');
+                    }
+                }
             ).done(function() {
                 $('.ls-bootstrap-switch').bootstrapSwitch();
             });
@@ -250,7 +265,8 @@ LS.CPDB = (function() {
                 function(result) {
                     console.ls.log(result);
                     if(!result.error) {
-                        window.LS.notifyFader(result.success, 'well-lg text-center bg-primary');
+                        //window.LS.notifyFader(result.success, 'well-lg text-center bg-primary');
+                        window.LS.ajaxAlerts(result.success, 'success');
                     }
                 }
             ).done(function(result) {
@@ -329,7 +345,8 @@ LS.CPDB = (function() {
                 function(result) {
                     console.ls.log(result);
                     if(!result.error) {
-                        window.LS.notifyFader(result.success, 'well-lg text-center bg-primary');
+                        window.LS.ajaxAlerts(result.success, 'success');
+                       // window.LS.notifyFader(result.success, 'well-lg text-center bg-primary');
                     }
                 }
             ); 
@@ -535,11 +552,12 @@ function rejectParticipantShareAjax(participant_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                window.LS.notifyFader(result.success, 'well-lg bg-primary text-center');
+                window.LS.ajaxAlerts(result.success, 'success');
+                //window.LS.notifyFader(result.success, 'well-lg bg-primary text-center');
                 $.fn.yiiGridView.update('share_central_participants',{});
             }
-        })
-    }
+        });
+    };
     return runRejectParticipantShareAjax;
 }
 

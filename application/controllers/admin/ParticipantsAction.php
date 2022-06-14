@@ -732,6 +732,7 @@ class ParticipantsAction extends SurveyCommonAction
 
     /**
      * Add new participant to database
+     *
      * @param array $aData
      * @param array $extraAttributes
      * @return string json
