@@ -15,6 +15,28 @@
 echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
 ?>
+<!-- for filter columns with datepicker-->
+<div style="display: none;">
+    <?php
+    $datePickerWidget = Yii::app()->getController()->widget(
+        'ext.DateTimePickerWidget.DateTimePicker',
+        [
+            'name'  => "no",
+            'id'    => "no_listResponses",
+            'pluginOptions' => array(
+                'format' => $dateformatdetails['jsdate'],
+                'allowInputToggle' => true,
+                'showClear' => true,
+                'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+            )
+        ]
+    );
+    $datePickerWidgetConfig = str_replace('"', '', json_encode($datePickerWidget->getTempusConfigString()));
+    $datePickerWidgetConfig = str_replace('\n', '', $datePickerWidgetConfig);
+
+    ?>
+</div>
+
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="col-12">
         <h3><?php eT('Survey responses'); ?></h3>
@@ -62,7 +84,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     <div id='fake-content'>&nbsp;</div>
                 </div>
                 <div id='bottom-scroller' class="content-right scrolling-wrapper">
-                    <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>'/>
+                    <input type='hidden' id="dateFormatDetails" name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>'/>
+                    <input type="hidden" id="locale" name="locale" value="<?= convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']) ?>"/>
                     <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>'/>
 
                     <?php if (App()->user->getState('sql_' . $surveyid) !== null) : ?>
@@ -229,6 +252,10 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                     'headerHtmlOptions' => ['style' => 'min-width: 350px;'],
                                     'name'              => $column->name,
                                     'type'              => 'raw',
+                                    'filter' => TbHtml::textField(
+                                        'SurveyDynamic[' . $column->name . ']',
+                                        $model->{$column->name}
+                                    ),
                                     'value'             => '$data->getExtendedData("' . $column->name . '", "' . $language . '", "' . $base64jsonFieldMap . '")',
                                 ];
                             }
@@ -318,16 +345,4 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    <div style="display: none;">
-        <?php
-        Yii::app()->getController()->widget(
-            'yiiwheels.widgets.datetimepicker.WhDateTimePicker',
-            [
-                'name'  => "no",
-                'id'    => "no",
-                'value' => '',
-            ]
-        );
-        ?>
-    </div>
 </div>

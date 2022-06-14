@@ -129,7 +129,7 @@ class DateTimePicker extends CInputWidget
         $cs->registerPackage('tempus-dominus');
 
         $id = $this->getId();
-        $script = $this->getClientScript($id);
+        $script = $this->getConfigScript($id);
 
         Yii::app()->clientScript->registerScript('datetimepicker_' . $id, $script, CClientScript::POS_END);
     }
@@ -138,7 +138,7 @@ class DateTimePicker extends CInputWidget
      * @param $id
      * @return string
      */
-    public function getClientScript($id)
+    public function getConfigScript($id)
     {
         $allowInputToggle = $this->getValue('data-allowInputToggle', $this->htmlOptions, false);
         $config = $this->getTempusConfigString();
@@ -290,7 +290,7 @@ class DateTimePicker extends CInputWidget
      * Creates and returns the main config object for the Tempus Dominus datepicker
      * @return string
      */
-    private function getTempusConfigString()
+    public function getTempusConfigString()
     {
         $clear = $this->getValue('data-showClear', $this->htmlOptions) == 1 ? 'true' : 'false';
         $today = $this->getValue('data-showToday', $this->htmlOptions) == 1 ? 'true' : 'false';

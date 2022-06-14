@@ -31,7 +31,7 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'survey-expiry',)); ?>
                 <script type="text/javascript">
                     $(function () {
                         // datepicker needs to be reinitialized, due to ajax reload of modal:
-                        <?= $widget->getClientScript('expiryPicker'); ?>
+                        <?= $widget->getConfigScript('expiryPicker'); ?>
                         document.getElementById("expiryPicker").addEventListener("change.td", function(){
                             document.getElementById("expires").value = this.value;
                         });
