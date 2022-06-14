@@ -537,11 +537,8 @@ class LSYii_Application extends CWebApplication
      */
     private function handleFriendlyException($exception)
     {
-        $message = $exception->getMessage();
-        $errors = $exception->getDetailedErrors();
-        if (!empty($errors)) {
-            $message .= "<br>" . implode("<br>", $errors);
-        }
+        $message = "<p>" . $exception->getMessage() . "</p>";
+        $message .= $exception->getDetailedErrorSummary();
         Yii::app()->setFlashMessage($message, 'error');
         if ($exception->getRedirectUrl() != null) {
             $redirectTo = $exception->getRedirectUrl();
