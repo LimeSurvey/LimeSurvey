@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.18 (build 220530) to 5.3.19 (build 220607) June 7, 2022
+-Fixed issue: Question organizer not working (Carsten Schmitz)
+-Fixed issue: #18029 - Removed html tags in emails for v5 (#2446) (François Charles Hébert)
+-Fixed issue #18158: Property "CDbCriteria.qid" is not defined status returned by delete_question (#2444) (Edgar R. M)
+-Fixed issue #18129: Check of json data for upload question (#2433) (Denis Chenu)
+-Fixed issue #18114: Permission will now be checked for user when opening list questions by link/url (#2423) (Patricia Stell)
+-Fixed issue #18110: Unable to get empty help in question attributes (#2421) (Denis Chenu)
+-Fixed issue #18026: Session expire message when submit button is clicked twice (#2337) (Gabriel Jenik)
+-Fixed issue #17837: Directly show edit mode: some quirks (#2441) (Gabriel Jenik)
+-Fixed issue #14909: Improve language consistency (Carsten Schmitz)
+#Updated translation: Valencian by joamuran, vbraque
+#Updated translation: Turkish by kayazeren
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by c_schmitz, dusanm, jelen1, sweetakasha
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: French (France) by arnaud21, b00z00, BenoitBouvarel, c_schmitz, DenisChenu, janolap1, Qat, ulysse68, Xave
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, zengqing, zhanginshanghai
+
+
 Changes from 5.3.17 (build 220525) to 5.3.18 (build 220530) May 30, 2022
 -Fixed issue #18160: [security] Update jquery-ui to 1.13.1 (Carsten Schmitz)
 -Fixed issue #18150: Survey not properly resuming and showing blank page (#2442) (Gabriel Jenik)

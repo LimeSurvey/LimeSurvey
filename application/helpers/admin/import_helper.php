@@ -2313,13 +2313,14 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 }
 
 /**
-* This function imports a CSV file into the response table
-*
-* @param string $sFullFilePath
-* @param integer $iSurveyId
-* @param array $aOptions
-* Return array $result ("errors","warnings","success")
-*/
+ * This function imports a CSV file into the response table
+ * CSV file is deleted during process
+ *
+ * @param string $sFullFilePath
+ * @param integer $iSurveyId
+ * @param array $aOptions
+ * Return array $result ("errors","warnings","success")
+ */
 function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
 {
 
@@ -3331,6 +3332,8 @@ function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDR
 
 /**
  * Read a csv file and return a tmp resources to same file in utf8
+ * CSV file is deleted during process
+ *
  * @param string $fullfilepath
  * @param string $encoding from
  * @return resource

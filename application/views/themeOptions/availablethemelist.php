@@ -10,7 +10,7 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
         <div class="col-sm-12 content-right">
 
             <div id="templates_no_db" >
-                <table class="items table">
+                <table class="items table table-hover">
                     <thead>
                     <tr>
                         <th><?php eT('Preview'); ?></th>
@@ -40,8 +40,8 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
 
 <?php if (!empty($aQuestionThemes['broken_themes'])): ?>
     <h3><?php eT('Broken question themes'); ?></h3>
-    <div id="templates_no_db" class="grid-view">
-        <table class="items table">
+    <div id="templates_no_db" >
+        <table class="items table table-hover">
             <thead>
             <tr>
                 <th><?php eT('Path'); ?></th>
