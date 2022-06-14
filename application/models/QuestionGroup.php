@@ -475,4 +475,15 @@ class QuestionGroup extends LSActiveRecord
 
         return $result;
     }
+
+    /**
+     * Returns all group questions (including subquestions)
+     * @return Question[]
+     */
+    public function getAllQuestions()
+    {
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAllByAttributes(['gid' => $this->gid]);
+        return $questions;
+    }
 }

@@ -1,21 +1,22 @@
 <div class="input-group col-12">
-<?php /*
+
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['prefix'])) : ?>
         <div class="input-group-addon">
             <?= $this->setting['aFormElementOptions']['inputGroup']['prefix']; ?>
         </div>
     <?php endif; ?>
- */ ?>
 
-    <?php if (isset($this->setting['i18n']) && $this->setting['i18n'] == 1): ?>
+    <?php if ($this->setting['i18n']): ?>
         <?php foreach ($this->survey->allLanguages as $lang): ?>
             <div class="lang-hide lang-<?= $lang; ?>">
                 <input
                     type="text"
                     class="form-control"
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>][<?= $lang; ?>]"
-                    id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>][<?= $lang; ?>]"
+                    name="<?= $inputBaseName; ?>[<?= $lang ?>]"
+                    id="<?= CHtml::getIdByName($inputBaseName . "[" . $lang ."]"); ?>"
                     value="<?= CHtml::encode($this->setting[$lang]['value']); ?>"
+                    aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>"
+                    <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
                 />
             </div>
         <?php endforeach; ?>
@@ -23,8 +24,9 @@
       <input
           type="text"
           class="form-control"
-          name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-          id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+          name="<?= $inputBaseName ?>"
+          id="<?= CHtml::getIdByName($inputBaseName); ?>"
+          <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
           value="<?= CHtml::encode($this->setting['value']); ?>"
       />
     <?php endif; ?>

@@ -64,10 +64,11 @@ export default {
             this.active = [];
         },
         createFullQuestionLink() { 
-            if(LS.reparsedParameters().combined.gid) {
-                return LS.createUrl(this.createQuestionLink, {gid: LS.reparsedParameters().combined.gid}); 
+            if (LS.reparsedParameters().combined.gid) {
+                return this.createQuestionLink + '&gid=' + LS.reparsedParameters().combined.gid;
+            } else {
+                return this.createQuestionLink;
             }
-            return LS.createUrl(this.createQuestionLink, {}); 
         },
         questionHasCondition(question) {
             return question.relevance !== '1';

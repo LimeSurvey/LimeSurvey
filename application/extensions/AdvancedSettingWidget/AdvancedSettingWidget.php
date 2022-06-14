@@ -8,6 +8,13 @@ class AdvancedSettingWidget extends CWidget
     /** @var Survey */
     public $survey;
 
+    const SINGLEINPUTTYPE = array(
+        'columns',
+        'integer',
+        'singleselect',
+        'text',
+        'textarea'
+    );
     /**
      * @todo Classes instead of array.
      * @return void
@@ -27,8 +34,23 @@ class AdvancedSettingWidget extends CWidget
         if (isset($this->setting['expression']) && $this->setting['expression'] == 2) {
             $this->setting['aFormElementOptions']['inputGroup'] = ['prefix' => '{', 'suffix' => '}'];
         }
-
-        $content = $this->render($this->setting['inputtype'], null, true);
-        $this->render('layout', ['content' => $content]);
+        $this->setting['hidden'] = !empty($this->setting['hidden']);
+        $this->setting['i18n'] = !empty($this->setting['i18n']);
+        $this->setting['help'] = trim($this->setting['help']);
+        if ($this->setting['help']) {
+            /* @fixme : Must be done in Model : QuestionTheme must be allowed to have own translation, plugin can have own translation */
+            $this->setting['help'] = gT($this->setting['help'], 'unescaped');
+        }
+        $inputBaseName = "advancedSettings[" . strtolower($this->setting['category']) . "][" . $this->setting['name'] ."]";
+        $content = $this->render($this->setting['inputtype'],
+            ['inputBaseName' => $inputBaseName]
+            , true
+        );
+        $this->render('layout',
+            [
+                'content' => $content,
+                'inputBaseName' => $inputBaseName
+            ]
+        );
     }
 }

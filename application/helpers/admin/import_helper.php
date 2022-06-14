@@ -2287,7 +2287,6 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                 }
                             }
                         }
-
                         if (!SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData)) {
                             throw new Exception(gT("Error") . ": Failed to insert data[16]<br />");
                         }
@@ -2314,13 +2313,14 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 }
 
 /**
-* This function imports a CSV file into the response table
-*
-* @param string $sFullFilePath
-* @param integer $iSurveyId
-* @param array $aOptions
-* Return array $result ("errors","warnings","success")
-*/
+ * This function imports a CSV file into the response table
+ * CSV file is deleted during process
+ *
+ * @param string $sFullFilePath
+ * @param integer $iSurveyId
+ * @param array $aOptions
+ * Return array $result ("errors","warnings","success")
+ */
 function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
 {
 
@@ -2635,6 +2635,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     if (!isset($xml->timings->rows)) {
         return $results;
     }
+    switchMSSQLIdentityInsert('survey_' . $iSurveyID . '_timings', true);
     foreach ($xml->timings->rows->row as $row) {
         $insertdata = array();
 
@@ -2649,11 +2650,12 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
         }
 
         if (!SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata)) {
-            throw new Exception(gT("Error") . ": Failed to insert data[17]<br />");
+            throw new Exception(gT("Error") . ": Failed to insert timings data");
         }
 
         $results['responses']++;
     }
+    switchMSSQLIdentityInsert('survey_' . $iSurveyID . '_timings', false);
     return $results;
 }
 
@@ -2768,7 +2770,10 @@ function TSVImportSurvey($sFullFilePath)
     if (isset($surveyinfo['language'])) {
         $baselang = $surveyinfo['language']; // the base language
     }
-
+    /* Keep track of id for group */
+    $groupIds = [];
+    /* Keep track of id for question (can come from tsv and can be broken : issue #17980 */
+    $questionsIds = [];
     $rownumber = 1;
     $lastglang = '';
     $lastother = 'N';
@@ -2805,19 +2810,19 @@ function TSVImportSurvey($sFullFilePath)
                     $group['gid'] = $gid;
                     $group['group_order'] = $ginfo[$sGroupseq]['group_order'];
                 } else {
-                    if (empty($row['id'])) {
+                    /* Get the new gid from file if it's number and not already set*/
+                    if (!empty($row['id']) && ctype_digit($row['id']) && !in_array($row['id'], $groupIds)) {
+                        $gid = $row['id'];
+                    } else {
                         $gidNew += 1;
                         $gid = $gidNew;
-                    } else {
-                        $gid = $row['id'];
                     }
-
                     $group['gid'] = $gid;
+                    $groupIds[] = $gid;
                     $group['group_order'] = $gseq;
                 }
 
                 if (!isset($ginfo[$sGroupseq])) {
-                    //$gid = $gseq;
                     $ginfo[$sGroupseq]['gid'] = $gid;
                     $ginfo[$sGroupseq]['group_order'] = $gseq++;
                 }
@@ -2847,7 +2852,7 @@ function TSVImportSurvey($sFullFilePath)
                 $question['same_script'] = (isset($row['same_script']) ? $row['same_script'] : 0);
                 $question['parent_qid'] = 0;
 
-                // For multi numeric survey : same name, add the gid to have same name on different gid. Bad for EM.
+                // For multi language survey : same name, add the gid to have same name on different gid. Bad for EM.
                 $fullqname = 'G' . $gid . '_' . $qname;
                 if (isset($qinfo[$fullqname])) {
                     $qseq = $qinfo[$fullqname]['question_order'];
@@ -2855,14 +2860,16 @@ function TSVImportSurvey($sFullFilePath)
                     $question['qid'] = $qid;
                     $question['question_order'] = $qseq;
                 } else {
-                    if (empty($row['id'])) {
+                    /* Get the new qid from file if it's number and not already set*/
+                    if (!empty($row['id']) && ctype_digit($row['id']) && !in_array($row['id'], $questionsIds)) {
+                        $qid = $row['id'];
+                    } else {
                         $qidNew += 1;
                         $qid = $qidNew;
-                    } else {
-                        $qid = $row['id'];
                     }
                     $question['question_order'] = $qseq;
                     $question['qid'] = $qid;
+                    $questionsIds[] = $qid;
                 }
 
                 $questions[] = $question;
@@ -2955,7 +2962,7 @@ function TSVImportSurvey($sFullFilePath)
                     $subquestion['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                     $subquestion['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
                     $subquestion['scale_id'] = $scale_id;
-                    // For multi nueric language, qid is needed, why not gid. name is not unique.
+                    // For multi language, qid is needed, why not gid. name is not unique.
                     $fullsqname = 'G' . $gid . 'Q' . $qid . '_' . $scale_id . '_' . $sqname;
                     if (isset($sqinfo[$fullsqname])) {
                         $qseq = $sqinfo[$fullsqname]['question_order'];
@@ -2964,14 +2971,15 @@ function TSVImportSurvey($sFullFilePath)
                         $subquestion['qid'] = $sqid;
                     } else {
                         $subquestion['question_order'] = $qseq;
-                        if (empty($row['id'])) {
+                        /* Get the new qid from file if it's number and not already set : subquestion are question*/
+                        if (!empty($row['id']) && ctype_digit($row['id']) && !in_array($row['id'], $questionsIds)) {
+                            $sqid = $row['id'];
+                        } else {
                             $qidNew += 1;
                             $sqid = $qidNew;
-                        } else {
-                            $sqid = $row['id'];
                         }
-
                         $subquestion['qid'] = $sqid;
+                        $questionsIds[] = $sqid;
                     }
                     $subquestions[] = $subquestion;
 
@@ -3326,6 +3334,8 @@ function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDR
 
 /**
  * Read a csv file and return a tmp ressources to same file in utf8
+ * CSV file is deleted during process
+ *
  * @param string $fullfilepath
  * @param string $encoding from
  * @return resource

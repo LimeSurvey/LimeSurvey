@@ -279,6 +279,9 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionListQuestions($surveyid, $landOnSideMenuTab = 'settings')
     {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
         $iSurveyID = sanitize_int($surveyid);
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
@@ -483,6 +486,7 @@ class QuestionAdministrationController extends LSBaseController
 
             // All done, redirect to edit form.
             $question->refresh();
+            LimeExpressionManager::SetDirtyFlag();
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             //only those two values are valid
             if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {
@@ -548,15 +552,36 @@ class QuestionAdministrationController extends LSBaseController
             }
         } catch (CException $ex) {
             $transaction->rollback();
-            throw new LSJsonException(
-                500,
-                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
-                0,
-                App()->createUrl(
-                    'surveyAdministration/view/',
-                    ["surveyid" => $iSurveyId]
-                )
-            );
+            if ($calledWithAjax) {
+                throw new LSJsonException(
+                    500,
+                    gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
+                    0,
+                    App()->createUrl(
+                        'surveyAdministration/view/',
+                        ["surveyid" => $iSurveyId]
+                    )
+                );
+            } else {
+                if (empty($question)) {
+                    $sRedirectUrl = $this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId]);
+                } else {
+                    $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
+                    if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {
+                        $tabOverviewEditorValue = 'overview';
+                    }
+                    $sRedirectUrl = $this->createUrl(
+                        'questionAdministration/edit/',
+                        [
+                            'questionId' => $question->qid,
+                            'landOnSideMenuTab' => 'structure',
+                            'tabOverviewEditor' => $tabOverviewEditorValue,
+                        ]
+                    );
+                }
+                Yii::app()->setFlashMessage($ex->getMessage(), 'error');
+                $this->redirect($sRedirectUrl);
+            }
         }
     }
 
@@ -582,39 +607,6 @@ class QuestionAdministrationController extends LSBaseController
         $aGeneralOptionsArray = $this->getGeneralOptions($iQuestionId, $sQuestionType, $gid, $questionThemeName);
 
         $this->renderJSON($aGeneralOptionsArray);
-    }
-
-
-    /**
-     * Action (called by ajaxrequest and returning json)
-     * Returns a preformatted json of advanced settings.
-     *
-     * @param int $iQuestionId
-     * @param string $sQuestionType
-     * @param boolean $returnArray
-     * @param string $questionThemeName
-     *
-     * @return void|array
-     * @throws CException
-     * @todo Delete when Vue is gone?
-     */
-    public function actionGetAdvancedOptions(
-        $iQuestionId = null,
-        $sQuestionType = null,
-        $returnArray = false, //todo see were this ajaxrequest is done and take out the parameter there and here
-        $questionThemeName = null
-    ) {
-        //here we get a Question object (also if question is new --> QuestionCreate)
-        // TODO: this object doesn't seem to be needed here.
-        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, null, $questionThemeName);
-        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $questionThemeName);
-
-        $this->renderJSON(
-            [
-                'advancedSettings'       => $aAdvancedOptionsArray,
-                'questionTypeDefinition' => $oQuestion->questionType,
-            ]
-        );
     }
 
 

@@ -4754,7 +4754,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) { // Did we need it ?
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -4969,7 +4968,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -5470,7 +5468,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-                    self::InitGroupRelevanceInfo();
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq, $force);
@@ -6733,34 +6730,6 @@ class LimeExpressionManager
     }
 
     /**
-     * Init groupRelevanceInfo with qid as 0 for expression not related to question
-     * see issue #17966
-     * @return void
-     */
-    private static function InitGroupRelevanceInfo()
-    {
-        $LEM =& LimeExpressionManager::singleton();
-        if (is_null($LEM->currentGroupSeq)) {
-            return;
-        }
-        $LEM->groupRelevanceInfo = [
-            [
-                'qid' => 0,
-                'gseq' => $LEM->currentGroupSeq,
-                'eqn' => '',
-                'result' => true,
-                'numJsVars' => 0,
-                'relevancejs' => '',
-                'relevanceVars' => '',
-                'jsResultVar' => '',
-                'type' => '',
-                'hidden' => false,
-                'hasErrors' => false,
-            ]
-        ];
-    }
-
-    /**
      * This should be called each time a new group is started, whether on same or different pages. Sets/Clears needed internal parameters.
      * @param int|null $gseq - the group sequence
      * @param boolean|null $anonymized - whether anonymized
@@ -6779,7 +6748,6 @@ class LimeExpressionManager
         $LEM->groupRelevanceInfo = [];
         if (!is_null($gseq)) {
             $LEM->currentGroupSeq = $gseq;
-            self::InitGroupRelevanceInfo();
             if (!is_null($surveyid)) {
                 $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized);
                 if ($gseq > $LEM->maxGroupSeq) {
@@ -6985,15 +6953,26 @@ class LimeExpressionManager
                     }
                 }
             }
+            $pageRelevanceInfo[] = array(
+                'qid' => 0,
+                'gseq' => $LEM->currentGroupSeq,
+                'eqn' => '',
+                'result' => true,
+                'numJsVars' => 0,
+                'relevancejs' => '',
+                'relevanceVars' => '',
+                'jsResultVar' => '',
+                'type' => '',
+                'hidden' => false,
+                'hasErrors' => false,
+            );
         }
-
         $valEqns = [];
         $relEqns = [];
         $relChangeVars = [];
 
         $dynamicQinG = []; // array of questions, per group, that might affect group-level visibility in all-in-one mode
         $GalwaysRelevant = []; // checks whether a group is always relevant (e.g. has at least one question that is always shown)
-
         if (is_array($pageRelevanceInfo)) {
             foreach ($pageRelevanceInfo as $arg) {
                 if (!$LEM->allOnOnePage && $LEM->currentGroupSeq != $arg['gseq']) {
@@ -7058,10 +7037,8 @@ class LimeExpressionManager
 
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
-
                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
-
-                if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
+                if ($arg['qid'] && ($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
@@ -7336,8 +7313,10 @@ class LimeExpressionManager
                     // Launch updated event after update value to allow equation update propagation
                     $relParts[] = "  $('#" . substr($jsResultVar, 1, -1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('updated');\n";
                 }
-                $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
-                $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                if ($arg['qid']) {
+                    $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
+                    $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                }
 
                 $relParts[] = "}\n";
                 if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
@@ -7352,10 +7331,10 @@ class LimeExpressionManager
                     $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
-                } else {
+                } elseif ($arg['qid']) {
                     // Second time : now if relevance is true: Group is allways visible (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
-                    if (!($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                    if ($arg['qid'] && !($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
                         $GalwaysRelevant[$arg['gseq']] = true;
                     }
                 }
@@ -8471,13 +8450,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             if (!preg_match('/_filecount$/', $sq)) {
                                 $json = $value;
                                 $aFiles = json_decode($json);
-                                $iSize = (is_null($aFiles)) ? 0 : @count($aFiles);
                                 // if the files have not been saved already,
                                 // move the files from tmp to the files folder
-
-                                $tmp = $LEM->surveyOptions['tempdir'] . 'upload' . DIRECTORY_SEPARATOR;
-                                if (!is_null($aFiles) && $iSize > 0) {
+                                if (!empty($aFiles) && is_array($aFiles)) {
+                                    $iSize = count($aFiles);
                                     // Move the (unmoved, temp) files from temp to files directory.
+                                    $tmp = $LEM->surveyOptions['tempdir'] . 'upload' . DIRECTORY_SEPARATOR;
                                     // Check all possible file uploads
                                     for ($i = 0; $i < $iSize; $i++) {
                                         $aFiles[$i]->name = sanitize_filename($aFiles[$i]->name, false, false, true);

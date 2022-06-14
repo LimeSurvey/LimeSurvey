@@ -38,10 +38,22 @@
                              <?php endif;?>
                         </td>
                         <td>
-                            <?php echo convertToGlobalSettingFormat($updateKeyInfos->validuntil); ?>
+                            <?php 
+                            if ($updateKeyInfos->result === false) {
+                                eT($updateKeyInfos->error);
+                            } else {
+                                echo convertToGlobalSettingFormat($updateKeyInfos->validuntil);
+                            }
+                            ?>
                         </td>
                         <td>
-                            <?php echo $updateKeyInfos->remaining_updates; ?>
+                        <?php 
+                        if ($updateKeyInfos->result === false) {
+                                echo '-';
+                            } else {
+                                echo $updateKeyInfos->remaining_updates; 
+                            };
+                        ?>
                         </td>
                         <td>
                             <a data-post-url="<?php echo App()->createUrl('/admin/update/sa/deleteKey');?>" class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
@@ -61,7 +73,7 @@
             </p>
             <p>
                 <?php
-                    $aopen  = '<a href="https://account.limesurvey.org/get-your-free-comfortupdate-trial-key" target="_blank">';
+                    $aopen  = '<a href="https://account.limesurvey.org/index.php?option=com_users&view=profile" target="_blank">';
                     $aclose = '</a>';
                 ?>
                 <?php echo sprintf(gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),$aopen, $aclose); ?>

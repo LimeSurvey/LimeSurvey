@@ -31,28 +31,30 @@
     <div role="tabpanel" class="tab-pane active" id="question-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-            <div class="form-group scope-contains-ckeditor">
-                <?= CHtml::textArea(
-                    "questionI10N[$lang][question]",
-                    $question->questionl10ns[$lang]->question ?? '',
-                    [
-                        'class' => 'form-control',
-                        'cols' => '60',
-                        'rows' => '8',
-                        'id' => "question_{$lang}",
-                        'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr',
-                        'placeholder' => gT('Enter your question here...'),
-                    ]
-                ); ?>
-                <?= getEditor(
-                    'question-text',//"question_" . $lang, //this is important for LimereplacementfieldsController function getReplacementFields(...)!
-                    "question_" . $lang,
-                    "[".gT("Question:","js")."](".$lang.")",
-                    $oSurvey->sid,
-                    $question->gid ?? 0,
-                    $question->qid ?? 0,
-                    'editquestion');
-                ?>
+            <div class="form-group">
+                <div class="input-group w-100">
+                    <?= CHtml::textArea(
+                        "questionI10N[$lang][question]",
+                        $question->questionl10ns[$lang]->question ?? '',
+                        [
+                            'class' => 'form-control',
+                            'cols' => '60',
+                            'rows' => '8',
+                            'id' => "question_{$lang}",
+                            'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr',
+                            'placeholder' => gT('Enter your question here...'),
+                        ]
+                    ); ?>
+                    <?= getEditor(
+                        'question-text',//"question_" . $lang, //this is important for LimereplacementfieldsController function getReplacementFields(...)!
+                        "question_" . $lang,
+                        "[".gT("Question:","js")."](".$lang.")",
+                        $oSurvey->sid,
+                        $question->gid ?? 0,
+                        $question->qid ?? 0,
+                        'editquestion');
+                    ?>
+                </div>
             </div>
         </div>
         <?php endforeach; ?>
@@ -62,28 +64,30 @@
     <div role="tabpanel" class="tab-pane" id="question-help-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-            <div class="form-group scope-contains-ckeditor">
-                <?= CHtml::textArea(
-                    "questionI10N[$lang][help]",
-                    $question->questionl10ns[$lang]->help ?? '',
-                    [
-                        'class' => 'form-control',
-                        'cols' => '60',
-                        'rows' => '4',
-                        'id' => "help_{$lang}",
-                        'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr',
-                        'placeholder' => gT('Enter some help text if your question needs some explanation here...'),
-                    ]
-                ); ?>
-                <?= getEditor(
-                    "help_".$lang,
-                    "help_".$lang,
-                    "[".gT("Help:", "js")."](".$lang.")",
-                    $oSurvey->sid,
-                    $question->gid ?? 0,
-                    $question->qid ?? 0,
-                    $action = ''
-                ); ?>
+            <div class="form-group">
+                <div class="input-group w-100">
+                    <?= CHtml::textArea(
+                        "questionI10N[$lang][help]",
+                        $question->questionl10ns[$lang]->help ?? '',
+                        [
+                            'class' => 'form-control',
+                            'cols' => '60',
+                            'rows' => '4',
+                            'id' => "help_{$lang}",
+                            'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr',
+                            'placeholder' => gT('Enter some help text if your question needs some explanation here...'),
+                        ]
+                    ); ?>
+                    <?= getEditor(
+                        "help_".$lang,
+                        "help_".$lang,
+                        "[".gT("Help:", "js")."](".$lang.")",
+                        $oSurvey->sid,
+                        $question->gid ?? 0,
+                        $question->qid ?? 0,
+                        $action = ''
+                    ); ?>
+                </div>
             </div>
         </div>
         <?php endforeach; ?>

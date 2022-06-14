@@ -294,11 +294,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
                 if ($aData['shownoanswer']) {
                     // No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
-                    if (!empty($this->getFromSurveySession($myfname0)) || $this->getFromSurveySession($myfname0) == "") {
+                    if (empty($this->getFromSurveySession($myfname0))) {
                         //$answer .= CHECKED;
-                        $aData['myfname0_notset'] = CHECKED;
+                        $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {
-                        $aData['myfname0_notset'] = "";
+                        $aData['aSubQuestions'][$i]['myfname0_notset'] = "";
                     }
                 }
 
@@ -317,18 +317,18 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $aData['answertextright'] = $answertextright;
             if ($aData['shownoanswer']) {
                 if (count($aData['labelans1']) > 0) {
-                    if (!empty($this->getFromSurveySession($myfname1)) || $this->getFromSurveySession($myfname1) == "") {
+                    if (empty($this->getFromSurveySession($myfname1))) {
                         #$answer .= CHECKED;
-                        $aData['myfname1_notset'] = CHECKED;
+                        $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
                     } else {
-                        $aData['myfname1_notset'] = "";
+                        $aData['aSubQuestions'][$i]['myfname1_notset'] = "";
                     }
                 } else {
-                    if (!empty($this->getFromSurveySession($myfname0)) || $this->getFromSurveySession($myfname0) == "") {
+                    if (empty($this->getFromSurveySession($myfname0))) {
                         $answer .= CHECKED;
-                        $aData['myfname0_notset'] = CHECKED;
+                        $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {
-                        $aData['myfname0_notset'] = '';
+                        $aData['aSubQuestions'][$i]['myfname0_notset'] = '';
                     }
                 }
             }

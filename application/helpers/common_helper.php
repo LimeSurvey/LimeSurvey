@@ -2183,13 +2183,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         }
     }
     $mail->Subject = $subject;
-
-    $sent = $mail->Send();
-    $maildebug = $mail->ErrorInfo;
-    if (Yii::app()->getConfig("emailsmtpdebug") > 0 && $mail->getDebug()) {
-        $maildebug .= '<br><strong>' . gT('SMTP debug output:') . '</strong>' . $mail->getDebug('html');
-    }
-    return $sent;
+    return $mail->Send();
 }
 
 
