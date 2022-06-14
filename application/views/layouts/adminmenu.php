@@ -13,11 +13,9 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus" aria-controls="small-screens-menus" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-brand">
-            <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-                <?php echo $sitename; ?>
-            </a>
-        </div>
+        <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
+            <?php echo $sitename; ?>
+        </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
             <ul class="nav navbar-nav">
