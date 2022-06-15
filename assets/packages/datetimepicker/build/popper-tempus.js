@@ -2527,7 +2527,7 @@
             error.code = 5;
             if (!soft)
                 throw error;
-            console.warn(error);
+            // console.warn(error);
         }
         /**
          * Throws when an element to attach to was not provided in the constructor.

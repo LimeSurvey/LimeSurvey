@@ -18,6 +18,12 @@ var initialScrollValue = 0;
  */
 var useRtl = false;
 
+/**
+ *
+ * @type {{}}
+ */
+var filterData = {};
+
 // Return public functions for this module
 LS.resp = {
     /**
@@ -76,7 +82,8 @@ LS.resp = {
 };
 
 /**
- * When date-picker is used in responses gridview
+ * reinits the datetimepickers and adds event listener
+ * for grid reload
  * @return
  */
 function reinstallResponsesFilterDatePicker() {
@@ -85,6 +92,7 @@ function reinstallResponsesFilterDatePicker() {
     var input = document.getElementById('dateFormatDetails');
     var locale = document.getElementById('locale');
     var startdateElement = document.getElementById('SurveyDynamic_startdate');
+    var datestampElement = document.getElementById('SurveyDynamic_datestamp');
 
     if (input.value && locale.value) {
         var dateFormatDetails = JSON.parse(input.value);
@@ -114,18 +122,30 @@ function reinstallResponsesFilterDatePicker() {
             const picker_SurveyDynamic_startdate = new tempusDominus.TempusDominus(startdateElement, config);
             setDatePickerFormat(picker_SurveyDynamic_startdate, dateFormatDetails.jsdate, startdateElement.value);
             startdateElement.addEventListener("change.td", function () {
-                var data = document.querySelectorAll('#responses-grid .filters input, #responses-grid .filters select');
-                data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
-                $.fn.yiiGridView.update('responses-grid', {data: data});
+                reloadGrid();
             });
         }
 
-        // $('#SurveyDynamic_datestamp').on('focusout', function() {
-        //     var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
-        //     $.fn.yiiGridView.update('responses-grid', {data: data});
-        // });
+        if (datestampElement) {
+            const picker_SurveyDynamic_datestamp = new tempusDominus.TempusDominus(datestampElement, config);
+            setDatePickerFormat(picker_SurveyDynamic_datestamp, dateFormatDetails.jsdate, datestampElement.value);
+            datestampElement.addEventListener("change.td", function () {
+                reloadGrid();
+            });
+        }
     } else {
         console.ls.log('Internal error? Run reinstallResponsesFilterDatePicker, but find no input with name dateFormatDetails.');
+    }
+}
+
+/**
+ * reload gridview only when data of filter input has changed
+ */
+function reloadGrid() {
+    var newData = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
+    if (filterData !== newData) {
+        filterData = newData;
+        $.fn.yiiGridView.update('responses-grid', {data: filterData});
     }
 }
 
@@ -146,6 +166,12 @@ function onDocumentReadyListresponse() {
 
 }
 
+/**
+ * manipulates weak handling of tempus datetimepicker with dateformats
+ * @param id
+ * @param format
+ * @param elemDate
+ */
 function setDatePickerFormat(id, format, elemDate) {
     // formatting when selected via datepicker
     id.dates.formatInput = function (date) {
@@ -161,8 +187,6 @@ function setDatePickerFormat(id, format, elemDate) {
         if (converted.isValid()) {
             let date = tempusDominus.DateTime.convert(converted.toDate(), this.optionsStore.options.localization.locale);
             this.setValue(date, index);
-        } else {
-            // console.log('Momentjs failed to parse the input date.');
         }
     };
     //workaround: formatting when value is loaded on pageload
@@ -176,7 +200,9 @@ $(window).bind("load", function () {
     reinstallResponsesFilterDatePicker();
 });
 
-$(document).on('pjax:scriptcomplete', onDocumentReadyListresponse);
+$(document).on('pjax:scriptcomplete', function() {
+    onDocumentReadyListresponse()
+});
 
 $(function () {
     // hide and submit Modal on click for pjax preventDefault submit
