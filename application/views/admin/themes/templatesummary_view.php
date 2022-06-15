@@ -38,7 +38,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
                                         <input type='hidden' name="filetype" value="<?php echo CHtml::encode('screen'); ?>" />
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='submit' class='btn btn-outline-secondary btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
@@ -69,7 +69,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
                                     <input type='hidden' name="filetype" value="<?php echo CHtml::encode('js'); ?>" />
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='submit' class='btn btn-outline-secondary btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
@@ -99,7 +99,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
                                     <input type='hidden' name="filetype" value="<?php echo CHtml::encode('css'); ?>" />
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='submit' class='btn btn-outline-secondary btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
@@ -139,7 +139,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                         ? gT("Save changes")
                         : gT("Copy to local theme and save changes");
                     if (is_writable($templates[$templatename])) { ?>
-                        <input type='submit' class='btn btn-default' id='button-save-changes' value='<?php echo $sSaveText; ?>' <?=(!is_template_editable($templatename) ? "disabled='disabled' alt='".gT( "Changes cannot be saved to a standard theme."). "'" : "")?> />
+                        <input type='submit' class='btn btn-outline-secondary' id='button-save-changes' value='<?php echo $sSaveText; ?>' <?=(!is_template_editable($templatename) ? "disabled='disabled' alt='".gT( "Changes cannot be saved to a standard theme."). "'" : "")?> />
                     <?php } ?>
                 <?php } ?>
             </p>
@@ -162,7 +162,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
                                         <input type='hidden' name="filetype" value="<?php echo CHtml::encode('other'); ?>" />
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button other-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='submit' class='btn btn-outline-secondary btn-xs template-files-delete-button other-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
@@ -183,7 +183,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                     <?php printf(gT("Upload a file (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                     <br>
                     <input name='upload_file' id="upload_file" type="file" class="form-control" required="required" />
-                    <input type='submit' value='<?php eT("Upload"); ?>' class='btn btn-default' <?=(!is_template_editable($templatename) ? "disabled='disabled'" : '') ?> />
+                    <input type='submit' value='<?php eT("Upload"); ?>' class='btn btn-outline-secondary' <?=(!is_template_editable($templatename) ? "disabled='disabled'" : '') ?> />
                     <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>' />
                     <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
                     <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
@@ -215,7 +215,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                     <br/>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <?php eT("Close");?>
                     </button>
                 </div>
@@ -231,11 +231,11 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
             <?php eT("Preview:"); ?>
         </div>
         <div class="jumbotron message-box">
-            <input type='button' value='<?php eT("Mobile"); ?>' id='iphone' class="btn btn-default" />
-            <input type='button' value='640x480' id='x640' class="btn btn-default" />
-            <input type='button' value='800x600' id='x800' class="btn btn-default" />
-            <input type='button' value='1024x768' id='x1024' class="btn btn-default" />
-            <input type='button' value='<?php eT("Full"); ?>' id='full' class="btn btn-default" />
+            <input type='button' value='<?php eT("Mobile"); ?>' id='iphone' class="btn btn-outline-secondary" />
+            <input type='button' value='640x480' id='x640' class="btn btn-outline-secondary" />
+            <input type='button' value='800x600' id='x800' class="btn btn-outline-secondary" />
+            <input type='button' value='1024x768' id='x1024' class="btn btn-outline-secondary" />
+            <input type='button' value='<?php eT("Full"); ?>' id='full' class="btn btn-outline-secondary" />
             <br>
             <br>
             <br>

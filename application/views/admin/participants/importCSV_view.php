@@ -88,7 +88,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                 <div class="row  ls-space margin top-25 bottom-25">
                     <div class="form-group">
                         <div class="col-12 ">
-                            <input type="submit" value="<?php eT("Upload") ?>" class="btn btn-default col-md-6 offest-md-3 col-lg-4 offset-lg-4">
+                            <input type="submit" value="<?php eT("Upload") ?>" class="btn btn-outline-secondary col-md-6 offest-md-3 col-lg-4 offset-lg-4">
                         </div>
                     </div>
                 </div>

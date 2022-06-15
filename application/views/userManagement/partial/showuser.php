@@ -29,5 +29,7 @@ Yii::app()->getController()->renderPartial(
 </div>
 
 <div class="modal-footer modal-footer-buttons">
-    <button id="exitForm" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?=gT('Close')?></button>
+    <button id="exitForm" class="btn btn-cancel" data-bs-dismiss="modal">
+        <?=gT('Close')?>
+    </button>
 </div>

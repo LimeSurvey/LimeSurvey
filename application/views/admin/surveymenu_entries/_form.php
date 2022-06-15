@@ -151,21 +151,27 @@ Yii::app()->getController()->renderPartial(
 
 			<div class="mb-3">
 				<?php echo $form->labelEx($model, 'name'); ?>
-				<p class="selector_infoBox alert alert-info d-none"><?=gT('The name must be unique for all menu entries throughout the software.')?></p>
+				<p class="selector_infoBox alert alert-info d-none">
+					<?=gT('The name must be unique for all menu entries throughout the software.')?>
+				</p>
 				<?php echo $form->textField($model, 'name', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'name'); ?>
 			</div>
 			
 			<div class="mb-3">
 				<?php echo $form->labelEx($model, 'menu_title'); ?>
-				<p class="selector_infoBox alert alert-info d-none"><?=gT('This is the content of the menu link - leave blank to use the title.')?></p>
+				<p class="selector_infoBox alert alert-info d-none">
+					<?=gT('This is the content of the menu link - leave blank to use the title.')?>
+				</p>
 				<?php echo $form->textField($model, 'menu_title', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'menu_title'); ?>
 			</div>
 
 			<div class="mb-3">
 				<?php echo $form->labelEx($model, 'menu_class'); ?>
-				<p class="selector_infoBox alert alert-warning d-none"><?=gT('If the link should have any extra classes, please insert them here.')?></p>
+				<p class="selector_infoBox alert alert-warning d-none">
+					<?=gT('If the link should have any extra classes, please insert them here.')?>
+				</p>
 				<?php echo $form->textField($model, 'menu_class', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'menu_class'); ?>
 			</div>
@@ -227,7 +233,12 @@ Yii::app()->getController()->renderPartial(
 	</div>
 </div>
 	<div class="modal-footer">
-        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?=gT('Cancel')?></button>
+        <button
+			type="button"
+			class="btn btn-cancel"
+			data-bs-dismiss="modal">
+			<?=gT('Cancel')?>
+		</button>
 		<?php echo TbHtml::submitButton(($model->isNewRecord ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
 
 	</div>

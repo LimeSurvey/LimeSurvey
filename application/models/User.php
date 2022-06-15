@@ -460,7 +460,7 @@ class User extends LSActiveRecord
             . "<button 
                 data-bs-toggle='tooltip' 
                 title='" . gT("User details") . "'    
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
+                class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--userdetail' 
                 data-href='" . $detailUrl . "'
                 >
                 <i class='fa fa-search'></i>
@@ -470,7 +470,7 @@ class User extends LSActiveRecord
             . "<button 
                 data-bs-toggle='tooltip' 
                 title='" . gT("Edit permissions") . "'  
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
+                class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--permissions' 
                 data-href='" . $setPermissionsUrl . "'
                 data-modalsize='modal-lg'
                 ><i class='fa fa-lock'></i></button>";
@@ -478,24 +478,24 @@ class User extends LSActiveRecord
             . "<button 
                 data-bs-toggle='tooltip' 
                 title='" . gT("User role") . "'
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
+                class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--addrole' 
                 data-href='" . $setRoleUrl . "'><i class='fa fa-users'></i></button>";
         $editUserButton = ""
             . "<button 
                 data-bs-toggle='tooltip' 
                 title='" . gT("Edit user") . "'
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser green-border' 
+                class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--edituser green-border' 
                 data-href='" . $editUrl . "'><i class='fa fa-pencil'></i></button>";
         $editTemplatePermissionButton = ""
             . "<button 
         data-bs-toggle='tooltip' 
         title='" . gT("Template permissions") . "'
-        class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
+        class='btn btn-sm btn-outline-secondary UserManagement--action--openmodal UserManagement--action--templatepermissions' 
         data-href='" . $setTemplatePermissionsUrl . "'><i class='fa fa-paint-brush'></i></button>";
         $takeOwnershipButton = ""
         . "<button 
                 id='UserManagement--takeown-" . $this->uid . "'
-                class='btn btn-sm btn-default' 
+                class='btn btn-sm btn-outline-secondary' 
                 data-bs-toggle='modal' 
                 data-bs-target='#confirmation-modal' 
                 data-url='" . $changeOwnershipUrl . "' 
@@ -511,7 +511,7 @@ class User extends LSActiveRecord
         $deleteUserButton = ""
             . "<button 
                 id='UserManagement--delete-" . $this->uid . "' 
-                class='btn btn-default btn-sm UserManagement--action--openmodal UserManagement--action--delete red-border'
+                class='btn btn-outline-secondary btn-sm UserManagement--action--openmodal UserManagement--action--delete red-border'
                 data-bs-toggle='tooltip' 
                 title='" . gT("Delete User") . "' 
                 data-href='" . $deleteUrl . "'><i class='fa fa-trash text-danger'></i></button>";

@@ -14,7 +14,7 @@
                 />
             <label
                 for="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
-                class="btn btn-outline-primary"
+                class="btn btn-outline-secondary"
             >
                 <?= gT('On'); ?>
             </label>
@@ -27,7 +27,7 @@
                 />
             <label
                 for="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
-                class="btn btn-outline-primary">
+                class="btn btn-outline-secondary">
                 <?= gT('Off'); ?>
             </label>
         <?php else : ?>
@@ -40,7 +40,7 @@
                 />
             <label
                 for="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_1"
-                class="btn btn-outline-primary">
+                class="btn btn-outline-secondary">
                 <?= gT('On'); ?>
             </label>
             <input
@@ -53,7 +53,7 @@
                 />
             <label
                 for="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]_0"
-                class="btn btn-outline-primary">
+                class="btn btn-outline-secondary">
                 <?= gT('Off'); ?>
             </label>
         <?php endif; ?>

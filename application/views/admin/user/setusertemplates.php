@@ -23,13 +23,14 @@
                         <?php eT('All themes');?>
                     </th>
                     <th>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'alltemplates',
-                            'id'=>'alltemplates',
-                            'value' => 0,
-                            'onLabel'=>gT('On'),
-                            'offLabel' => gT('Off')));
-                        ?>
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'name'          => 'alltemplates',
+                            'checkedOption' => 0,
+                            'selectOptions' => [
+                                '1' => gT('On'),
+                                '0' => gT('Off'),
+                            ]
+                        ]); ?>
                     </th>
                 </tr>
             </thead>
@@ -55,20 +56,20 @@
                     <tr>
                         <td><?php echo $trow["folder"];?></td>
                         <td>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => $trow['folder'].'_use',
-                                'id'=>$trow['folder'].'_use',
-                                'value' => isset($templaterights[$trow['folder']]['use'])?$templaterights[$trow['folder']]['use']:0,
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                'name' => $trow['folder'] . '_use',
+                                'checkedOption' => $templaterights[$trow['folder']]['use'] ?? 0,
+                                'selectOptions' => [
+                                    '1' => gT('On'),
+                                    '0' => gT('Off'),
+                                ]
+                            ]); ?>
                         </td>
                     </tr>
                     <?php } ?>
             </tbody>
         </table>
         </form>
-
 
     </div>
 </div>

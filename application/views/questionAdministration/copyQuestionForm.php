@@ -57,10 +57,10 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" role="tab" id="heading-copy">
                             <button
-                                class="accordion-button collapsed selector--questionEdit-collapse" 
+                                class="accordion-button collapsed selector--questionEdit-collapse"
                                 type="button"
                                 role="button"
-                                data-bs-toggle="collapse" 
+                                data-bs-toggle="collapse"
                                 data-bs-target="#collapse-copy"
                                 aria-expanded="false"
                                 aria-controls="collapse-copy"
@@ -71,59 +71,57 @@
                         <div id="collapse-copy" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-copy">
                             <div class="accordion-body">
                                 <div class="form-group">
-                                    <label class=" form-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?>
-                                    </label>
-                                    <div class="">
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            'name' => 'copysubquestions',
-                                            'id' => 'copysubquestions',
-                                            'value' => 'Y',
-                                            'onLabel' => gT('Yes'),
-                                            'offLabel' => gT('No')
-                                        ));
-                                        ?>
+                                    <label class=" form-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
+                                    <div>
+                                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'copysubquestions',
+                                            'checkedOption' => '1',
+                                            'selectOptions' => [
+                                                '1' => gT('Yes'),
+                                                '0' => gT('No'),
+                                            ],
+                                        ]); ?>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-label" for='copyanswers'><?php eT("Copy answer options?"); ?>
-                                    </label>
-                                    <div class="">
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            'name' => 'copyanswers',
-                                            'id' => 'copyanswers',
-                                            'value' => 'Y',
-                                            'onLabel' => gT('Yes'),
-                                            'offLabel' => gT('No')
-                                        ));
-                                        ?>
+                                    <label class=" form-label" for='copyanswers'><?php eT("Copy answer options?"); ?></label>
+                                    <div>
+                                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'copyanswers',
+                                            'checkedOption' => '1',
+                                            'selectOptions' => [
+                                                '1' => gT('Yes'),
+                                                '0' => gT('No'),
+                                            ],
+                                        ]); ?>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-label" for='copydefaultanswers'><?php eT("Copy default answers?"); ?>
-                                    </label>
-                                    <div class="">
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            'name' => 'copydefaultanswers',
-                                            'id' => 'copydefaultanswers',
-                                            'value' => 'Y',
-                                            'onLabel' => gT('Yes'),
-                                            'offLabel' => gT('No')
-                                        ));
-                                        ?>
+                                    <label class=" form-label" for='copydefaultanswers'><?php eT("Copy default answers?"); ?></label>
+                                    <div>
+                                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'copydefaultanswers',
+                                            'checkedOption' => '1',
+                                            'selectOptions' => [
+                                                '1' => gT('Yes'),
+                                                '0' => gT('No'),
+                                            ],
+                                        ]); ?>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for='copyattributes'><?php eT("Copy question settings?"); ?>
+                                    <label class="form-label" for='copyattributes'>
+                                        <?php eT("Copy question settings?"); ?>
                                     </label>
                                     <div class="">
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            'name' => 'copyattributes',
-                                            'id' => 'copyattributes',
-                                            'value' => 'Y',
-                                            'onLabel' => gT('Yes'),
-                                            'offLabel' => gT('No')
-                                        ));
-                                        ?>
+                                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'copyattributes',
+                                            'checkedOption' => 'Y',
+                                            'selectOptions' => [
+                                                '1' => gT('Yes'),
+                                                '0' => gT('No'),
+                                            ],
+                                        ]); ?>
                                     </div>
                                 </div>
                                 <div class="form-group">

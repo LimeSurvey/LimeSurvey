@@ -21,7 +21,7 @@
             <br /> <br />
         </p>
         <input
-            class="btn btn-default"
+            class="btn btn-cancel"
             type="submit"
             value="<?php eT('Cancel'); ?>"
             onclick="window.open(

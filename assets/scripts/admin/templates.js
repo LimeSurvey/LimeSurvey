@@ -37,19 +37,19 @@ function createToolbar(element, editor)
     element.css('background-color', '#F0F0F0');
     element.css('padding', '5px');
     element.css('text-align', 'center');
-    $('<button/>').text('Undo (ctrl + Z)').attr('type', 'button').addClass('btn btn-default').appendTo(element).on('click', function()
+    $('<button/>').text('Undo (ctrl + Z)').attr('type', 'button').addClass('btn btn-outline-secondary').appendTo(element).on('click', function()
     {
         editor.commands.exec('undo', editor);
     });
-    $('<button/>').text('Redo (ctrl + Y)').attr('type', 'button').addClass('btn btn-default').appendTo(element).on('click', function()
+    $('<button/>').text('Redo (ctrl + Y)').attr('type', 'button').addClass('btn btn-outline-secondary').appendTo(element).on('click', function()
     {
         editor.commands.exec('redo', editor);
     });
-    $('<button/>').text('Find (ctrl + F)').attr('type', 'button').addClass('btn btn-default').appendTo(element).on('click', function()
+    $('<button/>').text('Find (ctrl + F)').attr('type', 'button').addClass('btn btn-outline-secondary').appendTo(element).on('click', function()
     {
         editor.commands.exec('find', editor);
     });
-    $('<button/>').text('Replace (ctrl + H)').attr('type', 'button').addClass('btn btn-default').appendTo(element).on('click', function()
+    $('<button/>').text('Replace (ctrl + H)').attr('type', 'button').addClass('btn btn-outline-secondary').appendTo(element).on('click', function()
     {
         editor.commands.exec('replace', editor);
     });

@@ -75,15 +75,19 @@ echo viewHelper::getViewTestTag('index');
                                 <div class="row" id="selector__welcome-modal--tutorial">
                                     <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
                                     <p class="text-center">
-                                        <button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button>
+                                        <button type="button" class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour">
+                                            <?php eT("Start the tour"); ?>
+                                        </button>
                                     </p>
                                 </div>
                             <?php } ?>
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Close');?></button>
-                      <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey") ?>" class="btn btn-primary"><?php eT('Create a new survey');?></a>
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT('Close');?></button>
+                      <button role="button" type="button" href="<?php echo $this->createUrl("surveyAdministration/newSurvey") ?>" class="btn btn-primary">
+                        <?php eT('Create a new survey');?>
+                      </button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

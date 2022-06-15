@@ -88,7 +88,7 @@
                 <button
                     {{ disabled }}
                     data-scale-id="{{ scale_id }}"
-                    class='btnlsbrowser btn btn-default'
+                    class='btnlsbrowser btn btn-outline-secondary'
                     type='button'
                     onclick="LS.questionEditor.showLabelSetPicker(event, 'subquestions');"
                 >
@@ -97,7 +97,7 @@
 
                 {% if hasLabelSetPermission %}
                     <button
-                        class='bthsaveaslabel btn btn-default'
+                        class='bthsaveaslabel btn btn-outline-secondary'
                         id='bthsaveaslabel_{{ scale_id }}'
                         type='button'
                         onclick="LS.questionEditor.showLabelSetSaver(event, 'subquestions-table');"
@@ -107,7 +107,7 @@
                     </button>
                 {% endif %}
 
-                <button {{ disabled }} id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd pull-right' type='button' data-bs-toggle="modal" data-bs-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                <button {{ disabled }} id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-outline-secondary btnquickadd pull-right' type='button' data-bs-toggle="modal" data-bs-target="#quickaddModal" data-scale-id="{{ scale_id }}">
                     {{ gT('Quick add') }}
                 </button>
             </div>

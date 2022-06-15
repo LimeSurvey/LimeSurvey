@@ -68,25 +68,27 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             <!-- List survey publicly -->
             <div class="form-group">
                 <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
-                <div class="">
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                        'name' => 'listpublic',
-                        'value'=> $oSurvey->listpublic,
-                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->listpublic . ']')): $optionsOnOff,
-                        ));
-                    ?>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'listpublic',
+                        'checkedOption' => $oSurvey->listpublic,
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->listpublic . ']'])
+                            : $optionsOnOff,
+                    ]); ?>
                 </div>
             </div>
             <!-- Set cookie to prevent repeated participation -->
             <div class="form-group">
-                <label class=" form-label" for='usecookie'><?php  eT("Set cookie to prevent repeated participation:"); ?></label>
-                <div class="">
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                        'name' => 'usecookie',
-                        'value'=> $oSurvey->usecookie,
-                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->usecookie . ']')): $optionsOnOff,
-                        ));
-                    ?>
+                <label class=" form-label" for='usecookie'><?php eT("Set cookie to prevent repeated participation:"); ?></label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'usecookie',
+                        'checkedOption' => $oSurvey->usecookie,
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->usecookie . ']'])
+                            : $optionsOnOff,
+                    ]); ?>
                 </div>
             </div>
 
@@ -102,39 +104,50 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             ?>
             <div class="form-group">
                 <label class=" form-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
-                <div class="">
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                        'name' => 'usecaptcha_surveyaccess',
-                        'value'=> (in_array($usecap, $aCaptchaSurveyAccessYes))?'Y':((in_array($usecap, $aCaptchaSurveyAccessInherit))?('I'):('N')),
-                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->useCaptchaSurveyAccess . ']')): $optionsOnOff,
-                    ));
-                    ?>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'usecaptcha_surveyaccess',
+                        'checkedOption'         => (in_array($usecap, $aCaptchaSurveyAccessYes))
+                            ? 'Y'
+                            : ((in_array($usecap, $aCaptchaSurveyAccessInherit)) ? ('I') : ('N')),
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->useCaptchaSurveyAccess . ']'])
+                            : $optionsOnOff,
+                    ]); ?>
                 </div>
             </div>
 
             <!-- Use CAPTCHA for registration -->
             <div class="form-group">
                 <label class=" form-label" for='usecaptcha_registration'><?php  eT("Use CAPTCHA for registration:"); ?></label>
-                <div class="">
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                        'name' => 'usecaptcha_registration',
-                        'value'=> (in_array($usecap, $aCaptchaRegistrationYes))?'Y':((in_array($usecap, $aCaptchaRegistrationInherit))?('I'):('N')),
-                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->useCaptchaRegistration . ']')): $optionsOnOff,
-                    ));
-                    ?>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'usecaptcha_registration',
+                        'checkedOption' => (in_array($usecap, $aCaptchaRegistrationYes))
+                            ? 'Y'
+                            : ((in_array($usecap, $aCaptchaRegistrationInherit))
+                                ? ('I')
+                                : ('N')),
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->useCaptchaRegistration . ']'])
+                            : $optionsOnOff,
+                    ]); ?>
                 </div>
             </div>
 
             <!-- Use CAPTCHA for save and load -->
             <div class="form-group">
                 <label class=" form-label" for='usecaptcha_saveandload'><?php  eT("Use CAPTCHA for save and load:"); ?></label>
-                <div class="">
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                        'name' => 'usecaptcha_saveandload',
-                        'value'=> (in_array($usecap, $aCaptchaLoadSaveYes))?'Y':((in_array($usecap, $aCaptchaLoadSaveInherit))?('I'):('N')),
-                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->useCaptchaSaveAndLoad . ']')): $optionsOnOff,
-                    ));
-                    ?>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'usecaptcha_saveandload',
+                        'checkedOption' => (in_array($usecap, $aCaptchaLoadSaveYes))
+                            ? 'Y'
+                            : ((in_array($usecap, $aCaptchaLoadSaveInherit)) ? ('I') : ('N')),
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->useCaptchaSaveAndLoad . ']'])
+                            : $optionsOnOff,
+                    ]); ?>
                 </div>
             </div>
             <?php if(!extension_loaded('gd')) { ?>

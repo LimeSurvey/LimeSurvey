@@ -75,9 +75,9 @@
         </div>
     </div>
     <div class='form-group col-12 text-center'>
-        <input class='btn btn-default' type="button" name="attmapcancel" id="attmapcancel" value="<?php eT("Cancel") ?>" />
-        <input class='btn btn-default' type="button" name="attreset" id="attreset" value="<?php eT("Reset") ?>" onClick="window.location.reload();" />
-        <input class='btn btn-default' type="button" name="attmap" id="attmap" value="<?php eT("Continue"); ?>" />
+        <input class='btn btn-outline-secondary' type="button" name="attmapcancel" id="attmapcancel" value="<?php eT("Cancel") ?>" />
+        <input class='btn btn-outline-secondary' type="button" name="attreset" id="attreset" value="<?php eT("Reset") ?>" onClick="window.location.reload();" />
+        <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT("Continue"); ?>" />
     </div>
     <div id="processing" title="<?php eT("Processing...") ?>" style="display:none">
         <img src="<?php echo Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif'; ?>" alt="<?php eT('Loading...'); ?>" title="<?php eT('Loading...'); ?>" />

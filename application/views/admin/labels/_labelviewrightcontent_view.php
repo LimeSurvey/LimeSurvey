@@ -29,14 +29,14 @@
                       <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files','unescaped'), 'flash' => gT('Flash','unescaped'), 'images' => gT('Images','unescaped')), array('class'=>' form-select') ); ?>
                     </div>
                     <div class="">
-                      <input type='submit' class="btn btn-default" value="<?php eT(" Browse uploaded resources ") ?>" />
+                      <input type='submit' class="btn btn-outline-secondary" value="<?php eT(" Browse uploaded resources ") ?>" />
                     </div>
                   </li>
 
                   <!-- Export resources as ZIP archive -->
                   <li>
                     <label>&nbsp;</label>
-                    <input class="btn btn-default" type='button' <?php echo hasResources($lid, 'label')===false ? ' disabled="disabled"' : '' ?> onclick='window.open("
+                    <input class="btn btn-outline-secondary" type='button' <?php echo hasResources($lid, 'label')===false ? ' disabled="disabled"' : '' ?> onclick='window.open("
                     <?php echo $this->createUrl("/admin/export/sa/resources/export/label/lid/$lid"); ?>", "_blank")' value="
                       <?php eT("Export resources as ZIP archive") ?>" />
                   </li>
@@ -71,7 +71,7 @@
 
                       <!-- Import resources ZIP archive -->
                       <div class="col-md-6">
-                        <input class="btn btn-default" type='button' value='<?php eT("Import resources ZIP archive") ?>' <?php 
+                        <input class="btn btn-outline-secondary" type='button' value='<?php eT("Import resources ZIP archive") ?>' <?php 
                         echo !class_exists('ZipArchive') 
                             ? "onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'" 
                             : "onclick='if (window.LS.validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" 

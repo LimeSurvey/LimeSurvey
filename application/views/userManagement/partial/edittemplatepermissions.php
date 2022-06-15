@@ -15,10 +15,10 @@ Yii::app()->getController()->renderPartial(
     <div class="container">
         <input type="hidden" name="userid" value="<?php echo $oUser->uid; ?>"/>
         <div class="mb-3">
-            <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-default">
+            <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-outline-secondary">
                 <?php eT('Select all'); ?>
             </button>
-            <button id="UserManagement--action-userthemepermissions-select-none" class="btn btn-default">
+            <button id="UserManagement--action-userthemepermissions-select-none" class="btn btn-outline-secondary">
                 <?php eT('Select none'); ?>
             </button>
         </div>
@@ -31,24 +31,28 @@ Yii::app()->getController()->renderPartial(
                 <tr>
                     <td><?= $aTemplate['folder'] ?></td>
                     <td>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'TemplatePermissions[' . $aTemplate['folder'] . ']',
-                            'id' => $aTemplate['folder'] . '_use',
-                            'value' => $aTemplate['value'],
-                            'onLabel' => gT('On'),
-                            'offLabel' => gT('Off'),
-                            'htmlOptions' => ['class' => 'UserManagement--themepermissions-themeswitch']
-                        ));
-                        ?>
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'name'          => 'TemplatePermissions[' . $aTemplate['folder'] . ']',
+                            'id'            => $aTemplate['folder'] . '_use',
+                            'checkedOption' => $aTemplate['value'],
+                            'selectOptions' => [
+                                '1' => gT('On'),
+                                '0' => gT('Off'),
+                            ],
+                            'htmlOptions'   => ['class' => 'UserManagement--themepermissions-themeswitch']
+                        ]); ?>
                     </td>
                 </tr>
             <?php } ?>
         </table>
     </div>
 </div>
-<div class="modal-footer">
-    <button class="btn btn-outline-secondary selector--exitForm" id="exitForm"><?= gT('Cancel') ?></button>
-    <button class="btn btn-primary selector--submitForm" id="submitForm"><?= gT('Save') ?></button>
+</div>
+<div class="modal-footer modal-footer-buttons row ls-space margin top-25">
+    <button class="btn btn-cancel selector--exitForm" id="exitForm"><?= gT('Cancel') ?></button>
+    <button type="button" class="btn btn-primary selector--submitForm" id="submitForm">
+        <?=gT('Save')?>
+    </button>
 </div>
 </form>
 

@@ -39,7 +39,7 @@ var TemplateCoreClass = function () {
         /* confirmSurveyDialog @see application/core/package/limesurvey */
         confirmSurveyDialog: function (text, title, submits) {
             $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title);
-            $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" + "<div class='btn-group btn-group-justified' role='group'><a class='btn btn-warning btn-confirm' data-bs-dismiss='modal'>" + LSvar.lang.yes + "</a><a class='btn btn-default btn-cancel' data-bs-dismiss='modal'>" + LSvar.lang.no + "</a></div>");
+            $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" + "<div class='btn-group btn-group-justified' role='group'><a class='btn btn-warning btn-confirm' data-bs-dismiss='modal'>" + LSvar.lang.yes + "</a><a class='btn btn-cancel' data-bs-dismiss='modal'>" + LSvar.lang.no + "</a></div>");
             $("#bootstrap-alert-box-modal").modal('show');
             $("#bootstrap-alert-box-modal .btn-confirm").on('click', function () {
                 $.each(submits, function (name, value) {

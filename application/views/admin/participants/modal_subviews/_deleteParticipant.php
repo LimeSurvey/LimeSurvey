@@ -27,7 +27,10 @@ Yii::app()->getController()->renderPartial(
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
-    <button type="button" class="btn btn-danger action_save_modal_deleteParticipant" data-bs-dismiss="modal">&nbsp;<?php eT('Delete') ?></button>
+    <button type="button" class="btn btn-danger action_save_modal_deleteParticipant" data-bs-dismiss="modal">
+        &nbsp;
+        <?php eT('Delete'); ?>
+    </button>
 </div>
 <?php
 $this->endWidget();

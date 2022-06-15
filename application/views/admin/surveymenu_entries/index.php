@@ -66,7 +66,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
                 <?php eT("Please be careful - if you delete default entries you may not be able access some parts of the application."); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
                     <?php eT('Cancel'); ?>
                 </button>
                 <button type="button" id="deletemodalentry-confirm" class="btn btn-danger">

@@ -3,86 +3,63 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-/**
- * jQuery Plugin to manage the date in token modal edit.
- * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
- * They are displayed via a switch hidding or showing a date picker.
- */
-$.fn.YesNoDate = function(options)
-{
-    var that            = $(this);                                              // calling element
-    that.onReadyMethod = function(){
-        var $elSwitch        = that.find('.YesNoDateSwitch').first(),           // switch element (generated with YiiWheels widgets)
-            $elDateContainer = that.find('.date-container').first(),            // date time picker container (to show/hide)
-            $elDate          = that.find('.YesNoDatePicker').first(),           // date time picker element (generated with YiiWheels widgets)
-            $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
+ Tokens = {
+     /**
+      * jQuery Plugin to manage the date in token modal edit.
+      * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
+      * They are displayed via a switch hidding or showing a date picker.
+      */
+     YesNoDate: function (el) {
+         var $elSwitch = el.querySelector('.YesNoDateSwitch'),           // switch element (generated with YiiWheels widgets)
+             $elDateContainer = el.querySelector('.date-container'),            // date time picker container (to show/hide)
+             $elDate = el.querySelector('.YesNoDatePicker'),           // date time picker element (generated with YiiWheels widgets)
+             $elHiddenInput = el.querySelector('.YesNoDateHidden');           // input form, containing the value to submit to the database
+         console.ls.log('tokenform', {
+             $elSwitch: $elSwitch,
+             $elDateContainer: $elDateContainer,
+             $elDate: $elDate,
+             $elHiddenInput: $elHiddenInput
+         });
 
-        console.ls.log('tokenform', {
-            $elSwitch : $elSwitch,
-            $elDateContainer : $elDateContainer,
-            $elDate : $elDate,
-            $elHiddenInput : $elHiddenInput
-        });
+         // Generate the date time picker
+         // $elDate.datetimepicker({
+         //     locale: el.dataset.locale
+         // });
 
-        // The view is called without processing output (no javascript)
-        // So we must apply js to widget elements
-        $elSwitch.bootstrapSwitch();                                            // Generate the switch
-        $elDate.datetimepicker({locale: that.data('locale')});                  // Generate the date time picker
+         console.ls.log('$elSwitch', $elSwitch);
+         // When user switch
+         $elSwitch.addEventListener('change', (event, state) => {
+             console.ls.log('$elSwitch', event, state);
+             if ($elSwitch.querySelector('input').checked) {
+                 // Show date
+                 $elDateContainer.classList.remove('d-none');
+                 $elHiddenInput.value = moment().format($elDate.dataset.dateFormat);
+             } else {
+                 // Hide date, set hidden input to "N"
+                 $elDateContainer.classList.add('d-none');
+                 $elHiddenInput.value = 'N';
+             }
+         });
 
-        console.ls.log('$elSwitch', $elSwitch);
-        // When user switch
-        $elSwitch.on('switchChange.bootstrapSwitch', function(event, state)
-        {
-            console.ls.log('$elSwitch', event, state);
-            if (state==true)
-            {
-                // Show date
-                $elDateContainer.show();
-                $elHiddenInput.attr('value', moment().format($elDate.data('date-format')));
-            }
-            else
-            {
-                // Hide date, set hidden input to "N"
-                $elDateContainer.hide();
-                $elHiddenInput.attr('value', 'N');
-            }
-        });
+         // When user change date
+         $elDate.addEventListener('change', function (e) {
+             $elHiddenInput.value = e.date.format($elDate.dataset.dateFormat);
+         });
+     },
+     YesNo: function (el) {
+         let $elHiddenInput = el.querySelector('.YesNoDateHidden');           // input form, containing the value to submit to the database
+         let $elSwitch = el.querySelector('.YesNoSwitch');               // switch element (generated with YiiWheels widgets)
+         // When user change date
+         $elSwitch.addEventListener('change', () => {
+             if ($elSwitch.querySelector('input').checked) {
+                 $elHiddenInput.value = 'Y';
+             } else {
+                 $elHiddenInput.value = 'N';
+             }
+         });
+     }
+ };
 
-        // When user change date
-        $elDate.on('dp.change', function(e){
-            $elHiddenInput.attr('value', e.date.format($elDate.data('date-format')));
-        })
-    };
-    return that;
-}
-
-$.fn.YesNo = function(options)
-{
-    var that              = $(this);                                            // calling element
-    var $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
-
-    that.onReadyMethod = function(){
-        var $elSwitch        = that.find('.YesNoSwitch').first();               // switch element (generated with YiiWheels widgets)
-        $elSwitch.bootstrapSwitch();                                            // Generate the switch
-
-        // When user change date
-        $elSwitch.on( 'switchChange.bootstrapSwitch', function(event, state)
-        {
-            if (state==true)
-            {
-                $elHiddenInput.attr('value', 'Y');
-            }
-            else
-            {
-                $elHiddenInput.attr('value', 'N');
-            }
-
-
-        })
-
-    };
-    return that;
-}
 
 /**
  * Provide to this function a element containing form-groups,
@@ -235,12 +212,12 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     {
         $('#general').stickLabelOnLeft();
 
-        $('.yes-no-date-container').each(function(i,el){
-            $(this).YesNoDate();
+        document.querySelectorAll('.yes-no-date-container').forEach((el) => {
+            Tokens.YesNoDate(el);
         });
 
-        $('.yes-no-container').each(function(i,el){
-            $(this).YesNo();
+        document.querySelectorAll('.yes-no-container').forEach((el) => {
+            Tokens.YesNo(el);
         });
 
         $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
@@ -288,7 +265,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                 url: actionUrl,
                 method: "GET",
                 success: function(data){
-                    
+
                     $('#token-grid').yiiGridView('update',{
                         complete: function(s){
                             modal.hide();
@@ -451,20 +428,12 @@ var startEditToken = function(){
 
             modalContent.append(html);                       // Inject the returned HTML in the modal body
 
-            // Apply the yes/no/date jquery plugin to the elements loaded via ajax
-            /*
-                $('#sent-yes-no-date-container').YesNoDate();
-                $('#remind-yes-no-date-container').YesNoDate();
-                $('#completed-yes-no-date-container').YesNoDate();
-            */
-
-            $('.yes-no-date-container').each(function(el){
-                $(this).YesNoDate().onReadyMethod();
+            document.querySelectorAll('.yes-no-date-container').forEach((el) => {
+                Tokens.YesNoDate(el);
             });
 
-
-            $('.yes-no-container').each(function(el){
-                $(this).YesNo().onReadyMethod();
+            document.querySelectorAll('.yes-no-container').forEach((el) => {
+                Tokens.YesNo(el);
             });
 
             $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});

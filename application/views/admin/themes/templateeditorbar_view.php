@@ -64,7 +64,10 @@ App()->getClientScript()->registerScriptFile(
                 <?php if (is_writable($tempdir)) : ?>
                     <!-- Export -->
                     <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
-                        <a class="btn btn-default" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>" role="button">
+                    <a 	class="btn btn-outline-secondary" 
+                    	id="button-export" 
+                    	href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>" 
+                    	role="button">
                             <span class="icon-export text-success"></span>
                             <?php eT("Export"); ?>
                         </a>
@@ -73,13 +76,17 @@ App()->getClientScript()->registerScriptFile(
                     <!-- Copy -->
                     <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) : ?>
                         <?php if (is_writable($userthemerootdir)) : ?>
-                            <a class="btn btn-default" id="button-extend-<?php echo $templatename; ?>" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the new theme:"); ?>', '<?php echo gT("extends_") . "$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
+                        <a  	class="btn btn-outline-secondary" 
+                        	id="button-extend-<?php echo $templatename; ?>" 
+                        	href="#" 
+                        	role="button" 
+                        	onclick="javascript: copyprompt('<?php eT("Please enter the name for the new theme:"); ?>', '<?php echo gT("extends_") . "$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
                                 <span class="icon-copy text-success"></span>
                                 <?php eT("Extend"); ?>
                             </a>
                         <?php else : ?>
                         <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("The theme upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                            <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                            <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
                                 <span class="icon-copy text-success"></span>
                                 <?php eT("Copy"); ?>
                             </button>
@@ -100,7 +107,7 @@ App()->getClientScript()->registerScriptFile(
                     }
                     if (Permission::model()->hasGlobalPermission('templates', 'import')) :?>
                     <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>" >
-                        <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                        <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
                             <span class="icon-import text-muted"></span>
                                 <?php eT("Import"); ?>
                         </button>
@@ -110,7 +117,7 @@ App()->getClientScript()->registerScriptFile(
                     <!-- export disabled -->
                     <?php if (Permission::model()->hasGlobalPermission('templates', 'export')) : ?>
                 <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>" >
-                    <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                    <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
                         <span class="icon-export text-muted"></span>
                         <?php eT("Export"); ?>
                     </button>
@@ -120,7 +127,7 @@ App()->getClientScript()->registerScriptFile(
                     <!-- create disabled -->
                     <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) : ?>
                 <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>" >
-                    <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                    <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
                         <span class="icon-copy text-muted"></span>
                         <?php eT("Copy"); ?>
                     </button>
@@ -132,7 +139,11 @@ App()->getClientScript()->registerScriptFile(
 
                 <?php if (is_template_editable($templatename)) : ?>
                     <?php if (Permission::model()->hasGlobalPermission('templates', 'update')) : ?>
-                        <a class="btn btn-default" id="button-rename-theme" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this theme to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
+                    <a  class="btn btn-outline-secondary" 
+                    	id="button-rename-theme" 
+                    	href="#" 
+                    	role="button" 
+                    	onclick="javascript: copyprompt('<?php eT("Rename this theme to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
                             <span class="fa fa-pencil  text-success"></span>
                             <?php eT("Rename"); ?>
                         </a>
@@ -151,16 +162,15 @@ App()->getClientScript()->registerScriptFile(
                             class="btn btn-danger selector--ConfirmModal">
                             <span class="fa fa-trash"></span>
                             <?php eT('Delete'); ?>
-                        </a>
+                    </button>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
 
             <!-- Right Menu -->
             <div class="col-lg-7 row text-end">
-                <div class="col-3"></div>
                 <!-- Theme Select Box -->
-                <div class="mb-3 col-4 row">
+                <div class="mb-3 col row">
                     <label class="col col-form-label" for='templatedir'><?php eT("Theme:"); ?></label>
                     <select class="col listboxtemplates form-select" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
@@ -170,7 +180,7 @@ App()->getClientScript()->registerScriptFile(
                 </div>
 
                 <!-- Screen Select Box -->
-                <div class="mb-3 col-4 row">
+                <div class="mb-3 col row">
                     <label class="col col-form-label" for='listboxtemplates'><?php eT("Screen:"); ?></label>
                     <?php echo CHtml::dropDownList('screenname',
                         $screenname,
@@ -182,7 +192,7 @@ App()->getClientScript()->registerScriptFile(
                         ]); ?>
                 </div>
 
-                <div class="col-1">
+                <div class="col">
                 <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
                     <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                         <span class="fa fa-floppy-o"></span>
@@ -192,7 +202,7 @@ App()->getClientScript()->registerScriptFile(
 
                 <!-- Close -->
                 <?php if (isset($fullpagebar['closebutton']['url'])) : ?>
-                    <a class="btn btn-danger text-nowrap" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
+                    <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
                         <span class="fa fa-close"></span>
                         <?php eT("Close"); ?>
                     </a>
@@ -200,7 +210,7 @@ App()->getClientScript()->registerScriptFile(
 
                 <!-- Return to Theme List -->
                 <?php if (isset($templateEditorBar['buttons']['returnbutton'])) : ?>
-                    <a class="btn btn-default text-nowrap" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
+                    <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
                         <span class="fa fa-backward"></span>
                         &nbsp;&nbsp;
                         <?php eT("Back"); ?>

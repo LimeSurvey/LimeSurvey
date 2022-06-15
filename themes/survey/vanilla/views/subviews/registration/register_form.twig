@@ -69,7 +69,7 @@
                         <div class='{{ aSurveyInfo.class.registerformcaptchadivc }} control-label' {{ aSurveyInfo.attr.registerformcaptchadivc }}>
                             {{ renderCaptcha().renderOut() }}
                             <!-- TODO: Problems with reload and name getting empty/not in POST. -->
-                            <a href="#" class="btn btn-sm btn-default" onclick="window.location.reload();" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary" onclick="window.location.reload();" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
                         </div>
                         <input class='{{ aSurveyInfo.class.registerformcaptchainput }} form-control' {{ aSurveyInfo.attr.registerformcaptchainput }} >
                     </div>
@@ -86,7 +86,7 @@
         <div class='{{ aSurveyInfo.class.registersave }} form-group row' {{ aSurveyInfo.attr.registersave }} >
             <div class='{{ aSurveyInfo.class.registersavediv }} offset-lg-7' {{ aSurveyInfo.attr.registersavediv }} >
                 {% set continue = gT("Continue",'unescaped') %}
-                <button {{ aSurveyInfo.attr.registersavedivbutton }}  class='{{ aSurveyInfo.class.registersavedivbutton }} btn btn-default' >
+                <button {{ aSurveyInfo.attr.registersavedivbutton }}  class='{{ aSurveyInfo.class.registersavedivbutton }} btn btn-outline-secondary' >
                     {{ continue }}
                 </button>
             </div>

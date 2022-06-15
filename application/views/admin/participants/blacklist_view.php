@@ -31,15 +31,14 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                                     <?php eT('Blacklist all current surveys for participant once the global field is set:'); ?>
                                 </label>
                                 <div class='col-md-3'>
-                                    <?php $this->widget(
-                                        'yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name' => 'blacklistallsurveys',
-                                            'onLabel' => gT('Yes'),
-                                            'offLabel' => gT('No'),
-                                            'value' => $blacklistallsurveys === 'Y' ? '1' : 0
-                                        ]
-                                    ); ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'blacklistallsurveys',
+                                        'checkedOption' => $blacklistallsurveys === 'Y' ? '1' : 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 </div>
                             </div>
                         </div>
@@ -49,15 +48,14 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                                     <?php eT('Blacklist participant for any new added survey once the global field is set:'); ?>
                                 </label>
                                 <div class='col-md-3'>
-                                    <?php $this->widget(
-                                        'yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name' => 'blacklistnewsurveys',
-                                            'onLabel' => gT('Yes'),
-                                            'offLabel' => gT('No'),
-                                            'value' => $blacklistnewsurveys === 'Y' ? '1' : 0
-                                        ]
-                                    ); ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'blacklistnewsurveys',
+                                        'checkedOption' => $blacklistnewsurveys === 'Y' ? '1' : 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 </div>
                             </div>
                         </div>
@@ -67,15 +65,14 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                                     <?php eT('Prevent blacklisted participants from being added to a survey:'); ?>
                                 </label>
                                 <div class='col-md-3'>
-                                    <?php $this->widget(
-                                        'yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name' => 'blockaddingtosurveys',
-                                            'onLabel' => gT('Yes'),
-                                            'offLabel' => gT('No'),
-                                            'value' => $blockaddingtosurveys === 'Y' ? '1' : 0
-                                        ]
-                                    ); ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'blockaddingtosurveys',
+                                        'checkedOption' => $blockaddingtosurveys === 'Y' ? '1' : 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 </div>
                             </div>
                         </div>
@@ -85,15 +82,14 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                                     <?php eT('Hide blacklisted participants:'); ?>
                                 </label>
                                 <div class='col-md-3'>
-                                    <?php $this->widget(
-                                        'yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name' => 'hideblacklisted',
-                                            'onLabel' => gT('Yes'),
-                                            'offLabel' => gT('No'),
-                                            'value' => $hideblacklisted === 'Y' ? '1' : 0
-                                        ]
-                                    ); ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'hideblacklisted',
+                                        'checkedOption' => $hideblacklisted === 'Y' ? '1' : 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 </div>
                             </div>
                         </div>
@@ -103,15 +99,14 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                                     <?php eT( 'Delete globally blacklisted participant from the database:'); ?>
                                 </label>
                                 <div class='col-md-3'>
-                                    <?php $this->widget(
-                                        'yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name' => 'deleteblacklisted',
-                                            'onLabel' => gT('Yes'),
-                                            'offLabel' => gT('No'),
-                                            'value' => $deleteblacklisted === 'Y' ? '1' : 0
-                                        ]
-                                    ); ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'deleteblacklisted',
+                                        'checkedOption' => $deleteblacklisted === 'Y' ? '1' : 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 </div>
                             </div>
                         </div>
@@ -121,15 +116,14 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                                     <?php eT('Allow participant to unblacklist himself/herself:'); ?>
                                 </label>
                                 <div class='col-md-3'>
-                                    <?php $this->widget(
-                                        'yiiwheels.widgets.switch.WhSwitch',
-                                        [
-                                            'name' => 'allowunblacklist',
-                                            'onLabel' => gT('Yes'),
-                                            'offLabel' => gT('No'),
-                                            'value' => $allowunblacklist === 'Y' ? '1' : 0
-                                        ]
-                                    ); ?>
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                        'name'          => 'allowunblacklist',
+                                        'checkedOption' => $allowunblacklist === 'Y' ? '1' : 0,
+                                        'selectOptions' => [
+                                            '1' => gT('Yes'),
+                                            '0' => gT('No'),
+                                        ],
+                                    ]); ?>
                                 </div>
                             </div>
                         </div>

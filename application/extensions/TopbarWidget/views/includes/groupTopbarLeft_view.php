@@ -7,7 +7,7 @@
     <div class="btn-group ">
 
         <!-- Main button dropdown -->
-        <button id="ls-question-group-tools-button" type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button role="button" id="ls-question-group-tools-button" type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-tools" ></span>
             <?php eT('Tools'); ?>&nbsp;<span class="caret"></span>
         </button>

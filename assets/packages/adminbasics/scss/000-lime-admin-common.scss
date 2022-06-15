@@ -1414,8 +1414,7 @@ input[type="radio"] {
 input[type="radio"],
 input[type="checkbox"] {
     margin: 4px 0 0;
-    margin-top: 1px \9
-;
+    margin-top: 1px \9;
     line-height: normal;
 }
 
@@ -1425,6 +1424,11 @@ input[type="checkbox"]:focus {
     outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
+}
+
+// Button group
+.btn-group .btn-check {
+    position: absolute;
 }
 
 .radio,
@@ -1450,8 +1454,7 @@ input[type="checkbox"]:focus {
 .checkbox-inline input[type="checkbox"] {
     position: absolute;
     margin-left: -20px;
-    margin-top: 4px \9
-;
+    margin-top: 4px;
 }
 
 .radio + .radio,

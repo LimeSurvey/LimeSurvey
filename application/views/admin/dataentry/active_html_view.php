@@ -96,7 +96,7 @@ if ($thissurvey['active'] == "Y")
                 <?php } ?>
                 <tr>
                 <td colspan='3' align='center'>
-                <input type='submit' id='submitdata' class="btn btn-default d-none" value='<?php eT("Submit"); ?>' />
+                <input type='submit' id='submitdata' class="btn btn-outline-secondary d-none" value='<?php eT("Submit"); ?>' />
                 </td>
                 </tr>
             <?php }

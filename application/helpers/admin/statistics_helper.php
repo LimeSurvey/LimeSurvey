@@ -1062,7 +1062,7 @@ class statistics_helper
                         if ($browse) {
                             $statisticsoutput .= "\t<tr>\n"
                             . "\t\t<td align='right'  colspan='4'>
-                            <input type='button' class='statisticsbrowsebutton numericalbrowse btn btn-default btn-large' value='"
+                            <input type='button' class='statisticsbrowsebutton numericalbrowse btn btn-outline-secondary btn-large' value='"
                             . gT("Browse") . "' id='$fieldname' /></td>\n</tr>";
                             $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
                             <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
@@ -1586,7 +1586,7 @@ class statistics_helper
                 }
                 $fname = "$al[1]";
                 if ($browse === true) {
-                    $fname .= " <input type='button' class='statisticsbrowsebutton btn btn-default btn-large' value='"
+                    $fname .= " <input type='button' class='statisticsbrowsebutton btn btn-outline-secondary btn-large' value='"
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
             }
@@ -1607,7 +1607,7 @@ class statistics_helper
                 if ($al[0] == "Answer") {
                     $fname = "$al[1]";
                     if ($browse === true) {
-                        $fname .= " <input type='button'  class='statisticsbrowsebutton btn btn-default btn-large' value='"
+                        $fname .= " <input type='button'  class='statisticsbrowsebutton btn btn-outline-secondary btn-large' value='"
                         . gT("Browse") . "' id='$sColumnName' />";
                     }
                 } elseif ($al[0] == "NoAnswer") {
@@ -2353,7 +2353,7 @@ class statistics_helper
                 }
                 $fname = "$al[1]";
                 if ($browse === true) {
-                    $fname .= " <input type='button' class='statisticsbrowsebutton btn btn-default btn-large' value='"
+                    $fname .= " <input type='button' class='statisticsbrowsebutton btn btn-outline-secondary btn-large' value='"
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
 
@@ -2395,7 +2395,7 @@ class statistics_helper
                 if ($al[0] == "Answer") {
                     $fname = "$al[1]";
                     if ($browse === true) {
-                        $fname .= " <input type='button'  class='statisticsbrowsebutton btn btn-default btn-large' value='"
+                        $fname .= " <input type='button'  class='statisticsbrowsebutton btn btn-outline-secondary btn-large' value='"
                         . gT("Browse") . "' id='$sColumnName' />";
                     }
                 } elseif ($al[0] == "NoAnswer") {
@@ -3999,7 +3999,7 @@ class statistics_helper
                 // add a buttons to browse results
                 $sOutputHTML .= CHtml::form(["responses/browse/", 'surveyId' => $surveyid], 'post', array('target' => '_blank')) . "\n"
                 . "\t\t<p>"
-                . "\t\t\t<input type='submit' class='btn btn-default' value='" . gT("Browse") . "'  />\n"
+                . "\t\t\t<input type='submit' class='btn btn-outline-secondary' value='" . gT("Browse") . "'  />\n"
                 . "\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
                 . "\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
                 . "\t\t\t<input type='hidden' name='subaction' value='all' />\n"

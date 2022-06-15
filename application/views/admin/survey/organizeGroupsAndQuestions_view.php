@@ -15,8 +15,8 @@
                 </p>
             </div>
             <div class='col-md-4'>
-                <button id='organizer-collapse-all' class='btn btn-default'><span class='fa fa-compress'></span>&nbsp;<?php eT("Collapse all"); ?></button>
-                <button id='organizer-expand-all' class='btn btn-default'><span class='fa fa-expand'></span>&nbsp;<?php eT("Expand all"); ?></button>
+                <button id='organizer-collapse-all' class='btn btn-outline-secondary'><span class='fa fa-compress'></span>&nbsp;<?php eT("Collapse all"); ?></button>
+                <button id='organizer-expand-all' class='btn btn-outline-secondary'><span class='fa fa-expand'></span>&nbsp;<?php eT("Expand all"); ?></button>
             </div>
         </div>
 
@@ -28,7 +28,7 @@
                     <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='card mjs-nestedSortable-expanded' data-level='group'>
 
                     <div class="card-header bg-primary">
-                        <a class='btn btn-default btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>
+                        <a class='btn btn-outline-secondary btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>
                         &nbsp;
                         <?php echo ellipsize($aGroupAndQuestions['group_text'], 80);?>
                     </div>

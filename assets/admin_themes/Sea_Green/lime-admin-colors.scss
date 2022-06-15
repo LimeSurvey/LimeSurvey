@@ -83,14 +83,14 @@ $alert-info: #40ab82;
 
 //@extend-elements
 //original selectors
-//.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default
+//.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open .dropdown-toggle.btn-outline-secondary
 %extend_1 {
     color: $gray-20;
     background-color: $gray-05;
     border: 1px solid $gray-11;
 }
 // only in sunset_orange
-// Extend btn-default.active
+// Extend btn-outline-secondary.active
 %extend_1.active {
     @if $primary-bg-success != $white {
         background-color: $primary-bg-success;
@@ -920,7 +920,7 @@ fieldset[disabled] {
         background-color: $gray-04;
         opacity: 1;
     }
-    .btn-default {
+    .btn-outline-secondary {
         background-color: $white;
         border: 1px solid $gray-09;
         &:hover {
@@ -1065,8 +1065,8 @@ fieldset[disabled] {
         box-shadow: inset 0 3px 5px $black_opac_125;
     }
 }
-.btn-default {
-    color: $gray-20;
+.btn-outline-secondary {
+    color: $primary-hover_2;
     background-color: $white;
     border: 1px solid $gray-09;
     &:hover {
@@ -1106,7 +1106,7 @@ fieldset[disabled] {
         background-color: $gray-20;
     }
 }
-.btn-default[disabled] {
+.btn-outline-secondary[disabled] {
     background-color: $white;
     border: 1px solid $gray-09;
     &:hover {
@@ -1124,6 +1124,15 @@ fieldset[disabled] {
     &.active {
         background-color: $white;
         border: 1px solid $gray-09;
+    }
+}
+.btn-check{
+    &:active+.btn-outline-secondary,
+    &:checked+.btn-outline-secondary,
+    &.active {
+        background-color: $primary-bg-success;
+        border-color: $gray-11;
+        color: $primary-hover_2
     }
 }
 .btn-primary {
@@ -1447,9 +1456,6 @@ fieldset[disabled] {
     &:focus {
         color: $gray-15;
     }
-}
-.btn.btn-default {
-    color: $primary-hover_2;
 }
 .btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover {
     color: $white;
@@ -2647,7 +2653,7 @@ table.cke_editor {
 
 // Dropdowns
 .open .dropdown-toggle {
-    &.btn-default {
+    &.btn-outline-secondary {
         @extend %extend_1;
     }
     &.btn-primary {

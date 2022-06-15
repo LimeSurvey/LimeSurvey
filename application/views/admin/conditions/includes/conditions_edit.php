@@ -1,6 +1,6 @@
 
 <a
-    class="btn btn-default"
+    class="btn btn-outline-secondary"
     data-bs-target="#confirmation-modal"
     data-bs-toggle="tooltip"
     data-title="<?php eT("Delete condition"); ?>"
@@ -15,7 +15,7 @@
 </a>
 
 <a
-    class="btn btn-default"
+    class="btn btn-outline-secondary"
     data-bs-toggle="tooltip"
     data-title="<?php eT("Edit condition"); ?>"
     onclick='document.getElementById("subaction<?php echo $rows['cid']; ?>").value="editthiscondition"; document.getElementById("conditionaction<?php echo $rows['cid']; ?>").submit();'

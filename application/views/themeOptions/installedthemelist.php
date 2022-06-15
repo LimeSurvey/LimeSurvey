@@ -45,6 +45,7 @@ $massiveAction = App()->getController()->renderPartial(
             'name' => 'name',
             'value' => '$data->name',
             'htmlOptions' => array('class' => 'col-lg-2'),
+
         ),
 
         array(
@@ -87,21 +88,15 @@ $massiveAction = App()->getController()->renderPartial(
                                 function(id, data){
                                     window.LS.doToolTip();
                                     bindListItemclick();
-                                    $(".toggle_question_theme").each(function(){
-                                        $(this).bootstrapSwitch();
-                                    });
-                                    $(".toggle_question_theme").on("switchChange.bootstrapSwitch", function(event, state) {
-                                        $url = $(this).attr("data-url");
-                                        $.ajax({
-                                            url : $url,
-                                            type : "GET",
-                                            dataType : "html",
-                                
-                                            // html contains the buttons
-                                            success : function(html, statut){
-                                            }
+                                    let togglequestionthemes = document.getElementsByClassName("toggle_question_theme");
+                                    for (let togglequestiontheme of togglequestionthemes) {
+                                        togglequestiontheme.addEventListener("change", () => {
+                                            let $url = togglequestiontheme.getAttribute("data-url");
+                                            let xhttp = new XMLHttpRequest();
+                                            xhttp.open("GET", $url, true);
+                                            xhttp.send();
                                         });
-                                    });
+                                    }
                                 }',
 ));
 ?>
@@ -109,24 +104,22 @@ $massiveAction = App()->getController()->renderPartial(
 <?php
 // todo create a new javascript file and call function from here, related: 1573120573738
 $script = '
-                jQuery(document).on("change", "#pageSize", function(){
-                    $.fn.yiiGridView.update("questionthemes-grid",{ data:{ pageSize: $(this).val() }});
-                });
-                $(".toggle_question_theme").each(function(){
-                    $(this).bootstrapSwitch();
-                });
-                $(".toggle_question_theme").on("switchChange.bootstrapSwitch", function(event, state) {
-                    $url = $(this).attr("data-url");
-                    $.ajax({
-                        url : $url,
-                        type : "GET",
-                        dataType : "html",
-            
-                        // html contains the buttons
-                        success : function(html, statut){
+                jQuery(document).on("change", "#pageSize", function () {
+                    $.fn.yiiGridView.update("questionthemes-grid", {
+                        data: {
+                            pageSize: $(this).val()
                         }
                     });
                 });
+                let togglequestionthemes = document.getElementsByClassName("toggle_question_theme");
+                for (let togglequestiontheme of togglequestionthemes) {
+                    togglequestiontheme.addEventListener("change", () => {
+                        let $url = togglequestiontheme.getAttribute("data-url");
+                        let xhttp = new XMLHttpRequest();
+                        xhttp.open("GET", $url, true);
+                        xhttp.send();
+                    });
+                }
                 ';
 App()->getClientScript()->registerScript('questionthemes-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
 ?>

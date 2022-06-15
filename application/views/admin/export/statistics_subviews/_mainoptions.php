@@ -7,9 +7,9 @@
                 eT("Include:"); ?> </label>
             <div class="">
                 <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                     'name' => 'completionstate',
-                    'value' => incompleteAnsFilterState(),
+                    'checkedOption' => incompleteAnsFilterState(),
                     'selectOptions' => array(
                         "all" => gT("All responses", 'unescaped'),
                         "complete" => gT("Complete only", 'unescaped'),
@@ -22,22 +22,15 @@
             <label for='outputtype' class="form-label"><?php
                 eT("Output format:") ?></label>
             <div>
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default active">
-                        <input name="outputtype" value="html" type="radio" checked='checked' id="outputtypehtml">
-                        <?php
-                        eT('HTML'); ?>
-                    </label>
-                    <label class="btn btn-default">
-                        <input name="outputtype" value="pdf" type="radio" id="outputtypepdf"><?php
-                        eT('PDF'); ?>
-                    </label>
-                    <label class="btn btn-default">
-                        <input name="outputtype" value="xls" class="active" type="radio" id="outputtypexls"
-                               onclick='nographs();'><?php
-                        eT('Excel'); ?>
-                    </label>
-                </div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'outputtype',
+                    'checkedOption' => 'html',
+                    'selectOptions' => [
+                        'html' => gT('HTML'),
+                        'pdf' => gT('PDF'),
+                        'xls' => gT('Excel'),
+                    ],
+                ]); ?>
             </div>
         </div>
     </div>
@@ -48,42 +41,35 @@
             <label class="form-label" for='viewsummaryall'><?php
                 eT("View summary of all available fields:"); ?></label>
             <div>
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                    'name' => 'viewsummaryall',
-                    'id' => 'viewsummaryall',
-                    'value' => $sViewsummaryall,
-                    'selectOptions' => array(
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'viewsummaryall',
+                    'checkedOption' => $sViewsummaryall,
+                    'selectOptions' => [
                         '1' => gT('On', 'unescaped'),
                         '0' => gT('Off', 'unescaped'),
-                    ),
-                    'htmlOptions' => array(
+                    ],
+                    'htmlOptions'   => [
                         'class' => 'text-option-inherit'
-                    )
-                ));
-                ?>
+                    ]
+                ]); ?>
             </div>
         </div>
         <div class='form-group'>
             <label for='usegraph' class="form-label"><?php
                 eT("Show graphs:"); ?></label>
             <div class=''>
-                <?php
-                $sUsegraph = (int)Yii::app()->request->getPost('usegraph'); ?>
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                    'name' => 'usegraph',
-                    'id' => 'usegraph',
-                    'value' => $sUsegraph,
-                    'selectOptions' => array(
+                <?php $sUsegraph = (int)Yii::app()->request->getPost('usegraph'); ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'usegraph',
+                    'checkedOption' => $sUsegraph,
+                    'selectOptions' => [
                         '1' => gT('On', 'unescaped'),
                         '0' => gT('Off', 'unescaped'),
-                    ),
-                    'htmlOptions' => array(
+                    ],
+                    'htmlOptions'   => [
                         'class' => 'text-option-inherit'
-                    )
-                ));
-                ?>
+                    ]
+                ]); ?>
             </div>
             <?php
             if ($error != '') {
