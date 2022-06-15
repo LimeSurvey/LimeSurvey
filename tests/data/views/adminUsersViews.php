@@ -8,7 +8,9 @@ return [
     // Users ---------------------------------------
     // --------------------------------------------------
 
-    ['usersIndex', ['route'=>'user/sa/index']],
+    // @see application/controllers/admin/UsersIndex
+    // @todo Not used?
+    //['usersIndex', ['route'=>'user/sa/index']],
 
     // TODO needs a POST
     //['setUserPermissions', ['route'=>'user/sa/setuserpermissions/uid/{UID}']],
