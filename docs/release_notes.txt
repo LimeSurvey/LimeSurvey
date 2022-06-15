@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.14 (build 220608) to 3.28.15 (build 220616) June 15, 2022
+-Fixed issue #18189: Fonts showing differently on mobile and desktop (#2467) (Gabriel Jenik)
+-Fixed issue #18086: Custom 'other' label text not applied to Bootstrap button layout (#2422) (Gabriel Jenik)
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 3.28.13 (build 220531) to 3.28.14 (build 220608) June 7, 2022
 -Fixed issue: Question organizer not working (Carsten Schmitz)
 -Fixed issue #18140: Cannot import vv file (with debug set) (#2453) (Denis Chenu)
