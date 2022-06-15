@@ -19,5 +19,5 @@ return [
     // FIXME bug, also: needs a POST
     //['setUserTemplates', ['route'=>'user/sa/setusertemplates/uid/{UID}']],
 
-    ['usersIndex', ['route' => 'userManagement/index']]
+    ['usersIndex', ['route' => 'userManagement/index', 'noAdminInFront' => true]]
 ];
