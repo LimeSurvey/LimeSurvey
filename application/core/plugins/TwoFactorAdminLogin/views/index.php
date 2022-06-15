@@ -31,14 +31,13 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
         <div class="row" style="margin-bottom: 100px">
             <div class="container-fluid">
                 <?php
-                    $this->widget('yiistrap.widgets.TbGridView', array(
+                    $this->widget('application.extensions.admin.grid.CLSGridView', array(
                         'id' => 'tfa-usermanagement-gridPanel',
                         'itemsCssClass' => 'table table-striped items',
                         'dataProvider' => $model->search(),
                         'columns' => $model->columns,
                         'filter' => $model,
                         'afterAjaxUpdate' => 'window.TFA.bind',
-                        'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                         'summaryText'   => "<div class='row'>"
                         ."<div class='col-6'></div>"
                         ."<div class='col-6'>"

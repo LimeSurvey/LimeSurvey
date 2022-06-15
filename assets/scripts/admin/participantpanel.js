@@ -265,7 +265,6 @@ LS.CPDB = (function() {
                 function(result) {
                     console.ls.log(result);
                     if(!result.error) {
-                        //window.LS.notifyFader(result.success, 'well-lg text-center bg-primary');
                         window.LS.ajaxAlerts(result.success, 'success');
                     }
                 }
@@ -346,7 +345,6 @@ LS.CPDB = (function() {
                     console.ls.log(result);
                     if(!result.error) {
                         window.LS.ajaxAlerts(result.success, 'success');
-                       // window.LS.notifyFader(result.success, 'well-lg text-center bg-primary');
                     }
                 }
             ); 
@@ -553,7 +551,6 @@ function rejectParticipantShareAjax(participant_id){
             dataType: 'json',
             success: function(result){
                 window.LS.ajaxAlerts(result.success, 'success');
-                //window.LS.notifyFader(result.success, 'well-lg bg-primary text-center');
                 $.fn.yiiGridView.update('share_central_participants',{});
             }
         });
@@ -571,8 +568,8 @@ function deleteAttributeAjax(attribute_id){
             data: {attribute_id : attribute_id, actionTarget: 'deleteAttribute'},
             method: "POST",
             dataType: 'json',
-            success: function(result){
-                window.LS.notifyFader(result.success, 'well-lg bg-primary text-center');
+            success: function (result){
+                window.LS.ajaxAlerts(result.success, 'success');
                 $.fn.yiiGridView.update('list_attributes',{});
             }
         })
