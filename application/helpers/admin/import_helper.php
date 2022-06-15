@@ -2849,6 +2849,7 @@ function TSVImportSurvey($sFullFilePath)
                 $question['encrypted'] = (isset($row['encrypted']) ? $row['encrypted'] : 'N');
                 $lastother = $question['other'] = (isset($row['other']) ? $row['other'] : 'N'); // Keep trace of other settings for sub question
                 $question['same_default'] = (isset($row['same_default']) ? $row['same_default'] : 0);
+                $question['same_script'] = (isset($row['same_script']) ? $row['same_script'] : 0);
                 $question['parent_qid'] = 0;
 
                 // For multi language survey : same name, add the gid to have same name on different gid. Bad for EM.
@@ -2893,6 +2894,7 @@ function TSVImportSurvey($sFullFilePath)
                         case 'mandatory':
                         case 'other':
                         case 'same_default':
+                        case 'same_script':
                         case 'default':
                             break;
                         default:

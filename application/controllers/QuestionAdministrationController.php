@@ -2441,6 +2441,10 @@ class QuestionAdministrationController extends LSBaseController
             }
         }
 
+        if (!isset($aQuestionData['same_script'])) {
+            $aQuestionData['same_script'] = 0;
+        }
+
         $aQuestionData = array_merge(
             [
                 'sid'        => $iSurveyId,
@@ -2537,6 +2541,10 @@ class QuestionAdministrationController extends LSBaseController
             } else {
                 $aQuestionData['same_default'] = 1;
             }
+        }
+
+        if (!isset($aQuestionData['same_script'])) {
+            $aQuestionData['same_script'] = 0;
         }
 
         $originalRelevance = $oQuestion->relevance;
