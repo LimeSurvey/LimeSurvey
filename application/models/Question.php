@@ -94,6 +94,24 @@ class Question extends LSActiveRecord
 
     /**
      * @inheritdoc
+     */
+    public function init()
+    {
+        $this->attachEventHandler("onAfterFind", array($this, 'afterFindQuestion'));
+    }
+
+    /**
+     * Action to do after find a question
+     * @see https://www.yiiframework.com/doc/api/1.1/CActiveRecordBehavior#afterFind-detail
+     * - fix theme name after find
+     */
+    public function afterFindQuestion()
+    {
+        $this->questionThemeNameValidator();
+    }
+
+    /**
+     * @inheritdoc
      * @return Question
      */
     public static function model($className = __CLASS__)
@@ -1546,12 +1564,19 @@ class Question extends LSActiveRecord
      */
     public function questionThemeNameValidator()
     {
-        // As long as there is a question theme name, and it's not 'core', it's ok.
+        /* need a type */
+        if (empty($this->type)) {
+            return;
+        }
+        /* not needed in child question */
+        if (!empty($this->parent_qid)) {
+            return;
+        }
+        /* Is OK (@todo test with deleted question_theme_name) */
         if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
             return;
         }
-
-        // If question_theme_name is empty or 'core', we fetch the value from the question_theme related to the question_type
+        /* Get default theme name from type */
         $baseQuestionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
         if (!empty($baseQuestionThemeName)) {
             $this->question_theme_name = $baseQuestionThemeName;
