@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.19 (build 220607) to 5.3.20 (build 220615) June 15, 2022
+-Fixed issue: Plugin calling readConfigFile() in init() caused inf loop (Tim Willig)
+-Fixed issue #18135: Cant get all question attributes with API (Postman) (#2445) (Gabriel Jenik)
+-Fixed issue #17976: Bad place for pencil in edit question (#2455) (Gabriel Jenik)
+-Fixed issue #17740: Script : Set for all languages didn't work (#2228) (Gabriel Jenik)
+#Updated translation: Slovak by c_schmitz, jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by FangZhijian
+
+
 Changes from 5.3.18 (build 220530) to 5.3.19 (build 220607) June 7, 2022
 -Fixed issue: Question organizer not working (Carsten Schmitz)
 -Fixed issue: #18029 - Removed html tags in emails for v5 (#2446) (François Charles Hébert)

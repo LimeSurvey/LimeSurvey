@@ -381,7 +381,8 @@ function populateDatabase($oDB)
             'same_default' =>  "integer NOT NULL default '0'",
             'relevance' =>  "text",
             'question_theme_name' => "string(150) NULL",
-            'modulename' =>  "string(255) NULL"
+            'modulename' =>  "string(255) NULL",
+            'same_script' => "integer NOT NULL default '0'",
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
         $oDB->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
