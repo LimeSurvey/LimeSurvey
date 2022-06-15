@@ -58,21 +58,37 @@ class TFAUser extends User
         if(!$this->hasAuthSet) {
             return '';
         }
-        $buttons = "<div class='icon-btn-row'>";
-        $buttons .= '<button '
-            . 'class="btn btn-icon btn-default btn-sm TFA--management--action-deleteToken" '
-            . 'title="' . gT("Delete 2FA key") . '" '
-            . 'data-bs-toggle="tooltip" '
-            . 'data-confirmtext="' . gT('Are you sure you want to delete this 2FA key?') . '" '
-            . 'data-buttons="{confirm_cancel: \'' . gT('No, cancel') . '\', confirm_ok: \'' . gT('Yes, I am sure') . '\'}" '
-            . 'data-href="' . Yii::app()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey") . '" '
-            . 'data-uid="' . $this->uid . '" '
-            . 'data-errortext="' . gT('An error has happened, and the key could not be deleted.') . '" '
-            . '>'
-            . '<i class="fa fa-trash text-danger"></i>'
-            . '</button>';
-        $buttons .= "</div>";
-        return $buttons;
+        $title = gT("Delete 2FA key");
+        $confirmtext = gT("Are you sure you want to delete this 2FA key?");
+        $confirmButtons = htmlspecialchars(
+            json_encode(
+                [
+                    "confirm_cancel" => gT("No, cancel"),
+                    "confirm_ok"     => gT("Yes, I am sure")
+                ]
+            ),
+            ENT_QUOTES,
+            'UTF-8'
+        );
+        $href = Yii::app()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey");
+        $uid = $this->uid;
+        $errortext = gT("An error has happened, and the key could not be deleted.");
+        return <<<HTML
+            <div class="icon-btn-row">
+                <button
+                    class="btn btn-icon btn-default btn-sm TFA--management--action-deleteToken"
+                    title="$title"
+                    data-bs-toggle="tooltip"
+                    data-confirmtext="$confirmtext"
+                    data-buttons="$confirmButtons"
+                    data-href="$href"
+                    data-uid="$uid"
+                    data-errortext="$errortext"
+                >
+                    <i class="fa fa-trash text-danger"></i>
+                </button>
+            </div>
+HTML;
     }
 
     /**

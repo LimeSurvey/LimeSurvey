@@ -25,14 +25,14 @@ var confirmButtonAction = function(additionalCB) {
                 data: $.merge({uid: $self.data('uid')}, LS.data.csrfTokenData),
                 method: 'post',
                 success: function(resolve){
-                    var classes = resolve.success ? 'well-lg bg-primary text-center' : 'well-lg bg-danger text-center';
+                    var classes = resolve.success ? 'card-body bg-primary text-center' : 'card-body bg-danger text-center';
                     LS.notifyFader(resolve.message, classes);
                     $('#identity__bsconfirmModal').modal('hide');
                     additionalCB();
                 },
                 error: function(error) {
                     console.error(error);
-                    LS.notifyFader($self.data('errortext'), 'well-lg bg-primary text-center');
+                    LS.notifyFader($self.data('errortext'), 'card-body bg-primary text-center');
                     $('#identity__bsconfirmModal').modal('hide');
                     additionalCB();
                 }
