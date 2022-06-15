@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h2>Register 2FA Method</h2>
+    <h2><?= gT("Register 2FA Method"); ?></h2>
 </div>
 <div class="modal-body">
     <div class="container-center">
@@ -23,7 +23,7 @@
                 <div class="col-md-6 offset-md-3"><?=$sQRCodeContent?></div>
             </div>
             <div class="row ls-space margin bottom-5 top-5">
-                <?php echo TbHtml::label(gt('Confirmation key'), 'confirmationKey'); ?>
+                <?php echo TbHtml::label(gT('Confirmation key'), 'confirmationKey'); ?>
                 <?php echo TbHtml::textField('confirmationKey', null, ['required' => true]); ?>
             </div>
             <div class="row ls-space margin bottom-5 top-5">
