@@ -4,9 +4,9 @@
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 // Namespace
-var LS = LS || {onDocumentReady: {}};
+var LS = LS || {  onDocumentReady: {} };
 
-/**
+ /**
  * Needed to calculate correct pager position at RTL language
  * @var {number}
  */
@@ -30,8 +30,8 @@ LS.resp = {
      * Scroll the pager and the footer when scrolling horizontally
      * @return
      */
-    setListPagerPosition: function (pager) {
-        var $elListPager = $('#reponsesListPager');
+    setListPagerPosition : function (pager) {
+        var $elListPager = $('#listPager');
 
         if (useRtl) {
             var scrollAmount = Math.abs($(pager).scrollLeft() - initialScrollValue);

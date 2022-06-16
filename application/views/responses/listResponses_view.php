@@ -75,10 +75,6 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
         <div class="ls-flex-row col-12">
             <div class="col-12 ls-flex-column">
-                <div id='top-scroller' class="content-right scrolling-wrapper">
-                    <div id='fake-content'>&nbsp;</div>
-                </div>
-                <div id='bottom-scroller' class="content-right scrolling-wrapper">
                     <input type='hidden' id="dateFormatDetails" name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>'/>
                     <input type="hidden" id="locale" name="locale" value="<?= convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']) ?>"/>
                     <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>'/>
@@ -262,7 +258,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     $filterColumns = App()->getController()->renderPartial('/responses/modal_subviews/filterColumns', ['filterableColumns' => $filterableColumns, 'filteredColumns' => $filteredColumns, 'surveyId' => $surveyid], true);
 
                     $this->widget(
-                        'ext.LimeGridView.LimeGridView',
+                        'application.extensions.admin.grid.CLSGridView',
                         [
                             'dataProvider'    => $model->search(),
                             'filter'          => $model,
@@ -270,8 +266,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'id'              => 'responses-grid',
                             'ajaxUpdate'      => 'responses-grid',
                             'ajaxType'        => 'POST',
-                            'afterAjaxUpdate' => 'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-bs-toggle=\'popover\']").popover(); }',
-                            'template'        => "{items}\n<div id='responsesListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                            //'afterAjaxUpdate' => 'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-bs-toggle=\'popover\']").popover(); }',
                             'massiveActionTemplate' => $massiveAction,
                             'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                 gT('%s rows per page'),
@@ -286,7 +281,6 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     );
 
                     ?>
-                </div>
 
                 <!-- To update rows per page via ajax setSession-->
                 <?php
