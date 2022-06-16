@@ -84,7 +84,7 @@
 <?php else:?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class='jumbotron message-box col-12'>
+    <div class='p-4 message-box col-12'>
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <h1><?php eT("Note: Please review your survey carefully before activating"); ?></h1>
