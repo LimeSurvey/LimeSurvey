@@ -3,6 +3,7 @@
  * Add token entry
  */
 
+$locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>
 <div class='<?php if (!isset($ajax) || $ajax = false): ?>col-12 side-body <?php echo getSideBodyClass(false); ?> <?php endif; ?>'>
     <?php if (!isset($ajax) || $ajax = false) { ?>
@@ -93,7 +94,7 @@
                                 </label>
                                 <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>"
                                      id="completed-yes-no-date-container"
-                                     data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                     data-locale="<?php echo $locale ?>">
                                     <div class="row">
                                         <?php if ($oSurvey->anonymized != 'Y'): ?>
                                             <?php $bCompletedValue = "0";
@@ -134,8 +135,12 @@
                                             <div class="">
                                                 <div id="sent-date-container" class="date-container <?= !$bCompletedValue ? "d-none" : "" ?>">
                                                     <div id="completed-date_datetimepicker" class="input-group date">
-                                                        <input class="YesNoDatePicker form-control" id="completed-date" type="text" value="<?php echo isset($completed) ? $completed : '' ?>"
-                                                               name="completed-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                        <input class="YesNoDatePicker form-control"
+                                                               id="completed-date" type="text"
+                                                               value="<?php echo isset($completed) ? $completed : '' ?>"
+                                                               name="completed-date"
+                                                               data-locale="<?php echo $locale ?>"
+                                                               data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                                         <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                                     </div>
                                                 </div>
@@ -255,7 +260,7 @@
                                 <?php eT("Invitation sent?"); ?>
                             </label>
                             <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>" id="sent-yes-no-date-container"
-                                 data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                 data-locale="<?php echo $locale ?>">
                                 <div class="row">
                                     <div class="">
                                         <?php if ($oSurvey->anonymized != 'Y'): ?>
@@ -309,8 +314,13 @@
                                         <div id="sent-date-container" data-parent="#sent-switch" class="selector__date-container_hidden date-container <?= !$bSwitchValue ? "d-none" : "" ?>">
                                             <!-- Sent Date -->
                                             <div id="sent-date_datetimepicker" class="input-group date">
-                                                <input class="YesNoDatePicker form-control" id="sent-date" type="text" value="<?php echo isset($sent) ? $sent : '' ?>" name="sent-date"
-                                                       data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                <input class="YesNoDatePicker form-control"
+                                                       id="sent-date"
+                                                       type="text"
+                                                       value="<?php echo isset($sent) && $sent != 'N' ? $sent : '' ?>"
+                                                       name="sent-date"
+                                                       data-locale="<?php echo $locale ?>"
+                                                       data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                             </div>
                                         </div>
@@ -325,7 +335,7 @@
                                 <?php eT("Reminder sent?"); ?>
                             </label>
                             <div class="selector__yesNoContainer <?php echo $sCointainerClass; ?>" id="remind-yes-no-date-container"
-                                 data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                 data-locale="<?php echo $locale ?>">
 
                                 <div class="row">
                                     <div>
@@ -355,9 +365,13 @@
                                     <div class="">
                                         <div id="remind-date-container" data-parent="#remind-switch" class="selector__date-container_hidden date-container <?= !$bRemindSwitchValue ? "d-none" : "" ?>">
                                             <div id="remind-date_datetimepicker" class="input-group date">
-                                                <input class="YesNoDatePicker form-control" id="remind-date" type="text"
-                                                       value="<?php echo isset($remindersent) && $remindersent != 'N' ? $remindersent : '' ?>" name="remind-date"
-                                                       data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                <input class="YesNoDatePicker form-control"
+                                                       id="remind-date"
+                                                       type="text"
+                                                       value="<?php echo isset($remindersent) && $remindersent != 'N' ? $remindersent : '' ?>"
+                                                       name="remind-date"
+                                                       data-locale="<?php echo $locale ?>"
+                                                       data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                             </div>
                                         </div>
@@ -409,9 +423,13 @@
                                 <?php eT("Valid from"); ?>:</label>
                             <div class=" has-feedback">
                                 <div id="validfrom_datetimepicker" class="input-group date">
-                                    <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo isset($validfrom) ? $validfrom : '' ?>" name="validfrom"
-                                           data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
-                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                    <input class="YesNoDatePicker form-control"
+                                           id="validfrom"
+                                           type="text"
+                                           value="<?php echo isset($validfrom) ? $validfrom : '' ?>"
+                                           name="validfrom"
+                                           data-locale="<?php echo $locale ?>"
+                                           data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                     <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                 </div>
                             </div>
@@ -424,9 +442,13 @@
                             </label>
                             <div class="has-feedback">
                                 <div id="validuntil_datetimepicker" class="input-group date">
-                                    <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : '' ?>" name="validuntil"
-                                           data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
-                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                    <input class="YesNoDatePicker form-control"
+                                           id="validuntil"
+                                           type="text"
+                                           value="<?php echo isset($validuntil) ? $validuntil : '' ?>"
+                                           name="validuntil"
+                                           data-locale="<?php echo $locale ?>"
+                                           data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                     <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                 </div>
                             </div>

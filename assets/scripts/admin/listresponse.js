@@ -87,48 +87,24 @@ LS.resp = {
  * @return
  */
 function reinstallResponsesFilterDatePicker() {
-
     // Since grid view is updated with Ajax, we need to fetch date format each update
     var input = document.getElementById('dateFormatDetails');
     var locale = document.getElementById('locale');
     var startdateElement = document.getElementById('SurveyDynamic_startdate');
     var datestampElement = document.getElementById('SurveyDynamic_datestamp');
 
-    if (input.value && locale.value) {
+    if ((input && input.value) && (locale && locale.value)) {
         var dateFormatDetails = JSON.parse(input.value);
-        var config = {
-            localization: {
-                locale: locale.value
-            },
-            display: {
-                icons: {
-                    time: 'fa fa-clock-o text-success',
-                    date: 'fa fa-calendar text-success',
-                    up: 'fa fa-caret-up',
-                    down: 'fa fa-caret-down',
-                    previous: 'fa fa-caret-left',
-                    next: 'fa fa-caret-right',
-                    today: 'fa fa-today text-success',
-                    clear: 'fa fa-trash text-success',
-                    close: 'fa fa-close text-success',
-                },
-                components: {
-                    clock: false,
-                },
-            },
-        };
 
         if (startdateElement) {
-            const picker_SurveyDynamic_startdate = new tempusDominus.TempusDominus(startdateElement, config);
-            setDatePickerFormat(picker_SurveyDynamic_startdate, dateFormatDetails.jsdate, startdateElement.value);
+            initDatePicker(startdateElement, 'SurveyDynamic_startdate', locale.value, dateFormatDetails.jsdate);
             startdateElement.addEventListener("change.td", function () {
                 reloadGrid();
             });
         }
 
         if (datestampElement) {
-            const picker_SurveyDynamic_datestamp = new tempusDominus.TempusDominus(datestampElement, config);
-            setDatePickerFormat(picker_SurveyDynamic_datestamp, dateFormatDetails.jsdate, datestampElement.value);
+            initDatePicker(datestampElement, 'SurveyDynamic_datestamp', locale.value, dateFormatDetails.jsdate);
             datestampElement.addEventListener("change.td", function () {
                 reloadGrid();
             });
@@ -164,35 +140,6 @@ function onDocumentReadyListresponse() {
         $('#change-display-mode-form').find('input[type=submit]').trigger('click');
     });
 
-}
-
-/**
- * manipulates weak handling of tempus datetimepicker with dateformats
- * @param id
- * @param format
- * @param elemDate
- */
-function setDatePickerFormat(id, format, elemDate) {
-    // formatting when selected via datepicker
-    id.dates.formatInput = function (date) {
-        if (date !== null) {
-            return moment(date).format(format);
-        }
-        return null;
-    };
-
-    // converting with moment.js
-    id.dates.setFromInput = function (value, index) {
-        let converted = moment(value, format);
-        if (converted.isValid()) {
-            let date = tempusDominus.DateTime.convert(converted.toDate(), this.optionsStore.options.localization.locale);
-            this.setValue(date, index);
-        }
-    };
-    //workaround: formatting when value is loaded on pageload
-    if (elemDate) {
-        id.dates.setFromInput(elemDate);
-    }
 }
 
 $(window).bind("load", function () {

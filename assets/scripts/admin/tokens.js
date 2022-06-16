@@ -22,9 +22,7 @@ var LS = LS || {
          });
 
          // Generate the date time picker
-         // $elDate.datetimepicker({
-         //     locale: el.dataset.locale
-         // });
+         initDatePicker($elDate, $elDate.name, $elDate.dataset.locale, $elDate.dataset.dateformat);
 
          console.ls.log('$elSwitch', $elSwitch);
          // When user switch
@@ -33,7 +31,7 @@ var LS = LS || {
              if ($elSwitch.querySelector('input').checked) {
                  // Show date
                  $elDateContainer.classList.remove('d-none');
-                 $elHiddenInput.value = moment().format($elDate.dataset.dateFormat);
+                 $elHiddenInput.value = $elDate.value = moment().format($elDate.dataset.dateformat);
              } else {
                  // Hide date, set hidden input to "N"
                  $elDateContainer.classList.add('d-none');
@@ -43,7 +41,7 @@ var LS = LS || {
 
          // When user change date
          $elDate.addEventListener('change', function (e) {
-             $elHiddenInput.value = e.date.format($elDate.dataset.dateFormat);
+             $elHiddenInput.value = $elDate.value;
          });
      },
      YesNo: function (el) {
@@ -130,7 +128,9 @@ function submitEditToken(){
 
         success : function(result, stat) {
             if (result.success) {
-                modal.hide();
+                $modal.hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
             } else {
                 var errorMsg = result.error.message ? result.error.message : result.error;
                 if (!errorMsg) errorMsg = "Unexpected error";
@@ -142,14 +142,18 @@ function submitEditToken(){
             try {
                 $.fn.yiiGridView.update($gridId, {
                     complete: function(s){
-                        modal.hide();
+                        $modal.hide();
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
                     } // Update the surveys list
                 });
             }
             catch (e){
                 if (e) {
                     console.ls.error(e);
-                    modal.hide();
+                    $modal.hide();
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                 }
             }
         },
@@ -220,10 +224,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             Tokens.YesNo(el);
         });
 
-        $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
-        $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+        initValidFromValidUntilPickers();
 
-        $('.date .input-group-addon').on('click', function(){
+        $('.date. input-group-addon').on('click', function(){
             $prev = $(this).siblings();
             $prev.data("DateTimePicker").show();
         });
@@ -436,12 +439,11 @@ var startEditToken = function(){
                 Tokens.YesNo(el);
             });
 
-            $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
-            $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+            initValidFromValidUntilPickers()
 
             $('.date .input-group-addon').on('click', function(){
                 $prev = $(this).siblings();
-                $prev.data("DateTimePicker").show();
+                // $prev.data("DateTimePicker").show();
             });
 
             var elGeneral  = $('#general');
@@ -513,16 +515,20 @@ function onUpdateTokenGrid(){
  * @return
  */
 function reinstallParticipantsFilterDatePicker() {
-
     // Since grid view is updated with Ajax, we need to fetch date format each update
-    var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
-
-    $('#TokenDynamic_validfrom').datetimepicker({
-        format: dateFormatDetails.jsdate + ' HH:mm'
-    });
-    $('#TokenDynamic_validuntil').datetimepicker({
-        format: dateFormatDetails.jsdate + ' HH:mm'
-    });
+    var dateFormatDetails = document.getElementById('dateFormatDetails');
+    var locale = document.getElementById('locale');
+    var validfromElement = document.getElementById('TokenDynamic_validfrom');
+    var validuntilElement = document.getElementById('TokenDynamic_validuntil');
+    if ((dateFormatDetails && dateFormatDetails.value) && (locale && locale.value)) {
+        dateFormatDetails = JSON.parse(dateFormatDetails.value);
+        if (validfromElement) {
+            initDatePicker(validfromElement, 'TokenDynamic_validfrom', locale.value, dateFormatDetails.jsdate);
+        }
+        if (validuntilElement) {
+            initDatePicker(validuntilElement, 'TokenDynamic_validuntil', locale.value, dateFormatDetails.jsdate);
+        }
+    }
 
     $('#TokenDynamic_validfrom').on('focusout', function() {
         var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
@@ -535,4 +541,17 @@ function reinstallParticipantsFilterDatePicker() {
     });
     $(document).trigger('actions-updated');
 
+}
+
+function initValidFromValidUntilPickers() {
+    var validfromElement = document.getElementById('validfrom');
+    var validuntilElement = document.getElementById('validuntil');
+    var dateFormat = validfromElement.dataset.dateformat;
+    var locale = validfromElement.dataset.locale;
+    if (validfromElement) {
+        initDatePicker(validfromElement, 'validfrom', locale, dateFormat);
+    }
+    if (validuntilElement) {
+        initDatePicker(validuntilElement, 'validuntil', locale, dateFormat);
+    }
 }

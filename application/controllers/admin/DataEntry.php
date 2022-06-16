@@ -859,7 +859,7 @@ class DataEntry extends SurveyCommonAction
 
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                             $thisqid = $fname['qid'];
-                            while ($fname['qid'] == $thisqid) {
+                            while (is_array($fname) && $fname['qid'] == $thisqid) {
                                 if (substr($fname['fieldname'], -5) == "other") {
                                     $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                                     . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
