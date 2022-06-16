@@ -1,4 +1,4 @@
-const pickers = {};
+var pickers = {};
 
 /**
  * returns a basic config object

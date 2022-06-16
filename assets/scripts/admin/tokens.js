@@ -3,6 +3,12 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
+/**
+ *
+ * @type {{}}
+ */
+var filterData = {};
+
  Tokens = {
      /**
       * jQuery Plugin to manage the date in token modal edit.
@@ -518,29 +524,36 @@ function reinstallParticipantsFilterDatePicker() {
     // Since grid view is updated with Ajax, we need to fetch date format each update
     var dateFormatDetails = document.getElementById('dateFormatDetails');
     var locale = document.getElementById('locale');
-    var validfromElement = document.getElementById('TokenDynamic_validfrom');
-    var validuntilElement = document.getElementById('TokenDynamic_validuntil');
+    var validfromElement = document.getElementsByName('TokenDynamic[validfrom]')[0];
+    var validuntilElement = document.getElementsByName('TokenDynamic[validuntil]')[0];
     if ((dateFormatDetails && dateFormatDetails.value) && (locale && locale.value)) {
         dateFormatDetails = JSON.parse(dateFormatDetails.value);
+        var dateFormat = dateFormatDetails.jsdate + ' HH:mm';
         if (validfromElement) {
-            initDatePicker(validfromElement, 'TokenDynamic_validfrom', locale.value, dateFormatDetails.jsdate);
+            initDatePicker(validfromElement, 'TokenDynamic_validfrom', locale.value, dateFormat);
+            validfromElement.addEventListener("hide.td", function () {
+                reloadTokenGrid();
+            });
         }
         if (validuntilElement) {
-            initDatePicker(validuntilElement, 'TokenDynamic_validuntil', locale.value, dateFormatDetails.jsdate);
+            initDatePicker(validuntilElement, 'TokenDynamic_validuntil', locale.value, dateFormat);
+            validuntilElement.addEventListener("hide.td", function () {
+                reloadTokenGrid();
+            });
         }
     }
-
-    $('#TokenDynamic_validfrom').on('focusout', function() {
-        var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
-        $.fn.yiiGridView.update('token-grid', {data: data});
-    });
-
-    $('#TokenDynamic_validuntil').on('focusout', function() {
-        var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
-        $.fn.yiiGridView.update('token-grid', {data: data});
-    });
     $(document).trigger('actions-updated');
+}
 
+/**
+ * reload gridview only when data of filter input has changed
+ */
+function reloadTokenGrid() {
+    var newData = $('#token-grid .filters input, #token-grid .filters select').serialize();
+    if (filterData !== newData) {
+        filterData = newData;
+        $.fn.yiiGridView.update('token-grid', {data: filterData});
+    }
 }
 
 function initValidFromValidUntilPickers() {
