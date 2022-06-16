@@ -323,6 +323,9 @@ class TwoFactorAdminLogin extends AuthPluginBase
             ]);
         }
 
+        // NB: newDirectRequest does not deal with language or authentication
+        App()->setLanguage(App()->session['adminlang']);
+
         $oTFAModel = TFAUserKey::model()->findByPk($iUserId);
 
         if ($oTFAModel == null) {
