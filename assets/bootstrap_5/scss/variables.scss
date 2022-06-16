@@ -2,19 +2,25 @@
  * Custom variables for Bootstrap 5
  */
 
-// scss-docs-start theme-color-variables
-$primary:   #328637;
-$secondary: #6C757D;
-$success:   #198754;
-$info:      #0DCAF0;
-$warning:   #FFC107;
-$danger:    #DC3545;
-$light:     #f8f9fa;
-$dark:      #212529;
-$cancel:    #E9ECEF;
-// scss-docs-end theme-color-variables
+// START gray-color-variables
+$white:    #fff;
+$black:    #000;
+// END gray-color-variables
 
-// scss-docs-start theme-colors-map
+// START theme-color-variables
+$primary:       #328637;
+$primary-hover: #0f3e12;
+$secondary:     #6C757D;
+$success:       #198754;
+$info:          #0DCAF0;
+$warning:       #FFC107;
+$danger:        #DC3545;
+$light:         #f8f9fa;
+$dark:          #212529;
+$cancel:        #E9ECEF;
+// END theme-color-variables
+
+// START theme-colors-map
 $theme-colors: (
     "primary":    $primary,
     "secondary":  $secondary,
@@ -26,12 +32,13 @@ $theme-colors: (
     "dark":       $dark,
     "cancel":     $cancel,
 );
-// scss-docs-end theme-colors-map
+// END theme-colors-map
 
-// scss-docs-start font-variables
+// START font-variables
 $font-size-root: 14px;
-// scss-docs-end font-variables
+// END font-variables
 
+// START spacer
 $spacer: 1rem;
 $spacers: (
     0: 0,
@@ -43,8 +50,20 @@ $spacers: (
     6: $spacer * 4.5,
     7: $spacer * 6,
 );
+// END spacer
 
-// scss-docs-start btn-variables
+// START navbar-light
+$navbar-light-color:                $primary;
+$navbar-light-hover-color:          $white;
+$navbar-light-active-color:         $white;
+$navbar-light-disabled-color:       $primary;
+$navbar-light-toggler-icon-bg:      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-light-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
+$navbar-light-toggler-border-color: $primary;
+$navbar-light-brand-color:          $primary;
+$navbar-light-brand-hover-color:    $primary-hover;
+// END navbar-light
+
+// START btn-variables
 $btn-hover-bg-shade-amount: 30%;
 $btn-hover-bg-tint-amount: 30%;
-// scss-docs-end btn-variables
+// END btn-variables

@@ -35,28 +35,30 @@
     <div role="tabpanel" class="tab-pane show active" id="question-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-            <div class="form-group scope-contains-ckeditor">
-                <?= CHtml::textArea(
-                    "questionI10N[$lang][question]",
-                    $question->questionl10ns[$lang]->question ?? '',
-                    [
-                        'class' => 'form-control',
-                        'cols' => '60',
-                        'rows' => '8',
-                        'id' => "question_{$lang}",
-                        'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr',
-                        'placeholder' => gT('Enter your question here...'),
-                    ]
-                ); ?>
-                <?= getEditor(
-                    'question-text',//"question_" . $lang, //this is important for LimereplacementfieldsController function getReplacementFields(...)!
-                    "question_" . $lang,
-                    "[".gT("Question:","js")."](".$lang.")",
-                    $oSurvey->sid,
-                    $question->gid ?? 0,
-                    $question->qid ?? 0,
-                    'editquestion');
-                ?>
+            <div class="form-group">
+                <div class="input-group w-100">
+                    <?= CHtml::textArea(
+                        "questionI10N[$lang][question]",
+                        $question->questionl10ns[$lang]->question ?? '',
+                        [
+                            'class' => 'form-control',
+                            'cols' => '60',
+                            'rows' => '8',
+                            'id' => "question_{$lang}",
+                            'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr',
+                            'placeholder' => gT('Enter your question here...'),
+                        ]
+                    ); ?>
+                    <?= getEditor(
+                        'question-text',//"question_" . $lang, //this is important for LimereplacementfieldsController function getReplacementFields(...)!
+                        "question_" . $lang,
+                        "[".gT("Question:","js")."](".$lang.")",
+                        $oSurvey->sid,
+                        $question->gid ?? 0,
+                        $question->qid ?? 0,
+                        'editquestion');
+                    ?>
+                </div>
             </div>
         </div>
         <?php endforeach; ?>
@@ -66,28 +68,30 @@
     <div role="tabpanel" class="tab-pane" id="question-help-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-            <div class="form-group scope-contains-ckeditor">
-                <?= CHtml::textArea(
-                    "questionI10N[$lang][help]",
-                    $question->questionl10ns[$lang]->help ?? '',
-                    [
-                        'class' => 'form-control',
-                        'cols' => '60',
-                        'rows' => '4',
-                        'id' => "help_{$lang}",
-                        'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr',
-                        'placeholder' => gT('Enter some help text if your question needs some explanation here...'),
-                    ]
-                ); ?>
-                <?= getEditor(
-                    "help_".$lang,
-                    "help_".$lang,
-                    "[".gT("Help:", "js")."](".$lang.")",
-                    $oSurvey->sid,
-                    $question->gid ?? 0,
-                    $question->qid ?? 0,
-                    $action = ''
-                ); ?>
+            <div class="form-group">
+                <div class="input-group w-100">
+                    <?= CHtml::textArea(
+                        "questionI10N[$lang][help]",
+                        $question->questionl10ns[$lang]->help ?? '',
+                        [
+                            'class' => 'form-control',
+                            'cols' => '60',
+                            'rows' => '4',
+                            'id' => "help_{$lang}",
+                            'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr',
+                            'placeholder' => gT('Enter some help text if your question needs some explanation here...'),
+                        ]
+                    ); ?>
+                    <?= getEditor(
+                        "help_".$lang,
+                        "help_".$lang,
+                        "[".gT("Help:", "js")."](".$lang.")",
+                        $oSurvey->sid,
+                        $question->gid ?? 0,
+                        $question->qid ?? 0,
+                        $action = ''
+                    ); ?>
+                </div>
             </div>
         </div>
         <?php endforeach; ?>
@@ -98,19 +102,26 @@
             <?php foreach($oSurvey->allLanguages as $lang): ?>
             <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
                 <div class="form-group">
-                    <div class="row">
+                    <?php if ($lang == $oSurvey->language): ?>
+                        <div class="row">
                         <div class="col-12 text-end">
-                            <input 
-                                type="checkbox" 
-                                name="scriptForAllLanguages"
-                                id="selector--scriptForAllLanguages"
-                                v-model="scriptForAllLanugages"
-                            />&nbsp;
-                            <label for="selector--scriptForAllLanguages">
-                                <?= gT('Set for all languages'); ?>
-                            </label>
+                                <input
+                                    type="checkbox"
+                                    name="question[same_script]"
+                                    id="same_script"
+                                    value=1
+                                    <?php if($question->same_script): ?>
+                                        checked = 'checked'
+                                    <?php endif; ?>
+                                />&nbsp;
+                                <label for="same_script">
+                                    <?= gT('Use for all languages'); ?>
+                                </label>
+                            </div>
                         </div>
-                    </div> 
+                    <?php else: ?>
+                        <div class="alert alert-warning same-script-alert hidden"><?= gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.') ?></div>
+                    <?php endif; ?>
 
                     <?= CHtml::textArea(
                         "questionI10N[$lang][script]",

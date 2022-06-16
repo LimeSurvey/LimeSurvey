@@ -598,10 +598,6 @@ html {
     margin-bottom: 17px;
 }
 
-.cke_contents {
-    width: 650px;
-}
-
 .cke_toolgroup {
     cursor: pointer;
     cursor: hand;
@@ -4227,9 +4223,10 @@ table.dataTable thead .sorting_desc:after {
 
 // Sticky topbar
 .menubar.sticky {
-    position: fixed !important;
-    top: 0 !important;
-    margin-top: 0 !important;
+    position:   fixed;
+    top:        0;
+    margin-top: 0;
+    z-index:    1030;
 }
 #sticky-topbar-placeholder {
     display: none;

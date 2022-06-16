@@ -35,7 +35,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                         'id' => 'tfa-usermanagement-gridPanel',
                         'itemsCssClass' => 'table table-striped items',
                         'dataProvider' => $model->search(),
-                        'columns' => $model->columns,
+                        'columns' => $model->getColums(),
                         'filter' => $model,
                         'afterAjaxUpdate' => 'window.TFA.bind',
                         'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],

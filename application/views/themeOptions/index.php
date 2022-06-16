@@ -43,8 +43,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                     <!-- Available Themes -->
                     <?php if (count($oSurveyTheme->templatesWithNoDb) > 0) : ?>
                         <h3><?php eT('Available survey themes:'); ?></h3>
-                        <div id="templates_no_db" class="grid-view">
-                            <table class="items table">
+                        <div id="templates_no_db" >
+                            <table class="items table table-hover">
                                 <thead>
                                 <tr>
                                     <th><?php eT('Preview'); ?></th>
@@ -78,13 +78,11 @@ echo viewHelper::getViewTestTag('templateOptions');
                     <!-- Broken Themes  -->
                     <?php $aBrokenThemes = Template::getBrokenThemes();
                     if (count($aBrokenThemes) > 0) : ?>
-                        <div class="alert alert-danger" role="alert">
-                            <?php eT('Broken survey themes:'); ?>
-                        </div>
+                        <h3><?php eT('Broken survey themes'); ?></h3>
 
 
-                        <div id="thembes_broken" class="grid-view">
-                            <table class="items table">
+                        <div id="thembes_broken" >
+                            <table class="items table table-hover">
                                 <thead>
                                 <tr>
                                     <th><?php eT('Name'); ?></th>
@@ -137,8 +135,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                     <?php $aDeprecatedThemes = Template::getDeprecatedTemplates(); ?>
                     <?php if (count($aDeprecatedThemes) > 0) : ?>
                         <h3><?php eT('Deprecated survey themes:'); ?></h3>
-                        <div id="deprecatedThemes" class="grid-view">
-                            <table class="items table">
+                        <div id="deprecatedThemes" >
+                            <table class="items table table-hover">
                                 <thead>
                                 <tr>
                                     <th><?php eT('Name'); ?></th>
@@ -174,7 +172,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <div class="list-surveys">
                     <h3><?php eT('Available admin themes:'); ?></h3>
                     <div id="templates_no_db">
-                        <table class="items table">
+                        <table class="items table table-hover">
                             <thead>
                             <tr>
                                 <th><?php eT('Preview'); ?></th>
@@ -213,7 +211,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                     <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                     <!-- Installed Question Themes -->
                 <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
-                <!-- Available Quesiton Themes-->
+                <!-- Available Quesiton Themes and broken question themes-->
                 <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
             </div>
         </div>
