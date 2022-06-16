@@ -158,8 +158,9 @@ App()->getClientScript()->registerScriptFile(
 
             <!-- Right Menu -->
             <div class="col-lg-7 row text-end">
+                <div class="col-3"></div>
                 <!-- Theme Select Box -->
-                <div class="mb-3 col row">
+                <div class="mb-3 col-4 row">
                     <label class="col col-form-label" for='templatedir'><?php eT("Theme:"); ?></label>
                     <select class="col listboxtemplates form-select" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
@@ -169,7 +170,7 @@ App()->getClientScript()->registerScriptFile(
                 </div>
 
                 <!-- Screen Select Box -->
-                <div class="mb-3 col row">
+                <div class="mb-3 col-4 row">
                     <label class="col col-form-label" for='listboxtemplates'><?php eT("Screen:"); ?></label>
                     <?php echo CHtml::dropDownList('screenname',
                         $screenname,
@@ -181,7 +182,7 @@ App()->getClientScript()->registerScriptFile(
                         ]); ?>
                 </div>
 
-                <div class="col">
+                <div class="col-1">
                 <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
                     <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                         <span class="fa fa-floppy-o"></span>
@@ -191,7 +192,7 @@ App()->getClientScript()->registerScriptFile(
 
                 <!-- Close -->
                 <?php if (isset($fullpagebar['closebutton']['url'])) : ?>
-                    <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
+                    <a class="btn btn-danger text-nowrap" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
                         <span class="fa fa-close"></span>
                         <?php eT("Close"); ?>
                     </a>
@@ -199,7 +200,7 @@ App()->getClientScript()->registerScriptFile(
 
                 <!-- Return to Theme List -->
                 <?php if (isset($templateEditorBar['buttons']['returnbutton'])) : ?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
+                    <a class="btn btn-default text-nowrap" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
                         <span class="fa fa-backward"></span>
                         &nbsp;&nbsp;
                         <?php eT("Back"); ?>

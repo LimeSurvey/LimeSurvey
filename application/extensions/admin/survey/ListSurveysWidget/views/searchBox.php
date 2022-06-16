@@ -14,13 +14,13 @@
 ?>
 
 <!-- Search Box -->
-<div class="row float-end">
+<div class="row float-end col-10 ms-auto">
         <!-- Begin Form -->
         <?php $form  =  $this->beginWidget('CActiveForm', array(
             'action' => Yii::app()->createUrl($this->formUrl),
             'method' => 'get',
             'htmlOptions'=>array(
-                'class'=>'row ms-auto'
+                'class'=>'row'
             ),
         )); ?>
 

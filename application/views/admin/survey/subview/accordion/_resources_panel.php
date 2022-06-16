@@ -9,7 +9,6 @@ echo viewHelper::getViewTestTag('surveyResources');
 
 App()->getClientScript()->registerScript(
   "resources-panel-variables", "
-    "
 var jsonUrl = '';
 var sAction = '';
 var sParameter = '';
