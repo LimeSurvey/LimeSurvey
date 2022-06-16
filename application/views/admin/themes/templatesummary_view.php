@@ -3,9 +3,10 @@ Yii::app()->getClientScript()->registerPackage('jquery-ace');
 Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype ='".$sEditorFileType."';",CClientScript::POS_HEAD);
 ?>
 
+<div class="container-fluid">
 
   <?php if (is_template_editable($templatename)==true) { ?>
-    <div class="row template-sum">
+    <div class="row">
         <div class="col-12">
             <div class="h4">
                 <?php echo sprintf(gT("Viewing file '%s'"), $filedisplayname); ?>
@@ -20,102 +21,10 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
         </div>
     </div>
 
-    <div class="row template-sum">
-        <div class="col-md-2" id='templateleft'>
-            <div>
-                <?php eT("Screen part files:"); ?>
-                <div class="col-12 well" style="padding-left: 0;">
-                <?php foreach ($files as $file) { ?>
-                    <div class="row">
-                        <div class="col-md-9">
-                            <a href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>" class="<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>">
-                                <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
-                            <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate,false) && $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
-                                <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
-                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
-                                        <input type='hidden' name="filetype" value="<?php echo CHtml::encode('screen'); ?>" />
-                                        <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
-                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
-                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
-                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
-                                    </form>
-                                <?php } ?>
-                            <?php } else { ?>
-                                <span class="badge bg-danger"> <?php eT("inherited"); ?> </span>
-                            <?php }?>
-                        </div>
-                    </div>
-                <?php } ?>
-                </div>
-            </div>
-            <div>
-                <?php eT("JavaScript files:"); ?>
-                <div class="col-12 well">
+    <div class="row">
 
-                <?php foreach ($jsfiles as $file) { ?>
-                    <div class="row">
-                        <div class="col-md-9">
-                            <a href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>" class="<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>">
-                                <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
-                            <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {?>
-                                <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
-                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
-                                    <input type='hidden' name="filetype" value="<?php echo CHtml::encode('js'); ?>" />
-                                        <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
-                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
-                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
-                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
-                                    </form>
-                                <?php } ?>
-                            <?php } else { ?>
-                                <span class="badge bg-danger"><?php eT("inherited"); ?></span>
-                            <?php }?>
-                        </div>
-                    </div>
-                <?php }?>
-            </div>
-        </div>
-        <div>
-            <?php eT("CSS files:"); ?>
-            <div class="col-12 well">
-                <?php foreach ($cssfiles as $file) { ?>
-                    <div class="row">
-                        <div class="col-md-9">
-                            <a href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>" class="<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>">
-                                <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
-                            </a>
-                        </div>
-                        <div class="col-md-3">
-                            <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
-                                <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
-                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
-                                    <input type='hidden' name="filetype" value="<?php echo CHtml::encode('css'); ?>" />
-                                        <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
-                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
-                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
-                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
-                                    </form>
-                                <?php } ?>
-                            <?php } else { ?>
-                                <span class="badge bg-danger"><?php eT("inherited"); ?></span>
-                            <?php }?>
-                        </div>
-                    </div>
-                <?php }?>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-8 templateeditor">
+    <!-- Left column -->
+    <div class="col-9 templateeditor">
         <?=CHtml::form(['admin/themes/sa/templatesavechanges'], 'POST', ['id'=>'editTemplate', 'name'=>'editTemplate'])?>
             <?php
                 echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
@@ -135,21 +44,151 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
             <p class='text-center'>
                 <br/>
                 <?php if (Permission::model()->hasGlobalPermission('templates','update')) {
-                    $sSaveText = ( $oEditedTemplate->getTemplateForFile($relativePathEditfile, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName)
-                        ? gT("Save changes")
-                        : gT("Copy to local theme and save changes");
-                    if (is_writable($templates[$templatename])) { ?>
-                        <input type='submit' class='btn btn-default' id='button-save-changes' value='<?php echo $sSaveText; ?>' <?=(!is_template_editable($templatename) ? "disabled='disabled' alt='".gT( "Changes cannot be saved to a standard theme."). "'" : "")?> />
-                    <?php } ?>
+                    $buttonType = $oEditedTemplate->getTemplateForFile($relativePathEditfile, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName
+                        ? "savebutton" : "copybutton";
+                    if (is_writable($templates[$templatename])):
+                        if ($buttonType == "savebutton"): ?>
+                            <button type='submit' class='btn btn-primary' id='button-save-changes' value='' <?=(!is_template_editable($templatename) ? "disabled='disabled' alt='".gT( "Changes cannot be saved to a standard theme."). "'" : "")?> />
+                                <i class="fa fa-check"></i>
+                                <?= gT('Save'); ?>
+                            </button>
+                        <?php else: ?>
+                            <button type='submit' class='btn btn-default' id='button-save-changes' value='' <?=(!is_template_editable($templatename) ? "disabled='disabled' alt='".gT( "Changes cannot be saved to a standard theme."). "'" : "")?> />
+                                <?= gT("Copy to local theme and save changes") ?>
+                            </button>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 <?php } ?>
             </p>
         </form>
+        <br/>
+        <div class="h4">
+            <?php eT("Preview:"); ?>
+        </div>
+        <div class="jumbotron message-box">
+            <input type='button' value='<?php eT("Mobile"); ?>' id='iphone' class="btn btn-default" />
+            <input type='button' value='640x480' id='x640' class="btn btn-default" />
+            <input type='button' value='800x600' id='x800' class="btn btn-default" />
+            <input type='button' value='1024x768' id='x1024' class="btn btn-default" />
+            <input type='button' value='<?php eT("Full"); ?>' id='full' class="btn btn-default" />
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div style='width:90%; margin:0 auto;'>
+                <?php if(isset($filenotwritten) && $filenotwritten==true) { ?>
+                    <p>
+                        <span class='errortitle'><?php echo sprintf(gT("Please change the directory permissions of the folder %s in order to preview themes."), $tempdir); ?></span>
+                    </p>
+                <?php } else { ?>
+                    <p>
+                        <iframe id='previewiframe' title='Preview' src='<?php echo $this->createUrl('admin/themes/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe>
+                    </p>
+                <?php } ?>
+            </div>
+        </div>
     </div>
-    <div class="col-xl-2" style="overflow-x: hidden">
-        <div>
-            <?php eT("Other files:"); ?>
-            <br/>
-            <div class="col-12 well other-files-list">
+
+        <!-- Right column -->
+        <div class="col-3" id='templateleft'>
+            <div class="card mb-1">
+                <div class="col-12 card-body">
+                    <label class="card-title"><?php eT("Screen part files:"); ?></label>
+                <?php foreach ($files as $file) { ?>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <a href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>" class="<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>">
+                                <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate,false) && $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
+                                <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
+                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post', ['class' => 'd-grid gap-2']); ?>
+                                        <input type='hidden' name="filetype" value="<?php echo CHtml::encode('screen'); ?>" />
+                                        <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
+                                        <input type='submit' class='btn btn-default btn-xs' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
+                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
+                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
+                                    </form>
+                                <?php } ?>
+                            <?php } else { ?>
+                                <span class="badge bg-danger w-100"> <?php eT("Inherited"); ?> </span>
+                            <?php }?>
+                        </div>
+                    </div>
+                <?php } ?>
+                </div>
+            </div>
+            <div class="card mb-1">
+                <div class="col-12 card-body">
+                    <label class="card-title"><?php eT("JavaScript files:"); ?></label>
+
+                <?php foreach ($jsfiles as $file) { ?>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <a href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>" class="<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>">
+                                <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {?>
+                                <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
+                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post', ['class' => 'd-grid gap-2']); ?>
+                                    <input type='hidden' name="filetype" value="<?php echo CHtml::encode('js'); ?>" />
+                                        <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
+                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
+                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
+                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
+                                    </form>
+                                <?php } ?>
+                            <?php } else { ?>
+                                <span class="badge bg-danger w-100"><?php eT("Inherited"); ?></span>
+                            <?php }?>
+                        </div>
+                    </div>
+                <?php }?>
+            </div>
+        </div>
+
+        <div class="card mb-1">
+            <div class="col-12 card-body">
+                <label class="card-title"><?php eT("CSS files:"); ?></label>
+                <?php foreach ($cssfiles as $file) { ?>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <a href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>" class="<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>">
+                                <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
+                                <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
+                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post', ['class' => 'd-grid gap-2']); ?>
+                                    <input type='hidden' name="filetype" value="<?php echo CHtml::encode('css'); ?>" />
+                                        <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
+                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
+                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
+                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
+                                    </form>
+                                <?php } ?>
+                            <?php } else { ?>
+                                <span class="badge bg-danger w-100"><?php eT("Inherited"); ?></span>
+                            <?php }?>
+                        </div>
+                    </div>
+                <?php }?>
+            </div>
+        </div>
+
+    <div class="card mb-1">
+    <div class="col-12 card-body" style="">
+            <label class="card-title"><?php eT("Other files:"); ?></label>
+            <div class="col-12 mb-3 other-files-list">
                 <?php foreach ($otherfiles as $fileName => $file) { ?>
                     <div class="row other-files-row">
                         <div class="col-md-9 other-files-filename">
@@ -159,7 +198,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                             <?php //TODO: make it ajax and less messy ?>
                             <?php if ( $oEditedTemplate->getTemplateForFile($fileName, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {
                                 if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
-                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
+                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post', ['class' => 'd-grid gap-2']); ?>
                                         <input type='hidden' name="filetype" value="<?php echo CHtml::encode('other'); ?>" />
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
                                         <input type='submit' class='btn btn-default btn-xs template-files-delete-button other-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
@@ -169,26 +208,34 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>
-                                <span class="badge bg-danger"><?php eT("inherited"); ?></span>
+                                <span class="badge bg-danger w-100"><?php eT("Inherited"); ?></span>
                             <?php }?>
                         </div>
                     </div>
                 <?php }?>
-            </div>
-            <br>
         </div>
-        <div style='margin-top:1em;'>
+        <div class="mb-3">
             <?php if (Permission::model()->hasGlobalPermission('templates','update')) { ?>
-                <?php echo CHtml::form(array('admin/themes/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
-                    <?php printf(gT("Upload a file (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
-                    <br>
-                    <input name='upload_file' id="upload_file" type="file" class="form-control" required="required" />
-                    <input type='submit' value='<?php eT("Upload"); ?>' class='btn btn-default' <?=(!is_template_editable($templatename) ? "disabled='disabled'" : '') ?> />
-                    <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>' />
-                    <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
-                    <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
-                    <input type='hidden' name='action' value='templateuploadfile' />
-                </form>
+                <div class="">
+                    <?php echo CHtml::form(array('admin/themes/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'class' => 'row', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
+                        <label class="form-label col-12">
+                            <?php printf(gT("Upload a file (maximum size: %d MB):"), getMaximumFileUploadSize()/1024/1024); ?>
+                        </label>
+                        <div class="col-8">
+                            <input name='upload_file' id="upload_file" type="file" class="form-control" required="required" />
+                            <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>' />
+                            <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
+                            <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
+                            <input type='hidden' name='action' value='templateuploadfile' />
+                        </div>
+                        <div class="col-4">
+                            <button type='submit' class='btn btn-default text-nowrap' <?=(!is_template_editable($templatename) ? "disabled='disabled'" : '') ?>>
+                                <i class="icon-import"></i>
+                                <?= gT("Upload"); ?>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             <?php } ?>
         </div>
 
@@ -197,6 +244,10 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                 <?php eT('Tip: How to embed a picture in your theme?'); ?>
             </a>
         </div>
+    </div>
+    </div>
+
+
     </div>
 
     <!-- Modal -->
@@ -225,33 +276,6 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
 </div>
 
 <?php }?>
-<div class="row template-sum" style="margin-bottom: 100px;">
-    <div class="col-12">
-        <div class="h4">
-            <?php eT("Preview:"); ?>
-        </div>
-        <div class="jumbotron message-box">
-            <input type='button' value='<?php eT("Mobile"); ?>' id='iphone' class="btn btn-default" />
-            <input type='button' value='640x480' id='x640' class="btn btn-default" />
-            <input type='button' value='800x600' id='x800' class="btn btn-default" />
-            <input type='button' value='1024x768' id='x1024' class="btn btn-default" />
-            <input type='button' value='<?php eT("Full"); ?>' id='full' class="btn btn-default" />
-            <br>
-            <br>
-            <br>
-            <br>
 
-            <div style='width:90%; margin:0 auto;'>
-                <?php if(isset($filenotwritten) && $filenotwritten==true) { ?>
-                    <p>
-                        <span class='errortitle'><?php echo sprintf(gT("Please change the directory permissions of the folder %s in order to preview themes."), $tempdir); ?></span>
-                    </p>
-                <?php } else { ?>
-                    <p>
-                        <iframe id='previewiframe' title='Preview' src='<?php echo $this->createUrl('admin/themes/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe>
-                    </p>
-                <?php } ?>
-            </div>
-        </div>
-      </div>
-    </div>
+
+</div>
