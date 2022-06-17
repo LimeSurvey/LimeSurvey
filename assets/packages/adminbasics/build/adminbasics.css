@@ -1,4 +1,8 @@
 @charset "UTF-8";
+#cpdbatt {
+  min-height: 100px;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -6,7 +10,10 @@
  * It should not contain color definition (grey, blacks, and white are acceptable)
  */
 /**
- * Custom variables for Bootstrap 5
+ * Custom colors used by LimeSurvey admin theme.
+ */
+/**
+ * Custom variables
  */
 :root {
   --bs-blue: #0d6efd;
@@ -32,14 +39,13 @@
   --bs-gray-800: #343a40;
   --bs-gray-900: #212529;
   --bs-primary: #328637;
-  --bs-secondary: #6C757D;
+  --bs-secondary: #6c757d;
   --bs-success: #198754;
-  --bs-info: #0DCAF0;
-  --bs-warning: #FFC107;
-  --bs-danger: #DC3545;
+  --bs-info: #0dcaf0;
+  --bs-warning: #ffc107;
+  --bs-danger: #dc3545;
   --bs-light: #f8f9fa;
   --bs-dark: #212529;
-  --bs-cancel: #E9ECEF;
   --bs-primary-rgb: 50, 134, 55;
   --bs-secondary-rgb: 108, 117, 125;
   --bs-success-rgb: 25, 135, 84;
@@ -48,7 +54,6 @@
   --bs-danger-rgb: 220, 53, 69;
   --bs-light-rgb: 248, 249, 250;
   --bs-dark-rgb: 33, 37, 41;
-  --bs-cancel-rgb: 233, 236, 239;
   --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
@@ -355,29 +360,6 @@ body {
 
 .jumbotron {
   text-align: center;
-  background-color: transparent;
-  padding: 48px 60px;
-  border-radius: 6px;
-  margin-bottom: 30px;
-  margin-top: 14px;
-}
-
-.jumbotron h1,
-.jumbotron .h1 {
-  color: inherit;
-}
-
-.jumbotron p {
-  margin-bottom: 15px;
-  font-size: 21px;
-}
-
-.container .jumbotron {
-  border-radius: 6px;
-}
-
-.jumbotron .container {
-  max-width: 100%;
 }
 
 .jumbotron.message-box {
@@ -676,6 +658,10 @@ html {
 }
 .form-group {
   margin-bottom: 17px;
+}
+
+.cke_contents {
+  width: 650px;
 }
 
 .cke_toolgroup {
@@ -4271,10 +4257,9 @@ table.dataTable thead .sorting_desc:after {
 }
 
 .menubar.sticky {
-  position: fixed;
-  top: 0;
-  margin-top: 0;
-  z-index: 1030;
+  position: fixed !important;
+  top: 0 !important;
+  margin-top: 0 !important;
 }
 
 #sticky-topbar-placeholder {
@@ -4341,10 +4326,6 @@ html[dir=rtl] th {
 
 label {
   font-weight: bold;
-}
-
-#cpdbatt {
-  min-height: 100px;
 }
 
 .jcarousel-wrapper {
@@ -4464,6 +4445,66 @@ label {
   display: none;
 }
 
+#selectable .ui-selecting {
+  background: #8CCE00;
+}
+
+#selectable .ui-selected {
+  background: #C1DD7F;
+  color: #000000;
+}
+
+#selectable {
+  list-style-type: none;
+  margin: 2px;
+  padding: 0;
+  width: 90%;
+}
+
+#selectable li {
+  padding: 1em;
+  font-size: 1em;
+  height: 9px;
+  text-align: center;
+  margin: 4px;
+}
+
+#feedback {
+  font-size: 1.4em;
+}
+
+#selectableadd .ui-selecting {
+  background: #0066CC;
+}
+
+#selectableadd .ui-selected {
+  background: #0066CC;
+  color: white;
+}
+
+#selectableadd {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 90%;
+  text-align: center;
+}
+
+#selectableadd li {
+  margin: 3px;
+  padding: 0.4em;
+  font-size: 1em;
+  height: 18px;
+  text-align: center;
+}
+
+.popupgroup {
+  border: 1px solid #DAE5F4;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 8px;
+}
+
 .draggable-container {
   min-height: 300px;
 }
@@ -4569,92 +4610,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 /* Existing attribute column in CSV CPDB import */
 .centralatt {
   min-height: 100px;
-}
-
-#selectable .ui-selecting {
-  background: #8CCE00;
-}
-
-#selectable .ui-selected {
-  background: #C1DD7F;
-  color: #000000;
-}
-
-#selectable {
-  list-style-type: none;
-  margin: 2px;
-  padding: 0;
-  width: 90%;
-}
-
-#selectable li {
-  padding: 1em;
-  font-size: 1em;
-  height: 9px;
-  text-align: center;
-  margin: 4px;
-}
-
-#feedback {
-  font-size: 1.4em;
-}
-
-#selectableadd .ui-selecting {
-  background: #0066CC;
-}
-
-#selectableadd .ui-selected {
-  background: #0066CC;
-  color: white;
-}
-
-#selectableadd {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 90%;
-  text-align: center;
-}
-
-#selectableadd li {
-  margin: 3px;
-  padding: 0.4em;
-  font-size: 1em;
-  height: 18px;
-  text-align: center;
-}
-
-.popupgroup {
-  border: 1px solid #DAE5F4;
-  padding: 10px;
-  border-radius: 3px;
-  margin: 8px;
-}
-
-.translate > table {
-  table-layout: fixed;
-}
-
-.translate td._from_ > .question-text-from {
-  width: 100%;
-  overflow: auto;
-  word-wrap: break-word;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: left;
-  padding-bottom: 15px;
 }
 
 .grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {
@@ -4785,4 +4740,30 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   margin: 0;
   border: none;
   display: inline-block;
+}
+
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+.responses-column-filter-modal-checkbox-buttons {
+  text-align: left;
+  padding-bottom: 15px;
+}
+
+.translate > table {
+  table-layout: fixed;
+}
+
+.translate td._from_ > .question-text-from {
+  width: 100%;
+  overflow: auto;
+  word-wrap: break-word;
 }
