@@ -1220,8 +1220,18 @@ class Survey_Common_Action extends CAction
         while ($direntry = readdir($dh)) {
             if ($direntry != "." && $direntry != "..") {
                 if (is_file($extractdir."/".$direntry)) {
-                    // is  a file
+                    // Current entry is a file. Check if extension is allowed.
+
+                    // Get extension from file name
                     $extfile = (string) substr(strrchr($direntry, '.'), 1);
+
+                    // Workaround for files comming from file upload questions, which don't have an extension.
+                    // If the extension couldn't be determined, and the folder is "files", try to get the extension
+                    // from mime type.
+                    if (empty($extfile) && basename($extractdir) == 'files') {
+                        $extfile = LSFileHelper::getExtensionByMimeType($extractdir."/".$direntry);
+                    }
+
                     if (!(stripos(','.Yii::app()->getConfig('allowedresourcesuploads').',', ','.$extfile.',') === false)) {
                         // Extension allowed
                         if (!copy($extractdir."/".$direntry, $destdir."/".$direntry)) {
