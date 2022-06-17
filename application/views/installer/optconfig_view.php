@@ -79,7 +79,7 @@
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
-                <?php echo CHtml::submitButton(gT("Next",'unescaped'), array('class' => 'btn btn-default')); ?>
+                <?php echo CHtml::submitButton(gT("Next",'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
             </div>
         </div>
 

@@ -738,7 +738,7 @@ class TemplateConfiguration extends TemplateConfig
         $sEditorLink = "<a
             id='template_editor_link_" . $this->template_name . "'
             href='" . $sEditorUrl . "'
-            class='btn btn-default'>
+            class='btn btn-outline-secondary'>
                 <span class='icon-templates'></span>
                 " . gT('Theme editor') . "
             </a>";
@@ -748,7 +748,7 @@ class TemplateConfiguration extends TemplateConfig
             $OptionLink .= "<a
                 id='template_options_link_" . $this->template_name . "'
                 href='" . $sOptionUrl . "'
-                class='btn btn-default'>
+                class='btn btn-outline-secondary'>
                     <span class='fa fa-tachometer'></span>
                     " . gT('Theme options') . "
                 </a>";
@@ -772,7 +772,7 @@ class TemplateConfiguration extends TemplateConfig
             data-button-no="' . gt('Cancel') . '" 
             data-button-yes="' . gt('Extend') . '"
             title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
-            class="btn btn-primary selector--ConfirmModal">
+            role="button" class="btn btn-primary selector--ConfirmModal">
                 <i class="fa fa-copy"></i>
                 ' . gT('Extend') . '
             </a>';

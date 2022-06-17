@@ -164,7 +164,7 @@ class Permissiontemplates extends CActiveRecord
         // Role Detail
         $roleDetail = ""
             . "<button 
-                class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--userdetail' 
+                class='btn btn-sm btn-outline-secondary RoleControl--action--openmodal RoleControl--action--userdetail' 
                 data-bs-toggle='tooltip'
                 data-bs-placement='top'
                 title='" . gT('View role details') . "'
@@ -173,7 +173,7 @@ class Permissiontemplates extends CActiveRecord
         // Edit Permission
         $editPermissionButton = ""
             . "<button 
-                class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--permissions'
+                class='btn btn-sm btn-outline-secondary RoleControl--action--openmodal RoleControl--action--permissions'
                 data-bs-toggle='tooltip' 
                 data-bs-placement='top'
                 title='" . gT('Edit permission') . "'
@@ -185,7 +185,7 @@ class Permissiontemplates extends CActiveRecord
         // Edit Role
         $editRoleButton = ""
             . "<button 
-                class='btn btn-sm btn-default green-border RoleControl--action--openmodal RoleControl--action--edituser' 
+                class='btn btn-sm btn-outline-secondary green-border RoleControl--action--openmodal RoleControl--action--edituser' 
                 data-bs-toggle='tooltip'
                 data-bs-placement='top'
                 title='" . gT('Edit role') . "'
@@ -195,7 +195,7 @@ class Permissiontemplates extends CActiveRecord
 
         // Export Role
         $exportRoleButton = ""
-            . "<a class='btn btn-sm btn-default RoleControl--action--link'
+            . "<a class='btn btn-sm btn-outline-secondary RoleControl--action--link'
                 data-bs-toggle='tooltip'
                 data-bs-placement='top'
                  title='" . gT('Export role') . "'
@@ -209,7 +209,7 @@ class Permissiontemplates extends CActiveRecord
         $deleteRoleButton = '<span data-bs-toggle="tooltip" title="' . gT('Delete user role') . '">'
             . "<button 
                 id='RoleControl--delete-" . $this->ptid . "' 
-                class='btn btn-sm btn-default' 
+                class='btn btn-sm btn-outline-secondary' 
                 data-bs-toggle='modal' 
                 data-title='" . gt('Delete user role') . "'
                 data-bs-target='#confirmation-modal'

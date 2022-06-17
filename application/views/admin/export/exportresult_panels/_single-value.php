@@ -21,7 +21,7 @@
           <input type="text" readonly value="<?php echo  $sResponsesId; ?>" class="form-control" name="responses_id" id="responses_id" />
         </div>
         <div class="col-md-2">
-          <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("responses/setSession/", ['unset' => 'true', 'surveyId' => $surveyid]); ?>" role="button">
+          <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->getController()->createUrl("responses/setSession/", ['unset' => 'true', 'surveyId' => $surveyid]); ?>" role="button">
             <?php eT("Reset");?>
           </a>
         </div>

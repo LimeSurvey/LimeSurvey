@@ -56,12 +56,12 @@
         <div id="keyInfosbuttons">
             <br/>
             <?php  if ($serverAnswer->key_infos->remaining_updates!=-999):?>
-                <a class="btn btn-default" href="https://community.limesurvey.org/comfort-update-extension/" role="button" aria-disabled="false" target="_blank">
+                <a class="btn btn-outline-secondary" href="https://community.limesurvey.org/comfort-update-extension/" role="button" aria-disabled="false" target="_blank">
                     <?php eT("Buy a new key"); ?>
                 </a>
             <?php endif; ?>
 
-            <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+            <a class="btn btn-outline-secondary" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
                 <?php eT("Enter a new key"); ?>
             </a>
         </div>
@@ -76,11 +76,11 @@
             <?php  echo CHtml::hiddenField('destinationBuild' , $serverAnswer->destinationBuild); ?>
             <?php  echo CHtml::hiddenField('access_token' , $serverAnswer->access_token); ?>
 
-            <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button">
+            <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button">
                 <?php eT("Cancel"); ?>
             </a>
 
-            <button type="submit" class="btn btn-default ajax_button launch_update">
+            <button type="submit" class="btn btn-outline-secondary ajax_button launch_update">
                 <?php eT("Continue");?>
             </button>
         <?php echo CHtml::endForm(); ?>

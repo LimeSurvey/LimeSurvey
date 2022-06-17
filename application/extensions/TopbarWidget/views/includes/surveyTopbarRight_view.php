@@ -8,7 +8,7 @@
 
 <!-- White Close button -->
 <?php if (!empty($showWhiteCloseButton)) : ?>
-    <a class="btn btn-default" href="<?php echo $closeUrl ?>" role="button">
+    <a class="btn btn-outline-secondary" href="<?php echo $closeUrl ?>" role="button">
         <span class="fa fa-close"></span>
         <?php eT("Close"); ?>
     </a>
@@ -16,7 +16,7 @@
 
 <!-- Save and Close -->
 <?php if (!empty($showSaveAndCloseButton)): ?>
-    <a class="btn btn-default"
+    <a class="btn btn-outline-secondary"
        href="<?php echo $closeUrl; ?>"
        role="button"
        id="save-and-close-button"
@@ -28,7 +28,7 @@
 
 <!-- Return -->
 <?php if (!empty($showBackButton)): ?>
-    <a class="btn btn-default" href="<?php echo $returnUrl; ?>" role="button">
+    <a class="btn btn-outline-secondary" href="<?php echo $returnUrl; ?>" role="button">
         <span class="fa fa-backward"></span>
         &nbsp;&nbsp;
         <?php eT('Back') ?>
@@ -39,7 +39,6 @@
 <?php if (!empty($showGreenSaveAndCloseButton)): ?>
     <a class="btn btn-success"
        href="<?php echo $closeUrl; ?>"
-       role="button"
        id="save-and-close-button"
        onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
         <span class="fa fa-saved"></span>
@@ -49,7 +48,7 @@
 
 <!-- Save -->
 <?php if (!empty($showSaveButton)): ?>
-    <a id="save-button" class="btn btn-success pull-right" role="button">
+    <a id="save-button" class="btn btn-success pull-right">
         <i class="fa fa-check"></i>
         <?php eT("Save"); ?>
     </a>
@@ -57,7 +56,7 @@
 
 <!-- Export -->
 <?php if (!empty($showExportButton)): ?>
-    <button class="btn btn-success" name="export-button" id="export-button" data-submit-form=1>
+    <button class="btn btn-success" type="button" name="export-button" id="export-button" data-submit-form=1>
         <span class="fa fa-download-alt"></span>
         <?php eT("Export"); ?>
     </button>
@@ -65,7 +64,7 @@
 
 <!-- Import -->
 <?php if (!empty($showImportButton)): ?>
-    <button class="btn btn-success" name="import-button" id="import-button" data-submit-form=1>
+    <button class="btn btn-success" type="button" name="import-button" id="import-button" data-submit-form=1>
         <span class="fa fa-upload"></span>
         <?php eT("Import"); ?>
     </button>
@@ -73,7 +72,7 @@
 
 <!-- Close -->
 <?php if (!empty($showCloseButton)): ?>
-    <a class="btn btn-danger" href="<?php echo $closeUrl; ?>" role="button">
+    <a class="btn btn-danger" href="<?php echo $closeUrl; ?>" type="button">
         <span class="fa fa-close"></span>
         <?php eT("Close"); ?>
     </a>

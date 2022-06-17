@@ -91,7 +91,7 @@ var BootstrapRemoteModal = function(presetOptions, templateOptions){
             headlineBlock.text(options.modalTitle);
             thisHeader.append(headlineBlock);
             thisHeader.append(closeIcon.clone());
-            thisContent.prepend(thisHeader);   
+            thisContent.prepend(thisHeader);
         }
         if(options.footer === true){
             var thisFooter = footerBlock.clone();

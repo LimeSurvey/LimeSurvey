@@ -1050,7 +1050,7 @@ class userstatistics_helper
                             if ($browse) {
                                 $statisticsoutput .= "\t<tr>\n"
                                     . "\t\t<td class='text-center' colspan='4'>
-                            <input type='button' class='btn btn-default statisticsbrowsebutton numericalbrowse' value='"
+                            <input type='button' class='btn btn-outline-secondary statisticsbrowsebutton numericalbrowse' value='"
                                     . gT("Browse") . "' id='$fieldname' /></td>\n</tr>";
                                 $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
                             <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
@@ -1596,7 +1596,7 @@ class userstatistics_helper
                 }
                 $fname = "$al[1]";
                 if ($browse === true) {
-                    $fname .= " <input type='button' class='btn btn-default statisticsbrowsebutton' value='"
+                    $fname .= " <input type='button' class='btn btn-outline-secondary statisticsbrowsebutton' value='"
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
 
@@ -1640,7 +1640,7 @@ class userstatistics_helper
                 if ($al[0] == "Answer") {
                     $fname = "$al[1]";
                     if ($browse === true) {
-                        $fname .= " <input type='button'  class='btn btn-default statisticsbrowsebutton' value='"
+                        $fname .= " <input type='button'  class='btn btn-outline-secondary statisticsbrowsebutton' value='"
                         . gT("Browse") . "' id='$sColumnName' />";
                     }
                 } elseif ($al[0] == "NoAnswer") {

@@ -23,10 +23,10 @@
                         <div class='col-md-10 ls-flex wrap'>
                             <div class="btn-group" role="group">
                                 <input class='btn-check' type='radio' id='radiototal' name='scope' value='T' checked='checked'/>
-                                <label class='btn btn-outline-primary' for="radiototal"><?php eT("Total"); ?></label>
+                                <label class='btn btn-outline-secondary' for="radiototal"><?php eT("Total"); ?></label>
 
                                 <input class='btn-check' type='radio' id='radiogroup' name='scope' value='G'/>
-                                <label class='btn btn-outline-primary' for="radiogroup"><?php eT("Group"); ?></label>
+                                <label class='btn btn-outline-secondary' for="radiogroup"><?php eT("Group"); ?></label>
                             </div>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                                 <div class='mb-3'>
                                     <div class='col-md-2'></div>
                                     <div class='col-md-4'>
-                                        <input type='submit' class="btn btn-default d-none" value='<?php eT("Save"); ?>'/>
+                                        <input type='submit' class="btn btn-outline-secondary d-none" value='<?php eT("Save"); ?>'/>
                                     </div>
                                 </div>
                             </div>
@@ -141,7 +141,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <button type="button" class="btn btn-success" id="selector__assessments-save-modal"><?php eT('Add'); ?></button>
+                <button type="button" class="btn btn-success" id="selector__assessments-save-modal">
+                    <?php eT('Add'); ?>
+                </button>
             </div>
             </form>
         </div>

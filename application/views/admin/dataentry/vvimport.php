@@ -43,14 +43,15 @@
                 <label for="noid" class=" form-label">
                     <?php eT("Exclude record IDs?"); ?>
                 </label>
-                <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'noid',
-                        'value'=> 'noid',
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
-                        ));
-                    ?>
+                        'checkedOption' => '1',
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
@@ -73,14 +74,15 @@
                 <label for="notfinalized" class=" form-label">
                     <?php eT("Import as not finalized answers?"); ?>
                 </label>
-                <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'notfinalized',
-                        'value'=> false,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
-                        ));
-                    ?>
+                        'checkedOption' => '0',
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
@@ -98,13 +100,14 @@
                     <?php eT("First line contains the code of questions:"); ?>
                 </label>
                 <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'dontdeletefirstline',
-                        'value'=> false,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
-                        ));
-                    ?>
+                        'checkedOption' => '0',
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
@@ -112,14 +115,15 @@
                 <label for="forceimport" class=" form-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("Force import:"); ?>
                 </label>
-                <div class="">
-                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'forceimport',
-                        'value'=> false,
-                        'onLabel'=>gT('Yes'),
-                        'offLabel'=>gT('No')
-                        ));
-                    ?>
+                        'checkedOption' => '0',
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
 
@@ -147,7 +151,7 @@
             <?php eT("This survey is not active. You must activate the survey before attempting to import a VVexport file."); ?>
         </p>
         <p>
-            <a class="btn btn-lg btn-default" href='<?php echo $this->createUrl('surveyAdministration/view/'.$surveyid); ?>'><?php eT("Return to survey administration"); ?></a>
+            <a class="btn btn-lg btn-outline-secondary" href='<?php echo $this->createUrl('surveyAdministration/view/'.$surveyid); ?>'><?php eT("Return to survey administration"); ?></a>
         </p>
     </div>
 

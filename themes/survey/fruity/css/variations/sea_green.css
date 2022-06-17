@@ -1,4 +1,4 @@
-.fruity .btn-default:hover, .fruity .btn-default:focus, .fruity .btn-default:active, .fruity .btn-default.active, .fruity .open .dropdown-toggle.btn-default {
+.fruity .btn-outline-secondary:hover, .fruity .btn-outline-secondary:focus, .fruity .btn-outline-secondary:active, .fruity .btn-outline-secondary.active, .fruity .open .dropdown-toggle.btn-outline-secondary {
     color: #0f3e12;
     border: 1px solid #0f3e12;
     background-color: rgba(15, 62, 18, 0.1)
@@ -699,28 +699,28 @@ body {
     opacity: 1
 }
 
-.fruity fieldset[disabled] .btn-default {
+.fruity fieldset[disabled] .btn-outline-secondary {
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid #328637;
     color: #328637
 }
 
-.fruity fieldset[disabled] .btn-default:hover {
+.fruity fieldset[disabled] .btn-outline-secondary:hover {
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid #ccc
 }
 
-.fruity fieldset[disabled] .btn-default:focus {
+.fruity fieldset[disabled] .btn-outline-secondary:focus {
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid #ccc
 }
 
-.fruity fieldset[disabled] .btn-default:active {
+.fruity fieldset[disabled] .btn-outline-secondary:active {
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid #ccc
 }
 
-.fruity fieldset[disabled] .btn-default.active {
+.fruity fieldset[disabled] .btn-outline-secondary.active {
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid #ccc
 }
@@ -995,63 +995,63 @@ body {
     color: #8a8a8a
 }
 
-.fruity .btn-default {
+.fruity .btn-outline-secondary {
     background-color: rgba(255, 255, 255, 0.2);
     border: 1px solid #328637;
     color: #328637
 }
 
-.fruity .btn-default.disabled {
+.fruity .btn-outline-secondary.disabled {
     background-color: #fff;
     border: 1px solid #ccc
 }
 
-.fruity .btn-default.disabled:hover {
+.fruity .btn-outline-secondary.disabled:hover {
     background-color: #fff;
     border: 1px solid #ccc
 }
 
-.fruity .btn-default.disabled:focus {
+.fruity .btn-outline-secondary.disabled:focus {
     background-color: #fff;
     border: 1px solid #ccc
 }
 
-.fruity .btn-default.disabled:active {
+.fruity .btn-outline-secondary.disabled:active {
     background-color: #fff;
     border: 1px solid #ccc
 }
 
-.fruity .btn-default.disabled.active {
+.fruity .btn-outline-secondary.disabled.active {
     background-color: #fff;
     border: 1px solid #ccc
 }
 
-.fruity .btn-default .badge {
+.fruity .btn-outline-secondary .badge {
     color: #fff;
     background-color: #333
 }
 
-.fruity .btn-default[disabled] {
+.fruity .btn-outline-secondary[disabled] {
     background-color: #fff;
     border: 1px solid #ccc
 }
 
-.fruity .btn-default[disabled]:hover {
+.fruity .btn-outline-secondary[disabled]:hover {
     background-color: #fff;
     border: 1px solid #ccc
 }
 
-.fruity .btn-default[disabled]:focus {
+.fruity .btn-outline-secondary[disabled]:focus {
     background-color: #fff;
     border: 1px solid #ccc
 }
 
-.fruity .btn-default[disabled]:active {
+.fruity .btn-outline-secondary[disabled]:active {
     background-color: #fff;
     border: 1px solid #ccc
 }
 
-.fruity .btn-default[disabled].active {
+.fruity .btn-outline-secondary[disabled].active {
     background-color: #fff;
     border: 1px solid #ccc
 }

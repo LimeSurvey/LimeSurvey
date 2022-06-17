@@ -9,7 +9,7 @@
         <?php eT("Username:"); ?> <?php echo $user; ?> <br />
         <?php eT("Password:"); ?> <?php echo $pwd; ?>
         <div style="text-align: center">
-            <a id="ls-administration" href="<?php echo $this->createUrl("/admin"); ?>" class="btn btn-default btn btn-default-default btn btn-default-lg"><?php eT("Administration")?></a>
+            <a id="ls-administration" href="<?php echo $this->createUrl("/admin"); ?>" class="btn btn-outline-secondary btn btn-outline-secondary-default btn btn-outline-secondary-lg"><?php eT("Administration")?></a>
         </div>
     </div>
 </div>

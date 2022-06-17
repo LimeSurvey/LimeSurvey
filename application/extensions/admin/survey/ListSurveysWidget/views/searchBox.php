@@ -37,12 +37,24 @@
                 <?php echo $form->label($this->model, 'active', array('label'=>gT('Status:'),'class'=>'col-sm-3 col-form-label col-form-label-sm')); ?>
                 <div class="col-sm-9">
                     <select name="active" id='Survey_active' class="form-select">
-                        <option value="" <?php if( $this->model->active==""){echo "selected";}?>><?php eT('(Any)');?></option>
-                        <option value="Y" <?php if( $this->model->active=="Y"){echo "selected";}?>><?php eT('Active');?></option>
-                        <option value="R" <?php if( $this->model->active=="R"){echo "selected";}?>><?php eT('Active and running');?></option>
-                        <option value="N" <?php if( $this->model->active=="N"){echo "selected";}?>><?php eT('Inactive');?></option>
-                        <option value="E" <?php if( $this->model->active=="E"){echo "selected";}?>><?php eT('Active but expired');?></option>
-                        <option value="S" <?php if( $this->model->active=="S"){echo "selected";}?>><?php eT('Active but not yet started');?></option>
+                        <option value="" <?= $this->model->active == "" ? "selected" : '' ?>>
+                            <?php eT('(Any)'); ?>
+                        </option>
+                        <option value="Y" <?= $this->model->active == "Y" ? "selected" : '' ?>>
+                            <?php eT('Active'); ?>
+                        </option>
+                        <option value="R" <?= $this->model->active == "R" ? "selected" : '' ?>>
+                            <?php eT('Active and running'); ?>
+                        </option>
+                        <option value="N" <?= $this->model->active == "N" ? "selected" : '' ?>>
+                            <?php eT('Inactive'); ?>
+                        </option>
+                        <option value="E" <?= $this->model->active == "E" ? "selected" : '' ?>>
+                            <?php eT('Active but expired'); ?>
+                        </option>
+                        <option value="S" <?= $this->model->active == "S" ? "selected" : '' ?>>
+                            <?php eT('Active but not yet started'); ?>
+                        </option>
                     </select>
                 </div>
             </div>

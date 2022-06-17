@@ -642,7 +642,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['languagechanger'] = '  form-change-lang  ';
         $aClassAndAttributes['class']['formgroup']       = ' ';
         $aClassAndAttributes['class']['controllabel']    = ' ';
-        $aClassAndAttributes['class']['aLCDWithForm']    = '  btn btn-default ls-js-hidden ';
+        $aClassAndAttributes['class']['aLCDWithForm']    = '  btn btn-outline-secondary ls-js-hidden ';
 
         $aClassAndAttributes['attr']['languagechanger']  = $aClassAndAttributes['attr']['formgroup'] = $aClassAndAttributes['attr']['controllabel'] = '';
 
@@ -657,7 +657,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['modaltitle']        = ' modal-title';
         $aClassAndAttributes['class']['modalbody']         = ' modal-body ';
         $aClassAndAttributes['class']['modalfooter']       = ' modal-footer ';
-        $aClassAndAttributes['class']['modalfooterlink']   = ' btn btn-default ';
+        $aClassAndAttributes['class']['modalfooterlink']   = ' btn btn-outline-secondary ';
 
         $aClassAndAttributes['attr']['modalheader']       = ' style="min-height:40px;" '; // Todo: move to CSS
         $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-bs-dismiss="modal" aria-hidden="true" ';

@@ -55,12 +55,12 @@ Yii::app()->getController()->renderPartial(
                     <label><?= gT("Set password now?") ?></label>
                 </div>
                 <div class="btn-group col-6" data-bs-toggle="buttons">
-                    <input class="btn-check" type="radio" id="utility_set_password_yes" name="preset_password" value="1">
-                    <label for="utility_set_password_yes" class="btn btn-outline-primary col-6">
+                    <label for="utility_set_password_yes" class="btn btn-outline-secondary col-xs-6">
+                        <input type="radio" id="utility_set_password_yes" name="preset_password" value="1">
                         <?= gT("Yes") ?>
                     </label>
-                    <input class="btn-check" type="radio" id="utility_set_password_no" checked name="preset_password" value="0">
-                    <label for="utility_set_password_no" class="btn btn-outline-primary col-6">
+                    <label for="utility_set_password_no" class="btn btn-outline-secondary col-xs-6 active">
+                        <input type="radio" id="utility_set_password_no" checked="checked" name="preset_password" value="0">
                         <?= gT("No") ?>
                     </label>
                 </div>
@@ -101,8 +101,12 @@ Yii::app()->getController()->renderPartial(
     </div>
 </div>
 
-<div class="modal-footer modal-footer-buttons">
-    <button class="btn btn-outline-secondary" id="exitForm" data-bs-dismiss="modal"><?=gT('Cancel')?></button>
-    <button class="btn btn-success" id="submitForm"><?= gT('Add') ?></button>
+<div class="modal-footer modal-footer-buttons" style="margin-top: 15px;">
+    <button class="btn btn-cancel" id="exitForm" data-bs-dismiss="modal">
+        <?= gT('Cancel') ?>
+    </button>
+    <button class="btn btn-success" id="submitForm">
+        <?= gT('Add') ?>
+    </button>
 </div>
 <?php $this->endWidget(); ?>

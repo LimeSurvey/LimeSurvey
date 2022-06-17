@@ -28,9 +28,9 @@
                             <?php eT('Invitation status:'); ?>
                         </label>
                         <div class="default controls">
-                            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'invitationstatus',
-                                'value'=> 0 ,
+                                'checkedOption'=> 0 ,
                                 'selectOptions'=>array(
                                     "0"=>gT("All",'unescaped'),
                                     "1"=>gT("Invited",'unescaped'),
@@ -46,9 +46,9 @@
                             <?php eT('Reminder status:'); ?>
                         </label>
                         <div class="default controls">
-                            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'reminderstatus',
-                                'value'=> 0 ,
+                                'checkedOption'=> 0 ,
                                 'selectOptions'=>array(
                                     "0"=>gT("All",'unescaped'),
                                     "1"=>gT("Reminder(s) sent",'unescaped'),
@@ -96,13 +96,14 @@
                             <?php eT('Delete exported participants:'); ?>
                         </label>
                         <div class="default controls">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name' => 'tokendeleteexported',
-                                'id'=>'tokendeleteexported',
-                                'value' => 0,
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
+                                'checkedOption' => 0,
+                                'selectOptions' => [
+                                    '1' => gT('On'),
+                                    '0' => gT('Off'),
+                                ],
+                            ]); ?>
                         </div>
                         <div class="alert alert-warning controls" role="alert">
                             <?php eT('Warning: Deleted participants entries cannot be recovered.'); ?>
@@ -114,20 +115,21 @@
                             <?php eT('Quote equations:'); ?>
                         </label>
                         <div class="default controls">
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name' => 'maskequations',
-                                'id'=>'maskequations',
-                                'value' => 1,
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
+                                'checkedOption' => 1,
+                                'selectOptions' => [
+                                    '1' => gT('On'),
+                                    '0' => gT('Off'),
+                                ],
+                            ]); ?>
                         </div>
                         <div class="alert alert-warning controls" role="alert">
                             <?php eT('Important: Quote all content that starts with an equal sign to prevent CSV injections.'); ?>
                         </div>
                     </div>                    
                 </div>
-                <button class="btn btn-primary btn-block d-none" type="submit" name="submit">
+                <button role="button" class="btn btn-primary btn-block d-none" type="submit" name="submit">
                     <i class="fa fa-download"></i>
                     <?php eT('Export participants'); ?>
                 </button>

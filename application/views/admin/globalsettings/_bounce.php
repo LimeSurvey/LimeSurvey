@@ -17,16 +17,16 @@
 
 <div class="mb-3">
     <label class=" form-label"  for='bounceaccounttype'><?php eT("Server type:"); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                'name' => 'bounceaccounttype',
-                'value'=> getGlobalSetting('bounceaccounttype') ,
-                'selectOptions'=>array(
-                "off"=>gT("Off",'unescaped'),
-                "IMAP"=>gT("IMAP",'unescaped'),
-                "POP"=>gT("POP",'unescaped')
-                )
-                ));?>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'bounceaccounttype',
+            'checkedOption' => getGlobalSetting('bounceaccounttype'),
+            'selectOptions' => [
+                "off"  => gT("Off", 'unescaped'),
+                "IMAP" => gT("IMAP", 'unescaped'),
+                "POP"  => gT("POP", 'unescaped')
+            ]
+        ]); ?>
     </div>
 </div>
 
@@ -57,16 +57,16 @@
 
 <div class="mb-3">
     <label class=" form-label"  for='bounceencryption'><?php eT("Encryption type:"); ?></label>
-    <div class="">
-        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                'name' => 'bounceencryption',
-                'value'=> strtolower(getGlobalSetting('bounceencryption')),
-                'selectOptions'=>array(
-                "off"=>gT("Off (unsafe)",'unescaped'),
-                "ssl"=>"SSL/TLS",
-                "tls"=>"StartTLS"
-                )
-                ));?>
+    <div>
+        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'bounceencryption',
+            'checkedOption' => strtolower(getGlobalSetting('bounceencryption')),
+            'selectOptions' => [
+                "off" => gT("Off (unsafe)", 'unescaped'),
+                "ssl" => "SSL/TLS",
+                "tls" => "StartTLS"
+            ]
+        ]); ?>
     </div>
 </div>
 

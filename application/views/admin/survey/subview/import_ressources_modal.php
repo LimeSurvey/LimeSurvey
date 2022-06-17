@@ -24,7 +24,8 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php  eT("Cancel");?></button>
+            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php  eT("Cancel");?></button>
+            <!--TODO: Im not sure what this button does -->
             <input type='button' class="btn btn-primary" value='<?php  eT("Import"); ?>' <?php echo $ZIPimportAction; ?> />
           </div>
         </form>

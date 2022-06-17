@@ -181,16 +181,17 @@ LS.CPDB = (function() {
             var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                openModalParticipantPanel, 
+                openModalParticipantPanel,
                 data,
                 'action_save_modal_editParticipant',
-                'editPartcipantActiveForm', 
-                'list_central_participants' 
-            ).done(function(result) {
-                console.ls.log(result);
-                var val = $('#participantPanel_edit_modal .ls-bootstrap-switch').attr('checked');
-                $('.ls-bootstrap-switch').bootstrapSwitch('state', val == 'checked');
-            });
+                'editPartcipantActiveForm',
+                'list_central_participants',
+                function(result) {
+                    if (!result.error) {
+                        window.LS.ajaxAlerts(result.success, 'success');
+                    }
+                }
+            );
         });
 
         $('#list_central_participants').on('click', '.action_participant_deleteModal', function(e) {
@@ -198,12 +199,17 @@ LS.CPDB = (function() {
             var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                    openModalParticipantPanel, 
-                    data,
-                    'action_save_modal_deleteParticipant',
-                    'deleteParticipantActiveForm', 
-                    'list_central_participants' 
-                    );
+                openModalParticipantPanel,
+                data,
+                'action_save_modal_deleteParticipant',
+                'deleteParticipantActiveForm',
+                'list_central_participants',
+                function (result) {
+                    if (!result.error) {
+                        window.LS.ajaxAlerts(result.success, 'success');
+                    }
+                }
+                );
         });
         $('#list_central_participants').on('click', '.action_participant_infoModal', function(e) {
             e.preventDefault();
@@ -229,10 +235,13 @@ LS.CPDB = (function() {
                 data,
                 'action_save_modal_shareparticipant',
                 'shareParticipantActiveForm',
-                'list_central_participants'
-            ).done(function() {
-                $('.ls-bootstrap-switch').bootstrapSwitch();
-            });
+                'list_central_participants',
+                function(result) {
+                    if (!result.error) {
+                        window.LS.ajaxAlerts(result.success, 'success');
+                    }
+                }
+            );
         });
 
         $('#addParticipantToCPP').on('click', function(e){
@@ -250,13 +259,10 @@ LS.CPDB = (function() {
                 function(result) {
                     console.ls.log(result);
                     if(!result.error) {
-                        window.LS.notifyFader(result.success, 'well-lg text-center bg-primary');
+                        window.LS.ajaxAlerts(result.success, 'success');
                     }
                 }
-            ).done(function(result) {
-                console.ls.log(result);
-                $('.ls-bootstrap-switch').bootstrapSwitch();
-            });
+            );
         });
 
         /**
@@ -274,9 +280,7 @@ LS.CPDB = (function() {
                 'action_save_modal_addToSurvey',
                 'addToSurveyActiveForm', 
                 'list_central_participants' 
-            ).done(function() {
-                $('.ls-bootstrap-switch').bootstrapSwitch();
-            });
+            );
         });
 
         // Toggle all, participant list
@@ -288,23 +292,20 @@ LS.CPDB = (function() {
         $('#action_toggleAllParticipantShare').on('click', function() {
             $('.selector_participantShareCheckbox').prop('checked', $('#action_toggleAllParticipantShare').prop('checked'));
         });
-        
-        if(($('#pageSizeParticipantView').val() <= 100) || ($('#pageSizeAttributes').val() <= 100) || ($('#pageSizeShareParticipantView').val() <= 100) ){
-            $('.action_changeBlacklistStatus').bootstrapSwitch();
-        }
 
-        $('.action_changeBlacklistStatus').on('switchChange.bootstrapSwitch', function(event,state){
-            var self = this;
-            $.ajax({
-                url: editValueParticipantPanel, 
-                method: "POST",
-                data: {actionTarget: 'changeBlacklistStatus', 'participant_id': $(self).closest('tr').data('participant_id'), 'blacklist': state},
-                dataType: 'json', 
-                success: function(resolve){
-                    $(self).prop("checked", (resolve.newValue == "Y"));
-                }
-            })
-        });
+        let changeBlacklistButtons = document.querySelectorAll('.action_changeBlacklistStatus input');
+        for (let changeBlacklistButton of changeBlacklistButtons) {
+            changeBlacklistButton.addEventListener("change", (event) => {
+                let params = "actionTarget=changeBlacklistStatus"
+                    + "&participant_id=" + event.target.closest("tr").dataset.participant_id
+                    + "&blacklist=" + event.target.value
+                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
+                let xhttp = new XMLHttpRequest();
+                xhttp.open("POST", editValueParticipantPanel, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(params);
+            });
+        }
 
         $('#pageSizeParticipantView').on("change", function(){
             $.fn.yiiGridView.update('list_central_participants',{ data:{ pageSizeParticipantView: $(this).val() }});
@@ -329,7 +330,7 @@ LS.CPDB = (function() {
                 function(result) {
                     console.ls.log(result);
                     if(!result.error) {
-                        window.LS.notifyFader(result.success, 'well-lg text-center bg-primary');
+                        window.LS.ajaxAlerts(result.success, 'success');
                     }
                 }
             ); 
@@ -350,33 +351,33 @@ LS.CPDB = (function() {
             $('.selector_attributeNamesCheckbox').prop('checked',$('#action_toggleAllAttributeNames').prop('checked'));
         });
 
-        $('.action_changeAttributeVisibility').bootstrapSwitch();
-        $('.action_changeAttributeVisibility').on('switchChange.bootstrapSwitch', function(event,state){
-            var self = this;
-            $.ajax({
-                url: editValueParticipantPanel, 
-                method: "POST",
-                data: { actionTarget: 'changeAttributeVisibility', 'attribute_id': $(self).closest('tr').data('attribute_id'), 'visible': state},
-                dataType: 'json', 
-                success: function(resolve){
-                    $(self).prop("checked", (resolve.newValue == "Y"));
-                }
-            })
-        });
+        let changeAttributeVisibilityButtons = document.querySelectorAll('.action_changeAttributeVisibility input');
+        for (let changeAttributeVisibilityButton of changeAttributeVisibilityButtons) {
+            changeAttributeVisibilityButton.addEventListener("change", (event) => {
+                let params = "actionTarget=changeAttributeVisibility"
+                    + "&attribute_id=" + event.target.closest("tr").dataset.attribute_id
+                    + "&visible=" + event.target.value
+                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
+                let xhttp = new XMLHttpRequest();
+                xhttp.open("POST", editValueParticipantPanel, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(params);
+            });
+        }
 
-        $('.action_changeAttributeEncrypted').bootstrapSwitch();
-        $('.action_changeAttributeEncrypted').on('switchChange.bootstrapSwitch', function(event,state){
-            var self = this;
-            $.ajax({
-                url: editValueParticipantPanel, 
-                method: "POST",
-                data: { actionTarget: 'changeAttributeEncrypted', 'attribute_id': $(self).closest('tr').data('attribute_id'), 'encrypted': state},
-                dataType: 'json', 
-                success: function(resolve){
-                    $(self).prop("checked", (resolve.newValue == "Y"));
-                }
-            })
-        });
+        let changeAttributeEncryptedButtons = document.querySelectorAll('.action_changeAttributeEncrypted input');
+        for (let changeAttributeEncryptedButton of changeAttributeEncryptedButtons) {
+            changeAttributeEncryptedButton.addEventListener("change", (event) => {
+                let params = "actionTarget=changeAttributeEncrypted"
+                    + "&attribute_id=" + event.target.closest("tr").dataset.attribute_id
+                    + "&encrypted=" + event.target.value
+                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
+                let xhttp = new XMLHttpRequest();
+                xhttp.open("POST", editValueParticipantPanel, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(params);
+            });
+        }
 
         $('#pageSizeAttributes').on("change", function(){
             $.fn.yiiGridView.update('list_attributes',{ data:{ pageSizeAttributes: $(this).val() }});
@@ -392,20 +393,20 @@ LS.CPDB = (function() {
             $('.selector_participantCheckbox').prop('checked', $('#action_toggleAllParticipant').prop('checked'));
         });
 
-        $('.action_changeEditableStatus').bootstrapSwitch();
-
-        $('.action_changeEditableStatus').on('switchChange.bootstrapSwitch', function(event, state){
-            var self = this;
-            $.ajax({
-                url: editValueParticipantPanel, 
-                method: "POST",
-                data: {actionTarget: 'changeSharedEditableStatus', 'participant_id': $(self).closest('tr').data('participant_id'), 'can_edit': state, 'share_uid': $(self).closest('tr').data('share_uid')},
-                dataType: 'json', 
-                success: function(resolve){
-                    $(self).prop("checked", resolve.newValue);
-                }
+        let changeSharedEditableStatusButtons = document.querySelectorAll('.action_changeEditableStatus input');
+        for (let changeSharedEditableStatusButton of changeSharedEditableStatusButtons) {
+            changeSharedEditableStatusButton.addEventListener("change", (event) => {
+                let params = "actionTarget=changeSharedEditableStatus"
+                    + "&participant_id=" + event.target.closest("tr").dataset.participant_id
+                    + "&can_edit=" + event.target.value
+                    + "&share_uid=" + event.target.closest('tr').dataset.share_uid
+                    + "&YII_CSRF_TOKEN=" + LS.data.csrfToken;
+                let xhttp = new XMLHttpRequest();
+                xhttp.open("POST", editValueParticipantPanel, true);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(params);
             });
-        });
+        }
 
         $('#pageSizeShareParticipantView').on("change", function(){
             $.fn.yiiGridView.update('share_central_participants',{ data:{ pageSizeShareParticipantView: $(this).val() }});
@@ -440,9 +441,7 @@ LS.CPDB = (function() {
             'action_save_modal_shareparticipant',
             'shareParticipantActiveForm',
             'list_central_participants'
-        ).done(function() {
-            $('.ls-bootstrap-switch').bootstrapSwitch();
-        });
+        );
     },
 
     /**
@@ -462,9 +461,7 @@ LS.CPDB = (function() {
             'action_save_modal_addToSurvey',
             'addToSurveyActiveForm',
             'list_central_participants'
-        ).done(function() {
-            $('.ls-bootstrap-switch').bootstrapSwitch();
-        });
+        );
     },
 
     /**
@@ -535,11 +532,11 @@ function rejectParticipantShareAjax(participant_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                window.LS.notifyFader(result.success, 'well-lg bg-primary text-center');
+                window.LS.ajaxAlerts(result.success, 'success');
                 $.fn.yiiGridView.update('share_central_participants',{});
             }
-        })
-    }
+        });
+    };
     return runRejectParticipantShareAjax;
 }
 
@@ -553,8 +550,8 @@ function deleteAttributeAjax(attribute_id){
             data: {attribute_id : attribute_id, actionTarget: 'deleteAttribute'},
             method: "POST",
             dataType: 'json',
-            success: function(result){
-                window.LS.notifyFader(result.success, 'well-lg bg-primary text-center');
+            success: function (result){
+                window.LS.ajaxAlerts(result.success, 'success');
                 $.fn.yiiGridView.update('list_attributes',{});
             }
         })

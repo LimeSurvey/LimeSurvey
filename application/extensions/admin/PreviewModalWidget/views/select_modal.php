@@ -61,7 +61,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
           <?=gT($this->closeButton)?>
         </button>
         <button type="button" id="selector__select-this-<?=$this->widgetsJsName?>" class="btn btn-primary">

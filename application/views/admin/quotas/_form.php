@@ -43,26 +43,32 @@
 
                 <div class="form-group col-md-6">
                     <?php echo $form->labelEx($oQuota,'active',array('class'=>'form-label ')); ?>
-                    <div class=''>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'model' => $oQuota,
+                    <div>
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'model'     => $oQuota,
                             'attribute' => 'active',
-                            'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
-                        ?>
+                            'checkedOption' => $oQuota->active,
+                            'selectOptions' => [
+                                '1' => gT('Yes'),
+                                '0' => gT('No'),
+                            ],
+                        ]); ?>
                         <?php echo $form->error($oQuota,'active'); ?>
                     </div>
                 </div>
                 
                 <div class="form-group col-md-6">
                     <?php echo $form->labelEx($oQuota,'autoload_url',array('class'=>'form-label ')); ?>
-                    <div class=''>
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'model' => $oQuota,
+                    <div>
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                            'model'     => $oQuota,
                             'attribute' => 'autoload_url',
-                            'onLabel'=>gT('Yes'),
-                            'offLabel' => gT('No')));
-                        ?>
+                            'checkedOption' => $oQuota->autoload_url,
+                            'selectOptions' => [
+                                '1' => gT('Yes'),
+                                '0' => gT('No'),
+                            ],
+                        ]); ?>
                         <?php echo $form->error($oQuota,'autoload_url'); ?>
                     </div>
                 </div>

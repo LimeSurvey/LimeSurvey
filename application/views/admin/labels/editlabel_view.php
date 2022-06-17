@@ -108,19 +108,13 @@
                                 <label class=" form-label" for='checkforduplicates'>
                                     <?php eT("Don't import if label set already exists:"); ?>
                                 </label>
-                                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch',
-                                    [
-                                        'name'     => 'checkforduplicates',
-                                        'id'       => 'checkforduplicates',
-                                        'value'    => 1,
-                                        'onLabel'  => gT('On'),
-                                        'offLabel' => gT('Off')
-                                    ]); ?>
+                                <input id="ytcheckforduplicates" name="checkforduplicates" type="hidden" value="0" >
+                                <input id="checkforduplicates" name="checkforduplicates" type="checkbox" value="1" checked>
                             </div>
 
                             <div class="form-group">
                                 <div class="">
-                                    <input type='submit' class='btn btn-default' value='<?php eT("Import label set(s)"); ?>'/>
+                                <input type='submit' class='btn btn-outline-secondary' value='<?php eT("Import label set(s)"); ?>'/>
                                     <input type='hidden' name='action' value='importlabels'/>
                                 </div>
                             </div>

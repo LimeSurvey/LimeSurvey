@@ -32,7 +32,7 @@
     <?php endif; ?>
     <div class='form-group load-survey-row load-survey-submit'>
         <div class='col-md-7 offset-lg-3 load-survey-input input-cell'>
-            <button type='submit' id='loadbutton' name="loadall" class='btn btn-default' value='reload'><?php echo  gT("Load now") ?></button>
+            <button type='submit' id='loadbutton' name="loadall" class='btn btn-outline-secondary' value='reload'><?php echo  gT("Load now") ?></button>
         </div>
     </div>
 </div>

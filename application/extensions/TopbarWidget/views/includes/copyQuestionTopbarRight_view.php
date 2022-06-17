@@ -1,11 +1,11 @@
 <!-- Close -->
-<a class="btn btn-default" href="<?php echo $closeUrl; ?>" role="button">
+<a class="btn btn-outline-secondary" href="<?php echo $closeUrl; ?>">
     <span class="fa fa-close"></span>
     <?php eT("Close");?>
 </a>
 
 <!-- Save and close -->
-<a id="save-and-close-button-copy-question" class="btn btn-success" role="button">
+<a id="save-and-close-button-copy-question" class="btn btn-success">
     <i class="fa fa-check"></i>
     <?php eT("Save and close");?>
 </a>

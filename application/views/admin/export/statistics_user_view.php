@@ -55,7 +55,13 @@
             </div>
         </div>
         <div class="col-12 content-left">
-            <button id="statisticsExportImages" class="btn btn-info" style="margin: auto;"><?=gT('Export images')?></button>
+            <button 
+                type="button"
+                id="statisticsExportImages" 
+                class="btn btn-info" 
+                style="margin: auto;">
+                <?=gT('Export images')?>
+            </button>
             <p><?php eT('Make sure all images on this screen are loaded before clicking on the button.');?></p>
         </div>
     </div>

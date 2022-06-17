@@ -76,7 +76,7 @@ class TFAUser extends User
         return <<<HTML
             <div class="icon-btn-row">
                 <button
-                    class="btn btn-icon btn-default btn-sm TFA--management--action-deleteToken"
+                    class="btn btn-icon btn-outline-secondary btn-sm TFA--management--action-deleteToken"
                     title="$title"
                     data-bs-toggle="tooltip"
                     data-confirmtext="$confirmtext"
@@ -118,7 +118,7 @@ HTML;
      * @inheritDoc
      * @return array
      */
-    public function getColums()
+    public function getColumns()
     {
         // TODO should be static
         $cols = array(

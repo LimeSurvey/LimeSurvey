@@ -20,7 +20,7 @@ App()->getClientScript()->registerScript("plugin-panel-variables", "
         <div class="card">
             <div class="card-header bg-primary" role="tab" id="heading-plugin<?php echo $id; ?>">
                 <div class="">
-                    <a class="btn btn-default btn-xs hide-button  opened handleAccordion hidden-sm">
+                    <a class="btn btn-outline-secondary btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
 			<span class="sr-only"><?php eT("Expand/Collapse");?></span>
                     </a>

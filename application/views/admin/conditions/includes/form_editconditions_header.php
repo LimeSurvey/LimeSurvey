@@ -33,7 +33,7 @@
                                 <?php eT("Default scenario"); ?>
                             </span>
                             &nbsp;
-                            <button class='btn btn-default' onclick="scenarioaddbtnOnClickAction(); return false;" >
+                            <button class='btn btn-outline-secondary' onclick="scenarioaddbtnOnClickAction(); return false;" >
                                 <span class='icon-add'></span>&nbsp;<?php eT('Add scenario'); ?>
                             </button>
                         </div>
@@ -218,8 +218,8 @@
             <div class='form-group col-12'>
                 <div class=''></div>
                 <div class=''>
-                    <input type='reset' class='btn btn-default' id='resetForm' value='<?php eT("Clear"); ?>' />
-                    <input type='submit' class='btn btn-default' value='<?php echo $submitLabel; ?>' />
+                    <input type='reset' class='btn btn-outline-secondary' id='resetForm' value='<?php eT("Clear"); ?>' />
+                    <input type='submit' class='btn btn-outline-secondary' value='<?php echo $submitLabel; ?>' />
 
                     <input type='hidden' name='sid' value='<?php echo $iSurveyID; ?>' />
                     <input type='hidden' name='gid' value='<?php echo $gid; ?>' />

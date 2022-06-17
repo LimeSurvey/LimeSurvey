@@ -34,6 +34,8 @@
 </div>
 <div class="modal-footer">
     <?php if(!isset($noButton)): ?>
-        <button id="exitForm" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?=gT('Close')?></button>
+        <button id="exitForm" class="btn btn-cancel" data-bs-dismiss="modal">
+            <?=gT('Close')?>
+        </button>
     <?php endif; ?>
 </div>

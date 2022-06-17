@@ -518,7 +518,7 @@ export default {
         >
             <button 
                 v-show="!$store.getters.isCollapsed" 
-                class="btn btn-default" 
+                class="btn btn-outline-secondary" 
                 @mousedown="mousedown" @click.prevent="()=>{return false;}"
             >
                 <i class="fa fa-ellipsis-v" />

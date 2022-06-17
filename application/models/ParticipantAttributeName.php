@@ -106,7 +106,7 @@ class ParticipantAttributeName extends LSActiveRecord
         }
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
             . "<span class='fa fa-%s' ></span>" //icon class
             . "</button>";
         $buttons .= "";
@@ -196,11 +196,19 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getVisibleSwitch()
     {
-        $inputHtml = "<input type='checkbox' data-size='small' data-visible='" . $this->visible . "' data-on-color='primary' data-off-color='warning' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeAttributeVisibility' "
-            . ($this->visible == "TRUE" ? "checked" : "")
-            . ($this->core_attribute == "Y" ? " disabled" : "")
-            . "/>";
-        return  $inputHtml;
+        $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'visible_' . $this->attribute_id,
+            'checkedOption' => $this->visible === "TRUE" ? "1" : "0",
+            'selectOptions' => [
+                '1' => gT('Yes'),
+                '0' => gT('No'),
+            ],
+            'htmlOptions'   => [
+                'class' => 'action_changeAttributeVisibility',
+                'disabled' => $this->core_attribute === "Y" ? true : false
+            ]
+        ], true);
+        return $inputHtml;
     }
 
     /**
@@ -208,12 +216,21 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getEncryptedSwitch()
     {
-        // load sodium library
         $sodium = Yii::app()->sodium;
         $bEncrypted = $sodium->bLibraryExists;
-        $inputHtml = "<input type='checkbox' data-size='small' data-encrypted='" . $this->encrypted . "' data-on-color='primary' data-off-color='warning' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeAttributeEncrypted' " . ($bEncrypted === true ? " " : "disabled='' ") . ($this->encrypted == "Y" ? "checked" : "")
-            . "/>";
-        return  $inputHtml;
+        $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+            'name'          => 'encrypted_' . $this->attribute_id,
+            'checkedOption' => $this->encrypted === "Y" ? "1" : "0",
+            'selectOptions' => [
+                '1' => gT('Yes'),
+                '0' => gT('No'),
+            ],
+            'htmlOptions'   => [
+                'class' => 'action_changeAttributeEncrypted',
+                'disabled' => !$bEncrypted
+            ]
+        ], true);
+        return $inputHtml;
     }
 
     /**
@@ -221,11 +238,8 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getCoreAttributeSwitch()
     {
-        $inputHtml = "<input type='checkbox' data-size='small' data-encrypted='" . $this->encrypted . "' data-on-color='primary' data-off-color='warning' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeAttributeEncrypted' "
-            . ($this->core_attribute == "Y" ? "checked" : "")
-            . " disabled"
-            . "/>";
-        return  $inputHtml;
+        $inputHtml = $this->core_attribute === "Y" ? gT("Yes") : gT("No");
+        return $inputHtml;
     }
 
     /**
