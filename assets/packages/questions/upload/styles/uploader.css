@@ -39,18 +39,8 @@ margin:0;
     }
 }
 
-.file-preview {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    column-gap: 1rem;
-    row-gap: 1.5rem;
-}
 .file-preview span {
     margin-left: 1em;
-}
-.file-preview fieldset {
-    flex-basis: 100%;
 }
 
 .file-info label{
