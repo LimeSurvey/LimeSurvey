@@ -570,7 +570,8 @@ surveyThemeEditorLanguageData = {
     replace: "$replace"
 };
 JAVASCRIPT
-        , CClientScript::POS_BEGIN
+            ,
+            CClientScript::POS_BEGIN
         );
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js', CClientScript::POS_END);
         App()->getClientScript()->registerPackage('ace');
