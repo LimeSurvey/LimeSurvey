@@ -1,10 +1,13 @@
 <div class="inputtype--toggle-container">
-    <div class="btn-group" role="group" data-toggle="buttons">
+    <div class="btn-group" role="group" data-toggle="buttons"
+    aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>"
+    <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
+    >
         <?php if ($this->setting['value'] == "1") : ?>
             <label class="btn btn-default active">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                     value="1"
                     checked
                     />
@@ -13,7 +16,7 @@
             <label class="btn btn-default">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                     value="0"
                     />
                 <?= gT('Off'); ?>
@@ -22,7 +25,7 @@
             <label class="btn btn-default">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                     value="1"
                     />
                 <?= gT('On'); ?>
@@ -30,7 +33,7 @@
             <label class="btn btn-default active">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                     value="0"
                     checked
                     />

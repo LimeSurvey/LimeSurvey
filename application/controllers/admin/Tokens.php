@@ -1478,7 +1478,6 @@ class Tokens extends SurveyCommonAction
                         }
                         $tokenoutput .= $tokenSaveError;
                     } else {
-                        $maildebug = $mail->getDebug('html');
                         $tokenoutput .= $stringInfo . CHtml::tag("span", array('class' => "text-warning"), sprintf(gT("Error message: %s"), $mail->getError())) . "<br>\n";
                         if (Yii::app()->getConfig("emailsmtpdebug") > 0) {
                             $tokenoutput .= $mail->getDebug('html');

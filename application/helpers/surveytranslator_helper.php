@@ -761,8 +761,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ru']['momentjs'] = 'ru';
 
     // Sami
-    $supportedLanguages['smi']['description'] = gT('Sami');
-    $supportedLanguages['smi']['nativedescription'] = 'Sámi';
+    $supportedLanguages['smi']['description'] = gT('Sami (Northern)');
+    $supportedLanguages['smi']['nativedescription'] = 'Davvisámegiella';
     $supportedLanguages['smi']['rtl'] = false;
     $supportedLanguages['smi']['dateformat'] = 4;
     $supportedLanguages['smi']['radixpoint'] = 1;

@@ -279,6 +279,9 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionListQuestions($surveyid, $landOnSideMenuTab = 'settings')
     {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
         $iSurveyID = sanitize_int($surveyid);
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
@@ -2438,6 +2441,10 @@ class QuestionAdministrationController extends LSBaseController
             }
         }
 
+        if (!isset($aQuestionData['same_script'])) {
+            $aQuestionData['same_script'] = 0;
+        }
+
         $aQuestionData = array_merge(
             [
                 'sid'        => $iSurveyId,
@@ -2534,6 +2541,10 @@ class QuestionAdministrationController extends LSBaseController
             } else {
                 $aQuestionData['same_default'] = 1;
             }
+        }
+
+        if (!isset($aQuestionData['same_script'])) {
+            $aQuestionData['same_script'] = 0;
         }
 
         $originalRelevance = $oQuestion->relevance;

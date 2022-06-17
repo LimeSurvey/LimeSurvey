@@ -19,7 +19,7 @@ class SaveAsDefaultGeneralOption extends GeneralOption
             'save_as_default',
             null,
             gT('All attribute values for this question type will be saved as default'),
-            $question->same_default == 1 ? 'Y' : 'N',
+            'N',
             [
                 'classes' => [],
                 'options' => [
