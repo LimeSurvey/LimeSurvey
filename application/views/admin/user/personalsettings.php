@@ -6,6 +6,9 @@
  * @var $oQuestionSelector              PreviewModalWidget
  */
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('personalsettings');
+
 $aQuestionTypeGroups = [];
 
 if (App()->session['questionselectormode'] !== 'default') {
