@@ -260,15 +260,15 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     $this->widget(
                         'application.extensions.admin.grid.CLSGridView',
                         [
-                            'dataProvider'    => $model->search(),
-                            'filter'          => $model,
-                            'columns'         => $aColumns,
-                            'id'              => 'responses-grid',
-                            'ajaxUpdate'      => 'responses-grid',
-                            'ajaxType'        => 'POST',
-                            //'afterAjaxUpdate' => 'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-bs-toggle=\'popover\']").popover(); }',
-                            'massiveActionTemplate' => $massiveAction,
-                            'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                            'dataProvider'          => $model->search(),
+                            'filter'                => $model,
+                            'columns'               => $aColumns,
+                            'id'                    => 'responses-grid',
+                            'ajaxUpdate'            => 'responses-grid',
+                            'ajaxType'              => 'POST',
+                            'afterAjaxUpdate'       => 'js:function(id, data){ afterAjaxResponsesReload(); onUpdateTokenGrid(); $(".grid-view [data-bs-toggle=\'popover\']").popover(); }',
+                            'massiveActionTemplate' => $massiveAction . $filterColumns,
+                            'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                 gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'pageSize',

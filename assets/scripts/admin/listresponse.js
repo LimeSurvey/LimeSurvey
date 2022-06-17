@@ -98,14 +98,14 @@ function reinstallResponsesFilterDatePicker() {
 
         if (startdateElement) {
             initDatePicker(startdateElement, 'SurveyDynamic_startdate', locale.value, dateFormatDetails.jsdate);
-            startdateElement.addEventListener("change.td", function () {
+            startdateElement.addEventListener("hide.td", function () {
                 reloadGrid();
             });
         }
 
         if (datestampElement) {
             initDatePicker(datestampElement, 'SurveyDynamic_datestamp', locale.value, dateFormatDetails.jsdate);
-            datestampElement.addEventListener("change.td", function () {
+            datestampElement.addEventListener("hide.td", function () {
                 reloadGrid();
             });
         }
@@ -145,13 +145,15 @@ function onDocumentReadyListresponse() {
 $(window).bind("load", function () {
     onDocumentReadyListresponse();
     reinstallResponsesFilterDatePicker();
+    initColumnFilter();
 });
 
 $(document).on('pjax:scriptcomplete', function() {
-    onDocumentReadyListresponse()
+    onDocumentReadyListresponse();
 });
 
-$(function () {
+
+function initColumnFilter() {
     // hide and submit Modal on click for pjax preventDefault submit
     $('#responses-column-filter-modal-submit').on('click', function (e) {
         e.preventDefault();
@@ -159,25 +161,19 @@ $(function () {
         form.submit();
         form.modal('hide');
     });
-});
 
-$(function () {
     // select all columns for the response table
     $('#responses-column-filter-modal-selectall').on('click', function (e) {
         e.preventDefault();
         $(".responses-multiselect-checkboxes .checkbox input").prop('checked', true);
     });
-});
 
-$(function () {
     // remove selection fir the response table
     $('#responses-column-filter-modal-clear').on('click', function (e) {
         e.preventDefault();
         $(".responses-multiselect-checkboxes .checkbox input").prop('checked', false);
     });
-});
 
-$(function () {
     // cancel current modifications to the selection of columns for the response table
     $('#responses-column-filter-modal-cancel').on('click', function (e) {
         e.preventDefault();
@@ -190,4 +186,10 @@ $(function () {
         });
         form.modal('hide');
     });
-});
+}
+
+function afterAjaxResponsesReload() {
+    reinstallResponsesFilterDatePicker();
+    bindListItemclick();
+    initColumnFilter();
+}
