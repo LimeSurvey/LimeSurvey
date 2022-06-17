@@ -182,7 +182,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                 <div class="col-md-9">
                                     <a href="<?php echo $this->createUrl('admin/themes',
                                         ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
-                                       class="<?= ($file == $relativePathEditfile ? 'text-danger' : 'text-success'?>">
+                                       class="<?= $file === $relativePathEditfile ? 'text-danger' : 'text-success'?>">
                                         <?= (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))
                                             ? $file
                                             : substr(strrchr($file, DIRECTORY_SEPARATOR), 1); ?>
