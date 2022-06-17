@@ -7,7 +7,7 @@ class CLSGridView extends CGridView
     /**
      * @var string
      */
-    public string $massiveActionTemplate = '';
+    public $massiveActionTemplate = '';
 
     /**
      * Initializes the widget.
