@@ -2000,6 +2000,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $('#general-setting-help-relevance').show();
   }
 
+  function showSameScriptForAllLanguagesWarning() {
+    if ($('#same_script').is(":checked")) {
+      $('.same-script-alert').removeClass("hidden");
+    } else {
+      $('.same-script-alert').addClass("hidden");
+    }
+  }
+
   // Below, things run on pjax:scriptcomplete.
 
     makeAnswersTableSortable();
@@ -2073,6 +2081,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $('.lang-hide').hide();
     const languages = languageJson.langs.split(';');
     $('.lang-' + languages[0]).show();
+
+    // Show 'Use for all languages' warning
+    $('#same_script').on('change', showSameScriptForAllLanguagesWarning);
+    showSameScriptForAllLanguagesWarning();
 
     // Land on summary page if qid != 0 (not new question).
     // TODO: Fix

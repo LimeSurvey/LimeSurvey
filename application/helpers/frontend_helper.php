@@ -149,7 +149,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
             "sid" => $surveyid,
         );
 
-        // retreive the route of url in preview mode
+        // retrieve the route of url in preview mode
         if (substr($sAction, 0, 7) == 'preview') {
             $routeParams["action"] = $sAction;
             if (intval(Yii::app()->request->getParam('gid', 0))) {
@@ -260,12 +260,10 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
     global $thisstep;
 
     $survey = Survey::model()->findByPk($surveyid);
-
-
     if (!isset($backok) || $backok != "Y") {
         $fieldmap = createFieldMap($survey, 'full', false, false, $_SESSION['survey_' . $surveyid]['s_lang']);
 
-        if (isset($_POST['fieldnames']) && $_POST['fieldnames'] != "") {
+        if (!empty(App()->getRequest()->getPost('fieldnames'))) {
             $fields = explode("|", $_POST['fieldnames']);
 
             foreach ($fields as $field) {
@@ -274,20 +272,19 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
 
                     $filecount = 0;
 
-                    $json = $_POST[$field];
+                    $json = App()->getRequest()->getPost($field);
+                    $phparray = json_decode(urldecode($json));
                     // if name is blank, its basic, hence check
                     // else, its ajax, don't check, bypass it.
-
-                    if ($json != "" && $json != "[]") {
-                        $phparray = json_decode(urldecode($json));
-                        if ($phparray[0]->size != "") {
-// ajax
+                    if (!empty($phparray)) {
+                        if (!empty($phparray[0]->size)) {
+                            // ajax
                             $filecount = count($phparray);
                         } else {
-// basic
+                            // basic
                             for ($i = 1; $i <= $validation['max_num_of_files']; $i++) {
                                 if (!isset($_FILES[$field . "_file_" . $i]) || $_FILES[$field . "_file_" . $i]['name'] == '') {
-                                                                    continue;
+                                    continue;
                                 }
 
                                 $filecount++;
@@ -318,7 +315,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
                             }
                         }
                     } else {
-                                            $filecount = 0;
+                        $filecount = 0;
                     }
 
                     if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid'])) {
@@ -330,18 +327,18 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
         }
         if (isset($filenotvalidated)) {
             if (isset($move) && $move == "moveprev") {
-                            $_SESSION['survey_' . $surveyid]['step'] = $thisstep;
+                $_SESSION['survey_' . $surveyid]['step'] = $thisstep;
             }
             if (isset($move) && $move == "movenext") {
-                            $_SESSION['survey_' . $surveyid]['step'] = $thisstep;
+                $_SESSION['survey_' . $surveyid]['step'] = $thisstep;
             }
             return $filenotvalidated;
         }
     }
     if (!isset($filenotvalidated)) {
-            return false;
+        return false;
     } else {
-            return $filenotvalidated;
+        return $filenotvalidated;
     }
 }
 
@@ -1361,7 +1358,7 @@ function getNavigatorDatas()
         $sMoveNext = "movesubmit";
     }
 
-    // todo Remove Next if needed (exemple quota show previous only: maybe other, but actually don't use surveymover)
+    // todo Remove Next if needed (example quota show previous only: maybe other, but actually don't use surveymover)
     if (Yii::app()->getConfig('previewmode')) {
         $sMoveNext = "";
     }
@@ -1406,7 +1403,7 @@ function getNavigatorDatas()
 
             $aNavigator['save']['show'] = true;
         } elseif (getMove() != "movelast") {
-            // Not on last page or submited survey
+            // Not on last page or submitted survey
             $aNavigator['save']['show'] = true;
         }
     }
@@ -1768,7 +1765,7 @@ function checkCompletedQuota($surveyid, $return = false)
     // If a token is used then mark the token as completed, do it before event : this allow plugin to update token information
     $event = new PluginEvent('afterSurveyQuota');
     $event->set('surveyId', $surveyid);
-    $event->set('responseId', $_SESSION['survey_' . $surveyid]['srid']); // We allways have a responseId
+    $event->set('responseId', $_SESSION['survey_' . $surveyid]['srid']); // We always have a responseId
     $event->set('aMatchedQuotas', $aMatchedQuotas); // Give all the matched quota : the first is the active
     App()->getPluginManager()->dispatchEvent($event);
     $blocks = array();

@@ -103,7 +103,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /* @var string $eventName to send to events */
     private $eventName = 'beforeEmail';
 
-    /* @var string $eventMessage optionnal event message to return (used in some event (beforeTokenRegister) */
+    /* @var string $eventMessage optional event message to return (used in some event (beforeTokenRegister) */
     private $eventMessage = null;
 
     /* @var string[] $debug the debug lines one by one */
@@ -231,7 +231,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             /* no need to reset if new */
             return self::$instance;
         }
-        /* Some part must be always resetted */
+        /* Some part must be always reset */
         if ($reset) {
             self::$instance->init();
             if (self::$instance->surveyId) {

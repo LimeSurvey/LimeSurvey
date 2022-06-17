@@ -243,7 +243,7 @@ abstract class CBaseController extends CComponent
 
 	/**
 	 * Begins fragment caching.
-	 * This method will display cached content if it is availabe.
+	 * This method will display cached content if it is available.
 	 * If not, it will start caching and would expect a {@link endCache()}
 	 * call to end the cache and save the content into cache.
 	 * A typical usage of fragment caching is as follows,

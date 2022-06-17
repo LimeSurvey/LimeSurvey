@@ -142,7 +142,7 @@ class Authentication extends SurveyCommonAction
             $aData['summary'] = self::getSummary('logout');
             $aData['pluginContent'] = $newLoginForm->getAllContent(); // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
         } else {
-            // The form has been submited, or the plugin has been stoped (so normally, the value of login/password are available)
+            // The form has been submitted, or the plugin has been stoped (so normally, the value of login/password are available)
 
                 // Handle getting the post and populating the identity there
             $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin); // If form has been submitted, $_POST['authMethod'] is set, else  $identity->plugin should be set, ELSE: TODO error
@@ -150,7 +150,7 @@ class Authentication extends SurveyCommonAction
 
             // Call the function afterLoginFormSubmit of the plugin.
             // For Authdb, it calls AuthPluginBase::afterLoginFormSubmit()
-            // which set the plugin's private variables _username and _password with the POST informations if it's a POST request else it does nothing
+            // which set the plugin's private variables _username and _password with the POST information if it's a POST request else it does nothing
             $event = new PluginEvent('afterLoginFormSubmit');
             $event->set('identity', $identity);
             App()->getPluginManager()->dispatchEvent($event, array($authMethod));

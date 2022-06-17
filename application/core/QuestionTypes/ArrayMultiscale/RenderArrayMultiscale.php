@@ -36,7 +36,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $this->useDropdownLayout = true;
             $this->sCoreClass .= " dropdown-array";
             $this->answertypeclass .= " dropdown";
-            $this->doDualScaleFunction = "doDualScaleDropDown"; // javascript funtion to lauch at end of answers
+            $this->doDualScaleFunction = "doDualScaleDropDown"; // javascript function to lauch at end of answers
         } else {
             $this->useDropdownLayout = false;
             $this->sCoreClass .= " radio-array";
@@ -93,7 +93,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
     public function getPositioningAndSizing(&$aData)
     {
-        // Find if we have rigth and center text
+        // Find if we have right and center text
         /* All of this part seem broken actually : we don't send it to view and don't explode it */
         $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=" . $this->oQuestion->qid . " and scale_id=0 AND question like '%|%'";
         $rigthCount  = Yii::app()->db->createCommand($sQuery)->queryScalar();

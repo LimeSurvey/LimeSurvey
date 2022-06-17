@@ -33,6 +33,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog ('Edit default answers')
  * @property string $relevance Questions relevane equation
  * @property string $modulename
+ * @property integer $same_script Whether the same script should be used for all languages
  *
  * @property Survey $survey
  * @property QuestionGroup $groups  //@TODO should be singular
@@ -85,7 +86,7 @@ class Question extends LSActiveRecord
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
     public $gid;
-    /** Set defaut relevance **/
+    /** Set default relevance **/
     public $relevance = '';
 
     /** @var QuestionTheme cached question theme*/
@@ -152,6 +153,7 @@ class Question extends LSActiveRecord
             array('type', 'length', 'min' => 1, 'max' => 1),
             array('preg,relevance', 'safe'),
             array('modulename', 'length', 'max' => 255),
+            array('same_script', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
         // Always enforce unicity on Sub question code (DB issue).
         if ($this->parent_qid) {
@@ -834,7 +836,7 @@ class Question extends LSActiveRecord
 
     /**
      * Get an new title/code for a question
-     * @param integer $index base for question code (exemple : inde of question when survey import)
+     * @param integer $index base for question code (example : inde of question when survey import)
      * @return string|null : new title, null if impossible
      */
     public function getNewTitle($index = 0)

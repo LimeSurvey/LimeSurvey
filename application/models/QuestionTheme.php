@@ -5,7 +5,7 @@ use LimeSurvey\Helpers\questionHelper;
 /**
  * This is the model class for table "{{question_themes}}".
  *
- * The followings are the available columns in table '{{question_themes}}':
+ * The following are the available columns in table '{{question_themes}}':
  *
  * @property integer $id
  * @property string  $name
@@ -909,7 +909,7 @@ class QuestionTheme extends LSActiveRecord
         if (!is_file($sPathToCoreConfigFile)) {
             return $aSuccess = [
                 'message' => sprintf(
-                    gT("Question theme could not be converted to LimeSurvey 4 standard. Reason: No matching core theme with the name %s could be found"),
+                    gT("Question theme could not be converted to the latest LimeSurvey version. Reason: No matching core theme with the name %s could be found"),
                     $sThemeDirectoryName
                 ),
                 'success' => false
@@ -941,7 +941,7 @@ class QuestionTheme extends LSActiveRecord
         $oThemeConfig->saveXML($sQuestionConfigFilePath);
 
         return $aSuccess = [
-            'message' => gT('Question Theme has been sucessfully converted to LimeSurvey 4'),
+            'message' => gT('Question theme has been successfully converted to the latest LimeSurvey version.'),
             'success' => true
         ];
     }

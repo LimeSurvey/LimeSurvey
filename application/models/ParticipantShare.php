@@ -18,7 +18,7 @@ use ls\ajax\AjaxHelper;
 /**
  * This is the model class for table "{{participant_shares}}".
  *
- * The followings are the available columns in table '{{participant_shares}}':
+ * The following are the available columns in table '{{participant_shares}}':
  * @property string $participant_id
  * @property integer $share_uid
  * @property string $date_added

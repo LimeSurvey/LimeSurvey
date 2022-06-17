@@ -1076,7 +1076,7 @@ class Translate extends SurveyCommonAction
 
     public function ajaxtranslategoogleapi()
     {
-        // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin rigth can post
+        // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin right can post
         /* No Permission check on survey, seems unneded (return a josn with current string posted */
         if (Yii::app()->request->isPostRequest) {
             echo self::translateGoogleApi();
