@@ -53,6 +53,8 @@ class DateTimePicker extends CInputWidget
      * - locale: default
      * - minDate: undefined, Prevents the user from selecting a date/time before this value
      * - maxDate: undefined, Prevents the user from selecting a date/time after this value
+     *
+     * Following options are not yet done, because there are not needed right now:
      * - @TODO enabledDates: undefined
      * - @TODO disabledDates: undefined
      * - @TODO enabledHours: undefined
@@ -135,6 +137,7 @@ class DateTimePicker extends CInputWidget
     }
 
     /**
+     * Returns the whole js config which is needed for init of this datepicker
      * @param $id
      * @return string
      */
@@ -269,7 +272,7 @@ class DateTimePicker extends CInputWidget
     }
 
     /**
-     * Exchanges old bootstrap datepicker options which are named different with this Tempus Dominus datepicker.
+     * Exchanges old bootstrap datepicker options which are named differentto the ones used by Tempus Dominus datepicker.
      * If there is nothing found in $tempusConvertOptions array, given $option is returned unchanged.
      * @param string $option
      * @return string
@@ -344,7 +347,7 @@ class DateTimePicker extends CInputWidget
     }
 
     /**
-     * Returns function overrides for correct date format.
+     * Returns function overrides for correct date format using momentjs.
      * @return string
      */
     private function getMomentJsOverrideString()
@@ -421,7 +424,7 @@ class DateTimePicker extends CInputWidget
     }
 
     /**
-     * Regarding the format of the displayed date, it is determined if the calendar component will be shown
+     * Regarding the format of the displayed date, it is determined which calendar components will be shown
      * @return bool
      */
     private function getShowComponent($component)
