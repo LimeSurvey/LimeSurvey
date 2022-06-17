@@ -25,27 +25,22 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     <form action="<?= App()->createUrl('/responses/browse/', ['surveyId' => $surveyid]) ?>" class="pjax" method="POST" id="change-display-mode-form">
                         <div class="form-group">
                             <label for="display-mode">
-                                <?php
-                                eT('Display mode:');
-                                ?>
+                                <?php eT('Display mode:'); ?>
                             </label>
-                            <?php
-                            $state = App()->user->getState('responsesGridSwitchDisplayState') == "" ? 'compact' : App()->user->getState('responsesGridSwitchDisplayState');
-                            $this->widget(
-                                'yiiwheels.widgets.buttongroup.WhButtonGroup',
-                                [
-                                    'name'          => 'displaymode',
-                                    'value'         => $state,
-                                    'selectOptions' => [
-                                        'extended' => gT('Extended'),
-                                        'compact'  => gT('Compact')
-                                    ],
-                                    'htmlOptions'   => [
-                                        'classes' => 'selector__action-change-display-mode'
-                                    ]
+                            <?php $state = App()->user->getState('responsesGridSwitchDisplayState') == ""
+                                ? 'compact'
+                                : App()->user->getState('responsesGridSwitchDisplayState');
+                            $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                'name'          => 'displaymode',
+                                'checkedOption' => $state,
+                                'selectOptions' => [
+                                    'extended' => gT('Extended'),
+                                    'compact'  => gT('Compact')
+                                ],
+                                'htmlOptions'   => [
+                                    'classes' => 'selector__action-change-display-mode'
                                 ]
-                            );
-                            ?>
+                            ]); ?>
                             <input type="hidden" name="surveyid" value="<?= $surveyid ?>"/>
                             <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= Yii::app()->request->csrfToken ?>"/>
                             <input type="submit" class="d-none" name="submit" value="submit"/>
@@ -65,7 +60,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         <!-- Filter is on -->
                         <?php eT("Showing filtered results"); ?>
 
-                        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyid, 'filters' => 'reset']); ?>" role="button">
+                        <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyid, 'filters' => 'reset']); ?>" role="button">
                             <?php eT("View without the filter."); ?>
                             <span aria-hidden="true">&times;</span>
                         </a>
@@ -306,8 +301,10 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT("Close"); ?></button>
-                    <button type="button" class="btn btn-primary" id="save-edittoken"><?php eT("Save"); ?></button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT("Close"); ?></button>
+                    <button role="button" type="button" class="btn btn-primary" id="save-edittoken">
+                        <?php eT("Save"); ?>
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

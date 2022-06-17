@@ -31,7 +31,7 @@
                         </div>
                         <div class='form-group'>
                             <div class='col-md-5 offset-md-4'>
-                                <input name="submit" type="submit" class="submit btn btn-default" value="<?php eT("Next");?>" />
+                                <input name="submit" type="submit" class="submit btn btn-outline-secondary" value="<?php eT("Next");?>" />
                             </div>
                         </div>
                         <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />

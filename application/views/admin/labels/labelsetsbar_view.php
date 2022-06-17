@@ -30,7 +30,7 @@ App()->getClientScript()->registerScriptFile(
                 <?php if (isset($labelbar['buttons']['view'])) : ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets', 'create') || Permission::model()->hasGlobalPermission('labelsets', 'import')) : ?>
                         <!-- Create or Import -->
-                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset"); ?>" role="button">
+                    <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset"); ?>" role="button">
                             <span class="icon-add text-success"></span>
                             <?php eT("Create or import new label set(s)"); ?>
                         </a>
@@ -45,7 +45,7 @@ App()->getClientScript()->registerScriptFile(
                     <?php if (isset($labelbar['buttons']['edit'])) : ?>
                         <!-- Edit label set -->
                         <?php if (Permission::model()->hasGlobalPermission('labelsets', 'update')) : ?>
-                            <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/" . $lid); ?>" role="button">
+                        <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/" . $lid); ?>" role="button">
                                 <span class="fa fa-pencil  text-success"></span>
                                 <?php eT("Edit label set"); ?>
                             </a>
@@ -54,7 +54,7 @@ App()->getClientScript()->registerScriptFile(
 
                         <!-- Export this label set -->
                         <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>
-                            <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid"); ?>"
+                        <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid"); ?>"
                                role="button">
                                 <span class="icon-export text-success"></span>
                                 <?php eT("Export this label set"); ?>
@@ -66,7 +66,7 @@ App()->getClientScript()->registerScriptFile(
                     <!-- Delete label set -->
                     <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true) : ?>
                         <?php if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) : ?>
-                            <button class="btn btn-default"
+                        <button class="btn btn-outline-secondary"
                                 data-bs-toggle="modal"
                                     data-title="<?= gt('Delete label set') ?>"
                                 data-bs-target="#confirmation-modal"
@@ -89,7 +89,7 @@ App()->getClientScript()->registerScriptFile(
                 <!-- Export Multiple -->
                 <?php if (count($labelsets) > 0) : ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>
-                        <a class="btn btn-default"
+                    <a class="btn btn-outline-secondary"
                            id="exportButton"
                            href="<?php echo $this->createUrl("admin/labels/sa/exportmulti"); ?>"
                            role="button">
@@ -100,7 +100,7 @@ App()->getClientScript()->registerScriptFile(
                 <?php else : ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>
                     <span title="<?php eT("No label sets available"); ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" style="display: inline-block">
-                            <a class="btn btn-default disabled" role="button">
+                            <a class="btn btn-outline-secondary disabled" role="button">
                                 <span class="icon-export text-success"></span>
                                 <?php eT("Export multiple label sets"); ?>
                             </a>
@@ -110,7 +110,7 @@ App()->getClientScript()->registerScriptFile(
 
                 <!-- return to admin panel -->
                 <?php if (isset($labelbar['buttons']['return'])) : ?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
+                <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
                         <span class="fa fa-backward"></span>
                         &nbsp;&nbsp;
                         <?php eT('Back'); ?>
@@ -127,7 +127,7 @@ App()->getClientScript()->registerScriptFile(
 
                 <!-- White Close button -->
                 <?php if (isset($labelbar['white_closebutton']['url'])) : ?>
-                    <a class="btn btn-default" href="<?php echo $labelbar['white_closebutton']['url']; ?>" role="button">
+                <a class="btn btn-outline-secondary" href="<?php echo $labelbar['white_closebutton']['url']; ?>" role="button">
                         <span class="fa fa-close"></span>
                         <?php eT("Close"); ?>
                     </a>
@@ -135,10 +135,15 @@ App()->getClientScript()->registerScriptFile(
 
                 <!-- Save and Close -->
                 <?php if (isset($labelbar['saveandclosebutton']['form'])) : ?>
-                    <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $labelbar['saveandclosebutton']['form']; ?>">
+                <a class="btn btn-outline-secondary" 
+                   href="#" 
+                   type="button" 
+                   id="save-and-close-form-button" 
+                   onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" 
+                   data-form-id="<?php echo $labelbar['saveandclosebutton']['form']; ?>">
                         <span class="fa fa-saved"></span>
                         <?php eT("Save and close"); ?>
-                    </a>
+                </a>
                 <?php endif; ?>
 
                 <?php if (isset($labelbar['buttons']['edition'])) : ?>

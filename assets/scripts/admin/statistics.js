@@ -389,21 +389,29 @@ LS.Statistics2 = function () {
     $('#usegraph').click(function () {
         if ($('#grapherror').length > 0) {
             $('#grapherror').show();
-            $('#usegraph').prop('checked', false);
+            $('#usegraph_2').prop('checked', true);
         }
     });
 
     /***
      * Select all questions
      */
-    $("[name='viewsummaryall']").on('change', function (event) {
-        if (this.value == '1') {
-            $('#filterchoices input[type=checkbox]').prop('checked', true);
-        } else {
-            $('#filterchoices input[type=checkbox]').prop('checked', false);
-
-        }
-    });
+    let viewsummaryallbuttons = document.querySelectorAll('input[name="viewsummaryall"]');
+    for (let viewsummaryallbutton of viewsummaryallbuttons) {
+        viewsummaryallbutton.addEventListener("change", () => {
+            if (viewsummaryallbutton.value === '1') {
+                let filterchoices = document.querySelectorAll('#filterchoices input[type=checkbox]');
+                filterchoices.forEach((filterchoice) => {
+                    filterchoice.checked = true;
+                });
+            } else {
+                let filterchoices = document.querySelectorAll('#filterchoices input[type=checkbox]');
+                filterchoices.forEach((filterchoice) => {
+                    filterchoice.checked = false;
+                });
+            }
+        });
+    }
 
     /* Show and hide the three major sections of the statistics page */
     /* The response filters */
@@ -631,7 +639,7 @@ function selectCheckboxes(Div, CheckBoxName, Button) {
 }
 
 function nographs() {
-    document.getElementById('usegraph').checked = false;
+    document.getElementById('usegraph_2').checked = false;
 }
 
 function gMapInit(id, data) {

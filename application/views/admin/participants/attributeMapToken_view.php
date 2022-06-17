@@ -95,9 +95,9 @@
         </div>
     </div>
     <div class='form-group col-12 text-center'>
-        <input class='btn btn-default' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
-        <input class='btn btn-default' type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
-        <input class='btn btn-default' type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />
+        <input class='btn btn-outline-secondary' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
+        <input class='btn btn-outline-secondary' type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
+        <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />
    </div>
 
     <?php
@@ -121,7 +121,7 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT("Close");?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT("Close");?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

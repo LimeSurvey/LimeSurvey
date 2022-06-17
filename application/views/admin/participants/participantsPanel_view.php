@@ -66,7 +66,9 @@ App()->getClientScript()->registerScriptFile(
             <div class="col-lg-9">
                 <?php if (Permission::model()->hasGlobalPermission('participantpanel', 'read')) : ?>
                     <!-- Display participants -->
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
+                <a class="btn btn-outline-secondary" 
+                   href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" 
+                   role="button">
                         <span class="fa fa-list text-success"></span>
                         <?php eT("Display CPDB participants"); ?>
                     </a>
@@ -75,14 +77,18 @@ App()->getClientScript()->registerScriptFile(
                     || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
                 ) : ?>
                     <!-- Display my participants -->
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
+                <a class="btn btn-outline-secondary" 
+                   href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" 
+                   role="button">
                         <span class="fa fa-list text-success"></span>
                         <?php eT("Display my CPDB participants"); ?>
                     </a>
                 <?php endif; ?>
 
                 <!-- Summary -->
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
+            <a class="btn btn-outline-secondary" 
+               href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" 
+               role="button">
                     <span class="fa fa-list-alt text-success"></span>
                     <?php eT("Summary"); ?>
                 </a>
@@ -90,7 +96,9 @@ App()->getClientScript()->registerScriptFile(
                 <!-- Import from CSV file -->
                 <?php
                 if (Permission::model()->hasGlobalPermission('participantpanel', 'import')) : ?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/importCSV"); ?>" role="button">
+                <a class="btn btn-outline-secondary" 
+                   href="<?php echo $this->createUrl("admin/participants/sa/importCSV"); ?>" 
+                   role="button">
                         <span class="icon-importcsv text-success"></span>
                         <?php eT("Import"); ?>
                     </a>
@@ -98,13 +106,17 @@ App()->getClientScript()->registerScriptFile(
 
                 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
                     <!-- Global participant settings -->
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" role="button">
+                <a class="btn btn-outline-secondary" 
+                   href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" 
+                   role="button">
                         <span class="icon-global text-success"></span>
                         <?php eT("Blacklist settings"); ?>
                     </a>
 
                     <!-- Attribute management -->
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" role="button">
+                <a class="btn btn-outline-secondary" 
+                   href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" 
+                   role="button">
                         <span class="fa fa-tag text-success"></span>
                         <?php eT("Attributes"); ?>
                     </a>
@@ -112,7 +124,9 @@ App()->getClientScript()->registerScriptFile(
                 <?php endif; ?>
 
                 <!-- Share panel -->
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/sharePanel"); ?>" role="button">
+            <a class="btn btn-outline-secondary" 
+               href="<?php echo $this->createUrl("admin/participants/sa/sharePanel"); ?>" 
+               role="button">
                     <span class="fa fa-share text-success"></span>
                     <?php eT("Share panel"); ?>
                 </a>
@@ -120,7 +134,10 @@ App()->getClientScript()->registerScriptFile(
                 <!-- Export to CSV file -->
                 <?php
                 if (Permission::model()->hasGlobalPermission('participantpanel', 'export')) : ?>
-                    <a id="export" class="btn btn-default" href="#" role="button">
+                <a id="export" 
+                   class="btn btn-outline-secondary" 
+                   href="#" 
+                   role="button">
                         <span class="icon-exportcsv text-success"></span>
                         <?php eT("Export all participants"); ?>
                     </a>
@@ -129,7 +146,8 @@ App()->getClientScript()->registerScriptFile(
 
                 <!-- Add Participants -->
                 <?php if (isset($ownsAddParticipantsButton) && ($ownsAddParticipantsButton)) : ?>
-                    <button class="btn btn-default" id="addParticipantToCPP">
+                <button class="btn btn-outline-secondary" 
+                        id="addParticipantToCPP">
                         <i class="fa fa-plus-circle text-success"></i>&nbsp;
                         <?php eT("Add participant"); ?>
                     </button>
@@ -140,7 +158,8 @@ App()->getClientScript()->registerScriptFile(
 
                 <!-- Add Attribute -->
                 <?php if (isset($ownsAddAttributeButton) && ($ownsAddAttributeButton)) : ?>
-                    <button class="btn btn-default" id="addParticipantAttributeName">
+                <button class="btn btn-outline-secondary" 
+                        id="addParticipantAttributeName">
                         <i class="fa fa-plus-circle text-success"></i>
                         &nbsp;
                         <?php eT("Add new attribute"); ?>
@@ -148,7 +167,9 @@ App()->getClientScript()->registerScriptFile(
                 <?php endif; ?>
 
                 <!-- Back -->
-                <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
+            <a class="btn btn-outline-secondary" 
+               href="<?php echo $this->createUrl('admin/index'); ?>" 
+               role="button">
                     <span class="fa fa-backward"></span>
                     &nbsp;
                     <?php eT('Back'); ?>

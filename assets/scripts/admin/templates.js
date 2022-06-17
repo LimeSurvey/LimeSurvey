@@ -44,19 +44,19 @@ function createToolbar(element, editor)
     element.css('padding', '5px');
     element.css('text-align', 'center');
 
-    $('<button/>').text(surveyThemeEditorLanguageData.undo).attr('type', 'button').addClass('btn btn-default').appendTo(element).on('click', function()
+    $('<button/>').text(surveyThemeEditorLanguageData.undo).attr('type', 'button').addClass('btn btn-outline-secondary').appendTo(element).on('click', function()
     {
         editor.commands.exec('undo', editor);
     });
-    $('<button/>').text(surveyThemeEditorLanguageData.redo).attr('type', 'button').addClass('btn btn-default').appendTo(element).on('click', function()
+    $('<button/>').text(surveyThemeEditorLanguageData.redo).attr('type', 'button').addClass('btn btn-outline-secondary').appendTo(element).on('click', function()
     {
         editor.commands.exec('redo', editor);
     });
-    $('<button/>').text(surveyThemeEditorLanguageData.find).attr('type', 'button').addClass('btn btn-default').appendTo(element).on('click', function()
+    $('<button/>').text(surveyThemeEditorLanguageData.find).attr('type', 'button').addClass('btn btn-outline-secondary').appendTo(element).on('click', function()
     {
         editor.commands.exec('find', editor);
     });
-    $('<button/>').text(surveyThemeEditorLanguageData.replace).attr('type', 'button').addClass('btn btn-default').appendTo(element).on('click', function()
+    $('<button/>').text(surveyThemeEditorLanguageData.replace).attr('type', 'button').addClass('btn btn-outline-secondary').appendTo(element).on('click', function()
     {
         editor.commands.exec('replace', editor);
     });

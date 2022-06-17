@@ -271,7 +271,7 @@ export default {
                     id="adminsidepanel__sidebar--selectorCreateQuestion" 
                     v-if="createQuestionAllowed" 
                     :href="createFullQuestionLink()" 
-                    class="btn btn-small btn-default ls-space margin right-10 pjax"
+                    class="btn btn-small btn-outline-secondary ls-space margin right-10 pjax"
                 >
                     <i class="fa fa-plus-circle"></i>&nbsp;
                     {{"createQuestion"|translate}}
@@ -279,14 +279,14 @@ export default {
             </div>
             <div class="scoped-toolbuttons-right">
                 <button
-                    class="btn btn-default"
+                    class="btn btn-outline-secondary"
                     @click="toggleOrganizer"
                     :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
                 >
                     <i :class="allowOrganizer ? 'fa fa-unlock' : 'fa fa-lock'" />
                 </button>
                 <button
-                    class="btn btn-default"
+                    class="btn btn-outline-secondary"
                     @click="collapseAll"
                     :title="translate('collapseAll')"
                 >

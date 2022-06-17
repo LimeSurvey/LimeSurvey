@@ -30,7 +30,7 @@
         <?php echo CHtml::form(["responses/browse/", 'surveyId' => $surveyid], 'post') . "\n"; ?>
         <p>
             <?php Yii::app()->user->setState('sql_' . $surveyid, $sql); ?>
-            <input type='submit' class='btn btn-default hidden-print' value='<?php eT("Browse"); ?>'/>
+            <input type='submit' class='btn btn-outline-secondary hidden-print' value='<?php eT("Browse"); ?>'/>
             <input type='hidden' name='subaction' value='all'/>
         </p>
         <?php echo CHtml::endForm() ?>

@@ -26,9 +26,13 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                         <?=($force2FA == true ? gT("Please activate it now.") : gT("Do you want to activate it now?"))?> 
                     </h2>
                     <p>
-                        <a class="btn btn-default TFA--actionopenmodal TFA--excludefromlock" data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey")?>" data-bs-toggle="modal" id="TFA--register2fa"><?=gt("Activate 2FA now");?> </a>
-                    <?php if ($force2FA == true) { ?> 
-                        <a class="btn btn-danger TFA--excludefromlock" href="<?=App()->createUrl("admin")?>" id="TFA--excludeNotNow"><?=gT("Not now");?> </a>
+                        <a role="button" class="btn btn-outline-secondary TFA--actionopenmodal TFA--excludefromlock" data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey")?>" data-bs-toggle="modal" id="TFA--register2fa">
+                            <?=gt("Activate 2FA now");?>
+                        </a>
+                    <?php if ($force2FA == true) { ?>
+                        <a role="button" class="btn btn-danger TFA--excludefromlock" href="<?=App()->createUrl("admin")?>" id="TFA--excludeNotNow">
+                            <?=gT("Not now");?>
+                        </a>
                     <?php } ?>
                     </p>
                 </div>
@@ -39,7 +43,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                 <p><?=gT("Do you want to remove/renew it?");?></p>
                 <p>
                     <a 
-                        class="btn btn-default TFA--actionconfirm" 
+                        class="btn btn-outline-secondary TFA--actionconfirm" 
                         data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey")?>" 
                         id="TFA--unset2fa"
                         data-confirmtext="<?=gT('Are you sure you want to disable two-factor authentication (2FA) for your account?')?>"
@@ -48,7 +52,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                         data-errortext="<?=gT('An error has occurred, and the key could not be deleted.')?>"
                     ><?=gT("Remove 2FA")?></a>
                     <a 
-                        class="btn btn-default TFA--actionopenmodal" 
+                        class="btn btn-outline-secondary TFA--actionopenmodal" 
                         data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey", ['uid' => $oTFAModel->uid])?>" 
                         data-bs-toggle="modal" id="TFA--reset2fa"
                     ><?=gT("Renew 2FA")?></a>

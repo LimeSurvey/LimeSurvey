@@ -36,8 +36,12 @@
             {{ aSurveyInfo.datasecurity_notice }}
         </div>
         <div class="ls-no-js-hidden panel-footer">
-            <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true).trigger('change');" data-bs-dismiss="modal">{{gT("Accept")}}</button>
-            <button type="button" class="btn btn-default" onclick="$('#data-security-modal-{{aSurveyInfo.sid}}').collapse('hide');">{{gT("Close")}}</button>
+            <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true).trigger('change');" data-bs-dismiss="modal">
+                {{gT("Accept")}}
+            </button>
+            <button type="button" class="btn btn-cancel" onclick="$('#data-security-modal-{{aSurveyInfo.sid}}').collapse('hide');">
+                {{gT("Close")}}
+            </button>
         </div>
     </div>
 </div>

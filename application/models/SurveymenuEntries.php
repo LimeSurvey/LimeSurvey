@@ -309,7 +309,7 @@ class SurveymenuEntries extends LSActiveRecord
     {
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 

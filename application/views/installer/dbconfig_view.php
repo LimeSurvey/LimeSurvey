@@ -98,12 +98,12 @@ function checkDbEngine(){
 
         <div class="row">
             <div class="col-lg-4" >
-                <input id="ls-previous" class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+                <input id="ls-previous" class="btn btn-outline-secondary" type="button" value="<?php eT("Previous"); ?>" onclick="window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
             <div class="col-lg-4" style="text-align: center;">
             </div>
             <div class="col-lg-4" style="text-align: right;">
-                <?php echo CHtml::submitButton(gT("Next", "unescaped"), array("class" => "btn btn-default", "id" => "ls-next")); ?>
+                <?php echo CHtml::submitButton(gT("Next", "unescaped"), array("class" => "btn btn-outline-secondary", "id" => "ls-next")); ?>
             </div>
         </div>
         <?php echo CHtml::endForm(); ?>

@@ -21,7 +21,9 @@
         <strong><?php echo sprintf(gT("File backup created: %s"),''); ?></strong>
         <br/>
         <?php echo $tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'; ?><br/>
-        <a class="btn btn-success" href="<?php echo Yii::app()->getBaseUrl(true);?>/tmp/LimeSurvey_files_backup_<?php echo $basefilename;?>.zip" title="<?php eT('Download this file');?>"><?php eT('Download this file');?></a>
+        <a class="btn btn-success" href="<?php echo Yii::app()->getBaseUrl(true);?>/tmp/LimeSurvey_files_backup_<?php echo $basefilename;?>.zip" title="<?php eT('Download this file');?>">
+            <?php eT('Download this file');?>
+        </a>
     </p>
 
 
@@ -73,11 +75,11 @@
         <?php echo CHtml::hiddenField('datasupdateinfo' , $datasupdateinfo);?>
         <?php  echo CHtml::hiddenField('access_token' , $access_token); ?>
 
-        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+        <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
             <?php eT("Cancel"); ?>
         </a>
 
-        <?php echo CHtml::submitButton(gT('Continue','unescaped'), array("class"=>"btn btn-default")); ?>
+        <?php echo CHtml::submitButton(gT('Continue','unescaped'), array("class"=>"btn btn-outline-secondary")); ?>
     <?php echo CHtml::endForm(); ?>
 </div>
 

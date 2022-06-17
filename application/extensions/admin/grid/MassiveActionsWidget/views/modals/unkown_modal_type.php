@@ -11,7 +11,11 @@
                 UNKNOW MODAL VIEW TYPE IN MASSSIVE ACTIONS WIDGET !
             </div>
             <div class="modal-footer modal-footer-buttons">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <span class='fa fa-ban'></span>
+                    &nbsp;
+                    <?php eT("Close"); ?>
+                </button>
             </div>
         </div>
     </div>

@@ -63,24 +63,16 @@ Yii::app()->getController()->renderPartial(
         </div>
         <div class='form-group'>
             <label class='form-label '><?php eT("Blacklist user:"); ?></label>
-            <div class=''>
-                &nbsp;
-                <?php $this->widget(
-                'yiiwheels.widgets.switch.WhSwitch',
-                array(
-                    'attribute' => 'blacklisted',
-                    'model' => $model,
-                    'htmlOptions'=>array(
-                        'class'=>'bootstrap-switch',
-                        'value' => 'Y'
-                    ),
-                    'onLabel'=>gT('Yes'),
-                    'offLabel'=>gT('No'),
-                    'onColor'=> 'primary',
-                    'offColor'=> 'warning'
-                )
-            );
-            ?>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'model'         => $model,
+                    'attribute'     => 'blacklisted',
+                    'checkedOption' => $model->blacklisted ?? 'N',
+                    'selectOptions' => [
+                        'Y' => gT('Yes'),
+                        'N' => gT('No'),
+                    ]
+                ]); ?>
             </div>
         </div>
 
@@ -139,7 +131,9 @@ Yii::app()->getController()->renderPartial(
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
-    <button type="button" class="btn btn-primary action_save_modal_editParticipant"><?php echo $buttonTitle; ?></button>
+    <button role="button" type="button" class="btn btn-primary action_save_modal_editParticipant">
+        <?php echo $buttonTitle; ?>
+    </button>
 </div>
 <script>
 $('#editPartcipantActiveForm .bootstrap-switch').bootstrapSwitch();

@@ -73,7 +73,7 @@
 
                     <!-- Upload button -->
                     <input type='hidden' name='subaction' value='uploadldap' />
-                    <p><input type='submit' class="btn btn-default" name='submit' value='<?php eT('Upload');?>' /></p>
+                    <p><input type='submit' class="btn btn-outline-secondary" name='submit' value='<?php eT('Upload');?>' /></p>
                 </form>
             <?php endif; ?>
 

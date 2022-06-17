@@ -68,18 +68,18 @@ $codeids = '';
                                 <?php if (Permission::model()->hasGlobalPermission('labelsets', 'update')) : ?>
                                     <a
                                         href='#'
-                                        class="btn btn-default btn-sm htmleditor--openmodal"
+                                        class=" btn btn-outline-secondary btn-sm htmleditor--openmodal"
                                         data-target-field-id="title_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>"
                                         data-bs-toggle="tooltip"
                                         title="Open editor">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                     <?php if ($first) : ?>
-                                        <button class="btn btn-default btn-sm btnaddanswer" data-bs-toggle="tooltip"
+                                        <button class="btn btn-outline-secondary btn-sm btnaddanswer" data-bs-toggle="tooltip"
                                                 title="<?php eT("Add label"); ?>">
                                             <i class="icon-add text-success"></i>
                                         </button> <?php // eT("Insert a new label after this one") ?>
-                                        <button class="btn btn-default btn-sm btndelanswer" data-bs-toggle="tooltip"
+                                        <button class="btn btn-outline-secondary btn-sm btndelanswer" data-bs-toggle="tooltip"
                                                 title="<?php eT("Delete label"); ?>">
                                             <i class="fa fa-minus-circle text-danger "></i>
                                         </button> <?php //eT("Delete this label") ?>
@@ -97,7 +97,7 @@ $codeids = '';
             <div class="action-buttons text-end">
                 <?php $i++;
                 if (Permission::model()->hasGlobalPermission('labelsets', 'update')): ?>
-                    <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-default " data-bs-toggle="modal"
+                    <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-outline-secondary " data-bs-toggle="modal"
                             data-bs-target="#quickadd">
                         <?php eT('Quick add labels') ?>
                     </button>

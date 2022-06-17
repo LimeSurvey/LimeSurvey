@@ -153,7 +153,7 @@
     <!-- Icons add/edit/delete -->
     <td style="vertical-align: middle; white-space: nowrap;" class="subquestion-actions">
         {% if activated != 'Y' and first %}
-            <button class="btn btn-default btn-sm btnaddsubquestion">
+            <button class="btn btn-outline-secondary btn-sm btnaddsubquestion">
                 <i
                     class="icon-add text-success"
                     data-code="{{ subquestion.title|escape('html_attr') }}"
@@ -163,7 +163,7 @@
                     title="{{ gT("Insert a new subquestion after this one") }}"
                 ></i>
             </button>
-            <button class="btn btn-default btn-sm btndelsubquestion">
+            <button class="btn btn-outline-secondary btn-sm btndelsubquestion">
                 <i
                     class="fa fa-minus-circle text-danger"
                     data-bs-toggle="tooltip"

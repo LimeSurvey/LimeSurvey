@@ -59,7 +59,7 @@ echo viewHelper::getViewTestTag('login');
                 <div class="row login-submit login-content">
                     <div class="col-12">
                         <p>
-                            <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Save');?></button><br />
+                            <button type="submit" class="btn btn-outline-secondary" name='login_submit' value='login'><?php eT('Save');?></button><br />
                         </p>
                     </div>
 

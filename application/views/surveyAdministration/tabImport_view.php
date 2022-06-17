@@ -31,27 +31,21 @@
 
             <!-- Convert resource links and INSERTANS fields? -->
             <div class='mb-3 form-check'>
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                    'name' => 'translinksfields',
-                    'value'=> "1",
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
-                    ));
-                ?>
+                <input id="yttranslinksfields" name="translinksfields" type="hidden" value="0" >
+                <input id="translinksfields" name="translinksfields" type="checkbox" value="1" checked>
                 <label class='form-label ' for='translinksfields'><?php  eT("Convert resource links and expression fields?"); ?> </label>
             </div>
 
             <!-- Submit -->
             <div class='form-group col-4 text-center'>
                 <div class=''>
-                    <input
-                        type='submit'
-                        id="import-submit"
-                        class="btn btn-primary col-6"
-                        value='<?php  eT("Import survey"); ?>'
-                        disabled="disabled"
-                        data-bs-toggle="tooltip"
-                        data-title="<?= gT('Please choose a file'); ?>"
+                    <input type='submit'
+                           id="import-submit"
+                           class="btn btn-primary col-6"
+                           value='<?php eT("Import survey"); ?>'
+                           disabled="disabled"
+                           data-toggle="tooltip"
+                           data-title="<?= gT('Please choose a file'); ?>"
                     />
                 </div>
             </div>
@@ -75,7 +69,7 @@
                     <p><?php eT("Please select a file to import!"); ?></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT("Close");?></button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT("Close");?></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

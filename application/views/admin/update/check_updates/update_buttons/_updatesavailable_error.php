@@ -83,6 +83,6 @@
             </p>
         <?php endif;?>
         <p>
-            <a class="btn btn-lg btn-default" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
+            <a class="btn btn-lg btn-outline-secondary" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
         </p>
 </div>

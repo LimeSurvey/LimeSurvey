@@ -38,14 +38,23 @@
                     <?php eT('Display survey participant table after addition?'); ?>
                 </label>
                 <div class='col-md-8'>
-                    <input name='redirect' type='checkbox' data-size='small' data-on-color='primary' data-off-color='warning' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='ls-bootstrap-switch' />
+                    <?php App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => "redirect",
+                        'checkedOption' => "0",
+                        'selectOptions' => [
+                            '1' => gT('Yes'),
+                            '0' => gT('No'),
+                        ]
+                    ]); ?>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
-        <input type="submit" class="btn btn-primary action_save_modal_shareparticipant" value='<?php eT('Add')?>' />
+        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
+        <button role="button" type="submit" class="btn btn-primary action_save_modal_shareparticipant">
+            <?php eT('Add')?>
+        </button>
     </div>
 <?php $this->endWidget('CActiveForm'); ?>

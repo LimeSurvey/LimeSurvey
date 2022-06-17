@@ -341,10 +341,10 @@ function createNewLabelTR(alternate, first) {
     x = x + "<td><input class=' form-control  ' name=\"title_###lang###_###next###\" id=\"title_###lang###_###next###\" type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
     "</td>";
 
-    x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;&nbsp;<a href='#' class='btn btn-default btn-sm htmleditor--openmodal' data-target-field-id='title_###lang###_###next###' data-bs-toggle='tooltip' title='Open editor'><i class='fa fa-edit'></i></a>";
+    x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;&nbsp;<a href='#' class='btn btn-outline-secondary btn-sm htmleditor--openmodal' data-bs-target-field-id='title_###lang###_###next###' data-bs-toggle='tooltip' title='Open editor'><i class='fa fa-edit'></i></a>";
 
     if (first) {
-        x = x + "&nbsp<button class='btn btn-default btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-default btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button>";
+        x = x + "&nbsp<button class='btn btn-outline-secondary btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-outline-secondary btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button>";
     }
 
     x = x + "</td></tr>";

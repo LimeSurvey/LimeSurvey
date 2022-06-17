@@ -108,8 +108,18 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?= gT('Cancel') ?></button>
-                    <button type="button" class="btn btn-danger" id="confirm-deletion"><?= gT('Delete') ?></button>
+                    <button
+                    	type="button" 
+                    	class="btn btn-cancel" 
+                    	data-bs-dismiss="modal">
+                    	<?= gT('Cancel') ?>
+                    </button>
+                    <button 
+                    	type="button" 
+                    	class="btn btn-danger" 
+                    	id="confirm-deletion">
+                    	<?= gT('Delete') ?>
+                    	</button>
                 </div>
             </div>
         </div>

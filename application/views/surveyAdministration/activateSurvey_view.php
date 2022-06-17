@@ -38,8 +38,8 @@
                 </p>
 
                 <p>
-                    <button class="btn btn-default" id="ajaxAllConsistency"><?=gT("Resolve all issues")?></button>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$surveyid"); ?>" role="button">
+                    <button class="btn btn-outline-secondary" id="ajaxAllConsistency"><?=gT("Resolve all issues")?></button>
+                    <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$surveyid"); ?>" role="button">
                         <?php eT("Return to survey"); ?>
                     </a>
                 </p>
@@ -271,8 +271,8 @@
                 <div class='col-md-6 offset-md-4'>
                     <input type='hidden' name='ok' value='Y' />
                     <input id="activateSurvey__basicSettings--proceed" type='submit' class="btn btn-success btn-lg " value="<?php eT("Save & activate survey"); ?>" />
-                    <a class="btn btn-default btn-lg" href="<?php echo $this->createUrl("surveyAdministration/view/", ['surveyid'=> $surveyid]); ?>" role="button">
-                    <?php eT("Cancel"); ?>
+                    <a class="btn btn-cancel btn-lg" href="<?php echo $this->createUrl("surveyAdministration/view/", ['surveyid'=> $surveyid]); ?>">
+                        <?php eT("Cancel"); ?>
                     </a>
                 </div>
             </div>

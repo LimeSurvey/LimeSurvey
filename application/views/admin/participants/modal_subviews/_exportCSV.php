@@ -29,7 +29,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
-                <button type="button" class="btn btn-success exportButton"><?php eT('Export'); ?></button>
+                <button type="button" class="btn btn-success exportButton">
+                    <?php eT('Export'); ?>
+                </button>
             </div>
         </div>
     </div>
@@ -58,7 +60,7 @@
                 <?php eT("There are no participants to be exported."); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Close'); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT('Close'); ?></button>
             </div>
         </div>
     </div>

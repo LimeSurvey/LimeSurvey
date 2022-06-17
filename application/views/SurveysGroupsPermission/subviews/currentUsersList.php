@@ -18,7 +18,7 @@
                     <td>
                         <div class="icon-btn-row">
                             <?php if ($model->hasPermission('permission', 'update')) : ?>
-                                <a href="<?= $this->createUrl("surveysGroupsPermission/viewUser", ['id' => $model->gsid, 'to' => $oUser->uid]); ?>" class="btn btn-default btn-sm" role="button">
+                                <a href="<?= $this->createUrl("surveysGroupsPermission/viewUser", ['id' => $model->gsid, 'to' => $oUser->uid]); ?>" class="btn btn-outline-secondary btn-sm" role="button">
                             <span class="fa fa-pencil text-success" aria-hidden="true" title="<?= gT("Edit permissions") ?>"><span>
                             <span class="sr-only"><?= gT("Edit permissions") ?></span>
                                 </a>
@@ -32,7 +32,7 @@
                                     ]
                                 ); ?>
                                 <?php /* @see https://bugs.limesurvey.org/view.php?id=16792 */ ?>
-                                <a class="btn btn-default btn-sm" role="button"
+                                <a class="btn btn-outline-secondary btn-sm" role="button"
                                    data-bs-target='#confirmation-modal' data-bs-toggle='modal'
                                    data-message='<?= gT("Are you sure you want to remove all permissions for this user?") ?>'
                                    data-post-url='<?= $deleteUrl ?>'

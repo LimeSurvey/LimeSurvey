@@ -33,7 +33,7 @@
 
                 <!-- Submit -->
                 <div class="text-center">
-                    <input type='submit' class='btn btn-primary col-4' value='<?php  eT("Copy survey"); ?>' />
+                    <input type='submit' class='btn btn-primary col-4' value='<?php eT("Copy survey"); ?>' />
                     <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
                     <input type='hidden' name='action' value='copysurvey' />
                 </div>
@@ -42,84 +42,49 @@
             <div class="col">
                 <!-- Convert resource links -->
                 <div class="form-check">
-                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'copysurveytranslinksfields',
-                        'value'=> "1",
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
-                        ));
-                    ?>
+                    <input id="ytcopysurveytranslinksfields" name="copysurveytranslinksfields" type="hidden" value="0" >
+                    <input id="copysurveytranslinksfields" name="copysurveytranslinksfields" type="checkbox" value="1" checked>
                     <label class=" form-label" for='copysurveytranslinksfields'><?php echo  eT("Copy survey resource files and adapt links"); ?> </label>
                 </div>
 
                 <!-- Exclude quotas -->
                 <div class="form-check">
-                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'copysurveyexcludequotas',
-                        'value'=> "0",
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
-                        ));
-                    ?>
+                    <input id="ytcopysurveyexcludequotas" name="copysurveyexcludequotas" type="hidden" value="0" checked>
+                    <input id="copysurveyexcludequotas" name="copysurveyexcludequotas" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyexcludequotas'><?php echo  eT("Exclude quotas"); ?> </label>
                 </div>
 
                 <!-- Exclude survey permissions -->
                 <div class="form-check">
-                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'copysurveyexcludepermissions',
-                        'value'=> "0",
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
-                        ));
-                    ?>
+                    <input id="ytcopysurveyexcludepermissions" name="copysurveyexcludepermissions" type="hidden" value="0" checked>
+                    <input id="copysurveyexcludepermissions" name="copysurveyexcludepermissions" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyexcludepermissions'><?php echo  eT("Exclude survey permissions"); ?> </label>
                 </div>
 
                 <!-- Exclude answers -->
                 <div class="form-check">
-                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'copysurveyexcludeanswers',
-                        'value'=> "0",
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
-                        ));
-                    ?>
+                    <input id="ytcopysurveyexcludeanswers" name="copysurveyexcludeanswers" type="hidden" value="0" checked>
+                    <input id="copysurveyexcludeanswers" name="copysurveyexcludeanswers" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyexcludeanswers'><?php echo  eT("Exclude answers"); ?> </label>
                 </div>
 
                 <!-- Reset conditions/relevance -->
                 <div class="form-check">
-                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'copysurveyresetconditions',
-                        'value'=> "0",
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
-                        ));
-                    ?>
+                    <input id="ytcopysurveyresetconditions" name="copysurveyresetconditions" type="hidden" value="0" checked>
+                    <input id="copysurveyresetconditions" name="copysurveyresetconditions" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyresetconditions'><?php echo  eT("Reset conditions"); ?> </label>
                 </div>
 
                 <!-- Reset start/end date/time -->
                 <div class="form-check">
-                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'copysurveyresetstartenddate',
-                        'value'=> "0",
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
-                        ));
-                    ?>
+                    <input id="ytcopysurveyresetstartenddate" name="copysurveyresetstartenddate" type="hidden" value="0" checked>
+                    <input id="copysurveyresetstartenddate" name="copysurveyresetstartenddate" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyresetstartenddate'><?php echo  eT("Reset start/end date/time"); ?> </label>
                 </div>
 
                 <div class="form-check">
-                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'copysurveyresetresponsestartid',
-                        'value'=> "0",
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
-                        ));
-                    ?>
+                    <input id="ytcopysurveyresetresponsestartid" name="copysurveyresetresponsestartid" type="hidden" value="0" checked>
+                    <input id="copysurveyresetresponsestartid" name="copysurveyresetresponsestartid" type="checkbox" value="1">
                     <label class=" form-label" for='copysurveyresetresponsestartid'><?php echo  eT("Reset response start ID"); ?> </label>
                 </div>
             </div>

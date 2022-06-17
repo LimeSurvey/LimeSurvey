@@ -19,8 +19,8 @@
                 <?php App()->getController()->renderPartial(
                     '/admin/survey/surveybar_addgroupquestion', //todo this view must be moved to correct position
                     [
-                        'surveybar'      => $surveybar,
-                        'oSurvey'        => $oSurvey,
+                        'surveybar' => $surveybar,
+                        'oSurvey' => $oSurvey,
                         'surveyHasGroup' => isset($oSurvey->groups) ? $oSurvey->groups : false
                     ]
                 ); ?>

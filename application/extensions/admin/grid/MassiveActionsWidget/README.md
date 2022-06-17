@@ -23,7 +23,7 @@
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
@@ -60,7 +60,7 @@ The array of actions and modals can accept different types of items :
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
@@ -108,7 +108,7 @@ array(
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">
@@ -147,7 +147,7 @@ array(
 
 This will generate a dropup button of this kind :
 ```html
-    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       Selected items(s)...    <span class="caret"></span>
     </button>
     <ul class="dropdown-menu listActions" aria-labelledby="muhListActions">

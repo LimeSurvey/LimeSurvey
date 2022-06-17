@@ -28,7 +28,7 @@
                 <?php endif; ?>
             </div>
             <div class="modal-footer modal-footer-buttons">
-                <a class="btn btn-primary btn-ok"><span class='fa fa-check'></span>
+                <a role="button" class="btn btn-primary btn-ok"><span class='fa fa-check'></span>
                     &nbsp;
                     <?php if(isset($aAction['yes'])):?>
                         <?php echo $aAction['yes'];?>
@@ -36,7 +36,8 @@
                         <?php eT("Yes"); ?>
                     <?php endif;?>
                 </a>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><span class='fa fa-ban'></span>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <span class='fa fa-ban'></span>
                     &nbsp;
                     <?php if(isset($aAction['no'])):?>
                         <?php echo $aAction['no'];?>
@@ -48,8 +49,10 @@
 
             <?php if($aAction['keepopen']=="yes"):?>
                 <div class="modal-footer modal-footer-close" style="display: none;">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><span class='fa fa-ban'></span>
-                        &nbsp;<?php eT("Close"); ?>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <span class='fa fa-ban'></span>
+                        &nbsp;
+                        <?php eT("Close"); ?>
                     </button>
                 </div>
             <?php endif; ?>

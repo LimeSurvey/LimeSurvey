@@ -100,15 +100,15 @@
                     <?php echo CHtml::hiddenField('destinationBuild' , $aUpdateVersion['build']); ?>
 
                     <!-- the button launching the update -->
-                    <button type="submit" class="btn btn-default ajax_button launch_update">
+                    <button type="submit" class="btn btn-outline-secondary ajax_button launch_update">
                         <span style="height : 1em; margin-right : 0.5em;" class="icon-shield text-success"></span>
                         <?php eT("Use ComfortUpdate");?>
                     </button>
 
                      <?php if ($aUpdateVersion['branch']!='master'): ?>
-                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
+                         <input type='button' class="ajax_button btn btn-outline-secondary" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
                      <?php else: ?>
-                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
+                         <input type='button' class="ajax_button btn btn-outline-secondary" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
                      <?php endif; ?>
 
                  <?php echo CHtml::endForm(); ?>

@@ -86,8 +86,7 @@ class WhButtonGroup extends CInputWidget
                 )
             );
             echo CHtml::openTag('label', array(
-                //'class'=>($value==$this->value) ? 'btn btn-outline-primary ' : 'btn btn-outline-primary ',
-                'class' => 'btn btn-outline-primary ',
+                'class'=>($value==$this->value)?'btn btn-outline-secondary active':'btn btn-outline-secondary',
                 'for' => $name.'_opt'.$i
             ));
             echo CHtml::encode($caption);

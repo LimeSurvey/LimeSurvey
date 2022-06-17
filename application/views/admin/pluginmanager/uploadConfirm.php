@@ -73,6 +73,8 @@
                     <input type="submit" class="btn btn-success" value="<?php eT("Update"); ?>"/>
                 <?php else : ?>
                     <input type="submit" class="btn btn-success" value="<?php eT("Install"); ?>"/>
+                            <?php eT("Install");?>
+                        </button>
                 <?php endif; ?>
                 <a href="<?php echo $abortUrl; ?>" class="btn btn-warning" data-bs-dismiss="modal"><?php eT("Abort"); ?></a>
             </div>

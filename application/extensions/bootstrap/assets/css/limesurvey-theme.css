@@ -2032,44 +2032,44 @@ fieldset[disabled] .btn {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-.btn-default {
+.btn-outline-secondary {
   color: #333333;
   background-color: #ffffff;
   border-color: #cccccc;
 }
-.btn-default:hover,
-.btn-default:focus,
-.btn-default:active,
-.btn-default.active,
-.open .dropdown-toggle.btn-default {
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus,
+.btn-outline-secondary:active,
+.btn-outline-secondary.active,
+.open .dropdown-toggle.btn-outline-secondary {
   color: #333333;
   background-color: #ebebeb;
   border-color: #adadad;
 }
-.btn-default:active,
-.btn-default.active,
-.open .dropdown-toggle.btn-default {
+.btn-outline-secondary:active,
+.btn-outline-secondary.active,
+.open .dropdown-toggle.btn-outline-secondary {
   background-image: none;
 }
-.btn-default.disabled,
-.btn-default[disabled],
-fieldset[disabled] .btn-default,
-.btn-default.disabled:hover,
-.btn-default[disabled]:hover,
-fieldset[disabled] .btn-default:hover,
-.btn-default.disabled:focus,
-.btn-default[disabled]:focus,
-fieldset[disabled] .btn-default:focus,
-.btn-default.disabled:active,
-.btn-default[disabled]:active,
-fieldset[disabled] .btn-default:active,
-.btn-default.disabled.active,
-.btn-default[disabled].active,
-fieldset[disabled] .btn-default.active {
+.btn-outline-secondary.disabled,
+.btn-outline-secondary[disabled],
+fieldset[disabled] .btn-outline-secondary,
+.btn-outline-secondary.disabled:hover,
+.btn-outline-secondary[disabled]:hover,
+fieldset[disabled] .btn-outline-secondary:hover,
+.btn-outline-secondary.disabled:focus,
+.btn-outline-secondary[disabled]:focus,
+fieldset[disabled] .btn-outline-secondary:focus,
+.btn-outline-secondary.disabled:active,
+.btn-outline-secondary[disabled]:active,
+fieldset[disabled] .btn-outline-secondary:active,
+.btn-outline-secondary.disabled.active,
+.btn-outline-secondary[disabled].active,
+fieldset[disabled] .btn-outline-secondary.active {
   background-color: #ffffff;
   border-color: #cccccc;
 }
-.btn-default .badge {
+.btn-outline-secondary .badge {
   color: #ffffff;
   background-color: #333333;
 }

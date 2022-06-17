@@ -34,7 +34,9 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 <!-- Form submitted by save button menu bar -->
 <?php echo CHtml::form(array('surveyAdministration/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
     <!-- Submit button, needs to be the first item for the script to take it -->
-    <button class="btn btn-primary btn-success d-none" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
+    <button role="button" class="btn btn-primary btn-success d-none" type="submit" name="save" id="create_survey_save_and_send" value='insertsurvey'>
+        <?php eT("Finish & save"); ?>
+    </button>
 
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-10 ls-space padding left-10 right-10">
@@ -93,13 +95,13 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="administrator"><?= gT("Administrator:")?></label>
+                            <label class="form-label" for="administrator"><?= gT("Administrator:") ?></label>
                             <div>
-                                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                                    'name' => 'administrator',
-                                    'value'=> 'default',
-                                    'selectOptions' => isset($optionsAdmin) ?  $optionsAdmin : [],
-                                ));?>
+                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'name'          => 'administrator',
+                                    'checkedOption' => 'default',
+                                    'selectOptions' => $optionsAdmin ?? [],
+                                ]); ?>
                             </div>
                         </div>
                         <div id="conditional-administrator-fields" style="display: none;">

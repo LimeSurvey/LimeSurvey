@@ -6,22 +6,18 @@
             <label for='showtextinline' class="form-label"><?php
                 eT("Show text responses inline:") ?></label>
             <div>
-                <?php
-                $sShowtextinline = (int)Yii::app()->request->getPost('showtextinline'); ?>
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                    'name' => 'showtextinline',
-                    'id' => 'showtextinline',
-                    'value' => $sShowtextinline,
-                    'selectOptions' => array(
+                <?php $sShowtextinline = (int)Yii::app()->request->getPost('showtextinline'); ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'showtextinline',
+                    'checkedOption' => $sShowtextinline,
+                    'selectOptions' => [
                         '1' => gT('On', 'unescaped'),
                         '0' => gT('Off', 'unescaped'),
-                    ),
-                    'htmlOptions' => array(
+                    ],
+                    'htmlOptions'   => [
                         'class' => 'text-option-inherit'
-                    )
-                ));
-                ?>
+                    ]
+                ]); ?>
             </div>
         </div>
         <div class='form-group'>
@@ -33,20 +29,17 @@
             ); ?>'><?php
                 eT("Subtotals based on displayed questions:"); ?></label>
             <div>
-                <?php
-                $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                    'name' => 'noncompleted',
-                    'id' => 'noncompleted',
-                    'value' => $sNoncompleted,
-                    'selectOptions' => array(
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'noncompleted',
+                    'checkedOption' => $sNoncompleted,
+                    'selectOptions' => [
                         '1' => gT('On', 'unescaped'),
                         '0' => gT('Off', 'unescaped'),
-                    ),
-                    'htmlOptions' => array(
+                    ],
+                    'htmlOptions'   => [
                         'class' => 'text-option-inherit'
-                    )
-                ));
-                ?>
+                    ]
+                ]); ?>
             </div>
         </div>
         <div class="form-group">
@@ -78,47 +71,31 @@
         <div class='form-group'>
             <label for='stats_columns' class="form-label"><?php
                 eT("Number of columns:") ?></label>
-            <div class="">
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default">
-                        <input name="stats_columns" value="1" type="radio" class="selected">
-                        <?php
-                        eT('One'); ?>
-                    </label>
-                    <label class="btn btn-default active">
-                        <input name="stats_columns" value="2" type="radio" checked>
-                        <?php
-                        eT('Two'); ?>
-                    </label>
-                    <label class="btn btn-default">
-                        <input name="stats_columns" value="3" class="active" type="radio">
-                        <?php
-                        eT('Three'); ?>
-                    </label>
-                </div>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'stats_columns',
+                    'checkedOption' => '2',
+                    'selectOptions' => [
+                        '1' => gT('One'),
+                        '2' => gT('Two'),
+                        '3' => gT('Three'),
+                    ],
+                ]); ?>
             </div>
         </div>
         <div class='form-group'>
             <label for='graph_labels' class="form-label"><?php
                 eT("Graph labels:") ?></label>
-            <div class="">
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default active">
-                        <input name="graph_labels" value="qcode" type="radio" checked="checked">
-                        <?php
-                        eT('Question code'); ?>
-                    </label>
-                    <label class="btn btn-default">
-                        <input name="graph_labels" value="qtext" type="radio">
-                        <?php
-                        eT('Question text'); ?>
-                    </label>
-                    <label class="btn btn-default">
-                        <input name="graph_labels" value="both" class="active" type="radio">
-                        <?php
-                        eT('Both'); ?>
-                    </label>
-                </div>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'graph_labels',
+                    'checkedOption' => 'qcode',
+                    'selectOptions' => [
+                        'qcode' => gT('Question code'),
+                        'qtext' => gT('Question text'),
+                        'both'  => gT('Both'),
+                    ],
+                ]); ?>
             </div>
         </div>
         <div class="form-group">

@@ -38,7 +38,7 @@
                 <?php endif; ?>
                 <p class="text-info"><?php eT("Question import is complete.") ?></p>
                 <p>
-                    <a href="<?php echo $this->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $aImportResults['newqid']) ?>" class="btn btn-default btn-lg"><?php eT("Go to question") ?></a>
+                    <a href="<?php echo $this->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $aImportResults['newqid']) ?>" class="btn btn-outline-secondary btn-lg"><?php eT("Go to question") ?></a>
                 </p>
             </div>
         </div>

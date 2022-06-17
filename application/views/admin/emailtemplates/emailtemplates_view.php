@@ -79,7 +79,7 @@ var LS = LS || {};  // namespace
                 <iframe frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
             </div>
             <div class='modal-footer'>
-                <button type="button" class='btn btn-default' data-bs-dismiss='modal'><?php eT("Cancel"); ?></button>
+                <button type="button" class='btn btn-cancel' data-bs-dismiss='modal'><?php eT("Cancel"); ?></button>
             </div>
         </div>
     </div>
@@ -100,8 +100,12 @@ var LS = LS || {};  // namespace
                 </div>
             </div>
             <div class='modal-footer'>
-                <button type="button" class='btn btn-default' data-bs-dismiss='modal'><?php eT("Close"); ?></button>
-                <button type="button" class='btn btn-success'><?php eT("Add"); ?></button>
+                <button type="button" class='btn btn-outline-secondary' data-bs-dismiss='modal'>
+                    <?php eT("Close"); ?>
+                </button>
+                <button type="button" class='btn btn-success'>
+                    <?php eT("Add"); ?>
+                </button>
             </div>
         </div>
     </div>
