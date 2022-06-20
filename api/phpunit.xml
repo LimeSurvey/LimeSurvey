@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="tests/bootstrap.php"
+         colors="true"
+         verbose="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="false"
+         executionOrder="random"
+         resolveDependencies="true">
+    <php>
+        <ini name="error_reporting" value="-1"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/unit</directory>
+        </testsuite>
+        <testsuite name="functional">
+            <directory>tests/functional</directory>
+        </testsuite>
+        <!--        <testsuite name="acceptance">-->
+        <!--            <directory>tests/functional/acceptance</directory>-->
+        <!--        </testsuite>-->
+    </testsuites>
+
+    <coverage>
+        <include>
+            <directory>./src</directory>
+        </include>
+        <report>
+            <clover outputFile="cov.xml"/>
+        </report>
+    </coverage>
+</phpunit>

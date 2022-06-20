@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="2"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="src" />
+        <file name="public/index.php"/>
+        <file name="yii"/>
+        <file name="autoload.php"/>
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="src/User" />
+        </ignoreFiles>
+    </projectFiles>
+</psalm>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ruleset name="Custom Standard">
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength"/>
+        <type>error</type>
+    </rule>
+    <rule ref="VariableAnalysis"/>
+    <rule ref="Generic.Files.LineEndings">
+        <exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
+    </rule>
+</ruleset>

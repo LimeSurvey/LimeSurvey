@@ -1,0 +1,201 @@
+{
+    "name": "limesurvey/api",
+    "type": "project",
+    "description": "LimeSurvey API",
+    "keywords": [
+        "limesurvey",
+        "yii3",
+        "app",
+        "api",
+        "rest"
+    ],
+    "homepage": "https://limesurvey.org",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.0",
+        "cebe/markdown": "^1.2@dev",
+        "cycle/orm": "^1.2",
+        "cycle/proxy-factory": "^1.2",
+        "httpsoft/http-message": "^1.0.5",
+        "myclabs/php-enum": "^1.7",
+        "psr/container": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0",
+        "psr/log": "^1.1",
+        "vlucas/phpdotenv": "^5.3",
+        "yiisoft/access": "^1.0",
+        "yiisoft/active-record": "3.0.x-dev",
+        "yiisoft/auth": "^3.0",
+        "yiisoft/cache": "^1.0",
+        "yiisoft/cache-file": "^1.0",
+        "yiisoft/config": "^1.0",
+        "yiisoft/data": "^3.0@dev",
+        "yiisoft/data-response": "^1.0",
+        "yiisoft/db-mysql": "3.0.x-dev",
+        "yiisoft/definitions": "^1.0",
+        "yiisoft/di": "^1.0",
+        "yiisoft/error-handler": "^2.0",
+        "yiisoft/factory": "^1.0",
+        "yiisoft/files": "^1.0",
+        "yiisoft/http": "^1.2",
+        "yiisoft/injector": "^1.0",
+        "yiisoft/log": "^1.0",
+        "yiisoft/log-target-file": "^1.0",
+        "yiisoft/request-body-parser": "^1.0",
+        "yiisoft/request-model": "^1.0@dev",
+        "yiisoft/router": "^1.0",
+        "yiisoft/router-fastroute": "^1.0",
+        "yiisoft/security": "^1.0",
+        "yiisoft/user": "^1.0",
+        "yiisoft/validator": "^3.0@dev",
+        "yiisoft/yii-console": "^1.0",
+        "yiisoft/yii-cycle": "^3.0@dev",
+        "yiisoft/yii-debug": "^3.0@dev",
+        "yiisoft/yii-debug-api": "^3.0@dev",
+        "yiisoft/yii-event": "^1.0",
+        "yiisoft/yii-http": "^1.0",
+        "yiisoft/yii-middleware": "dev-master",
+        "yiisoft/yii-runner-console": "^1.0",
+        "yiisoft/yii-runner-http": "^1.0",
+        "yiisoft/yii-swagger": "^1.0"
+    },
+    "require-dev": {
+        "codeception/c3": "^2.6",
+        "codeception/codeception": "^4.1",
+        "codeception/lib-innerbrowser": "^2.0",
+        "codeception/module-asserts": "^2.0",
+        "codeception/module-cli": "^2.0",
+        "codeception/module-db": "^2.0",
+        "codeception/module-phpbrowser": "^2.0",
+        "codeception/module-rest": "^2.0",
+        "phpunit/phpunit": "^9.5",
+        "roave/infection-static-analysis-plugin": "^1.16",
+        "spatie/phpunit-watcher": "^1.23",
+        "vimeo/psalm": "^4.18",
+        "yiisoft/json": "^1.0",
+        "yiisoft/yii-debug-viewer": "^3.0@dev",
+        "squizlabs/php_codesniffer": "^3.5",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+        "sirbrillig/phpcs-variable-analysis": "^2.11",
+        "phpmd/phpmd" : "^2.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/",
+            "App\\Tests\\Acceptance\\": "tests/acceptance/",
+            "App\\Tests\\Functional\\": "tests/functional/"
+        }
+    },
+    "scripts": {
+        "serve": "./yii serve",
+        "post-update-cmd": [
+            "App\\Installer::postUpdate",
+            "App\\Installer::copyEnvFile"
+        ],
+        "post-create-project-cmd": [
+            "App\\Installer::copyEnvFile"
+        ],
+        "test": [
+            "vendor/bin/phpcs --standard=tests/pipeline/phpcs.xml --warning-severity=5 src/",
+            "vendor/bin/psalm --no-cache",
+            "vendor/bin/phpmd src/ text tests/pipeline/phpmd_ruleset_strict.xml"
+        ],
+        "test-watch": "phpunit-watcher watch"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        },
+        "config-plugin-options": {
+            "source-directory": "config"
+        },
+        "config-plugin": {
+            "common": "common/*.php",
+            "params": [
+                "params.php"
+            ],
+            "web": [
+                "$common"
+            ],
+            "console": [
+                "$common",
+                "console/*.php"
+            ],
+            "events": "events.php",
+            "events-web": [
+                "$events",
+                "events-web.php"
+            ],
+            "events-console": [
+                "$events",
+                "events-console.php"
+            ],
+            "providers": "providers.php",
+            "providers-web": [
+                "$providers",
+                "providers-web.php"
+            ],
+            "providers-console": [
+                "$providers",
+                "providers-console.php"
+            ],
+            "delegates": "delegates.php",
+            "delegates-web": [
+                "$delegates",
+                "delegates-web.php"
+            ],
+            "delegates-console": [
+                "$delegates",
+                "delegates-console.php"
+            ],
+            "routes": [
+                "routes.php",
+                "routes/*.php"
+            ],
+            "bootstrap": "bootstrap.php",
+            "bootstrap-web": [
+                "$bootstrap",
+                "bootstrap-web.php"
+            ],
+            "bootstrap-console": [
+                "$bootstrap",
+                "bootstrap-console.php"
+            ]
+        },
+        "config-plugin-environments": {
+            "dev": {
+                "params": "dev/params.php",
+                "web": [
+                    "common/*.php",
+                    "dev/web/*.php"
+                ]
+            },
+            "prod": {
+                "params": "params.php",
+                "web": [
+                    "common/*.php",
+                    "web/*.php"
+                ]
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "codeception/c3": true,
+            "infection/extension-installer": true,
+            "composer/package-versions-deprecated": true,
+            "yiisoft/config": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

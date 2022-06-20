@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Yiisoft\Yii\Runner\Console\ConsoleApplicationRunner;
+
+require_once __DIR__ . '/autoload.php';
+
+// Run console application runner
+$runner = new ConsoleApplicationRunner(__DIR__, $_ENV['YII_DEBUG'], $_ENV['YII_ENV']);
+$runner->run();

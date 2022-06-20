@@ -1,0 +1,5 @@
+actor: CliTester
+modules:
+  enabled:
+    - Cli
+  step_decorators: ~

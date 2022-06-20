@@ -2,6 +2,11 @@
 /application/config/config.php
 /application/config/config.*.php
 /application/config/security.php
+/api/config/config.php
+/api/.env
+/api/config/params.php
+/api/vendor
+
 
 # Don't include LS4 security.php
 /application/config/security.php

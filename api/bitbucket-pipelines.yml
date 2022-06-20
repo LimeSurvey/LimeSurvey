@@ -1,0 +1,104 @@
+# This is a sample build configuration for PHP.
+# Check our guides at https://confluence.atlassian.com/x/e8YWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: php:8.0
+
+definitions:
+  services:
+    mysql:
+      image: mysql:5.7
+      variables:
+        MYSQL_ROOT_PASSWORD: password
+
+pipelines:
+  # TODO: Duplicated between master branch and "all other" branches
+  '*':
+    - step:
+        caches:
+          - composer
+        services:
+          - mysql
+        script:
+          - apt-get update && apt-get install -y unzip libzip-dev libsodium-dev default-mysql-client
+          - mysql -h 127.0.0.1 -u root -ppassword -e "SHOW DATABASES"
+          - mysql -h 127.0.0.1 -u root -ppassword -e "SHOW VARIABLES LIKE '%sock%'"
+          - mysql -h 127.0.0.1 -u root -ppassword -e "CREATE DATABASE c1accountstage"
+          - mysql -h 127.0.0.1 -u root -ppassword -e "CREATE DATABASE limesurvey_comfortupdate"
+          - mysql -h 127.0.0.1 -u root -ppassword -e "SET GLOBAL sql_mode = '';"
+          - mysql -h 127.0.0.1 -u root -ppassword c1accountstage < tests/pipeline/c1accountstage_pipeline.sql
+          - mysql -h 127.0.0.1 -u root -ppassword limesurvey_comfortupdate < tests/pipeline/comfortupdate_pipeline.sql
+          - pecl install xdebug && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
+          - docker-php-ext-install -j$(nproc) bcmath zip sodium mysqli pdo pdo_mysql
+          - cp tests/pipeline/pipeline_params.php config/params.php
+          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - composer update
+          - composer yii-config-rebuild
+          - composer test
+          - touch enabletests
+          - XDEBUG_MODE=coverage php vendor/bin/phpunit
+          - php tests/pipeline/check_coverage.php cov.xml 10
+
+  branches:
+    master:
+      - step:
+          image: php:8.0
+          caches:
+            - composer
+          services:
+            - mysql
+          script:
+            - apt-get update && apt-get install -y unzip libzip-dev libsodium-dev default-mysql-client
+            - mysql -h 127.0.0.1 -u root -ppassword -e "SHOW DATABASES"
+            - mysql -h 127.0.0.1 -u root -ppassword -e "SHOW VARIABLES LIKE '%sock%'"
+            - mysql -h 127.0.0.1 -u root -ppassword -e "CREATE DATABASE c1accountstage"
+            - mysql -h 127.0.0.1 -u root -ppassword -e "CREATE DATABASE limesurvey_comfortupdate"
+            - mysql -h 127.0.0.1 -u root -ppassword -e "SET GLOBAL sql_mode = '';"
+            - mysql -h 127.0.0.1 -u root -ppassword c1accountstage < tests/pipeline/c1accountstage_pipeline.sql
+            - mysql -h 127.0.0.1 -u root -ppassword limesurvey_comfortupdate < tests/pipeline/comfortupdate_pipeline.sql
+            - pecl install xdebug && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
+            - docker-php-ext-install -j$(nproc) bcmath zip sodium mysqli pdo pdo_mysql
+            - cp tests/pipeline/pipeline_params.php config/params.php
+            - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+            - composer update
+            - composer yii-config-rebuild
+            - composer test
+            - touch enabletests
+            - XDEBUG_MODE=coverage php vendor/bin/phpunit
+              #- php tests/pipeline/check_coverage.php cov.xml 10
+      - step:
+          script:
+            - pipe: atlassian/ssh-run:0.2.4
+              variables:
+                SSH_USER: $userlive
+                SERVER: webservice.limesurvey.org
+                COMMAND: 'rm -rf /web/.git'
+                PORT: '888'
+                DEBUG: 'true'
+            - pipe: atlassian/rsync-deploy:0.4.2
+              variables:
+                USER: $userlive
+                SERVER: webservice.limesurvey.org
+                REMOTE_PATH: '/private'
+                LOCAL_PATH: './'
+                # SSH_KEY: $ssh_key # Optional.
+                SSH_PORT: '888' # Optional.
+                # EXTRA_ARGS: '--exclude=.git' # Exclude Updload forder from deployement.
+                # EXTRA_ARGS: '<string>' # Optional.
+                # DEBUG: '<boolean>' # Optional.
+                DELETE_FLAG: 'false'
+            - pipe: atlassian/ssh-run:0.2.4
+              variables:
+                SSH_USER: $userlive
+                SERVER: account.limesurvey.org
+                COMMAND: 'cp -r /private/public/* /web'
+                PORT: '888'
+                DEBUG: 'true'
+            - pipe: atlassian/ssh-run:0.2.4
+              variables:
+                SSH_USER: $userlive
+                SERVER: account.limesurvey.org
+                COMMAND: sed -i "s/dirname(__DIR__)/__DIR__\.'\/\.\.\/private\/'/g" /web/index.php
+                PORT: '888'
+                DEBUG: 'true'
