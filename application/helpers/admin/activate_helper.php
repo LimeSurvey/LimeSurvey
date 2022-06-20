@@ -525,9 +525,11 @@ function mssql_drop_constraint($fieldname, $tablename)
     sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
     WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{{{$tablename}}}')";
     $result = dbExecuteAssoc($dfquery)->read();
-    $defaultname = $result['CONTRAINT_NAME'];
-    if ($defaultname != false) {
-        modifyDatabase("", "ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
+    if (!empty($result['CONTRAINT_NAME'])) {
+        $defaultname = $result['CONTRAINT_NAME'];
+        modifyDatabase("", "ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}");
+        echo $modifyoutput;
+        flush();
     }
 }
 
