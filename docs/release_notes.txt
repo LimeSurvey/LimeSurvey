@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.15 (build 220616) to 3.28.16 (build 220621) June 20, 2022
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: French (France) by DenisChenu, Xave
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.28.14 (build 220608) to 3.28.15 (build 220616) June 15, 2022
 -Fixed issue #18189: Fonts showing differently on mobile and desktop (#2467) (Gabriel Jenik)
 -Fixed issue #18086: Custom 'other' label text not applied to Bootstrap button layout (#2422) (Gabriel Jenik)
