@@ -14,14 +14,14 @@
     $(document).ready(function() {
         $("#save-and-close-button-copy-question").click(function(event) {
             event.preventDefault();
-            $('#question-code-unique-warning').addClass('hidden');
-
+            $('#question-title-warning').text("");
+            $('#question-title-warning').addClass('hidden');
             const sid = $('input[name=surveyId]').val();
             const qid = 0;
             const code = $('input[name=question\\[title\\]]').val();
 
             $.ajax({
-              url: "<?= Yii::app()->createUrl('questionAdministration/checkQuestionCodeUniqueness'); ?>",
+              url: "<?= Yii::app()->createUrl('questionAdministration/checkQuestionValidateTitle'); ?>",
               method: 'GET',
               data: {
                 sid,
@@ -29,10 +29,11 @@
                 code
               },
               success: (data) => {
-                if (data === 'true') {
-                    document.getElementById("submit-copy-question").click();
+                if (data) {
+                    $('#question-title-warning').text(data);
+                    $('#question-title-warning').removeClass('hidden');
                 } else {
-                    $('#question-code-unique-warning').removeClass('hidden');
+                    $("#submit-copy-question").click();
                 }
               },
               error: (data) => {
