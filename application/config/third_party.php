@@ -400,7 +400,7 @@ return array(
             'build/tempus-dominus.min.css',
         ),
         'js' => array(
-            'build/popper-tempus.js'
+            'build/popper-tempus.min.js'
         ),
         'depends' => array()
     ),
