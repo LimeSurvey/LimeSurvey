@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.20 (build 220615) to 5.3.21 (build 220620) June 20, 2022
+-Fixed issue #18175: html editor iframe did not take whole available place (#2463) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.3.19 (build 220607) to 5.3.20 (build 220615) June 15, 2022
 -Fixed issue: Plugin calling readConfigFile() in init() caused inf loop (Tim Willig)
 -Fixed issue #18135: Cant get all question attributes with API (Postman) (#2445) (Gabriel Jenik)
