@@ -536,8 +536,7 @@ class LSYii_Application extends CWebApplication
      */
     private function handleFriendlyException($exception)
     {
-        $message = "<p>" . $exception->getMessage() . "</p>";
-        $message .= $exception->getDetailedErrorSummary();
+        $message = "<p>" . $exception->getMessage() . "</p>" . $exception->getDetailedErrorSummary();
         Yii::app()->setFlashMessage($message, 'error');
         if ($exception->getRedirectUrl() != null) {
             $redirectTo = $exception->getRedirectUrl();
@@ -566,14 +565,12 @@ class LSYii_Application extends CWebApplication
             if ($exception->getNoReload() != null) {
                 $outputData['noReload'] = $exception->getNoReload();
             }
-            $errors = $exception->getDetailedErrors();
-
             // Add the detailed errors to the message, so simple handlers can just show it.
-            $outputData['message'] .= "<br>" . implode("<br>", $errors);
+            $outputData['message'] = "<p>" . $exception->getMessage() . "</p>". $exception->getDetailedErrorSummary();
             // But save the "simpler" message on 'error', and the list of errors on "detailedErrors"
             // so that more complex handlers can decide what to show.
             $outputData['error'] = $exception->getMessage();
-            $outputData['detailedErrors'] = $errors;
+            $outputData['detailedErrors'] = $exception->getDetailedErrors();
         }
         header('Content-Type: application/json');
         http_response_code($exception->statusCode);
