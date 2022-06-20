@@ -28,6 +28,6 @@
         />
         -->
     </div>
-    <p id="question-code-unique-warning" class="d-none text-warning"><?= gT('Question codes must be unique.'); ?></p>
+    <p id="question-code-unique-warning" class="d-none text-warning"></p>
 </div>
 
