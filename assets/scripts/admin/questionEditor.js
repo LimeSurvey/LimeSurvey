@@ -1961,8 +1961,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         },
         success: (data) => {
           if (data) {
-              $('#question-title-warning').text(data);
-              $('#question-title-warning').removeClass('hidden');
+              $('#question-code-unique-warning').text(data);
+              $('#question-code-unique-warning').removeClass('d-none');
           } else {
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
@@ -1980,7 +1980,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 button.click();
               }
             }
-          } else {
             $('#question-code-unique-warning').removeClass('d-none');
           }
         },
