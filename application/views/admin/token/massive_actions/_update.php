@@ -90,8 +90,8 @@
 
                             <div class="col-sm-7 col-sm-offset-1">
                                 <?php if ($oSurvey->anonymized != 'Y'):?>
-                                    <div id="massedit_sent-date-container" class="date-container selector_datechange"  style="display: none;">
-                                        <div id="completed-date_datetimepicker" class="input-group date">
+                                    <div id="massedit_completed-date-container" class="date-container selector_datechange"  style="display: none;">
+                                        <div id="massedit_completed-date_datetimepicker" class="input-group date">
                                             <input
                                                 class="YesNoDatePicker form-control"
                                                 id="massedit_completed-date"
@@ -210,9 +210,9 @@
                             </div>
 
                             <div class="col-sm-8">
-                                <div id="sent-date-container" class="date-container selector_datechange" style="display: none;">
+                                <div id="massedit_sent-date-container" class="date-container selector_datechange" style="display: none;">
                                     <!-- Sent Date -->
-                                    <div id="sent-date_datetimepicker" class="input-group date">
+                                    <div id="massedit_sent-date_datetimepicker" class="input-group date">
                                         <input
                                             class="YesNoDatePicker form-control"
                                             id="massedit_sent-date"
@@ -420,13 +420,10 @@
 
    var bindBSSwitch = function(formGroup){
        console.log(\"bindBSSwitch run on:\",formGroup);
-    //Script to update the completed settings
-    formGroup.find('.YesNoSwitch').on('switchChange.bootstrapSwitch', function(e, state){
-        
-        formGroup.find('.selector_datechange').css('display', (state ? '' : 'none'));
-        formGroup.find('.selector_submitField').val(state ? 'Y' : 'N');
-
-    });
+       //Script to update the completed settings
+       formGroup.find('.YesNoSwitch').on('switchChange.bootstrapSwitch', function(e, state){        
+           formGroup.find('.selector_datechange').css('display', (state ? '' : 'none'));
+       });
    };
 
    var bindDatepicker = function(myFormGroup){
