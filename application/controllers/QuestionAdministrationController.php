@@ -552,36 +552,37 @@ class QuestionAdministrationController extends LSBaseController
             }
         } catch (CException $ex) {
             $transaction->rollback();
-            if ($calledWithAjax) {
-                throw new LSJsonException(
-                    500,
-                    gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
-                    0,
-                    App()->createUrl(
-                        'surveyAdministration/view/',
-                        ["surveyid" => $iSurveyId]
-                    )
-                );
+
+            // Determine the proper redirect URL
+            if (empty($question)) {
+                $redirectUrl = $this->createUrl('surveyAdministration/view/', ["surveyid" => $iSurveyId]);
             } else {
-                if (empty($question)) {
-                    $sRedirectUrl = $this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId]);
-                } else {
-                    $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
-                    if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {
-                        $tabOverviewEditorValue = 'overview';
-                    }
-                    $sRedirectUrl = $this->createUrl(
-                        'questionAdministration/edit/',
-                        [
-                            'questionId' => $question->qid,
-                            'landOnSideMenuTab' => 'structure',
-                            'tabOverviewEditor' => $tabOverviewEditorValue,
-                        ]
-                    );
+                $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
+                if ($tabOverviewEditorValue !== 'overview' && $tabOverviewEditorValue !== 'editor') {
+                    $tabOverviewEditorValue = 'overview';
                 }
-                Yii::app()->setFlashMessage($ex->getMessage(), 'error');
-                $this->redirect($sRedirectUrl);
+                $redirectUrl = $this->createUrl(
+                    'questionAdministration/edit/',
+                    [
+                        'questionId' => $question->qid,
+                        'landOnSideMenuTab' => 'structure',
+                        'tabOverviewEditor' => $tabOverviewEditorValue,
+                    ]
+                );
             }
+
+            // If we are already dealing with a friendly exception (may include detailed errors),
+            // just set the redirect URL and rethrow.
+            if ($ex instanceof LSUserException) {
+                throw $ex->setRedirectUrl($redirectUrl);
+            }
+
+            throw new LSUserException(
+                500,
+                $ex->getMessage(),
+                0,
+                $redirectUrl
+            );
         }
     }
 
@@ -2466,7 +2467,7 @@ class QuestionAdministrationController extends LSBaseController
 
 
         if ($oQuestion == null) {
-            throw new LSJsonException(
+            throw new LSUserException(
                 500,
                 gT("Question creation failed - input was malformed or invalid"),
                 0,
@@ -2477,14 +2478,13 @@ class QuestionAdministrationController extends LSBaseController
 
         $saved = $oQuestion->save();
         if ($saved == false) {
-            throw new LSJsonException(
+            throw (new LSUserException(
                 500,
-                gT('Could not save question') . " " . PHP_EOL
-                . print_r($oQuestion->getErrors(), true),
+                gT('Could not save question'),
                 0,
                 null,
                 true
-            );
+            ))->setDetailedErrorsFromModel($oQuestion);
         }
 
         $i10N = [];
@@ -2534,7 +2534,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
-            throw new LSJsonException(
+            throw new LSUserException(
                 500,
                 gT("Question update failed, input array malformed or invalid"),
                 0,
@@ -2545,14 +2545,13 @@ class QuestionAdministrationController extends LSBaseController
 
         $saved = $oQuestion->save();
         if ($saved == false) {
-            throw new LSJsonException(
+            throw (new LSUserException(
                 500,
-                "Update failed, could not save. ERRORS:<br/>"
-                . implode(", ", $oQuestion->getErrors()['title']),
+                gT("Update failed, could not save."),
                 0,
                 null,
                 true
-            );
+            ))->setDetailedErrorsFromModel($oQuestion);
         }
 
         // If relevance equation was manually edited, existing conditions must be cleared
@@ -2624,11 +2623,8 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         if (!$oQuestion->save()) {
-            throw new CHttpException(
-                500,
-                gT("Could not save question") . PHP_EOL
-                . print_r($oQuestion->getErrors(), true)
-            );
+            throw (new LSUserException(500, gT("Could not save question")))
+                ->setDetailedErrorsFromModel($oQuestion);
         }
 
         return true;
@@ -2713,6 +2709,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @return boolean
      * @throws CHttpException
+     * @deprecated Functionality moved to CopyQuestion service.
      */
     private function copyDefaultAnswers($oQuestion, $oldQid)
     {
@@ -2791,11 +2788,8 @@ class QuestionAdministrationController extends LSBaseController
                 }
                 $subquestion->scale_id   = $scaleId;
                 if (!$subquestion->save()) {
-                    throw new CHttpException(
-                        500,
-                        gT("Could not save subquestion") . PHP_EOL
-                        . print_r($subquestion->getErrors(), true)
-                    );
+                    throw (new LSUserException(500, gT("Could not save subquestion")))
+                        ->setDetailedErrorsFromModel($subquestion);
                 }
                 $subquestion->refresh();
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
@@ -2804,11 +2798,8 @@ class QuestionAdministrationController extends LSBaseController
                     $l10n->language = $lang;
                     $l10n->question = $questionText;
                     if (!$l10n->save()) {
-                        throw new CHttpException(
-                            500,
-                            gT("Could not save subquestion") . PHP_EOL
-                            . print_r($l10n->getErrors(), true)
-                        );
+                        throw (new LSUserException(500, gT("Could not save subquestion")))
+                            ->setDetailedErrorsFromModel($l10n);
                     }
                 }
             }
@@ -2856,11 +2847,8 @@ class QuestionAdministrationController extends LSBaseController
                 }
                 $subquestion->scale_id   = $scaleId;
                 if (!$subquestion->update()) {
-                    throw new CHttpException(
-                        500,
-                        gT("Could not save subquestion") . PHP_EOL
-                        . print_r($subquestion->getErrors(), true)
-                    );
+                    throw (new LSUserException(500, gT("Could not save subquestion")))
+                        ->setDetailedErrorsFromModel($subquestion);
                 }
                 $subquestion->refresh();
                 foreach ($data['subquestionl10n'] as $lang => $questionText) {
@@ -2877,11 +2865,8 @@ class QuestionAdministrationController extends LSBaseController
                     $l10n->language = $lang;
                     $l10n->question = $questionText;
                     if (!$l10n->save()) {
-                        throw new CHttpException(
-                            500,
-                            gT("Could not save subquestion") . PHP_EOL
-                            . print_r($l10n->getErrors(), true)
-                        );
+                        throw (new LSUserException(500, gT("Could not save subquestion")))
+                            ->setDetailedErrorsFromModel($l10n);
                     }
                 }
             }
@@ -2919,11 +2904,8 @@ class QuestionAdministrationController extends LSBaseController
                 }
                 $answer->scale_id = $scaleId;
                 if (!$answer->save()) {
-                    throw new CHttpException(
-                        500,
-                        gT("Could not save answer option") . PHP_EOL
-                        . print_r($answer->getErrors(), true)
-                    );
+                    throw (new LSUserException(500, gT("Could not save answer option")))
+                        ->setDetailedErrorsFromModel($answer);
                 }
                 $answer->refresh();
                 foreach ($data['answeroptionl10n'] as $lang => $answerOptionText) {
@@ -2932,11 +2914,8 @@ class QuestionAdministrationController extends LSBaseController
                     $l10n->language = $lang;
                     $l10n->answer = $answerOptionText;
                     if (!$l10n->save()) {
-                        throw new CHttpException(
-                            500,
-                            gT("Could not save answer option") . PHP_EOL
-                            . print_r($l10n->getErrors(), true)
-                        );
+                        throw (new LSUserException(500, gT("Could not save answer option")))
+                            ->setDetailedErrorsFromModel($l10n);
                     }
                 }
             }
