@@ -225,6 +225,7 @@ class ExpressionManager
             'is_null' => array('is_null', 'LEMis_null', gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://php.net/is-null', 1),
             'is_numeric' => array('is_numeric', 'LEMis_numeric', gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://php.net/is-numeric', 1),
             'is_string' => array('is_string', 'LEMis_string', gT('Find whether the type of a variable is string'), 'bool is_string(var)', 'http://php.net/is-string', 1),
+            'json_value' => array('exprmgr_json_value', null, gT('Takes a JSON encoded string and extracts a scalar string value using the additional arguments as indexes to navigate the JSON object. E.g. json_value(\'{"something":{"new":"a surprise!","old":"boring"}}\',\'something\',\'new\') will return the string "a surprise!".'), 'mixed json_value(json_encoded_string, index1,...,indexN)', '', 2,3,4,5,6),
             'join' => array('exprmgr_join', 'LEMjoin', gT('Join strings, return joined string.This function is an alias of implode("",argN)'), 'string join(arg1,arg2,...,argN)', '', -1),
             'list' => array('exprmgr_list', 'LEMlist', gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
             'listifop' => array('exprmgr_listifop', 'LEMlistifop', gT('Return a list of retAttr from sgqa1...sgqaN which pass the criteria (cmpAttr op value)'), 'string listifop(cmpAttr, op, value, retAttr, glue, sgqa1, sgqa2,...,sgqaN)', '', -6),
@@ -3249,4 +3250,75 @@ function exprmgr_unique($args)
         $uniqs[$arg] = 1;
     }
     return true;
+}
+
+/**
+ * Takes a JSON encoded string and extracts a value as a string using any additional arguments as indexes to navigate the JSON object.
+ * Examples:
+ *	If
+ *		$json_encoded_string='{"something":{"new":"a surprise!","old":"boring","complex":{"older":"boringer"},"array":["item 1","item 2"],"numeric":56}}'
+ *	Then
+ * 		exprmgr_json_value($json_encoded_string,"something","new")="a surprise!"
+ * 		exprmgr_json_value($json_encoded_string,"something","old")="boring"
+ * 		exprmgr_json_value($json_encoded_string,"something","complex")='{"older":"boringer"}'
+ * 		exprmgr_json_value($json_encoded_string,"something","array")='["item 1","item 2"]'
+ * 		exprmgr_json_value($json_encoded_string,"something","array[1]")="item 2"
+ * 		exprmgr_json_value($json_encoded_string,"something","array[50][1]")="item 2"
+ * 		exprmgr_json_value($json_encoded_string,"something","missing")=""
+ * 		exprmgr_json_value($json_encoded_string,"something","numeric")="56"
+ * 		exprmgr_json_value($json_encoded_string,"something")='{"new":"a surprise!","old":"boring","complex":{"older":"boringer"},"array":["item 1","item 2"],"numeric":56}'
+ * 		exprmgr_json_value($json_encoded_string)='{"something":{"new":"a surprise!","old":"boring","complex":{"older":"boringer"},"array":["item 1","item 2"],"numeric":56}}'
+ * @author Leon Janzen
+ * 
+ * @param string $json_encoded_string A JSON encoded string. Required
+ * @param string $index1 The first level object name. Optional
+ * @param string $index2 The second level object name. Optional
+ * @param string $index3 The third level object name. Optional
+ * etc.
+ * @return string
+ */
+function exprmgr_json_value(string $json_encoded_string, string $index1=null) {
+	
+	$json_element = null;
+	$json_array = json_decode($json_encoded_string,true);
+
+	if(is_null($json_array)) { //Check if the string was not valid JSON, and could not be decoded.
+		//I'm not sure which is preferable, to return an error message, or throw an error, or do nothing and just return null.
+		
+		//Return an error message as the value.
+		//$json_element = "Invalid JSON (json_decode() failed).";
+
+		//Throw an error.
+		throw new \ErrorException("Invalid JSON (json_decode() failed).");
+	} else {
+		$json_element = $json_array;
+		$indices = func_get_args();
+		array_shift($indices); //Remove the first element from the array, since it is the $json value, leaving only the array indices.
+		
+		foreach($indices as $index) { //Loop through the given indices.
+			$indexParts=array();
+			$indexNumber=null;
+			if(preg_match("/^(\w+)(?:\[(\d+)\])+$/", $index, $indexParts)) { //Find any index values that contain an index, followed by at least one numeric subindex in square brackets. This will match both of these examples: "test[5]", and "test[3][5]".
+				$index=$indexParts[1]; //Replace $index with the first part of the index found in the string. Using the second example above, $index would change from "test[3][5]" to "test", and $indexParts[2] will be 5. The 3 will be ignored.
+				$indexNumber=$indexParts[2]; //Populate $indexNumber with the last numeric subindex found in $index. Future development could incorporate multiple subindices, but so far we'll just always use the last one.
+			}
+			
+			if(!is_null($json_element) && array_key_exists($index, $json_element)) { //Check if there is an element for the given index.
+				if(!is_null($indexNumber)) { //Check if the index included a numeric subindex.
+					$json_element=$json_element[$index][$indexNumber]; //Replace $json_element with the element at the given index and numeric subindex.
+				} else {
+					$json_element=$json_element[$index]; //Replace $json_element with the element at the given index.
+				}
+			} else {
+				$json_element = null;
+				break;
+			}
+		}
+		
+		if(!is_null($json_element) && !is_scalar($json_element)) { //Check if the indices weren't specific enough to return a scalar value, and are returning an array of elements instead.
+			$json_element=json_encode($json_element); //Convert the array back to a JSON encoded string before returning it.
+		}
+	}
+	
+	return $json_element;
 }
