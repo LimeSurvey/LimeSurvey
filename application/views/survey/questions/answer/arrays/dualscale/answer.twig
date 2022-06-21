@@ -107,7 +107,7 @@
             <tr id="javatbd{{ ansrow.myfname }}" role="group" aria-labelledby="answertext{{ ansrow.myfname }}"
                 class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %}"
             >
-            <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
+            <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}">
                 {{ processString(ansrow.answertext) }}
                 {# Value for expression manager javascript (use id) ; no need to submit #}
                 {{ C.Html.hiddenField("java"~ansrow.myfid0,ansrow.sessionfname0,({
@@ -145,7 +145,7 @@
             {% endfor %}
 
             {% if labelans1|length > 0 %}  {# if second label set is used #}
-                <td class="dual_scale_separator information-item {% if shownoanswer %}answer_cell_1_ radio-item noanswer-item {% endif %}{% if separatorwidth==0 %} sr-only{% endif %}">
+                <td class="dual_scale_separator information-item {% if shownoanswer %}answer_cell_1_ radio-item noanswer-item {% endif %}{% if separatorwidth==0 %} visually-hidden{% endif %}">
                     {% if shownoanswer %} {# No answer for accessibility and no javascript (but visible-xs-block visible-xs-block even with no js: need reworking) #}
                     <div class="ls-js-hidden">
                         <input

@@ -120,7 +120,7 @@
                             </div>
                         </div>
                     <?php else: ?>
-                        <div class="alert alert-warning same-script-alert hidden"><?= gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.') ?></div>
+                        <div class="alert alert-warning same-script-alert d-none"><?= gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.') ?></div>
                     <?php endif; ?>
 
                     <?= CHtml::textArea(

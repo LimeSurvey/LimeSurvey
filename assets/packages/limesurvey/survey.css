@@ -38,7 +38,7 @@
 
 .form-horizontal .control-label.col-12 {text-align: left;}
 .dir-rtl .form-horizontal .control-label.col-12 {text-align: right;}
-/** ls-label-xs-visibility : set sr-only by default : template can reinit it with initial */
+/** ls-label-xs-visibility : set visually-hidden by default : template can reinit it with initial */
 .ls-label-xs-visibility{
   position:absolute;
   top:auto;

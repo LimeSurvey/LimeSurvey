@@ -47,7 +47,7 @@ var ThemeOptions = function () {
 
         if (generalInherit()) {
             $('#general_inherit_on').prop('checked', true).trigger('change').closest('label').addClass('active');
-            $('.action_hide_on_inherit').addClass('hidden');
+            $('.action_hide_on_inherit').addClass('d-none');
         } else {
             $('#general_inherit_off').prop('checked', true).trigger('change').closest('label').addClass('active');
         }
@@ -258,10 +258,10 @@ var ThemeOptions = function () {
         //hotswapping the general inherit
         $('#general_inherit_on').on('change', function (evt) {
             $('#TemplateConfiguration_options').val('inherit');
-            $('.action_hide_on_inherit').addClass('hidden');
+            $('.action_hide_on_inherit').addClass('d-none');
         });
         $('#general_inherit_off').on('change', function (evt) {
-            $('.action_hide_on_inherit').removeClass('hidden');
+            $('.action_hide_on_inherit').removeClass('d-none');
             updateFieldSettings();
         });
     };

@@ -22,7 +22,7 @@
             </div>
 
             <!-- Right Side -->
-            <div class="col-md-auto pull-right text-end">
+            <div class="col-md-auto float-end text-end">
                 <?php if (!empty($rightSideContent)) : ?>
                     <?= $rightSideContent ?>
                 <?php endif; ?>

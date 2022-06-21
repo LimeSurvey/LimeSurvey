@@ -18,7 +18,7 @@
 <!-- answer -->
 <div class='{{ coreClass }} mb-3 row row-cols-lg-auto g-1 align-items-center'>
     <div class="col-3">
-        <label for='answer{{ name }}' class='sr-only control-label'>
+        <label for='answer{{ name }}' class='visually-hidden control-label'>
             {{ sprintf(gT('Date format: %s'), dateformatdetails) }}
         </label>
         <div id="answer{{ name }}_datetimepicker" class="input-group answer-item date-timepicker-group"
@@ -30,7 +30,7 @@
             }) }}
             <div class="input-group-addon btn btn-primary">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
-                <span class="sr-only"> {{ gT("Open date/time selector") }}</span>
+                <span class="visually-hidden"> {{ gT("Open date/time selector") }}</span>
             </div>
         </div>
         {% if(hidetip) %}

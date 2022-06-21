@@ -3,8 +3,8 @@
     <div id="panel-1">
 
         <!-- Header -->
-        <div class="col-12">
-          <img alt="logo" id="profile-img" class="profile-img-card img-fluid center-block" src="<?php echo LOGO_URL;?>" />
+        <div class="d-flex justify-content-center">
+          <img alt="logo" id="profile-img" class="profile-img-card img-fluid" src="<?php echo LOGO_URL;?>" />
         </div>
 
         <!-- Action Name -->

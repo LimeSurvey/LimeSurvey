@@ -3234,8 +3234,7 @@ class LimeExpressionManager
      * @param array $afelist - the list of array_filter_exclude $qroot codes
      * @return array
      */
-    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist)
-    {
+    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist) {
         if (isset($this->qrootVarName2arrayFilter[$qroot])) {
             if (isset($this->qrootVarName2arrayFilter[$qroot]['array_filter'])) {
                 $_afs = explode(';', $this->qrootVarName2arrayFilter[$qroot]['array_filter']);
@@ -7298,7 +7297,7 @@ class LimeExpressionManager
 
                 if ($arg['hidden']) {
                     $relParts[] = "  // This question should always be hidden : not relevance, hidden question\n";
-                    $relParts[] = "  $('#question" . $arg['qid'] . "').addClass('hidden');\n";
+                    $relParts[] = "  $('#question" . $arg['qid'] . "').addClass('d-none');\n";
                 } else {
                     if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
                         // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity

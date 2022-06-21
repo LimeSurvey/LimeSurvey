@@ -14,9 +14,9 @@
                 <div class="container-fluid">
                     <!-- Header -->
                     <div class="card-body">
-                        <div class="row">
-                            <img alt="logo" id="profile-img" class="profile-img-card img-fluid mx-auto" src="<?php
-                            echo LOGO_URL; ?>"/>
+                    <div class="d-flex justify-content-center">
+                        <img alt="logo" id="profile-img" class="profile-img-card img-fluid mx-auto" src="<?php echo LOGO_URL;?>" />
+                    </div>
                         </div>
 
                         <!-- Action Name -->

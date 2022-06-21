@@ -6,7 +6,7 @@
 ?>
 
 <!-- Save -->
-<button id="save-button" class="btn btn-success pull-right" type="button">
+<button id="save-button" class="btn btn-success float-end" type="button">
     <i class="fa fa-check"></i>
     <?php eT('Save'); ?>
 </button>

@@ -19,11 +19,11 @@
         border-left-color:#555;
     }
 
-    &.pull-left{
+    &.float-start{
         float:none;
     }
 
-    &.pull-left>.dropdown-menu{
+    &.float-start>.dropdown-menu{
         left:-100%;
         margin-left:10px;
         -webkit-border-radius:6px 0 6px 6px;

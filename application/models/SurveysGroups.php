@@ -305,13 +305,13 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id" => $this->gsid));
         $button = "<div class='icon-btn-row'>";
         if ($this->hasPermission('group', 'read')) {
-            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-pencil" aria-hidden="true"></i><span class="visually-hidden">' . gT('Edit survey group') . '</span></a>';
         }
         if ($this->hasPermission('permission', 'read')) {
-            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sPermissionUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">' . gT('Permission') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sPermissionUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="visually-hidden">' . gT('Permission') . '</span></a>';
         }
         if ($this->hasPermission('surveysettings', 'read')) {
-            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sSurveySettingsUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sSurveySettingsUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="visually-hidden">' . gT('Survey settings') . '</span></a>';
         }
         /* Can not delete group #1 + with survey (or move it to hasPermission function ?) */
         if ($this->gsid != 1 && !$this->hasSurveys && $this->hasPermission('group', 'delete')) {

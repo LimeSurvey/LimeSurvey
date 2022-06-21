@@ -30,7 +30,7 @@ echo viewHelper::getViewTestTag('index');
     <?php if($bShowLogo):?>
         <div class="row">
             <div class="jumbotron" id="welcome-jumbotron">
-                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-fluid center-block" />
+                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-fluid" />
                 <p class="d-xs-none custom custom-margin top-25 fs-4 text" ><?php echo PRESENTATION; // Defined in AdminController?></p>
             </div>
         </div>
@@ -128,7 +128,7 @@ echo viewHelper::getViewTestTag('index');
     <?php if( $bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
         <div class="row text-end">
             <div class="col-xl-9 col-md-9  ">
-                <div class='pull-right'>
+                <div class='float-end'>
                 <?php if($showLastSurvey):?>
                     <span id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:");?>
@@ -179,7 +179,7 @@ echo viewHelper::getViewTestTag('index');
             <div class="card-body">
                 <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'>
                     <span class="icon-list" style="font-size: 4em"></span>
-            <span class="sr-only"><?php eT('List surveys');?></span>
+            <span class="visually-hidden"><?php eT('List surveys');?></span>
                 </a><br><br>
                 <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'><?php eT('List surveys');?></a>
             </div>
@@ -192,7 +192,7 @@ echo viewHelper::getViewTestTag('index');
             <div class="card-body">
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>
                     <span class="icon-settings" style="font-size: 4em"></span>
-                    <span class="sr-only"><?php eT('Edit global settings');?></span>
+                    <span class="visually-hidden"><?php eT('Edit global settings');?></span>
                 </a><br><br>
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'><?php eT('Edit global settings');?></a>
             </div>

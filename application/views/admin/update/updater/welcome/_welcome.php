@@ -34,7 +34,7 @@
     </div>
 
     <!-- The key information-->
-    <div  class="col-xl-6 hidden-sm">
+    <div class="col-xl-6 d-md-none d-lg-block">
         <h4><?php eT('ComfortUpdate key information'); ?></h4>
 
         <?php if( isset($serverAnswer->html) ): ?>

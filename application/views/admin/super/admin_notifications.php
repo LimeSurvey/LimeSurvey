@@ -4,7 +4,7 @@
         <a aria-expanded='false' class="nav-link"
             href='#'>
             <span class='fa fa-bell text-muted'></span>
-	    <span class='sr-only'>Notifications</span>
+	    <span class='visually-hidden'>Notifications</span>
         </a>
     </li>
 <?php elseif($showLoader): ?>
@@ -21,7 +21,7 @@
         </a>
         <ul class='dropdown-menu dropdown-menu-end' role='menu'>
             <li>
-                <a class="dropdown-item"><span class='fa fa-spinner fa-spin'></span><span class='sr-only'>Loading notifications</span></a>
+                <a class="dropdown-item"><span class='fa fa-spinner fa-spin'></span><span class='visually-hidden'>Loading notifications</span></a>
             </li>
         </ul>
     </li>

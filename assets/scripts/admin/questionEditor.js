@@ -2021,9 +2021,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
   function showSameScriptForAllLanguagesWarning() {
     if ($('#same_script').is(":checked")) {
-      $('.same-script-alert').removeClass("hidden");
+      $('.same-script-alert').removeClass("d-none");
     } else {
-      $('.same-script-alert').addClass("hidden");
+      $('.same-script-alert').addClass("d-none");
     }
   }
 

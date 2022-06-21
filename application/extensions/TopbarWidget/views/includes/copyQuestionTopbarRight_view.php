@@ -15,7 +15,7 @@
         $("#save-and-close-button-copy-question").click(function(event) {
             event.preventDefault();
             $('#question-title-warning').text("");
-            $('#question-title-warning').addClass('hidden');
+            $('#question-title-warning').addClass('d-none');
             const sid = $('input[name=surveyId]').val();
             const qid = 0;
             const code = $('input[name=question\\[title\\]]').val();
@@ -31,7 +31,7 @@
               success: (data) => {
                 if (data) {
                     $('#question-title-warning').text(data);
-                    $('#question-title-warning').removeClass('hidden');
+                    $('#question-title-warning').removeClass('d-none');
                 } else {
                     $("#submit-copy-question").click();
                 }
