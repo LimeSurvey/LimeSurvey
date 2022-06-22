@@ -29089,102 +29089,37 @@
   };
 
   /**
-   * A method to use the implemented notifier, via ajax or javascript
-   *
-   * @param text string  | The text to be displayed
-   * @param classes string | The classes that will be put onto the inner container
-   * @param styles object | An object of css-attributes that will be put onto the inner container
-   * @param customOptions | possible options are:
-   *                         useHtml (boolean) -> use the @text as html
-   *                         timeout (int) -> the timeout in milliseconds until the notifier will fade/slide out
-   *                         inAnimation (string) -> The jQuery animation to call for the notifier [fadeIn||slideDown]
-   *                         outAnimation (string) -> The jQuery animation to remove the notifier [fadeOut||slideUp]
-   *                         animationTime (int) -> The time in milliseconds the animation will last
+   * This class is responsible for creating alerts after ajax requests.
+   * It should use bootstrap 5 elements
+   * For example: a user is added via a controller action. After the modal is
+   * closed (by clicking button "Add") a success alert should be shown.
    */
   window.LS = window.LS || {};
 
-  var NotifyFader = /*#__PURE__*/function () {
-    function NotifyFader() {
-      _classCallCheck(this, NotifyFader);
-
-      this.count = 0;
+  var AjaxAlerts = /*#__PURE__*/function () {
+    function AjaxAlerts() {
+      _classCallCheck(this, AjaxAlerts);
     }
 
-    _createClass(NotifyFader, [{
-      key: "increment",
-      value: function increment() {
-        this.count = this.count + 1;
-      }
-    }, {
-      key: "decrement",
-      value: function decrement() {
-        this.count = this.count - 1;
-      }
-    }, {
-      key: "getCount",
-      value: function getCount() {
-        return this.count;
-      }
-    }, {
-      key: "create",
-      value: function create(text, classes, styles, customOptions) {
-        var _this = this;
-
-        this.increment();
-        customOptions = customOptions || {};
-        styles = styles || {}; // NB: Class "well" will overide any background set, like bg-danger. Only use well-lg.
-
-        classes = classes || "well-lg";
-        var options = {
-          useHtml: customOptions.useHtml || true,
-          timeout: customOptions.timeout || 3500,
-          inAnimation: customOptions.inAnimation || "slideDown",
-          outAnimation: customOptions.outAnimation || "slideUp",
-          animationTime: customOptions.animationTime || 450
-        };
-        var container = $("<div> </div>");
-        var newID = "notif-container_" + this.getCount();
-        container.addClass(classes);
-        container.css(styles);
-
-        if (options.useHtml) {
-          container.html(text);
-        } else {
-          container.text(text);
-        }
-
-        $('#notif-container').clone().attr('id', newID).css({
-          display: 'none',
-          top: 8 * this.getCount() + "%",
-          position: 'fixed',
-          left: "15%",
-          width: "70%",
-          'z-index': 3500
-        }).appendTo($('#notif-container').parent()).html(container); // using the option inAnimation as funtion of jquery
-
-        $('#' + newID)[options.inAnimation](options.animationTime, function () {
-          var remove = function remove() {
-            $('#' + newID)[options.outAnimation](options.animationTime, function () {
-              $('#' + newID).remove();
-
-              _this.decrement();
-            });
-          };
-
-          $(_this).on('click', remove);
-
-          if (options.timeout) {
-            setTimeout(remove, options.timeout);
-          }
-        });
+    _createClass(AjaxAlerts, [{
+      key: "createAlert",
+      value: function createAlert(message, alertType) {
+        //bs5 alert types (e.g. alter-success)
+        var alertTypes = ['success', 'primary', 'secondary', 'danger', 'warning', 'info', 'light', 'dark'];
+        var alertDefault = 'success';
+        var currentAlertType = alertTypes.includes(alertType) ? alertType : alertDefault;
+        var openDivTag = '<div class="alert alert-' + currentAlertType + ' alert-dismissible" role="alert">';
+        var buttonDismiss = '<button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>';
+        $('#notif-container').append(openDivTag + buttonDismiss + message + '</div>');
       }
     }]);
 
-    return NotifyFader;
+    return AjaxAlerts;
   }();
-  window.LS.LsGlobalNotifier = window.LS.LsGlobalNotifier || new NotifyFader();
-  function notifyFader (text, classes, styles, customOptions) {
-    window.LS.LsGlobalNotifier.create(text, classes, styles, customOptions);
+
+  window.LS.LsGlobalNotifier = window.LS.LsGlobalNotifier || new AjaxAlerts();
+  function ajaxAlerts (message, alertType) {
+    window.LS.LsGlobalNotifier.createAlert(message, alertType);
   }
 
   /**
@@ -29195,7 +29130,7 @@
     // Check type of response and take action accordingly
     if (response == '') {
       console.error('No response from server');
-      notifyFader.create('No response from server', 'alert-danger');
+      ajaxAlerts('No response from server', 'danger');
       return false;
     }
 
@@ -29209,13 +29144,13 @@
 
 
     if (!response.hasPermission) {
-      notifyFader(response.noPermissionText, 'well-lg bg-danger text-center');
+      ajaxAlerts(response.noPermissionText, 'danger');
       return false;
     } // Error popup
 
 
     if (response.error) {
-      notifyFader(response.error.message, 'well-lg bg-danger text-center');
+      ajaxAlerts(response.error.message, 'danger');
       return false;
     } // Put HTML into element.
 
@@ -29228,7 +29163,7 @@
 
 
     if (response.success) {
-      notifyFader(response.success, 'well-lg bg-primary text-center');
+      ajaxAlerts(response.success, 'success');
     } // Modal popup
 
 
@@ -41270,9 +41205,9 @@
       var LsNameSpace = lodash.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, {
         AjaxHelper: AjaxHelper
       }, {
-        notifyFader: notifyFader
-      }, {
         createUrl: createUrl
+      }, {
+        ajaxAlerts: ajaxAlerts
       }, {
         EventBus: EventBus$1
       }, subquestionAndAnswersGlobalMethods, notificationSystem, gridAction);

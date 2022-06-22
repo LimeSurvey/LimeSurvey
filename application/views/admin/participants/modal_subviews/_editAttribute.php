@@ -228,7 +228,7 @@
                         if(result.success){
                             formGroup.fadeOut(400, function(){formGroup.remove()});
                         } else {
-                            window.LS.notifyFader(result.errorMessage, 'well-lg bg-danger text-center');
+                            window.LS.ajaxAlerts(result.errorMessage, 'danger');
                         }
                     }
                 })
