@@ -1832,6 +1832,20 @@ input[type="checkbox"]:disabled:checked:after,
     box-shadow: inset 0 -2px 0 #4caf50;
 }
 
+/* Improve differnce between checked/non-checked buttons #17300 */
+.btn-group label.btn::before {
+    content: "\f1db";
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 14px;
+    font-size: inherit;
+    text-rendering: auto;
+    display:inline-block;
+    margin: 0 0.2em;
+}
+.btn-group label.btn.active::before {
+    content: "\f058";
+}
+
 /* jqGrid */
 .ui-widget-content {
     border: none;
