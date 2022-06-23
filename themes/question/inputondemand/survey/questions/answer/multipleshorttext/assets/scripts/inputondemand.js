@@ -51,10 +51,6 @@ var InputOnDemanControlGenerator = function(containerId, options){
         // Then we should show all non-empty lines
         controlListItemVisibility();
 
-        //$list.find('.selector--inputondemand-list-input').first().closest('.selector--inputondemand-list-item').removeClass('hidden');
-        console.log('INPUTONDEMAND',  $list.find('.selector--inputondemand-list-input'));
-        console.log('INPUTONDEMAND',  $list.find('.selector--inputondemand-list-input').first())
-        console.log('INPUTONDEMAND',  $list.find('.selector--inputondemand-lis-input').first().closest('.selector--inputondemand-list-item'))
         $button.on('click', function(e){
             e.preventDefault();
             addLine();
