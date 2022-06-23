@@ -876,7 +876,12 @@ class export extends Survey_Common_Action
                 switch ($sExportType) {
                     // Export archives for active surveys
                     case 'archive':
-                        if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
+                        if (
+                            ($oSurvey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
+                            || !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+                        ) {
+                            $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
+                        } else {
                             if ($oSurvey->isActive) {
                                 $archiveName = $this->_exportarchive($iSurveyID, false);
 
@@ -894,8 +899,6 @@ class export extends Survey_Common_Action
                             } else {
                                 $aResults[$iSurveyID]['error'] = gT("Not active.");
                             }
-                        } else {
-                            $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
                         }
                     break;
                     // Export printable archives for all selected surveys
@@ -965,6 +968,13 @@ class export extends Survey_Common_Action
     private function _exportarchive($iSurveyID, $bSendToBrowser = true)
     {
         $survey = Survey::model()->findByPk($iSurveyID);
+
+        if (
+            ($survey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
+            || !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
         $aSurveyInfo = getSurveyInfo($iSurveyID);
 
