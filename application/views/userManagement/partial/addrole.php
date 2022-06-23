@@ -20,7 +20,7 @@ Yii::app()->getController()->renderPartial(
                 <?=gT("Note: Adding role(s) to a user will overwrite any individual user permissions!")?>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="roleselector"><?=gT("Select role(s):")?></label>
             <select name="roleselector[]" id="roleselector"  class="form-select select" style="width:150px;" multiple>
                 <?php

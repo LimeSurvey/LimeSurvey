@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
 } ?> center-box">
     <div class="col-12 col-xl-6">
         <!-- Survey data policy checkbox label -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class="form-label"><?php eT("Survey data policy checkbox label:"); ?></label>
             <div class="">
                 <?php echo CHtml::textField("dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}",
@@ -51,7 +51,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
 <div class="row">
     <div class="col-12 col-xl-6">
         <!-- Survey data policy message -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class=" form-label" for='datasec_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Survey data policy message:"); ?></label>
             <div class="">
                 <div class="htmleditor input-group">
@@ -73,7 +73,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
     </div>
     <div class="col-12 col-xl-6">
         <!-- Survey data policy error message -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class=" form-label" for='datasecerror_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Survey data policy error message:"); ?></label>
             <div class="">
                 <div class="htmleditor input-group">

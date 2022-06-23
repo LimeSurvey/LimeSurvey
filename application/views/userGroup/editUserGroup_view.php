@@ -8,12 +8,12 @@
     <div class="row">
         <?php echo CHtml::form(array("userGroup/edit/ugid/{$ugid}"), 'post', array('class' => 'col-lg-6 offset-lg-3', 'id' => 'usergroupform', 'name' => 'usergroupform')); ?>
             
-            <div class="form-group">
+            <div class="mb-3">
                 <label for='name'><?php eT("Name:"); ?></label>
                 <input type='text' size='50' maxlength='20' id='name' name='name' value="<?php echo htmlspecialchars($model['name'], ENT_QUOTES, 'UTF-8'); ?>" class="form-control" />
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label for='description'><?php eT("Description:"); ?></label>
                 <textarea cols='50' rows='4' id='description' name='description' class="form-control"><?php echo htmlspecialchars($model['description'], ENT_QUOTES, 'UTF-8'); ?></textarea>
             </div>

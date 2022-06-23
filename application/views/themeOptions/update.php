@@ -205,56 +205,56 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                 <?php echo CHtml::hiddenField('translationInheritedValue', gT("Inherited value:") . ' '); ?>
 
                                 <div class="row">
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <?php echo $form->labelEx($model, 'files_css'); ?>
                                         <?php echo $form->textArea($model, 'files_css', ['rows' => 6, 'cols' => 50]); ?>
                                         <?php echo $form->error($model, 'files_css'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <?php echo $form->labelEx($model, 'files_js'); ?>
                                         <?php echo $form->textArea($model, 'files_js', ['rows' => 6, 'cols' => 50]); ?>
                                         <?php echo $form->error($model, 'files_js'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <?php echo $form->labelEx($model, 'files_print_css'); ?>
                                         <?php echo $form->textArea($model, 'files_print_css', ['rows' => 6, 'cols' => 50]); ?>
                                         <?php echo $form->error($model, 'files_print_css'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <?php echo $form->labelEx($model, 'options'); ?>
                                         <?php echo $form->textArea($model, 'options', ['rows' => 6, 'cols' => 50]); ?>
                                         <?php echo $form->error($model, 'options'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <?php echo $form->labelEx($model, 'cssframework_name'); ?>
                                         <?php echo $form->textField($model, 'cssframework_name', ['size' => 45, 'maxlength' => 45]); ?>
                                         <?php echo $form->error($model, 'cssframework_name'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <?php echo $form->labelEx($model, 'cssframework_css'); ?>
                                         <?php echo $form->textArea($model, 'cssframework_css', ['rows' => 6, 'cols' => 50]); ?>
                                         <?php echo $form->error($model, 'cssframework_css'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <?php echo $form->labelEx($model, 'cssframework_js'); ?>
                                         <?php echo $form->textArea($model, 'cssframework_js', ['rows' => 6, 'cols' => 50]); ?>
                                         <?php echo $form->error($model, 'cssframework_js'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <?php echo $form->labelEx($model, 'packages_to_load'); ?>
                                         <?php echo $form->textArea($model, 'packages_to_load', ['rows' => 6, 'cols' => 50]); ?>
                                         <?php echo $form->error($model, 'packages_to_load'); ?>

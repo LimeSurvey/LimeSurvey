@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    <div class='form-group col-12 text-center'>
+    <div class='mb-3 col-12 text-center'>
         <input class='btn btn-outline-secondary' type="button" name="attmapcancel" id="attmapcancel" value="<?php eT("Cancel") ?>" />
         <input class='btn btn-outline-secondary' type="button" name="attreset" id="attreset" value="<?php eT("Reset") ?>" onClick="window.location.reload();" />
         <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT("Continue"); ?>" />

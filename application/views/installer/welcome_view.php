@@ -8,7 +8,7 @@
         <?php echo CHtml::form(array("installer/welcome"), 'post', array('class' => 'form-vertical')); ?>
             <legend><?php eT('Language selection'); ?></legend>
             <div class="row">
-                <div class='form-group'>
+                <div class='mb-3'>
                     <div class="span6 col-12">
                         <?php
                             echo CHtml::label(gT('Please select your preferred language:'), 'installerLang', array('class' => 'form-label'));

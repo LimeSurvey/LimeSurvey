@@ -33,7 +33,7 @@ Yii::app()->getController()->renderPartial(
              'required' => 'required'
         );
     ?>
-        <div class='form-group'>
+        <div class='mb-3'>
             <label class='form-label '>
                 <?php eT('First name:'); ?>
             </label>
@@ -47,7 +47,7 @@ Yii::app()->getController()->renderPartial(
                 <?=$form->textField($model, 'lastname')?>
             </div>
         </div>
-        <div class='form-group'>
+        <div class='mb-3'>
             <label class='form-label '>
                 <?php eT('E-mail:'); ?>
             </label>
@@ -55,13 +55,13 @@ Yii::app()->getController()->renderPartial(
                 <?=$form->textField($model, 'email')?>
             </div>
         </div>
-        <div class='form-group'>
+        <div class='mb-3'>
             <label class='form-label '><?php eT("Language:"); ?></label>
             <div class=''>
                 <?=$form->dropDownList($model, 'language', $model->languageOptions, ['empty' => gT('Select language...')])?>
             </div>
         </div>
-        <div class='form-group'>
+        <div class='mb-3'>
             <label class='form-label '><?php eT("Blacklist user:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -79,7 +79,7 @@ Yii::app()->getController()->renderPartial(
         <!-- Change owner -->
         <?php if ($model->isOwnerOrSuperAdmin()): ?>
         <?php  ?>
-            <div class='form-group'>
+            <div class='mb-3'>
                 <label class='form-label '><?php eT("Owner:"); ?></label>
                 <div class=''>
                 <?php
@@ -99,7 +99,7 @@ Yii::app()->getController()->renderPartial(
 
             <!-- Two inputs on each row -->
             <?php if ($i % 2 == 0): ?>
-                <div class='form-group'>
+                <div class='mb-3'>
             <?php endif; ?>
 
             <?php switch ($attribute['attribute_type']):
@@ -121,7 +121,7 @@ Yii::app()->getController()->renderPartial(
 
             <?php endswitch; ?>
 
-            <!-- Close form-group div -->
+            <!-- Close mb-3 div -->
             <?php if ($i % 2 == 0): ?>
                 </div>
             <?php endif; ?>

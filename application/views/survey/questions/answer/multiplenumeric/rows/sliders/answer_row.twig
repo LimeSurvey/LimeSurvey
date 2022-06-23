@@ -30,7 +30,7 @@
  */
 #}
 
-<li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item slider-item form-group {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
+<li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item slider-item mb-3 {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
     <label id="label-{{ myfname }}" class='control-label col-12 col-md-{{ sLabelWidth }}{% if sLabelWidth == 0 %} d-none{% endif %}' for="answer{{myfname}}">
         {{ processString(labelText) }}
     </label>

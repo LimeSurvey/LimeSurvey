@@ -30,7 +30,7 @@
         </div>
 
         <div class="card-body">
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="csv_vv_file" class=" form-label">
                     <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="noid" class=" form-label">
                     <?php eT("Exclude record IDs?"); ?>
                 </label>
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="form-group" id="insertmethod-container">
+            <div class="mb-3" id="insertmethod-container">
                 <label for="insertmethod" class=" form-label">
                     <?php eT("When an imported record matches an existing record ID:"); ?>
                 </label>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="notfinalized" class=" form-label">
                     <?php eT("Import as not finalized answers?"); ?>
                 </label>
@@ -86,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="vvcharset" class=" form-label">
                     <?php eT("Character set of the file:"); ?>
                 </label>
@@ -95,7 +95,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="dontdeletefirstline" class=" form-label" title='<?php eT("With real vv file : questions code are in second line"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("First line contains the code of questions:"); ?>
                 </label>
@@ -111,7 +111,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="forceimport" class=" form-label" title='<?php eT("Try to import even if question codes don't match"); ?>' data-bs-toggle="tooltip" data-bs-placement="right">
                     <?php eT("Force import:"); ?>
                 </label>

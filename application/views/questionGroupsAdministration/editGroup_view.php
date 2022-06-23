@@ -34,14 +34,14 @@ $count = 0;
                             echo "show active";
                             $count++;
                         } ?> center-box">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class="form-label "
                                        id="question-group-title-<?= $aGroupData[$i]['language'] ?>"><?php eT("Title:"); ?></label>
                                 <div class="">
                                     <?php echo CHtml::textField("questionGroupI10N[{$aGroupData[$i]['language']}][group_name]", $aGroupData[$i]['group_name'], array('class' => 'form-control', 'size' => "80", 'maxlength' => '200', 'id' => "group_name_{$aGroupData[$i]['language']}")); ?>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class=" form-label"
                                        for="description_<?php echo $aGroupData[$i]['language']; ?>"><?php eT("Description:"); ?></label>
                                 <div class="">
@@ -54,7 +54,7 @@ $count = 0;
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label class="form-label " id="randomization-group"><?php eT("Randomization group:"); ?></label>
                     <div class="">
                         <?php echo CHtml::textField("questionGroup[randomization_group]", $oQuestionGroup['randomization_group'], array('class' => 'form-control', 'size' => "20", 'maxlength' => '20', 'id' => "randomization_group")); ?>
@@ -62,7 +62,7 @@ $count = 0;
                 </div>
 
                 <!-- Relevance Equation -->
-                <div class="form-group">
+                <div class="mb-3">
                     <label class="form-label " id="relevance-group"><?php eT("Condition:"); ?></label>
                     <div class="input-group">
                         <div class="input-group-addon">{</div>

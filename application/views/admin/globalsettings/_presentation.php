@@ -9,7 +9,7 @@
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='repeatheadings'><?php eT("Repeat headings in array questions every X subquestions:"); ?></label>
                 <div class="">
                     <input class="form-control" id='repeatheadings' name='repeatheadings' value='<?php echo getGlobalSetting('repeatheadings'); ?>'
@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='pdffontsize'><?php eT("Font size of PDFs:"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' id='pdffontsize' name='pdffontsize'
@@ -26,7 +26,7 @@
             </div>
 
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='pdflogowidth'><?php eT("Width of PDF header logo:"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' size='5' id='pdflogowidth' name='pdflogowidth'
@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='pdfheadertitle'><?php eT("PDF header title (if empty, site name will be used):"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' id='pdfheadertitle' size='50' maxlength='256' name='pdfheadertitle'
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='pdfheaderstring'><?php eT("PDF header string (if empty, survey name will be used):"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' id='pdfheaderstring' size='50' maxlength='256' name='pdfheaderstring'
@@ -55,7 +55,7 @@
         </div>
         <div class="col-6">
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='pdfshowsurveytitle'><?php eT("Show survey title in export PDFs:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -69,7 +69,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='pdfshowheader'><?php eT("Show header in answers export PDFs:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='bPdfQuestionFill'><?php eT("Add gray background to questions in PDF:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -97,7 +97,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='bPdfQuestionBold'><?php eT("PDF questions in bold:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -111,7 +111,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='bPdfQuestionBorder'><?php eT("Borders around questions in PDF:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -125,7 +125,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='bPdfResponseBorder'><?php eT("Borders around responses in PDF:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

@@ -80,7 +80,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         <?php if ($bShowAllOptions === true) { ?>
             <?php if (!$oSurvey->isNewRecord): ?>
                 <!-- Survey Languages -->
-                <div class="form-group">
+                <div class="mb-3">
                     <label class=" form-label" for='additional_languages'><?php eT("Survey languages:"); ?></label>
                     <div class="">
                         <?php
@@ -105,7 +105,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     </div>
                 </div>
                 <!-- Base language -->
-                <div class="form-group">
+                <div class="mb-3">
                     <label class=" form-label"><?php eT("Base language:"); ?></label>
                     <div class="">
                         <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
@@ -125,7 +125,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         <!-- Survey owner -->
         <?php
         if (isset($oSurvey->owner_id) && Yii::app()->session['loginID'] == $oSurvey->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read')):?>
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='owner_id'><?php eT("Survey owner:"); ?></label>
                 <div class=""><?php
                     Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2',
@@ -146,7 +146,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         <?php endif; ?>
 
         <!-- Administrator -->
-        <div class="form-group">
+        <div class="mb-3">
             <?php //Switch for creation/editing ?>
             <?php $admin = $oSurvey->admin; ?>
             <div class="row">
@@ -172,7 +172,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         </div>
 
         <!-- Admin email -->
-        <div class="form-group">
+        <div class="mb-3">
             <?php //Switch for creation/editing ?>
             <?php $adminemail = $oSurvey->adminemail; ?>
             <div class="row">
@@ -198,7 +198,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         </div>
 
         <!-- Bounce email -->
-        <div class="form-group">
+        <div class="mb-3">
             <?php //Switch for creation/editing ?>
             <?php $bounce_email = $oSurvey->bounce_email; ?>
             <div class="row">
@@ -226,7 +226,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
 
         <?php if ($bShowAllOptions === true) { ?>
             <!-- Fax to -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='faxto'><?php eT("Fax to:"); ?></label>
                 <div class="">
                     <?php echo CHtml::textField('faxto',
@@ -245,7 +245,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
 
         <?php else: ?>
             <!-- End URL -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='url'><?php eT("End URL:"); ?></label>
                 <div class="">
                     <input type='text' class="form-control" id='url' name='url' placeholder="http://example.com"/>
@@ -253,7 +253,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             </div>
 
             <!-- URL description -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='urldescrip'><?php eT("URL description:"); ?></label>
                 <div class="">
                     <input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value='' class="form-control" placeholder="<?php eT('Some description text'); ?>"/>
@@ -261,7 +261,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             </div>
 
             <!-- Date format -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='dateformat'><?php eT("Date format:"); ?></label>
                 <div class="">
                     <?php echo CHtml::listBox('dateformat', $sDateFormatDefault, $aDateFormatData, array('id' => 'dateformat', 'size' => '1', 'class' => 'form-control')); ?>
@@ -269,7 +269,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             </div>
 
             <!-- Decimal mark -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='numberformat'><?php eT("Decimal mark:"); ?></label>
                 <div class="">
                     <?php echo CHtml::listBox('numberformat', $sRadixDefault, $aRadixPointData, array('id' => 'numberformat', 'size' => '1', 'class' => 'form-control')); ?>
@@ -277,7 +277,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             </div>
 
             <!-- Administrator -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='admin'><?php eT("Administrator:"); ?></label>
                 <div class="">
                     <input type='text' size='50' id='admin' name='admin' class="form-control" value='<?php echo $owner['full_name']; ?>'/>
@@ -285,7 +285,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             </div>
 
             <!-- Admin email -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='adminemail'><?php eT("Administrator email address:"); ?></label>
                 <div class="">
                     <input type='email' size='30' class="form-control" id='adminemail' name='adminemail' value='<?php echo $owner['email']; ?>'/>
@@ -293,7 +293,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             </div>
 
             <!-- Bounce Email -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='bounce_email'><?php eT("Bounce email address:"); ?></label>
                 <div class="">
                     <input type='email' size='50' class="form-control" id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email']; ?>'/>
@@ -305,7 +305,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
 
         <!-- Survey Group -->
         <?php if ($bShowAllOptions === true) { ?>
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='gsid'><?php eT("Group:"); ?></label>
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
@@ -323,7 +323,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         <?php } ?>
 
         <!-- Format -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class=" form-label" for='format'><?php eT("Format:"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -335,7 +335,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         </div>
         <!-- Template -->
 
-        <div class="form-group">
+        <div class="mb-3">
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
             <div class="">
                 <select id='template' class="form-select" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'

@@ -70,7 +70,7 @@
                         </h2>
                         <div id="collapse-copy" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-copy">
                             <div class="accordion-body">
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label class=" form-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
                                     <div>
                                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -83,7 +83,7 @@
                                         ]); ?>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label class=" form-label" for='copyanswers'><?php eT("Copy answer options?"); ?></label>
                                     <div>
                                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -96,7 +96,7 @@
                                         ]); ?>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label class=" form-label" for='copydefaultanswers'><?php eT("Copy default answers?"); ?></label>
                                     <div>
                                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -109,7 +109,7 @@
                                         ]); ?>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label class="form-label" for='copyattributes'>
                                         <?php eT("Copy question settings?"); ?>
                                     </label>
@@ -124,7 +124,7 @@
                                         ]); ?>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label class=" form-label" for='gid'><?php eT("Question group:"); ?></label>
                                     <div class="">
                                         <select name='gid' id='gid' class="form-select" >

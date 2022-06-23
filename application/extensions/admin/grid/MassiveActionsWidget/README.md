@@ -204,7 +204,7 @@ The form will not be posted to the url directly by the ajax request. Indeed, the
 ```html
 <!-- The form itself is optional-->
 <form class="custom-modal-datas">                                               
-    <div class="form-group">
+    <div class="mb-3">
         <label class="col-md-4 control-label"><?php eT("Muh Value:"); ?></label>
         <div class="col-md-8">
             <!-- Thoses input have the class "custom-data", they will be posted by the ajax request -->

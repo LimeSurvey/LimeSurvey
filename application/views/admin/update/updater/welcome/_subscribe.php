@@ -30,7 +30,7 @@ if( isset($serverAnswer->html) )
     $url = Yii::app()->createUrl('/admin/update/sa/submitkey');
     echo CHtml::beginForm($url, 'post', array("id"=>"submitKeyForm"));
     echo CHtml::hiddenField('destinationBuild', Yii::app()->request->getParam('destinationBuild',''));?>
-    <div class="form-group">
+    <div class="mb-3">
         <?php
         echo CHtml::label(gT('Enter your update key:'),'inputKey', array('class'=>'col-md-2'));
         ?>

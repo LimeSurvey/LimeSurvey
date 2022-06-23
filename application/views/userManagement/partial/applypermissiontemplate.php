@@ -16,7 +16,7 @@
                     Assign permission level to user:
                 </div>
             </div>
-            <div class="row form-group ls-space margin top-5 bottom-5">
+            <div class="row mb-3 ls-space margin top-5 bottom-5">
                 <label class="form-label">
                     Permission level: 
                 </label>
@@ -25,7 +25,7 @@
                     <option value="classmanager">Group manager</option>
                 </select>
             </div>
-            <div class="row form-group ls-space margin top-5 bottom-5" id="smk--selector--surveypermission" style="display:none;">
+            <div class="row mb-3 ls-space margin top-5 bottom-5" id="smk--selector--surveypermission" style="display:none;">
                 <label class="form-label">
                     Umfragen zur Berechtigung auswählen: 
                 </label>

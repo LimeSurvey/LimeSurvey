@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <?php if (count($tokenids) > 0): ?>
-                        <div class='form-group'>
+                        <div class='mb-3'>
                             <label class='form-label '><?php eT("Send reminder to participant ID(s):"); ?></label>
                             <div class=''>
                                 <?php echo short_implode(", ", "-", (array)$tokenids); ?>
@@ -33,7 +33,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <label class='form-label '
                                for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
                         <div>
@@ -48,7 +48,7 @@
                         </div>
                     </div>
 
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <?php
                         echo CHtml::label(gT("Bypass date control before sending email:"), 'bypassdatecontrol', [
                             'title' => gT("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
@@ -70,7 +70,7 @@
                     </div>
 
                     <!-- Only partial responses -->
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <label class='form-label '
                                for='partialonly'><?php eT("Send email only to participants with partial responses:"); ?></label>
                         <div>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="col-md-6">
                     <!-- Max reminders -->
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <label class='form-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
                         <div class=''>
                             <input type="text" id="maxremindercount" class="form-control" size="25" value=""
@@ -96,7 +96,7 @@
                     </div>
 
                     <!-- Min days between reminders -->
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <label class='form-label '
                                for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
                         <div class=''>
@@ -143,7 +143,7 @@
                             echo 'show active';
                         } ?>">
 
-                            <div class='form-group'>
+                            <div class='mb-3'>
                                 <label class='form-label '
                                        for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
                                 <div class=''>
@@ -151,7 +151,7 @@
                                 </div>
                             </div>
 
-                            <div class='form-group'>
+                            <div class='mb-3'>
                                 <label class='form-label '
                                        for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
                                 <div class=''>
@@ -159,7 +159,7 @@
                                 </div>
                             </div>
 
-                            <div class='form-group'>
+                            <div class='mb-3'>
                                 <label class='form-label '
                                        for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                 <div class="htmleditor ">
@@ -171,7 +171,7 @@
                     <?php } ?>
                 </div>
                 <div class="row">
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <div class=''></div>
                         <div class=''>
                             <?php echo CHtml::submitButton(gT("Send Reminders", 'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>

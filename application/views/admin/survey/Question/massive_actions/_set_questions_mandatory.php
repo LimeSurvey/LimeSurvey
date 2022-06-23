@@ -9,7 +9,7 @@ $surveyid = App()->request->getParam('surveyid', 0);
 
 ?>
 <form class="custom-modal-datas form-horizontal">
-    <div id='MandatorySelection' class="form-group">
+    <div id='MandatorySelection' class="mb-3">
         <label class="col-md-4 form-label"><?php eT("Mandatory:"); ?></label>
         <div class="col-md-8">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

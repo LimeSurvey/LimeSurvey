@@ -94,7 +94,7 @@
             </div>
         </div>
     </div>
-    <div class='form-group col-12 text-center'>
+    <div class='mb-3 col-12 text-center'>
         <input class='btn btn-outline-secondary' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
         <input class='btn btn-outline-secondary' type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
         <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />

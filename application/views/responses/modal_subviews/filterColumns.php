@@ -35,7 +35,7 @@
                             <?php eT("Clear selection"); ?>
                         </button>
                     </div>
-                    <div class="form-group responses-multiselect-checkboxes">
+                    <div class="mb-3 responses-multiselect-checkboxes">
                         <?php foreach ($filterableColumns as $columnName => $columnTitle): ?>
                             <div class="checkbox">
                                 <label>
