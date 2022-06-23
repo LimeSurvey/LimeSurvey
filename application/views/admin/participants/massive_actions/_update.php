@@ -10,7 +10,7 @@
 
 <form class="custom-modal-datas form form-horizontal">
 	<div class="container-fluid">
-        <div class="mb-3">
+        <div class="ex-form-group mb-3">
             <div class="col-md-1">
                 <label class="" >
                 <?php eT("Modify"); ?>
@@ -26,7 +26,7 @@
             )
         ) {
         ?>
-            <div class="mb-3">
+            <div class="ex-form-group mb-3">
                 <div class="col-md-1">
                     <label class="" >
                         <input type="checkbox" class="action_check_to_keep_old_value" />
@@ -38,7 +38,7 @@
                 </div>
             </div>
         <?php } ?>
-        <div class="mb-3">
+        <div class="ex-form-group mb-3">
             <div class="col-md-1">
                 <label class="" >
                     <input type="checkbox" class="action_check_to_keep_old_value" />
@@ -50,7 +50,7 @@
             </div>
         </div>
         
-		<div class="mb-3">
+		<div class="ex-form-group mb-3">
             <div class="col-md-1">
                 <label class="" >
                     <input type="checkbox" class="action_check_to_keep_old_value" />
@@ -70,16 +70,15 @@
 <script>
 $('.action_check_to_keep_old_value').on('click', function(){
         var currentValue = !$(this).prop('checked');
-        var myFormGroup = $(this).closest('.mb-3');
-        
-        $(this).closest('.mb-3').find('input:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
-        $(this).closest('.mb-3').find('select').prop('disabled', currentValue)
+        var myFormGroup = $(this).closest('.ex-form-group');
+
+        myFormGroup.find('input:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
+        myFormGroup.find('select').prop('disabled', currentValue)
 
         if(currentValue){
-            $(this).closest('.mb-3').find('.selector_submitField').val('lskeep');
+            myFormGroup.find('.selector_submitField').val('lskeep');
         } else {
-            $(this).closest('.mb-3').find('input.selector_submitField').val('');
+            myFormGroup.find('input.selector_submitField').val('');
         }
-
     });
 </script>
