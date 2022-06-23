@@ -29,6 +29,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
 <div id="editdatasecele-<?php echo $i; ?>" class="tab-pane fade <?php if ($i == 0) {
     echo "show active";
 } ?> center-box">
+<div class="row">
     <div class="col-12 col-xl-6">
         <!-- Survey data policy checkbox label -->
         <div class="form-group">
