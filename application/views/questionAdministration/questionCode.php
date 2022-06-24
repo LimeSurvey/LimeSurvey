@@ -17,7 +17,7 @@
             value="<?= !empty($newTitle) ? $newTitle : $question->title; ?>"
             required="true"
             maxlength="20"
-            onfocusout="LS.questionEditor.checkQuestionCodeUniqueness($(this).val(), <?= $question->qid; ?>)"
+            data-qid="<?= (empty($question->qid) || !empty($newQid)) ? 0 : $question->qid; ?>"
         />
 
         <!--
@@ -28,6 +28,6 @@
         />
         -->
     </div>
-    <p id="question-code-unique-warning" class="d-none text-warning"><?= gT('Question codes must be unique.'); ?></p>
+    <p id="question-code-unique-warning" class="d-none text-warning"></p>
 </div>
 

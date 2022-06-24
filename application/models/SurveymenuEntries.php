@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{surveymenu_entries}}".
  *
- * The followings are the available columns in table '{{surveymenu_entries}}':
+ * The following are the available columns in table '{{surveymenu_entries}}':
  * @property integer $id
  * @property integer $menu_id
  * @property integer $user_id
@@ -30,7 +30,7 @@
  * @property integer $created_by
  * @property integer $active
  *
- * The followings are the available model relations:
+ * The following are the available model relations:
  * @property Surveymenu $menu
  */
 class SurveymenuEntries extends LSActiveRecord
@@ -309,7 +309,7 @@ class SurveymenuEntries extends LSActiveRecord
     {
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 

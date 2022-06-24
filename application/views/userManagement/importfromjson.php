@@ -43,7 +43,7 @@ echo viewHelper::getViewTestTag('usersIndex');
         </div>
         <div class="row">
             <div class="col-12">
-                <input type="submit" class="btn btn-default" name="submit" value="Submit and save" />
+                <input type="submit" class="btn btn-outline-secondary" name="submit" value="Submit and save" />
             </div>
         </div>
         </form>

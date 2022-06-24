@@ -3,12 +3,16 @@
 /**
  * LimeGridView class file.
  * Needed to set Scriptfile and script to good position
+ *
+ *
  */
 
 Yii::import('application.extensions.admin.grid.CLSGridView'); //changed for bt5
 
 /**
  * LimeSurvey Zii grid view.
+ *
+ * @deprecated use CLSGridView instead
  */
 class LimeGridView extends CLSGridView
 {

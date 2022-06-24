@@ -1566,7 +1566,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     return duplicateCodes.length == 0;
   }
-
+  
   /**
    * Return a function that can be used to check code uniqueness.
    * Used by subquestions and answer options.
@@ -1787,10 +1787,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @param {number} qid Question id (0 when creating new question)
      * @return {void}
      */
-    checkQuestionCodeUniqueness: function(code, qid) {
+    checkQuestionValidateTitle: function(code, qid) {
+      $('#question-code-unique-warning').text("");
       $('#question-code-unique-warning').addClass('d-none');
       $.ajax({
-        url: languageJson.checkQuestionCodeIsUniqueURL,
+        url: languageJson.checkQuestionValidateTitleURL,
         method: 'GET',
         data: {
           sid,
@@ -1798,8 +1799,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data !== 'true') {
+          if (data) {
             $('#question-code-unique-warning').removeClass('d-none');
+            $('#question-code-unique-warning').text(data);
+          } else {
+              // Continue
           }
         },
         error: (data) => {
@@ -1948,7 +1952,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       };
 
       $.ajax({
-        url: languageJson.checkQuestionCodeIsUniqueURL,
+        url: languageJson.checkQuestionValidateTitleURL,
         method: 'GET',
         data: {
           sid,
@@ -1956,7 +1960,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data === 'true') {
+          if (data) {
+              $('#question-code-unique-warning').text(data);
+              $('#question-code-unique-warning').removeClass('d-none');
+          } else {
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
@@ -1973,12 +1980,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 button.click();
               }
             }
-          } else {
             $('#question-code-unique-warning').removeClass('d-none');
           }
         },
         error: (response) => {
-          alert('Internal error in checkIfSaveIsValid: ' + response);
+          alert('Internal error in checkQuestionValidateTitle: ' + response);
           throw 'abort';
         }
       });
@@ -1998,11 +2004,27 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
+  $("#questionCode").on('blur', function() {
+    let qid = 0;
+    if ($(this).data('qid')) {
+      qid = $(this).data('qid');
+    }
+    LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
+  });
+
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {
       return;
     }
     $('#general-setting-help-relevance').show();
+  }
+
+  function showSameScriptForAllLanguagesWarning() {
+    if ($('#same_script').is(":checked")) {
+      $('.same-script-alert').removeClass("hidden");
+    } else {
+      $('.same-script-alert').addClass("hidden");
+    }
   }
 
   // Below, things run on pjax:scriptcomplete.
@@ -2078,6 +2100,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $('.lang-hide').hide();
     const languages = languageJson.langs.split(';');
     $('.lang-' + languages[0]).show();
+
+    // Show 'Use for all languages' warning
+    $('#same_script').on('change', showSameScriptForAllLanguagesWarning);
+    showSameScriptForAllLanguagesWarning();
 
     // Land on summary page if qid != 0 (not new question).
     // TODO: Fix

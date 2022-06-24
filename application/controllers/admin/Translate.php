@@ -233,7 +233,7 @@ class Translate extends SurveyCommonAction
                 $aResultTo2 = array_merge($aResultTo2, $oResultTo2->getAttributes());
 
                 $textfrom = htmlspecialchars_decode($aRowfrom[$amTypeOptions["dbColumn"]]);
-//
+
                 $textto = $aResultTo[$amTypeOptions["dbColumn"]];
                 if ($associated) {
                     $textfrom2 = htmlspecialchars_decode($aResultBase2[$amTypeOptions2["dbColumn"]]);
@@ -335,15 +335,16 @@ class Translate extends SurveyCommonAction
         $langs = $oSurvey->additionalLanguages;
         $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
 
-        $language_list .= CHtml::openTag('div', array('class' => 'form-group')); // Opens .menubar-right div
+        $language_list .= CHtml::openTag('div', array('class' => 'mb-3 row ms-auto col-4 float-start')); // Opens .menubar-right div
 
-        $language_list .= CHtml::tag('label', array('for' => 'translationlanguage', 'class' => 'form-label'), gT("Translate to") . ":");
+        $language_list .= CHtml::tag('label', array('for' => 'translationlanguage', 'class' => 'text-nowrap col col-form-label col-form-label-sm'), gT("Translate to") . ":");
+        $language_list .= CHtml::openTag('div', array('class' => 'col'));
         $language_list .= CHtml::openTag(
             'select',
             array(
                 'id' => 'translationlanguage',
                 'name' => 'lang',
-                'class' => 'form-control',
+                'class' => 'form-select',
                 'onchange' => "$(this).closest('form').submit();"
             )
         );
@@ -370,7 +371,8 @@ class Translate extends SurveyCommonAction
             );
         }
         $language_list .= CHtml::closeTag('select');
-        $language_list .= CHtml::closeTag('div'); // form-group
+        $language_list .= CHtml::closeTag('div');
+        $language_list .= CHtml::closeTag('div');
 
         return $language_list;
     }
@@ -1076,7 +1078,7 @@ class Translate extends SurveyCommonAction
 
     public function ajaxtranslategoogleapi()
     {
-        // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin rigth can post
+        // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin right can post
         /* No Permission check on survey, seems unneded (return a josn with current string posted */
         if (Yii::app()->request->isPostRequest) {
             echo self::translateGoogleApi();

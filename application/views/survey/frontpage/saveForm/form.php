@@ -69,7 +69,7 @@
     <?php endif; ?>
     <div class='form-group save-survey-row save-survey-submit'>
         <div class='col-md-7 offset-lg-3 save-survey-input input-cell'>
-            <button type='submit' id='savebutton' name="savesubmit" class='btn btn-default' value='save'><?php echo gT("Save Now") ?></button>
+            <button type='submit' id='savebutton' name="savesubmit" class='btn btn-outline-secondary' value='save'><?php echo gT("Save Now") ?></button>
         </div>
     </div>
 </div>

@@ -4,7 +4,6 @@ Yii::import('zii.widgets.grid.CGridView');
 
 class CLSGridView extends CGridView
 {
-
     /**
      * @var string
      */
@@ -16,11 +15,15 @@ class CLSGridView extends CGridView
     public function init()
     {
         parent::init();
+        Yii::app()->clientScript->registerScriptFile(
+            App()->getConfig('generalscripts') . 'admin/listresponse.js',
+            LSYii_ClientScript::POS_BEGIN
+        );
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = '';
         $classes = array('table', 'table-hover');
-        $this->template = "{items}\n<div class=\"row\" id='userListPager'><div class=\"col-md-4\" id=\"massive-action-container\">$this->massiveActionTemplate</div><div class=\"col-md-4 \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>";
+        $this->template = "{items}\n<div class=\"row mx-auto\" id='listPager'><div class=\"col-md-4\" id=\"massive-action-container\">$this->massiveActionTemplate</div><div class=\"col-md-4 \">{pager}</div><div class=\"col-md-4 summary-container\">{summary}</div></div>";
         if (!empty($classes)) {
             $classes = implode(' ', $classes);
             if (isset($this->itemsCssClass)) {
@@ -30,4 +33,21 @@ class CLSGridView extends CGridView
             }
         }
     }
+
+    /**
+     * Overwritten because of additional scrollbar at bottom of the gridview itself.
+     *
+     * @return void
+     */
+    public function renderContent()
+    {
+        $scrollBars = '<div id="bottom-scroller" class="content-right scrolling-wrapper">';
+        echo $scrollBars;
+
+        parent::renderContent();
+
+        echo '</div>';
+    }
+
+
 }

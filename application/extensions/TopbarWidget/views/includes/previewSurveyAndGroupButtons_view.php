@@ -1,7 +1,7 @@
 <!-- test/execute survey -->
 <?php if (count($surveyLanguages) > 1): ?>
     <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <?php if($oSurvey->active=='N'):?>
                 <span class="fa fa-eye" ></span>
                 <?php eT('Preview survey');?>
@@ -22,7 +22,7 @@
         </ul>
     </div>
 <?php else: ?>
-    <a class="btn btn-default  btntooltip" href="<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
+    <a class="btn btn-outline-secondary btntooltip" href="<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank' role="button">
         <?php if($oSurvey->active=='N'):?>
             <span class="fa fa-eye" ></span>
             <?php eT('Preview survey');?>
@@ -37,7 +37,7 @@
     <?php if (count($surveyLanguages) > 1): ?>
         <!-- Preview group multilanguage -->
         <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa fa-eye" ></span>
                 <?php eT("Preview question group"); ?> <span class="caret"></span>
             </button>
@@ -51,11 +51,13 @@
                 <?php endforeach; ?>
             </ul>
         </div>
-    <?php else:?>
+    <?php else: ?>
         <!-- Preview group single language -->
-        <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
-            <span class="fa fa-eye" ></span>
-            <?php eT("Preview question group");?>
+        <a type="button" class="btn btn-outline-secondary"
+           href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
+           target="_blank">
+            <span class="fa fa-eye"></span>
+            <?php eT("Preview question group"); ?>
         </a>
     <?php endif; ?>
 <?php endif; ?>

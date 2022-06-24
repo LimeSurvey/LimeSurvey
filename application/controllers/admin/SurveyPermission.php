@@ -62,7 +62,7 @@ class SurveyPermission extends SurveyCommonAction
         $result2 = Permission::model()->getUserDetails($iSurveyID);
         if (count($result2) > 0) {
                 $surveysecurity .= ""
-                . "<table class='surveysecurity table table-hover'><thead>"
+                . "<div class='overflow-auto'><table class='surveysecurity table table-hover'><thead>"
                 . "<tr>\n"
                 . "<th>" . gT("Action") . "</th>\n"
                 . "<th>" . gT("Username") . "</th>\n"
@@ -117,7 +117,7 @@ class SurveyPermission extends SurveyCommonAction
                     if ($PermissionRow['uid'] != Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                         // Can not update own security
                         $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$iSurveyID}"), 'post', array('style' => "display:inline;"))
-                        . "<button type='submit' class='btn btn-default btn-sm' data-bs-toggle='tooltip' title='" . gT("Edit permissions") . "'><span class='fa fa-pencil text-success'></span></button>";
+                        . "<button type='submit' class='btn btn-outline-secondary btn-sm' data-bs-toggle='tooltip' title='" . gT("Edit permissions") . "'><span class='fa fa-pencil text-success'></span></button>";
                         $surveysecurity .= \CHtml::hiddenField('action', 'setsurveysecurity');
                         $surveysecurity .= \CHtml::hiddenField('user', $PermissionRow['users_name']);
                         $surveysecurity .= \CHtml::hiddenField('uid', $PermissionRow['uid']);
@@ -130,7 +130,7 @@ class SurveyPermission extends SurveyCommonAction
                         'uid' => $PermissionRow['uid']
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
-                    $surveysecurity .= "<span data-bs-toggle='tooltip' title='" . gT("Delete") . "'><a data-target='#confirmation-modal' data-bs-toggle='modal' data-message='{$deleteConfirmMessage}' data-post-url='{$deleteUrl}' type='submit' class='btn-sm btn btn-default'>
+                    $surveysecurity .= "<span data-bs-toggle='tooltip' title='" . gT("Delete") . "'><a data-bs-target='#confirmation-modal' data-bs-toggle='modal' data-message='{$deleteConfirmMessage}' data-post-url='{$deleteUrl}' type='submit' class='btn-sm btn btn-outline-secondary'>
                         <span class='fa fa-trash text-danger'></span>
                         </a></span>";
                 }
@@ -175,10 +175,10 @@ class SurveyPermission extends SurveyCommonAction
 
                     // Full icon = all permissions
                     if ($iCount == $iPermissionCount) {
-                        $insert = "<div data-bs-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check\">&nbsp;</div>";
+                        $insert = "<div data-bs-toggle='tooltip' title='" . $sTooltip . "' class=\"fa fa-check\">&nbsp;</div>";
                     } elseif ($iCount > 0) {
                         // Blurred icon, meaning only partial permissions
-                        $insert = "<div data-bs-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
+                        $insert = "<div data-bs-toggle='tooltip' title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
                     } else {
                         $insert = "<div>&#8211;</div>";
                     }
@@ -190,17 +190,17 @@ class SurveyPermission extends SurveyCommonAction
                 $row++;
             }
             $surveysecurity .= "</tbody>\n"
-            . "</table>\n";
+            . "</table></div>\n";
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'create')) {
-            $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<br/><br/><div class='row'>\n"
+            $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$iSurveyID}"), 'post', array('class' => "form44")) . "<br/><br/><div class='row mb-3'>\n"
             . "<label class='col-md-3 text-end form-label' for='uidselect'>" . gT("User") . ": </label>
                  <div class='col-md-4'>
                 <select id='uidselect' name='uid'  class='form-select'>\n"
             . getSurveyUserList(false, $iSurveyID)
             . "</select></div>\n"
-            . "<input style='width: 15em;' class='btn btn-default' type='submit' value='" . gT("Add user") . "'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('" . gT("Please select a user first", "js") . "'); return false;}\"/>"
+            . "<input style='width: 15em;' class='btn btn-outline-secondary' type='submit' value='" . gT("Add user") . "'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('" . gT("Please select a user first", "js") . "'); return false;}\"/>"
             . "<input type='hidden' name='action' value='addsurveysecurity' />"
             . "</div></form>\n";
 
@@ -210,7 +210,7 @@ class SurveyPermission extends SurveyCommonAction
                 <select id='ugidselect' name='ugid'  class='form-select'>\n"
             . getSurveyUserGroupList('htmloptions', $iSurveyID)
             . "</select></div>\n"
-            . "<input style='width: 15em;' class='btn btn-default'  type='submit' value='" . gT("Add group users") . "' onclick=\"if (document.getElementById('ugidselect').value == -1) { alert('" . gT("Please select a user group first", "js") . "'); return false;}\" />"
+            . "<input style='width: 15em;' class='btn btn-outline-secondary'  type='submit' value='" . gT("Add group users") . "' onclick=\"if (document.getElementById('ugidselect').value == -1) { alert('" . gT("Please select a user group first", "js") . "'); return false;}\" />"
             . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
             . "</div></form>";
         }
@@ -278,7 +278,7 @@ class SurveyPermission extends SurveyCommonAction
                             Yii::app()->session['uids'] = $uid_arr;
                             $addsummary .= "<br />"
                             . CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$surveyid}"), 'post')
-                            . "<input class='btn btn-default'  type='submit' value='" . gT("Set Survey Rights") . "' />"
+                            . "<input class='btn btn-outline-secondary'  type='submit' value='" . gT("Set Survey Rights") . "' />"
                             . "<input type='hidden' name='action' value='setusergroupsurveysecurity' />"
                             . "<input type='hidden' name='ugid' value='{$postusergroupid}' />"
                             . "</form></p>\n";
@@ -290,7 +290,7 @@ class SurveyPermission extends SurveyCommonAction
                             $addsummary .= "<p class='lead'>" . gT("Failed to add user group.") . "</p>\n";
                             $addsummary .= "<p>";
 
-                            $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
+                            $addsummary .= "<br/><input class='btn btn-outline-secondary'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
                             $addsummary .= "</p>";
                         }
                     } else {
@@ -299,7 +299,7 @@ class SurveyPermission extends SurveyCommonAction
                         $addsummary .= "<h2>" . gT("Add user group") . "</h2>\n";
                         $addsummary .= "<p class='lead'>" . gT("Failed to add user group.") . "</p>\n";
                         $addsummary .= "<p>";
-                        $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
+                        $addsummary .= "<br/><input class='btn btn-outline-secondary'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
                         $addsummary .= "</p>";
                     }
                 } else {
@@ -308,7 +308,7 @@ class SurveyPermission extends SurveyCommonAction
                     $addsummary .= "<p class='lead'>" . gT("Failed to add user group.") . "</p>\n";
                     $addsummary .= "<p>" . gT("No Username selected.") . "</p>\n";
                     $addsummary .= "<p>";
-                    $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
+                    $addsummary .= "<br/><input class='btn btn-outline-secondary'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
                     $addsummary .= "</p>";
                 }
             } else {
@@ -371,7 +371,7 @@ class SurveyPermission extends SurveyCommonAction
                         $addsummary .= "<p class='lead'>" . gT("User added.") . "</p>\n";
                         $addsummary .= "<p>"
                         . CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$surveyid}"), 'post')
-                        . "<input class='btn btn-default'  type='submit' value='" . gT("Set survey permissions") . "' />"
+                        . "<input class='btn btn-outline-secondary'  type='submit' value='" . gT("Set survey permissions") . "' />"
                         . "<input type='hidden' name='action' value='setsurveysecurity' />"
                         . "<input type='hidden' name='uid' value='{$postuserid}' /></p>"
                         . "</form>\n";
@@ -381,14 +381,14 @@ class SurveyPermission extends SurveyCommonAction
                         $addsummary .= "<h2>" . gT("Add user") . "</h2>\n";
                         $addsummary .= "<p class='lead'>" . gT("Failed to add user.") . "</p>\n"
                         . "<p>" . gT("User already has permissions for this survey.") . "</p>";
-                        $addsummary .= "<p><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/></p>\n";
+                        $addsummary .= "<p><input class='btn btn-outline-secondary'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/></p>\n";
                     }
                 } else {
                     $addsummary .= "<div class=\"jumbotron message-box message-box-error\">\n";
                     $addsummary .= "<h2>" . gT("Add user") . "</h2>\n";
                     $addsummary .= "<p class='lead'>" . gT("Failed to add user.") . "</p>\n"
                     . "<p>" . gT("No username selected.") . "</p>\n";
-                    $addsummary .= "<p><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/></p>\n";
+                    $addsummary .= "<p><input class='btn btn-outline-secondary'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/></p>\n";
                 }
             } else {
                 $this->getController()->error('Access denied');
@@ -467,7 +467,7 @@ class SurveyPermission extends SurveyCommonAction
             ['aPermissions' => $aPermissions],
             true
         );
-        $usersummary .= "<p><input class='btn btn-default hidden'  type='submit' value='" . gT("Save Now") . "' />"
+        $usersummary .= "<p><input class='btn btn-outline-secondary d-none'  type='submit' value='" . gT("Save now") . "' />"
         . "<input type='hidden' name='perm_survey_read' value='1' />"
         . "<input type='hidden' name='action' value='surveyrights' />";
 
@@ -537,7 +537,7 @@ class SurveyPermission extends SurveyCommonAction
                 } else {
                     $addsummary .= "<div class=\"warningheader\">" . gT("Could not delete user. User was not supplied.") . "</div>\n";
                 }
-                $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
+                $addsummary .= "<br/><input class='btn btn-outline-secondary'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
             } else {
                 $this->getController()->error('Access denied');
             }
@@ -655,7 +655,7 @@ class SurveyPermission extends SurveyCommonAction
         } else {
             $addsummary .= "<div class=\"errorheader\">" . gT("Failed to update permissions for all users in this group.") . "</div>\n";
         }
-        $addsummary .= "<br/><input class='btn btn-default' type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
+        $addsummary .= "<br/><input class='btn btn-outline-secondary' type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
         $addsummary .= "</div></div></div></div>\n";
         $aViewUrls['output'] = $addsummary;
 

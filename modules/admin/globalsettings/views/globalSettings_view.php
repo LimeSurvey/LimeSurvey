@@ -114,6 +114,6 @@ LS.renderBootstrapSwitch();
     </div>
     <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ', $restrictToLanguages); ?>'/>
     <input type='hidden' name='action' value='globalsettingssave'/>
-    <input type='submit' class="hidden"/>
+    <input type='submit' class="d-none"/>
     <?php echo CHtml::endForm() ?>
 </div>

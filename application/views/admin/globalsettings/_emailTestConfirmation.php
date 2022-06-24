@@ -9,8 +9,10 @@
     </div>
 </div>
 <div class="modal-footer">
-    <a class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail"));?>"><span class='fa fa-check'></span>&nbsp;<?php eT("Send email"); ?></a>
-    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+    <button role="button" class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail"));?>">
+        <span class='fa fa-check'></span>
+        &nbsp;<?php eT("Send email"); ?>
+    </button>
         <?php eT("Close"); ?>
     </button>
 </div>

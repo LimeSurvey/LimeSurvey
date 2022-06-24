@@ -5,7 +5,7 @@
         echo CHtml::link(
             gT("Continue"),
             array( "surveysGroupsPermission/index", 'id'=>$model->gsid),
-            array('class' => 'btn btn-default')
+            array('class' => 'btn btn-outline-secondary')
         );
     ?> </p>
 </div>

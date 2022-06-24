@@ -12,7 +12,7 @@
 <?php foreach ($beforeSurveyBarRender as $menu): ?>
     <div class='btn-group'>
         <?php if ($menu->isDropDown()): ?>
-	    <button class="dropdown-toggle btn btn-default" data-bs-toggle="dropdown" href="#">
+	    <button class="dropdown-toggle btn btn-outline-secondary" data-bs-toggle="dropdown" href="#">
               <?php if ($menu->getIconClass()): ?>
                   <span class="<?php echo $menu->getIconClass(); ?>"></span>&nbsp;
               <?php endif; ?>
@@ -40,7 +40,7 @@
                 <?php endforeach; ?>
             </ul>
         <?php else : ?>
-            <a class='btn btn-default' href="<?php echo $menu->getHref(); ?>">
+            <a class='btn btn-outline-secondary' href="<?php echo $menu->getHref(); ?>">
                 <?php if ($menu->getIconClass()): ?>
                     <span class="<?php echo $menu->getIconClass(); ?>"></span>&nbsp;
                 <?php endif; ?>

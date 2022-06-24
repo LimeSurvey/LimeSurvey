@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('index');
         <div class="row">
             <div class="jumbotron" id="welcome-jumbotron">
                 <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
-                <p class="d-xs-none custom custom-margin top-25" ><?php echo PRESENTATION; // Defined in AdminController?></p>
+                <p class="d-xs-none custom custom-margin top-25 fs-4 text" ><?php echo PRESENTATION; // Defined in AdminController?></p>
             </div>
         </div>
     <?php endif;?>
@@ -75,15 +75,19 @@ echo viewHelper::getViewTestTag('index');
                                 <div class="row" id="selector__welcome-modal--tutorial">
                                     <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
                                     <p class="text-center">
-                                        <button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button>
+                                        <button type="button" class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour">
+                                            <?php eT("Start the tour"); ?>
+                                        </button>
                                     </p>
                                 </div>
                             <?php } ?>
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Close');?></button>
-                      <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey") ?>" class="btn btn-primary"><?php eT('Create a new survey');?></a>
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT('Close');?></button>
+                      <button role="button" type="button" href="<?php echo $this->createUrl("surveyAdministration/newSurvey") ?>" class="btn btn-primary">
+                        <?php eT('Create a new survey');?>
+                      </button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

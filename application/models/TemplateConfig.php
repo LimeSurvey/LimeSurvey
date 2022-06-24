@@ -67,7 +67,7 @@ class TemplateConfig extends CActiveRecord
     protected $apiVersion;
 
     /**
-     * @var int? $iSurveyId The current Survey Id. It can be void. It's use only to retreive
+     * @var int? $iSurveyId The current Survey Id. It can be void. It's use only to retrieve
      * the current template of a given survey
      */
     protected $iSurveyId = '';
@@ -214,7 +214,7 @@ class TemplateConfig extends CActiveRecord
         $sFile = trim($sFile, '.');
         $sFile = trim($sFile, '/');
 
-        // Retreive the correct template for this file (can be a mother template)
+        // Retrieve the correct template for this file (can be a mother template)
         $oTemplate = $this->getTemplateForFile($sFile, $oTemplate, false);
 
         if ($oTemplate instanceof TemplateConfiguration) {
@@ -642,7 +642,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['languagechanger'] = '  form-change-lang  ';
         $aClassAndAttributes['class']['formgroup']       = ' ';
         $aClassAndAttributes['class']['controllabel']    = ' ';
-        $aClassAndAttributes['class']['aLCDWithForm']    = '  btn btn-default ls-js-hidden ';
+        $aClassAndAttributes['class']['aLCDWithForm']    = '  btn btn-outline-secondary ls-js-hidden ';
 
         $aClassAndAttributes['attr']['languagechanger']  = $aClassAndAttributes['attr']['formgroup'] = $aClassAndAttributes['attr']['controllabel'] = '';
 
@@ -657,7 +657,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['modaltitle']        = ' modal-title';
         $aClassAndAttributes['class']['modalbody']         = ' modal-body ';
         $aClassAndAttributes['class']['modalfooter']       = ' modal-footer ';
-        $aClassAndAttributes['class']['modalfooterlink']   = ' btn btn-default ';
+        $aClassAndAttributes['class']['modalfooterlink']   = ' btn btn-outline-secondary ';
 
         $aClassAndAttributes['attr']['modalheader']       = ' style="min-height:40px;" '; // Todo: move to CSS
         $aClassAndAttributes['attr']['modalclosebutton']  = ' type="button" data-bs-dismiss="modal" aria-hidden="true" ';

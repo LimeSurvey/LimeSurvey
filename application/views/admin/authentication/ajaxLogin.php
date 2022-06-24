@@ -105,7 +105,7 @@
                 <div class="col-12">
                         <p><input type='hidden' name='action' value='login' />
                            <input type='hidden' id='width' name='width' value='' />
-                            <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Log in');?></button><br />
+                            <button type="submit" class="btn btn-outline-secondary" name='login_submit' value='login'><?php eT('Log in');?></button><br />
                             <br/>
                             <?php
                             if (Yii::app()->getConfig("display_user_password_in_email") === true)

@@ -38,8 +38,8 @@
                 </p>
 
                 <p>
-                    <button class="btn btn-default" id="ajaxAllConsistency"><?=gT("Resolve all issues")?></button>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$surveyid"); ?>" role="button">
+                    <button class="btn btn-outline-secondary" id="ajaxAllConsistency"><?=gT("Resolve all issues")?></button>
+                    <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$surveyid"); ?>" role="button">
                         <?php eT("Return to survey"); ?>
                     </a>
                 </p>
@@ -84,7 +84,7 @@
 <?php else:?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class='container message-box col-12'>
+    <div class='p-4 message-box col-12'>
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <h1><?php eT("Note: Please review your survey carefully before activating"); ?></h1>
@@ -114,7 +114,7 @@
                     <div class='form-group'>
                         <label for='anonymized' class='form-label col-md-7'>
                             <?php eT("Anonymized responses"); ?>
-                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, reponses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, responses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
                             <script type="text/javascript">
                                 <!--
                                 function alertPrivacy()
@@ -271,8 +271,8 @@
                 <div class='col-md-6 offset-md-4'>
                     <input type='hidden' name='ok' value='Y' />
                     <input id="activateSurvey__basicSettings--proceed" type='submit' class="btn btn-success btn-lg " value="<?php eT("Save & activate survey"); ?>" />
-                    <a class="btn btn-default btn-lg" href="<?php echo $this->createUrl("surveyAdministration/view/", ['surveyid'=> $surveyid]); ?>" role="button">
-                    <?php eT("Cancel"); ?>
+                    <a class="btn btn-cancel btn-lg" href="<?php echo $this->createUrl("surveyAdministration/view/", ['surveyid'=> $surveyid]); ?>">
+                        <?php eT("Cancel"); ?>
                     </a>
                 </div>
             </div>

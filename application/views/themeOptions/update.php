@@ -20,13 +20,13 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                     ?>
 
                     <!-- Back -->
-                    <a class="btn btn-default" href="<?php echo $sUrl; ?>" role="button">
+                    <a class="btn btn-outline-secondary" href="<?php echo $sUrl; ?>">
                         <span class="fa fa-backward"></span>
                         <?php eT('Back'); ?>
                     </a>
 
                     <!-- Save -->
-                    <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form" style="margin-right: 30px;">
+                    <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form">
                         <span class="fa fa-floppy-o"></span>
                         <?php eT('Save'); ?>
                     </a>
@@ -155,7 +155,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                     <div class="col-md-6">
                                         <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'uploadimage', 'name' => 'uploadimage', 'enctype' => 'multipart/form-data']); ?>
                                         <span id="fileselector">
-                                            <label class="btn btn-default col-8" for="upload_image">
+                                            <label class="btn btn-outline-secondary col-8" for="upload_image">
                                                 <input class="d-none" id="upload_image" name="upload_image" type="file">
                                                 <i class="fa fa-upload ls-space margin right-10"></i><?php eT("Upload"); ?>
                                             </label>

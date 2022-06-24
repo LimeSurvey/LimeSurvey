@@ -79,46 +79,43 @@
                                             <?php } ?>
                                         </td>
                                         <td>
-                                            <?php 
-                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                    'name' => "show_register_{$sTokenField}",
-                                                    'id'=>"show_register_{$sTokenField}",
-                                                    'value' => $tokenvalues['show_register']=='Y'?'1':'0',
-                                                    'onLabel'=>gT('On'),
-                                                    'offLabel' => gT('Off'),
-                                                    'htmlOptions'=>array(
-                                                        'disabled'=>empty($tokenvalues['coreattribute']) ? false : true,
-                                                    )
-                                                ));
-                                            ?>
+                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'name'          => "show_register_{$sTokenField}",
+                                                'checkedOption' => $tokenvalues['show_register'] === 'Y' ? '1' : '0',
+                                                'selectOptions' => [
+                                                    '1' => gT('On'),
+                                                    '0' => gT('Off'),
+                                                ],
+                                                'htmlOptions'   => [
+                                                    'disabled' => !empty($tokenvalues['coreattribute']),
+                                                ]
+                                            ]); ?>
                                         </td>
                                         <td>
-                                            <?php
-                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                    'name' => "mandatory_{$sTokenField}",
-                                                    'id'=>"mandatory_{$sTokenField}",
-                                                    'value' => $tokenvalues['mandatory']=='Y'?'1':'0',
-                                                    'onLabel'=>gT('On'),
-                                                    'offLabel' => gT('Off'),
-                                                    'htmlOptions'=>array(
-                                                        'disabled'=>empty($tokenvalues['coreattribute']) ? false : true,
-                                                    )
-                                                ));
-                                            ?>
+                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'name'          => "mandatory_{$sTokenField}",
+                                                'checkedOption' => $tokenvalues['mandatory'] === 'Y' ? '1' : '0',
+                                                'selectOptions' => [
+                                                    '1' => gT('On'),
+                                                    '0' => gT('Off'),
+                                                ],
+                                                'htmlOptions'   => [
+                                                    'disabled' => !empty($tokenvalues['coreattribute']),
+                                                ]
+                                            ]); ?>
                                         </td>
                                         <td>
-                                            <?php
-                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                    'name' => "encrypted_{$sTokenField}",
-                                                    'id'=>"encrypted_{$sTokenField}",
-                                                    'value' => $tokenvalues['encrypted']=='Y'?'1':'0',
-                                                    'onLabel'=>gT('On'),
-                                                    'offLabel' => gT('Off'),
-                                                    'htmlOptions'=>array(
-                                                        'disabled' => !$bEncrypted,
-                                                    )
-                                                ));
-                                            ?>
+                                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                                'name'          => "encrypted_{$sTokenField}",
+                                                'checkedOption' => $tokenvalues['encrypted'] === 'Y' ? '1' : '0',
+                                                'selectOptions' => [
+                                                    '1' => gT('On'),
+                                                    '0' => gT('Off'),
+                                                ],
+                                                'htmlOptions'   => [
+                                                    'disabled' => !$bEncrypted,
+                                                ]
+                                            ]); ?>
                                         </td>
                                         <?php
                                     }

@@ -40,50 +40,42 @@
             </div>
             <div class="mb-3">
                 <label class=" form-label" for='autorename'><?php eT("Automatically rename question code if already exists?"); ?></label>
-                <div class="">
-                    <?php $this->widget(
-                        'yiiwheels.widgets.switch.WhSwitch',
-                        [
-                            'name'     => 'autorename',
-                            'id'       => 'autorename',
-                            'value'    => 1,
-                            'onLabel'  => gT('On'),
-                            'offLabel' => gT('Off')
-                        ]
-                    );
-                    ?>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'autorename',
+                        'checkedOption' => 1,
+                        'selectOptions' => [
+                            '1' => gT('On'),
+                            '0' => gT('Off'),
+                        ],
+                    ]); ?>
                 </div>
             </div>
             <div class="mb-3">
                 <label class=" form-label" for='translinksfields'><?php eT("Convert resource links?"); ?></label>
-                <div class="">
-                    <?php $this->widget(
-                        'yiiwheels.widgets.switch.WhSwitch',
-                        [
-                            'name'     => 'translinksfields',
-                            'id'       => 'translinksfields',
-                            'value'    => 1,
-                            'onLabel'  => gT('On'),
-                            'offLabel' => gT('Off')
-                        ]
-                    );
-                    ?>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'translinksfields',
+                        'checkedOption' => 1,
+                        'selectOptions' => [
+                            '1' => gT('On'),
+                            '0' => gT('Off'),
+                        ],
+                    ]); ?>
                 </div>
             </div>
             <div class="mb-3">
                 <label class=" form-label" for='jumptoquestion'><?php eT("Jump to question after import?"); ?></label>
-                <div class="">
-                    <?php $this->widget(
-                        'yiiwheels.widgets.switch.WhSwitch',
-                        [
-                            'name'     => 'jumptoquestion',
-                            'id'       => 'jumptoquestion',
-                            'value'    => 1,
-                            'onLabel'  => gT('On'),
-                            'offLabel' => gT('Off')
-                        ]
-                    );
-                    ?>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'jumptoquestion',
+                        'id'            => 'jumptoquestion',
+                        'checkedOption' => 1,
+                        'selectOptions' => [
+                            '1' => gT('On'),
+                            '0' => gT('Off'),
+                        ],
+                    ]); ?>
                 </div>
             </div>
             <input type='submit' class="d-none" value='<?php eT("Import question"); ?>'/>

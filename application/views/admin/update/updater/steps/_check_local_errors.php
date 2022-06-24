@@ -166,17 +166,17 @@
     ?>
 
 <p>
-    <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+    <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>
     </a>
-    <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+    <a class="btn btn-outline-secondary" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
         <?php eT('Check again');?>
     </a>
 
     <?php if($ignore  && ! $cant_ignore): ?>
 
         <?php
-            echo CHtml::submitButton(gT('Ignore','unescaped'), array('id'=>'Ignorestep1launch', "class"=>"btn btn-default"));
+            echo CHtml::submitButton(gT('Ignore','unescaped'), array('id'=>'Ignorestep1launch', "class"=>"btn btn-outline-secondary"));
         ?>
     <?php endif;?>
 </p>
@@ -194,12 +194,12 @@
         echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
         echo CHtml::hiddenField('access_token' , $access_token);
     ?>
-        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+        <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
             <?php eT("Cancel"); ?>
         </a>
 
     <?php
-        echo CHtml::submitButton(gT('Continue','unescaped'), array('id'=>'step1launch', "class"=>"btn btn-default"));
+        echo CHtml::submitButton(gT('Continue','unescaped'), array('id'=>'step1launch', "class"=>"btn btn-outline-secondary"));
         echo CHtml::endForm();
     ?>
 </p>

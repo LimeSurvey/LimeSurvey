@@ -18,7 +18,7 @@ use LimeSurvey\Exceptions\CPDBException;
 /**
  * This is the model class for table "{{participants}}".
  *
- * The followings are the available columns in table '{{participants}}':
+ * The following are the available columns in table '{{participants}}':
  * @property string $participant_id Primary Key
  * @property string $firstname
  * @property string $lastname
@@ -117,7 +117,7 @@ class Participant extends LSActiveRecord
     {
         $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-outline-secondary btn-sm %s %s' role='button' data-bs-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
@@ -317,7 +317,7 @@ class Participant extends LSActiveRecord
     public function getParticipantAttribute($attributeTextId, $attribute_id = false)
     {
         if ($attribute_id == false) {
-            list(, $attribute_id) = explode('_', $attributeTextId);
+            [, $attribute_id] = explode('_', $attributeTextId);
         }
 
         $participantAttributes = ParticipantAttribute::model()->getAttributeInfo($this->participant_id);
@@ -344,17 +344,25 @@ class Participant extends LSActiveRecord
     public function getBlacklistSwitchbutton()
     {
         if ($this->userHasPermissionToEdit()) {
-            $inputHtml = "<input type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeBlacklistStatus' "
-                . ($this->blacklisted == "Y" ? "checked" : "")
-                . "/>";
-            return  $inputHtml;
-        } else {
-            if ($this->blacklisted == 'Y') {
-                return gT('Yes');
-            } else {
-                return gT('No');
-            }
+            $inputHtml = App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'blacklisted_' . $this->participant_id,
+                'checkedOption' => $this->blacklisted === "Y" ? "1" : "0",
+                'selectOptions' => [
+                    '1' => gT('Yes'),
+                    '0' => gT('No'),
+                ],
+                'htmlOptions'   => [
+                    'class' => 'action_changeBlacklistStatus'
+                ]
+            ], true);
+            return $inputHtml;
         }
+
+        if ($this->blacklisted === 'Y') {
+            return gT('Yes');
+        }
+
+        return gT('No');
     }
 
     /**

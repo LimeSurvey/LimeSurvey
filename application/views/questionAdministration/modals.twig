@@ -21,8 +21,12 @@
             </div>
             <div class="modal-footer button-list">
                 <button class='btn btn-cancel' id='btnqacancel' type='button'  data-bs-dismiss="modal">{{ gT('Cancel') }}</button>
-                <button class='btn btn-default' id='btnqareplace' type='button'>{{ gT('Replace') }}</button>
-                <button class='btn btn-success' id='btnqainsert' type='button'>{{ gT('Add') }}</button>
+                <button class='btn btn-outline-secondary' id='btnqareplace' type='button'>
+                    {{ gT('Replace') }}
+                </button>
+                <button class='btn btn-success' id='btnqainsert' type='button'>
+                    {{ gT('Add') }}
+                </button>
             </div>
         </div>
     </div>
@@ -77,8 +81,12 @@
             </div>
             <div class="modal-footer button-list">
                 <button class='btn btn-cancel' id='btnqacancel' type='button'  data-bs-dismiss="modal">{{ gT('Cancel') }}</button>
-                <button id='btnlsreplace' type='button' class='btn btn-default'>{{ gT('Replace') }}</button>
-                <button id='btnlsinsert' type='button' class='btn btn-success'>{{ gT('Add') }}</button>
+                <button id='btnlsreplace' type='button' class='btn btn-outline-secondary'>
+                    {{ gT('Replace') }}
+                </button>
+                <button id='btnlsinsert'  type='button' class='btn btn-success'>
+                    {{ gT('Add') }}
+                </button>
             </div>
         </div>
     </div>
@@ -96,15 +104,17 @@
             <div class="modal-body">
                 <div class="btn-group mb-3">
                     <input class="btn-check" type="radio" name="savelabeloption" id="newlabel">
-                    <label class="btn btn-outline-primary" for="newlabel">{{ gT('New label set') }}</label>
+                    <label class="btn btn-outline-secondary" for="newlabel">{{ gT('New label set') }}</label>
                     <input class="btn-check" type="radio" name="savelabeloption" id="replacelabel">
-                    <label class="btn btn-outline-primary" for="replacelabel">{{ gT('Replace the existing record.') }}
+                    <label class="btn btn-outline-secondary" for="replacelabel">{{ gT('Replace the existing record.') }}
                 </div>
             </div>
 
             <div class="modal-footer button-list">
                 <button class='btn btn-cancel' id='btnlacancel' type='button'  data-bs-dismiss="modal">{{ gT('Cancel') }}</button>
-                <button id='btnsavelabelset' class='btn btn-success' type='button'>{{ gT('Save') }}</button>
+                <button id='btnsavelabelset' class='btn btn-success' type='button'>
+                    {{ gT('Save') }}
+                </button>
             </div>
         </div>
     </div>
@@ -126,8 +136,8 @@
             </div>
 
             <div class="modal-footer button-list">
-                <button class='btn btn-default' id='btnlconfirmreplace' type='button' data-bs-dismiss="modal"  >{{ gT('OK') }}</button>
-                <button class='btn btn-warning' id='btnlacancel' type='button'  data-bs-dismiss="modal">{{ gT('Cancel') }}</button>
+                <button class='btn btn-outline-secondary' id='btnlconfirmreplace' type='button' data-bs-dismiss="modal">{{ gT('OK') }}</button>
+                <button class='btn btn-cancel'           id='btnlacancel'        type='button' data-bs-dismiss="modal">{{ gT('Cancel') }}</button>
             </div>
         </div>
     </div>

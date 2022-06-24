@@ -1,6 +1,6 @@
 <?php
 /**
- * Ressources panel tab
+ * Resources panel tab
  **/
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -8,8 +8,7 @@ echo viewHelper::getViewTestTag('surveyResources');
 
 
 App()->getClientScript()->registerScript(
-    "ressources-panel-variables",
-    "
+  "resources-panel-variables", "
 var jsonUrl = '';
 var sAction = '';
 var sParameter = '';
@@ -22,12 +21,12 @@ var sAddParam = '';
     LSYii_ClientScript::POS_BEGIN
 );
 
-//The ressources panel is a little special thus the unorganized html
+//The resources panel is a little special thus the unorganized html
 // @TODO Fix rendering!
 ?>
 
 <div class="row">
-    <!-- ressources panel -->
+  <!-- resources panel -->
     <div id='resources' class="container-fluid">
         <div class="row">
             <!-- Export -->
@@ -42,17 +41,17 @@ var sAddParam = '';
                         'images' => gT('Images', 'unescaped')
                     ),
                     array(
-                        'class' => 'btn btn-default',
+                    'class'=>'btn btn-outline-secondary',
                         "data-href" => App()->request->getBaseUrl() . "/third_party/kcfinder/browse.php?language=" . sTranslateLangCode2CK(App()->language)
                     )
                 );
                 ?>
             </div>
             <div class="col-md-6">
-                <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/' . $surveyid); ?>" target="_blank" class="btn btn-default">
+        <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
                     <?php eT("Export resources as ZIP archive") ?>
                 </a>
-                <a class="btn btn-default" href="" target='_blank' data-bs-toggle="modal" data-bs-target="#importRessourcesModal">
+        <a class="btn btn-outline-secondary" href="" target='_blank' data-bs-toggle="modal" data-bs-target="#importRessourcesModal">
                     <span class="fa fa-download"></span>
                     <?php eT("Import resources ZIP archive"); ?>
                 </a>

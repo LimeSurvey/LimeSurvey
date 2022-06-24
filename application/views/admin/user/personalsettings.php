@@ -6,6 +6,9 @@
  * @var $oQuestionSelector              PreviewModalWidget
  */
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('personalsettings');
+
 $aQuestionTypeGroups = [];
 
 if (App()->session['questionselectormode'] !== 'default') {
@@ -136,11 +139,11 @@ echo $oQuestionSelector->getModal();
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <button type="button" class="btn btn-default btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
+                                    <button type="button" class="btn btn-outline-secondary btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
                                         <i class="fa fa-lock"></i>
                                         <?= gT("Change password") ?>
                                     </button>
-                                    <button type="button" class="btn btn-default btn-warning " id="selector__showChangeEmail" style="color: white; outline: none;">
+                                    <button type="button" class="btn btn-outline-secondary btn-warning " id="selector__showChangeEmail" style="color: white; outline: none;">
                                         <i class="fa fa-lock"></i>
                                         <?= gT("Change email address") ?>
                                     </button>
@@ -216,13 +219,13 @@ echo $oQuestionSelector->getModal();
                                                         'buttonWidth' => '100%',
                                                         'htmlOptions' => [
                                                             'id'    => 'lang',
-                                                            'style' => "widht:100%;"
+                                                            'style' => "width:100%;"
                                                         ]
                                                     ],
                                                     'value'          => $sSavedLanguage,
                                                     'htmlOptions'    => [
                                                         'class'      => "form-control",
-                                                        'style'      => "widht:100%;",
+                                                        'style'      => "width:100%;",
                                                         'data-width' => '100%'
                                                     ]
                                                 ]

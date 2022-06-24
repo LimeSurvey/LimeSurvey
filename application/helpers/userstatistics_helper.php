@@ -1050,7 +1050,7 @@ class userstatistics_helper
                             if ($browse) {
                                 $statisticsoutput .= "\t<tr>\n"
                                     . "\t\t<td class='text-center' colspan='4'>
-                            <input type='button' class='btn btn-default statisticsbrowsebutton numericalbrowse' value='"
+                            <input type='button' class='btn btn-outline-secondary statisticsbrowsebutton numericalbrowse' value='"
                                     . gT("Browse") . "' id='$fieldname' /></td>\n</tr>";
                                 $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
                             <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
@@ -1449,6 +1449,12 @@ class userstatistics_helper
         } elseif (incompleteAnsFilterState() == "complete") {
             $criteria->addCondition("submitdate is not null");
         }
+
+        //check for any "sql" that has been passed from another script
+        if (!empty($sql)) {
+            $criteria->addCondition($sql);
+        }
+        
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
         foreach ($oResponses as $key => $oResponse) {
@@ -1565,21 +1571,6 @@ class userstatistics_helper
                 }
             }
 
-            //check filter option
-            if (incompleteAnsFilterState() == "incomplete") {
-                $query .= " AND submitdate is null";
-            } elseif (incompleteAnsFilterState() == "complete") {
-                $query .= " AND submitdate is not null";
-            }
-
-            //check for any "sql" that has been passed from another script
-            if (!empty($sql)) {
-                $query .= " AND $sql";
-            }
-
-
-            // $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
-
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero
 
@@ -1605,7 +1596,7 @@ class userstatistics_helper
                 }
                 $fname = "$al[1]";
                 if ($browse === true) {
-                    $fname .= " <input type='button' class='btn btn-default statisticsbrowsebutton' value='"
+                    $fname .= " <input type='button' class='btn btn-outline-secondary statisticsbrowsebutton' value='"
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
 
@@ -1649,7 +1640,7 @@ class userstatistics_helper
                 if ($al[0] == "Answer") {
                     $fname = "$al[1]";
                     if ($browse === true) {
-                        $fname .= " <input type='button'  class='btn btn-default statisticsbrowsebutton' value='"
+                        $fname .= " <input type='button'  class='btn btn-outline-secondary statisticsbrowsebutton' value='"
                         . gT("Browse") . "' id='$sColumnName' />";
                     }
                 } elseif ($al[0] == "NoAnswer") {
@@ -1953,7 +1944,7 @@ class userstatistics_helper
 
 
             /*
-            * there are 3 colums:
+            * there are 3 columns:
             *
             * 1 (50%) = answer (title and code in brackets)
             * 2 (25%) = count (absolute)

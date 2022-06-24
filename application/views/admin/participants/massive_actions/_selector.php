@@ -35,7 +35,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'htmlFooterButtons' => array(
                     // The class 'btn-ok' binds to URL above
                     '<a class="btn btn-ok btn-danger"><span class="fa fa-trash"></span>&nbsp;' . gT('Delete') . '</a>',
-                    '<a class="btn btn-default" data-bs-dismiss="modal">' . gT('Cancel') . '</a>'
+                    '<a class="btn btn-cancel" data-bs-dismiss="modal">' . gT('Cancel') . '</a>'
                 ),
                 'aCustomDatas' => array(),
             ],

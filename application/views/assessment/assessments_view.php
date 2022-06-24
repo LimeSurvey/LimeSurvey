@@ -15,7 +15,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
         <?php
             $messageLink = gT("Assessment mode for this survey is not activated.").'<br/>'
                 . gT("If you want to activate it, click here:").'<br/>'
-                . '<a type="submit" class="btn btn-primary" href="'
+                . '<a role="button" class="btn btn-primary" href="'
                 . $this->createUrl('/assessment/activate', ['surveyid'=> $surveyid])
                 .'">'.gT('Activate assessements').'</a>';
         if(!Assessment::isAssessmentActive($surveyid)) {
@@ -59,7 +59,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             <?php if ( Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create') ) { ?>
               <div class="row">
                 <div class="col-12">
-                  <button class="btn btn-success" id="selector__assessment-add-new">
+                  <button class="btn btn-success" type="button" id="selector__assessment-add-new">
                     <?=eT("Add new assessment rule")?>
                   </button>
                 </div>

@@ -1,6 +1,6 @@
 <!-- Display tokens -->
 <?php if ($hasTokensReadPermission): ?>
-    <a class="btn btn-default pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
+    <a class="btn btn-outline-secondary pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
         <span class="fa fa-list-alt text-success"></span>
         <?php eT("Display participants"); ?>
     </a>
@@ -10,7 +10,7 @@
 <?php if ($hasTokensCreatePermission || $hasTokensImportPermission): ?>
     <!-- Create tokens -->
     <div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="icon-add text-success"></span>
         <?php eT("Create...");?> <span class="caret"></span>
     </button>
@@ -64,7 +64,7 @@
 <?php endif; ?>
 <!-- Manage additional attribute fields -->
 <?php if ($hasTokensUpdatePermission || $hasSurveySettingsUpdatePermission): ?>
-    <a class="btn btn-default pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$oSurvey->sid"); ?>' role="button">
+    <a class="btn btn-outline-secondary pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$oSurvey->sid"); ?>' role="button">
         <span class="icon-token_manage text-success"></span>
         <?php eT("Manage attributes"); ?>
     </a>
@@ -72,7 +72,7 @@
 
 <!-- Export tokens to CSV file -->
 <?php if ($hasTokensExportPermission): ?>
-    <a class="btn btn-default pjax" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/exportdialog/surveyid/$oSurvey->sid"); ?>" role="button">
+    <a class="btn btn-outline-secondary pjax" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/exportdialog/surveyid/$oSurvey->sid"); ?>" role="button">
         <span class="icon-exportcsv"></span>
         <?php eT("Export"); ?>
     </a>
@@ -81,7 +81,7 @@
 <!-- EMAILS -->
 <?php if ($hasTokensUpdatePermission):?>
     <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon-emailtemplates text-success"></span>
             <?php eT("Invitations & reminders");?> <span class="caret"></span>
         </button>
@@ -157,20 +157,20 @@
     </div>
 
     <!-- Generate tokens -->
-    <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/tokenify/surveyid/$oSurvey->sid"); ?>" role="button">
+    <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/tokenify/surveyid/$oSurvey->sid"); ?>" role="button">
         <span class="icon-do text-success"></span>
         <?php eT("Generate tokens"); ?>
     </a>
 
     <!-- View participants of this survey in CPDB -->
-    <a class="btn btn-default" href="#" role="button" onclick="window.LS.sendPost('<?php echo Yii::App()->createUrl("/admin/participants/sa/displayParticipants"); ?>',false,{'searchcondition': 'surveyid||equal|| <?php echo $oSurvey->sid ?>'});">
+    <a class="btn btn-outline-secondary" href="#" role="button" onclick="window.LS.sendPost('<?php echo Yii::App()->createUrl("/admin/participants/sa/displayParticipants"); ?>',false,{'searchcondition': 'surveyid||equal|| <?php echo $oSurvey->sid ?>'});">
         <i class="fa fa-users text-success"></i>
         <?php eT("View in CPDB"); ?>
     </a>
 <?php endif; ?>
 
 <!-- Survey Quotas -->
-<a class="btn btn-default" href='<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
+<a class="btn btn-outline-secondary" href='<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
     <span class="fa fa-tasks"></span>
     <?php eT("Survey quotas"); ?>
 </a>

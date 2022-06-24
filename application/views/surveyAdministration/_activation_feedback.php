@@ -36,7 +36,7 @@
                         <br />
                         <input
                             type="submit"
-                            class="btn btn-default btn-lg limebutton"
+                            class="btn btn-outline-secondary btn-lg limebutton"
                             value="<?php eT("Initialize participant table"); ?>"
                             onclick='<?php echo $onclickAction;?>'
                             />
@@ -47,7 +47,7 @@
                         <?php if (!tableExists('tokens_' . $iSurveyID)) :?>
                             <!-- Open Access Mode -->
                             <?php eT("By default, surveys are activated in open-access mode. In this mode participants do not need an invitation (access code) to complete the survey."); ?>
-                            <?php eT("You can share your survey via URL, QR code or social media. Navigate to Settings --> Overview --> Share your survey."); ?>
+                            <?php eT("You can share your survey via URL, QR code or social media. Navigate to Settings --> Overview --> Share survey."); ?>
                             <br />
                             <br />
                             <!-- Closed Access Mode -->
@@ -59,20 +59,20 @@
                             <br />
                             <input
                                 type='submit'
-                                class='btn btn-default'
+                                class='btn btn-outline-secondary'
                                 id='activateTokenTable__selector--yes'
                                 value='<?php eT("Switch to closed-access mode"); ?>'
                                 />
                             <input
                                 type='submit'
-                                class='btn btn-default'
+                                class='btn btn-outline-secondary'
                                 id='activateTokenTable__selector--no'
                                 value='<?php eT("Continue in open-access mode"); ?>'
                                 />
                         <?php else :?>
                             <input
                                 type='submit'
-                                class='btn btn-default'
+                                class='btn btn-outline-secondary'
                                 id='activateRedirectSurvey__selector'
                                 value='<?php eT("Back to survey home"); ?>'
                                 />

@@ -14,35 +14,43 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT('Groups in this survey'); ?></h3>
     <div class="row">
-        <div class="col-12 ls-flex ls-flex-row">
-            <div class="ls-flex-item text-start">
+        <div class="">
+            <div class="">
                 <?php App()->getController()->renderPartial(
                     '/admin/survey/surveybar_addgroupquestion', //todo this view must be moved to correct position
                     [
-                        'surveybar'      => $surveybar,
-                        'oSurvey'        => $oSurvey,
+                        'surveybar' => $surveybar,
+                        'oSurvey' => $oSurvey,
                         'surveyHasGroup' => isset($oSurvey->groups) ? $oSurvey->groups : false
                     ]
                 ); ?>
             </div>
-            <div class="ls-flex-item text-end">
+            <div class="row float-end">
                 <!-- Search Box -->
                 <?php $form = $this->beginWidget('TbActiveForm', array(
                     'action' => Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid),
                     'method' => 'get',
                     'htmlOptions' => array(
-                        'class' => 'form-inline',
+                        'class' => 'row ms-auto',
                     ),
                 )); ?>
-                    <div class="form-group">
-                        <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => ' form-label text-end')); ?>
-                        <?php echo $form->textField($model, 'group_name', array('class' => 'form-control')); ?>
+                    <div class="col row mb-3">
+                        <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => 'text-nowrap col-sm-7 col-form-label col-form-label-sm')); ?>
+                        <div class="col-sm-5">
+                            <?php echo $form->textField($model, 'group_name', array('class' => 'form-control')); ?>
+                        </div>
                     </div>
-                    <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>
-                    <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
-                       class="btn btn-warning">
-                        <?php eT('Reset');?>
-                    </a>
+
+                    <div class="col row mb-3">
+                        <div class="col-12">
+                            <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>
+                            <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
+                               class="btn btn-warning">
+                                <span class="fa fa-refresh"></span>
+                                <?php eT('Reset');?>
+                            </a>
+                        </div>
+                    </div>
                 <?php $this->endWidget(); ?>
             </div>
         </div>

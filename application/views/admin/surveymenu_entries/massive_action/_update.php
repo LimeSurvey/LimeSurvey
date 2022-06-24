@@ -67,9 +67,11 @@
             </div>
 		</div>
 
-		<div class="row ls-space margin bottom-10">
-			<button class="btn btn-warning pull-right " type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdvancedOptionsMassEdit"><?php eT('Toggle advanced options') ?></button>
-		</div>
+        <div class="row ls-space margin bottom-10">
+            <button class="btn btn-warning pull-right" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdvancedOptionsMassEdit">
+                <?php eT('Toggle advanced options') ?>
+            </button>
+        </div>
 		<!-- Start collapsed advanced options -->
 		<div class="collapse" id="collapseAdvancedOptionsMassEdit">
 

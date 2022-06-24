@@ -1,7 +1,7 @@
 <?php
 /**
-* This modal display a form to upload ressources
-* It's called from the accordion "Ressources"
+* This modal display a form to upload resources
+* It's called from the accordion "Resources"
 * It has been move from inside the settings because form nesting is not valid in HTML, and can create problems.
 */
 ?>
@@ -24,7 +24,8 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php  eT("Cancel");?></button>
+            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php  eT("Cancel");?></button>
+            <!--TODO: Im not sure what this button does -->
             <input type='button' class="btn btn-primary" value='<?php  eT("Import"); ?>' <?php echo $ZIPimportAction; ?> />
           </div>
         </form>

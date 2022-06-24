@@ -282,7 +282,7 @@ class SurveyDynamic extends LSActiveRecord
         /* detail button */
         $buttons .= "<a
         href='" . App()->createUrl("responses/view", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
-        class='btn btn-default btn-sm'
+        class='btn btn-outline-secondary btn-sm'
         target='_blank'
         data-bs-toggle='tooltip'
         title='" . gt("View response details") . "'>
@@ -292,7 +292,7 @@ class SurveyDynamic extends LSActiveRecord
         /* quexmlpdf button */
         $buttons .= "<a
         href='" . App()->createUrl("responses/viewquexmlpdf", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
-        class='btn btn-default btn-sm'
+        class='btn btn-outline-secondary btn-sm'
         target='_blank'
         data-bs-toggle='tooltip'
         title='" . gt("View response details as queXML PDF") . "'>
@@ -303,7 +303,7 @@ class SurveyDynamic extends LSActiveRecord
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
             $buttons .= "<a
             href='" . App()->createUrl("admin/dataentry/sa/editdata/subaction/edit", ["surveyId" => self::$sid, "id" => $this->id, "browseLang" => $sBrowseLanguage]) . "'
-            class='btn btn-default btn-sm'
+            class='btn btn-outline-secondary btn-sm'
             target='_blank'
             data-bs-toggle='tooltip'
             title='" . gt("Edit this response") . "'>
@@ -315,7 +315,7 @@ class SurveyDynamic extends LSActiveRecord
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
             $buttons .= "<a
             href='" . App()->createUrl("responses/downloadfiles", ["surveyId" => self::$sid, "responseIds" => $this->id]) . "'
-            class='btn btn-default btn-sm'
+            class='btn btn-outline-secondary btn-sm'
             target='_blank'
             data-bs-toggle='tooltip'
             title='" . gt("Download all files in this response as a zip file") . "'>
@@ -336,7 +336,7 @@ class SurveyDynamic extends LSActiveRecord
             data-message='" . gt("Do you want to delete all files of this response?") . "'>
             <button
             data-bs-toggle='tooltip'
-            class='btn btn-default btn-sm btn-deletefiles'
+            class='btn btn-outline-secondary btn-sm btn-deletefiles'
             title='" . gt("Delete all files of this response") . "'>
             <i class='fa fa-paperclip text-danger'></i>
             </button>
@@ -356,7 +356,7 @@ class SurveyDynamic extends LSActiveRecord
             data-message='" . gt("Do you want to delete this response?") . "<br/>" . gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.") . "'>
             <button
             data-bs-toggle='tooltip'
-            class='btn btn-default btn-sm btn-delete'
+            class='btn btn-outline-secondary btn-sm btn-delete'
             title='" . gt("Delete this response") . "'>
             <i class='fa fa-trash text-danger'></i>
             </button>
@@ -607,7 +607,7 @@ class SurveyDynamic extends LSActiveRecord
     public function getTokenForGrid()
     {
         if (is_object($this->tokens) && !is_null($this->tokens->tid)) {
-            $sToken = "<a class='btn btn-default btn-xs edit-token' href='#' data-sid='" . self::$sid . "' data-tid='" . $this->tokens->tid . "'  data-url='" . App()->createUrl("admin/tokens", array("sa" => "edit", "iSurveyId" => self::$sid, "iTokenId" => $this->tokens->tid, 'ajax' => 'true')) . "' data-bs-toggle='tooltip' title='" . gT("Edit this survey participant") . "'>" . CHtml::encode($this->token) . "&nbsp;&nbsp;&nbsp;<span class='fa fa-pencil'></span></a>";
+            $sToken = "<a class='btn btn-outline-secondary btn-xs edit-token' href='#' data-sid='" . self::$sid . "' data-tid='" . $this->tokens->tid . "'  data-url='" . App()->createUrl("admin/tokens", array("sa" => "edit", "iSurveyId" => self::$sid, "iTokenId" => $this->tokens->tid, 'ajax' => 'true')) . "' data-bs-toggle='tooltip' title='" . gT("Edit this survey participant") . "'>" . CHtml::encode($this->token) . "&nbsp;&nbsp;&nbsp;<span class='fa fa-pencil'></span></a>";
         } else {
             $sToken = '<span class="badge rounded-pill">' . CHtml::encode($this->token) . '</span>';
         }
@@ -775,16 +775,16 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Get an array to find question data responsively
      * This should be part of the question object.
-     * And in future developement this should be part of the specific question type object
+     * And in future development this should be part of the specific question type object
      *
      * @param Question $oQuestion
      * @param SurveyDynamic $oResponses
      * @param boolean $bHonorConditions
      * @param boolean $subquestion
-     * @param boolean $getComment
+     * @param boolean $getCommentOnly If should only returns the "comments" or "other" response.
      * @return array | boolean
      */
-    public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion = false, $getComment = false, $sLanguage = null)
+    public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion = false, $getCommentOnly = false, $sLanguage = null)
     {
 
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
@@ -871,7 +871,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
 
-        if ($getComment === true) {
+        if ($getCommentOnly) {
             $fieldname .= 'comment';
         }
 
@@ -997,6 +997,12 @@ class SurveyDynamic extends LSActiveRecord
             if (strpos($aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
                 $aQuestionAttributes['answervalue'] = rtrim(rtrim($aQuestionAttributes['answervalue'], "0"), ".");
             }
+        }
+
+        // If trying to retrieve main question ($getCommentOnly = false), retrieve comment in a new attribute
+        // Check if $getCommentOnly = false to avoid endless recursivity
+        if ($oQuestion->type == 'O' && !$getCommentOnly) {
+            $aQuestionAttributes['comment'] = $this->getQuestionArray($oQuestion, $oResponses, $bHonorConditions, true, true);
         }
 
         return $aQuestionAttributes;

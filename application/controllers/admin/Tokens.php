@@ -1125,8 +1125,8 @@ class Tokens extends SurveyCommonAction
             . CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$iSurveyId}"), 'post', array('id' => 'attributenumber'))
             . CHtml::hiddenField('deleteattribute', $sAttributeToDelete)
             . CHtml::hiddenField('sid', $iSurveyId)
-            . CHtml::htmlButton(gT('Delete attribute'), array('type' => 'submit', 'value' => 'confirm', 'name' => 'confirm', 'class' => 'btn btn-default btn-lg'))
-            . CHtml::htmlButton(gT('Cancel'), array('type' => 'submit', 'value' => 'cancel', 'name' => 'cancel', 'class' => 'btn btn-default btn-lg'))
+            . CHtml::htmlButton(gT('Delete attribute'), array('type' => 'submit', 'value' => 'confirm', 'name' => 'confirm', 'class' => 'btn btn-outline-secondary btn-lg'))
+            . CHtml::htmlButton(gT('Cancel'), array('type' => 'submit', 'value' => 'cancel', 'name' => 'cancel', 'class' => 'btn btn-cancel btn-lg'))
             . CHtml::endForm()
             )), $aData);
         } elseif ($sAttributeToDelete) {
@@ -1417,61 +1417,74 @@ class Tokens extends SurveyCommonAction
                     $mail->setFrom(Yii::app()->request->getPost('from_' . $emrow['language']));
                     $mail->rawSubject = $sSubject[$emrow['language']];
                     $mail->rawBody = $sMessage[$emrow['language']];
-                    if (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
-                        $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Access code is not yet valid.", 'unescaped'), $fieldsarray)) . "<br />";
-                        $bInvalidDate = true;
-                    } elseif (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validuntil']) != '' && convertDateTimeFormat($emrow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1) {
-                        $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Access code is not valid anymore.", 'unescaped'), $fieldsarray)) . "<br />";
-                        $bInvalidDate = true;
-                    } else {
-                        $success = $mail->sendMessage();
-                        $stringInfo = CHtml::encode("{$emrow['tid']}: {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']}).");
-                        if ($success) {
-                            // Load token to set as sent, no need to check existence ? we just send the email
-                            $oToken = Token::model($iSurveyId)->findByPk($emrow['tid'])->decrypt();
-                            if ($bIsInvitation) {
-                                $tokenoutput .= gT("Invitation sent to:");
-                                $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                            } else {
-                                $tokenoutput .= gT("Reminder sent to:");
-                                $oToken->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                                $oToken->remindercount++;
-                            }
-                            $tokenSaveError = "";
-                            if (!$oToken->encryptSave(true)) {
-                                // Add the error when try to save token
-                                $tokenSaveError = CHtml::errorSummary(
-                                    $oToken,
-                                    CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error occured when saving the sent date for this participant (ID: %s)."), $emrow['tid']))
-                                );
-                            }
-                            // Mark token email as send this session.
-                            // NB: This cache is cleared on form page for invitation/reminder.
-                            $sType = $bIsInvitation ? 'i' : 'r';
-                            $_SESSION[$this->getEmailCacheName($iSurveyId)][$sType][$emrow['tid']] = 1;
 
-                            //Update central participant survey_links
-                            if (!empty($emrow['participant_id'])) {
-                                $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid' => $emrow['participant_id'], ':sid' => $iSurveyId, ':tid' => $emrow['tid']));
-                                if (!is_null($slquery)) {
-                                    $slquery->date_invited = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                                    $slquery->save();
-                                }
-                            }
-                            $tokenoutput .= $stringInfo . "<br />\n";
-                            if (Yii::app()->getConfig("emailsmtpdebug") > 1) {
-                                $tokenoutput .= $mail->getDebug('html');
-                            }
-                            $tokenoutput .= $tokenSaveError;
-                        } else {
-                            $maildebug = $mail->getDebug('html');
-                            $tokenoutput .= $stringInfo . CHtml::tag("span", array('class' => "text-warning"), sprintf(gT("Error message: %s"), $mail->getError())) . "<br>\n";
-                            if (Yii::app()->getConfig("emailsmtpdebug") > 0) {
-                                $tokenoutput .= $mail->getDebug('html');
-                            }
-                            $bSendError = true;
+                    // If "Bypass date control before sending email" is disabled, check the token validity range
+                    if (!Yii::app()->request->getPost('bypassdatecontrol')) {
+                        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                        $fieldsarray = [
+                            '{FIRSTNAME}' => $emrow['firstname'],
+                            '{LASTNAME}' => $emrow['lastname'],
+                            '{EMAIL}' => $emrow['email'],
+                        ];
+                        if (trim($emrow['validfrom']) != '' && strtotime($emrow['validfrom']) > strtotime($now)) {
+                            $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Access code is not yet valid.", 'unescaped'), $fieldsarray)) . "<br />";
+                            $bInvalidDate = true;
+                            continue;
+                        } elseif (trim($emrow['validuntil']) != '' && strtotime($emrow['validuntil']) < strtotime($now)) {
+                            $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Access code is not valid anymore.", 'unescaped'), $fieldsarray)) . "<br />";
+                            $bInvalidDate = true;
+                            continue;
                         }
                     }
+
+                    // If all checks passed, send the email
+                    $success = $mail->sendMessage();
+                    $stringInfo = CHtml::encode("{$emrow['tid']}: {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']}).");
+                    if ($success) {
+                        // Load token to set as sent, no need to check existence ? we just send the email
+                        $oToken = Token::model($iSurveyId)->findByPk($emrow['tid'])->decrypt();
+                        if ($bIsInvitation) {
+                            $tokenoutput .= gT("Invitation sent to:");
+                            $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                        } else {
+                            $tokenoutput .= gT("Reminder sent to:");
+                            $oToken->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                            $oToken->remindercount++;
+                        }
+                        $tokenSaveError = "";
+                        if (!$oToken->encryptSave(true)) {
+                            // Add the error when try to save token
+                            $tokenSaveError = CHtml::errorSummary(
+                                $oToken,
+                                CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error occurred when saving the sent date for this participant (ID: %s)."), $emrow['tid']))
+                            );
+                        }
+                        // Mark token email as send this session.
+                        // NB: This cache is cleared on form page for invitation/reminder.
+                        $sType = $bIsInvitation ? 'i' : 'r';
+                        $_SESSION[$this->getEmailCacheName($iSurveyId)][$sType][$emrow['tid']] = 1;
+
+                        //Update central participant survey_links
+                        if (!empty($emrow['participant_id'])) {
+                            $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid' => $emrow['participant_id'], ':sid' => $iSurveyId, ':tid' => $emrow['tid']));
+                            if (!is_null($slquery)) {
+                                $slquery->date_invited = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                                $slquery->save();
+                            }
+                        }
+                        $tokenoutput .= $stringInfo . "<br />\n";
+                        if (Yii::app()->getConfig("emailsmtpdebug") > 1) {
+                            $tokenoutput .= $mail->getDebug('html');
+                        }
+                        $tokenoutput .= $tokenSaveError;
+                    } else {
+                        $tokenoutput .= $stringInfo . CHtml::tag("span", array('class' => "text-warning"), sprintf(gT("Error message: %s"), $mail->getError())) . "<br>\n";
+                        if (Yii::app()->getConfig("emailsmtpdebug") > 0) {
+                            $tokenoutput .= $mail->getDebug('html');
+                        }
+                        $bSendError = true;
+                    }
+
                     unset($fieldsarray);
                 }
 
@@ -1500,10 +1513,10 @@ class Tokens extends SurveyCommonAction
                             $aData['tokenoutput'] .= "<li>" . gT("Some entries had a validity date set which was not yet valid or not valid anymore.") . "</li>";
                         }
                         if ($bSendError) {
-                            $aData['tokenoutput'] .= "<li>" . gT("Some emails were not sent because the server did not accept the email(s) or some other error occured.") . "</li>";
+                            $aData['tokenoutput'] .= "<li>" . gT("Some emails were not sent because the server did not accept the email(s) or some other error occurred.") . "</li>";
                         }
                         $aData['tokenoutput'] .= '</ul>';
-                        $aData['tokenoutput'] .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-default btn-lg">' . gT("Ok") . '</a></p>';
+                        $aData['tokenoutput'] .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary btn-lg">' . gT("Ok") . '</a></p>';
                     }
                 }
                 $aViewUrls[] = 'emailpost';
@@ -1522,7 +1535,7 @@ class Tokens extends SurveyCommonAction
                             . "<li>" . gT("not having already completed the survey") . "</li>"
                             . "<li>" . gT("having an access code") . "</li></ul>"
                             . "<li>" . gT("having at least one use left") . "</li></ul>"
-                            . '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-default btn-lg">' . gT("Cancel") . '</a></p>'
+                            . '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-cancel btn-lg">' . gT("Cancel") . '</a></p>'
                         )
                     ),
                     $aData
@@ -1779,7 +1792,7 @@ class Tokens extends SurveyCommonAction
                                     $meetminirequirements = false;
                                 }
 
-                                // The following attrs are optionnal
+                                // The following attrs are optional
                                 if (isset($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']])) {
                                                                     $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
                                 }
@@ -2115,7 +2128,7 @@ class Tokens extends SurveyCommonAction
                                 $aInvalidTokenList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
                                 $bInvalidToken = true;
                             }
-                            // We allways search for duplicate token (it's in model. Allow to reset or update token ?
+                            // We always search for duplicate token (it's in model. Allow to reset or update token ?
                             if (Token::model($iSurveyId)->count("token=:token", array(":token" => $aWriteArray['token']))) {
                                 $bDuplicateFound = true;
                                 $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
@@ -2267,9 +2280,9 @@ class Tokens extends SurveyCommonAction
             $this->renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Create access codes"),
             'message' => gT("Clicking 'Yes' will generate access codes for all those in this participant list that have not been issued one. Continue?") . "<br /><br />\n"
-            . "<button class='btn btn-default btn-lg' type='submit' value='"
+            . "<button class='btn btn-outline-secondary btn-lg' type='submit' value='"
             . gT("Yes") . "' onclick='" . convertGETtoPOST($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$iSurveyId", array('ok' => 'Y'))) . "' >" . gT("Yes") . "</button>\n"
-            . "<input class='btn btn-default  btn-lg' type='submit' value='"
+            . "<input class='btn btn-outline-secondary  btn-lg' type='submit' value='"
             . gT("No") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             . "<br />\n"
             )), $aData);
@@ -2282,11 +2295,11 @@ class Tokens extends SurveyCommonAction
                 $aData['success'] = false;
                 $message = ngT('Only {n} access code has been created.|Only {n} access codes have been created.', $newtokencount)
                             . ngT('Need {n} access code.|Need {n} access codes.', $neededtokencount);
-                $message .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-default btn-lg">' . gT("Ok") . '</a></p>';
+                $message .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary btn-lg">' . gT("Ok") . '</a></p>';
             } else {
                 $aData['success'] = true;
                 $message = ngT('{n} access code has been created.|{n} access codes have been created.', $newtokencount);
-                $message .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-default btn-lg">' . gT("Ok") . '</a></p>';
+                $message .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary btn-lg">' . gT("Ok") . '</a></p>';
             }
             $this->renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Create access codes"),
@@ -2528,7 +2541,7 @@ class Tokens extends SurveyCommonAction
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
-        // The user have rigth to create token, then don't test right after
+        // The user have right to create token, then don't test right after
         Yii::import('application.helpers.admin.token_helper', true);
 
         $aData = array();
@@ -2550,7 +2563,7 @@ class Tokens extends SurveyCommonAction
             $this->renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Survey participants"),
             'message' => gT("A participant table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
-            . "<input type='submit' class='btn btn-default' value='"
+            . "<input type='submit' class='btn btn-outline-secondary' value='"
             . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             )), $aData);
         } elseif (returnGlobal('restoretable') === "Y" && Yii::app()->request->getPost('oldtable')) {
@@ -2608,7 +2621,7 @@ class Tokens extends SurveyCommonAction
                             'message' => [
                                 'title'   => gT("Import old participant table"),
                                 'message' => gT("A survey participants table has been created for this survey and the old participants were imported.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId" . "\")<br /><br />\n"
-                                    . "<input type='submit' class='btn btn-default' value='"
+                                    . "<input type='submit' class='btn btn-outline-secondary' value='"
                                     . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
                             ]
                         ],

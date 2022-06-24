@@ -76,7 +76,7 @@ if ($result === 'success') {
                 </ul>
             <?php endif; ?>
             <p>
-                <input type='submit' class="btn btn-default btn-lg" id="button-open-theme"
+                <input type='submit' class="btn btn-outline-secondary btn-lg" id="button-open-theme"
                        value='<?php eT("Open imported theme") ?>'
                        onclick="window.open('<?php
                        if ($theme == 'question') {

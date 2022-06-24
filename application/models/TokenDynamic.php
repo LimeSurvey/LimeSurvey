@@ -791,7 +791,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("responses/viewbytoken",array("surveyId"=>' . self::$sid . ',"token"=>$data->token));',
             'options' => array(
-                'class' => "btn btn-default btn-sm",
+                'class' => "btn btn-outline-secondary btn-sm",
                 'data-bs-toggle' => "tooltip",
                 'title' => gT("View response details")
             ),
@@ -802,7 +802,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
+                'class' => "btn btn-outline-secondary btn-sm invisible",
                 'disabled' => 'disabled',
                 'title' => ''
             ),
@@ -816,7 +816,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
-                'class' => "btn btn-default btn-sm",
+                'class' => "btn btn-outline-secondary btn-sm",
                 'target' => "_blank",
                 'data-bs-toggle' => "tooltip",
                 'title' => gT("Launch the survey with this participant")
@@ -828,7 +828,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
+                'class' => "btn btn-outline-secondary btn-sm invisible",
                 'disabled' => 'disabled',
                 'title' => ''
             ),
@@ -843,7 +843,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid,));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-email",
+                'class' => "btn btn-outline-secondary btn-sm btn-email",
                 'data-bs-toggle' => "tooltip",
                 'title' => gT("Send email invitation")
             ),
@@ -855,7 +855,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email/action/remind",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-email",
+                'class' => "btn btn-outline-secondary btn-sm btn-email",
                 'data-bs-toggle' => "tooltip",
                 'title' => gT("Send email reminder")
             ),
@@ -866,7 +866,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
+                'class' => "btn btn-outline-secondary btn-sm invisible",
                 'disabled' => 'disabled',
                 'title' => ''
             ),
@@ -878,7 +878,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/edit",array("iSurveyId"=>' . self::$sid . ',"iTokenId"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-edit",
+                'class' => "btn btn-outline-secondary btn-sm btn-edit",
                 'data-bs-toggle' => "tooltip",
                 'title' => gT('Edit this survey participant'),
                 'data-sid' => self::$sid
@@ -892,7 +892,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             //'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-delete",
+                'class' => "btn btn-outline-secondary btn-sm btn-delete",
                 ///'data-bs-toggle' => "tooltip",
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => '#confirmation-modal',
@@ -912,7 +912,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("#" => json_encode(["searchcondition"=>"participant_id||equal||".$data->participant_id],JSON_FORCE_OBJECT)))',
             'options' => array(
-                'class' => "btn btn-default btn-sm btn-participant",
+                'class' => "btn btn-outline-secondary btn-sm btn-participant",
                 'data-bs-toggle' => "tooltip",
                 'title' => gT('View this participant in the central participants database'),
             ),
@@ -924,7 +924,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-sm invisible",
+                'class' => "btn btn-outline-secondary btn-sm invisible",
                 'data-bs-toggle' => "tooltip",
                 'title' => "",
             ),

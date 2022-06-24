@@ -169,7 +169,7 @@
                     <?php } ?>
                     </p>
                     <p>
-                        <input class="btn btn-large btn-default" type='button' value='<?php eT("Browse participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
+                        <input class="btn btn-large btn-outline-secondary" type='button' value='<?php eT("Browse participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
                     </p>
                 </div>
 

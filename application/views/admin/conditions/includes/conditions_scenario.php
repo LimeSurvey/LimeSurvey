@@ -38,15 +38,15 @@
                     <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
                     <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
                     <input type='hidden' name='subaction' value='updatescenario' />&nbsp;&nbsp;
-                    <input type='submit' class="btn btn-default" name='scenarioupdated' value='<?php eT("Update scenario"); ?>' />
-                    <input type='button' class="btn btn-default" name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
+                    <input type='submit' class="btn btn-outline-secondary" name='scenarioupdated' value='<?php eT("Update scenario"); ?>' />
+                    <input type='button' class="btn btn-cancel" name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
                 </form>
 
                 <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deletescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;', 'class' => 'delete-scenario-form', 'id'=>'deletescenario'.$scenarionr['scenario'],'name'=>'deletescenario'.$scenarionr['scenario']));?>
 
                     <?php if ($showScenarioButtons): ?>
                         <button 
-                            class='btn btn-default btn-xs'
+                            class='btn btn-outline-secondary btn-xs'
                             data-tooltip='true'
                             data-title='<?php eT('Delete all conditions in this scenario'); ?>'
                             data-bs-toggle='modal'
@@ -59,7 +59,7 @@
                         </button>
 
                         <button
-                            class='btn btn-default btn-xs'
+                            class='btn btn-outline-secondary btn-xs'
                             data-bs-toggle='tooltip'
                             data-title='<?php eT('Change scenario number'); ?>'
                             id='editscenariobtn<?php echo $scenarionr['scenario']; ?>'
@@ -69,7 +69,7 @@
                         </button>
 
                         <button
-                            class='btn btn-default btn-xs'
+                            class='btn btn-outline-secondary btn-xs'
                             data-bs-toggle='tooltip'
                             data-title='<?php eT('Add condition to this scenario'); ?>'
                             onclick='addConditionToScenario("<?php echo $addConditionToScenarioURL; ?>"); return false'

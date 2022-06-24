@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{surveys_groups}}".
  *
- * The followings are the available columns in table '{{surveys_groups}}':
+ * The following are the available columns in table '{{surveys_groups}}':
  * @property integer $gsid
  * @property string $name
  * @property string $title
@@ -305,17 +305,17 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id" => $this->gsid));
         $button = "<div class='icon-btn-row'>";
         if ($this->hasPermission('group', 'read')) {
-            $button .= '<a class="btn btn-sm btn-default" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
         }
         if ($this->hasPermission('permission', 'read')) {
-            $button .= '<a class="btn btn-sm btn-default" href="' . $sPermissionUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">' . gT('Permission') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sPermissionUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">' . gT('Permission') . '</span></a>';
         }
         if ($this->hasPermission('surveysettings', 'read')) {
-            $button .= '<a class="btn btn-sm btn-default" href="' . $sSurveySettingsUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sSurveySettingsUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
         }
         /* Can not delete group #1 + with survey (or move it to hasPermission function ?) */
         if ($this->gsid != 1 && !$this->hasSurveys && $this->hasPermission('group', 'delete')) {
-            $button .= '<span data-bs-toggle="tooltip" title="' . gT('Delete survey group') . '"><a class="btn btn-sm btn-default" href="#" data-post-url="' . $sDeleteUrl . '" data-bs-target="#confirmation-modal" role="button" data-bs-toggle="modal" data-message="' . gT('Do you want to continue?') . '"><i class="fa fa-trash text-danger " aria-hidden="true"></i></a></span>';
+            $button .= '<span data-bs-toggle="tooltip" title="' . gT('Delete survey group') . '"><a class="btn btn-sm btn-outline-secondary" href="#" data-post-url="' . $sDeleteUrl . '" data-bs-target="#confirmation-modal" role="button" data-bs-toggle="modal" data-message="' . gT('Do you want to continue?') . '"><i class="fa fa-trash text-danger " aria-hidden="true"></i></a></span>';
         }
         $button .= "</div>";
         return $button;

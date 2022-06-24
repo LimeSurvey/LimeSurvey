@@ -36,11 +36,13 @@
             </div>
             <div class='form-group'>
                 <div class='col-12 text-center'>
-                    <button class='btn btn-success' id='btnSaveParams'>
+                    <button class='btn btn-success' id='btnSaveParams' type="button">
                         <span class="fa fa-floppy-o icon"></span>
                         <?php eT('Save'); ?>
                     </button>
-                    <button class='btn btn-danger' id='btnCancelParams'><?php eT('Cancel'); ?></button>
+                    <button type="button" class='btn btn-cancel' id='btnCancelParams'>
+                        <?php eT('Cancel'); ?>
+                    </button>
                 </div>
             </div>
         </div>

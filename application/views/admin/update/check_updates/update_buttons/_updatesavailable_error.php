@@ -2,7 +2,7 @@
 /**
  * If any error is returned by the server while checking for updates, they will shown through this view.
  * It is injected inside the li#udapteButtonsContainer, in the _checkButton view.
- * @var obj $serverAnswer the update informations provided by the update server
+ * @var obj $serverAnswer the update information provided by the update server
  */
 ?>
 <?php
@@ -67,7 +67,7 @@
         default :
             $sTile = gT('Error!');
             $sHeader = gT('Unknown error!');
-            $sMessage = gT('An unknown error occured.').' '.gT('Please contact the LimeSurvey team.');
+            $sMessage = gT('An unknown error occurred.').' '.gT('Please contact the LimeSurvey team.');
             $sErrorCode = gT('Error code:').' '.$serverAnswer->error;
             break;
     }
@@ -83,6 +83,6 @@
             </p>
         <?php endif;?>
         <p>
-            <a class="btn btn-lg btn-default" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
+            <a class="btn btn-lg btn-outline-secondary" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
         </p>
 </div>

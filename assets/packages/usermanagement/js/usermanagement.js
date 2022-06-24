@@ -99,7 +99,7 @@ var UserManagement = function () {
                         wireExportDummyUser();
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
-                            window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? 'bg-primary' : 'bg-danger'));
+                            window.LS.ajaxAlerts(result.message, 'success');
                             if (result.hasOwnProperty('href')) {
                                 setTimeout(function() {
                                     const modalSize = result.hasOwnProperty('modalsize') ? result.modalsize : '';
@@ -153,13 +153,22 @@ var UserManagement = function () {
     };
 
     var wireTemplatePermissions = function () {
-        $('#UserManagement--action-userthemepermissions-select-all').on('click', function(e){
-            e.preventDefault();
-            $('.UserManagement--themepermissions-themeswitch').prop('checked',true).trigger('change');
+        $('#UserManagement--action-userthemepermissions-select-all').on('click', function (e) {
+            let templatePermissionButtons = document.querySelectorAll('.UserManagement--themepermissions-themeswitch');
+            for (let templatePermissionButton of templatePermissionButtons) {
+                templatePermissionButton = templatePermissionButton.querySelector('input');
+                if (!templatePermissionButton.checked) {
+                    templatePermissionButton.checked = true;
+                }
+            }
         });
-        $('#UserManagement--action-userthemepermissions-select-none').on('click', function(e){
-            e.preventDefault();
-            $('.UserManagement--themepermissions-themeswitch').prop('checked',false).trigger('change');
+        $('#UserManagement--action-userthemepermissions-select-none').on('click', function (e) {
+            let templatePermissionButtons = document.querySelectorAll('.UserManagement--themepermissions-themeswitch');
+            for (let templatePermissionButton of templatePermissionButtons) {
+                if (templatePermissionButton.querySelector('input').checked) {
+                    templatePermissionButton.querySelector('input:last-of-type').checked = true;
+                }
+            }
         });
     };
 

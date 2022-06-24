@@ -75,12 +75,12 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                             <div class="btn-group" role="group">
                                 <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit '
                                        data-id='simple_edit_options_general_inherit'/>
-                                <label for="general_inherit_on" class="btn btn-outline-primary">
+                                <label for="general_inherit_on" class="btn btn-outline-secondary">
                                     <?php echo gT("Yes"); ?>
                                 </label>
                                 <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='btn-check selector_option_general_inherit '
                                        data-id='simple_edit_options_general_inherit'/>
-                                <label for="general_inherit_off" class="btn btn-outline-primary">
+                                <label for="general_inherit_off" class="btn btn-outline-secondary">
                                     <?php echo gT("No"); ?>
                                 </label>
                             </div>
@@ -132,7 +132,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     foreach ($options as $optionKey => $optionValue) {
                         $id = $attributeKey . "_" . $optionKey;
                         echo '<input id="' . $id . '" type="radio" name="' . $attributeKey . '" value="' . $optionKey . '" class="btn-check selector_option_radio_field simple_edit_options_' . $attributeKey . ' " id="' . $attributeKey . '"/>';
-                        echo '<label for="' . $id . '" class="btn btn-outline-primary">'
+                        echo '<label for="' . $id . '" class="btn btn-outline-secondary">'
                             . gT($optionValue) . '
                                             </label>';
                     }
@@ -146,7 +146,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                                     <input type="text" name="' . $attributeKey . '" data-inheritvalue="' . $sParentOption . '" value="inherit" class="selector_option_value_field selector__color-picker form-control simple_edit_options_' . $attributeKey . '" id="' . $attributeKey . '" />';
                     if ($bInherit && isset($sParentOption)) {
                         echo '<div class="input-group-addon">
-                                            <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                            <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
                                         </div>';
                     }
                     echo '</div>';
@@ -200,7 +200,10 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 if ($category == 'Images' && $attribute['type'] == 'dropdown') {
                     echo '<div class="col-md-4 col-lg-2">
                                 <br/>
-                                <button class="btn btn-default selector__open_lightbox" data-bs-target="#simple_edit_options_' . $attributeKey . '"> ' . gT('Preview image') . '</button>
+                                <button 
+                                	class="btn btn-outline-secondary selector__open_lightbox" 
+                                	data-bs-target="#simple_edit_options_' . $attributeKey .'"> ' . gT('Preview image') . '
+                                </button>
                             </div>';
                 }
 
@@ -220,7 +223,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                         </div>
                         <div class="col-md-6">
                                     <span id="fileselector_frontend">
-                                        <label class="btn btn-default col-8" for="upload_image_frontend">
+                                        <label class="btn btn-outline-secondary col-xs-8" for="upload_image_frontend">
                                             <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
                                             <i class="fa fa-upload ls-space margin right-10"></i>
                                             <?php eT("Upload"); ?>

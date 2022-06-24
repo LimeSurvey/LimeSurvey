@@ -25,7 +25,7 @@ LS.resp =  {
      * @return
      */
     setListPagerPosition : function (pager) {
-        var $elListPager = $('#reponsesListPager');
+        var $elListPager = $('#listPager');
 
         if (useRtl) {
             var scrollAmount = Math.abs($(pager).scrollLeft() - initialScrollValue);

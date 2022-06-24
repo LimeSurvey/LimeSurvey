@@ -1,7 +1,7 @@
 <div class="card m-2">
     <!-- Default panel contents -->
     <div class="card-header">
-        <strong> {{ gT("Share your survey") }} </strong>
+        <strong> {{ gT("Share survey") }} </strong>
     </div>
     <!-- List group -->
     <ul class="list-group list-group-flush">
@@ -66,7 +66,7 @@
                         {{ gT("Sharing panel:") }}
                     </div>
                     <div class="col-8">
-                        <a href="#sharingdialog" class="btn btn-default selector_openSharePanel" data-bs-toggle="modal" id="sharePanelButton_{{oSurvey.sid}}" data-surveyid="{{oSurvey.sid}}">
+                        <a href="#sharingdialog" class="btn btn-outline-secondary selector_openSharePanel" data-bs-toggle="modal" id="sharePanelButton_{{oSurvey.sid}}" data-surveyid="{{oSurvey.sid}}">
                             {{ gT("Open sharing panel") }}
                         </a>
                     </div>
@@ -102,7 +102,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="row selector__qrcode_container">
-                                                    <button class="btn btn-default selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
+                                                    <button class="btn btn-outline-secondary selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
                                                     <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
                                                 </div>
                                             </div>
@@ -119,7 +119,7 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="row selector__qrcode_container">
-                                                        <button class="btn btn-default selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
+                                                        <button class="btn btn-outline-secondary selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
                                                         <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
                                                     </div>
                                                 </div>
@@ -192,7 +192,7 @@
                                                 {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                             </div>
                                             <div class="col-6">
-                                                <a class="btn btn-default twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
+                                                <a class="btn btn-outline-secondary twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
                                                     <i class="fa fa-twitter"></i>{{ gT("Tweet it") }}
                                                 </a>
                                             </div>
@@ -208,7 +208,7 @@
                                                     {{ getLanguageNameFromCode(langname, false)}}
                                                 </div>
                                                 <div class="col-6">
-                                                    <a class="btn btn-default twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
+                                                    <a class="btn btn-outline-secondary twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
                                                         <i class="fa fa-twitter"></i>{{ gT("Tweet it") }}
                                                     </a>
                                                 </div>
@@ -221,7 +221,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">{{gT ("Close") }}</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{gT ("Close") }}</button>
                 </div>
             </div>
         </div>

@@ -7,63 +7,62 @@
 
 ?>
 
+<div class="container">
 <div class="row">
-    <div class="col-12">
-        <div class="form-group">
+    <div class="col-6">
+        <div class="mb-3">
             <label class=" form-label" for='siteadminemail'><?php eT("Default site admin email:"); ?></label>
             <div class="">
                 <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminemail')); ?>"/>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label class="  form-label" for='siteadminname'><?php eT("Administrator name:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminname')); ?>"/><br/><br/>
+                <input class="form-control" type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminname')); ?>"/>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label class="  form-label" for='emailmethod'><?php eT("Email method:"); ?></label>
-            <div class="">
-                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'emailmethod',
-                        'value' => getGlobalSetting('emailmethod'),
-                        'selectOptions' => array(
-                            "mail" => "PHP",
-                            "smtp" => "SMTP",
-                            "sendmail" => "Sendmail",
-                            "qmail" => "qmail"
-                        )
-                    )
-                ); ?>
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'emailmethod',
+                    'checkedOption' => getGlobalSetting('emailmethod'),
+                    'selectOptions' => [
+                        "mail"     => "PHP",
+                        "smtp"     => "SMTP",
+                        "sendmail" => "Sendmail",
+                        "qmail"    => "qmail"
+                    ]
+                ]); ?>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label class="  form-label" for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
             <div class="">
                 <input class="form-control" type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtphost')); ?>"/>
                 <span class="hint"><?php printf(gT("Enter your hostname and port, e.g.: %s"), "smtp.example.org:25"); ?></span>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label class="  form-label" for='emailsmtpuser'><?php eT("SMTP username:"); ?></label>
             <div class="">
                 <input class="form-control" type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtpuser')); ?>"/>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label class="  form-label" for='emailsmtppassword'><?php eT("SMTP password:"); ?></label>
             <div class="">
                 <input class="form-control" type='password' autocomplete="off" size='50' id='emailsmtppassword' name='emailsmtppassword' value='somepassword'/>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label class="  form-label" for='emailsmtpssl'><?php eT("SMTP encryption:"); ?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                     array(
                         'name' => 'emailsmtpssl',
-                        'value' => getGlobalSetting('emailsmtpssl'),
+                        'checkedOption' => getGlobalSetting('emailsmtpssl'),
                         'selectOptions' => array(
                             "" => gT("Off (unsafe)", 'unescaped'),
                             "ssl" => gT("SSL/TLS", 'unescaped'),
@@ -73,31 +72,27 @@
                 ); ?>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label class="  form-label" for='emailsmtpdebug'><?php eT("SMTP debug mode:"); ?></label>
-            <div class="">
-                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                    array(
-                        'name' => 'emailsmtpdebug',
-                        'value' => getGlobalSetting('emailsmtpdebug'),
-                        'selectOptions' => array(
-                            "0" => gT("Off", 'unescaped'),
-                            "1" => gT("On errors", 'unescaped'),
-                            "2" => gT("Always", 'unescaped')
-                        )
-                    )
-                ); ?>
-
-                <br/>&nbsp;
+            <div>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name'          => 'emailsmtpdebug',
+                    'checkedOption' => getGlobalSetting('emailsmtpdebug'),
+                    'selectOptions' => [
+                        "0" => gT("Off", 'unescaped'),
+                        "1" => gT("On errors", 'unescaped'),
+                        "2" => gT("Always", 'unescaped')
+                    ]
+                ]); ?>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label class="  form-label" for='maxemails'><?php eT("Email batch size:"); ?></label>
             <div class="">
                 <input class="form-control" type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars(getGlobalSetting('maxemails')); ?>"/>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label class="form-label" for="sendingrate"><?php eT("Email sending rate:"); ?></label>
             <div>
                 <?php echo Chtml::numberField("sendingrate", App()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1)); ?>
@@ -105,11 +100,12 @@
             </div>
         </div>
         <!-- Test email -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class="text-start form-label" for='sendTestEmail'>
                 <?php eT("Send test email:"); ?>
             </label>
             <div class="">
+                <!-- TODO: is this needed? It looks like commented out? -->
                 <!--a href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>" class="btn btn-success btn-large"><?php eT("Send email"); ?></a-->
                 <button
                     id="sendtestemailbutton"
@@ -141,6 +137,7 @@
 
         </div>
     </div>
+</div>
 </div>
 
 <?php if (Yii::app()->getConfig("demoMode") == true): ?>

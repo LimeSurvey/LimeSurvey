@@ -272,8 +272,28 @@ body {
     line-height: inherit;
 }
 
-.jumbotron {
+.jumbotron{
     text-align: center;
+    background-color: transparent;
+    padding: 48px 60px;
+    border-radius: 6px;
+    margin-bottom: 30px;
+    margin-top: 14px;
+
+}
+.jumbotron h1,
+.jumbotron .h1 {
+    color: inherit;
+}
+.jumbotron p {
+    margin-bottom: 15px;
+    font-size: 21px;
+}
+.container .jumbotron {
+    border-radius: 6px;
+}
+.jumbotron .container {
+    max-width: 100%;
 }
 
 .jumbotron.message-box {
@@ -596,10 +616,6 @@ html {
 
 .form-group {
     margin-bottom: 17px;
-}
-
-.cke_contents {
-    width: 650px;
 }
 
 .cke_toolgroup {
@@ -1414,8 +1430,7 @@ input[type="radio"] {
 input[type="radio"],
 input[type="checkbox"] {
     margin: 4px 0 0;
-    margin-top: 1px \9
-;
+    margin-top: 1px \9;
     line-height: normal;
 }
 
@@ -1425,6 +1440,11 @@ input[type="checkbox"]:focus {
     outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
+}
+
+// Button group
+.btn-group .btn-check {
+    position: absolute;
 }
 
 .radio,
@@ -1450,8 +1470,7 @@ input[type="checkbox"]:focus {
 .checkbox-inline input[type="checkbox"] {
     position: absolute;
     margin-left: -20px;
-    margin-top: 4px \9
-;
+    margin-top: 4px;
 }
 
 .radio + .radio,
@@ -2259,10 +2278,6 @@ html body .nav-tabs > li.active > a:focus {
 .btnaddanswer:hover,
 .btndelanswer:hover {
     cursor: pointer;
-}
-
-.jumbotron p {
-    font-weight: 300;
 }
 
 span[data-tooltip] {
@@ -4233,9 +4248,10 @@ table.dataTable thead .sorting_desc:after {
 
 // Sticky topbar
 .menubar.sticky {
-    position: fixed !important;
-    top: 0 !important;
-    margin-top: 0 !important;
+    position:   fixed;
+    top:        0;
+    margin-top: 0;
+    z-index:    1030;
 }
 #sticky-topbar-placeholder {
     display: none;
@@ -4291,6 +4307,16 @@ table.dataTable thead .sorting_desc:after {
 html[dir="rtl"] .dropdown-menu,
 html[dir="rtl"] th {
     text-align: initial;
+}
+
+.list-group-item.disabled {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #eee;
+}
+
+label {
+    font-weight: bold;
 }
 
 .list-group-item.disabled {

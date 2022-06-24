@@ -288,7 +288,7 @@ class Themes extends SurveyCommonAction
         /** @var string */
         $themeType = returnGlobal('theme');
         if ($themeType === 'question') {
-            // Make questiontheme upload folder if it doesnt exist
+            // Make questiontheme upload folder if it doesn't exist
             if (!is_dir($questionthemerootdir = App()->getConfig('userquestionthemerootdir'))) {
                 mkdir($questionthemerootdir, 0777, true);
             }
@@ -496,7 +496,7 @@ class Themes extends SurveyCommonAction
                         $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                     } else {
                         $uploadresult = sprintf(gT("File %s uploaded"), $filename);
-                        Template::model()->findByPk($templatename)->resetAssetVersion(); // Upload a files, asset need to be resetted (maybe)
+                        Template::model()->findByPk($templatename)->resetAssetVersion(); // Upload a files, asset need to be reset (maybe)
                         $status = 'success';
                     }
                 }
@@ -555,7 +555,25 @@ class Themes extends SurveyCommonAction
 
         App()->getClientScript()->reset();
         App()->getClientScript()->registerPackage('bootstrap-admin');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js');
+
+        $undo    = gT("Undo (ctrl + Z)", "js");
+        $redo    = gT("Redo (ctrl + Y)", "js");
+        $find    = gT("Find (ctrl + F)", "js");
+        $replace = gT("Replace (ctrl + H)", "js");
+        App()->getClientScript()->registerScript(
+            "SurveyThemeEditorLanguageData",
+            <<<JAVASCRIPT
+surveyThemeEditorLanguageData = {
+    undo: "$undo",
+    redo: "$redo",
+    find: "$find",
+    replace: "$replace"
+};
+JAVASCRIPT
+            ,
+            CClientScript::POS_BEGIN
+        );
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js', CClientScript::POS_END);
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
         AdminTheme::getInstance()->registerStylesAndScripts();
@@ -615,7 +633,7 @@ class Themes extends SurveyCommonAction
             /* No try to hack, go to delete */
             if (@unlink($the_full_file_path)) {
                 Yii::app()->user->setFlash('success', sprintf(gT("The file %s was deleted."), CHtml::encode($sPostedFile)));
-                Template::model()->findByPk($sTemplateName)->resetAssetVersion(); // Delete a files, asset need to be resetted (maybe)
+                Template::model()->findByPk($sTemplateName)->resetAssetVersion(); // Delete a files, asset need to be reset (maybe)
             } else {
                 Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/themes folder"), CHtml::encode($sPostedFile)));
             }
@@ -1088,7 +1106,7 @@ class Themes extends SurveyCommonAction
 
         /* See if we found the file to be edited inside template */
         /* @todo must control if is updatable : in updatable file OR is a view */
-        /* Actually allow to update any file exemple css/template-core.css */
+        /* Actually allow to update any file example css/template-core.css */
         // @TODO: Proper language code conversion
         $sLanguageCode = 'en';
         $availableeditorlanguages = array('bg', 'cs', 'de', 'dk', 'en', 'eo', 'es', 'fi', 'fr', 'hr', 'it', 'ja', 'mk', 'nl', 'pl', 'pt', 'ru', 'sk', 'zh');

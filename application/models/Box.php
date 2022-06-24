@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{boxes}}".
  *
- * The followings are the available columns in table '{{boxes}}':
+ * The following are the available columns in table '{{boxes}}':
  * @property integer $id Primary key
  * @property integer $position
  * @property string $url
@@ -141,14 +141,14 @@ class Box extends CActiveRecord
         $url = Yii::app()->createUrl("/homepageSettings/updateBox/id/");
         $url .= '/' . $this->id;
         $button = "<div class='icon-btn-row'>";
-        $button .= '<a class="btn btn-sm btn-default green-border" data-bs-toggle="tooltip" data-bs-target="top" '
+        $button .= '<a class="btn btn-sm btn-outline-secondary green-border" data-bs-toggle="tooltip" data-bs-target="top" '
          . 'title="' . gT('Edit') . '"'
          . 'href="'
          . $url
          . '" role="button"><span class="fa fa-pencil" ></span></a>';
 
         $url = Yii::app()->createUrl("/homepageSettings/deleteBox");
-        $button .= '<a class="btn btn-sm btn-default selector--ConfirmModal"'
+        $button .= '<a class="btn btn-sm btn-outline-secondary selector--ConfirmModal"'
         . ' data-button-no="' . gT('Cancel') . '"'
         . ' data-button-yes="' . gT('Delete') . '"'
         . ' data-button-type="btn-danger"'

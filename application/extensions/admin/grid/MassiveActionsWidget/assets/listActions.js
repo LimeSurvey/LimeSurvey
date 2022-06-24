@@ -169,7 +169,7 @@ var onClickListAction =  function () {
         var $postDatas  = {sItems:$oCheckedItems};
         $modal.find('.custom-data').each(function(i, el)
         {
-            if ($(this).hasClass('btn-group')){ // yiiwheels.widgets.buttongroup.WhButtonGroup
+            if ($(this).hasClass('btn-group')){ // ext.ButtonGroupWidget.ButtonGroupWidget
                 $(this).find('input:checked').each(function(i, el)
                 {
                     $postDatas[$(this).attr('name')]=$(this).val();

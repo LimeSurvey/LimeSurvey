@@ -36,9 +36,15 @@
                         </label>
                         <div class="col-md-8">
                             <select class="form-control" name="completionstate" id="completionstate">
-                                <option value="complete"  id="completionstate-complete"><?php eT("Completed responses only"); ?></option>
-                                <option value="all" id="completionstate-all" selected><?php eT("All responses"); ?></option>
-                                <option value="incomplete" id="completionstate-incomplete"><?php eT("Incomplete responses only"); ?></option>
+                                <option value="complete"  id="completionstate-complete">
+                                    <?php eT("Completed responses only"); ?>
+                                </option>
+                                <option value="all" id="completionstate-all" selected>
+                                    <?php eT("All responses"); ?>
+                                </option>
+                                <option value="incomplete" id="completionstate-incomplete">
+                                    <?php eT("Incomplete responses only"); ?>
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -68,17 +74,17 @@
                         </label>
                         <div class="col-md-4">
                             <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default <?php echo ($vvversionselected == 2 ? "active" : ""); ?>">
+                                <label class="btn btn-outline-secondary <?php echo ($vvversionselected == 2 ? "active" : ""); ?>">
                                     <input name="vvversion" value="2" type="radio" id="vvversion-last" <?php echo ($vvversionselected == 2 ? "checked='checked'" : ""); ?> />
                                     <?php eT("Last VV version"); ?>
                                 </label>
 
-                                <label class="btn btn-default <?php echo ($vvversionselected == 1 ? "active" : ""); ?>">
+                                <label class="btn btn-outline-secondary <?php echo ($vvversionselected == 1 ? "active" : ""); ?>">
                                     <input name="vvversion" value="1" type="radio" id="vvversion-old" <?php echo ($vvversionselected == 1 ? "checked='checked'" : ""); ?> />
                                     <?php eT("Old VV version"); ?>
                                 </label>
                             </div>
-                            <p class="help-block"><?php eT("If you want to import the response data in older version or if your survey has integrity problem, please use the old export version (automatically selected if there are duplicate codes)."); ?></p>
+                            <p class="help-block"><?php eT("If you want to import the response data from an older version or if your survey has an integrity problem, please use the old export version (automatically selected if there are duplicate codes)."); ?></p>
                         </div>
                     </div>
 
@@ -100,12 +106,12 @@
                         </label>
                         <div class="col-sm-8">
                             <?php echo CHtml::numberField('abbreviatedtextto', '', array('min' => "1", 'step' => "1", 'class' => 'form-control')); ?>
-                            <p class="help-block"><?php eT("Leave empty if you want complete question text."); ?></p>
+                            <p class="help-block"><?php eT("Leave empty if you want the complete question text."); ?></p>
                         </div>
                     </div>
                 </div>
             </div>
-            <?php echo CHtml::submitButton(gT('Export results','unescaped'), array('class'=>'btn btn-default d-none')); ?>
+            <?php echo CHtml::submitButton(gT('Export results','unescaped'), array('class'=>'btn btn-outline-secondary d-none')); ?>
             <?php echo CHtml::hiddenField('subaction','export'); ?>
             <form>
         </div>

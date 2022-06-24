@@ -43,8 +43,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                     <!-- Available Themes -->
                     <?php if (count($oSurveyTheme->templatesWithNoDb) > 0) : ?>
                         <h3><?php eT('Available survey themes:'); ?></h3>
-                        <div id="templates_no_db" class="grid-view">
-                            <table class="items table">
+                        <div id="templates_no_db" >
+                            <table class="items table table-hover">
                                 <thead>
                                 <tr>
                                     <th><?php eT('Preview'); ?></th>
@@ -78,13 +78,11 @@ echo viewHelper::getViewTestTag('templateOptions');
                     <!-- Broken Themes  -->
                     <?php $aBrokenThemes = Template::getBrokenThemes();
                     if (count($aBrokenThemes) > 0) : ?>
-                        <div class="alert alert-danger" role="alert">
-                            <?php eT('Broken survey themes:'); ?>
-                        </div>
+                        <h3><?php eT('Broken survey themes'); ?></h3>
 
 
-                        <div id="thembes_broken" class="grid-view">
-                            <table class="items table">
+                        <div id="thembes_broken" >
+                            <table class="items table table-hover">
                                 <thead>
                                 <tr>
                                     <th><?php eT('Name'); ?></th>
@@ -102,29 +100,24 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <blockquote><?php echo $oBrokenTheme->getMessage(); ?></blockquote>
                                         </td>
                                         <td class="col-lg-1">
-
                                             <!-- Export -->
-                                            <?php if (Permission::model()->hasGlobalPermission('templates',
-                                                    'export') && class_exists('ZipArchive')) : ?>
-                                                <a class="btn btn-default  btn-block" id="button-export"
-                                                   href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>"
-                                                   role="button">
+                                            <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) : ?>
+                                                <a class="btn btn-outline-secondary btn-block" id="button-export"
+                                                   href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>">
                                                     <span class="icon-export text-success"></span>
                                                     <?php eT("Export"); ?>
                                                 </a>
                                             <?php endif; ?>
-
                                             <!-- Delete -->
                                             <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) : ?>
-                                                <a
-                                                    id="button-delete"
-                                                    href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
-                                                    data-post='{ "templatename": "<?php echo $sName; ?>" }'
-                                                    data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
-                                                data-button-no="<?= gT('Cancel'); ?>"
-                                                data-button-yes="<?= gT('Delete'); ?>"
-                                                    title="<?php eT('Delete'); ?>"
-                                                    class="btn btn-danger selector--ConfirmModal">
+                                                <a id="button-delete"
+                                                   href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
+                                                   data-post='{ "templatename": "<?php echo $sName; ?>" }'
+                                                   data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
+                                                   data-button-no="<?= gT('Cancel'); ?>"
+                                                   data-button-yes="<?= gT('Delete'); ?>"
+                                                   title="<?php eT('Delete'); ?>"
+                                                   class="btn btn-danger selector--ConfirmModal">
                                                     <span class="fa fa-trash"></span>
                                                     <?php eT('Delete'); ?>
                                                 </a>
@@ -142,8 +135,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                     <?php $aDeprecatedThemes = Template::getDeprecatedTemplates(); ?>
                     <?php if (count($aDeprecatedThemes) > 0) : ?>
                         <h3><?php eT('Deprecated survey themes:'); ?></h3>
-                        <div id="deprecatedThemes" class="grid-view">
-                            <table class="items table">
+                        <div id="deprecatedThemes" >
+                            <table class="items table table-hover">
                                 <thead>
                                 <tr>
                                     <th><?php eT('Name'); ?></th>
@@ -158,7 +151,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                         <td class="col-lg-2">
                                             <?php if (Permission::model()->hasGlobalPermission('templates',
                                                     'export') && class_exists('ZipArchive')) : ?>
-                                                <a class="btn btn-default" id="button-export"
+                                                <a class="btn btn-outline-secondary id="button-export"
                                                    href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>"
                                                    role="button">
                                                     <span class="icon-export text-success"></span>
@@ -179,7 +172,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <div class="list-surveys">
                     <h3><?php eT('Available admin themes:'); ?></h3>
                     <div id="templates_no_db">
-                        <table class="items table">
+                        <table class="items table table-hover">
                             <thead>
                             <tr>
                                 <th><?php eT('Preview'); ?></th>
@@ -201,7 +194,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                             <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
                                         <?php else : ?>
                                             <a href="<?php echo $this->createUrl("themeOptions/setAdminTheme/",
-                                                ['sAdminThemeName' => $oTheme->path]); ?>" class="btn btn-default btn-lg ">
+                                                ['sAdminThemeName' => $oTheme->path]); ?>" class="btn btn-outline-secondary btn-lg">
                                                 <?php eT("Select"); ?>
                                             </a>
                                         <?php endif; ?>
@@ -218,7 +211,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                     <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                     <!-- Installed Question Themes -->
                 <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
-                <!-- Available Quesiton Themes-->
+                <!-- Available Quesiton Themes and broken question themes-->
                 <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
             </div>
         </div>

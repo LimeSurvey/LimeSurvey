@@ -2,7 +2,7 @@
 <?php /* Ported from previous versions: Pending to adapt to screen own JS for saving (and validations) 
 <!-- Save and new group -->
 <?php if(!empty($showSaveAndNewGroupButton)): ?>
-    <a class="btn btn-default" id='save-and-new-button' role="button">
+    <a class="btn btn-outline-secondary" id='save-and-new-button' role="button">
         <span class="fa fa-plus-square"></span>
         <?php eT("Save and new group"); ?>
     </a>
@@ -10,7 +10,7 @@
 
 <!-- Save and add question -->
 <?php if(!empty($showSaveAndNewQuestionButton)): ?>
-    <a class="btn btn-default" id='save-and-new-question-button' role="button">
+    <a class="btn btn-outline-secondary" id='save-and-new-question-button' role="button">
         <span class="fa fa-plus"></span>
         <?php eT("Save and add question"); ?>
     </a>
@@ -19,7 +19,7 @@
 
 <!-- Close -->
 <?php if(!empty($showCloseButton)): ?>
-    <a class="btn btn-default" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
+    <a class="btn btn-outline-secondary" href="#" onclick="LS.questionEditor.showOverview(); return false;">
         <span class="fa fa-close"></span>
         <?php eT("Close");?>
     </a>
@@ -28,8 +28,10 @@
 <!-- Save and close -->
 <?php if(!empty($showSaveAndCloseButton)): ?>
     <button
+        type="button"
+        role="button"
         id="save-and-close-button-create-question"
-        class="btn btn-default"
+        class="btn btn-outline-secondary"
         type="button"
         onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'overview');"
     >

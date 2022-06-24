@@ -58,13 +58,13 @@ echo $changelog;
             echo CHtml::hiddenField('access_token', $access_token);
         ?>
 
-        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
+        <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
             <?php eT("Cancel"); ?>
         </a>
 
 
     <?php
-        echo CHtml::submitButton(gT('Continue', 'unescaped'), array('id' => 'step2launch', "class" => "btn btn-default ajax_button launch_update"));
+        echo CHtml::submitButton(gT('Continue', 'unescaped'), array('id' => 'step2launch', "class" => "btn btn-outline-secondary ajax_button launch_update"));
         echo CHtml::endForm();
     ?>
 

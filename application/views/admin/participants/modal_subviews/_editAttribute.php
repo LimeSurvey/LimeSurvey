@@ -31,37 +31,37 @@
     <div class=" form-group" id="">
         <label class='form-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
         <div>
-            <?php
-            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                'name' => "ParticipantAttributeName[visible]",
-                'id'=>"visible",
-                'value' => $model['visible']=='TRUE'?'1':'0',
-                'onLabel'=>gT('On'),
-                'offLabel' => gT('Off')));
-            ?>
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => "ParticipantAttributeName[visible]",
+                'checkedOption' => $model['visible'] === 'TRUE' ? '1' : '0',
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ],
+            ]); ?>
         </div>
     </div>
     <div class=" form-group" id="">
         <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
         <div>
-            <?php
-            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                'name' => "ParticipantAttributeName[encrypted]",
-                'id'=>"encrypted",
-                'value' => $model['encrypted']=='Y'?'1':'0',
-                'onLabel'=>gT('On'),
-                'offLabel' => gT('Off'),
-                'htmlOptions'=>array(
-                    'disabled'=>!$bEncrypted,
-                )
-            ));
-            ?>
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => "ParticipantAttributeName[encrypted]",
+                'id'            => "encrypted",
+                'checkedOption' => $model['encrypted'] === 'Y' ? '1' : '0',
+                'selectOptions' => [
+                    '1' => gT('On'),
+                    '0' => gT('Off'),
+                ],
+                'htmlOptions'   => [
+                    'disabled' => !$bEncrypted,
+                ]
+            ]); ?>
         </div>
     </div>
     <div id="ParticipantAttributeNamesDropdownEdit" class="row form-group" style="display: none;">
         <div class="row">
             <div class="col-2">
-                <button class="btn btn-default btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
+                <button class="btn btn-outline-secondary btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
             </div>
             <h4 class="col-8 col-offset-2"><?php eT("Dropdown fields") ?></h4>
         </div>
@@ -74,10 +74,9 @@
                         'class' => 'form-control',
                         'id' => ''
                     ]);
-                    // echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='".$attribute_value['value']."' />";
                     echo "</div>";
                     echo '<div class="col-1">
-                            <button class="btn btn-default form-group action_delDropdownField">
+                            <button class="btn btn-outline-secondary form-group action_delDropdownField">
                                 <i class="fa fa-trash text-danger"></i>
                             </button>
                         </div>
@@ -89,7 +88,7 @@
                     <input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='' />
                 </div>
                 <div class="col-1">
-                    <button class="btn btn-default form-group action_delDropdownField">
+                    <button class="btn btn-outline-secondary form-group action_delDropdownField">
                         <i class="fa fa-trash text-danger"></i>
                     </button>
                 </div>
@@ -107,7 +106,7 @@
                 </div>
             </div>
             <div class="col-1">
-                <button class="btn btn-default form-group" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+                <button class="btn btn-outline-secondary form-group" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
                     <i class="fa fa-plus-circle text-success"></i>
                 </button>
             </div>
@@ -124,7 +123,7 @@
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-default form-group action_delLanguageField">
+                                <button class="btn btn-outline-secondary form-group action_delLanguageField">
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
                             </div>
@@ -141,7 +140,7 @@
                                 <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.$languageOfAttribute.'">
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-default form-group action_delLanguageField">
+                                <button class="btn btn-outline-secondary form-group action_delLanguageField">
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
                             </div>
@@ -163,7 +162,7 @@
                         <input class='form-control' name='dummyParticipantAttributeNamesDropdown' value='' />
                     </div>
                     <div class="col-1">
-                        <button class="btn btn-default form-group action_delDropdownField">
+                        <button class="btn btn-outline-secondary form-group action_delDropdownField">
                             <i class="fa fa-trash text-danger"></i>
                         </button>
                     </div>
@@ -229,7 +228,7 @@
                         if(result.success){
                             formGroup.fadeOut(400, function(){formGroup.remove()});
                         } else {
-                            window.LS.notifyFader(result.errorMessage, 'well-lg bg-danger text-center');
+                            window.LS.ajaxAlerts(result.errorMessage, 'danger');
                         }
                     }
                 })
@@ -242,8 +241,10 @@
     </script>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
-    <button type="button" class="btn btn-primary action_save_modal_editAttributeName"><?php eT("Save")?></button>
+    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
+    <button role="button" class="btn btn-primary action_save_modal_editAttributeName">
+        <?php eT("Save")?>
+    </button>
 </div>
 <?php
 $this->endWidget();

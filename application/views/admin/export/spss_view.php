@@ -14,9 +14,9 @@ echo viewHelper::getViewTestTag('exportSpss');
     <div class="form-group row">
         <label for='completionstate' class='col-md-2  form-form-label'><?php eT("Data selection:");?></label>
         <div class="col-md-10">
-            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                 'name' => 'completionstate',
-                'value'=> 'all' ,
+                'checkedOption'=> 'all' ,
                 'selectOptions'=>array(
                     "all"=>gT("All responses",'unescaped'),
                     "complete"=>gT("Complete only",'unescaped'),
@@ -28,9 +28,9 @@ echo viewHelper::getViewTestTag('exportSpss');
     <div class="form-group row">
         <label for='spssver'  class='col-md-2  form-form-label'><?php eT("Version:");?></label>
         <div class="col-md-10">
-            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                 'name' => 'spssver',
-                'value'=> $spssver ,
+                'checkedOption'=> $spssver ,
                 'selectOptions'=>array(
                     "1"=>gT("Prior to 16",'unescaped'),
                     "2"=>gT("16 or up",'unescaped'),
@@ -86,13 +86,13 @@ echo viewHelper::getViewTestTag('exportSpss');
         ?>
         <label for='dlstructure' class='col-md-1 form-form-label'><?php eT("Step 1:");?></label>
         <div class="col-md-10">
-            <input class="btn btn-default" type='submit' name='dlstructure' id='dlstructure' value='<?php eT("Export syntax");?>'/>
+            <input class="btn btn-outline-secondary" type='submit' name='dlstructure' id='dlstructure' value='<?php eT("Export syntax");?>'/>
         </div>
     </div>
     <div class="form-group row">
         <label for='dldata' class='col-md-1  form-form-label'><?php eT("Step 2:");?></label>
         <div class="col-md-10">
-            <input class="btn btn-default" type='submit' name='dldata' id='dldata' value='<?php eT("Export data");?>'/>
+            <input class="btn btn-outline-secondary" type='submit' name='dldata' id='dldata' value='<?php eT("Export data");?>'/>
         </div>
     </div>
     </form>

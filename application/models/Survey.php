@@ -107,7 +107,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $responsesTableName Name of survey resonses table
  * @property string $timingsTableName Name of survey timings table
  * @property boolean $hasTokensTable Whether survey has a tokens table or not
- * @property boolean $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
+ * @property boolean $hasResponsesTable Wheteher the survey responses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
@@ -765,7 +765,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Wheteher the survey reponses (data) table exists in DB
+     * Wheteher the survey responses (data) table exists in DB
      * @return boolean
      */
     public function getHasResponsesTable()
@@ -776,7 +776,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Wheteher the survey reponses timings exists in DB
+     * Wheteher the survey responses timings exists in DB
      * @return boolean
      */
     public function getHasTimingsTable()
@@ -1501,18 +1501,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
             if ($this->active != 'Y') {
                 $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid));
                 if ($groupCount > 0) {
-                    $button .= '<a class="btn btn-sm btn-default" href="' . $sAddquestion . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new question') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new question') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddquestion . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new question') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new question') . '</span></a>';
                 } else {
-                    $button .= '<a class="btn btn-sm btn-default" href="' . $sAddGroup . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new group') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new group') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddGroup . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new group') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new group') . '</span></a>';
                 }
             }
         }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active == 'Y') {
-            $button .= '<a class="btn btn-sm btn-default" href="' . $sStatUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Statistics') . '"><span class="fa fa-bar-chart text-success" ></span><span class="sr-only">' . gT('Statistics') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sStatUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Statistics') . '"><span class="fa fa-bar-chart text-success" ></span><span class="sr-only">' . gT('Statistics') . '</span></a>';
         }
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
-            $button .= '<a class="btn btn-sm btn-default" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="sr-only">' . gT('General settings & texts') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="sr-only">' . gT('General settings & texts') . '</span></a>';
         }
 
         $button .= "</div>";
@@ -2247,10 +2247,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
     {
         $sGlobalCRUD = $sCRUD;
-        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, response , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
-        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, response , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
         /* Global */

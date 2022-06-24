@@ -309,10 +309,10 @@ class SurveyCommonAction extends CAction
      *
      * Addition of parameters should be avoided if they can be added to $aData
      *
-     * NOTE FROM LOUIS : We want to remove this function, wich doesn't respect MVC pattern.
+     * NOTE FROM LOUIS : We want to remove this function, which doesn't respect MVC pattern.
      * The work it's doing should be handle by layout files, and subviews inside views.
      * Eg : for route "admin/survey/sa/listquestiongroups/surveyid/282267"
-     *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in wich the question group bar is called as a subview.
+     *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in which the question group bar is called as a subview.
      *
      * So for now, we try to evacuate all the renderWrappedTemplate logic (if statements, etc.)
      * to subfunctions, then it will be easier to remove.
@@ -653,47 +653,6 @@ class SurveyCommonAction extends CAction
                 Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
                 $this->getController()->redirect(array("admin/index"));
             }
-        }
-    }
-
-    /**
-     * Show admin menu for question group view
-     *
-     * @param array $aData ?
-     */
-    public function nquestiongroupbar($aData)
-    {
-        if (isset($aData['questiongroupbar'])) {
-            if (!isset($aData['gid'])) {
-                if (isset($_GET['gid'])) {
-                    $aData['gid'] = $_GET['gid'];
-                }
-            }
-
-            $aData['surveyIsActive'] = $aData['oSurvey']->active !== 'N';
-
-            $surveyid = $aData['surveyid'];
-            $gid = $aData['gid'];
-            $oSurvey = $aData['oSurvey'];
-
-            $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid));
-
-            $sumresult1 = Survey::model()->with(array(
-                'languagesettings' => array('condition' => 'surveyls_language=language')))->findByPk($surveyid);
-            $aData['activated'] = $activated = $sumresult1->active;
-            if ($gid !== null) {
-                $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
-            }
-            $aData['condarray'] = $condarray ?? [];
-
-            $aData['languagelist'] = $oSurvey->getAllLanguages();
-
-            if (isset($aData['questiongroupbar']['closebutton']['url'])) {
-                $sAlternativeUrl = $aData['questiongroupbar']['closebutton']['url'];
-                $aData['questiongroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-
-            $this->getController()->renderPartial("/questionGroupsAdministration/questiongroupbar_view", $aData);
         }
     }
 

@@ -159,7 +159,7 @@ foreach ($systemInfos as $key => $systemInfo) {
 
             </div>
             <div class="modal-footer modal-footer-yes-no">
-                <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
                 <a id="actionBtn" class="btn btn-ok" data-actionbtntext="<?php eT('Confirm'); ?>" ></a>
             </div>
             <div class="modal-footer-close modal-footer" style="display: none;">
@@ -184,7 +184,7 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <p class='modal-body-text'><?php eT("An error occurred."); ?></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-bs-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>
@@ -203,7 +203,7 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <p class='modal-body-text'><?php /* This must be set in Javascript */ ?></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-bs-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>
@@ -222,7 +222,7 @@ foreach ($systemInfos as $key => $systemInfo) {
                 <p class='modal-body-text'></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-bs-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
             </div>
         </div>
     </div>

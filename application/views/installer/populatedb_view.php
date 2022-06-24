@@ -17,7 +17,7 @@
 
             <div class="row">
                 <div class="col-lg-4" >
-                    <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
+                    <input class="btn btn-outline-secondary" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
                 </div>
                 <div class="col-lg-4" style="text-align: center;">
                 </div>
@@ -28,7 +28,7 @@
                             echo CHtml::form(array($next['action']), 'post');
                             echo CHtml::submitButton($next['label'], array(
                                 'name' => $next['name'],
-                                'class' => 'btn btn-default'
+                                'class' => 'btn btn-outline-secondary'
                             ));
                             echo CHtml::endForm();
                         }

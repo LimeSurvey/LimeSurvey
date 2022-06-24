@@ -132,8 +132,8 @@
         {%  if activated != 'Y' and first %}
             {# TODO : to merge subquestion and answer options,  implies : define in controller titles #}
 
-            <button class="btn btn-default btn-sm btnaddanswer"><i class="icon-add text-success" data-code="{{ title }}" data-bs-toggle="tooltip" data-scale-id="{{ scale_id }}" data-bs-placement="bottom" title="{{ gT("Insert a new subquestion after this one") }}"></i></button>
-            <button class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash text-danger"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ gT("Delete this subquestion") }}"></i></button>
+            <button class="btn btn-outline-secondary btn-sm btnaddanswer"><i class="icon-add text-success" data-code="{{ title }}" data-bs-toggle="tooltip" data-scale-id="{{ scale_id }}" data-bs-placement="bottom" title="{{ gT("Insert a new subquestion after this one") }}"></i></button>
+            <button class="btn btn-outline-secondary btn-sm btndelanswer"><i class="fa fa-trash text-danger"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ gT("Delete this subquestion") }}"></i></button>
         {%  endif %}
 
     </td>

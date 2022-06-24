@@ -47,7 +47,7 @@
                     <div class="row login-submit login-content">
                         <div class="col-12">
                             <input type="hidden" name="action" value="forgotpass" />
-                            <input class="action btn btn-default" type="submit" value="<?php eT('Check data'); ?>" />
+                            <input class="action btn btn-outline-secondary" type="submit" value="<?php eT('Check data'); ?>" />
                             <br/><br/>
                             <a href="<?php echo $this->createUrl("/admin"); ?>"><?php eT('Main Admin Screen'); ?></a>
                         </div>

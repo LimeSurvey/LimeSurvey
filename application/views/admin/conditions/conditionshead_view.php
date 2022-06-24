@@ -4,6 +4,7 @@
 
         <?php if ($scenariocount > 0): ?>
             <button
+                type='button'
                 id='delete-all-conditions'
                 data-bs-toggle='modal'
                 data-bs-target='#confirmation-modal'
@@ -20,8 +21,9 @@
 
         <?php if ($scenariocount > 1): ?>
             <button
+                type='button'
                 id='renumber-scenario'
-                class="btn btn-default pull-right condition-header-button"
+                class="btn btn-outline-secondary pull-right condition-header-button"
                 data-bs-toggle='modal'
                 data-bs-target='#confirmation-modal'
                 data-message='<?php eT('Are you sure you want to renumber the scenarios with incrementing numbers beginning from 1?', 'js'); ?>'
@@ -56,9 +58,15 @@
                 <?php echo $quickAddConditionForm; ?>
             </div>
             <div class="modal-footer">
-                <button type="button" id='quick-add-condition-close-button' class="btn btn-default" data-bs-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
-                <button type='submit' id='quick-add-condition-save-button' class='btn btn-primary'><?php eT('Save'); ?></button>
-                <span id='quick-add-url' class="d-none"><?php echo $quickAddConditionURL; ?></span>
+                <button type="button" id='quick-add-condition-close-button' class="btn btn-cancel" data-bs-dismiss="modal">
+                    <?php eT("Cancel"); ?>
+                </button>
+                <button role="button" type='submit' id='quick-add-condition-save-button' class='btn btn-primary'>
+                    <?php eT('Save'); ?>
+                </button>
+                <span id='quick-add-url' class="d-none">
+                	<?php echo $quickAddConditionURL; ?>
+                </span>
             </div>
         </div>
     </div>

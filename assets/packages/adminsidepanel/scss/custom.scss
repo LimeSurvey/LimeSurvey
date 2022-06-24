@@ -353,14 +353,14 @@ ol.breadcrumb.title-bar-breadcrumb {
     position: fixed;
     justify-content: center;
     align-items: center;
-    
+
     .blocker-loading-container {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
         width: 100%;
-        
+
         .loading-icon-fa {
             display: flex;
             z-index: 9999;
@@ -388,3 +388,9 @@ ol.breadcrumb.title-bar-breadcrumb {
         margin-left:22px
     }
 }
+
+.black-caret {
+    color: black;
+}
+
+

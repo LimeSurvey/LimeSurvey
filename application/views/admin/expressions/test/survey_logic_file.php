@@ -22,7 +22,7 @@ echo viewHelper::getViewTestTag('surveyLogicFile');
                 
                 <input name="printable" type="hidden" value="1" />
                 <div class="form-group">
-                    <input type="submit" name="printablesubmit" value="<?=gT("Open printable view")?>" class="btn btn-default" />
+                    <input type="submit" name="printablesubmit" value="<?=gT("Open printable view")?>" class="btn btn-outline-secondary" />
                 </div>
             </form>
         </div>

@@ -20,7 +20,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             <?php /* Disabled for prototype 1.
                 <a
                     href=''
-                    class='btn btn-default '
+                    class='btn btn-outline-secondary '
                     data-tooltip='true'
                     title='<?php eT('Install plugins from the extension shop'); ?>'
                 >
@@ -38,7 +38,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                         data-bs-toggle='tooltip'
                         data-title='<?php echo $menu->getTooltip(); ?>'
                     <?php endif; ?>
-                    class='btn btn-default'
+                    class='btn btn-outline-secondary'
                 >
                     <?php if ($menu->getIconClass()): ?>
                         <i class='<?php echo $menu->getIconClass(); ?>'></i>&nbsp;

@@ -3,7 +3,7 @@
  * This view render the textaera to display the list of files changed by the update but being readonly in the local installation
  * If no readonly file, display a success message
  * 
- * @var array $readonlyfiles array continaing the readonly files. 
+ * @var array $readonlyfiles array containing the readonly files. 
  */
 ?>
 <?php if (count($readonlyfiles)>0):?>

@@ -460,7 +460,7 @@ class UserManagementController extends LSBaseController
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => gT("Saved permissions successfully.")
             ]
         ]);
     }
@@ -520,12 +520,12 @@ class UserManagementController extends LSBaseController
         $userId = Yii::app()->request->getPost('userid');
         $aTemplatePermissions = Yii::app()->request->getPost('TemplatePermissions', []);
 
-        $results = Permission::editThemePermissionsUser($userId, $aTemplatePermissions);
+        Permission::editThemePermissionsUser($userId, $aTemplatePermissions);
 
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => gT("Saved template permissions successfully.")
             ]
         ]);
     }
@@ -604,7 +604,7 @@ class UserManagementController extends LSBaseController
         return $this->renderPartial('partial/json', [
             "data" => [
                 'success' => true,
-                'html'    => $this->renderPartial('partial/permissionsuccess', ['results' => $results], true),
+                'message' => 'Saved user roles successfuly',
             ]
         ]);
     }
@@ -629,7 +629,7 @@ class UserManagementController extends LSBaseController
         $allowFileType = ".csv";
 
         if ($importFormat == 'json') {
-            $importNote = sprintf(gT("Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+            $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
             $allowFileType = ".json,application/json";
         }
 

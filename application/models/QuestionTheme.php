@@ -5,7 +5,7 @@ use LimeSurvey\Helpers\questionHelper;
 /**
  * This is the model class for table "{{question_themes}}".
  *
- * The followings are the available columns in table '{{question_themes}}':
+ * The following are the available columns in table '{{question_themes}}':
  *
  * @property integer $id
  * @property string  $name
@@ -231,7 +231,7 @@ class QuestionTheme extends LSActiveRecord
         $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
             "<input type='hidden' name='templatefolder' value='" . $this->xml_path . "'>
             <input type='hidden' name='theme' value='questiontheme'>
-            <button id='template_options_link_" . $this->name . "'class='btn btn-default btn-block'>
+            <button id='template_options_link_" . $this->name . "'class='btn btn-outline-secondary btn-block'>
             <span class='fa fa-download text-warning'></span>
             " . gT('Install') . "
             </button>
@@ -389,6 +389,9 @@ class QuestionTheme extends LSActiveRecord
 
         // read all metadata from the provided $pathToXmlFolder
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
+        if (!isset($questionMetaData['questionType'])) {
+            throw new Exception(gT('Missing questionType in metadata'));
+        }
 
         $aQuestionThemes = QuestionTheme::model()->findAll(
             '(question_type = :question_type AND extends = :extends)',
@@ -658,7 +661,11 @@ class QuestionTheme extends LSActiveRecord
         $baseQuestionsModified = [];
         foreach ($baseQuestions as $baseQuestion) {
             //TODO: should be moved into DB column (question_theme_settings table)
-            $sQuestionConfigFile = file_get_contents($baseQuestion->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = @file_get_contents($baseQuestion->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            if (!$sQuestionConfigFile) {
+                /* Not readable file : don't break */
+                continue;
+            }
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionEngineData = json_decode(json_encode($oQuestionConfig->engine), true);
             $showAsQuestionType = $questionEngineData['show_as_question_type'];
@@ -902,7 +909,7 @@ class QuestionTheme extends LSActiveRecord
         if (!is_file($sPathToCoreConfigFile)) {
             return $aSuccess = [
                 'message' => sprintf(
-                    gT("Question theme could not be converted to LimeSurvey 4 standard. Reason: No matching core theme with the name %s could be found"),
+                    gT("Question theme could not be converted to the latest LimeSurvey version. Reason: No matching core theme with the name %s could be found"),
                     $sThemeDirectoryName
                 ),
                 'success' => false
@@ -934,7 +941,7 @@ class QuestionTheme extends LSActiveRecord
         $oThemeConfig->saveXML($sQuestionConfigFilePath);
 
         return $aSuccess = [
-            'message' => gT('Question Theme has been sucessfully converted to LimeSurvey 4'),
+            'message' => gT('Question theme has been successfully converted to the latest LimeSurvey version.'),
             'success' => true
         ];
     }

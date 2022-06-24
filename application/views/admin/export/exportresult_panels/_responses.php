@@ -11,12 +11,12 @@
             </label>
             <!-- Answer codes / Full answers -->
             <div class="btn-group col-md-6" data-toggle="buttons">
-                <label class="btn btn-default">
+                <label class="btn btn-outline-secondary">
                     <input name="answers" value="short" type="radio" id="answers-short" />
                     <?php eT("Answer codes");?>
                 </label>
 
-                <label class="btn btn-default active">
+                <label class="btn btn-outline-secondary active">
                     <input name="answers" value="long" type="radio" checked='checked' id="answers-long" autofocus="true" />
                     <?php eT("Full answers");?>
                 </label>

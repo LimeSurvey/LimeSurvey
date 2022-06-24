@@ -1,4 +1,7 @@
-<div class="btn-group col-12" role="group" data-toggle="buttons">
+<div class="btn-group col-12" role="group" data-toggle="buttons"
+    aria-labelledby="label-<?= CHtml::getIdByName($this->generalOption->name); ?>"
+    <?= ($this->generalOption->formElement->help) ? 'aria-describedby="help-' . CHtml::getIdByName($this->generalOption->name) . '"' : "" ?>
+    >
     <?php if ($this->generalOption->formElement->value === 'Y') : ?>
         <input
             class="btn-check"
@@ -10,7 +13,7 @@
             checked
         />
         <label
-            class="btn btn-outline-primary <?= $this->generalOption->disabled ? 'disabled' : '' ?>"
+            class="btn btn-outline-secondary <?= $this->generalOption->disabled ? 'disabled' : '' ?>"
             for="question[<?= $this->generalOption->name ?>]_Y"
         >
             <?= gT('On') ?>
@@ -24,7 +27,7 @@
             <?= $this->generalOption->disabled ? 'disabled' : '' ?>
             />
         <label
-            class="btn btn-outline-primary <?= $this->generalOption->disabled ? 'disabled' : '' ?>"
+            class="btn btn-outline-secondary <?= $this->generalOption->disabled ? 'disabled' : '' ?>"
             for="question[<?= $this->generalOption->name ?>]_N"
         >
             <?= gT('Off') ?>
@@ -39,7 +42,7 @@
             <?= $this->generalOption->disabled ? 'disabled' : '' ?>
             />
         <label
-            class="btn btn-outline-primary <?= $this->generalOption->disabled ? 'disabled' : '' ?>"
+            class="btn btn-outline-secondary <?= $this->generalOption->disabled ? 'disabled' : '' ?>"
             for="question[<?= $this->generalOption->name ?>]_Y"
         >
             <?= gT('On') ?>
@@ -54,7 +57,7 @@
             checked
         />
         <label
-            class="btn btn-outline-primary <?= $this->generalOption->disabled ? 'disabled' : '' ?>"
+            class="btn btn-outline-secondary <?= $this->generalOption->disabled ? 'disabled' : '' ?>"
             for="question[<?= $this->generalOption->name ?>]_N"
         >
             <?= gT('Off') ?>

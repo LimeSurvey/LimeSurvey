@@ -56,7 +56,7 @@ class TemplateManifest extends TemplateConfiguration
      * It returns an array of editable files by screen for a given file type
      *
      * @param   string  $sType      the type of files (view/css/js)
-     * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
+     * @param   string  $sScreen    the screen you want to retrieve the files from. If null: all screens
      * @return  array   array       ( [screen name] => array([files]) )
      */
     public function getValidScreenFiles($sType = "view", $sScreen = null)
@@ -231,7 +231,7 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aAssessments']["datas"]["total"][0] = $this->parseDefaultData('assessments', $thissurvey['aAssessments']["datas"]["total"][0]);
 
         /**
-         * NOTE: This will allow Theme developper to add their new screens without editing this file.
+         * NOTE: This will allow Theme developer to add their new screens without editing this file.
          * It implies they respect the convention :
          * $aSurveyData[custom screen name][custom variable] = custom variable value
          * Where custom variable value can't be an array.
@@ -447,7 +447,7 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * Returns the layout file name for a given screen
      *
-     * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
+     * @param   string  $sScreen    the screen you want to retrieve the files from. If null: all screens
      * @return  string  the file name
      */
     public function getLayoutForScreen($sScreen)
@@ -473,7 +473,7 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * Returns the content file name for a given screen
      *
-     * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
+     * @param   string  $sScreen    the screen you want to retrieve the files from. If null: all screens
      * @return  string  the file name
      */
     public function getContentForScreen($sScreen)
@@ -638,7 +638,7 @@ class TemplateManifest extends TemplateConfiguration
         $sEditorLink = "<a
             id='template_editor_link_" . $this->sTemplateName . "'
             href='" . $sEditorUrl . "'
-            class='btn btn-default btn-block'>
+            class='btn btn-outline-secondary btn-block'>
                 <span class='icon-templates'></span>
                 " . gT('Theme editor') . "
             </a>";
@@ -649,7 +649,7 @@ class TemplateManifest extends TemplateConfiguration
         $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'frmínstalltheme','name' => 'frmínstalltheme', 'class' => 'btn-block')) .
                 "<input type='hidden' name='templatename' value='" . $this->sTemplateName . "'>
                 <button id='template_options_link_" . $this->sTemplateName . "'
-                class='btn btn-default btn-block'>
+                class='btn btn-outline-secondary btn-block'>
                     <span class='fa fa-download text-warning'></span>
                     " . gT('Install') . "
                 </button>

@@ -54,32 +54,28 @@ if ($bShowInherited) {
                     </div>
                     <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
                         <label class="form-label content-center col-12" for='navigationdelay'><?php eT("Inherit:"); ?></label>
-                        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                            array(
+                        <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
+                            [
                                 'name' => 'navigationdelaybutton',
                                 // NB: Do NOT use === when comparing navigationdelay with '-1', it won't work with Postgresql.
-                                'value' => ($bShowInherited && $navigationdelay == '-1' ? 'Y' : 'N'),
+                                'checkedOption' => ($bShowInherited && $navigationdelay == '-1' ? 'Y' : 'N'),
                                 'selectOptions' => $optionsOnOff,
-                                'htmlOptions' => array(
+                                'htmlOptions' => [
                                     'class' => 'text-option-inherit'
-                                )
-                            )
-                        );
-                        ?>
+                                ]
+                            ]
+                        ); ?>
                     </div>
                 </div>
             </div>
-
             <!-- Show question index -->
             <div class="form-group">
                 <label class="form-label" for='questionindex'><?php eT("Show question index / allow jumping:"); ?></label>
                 <div class="">
-
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'questionindex',
-                            'value' => $oSurvey->questionindex,
+                            'checkedOption' => $oSurvey->questionindex,
                             'selectOptions' => $optionsQuestionIndex
                         )
                     );
@@ -147,10 +143,10 @@ if ($bShowInherited) {
             <div class="form-group">
                 <label class="form-label" for="shownoanswer"><?php eT('Show "No answer":'); ?></label>
                 <div class="">
-                    <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'shownoanswer',
-                            'value' => $oSurvey->shownoanswer,
+                            'checkedOption' => $oSurvey->shownoanswer,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->shownoanswer . ']')) : $optionsOnOff
                         )
                     );
@@ -165,11 +161,10 @@ if ($bShowInherited) {
             <div class="form-group">
                 <label class="form-label" for="showxquestions"><?php eT('Show "There are X questions in this survey":'); ?></label>
                 <div class="">
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                    <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'showxquestions',
-                            'value' => $oSurvey->showxquestions,
+                            'checkedOption' => $oSurvey->showxquestions,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->showxquestions . ']')) : $optionsOnOff
                         )
                     );
@@ -181,11 +176,10 @@ if ($bShowInherited) {
             <div class="form-group">
                 <label class=" form-label" for='showwelcome'><?php eT("Show welcome screen:"); ?></label>
                 <div class="">
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                    <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'showwelcome',
-                            'value' => $oSurvey->showwelcome,
+                            'checkedOption' => $oSurvey->showwelcome,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->showwelcome . ']')) : $optionsOnOff
                         )
                     );
@@ -197,11 +191,10 @@ if ($bShowInherited) {
             <div class="form-group">
                 <label class=" form-label" for='allowprev'><?php eT("Allow backward navigation:"); ?></label>
                 <div class="">
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                    <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'allowprev',
-                            'value' => $oSurvey->allowprev,
+                            'checkedOption' => $oSurvey->allowprev,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->allowprev . ']')) : $optionsOnOff
                         )
                     );
@@ -214,11 +207,10 @@ if ($bShowInherited) {
             <div class="form-group">
                 <label class=" form-label" for='nokeyboard'><?php eT("Show on-screen keyboard:"); ?></label>
                 <div class="">
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                    <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'nokeyboard',
-                            'value' => $oSurvey->nokeyboard,
+                            'checkedOption' => $oSurvey->nokeyboard,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->nokeyboard . ']')) : $optionsOnOff
                         )
                     );
@@ -230,11 +222,10 @@ if ($bShowInherited) {
             <div class="form-group">
                 <label class=" form-label" for='showprogress'><?php eT("Show progress bar:"); ?></label>
                 <div class="">
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                    <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'showprogress',
-                            'value' => $oSurvey->showprogress,
+                            'checkedOption' => $oSurvey->showprogress,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->showprogress . ']')) : $optionsOnOff
                         )
                     );
@@ -245,11 +236,10 @@ if ($bShowInherited) {
             <div class="form-group">
                 <label class=" form-label" for='printanswers'><?php eT("Participants may print answers:"); ?></label>
                 <div class="">
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                    <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'printanswers',
-                            'value' => $oSurvey->printanswers,
+                            'checkedOption' => $oSurvey->printanswers,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->printanswers . ']')) : $optionsOnOff
                         )
                     );
@@ -261,11 +251,10 @@ if ($bShowInherited) {
             <div class="form-group">
                 <label class=" form-label" for='publicstatistics'><?php eT("Public statistics:"); ?></label>
                 <div class="">
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                    <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'publicstatistics',
-                            'value' => $oSurvey->publicstatistics,
+                            'checkedOption' => $oSurvey->publicstatistics,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->publicstatistics . ']')) : $optionsOnOff
                         )
                     );
@@ -277,11 +266,10 @@ if ($bShowInherited) {
             <div class="form-group">
                 <label class=" form-label" for='publicgraphs'><?php eT("Show graphs in public statistics:"); ?></label>
                 <div class="">
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                    <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'publicgraphs',
-                            'value' => $oSurvey->publicgraphs,
+                            'checkedOption' => $oSurvey->publicgraphs,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->publicgraphs . ']')) : $optionsOnOff
                         )
                     );
@@ -293,11 +281,10 @@ if ($bShowInherited) {
             <div class="form-group">
                 <label class=" form-label" for='autoredirect'><?php eT("Automatically load end URL when survey complete:"); ?></label>
                 <div class="">
-                    <!-- TODO: Replace with Bootstrap Button Group -->
-                    <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup',
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                         array(
                             'name' => 'autoredirect',
-                            'value' => $oSurvey->autoredirect,
+                            'checkedOption' => $oSurvey->autoredirect,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array('I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->autoredirect . ']')) : $optionsOnOff
                         )
                     );

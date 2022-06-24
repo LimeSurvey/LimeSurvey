@@ -31,7 +31,9 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"><?php eT("Cancel");?></button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <?php eT("Cancel");?>
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
