@@ -34,6 +34,46 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.21 (build 220620) to 5.3.22 (build 220628) June 27, 2022
+-Fixed issue: Class CHtml not found after user deletion (Carsten Schmitz)
+-Fixed issue #18185: Error message "No scope _renderErrorString" when trying to update (Carsten Schmitz)
+-Fixed issue #18171: Timings are not saved on MSSQL DB (#2477) (Denis Chenu)
+-Fixed issue #18153: 'Export this question to PDF' button in View Statistics - HTML does nothing (#2457) (Gabriel Jenik)
+-Fixed issue #18108: Unable to save existing question with button (#2440) (Denis Chenu)
+-Fixed issue #18101: Spinning hexagon continues to spin although file is correctly downloaded (#2454) (Gabriel Jenik)
+-Fixed issue #18094: Broken view in uploader (#2438) (Gabriel Jenik)
+-Fixed issue #17804: InputOnDemand is not loading all prior rows when navigating back (#2475) (Gabriel Jenik)
+-Fixed issue #17700: Custom logo disappears in extended themes (#2459) (Gabriel Jenik)
+
+
+Changes from 5.3.20 (build 220615) to 5.3.21 (build 220620) June 20, 2022
+-Fixed issue #18175: html editor iframe did not take whole available place (#2463) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.3.19 (build 220607) to 5.3.20 (build 220615) June 15, 2022
+-Fixed issue: Plugin calling readConfigFile() in init() caused inf loop (Tim Willig)
+-Fixed issue #18135: Cant get all question attributes with API (Postman) (#2445) (Gabriel Jenik)
+-Fixed issue #17976: Bad place for pencil in edit question (#2455) (Gabriel Jenik)
+-Fixed issue #17740: Script : Set for all languages didn't work (#2228) (Gabriel Jenik)
+#Updated translation: Slovak by c_schmitz, jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by FangZhijian
+
+
 Changes from 5.3.18 (build 220530) to 5.3.19 (build 220607) June 7, 2022
 -Fixed issue: Question organizer not working (Carsten Schmitz)
 -Fixed issue: #18029 - Removed html tags in emails for v5 (#2446) (François Charles Hébert)

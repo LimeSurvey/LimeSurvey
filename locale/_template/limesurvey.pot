@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-06-07 10:00:42+00:00\n"
+"POT-Creation-Date: 2022-06-24 18:14:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -54,8 +54,8 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:2110
 #: application/helpers/admin/import_helper.php:2291
 #: application/helpers/admin/import_helper.php:2653
-#: application/helpers/admin/import_helper.php:3282
-#: application/helpers/admin/import_helper.php:3327
+#: application/helpers/admin/import_helper.php:3284
+#: application/helpers/admin/import_helper.php:3329
 #: application/models/TemplateManifest.php:171
 #: application/models/TemplateManifest.php:418
 #: application/models/services/PasswordManagement.php:85
@@ -820,7 +820,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:397
 #: application/controllers/LimereplacementfieldsController.php:412
 #: application/controllers/QuestionAdministrationController.php:1498
-#: application/models/Question.php:893
+#: application/models/Question.php:895
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:10
 msgid "Question ID"
 msgstr ""
@@ -994,8 +994,10 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:127
 #: application/controllers/QuestionAdministrationController.php:1314
+#: application/controllers/QuestionAdministrationController.php:3055
+#: application/controllers/QuestionAdministrationController.php:3058
 #: application/controllers/QuestionAdministrationController.php:3061
-#: application/controllers/QuestionAdministrationController.php:3087
+#: application/controllers/QuestionAdministrationController.php:3085
 #: application/core/SurveyCommonAction.php:151
 msgid "Invalid question id"
 msgstr ""
@@ -1005,12 +1007,12 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:745
 #: application/controllers/QuestionAdministrationController.php:1547
 #: application/controllers/QuestionAdministrationController.php:1555
-#: application/controllers/QuestionAdministrationController.php:1748
-#: application/controllers/QuestionAdministrationController.php:1756
-#: application/controllers/QuestionAdministrationController.php:1790
-#: application/controllers/QuestionAdministrationController.php:1798
-#: application/controllers/QuestionAdministrationController.php:3041
-#: application/controllers/QuestionAdministrationController.php:3090
+#: application/controllers/QuestionAdministrationController.php:1735
+#: application/controllers/QuestionAdministrationController.php:1743
+#: application/controllers/QuestionAdministrationController.php:1777
+#: application/controllers/QuestionAdministrationController.php:1785
+#: application/controllers/QuestionAdministrationController.php:3045
+#: application/controllers/QuestionAdministrationController.php:3088
 #: application/controllers/SurveyAdministrationController.php:684
 #: application/controllers/SurveyAdministrationController.php:1034
 #: application/controllers/SurveyAdministrationController.php:1106
@@ -1053,7 +1055,7 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:670
 #: application/controllers/QuestionAdministrationController.php:742
-#: application/controllers/QuestionAdministrationController.php:3046
+#: application/controllers/QuestionAdministrationController.php:3050
 #: application/core/SurveyCommonAction.php:180
 msgid "Invalid survey id"
 msgstr ""
@@ -1221,43 +1223,39 @@ msgstr ""
 msgid "Question does not exist."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1631
-msgid "Duplicate question code"
-msgstr ""
-
-#: application/controllers/QuestionAdministrationController.php:1686
+#: application/controllers/QuestionAdministrationController.php:1674
 msgid "Saved copied question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1699
+#: application/controllers/QuestionAdministrationController.php:1687
 msgid "Could not save copied question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1913
+#: application/controllers/QuestionAdministrationController.php:1900
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1913
+#: application/controllers/QuestionAdministrationController.php:1900
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1916
+#: application/controllers/QuestionAdministrationController.php:1903
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1916
+#: application/controllers/QuestionAdministrationController.php:1903
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1922
+#: application/controllers/QuestionAdministrationController.php:1909
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1924
+#: application/controllers/QuestionAdministrationController.php:1911
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1926
+#: application/controllers/QuestionAdministrationController.php:1913
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_change_survey_group.php:20
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_select_survey_theme.php:24
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:114
@@ -1267,52 +1265,52 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2171
+#: application/controllers/QuestionAdministrationController.php:2158
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:67
 #: application/views/questionAdministration/editdefaultvalues.php:42
 msgid "<No default value>"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2171
+#: application/controllers/QuestionAdministrationController.php:2158
 msgid "Checked"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2484
+#: application/controllers/QuestionAdministrationController.php:2475
 msgid "Question creation failed - input was malformed or invalid"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2495
-#: application/controllers/QuestionAdministrationController.php:2638
+#: application/controllers/QuestionAdministrationController.php:2486
+#: application/controllers/QuestionAdministrationController.php:2633
 msgid "Could not save question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2548
+#: application/controllers/QuestionAdministrationController.php:2543
 msgid "Question update failed, input array malformed or invalid"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2599
+#: application/controllers/QuestionAdministrationController.php:2594
 msgid "Could not store translation"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2631
+#: application/controllers/QuestionAdministrationController.php:2626
 msgid "Could not save question attributes"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2693
-#: application/controllers/QuestionAdministrationController.php:2705
-#: application/controllers/QuestionAdministrationController.php:2711
+#: application/controllers/QuestionAdministrationController.php:2688
+#: application/controllers/QuestionAdministrationController.php:2700
+#: application/controllers/QuestionAdministrationController.php:2706
 msgid "Could not store advanced options"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2805
-#: application/controllers/QuestionAdministrationController.php:2818
-#: application/controllers/QuestionAdministrationController.php:2870
-#: application/controllers/QuestionAdministrationController.php:2891
+#: application/controllers/QuestionAdministrationController.php:2800
+#: application/controllers/QuestionAdministrationController.php:2813
+#: application/controllers/QuestionAdministrationController.php:2865
+#: application/controllers/QuestionAdministrationController.php:2886
 msgid "Could not save subquestion"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2933
-#: application/controllers/QuestionAdministrationController.php:2946
+#: application/controllers/QuestionAdministrationController.php:2928
+#: application/controllers/QuestionAdministrationController.php:2941
 msgid "Could not save answer option"
 msgstr ""
 
@@ -1664,7 +1662,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:861
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:81
 #: application/helpers/admin/export/HtmlWriter.php:72
-#: application/models/Assessment.php:143 application/models/Question.php:923
+#: application/models/Assessment.php:143 application/models/Question.php:925
 #: application/models/QuestionType.php:111
 #: application/models/SurveysGroups.php:438
 #: application/views/assessment/assessments_edit.php:34
@@ -1677,7 +1675,7 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:869
 #: application/helpers/admin/statistics_helper.php:4261
-#: application/models/Question.php:909
+#: application/models/Question.php:911
 #: application/models/TemplateManifest.php:165
 #: application/views/admin/conditions/includes/form_editconditions_header.php:67
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:22
@@ -2399,7 +2397,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:259
-#: application/models/Question.php:669 application/models/Survey.php:1048
+#: application/models/Question.php:671 application/models/Survey.php:1048
 #: application/models/Survey.php:1056
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:624
@@ -2562,7 +2560,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:259
-#: application/models/Question.php:669 application/models/Survey.php:1048
+#: application/models/Question.php:671 application/models/Survey.php:1048
 #: application/models/Survey.php:1056
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/conditions/includes/conditions_edit.php:8
@@ -2745,7 +2743,7 @@ msgstr ""
 #: application/models/ParticipantAttributeName.php:249
 #: application/models/ParticipantShare.php:221
 #: application/models/Permissiontemplates.php:255
-#: application/models/Question.php:886 application/models/SavedControl.php:161
+#: application/models/Question.php:888 application/models/SavedControl.php:161
 #: application/models/Surveymenu.php:399
 #: application/models/SurveymenuEntries.php:194
 #: application/models/SurveymenuEntries.php:207
@@ -2877,7 +2875,7 @@ msgstr ""
 #: application/views/layouts/fullpagebar_view.php:121
 #: application/views/layouts/fullpagebar_view.php:136
 #: application/views/layouts/partial_modals/modal_footer_cancelsave.php:11
-#: application/views/questionAdministration/_copyQuestionTabsLanguages.php:39
+#: application/views/questionAdministration/_copyQuestionTabsLanguages.php:40
 #: application/views/questionAdministration/editdefaultvalues.php:194
 #: application/views/questionAdministration/topbars/editQuestiontopbar_view.php:41
 #: application/views/questionGroupsAdministration/question_group_topbar.php:252
@@ -3228,7 +3226,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:250
 #: application/controllers/UploaderController.php:278
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3118
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3124
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -4362,7 +4360,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1349
 #: application/helpers/userstatistics_helper.php:1469
 #: application/helpers/userstatistics_helper.php:1587
-#: application/models/Question.php:937 application/models/SurveyDynamic.php:844
+#: application/models/Question.php:939 application/models/SurveyDynamic.php:844
 #: application/models/SurveyDynamic.php:914
 #: application/views/admin/dataentry/content_view.php:175
 #: application/views/admin/dataentry/content_view.php:179
@@ -5737,7 +5735,7 @@ msgstr ""
 #: application/views/admin/survey/Question/questionbar_view.php:207
 #: application/views/admin/survey/Question/questionbar_view.php:255
 #: application/views/layouts/fullpagebar_view.php:113
-#: application/views/questionAdministration/_copyQuestionTabsLanguages.php:40
+#: application/views/questionAdministration/_copyQuestionTabsLanguages.php:41
 #: application/views/questionAdministration/topbars/copyQuestiontopbar_view.php:22
 #: application/views/questionAdministration/topbars/editQuestiontopbar_view.php:55
 #: application/views/questionGroupsAdministration/questiongroupbar_view.php:256
@@ -9518,7 +9516,7 @@ msgid "If you want to change the question group this question is in."
 msgstr ""
 
 #: application/extensions/GeneralOptionWidget/settings/MandatoryGeneralOption.php:15
-#: application/models/Question.php:929
+#: application/models/Question.php:931
 #: application/views/survey/system/required.php:6
 #: tmp/runtime/twig_cache/73/7328e1b15a113f44037ff129db8a4944807bcf7fb51a65eaa803d6f8eaf0cb3b.php:116
 #: tmp/runtime/twig_cache/73/7328e1b15a113f44037ff129db8a4944807bcf7fb51a65eaa803d6f8eaf0cb3b.php:196
@@ -9537,7 +9535,7 @@ msgid "Makes this question mandatory in your survey. Option \"Soft\" gives a pos
 msgstr ""
 
 #: application/extensions/GeneralOptionWidget/settings/MandatoryGeneralOption.php:26
-#: application/models/Question.php:815
+#: application/models/Question.php:817
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:21
 msgid "Soft"
 msgstr ""
@@ -9792,7 +9790,7 @@ msgstr ""
 
 #: application/extensions/TopbarWidget/views/includes/questionToolsDropdownItems.php:79
 #: application/extensions/TopbarWidget/views/includes/questionToolsDropdownItems.php:86
-#: application/models/Question.php:667
+#: application/models/Question.php:669
 msgid "Delete question"
 msgstr ""
 
@@ -12134,7 +12132,7 @@ msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9153
 #: application/views/questionAdministration/summary.php:60
-#: application/views/questionAdministration/textElements.php:81
+#: application/views/questionAdministration/textElements.php:84
 msgid "Help:"
 msgstr ""
 
@@ -12338,34 +12336,34 @@ msgid "One or more file have either exceeded the filesize/are not in the right f
 msgstr ""
 
 #: application/helpers/qanda_helper.php:388
-#: application/models/QuestionBaseRenderer.php:77
+#: application/models/QuestionBaseRenderer.php:78
 msgid "hours"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:389
-#: application/models/QuestionBaseRenderer.php:78
+#: application/models/QuestionBaseRenderer.php:79
 msgid "mins"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:390
-#: application/models/QuestionBaseRenderer.php:79
+#: application/models/QuestionBaseRenderer.php:80
 msgid "seconds"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:410
-#: application/models/QuestionBaseRenderer.php:110
+#: application/models/QuestionBaseRenderer.php:111
 msgid "Your time to answer this question has expired"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:413
-#: application/models/QuestionBaseRenderer.php:113
+#: application/models/QuestionBaseRenderer.php:114
 msgid "Time remaining"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:414
 #: application/helpers/qanda_helper.php:420
-#: application/models/QuestionBaseRenderer.php:114
-#: application/models/QuestionBaseRenderer.php:116
+#: application/models/QuestionBaseRenderer.php:115
+#: application/models/QuestionBaseRenderer.php:117
 msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
 msgstr ""
 
@@ -15142,81 +15140,80 @@ msgstr ""
 msgid "Uninstall plugin"
 msgstr ""
 
-#: application/models/Question.php:142
+#: application/models/Question.php:143
 msgid "The question code is mandatory."
 msgstr ""
 
-#: application/models/Question.php:145
+#: application/models/Question.php:146
 msgid "Question id (qid) : '%s' is already in use."
 msgstr ""
 
-#: application/models/Question.php:167
+#: application/models/Question.php:169
 msgid "Subquestion codes must be unique."
 msgstr ""
 
-#: application/models/Question.php:172 application/models/Question.php:182
+#: application/models/Question.php:174 application/models/Question.php:184
 msgid "'%s' can not be used if the 'Other' option for this question is activated."
 msgstr ""
 
-#: application/models/Question.php:176
+#: application/models/Question.php:178
 msgid "'comment' suffix can not be used with multiple choice with comments."
 msgstr ""
 
-#: application/models/Question.php:203
-#: application/views/questionAdministration/questionCode.php:31
+#: application/models/Question.php:205
 msgid "Question codes must be unique."
 msgstr ""
 
-#: application/models/Question.php:208
+#: application/models/Question.php:210
 msgid "Question codes must start with a letter and may only contain alphanumeric characters."
 msgstr ""
 
-#: application/models/Question.php:219
+#: application/models/Question.php:221
 msgid "Code: '%s' is a reserved word."
 msgstr ""
 
-#: application/models/Question.php:226
+#: application/models/Question.php:228
 msgid "'time' is a reserved word and can not be used for a subquestion."
 msgstr ""
 
-#: application/models/Question.php:229
+#: application/models/Question.php:231
 msgid "Subquestion codes may only contain alphanumeric characters."
 msgstr ""
 
-#: application/models/Question.php:334
+#: application/models/Question.php:336
 #: application/models/QuestionTheme.php:1029
 #: application/models/SurveymenuEntries.php:195
 msgid "Template"
 msgstr ""
 
-#: application/models/Question.php:655
+#: application/models/Question.php:657
 #: application/views/questionAdministration/create.php:71
 msgid "Edit question"
 msgstr ""
 
-#: application/models/Question.php:658
+#: application/models/Question.php:660
 #: application/views/questionAdministration/listquestions.php:137
 msgid "Question preview"
 msgstr ""
 
-#: application/models/Question.php:661
+#: application/models/Question.php:663
 #: application/views/questionAdministration/questionSummary.php:16
 msgid "Question summary"
 msgstr ""
 
-#: application/models/Question.php:668
+#: application/models/Question.php:670
 msgid "Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr ""
 
-#: application/models/Question.php:820 application/models/Question.php:830
+#: application/models/Question.php:822 application/models/Question.php:832
 msgid "Not relevant for this question type"
 msgstr ""
 
-#: application/models/Question.php:898
+#: application/models/Question.php:900
 msgid "Group / Question order"
 msgstr ""
 
-#: application/models/Question.php:903 application/models/QuestionType.php:109
+#: application/models/Question.php:905 application/models/QuestionType.php:109
 #: application/models/SurveysGroups.php:95
 #: application/models/SurveysGroups.php:141
 #: application/views/admin/labels/_labelviewtabcontent_view.php:18
@@ -15224,7 +15221,7 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
-#: application/models/Question.php:915
+#: application/models/Question.php:917
 msgid "Question type"
 msgstr ""
 
@@ -15614,7 +15611,7 @@ msgid "Permission to view & update the translations using the quick-translation 
 msgstr ""
 
 #: application/models/SurveyDynamic.php:288
-#: application/models/SurveyTimingDynamic.php:197
+#: application/models/SurveyTimingDynamic.php:207
 #: application/models/TokenDynamic.php:790
 #: application/models/TokenDynamic.php:796
 msgid "View response details"
@@ -15625,7 +15622,7 @@ msgid "View response details as queXML PDF"
 msgstr ""
 
 #: application/models/SurveyDynamic.php:309
-#: application/models/SurveyTimingDynamic.php:193
+#: application/models/SurveyTimingDynamic.php:203
 msgid "Edit this response"
 msgstr ""
 
@@ -15646,7 +15643,7 @@ msgid "Do you want to delete this response?"
 msgstr ""
 
 #: application/models/SurveyDynamic.php:360
-#: application/models/SurveyTimingDynamic.php:203
+#: application/models/SurveyTimingDynamic.php:213
 msgid "Delete this response"
 msgstr ""
 
@@ -23686,7 +23683,7 @@ msgid "Optional Question"
 msgstr ""
 
 #: application/views/questionAdministration/summary.php:38
-#: application/views/questionAdministration/textElements.php:50
+#: application/views/questionAdministration/textElements.php:51
 msgid "Question:"
 msgstr ""
 
@@ -23734,19 +23731,23 @@ msgstr ""
 msgid "Script"
 msgstr ""
 
-#: application/views/questionAdministration/textElements.php:44
+#: application/views/questionAdministration/textElements.php:45
 msgid "Enter your question here..."
 msgstr ""
 
-#: application/views/questionAdministration/textElements.php:75
+#: application/views/questionAdministration/textElements.php:78
 msgid "Enter some help text if your question needs some explanation here..."
 msgstr ""
 
-#: application/views/questionAdministration/textElements.php:106
-msgid "Set for all languages"
+#: application/views/questionAdministration/textElements.php:114
+msgid "Use for all languages"
 msgstr ""
 
-#: application/views/questionAdministration/textElements.php:125
+#: application/views/questionAdministration/textElements.php:119
+msgid "The script for this language will not be used because \"Use for all languages\" is set on the base language's script."
+msgstr ""
+
+#: application/views/questionAdministration/textElements.php:136
 msgid "This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"
 msgstr ""
 

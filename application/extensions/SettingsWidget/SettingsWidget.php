@@ -403,7 +403,7 @@ class SettingsWidget extends CWidget
             throw new CException('wrong type' . $name);
         }
         $htmlOptions = $this->htmlOptions($metaData);
-        return Chtml::tag('div', $htmlOptions, $value);
+        return CHtml::tag('div', $htmlOptions, $value);
     }
 
     /**
