@@ -3080,6 +3080,36 @@ class remotecontrol_handle
         return $uploaded_files;
     }
 
+    /**
+     * Get survey fieldmap (RPC function)
+     *
+     * Returns the requested survey's fieldmap in an array
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $surveyId ID of the Survey
+     * @return array
+     */
+    public function get_fieldmap($sSessionKey, $surveyId)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return ['status' => self::INVALID_SESSION_KEY];
+        }
+        $surveyId = (int) $surveyId;
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!isset($survey)) {
+            return ['status' => 'Error: Invalid survey ID'];
+        }
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'read')) {
+            return ['status' => 'No permission'];
+        }
+        // Get the fieldmap
+        $fieldmap = createFieldMap($survey, 'full', false, false, Yii::app()->getConfig('defaultlang'));
+        if (empty($fieldmap)) {
+            return ['status' => 'Can not obtain field map'];
+        }
+        return $fieldmap;
+    }
 
     /**
      * Login with username and password
