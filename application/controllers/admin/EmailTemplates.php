@@ -34,7 +34,7 @@ class EmailTemplates extends SurveyCommonAction
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'read')) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
-            $this->getController()->redirect(array('admin/survey', 'sa' => 'view', 'surveyid' => $iSurveyId));
+            $this->getController()->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyId));
         }
 
         Yii::app()->loadHelper('admin.htmleditor');

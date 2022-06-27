@@ -587,7 +587,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $survey = Survey::model()->findByPk($iSurveyId);
         // Make sure we have the latest groups data
         $survey->refresh();
-        if (!empty($survey->groups)) {
+        $landOnSideMenuTab = Yii::app()->request->getPost('landOnSideMenuTab');
+        if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
             $this->redirect(
                 Yii::app()->createUrl(
                     'questionGroupsAdministration/view/',

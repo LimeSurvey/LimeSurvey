@@ -147,7 +147,9 @@ class ResponsesController extends LSBaseController
                 $fnames[] = ["lastname", gT("Last name"), 'code' => 'lastname'];
                 $fnames[] = ["email", gT("Email"), 'code' => 'email'];
             }
-            $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
+            if ($survey->isDateStamp) {
+                $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
+            }
             $fnames[] = ["completed", gT("Completed"), "0"];
 
             foreach ($fieldmap as $field) {

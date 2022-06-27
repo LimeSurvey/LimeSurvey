@@ -8450,13 +8450,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             if (!preg_match('/_filecount$/', $sq)) {
                                 $json = $value;
                                 $aFiles = json_decode($json);
-                                $iSize = (is_null($aFiles)) ? 0 : @count($aFiles);
                                 // if the files have not been saved already,
                                 // move the files from tmp to the files folder
-
-                                $tmp = $LEM->surveyOptions['tempdir'] . 'upload' . DIRECTORY_SEPARATOR;
-                                if (!is_null($aFiles) && $iSize > 0) {
+                                if (!empty($aFiles) && is_array($aFiles)) {
+                                    $iSize = count($aFiles);
                                     // Move the (unmoved, temp) files from temp to files directory.
+                                    $tmp = $LEM->surveyOptions['tempdir'] . 'upload' . DIRECTORY_SEPARATOR;
                                     // Check all possible file uploads
                                     for ($i = 0; $i < $iSize; $i++) {
                                         $aFiles[$i]->name = sanitize_filename($aFiles[$i]->name, false, false, true);

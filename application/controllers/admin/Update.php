@@ -147,7 +147,6 @@ class Update extends DynamicSurveyCommonAction
 
     public function manageSubmitkey()
     {
-        $buttons = 1;
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
@@ -170,27 +169,23 @@ class Update extends DynamicSurveyCommonAction
                 } else {
                     switch ($check->error) {
                         case 'out_of_updates':
-                            $title = "Your update key is out of update !";
-                            $message = "you should first renew this key before using it, or try to enter a new one !";
-                            $buttons = 1;
+                            $title = gT("Your update key has exceeded the maximum number of updates!");
+                            $message = gT("Please buy/enter a new one!");
                             break;
 
                         case 'expired':
-                            $title = "Your update key has expired!";
-                            $message = "you should first renew this key before using it, or try to enter a new one !";
-                            $buttons = 1;
+                            $title = gT("Your update key has expired!");
+                            $message = gT("Please buy/enter a new one!");
                             break;
 
                         case 'not_found':
-                            $title = "Unknown update key !";
-                            $message = "Your key is unknown by the update server.";
-                            $buttons = 3;
+                            $title = gT("Unknown update key!");
+                            $message = gT("Your key is unknown to the update server.");
                             break;
 
                         case 'key_null':
-                            $title = "key can't be null !";
+                            $title = gT("Key can't be empty!");
                             $message = "";
-                            $buttons = 3;
                             break;
                     }
 
@@ -402,7 +397,7 @@ class Update extends DynamicSurveyCommonAction
 
                     $remove = $updateModel->removeDeletedFiles($updateinfos);
                     if (!$remove->result) {
-                        return $this->_renderErrorString($remove->error);
+                        return $this->renderErrorString($remove->error);
                     };
                     $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
                     if ($file->result) {
