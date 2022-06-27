@@ -260,12 +260,10 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
     global $thisstep;
 
     $survey = Survey::model()->findByPk($surveyid);
-
-
     if (!isset($backok) || $backok != "Y") {
         $fieldmap = createFieldMap($survey, 'full', false, false, $_SESSION['survey_' . $surveyid]['s_lang']);
 
-        if (isset($_POST['fieldnames']) && $_POST['fieldnames'] != "") {
+        if (!empty(App()->getRequest()->getPost('fieldnames'))) {
             $fields = explode("|", $_POST['fieldnames']);
 
             foreach ($fields as $field) {
@@ -274,20 +272,19 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
 
                     $filecount = 0;
 
-                    $json = $_POST[$field];
+                    $json = App()->getRequest()->getPost($field);
+                    $phparray = json_decode(urldecode($json));
                     // if name is blank, its basic, hence check
                     // else, its ajax, don't check, bypass it.
-
-                    if ($json != "" && $json != "[]") {
-                        $phparray = json_decode(urldecode($json));
-                        if ($phparray[0]->size != "") {
-// ajax
+                    if (!empty($phparray)) {
+                        if (!empty($phparray[0]->size)) {
+                            // ajax
                             $filecount = count($phparray);
                         } else {
-// basic
+                            // basic
                             for ($i = 1; $i <= $validation['max_num_of_files']; $i++) {
                                 if (!isset($_FILES[$field . "_file_" . $i]) || $_FILES[$field . "_file_" . $i]['name'] == '') {
-                                                                    continue;
+                                    continue;
                                 }
 
                                 $filecount++;
@@ -318,7 +315,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
                             }
                         }
                     } else {
-                                            $filecount = 0;
+                        $filecount = 0;
                     }
 
                     if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid'])) {
@@ -330,18 +327,18 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
         }
         if (isset($filenotvalidated)) {
             if (isset($move) && $move == "moveprev") {
-                            $_SESSION['survey_' . $surveyid]['step'] = $thisstep;
+                $_SESSION['survey_' . $surveyid]['step'] = $thisstep;
             }
             if (isset($move) && $move == "movenext") {
-                            $_SESSION['survey_' . $surveyid]['step'] = $thisstep;
+                $_SESSION['survey_' . $surveyid]['step'] = $thisstep;
             }
             return $filenotvalidated;
         }
     }
     if (!isset($filenotvalidated)) {
-            return false;
+        return false;
     } else {
-            return $filenotvalidated;
+        return $filenotvalidated;
     }
 }
 

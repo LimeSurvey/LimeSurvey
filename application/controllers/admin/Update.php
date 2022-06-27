@@ -397,7 +397,7 @@ class Update extends DynamicSurveyCommonAction
 
                     $remove = $updateModel->removeDeletedFiles($updateinfos);
                     if (!$remove->result) {
-                        return $this->_renderErrorString($remove->error);
+                        return $this->renderErrorString($remove->error);
                     };
                     $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
                     if ($file->result) {

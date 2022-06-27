@@ -585,7 +585,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
-        if (!empty($survey->groups)) {
+        $landOnSideMenuTab = Yii::app()->request->getPost('landOnSideMenuTab');
+        if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
             $this->redirect(
                 Yii::app()->createUrl(
                     'questionGroupsAdministration/view/',
