@@ -304,9 +304,6 @@ body {
     float: right;
   }
 }
-@media (max-width: 768px) {
-    ul.list-unstyled{column-count:1 !important }
-}
 /* table color */
 .ls-even{
 }
