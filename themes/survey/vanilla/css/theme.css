@@ -304,6 +304,9 @@ body {
     float: right;
   }
 }
+@media (max-width: 768px) {
+    ul.list-unstyled{column-count:1 !important }
+}
 /* table color */
 .ls-even{
 }
@@ -668,7 +671,6 @@ div.yes-no .btn-group label {
     font-weight: bold;
     font-style: italic;
 }
-
 
 @media only screen and (max-device-width: 760px){
 

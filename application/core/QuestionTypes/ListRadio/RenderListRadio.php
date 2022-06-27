@@ -22,12 +22,8 @@ class RenderListRadio extends QuestionBaseRenderer
     
     protected $sOthertext;
     protected $iNbCols;
-    protected $iColumnWidth;
     protected $iCountAnswers;
 
-    private $iMaxRowsByColumn;
-    private $iRowCount = 0;
-    private $bColumnIsOpen = false;
     private $inputnames = [];
 
     /** @var boolean indicates if the question has the 'Other' option enabled */
@@ -58,17 +54,12 @@ class RenderListRadio extends QuestionBaseRenderer
         $this->setAnsweroptions();
 
         if ($this->iNbCols > 1) {
-            // Add a class on the wrapper
             $this->sCoreClass .= " multiple-list nbcol-{$this->iNbCols}";
-            // First we calculate the width of each column
-            // Max number of column is 12 http://getbootstrap.com/css/#grid
-            $this->iColumnWidth = round(12 / $this->iNbCols);
-            $this->iColumnWidth = ($this->iColumnWidth >= 1) ? $this->iColumnWidth : 1;
-            $this->iColumnWidth = ($this->iColumnWidth <= 12) ? $this->iColumnWidth : 12;
-            $this->iMaxRowsByColumn = ceil($this->getAnswerCount() / $this->iNbCols);
-        } else {
-            $this->iColumnWidth = 12;
-            $this->iMaxRowsByColumn = $this->getAnswerCount() + 3; // No max : anscount + no answer + other + 1 by security
+            /* Adding but didn't work */
+            $this->aStyles[] = array(
+                'name' => 'display_columns-{$this->iNbCols}',
+                'content' => "nbcol-{$this->iNbCols} ul{column-count: {$this->iNbCols};}"
+            );
         }
     }
 
@@ -82,7 +73,6 @@ class RenderListRadio extends QuestionBaseRenderer
         $otherRendered = false;
 
         $aRows = [];
-
         if ($this->hasOther && $this->otherPosition == self::OTHER_POS_START) {
             $aRows[] = $this->addOtherRow();
             $otherRendered = true;
@@ -122,43 +112,8 @@ class RenderListRadio extends QuestionBaseRenderer
         $sRows = "";
         
         foreach ($this->renderRowsArray() as $iterator => $sRow) {
-            // counter of number of row by column. Is reset to zero each time a column is full.
-            $this->iRowCount++;
-                
-            ////
-            // Open Column
-            // The column is opened if user set more than one column in question attribute
-            // and if this is the first answer row, or if the column has been closed and the row count reset before.
-            if ($this->iRowCount == 1) {
-                $sRows  .= Yii::app()->twigRenderer->renderQuestion(
-                    $this->getMainView() . '/columns/column_header',
-                    array('iColumnWidth' => $this->iColumnWidth),
-                    true
-                );
-                $this->bColumnIsOpen  = true; // If a column is not closed, it will be closed at the end of the process
-            }
-        
-            ////
             // Insert row
-            // Display the answer row
             $sRows .= $sRow;
-
-            ////
-            // Close column
-            // The column is closed if the user set more than one column in question attribute
-            // and if the max answer rows by column is reached.
-            // If max answer rows by column is not reached while there is no more answer,
-            // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
-            if ($this->iRowCount == $this->iMaxRowsByColumn) {
-                $last      = ($iterator == $this->getAnswerCount()) ? true : false; // If this loop count equal to the number of answers, then this answer is the last one.
-                $sRows  .= Yii::app()->twigRenderer->renderQuestion(
-                    $this->getMainView() . '/columns/column_footer',
-                    array('last' => $last),
-                    true
-                );
-                $this->iRowCount = 0;
-                $this->bColumnIsOpen    = false;
-            }
         }
 
         return $sRows;
@@ -218,7 +173,6 @@ class RenderListRadio extends QuestionBaseRenderer
         $answer = '';
         $this->inputnames[] = $this->sSGQA;
         $this->sCoreClass .= " " . $sCoreClasses;
-
         if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
@@ -229,9 +183,13 @@ class RenderListRadio extends QuestionBaseRenderer
             'basename'  => $this->sSGQA,
             'value'     => $this->mSessionValue,
             'coreClass' => $this->sCoreClass,
-            'othertext' => $this->sOthertext
+            'othertext' => $this->sOthertext,
+            'iNbCols' => $this->iNbCols,
+            'iCountAnswers' => $this->iCountAnswers,
+            'hasOther' => $this->hasOther,
+            'otherPosition' => $this->otherPosition,
+            'answerBeforeOther' => $this->answerBeforeOther,
         ), true);
-
         $this->registerAssets();
         return array($answer, $this->inputnames);
     }
