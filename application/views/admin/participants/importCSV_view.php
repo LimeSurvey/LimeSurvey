@@ -96,7 +96,7 @@ echo viewHelper::getViewTestTag('importParticipants');
 
 
                 <div class="col-12 ls-space margin top-25 bottom-25">
-                    <div class="card">
+                    <div class="card card-primary">
                         <div class="card-header bg-primary">
                             <?php eT("CSV input format") ?>
                         </div>

@@ -666,7 +666,8 @@ html {
 }
 
 #profile-img {
-    min-height: 80px;
+    height: auto;
+    max-width: 21em;
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1680px) {
@@ -683,6 +684,9 @@ html {
 
 .welcome .card-body {
   text-align: center;
+  padding: 0px;
+  height: 75%;
+  width: 100%;    
 }
 
 .welcome .card-body img {
@@ -690,8 +694,41 @@ html {
   margin-bottom: 1em;
 }
 
-.welcome .login-card .card-body img {
+.welcome .card-body .row {
+    margin-left: -21px;
+    margin-right: -21px;
+}
+
+.welcome .login-panel .card-body img {
   margin-bottom: 0;
+}
+
+.welcome .card-header {
+    height: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome .card-title {
+    font-weight: 500;
+}
+
+.welcome .card-body .card-body-ico,
+.welcome .card-body .card-body-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.welcome .card-body .card-body-ico {
+    height: 70%;
+}
+
+.welcome .card-body .card-body-link {
+    height: 30%;
 }
 
 .login-panel {

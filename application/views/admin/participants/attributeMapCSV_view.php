@@ -4,7 +4,7 @@
 
 <div class='row draggable-container' style='z-index: 1;'>
     <div class='col-md-4'>
-        <div id="csvattribute" class="card">
+        <div id="csvattribute" class="card card-primary">
             <div class="card-header bg-primary">
                 <?php eT("CSV field names "); ?>
                 <div class='pull-right'>

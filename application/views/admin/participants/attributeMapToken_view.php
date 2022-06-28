@@ -17,7 +17,7 @@
 <div class="draggable-container">
     <div class='row'>
         <div class='col-md-4'>
-            <div id="tokenattribute" class="card attribute-column">
+            <div id="tokenattribute" class="card attribute-column card-primary">
                 <div class="card-header bg-primary"><?php eT("Unmapped survey participant attributes") ?></div>
                 <div id="tokenatt" class="tokenatt droppable">
                     <?php
