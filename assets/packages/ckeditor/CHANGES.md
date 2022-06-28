@@ -1,6 +1,66 @@
 CKEditor 4 Changelog
 ====================
 
+## CKEditor 4.19.0
+
+New features:
+
+* [#2444](https://github.com/ckeditor/ckeditor4/issues/2444): Togglable toolbar buttons are now exposed as toggle buttons in the browser's accessibility tree.
+* [#4641](https://github.com/ckeditor/ckeditor4/issues/4641): Added an option allowing to cancel the [Delayed Editor Creation](https://ckeditor.com/docs/ckeditor4/latest/features/delayed_creation.html) feature as a function handle for editor creators ([`CKEDITOR.replace`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-replace), [`CKEDITOR.inline`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-inline), [`CKEDITOR.appendTo`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-appendTo)).
+* [#4986](https://github.com/ckeditor/ckeditor4/issues/4986): Added [`config.shiftLineBreaks`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-shiftLineBreaks) allowing to preserve inline elements formatting when the `shift`+`enter` keystroke is used.
+* [#2445](https://github.com/ckeditor/ckeditor4/issues/2445): Added [`config.applicationTitle`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-applicationTitle) configuration option allowing to customize or disable the editor's application region label. This option, combined with [`config.title`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-title), gives much better control over the editor's labels read by screen readers.
+
+Fixed Issues:
+
+* [#4543](https://github.com/ckeditor/ckeditor4/issues/4543): Fixed: Toolbar buttons toggle state is not correctly announced by screen readers lacking the information whether the feature is on or off.
+* [#4052](https://github.com/ckeditor/ckeditor4/issues/4052): Fixed: Editor labels are read incorrectly by screen readers due to invalid editor control type for the [Iframe Editing Area](https://ckeditor.com/cke4/addon/wysiwygarea) editors.
+* [#1904](https://github.com/ckeditor/ckeditor4/issues/1904): Fixed: Screen readers are not announcing the read-only editor state.
+* [#4904](https://github.com/ckeditor/ckeditor4/issues/4904): Fixed: Table cell selection and navigation with the `tab` key behavior is inconsistent after adding a new row.
+* [#3394](https://github.com/ckeditor/ckeditor4/issues/3394): Fixed: [Enhanced image](https://ckeditor.com/cke4/addon/image2) plugin dialog is not supporting URL with query string parameters. Thanks to [Simon Urli](https://github.com/surli)!
+* [#5049](https://github.com/ckeditor/ckeditor4/issues/5049): Fixed: The editor fails in strict mode due to not following the `use strict` directives in a core editor module.
+* [#5095](https://github.com/ckeditor/ckeditor4/issues/5095): Fixed: The [clipboard](https://ckeditor.com/cke4/addon/clipboard) plugin shows notification about unsupported file format when the file type is different than `jpg`, `gif`, `png`, not respecting [supported types](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_fileTools_uploadWidgetDefinition.html#property-supportedTypes) by the [Upload Widget](https://ckeditor.com/cke4/addon/uploadwidget) plugin.
+* [#4855](https://github.com/ckeditor/ckeditor4/issues/4855): [iOS] Fixed: Focusing toolbar buttons with an enabled VoiceOver screen reader moves the browser focus into an editable area and interrupts button functionality.
+
+API changes:
+
+* [#4641](https://github.com/ckeditor/ckeditor4/issues/4641): The [`CKEDITOR.replace`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-replace), [`CKEDITOR.inline`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-inline), [`CKEDITOR.appendTo`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-appendTo) functions are now returning a handle function allowing to cancel the [Delayed Editor Creation](https://ckeditor.com/docs/ckeditor4/latest/features/delayed_creation.html) feature.
+* [#5095](https://github.com/ckeditor/ckeditor4/issues/5095): Added the [CKEDITOR.plugins.clipboard.addFileMatcher](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_plugins_clipboard.html#method-addFileMatcher) function allowing to define file formats supported by the [clipboard](https://ckeditor.com/cke4/addon/clipboard) plugin. Trying to paste unsupported files will result in a notification that a file cannot be dropped or pasted into the editor.
+* [#2445](https://github.com/ckeditor/ckeditor4/issues/2445): Added [`config.applicationTitle`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-applicationTitle) alongside [`CKEDITOR.editor#applicationTitle`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#property-applicationTitle) to allow customizing editor's application region label.
+
+## CKEditor 4.18.0
+
+**Security Updates:**
+
+* Fixed an XSS vulnerability in the core module reported by GitHub Security Lab team member [Kevin Backhouse](https://github.com/kevinbackhouse).
+
+	Issue summary: The vulnerability allowed to inject malformed HTML bypassing content sanitization, which could result in executing a JavaScript code. See [CVE-2022-24728](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-4fc4-4p5g-6w89) for more details.
+
+* Fixed a Regular expression Denial of Service (ReDoS) vulnerability in dialog plugin discovered by the CKEditor 4 team during our regular security audit.
+
+	Issue summary: The vulnerability allowed to abuse a dialog input validator regular expression, which could cause a significant performance drop resulting in a browser tab freeze. See [CVE-2022-24729](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-f6rf-9m92-x2hh) for more details.
+
+You can read more details in the relevant security advisory and [contact us](security@cksource.com) if you have more questions.
+
+**An upgrade is highly recommended!**
+
+**Highlights:**
+
+[Web Spell Checker](https://webspellchecker.com/) ended support for WebSpellChecker Dialog on December 31st, 2021. This means the plugin is not supported any longer. Therefore, we decided to deprecate and remove the WebSpellChecker Dialog plugin from CKEditor 4 presets.
+
+We strongly encourage everyone to choose one of the other available spellchecking solutions - [Spell Check As You Type (SCAYT)](https://ckeditor.com/cke4/addon/scayt) or [WProofreader](https://ckeditor.com/cke4/addon/wproofreader).
+
+Fixed issues:
+
+* [#5097](https://github.com/ckeditor/ckeditor4/issues/5097): [Chrome] Fixed: Incorrect conversion of points to pixels while using [`CKEDITOR.tools.convertToPx()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_tools.html#method-convertToPx).
+* [#5044](https://github.com/ckeditor/ckeditor4/issues/5044): Fixed: `select` elements with `multiple` attribute had incorrect styling. Thanks to [John R. D'Orazio](https://github.com/JohnRDOrazio)!
+
+Other changes:
+
+* [#5093](https://github.com/ckeditor/ckeditor4/issues/5093): Deprecated and removed WebSpellChecker Dialog from presets.
+* [#5127](https://github.com/ckeditor/ckeditor4/issues/5127): Deprecated the [`CKEDITOR.rnd`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#property-rnd) property to discourage using it in a security-sensitive context.
+* [#5087](https://github.com/ckeditor/ckeditor4/issues/5087): Improved the jQuery adapter by replacing a deprecated jQuery API with existing counterparts. Thanks to [Fran Boon](https://github.com/flavour)!
+* [#5128](https://github.com/ckeditor/ckeditor4/issues/5128): Improved the [Emoji](https://ckeditor.com/cke4/addon/emoji) definitions encoding set by the [`config.emoji_emojiListUrl`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-emoji_emojiListUrl) configuration option.
+
 ## CKEditor 4.17.2
 
 Fixed issues:
@@ -44,11 +104,11 @@ Fixed issues:
 
 * Fixed XSS vulnerability in the core module reported by [William Bowling](https://github.com/wbowling).
 
-	Issue summary: The vulnerability allowed to inject malformed comments HTML bypassing content sanitization, which could result in executing JavaScript code. See [security advisory](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-7h26-63m7-qhf2) for more details.
+	Issue summary: The vulnerability allowed to inject malformed comments HTML bypassing content sanitization, which could result in executing JavaScript code. See [CVE-2021-41165](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-7h26-63m7-qhf2) for more details.
 
 * Fixed XSS vulnerability in the core module reported by [Maurice Dauer](https://twitter.com/laytonctf).
 
-	Issue summary: The vulnerability allowed to inject malformed HTML bypassing content sanitization, which could result in executing JavaScript code. See [security advisory](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-pvmx-g8h5-cprj) for more details.
+	Issue summary: The vulnerability allowed to inject malformed HTML bypassing content sanitization, which could result in executing JavaScript code. See [CVE-2021-41164](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-pvmx-g8h5-cprj) for more details.
 
 You can read more details in the relevant security advisory and [contact us](security@cksource.com) if you have more questions.
 
@@ -110,15 +170,15 @@ Other Changes:
 
 * Fixed XSS vulnerability in the [Clipboard](https://ckeditor.com/cke4/addon/clipboard) plugin reported by [Anton Subbotin](https://github.com/skavans).
 
-	Issue summary: The vulnerability allowed to abuse paste functionality using malformed HTML, which could result in injecting arbitrary HTML into the editor. See [security advisory](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-7889-rm5j-hpgg) for more details.
+	Issue summary: The vulnerability allowed to abuse paste functionality using malformed HTML, which could result in injecting arbitrary HTML into the editor. See [CVE-2021-32809](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-7889-rm5j-hpgg) for more details.
 
 * Fixed XSS vulnerability in the [Widget](https://ckeditor.com/cke4/addon/widget) plugin reported by [Anton Subbotin](https://github.com/skavans).
 
-	Issue summary: The vulnerability allowed to abuse undo functionality using malformed [Widget](https://ckeditor.com/cke4/addon/widget) HTML, which could result in executing JavaScript code. See [security advisory](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-6226-h7ff-ch6c) for more details.
+	Issue summary: The vulnerability allowed to abuse undo functionality using malformed [Widget](https://ckeditor.com/cke4/addon/widget) HTML, which could result in executing JavaScript code. See [CVE-2021-32808](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-6226-h7ff-ch6c) for more details.
 
 * Fixed XSS vulnerability in the [Fake Objects](https://ckeditor.com/cke4/addon/fakeobjects) plugin reported by [Mika Kulmala](https://github.com/kulmik).
 
-	Issue summary: The vulnerability allowed to inject malformed [Fake Objects](https://ckeditor.com/cke4/addon/fakeobjects) HTML, which could result in executing JavaScript code. See [security advisory](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-m94c-37g6-cjhc) for more details.
+	Issue summary: The vulnerability allowed to inject malformed [Fake Objects](https://ckeditor.com/cke4/addon/fakeobjects) HTML, which could result in executing JavaScript code. See [CVE-2021-37695](https://github.com/ckeditor/ckeditor4/security/advisories/GHSA-m94c-37g6-cjhc) for more details.
 
 You can read more details in the relevant security advisory and [contact us](security@cksource.com) if you have more questions.
 
