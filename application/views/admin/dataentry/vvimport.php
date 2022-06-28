@@ -22,7 +22,7 @@
     ?>
     
     
-    <div class="card" id="panel-1">
+    <div class="card card-primary" id="panel-1">
         <div class="card-header bg-primary">
             <div class="">
                 <?php eT("General");?>
