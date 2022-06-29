@@ -312,7 +312,6 @@ class RenderDate extends QuestionBaseRenderer
 
     public function renderDropdownDates($dateoutput, $coreClass)
     {
-        $coreClass .= " dropdown-item"; // items ?
         if (!empty($this->mSessionValue) && ($this->mSessionValue != 'INVALID')) {
             $datetimeobj   = new Date_Time_Converter($this->mSessionValue, "Y-m-d H:i:s");
             $currentyear   = $datetimeobj->years;
