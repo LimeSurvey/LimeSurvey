@@ -483,11 +483,6 @@ only screen and (max-width: 760px),
         border: 0 none;
         padding: 1em;
     }
-    table.ls-answers  tr th {
-        font-size: 1.1em;
-        text-align: center;
-        color: #317eac;
-    }
 
     /* Add some margin for multiple short text */
     .form-group.row {
@@ -508,7 +503,6 @@ only screen and (max-width: 760px),
     table.ls-answers tr th {
         font-size: 1.1em;
         text-align: left;
-        color: #317eac;
     }
 
     .array-by-columns .answertext {
