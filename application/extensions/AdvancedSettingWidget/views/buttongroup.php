@@ -11,7 +11,7 @@
                     value="<?= CHtml::encode($value); ?>"
                     checked
                 />
-                <?= gT($text); ?>
+                <?= $text; ?>
             </label>
         <?php else: ?>
             <label class="btn btn-default">
@@ -20,7 +20,7 @@
                     name="<?= $inputBaseName ?>"
                     value="<?= CHtml::encode($value); ?>"
                 />
-                <?= gT($text); ?>
+                <?= $text; ?>
             </label>
         <?php endif; ?>
     <?php endforeach; ?>

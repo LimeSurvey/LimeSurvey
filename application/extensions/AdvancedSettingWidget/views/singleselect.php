@@ -10,7 +10,7 @@
         <?php else: ?>
             <option value="<?= CHtml::encode($value); ?>">
         <?php endif; ?>
-        <?= gT($text); ?>
+        <?= $text; ?>
         </option>
     <?php endforeach; ?>
 </select>
