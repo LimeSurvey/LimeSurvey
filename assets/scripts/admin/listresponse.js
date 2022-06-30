@@ -125,7 +125,7 @@ function onDocumentReadyListresponse() {
 
 }
 
-$(document).on('ready pjax:scriptcomplete',function(){
+$(document).off('pjax:scriptcomplete.listresponse').on('pjax:scriptcomplete.listresponse', function(){
     onDocumentReadyListresponse();
     reinstallResponsesFilterDatePicker();
 });
