@@ -17,7 +17,7 @@ App()->getClientScript()->registerScript("plugin-panel-variables", "
 ", LSYii_ClientScript::POS_BEGIN);
 
     if (!empty($plugin['settings'])): ?>
-        <div class="card">
+        <div class="card card-primary">
             <div class="card-header bg-primary" role="tab" id="heading-plugin<?php echo $id; ?>">
                 <div class="">
                     <a class="btn btn-outline-secondary btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">

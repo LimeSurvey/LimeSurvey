@@ -452,14 +452,14 @@ html {
         top: 50px;
         opacity: 0;
     }
-    .panel-body {
+    .card-body {
         text-align: center;
         img {
             height: 4em;
             margin-bottom: 1em;
         }
     }
-    .login-pannel .panel-body img {
+    .login-pannel .card-body img {
         margin-bottom: 0;
     }
 }
@@ -468,7 +468,7 @@ html {
     animation: slidefromtop 1s;
 }
 @media screen and(min-width: 1280px) and(max-width: 1440px) {
-    .welcome .panel {
+    .welcome .card {
         min-height: 188px;
     }
 }
@@ -572,7 +572,7 @@ html {
     font-size: 9px;
 }
 
-.survey-action .panel-body img {
+.survey-action .card-body img {
     height: 3em;
 }
 div.panel.disabled {
@@ -693,7 +693,7 @@ div.panel.disabled {
         .indicator {
             float: right;
         }
-        .panel-body {
+        .card-body {
             padding: 0;
             .navbar-nav {
                 width: 100%;
@@ -716,7 +716,7 @@ div.panel.disabled {
                     }
                 }
             }
-            .panel-body {
+            .card-body {
                 margin-left: -15px;
             }
             .panel > a {
@@ -744,7 +744,7 @@ div.panel.disabled {
     #search {
         position: relative;
         z-index: 1000;
-        .panel-body {
+        .card-body {
             padding: 0;
             .navbar-form {
                 padding: 0;
@@ -1061,13 +1061,13 @@ div.panel.disabled {
             transform-style: preserve-3d;
         }
     }
-    #search .panel-body .navbar-form {
+    #search .card-body .navbar-form {
         border-bottom: 0;
         .form-group {
             margin: 0;
         }
     }
-    #dropdown .panel-body .navbar-nav {
+    #dropdown .card-body .navbar-nav {
         margin: 0;
     }
 }
