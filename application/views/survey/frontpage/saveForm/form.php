@@ -5,7 +5,7 @@
  */
 ?>
 <div class='save-survey-form '>
-    <div class='form-group save-survey-row save-survey-name'>
+    <div class='mb-3 save-survey-row save-survey-name'>
         <label class='form-label col-md-3 save-survey-label' for='savename'><?php echo gT("Saved name:") ?></label>
         <div class='col-md-7 save-survey-input input-cell'>
           <?php
@@ -18,7 +18,7 @@
           ?>
         </div>
     </div>
-    <div class='form-group save-survey-row save-survey-password'>
+    <div class='mb-3 save-survey-row save-survey-password'>
         <label class='form-label col-md-3 save-survey-label label-cell' for='savepass'><?php echo gT("Password:") ?></label>
         <div class='col-md-7 save-survey-input input-cell'>
           <?php
@@ -31,7 +31,7 @@
           ?>
         </div>
     </div>
-    <div class='form-group save-survey-row save-survey-password'>
+    <div class='mb-3 save-survey-row save-survey-password'>
         <label class='form-label col-md-3 save-survey-label label-cell' for='savepass2'><?php echo gT("Repeat password:") ?></label>
         <div class='col-md-7 save-survey-input input-cell'>
           <?php
@@ -43,7 +43,7 @@
           ?>
         </div>
     </div>
-    <div class='form-group save-survey-row save-survey-password'>
+    <div class='mb-3 save-survey-row save-survey-password'>
         <label class='form-label col-md-3 save-survey-label label-cell' for='saveemail'><?php echo gT("Your email address:") ?></label>
         <div class='col-md-7 save-survey-input input-cell'>
           <?php
@@ -55,7 +55,7 @@
         </div>
     </div>
     <?php if($captcha) : ?>
-        <div class='form-group save-survey-row save-survey-captcha'>
+        <div class='mb-3 save-survey-row save-survey-captcha'>
             <label class='form-label col-md-3 save-survey-label label-cell' for='loadsecurity'><?php echo gT("Security question:") ?></label>
             <div class='col-md-7 save-survey-input input-cell'>
                 <div class='input-group'>
@@ -67,7 +67,7 @@
             </div>
         </div>
     <?php endif; ?>
-    <div class='form-group save-survey-row save-survey-submit'>
+    <div class='mb-3 save-survey-row save-survey-submit'>
         <div class='col-md-7 offset-lg-3 save-survey-input input-cell'>
             <button type='submit' id='savebutton' name="savesubmit" class='btn btn-outline-secondary' value='save'><?php echo gT("Save Now") ?></button>
         </div>

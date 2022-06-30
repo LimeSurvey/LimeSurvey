@@ -7,7 +7,7 @@
 /** @var Question $model */
 ?>
 <form class="custom-modal-datas  form-horizontal">
-    <div class="form-group" id="CssClass">
+    <div class="mb-3" id="CssClass">
         <label class="col-md-4 form-label"><?php eT("CSS class(es):"); ?></label>
         <div class="col-md-8">
             <input type="text" class="form-control custom-data attributes-to-update" id="cssclass" name="cssclass" value="">

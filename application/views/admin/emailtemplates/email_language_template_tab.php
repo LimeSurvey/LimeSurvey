@@ -5,7 +5,7 @@ $script = array();
 
 <div id='<?php echo "tab-".CHtml::encode($grouplang)."-".CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>">
     <div class="row">
-        <div class='form-group col-md-12'>
+        <div class='mb-3 col-md-12'>
             <label class=' form-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
             <div class=''>
                 <?php
@@ -15,7 +15,7 @@ $script = array();
         </div>
     </div>
     <div class="row">
-        <div class='form-group col-md-12'>
+        <div class='mb-3 col-md-12'>
             <label class=' form-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
             <?php if(getEmailFormat($surveyid) != 'html') { ?>
                 <div class="">
@@ -31,7 +31,7 @@ $script = array();
         </div>
     </div>
     <div class="row">
-        <div class='form-group col-md-12'>
+        <div class='mb-3 col-md-12'>
             <label class=' form-label'><?php et('Actions:');?></label>
             <div class=''>
                 <a class='btn btn-outline-secondary' 
@@ -77,8 +77,8 @@ $script = array();
     ?>
 
     <div class="row selector__table-container <?=($hideAttacehemtTable===true ? 'd-none' : '')?>">
-        <div class='form-group col-12'>
-            <div class='form-group'>
+        <div class='mb-3 col-12'>
+            <div class='mb-3'>
                 <div class=' '>
                     <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]"  data-bs-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments table table-striped" style="width: 100%;">
                         <thead>

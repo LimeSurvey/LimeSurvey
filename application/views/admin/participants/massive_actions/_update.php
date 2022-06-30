@@ -10,7 +10,7 @@
 
 <form class="custom-modal-datas form form-horizontal">
 	<div class="container-fluid">
-        <div class="form-group">
+        <div class="ex-form-group mb-3">
             <div class="col-md-1">
                 <label class="" >
                 <?php eT("Modify"); ?>
@@ -26,7 +26,7 @@
             )
         ) {
         ?>
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <div class="col-md-1">
                     <label class="" >
                         <input type="checkbox" class="action_check_to_keep_old_value" />
@@ -38,7 +38,7 @@
                 </div>
             </div>
         <?php } ?>
-        <div class="form-group">
+        <div class="ex-form-group mb-3">
             <div class="col-md-1">
                 <label class="" >
                     <input type="checkbox" class="action_check_to_keep_old_value" />
@@ -50,7 +50,7 @@
             </div>
         </div>
         
-		<div class="form-group">
+		<div class="ex-form-group mb-3">
             <div class="col-md-1">
                 <label class="" >
                     <input type="checkbox" class="action_check_to_keep_old_value" />
@@ -70,16 +70,15 @@
 <script>
 $('.action_check_to_keep_old_value').on('click', function(){
         var currentValue = !$(this).prop('checked');
-        var myFormGroup = $(this).closest('.form-group');
-        
-        $(this).closest('.form-group').find('input:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
-        $(this).closest('.form-group').find('select').prop('disabled', currentValue)
+        var myFormGroup = $(this).closest('.ex-form-group');
+
+        myFormGroup.find('input:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
+        myFormGroup.find('select').prop('disabled', currentValue)
 
         if(currentValue){
-            $(this).closest('.form-group').find('.selector_submitField').val('lskeep');
+            myFormGroup.find('.selector_submitField').val('lskeep');
         } else {
-            $(this).closest('.form-group').find('input.selector_submitField').val('');
+            myFormGroup.find('input.selector_submitField').val('');
         }
-
     });
 </script>

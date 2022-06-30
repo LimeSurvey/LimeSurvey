@@ -4,7 +4,7 @@
       <?php eT("Format");?>
   </div>
   <div class="card-body">
-    <div class="form-group">
+    <div class="mb-3">
       <!-- Format -->
       <label for='export_format' class="col-md-6 form-label">
         <?php eT("Export format:"); ?>

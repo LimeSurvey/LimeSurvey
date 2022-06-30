@@ -27,7 +27,7 @@
             <?php
             echo CHtml::beginForm(App()->createUrl('/admin/update/sa/manageSubmitkey'), 'post', ["id" => ""]);
             ?>
-            <div class="form-group">
+            <div class="mb-3">
                 <?php
                 echo CHtml::label(gT('Enter your update key:'), 'inputKey', ['class' => 'col-md-2']);
                 ?>

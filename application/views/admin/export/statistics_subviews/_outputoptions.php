@@ -2,7 +2,7 @@
     eT("Output options"); ?></h4>
 <div class="row">
     <div class="col-lg-6 col-md-12">
-        <div class='form-group'>
+        <div class='mb-3'>
             <label for='showtextinline' class="form-label"><?php
                 eT("Show text responses inline:") ?></label>
             <div>
@@ -20,7 +20,7 @@
                 ]); ?>
             </div>
         </div>
-        <div class='form-group'>
+        <div class='mb-3'>
             <?php
             $sNoncompleted = (int)Yii::app()->request->getPost('noncompleted'); ?>
             <label class="form-label" id='noncompletedlbl' for='noncompleted' title='<?php
@@ -42,7 +42,7 @@
                 ]); ?>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for='charttype' class="form-label">
                 <?php
                 eT('Chart type:'); ?>
@@ -68,7 +68,7 @@
         </div>
     </div>
     <div class="col-lg-6 col-md-12">
-        <div class='form-group'>
+        <div class='mb-3'>
             <label for='stats_columns' class="form-label"><?php
                 eT("Number of columns:") ?></label>
             <div>
@@ -83,7 +83,7 @@
                 ]); ?>
             </div>
         </div>
-        <div class='form-group'>
+        <div class='mb-3'>
             <label for='graph_labels' class="form-label"><?php
                 eT("Graph labels:") ?></label>
             <div>
@@ -98,7 +98,7 @@
                 ]); ?>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <div class="alert alert-info alert-dismissible" role="alert">
                 <button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>
                 <?php

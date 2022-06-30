@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                 </div>
                 <div class="row ls-space margin top-25 bottom-25">
                     <div class="col-lg-6">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="characterset" id="characterset" class='form-label '>
                                 <?php eT("Character set of file:"); ?>
                             </label>
@@ -45,7 +45,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="separatorused" id="separatorused" class='form-label '>
                                 <?php eT("Separator used:"); ?>
                             </label>
@@ -75,7 +75,7 @@ echo viewHelper::getViewTestTag('importParticipants');
 
                 <div class="row  ls-space margin top-25 bottom-25">
                     <div class="col-lg-6">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="filter" id="filter" class='form-label '>
                                 <?php
                                 eT("Filter blank email addresses:");
@@ -86,7 +86,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                     </div>
                 </div>
                 <div class="row  ls-space margin top-25 bottom-25">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <div class="col-12 ">
                             <input type="submit" value="<?php eT("Upload") ?>" class="btn btn-outline-secondary col-md-6 offest-md-3 col-lg-4 offset-lg-4">
                         </div>

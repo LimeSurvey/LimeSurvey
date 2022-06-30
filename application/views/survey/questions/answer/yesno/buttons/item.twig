@@ -12,7 +12,7 @@
 #}
 <ul class="{{ coreClass }} list-unstyled btn-group btn-group-justified" data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
     <!-- Yes -->
-    <li id="javatbd{{ name }}Y" class="button-item form-group btn btn-primary {% if yChecked %}active{% endif %}">
+    <li id="javatbd{{ name }}Y" class="button-item mb-3 btn btn-primary {% if yChecked %}active{% endif %}">
         <input
             type="radio"
             name="{{ name }}"
@@ -25,7 +25,7 @@
         </label>
     </li>
     <!-- No -->
-    <li id="javatbd{{ name }}N" class="button-item form-group btn btn-primary {% if nChecked %}active{% endif %}">
+    <li id="javatbd{{ name }}N" class="button-item mb-3 btn btn-primary {% if nChecked %}active{% endif %}">
         <input
             type="radio"
             name="{{ name }}"
@@ -40,7 +40,7 @@
 
     <!-- No answer -->
     {% if noAnswer %}
-        <li id="javatbd{{ name }}" class="button-item form-group btn btn-primary {% if naChecked %}active{% endif %}">
+        <li id="javatbd{{ name }}" class="button-item mb-3 btn btn-primary {% if naChecked %}active{% endif %}">
             <input
                 type="radio"
                 name="{{ name }}"

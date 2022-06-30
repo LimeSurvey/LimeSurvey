@@ -7,7 +7,7 @@
         return true ;
     }
 </script>
-<div class="form-group">
+<div class="mb-3">
     <?php
     if (count($replFields) > 0 || isset($cquestions) )
     {

@@ -26,7 +26,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                         $options = ['Y' => gT('Yes', 'unescaped'), 'N' => gT('No', 'unescaped')];
                         ?>
                         <div class="row ls-space margin top-10 bottom-10">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class='form-label col-md-8'>
                                     <?php eT('Blacklist all current surveys for participant once the global field is set:'); ?>
                                 </label>
@@ -43,7 +43,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </div>
                         </div>
                         <div class="row ls-space margin top-10 bottom-10">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class='form-label col-md-8'>
                                     <?php eT('Blacklist participant for any new added survey once the global field is set:'); ?>
                                 </label>
@@ -60,7 +60,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </div>
                         </div>
                         <div class="row ls-space margin top-10 bottom-10">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class='form-label col-md-8'>
                                     <?php eT('Prevent blacklisted participants from being added to a survey:'); ?>
                                 </label>
@@ -77,7 +77,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </div>
                         </div>
                         <div class="row ls-space margin top-10 bottom-10">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class='form-label col-md-8'>
                                     <?php eT('Hide blacklisted participants:'); ?>
                                 </label>
@@ -94,7 +94,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </div>
                         </div>
                         <div class="row ls-space margin top-10 bottom-10">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class='form-label col-md-8'>
                                     <?php eT( 'Delete globally blacklisted participant from the database:'); ?>
                                 </label>
@@ -111,7 +111,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </div>
                         </div>
                         <div class="row ls-space margin top-10 bottom-10">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class='form-label col-md-8'>
                                     <?php eT('Allow participant to unblacklist himself/herself:'); ?>
                                 </label>
@@ -128,7 +128,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                             </div>
                         </div>
                         <div class="row ls-space margin top-25 bottom-10">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <div class='col-md-8'>
                                 </div>
                                 <div class='col-md-3'>

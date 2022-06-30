@@ -72,7 +72,7 @@
             {# If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template #}
             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                 <div class='row' id="general_inherit_active">
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_general_inherit' class='control-label'>{{gT("Inherit everything" )}}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -98,7 +98,7 @@
 
                 {# Container #}
                 <div class='col-12 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_container' class='control-label'> {{ gT("Survey container") }} </label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -124,7 +124,7 @@
 
                 {# hideprivacyinfo #}
                 <div class='col-12 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_hideprivacyinfo' class='control-label'>{{ gT("Hide privacy info") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -150,7 +150,7 @@
 
                 {# Show Clear And Exit #}
                 <div class='col-12 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_showclearall' class='control-label'> {{ gT("Show Clear All Button") }} </label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -180,7 +180,7 @@
 
                 {# questionhelptextposition #}
                 <div class='col-12 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_questionhelptextposition' class='control-label'>{{ gT("Question help text position") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -206,7 +206,7 @@
                 
                 {# Show popups #}
                 <div class='col-12 col-lg-4 col-xl-4'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_showpopups' class='control-label' {{ showpopups_disabled_qtip }}>{{ gT("Show popups") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -236,7 +236,7 @@
 
                 {# Fix num auto (and real num value) #}
                 <div class='col-12 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_fixnumauto' class='control-label'>{{ gT("Fix automatically numeric value") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -281,7 +281,7 @@
             <div class='row action_hide_on_inherit'>
                 <div class='col-12 col-lg-4'>
                     {# Brandlogo #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_brandlogo' class='control-label'>Brandlogo</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -306,7 +306,7 @@
                 </div>
                 <div class='col-md-8 col-lg-6'>
                     {#  Brandlogo file selector #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_brandlogofile' class='control-label'>Brandlogo file</label>
                         <div class='col-12'>
                             <select class='form-select selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
@@ -349,7 +349,7 @@
                     <div class='panel panel-default'>
                         <div class='panel-heading'>{{ sprintf( gT("%s fonts"), templateConfiguration.template_name)|capitalize }}</div>
                         <div class='panel-body'>
-                            <div class='form-group row'>
+                            <div class='mb-3 row'>
                                 <label for='simple_edit_options_font' class='control-label'>{{ gT("Select font:") }}</label>
                                 <div class='col-12'>
                                     <select class='form-select selector_option_value_field' id='simple_edit_options_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>

@@ -25,7 +25,7 @@ $isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == 
                 <?php else:?>
                         <h2><?php echo sprintf(gT("New answer for quota '%s'"), CHtml::encode($oQuota->name));?></h2>
                         <p class="lead"><?php eT("Select answer:");?></p>
-                        <div class='form-group'>
+                        <div class='mb-3'>
                             <div class='col-md-5 offset-md-4'>
                                 <select class='form-select' name="quota_anscode" size="15">
                                     <?php
@@ -38,14 +38,14 @@ $isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == 
                         </div>
                 <?php endif;?>
 
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <div class='col-md-5 offset-md-4'>
                             <button class="btn btn btn-success" name="submit"  class="submit btn btn-outline-secondary">
                                 <?php eT("Next");?>
                             </button>
                         </div>
                     </div>
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <?php eT("Save this, then create another:");?>
                         <input type="checkbox" name="createanother">
                         <input type="hidden" name="sid" value="<?= $oQuota->sid;?>" />

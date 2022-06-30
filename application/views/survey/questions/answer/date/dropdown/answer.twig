@@ -16,12 +16,12 @@
 
 <!-- answer -->
 <div class='form-inline'>
-    <div class="{{coreClass}} ls-no-js-hidden form-group" role="group" aria-labelledby="ls-question-text-{{name}}">
+    <div class="{{coreClass}} ls-no-js-hidden mb-3" role="group" aria-labelledby="ls-question-text-{{name}}">
             {# // rows/*.php #}
             {{sRows}}
     </div>
     <!-- answer fo nojs action and real value sent -->
-    <div class='{{coreClass}} ls-js-hidden form-group'>
+    <div class='{{coreClass}} ls-js-hidden mb-3'>
         <label for='answer{{name}}' class='sr-only control-label'>
             {{ sprintf(gT('Date in the format: %s'), dateformatdetails) }}
         </label>

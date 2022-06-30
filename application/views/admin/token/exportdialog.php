@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="settings-list col-12 col-lg-6">
                     <!--Survey status -->
-                    <div class=" form-group control-group" data-name="tokenstatus">
+                    <div class=" mb-3 control-group" data-name="tokenstatus">
                         <label class="default form-label" for="tokenstatus">
                             <?php eT('Survey status:'); ?>
                         </label>
@@ -23,7 +23,7 @@
                     </div>
 
                     <!--Invitation status -->
-                    <div class=" form-group control-group" data-name="invitationstatus">
+                    <div class=" mb-3 control-group" data-name="invitationstatus">
                         <label class="default form-label" for="invitationstatus">
                             <?php eT('Invitation status:'); ?>
                         </label>
@@ -41,7 +41,7 @@
                     </div>
 
                     <!--Reminder status -->
-                    <div class=" form-group control-group" data-name="reminderstatus">
+                    <div class=" mb-3 control-group" data-name="reminderstatus">
                         <label class="default form-label" for="reminderstatus">
                             <?php eT('Reminder status:'); ?>
                         </label>
@@ -59,7 +59,7 @@
                     </div>
 
                     <!--Filter by language -->
-                    <div class=" form-group control-group" data-name="tokenlanguage">
+                    <div class=" mb-3 control-group" data-name="tokenlanguage">
                         <label class="default form-label" for="tokenlanguage">
                             <?php eT('Filter by language:'); ?>
                         </label>
@@ -74,7 +74,7 @@
                 <div class="col-12 col-lg-6">
 
                     <!--Filter by email address -->
-                    <div class=" form-group control-group" data-name="filteremail">
+                    <div class=" mb-3 control-group" data-name="filteremail">
 
                         <label class="default form-label" for="filteremail">
                             <?php eT('Filter by email address:'); ?>
@@ -91,7 +91,7 @@
                     <!--Delete exported tokens -->
                     <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')) { ?>
 
-                    <div class="form-group control-group " data-name="tokendeleteexported">
+                    <div class="mb-3 control-group " data-name="tokendeleteexported">
                         <label class="default form-label" for="tokendeleteexported">
                             <?php eT('Delete exported participants:'); ?>
                         </label>
@@ -110,7 +110,7 @@
                         </div>
                     </div>
                     <?php } ?>
-                    <div class="form-group control-group " data-name="maskequations">
+                    <div class="mb-3 control-group " data-name="maskequations">
                         <label class="default form-label" for="maskequations">
                             <?php eT('Quote equations:'); ?>
                         </label>
