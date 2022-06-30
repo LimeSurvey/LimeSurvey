@@ -19,7 +19,7 @@
                 </h4>
             </div>
             <div class="col-lg-9 text-end">
-                <div class="form-group">
+                <div class="mb-3">
                     <div >
                         <label for='completionstate' class="form-label"><?php eT("Include:"); ?> </label>
                         <?php

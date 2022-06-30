@@ -35,7 +35,7 @@
     <div role="tabpanel" class="tab-pane show active" id="question-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-            <div class="form-group">
+            <div class="mb-3">
                 <div class="input-group w-100">
                     <?= CHtml::textArea(
                         "questionI10N[$lang][question]",
@@ -68,7 +68,7 @@
     <div role="tabpanel" class="tab-pane" id="question-help-tab">
         <?php foreach($oSurvey->allLanguages as $lang): ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-            <div class="form-group">
+            <div class="mb-3">
                 <div class="input-group w-100">
                     <?= CHtml::textArea(
                         "questionI10N[$lang][help]",
@@ -101,7 +101,7 @@
         <div role="tabpanel" class="tab-pane" id="script-field-tab">
             <?php foreach($oSurvey->allLanguages as $lang): ?>
             <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-                <div class="form-group">
+                <div class="mb-3">
                     <?php if ($lang == $oSurvey->language): ?>
                         <div class="row">
                         <div class="col-12 text-end">

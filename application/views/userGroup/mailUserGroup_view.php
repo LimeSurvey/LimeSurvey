@@ -10,19 +10,19 @@
             'post',
             ['class' => 'col-lg-6 offset-lg-3', 'id' => 'mailusergroup', 'name' => 'mailusergroup']
         ); ?>
-        <div class="form-group">
+        <div class="mb-3">
             <label for='copymail'>
                 <?php eT("Send me a copy:"); ?>
                 <input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1'/>
             </label>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for='subject'>
                 <?php eT("Subject:"); ?>
             </label>
             <input type='text' id='subject' size='50' name='subject' value='' class="form-control"/>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for='body'>
                 <?php eT("Message:"); ?>
             </label>

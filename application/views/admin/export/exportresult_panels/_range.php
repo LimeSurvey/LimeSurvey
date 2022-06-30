@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="card-body">
-    <div class="form-group">
+    <div class="mb-3">
       <!-- From -->
       <label for='export_from' class=" form-label">
         <?php eT("From:"); ?>

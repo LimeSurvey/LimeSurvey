@@ -41,7 +41,7 @@ if ($bShowInherited) {
     <div class="row">
         <div class="col-12 col-lg-6">
             <!-- Navigation delay -->
-            <div class="form-group">
+            <div class="mb-3">
                 <?php $navigationdelay = $oSurvey->navigationdelay; ?>
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
@@ -69,7 +69,7 @@ if ($bShowInherited) {
                 </div>
             </div>
             <!-- Show question index -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class="form-label" for='questionindex'><?php eT("Show question index / allow jumping:"); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -95,7 +95,7 @@ if ($bShowInherited) {
             ?>
 
             <!-- Show group name and/or group description -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class="form-label" for="showgroupinfo"><?php eT('Show group name and/or group description:'); ?></label>
                 <div class="">
                     <select id="showgroupinfo" name="showgroupinfo" class="form-select">
@@ -123,7 +123,7 @@ if ($bShowInherited) {
             ?>
 
             <!-- Show question number and/or code -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class="form-label" for="showqnumcode"><?php eT('Show question number and/or code:'); ?></label>
                 <div class="">
                     <select class="form-select" id="showqnumcode" name="showqnumcode">
@@ -140,7 +140,7 @@ if ($bShowInherited) {
             </div>
 
             <!-- Show "No answer" -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class="form-label" for="shownoanswer"><?php eT('Show "No answer":'); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -158,7 +158,7 @@ if ($bShowInherited) {
         <div class="col-12 col-lg-6">
 
             <!-- Show "There are X questions in this survey" -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class="form-label" for="showxquestions"><?php eT('Show "There are X questions in this survey":'); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -173,7 +173,7 @@ if ($bShowInherited) {
             </div>
 
             <!-- Show welcome screen -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='showwelcome'><?php eT("Show welcome screen:"); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -188,7 +188,7 @@ if ($bShowInherited) {
             </div>
 
             <!-- Allow backward navigation: -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='allowprev'><?php eT("Allow backward navigation:"); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -204,7 +204,7 @@ if ($bShowInherited) {
 
 
             <!-- Show on-screen keyboard -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='nokeyboard'><?php eT("Show on-screen keyboard:"); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -219,7 +219,7 @@ if ($bShowInherited) {
             </div>
 
             <!-- Show progress bar -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='showprogress'><?php eT("Show progress bar:"); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -233,7 +233,7 @@ if ($bShowInherited) {
                 </div>
             </div>
             <!-- Participants may print answers -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='printanswers'><?php eT("Participants may print answers:"); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -248,7 +248,7 @@ if ($bShowInherited) {
             </div>
 
             <!-- Public statistics -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='publicstatistics'><?php eT("Public statistics:"); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -263,7 +263,7 @@ if ($bShowInherited) {
             </div>
 
             <!-- Show graphs in public statistics -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='publicgraphs'><?php eT("Show graphs in public statistics:"); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
@@ -278,7 +278,7 @@ if ($bShowInherited) {
             </div>
 
             <!-- Automatically load URL -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='autoredirect'><?php eT("Automatically load end URL when survey complete:"); ?></label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',

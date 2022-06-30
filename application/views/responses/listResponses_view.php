@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
             <div class="pull-right">
                 <div class="form text-end">
                     <form action="<?= App()->createUrl('/responses/browse/', ['surveyId' => $surveyid]) ?>" class="pjax" method="POST" id="change-display-mode-form">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="display-mode">
                                 <?php eT('Display mode:'); ?>
                             </label>

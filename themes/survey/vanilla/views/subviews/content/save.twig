@@ -92,7 +92,7 @@
 
             <!-- Name and Password -->
             <div class='{{ aSurveyInfo.class.saveformsurvey }} form-horizontal' {{ aSurveyInfo.attr.saveformsurvey }}>
-                <div class='{{ aSurveyInfo.class.saveformsurveydiva }} form-group ' {{ aSurveyInfo.attr.saveformsurveydiva }}>
+                <div class='{{ aSurveyInfo.class.saveformsurveydiva }} mb-3 ' {{ aSurveyInfo.attr.saveformsurveydiva }}>
 
                     <!-- Saved name  -->
                     <label class='{{ aSurveyInfo.class.saveformsurveydivalabel }} control-label col-md-3' {{ aSurveyInfo.attr.saveformsurveydivalabel }}>
@@ -121,7 +121,7 @@
                 </div>
 
                 <!-- Password -->
-                <div class='{{ aSurveyInfo.class.saveformsurveydivc }} form-group' {{ aSurveyInfo.attr.saveformsurveydivc }}>
+                <div class='{{ aSurveyInfo.class.saveformsurveydivc }} mb-3' {{ aSurveyInfo.attr.saveformsurveydivc }}>
                     <label class='{{ aSurveyInfo.class.saveformsurveydivclabel }} control-label col-md-3 ' {{ aSurveyInfo.attr.saveformsurveydivclabel }}>
                         {{ gT("Password:") }}
                         <small class="{{ aSurveyInfo.class.saveformsurveydivcsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformsurveydivcsmall }} ></small>
@@ -147,7 +147,7 @@
                 </div>
 
                 <!-- Confirm password -->
-                <div class='{{ aSurveyInfo.class.saveformsurveydivd }} form-group ' {{ aSurveyInfo.attr.saveformsurveydivd }}>
+                <div class='{{ aSurveyInfo.class.saveformsurveydivd }} mb-3 ' {{ aSurveyInfo.attr.saveformsurveydivd }}>
                     <label class='{{ aSurveyInfo.class.saveformsurveydivdlabel }} control-label col-md-3 ' {{ aSurveyInfo.attr.saveformsurveydivdlabel }} >
                         {{ gT("Repeat password:") }}
                         <small class="{{ aSurveyInfo.class.saveformsurveydivdlabelsmall }}  text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformsurveydivdlabelsmall }}></small>
@@ -172,7 +172,7 @@
                 </div>
 
                 <!-- Email -->
-                <div class='{{ aSurveyInfo.class.saveformsurveydive }}  form-group ' {{ aSurveyInfo.attr.saveformsurveydive }}>
+                <div class='{{ aSurveyInfo.class.saveformsurveydive }}  mb-3 ' {{ aSurveyInfo.attr.saveformsurveydive }}>
                     <label class='{{ aSurveyInfo.class.saveformsurveydivelabel }} control-label col-md-3 ' {{ aSurveyInfo.attr.saveformsurveydivelabel }} >
                         {{ gT("Your email address:") }}
                     </label>
@@ -196,7 +196,7 @@
 
                 {% if aSurveyInfo.aSaveForm.aCaptcha.show %}
                     <!-- Captcha -->
-                    <div class='{{ aSurveyInfo.class.saveformsurveydivf }} form-group ' {{ aSurveyInfo.attr.saveformsurveydivd }} >
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivf }} mb-3 ' {{ aSurveyInfo.attr.saveformsurveydivd }} >
                         <label class='{{ aSurveyInfo.class.saveformsurveydivflabel }} control-label col-md-3 ' {{ aSurveyInfo.attr.saveformsurveydivdlabel }}  >
                             {{ gT("Security question:") }}
                         </label>
@@ -212,7 +212,7 @@
                 {% endif %}
 
                 <!-- save button -->
-                <div class='{{ aSurveyInfo.class.saveformsurveydivg }} form-group' {{ aSurveyInfo.attr.saveformsurveydivg }}>
+                <div class='{{ aSurveyInfo.class.saveformsurveydivg }} mb-3' {{ aSurveyInfo.attr.saveformsurveydivg }}>
                     <div class='{{ aSurveyInfo.class.saveformsurveydivgdiv }}  col-md-7 offset-lg-3' {{ aSurveyInfo.attr.saveformsurveydivgdiv }}>
                         <button {{ aSurveyInfo.attr.saveformsurveydivgdivbutton }}  class='{{ aSurveyInfo.class.saveformsurveydivgdivbutton }} btn btn-outline-secondary' >
                             {{ gT("Save Now") }}

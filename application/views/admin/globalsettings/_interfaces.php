@@ -6,7 +6,7 @@
 ?>
 
 <?php $RPCInterface=getGlobalSetting('RPCInterface'); ?>
-<div class="form-group">
+<div class="mb-3">
     <label class=" form-label"  for='RPCInterface'><?php eT("RPC interface enabled:"); ?></label>
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -21,14 +21,14 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="mb-3">
     <label class=" form-label" ><?php eT("URL:"); ?></label>
     <div class="">
         <?php echo $this->createAbsoluteUrl("admin/remotecontrol"); ?>
     </div>
 </div>
 
-<div class="form-group">
+<div class="mb-3">
     <label class=" form-label"  for='rpc_publish_api'><?php eT("Publish API on /admin/remotecontrol:"); ?></label>
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -42,7 +42,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="mb-3">
     <label class=" form-label"  for='add_access_control_header'><?php eT("Set Access-Control-Allow-Origin header:"); ?></label>
     <div>
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

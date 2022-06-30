@@ -111,7 +111,7 @@
         <?php echo CHtml::form(array("surveyAdministration/activate/iSurveyID/{$surveyid}/"), 'post', array('class'=>'form-horizontal')); ?>
             <div class='row'>
                 <div class="col-md-4 offset-md-2">
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <label for='anonymized' class='form-label col-md-7'>
                             <?php eT("Anonymized responses"); ?>
                             <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, responses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
@@ -146,7 +146,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <label for='datestamp' class='form-label col-md-7'>
                             <?php eT("Date stamp"); ?>
                             <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"></i>
@@ -168,7 +168,7 @@
 
             <div class='row'>
                 <div class="col-md-4 offset-md-2">
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <label for='ipaddr' class='form-label col-md-7'>
                             <?php eT("Save IP address"); ?>
                             <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"></i>
@@ -188,7 +188,7 @@
                 </div>
 
                 <div class="col-md-4 ">
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <label for='ipaddr' class='form-label col-md-7'>
                             <?php eT("Anonymize IP address"); ?>
                             <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"></i>
@@ -210,7 +210,7 @@
 
             <div class='row'>
                 <div class="col-md-4 offset-md-2">
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <label class='form-label col-md-7' for='savetimings'>
                             <?php eT("Save timings"); ?>
                             <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"></i>
@@ -230,7 +230,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <div class='form-group'>
+                    <div class='mb-3'>
                         <label class='form-label col-md-7' for='refurl'>
                             <?php eT("Save referrer URL"); ?>
                             <i class="fa fa-question-circle text-success" data-bs-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"></i>

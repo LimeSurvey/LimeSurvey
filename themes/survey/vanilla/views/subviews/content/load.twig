@@ -83,7 +83,7 @@
             <div class="{{ aSurveyInfo.class.saveform }}" {{ aSurveyInfo.attr.saveform }}>
 
                 <!-- Saved name  -->
-                <div class="{{ aSurveyInfo.class.saveformrow }} row form-group " {{ aSurveyInfo.attr.saveformrow }}>
+                <div class="{{ aSurveyInfo.class.saveformrow }} row mb-3 " {{ aSurveyInfo.attr.saveformrow }}>
                     <label class="{{ aSurveyInfo.class.saveformrowlabel }} control-label col-md-3 " {{ aSurveyInfo.attr.saveformrowlabel }}>
                         {{ gT("Saved name:") }}
                         <small class="{{ aSurveyInfo.class.saveformrowlabelsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformrowlabelsmall }} ></small>
@@ -95,7 +95,7 @@
                 </div>
 
                 <!-- Password -->
-                <div class="{{ aSurveyInfo.class.passwordrow }} row form-group " {{ aSurveyInfo.attr.passwordrow }}>
+                <div class="{{ aSurveyInfo.class.passwordrow }} row mb-3 " {{ aSurveyInfo.attr.passwordrow }}>
                     <label class='{{ aSurveyInfo.class.passwordrowcol }} control-label col-md-3 '  {{ aSurveyInfo.attr.passwordrowcol }} >
                         {{ gT("Password:") }}
                         <small class="{{ aSurveyInfo.class.passwordrowcolsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.passwordrowcolsmall }}></small>
@@ -109,7 +109,7 @@
 
                 {% if aSurveyInfo.aLoadForm.aCaptcha.show %}
                     <!-- Captcha -->
-                    <div class='{{ aSurveyInfo.class.captcharow }} row form-group ' {{ aSurveyInfo.attr.captcharow }}>
+                    <div class='{{ aSurveyInfo.class.captcharow }} row mb-3 ' {{ aSurveyInfo.attr.captcharow }}>
                         <label class='{{ aSurveyInfo.class.captcharowlabel }} control-label col-md-3 '  {{ aSurveyInfo.attr.captcharowlabel }}>
                             {{ gT("Security question:") }}
                         </label>
@@ -125,7 +125,7 @@
                 {% endif %}
 
                 <!-- load button -->
-                <div class='{{ aSurveyInfo.class.loadrow }} row form-group ' {{ aSurveyInfo.attr.loadrow }}>
+                <div class='{{ aSurveyInfo.class.loadrow }} row mb-3 ' {{ aSurveyInfo.attr.loadrow }}>
                     <div class='{{ aSurveyInfo.class.loadrowcol }} col-md-7 offset-lg-3 ' {{ aSurveyInfo.attr.loadrowcol }}>
                         <button class='{{ aSurveyInfo.class.loadrowcolbutton }} btn btn-outline-secondary' {{ aSurveyInfo.attr.loadrowcolbutton }} >
                             {{ gT("Load now") }}

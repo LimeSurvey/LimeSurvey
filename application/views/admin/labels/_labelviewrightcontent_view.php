@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-12 content-right text-center">
     <div class="panel-group" id="accordion" role="tablist" style="margin-top: 20px">
-      <div class="card" id="up_resmgmt">
+      <div class="card card-default" id="up_resmgmt">
 
         <!-- Uploaded resources management -->
-        <div class="card-header bg-primary" role="tab" id="headingOne">
+        <div class="card-header bg-default" role="tab" id="headingOne">
           <div class="">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <a role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <?php eT("Uploaded resources management"); ?>
             </a>
           </div>
@@ -35,53 +35,67 @@
 
                   <!-- Export resources as ZIP archive -->
                   <li>
-                    <label>&nbsp;</label>
-                    <input class="btn btn-outline-secondary" type='button' <?php echo hasResources($lid, 'label')===false ? ' disabled="disabled"' : '' ?> onclick='window.open("
-                    <?php echo $this->createUrl("/admin/export/sa/resources/export/label/lid/$lid"); ?>", "_blank")' value="
-                      <?php eT("Export resources as ZIP archive") ?>" />
+                    <button class="btn btn-outline-secondary" <?php echo hasResources($lid, 'label')===false ? ' disabled="disabled"' : '' ?> onclick='window.open("
+                    <?php echo $this->createUrl("/admin/export/sa/resources/export/label/lid/$lid"); ?>", "_blank")'>
+                        <?php eT("Export resources as ZIP archive") ?>
+                    </button>
                   </li>
                 </ul>
                 <input type='hidden' name='lid' value='<?php echo $lid; ?>' />
                 </form>
 
                 <!-- Form importlabelresources -->
-                <?php 
-                    echo CHtml::form(
-                        array('admin/labels/sa/importlabelresources'), 
-                        'post', 
-                        array(
-                            'id'=>'importlabelresources',
-                            'class'=>'form30',
-                            'name'=>'importlabelresources',
-                            'enctype'=>'multipart/form-data',
-                            'onsubmit'=>'return window.LS.validatefilename(this, "'.gT('Please select a file to import!', 'js').'");'
-                        )
-                    ); 
+                <?php
+                echo CHtml::form(
+                    array('admin/labels/sa/importlabelresources'),
+                    'post',
+                    array(
+                        'id' => 'importlabelresources',
+                        'class' => 'form30',
+                        'name' => 'importlabelresources',
+                        'enctype' => 'multipart/form-data',
+                        'onsubmit' => 'return window.LS.validatefilename(this, "' . gT(
+                                'Please select a file to import!',
+                                'js'
+                            ) . '");'
+                    )
+                );
                 ?>
-                  <ul class="list-unstyled">
-                    <li>
-                      <br/>
-                      <label class="col-12 label-control" for='the_file'>
-                        <?php eT("Select ZIP file:") ?>
-                      </label>
+                <div class="container">
+                    <div class="row">
+                        <br/>
+                        <label class="col-12 label-control" for='the_file'>
+                            <?php
+                            eT("Select ZIP file:") ?>
+                        </label>
+                    </div>
+                    <div class="row">
+                        <!-- Select ZIP file -->
+                        <div class="col-md-6"><input id='the_file' name="the_file" class="form-control" type="file"/></div>
 
-                      <!-- Select ZIP file -->
-                      <div class="col-md-6"> <input id='the_file' name="the_file" type="file" /> </div>
 
-
-                      <!-- Import resources ZIP archive -->
-                      <div class="col-md-6">
-                        <input class="btn btn-outline-secondary" type='button' value='<?php eT("Import resources ZIP archive") ?>' <?php 
-                        echo !class_exists('ZipArchive') 
-                            ? "onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'" 
-                            : "onclick='if (window.LS.validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" 
-                        ?>/>
-                      </div>
-                    </li>
-                  </ul>
-                  <input type='hidden' name='lid' value='<?php echo $lid; ?>' />
-                  <input type='hidden' name='action' value='importlabelresources' />
-                  </form>
+                        <!-- Import resources ZIP archive -->
+                        <div class="col-md-6">
+                            <input class="btn btn-outline-secondary" type='button' value='<?php
+                            eT("Import resources ZIP archive") ?>' <?php
+                            echo !class_exists('ZipArchive')
+                                ? "onclick='alert(\"" . gT(
+                                    "The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.",
+                                    "js"
+                                ) . "\");'"
+                                : "onclick='if (window.LS.validatefilename(this.form,\"" . gT(
+                                    'Please select a file to import!',
+                                    'js'
+                                ) . "\")) { this.form.submit();}'"
+                            ?>/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+              <input type='hidden' name='lid' value='<?php
+              echo $lid; ?>'/>
+              <input type='hidden' name='action' value='importlabelresources'/>
+              <?= CHtml::endForm(); ?>
             </div>
             <!-- upload-form-container -->
           </div>

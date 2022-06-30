@@ -23,7 +23,7 @@ initKcfinder();
 PrepareEditorScript(false, $this);
 ?>
 <!-- security notice -->
-<div class="form-group">
+<div class="mb-3">
     <label class="form-label" for='showsurveypolicynotice'><?php eT("Show survey policy text with mandatory checkbox:"); ?></label>
     <div class="">
                 <div class="btn-group" data-bs-toggle="buttons">

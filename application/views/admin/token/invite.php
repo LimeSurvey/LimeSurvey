@@ -27,7 +27,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <?php if (count($tokenids)>0): ?>
-                                <div class='form-group'>
+                                <div class='mb-3'>
                                     <label class='form-label '><?php eT("Send invitation email to participant ID(s):"); ?></label>
                                     <div class=''>
                                         <?php echo short_implode(", ", "-", (array) $tokenids); ?>
@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <div class='form-group'>
+                            <div class='mb-3'>
 
                                 <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
                                 <div>
@@ -55,7 +55,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <div class='form-group'>
+                            <div class='mb-3'>
                                 <?php echo CHtml::label(
                                     gT("Bypass date control before sending email:"),
                                     'bypassdatecontrol', 
@@ -111,21 +111,21 @@
                             ?>
                             <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c){$c=false;echo 'show active';}?>">
 
-                                <div class='form-group'>
+                                <div class='mb-3'>
                                     <label class='form-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
                                     <div class=''>
                                         <?php echo CHtml::textField("from_{$language}",$admin_name." <".$admin_email.">",array('class' => 'form-control')); ?>
                                     </div>
                                 </div>
 
-                                <div class='form-group'>
+                                <div class='mb-3'>
                                     <label class='form-label ' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
                                     <div class=''>
                                         <?php echo CHtml::textField("subject_{$language}",$subject,array('class' => 'form-control')); ?>
                                     </div>
                                 </div>
 
-                                <div class='form-group'>
+                                <div class='mb-3'>
 
                                     <label class='form-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                     <div class=''>
@@ -139,7 +139,7 @@
                         <?php } ?>
                     </div>
                     <div class="row">
-                        <div class='form-group'>
+                        <div class='mb-3'>
                             <div class=''></div>
                             <div class=''>
                                 <?php echo CHtml::submitButton(gT("Send Invitations",'unescaped'), array('class'=>'btn btn-outline-secondary')); ?>

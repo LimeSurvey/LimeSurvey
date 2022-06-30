@@ -2,7 +2,7 @@
     eT("Main options"); ?></h4>
 <div class="row">
     <div class="col-lg-6 col-md-12">
-        <div class='form-group'>
+        <div class='mb-3'>
             <label for='completionstate' class="form-label"><?php
                 eT("Include:"); ?> </label>
             <div class="">
@@ -18,7 +18,7 @@
                 )); ?>
             </div>
         </div>
-        <div class='form-group'>
+        <div class='mb-3'>
             <label for='outputtype' class="form-label"><?php
                 eT("Output format:") ?></label>
             <div>
@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="col-lg-6 col-md-12">
-        <div class='form-group'>
+        <div class='mb-3'>
             <?php
             $sViewsummaryall = (int)Yii::app()->request->getPost('viewsummaryall'); ?>
             <label class="form-label" for='viewsummaryall'><?php
@@ -54,7 +54,7 @@
                 ]); ?>
             </div>
         </div>
-        <div class='form-group'>
+        <div class='mb-3'>
             <label for='usegraph' class="form-label"><?php
                 eT("Show graphs:"); ?></label>
             <div class=''>
@@ -87,7 +87,7 @@
             $language_options .= ">" . $temp[1] . "</option>\n";
         }
         ?>
-        <div class='form-group' <?php
+        <div class='mb-3' <?php
         if (count($survlangs) == 1) {
             echo "style='display:none'";
         } ?>>

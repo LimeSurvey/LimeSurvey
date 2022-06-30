@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-xl-4">
                 <?php echo $form->hiddenField($oQuota,'id'); ?>
-                <div class="form-group">
+                <div class="mb-3">
                     <?php echo $form->labelEx($oQuota,'name',array('class'=>'form-label ')); ?>
                     <div class=''>
                         <?php echo $form->textField($oQuota,'name',array('class'=>'form-control')); ?>
@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <?php echo $form->labelEx($oQuota,'qlimit',array('class'=>'form-label ')); ?>
                     <div class=''>
                         <?php echo $form->textField($oQuota,'qlimit',array('class'=>'form-control')); ?>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <?php echo $form->labelEx($oQuota,'action',array('class'=>'form-label ')); ?>
                     <div class=''>
                         <?php echo $form->dropDownList($oQuota,'action',
@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="form-group col-md-6">
+                <div class="mb-3 col-md-6">
                     <?php echo $form->labelEx($oQuota,'active',array('class'=>'form-label ')); ?>
                     <div>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 
-                <div class="form-group col-md-6">
+                <div class="mb-3 col-md-6">
                     <?php echo $form->labelEx($oQuota,'autoload_url',array('class'=>'form-label ')); ?>
                     <div>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

@@ -29,7 +29,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
 <div id="edittxtele-<?= $i ?>" class="tab-pane fade <?= $i == 0 ? "show active" : "" ?> center-box">
     <div class="col-md-6">
         <!-- Survey title -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class=" question-group-title form-label" for="short_title_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>">
                 <?php eT("Survey title:"); ?>
             </label>
@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
 <div class="row">
     <div class="col-12 col-xl-6">
         <!-- Description -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class=" form-label" for="description_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"><?php eT("Description:"); ?></label>
             <div class="">
                 <div class="htmleditor input-group">
@@ -68,7 +68,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
     </div>
     <div class="col-12 col-xl-6">
         <!-- End URL -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class="form-label "><?php eT("End URL:"); ?></label>
             <div class="">
                 <?php echo CHtml::textField("url_{$aSurveyLanguageSettings['surveyls_language']}",
@@ -79,7 +79,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
         </div>
 
         <!-- URL description -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class="form-label "><?php eT("URL description:"); ?></label>
             <div class="">
                 <?php echo CHtml::textField("urldescrip_{$aSurveyLanguageSettings['surveyls_language']}",
@@ -90,7 +90,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
         </div>
 
         <!-- Date format -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class="form-label "><?php eT("Date format:"); ?></label>
 
             <div class="">
@@ -108,7 +108,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
         </div>
 
         <!-- Decimal mark -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class="form-label "><?php eT("Decimal mark:"); ?></label>
             <div>
                 <?php $aRadixPoint = [];
@@ -130,7 +130,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
 <div class="row">
     <div class="col-12 col-xl-6">
         <!-- Welcome message -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class=" form-label" for='welcome_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Welcome message:"); ?></label>
             <div class="">
                 <div class="htmleditor input-group">
@@ -152,7 +152,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
     </div>
     <div class="col-12 col-xl-6">
         <!-- End message -->
-        <div class="form-group">
+        <div class="mb-3">
             <label class=" form-label" for='endtext_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("End message:"); ?></label>
             <div class="">
                 <div class="htmleditor input-group">

@@ -172,7 +172,7 @@ echo viewHelper::getViewTestTag('index');
 
     <!-- Boxes for smartphones -->
     <div class="row d-sm-none d-md-none d-lg-none">
-        <div class="card card-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/surveyAdministration//listsurveys" style="opacity: 1; top: 0px;">
+        <div class="card card-clickable card-primary" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/surveyAdministration//listsurveys" style="opacity: 1; top: 0px;">
             <div class="card-header bg-primary">
                 <?php eT('List surveys');?>
             </div>
@@ -185,7 +185,7 @@ echo viewHelper::getViewTestTag('index');
             </div>
         </div>
 
-        <div class="card card-clickable" id="panel-8" data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
+        <div class="card card-clickable card-primary" id="panel-8" data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
             <div class="card-header bg-primary">
                 <?php eT('Edit global settings');?>
             </div>

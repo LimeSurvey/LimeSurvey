@@ -9,7 +9,7 @@
 <form class="custom-modal-datas form-horizontal">
 
     <!-- Public statistics -->
-    <div  class="form-group" id="PublicStatistcs">
+    <div  class="mb-3" id="PublicStatistcs">
         <label class="col-md-4 form-label" for="public_statistics"><?php eT("Show in public statistics:"); ?></label>
         <div class="col-md-8">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -26,7 +26,7 @@
         </div>
     </div>
     <!-- Display charts -->
-    <div  class="form-group" id="StatisticsShowgraph">
+    <div  class="mb-3" id="StatisticsShowgraph">
         <label class="col-md-4 form-label" for="statistics_showgraph"><?php eT("Display chart:"); ?></label>
         <div class="col-md-8">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -43,7 +43,7 @@
         </div>
     </div>
     <!-- Display charts -->
-    <div  class="form-group" id="StatisticsGraphType">
+    <div  class="mb-3" id="StatisticsGraphType">
         <label class="col-md-4 form-label" for="statistics_showgraph"><?php eT("Chart type:"); ?></label>
         <div class="col-md-8">
             <select class="form-select custom-data attributes-to-update" id="statistics_graphtype" name="statistics_graphtype">

@@ -19,7 +19,7 @@ echo viewHelper::getViewTestTag('modifyUser');
                 'action'=> array("admin/user/sa/moduser"),
                 'enableAjaxValidation'=>false,
             )); ?>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="user" class=" form-label">
                         <?php eT("Username");?>
                     </label>
@@ -30,7 +30,7 @@ echo viewHelper::getViewTestTag('modifyUser');
                         <span class='text-info'><?php eT("The user name cannot be changed."); ?></span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="email" class=" form-label">
                         <?php eT("Email");?>
                     </label>
@@ -38,7 +38,7 @@ echo viewHelper::getViewTestTag('modifyUser');
                         <?php echo $form->emailField($oUser,'email');?>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="full_name" class=" form-label">
                         <?php eT("Full name");?>
                     </label>
@@ -48,7 +48,7 @@ echo viewHelper::getViewTestTag('modifyUser');
                 </div>
 
                 <?php if( !Permission::model()->hasGlobalPermission('superadmin','read', $oUser->uid) || (Permission::isForcedSuperAdmin(Permission::model()->getUserId())) ): ?>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="password" class=" form-label">
                         <?php eT("Password");?>
                     </label>

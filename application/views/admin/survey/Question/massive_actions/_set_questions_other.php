@@ -8,7 +8,7 @@
 
 ?>
 <form class="custom-modal-datas form-horizontal">
-    <div  class="form-group" id="OtherSelection">
+    <div  class="mb-3" id="OtherSelection">
         <label class="col-md-4 form-label"><?php eT("Option 'Other':"); ?></label>
         <div class="col-md-8">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

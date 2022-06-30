@@ -37,7 +37,7 @@
                 <?php echo CHtml::form(array("admin/tokens/sa/importldap/surveyid/{$iSurveyId}"), 'post', array('class'=>'')); ?>
 
                     <!-- LDAP query  -->
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="ldapQueries" class=" form-label">
                             <?php eT("Select the LDAP query you want to run:"); ?>
                         </label>
@@ -56,7 +56,7 @@
                     </div>
 
                     <!-- Filter blank email -->
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for='filterblankemail' class=" form-label"><?php echo eT("Filter blank email addresses:"); ?></label>
                         <div class="">
                             <input type='checkbox' id='filterblankemail' name='filterblankemail' checked='checked' />
@@ -64,7 +64,7 @@
                     </div>
 
                     <!-- Filter duplicate -->
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for='filterduplicatetoken'  class=" form-label"><?php echo eT("Filter duplicate records:"); ?></label>
                         <div class="">
                             <input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' />

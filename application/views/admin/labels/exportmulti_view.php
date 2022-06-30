@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-12 content-right text-center">
             <?php echo CHtml::form(["admin/export/sa/dumplabel"], 'post', ['id' => 'exportlabelset', 'class' => '']); ?>
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-md-3 form-form-label" for='labelsets'>
                     <?php eT('Please choose the label sets you want to export:'); ?>
                     <br/>

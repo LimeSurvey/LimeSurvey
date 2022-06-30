@@ -25,7 +25,7 @@
     <?php endif; ?>
 
 
-    <div class="form-group">
+    <div class="mb-3">
         <label class='form-label '><?php echo $form->labelEx($model, 'position'); ?></label>
         <div class=''>
             <?php echo $form->numberField($model, 'position', array('class' => 'form-control')); ?>
@@ -37,7 +37,7 @@
         <?php endif; ?>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <label class='form-label '><?php echo $form->labelEx($model, 'url'); ?></label>
         <div class=''>
             <?php echo $form->textField($model, 'url', array('class' => 'form-control')); ?>
@@ -49,7 +49,7 @@
         <?php endif; ?>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <label class='form-label '><?php echo $form->labelEx($model, 'title'); ?></label>
         <div class=''>
             <?php echo $form->textField($model, 'title', array('class' => 'form-control')); ?>
@@ -61,7 +61,7 @@
         <?php endif; ?>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <label class='form-label '><?php echo $form->labelEx($model, 'ico'); ?></label>
         <div class=''>
             <div class='btn-group'>
@@ -108,7 +108,7 @@
         <?php endif; ?>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <label class='form-label '><?php echo $form->labelEx($model, 'desc'); ?></label>
         <div class=''>
             <?php echo $form->textArea($model, 'desc', array('rows' => 6, 'cols' => 50, 'class' => 'form-control')); ?>
@@ -121,7 +121,7 @@
     </div>
 
     <!-- Page -->
-    <div class="form-group">
+    <div class="mb-3">
         <?php if ($action == 'create'): ?>
             <input name="Box[page]" id="Boxes_page" type="hidden" value="welcome">
         <?php else: ?>
@@ -129,7 +129,7 @@
         <?php endif; ?>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <label class='form-label '><?php echo $form->labelEx($model, 'usergroup'); ?></label>
         <div class=''>
             <?php
@@ -159,7 +159,7 @@
     </div>
 
     <p class="note"><?php printf(gT('Fields with %s*%s are required.'), '<span class="required">', '</span>'); ?></p>
-    <div class="form-group buttons">
+    <div class="mb-3 buttons">
         <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'form-control d-none')); ?>
     </div>
 

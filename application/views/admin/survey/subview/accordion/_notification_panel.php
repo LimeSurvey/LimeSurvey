@@ -35,7 +35,7 @@ $googleAnalyticsStyleOptions = array(
     <div class="row">
         <div class="col-12 col-lg-6">
             <!-- Date Stamp -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <label class=" form-label" for='datestamp'><?php eT("Date stamp:"); ?></label>
                 <div class="">
                     <?php if ($oSurvey->isActive) { ?>
@@ -58,7 +58,7 @@ $googleAnalyticsStyleOptions = array(
                 </div>
             </div>
             <!-- Save IP Address -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <label class=" form-label" for='ipaddr'><?php  eT("Save IP address:"); ?></label>
                 <div class="">
                     <?php if ($oSurvey->isActive) {
@@ -80,7 +80,7 @@ $googleAnalyticsStyleOptions = array(
                     } ?>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <label class=" form-label" for='ipanonymize'><?php  eT("Anonymize IP address:"); ?></label>
                 <div>
                     <?php if ($oSurvey->isActive) {
@@ -105,7 +105,7 @@ $googleAnalyticsStyleOptions = array(
             </div>
 
             <!-- Save referrer URL -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <label class=" form-label" for='refurl'><?php  eT("Save referrer URL:"); ?></label>
                 <div>
                     <?php if ($oSurvey->isActive) { ?>
@@ -129,7 +129,7 @@ $googleAnalyticsStyleOptions = array(
             </div>
 
             <!-- Save timings -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <label class=" form-label" for='savetimings'><?php  eT("Save timings:"); ?></label>
                 <div class="">
                     <?php if ($oSurvey->isActive): ?>
@@ -156,7 +156,7 @@ $googleAnalyticsStyleOptions = array(
         <div class="col-12 col-lg-6">
 
             <!-- Enable assessment mode -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <label class=" form-label" for='assessments'><?php eT("Enable assessment mode:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -170,7 +170,7 @@ $googleAnalyticsStyleOptions = array(
             </div>
 
             <!-- Participant may save and resume  -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <label class=" form-label" for='allowsave'><?php  eT("Participant may save and resume later:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -183,7 +183,7 @@ $googleAnalyticsStyleOptions = array(
                 </div>
             </div>
             <!-- email basic to -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
             <?php $emailnotificationto = $oSurvey->emailnotificationto; ?>
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
@@ -206,7 +206,7 @@ $googleAnalyticsStyleOptions = array(
             </div>
 
             <!-- email detail to  -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
             <?php $emailresponseto = $oSurvey->emailresponseto; ?>w
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
@@ -234,7 +234,7 @@ $googleAnalyticsStyleOptions = array(
         
             <?php if ($bShowAllOptions === true){ ?>
             <!-- GoogleAnalytics settings to be used -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <label class=" form-label" for="googleanalyticsapikeysetting">
                     <?php echo gT('Google Analytics settings:');?>
                 </label>
@@ -247,7 +247,7 @@ $googleAnalyticsStyleOptions = array(
                 </div>
             </div>
             <!-- Google Analytics -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <label class=" form-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
                 <div class="">
                     <?php echo CHtml::textField(
@@ -258,7 +258,7 @@ $googleAnalyticsStyleOptions = array(
                 </div>
             </div>
             <!-- Google Analytics style -->
-            <div class="form-group">
+            <div class="ex-form-group mb-3">
                 <label class=" form-label" for='googleanalyticsstyle'><?php  eT("Google Analytics style:"); ?></label>
                     <div>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

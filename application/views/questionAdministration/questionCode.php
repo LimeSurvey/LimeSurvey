@@ -2,7 +2,7 @@
 
 /**@var Question $question */
 ?>
-<div class="form-group col-md-6 col-xl-5 scoped-responsive-fix-height">
+<div class="mb-3 col-md-6 col-xl-5 scoped-responsive-fix-height">
     <label for="questionCode"><?= gT('Code'); ?></label>
     <i class="fa fa-question-circle text-success"
         data-bs-toggle="tooltip"

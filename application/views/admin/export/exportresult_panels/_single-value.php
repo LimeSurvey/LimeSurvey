@@ -11,7 +11,7 @@
     <?php eT("Selection");?>
   </div>
   <div class="card-body">
-    <div class="form-group">
+    <div class="mb-3">
         <!-- From -->
         <label for='export_ids' class="col-md-2 form-label">
           <?php eT("Selected answers"); ?>
