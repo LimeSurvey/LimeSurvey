@@ -231,11 +231,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         });
 
         initValidFromValidUntilPickers();
-
-        $('.date. input-group-addon').on('click', function(){
-            $prev = $(this).siblings();
-            $prev.data("DateTimePicker").show();
-        });
     }
 
     var initialScrollValue = $('.scrolling-wrapper').scrollLeft();
