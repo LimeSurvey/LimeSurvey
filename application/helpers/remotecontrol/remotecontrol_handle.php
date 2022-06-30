@@ -3094,7 +3094,7 @@ class remotecontrol_handle
     public function get_fieldmap($sessionKey, $surveyId, $language = null)
     {
         if (!$this->_checkSessionKey($sessionKey)) {
-            return ['status' => self::INVALID_SESSION_KEY];
+            return ['status' => 'Invalid session key'];
         }
         $surveyId = (int) $surveyId;
         $survey = Survey::model()->findByPk($surveyId);
@@ -3108,7 +3108,7 @@ class remotecontrol_handle
             $language = $survey->language;
         }
         // Get the fieldmap
-        $fieldmap = createFieldMap($survey, 'full', false, false, $language);
+        $fieldmap = createFieldMap($survey, 'full', true, false, $language);
         if (empty($fieldmap)) {
             return ['status' => 'Can not obtain field map'];
         }
