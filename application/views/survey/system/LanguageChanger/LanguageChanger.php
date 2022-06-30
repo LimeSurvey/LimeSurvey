@@ -11,7 +11,7 @@
 <!-- Must be included only one time (else : multiple id) -->
 <!-- views/survey/system/LanguageChanger -->
     <div class="form-inline form-change-lang <?php echo $sClass ?>" >
-        <label class="form-group">
+        <label class="mb-3">
             <span class="form-label"><?php eT("Language:");?></span>
             <?php echo CHtml::dropDownList('lang', $sSelected,$aListLang,array('id'=>false,'class'=>"form-select",'data-targeturl'=>$targetUrl));?>
         </label>

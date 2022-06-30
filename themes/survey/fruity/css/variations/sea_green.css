@@ -1757,137 +1757,137 @@ body {
     background-color: #be6665
 }
 
-.fruity .panel {
+.fruity .card {
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05)
 }
 
-.fruity .panel > .panel-body + .table {
+.fruity .card > .card-body + .table {
     border-top: 1px solid #dadada
 }
 
-.fruity .panel > .panel-body + .table-responsive {
+.fruity .card > .card-body + .table-responsive {
     border-top: 1px solid #dadada
 }
 
-.fruity .panel-footer {
+.fruity .card-footer {
     background-color: #f5f5f5;
     border-top: 1px solid #dadada
 }
 
-.fruity .panel-group .panel-heading + .panel-collapse .panel-body {
+.fruity .card-group .card-header + .panel-collapse .card-body {
     border-top: 1px solid #dadada
 }
 
-.fruity .panel-group .panel-footer + .panel-collapse .panel-body {
+.fruity .card-group .card-footer + .panel-collapse .card-body {
     border-bottom: 1px solid #dadada
 }
 
-.fruity .panel-default {
+.fruity .card-default {
     border: 1px solid #dadada
 }
 
-.fruity .panel-default > .panel-heading {
+.fruity .card-default > .card-header {
     color: #35363f;
     background-color: #f5f5f5;
     border: 1px solid #dadada
 }
 
-.fruity .panel-default > .panel-heading + .panel-collapse .panel-body {
+.fruity .card-default > .card-header + .panel-collapse .card-body {
     border-top-color: #dadada
 }
 
-.fruity .panel-default > .panel-footer + .panel-collapse .panel-body {
+.fruity .card-default > .card-footer + .panel-collapse .card-body {
     border-bottom-color: #dadada
 }
 
-.fruity .panel-primary {
+.fruity .card-primary {
     border: 1px solid #328637
 }
 
-.fruity .panel-primary > .panel-heading {
+.fruity .card-primary > .card-header {
     color: #fff;
     background-color: #328637;
     border: 1px solid #328637
 }
 
-.fruity .panel-primary > .panel-heading + .panel-collapse .panel-body {
+.fruity .card-primary > .card-header + .panel-collapse .card-body {
     border-top-color: #328637
 }
 
-.fruity .panel-primary > .panel-footer + .panel-collapse .panel-body {
+.fruity .card-primary > .card-footer + .panel-collapse .card-body {
     border-bottom-color: #328637
 }
 
-.fruity .panel-success {
+.fruity .card-success {
     border: 1px solid #afdbb1
 }
 
-.fruity .panel-success > .panel-heading {
+.fruity .card-success > .card-header {
     color: #328637;
     background-color: #c0e3c2;
     border: 1px solid #afdbb1
 }
 
-.fruity .panel-success > .panel-heading + .panel-collapse .panel-body {
+.fruity .card-success > .card-header + .panel-collapse .card-body {
     border-top-color: #afdbb1
 }
 
-.fruity .panel-success > .panel-footer + .panel-collapse .panel-body {
+.fruity .card-success > .card-footer + .panel-collapse .card-body {
     border-bottom-color: #afdbb1
 }
 
-.fruity .panel-info {
+.fruity .card-info {
     border: 1px solid #9bbfc0
 }
 
-.fruity .panel-info > .panel-heading {
+.fruity .card-info > .card-header {
     color: #39993f;
     background-color: #649b6b;
     border: 1px solid #9bbfc0
 }
 
-.fruity .panel-info > .panel-heading + .panel-collapse .panel-body {
+.fruity .card-info > .card-header + .panel-collapse .card-body {
     border-top-color: #9bbfc0
 }
 
-.fruity .panel-info > .panel-footer + .panel-collapse .panel-body {
+.fruity .card-info > .card-footer + .panel-collapse .card-body {
     border-bottom-color: #9bbfc0
 }
 
-.fruity .panel-warning {
+.fruity .card-warning {
     border: 1px solid #ff726c
 }
 
-.fruity .panel-warning > .panel-heading {
+.fruity .card-warning > .card-header {
     color: #f8a46e;
     background-color: #bba18c;
     border: 1px solid #ff726c
 }
 
-.fruity .panel-warning > .panel-heading + .panel-collapse .panel-body {
+.fruity .card-warning > .card-header + .panel-collapse .card-body {
     border-top-color: #ff726c
 }
 
-.fruity .panel-warning > .panel-footer + .panel-collapse .panel-body {
+.fruity .card-warning > .card-footer + .panel-collapse .card-body {
     border-bottom-color: #ff726c
 }
 
-.fruity .panel-danger {
+.fruity .card-danger {
     border: 1px solid #a94442
 }
 
-.fruity .panel-danger > .panel-heading {
+.fruity .card-danger > .card-header {
     color: #a94442;
     background-color: #be6665;
     border: 1px solid #a94442
 }
 
-.fruity .panel-danger > .panel-heading + .panel-collapse .panel-body {
+.fruity .card-danger > .card-header + .panel-collapse .card-body {
     border-top-color: #a94442
 }
 
-.fruity .panel-danger > .panel-footer + .panel-collapse .panel-body {
+.fruity .card-danger > .card-footer + .panel-collapse .card-body {
     border-bottom-color: #a94442
 }
 
@@ -2166,7 +2166,7 @@ body {
     border: 1px solid #f6863a
 }
 
-.fruity .welcome .panel {
+.fruity .welcome .card {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)
 }
 
@@ -2330,11 +2330,11 @@ body {
     background-color: transparent
 }
 
-.fruity div.panel.disabled {
+.fruity div.card.disabled {
     opacity: 0.5
 }
 
-.fruity div.panel.disabled * {
+.fruity div.card.disabled * {
     opacity: 0.5
 }
 
@@ -2414,23 +2414,23 @@ body {
     background-color: transparent
 }
 
-.fruity .side-menu #dropdown .panel-body {
+.fruity .side-menu #dropdown .card-body {
     background-color: #fafafa
 }
 
-.fruity .side-menu #dropdown .panel-body .navbar-nav li {
+.fruity .side-menu #dropdown .card-body .navbar-nav li {
     border-bottom: 1px solid #e3e3e3
 }
 
-.fruity .side-menu #dropdown .panel-body .navbar-nav li.panel {
+.fruity .side-menu #dropdown .card-body .navbar-nav li.card {
     background-color: transparent
 }
 
-.fruity .side-menu #dropdown .panel-body .navbar-nav li.panel-default {
+.fruity .side-menu #dropdown .card-body .navbar-nav li.card-default {
     border-bottom: 1px solid #e3e3e3
 }
 
-.fruity .side-menu #dropdown .panel-body .panel-body li:last-child {
+.fruity .side-menu #dropdown .card-body .card-body li:last-child {
     border-bottom: 1px solid #e3e3e3
 }
 
@@ -2442,11 +2442,11 @@ body {
     background-color: #fafafa
 }
 
-.fruity .side-menu #search .panel-body .navbar-form {
+.fruity .side-menu #search .card-body .navbar-form {
     border-top: 1px solid #e3e3e3
 }
 
-.fruity .side-menu #search .panel-body .navbar-form .btn {
+.fruity .side-menu #search .card-body .navbar-form .btn {
     background-color: #fafafa
 }
 
@@ -2636,7 +2636,7 @@ body {
     color: #328637
 }
 
-.fruity #carousel-example-generic .panel-title {
+.fruity #carousel-example-generic .card-title {
     color: #328637
 }
 

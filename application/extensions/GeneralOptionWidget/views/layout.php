@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="mb-3">
     <div class="question-option-general-setting-block">
         <?php if (in_array($this->generalOption->inputType, GeneralOptionWidget::SINGLEINPUTTYPE)): ?>
             <label class="form-label" for="<?= CHtml::getIdByName($this->generalOption->name); ?>">

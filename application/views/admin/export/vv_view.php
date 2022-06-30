@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="surveyid" class="col-md-2 form-label">
                             <?php eT("Survey ID:"); ?>
                         </label>
@@ -30,7 +30,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="completionstate" class="col-md-2 form-label">
                             <?php eT("Export:"); ?>
                         </label>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="extension" class="col-md-2 form-label" data-bs-toggle="tooltip" data-bs-placement="right" title='<?php eT("For easy opening in MS Excel, change the extension to 'tab' or 'txt'"); ?>'>
                             <?php eT("File extension:"); ?>
                         </label>
@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="vvversion" class="col-md-2 form-label" data-bs-toggle="tooltip" data-bs-placement="right" title='<?php eT("If you want to import survey on old installation or if your survey have problem: use old version (automatically selected if some code are duplicated)."); ?>'>
                             <?php eT("VV export version:"); ?>
                         </label>
@@ -88,7 +88,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="qseparator" class="col-sm-4 control-label">
                             <?php eT("Separator between question and subquestion:"); ?>
                         </label>
@@ -100,7 +100,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="abbreviatedtextto" class="col-sm-4 control-label">
                             <?php eT("Number of characters:"); ?>
                         </label>

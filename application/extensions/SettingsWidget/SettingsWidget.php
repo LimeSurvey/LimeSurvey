@@ -79,8 +79,8 @@ class SettingsWidget extends CWidget
         // Add default form class.
         $this->formHtmlOptions['class'] =
             isset($this->formHtmlOptions['class']) ?
-            $this->formHtmlOptions['class'] . " settingswidget form-horizontal"
-            : 'settingswidget form-horizontal';
+            $this->formHtmlOptions['class'] . " settingswidget"
+            : 'settingswidget';
 
 
         // Start form
@@ -200,7 +200,7 @@ class SettingsWidget extends CWidget
         $result=CHtml::tag(
             $wrapper,
             [
-                'class'     => "form-group setting setting-{$metaData['type']}",
+                'class'     => "mb-3 row setting setting-{$metaData['type']}",
                 'data-name' => $name
             ],
             $content
@@ -267,7 +267,7 @@ class SettingsWidget extends CWidget
         $metaData = array_merge($defaults, $metaData);
 
         // col-md-6/col-md-6 used in survey settings, sm-4/sm-6 in global : use sm-4/sm-6 for plugins ?
-        $metaData['labelOptions']['class'].=" form-label col-md-{$this->labelWidth}";
+        $metaData['labelOptions']['class'].=" col-form-label text-end col-md-{$this->labelWidth}";
         // Set the witdth of control-option according to existence of label
         if (!isset($metaData['label'])) {
             $metaData['controlOptions']['class'].=" col-12";
@@ -360,6 +360,7 @@ class SettingsWidget extends CWidget
     public function renderCheckbox($name, array $metaData, $form = null)
     {
         $htmlOptions = $this->htmlOptions($metaData, $form, array('uncheckValue'=>false));
+        $htmlOptions['class'] = 'form-check-input';
         $value = isset($metaData['current']) ? (bool) $metaData['current'] : false;
         return CHtml::checkBox($name, $value, $htmlOptions);
     }

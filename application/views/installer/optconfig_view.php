@@ -11,7 +11,7 @@
     </div>
     <?php  ?>
     <?php echo CHtml::beginForm($this->createUrl('installer/optional'), 'post', array('class' => '')); ?>
-    <div class='form-group'>
+    <div class='mb-3'>
         <div class='col-12'>
             <i class='fa fa-info-circle'></i><?php eT("You can leave these settings blank and change them later"); ?>
         </div>
@@ -61,7 +61,7 @@
 
         foreach ($rows as $row)
         {
-            echo CHtml::openTag('div', array('class' => 'form-group'));
+            echo CHtml::openTag('div', array('class' => 'mb-3'));
                 echo $row['label'];
 
                 echo CHtml::openTag('div', array('class' => ''));

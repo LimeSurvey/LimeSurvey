@@ -8,7 +8,7 @@ $surveyid = App()->request->getParam('surveyid', 0);
 
 ?>
 <form class="custom-modal-datas form-horizontal">
-    <div  class="form-group" id="CssClass">
+    <div  class="mb-3" id="CssClass">
         <label class="col-md-4 form-label"><?php eT("Random order:"); ?></label>
         <div class="col-md-8">
             <select class="form-select custom-data attributes-to-update" id="random_order" name="random_order">

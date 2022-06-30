@@ -2081,7 +2081,7 @@ fieldset[disabled] {
 .panel {
     background-color: $white;
     box-shadow: 0 1px 1px $black_opac_05;
-    > .panel-body + {
+    > .card-body + {
         .table {
             border-top: 1px solid $gray-08;
         }
@@ -2090,110 +2090,110 @@ fieldset[disabled] {
         }
     }
 }
-.panel-footer {
+.card-footer {
     background-color: $gray-04;
     border-top: 1px solid $gray-08;
 }
-.panel-group {
-    .panel-heading + .panel-collapse .panel-body {
+.card-group {
+    .card-header + .panel-collapse .card-body {
         border-top: 1px solid $gray-08;
     }
-    .panel-footer + .panel-collapse .panel-body {
+    .card-footer + .panel-collapse .card-body {
         border-bottom: 1px solid $gray-08;
     }
 }
 .panel-default {
     border: 1px solid $gray-08;
     > {
-        .panel-heading {
+        .card-header {
             color: $primary-2;
             background-color: $gray-04;
             border: 1px solid $gray-08;
-            + .panel-collapse .panel-body {
+            + .panel-collapse .card-body {
                 border-top-color: $gray-08;
             }
         }
-        .panel-footer + .panel-collapse .panel-body {
+        .card-footer + .panel-collapse .card-body {
             border-bottom-color: $gray-08;
         }
     }
 }
-.panel-primary {
+.card-primary {
     border: 1px solid $primary;
     > {
-        .panel-heading {
+        .card-header {
             color: $white;
             background-color: $primary;
             border: 1px solid $primary;
-            + .panel-collapse .panel-body {
+            + .panel-collapse .card-body {
                 border-top-color: $primary;
             }
         }
-        .panel-footer + .panel-collapse .panel-body {
+        .card-footer + .panel-collapse .card-body {
             border-bottom-color: $primary;
         }
     }
 }
-.panel-success {
+.card-success {
     border: 1px solid $primary-active;
     > {
-        .panel-heading {
+        .card-header {
             color: $primary;
             background-color: $primary-bg-success;
             border: 1px solid $primary-active;
-            + .panel-collapse .panel-body {
+            + .panel-collapse .card-body {
                 border-top-color: $primary-active;
             }
         }
-        .panel-footer + .panel-collapse .panel-body {
+        .card-footer + .panel-collapse .card-body {
             border-bottom-color: $primary-active;
         }
     }
 }
-.panel-info {
+.card-info {
     border: 1px solid $primary-bg_info_hover_2;
     > {
-        .panel-heading {
+        .card-header {
             color: $primary-bg_info_hover;
             background-color: $primary-bg_info;
             border: 1px solid $primary-bg_info_hover_2;
-            + .panel-collapse .panel-body {
+            + .panel-collapse .card-body {
                 border-top-color: $primary-bg_info_hover_2;
             }
         }
-        .panel-footer + .panel-collapse .panel-body {
+        .card-footer + .panel-collapse .card-body {
             border-bottom-color: $primary-bg_info_hover_2;
         }
     }
 }
-.panel-warning {
+.card-warning {
     border: 1px solid $warning_shadow;
     > {
-        .panel-heading {
+        .card-header {
             color: $warning;
             background-color: $warning-bg;
             border: 1px solid $warning_shadow;
-            + .panel-collapse .panel-body {
+            + .panel-collapse .card-body {
                 border-top-color: $warning_shadow;
             }
         }
-        .panel-footer + .panel-collapse .panel-body {
+        .card-footer + .panel-collapse .card-body {
             border-bottom-color: $warning_shadow;
         }
     }
 }
-.panel-danger {
+.card-danger {
     border: 1px solid $red-50;
     > {
-        .panel-heading {
+        .card-header {
             color: $red-10;
             background-color: $danger-bg;
             border: 1px solid $red-50;
-            + .panel-collapse .panel-body {
+            + .panel-collapse .card-body {
                 border-top-color: $red-50;
             }
         }
-        .panel-footer + .panel-collapse .panel-body {
+        .card-footer + .panel-collapse .card-body {
             border-bottom-color: $red-50;
         }
     }
@@ -2777,7 +2777,7 @@ div.panel.disabled {
                 background-color: transparent;
             }
         }
-        .panel-body {
+        .card-body {
             background-color: $gray-03;
             .navbar-nav {
                 li {
@@ -2790,7 +2790,7 @@ div.panel.disabled {
                     }
                 }
             }
-            .panel-body {
+            .card-body {
                 li:last-child {
                     border-bottom: 1px solid $gray-07;
                 }
@@ -2805,7 +2805,7 @@ div.panel.disabled {
     }
 
     #search {
-        .panel-body {
+        .card-body {
             .navbar-form {
                 border-top: 1px solid $gray-07;
                 .btn {

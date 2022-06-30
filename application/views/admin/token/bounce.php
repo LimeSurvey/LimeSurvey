@@ -8,7 +8,7 @@
                         <div class="settings-list">
 
                             <!-- Survey bounce email -->
-                            <div class="form-group setting control-group setting-email">
+                            <div class="mb-3 setting control-group setting-email">
                                 <label class="default form-label" for="bounce_email">
                                     <?php eT('Survey bounce email address:'); ?>
                                 </label>
@@ -18,7 +18,7 @@
                             </div>
 
                             <!-- Bounce settings to be used -->
-                            <div class="form-group setting control-group setting-select">
+                            <div class="mb-3 setting control-group setting-select">
                                 <label class="default form-label" for="bounceprocessing">
                                     <?php eT('Used bounce settings:');?>
                                 </label>
@@ -38,7 +38,7 @@
                             <div id="bounceparams">
 
                             <!-- Server type -->
-                            <div class=" form-group setting control-group setting-select">
+                            <div class=" mb-3 setting control-group setting-select">
                                 <label class="default form-label" for="bounceaccounttype">
                                     <?php eT("Server type:"); ?>
                                 </label>
@@ -55,7 +55,7 @@
                             </div>
 
                             <!-- Server name port -->
-                            <div class=" form-group setting control-group setting-string">
+                            <div class=" mb-3 setting control-group setting-string">
                                 <label class="default form-label" for="bounceaccounthost">
                                     <?php eT('Server name & port:'); ?>
                                 </label>
@@ -68,7 +68,7 @@
 
 
                             <!-- User name -->
-                            <div class=" form-group setting control-group setting-string">
+                            <div class=" mb-3 setting control-group setting-string">
                                 <label class="default form-label" for="bounceaccountuser">
                                     <?php eT('User name:'); ?>
                                 </label>
@@ -78,7 +78,7 @@
                             </div>
 
                             <!-- Password -->
-                            <div class=" form-group setting control-group setting-password">
+                            <div class=" mb-3 setting control-group setting-password">
                                 <label class="default form-label" for="bounceaccountpass">
                                     <?php eT('Password:'); ?>
                                 </label>
@@ -89,7 +89,7 @@
                             </div>
 
                             <!-- Encryption type  -->
-                            <div class=" form-group setting control-group setting-select">
+                            <div class=" mb-3 setting control-group setting-select">
                                 <label class="default form-label" for="bounceaccountencryption">
                                     <?php eT('Encryption type:'); ?>
                                 </label>

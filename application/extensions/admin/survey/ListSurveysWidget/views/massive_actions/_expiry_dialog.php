@@ -8,7 +8,7 @@ $dateFormatDetails=getDateFormatData(Yii::app()->session['dateformat']);
 <div id='publication' class="container-center">
     <div class="row">
         <!-- Expiry date/time -->
-        <div class="form-group">
+        <div class="mb-3">
 
             <label class="col-md-6 form-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
             <div class='col-md-6'>

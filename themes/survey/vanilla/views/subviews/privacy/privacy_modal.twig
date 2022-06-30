@@ -28,14 +28,14 @@
 <label for="datasecurity_accepted" class="control-label {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">{{ aSurveyInfo.datasecurity_notice_label }}</label>
 
 <div class="collapse fade" id="data-security-modal-{{aSurveyInfo.sid}}">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
+    <div class="card card-primary">
+        <div class="card-header bg-primary">
             <h4 class="modal-title">{{gT('Survey data policy')}}</h4>
         </div>
-        <div class="panel-body {{ aSurveyInfo.class.privacydatasecmodalbody }}">
+        <div class="card-body {{ aSurveyInfo.class.privacydatasecmodalbody }}">
             {{ aSurveyInfo.datasecurity_notice }}
         </div>
-        <div class="ls-no-js-hidden panel-footer">
+        <div class="ls-no-js-hidden card-footer">
             <button type="button" class="btn btn-primary" onclick="$('#datasecurity_accepted').prop('checked',true).trigger('change');" data-bs-dismiss="modal">
                 {{gT("Accept")}}
             </button>

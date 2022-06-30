@@ -9,7 +9,7 @@
 
 <div class="container-fluid">
     <div class="ls-flex-column ls-space padding left-5 right-35 col-12">
-        <div id='global-settings-storage' class="form-group">
+        <div id='global-settings-storage' class="mb-3">
             <label class="form-label"  for='global-settings-calculate-storage'><?=gT("Recalculates the storage used by all your files in the upload folders")?></label>
             <div class="">
                 <input type='hidden' name='global-settings-storage-url' value='<?php echo Yii::app()->createUrl('admin/globalsettings', array('sa' => 'getStorageData')); ?>' />
@@ -23,7 +23,7 @@
                 </span>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label class="form-label"  for='overwritefiles'><?php eT("Overwrite files with the same name when uploaded, moved or copied through the editor/file-manager?");?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

@@ -580,22 +580,22 @@ html {
   animation: fadein 1s;
 }
 
-.welcome .panel {
+.welcome .card {
   position: relative;
   top: 50px;
   opacity: 0;
 }
 
-.welcome .panel-body {
+.welcome .card-body {
   text-align: center;
 }
 
-.welcome .panel-body img {
+.welcome .card-body img {
   height: 4em;
   margin-bottom: 1em;
 }
 
-.welcome .login-panel .panel-body img {
+.welcome .login-panel .card-body img {
   margin-bottom: 0;
 }
 
@@ -605,7 +605,7 @@ html {
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1440px) {
-  .welcome .panel {
+  .welcome .card {
     min-height: 188px;
   }
 }
@@ -724,7 +724,7 @@ html {
   font-size: 9px;
 }
 
-.survey-action .panel-body img {
+.survey-action .card-body img {
   height: 3em;
 }
 
@@ -858,20 +858,20 @@ div.panel.disabled a {
   float: right;
 }
 
-.side-menu #dropdown .panel-body {
+.side-menu #dropdown .card-body {
   padding: 0;
 }
 
-.side-menu #dropdown .panel-body .navbar-nav {
+.side-menu #dropdown .card-body .navbar-nav {
   width: 100%;
 }
 
-.side-menu #dropdown .panel-body .navbar-nav li {
+.side-menu #dropdown .card-body .navbar-nav li {
   padding-left: 15px;
   border: none;
 }
 
-.side-menu #dropdown .panel-body .navbar-nav li.panel {
+.side-menu #dropdown .card-body .navbar-nav li.panel {
   margin-bottom: 0;
   background-color: transparent;
   border: none;
@@ -879,20 +879,20 @@ div.panel.disabled a {
   box-shadow: none;
 }
 
-.side-menu #dropdown .panel-body .navbar-nav li.panel-default {
+.side-menu #dropdown .card-body .navbar-nav li.panel-default {
   padding-left: 15px;
   border: none;
 }
 
-.side-menu #dropdown .panel-body .navbar-nav li:last-child {
+.side-menu #dropdown .card-body .navbar-nav li:last-child {
   border-bottom: none;
 }
 
-.side-menu #dropdown .panel-body .panel-body {
+.side-menu #dropdown .card-body .card-body {
   margin-left: -15px;
 }
 
-.side-menu #dropdown .panel-body .panel > a {
+.side-menu #dropdown .card-body .panel > a {
   margin-left: -20px;
   padding-left: 35px;
 }
@@ -921,11 +921,11 @@ div.panel.disabled a {
   z-index: 1000;
 }
 
-.side-menu #search .panel-body {
+.side-menu #search .card-body {
   padding: 0;
 }
 
-.side-menu #search .panel-body .navbar-form {
+.side-menu #search .card-body .navbar-form {
   padding: 0;
   padding-right: 50px;
   width: 100%;
@@ -933,12 +933,12 @@ div.panel.disabled a {
   position: relative;
 }
 
-.side-menu #search .panel-body .navbar-form .form-group {
+.side-menu #search .card-body .navbar-form .form-group {
   width: 100%;
   position: relative;
 }
 
-.side-menu #search .panel-body .navbar-form input {
+.side-menu #search .card-body .navbar-form input {
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -946,7 +946,7 @@ div.panel.disabled a {
   height: 50px;
 }
 
-.side-menu #search .panel-body .navbar-form .btn {
+.side-menu #search .card-body .navbar-form .btn {
   position: absolute;
   right: 0;
   top: 0;
@@ -1276,15 +1276,15 @@ div.panel.disabled a {
     transform-style: preserve-3d;
   }
 
-  #search .panel-body .navbar-form {
+  #search .card-body .navbar-form {
     border-bottom: 0;
   }
 
-  #search .panel-body .navbar-form .form-group {
+  #search .card-body .navbar-form .form-group {
     margin: 0;
   }
 
-  #dropdown .panel-body .navbar-nav {
+  #dropdown .card-body .navbar-nav {
     margin: 0;
   }
 }
@@ -2532,7 +2532,7 @@ div#gview_displayresponses th#displayresponses_cb {
 }
 
 /* Needed for DateTimePicker in survey settings */
-.panel-group .panel {
+.card-group .panel {
   overflow: visible;
 }
 
@@ -2897,43 +2897,43 @@ table#responsedetail tr td {
   margin-bottom: 30px;
 }
 
-.welcome .panel {
+.welcome .card {
   height: 110%;
 }
 
-.welcome .panel-body {
+.welcome .card-body {
   padding: 0px;
 }
 
-.welcome .panel-heading {
+.welcome .card-header {
   height: 25%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.welcome .panel-title {
+.welcome .card-title {
   font-weight: 500;
 }
 
-.welcome .panel-body {
+.welcome .card-body {
   height: 75%;
   width: 100%;
 }
 
-.welcome .panel-body .panel-body-ico,
-.welcome .panel-body .panel-body-link {
+.welcome .card-body .card-body-ico,
+.welcome .card-body .card-body-link {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.welcome .panel-body .panel-body-ico {
+.welcome .card-body .card-body-ico {
   height: 70%;
 }
 
-.welcome .panel-body .panel-body-link {
+.welcome .card-body .card-body-link {
   height: 30%;
 }
 
@@ -3078,7 +3078,7 @@ body.onStatistics .ls-flex .col-11 {
   max-width: 100%;
 }
 
-#accordion-container .panel-heading > a {
+#accordion-container .card-header > a {
   width: 100%;
   display: block;
 }

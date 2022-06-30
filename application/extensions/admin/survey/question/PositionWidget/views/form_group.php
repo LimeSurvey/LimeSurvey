@@ -8,7 +8,7 @@
 ?>
 
 <!-- PositionWidget : form_group -->
-<div id='PositionWidget' class='form-group'>
+<div id='PositionWidget' class='mb-3'>
     <label class="col-md-4 form-label" for='pos'><?php eT("Position:"); ?></label>
     <div class="col-md-8">
         <select class='form-select <?php echo $this->classes;?>' name='questionposition' id='questionposition'>

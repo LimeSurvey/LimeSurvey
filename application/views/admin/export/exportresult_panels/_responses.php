@@ -5,7 +5,7 @@
         </div>
     </div>
     <div class="card-body">
-        <div class='form-group row'>
+        <div class='mb-3 row'>
             <label class="col-md-12 form-label" for=''>
                 <?php eT("Export responses as:"); ?>
             </label>
@@ -24,7 +24,7 @@
         </div>
 
         <!-- Responses  -->
-        <div class="form-group row">
+        <div class="mb-3 row">
             <div class='col-md-12'>
                 <?php 
                 echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
@@ -40,7 +40,7 @@
                 ?>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="mb-3 row">
             <div class='col-md-12'>
                 <?php 
                 echo CHTML::checkBox('maskequations',true,array('value'=>'Y','id'=>'maskequations'));

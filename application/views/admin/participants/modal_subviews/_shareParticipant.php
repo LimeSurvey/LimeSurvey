@@ -25,7 +25,7 @@ Yii::app()->getController()->renderPartial(
     <?php endif; ?>
     <div class="row">
         <div class="col-lg-6">
-            <div class='form-group'>
+            <div class='mb-3'>
                 <label class='form-label'>
                     <?php eT("User with whom the participants are to be shared:"); ?>
                 </label>
@@ -45,7 +45,7 @@ Yii::app()->getController()->renderPartial(
         </div>
 
         <div class="col-lg-6">
-            <div class='form-group'>
+            <div class='mb-3'>
                 <label class='form-label text-start'>
                     <?php eT("Other users may edit this participant"); ?>
                 </label>

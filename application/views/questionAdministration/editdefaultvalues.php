@@ -29,7 +29,7 @@
                             <?php if ((int)$questionMetaData->answerscales > 0) : ?>
                                 <?php for ($scale_id = 0; $scale_id < (int)$questionMetaData->answerscales; $scale_id++) : ?>
                                     <?php $opts = $langopts[$language][$questionrow['type']][$scale_id]; ?>
-                                    <div class="form-group col-12">
+                                    <div class="mb-3 col-12">
                                         <label class=" form-label" for='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                             <?php (int)$questionMetaData->answerscales > 1
                                                 ? printf(gT('Default answer for scale %s:'), $scale_id)
@@ -54,7 +54,7 @@
                                         </div>
                                     </div>
                                     <?php if ($questionrow['other'] == 'Y'): ?>
-                                        <div class="form-group">
+                                        <div class="mb-3">
                                             <label class="col-12 form-label" for='other_<?php echo "{$scale_id}_{$language}" ?>'>
                                                 <?php eT("Default value for option 'Other':") ?>
                                             </label>
@@ -91,7 +91,7 @@
                                     } ?>
                                     <?php if ($inputStyle == 'enum') : ?>
                                         <?php foreach ($opts['sqresult'] as $aSubquestion) : ?>
-                                            <div class="form-group">
+                                            <div class="mb-3">
                                                 <label class="col-12 form-label" for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
                                                     <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                 </label>
@@ -111,7 +111,7 @@
 
                                     <?php if ($inputStyle == 'text') : ?>
                                         <?php foreach ($opts['sqresult'] as $aSubquestion) : ?>
-                                            <div class="form-group">
+                                            <div class="mb-3">
                                                 <label class="col-12 form-label" for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
                                                     <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                 </label>
@@ -145,7 +145,7 @@
                                 $this->widget('application.views.admin.survey.Question.yesNo_defaultvalue_widget', ['widgetOptions' => $widgetOptions]);
                                 ?>
                                 <?php if ($questionrow['type'] != Question::QT_Y_YES_NO_RADIO): //temporary solution - until everything is move to widgets?>
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <label class="col-12 form-label" for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
                                             <?php eT("Default value:") ?>
                                         </label>
@@ -174,7 +174,7 @@
                             <?php endif; ?>
 
                             <?php if ($language == $oSurvey->language && count($oSurvey->allLanguages) > 1) { ?>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label class=" form-label" for='samedefault'>
                                         <?php eT('Use same default value across languages:') ?>
                                     </label>

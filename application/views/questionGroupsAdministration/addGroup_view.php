@@ -50,7 +50,7 @@ $active = 1; ?>
                     } ?> ">
                         <div>
                             <!-- Title -->
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class="form-label " for='group_name_<?php echo $grouplang; ?>'><?php eT("Title:"); ?></label>
                                 <div class="">
                                     <input class="form-control group_title" type='text' size='80' maxlength='200' name='questionGroupI10N[<?= $grouplang ?>][group_name]'
@@ -59,7 +59,7 @@ $active = 1; ?>
                             </div>
 
                             <!-- Description -->
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class="form-label " for='description_<?php echo $grouplang; ?>'><?php eT("Description:"); ?></label>
                                 <div class=" input-group">
                                     <?php echo CHtml::textArea("questionGroupI10N[{$grouplang}][description]",
@@ -74,7 +74,7 @@ $active = 1; ?>
                                 <!-- Base Lang -->
 
                                 <!-- Randomization group -->
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label class="form-label " for='randomization_group'><?php eT("Randomization group:"); ?></label>
                                     <div class="">
                                         <input class="form-control" type='text' size='20' maxlength='20' name='questionGroup[randomization_group]' id='randomization_group'/>
@@ -82,7 +82,7 @@ $active = 1; ?>
                                 </div>
 
                                 <!-- Relevance equation -->
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <label class="form-label " for='grelevance'><?php eT("Condition:"); ?></label>
                                     <div class="input-group">
                                         <div class="input-group-addon">{</div>

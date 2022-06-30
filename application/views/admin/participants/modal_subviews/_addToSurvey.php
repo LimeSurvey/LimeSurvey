@@ -17,7 +17,7 @@
         <!-- Comma separated list -->
         <input type='hidden' name='participant_id' value='<?php echo $participant_id; ?>'/>
         <div class="row ls-space margin top-10 bottom-10">
-            <div class='form-group'>
+            <div class='mb-3'>
                 <label class='form-label col-md-4'>
                     <?php eT('Survey'); ?>
                 </label>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="row ls-space margin top-10 bottom-10">
-            <div class='form-group'>
+            <div class='mb-3'>
                 <label class='form-label col-md-4'>
                     <?php eT('Display survey participant table after addition?'); ?>
                 </label>
