@@ -467,7 +467,7 @@ html {
 .welcome #lime-logo {
   animation: fadein 1s;
 }
-.welcome .card {
+.welcome .panel {
   position: relative;
   top: 50px;
   opacity: 0;
@@ -727,7 +727,7 @@ div.panel.disabled a {
   border-radius: 0;
   box-shadow: none;
 }
-.side-menu #dropdown .card-body .navbar-nav li.card-default {
+.side-menu #dropdown .card-body .navbar-nav li.panel-default {
   padding-right: 15px;
   border: none;
 }
