@@ -1683,10 +1683,10 @@ fieldset[disabled] .btn-link:focus {
   background-color: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-.card > .card-body + .table {
+.panel > .card-body + .table {
   border-top: 1px solid #dadada;
 }
-.card > .card-body + .table-responsive {
+.panel > .card-body + .table-responsive {
   border-top: 1px solid #dadada;
 }
 
@@ -1702,18 +1702,18 @@ fieldset[disabled] .btn-link:focus {
   border-bottom: 1px solid #dadada;
 }
 
-.card-default {
+.panel-default {
   border: 1px solid #dadada;
 }
-.card-default > .card-header {
+.panel-default > .card-header {
   color: #35363F;
   background-color: #f5f5f5;
   border: 1px solid #dadada;
 }
-.card-default > .card-header + .panel-collapse .card-body {
+.panel-default > .card-header + .panel-collapse .card-body {
   border-top-color: #dadada;
 }
-.card-default > .card-footer + .panel-collapse .card-body {
+.panel-default > .card-footer + .panel-collapse .card-body {
   border-bottom-color: #dadada;
 }
 
@@ -2188,7 +2188,7 @@ table.cke_editor {
   background-color: transparent;
 }
 
-.welcome .card {
+.welcome .panel {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
@@ -2297,7 +2297,7 @@ div.panel.disabled * {
 .side-menu #dropdown .card-body .navbar-nav li.panel {
   background-color: transparent;
 }
-.side-menu #dropdown .card-body .navbar-nav li.card-default {
+.side-menu #dropdown .card-body .navbar-nav li.panel-default {
   border-bottom: 1px solid #e3e3e3;
 }
 .side-menu #dropdown .card-body .card-body li:last-child {
