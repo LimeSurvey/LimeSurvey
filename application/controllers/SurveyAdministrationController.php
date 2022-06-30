@@ -1249,8 +1249,9 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return void
      */
-    public function actionApplythemeoptions(int $iSurveyID = 0)
+    public function actionApplythemeoptions(int $surveyid = 0)
     {
+        $iSurveyID = $surveyid;
         if ((int)$iSurveyID > 0 && Yii::app()->request->isPostRequest) {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             $sTemplateName = $oSurvey->template;
