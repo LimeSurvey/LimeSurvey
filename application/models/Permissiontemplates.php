@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{permissiontemplates}}".
  *
- * The followings are the available columns in table '{{permissiontemplates}}':
+ * The following are the available columns in table '{{permissiontemplates}}':
  * @property integer $ptid
  * @property string $name
  * @property string $description

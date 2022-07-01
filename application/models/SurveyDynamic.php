@@ -775,16 +775,16 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Get an array to find question data responsively
      * This should be part of the question object.
-     * And in future developement this should be part of the specific question type object
+     * And in future development this should be part of the specific question type object
      *
      * @param Question $oQuestion
      * @param SurveyDynamic $oResponses
      * @param boolean $bHonorConditions
      * @param boolean $subquestion
-     * @param boolean $getComment
+     * @param boolean $getCommentOnly If should only returns the "comments" or "other" response.
      * @return array | boolean
      */
-    public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion = false, $getComment = false, $sLanguage = null)
+    public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion = false, $getCommentOnly = false, $sLanguage = null)
     {
 
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
@@ -871,7 +871,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
 
-        if ($getComment === true) {
+        if ($getCommentOnly) {
             $fieldname .= 'comment';
         }
 
@@ -997,6 +997,12 @@ class SurveyDynamic extends LSActiveRecord
             if (strpos($aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
                 $aQuestionAttributes['answervalue'] = rtrim(rtrim($aQuestionAttributes['answervalue'], "0"), ".");
             }
+        }
+
+        // If trying to retrieve main question ($getCommentOnly = false), retrieve comment in a new attribute
+        // Check if $getCommentOnly = false to avoid endless recursivity
+        if ($oQuestion->type == 'O' && !$getCommentOnly) {
+            $aQuestionAttributes['comment'] = $this->getQuestionArray($oQuestion, $oResponses, $bHonorConditions, true, true);
         }
 
         return $aQuestionAttributes;

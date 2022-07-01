@@ -55,6 +55,7 @@ class UserAction extends SurveyCommonAction
 
     /**
      * Show users table
+     * @todo Replaced with user management module? How to reach this point from the interface?
      */
     public function index()
     {

@@ -1418,7 +1418,7 @@ class TCPDF {
 	protected $columns = array();
 
 	/**
-	 * Number of colums.
+	 * Number of columns.
 	 * @protected
 	 * @since 4.9.001 (2010-03-28)
 	 */
@@ -6388,7 +6388,7 @@ class TCPDF {
 		// replacement for SHY character (minus symbol)
 		$shy_replacement = 45;
 		$shy_replacement_char = TCPDF_FONTS::unichr($shy_replacement, $this->isunicode);
-		// widht for SHY replacement
+		// width for SHY replacement
 		$shy_replacement_width = $this->GetCharWidth($shy_replacement);
 		// page width
 		$pw = $w = $this->w - $this->lMargin - $this->rMargin;

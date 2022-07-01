@@ -1,10 +1,13 @@
-<div class="btn-group col-12" role="group" data-toggle="buttons">
+<div class="btn-group col-12" role="group" data-toggle="buttons"
+    aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>"
+    <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
+    >
     <?php foreach ($this->setting['options'] as $value => $text): ?>
         <?php if ($this->setting['value'] == $value): ?>
             <label class="btn btn-default active">
                 <input 
                     type="radio" 
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                     value="<?= CHtml::encode($value); ?>"
                     checked
                 />
@@ -14,7 +17,7 @@
             <label class="btn btn-default">
                 <input 
                     type="radio" 
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="<?= $inputBaseName ?>"
                     value="<?= CHtml::encode($value); ?>"
                 />
                 <?= $text; ?>
