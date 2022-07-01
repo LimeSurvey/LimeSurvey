@@ -275,9 +275,6 @@ class ThemeOptionsController extends LSBaseController
         $model = $this->loadModel($id);
 
         if (Permission::model()->hasTemplatePermission($model->template_name, 'update')) {
-            $model = $this->turnAjaxmodeOffAsDefault($model);
-            $model->save();
-
             if (isset($_POST['TemplateConfiguration'])) {
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
@@ -290,33 +287,6 @@ class ThemeOptionsController extends LSBaseController
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->redirect(array("themeOptions/index"));
         }
-    }
-
-    /**
-     * This method turns ajaxmode off as default.
-     *
-     * @param TemplateConfiguration $templateConfiguration Configuration of Template
-     *
-     * @return TemplateConfiguration
-     */
-    private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
-    {
-        $attributes = $templateConfiguration->getAttributes();
-        $hasOptions = isset($attributes['options']);
-        if ($hasOptions) {
-            $options = $attributes['options'];
-            $optionsJSON = json_decode($options, true);
-
-            if ($options !== 'inherit' && $optionsJSON !== null) {
-                $ajaxModeOn  = (!empty($optionsJSON['ajaxmode']) && $optionsJSON['ajaxmode'] == 'on');
-                if ($ajaxModeOn) {
-                    $optionsJSON['ajaxmode'] = 'off';
-                    $options = json_encode($optionsJSON);
-                    $templateConfiguration->setAttribute('options', $options);
-                }
-            }
-        }
-        return $templateConfiguration;
     }
 
     /**
@@ -336,10 +306,6 @@ class ThemeOptionsController extends LSBaseController
         }
         // Did we really need hasGlobalPermission template ? We are inside survey : hasSurveyPermission only seem better
         $model = TemplateConfiguration::getInstance(null, null, $sid);
-
-        // turn ajaxmode off as default behavior
-        $model = $this->turnAjaxmodeOffAsDefault($model);
-        $model->save();
 
         if (isset($_POST['TemplateConfiguration'])) {
             $model->attributes = $_POST['TemplateConfiguration'];

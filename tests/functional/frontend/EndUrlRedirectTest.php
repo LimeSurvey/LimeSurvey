@@ -35,30 +35,9 @@ class EndUrlRedirectTest extends TestBaseClassWeb
 
     /**
      * @return void
-     * @todo Enable again when fixed.
      */
-    public function testWithAjaxMode()
+    public function testRedirect()
     {
-        $this->doTheTest("on");
-    }
-
-    /**
-     * @return void
-     */
-    public function testWithoutAjaxMode()
-    {
-        $this->doTheTest("off");
-    }
-
-    /**
-     * @param string $ajaxmode "on" or "off"
-     * @return void
-     */
-    public function doTheTest($ajaxmode)
-    {
-        $templateConfiguration = self::$testSurvey->templateConfiguration;
-        $templateConfiguration->setOption("ajaxmode", $ajaxmode);
-
         // To make writing shorter.
         $web = self::$webDriver;
         $url = $this->getSurveyUrl();
@@ -79,9 +58,8 @@ class EndUrlRedirectTest extends TestBaseClassWeb
             $body = $web->findElement(WebDriverBy::tagName('body'));
             $text = $body->getText();
             $this->assertTrue(strpos($text, 'Gmail') !== false, 'Ended up on google.com with text ' . $text);
-
         } catch (\Exception $ex) {
-            self::$testHelper->takeScreenshot($web, 'EndUrlRedirectTest' . $ajaxmode);
+            self::$testHelper->takeScreenshot($web, 'EndUrlRedirectTest' );
             $this->assertFalse(
                 true,
                 'Url: ' . $url . PHP_EOL

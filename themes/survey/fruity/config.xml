@@ -63,7 +63,6 @@
     </files>
 
     <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
-    <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
     <!-- for animations, see https://daneden.github.io/animate.css/ -->
     <!-- for checkbox icons, use the Unicode of the charcter (eg: http://fontawesome.io/icon/check/ is f00c ) -->
     <options>

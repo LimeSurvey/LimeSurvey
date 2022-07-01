@@ -99,9 +99,6 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
         $iCount         = 0;
         foreach ($aOptionAttributes['optionAttributes'] as $attributeKey => $attribute) {
             $sParentOption = array_key_exists($attributeKey, $oParentOptions) ? $oParentOptions[$attributeKey] : '';
-            if ($attributeKey === 'ajaxmode') {
-                continue;
-            }
             if (array_key_exists('category', $attribute) && $category == $attribute['category']) {
                 $width = $attribute['width'];
 
