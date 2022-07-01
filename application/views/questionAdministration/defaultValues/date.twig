@@ -1,0 +1,39 @@
+{#
+/**
+ * Default Value for text question types
+ *
+ * @var Question $question
+ * @var string $lang
+ * @var array<mixed> $defaultValues
+ * @var bool $hasUpdatePermission
+ */
+#}
+<div class="form-group col-sm-12">
+    <label class="control-label" for='defaultvalues[{{ lang }}]'>
+        {{ gT("Default value:") }}
+    </label>
+    <textarea {{ hasUpdatePermission ? '' : 'disabled="disabled" readonly="readonly"' }}
+        cols='50'
+        name='defaultvalues[{{ lang }}]'
+        id='defaultvalues[{{ lang }}]'
+        class='form-control'
+    >{{ defaultValues[lang][question.type][0] }}</textarea>
+    <div id="defaultvalues_{{lang}}_datetimepicker" class="input-group answer-item date-timepicker-group">
+        {{ C.Html.textField('defaultvalues[' ~ lang ~ ']',dateoutput,{
+            'id' : 'defaultvalues[' ~ lang ~ ']',
+            'class' : "form-control date-control date",
+        }) }}
+        <div class="input-group-addon btn btn-primary">
+            <i class="fa fa-calendar" aria-hidden="true"></i><span class="sr-only"> {{ gT("Open date/time selector") }}</span>
+        </div>
+    </div>
+    {# TODO: Use actual mindate and maxdate #}
+    {% set aJsonOption = json_encode({
+            'format' : question.dateformat.jsdate,
+            'minDate' : '1900-01-01',
+            'maxDate' : '2037-12-31',
+            'sideBySide' :  true
+    }) %}
+
+    {{ registerScript("doDatetimepicker_defaultvalues_" ~ lang, "jQuery('#defaultvalues_" ~ lang ~ "_datetimepicker').datetimepicker(" ~ aJsonOption ~ ");" , 'POS_POSTSCRIPT' ) }}
+</div>

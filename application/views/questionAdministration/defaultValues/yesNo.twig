@@ -1,0 +1,19 @@
+{#
+/**
+ * Default Value for Yes/No question type
+ *
+ * @var Question $question
+ * @var string $lang
+ * @var array<mixed> $defaultValues
+ */
+#}
+<div class="form-group col-sm-12">
+    <label class="control-label" for='defaultvalues_{{ lang }}'>
+        {{ gT("Default value:") }}
+    </label>
+    {#
+        Call default value widget for yes/no question type
+        This is fast insert rewrite of this view follows
+    #}
+    {{ getYesNoDefaultValueWidget(lang, question, defaultValues, "defaultvalues_" ~ lang, "defaultvalues_" ~ lang ~ "_EM") }}
+</div>

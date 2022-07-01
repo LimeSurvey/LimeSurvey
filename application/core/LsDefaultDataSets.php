@@ -1988,7 +1988,7 @@ class LsDefaultDataSets
                 "core_theme" => 1,
                 "extends" => "",
                 "group" => "Single choice questions",
-                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"0\",\"class\":\"choice-5-pt-radio\"}",
+                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"choice-5-pt-radio\"}",
             ),
             array(
                 "name" => "arrays/10point",
