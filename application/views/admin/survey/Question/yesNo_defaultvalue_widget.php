@@ -34,7 +34,7 @@
             $questionrow = $this->widgetOptions['questionrow'];
             $langopts = $this->widgetOptions['langopts'];
             $language = $this->widgetOptions['language'];
-            $defaultValues =  $this->widgetOptions['langopts'][$language][$questionrow['type']][0];
+            $defaultValues =  $this->widgetOptions['langopts'][$language][$questionrow['type']][0] ?? null;
 
             $elementId = isset($this->widgetOptions['elementId']) ? $this->widgetOptions['elementId'] : null;
             $emElementId = isset($this->widgetOptions['emElementId']) ? $this->widgetOptions['emElementId'] : null;
@@ -91,7 +91,7 @@
                 }
                 echo CHtml::textField ($emElementId, $emValue, array(
                         'id'    => $emElementId,
-                        'class' => $sEmfield_css_class,
+                        'class' => 'form-control ' . $sEmfield_css_class,
                         'width' => 100
                     ));
             }

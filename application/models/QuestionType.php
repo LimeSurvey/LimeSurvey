@@ -148,7 +148,7 @@ class QuestionType extends StaticModel
                 'description' => gT("5 point choice", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
-                'hasdefaultvalues' => 0,
+                'hasdefaultvalues' => 1,
                 'assessable' => 0,
                 'answerscales' => 0,
                 'class' => "choice-5-pt-radio"

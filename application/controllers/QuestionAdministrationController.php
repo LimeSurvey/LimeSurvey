@@ -1,5 +1,7 @@
 <?php
 
+use ls\tests\QuestionTest;
+
 /**
  * Class QuestionAdministrationController
  */
@@ -2087,6 +2089,11 @@ class QuestionAdministrationController extends LSBaseController
     {
         $aDefaultValues = [];
         $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
+
+        if (empty($oQuestion)) {
+            return $aDefaultValues;
+        }
+
         $aQuestionAttributes = $oQuestion->attributes;
         $aQuestionTypeMetadata = QuestionType::modelsAttributes();
         $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -3154,49 +3161,43 @@ class QuestionAdministrationController extends LSBaseController
 
         // Process default values for all survey languages
         foreach ($surveyLanguages as $language) {
-            // Case 1
-            if ($answerScales == 1 && $subquestionScales == 0) {
-                //for ($scaleId = 0; $scaleId < $answerScales; $scaleId++) {
-                $scaleId = 0;
-                if (!is_null($defaultAnswers[$language][$scaleId])) {
-                    $this->updateDefaultValues($surveyId, $qid, 0, $scaleId, '', $language, $defaultAnswers[$language][$scaleId]);
-                }
-                if (!is_null($other[$language][$scaleId])) {
-                    $this->updateDefaultValues($surveyId, $qid, 0, $scaleId, 'other', $language, $other[$language][$scaleId]);
-                }
-                //}
-                continue;
-            }
-
-            // Case 2
-            if ($answerScales == 0 && $subquestionScales == 1) {
-                // Make sure we have the latest info
-                $question->refresh();
-                foreach ($question->subquestions as $subquestion) {
-                    //for ($scaleId = 0; $scaleId < $subquestionScales; $scaleId++) {
-                    $scaleId = 0;
-                    // Old code handled subquestions by sqid, but now we may be dealing with new subquestions,
-                    // so we will use the subquestion title instead.
-                    if (!is_null($defaultAnswers[$language][$subquestion->title][$scaleId])) {
-                        $this->updateDefaultValues($surveyId, $qid, $subquestion->qid, $scaleId, '', $language, $defaultAnswers[$language][$subquestion->title][$scaleId]);
+            switch ($question->type) {
+                case QuestionType::QT_L_LIST:
+                case QuestionType::QT_O_LIST_WITH_COMMENT:
+                case QuestionType::QT_EXCLAMATION_LIST_DROPDOWN:
+                    if (isset($defaultAnswers[$language][0])) {
+                        $this->updateDefaultValues($surveyId, $qid, 0, 0, '', $language, $defaultAnswers[$language][0]);
                     }
-                    //}
-                }
-                continue;
-            }
-
-            //Case 3
-            if ($answerScales == 0 && $subquestionScales == 0) {
-                if (!is_null($defaultAnswers[$language])) {
-                    // Yes/No question type needs special handling because, if "EM" is selected, the value
-                    // is input in a different control on the page.
-                    if ($question->type == 'Y' && $defaultAnswers[$language] == 'EM') {
+                    if (isset($other[$language][0])) {
+                        $this->updateDefaultValues($surveyId, $qid, 0, 0, 'other', $language, $other[$language][0]);
+                    }
+                    break;
+                case QuestionType::QT_K_MULTIPLE_NUMERICAL:
+                case QuestionType::QT_M_MULTIPLE_CHOICE:
+                case QuestionType::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                case QuestionType::QT_Q_MULTIPLE_SHORT_TEXT:
+                    // Make sure we have the latest info
+                    $question->refresh();
+                    foreach ($question->subquestions as $subquestion) {
+                        // Old code handled subquestions by sqid, but now we may be dealing with new subquestions,
+                        // so we will use the subquestion title instead.
+                        if (isset($defaultAnswers[$language][$subquestion->title][0])) {
+                            $this->updateDefaultValues($surveyId, $qid, $subquestion->qid, 0, '', $language, $defaultAnswers[$language][$subquestion->title][0]);
+                        }
+                    }
+                    break;
+                case QuestionType::QT_5_POINT_CHOICE:
+                    $this->updateDefaultValues($surveyId, $qid, 0, 0, '', $language, $defaultAnswers[$language][0]);
+                    break;
+                case QuestionType::QT_Y_YES_NO_RADIO:
+                    if ($defaultAnswers[$language] == 'EM') {
                         $this->updateDefaultValues($surveyId, $qid, 0, 0, '', $language, !is_null($expression[$language]) ? $expression[$language] : '');
                     } else {
                         $this->updateDefaultValues($surveyId, $qid, 0, 0, '', $language, $defaultAnswers[$language]);
                     }
-                }
-                continue;
+                    break;
+                default:
+                    $this->updateDefaultValues($surveyId, $qid, 0, 0, '', $language, $defaultAnswers[$language]);
             }
         }
 
