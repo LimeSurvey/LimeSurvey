@@ -22,7 +22,11 @@
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/".$oSurvey->sid),
         "download" => true
     ];
-    if(($respstatsread && $surveyexport)) {
+    if(
+        $respstatsread
+        && $surveyexport
+        && (!$oSurvey->hasTokensTable || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'export'))
+    ) {
         $aExportItemsArray["surveyarchive"] = ($oSurvey->isActive) 
         ? [
             "key" => "surveyarchive",
