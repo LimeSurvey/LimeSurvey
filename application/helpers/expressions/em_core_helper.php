@@ -2564,7 +2564,11 @@ class ExpressionManager
      */
     public static function gT($string, $sEscapeMode = 'html')
     {
-        return gT($string, $sEscapeMode, Yii::app()->session['adminlang']);
+        return gT(
+            $string,
+            $sEscapeMode,
+            Yii::app()->session->get('adminlang', App()->getConfig("defaultlang"))
+        );
     }
 }
 
