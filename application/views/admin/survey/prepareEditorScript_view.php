@@ -1,10 +1,10 @@
 <!--<script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL'); ?>/ckeditor.js"></script>-->
-<?php
+<?php 
 $script = "
     CKEDITOR.on('dialogDefinition', function (ev) {
         var dialogName = ev.data.name;
         var dialogDefinition = ev.data.definition;
-        console.log(ev);
+
         // Remove upload tab from Link and Image dialog as it interferes with
         // CSRF protection and upload can be reached using the browse server tab
         if ( dialogName == 'link')
@@ -21,21 +21,13 @@ $script = "
     ";
 
 /**
- * @todo This following three JS lines are a hack to keep the most common usage of <br> in ExpressionScript from breaking the expression,
- * because the HTML editor will insert linebreaks after every <br>, even if it is inside a ExpressionScript tag {}
- * The proper way to fix this would be to merge a plugin like ShowProtected (https://github.com/IGx89/CKEditor-ShowProtected-Plugin)
- * with LimeReplacementFields and in general use ProtectSource for ExpressionScript
- * See https://stackoverflow.com/questions/2851068/prevent-ckeditor-from-formatting-code-in-source-mode
- */
+* @todo This following three JS lines are a hack to keep the most common usage of <br> in ExpressionScript from breaking the expression,
+* because the HTML editor will insert linebreaks after every <br>, even if it is inside a ExpressionScript tag {}
+* The proper way to fix this would be to merge a plugin like ShowProtected (https://github.com/IGx89/CKEditor-ShowProtected-Plugin) 
+* with LimeReplacementFields and in general use ProtectSource for ExpressionScript
+* See https://stackoverflow.com/questions/2851068/prevent-ckeditor-from-formatting-code-in-source-mode
+*/ 
 $script.="CKEDITOR.on('instanceReady', function(event) {
-
-        // Change config. for editors with name like email_*
-        // Those editors are initialized for email templates.
-        // It doesn't have effects on popup Editors.
-        if(event.editor.name.startsWith('email_')){
-            event.editor.config.fullPage = true;
-        }
-        
         event.editor.dataProcessor.writer.setRules( 'br', { breakAfterOpen: 0 } );
     });    
 
@@ -70,38 +62,22 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
             popup = window.open('".$this->createUrl('admin/htmleditor_pop/sa/index')."/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/".App()->language."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
-            
-            // Check if action is related to email templates.
-            if(action === 'editemailtemplates'){
-                // Add a listener to load event, change config once the popup has finish loaded.
-                popup.addEventListener('load', enableFullPageConfigForEditor, false);
-            }
-           
+
             editorwindowsHash[fieldname] = popup;
         }
         else
         {
             activepopup.focus();
-        }  
-
-    }
-    
-    // Used for the popup editor in email templates.
-    function enableFullPageConfigForEditor()
-    {
-        this.CKEDITOR.config.fullPage = true;
+        }
     }
 
     function updateCKeditor(fieldname,value)
     {
-    
         var mypopup= editorwindowsHash[fieldname];
-        
         if (mypopup)
         {
             var oMyEditor = mypopup.CKEDITOR.instances['MyTextarea'];
             if (oMyEditor) {oMyEditor.setData(value);}
-            
             mypopup.focus();
         }
         else
@@ -110,6 +86,7 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
             oMyEditor.setData(value);
         }
     }
+
 ";
 
 Yii::app()->getClientScript()->registerScript('ckEditorPreparingSettings', $script, LSYii_ClientScript::POS_BEGIN);
