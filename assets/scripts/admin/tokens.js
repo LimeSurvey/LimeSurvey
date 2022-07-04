@@ -563,3 +563,11 @@ function initValidFromValidUntilPickers() {
         initDatePicker(validuntilElement, 'validuntil', locale, dateFormat);
     }
 }
+
+/**
+ * Open datepicker via click on calendar icon
+ */
+$(document).on('click', '.datepicker-icon', function () {
+    $(this).prevAll('input').click();
+});
+

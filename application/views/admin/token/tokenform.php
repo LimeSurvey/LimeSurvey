@@ -141,7 +141,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                                name="completed-date"
                                                                data-locale="<?php echo $locale ?>"
                                                                data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                        <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                                        <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -321,7 +321,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        name="sent-date"
                                                        data-locale="<?php echo $locale ?>"
                                                        data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                                <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
                                             </div>
                                         </div>
                                     </div>
@@ -372,7 +372,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        name="remind-date"
                                                        data-locale="<?php echo $locale ?>"
                                                        data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                                <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
                                             </div>
                                         </div>
                                     </div>
@@ -430,7 +430,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                            name="validfrom"
                                            data-locale="<?php echo $locale ?>"
                                            data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                    <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
                                 </div>
                             </div>
                         </div>
@@ -449,7 +449,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                            name="validuntil"
                                            data-locale="<?php echo $locale ?>"
                                            data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                    <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
                                 </div>
                             </div>
                         </div>
