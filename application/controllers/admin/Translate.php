@@ -335,10 +335,11 @@ class Translate extends SurveyCommonAction
         $langs = $oSurvey->additionalLanguages;
         $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
 
-        $language_list .= CHtml::openTag('div', array('class' => 'mb-3 row ms-auto col-4 float-start')); // Opens .menubar-right div
-
+        $language_list .= CHtml::openTag('div', array('class' => 'row row-cols-lg-auto g-1 align-items-center mb-3')); // Opens .menubar-right div
+        $language_list .= CHtml::openTag('div', array('class' => 'col-12'));
         $language_list .= CHtml::tag('label', array('for' => 'translationlanguage', 'class' => 'text-nowrap col col-form-label col-form-label-sm'), gT("Translate to") . ":");
-        $language_list .= CHtml::openTag('div', array('class' => 'col'));
+        $language_list .= CHtml::closeTag('div');
+        $language_list .= CHtml::openTag('div', array('class' => 'col-12'));
         $language_list .= CHtml::openTag(
             'select',
             array(
