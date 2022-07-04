@@ -52,7 +52,7 @@ $baseLanguage = $oSurvey->language;
                             'class' => '',
                         ),
                     )); ?>
-                    <div class="row row-cols-lg-auto g-3 align-items-center mb-3 float-end">
+                    <div class="row row-cols-lg-auto g-1 align-items-center mb-3 float-end">
                         <!-- Search input -->
                         <div class="col-12">
                             <?php

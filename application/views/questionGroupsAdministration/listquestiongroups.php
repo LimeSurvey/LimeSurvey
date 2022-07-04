@@ -34,7 +34,7 @@
                     'class' => '',
                 ),
             )); ?>
-                <div class="row row-cols-lg-auto g-3 align-items-center mb-3 float-end">
+                <div class="row row-cols-lg-auto g-1 align-items-center mb-3 float-end">
                     <div class="col-12">
                         <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => 'text-nowrap col-sm-7 col-form-label col-form-label-sm')); ?>
                     </div>
