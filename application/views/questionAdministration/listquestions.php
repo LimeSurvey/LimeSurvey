@@ -39,62 +39,76 @@ $baseLanguage = $oSurvey->language;
                             ]
                         ); ?>
                     </div>
-                    <div class="row float-end">
-                        <!-- Begin Form -->
-                        <?php $form = $this->beginWidget('CActiveForm', array(
-                            'action' => App()->createUrl(
-                                'questionAdministration/listquestions',
-                                ['surveyid' => $oSurvey->primaryKey]
-                            ),
-                            'method' => 'get',
-                            'htmlOptions' => array(
-                                'class' => 'row ms-auto',
-                            ),
-                        )); ?>
 
+                    <!-- Begin Form -->
+                    <?php
+                    $form = $this->beginWidget('CActiveForm', array(
+                        'action' => App()->createUrl(
+                            'questionAdministration/listquestions',
+                            ['surveyid' => $oSurvey->primaryKey]
+                        ),
+                        'method' => 'get',
+                        'htmlOptions' => array(
+                            'class' => '',
+                        ),
+                    )); ?>
+                    <div class="row row-cols-lg-auto g-3 align-items-center mb-3 float-end">
                         <!-- Search input -->
-                        <div class="col row mb-3">
-                            <?php echo $form->label( $model, 'search', array('label' => gT('Search:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm')); ?>
-                            <div class="col-sm-9">
-                                <?php echo $form->textField($model, 'title', array('class' => 'form-control')); ?>
-                            </div>
+                        <div class="col-12">
+                            <?php
+                            echo $form->label(
+                                $model,
+                                'search',
+                                array('label' => gT('Search:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm')
+                            ); ?>
+                        </div>
+                        <div class="col-12">
+                            <?php
+                            echo $form->textField($model, 'title', array('class' => 'form-control')); ?>
                         </div>
 
                         <!-- Select group -->
-                        <div class="col row mb-3">
-                            <?php echo $form->label($model, 'group', array('label' => gT('Group:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm')); ?>
-                            <div class="col-sm-9">
-                                <select name="gid" class="form-select">
-                                    <option value=""><?php eT('(Any group)'); ?></option>
-                                    <?php foreach ($oSurvey->groups as $group): ?>
-                                        <option value="<?php echo $group->gid; ?>" <?php if ($group->gid == $model->gid) {
-                                            echo 'selected';
-                                        } ?>>
-                                            <?php echo flattenText($group->questiongroupl10ns[$oSurvey->language]->group_name); ?>
-                                        </option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
+                        <div class="col-12">
+                            <?php
+                            echo $form->label(
+                                $model,
+                                'group',
+                                array('label' => gT('Group:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm')
+                            ); ?>
+                        </div>
+                        <div class="col-12">
+                            <select name="gid" class="form-select">
+                                <option value=""><?php eT('(Any group)'); ?></option>
+                                <?php foreach ($oSurvey->groups as $group): ?>
+                                    <option value="<?php echo $group->gid; ?>" <?php if ($group->gid == $model->gid) {
+                                        echo 'selected';
+                                    } ?>>
+                                        <?php echo flattenText($group->questiongroupl10ns[$oSurvey->language]->group_name); ?>
+                                    </option>
+                                <?php endforeach ?>
+                            </select>
                         </div>
 
-                        <div class="col row mb-3">
-                            <div class="col-12">
-                                <?php echo CHtml::submitButton(
-                                    gT('Search', 'unescaped'),
-                                    ['class' => 'btn btn-success']
-                                ); ?>
-                                <a href="<?php echo App()->createUrl(
-                                    'questionAdministration/listquestions',
-                                    ['surveyid' => $oSurvey->primaryKey]
-                                ); ?>" class="btn btn-warning">
-                                    <span class="fa fa-refresh"></span>
-                                    <?php eT('Reset'); ?>
-                                </a>
-                            </div>
+                        <div class="col-12">
+                            <?php
+                            echo CHtml::submitButton(
+                                gT('Search', 'unescaped'),
+                                ['class' => 'btn btn-success']
+                            ); ?>
+                            <a href="<?php
+                            echo App()->createUrl(
+                                'questionAdministration/listquestions',
+                                ['surveyid' => $oSurvey->primaryKey]
+                            ); ?>" class="btn btn-warning">
+                                <span class="fa fa-refresh"></span>
+                                <?php
+                                eT('Reset'); ?>
+                            </a>
                         </div>
-
-                        <?php $this->endWidget(); ?>
-                    </div><!-- form -->
+                    </div>
+                    <?php
+                    $this->endWidget(); ?>
+                   <!-- form -->
                 </div>
             </div>
             <hr/>
