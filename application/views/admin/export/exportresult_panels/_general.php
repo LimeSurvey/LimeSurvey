@@ -4,7 +4,7 @@
       <?php eT("General"); ?>
   </div>
   <div class="card-body">
-    <div class="form-group row">
+    <div class="mb-3 row">
       <label for='completionstate' class="form-label">
         <?php eT("Completion state:");?>
       </label>
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="form-group row">
+    <div class="mb-3 row">
       <label for='exportlang' class="form-label">
         <?php eT("Export language:"); ?>
       </label>

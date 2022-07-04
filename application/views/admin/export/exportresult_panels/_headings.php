@@ -6,7 +6,7 @@
   <div class="card-body">
 
     <!-- Headers -->
-    <div class="form-group row">
+    <div class="mb-3 row">
         <label class="col-md-12 form-label" for=''>
         <?php eT("Export questions as:"); ?>
       </label>
@@ -21,7 +21,7 @@
     </div>
 
     <!-- Strip HTML -->
-    <div class="form-group row">
+    <div class="mb-3 row">
       <label class="col-md-12 form-label" for='striphtmlcode'>
         <?php eT("Strip HTML code:"); ?>
       </label>
@@ -38,7 +38,7 @@
     </div>
 
     <!-- Convert spaces -->
-    <div class="form-group row">
+    <div class="mb-3 row">
       <label class="col-md-12 form-label" for='headspacetounderscores'>
         <?php eT("Convert spaces in question text to underscores:"); ?>
       </label>
@@ -55,7 +55,7 @@
     </div>
 
     <!-- Text abbreviated-->
-    <div class="form-group row">
+    <div class="mb-3 row">
       <label class="col-md-12 form-label" for='abbreviatedtext'>
         <?php eT("Text abbreviated:"); ?>
       </label>
@@ -72,7 +72,7 @@
     </div>
 
     <!-- Use ExpressionScript Engine code-->
-    <div class="form-group row">
+    <div class="mb-3 row">
       <label class="col-md-12 form-label" for='emcode'>
         <?php eT("Use ExpressionScript code:"); ?>
       </label>
@@ -88,7 +88,7 @@
       </div>
     </div>
 
-    <div class="form-group row">
+    <div class="mb-3 row">
       <label for='abbreviatedtextto' class="col-md-12 form-label">
         <?php eT("Number of characters:"); ?>
       </label>
@@ -97,7 +97,7 @@
       </div>
     </div>
 
-    <div class="form-group row">
+    <div class="mb-3 row">
       <label for='codetextseparator' class="col-md-12 form-label">
         <?php eT("Code/text separator:"); ?>
       </label>

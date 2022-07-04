@@ -15,7 +15,7 @@
                 ['id' => 'tokenimport', 'name' => 'tokenimport', 'class' => '', 'enctype' => 'multipart/form-data']); ?>
 
             <!-- Choose the CSV file to upload -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='the_file'><?php eT("Choose the CSV file to upload:"); ?></label>
                 <div class="">
                     <?php echo CHtml::fileField('the_file', '', ['required' => 'required', 'accept' => '.csv']); ?>
@@ -23,7 +23,7 @@
             </div>
 
             <!-- "Character set of the file -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='csvcharset'><?php eT("Character set of the file:"); ?></label>
                 <div class="">
                     <?php
@@ -33,7 +33,7 @@
             </div>
 
             <!-- Separator used -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='separator'><?php eT("Separator used:"); ?> </label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -49,7 +49,7 @@
             </div>
 
             <!-- Filter blank email addresses -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class="form-label" for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -64,7 +64,7 @@
             </div>
 
             <!-- Allow invalid email addresses -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -79,7 +79,7 @@
             </div>
 
             <!-- show invalid attributes -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='showwarningtoken'><?php eT("Display attribute warnings:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -94,7 +94,7 @@
             </div>
 
             <!-- Filter duplicate records -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -110,7 +110,7 @@
             </div>
 
             <!-- Duplicates are determined by -->
-            <div class="form-group" id='lifilterduplicatefields'>
+            <div class="mb-3" id='lifilterduplicatefields'>
                 <label class=" form-label" for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
                 <div class="">
                     <?php
@@ -124,7 +124,7 @@
             </div>
 
             <!-- Buttons -->
-            <div class="form-group">
+            <div class="mb-3">
                 <div class="">
                     <?php echo CHtml::htmlButton(gT("Upload"),
                         ['type' => 'submit', 'name' => 'upload', 'value' => 'import', 'class' => 'btn btn-outline-secondary']); ?>

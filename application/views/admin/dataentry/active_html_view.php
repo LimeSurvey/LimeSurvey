@@ -41,7 +41,7 @@ if ($thissurvey['active'] == "Y")
                     <div name='saveoptions' id='saveoptions' style='display: none' class=" ">
 
                         <!-- Save identifier -->
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class=" form-label" for="save_identifier"><?php eT("Identifier:"); ?></label>
                             <div class="">
                                 <input class="form-control" type="text" size="50" id="save_identifier" name="save_identifier" value="">
@@ -49,7 +49,7 @@ if ($thissurvey['active'] == "Y")
                         </div>
 
                         <!-- Password -->
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class=" form-label" for="save_password"><?php eT("Password:"); ?></label>
                             <div class="">
                                 <input class="form-control" type="password" size="50" id="save_password" name="save_password" value="">
@@ -57,7 +57,7 @@ if ($thissurvey['active'] == "Y")
                         </div>
 
                         <!-- Confirm password -->
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class=" form-label" for="save_confirmpassword"><?php eT("Confirm password:"); ?></label>
                             <div class="">
                                 <input class="form-control" type="password" size="50" id="save_confirmpassword" name="save_confirmpassword" value="">
@@ -65,7 +65,7 @@ if ($thissurvey['active'] == "Y")
                         </div>
 
                         <!-- Email -->
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class=" form-label" for="save_email"><?php eT("Email:"); ?></label>
                             <div class="">
                                 <input class="form-control" type="email" size="50" id="save_email" name="save_email" value="">
@@ -73,7 +73,7 @@ if ($thissurvey['active'] == "Y")
                         </div>
 
                         <!-- Start language -->
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class=" form-label" for="save_language"><?php eT("Start language:"); ?></label>
                             <div class="">
 

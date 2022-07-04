@@ -9,7 +9,7 @@
 
 
 <!-- Quota message -->
-<div class="form-group">
+<div class="mb-3">
     <?php echo $form->labelEx($oQuotaLanguageSetting,'['.$language.']quotals_message',array('class'=>'form-label')); ?>
     <div class=''>
         <?php echo $form->textArea($oQuotaLanguageSetting,'['.$language.']quotals_message',array('class'=>'form-control custom-data')); ?>
@@ -18,7 +18,7 @@
 </div>
 
 <!-- URL -->
-<div class="form-group">
+<div class="mb-3">
     <?php echo $form->labelEx($oQuotaLanguageSetting,'['.$language.']quotals_url',array('class'=>'form-label')); ?>
     <div class=''>
         <?php echo $form->textField($oQuotaLanguageSetting,'['.$language.']quotals_url',array('class'=>'form-control custom-data')); ?>
@@ -27,7 +27,7 @@
 </div>
 
 <!-- URL Description -->
-<div class="form-group">
+<div class="mb-3">
     <?php echo $form->labelEx($oQuotaLanguageSetting,'['.$language.']quotals_urldescrip',array('class'=>'form-label')); ?>
     <div class=''>
         <?php echo $form->textField($oQuotaLanguageSetting,'['.$language.']quotals_urldescrip',array('class'=>'form-control custom-data')); ?>

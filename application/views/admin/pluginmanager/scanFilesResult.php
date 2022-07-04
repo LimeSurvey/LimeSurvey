@@ -9,7 +9,7 @@
     <div class="row">
         <div class='col-12'>
             <?php foreach ($result as $name => $scannedPlugin) : ?>
-                <div class='form-group col-12'>
+                <div class='mb-3 col-12'>
                     <label class='form-label col-md-4'>
                         <?php echo $name; ?>
                     </label>

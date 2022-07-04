@@ -108,13 +108,13 @@
 
                     <?php if(!empty($selectedtokenattribute)): ?>
                         <div class='explanation row'>
-                            <div class='form-group'>
+                            <div class='mb-3'>
                                 <label class='form-label col-md-10 text-end' for='overwriteman'><?php eT("Overwrite existing participant attribute values if a participant already exists?") ?></label>
                                 <div class='col-md-2'>
                                     <input type='checkbox' id='overwriteman' name='overwriteman' />
                                 </div>
                             </div>
-                            <div class='form-group'>
+                            <div class='mb-3'>
                                 <label class='form-label col-md-10 text-end' for='createautomap'><?php eT("Make these mappings automatic in future") ?></label>
                                 <div class='col-md-2'>
                                     <input type='checkbox' id='createautomap' name='createautomap' />
@@ -163,7 +163,7 @@
                         </div>
                     </div>
                     <div class='explanation'>
-                        <div class='form-group'>
+                        <div class='mb-3'>
                             <label class='form-label col-md-10 text-end' for='overwritest'>
                                 <?php eT("Overwrite existing standard field values if a participant already exists?") ?>
                             </label>
@@ -180,7 +180,7 @@
     </div>
 </div>
 
-<div class='form-group col-12 text-center'>
+<div class='mb-3 col-12 text-center'>
     <input class='btn btn-outline-secondary' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
     <input class='btn btn-outline-secondary' type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
     <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />

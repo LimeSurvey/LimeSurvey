@@ -5,7 +5,7 @@
 <div class="modal-body selector--edit-usergroup-container">
     <div class="container-center form">
         <?php if ($aUsergoups) : ?>
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="addtousergroup"><?= gT("Select user group to add users to") ?></label>
                 <select class="form-select select post-value" name="addtousergroup" id="addtousergroup" required>
                     <?php foreach ($aUsergoups as $oUsergroup) {

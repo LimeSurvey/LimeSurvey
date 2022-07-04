@@ -85,13 +85,13 @@
                         echo $oStatisticsHelper::_showSpeaker($flt[3]." - ".flattenText($row['question'],true))
                         ."</div>
 
-                        <div class='form-group row'>
+                        <div class='mb-3 row'>
                         <label for='".$myfield2."' class='col-md-4 form-label'>".gT("Number greater than:")."</label>
                         <div class='col-md-6'>"
                         .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
                         ."</div>
                         </div>
-                        <div class='form-group row'>
+                        <div class='mb-3 row'>
                         <label for='N".$myfield3."' class='col-md-4 form-label'>".gT("Number less than:")."</label>
                         <div class='col-md-6'>"
                         .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
@@ -197,13 +197,13 @@
                 $myfield2="N{$myfield}G";
                 $myfield3="N{$myfield}L";
                 echo " 
-                <div class='form-group row'>
+                <div class='mb-3 row'>
                 <label for='".$myfield2."' class='col-md-4 form-label'>".gT("Number greater than:")."</label>
                 <div class='col-md-6'>"
                 .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>
-                <div class='form-group row'>
+                <div class='mb-3 row'>
                 <label for='N".$myfield3."' class='col-md-4 form-label'>".gT("Number less than:")."</label>
                 <div class='col-md-6'>"
                 .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
@@ -218,13 +218,13 @@
                 $myfield2 = "{$myfield}G";
                 $myfield3 = "{$myfield}L";
                 echo"
-                <div class='form-group row'>
+                <div class='mb-3 row'>
                 <label for='".$myfield2."' class='col-md-4 form-label'>".gT("Number of files greater than:")."</label>
                 <div class='col-md-6'>"
                 .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>
-                <div class='form-group row'>
+                <div class='mb-3 row'>
                 <label for='N".$myfield3."' class='col-md-4 form-label'>".gT("Number of files less than:")."</label>
                 <div class='col-md-6'>"
                 .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
@@ -263,7 +263,7 @@
                 echo " />";
                 echo $oStatisticsHelper::_showSpeaker($niceqtext)."
 
-                <div class='form-group row' style='margin-top:1em;'>
+                <div class='mb-3 row' style='margin-top:1em;'>
                 <label for='".$myfield3."' class='col-md-4 col-form-label smalltext'>".gT("Date equals:")."</label>
                 <div class='col-md-8'>";
                 Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
@@ -280,7 +280,7 @@
                 echo "
                 </div>
               </div>
-              <div class='form-group row'>
+              <div class='mb-3 row'>
               <label for='".$myfield4."' class='col-md-4 col-form-label smalltext'>".gT("Date is >= :")."</label>
               <div class='col-md-8'>";
               Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
@@ -297,7 +297,7 @@
               echo "
               </div>
             </div>
-            <div class='form-group row'>
+            <div class='mb-3 row'>
             <label for='".$myfield5."' class='col-md-4 col-form-label smalltext'>".gT("And/or Date is <= :")."</label>
             <div class='col-md-8'>";
             Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(

@@ -49,7 +49,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
     <div class="row">
         <div class="col-12 col-lg-6">
             <!--  Set token length to -->
-            <div class="form-group">
+            <div class="mb-3">
                 <?php $tokenlength = $oSurvey->tokenlength; ?>
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
@@ -73,7 +73,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
         </div>
         <div class="col-12 col-lg-6">
             <!-- Anonymized responses -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label  class=" form-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between survey participants table and survey responses table. You won't be able to identify responses by their access code."); ?>'>
                     <?php  eT("Anonymized responses:"); ?>
                 </label>
@@ -98,7 +98,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
             </div>
 
             <!-- Enable token-based response persistence -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the survey participants table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."); ?>'>
                     <?php  eT("Enable participant-based response persistence:"); ?>
                 </label>
@@ -114,7 +114,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
             </div>
 
             <!-- Allow multiple responses or update responses with one token -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='alloweditaftercompletion' title='<?php  eT("If participant-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."); ?>'>
                     <?php  eT("Allow multiple responses or update responses with one access code:"); ?>
                 </label>
@@ -130,7 +130,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
             </div>
 
             <!-- Allow public registration -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='allowregister'><?php eT("Allow public registration:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -144,7 +144,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
             </div>
 
             <!-- Use HTML format for token emails -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='htmlemail'><?php  eT("Use HTML format for participant emails:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -164,7 +164,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
             </div>
 
             <!-- Send confirmation emails -->
-            <div class="form-group">
+            <div class="mb-3">
                 <label class=" form-label" for='sendconfirmation'><?php eT("Send confirmation emails:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [

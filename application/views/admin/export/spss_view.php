@@ -11,7 +11,7 @@ echo viewHelper::getViewTestTag('exportSpss');
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Export response data to SPSS");?></h3>
     <?php echo CHtml::form(array("admin/export/sa/exportspss/sid/{$surveyid}/"), 'post', array('id'=>'exportspss', 'class'=>''));?>
-    <div class="form-group row">
+    <div class="mb-3 row">
         <label for='completionstate' class='col-md-2  form-form-label'><?php eT("Data selection:");?></label>
         <div class="col-md-10">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('exportSpss');
             ));?>
         </div>
     </div>
-    <div class="form-group row">
+    <div class="mb-3 row">
         <label for='spssver'  class='col-md-2  form-form-label'><?php eT("Version:");?></label>
         <div class="col-md-10">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
@@ -42,7 +42,7 @@ echo viewHelper::getViewTestTag('exportSpss');
     <?php
     if (count($aLanguages)>1)
     { ?>
-        <div class="form-group row">
+        <div class="mb-3 row">
             <label for='exportlang'  class='col-md-2  form-form-label'><?php eT("Language:");?></label>
             <div class="col-md-2">
                 <?php echo CHtml::dropDownList('exportlang', $sBaseLanguage, $aLanguages, array('class'=>'form-select')); ?>
@@ -52,7 +52,7 @@ echo viewHelper::getViewTestTag('exportSpss');
             <?php echo CHtml::hiddenField('exportlang', $sBaseLanguage); ?>
 
         <?php } ?>
-    <div class="form-group row">
+    <div class="mb-3 row">
         <label for='limit' class='col-md-2  form-form-label'><?php eT("Limit:");?></label>
         <div class="col-md-1">
             <?php
@@ -60,7 +60,7 @@ echo viewHelper::getViewTestTag('exportSpss');
             ?>
         </div>
     </div>
-    <div class="form-group row">
+    <div class="mb-3 row">
         <label for='offset' class='col-md-2  form-form-label'><?php eT("Offset:");?></label>
         <div class="col-md-1">
             <?php
@@ -69,7 +69,7 @@ echo viewHelper::getViewTestTag('exportSpss');
         </div>
     </div>
 
-    <div class="form-group row">
+    <div class="mb-3 row">
         <label for='offset' class='col-md-2  form-form-label'><?php eT("No answer:");?></label>
         <div class="col-md-1">
             <?php
@@ -79,7 +79,7 @@ echo viewHelper::getViewTestTag('exportSpss');
     </div>
 
 
-    <div class="form-group row">
+    <div class="mb-3 row">
         <?php
             echo CHtml::hiddenField('sid',$surveyid);
             echo CHtml::hiddenField('action','exportspss');
@@ -89,7 +89,7 @@ echo viewHelper::getViewTestTag('exportSpss');
             <input class="btn btn-outline-secondary" type='submit' name='dlstructure' id='dlstructure' value='<?php eT("Export syntax");?>'/>
         </div>
     </div>
-    <div class="form-group row">
+    <div class="mb-3 row">
         <label for='dldata' class='col-md-1  form-form-label'><?php eT("Step 2:");?></label>
         <div class="col-md-10">
             <input class="btn btn-outline-secondary" type='submit' name='dldata' id='dldata' value='<?php eT("Export data");?>'/>

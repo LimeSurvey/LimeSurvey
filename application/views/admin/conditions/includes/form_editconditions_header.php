@@ -23,7 +23,7 @@
         <!-- Scenario selection -->
         <div class="row ">
             <!-- Condition -->
-            <div class='form-group'>
+            <div class='mb-3'>
                 <label class='form-label col-12'><?php eT('Scenario'); ?></label>
                 <div class='add-scenario-column col-12  ls-space padding bottom-15'>
                     <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if($showScenario):?> style='display: none;' <?php endif;?>/>
@@ -45,7 +45,7 @@
 
         <!-- Comparison operator -->
         <div class="row">
-            <div class='form-group col-12'>
+            <div class='mb-3 col-12'>
                 <label class='form-label'><?php eT("Comparison operator"); ?></label>
                 <div class=''>
                     <select class='form-select' name='method' id='method'>
@@ -63,7 +63,7 @@
         <div class="row">
             <!-- Question section -->
             <div class="col-xl-6">
-                <div class='form-group'>
+                <div class='mb-3'>
                     <label class='form-label '><?php eT("Question"); ?></label>
                     <div class=''>
                         <ul class='nav nav-tabs'>
@@ -79,7 +79,7 @@
 
                 <div class='tab-content'>
                     <div role='tabpanel' class='tab-pane show active' id='SRCPREVQUEST'>
-                        <div class='form-group question-option'>
+                        <div class='mb-3 question-option'>
                             <div class=''>
                                 <select class='form-select' name='cquestions' id='cquestions' size='7'>
                                     <?php foreach ($cquestions as $cqn): ?>
@@ -95,7 +95,7 @@
                         <?php if($surveyIsAnonymized) {
                             echo CHtml::tag("p",array("class"=>"alert alert-warning"),gT("This is an anonymized survey. Participant attributes can only be used in non-anonymised surveys."));
                         }?>
-                        <div class='form-group question-option'>
+                        <div class='mb-3 question-option'>
                             <div class=''>
                                 <select class='form-select' name='csrctoken' id='csrctoken' size='7'>
                                     <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
@@ -112,7 +112,7 @@
 
             <!-- Answer section -->
             <div class="col-xl-6">
-                <div class='form-group'>
+                <div class='mb-3'>
                     <label class='form-label'><?php echo gT("Answer"); ?></label>
                     <div class=''>
                         <ul class='nav nav-tabs'>
@@ -137,7 +137,7 @@
 
                 <div class='tab-content'>
                     <div role='tabpanel' class='tab-pane show active' id='CANSWERSTAB'>
-                        <div class='form-group answer-option'>
+                        <div class='mb-3 answer-option'>
                             <div class=''></div>
                             <div class=''>
                                 <select
@@ -153,7 +153,7 @@
                     </div>
 
                     <div role='tabpanel' class='tab-pane' id='CONST'>
-                        <div class='form-group answer-option'>
+                        <div class='mb-3 answer-option'>
                             <div class=''></div>
                             <div class=''>
                                 <textarea class='form-control' name='ConditionConst' id='ConditionConst' rows='5' cols='113'><?php echo $EDITConditionConst; ?></textarea>
@@ -162,7 +162,7 @@
                     </div>
 
                     <div role='tabpanel' class='tab-pane' id='PREVQUESTIONS'>
-                        <div class='form-group answer-option'>
+                        <div class='mb-3 answer-option'>
                             <div class=''></div>
                             <div class=''>
                                 <select class='form-select' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>
@@ -184,7 +184,7 @@
                     </div>
 
                     <div role='tabpanel' class='tab-pane' id='TOKENATTRS'>
-                        <div class='form-group answer-option'>
+                        <div class='mb-3 answer-option'>
                             <div class=''></div>
                             <div class=''>
                                 <select class='form-select' name='tokenAttr' id='tokenAttr' size='7'>
@@ -199,7 +199,7 @@
                     </div>
 
                     <div role='tabpanel' class='tab-pane' id='REGEXP'>
-                        <div class='form-group answer-option'>
+                        <div class='mb-3 answer-option'>
                             <div class=''></div>
                             <div class=''>
                                 <textarea name='ConditionRegexp' class='form-control' id='ConditionRegexp' rows='5' cols='113'><?php echo $EDITConditionRegexp; ?></textarea>
@@ -215,7 +215,7 @@
             </div>
         </div>
         <div class="row">
-            <div class='form-group col-12'>
+            <div class='mb-3 col-12'>
                 <div class=''></div>
                 <div class=''>
                     <input type='reset' class='btn btn-outline-secondary' id='resetForm' value='<?php eT("Clear"); ?>' />

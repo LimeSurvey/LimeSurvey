@@ -18,7 +18,7 @@
                         <?php eT("Select question");?>:
                     </p>
                     <?php echo CHtml::form(array("admin/quotas/sa/newanswer/surveyid/{$oQuota->sid}/subaction/new_answer_two"), 'post', array('class' => '')); ?>
-                        <div class='form-group'>
+                        <div class='mb-3'>
                             <div class='col-md-5 offset-md-4'>
                                 <select class='form-select' name="quota_qid" size="15">
                                     <?php foreach ($oQuota->survey->quotableQuestions as $questionlisting) { ?>
@@ -29,7 +29,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class='form-group'>
+                        <div class='mb-3'>
                             <div class='col-md-5 offset-md-4'>
                                 <input name="submit" type="submit" class="submit btn btn-outline-secondary" value="<?php eT("Next");?>" />
                             </div>

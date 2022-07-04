@@ -32,31 +32,31 @@
         <?php endif; ?>
 
         <!-- Name -->
-        <div class="form-group col-12">
+        <div class="mb-3 col-12">
             <label class="col-md-4 form-label"><?php eT("Name:"); ?></label>
             <div class="col-md-4"><?= htmlentities($config->getName()); ?></div>
         </div>
 
         <!-- Description -->
-        <div class="form-group col-12">
+        <div class="mb-3 col-12">
             <label class="col-md-4 form-label"><?php eT("Description:"); ?></label>
             <div class="col-md-8"><?= htmlentities($config->getDescription()); ?></div>
         </div>
 
         <!-- Version -->
-        <div class="form-group col-12">
+        <div class="mb-3 col-12">
             <label class="col-md-4 form-label"><?php eT("Version:"); ?></label>
             <div class="col-md-4"><?= htmlentities($config->getVersion()); ?></div>
         </div>
 
         <!-- Author -->
-        <div class="form-group col-12">
+        <div class="mb-3 col-12">
             <label class="col-md-4 form-label"><?php eT("Author:"); ?></label>
             <div class="col-md-4"><?= htmlentities($config->getAuthor()); ?></div>
         </div>
 
         <!-- Compatible -->
-        <div class="form-group col-12">
+        <div class="mb-3 col-12">
             <label class="col-md-4 form-label"><?php eT("Compatible"); ?></label>
             <?php if ($config->isCompatible()) : ?>
                 <div class="col-md-4"><span class="fa fa-check text-success"></span></div>
@@ -66,7 +66,7 @@
         </div>
 
         <!-- Buttons -->
-        <div class="form-group col-12">
+        <div class="mb-3 col-12">
             <label class="col-md-4 form-label"></label>
             <div class="col-md-4">
                 <?php if ($isUpdate) : ?>

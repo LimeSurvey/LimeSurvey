@@ -68,11 +68,12 @@ var filterData = {};
 /**
  * Provide to this function a element containing form-groups,
  * it will stick the text labels on its border
+ * @TODO Does this function still make sense???
  */
 $.fn.stickLabelOnLeft  = function(options)
 {
     var that = $(this);
-    var formgroups = that.find('.form-group');
+    var formgroups = that.find('.ex-form-group');
     $maxWidth  = 0;
     $elWidestLeftLabel = '';
     formgroups.each( function() {
@@ -89,6 +90,7 @@ $.fn.stickLabelOnLeft  = function(options)
     $distanceFromBorder = ( $maxWidth - $elWidestLeftLabel.width());
     if ( $distanceFromBorder < 0)
     {
+        console.log(that);
         that.css({
             position: "relative",
             left: $distanceFromBorder,

@@ -5,7 +5,7 @@
             <?php echo CHtml::form(array("userGroup/addGroup"), 'post', array('class'=>'', 'id'=>'usergroupform')); ?>
 
                 <!-- Name -->
-                <div class="form-group col-12">
+                <div class="mb-3 col-12">
                     <label for='group_name' class="form-label">
                         <?php eT("Name:"); ?>
                     </label>
@@ -16,7 +16,7 @@
                 </div>
 
                 <!-- Description -->
-                <div class="form-group col-12">
+                <div class="mb-3 col-12">
                     <label for='group_description' class="form-label">
                         <?php eT("Description:"); ?>
                     </label>

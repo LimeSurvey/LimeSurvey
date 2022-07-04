@@ -52,7 +52,7 @@
             {# If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template #}
             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                 <div class='row' id="general_inherit_active">
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_general_inherit' class='control-label'>{{gT("Inherit everything" )}}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -78,7 +78,7 @@
 
                 {# Container #}
                 <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_container' class='control-label'> {{ gT("Survey container") }} </label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -104,7 +104,7 @@
 
                 {# Question Border #}
                 <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_questionborder' class='control-label'>{{ gT("Question borders") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -131,7 +131,7 @@
 
                 {# Question Shadow #}
                 <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_questioncontainershadow' class='control-label'>{{ gT("Question shadow") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -162,7 +162,7 @@
 
                 {# Show Clear And Exit #}
                 <div class='col-12 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_showclearall' class='control-label'> {{ gT("Show Clear All Button") }} </label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -187,7 +187,7 @@
                 </div>
                 {# zebrastriping #}
                 <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_zebrastriping' class='test control-label'>{{ gT("Zebra-striped questions") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -213,7 +213,7 @@
 
                 {# stickymatrixheaders #}
                 <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_stickymatrixheaders' class='control-label'>{{ gT("Sticky array headers") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -239,7 +239,7 @@
 
                 {# greyoutselected #}
                 <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_greyoutselected' class='control-label'>{{ gT("Dim answered array rows") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -268,7 +268,7 @@
             <div class='row action_hide_on_inherit'>
                 {# hideprivacyinfo #}
                 <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_hideprivacyinfo' class='control-label'>{{ gT("Hide privacy info") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -294,7 +294,7 @@
                 
                 {# crosshover #}
                 <div class='col-12 col-md-6 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_crosshover' class='control-label'>{{ gT("Cross-hover in matrix questions") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -319,7 +319,7 @@
                 </div>
                 {# questionhelptextposition #}
                 <div class='col-12 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_questionhelptextposition' class='control-label'>{{ gT("Question help text position") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -345,7 +345,7 @@
 
                 {# Fix num auto (and real num value) #}
                 <div class='col-12 col-lg-4 col-xl-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_fixnumauto' class='control-label'>{{ gT("Fix automatically numeric value") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -387,7 +387,7 @@
             <div class='row action_hide_on_inherit'>
                 {# Show popups #}
                 <div class='col-12 col-md-6'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_showpopups' class='control-label' {{ showpopups_disabled_qtip }}>{{ gT("Show popups") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -417,7 +417,7 @@
                 
                 {# always activate no more tables #}
                 <div class='col-12 col-md-6'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_notables' class='control-label'>{{ gT("Break tables") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -453,7 +453,7 @@
 
                 {# Background Color #}
                 <div class='col-md-6 col-lg-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_bodybackgroundcolor' class='control-label'>{{ gT("Background color") }}</label>
                         <div class="input-group">
                             <div class="input-group-addon style__colorpicker">
@@ -472,7 +472,7 @@
 
                 {# Font Color #}
                 <div class='col-md-6 col-lg-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_fontcolor' class='control-label'>{{ gT("Font color") }}</label>
                         <div class="input-group">
                             <div class="input-group-addon style__colorpicker">
@@ -490,7 +490,7 @@
 
                 {# Question Background Color #}
                 <div class='col-md-6 col-lg-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_questionbackgroundcolor' class='control-label'>{{ gT("Question background color") }}</label>
                         <div class="input-group">
                             <div class="input-group-addon style__colorpicker">
@@ -508,7 +508,7 @@
 
                 {# Check icon #}
                 <div class='col-md-6 col-lg-3'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_checkicon' class='control-label'>{{ gT("Check icon") }}</label>
                         <div class="input-group">
                             <select name="checkicon" value="" class="selector_option_value_field form-select simple_edit_options_checkicon" data-id="checkicon" id="checkicon" >
@@ -534,7 +534,7 @@
              <div class='row action_hide_on_inherit'>
                 <div class='col-12 col-lg-4'>
                     {# Background image #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_backgroundimage' class='control-label'>{{ gT("Background image") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -560,7 +560,7 @@
 
                 <div class='col-md-8 col-lg-6'>
                     {#  Background image file selector #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_backgroundimagefile' class='control-label'>{{ gT("Background image file") }}</label>
                         <div class='col-12'>
                             <select class='form-select selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="backgroundimage" id='simple_edit_options_backgroundimagefile' name='backgroundimagefile'>
@@ -596,7 +596,7 @@
             <div class='row action_hide_on_inherit'>
                 <div class='col-12 col-lg-4'>
                     {# Brandlogo #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_brandlogo' class='control-label'> {{ gT("Logo") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -621,7 +621,7 @@
                 </div>
                 <div class='col-md-8 col-lg-6'>
                     {#  Brandlogo file selector #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_brandlogofile' class='control-label'>{{ gT("Logo file") }}</label>
                         <div class='col-12'>
                             <select class='form-select selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
@@ -659,7 +659,7 @@
             </div>
             <div class='row action_hide_on_inherit'>
                 <div class='col-12 col-lg-4'>
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         {# Animate body On/Off #}
                         <label for='simple_edit_options_animatebody' class='control-label'>{{ gT("Animate body") }}</label>
                         <div class='col-12'>
@@ -685,7 +685,7 @@
                 </div>
                 <div class='col-md-10 col-lg-6'>
                     {# Animate body -> Animation type #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_bodyanimation' class='control-label'>{{ gT("Body animation") }}</label>
                         <div class='col-12'>
                             <select class='form-select selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimation' name='bodyanimation'>
@@ -699,7 +699,7 @@
                 </div>
                 <div class='col-md-2'>
                     {# Animate body -> Animation type duration #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_bodyanimationduration' class='control-label'>{{ gT("Duration") }}</label>
                         <div class='col-12'>
                             <input type="text" class='form-control selector-numerical-input selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimationduration' name='bodyanimationduration' title='{{ gT("inherited value:") }} ' />
@@ -710,7 +710,7 @@
             <div class='row action_hide_on_inherit'>
                 <div class='col-12 col-lg-4'>
                     {# Animate question -> On/Off #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_animatequestion' class='control-label'>{{ gT("Animate question") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -735,7 +735,7 @@
                 </div>
                 <div class='col-md-10 col-lg-6'>
                     {# Animate question -> Animation type #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_questionanimation' class='control-label'>{{ gT("Question animation") }}</label>
                         <div class='col-12'>
                             <select class='form-select selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimation' name='questionanimation'>
@@ -749,7 +749,7 @@
                 </div>
                 <div class='col-md-2'>
                     {# Animate question -> Animation type #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_questionanimationduration' class='control-label'>{{ gT("Duration") }}</label>
                         <div class='col-12'>
                             <input type="text" class='form-control selector-numerical-input selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimationduration' name='questionanimationduration' title='{{ gT("inherited value:") }} ' />
@@ -762,7 +762,7 @@
             <div class='row action_hide_on_inherit'>
                 <div class='col-12 col-lg-4'>
                     {# Animate alert -> On/Off #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_animatealert' class='control-label'>{{ gT("Animate alert") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -787,7 +787,7 @@
                 </div>
                 <div class='col-md-10 col-lg-6'>
                     {# Animate alert -> Animation options #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_alertanimation' class='control-label'>{{ gT("Alert animation") }}</label>
                         <div class='col-12'>
                             <select class='form-select selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimation' name='alertanimation'>
@@ -801,7 +801,7 @@
                 </div>
                 <div class='col-md-2'>
                     {# Animate alert -> Animation options #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_alertanimationduration' class='control-label'>{{ gT("Duration") }}</label>
                         <div class='col-12'>
                             <input type="text" class='form-control selector-numerical-input selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimationduration' name='alertanimationduration' title='{{ gT("inherited value:") }} '/>
@@ -814,7 +814,7 @@
             <div class='row action_hide_on_inherit'>
                 <div class='col-12 col-lg-4'>
                     {# Animate alert -> On/Off #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_animatecheckbox' class='control-label'>{{ gT("Animate checkbox") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -839,7 +839,7 @@
                 </div>
                 <div class='col-md-10 col-lg-6'>
                     {# Animate alert -> Animation options #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_checkboxanimation' class='control-label'>{{ gT("Alert animation") }}</label>
                         <div class='col-12'>
                             <select class='form-select selector_option_value_field selector_radio_childfield' data-parent="animatecheckbox" id='simple_edit_options_checkboxanimation' name='checkboxanimation'>
@@ -853,7 +853,7 @@
                 </div>
                 <div class='col-md-2'>
                     {# Animate alert -> Animation options #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_checkboxanimationduration' class='control-label'>{{ gT("Duration") }}</label>
                         <div class='col-12'>
                             <input type="text" class='form-control selector-numerical-input selector_option_value_field selector_radio_childfield' data-parent="animatecheckbox" id='simple_edit_options_checkboxanimationduration' name='checkboxanimationduration' title='{{ gT("inherited value:") }} ' />
@@ -866,7 +866,7 @@
             <div class='row action_hide_on_inherit'>
                 <div class='col-12 col-lg-4'>
                     {# Animate alert -> On/Off #}
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_animateradio' class='control-label'>{{ gT("Animate radio buttons") }}</label>
                         <div class='col-12'>
                             <div class="btn-group" data-toggle="buttons">
@@ -893,7 +893,7 @@
                 {# Animate alert -> Animation options #}
                 <div class='col-md-10 col-lg-6'>
 
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_radioanimation' class='control-label'>{{ gT("Radio button animation") }}</label>
                         <div class='col-12'>
                             <select class='form-select selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimation' name='radioanimation'>
@@ -908,7 +908,7 @@
                 {# Animate alert -> Animation options #}
                 <div class='col-md-2'>
 
-                    <div class='form-group row'>
+                    <div class='mb-3 row'>
                         <label for='simple_edit_options_radioanimationduration' class='control-label'>{{ gT("Duration") }}</label>
                         <div class='col-12'>
                             <input type="text" class='form-control selector-numerical-input selector_option_value_field selector_radio_childfield' data-parent="animateradio" id='simple_edit_options_radioanimationduration' name='radioanimationduration' title='{{ gT("inherited value:") }} ' />
@@ -924,7 +924,7 @@
                     <div class='panel panel-default'>
                         <div class='panel-heading'>{{ sprintf( gT("%s fonts"), templateConfiguration.template_name)|capitalize }}</div>
                         <div class='panel-body'>
-                            <div class='form-group row'>
+                            <div class='mb-3 row'>
                                 <label for='simple_edit_options_font' class='control-label'>{{ gT("Select font:") }}</label>
                                 <div class='col-12'>
                                     <select class='form-select selector_option_value_field' id='simple_edit_options_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>
@@ -946,7 +946,7 @@
                     <div class='panel panel-default'>
                         <div class='panel-heading'>{{ sprintf( gT("%s variations"), templateConfiguration.template_name)|capitalize }} </div>
                         <div class='panel-body'>
-                            <div class='form-group row'>
+                            <div class='mb-3 row'>
                                 <label for='simple_edit_add_css' class='control-label'>{{ gT("Select variation:") }}</label>
                                 <div class='col-12'>
                                     <select class='form-select selector_cssframework_value_field' id='simple_edit_add_css' name='cssframework' data-inheritvalue='{{oParentOptions.files_css}}'>

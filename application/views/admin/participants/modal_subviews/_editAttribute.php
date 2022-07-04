@@ -28,7 +28,7 @@
         echo $form->textFieldControlGroup($model,'defaultname', $baseControlGroupHtmlOptions);
         echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, array_merge($baseControlGroupHtmlOptions, ['class' => 'form-select']));
     ?>
-    <div class=" form-group" id="">
+    <div class="ex-form-group mb-3" id="">
         <label class='form-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
         <div>
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -41,7 +41,7 @@
             ]); ?>
         </div>
     </div>
-    <div class=" form-group" id="">
+    <div class="ex-form-group mb-3" id="">
         <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
         <div>
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -58,7 +58,7 @@
             ]); ?>
         </div>
     </div>
-    <div id="ParticipantAttributeNamesDropdownEdit" class="row form-group" style="display: none;">
+    <div id="ParticipantAttributeNamesDropdownEdit" class="row ex-form-group mb-3" style="display: none;">
         <div class="row">
             <div class="col-2">
                 <button class="btn btn-outline-secondary btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
@@ -76,7 +76,7 @@
                     ]);
                     echo "</div>";
                     echo '<div class="col-1">
-                            <button class="btn btn-outline-secondary form-group action_delDropdownField">
+                            <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
                                 <i class="fa fa-trash text-danger"></i>
                             </button>
                         </div>
@@ -88,7 +88,7 @@
                     <input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='' />
                 </div>
                 <div class="col-1">
-                    <button class="btn btn-outline-secondary form-group action_delDropdownField">
+                    <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
                         <i class="fa fa-trash text-danger"></i>
                     </button>
                 </div>
@@ -96,7 +96,7 @@
         </div>
     </div>
      <legend><?php eT("Languages") ?></legend>
-        <div class="row form-group">
+        <div class="row ex-form-group mb-3">
             <label class=" col-12 form-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
             <div>
                 <div class=" col-11">
@@ -106,7 +106,7 @@
                 </div>
             </div>
             <div class="col-1">
-                <button class="btn btn-outline-secondary form-group" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+                <button class="btn btn-outline-secondary ex-form-group mb-3" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
                     <i class="fa fa-plus-circle text-success"></i>
                 </button>
             </div>
@@ -116,14 +116,14 @@
                 if($editType!=='edit'){
                     $languageKey = Yii::app()->getLanguage();
                     echo 
-                    '<div class="form-group" data-lang="'.$languageKey .'">
+                    '<div class="ex-form-group mb-3" data-lang="'.$languageKey .'">
                         <label class="col-12 form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
                             <div class=" col-11">
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-outline-secondary form-group action_delLanguageField">
+                                <button class="btn btn-outline-secondary ex-form-group mb-3 action_delLanguageField">
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
                             </div>
@@ -133,14 +133,14 @@
                 foreach($languagesOfAttribute as $languageKey => $languageOfAttribute)
                 {
                     echo 
-                    '<div class="col-12 form-group" data-lang="'.$languageKey.'">
+                    '<div class="col-12 ex-form-group mb-3" data-lang="'.$languageKey.'">
                         <label class=" form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
                         <div>
                             <div class=" col-11">
                                 <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.$languageOfAttribute.'">
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-outline-secondary form-group action_delLanguageField">
+                                <button class="btn btn-outline-secondary ex-form-group mb-3 action_delLanguageField">
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
                             </div>
@@ -149,7 +149,7 @@
                 }
             ?>
             <div class="d-none">
-                <div class=" form-group" id="dummyLanguageInputGroup">
+                <div class="ex-form-group mb-3" id="dummyLanguageInputGroup">
                         <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel"></label>
                         <div>
                             <div class="">
@@ -162,7 +162,7 @@
                         <input class='form-control' name='dummyParticipantAttributeNamesDropdown' value='' />
                     </div>
                     <div class="col-1">
-                        <button class="btn btn-outline-secondary form-group action_delDropdownField">
+                        <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
                             <i class="fa fa-trash text-danger"></i>
                         </button>
                     </div>
@@ -217,7 +217,7 @@
             e.preventDefault();
             var self = this,
                 attribute_id = $('#ParticipantAttributeName_attribute_id').val(),
-                formGroup = $(this).closest('div.form-group.'),
+                formGroup = $(this).closest('div.ex-form-group.'),
                 lang = formGroup.data('lang');
                 $.ajax({
                     url: deleteLanguageFromAttributeUrl,

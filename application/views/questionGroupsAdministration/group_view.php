@@ -81,7 +81,7 @@
 
                 <!-- create question in this group -->
                 <div class="col-xl-3">
-                    <div class="card text-center <?php if ($oSurvey->isActive) {
+                    <div class="card card-primary text-center <?php if ($oSurvey->isActive) {
                         echo 'disabled';
                     } else {
                         echo 'card-clickable';

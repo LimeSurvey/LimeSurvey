@@ -67,7 +67,7 @@ const NotifcationSystem  = function (){
 
             $('#admin-notification-modal .modal-title').html(not.title);
             $('#admin-notification-modal .modal-body-text').html(not.message);
-            $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
+            $('#admin-notification-modal .modal-content').addClass('card-' + not.display_class);
             $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
             const modal = new bootstrap.Modal(document.getElementById('admin-notification-modal'));
             modal.show();
@@ -76,7 +76,7 @@ const NotifcationSystem  = function (){
             $('#admin-notification-modal').off('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
                 __notificationIsRead(that);
-                $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
+                $('#admin-notification-modal .modal-content').removeClass('card-' + not.display_class);
             });
         });
     },

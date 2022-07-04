@@ -64,7 +64,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div id="general" class="tab-pane fade show active">
                     <div class="ls-flex-column ls-space padding left-5 right-35 col-lg-6">
                         <!-- General -->
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <!-- ID  -->
                             <label class="form-label">ID:</label>
                             <div class="">
@@ -79,7 +79,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 </p>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <!--
                             TODO:
                             To take in account the anonomyzed survey case (completed field contain no date, but a {Y,N}), the code become more complexe
@@ -153,7 +153,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </div>
 
                         <!-- First name, Last name -->
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <label class="form-label" for='firstname'>
                                 <?php eT("First name:"); ?>
                             </label>
@@ -167,7 +167,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 ); ?>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <label class="form-label" for='lastname'>
                                 <?php eT("Last name:"); ?>
                             </label>
@@ -183,7 +183,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </div>
 
                         <!-- Token, language -->
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <label class="form-label" for='token'>
                                 <?php eT("Access code:"); ?>
                             </label>
@@ -202,7 +202,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <label class="form-label" for='language'>
                                 <?php eT("Language:"); ?>
                             </label>
@@ -218,7 +218,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     <div class="ls-flex-column ls-space padding left-5 right-35 col-lg-6">
 
                         <!-- Email, Email Status  -->
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <label class="form-label" for='email'>
                                 <?php eT("Email:"); ?>
                             </label>
@@ -236,7 +236,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </div>
 
                         <!-- Email Status -->
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <label class="form-label" for='emailstatus'>
                                 <?php eT("Email status:"); ?>
                             </label>
@@ -254,7 +254,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </div>
 
                         <!-- Invitation sent, Reminder sent -->
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <!-- Invitation sent -->
                             <label class="form-label" for='sent'>
                                 <?php eT("Invitation sent?"); ?>
@@ -329,7 +329,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo "N"; }?>" />
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <!-- Reminder sent -->
                             <label class="form-label" for='remindersent'>
                                 <?php eT("Reminder sent?"); ?>
@@ -381,7 +381,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                             </div>
 
                             <!-- Reminder count, Uses left -->
-                            <div class="form-group">
+                            <div class="ex-form-group mb-3">
                                 <!-- Reminder count -->
                                 <?php if ($token_subaction == "edit"): ?>
                                     <label class="form-label" for='remindercount'>
@@ -392,7 +392,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                             </div>
 
                             <!-- Uses left -->
-                            <div class="form-group">
+                            <div class="ex-form-group mb-3">
                                 <label class="form-label" for='usesleft'>
                                     <?php eT("Uses left:"); ?>
                                 </label>
@@ -407,7 +407,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 
                     <div class="ls-flex-column ls-space padding left-5 right-35 col-12">
                         <!-- Valid from to  -->
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <?php
                             if (isset($validfrom) && $validfrom != 'N') {
                                 $validfrom = convertToGlobalSettingFormat($validfrom, true);
@@ -435,7 +435,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <!-- To -->
                             <label class="form-label" for='validuntil'>
                                 <?php eT('Until:'); ?>
@@ -460,7 +460,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div id="custom" class="tab-pane fade">
                     <!-- Attributes -->
                     <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
-                        <div class="form-group">
+                        <div class="ex-form-group mb-3">
                             <label class="form-label" for='<?php echo $attr_name; ?>'>
                                 <?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:
                             </label>

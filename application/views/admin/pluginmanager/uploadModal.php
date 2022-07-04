@@ -25,7 +25,7 @@
                 </div>
                 <input type='hidden' name='lid' value='$lid' />
                 <input type='hidden' name='action' value='templateupload' />
-                <div  class="form-group">
+                <div  class="mb-3">
                     <label for='the_file'><?php eT("Select plugin ZIP file:") ?></label>
                     <input id='the_file' name='the_file' type="file" accept='.zip' />
                     <br/>
