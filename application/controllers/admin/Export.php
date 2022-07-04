@@ -957,32 +957,39 @@ class Export extends SurveyCommonAction
             if ($iSurveyID === false) {
                 continue;
             }
+            $archiveName                    = "";
+            $oSurvey                        = Survey::model()->findByPk($iSurveyID);
+            $aResults[$iSurveyID]['title']  = ellipsize($oSurvey->correct_relation_defaultlanguage->surveyls_title, 30);
+            $aResults[$iSurveyID]['result'] = false;
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
-                $archiveName                    = "";
-                $oSurvey                        = Survey::model()->findByPk($iSurveyID);
-                $aResults[$iSurveyID]['title']  = ellipsize($oSurvey->correct_relation_defaultlanguage->surveyls_title, 30);
-                $aResults[$iSurveyID]['result'] = false;
 
                 // Specific to each kind of export
                 switch ($sExportType) {
                     // Export archives for active surveys
                     case 'archive':
-                        if ($oSurvey->isActive) {
-                            $archiveName = $this->exportarchive($iSurveyID, false);
-
-                            if (is_file($archiveName)) {
-                                $aResults[$iSurveyID]['result'] = true;
-                                $aResults[$iSurveyID]['file']   = $archiveName;
-                                $bArchiveIsEmpty                = false;
-                                $archiveFile                    = $archiveName;
-                                $newArchiveFileFullName         = 'survey_archive_' . $iSurveyID . '.lsa';
-                                $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
-                                unlink($archiveFile);
-                            } else {
-                                $aResults[$iSurveyID]['error'] = gT("Unknown error");
-                            }
+                        if (
+                            ($oSurvey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
+                            || !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+                        ) {
+                            $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
                         } else {
-                            $aResults[$iSurveyID]['error'] = gT("Not active.");
+                            if ($oSurvey->isActive) {
+                                $archiveName = $this->exportarchive($iSurveyID, false);
+
+                                if (is_file($archiveName)) {
+                                    $aResults[$iSurveyID]['result'] = true;
+                                    $aResults[$iSurveyID]['file']   = $archiveName;
+                                    $bArchiveIsEmpty                = false;
+                                    $archiveFile                    = $archiveName;
+                                    $newArchiveFileFullName         = 'survey_archive_' . $iSurveyID . '.lsa';
+                                    $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
+                                    unlink($archiveFile);
+                                } else {
+                                    $aResults[$iSurveyID]['error'] = gT("Unknown error");
+                                }
+                            } else {
+                                $aResults[$iSurveyID]['error'] = gT("Not active.");
+                            }
                         }
                         break;
                     // Export printable archives for all selected surveys
@@ -1053,6 +1060,13 @@ class Export extends SurveyCommonAction
     private function exportarchive(int $iSurveyID, bool $bSendToBrowser = true)
     {
         $survey = Survey::model()->findByPk($iSurveyID);
+
+        if (
+            ($survey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
+            || !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
         $aSurveyInfo = getSurveyInfo($iSurveyID); // TODO: $aSurveyInfo is not used anymore. Remove it.
 
