@@ -1460,6 +1460,11 @@ body {
     background-color: #328637
 }
 
+.fruity .input-group-text {
+    color: white;
+    background-color: #328637
+}
+
 .fruity .nav .nav-divider {
     background-color: #e6e6e6
 }
