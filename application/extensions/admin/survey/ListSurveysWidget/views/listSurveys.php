@@ -91,8 +91,8 @@
                         'name' => 'owner',
                         'type' => 'raw',
                         'value'=>'CHtml::link(CHtml::encode($data->ownerUserName), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm  text-nowrap'),
-                        'htmlOptions' => array('class' => 'hidden-md hidden-sm  has-link'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-md d-table-cell d-sm-none d-md-table-cell text-nowrap'),
+                        'htmlOptions' => array('class' => 'hidden-md d-table-cell d-sm-none d-md-table-cell  has-link'),
                     ),
 
                     array(
@@ -100,8 +100,8 @@
                         'name' => 'anonymized_responses',
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->anonymizedResponses, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => ' hidden-sm'),
-                        'htmlOptions' => array('class' => ' hidden-sm has-link'),
+                        'headerHtmlOptions'=>array('class' => ' d-table-cell d-sm-none d-md-table-cell'),
+                        'htmlOptions' => array('class' => ' d-table-cell d-sm-none d-md-table-cell has-link'),
                     ),
 
 
