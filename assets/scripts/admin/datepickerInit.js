@@ -75,4 +75,16 @@ function initDatePicker(element, constName, locale, dateFormat) {
     constName = 'picker_' + constName;
     pickers[constName] = new tempusDominus.TempusDominus(element, config);
     setDatePickerFormat(pickers[constName], dateFormat, element.value);
+    attachCalendarIconToDatepicker();
+}
+
+
+/**
+ * Open datepicker via click on calendar icon.
+ * This is needed for the datepicker fields in the tokenform.
+ */
+function attachCalendarIconToDatepicker() {
+    $(document).off().on('click', '.datepicker-icon', function () {
+        $(this).prevAll('input').click();
+    });
 }

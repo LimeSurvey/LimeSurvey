@@ -442,7 +442,7 @@ var startEditToken = function(){
                 Tokens.YesNo(el);
             });
 
-            initValidFromValidUntilPickers()
+            initValidFromValidUntilPickers();
 
             $('.date .input-group-addon').on('click', function(){
                 $prev = $(this).siblings();
@@ -565,11 +565,3 @@ function initValidFromValidUntilPickers() {
         initDatePicker(validuntilElement, 'validuntil', locale, dateFormat);
     }
 }
-
-/**
- * Open datepicker via click on calendar icon
- */
-$(document).on('click', '.datepicker-icon', function () {
-    $(this).prevAll('input').click();
-});
-
