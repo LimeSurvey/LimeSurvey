@@ -13,6 +13,7 @@ class Update_489 extends DatabaseUpdateBase
             '{{failed_email}}',
             [
                 'id' => "pk",
+                'surveyid' => "integer NOT NULL",
                 'subject' => "string(200) NOT NULL",
                 'recipient' => "string(200) NOT NULL",
                 'content' => "text NOT NULL",

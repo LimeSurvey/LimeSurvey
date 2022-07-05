@@ -6,6 +6,7 @@
  *
  * The followings are the available columns in table '{{failed_email}}':
  * @property integer $id primary key
+ * @property integer $surveyid the surveyid this one belongs to
  * @property string $subject the email subject
  * @property string $recipient the recipients email address
  * @property string $content the content of the failed email
@@ -27,7 +28,7 @@ class FailedEmail extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('id, subject, recipient,content, created', 'required'),
+            array('id, surveyid, subject, recipient,content, created', 'required'),
         );
     }
 
