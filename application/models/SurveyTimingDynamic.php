@@ -210,7 +210,7 @@ class SurveyTimingDynamic extends LSActiveRecord
         // Delete
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
             $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '<a class="btn btn-sm btn-outline-secondary" data-bs-target="#confirmation-modal" data-post-url="' . $deleteUrl . '" role="button" data-bs-toggle="modal" data-tooltip="true" title="' . gT('Delete this response') . '"><span class="fa fa-trash text-danger" ></span></a>';
+            $buttons .= '<span data-bs-toggle="tooltip" title="' . gT('Delete this response') . '"><a class="btn btn-sm btn-outline-secondary" data-bs-target="#confirmation-modal" data-post-url="' . $deleteUrl . '" role="button" data-bs-toggle="modal"><span class="fa fa-trash text-danger" ></span></a></span>';
         }
         $buttons .= '</div>';
         return $buttons;

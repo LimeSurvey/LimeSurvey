@@ -17,17 +17,17 @@
                 <?php if (isset($fullpagebar['pluginManager'])) : ?>
                     <!-- Install Plugin Zip -->
                     <?php if (!empty($fullpagebar['pluginManager']['buttons']['showUpload'])) : ?>
-                        <a
-                            href=''
-                        class='btn btn-outline-secondary'
-                        data-bs-toggle='modal'
-                        data-bs-target='#installPluginZipModal'
-                            data-tooltip='true'
-                            title='<?php eT('Install plugin by ZIP archive'); ?>'
-                        >
-                            <i class='icon-import'></i>&nbsp;
-                            <?php eT('Upload & install'); ?>
-                        </a>
+                        <span data-bs-toggle="tooltip" title='<?php eT('Install plugin by ZIP archive'); ?>'>
+                            <a
+                                href=''
+                                class='btn btn-outline-secondary'
+                                data-bs-toggle='modal'
+                                data-bs-target='#installPluginZipModal'>
+                                <i class='icon-import'></i>&nbsp;
+                                <?php
+                                eT('Upload & install'); ?>
+                            </a>
+                        </span>
                     <?php endif; ?>
 
                     <!-- Scan Files -->
