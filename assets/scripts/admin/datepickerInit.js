@@ -84,7 +84,8 @@ function initDatePicker(element, constName, locale, dateFormat) {
  * This is needed for the datepicker fields in the tokenform.
  */
 function attachCalendarIconToDatepicker() {
-    $(document).off().on('click', '.datepicker-icon', function () {
+    $(document).off('click', '.datepicker-icon');
+    $(document).on('click', '.datepicker-icon', function () {
         $(this).prevAll('input').click();
     });
 }
