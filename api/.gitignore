@@ -9,6 +9,7 @@ dist/
 vendor/
 .env
 .vscode/
+api/config/runtime/debug/*
 
 #php specific
 composer.phar
