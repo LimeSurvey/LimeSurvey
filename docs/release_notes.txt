@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.17 (build 220627) to 3.28.18 (build 220706) July 5, 2022
+-Fixed issue [security] #18200: User with only reponse export can export Survey + token (survey archive) (#2491) (Gabriel Jenik)
+-Fixed issue [security] #18042: Path-relative stylesheet import (PRSSI) vulnerability (#2374) (#2495) (Gabriel Jenik)
+-Fixed issue #18201: Unable to import LSA file with MSSQL and debug set (#2472) (Denis Chenu)
+-Fixed issue #18189: Fonts showing differently on mobile Vs desktop (#2484) (Gabriel Jenik)
+#Updated translation: Zulu by erik.lamontagne
+#Updated translation: Ukrainian by olly
+#Updated translation: Slovak by jelen1
+#Updated translation: Luxembourgish by Mazi
+#Updated translation: Kazakh by CenterOfExcellence
+#Updated translation: Kannada by mahantesh19
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Chinese (Simplified) by FangZhijian
+#Updated translation: Basque by zatarain
+
+
 Changes from 3.28.16 (build 220621) to 3.28.17 (build 220627) June 27, 2022
 -Fixed issue: Error after user deletion (Carsten Schmitz)
 -Fixed issue #18186: Language changer does not work in registration page (Roberto Longobardi)
