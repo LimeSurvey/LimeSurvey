@@ -2070,7 +2070,7 @@ function getSideBodyClass($sideMenustate = false)
         throw new \CException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
     }
 
-    //@TODO something unfinished here?
+    //TODO something unfinished here?
     return "";
     $class;
 }
