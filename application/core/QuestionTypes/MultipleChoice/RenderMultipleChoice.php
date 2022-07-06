@@ -169,6 +169,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'basename'         => $this->sSGQA,
             'anscount'         => $this->getQuestionCount(),
             'iNbCols'          => $this->iNbCols,
+            'iMaxRowsByColumn' => $this->getQuestionCount() +1, // Leave it for old question theme compatibility, be sure to don't add columns
             'coreClass'        => $this->sCoreClasses,
         ), true);
 
