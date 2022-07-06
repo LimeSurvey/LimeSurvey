@@ -258,7 +258,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                            <img class="selector__image img-responsive" src="" alt="title"/>
+                            <img class="selector__image img-fluid" src="" alt="title"/>
                         </div>
                     </div>
                 </div>

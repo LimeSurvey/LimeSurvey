@@ -30,7 +30,7 @@ echo viewHelper::getViewTestTag('index');
     <?php if($bShowLogo):?>
         <div class="row">
             <div class="jumbotron" id="welcome-jumbotron">
-                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
+                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-fluid center-block" />
                 <p class="d-xs-none custom custom-margin top-25 fs-4 text" ><?php echo PRESENTATION; // Defined in AdminController?></p>
             </div>
         </div>

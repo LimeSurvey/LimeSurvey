@@ -4,7 +4,7 @@
 
         <!-- Header -->
         <div class="col-12">
-          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
+          <img alt="logo" id="profile-img" class="profile-img-card img-fluid center-block" src="<?php echo LOGO_URL;?>" />
         </div>
 
         <!-- Action Name -->
