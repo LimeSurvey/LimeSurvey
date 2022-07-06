@@ -3478,7 +3478,6 @@ class statistics_helper
         //START Chop up fieldname and find matching questions
 
         //loop through all selected questions
-        $count = 0;
         foreach ($runthrough as $rt) {
             ////Step 1: Get information about this response field (SGQA) for the summary
             $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
@@ -3486,22 +3485,10 @@ class statistics_helper
             //2. Collect and Display results #######################################################################
 
             if (isset($outputs['alist']) && $outputs['alist']) {
-                $count = $count + 1;
-
                 $display = $this->displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
                 $sOutputHTML .= $display['statisticsoutput'];
                 $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
-
-                // Add row break after every second column for md size
-                if ($count % 2 == 0) {
-                    $sOutputHTML .= '<div class="clearfix visible-md-block"></div>';
-                }
-                // Add row break after every third column for lg size
-                if ($count % 3 == 0) {
-                    $sOutputHTML .= '<div class="clearfix visible-lg-block"></div>';
-                }
             }    //end if -> collect and display results
-
 
             //Delete Build Outputs data
             unset($outputs);
