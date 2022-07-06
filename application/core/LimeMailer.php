@@ -681,7 +681,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $url = $aReplacements["{$urlPlaceholder}URL"];
                 $string = str_replace("@@{$urlPlaceholder}URL@@", $url, $string);
                 if ($this->getIsHtml()) {
-                    $aReplacements["{$urlPlaceholder}URL"] = Chtml::link($url, $url);
+                    $aReplacements["{$urlPlaceholder}URL"] = CHtml::link($url, $url);
                 }
             }
         }

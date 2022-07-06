@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.21 (build 220620) to 5.3.22 (build 220628) June 27, 2022
+-Fixed issue: Class CHtml not found after user deletion (Carsten Schmitz)
+-Fixed issue #18185: Error message "No scope _renderErrorString" when trying to update (Carsten Schmitz)
+-Fixed issue #18171: Timings are not saved on MSSQL DB (#2477) (Denis Chenu)
+-Fixed issue #18153: 'Export this question to PDF' button in View Statistics - HTML does nothing (#2457) (Gabriel Jenik)
+-Fixed issue #18108: Unable to save existing question with button (#2440) (Denis Chenu)
+-Fixed issue #18101: Spinning hexagon continues to spin although file is correctly downloaded (#2454) (Gabriel Jenik)
+-Fixed issue #18094: Broken view in uploader (#2438) (Gabriel Jenik)
+-Fixed issue #17804: InputOnDemand is not loading all prior rows when navigating back (#2475) (Gabriel Jenik)
+-Fixed issue #17700: Custom logo disappears in extended themes (#2459) (Gabriel Jenik)
+
+
 Changes from 5.3.20 (build 220615) to 5.3.21 (build 220620) June 20, 2022
 -Fixed issue #18175: html editor iframe did not take whole available place (#2463) (Gabriel Jenik)
 #Updated translation: Spanish (Spain) by ireneoh

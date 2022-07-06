@@ -415,6 +415,7 @@ class QuestionTheme extends LSActiveRecord
         // set settings as json
         $questionMetaData['settings'] = json_encode([
             'subquestions'     => $questionMetaData['subquestions'] ?? 0,
+            'other'            => $questionMetaData['other'] ?? false,
             'answerscales'     => $questionMetaData['answerscales'] ?? 0,
             'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'] ?? 0,
             'assessable'       => $questionMetaData['assessable'] ?? 0,
