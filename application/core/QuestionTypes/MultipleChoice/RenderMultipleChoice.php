@@ -21,8 +21,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     private $sCoreClasses = 'ls-answers checkbox-list answers-list';
     private $inputnames = [];
 
-    private $iColumnWidth;
-    private $iMaxRowsByColumn;
+    /* Number of columns */
     private $iNbCols;
 
     /** @var boolean indicates if the question has the 'Other' option enabled */
@@ -45,11 +44,6 @@ class RenderMultipleChoice extends QuestionBaseRenderer
 
         $this->iNbCols = $this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1);
 
-        $this->iColumnWidth = round(12 / $this->iNbCols);
-        $this->iColumnWidth = ($this->iColumnWidth >= 1) ? $this->iColumnWidth : 1;
-        $this->iColumnWidth = ($this->iColumnWidth <= 12) ? $this->iColumnWidth : 12;
-        $this->iMaxRowsByColumn = ceil($this->getQuestionCount() / $this->iNbCols);
-    
         if ($this->iNbCols > 1) {
             $this->sCoreClasses .= " multiple-list nbcol-{$this->iNbCols}";
         }
@@ -99,7 +93,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
                 'checkedState'            => ($this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], '') == 'Y' ? CHECKED : ''),
                 'sCheckconditionFunction' => $checkconditionFunction . '(this.value, this.name, this.type)',
                 'sValue'                  => $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], ''),
-                'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname)
+                'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname),
+                'anscount'                => $this->getQuestionCount(),
+                'iNbCols'                 => $this->iNbCols
             );
             if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_SUBQUESTION && $this->subquestionBeforeOther == $oQuestion->title) {
                 $aRows[] = $this->getOtherRow();
@@ -154,7 +150,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'sValueHidden'               => $sValueHidden,
             'checkedState'               => ($mSessionValue != '' ? CHECKED : ''),
             'relevanceClass'             => $this->getCurrentRelevecanceClass($myfname),
-            'other'                      => true
+            'other'                      => true,
+            'anscount'                   => $this->getQuestionCount(),
+            'iNbCols'                    => $this->iNbCols
         );
     }
 
@@ -170,8 +168,6 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'name'             => $this->sSGQA,
             'basename'         => $this->sSGQA,
             'anscount'         => $this->getQuestionCount(),
-            'iColumnWidth'     => $this->iColumnWidth,
-            'iMaxRowsByColumn' => $this->iMaxRowsByColumn,
             'iNbCols'          => $this->iNbCols,
             'coreClass'        => $this->sCoreClasses,
         ), true);

@@ -11,7 +11,7 @@
 
 <!-- answer -->
 {{ sTimer }}
-<ul class="{{ coreClass }} list-unstyled" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}" data-column-count={{iNbCols}}>
+<ul class="{{ coreClass }} list-unstyled" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}"{% if iNbCols > 1 %} data-column-count={{iNbCols}}{% endif %}>
     {# rows/answer_row.php #}
     {{ sRows }}
 </ul>

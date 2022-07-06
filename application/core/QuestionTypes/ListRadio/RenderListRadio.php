@@ -85,6 +85,11 @@ class RenderListRadio extends QuestionBaseRenderer
                 'answer'        => $oAnswer->answerl10ns[$this->sLanguage]->answer,
                 'checkedState'  => ($this->mSessionValue == $oAnswer->code ? 'CHECKED' : ''),
                 'myfname'       => $this->sSGQA . $oAnswer->code,
+                'iNbCols' => $this->iNbCols,
+                'iCountAnswers' => $this->iCountAnswers,
+                'hasOther' => $this->hasOther,
+                'otherPosition' => $this->otherPosition,
+                'answerBeforeOther' => $this->answerBeforeOther,
                 ), true);
             if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $oAnswer->code) {
                 $aRows[] = $this->addOtherRow();
@@ -131,6 +136,11 @@ class RenderListRadio extends QuestionBaseRenderer
             'name' => $this->sSGQA,
             'check_ans' => $check_ans,
             'checkconditionFunction' => $this->checkconditionFunction,
+            'iNbCols' => $this->iNbCols,
+            'iCountAnswers' => $this->iCountAnswers,
+            'hasOther' => $this->hasOther,
+            'otherPosition' => $this->otherPosition,
+            'answerBeforeOther' => $this->answerBeforeOther,
             ), true);
     }
 
@@ -164,6 +174,11 @@ class RenderListRadio extends QuestionBaseRenderer
             'checkedState' => $checkedState,
             'oth_checkconditionFunction' => $oth_checkconditionFunction . '(this.value, this.name, this.type)',
             'checkconditionFunction' => $this->checkconditionFunction,
+            'iNbCols' => $this->iNbCols,
+            'iCountAnswers' => $this->iCountAnswers,
+            'hasOther' => $this->hasOther,
+            'otherPosition' => $this->otherPosition,
+            'answerBeforeOther' => $this->answerBeforeOther,
             ), true);
     }
 
