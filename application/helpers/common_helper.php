@@ -1183,7 +1183,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
-                    $myfield2 = $flt['type'] . $myfield . reset($row);
+                    $myfield2 = $flt['type'].$myfield .$row['title'];
                     $allfields[] = $myfield2;
                 }
                 break;
@@ -1198,7 +1198,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
-                    $myfield2 = $myfield . reset($row);
+                    $myfield2 = $myfield .$row['title'];
                     $allfields[] = $myfield2;
                 }
                 break;
@@ -1216,7 +1216,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 foreach ($result as $row) {
                     $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
                     foreach ($fresult as $frow) {
-                        $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
+                        $myfield2 = $myfield .$row['title']. "_" . $frow['title'];
                         $allfields[] = $myfield2;
                     }
                 }
