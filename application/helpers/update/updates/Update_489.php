@@ -2,6 +2,9 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use LsDefaultDataSets;
+use SurveymenuEntries;
+
 class Update_489 extends DatabaseUpdateBase
 {
     /**
@@ -23,6 +26,17 @@ class Update_489 extends DatabaseUpdateBase
                 'updated' => "datetime NULL",
             ]
         );
+        $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+        foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
+            if ($aSurveymenuentry['name'] === 'failedemail') {
+                $aSurveymenuentry['ordering'] = 5;
+                if (SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) === null) {
+                    $this->db->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+                    SurveymenuEntries::reorderMenu(2);
+                }
+                break;
+            }
+        }
     }
 
 }

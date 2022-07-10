@@ -20,7 +20,7 @@ class FailedEmail extends LSActiveRecord
      * @inheritdoc
      * @return string the associated database table name
      */
-    public function tableName()
+    public function tableName(): string
     {
         return '{{failed_email}}';
     }
@@ -29,7 +29,7 @@ class FailedEmail extends LSActiveRecord
      * @inheritdoc
      * @return array validation rules for model attributes.
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             ['id, surveyid, subject, recipient, content, created', 'required'],
@@ -46,7 +46,7 @@ class FailedEmail extends LSActiveRecord
      * @inheritdoc
      * @return array relational rules.
      */
-    public function relations()
+    public function relations(): array
     {
         return [];
     }
@@ -55,7 +55,7 @@ class FailedEmail extends LSActiveRecord
      * @inheritdoc
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id'        => 'ID',
@@ -80,7 +80,7 @@ class FailedEmail extends LSActiveRecord
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
      */
-    public function search()
+    public function search(): CActiveDataProvider
     {
         $criteria = new CDbCriteria;
 
@@ -103,8 +103,66 @@ class FailedEmail extends LSActiveRecord
      * @param string $className active record class name.
      * @return FailedEmail the static model class
      */
-    public static function model($className = __CLASS__)
+    public static function model($className = __CLASS__): FailedEmail
     {
         return parent::model($className);
+    }
+
+    public function getColumns()
+    {
+        return [
+            [
+                'id'             => 'id',
+                'class'          => 'CCheckBoxColumn',
+                'selectableRows' => '100',
+            ],
+            [
+                'header'      => gT('Action'),
+                'name'        => 'buttons',
+                'type'        => 'raw',
+                'value'       => '$data->buttons',
+            ],
+            [
+                'header' => gT('Status'),
+                'name'   => 'status',
+                'value'  => '$data->status',
+            ],
+            [
+                'header' => gT('Error Message'),
+                'name'   => 'error_message',
+                'value'  => '$data->error_message',
+            ],
+            [
+                'header' => gT('Created'),
+                'name'   => 'created',
+                'value'  => '$data->created',
+            ],
+            [
+                'header' => gT('Updated'),
+                'name'   => 'updated',
+                'value'  => '$data->updated',
+            ],
+            [
+                'header' => gT('Subject'),
+                'name'   => 'subject',
+                'value'  => '$data->subject',
+            ],
+            [
+                'header' => gT("Recipient"),
+                'name'   => 'recipient',
+                'value'  => '$data->recipient',
+            ],
+            [
+                'header' => gT('Content'),
+                'name'   => 'content',
+                'value'  => '$data->content',
+            ],
+        ];
+    }
+
+    public function getButtons()
+    {
+        $buttons = 'insert viewfile here';
+        return $buttons;
     }
 }

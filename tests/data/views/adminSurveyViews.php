@@ -24,6 +24,7 @@ return [
     ['surveyNotificationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/notification/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyPublicationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/publication/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyEmailTemplates', ['route'=>'emailtemplates/sa/index/surveyid/{SID}']],
+    ['surveyFailedEmail', ['route'=>'failedemail/sa/index/surveyid/{SID}']],
     ['surveyPanelIntegration', ['route'=>'surveyAdministration/rendersidemenulink/subaction/panelintegration/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyPlugins', ['route'=>'surveyAdministration/rendersidemenulink/subaction/plugins/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyListQuestions', ['route'=>'questionAdministration/listquestions/surveyid/{SID}', 'noAdminInFront' => true]],
