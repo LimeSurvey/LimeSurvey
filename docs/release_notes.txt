@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.18 (build 220706) to 3.28.19 (build 220712) July 11, 2022
+-Fixed issue #17952: Command action tries to open unneeded session (#2496) (Denis Chenu)
+-Fixed issue #17488: Cannot view survey after updating to version 3.27.9 with custom twig extension (breaks survey) (#2360) (Gabriel Jenik)
+#Updated translation: Hungarian by kkd
+
+
 Changes from 3.28.17 (build 220627) to 3.28.18 (build 220706) July 5, 2022
 -Fixed issue [security] #18200: User with only reponse export can export Survey + token (survey archive) (#2491) (Gabriel Jenik)
 -Fixed issue [security] #18042: Path-relative stylesheet import (PRSSI) vulnerability (#2374) (#2495) (Gabriel Jenik)
