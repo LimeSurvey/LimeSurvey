@@ -1,43 +1,5 @@
-﻿/**
- * @license Copyright (c) 2014-2018, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/license
- */
-
-( function() {
-	'use strict';
-
-	CKEDITOR.plugins.a11ychecker.quickFixes.get( { langCode: 'en',
-		name: 'QuickFix',
-		callback: function( QuickFix ) {
-			/**
-			 * The ultimate fix for unsolvable problem - removing an element.
-			 *
-			 * @member CKEDITOR.plugins.a11ychecker.quickFix
-			 * @class ElementRemove
-			 * @constructor
-			 * @param {CKEDITOR.plugins.a11ychecker.Issue} issue
-			 */
-			function ElementRemove( issue ) {
-				QuickFix.call( this, issue );
-			}
-
-			ElementRemove.prototype = new QuickFix();
-			ElementRemove.prototype.constructor = ElementRemove;
-
-			ElementRemove.prototype.display = function( form ) {
-				form.setInputs( {} );
-			};
-
-			ElementRemove.prototype.fix = function( formAttributes, callback ) {
-				this.issue.element.remove();
-
-				if ( callback ) {
-					callback( this );
-				}
-			};
-
-			ElementRemove.prototype.lang = {};
-			CKEDITOR.plugins.a11ychecker.quickFixes.add( 'en/ElementRemove', ElementRemove );
-		}
-	} );
-}() );
+﻿/*
+ Copyright (c) 2014-2018, CKSource - Frederico Knabben. All rights reserved.
+ For licensing, see LICENSE.md or https://ckeditor.com/license
+*/
+(function(){CKEDITOR.plugins.a11ychecker.quickFixes.get({langCode:"en",name:"QuickFix",callback:function(b){function a(a){b.call(this,a)}a.prototype=new b;a.prototype.constructor=a;a.prototype.display=function(a){a.setInputs({})};a.prototype.fix=function(a,b){this.issue.element.remove();b&&b(this)};a.prototype.lang={};CKEDITOR.plugins.a11ychecker.quickFixes.add("en/ElementRemove",a)}})})();

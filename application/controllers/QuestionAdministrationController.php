@@ -1963,13 +1963,8 @@ class QuestionAdministrationController extends LSBaseController
         foreach ($aQids as $sQid) {
             $iQid = (int)$sQid;
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
-            // Only set the other state for question types that have this attribute
-            if (
-                ($oQuestion->type == Question::QT_L_LIST)
-                || ($oQuestion->type == Question::QT_EXCLAMATION_LIST_DROPDOWN)
-                || ($oQuestion->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
-                || ($oQuestion->type == Question::QT_M_MULTIPLE_CHOICE)
-            ) {
+            // Only set the other state for question types that have this attribute (and no parent_qid)
+            if ($oQuestion->getAllowOther()) {
                 $oQuestion->other = $sOther;
                 $oQuestion->save();
             }
