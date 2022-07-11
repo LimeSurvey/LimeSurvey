@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-07-01 14:29:00+00:00\n"
+"POT-Creation-Date: 2022-07-11 09:22:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -195,6 +195,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:494
 #: application/controllers/admin/EmailTemplates.php:36
 #: application/controllers/admin/Export.php:656
+#: application/controllers/admin/Export.php:1068
 #: application/controllers/admin/Expressions.php:43
 #: application/controllers/admin/Expressions.php:93
 #: application/controllers/admin/PrintableSurvey.php:38
@@ -273,7 +274,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2435
 #: application/controllers/SurveyAdministrationController.php:3172
 #: application/controllers/admin/EmailTemplates.php:84
-#: application/controllers/admin/Export.php:1243
+#: application/controllers/admin/Export.php:1257
 #: application/controllers/admin/Expressions.php:134
 #: application/controllers/admin/PluginHelper.php:31
 #: application/controllers/admin/Quotas.php:150
@@ -1067,7 +1068,8 @@ msgstr ""
 #: application/controllers/ThemeOptionsController.php:290
 #: application/controllers/ThemeOptionsController.php:579
 #: application/controllers/ThemeOptionsController.php:605
-#: application/controllers/admin/Export.php:1017
+#: application/controllers/admin/Export.php:965
+#: application/controllers/admin/Export.php:977
 #: application/controllers/admin/QuestionThemes.php:13
 #: application/controllers/admin/SurveymenuController.php:168
 #: application/controllers/admin/SurveymenuEntryController.php:214
@@ -2088,7 +2090,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1434
 #: application/core/LsDefaultDataSets.php:1579
 #: application/core/SurveyCommonAction.php:766
-#: application/core/TopbarConfiguration.php:177
+#: application/core/TopbarConfiguration.php:180
 #: application/extensions/TopbarWidget/views/includes/editQuestionTopbarLeft_view.php:8
 #: application/extensions/TopbarWidget/views/includes/editQuestionTopbarLeft_view.php:29
 #: application/extensions/TopbarWidget/views/includes/previewSurveyAndGroupButtons_view.php:7
@@ -2108,7 +2110,7 @@ msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:1437
 #: application/core/SurveyCommonAction.php:768
-#: application/core/TopbarConfiguration.php:180
+#: application/core/TopbarConfiguration.php:183
 #: application/extensions/TopbarWidget/views/includes/editQuestionTopbarLeft_view.php:11
 #: application/extensions/TopbarWidget/views/includes/editQuestionTopbarLeft_view.php:32
 #: application/extensions/TopbarWidget/views/includes/previewSurveyAndGroupButtons_view.php:10
@@ -5106,25 +5108,25 @@ msgstr ""
 msgid "Export a VV survey file"
 msgstr ""
 
-#: application/controllers/admin/Export.php:982
-#: application/controllers/admin/Export.php:1000
-msgid "Unknown error"
-msgstr ""
-
-#: application/controllers/admin/Export.php:985
+#: application/controllers/admin/Export.php:981
 msgid "Not active."
 msgstr ""
 
-#: application/controllers/admin/Export.php:1241
-#: application/controllers/admin/Export.php:1242
+#: application/controllers/admin/Export.php:995
+#: application/controllers/admin/Export.php:1010
+msgid "Unknown error"
+msgstr ""
+
+#: application/controllers/admin/Export.php:1255
+#: application/controllers/admin/Export.php:1256
 #: application/views/admin/survey/queXMLSurvey_view.php:5
 #: application/views/admin/survey/queXMLSurvey_view.php:6
-#: application/views/admin/survey/surveybar_displayexport.php:70
+#: application/views/admin/survey/surveybar_displayexport.php:75
 #: tmp/runtime/twig_cache/3a/3a6fc8bc181163606d8be8f33a72d4c41df9158507d711e8473aa7a07f654aa3.php:91
 msgid "queXML PDF export"
 msgstr ""
 
-#: application/controllers/admin/Export.php:1305
+#: application/controllers/admin/Export.php:1319
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
@@ -5394,11 +5396,11 @@ msgstr ""
 #: application/views/admin/participants/massive_actions/_selector.php:65
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:32
 #: application/views/admin/participants/participantsPanel_view.php:21
-#: application/views/admin/survey/surveybar_displayexport.php:152
-#: application/views/admin/survey/surveybar_displayexport.php:153
-#: application/views/admin/survey/surveybar_displayexport.php:154
-#: application/views/admin/survey/surveybar_displayexport.php:162
-#: application/views/admin/survey/surveybar_displayexport.php:186
+#: application/views/admin/survey/surveybar_displayexport.php:157
+#: application/views/admin/survey/surveybar_displayexport.php:158
+#: application/views/admin/survey/surveybar_displayexport.php:159
+#: application/views/admin/survey/surveybar_displayexport.php:167
+#: application/views/admin/survey/surveybar_displayexport.php:191
 #: application/views/admin/survey/topbar/responses_topbar.php:101
 #: application/views/admin/themes/templateeditorbar_view.php:78
 #: application/views/admin/themes/templateeditorbar_view.php:124
@@ -10361,7 +10363,7 @@ msgid "This will export the survey structure (.lss) for all selected active surv
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:144
-#: application/views/admin/survey/surveybar_displayexport.php:95
+#: application/views/admin/survey/surveybar_displayexport.php:100
 msgid "Printable survey (*.html)"
 msgstr ""
 
@@ -21078,133 +21080,133 @@ msgstr ""
 msgid "Import a group"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:18
+#: application/views/admin/survey/surveybar_displayexport.php:19
 msgid "Survey structure (.lss)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:19
+#: application/views/admin/survey/surveybar_displayexport.php:20
 msgid "This export will dump all the groups, questions, answers and conditions for your survey into a .LSS file (which is basically an XML file). This dump file can be used with the 'Import survey' feature when creating a new survey."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:20
+#: application/views/admin/survey/surveybar_displayexport.php:21
 msgid "A survey which uses a custom theme will import fine, but the template it refers to will not exist on the new server. In that case the system will use the global default theme."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:21
+#: application/views/admin/survey/surveybar_displayexport.php:22
 msgid "Please note: This file does not contain any collected responses."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:29
+#: application/views/admin/survey/surveybar_displayexport.php:34
 msgid "Survey archive (.lsa)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:31
+#: application/views/admin/survey/surveybar_displayexport.php:36
 msgid "This export is intended to create a complete backup of an active survey for archival purposes."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:32
+#: application/views/admin/survey/surveybar_displayexport.php:37
 msgid "It will include the following data in a ZIP file ending with '.lsa'."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:34
+#: application/views/admin/survey/surveybar_displayexport.php:39
 msgid "Survey structure"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:35
+#: application/views/admin/survey/surveybar_displayexport.php:40
 msgid "Response data (Attention: Doesn't include files uploaded in a file upload question. These have to be exported separately.)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:36
+#: application/views/admin/survey/surveybar_displayexport.php:41
 msgid "Survey participant data (if available)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:37
+#: application/views/admin/survey/surveybar_displayexport.php:42
 msgid "Timings (if activated)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:45
+#: application/views/admin/survey/surveybar_displayexport.php:50
 msgid "Survey archive - only available for active surveys"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:57
+#: application/views/admin/survey/surveybar_displayexport.php:62
 msgid "queXML format (*.xml)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:59
-#: application/views/admin/survey/surveybar_displayexport.php:72
+#: application/views/admin/survey/surveybar_displayexport.php:64
+#: application/views/admin/survey/surveybar_displayexport.php:77
 msgid "queXML is an XML description of a questionnaire."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:60
-#: application/views/admin/survey/surveybar_displayexport.php:74
+#: application/views/admin/survey/surveybar_displayexport.php:65
+#: application/views/admin/survey/surveybar_displayexport.php:79
 msgid "It is not suitable for backing up a LimeSurvey survey as it cannot export conditions, and isn't able to export all question types."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:61
+#: application/views/admin/survey/surveybar_displayexport.php:66
 msgid "Exporting a questionnaire to queXML allows you to create PDF documents that can be printed, filled then scanned and processed using queXF software."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:62
+#: application/views/admin/survey/surveybar_displayexport.php:67
 msgid "To find out more about queXML check out this page:"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:73
+#: application/views/admin/survey/surveybar_displayexport.php:78
 msgid "On the following page you will be able to create a pdf that can be printed filled out and scanned again."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:75
+#: application/views/admin/survey/surveybar_displayexport.php:80
 msgid "To get to know more about queXML check this page:"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:82
+#: application/views/admin/survey/surveybar_displayexport.php:87
 msgid "Tab-separated-values format (*.txt)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:84
+#: application/views/admin/survey/surveybar_displayexport.php:89
 msgid "This feature is designed to make it easy to use Excel to author and edit surveys."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:85
+#: application/views/admin/survey/surveybar_displayexport.php:90
 msgid "It completely eliminates the dependence upon SGQA codes."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:86
+#: application/views/admin/survey/surveybar_displayexport.php:91
 msgid "It also makes it easy to do bulk editing of your survey, such as find-replace, bulk-reordering, looping (repeating groups), and testing (such as temporarily disabling mandatory or validation criteria)."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:87
+#: application/views/admin/survey/surveybar_displayexport.php:92
 msgid "Check out the dedicated documentation for this format."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:97
+#: application/views/admin/survey/surveybar_displayexport.php:102
 msgid "This will download a .zip file containing the survey in all languages."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:98
+#: application/views/admin/survey/surveybar_displayexport.php:103
 msgid "It will also contain the necessary stylesheets to put it up on any HTML-ready devices or browsers."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:99
-#: application/views/admin/survey/surveybar_displayexport.php:113
-#: application/views/admin/survey/surveybar_displayexport.php:138
+#: application/views/admin/survey/surveybar_displayexport.php:104
+#: application/views/admin/survey/surveybar_displayexport.php:118
+#: application/views/admin/survey/surveybar_displayexport.php:143
 msgid "It will not contain any logic or EM-functionality, you'll have to take that into account yourself."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:109
-#: application/views/admin/survey/surveybar_displayexport.php:134
+#: application/views/admin/survey/surveybar_displayexport.php:114
+#: application/views/admin/survey/surveybar_displayexport.php:139
 msgid "Printable survey"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:111
+#: application/views/admin/survey/surveybar_displayexport.php:116
 msgid "This will open the survey as a printable page in new window."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:112
-#: application/views/admin/survey/surveybar_displayexport.php:137
+#: application/views/admin/survey/surveybar_displayexport.php:117
+#: application/views/admin/survey/surveybar_displayexport.php:142
 msgid "All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browser menu."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:136
+#: application/views/admin/survey/surveybar_displayexport.php:141
 msgid "This will open the survey in %s as a printable page in new window."
 msgstr ""
 
