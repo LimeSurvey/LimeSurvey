@@ -152,11 +152,11 @@ class ResponsesController extends LSBaseController
             $fnames[] = ["lastname", gT("Last name"), 'code' => 'lastname'];
             $fnames[] = ["email", gT("Email"), 'code' => 'email'];
 
-                $customTokenAttributes = $survey->tokenAttributes;
-                foreach ($customTokenAttributes as $attributeName => $tokenAttribute) {
-                    $tokenAttributeDescription = ($tokenAttribute['description'] != '') ? $tokenAttribute['description'] : $attributeName;
-                    $fnames[] = [$attributeName, $tokenAttributeDescription, 'code' => $attributeName];
-                }
+            $customTokenAttributes = $survey->tokenAttributes;
+            foreach ($customTokenAttributes as $attributeName => $tokenAttribute) {
+                $tokenAttributeDescription = ($tokenAttribute['description'] != '') ? $tokenAttribute['description'] : $attributeName;
+                $fnames[] = [$attributeName, $tokenAttributeDescription, 'code' => $attributeName];
+            }
         }
         if ($survey->isDateStamp) {
             $fnames[] = ["submitdate", gT("Submission date"), gT("Completed"), "0", 'D', 'code' => 'submitdate'];
