@@ -398,14 +398,8 @@ class LSYii_Application extends CWebApplication
             /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
             return;
         }
-        if (
-            Yii::app()->request->isAjaxRequest &&
-            $event->exception instanceof CHttpException
-        ) {
-            header('Content-Type: application/json');
-            http_response_code($event->exception->statusCode);
-            die(json_encode(['message' => $event->exception->getMessage()]));
-        }
+        // Handle specific exception cases, like "user friendly" exceptions and exceptions on ajax requests
+        $this->handleSpecificExceptions($event->exception);
         $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
             /* Can restrict to admin ? */
@@ -512,6 +506,75 @@ class LSYii_Application extends CWebApplication
         }
 
         return $aApplicationConfig;
+    }
+
+    /**
+     * Handles specific exception cases, like "user friendly" exceptions and exceptions on ajax requests.
+     *
+     * @param CException $exception
+     * @return void
+     */
+    private function handleSpecificExceptions($exception)
+    {
+        if (
+            Yii::app()->request->isAjaxRequest &&
+            $exception instanceof CHttpException
+        ) {
+            $this->outputJsonError($exception);
+        } elseif ($exception instanceof LSUserException) {
+            $this->handleFriendlyException($exception);
+        }
+    }
+
+    /**
+     * Handles "friendly" exceptions by setting a flash message and redirecting.
+     * If the exception doesn't specify a redirect URL, the referrer is used.
+     *
+     * @param array $error
+     * @param LSUserException $exception
+     * @return void
+     */
+    private function handleFriendlyException($exception)
+    {
+        $message = "<p>" . $exception->getMessage() . "</p>" . $exception->getDetailedErrorSummary();
+        Yii::app()->setFlashMessage($message, 'error');
+        if ($exception->getRedirectUrl() != null) {
+            $redirectTo = $exception->getRedirectUrl();
+        } else {
+            $redirectTo = Yii::app()->request->urlReferrer;
+        }
+        Yii::app()->request->redirect($redirectTo);
+    }
+
+    /**
+     * Outputs an exception as JSON.
+     *
+     * @param CHttpException $exception
+     * @return void
+     */
+    private function outputJsonError($exception)
+    {
+        $outputData = [
+            'success' => false,
+            'message' => $exception->getMessage(),
+        ];
+        if ($exception instanceof LSUserException) {
+            if ($exception->getRedirectUrl() != null) {
+                $outputData['redirectTo'] = $exception->getRedirectUrl();
+            }
+            if ($exception->getNoReload() != null) {
+                $outputData['noReload'] = $exception->getNoReload();
+            }
+            // Add the detailed errors to the message, so simple handlers can just show it.
+            $outputData['message'] = "<p>" . $exception->getMessage() . "</p>". $exception->getDetailedErrorSummary();
+            // But save the "simpler" message on 'error', and the list of errors on "detailedErrors"
+            // so that more complex handlers can decide what to show.
+            $outputData['error'] = $exception->getMessage();
+            $outputData['detailedErrors'] = $exception->getDetailedErrors();
+        }
+        header('Content-Type: application/json');
+        http_response_code($exception->statusCode);
+        die(json_encode($outputData));
     }
 
     /**

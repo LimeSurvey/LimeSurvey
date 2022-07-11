@@ -304,8 +304,8 @@ function mssql_drop_constraint($fieldname, $tablename)
     WHERE (c_obj.xtype = 'D') AND (col.name = '{$fieldname}') AND (t_obj.name='{{{$tablename}}}')";
     $result = Yii::app()->db->createCommand($dfquery)->query();
     $result = $result->read();
-    $defaultname = $result['CONSTRAINT_NAME'];
-    if ($defaultname != false) {
+    if (!empty($result['CONSTRAINT_NAME'])) {
+        $defaultname = $result['CONSTRAINT_NAME'];
         modifyDatabase("", "ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}");
         echo $modifyoutput;
         flush();

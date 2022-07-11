@@ -150,11 +150,14 @@ class TopbarConfiguration
         $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
         $hasSurveyTranslatePermission = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
         $hasSurveyReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
+        $hasSurveyExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
         $hasSurveyTokensPermission = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
             || Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
         $hasSurveyTokensReadPermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'read');
+        $hasSurveyTokensExportPermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'export');
         $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
         $hasResponsesReadPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
+        $hasResponsesExportPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
         $hasResponsesStatisticsReadPermission = Permission::model()->hasSurveyPermission($sid, 'statistics', 'read');
 
         $isActive = $oSurvey->active == 'Y';
@@ -223,6 +226,9 @@ class TopbarConfiguration
             'hasResponsesReadPermission' => $hasResponsesReadPermission,
             'hasSurveyActivationPermission' => $hasSurveyActivationPermission,
             'hasResponsesStatisticsReadPermission' => $hasResponsesStatisticsReadPermission,
+            'hasSurveyExportPermission' => $hasSurveyExportPermission,
+            'hasSurveyTokensExportPermission' => $hasSurveyTokensExportPermission,
+            'hasResponsesExportPermission' => $hasResponsesExportPermission,
             'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
