@@ -721,10 +721,7 @@ class DataEntry extends SurveyCommonAction
                             . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                         } else {
                             $lresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $fname['qid'], 'language' => $sDataEntryLanguage)));
-                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
-                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n"
-                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
-                            . "<option value=''";
+                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-select'>\n" . "<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {
                                 $aDataentryoutput .= " selected='selected'";
                             }
