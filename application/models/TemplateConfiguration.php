@@ -413,7 +413,7 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyGroup(
                 $iSurveyGroupId,
                 $sTemplateName,
-                $abstractInstance
+                true
             );
         }
 
@@ -421,7 +421,7 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyId(
                 $iSurveyId,
                 $sTemplateName,
-                $abstractInstance
+                true
             );
         }
 
