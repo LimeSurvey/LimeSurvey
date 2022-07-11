@@ -1165,7 +1165,7 @@ function populateDatabase($oDB)
                 'surveyid' => "integer NOT NULL",
                 'subject' => "string(200) NOT NULL",
                 'recipient' => "string(320) NOT NULL",
-                'content' => "text NOT NULL",
+                'language' => "string(20) NOT NULL DEFAULT 'en'",
                 'error_message'  => "text",
                 'created' => "datetime NOT NULL",  //this one has always to be set to delete after x days ...
                 'status' => "string(20) NULL DEFAULT 'SEND FAILED'",

@@ -9,7 +9,7 @@
  * @property integer $surveyid the surveyid this one belongs to
  * @property string $subject the email subject
  * @property string $recipient the recipients email address
- * @property string $content the content of the failed email
+ * @property string $language the email language
  * @property string $created datetime when this entry is created
  * @property string $status status in which this entry is default 'SEND FAILED'
  * @property string $update datetim when it was last updated
@@ -32,13 +32,14 @@ class FailedEmail extends LSActiveRecord
     public function rules(): array
     {
         return [
-            ['id, surveyid, subject, recipient, content, created', 'required'],
+            ['id, surveyid, subject, recipient, error_message, created', 'required'],
             ['subject', 'length', 'max' => 200],
             ['recipient', 'length', 'max' => 320],
             ['status', 'length', 'max' => 20],
+            ['language', 'length', 'max' => 20],
             ['created, updated', 'safe'],
             // The following rule is used by search().
-            ['id, subject, recipient, content, created, status, updated', 'safe', 'on' => 'search'],
+            ['id, subject, recipient, language, created, error_message, status, updated', 'safe', 'on' => 'search'],
         ];
     }
 
@@ -61,10 +62,11 @@ class FailedEmail extends LSActiveRecord
             'id'        => 'ID',
             'subject'   => gt('Email subject'),
             'recipient' => gt('Recipient'),
-            'content'   => gt('Email content'),
+            'language'  => gt('Email language'),
             'created'   => gt('Date of email failing'),
             'status'    => gt('Status'),
-            'update'    => gt('Updated')
+            'update'    => gt('Updated'),
+            'error_message'    => gt('Error message')
         ];
     }
 
@@ -87,7 +89,8 @@ class FailedEmail extends LSActiveRecord
         $criteria->compare('id', $this->id);
         $criteria->compare('subject', $this->subject, true);
         $criteria->compare('recipient', $this->recipient, true);
-        $criteria->compare('content', $this->content, true);
+        $criteria->compare('language', $this->language, true);
+        $criteria->compare('error_message', $this->error_message, true);
         $criteria->compare('created', $this->created, true);
         $criteria->compare('status', $this->status, true);
         $criteria->compare('updated', $this->updated, true);
@@ -148,14 +151,19 @@ class FailedEmail extends LSActiveRecord
                 'value'  => '$data->subject',
             ],
             [
+                'header' => gT('Error message'),
+                'name'   => 'error_message',
+                'value'  => '$data->error_message',
+            ],
+            [
                 'header' => gT("Recipient"),
                 'name'   => 'recipient',
                 'value'  => '$data->recipient',
             ],
             [
-                'header' => gT('Content'),
-                'name'   => 'content',
-                'value'  => '$data->content',
+                'header' => gT('Language'),
+                'name'   => 'language',
+                'value'  => '$data->language',
             ],
         ];
     }

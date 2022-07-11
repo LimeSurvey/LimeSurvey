@@ -532,6 +532,8 @@ function sendSubmitNotifications($surveyid)
         foreach ($aEmailNotificationTo as $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
+                saveFailedEmail($sRecipient, $surveyid, gT("Admin Notification"), $emailLanguage, $mailer->getError());
+
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     echo CHtml::tag("div", array('class' => 'alert alert-danger'), sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError()));
@@ -546,6 +548,8 @@ function sendSubmitNotifications($surveyid)
         foreach ($aEmailResponseTo as $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
+                saveFailedEmail($sRecipient, $surveyid, gT("Admin Response"), $emailLanguage, $mailer->getError());
+
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     echo CHtml::tag("div", array('class' => 'alert alert-danger'), sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError()));
@@ -553,6 +557,21 @@ function sendSubmitNotifications($surveyid)
             }
         }
     }
+}
+
+function saveFailedEmail($recipient, $surveyId, $subject, $language, $errorMessage) {
+    $model = new FailedEmail();
+
+    $model->recipient = $recipient;
+    $model->surveyid  = $surveyId;
+    $model->subject = $subject;
+    $model->language = $language;
+    $model->error_message = $errorMessage;
+
+    return $model->save(false);
+
+    Yii::log(\CVarDumper::dumpAsString($model->getErrors()), 'warning', 'application.models.FailedEmail.insertRecords');
+    return null;
 }
 
 /**
