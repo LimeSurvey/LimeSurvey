@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.23 (build 220705) to 5.3.24 (build 220711) July 11, 2022
+-Fixed issue: Missing minimum value restriction for login retries/ban time (Carsten Schmitz)
+-Fixed issue: Better control on archive export (Gabriel Jenik)
+-Fixed issue #18235: No control on response and token export on survey archive export (Gabriel Jenik)
+-Fixed issue #18220: Question image theme doesn't seem to work (#2497) (Gabriel Jenik)
+-Fixed issue #18085: Renamed custom theme not updated in global survey settings (#2436) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+
+
 Changes from 5.3.22 (build 220628) to 5.3.23 (build 220705) July 5, 2022
 -Fixed issue: Some minor performance fix (Carsten Schmitz)
 -Fixed issue: Applying original theme option on survey theme import did not work (Carsten Schmitz)
