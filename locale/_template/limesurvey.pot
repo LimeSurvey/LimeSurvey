@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-07-05 08:57:30+00:00\n"
+"POT-Creation-Date: 2022-07-11 09:22:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5945,23 +5945,23 @@ msgstr ""
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:58
+#: application/core/LSETwigViewRenderer.php:73
 msgid "Can't render layout %s for template %s. Template version in database is %s, but in config.xml it's %s. Please re-install the template."
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:69
+#: application/core/LSETwigViewRenderer.php:84
 msgid "Can't render layout %s for template %s. Please try to re-install the template."
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:107
+#: application/core/LSETwigViewRenderer.php:122
 msgid "Can't render layout %s. Please check that the view exists or contact your admin."
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:264
+#: application/core/LSETwigViewRenderer.php:279
 msgid "%s not found!"
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:279
+#: application/core/LSETwigViewRenderer.php:294
 msgid "Disabled by configuration. Set 'showpopups' option in config.php file to enable this option. "
 msgstr ""
 
@@ -9338,7 +9338,7 @@ msgstr ""
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2994
+#: application/helpers/expressions/em_core_helper.php:2998
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
