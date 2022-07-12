@@ -22,9 +22,6 @@ class SurveyTimingDynamic extends LSActiveRecord
     /** @var int $sid Survey id */
     protected static $sid = 0;
 
-    /** @var Survey $survey*/
-    protected static $survey;
-
     /**
      * @inheritdoc
      * @param string $sid
@@ -36,9 +33,9 @@ class SurveyTimingDynamic extends LSActiveRecord
         $refresh = false;
         $survey = Survey::model()->findByPk($sid);
         if ($survey) {
+            /** @var boolean $refresh */
+            $refresh = self::$sid !== $survey->sid;
             self::sid($survey->sid);
-            self::$survey = $survey;
-            $refresh = true;
         }
 
         /** @var self $model */
@@ -132,7 +129,8 @@ class SurveyTimingDynamic extends LSActiveRecord
 
     /**
      * @param array $data
-     * @return bool|mixed|null
+     * @throws \CException
+     * @return false|integer
      */
     public function insertRecords($data)
     {
@@ -141,10 +139,22 @@ class SurveyTimingDynamic extends LSActiveRecord
             $record->$k = $v;
         }
 
+        if (isset($data['id'])) {
+             switchMSSQLIdentityInsert(trim($this->tableName(), "{}"), true);
+        }
         try {
             $record->save();
+            if (isset($data['id'])) {
+                 switchMSSQLIdentityInsert(trim($this->tableName(), "{}"), false);
+            }
             return $record->id;
         } catch (Exception $e) {
+            if (isset($data['id'])) {
+                 switchMSSQLIdentityInsert(trim($this->tableName(), "{}"), false);
+            }
+            if (App()->getConfig('debug') > 1) {
+                throw new \CException($e->getMessage());
+            }
             return false;
         }
     }

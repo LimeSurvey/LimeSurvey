@@ -149,7 +149,7 @@
                         <?php eT("Maximum number of attempts:"); ?>
                     </label>
                     <div class="">
-                        <input class="form-control" type="number" name="maxLoginAttempt"
+                        <input class="form-control" type="number" min="0" name="maxLoginAttempt"
                                value="<?= Yii::app()->getConfig('maxLoginAttempt') ?>"/>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                         <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
                     </label>
                     <div class="">
-                        <input class="form-control" type="number" name="timeOutTime" value="<?= Yii::app()->getConfig('timeOutTime') ?>"/>
+                        <input class="form-control" type="number" min="0" name="timeOutTime" value="<?= Yii::app()->getConfig('timeOutTime') ?>"/>
                     </div>
                 </div>
             </div>
@@ -184,7 +184,7 @@
                     <?php eT("Maximum number of attempts:"); ?>
                 </label>
                 <div class="">
-                    <input class="form-control" type="number" name="maxLoginAttemptParticipants"
+                    <input class="form-control" min="0" type="number" name="maxLoginAttemptParticipants"
                            value="<?= Yii::app()->getConfig('maxLoginAttemptParticipants') ?>"/>
                 </div>
             </div>
@@ -193,7 +193,7 @@
                     <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
                 </label>
                 <div class="">
-                    <input class="form-control" type="number" name="timeOutParticipants"
+                    <input class="form-control" type="number" min="0" name="timeOutParticipants"
                            value="<?= Yii::app()->getConfig('timeOutParticipants') ?>"/>
                 </div>
             </div>
