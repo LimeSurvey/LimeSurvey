@@ -17,7 +17,7 @@ class Update_489 extends DatabaseUpdateBase
             [
                 'id' => "pk",
                 'surveyid' => "integer NOT NULL",
-                'subject' => "string(200) NOT NULL",
+                'email_type' => "string(200) NOT NULL",
                 'recipient' => "string(320) NOT NULL",
                 'language' => "string(20) NOT NULL DEFAULT 'en'",
                 'error_message'  => "text",

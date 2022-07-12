@@ -438,8 +438,10 @@ function submittokens($quotaexit = false)
 
 /**
 * Send a submit notification to the email address specified in the notifications tab in the survey settings
+ * @var int $surveyid survey ID of currently used survey
+ * @var array $emails Emailnotifications that should be sent ['responseTo' => ['recipient1', 'recipient2'], 'notificationTo' => ['recipient1', 'recipient2']]
 */
-function sendSubmitNotifications($surveyid)
+function sendSubmitNotifications($surveyid, array $emails = [])
 {
     // @todo: Remove globals
     global $thissurvey;
@@ -460,10 +462,10 @@ function sendSubmitNotifications($surveyid)
     $aReplacementVars['STATISTICSURL'] = Yii::app()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
     $mailer->aUrlsPlaceholders = ['VIEWRESPONSE','EDITRESPONSE','STATISTICS'];
     $aReplacementVars['ANSWERTABLE'] = '';
-    $aEmailResponseTo = array();
-    $aEmailNotificationTo = array();
+    $aEmailNotificationTo = $emails['notificationTo'] ?? [];
+    $aEmailResponseTo = $emails['responseTo'] ?? [];
 
-    if (!empty($thissurvey['emailnotificationto'])) {
+    if (!empty($thissurvey['emailnotificationto']) && empty($aEmailNotificationTo)) {
         $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
@@ -472,7 +474,7 @@ function sendSubmitNotifications($surveyid)
             }
         }
     }
-    if (!empty($thissurvey['emailresponseto'])) {
+    if (!empty($thissurvey['emailresponseto']) && empty($aEmailResponseTo)) {
         $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
@@ -532,7 +534,7 @@ function sendSubmitNotifications($surveyid)
         foreach ($aEmailNotificationTo as $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
-                saveFailedEmail($sRecipient, $surveyid, gT("Admin Notification"), $emailLanguage, $mailer->getError());
+                saveFailedEmail($sRecipient, $surveyid, 'admin_notification', $emailLanguage, $mailer->getError());
 
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
@@ -548,7 +550,7 @@ function sendSubmitNotifications($surveyid)
         foreach ($aEmailResponseTo as $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
-                saveFailedEmail($sRecipient, $surveyid, gT("Admin Response"), $emailLanguage, $mailer->getError());
+                saveFailedEmail($sRecipient, $surveyid, 'admin_responses', $emailLanguage, $mailer->getError());
 
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
@@ -559,12 +561,12 @@ function sendSubmitNotifications($surveyid)
     }
 }
 
-function saveFailedEmail($recipient, $surveyId, $subject, $language, $errorMessage) {
+function saveFailedEmail($recipient, $surveyId, $emailType, $language, $errorMessage) {
     $model = new FailedEmail();
 
     $model->recipient = $recipient;
     $model->surveyid  = $surveyId;
-    $model->subject = $subject;
+    $model->email_type = $emailType;
     $model->language = $language;
     $model->error_message = $errorMessage;
 

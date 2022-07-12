@@ -16,6 +16,7 @@ class FailedEmailController extends LSBaseController
 
         return parent::beforeRender($view);
     }
+
     /**
      * @throws CHttpException
      */
@@ -31,9 +32,42 @@ class FailedEmailController extends LSBaseController
         $massiveAction = App()->getController()->renderPartial('/failedEmail/partials/massive_action_selector', ['surveyId' => $surveyId], true);
 
         $this->render('failedEmail_index', [
-            'failedEmailModel' => $failedEmailModel,
+            'failedEmailModel'  => $failedEmailModel,
             'pageSizeTokenView' => $pageSizeTokenView,
-            'massiveAction' => $massiveAction
+            'massiveAction'     => $massiveAction
         ]);
-	}
+    }
+
+    /**
+     * @throws CHttpException
+     */
+    public function actionResend(): void
+    {
+        $surveyId = sanitize_int(App()->request->getParam('surveyid'));
+        if (!$surveyId) {
+            throw new CHttpException(403, gT("Invalid survey ID"));
+        }
+        if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
+            return;
+        }
+
+        $failedEmailModel = FailedEmail::model()->findAllByAttributes(['email_type', 'recipient'], 'surveyid = :surveyid', [':surveyid' => $surveyId]);
+        sendSubmitNotifications($surveyId, $failedEmailModel);
+    }
+
+    /**
+     * @throws CHttpException
+     */
+    public function actionDelete(): void
+    {
+        $surveyId = sanitize_int(App()->request->getParam('surveyid'));
+        if (!$surveyId) {
+            throw new CHttpException(403, gT("Invalid survey ID"));
+        }
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
+            return;
+        }
+
+
+    }
 }

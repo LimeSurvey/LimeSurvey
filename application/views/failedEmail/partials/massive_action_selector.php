@@ -9,7 +9,7 @@ if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) 
         // li element
         'type'          => 'action',
         'action'        => 'delete',
-        'url'           => App()->createUrl("responses/delete/", ['surveyId' => $surveyId]),
+        'url'           => App()->createUrl("failedemail/delete/", ['surveyId' => $surveyId]),
         'iconClasses'   => 'fa fa-trash text-danger',
         'text'          => gT('Delete'),
         'grid-reload'   => 'yes',
@@ -20,6 +20,9 @@ if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) 
         'keepopen'      => 'no',
         'sModalTitle'   => gT('Delete failed e-mail notifications'),
         'htmlModalBody' => gT('Are you sure you want to delete the selected notifications?'),
+        'aCustomDatas'  => [
+            ['name' =>'surveyid', 'value' => $surveyId],
+        ]
     ];
     $buttons[] = [
         'type' => 'action',
@@ -42,7 +45,7 @@ $this->widget(
     'ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget',
     [
         'pk'         => 'id',
-        'gridid'     => 'failedEmail-grid',
+        'gridid'     => 'failedemail-grid',
         'dropupId'   => 'failedEmailActions',
         'dropUpText' => gT('Selected e-mail(s)...'),
         'aActions'   => $buttons
