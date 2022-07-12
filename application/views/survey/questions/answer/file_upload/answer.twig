@@ -34,8 +34,12 @@
             <thead>
                 <tr>
                     <th width="20%">&nbsp;</th>
-                    <th>{{ "Title" | gT }}</th>
-                    <th>{{ "Comment" | gT }}</th>
+                    {% if showTitle %}
+                        <th>{{ "Title" | gT }}</th>
+                    {% endif %}
+                    {% if showComment %}
+                        <th>{{ "Comment" | gT }}</th>
+                    {% endif %}
                     <th>{{ "File name" | gT }}</th>
                     <th class="edit"></th>
                 </tr>
@@ -127,8 +131,12 @@
 <script type="text/x-template" id="filerowtemplate_{{fileid}}">
     <tr>
         <td class="upload {imageOrPlaceholder}">{imageOrPlaceholderHtml}</td>
-        <td class="upload title">{title}</td>
-        <td class="upload comment">{comment}</td>
+        {% if showTitle %}
+            <td class="upload title">{title}</td>
+        {% endif %}
+        {% if showComment %}
+            <td class="upload comment">{comment}</td>
+        {% endif %}
         <td class="upload edit">{name}</td>
         <td>
             <a role="button" class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">

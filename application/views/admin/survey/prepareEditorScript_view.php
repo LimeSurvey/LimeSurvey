@@ -30,14 +30,6 @@ $script = "
 $script.="CKEDITOR.on('instanceReady', function(event) {
         var textareaId = event.editor.element.getId();
         $('#'+textareaId+'_htmleditor_loader').remove();
-        
-        // Change config. for editors with name like email_*
-        // Those editors are initialized for email templates.
-        // It doesn't have effects on popup Editors.
-        if(event.editor.name.startsWith('email_')){
-            event.editor.config.fullPage = true;
-        }
-        
         event.editor.dataProcessor.writer.setRules( 'br', { breakAfterOpen: 0 } );
     });    
 
@@ -83,13 +75,7 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
             }
 
             popup = window.open(editorurl,'', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
-            
-            // Check if action is related to email templates.
-            if(action === 'editemailtemplates'){
-                // Add a listener to load event, change config once the popup has finish loaded.
-                popup.addEventListener('load', enableFullPageConfigForEditor, false);
-            }
-            
+
             editorwindowsHash[fieldname] = popup;
         }
         else
@@ -98,12 +84,6 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
         }
     }
 
-    // Used for the popup editor in email templates.
-    function enableFullPageConfigForEditor()
-    {
-        this.CKEDITOR.config.fullPage = true;
-    }
-    
     function updateCKeditor(fieldname,value)
     {
         var mypopup= editorwindowsHash[fieldname];

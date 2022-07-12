@@ -277,7 +277,6 @@ LS.Statistics2 = function () {
     });
 
     $('#generate-statistics').submit(function () {
-
         hideSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters'));
         hideSection($('#responsefilters-chevron'), $('#filterchoices'))
         $('#statisticsoutput').show();
@@ -285,6 +284,12 @@ LS.Statistics2 = function () {
         $('#statistics-render-chevron').addClass('fa-chevron-down');
         $('#view-stats-alert-info').hide();
         $('#statsContainerLoading').show();
+        if ($('input[name=outputtype]:checked').val() != 'html') {
+            var data = new FormData($(this).get(0));
+            var url = $(this).attr('action');
+            ajaxDownloadStats(url, data);
+            return false;
+        }
         //alert('ok');
     });
 
@@ -598,6 +603,28 @@ LS.Statistics2 = function () {
     $(".stats-showpie").click(function () {
         changeGraphType('showpie', this.parentNode);
     });
+
+    var ajaxDownloadStats = function (url, data) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.responseType = 'blob';
+        xhr.onload = () => {
+            const contentDisposition = xhr.getResponseHeader('Content-Disposition');
+            const fileName = contentDisposition ? contentDisposition.match(/filename[^;=\n]*=['"](.*?|[^;\n]*)['"]/)[1] : '';
+            if (fileName.length > 0) {
+                // saveAs is implemented by jszip/fileSaver.js
+                saveAs(xhr.response, fileName);
+            } else {
+                ajaxError();
+            }
+            $('#statsContainerLoading').hide();
+        };
+        xhr.onerror = () => {
+            ajaxError();
+            $('#statsContainerLoading').hide();
+        };
+        xhr.send(data);
+    };
 };
 
 var isWaiting = {};
@@ -623,6 +650,7 @@ function graphQuery(id, cmd, success) {
 }
 
 function ajaxError() {
+    // TODO: Use NotifyFader?
     alert("An error occured! Please reload the page!");
 }
 

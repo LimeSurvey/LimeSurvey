@@ -625,7 +625,7 @@ class TokenDynamic extends LSActiveRecord
             array(
                 'header' => gT('Action'),
                 'class' => 'yiistrap.widgets.TbButtonColumn',
-                'template' => '{edit}{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{viewparticipant}<span data-bs-toggle="tooltip" title="' . gt('Delete survey participant') . '">{deletetoken}</span>{viewparticipantspacer}',
+                'template' => '{edit}{viewresponse}{spacerviewresponse}{previewsurvey}{launchsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{viewparticipant}<span data-bs-toggle="tooltip" title="' . gt('Delete survey participant') . '">{deletetoken}</span>{viewparticipantspacer}',
                 'htmlOptions' => array('class' => 'icon-btn-row'),
                 'buttons' => $this->getGridButtons(),
             ),
@@ -812,7 +812,19 @@ class TokenDynamic extends LSActiveRecord
         /* previewsurvey button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create'));
         $gridButtons['previewsurvey'] = array(
-            'label' => '<span class="sr-only">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-eye" aria-hidden="true"></span>',
+            'label' => '<span class="sr-only">' . gT("Preview the survey with this participant") . '</span><span class="fa fa-eye" aria-hidden="true"></span>',
+            'imageUrl' => false,
+            'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
+            'options' => array(
+                'class' => "btn btn-default btn-sm",
+                'target' => "_blank",
+                'data-toggle' => "tooltip",
+                'title' => gT("Preview the survey with this participant")
+            ),
+            'visible' => $baseView . ' && !$data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
+        );
+        $gridButtons['launchsurvey'] = array(
+            'label' => '<span class="sr-only">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-play" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
@@ -821,7 +833,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-bs-toggle' => "tooltip",
                 'title' => gT("Launch the survey with this participant")
             ),
-            'visible' => $baseView . ' && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
+            'visible' => $baseView . ' && $data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );
         $gridButtons['previewsurveyspacer'] = array(
             'label' => '<span class="fa fa-eye  text-muted" aria-hidden="true"></span>',
