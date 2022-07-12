@@ -8,12 +8,13 @@
  * @property integer $surveyid the surveyid this one belongs to
  * @property string $email_type the email type
  * @property string $recipient the recipients email address
- * @property string $content the content of the failed email
  * @property string $language the email language
  * @property string $error_message the error message
  * @property string $created datetime when this entry is created
  * @property string $status status in which this entry is default 'SEND FAILED'
  * @property string $update datetim when it was last updated
+ *
+ * @property Survey $survey
  */
 class FailedEmail extends LSActiveRecord
 {
@@ -50,7 +51,9 @@ class FailedEmail extends LSActiveRecord
      */
     public function relations(): array
     {
-        return [];
+        return [
+            'survey' => array(self::HAS_ONE, 'Survey', ['sid' => 'surveyid']),
+        ];
     }
 
     /**
@@ -157,11 +160,6 @@ class FailedEmail extends LSActiveRecord
                 'value'  => '$data->recipient',
             ],
             [
-                'header' => gT('Content'),
-                'name'   => 'content',
-                'value'  => '$data->content',
-            ],
-            [
                 'header' => gT('Language'),
                 'name'   => 'language',
                 'value'  => '$data->language',
@@ -173,5 +171,20 @@ class FailedEmail extends LSActiveRecord
     {
         $buttons = 'insert viewfile here';
         return $buttons;
+    }
+
+    /**
+     * Returns array having surveyid as key and the localized survey title as value of all failed email entries
+     * @return array
+     */
+    public function getFailedEmailSurveyTitles()
+    {
+        $allFailedEmails = $this->findAllByAttributes([], "status != :status", [':status' => 'SUCCESSFUL']);
+        $groupedFailedEmails = [];
+        foreach ($allFailedEmails as $failedEmail) {
+            $groupedFailedEmails[$failedEmail->surveyid] = $failedEmail->survey->getLocalizedTitle();
+        }
+
+        return $groupedFailedEmails;
     }
 }

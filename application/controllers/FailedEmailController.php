@@ -12,6 +12,7 @@ class FailedEmailController extends LSBaseController
     {
         $surveyId = (int)App()->request->getParam('surveyid');
         $this->aData['surveyid'] = $surveyId;
+        LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
         $this->layout = 'layout_questioneditor';
 
         return parent::beforeRender($view);

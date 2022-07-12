@@ -390,6 +390,7 @@ class Authentication extends SurveyCommonAction
     {
         self::runDbUpgrade();
         self::cleanFailedEmailTable();
+        self::createNewFailedEmailsNotification();
         $returnUrl = App()->user->getReturnUrl(array('/admin'));
         Yii::app()->getController()->redirect($returnUrl);
     }
@@ -413,6 +414,40 @@ class Authentication extends SurveyCommonAction
         $criteria->addCondition('created < \'' . $dateNowFormatted . '\'');
 
         FailedEmail::model()->deleteAll($criteria);
+    }
+
+    /**
+     * Checks failed_email table for entries and creates UniqueNotifications per survey
+     *
+     * @return void
+     */
+    private static function createNewFailedEmailsNotification()
+    {
+        $failedEmailModel = new FailedEmail();
+        $failedEmailSurveyTitles = $failedEmailModel->getFailedEmailSurveyTitles();
+        foreach ($failedEmailSurveyTitles as $surveyId => $surveyTitle) {
+            $uniqueNotification = new UniqueNotification(
+                array(
+                    'user_id' => App()->user->id,
+                    'title' => gT('Failed e-mail notifications') . " ($surveyId)",
+                    'markAsNew' => false,
+                    'importance' => Notification::NORMAL_IMPORTANCE,
+                    'message' => sprintf(
+                        gT(
+                            'Unfortunately there was an error regarding the sending of emails after a participant completed your survey %s. For an overview of failed emails go to %s.',
+                            'unescaped'
+                        ),
+                        "$surveyTitle ($surveyId)",
+                        CHtml::link(
+                            gt('Failed e-mail notifications'),
+                            Yii::app()->createUrl("failedemail/index/", ['surveyid' => $surveyId])
+                        ),
+                    )
+                )
+            );
+
+            $uniqueNotification->save();
+        }
     }
 
     /**
