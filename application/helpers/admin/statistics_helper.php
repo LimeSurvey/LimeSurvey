@@ -462,21 +462,23 @@ function buildSelects($allfields, $surveyid, $language)
 
                 //D - Date
                 elseif ($firstletter == "D" && $_POST[$pv] != "") {
+                    $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
                     //Date equals
                     if (substr($pv, -2) == "eq") {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
                         $dateValue = $datetimeobj->convert("Y-m-d");
                         $columnName = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3));
                         $selects[] = $columnName . " >= " . Yii::app()->db->quoteValue($dateValue . " 00:00:00") . " and " . $columnName . " <= " . Yii::app()->db->quoteValue($dateValue . " 23:59:59");
                     } else {
+                        $dateValue = $datetimeobj->convert("Y-m-d H:i");
+
                         //date less than
                         if (substr($pv, -4) == "less") {
-                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." >= ".App()->db->quoteValue($_POST[$pv]);
+                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." >= ".App()->db->quoteValue($dateValue);
                         }
 
                         //date greater than
                         if (substr($pv, -4) == "more") {
-                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." <= ".App()->db->quoteValue($_POST[$pv]);
+                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." <= ".App()->db->quoteValue($dateValue);
                         }
                     }
                 }
