@@ -15,23 +15,17 @@
     <!-- Columns -->
     <colgroup class="col-responses">
         <col class="col-answers" style='width: {{ answerwidth }}%;' />
-        
             {# columns/col.php #}
             {{ sColumns }}
         
     </colgroup>
-    <!-- Table headers -->
-    <thead aria-hidden="true">
-        <tr class="ls-heading"><!-- same class for repeat heading too -->
-            
-                {# rows/cell/thead.php #}
-                {{ sHeaders }}
-            
-        </tr>
-    </thead>
-    <!-- Table Body -->
+    <!-- No header or th : table used for presentation -->
     <tbody>
+    <tr class="ls-heading"><!-- same class for repeat heading too -->
+            {# rows/cell/thead.php #}
+            {{ sHeaders }}
         
+    </tr>
             {#rows/answer_row.php #}
             {{ sRows }}
         
