@@ -17,10 +17,7 @@
             <col
                 class="answers-list radio-list {% if i % 2 %}ls-odd{% else %}ls-even{% endif %} {% if question.errormandatory %} ls-error-mandatory has-error{% endif %}"
                 style='width: {{ cellwidth }}%;'
-                role="radiogroup"
-                aria-labelledby="answertext{{ question.myfname }}"
                 >
-                <!-- @todo : control if radiogroup can be used in col : https://www.w3.org/TR/wai-aria/roles -->
         {% endfor %}
     </colgroup>
     <!-- The global concept is hard to understand : must control if aria-labelledby for radiogroup is OK and if we can add aria-hidden here -->
@@ -34,7 +31,7 @@
             {% endfor %}
         </tr>
         {% for key, ansrow in labels %}
-            <tr id="javatbd{{ aQuestions[key].myfname }}" class="answers-list">
+            <tr id="javatbd{{ basename }}-{{ ansrow.code }}" class="answers-list">
                 <td id="label-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} sr-only{% endif %}">
                     {{ ansrow.answer }}
                 </td>
@@ -45,7 +42,7 @@
                                 name="{{ aQuestions[i].myfname }}"
                                 value="{{ ansrow.code }}"
                                 id="answer{{ aQuestions[i].myfname }}-{{ ansrow.code }}"
-                                aria-labelledby="label-{{ aQuestions[i].myfname }}-{{ ansrow.code }}"
+                                aria-labelledby="label-{{ ansrow.code }} label-{{ aQuestions[i].myfname }}-{{ ansrow.code }}"
                                 {{ checked[ansrow.code][ld] }}
                                  />
                                 <label class="ls-label-xs-visibility " for="answer{{ aQuestions[i].myfname }}-{{ ansrow.code }}"  id="label-{{ aQuestions[i].myfname }}-{{ ansrow.code }}">
