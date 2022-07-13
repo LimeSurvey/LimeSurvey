@@ -57,9 +57,9 @@ App()->getClientScript()->registerScriptFile(
 <!-- Template Editor Bar -->
 <div class='menubar surveybar' id="templateeditorbar">
     <div class="container-fluid">
-        <div class='row'>
+        <div class='row row-cols-auto justify-content-between'>
             <!-- Left Menu -->
-            <div class="col-lg-5">
+            <div class="col">
                 <?php $importModal = false; ?>
                 <?php if (is_writable($tempdir)) : ?>
                     <!-- Export -->
@@ -173,11 +173,11 @@ App()->getClientScript()->registerScriptFile(
             </div>
 
             <!-- Right Menu -->
-            <div class="col-lg-7 row text-end">
-                <div class="col-3"></div>
+            <div class="col">
+            <div class="row row-cols-lg-auto gx-1 gy-0 text-end">
                 <!-- Theme Select Box -->
-                <div class="mb-3 col-4 row">
-                    <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
+                <label class="col col-form-label text-nowrap" for='templatedir'><?php eT("Theme:"); ?></label>
+                <div class="col">
                     <select class="col listboxtemplates form-select" id='templatedir' name='templatedir'
                             onchange="javascript: var uri = new Uri('<?php
                             // Don't put 'sa' into the URL dirctly because Yii will then try to use filenames directly in the path because of the route
@@ -192,8 +192,8 @@ App()->getClientScript()->registerScriptFile(
                 </div>
 
                 <!-- Screen Select Box -->
-                <div class="mb-3 col-4 row">
-                    <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
+                <label class="col col-form-label text-nowrap" for='listboxtemplates'><?php eT("Screen:"); ?></label>
+                <div>
                     <?php echo CHtml::dropDownList('screenname',
                         $screenname,
                         $screens,
@@ -209,32 +209,32 @@ App()->getClientScript()->registerScriptFile(
                         ]); ?>
                 </div>
 
-                <div class="col-1">
-                    <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
-                        <a class="btn btn-success" href="#" role="button" id="save-form-button"
-                           data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                            <span class="fa fa-floppy-o"></span>
-                            <?php eT("Save"); ?>
-                        </a>
-                    <?php endif; ?>
+                <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
+                    <a class="btn btn-success" href="#" role="button" id="save-form-button"
+                       data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+                        <span class="fa fa-floppy-o"></span>
+                        <?php eT("Save"); ?>
+                    </a>
+                <?php endif; ?>
 
-                    <!-- Close -->
-                    <?php if (isset($fullpagebar['closebutton']['url'])) : ?>
-                        <a class="btn btn-danger text-nowrap" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
-                            <span class="fa fa-close"></span>
-                            <?php eT("Close"); ?>
-                        </a>
-                    <?php endif; ?>
+                <!-- Close -->
+                <?php if (isset($fullpagebar['closebutton']['url'])) : ?>
+                    <a class="btn btn-danger text-nowrap" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
+                        <span class="fa fa-close"></span>
+                        <?php eT("Close"); ?>
+                    </a>
+                <?php endif; ?>
 
-                    <!-- Return to Theme List -->
-                    <?php if (isset($templateEditorBar['buttons']['returnbutton'])) : ?>
+                <!-- Return to Theme List -->
+                <?php if (isset($templateEditorBar['buttons']['returnbutton'])) : ?>
                     <a class="btn btn-outline-secondary text-nowrap" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
-                            <span class="fa fa-backward"></span>
-                            &nbsp;&nbsp;
-                            <?php eT("Back"); ?>
-                        </a>
-                    <?php endif; ?>
+                        <span class="fa fa-backward"></span>
+                        &nbsp;&nbsp;
+                        <?php eT("Back"); ?>
+                    </a>
+                <?php endif; ?>
                 </div>
+            </div>
             </div>
         </div>
     </div>
