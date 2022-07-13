@@ -275,8 +275,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         </div>
     </div>
 
-
     <!-- Edit Token Modal -->
+    <?php // @todo Duplicate, original in application/views/admin/token/browse.php. Remove this? ?>
     <div class="modal fade" tabindex="-1" role="dialog" id="editTokenModal">
         <div class="modal-dialog" style="width: 1100px">
             <div class="modal-content">
