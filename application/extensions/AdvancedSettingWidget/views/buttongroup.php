@@ -12,7 +12,7 @@
                 value="<?= CHtml::encode($value); ?>"
                 checked
             />
-            <label class="btn btn-outline-primary" for="<?= $inputBaseName  . $value ?>">
+            <label class="btn btn-outline-secondary" for="<?= $inputBaseName  . $value ?>">
                 <?= $text; ?>
             </label>
         <?php else: ?>
@@ -23,7 +23,7 @@
                 id="<?= $inputBaseName . $value ?>"
                 value="<?= CHtml::encode($value); ?>"
             />
-            <label class="btn btn-outline-primary" for="<?= $inputBaseName . $value ?>">
+            <label class="btn btn-outline-secondary" for="<?= $inputBaseName . $value ?>">
                 <?= $text; ?>
             </label>
         <?php endif; ?>
