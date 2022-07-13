@@ -9,7 +9,7 @@
                 type="radio" 
                 id="question[<?= $this->generalOption->name; ?>]_<?= $option->value; ?>" 
                 name="question[<?= $this->generalOption->name; ?>]" 
-                    value="<?= Chtml::encode($option->value); ?>"
+                    value="<?= CHtml::encode($option->value); ?>"
                 checked
             />
             <label
@@ -24,7 +24,7 @@
                 type="radio" 
                 id="question[<?= $this->generalOption->name; ?>]_<?= $option->value; ?>" 
                 name="question[<?= $this->generalOption->name; ?>]" 
-                    value="<?= Chtml::encode($option->value); ?>"
+                    value="<?= CHtml::encode($option->value); ?>"
             />
             <label
                 class="btn btn-outline-secondary"

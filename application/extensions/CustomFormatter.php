@@ -26,7 +26,7 @@ class CustomFormatter extends CFormatter {
 	 * @return $string
 	 */
 	public function formatLongText($value) {
-		$value = Chtml::encode($value);
+		$value = CHtml::encode($value);
 		if(strlen($value) > $this->maxLength) {
 			$truncated = substr($value, 0, $this->maxLength-3);
 			return trim($truncated)."...";

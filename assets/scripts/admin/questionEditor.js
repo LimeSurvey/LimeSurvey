@@ -1434,9 +1434,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
        * @return {void}
        */
       success(successMessage) {
-        LS.LsGlobalNotifier.create(
+        LS.LsGlobalNotifier.createAlert(
           successMessage,
-          'card-body bg-primary text-center'
+          'success'
         );
       },
       /**
@@ -1445,9 +1445,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
        */
       error(data) {
         if (data.responseJSON) {
-          LS.LsGlobalNotifier.create(
+          LS.LsGlobalNotifier.createAlert(
             data.responseJSON.message,
-            'card-body bg-danger text-center'
+            'danger'
           );
         } else {
           alert('Internal eror from Ajax call');
@@ -1585,9 +1585,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
       // Check uniqueness.
       if (!checkSubquestionCodeUnique(table, msg)) {
-        LS.LsGlobalNotifier.create(
+        LS.LsGlobalNotifier.createAlert(
           msg,
-          'card-body bg-danger text-center'
+          'danger'
         );
         hasError = true;
       }
@@ -1599,10 +1599,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const code = that.value;
         if (code.length > 20) {
           $(that.parentElement).addClass('has-error');
-          LS.LsGlobalNotifier.create(
+          LS.LsGlobalNotifier.createAlert(
             // TODO: Translation
             'Subquestion code is too long. Maximal number of characters is: 20.',
-            'card-body bg-danger text-center'
+            'danger'
           );
           hasError = true;
         }
@@ -1923,15 +1923,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             if (textStatus === 'success') {
               // Show confirm message.
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createAlert(
                 json.message,
-                'card-body bg-primary text-center'
+                'success'
               );
             } else {
               // Show error message.
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createAlert(
                 json.message,
-                'card-body bg-danger text-center'
+                'danger'
               );
             }
             updateQuestionSummary();
@@ -1939,9 +1939,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
           error: (data) => {
             $('#ls-loading').hide();
             if (data.responseJSON) {
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createAlert(
                 data.responseJSON.message,
-                'card-body bg-danger text-center'
+                'danger'
               );
             } else {
               alert('Internal error from saveFormWithAjax: no data.responseJSON found');

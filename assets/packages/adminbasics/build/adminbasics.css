@@ -1,111 +1,4 @@
 @charset "UTF-8";
-.draggable-container {
-  min-height: 300px;
-}
-
-#newcreated,
-#tokenattribute,
-#csvattribute,
-#centralattribute {
-  margin-left: 0.75%;
-  margin-right: 0.75%;
-  margin-bottom: 20px;
-}
-
-#tokenattribute {
-  margin-left: 1.5%;
-}
-
-#centralattribute {
-  margin-right: 1.5%;
-}
-
-#centralattribute .centralatt {
-  padding-bottom: 15px;
-}
-
-#newcreated .attribute-item input {
-  display: block;
-  margin: 2px auto;
-  width: 80%;
-}
-
-#centralattribute div.centralatt div.token-attribute {
-  margin-top: -5px;
-  min-height: 20px;
-}
-
-#newcreated,
-#tokenattribute {
-  height: 100%;
-}
-
-.heading {
-  height: auto;
-  padding-top: 7px;
-  font-weight: bold;
-}
-
-div.mappable-attribute-wrapper {
-  width: 80%;
-  margin: 6px auto;
-  padding: 6px;
-}
-
-div.attribute-item, .already-mapped-attribute {
-  width: 80%;
-  margin: 6px auto;
-  padding: 4px;
-  text-align: center;
-}
-
-#centralattribute .explanation {
-  width: 90%;
-  margin: 0 auto;
-  text-align: left;
-}
-
-#centralattribute .explanation-row {
-  display: table-row;
-}
-
-#centralattribute .explanation input,
-#centralattribute .explanation label {
-  display: table-cell;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#centralattribute .explanation label {
-  padding-left: 8px;
-}
-
-.attribute-item.draggable {
-  cursor: move;
-}
-
-div.mappable-attribute-wrapper.target-hover {
-  padding-bottom: 27px;
-}
-
-div.mappable-attribute-wrapper.paired.target-hover {
-  padding-bottom: 4px;
-}
-
-div.mappable-attribute-wrapper.paired.ui-state-disabled {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-
-.draggable-container .attribute-column .ui-draggable-dragging {
-  z-index: 100;
-}
-
-/* Existing attribute column in CSV CPDB import */
-.centralatt {
-  min-height: 100px;
-}
-
 /**
  * Lime Admin Common CSS File
  *
@@ -4501,10 +4394,6 @@ label {
   background-color: #eee;
 }
 
-#cpdbatt {
-  min-height: 100px;
-}
-
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -4622,6 +4511,10 @@ label {
   display: none;
 }
 
+#cpdbatt {
+  min-height: 100px;
+}
+
 #selectable .ui-selecting {
   background: #8CCE00;
 }
@@ -4680,6 +4573,113 @@ label {
   padding: 10px;
   border-radius: 3px;
   margin: 8px;
+}
+
+.draggable-container {
+  min-height: 300px;
+}
+
+#newcreated,
+#tokenattribute,
+#csvattribute,
+#centralattribute {
+  margin-left: 0.75%;
+  margin-right: 0.75%;
+  margin-bottom: 20px;
+}
+
+#tokenattribute {
+  margin-left: 1.5%;
+}
+
+#centralattribute {
+  margin-right: 1.5%;
+}
+
+#centralattribute .centralatt {
+  padding-bottom: 15px;
+}
+
+#newcreated .attribute-item input {
+  display: block;
+  margin: 2px auto;
+  width: 80%;
+}
+
+#centralattribute div.centralatt div.token-attribute {
+  margin-top: -5px;
+  min-height: 20px;
+}
+
+#newcreated,
+#tokenattribute {
+  height: 100%;
+}
+
+.heading {
+  height: auto;
+  padding-top: 7px;
+  font-weight: bold;
+}
+
+div.mappable-attribute-wrapper {
+  width: 80%;
+  margin: 6px auto;
+  padding: 6px;
+}
+
+div.attribute-item, .already-mapped-attribute {
+  width: 80%;
+  margin: 6px auto;
+  padding: 4px;
+  text-align: center;
+}
+
+#centralattribute .explanation {
+  width: 90%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+#centralattribute .explanation-row {
+  display: table-row;
+}
+
+#centralattribute .explanation input,
+#centralattribute .explanation label {
+  display: table-cell;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#centralattribute .explanation label {
+  padding-left: 8px;
+}
+
+.attribute-item.draggable {
+  cursor: move;
+}
+
+div.mappable-attribute-wrapper.target-hover {
+  padding-bottom: 27px;
+}
+
+div.mappable-attribute-wrapper.paired.target-hover {
+  padding-bottom: 4px;
+}
+
+div.mappable-attribute-wrapper.paired.ui-state-disabled {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.draggable-container .attribute-column .ui-draggable-dragging {
+  z-index: 100;
+}
+
+/* Existing attribute column in CSV CPDB import */
+.centralatt {
+  min-height: 100px;
 }
 
 #responses-column-filter-modal .checkbox label {
