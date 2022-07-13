@@ -34,6 +34,118 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.23 (build 220705) to 5.3.24 (build 220711) July 11, 2022
+-Fixed issue: Missing minimum value restriction for login retries/ban time (Carsten Schmitz)
+-Fixed issue: Better control on archive export (Gabriel Jenik)
+-Fixed issue #18235: No control on response and token export on survey archive export (Gabriel Jenik)
+-Fixed issue #18220: Question image theme doesn't seem to work (#2497) (Gabriel Jenik)
+-Fixed issue #18085: Renamed custom theme not updated in global survey settings (#2436) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+
+
+Changes from 5.3.22 (build 220628) to 5.3.23 (build 220705) July 5, 2022
+-Fixed issue: Some minor performance fix (Carsten Schmitz)
+-Fixed issue: Applying original theme option on survey theme import did not work (Carsten Schmitz)
+-Fixed issue [security] #18042: Path-relative stylesheet import (PRSSI) vulnerability (#2374) (Gabriel Jenik)
+-Fixed issue #18209: Missing RemoteControl function to get the field mapping (#2479) (Gabriel Jenik)
+-Fixed issue #18201: Unable to import LSA file with MSSQL and debug set (#2473) (Denis Chenu)
+-Fixed issue #18189: Fonts showing differently on mobile Vs desktop (#2488) (Gabriel Jenik)
+-Fixed issue #18146: Unable to use "other" as subquestion code (#2443) (Denis Chenu)
+-Fixed issue #18136: Core plugin PasswordRequirement shows duplicate setting fields (#2452) (Denis Chenu)
+-Fixed issue #18116: Ability to disable animation layer regarding saving in header section (#2462) (Gabriel Jenik)
+-Fixed issue #18092: File upload show title/comment=off not yet fully respected (#2427) (Gabriel Jenik)
+-Fixed issue #18073: Can't change reminder / invitation date (#2420) (Gabriel Jenik)
+-Fixed issue #17952: Command action potentially try to open uneeded session (#2293) (Denis Chenu)
+-Fixed issue #17938: Deleting first question group jumps to system frontpage (#2413) (Gabriel Jenik)
+-Fixed issue #17881: Question code / ID on quick translation screen showing question text not ID making it impossible to translate surveys (#2357) (Gabriel Jenik)
+-Fixed issue #17836: Adding a "smiley" to a question creates an image that does not survive upgrades (Carsten Schmitz)
+-Fixed issue #17655: Launch survey via token link : unclear icon (#2449) (Denis Chenu)
+#Updated translation: Zulu by erik.lamontagne
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by arnaud21, aschwey, b00z00, c_schmitz, DenisChenu, jayce, JMI, Xave
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Deutsch -AT by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, johnxan, zengqing, zhanginshanghai
+
+
+Changes from 5.3.21 (build 220620) to 5.3.22 (build 220628) June 27, 2022
+-Fixed issue: Class CHtml not found after user deletion (Carsten Schmitz)
+-Fixed issue #18185: Error message "No scope _renderErrorString" when trying to update (Carsten Schmitz)
+-Fixed issue #18171: Timings are not saved on MSSQL DB (#2477) (Denis Chenu)
+-Fixed issue #18153: 'Export this question to PDF' button in View Statistics - HTML does nothing (#2457) (Gabriel Jenik)
+-Fixed issue #18108: Unable to save existing question with button (#2440) (Denis Chenu)
+-Fixed issue #18101: Spinning hexagon continues to spin although file is correctly downloaded (#2454) (Gabriel Jenik)
+-Fixed issue #18094: Broken view in uploader (#2438) (Gabriel Jenik)
+-Fixed issue #17804: InputOnDemand is not loading all prior rows when navigating back (#2475) (Gabriel Jenik)
+-Fixed issue #17700: Custom logo disappears in extended themes (#2459) (Gabriel Jenik)
+
+
+Changes from 5.3.20 (build 220615) to 5.3.21 (build 220620) June 20, 2022
+-Fixed issue #18175: html editor iframe did not take whole available place (#2463) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.3.19 (build 220607) to 5.3.20 (build 220615) June 15, 2022
+-Fixed issue: Plugin calling readConfigFile() in init() caused inf loop (Tim Willig)
+-Fixed issue #18135: Cant get all question attributes with API (Postman) (#2445) (Gabriel Jenik)
+-Fixed issue #17976: Bad place for pencil in edit question (#2455) (Gabriel Jenik)
+-Fixed issue #17740: Script : Set for all languages didn't work (#2228) (Gabriel Jenik)
+#Updated translation: Slovak by c_schmitz, jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by FangZhijian
+
+
+Changes from 5.3.18 (build 220530) to 5.3.19 (build 220607) June 7, 2022
+-Fixed issue: Question organizer not working (Carsten Schmitz)
+-Fixed issue: #18029 - Removed html tags in emails for v5 (#2446) (François Charles Hébert)
+-Fixed issue #18158: Property "CDbCriteria.qid" is not defined status returned by delete_question (#2444) (Edgar R. M)
+-Fixed issue #18129: Check of json data for upload question (#2433) (Denis Chenu)
+-Fixed issue #18114: Permission will now be checked for user when opening list questions by link/url (#2423) (Patricia Stell)
+-Fixed issue #18110: Unable to get empty help in question attributes (#2421) (Denis Chenu)
+-Fixed issue #18026: Session expire message when submit button is clicked twice (#2337) (Gabriel Jenik)
+-Fixed issue #17837: Directly show edit mode: some quirks (#2441) (Gabriel Jenik)
+-Fixed issue #14909: Improve language consistency (Carsten Schmitz)
+#Updated translation: Valencian by joamuran, vbraque
+#Updated translation: Turkish by kayazeren
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by c_schmitz, dusanm, jelen1, sweetakasha
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: French (France) by arnaud21, b00z00, BenoitBouvarel, c_schmitz, DenisChenu, janolap1, Qat, ulysse68, Xave
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, zengqing, zhanginshanghai
+
+
 Changes from 5.3.17 (build 220525) to 5.3.18 (build 220530) May 30, 2022
 -Fixed issue #18160: [security] Update jquery-ui to 1.13.1 (Carsten Schmitz)
 -Fixed issue #18150: Survey not properly resuming and showing blank page (#2442) (Gabriel Jenik)
