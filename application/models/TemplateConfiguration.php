@@ -1593,12 +1593,18 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function sanitizeImagePathsOnJson($attribute, $params)
     {
+        $excludedOptions = [
+            'cssframework'
+        ];
         // Validates all options of the theme. Not only classic ones which are expected to hold a path,
         // as other options may hold a path as well (eg. custom theme options)
         $decodedOptions = json_decode($this->$attribute, true);
         if (is_array($decodedOptions)) {
             Yii::import('application.helpers.SurveyThemeHelper');
-            foreach ($decodedOptions as &$value) {
+            foreach ($decodedOptions as $option => &$value) {
+                if (in_array($option, $excludedOptions)) {
+                    continue;
+                }
                 $value = SurveyThemeHelper::sanitizePathInOption($value, $this->template_name, $this->sid);
             }
             $this->$attribute = json_encode($decodedOptions);
