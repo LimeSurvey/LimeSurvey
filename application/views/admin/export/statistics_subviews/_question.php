@@ -277,7 +277,7 @@
                     'id' => $myfield3,
                     'value' => isset($_POST[$myfield3]) ? $_POST[$myfield3] : '',
                     'pluginOptions' => array(
-                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                        'format' => $dateformatdetails['jsdate'],
                         'allowInputToggle' =>true,
                         'showClear' => true,
                         'tooltips' => array(
