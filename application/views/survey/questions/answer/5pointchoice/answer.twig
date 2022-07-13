@@ -15,7 +15,7 @@
 <!-- 5 point choice -->
 <!-- answer -->
 
-<ul class="{{coreClass}} list-unstyled form-inline" role="radiogroup" aria-labelledby="ls-question-text-{{name}}">
+<ul class="{{coreClass}} list-unstyled list-group list-group-horizontal" role="radiogroup" aria-labelledby="ls-question-text-{{name}}">
     {% for aRow in aRows %}
         {% include './survey/questions/answer/5pointchoice/rows/item_row.twig' with aRow only %}
     {% endfor %}

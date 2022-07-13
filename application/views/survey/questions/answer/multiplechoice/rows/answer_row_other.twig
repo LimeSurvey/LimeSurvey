@@ -16,43 +16,43 @@
 #}
 
 <!-- answer_row_other -->
-    <li id='javatbd{{myfname}}' class='question-item answer-item checkbox-text-item form-inline {{relevanceClass}}' >
+    <li id='javatbd{{myfname}}' class='question-item answer-item checkbox-text-item {{relevanceClass}}' >
+        <div class="row row-cols-lg-auto g-1 align-items-center mb-3">
+            <!-- Checkbox + label -->
+            <div class="checkbox-item othertext-label-checkox-container">
+                <!-- checkbox -->
+                <input
+                    class="other-checkbox"
+                    type="checkbox"
+                    name="{{myfname}}cbox"
+                    id="answer{{myfname}}cbox"
+                    {{checkedState}}
+                    aria-hidden="true"
+                />
+                <label for="answer{{myfname}}cbox" class="answertext" id="label-{{myfname}}-other">{{ processString(othertext) }}</label>
+            </div>
 
-        <!-- Checkbox + label -->
-        <div class="mb-3 checkbox-item othertext-label-checkox-container">
-            <!-- checkbox -->
+            <!-- comment -->
+            <div class="text-item other-text-item">
+                <input
+                    class="form-control input-sm {{kpclass}}"
+                    type="text"
+                    name="{{myfname}}"
+                    id="answer{{myfname}}"
+                    value="{{sValue}}"
+                    aria-labelledby="label-{{myfname}}-other"
+                />
+            </div>
+
+
+            <!-- hidden input -->
             <input
-                class="other-checkbox"
-                type="checkbox"
-                name="{{myfname}}cbox"
-                id="answer{{myfname}}cbox"
-                {{checkedState}}
-                aria-hidden="true"
-            />
-            <label for="answer{{myfname}}cbox" class="answertext" id="label-{{myfname}}-other">{{ processString(othertext) }}</label>
-        </div>
-
-        <!-- comment -->
-        <div class="mb-3 text-item other-text-item">
-            <input
-                class="form-control input-sm {{kpclass}}"
-                type="text"
-                name="{{myfname}}"
-                id="answer{{myfname}}"
-                value="{{sValue}}"
-                aria-labelledby="label-{{myfname}}-other"
+                type="hidden"
+                name="java{{myfname}}"
+                id="java{{myfname}}"
+                value="{{sValueHidden}}"
             />
         </div>
-
-
-        <!-- hidden input -->
-        <input
-            type="hidden"
-            name="java{{myfname}}"
-            id="java{{myfname}}"
-            value="{{sValueHidden}}"
-        />
-
 <script type='text/javascript'>
     $('#answer{{myfname}}').on('keyup focusout',function(event)
     {
