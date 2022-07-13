@@ -434,7 +434,7 @@ class Authentication extends SurveyCommonAction
                     'importance' => Notification::NORMAL_IMPORTANCE,
                     'message' => sprintf(
                         gT(
-                            'Unfortunately there was an error regarding the sending of emails after a participant completed your survey %s. For an overview of failed emails go to %s.',
+                            'Unfortunately there was an error regarding the sending of emails after a participant completed your survey "%s". For an overview of failed emails go to %s.',
                             'unescaped'
                         ),
                         "$surveyTitle ($surveyId)",

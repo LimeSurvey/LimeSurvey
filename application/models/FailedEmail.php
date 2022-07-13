@@ -18,6 +18,8 @@
  */
 class FailedEmail extends LSActiveRecord
 {
+    /** @var string all attributes that have the value "NO" */
+    const STATE_SUCCESS = 'SEND SUCCESS';
     /**
      * @inheritdoc
      * @return string the associated database table name
@@ -179,7 +181,7 @@ class FailedEmail extends LSActiveRecord
      */
     public function getFailedEmailSurveyTitles()
     {
-        $allFailedEmails = $this->findAllByAttributes([], "status != :status", [':status' => 'SUCCESSFUL']);
+        $allFailedEmails = $this->findAllByAttributes([], "status != :status", [':status' => self::STATE_SUCCESS]);
         $groupedFailedEmails = [];
         foreach ($allFailedEmails as $failedEmail) {
             $groupedFailedEmails[$failedEmail->surveyid] = $failedEmail->survey->getLocalizedTitle();
