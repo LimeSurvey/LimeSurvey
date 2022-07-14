@@ -28,6 +28,6 @@
         />
         -->
     </div>
-    <p id="question-code-unique-warning" class="d-none text-warning"></p>
+    <p id="question-title-warning" class="d-none text-warning"></p>
 </div>
 
