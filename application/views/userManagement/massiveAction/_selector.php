@@ -5,7 +5,7 @@ $aActionsArray = array(
     'pk'          => 'selectedUser',
     'gridid'      => 'usermanagement--identity-gridPanel',
     'dropupId'    => 'usermanagement--actions',
-    'dropUpText'  => gT('Selected users(s)...'),
+    'dropUpText'  => gT('Selected user(s)...'),
 
     'aActions'    => array(
         
