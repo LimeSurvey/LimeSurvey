@@ -2674,7 +2674,8 @@ class remotecontrol_handle
     /**
      * Invite participants in a survey (RPC function)
      *
-     * Returns array of results of sending
+     * Returns array of results of sending.
+     * The sending stops on the first error (ie. when a token is invalid).
      *
      * @access public
      * @param string $sSessionKey Auth credentials
