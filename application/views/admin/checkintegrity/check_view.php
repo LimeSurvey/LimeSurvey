@@ -323,7 +323,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                                 <?php
                                 foreach ($redundanttokentables as $tokentable) {?>
                                     <li>
-                                        <input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' />
+                                        <input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' onclick="toggleDisableState(this)"/>
                                         <label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label>
                                     </li>
                                 <?php
