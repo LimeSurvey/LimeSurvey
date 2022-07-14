@@ -64,6 +64,20 @@ class CreateQuestionTest extends TestBaseClassWeb
             $web->get($url);
             sleep(1);
 
+            // Ignore welcome modal.
+            try {
+                $button = self::$webDriver->wait(1)->until(
+                    WebDriverExpectedCondition::elementToBeClickable(
+                        WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
+                    )
+                );
+                $button->click();
+            } catch (NoSuchElementException $ex) {
+                // Do nothing.
+            } catch (TimeOutException $ex) {
+                // Do nothing.
+            }
+
             // Go to structure sidebar
             $selectStructureSidebar = $web->findById('adminsidepanel__sidebar--selectorStructureButton');
             $selectStructureSidebar->click();
