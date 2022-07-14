@@ -417,7 +417,7 @@ class Authentication extends SurveyCommonAction
     }
 
     /**
-     * Checks failed_email table for entries and creates UniqueNotifications per survey
+     * Checks failed_email table for entries for this user and creates a UniqueNotification
      *
      * @return void
      */
@@ -425,24 +425,16 @@ class Authentication extends SurveyCommonAction
     {
         $failedEmailModel = new FailedEmail();
         $failedEmailSurveyTitles = $failedEmailModel->getFailedEmailSurveyTitles();
-        foreach ($failedEmailSurveyTitles as $surveyId => $surveyTitle) {
+        if(!empty($failedEmailSurveyTitles)) {
             $uniqueNotification = new UniqueNotification(
                 array(
                     'user_id' => App()->user->id,
-                    'title' => gT('Failed e-mail notifications') . " ($surveyId)",
+                    'title' => gT('Failed e-mail notifications'),
                     'markAsNew' => false,
                     'importance' => Notification::NORMAL_IMPORTANCE,
-                    'message' => sprintf(
-                        gT(
-                            'Unfortunately there was an error regarding the sending of emails after a participant completed your survey "%s". For an overview of failed emails go to %s.',
-                            'unescaped'
-                        ),
-                        "$surveyTitle ($surveyId)",
-                        CHtml::link(
-                            gt('Failed e-mail notifications'),
-                            Yii::app()->createUrl("failedemail/index/", ['surveyid' => $surveyId])
-                        ),
-                    )
+                    'message' => Yii::app()->getController()->renderPartial('//failedEmail/notification_message/_notification_message', [
+                        'failedEmailSurveyTitles' => $failedEmailSurveyTitles
+                    ], true)
                 )
             );
 

@@ -193,7 +193,11 @@ class FailedEmail extends LSActiveRecord
      */
     public function getFailedEmailSurveyTitles()
     {
-        $allFailedEmails = $this->findAllByAttributes([], "status != :status", [':status' => self::STATE_SUCCESS]);
+        $allFailedEmails = $this->with('survey')->findAllByAttributes(
+            [],
+            "owner_id = :owner AND status != :status",
+            [':owner' => App()->user->id, ':status' => self::STATE_SUCCESS]
+        );
         $groupedFailedEmails = [];
         foreach ($allFailedEmails as $failedEmail) {
             $groupedFailedEmails[$failedEmail->surveyid] = $failedEmail->survey->getLocalizedTitle();
