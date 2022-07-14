@@ -17,7 +17,7 @@
         <div class="content-right">
             <?php
 
-            $this->widget('bootstrap.widgets.TbGridView', [
+            $this->widget('ext.LimeGridView.LimeGridView', [
                 'dataProvider'    => $failedEmailModel->search(),
                 'filter'          => $failedEmailModel,
                 'id'              => 'failedemail-grid',
@@ -33,7 +33,7 @@
                 'columns'         => $failedEmailModel->getColumns(),
                 'ajaxUpdate'      => 'failedemail-grid',
                 'ajaxType'        => 'POST',
-//                'afterAjaxUpdate' => 'failedemail-grid'
+                'afterAjaxUpdate' => 'js:function(id, data){ bindListItemclick(); }'
             ]);
             ?>
         </div>

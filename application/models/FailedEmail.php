@@ -12,14 +12,14 @@
  * @property string $error_message the error message
  * @property string $created datetime when this entry is created
  * @property string $status status in which this entry is default 'SEND FAILED'
- * @property string $update datetim when it was last updated
- *
- * @property Survey $survey
+ * @property string $updated datetime when it was last updated
+ * @property Survey $survey the surveyobject related to the entry
  */
 class FailedEmail extends LSActiveRecord
 {
     /** @var string all attributes that have the value "NO" */
     const STATE_SUCCESS = 'SEND SUCCESS';
+
     /**
      * @inheritdoc
      * @return string the associated database table name
@@ -71,7 +71,7 @@ class FailedEmail extends LSActiveRecord
             'language'      => gt('Email language'),
             'created'       => gt('Date of email failing'),
             'status'        => gt('Status'),
-            'update'        => gt('Updated'),
+            'updated'       => gt('Updated'),
             'error_message' => gt('Error message')
         ];
     }
@@ -126,10 +126,10 @@ class FailedEmail extends LSActiveRecord
                 'selectableRows' => '100',
             ],
             [
-                'header'      => gT('Action'),
                 'name'        => 'buttons',
-                'type'        => 'raw',
-                'value'       => '$data->buttons',
+                "type"        => 'raw',
+                'filter'      => false,
+                'header'      => gT('Action'),
             ],
             [
                 'header' => gT('Status'),
@@ -162,6 +162,11 @@ class FailedEmail extends LSActiveRecord
                 'value'  => '$data->recipient',
             ],
             [
+                'header' => gT('Content'),
+                'type' => 'raw',
+                'value'  => '$data->rawMailBody',
+            ],
+            [
                 'header' => gT('Language'),
                 'name'   => 'language',
                 'value'  => '$data->language',
@@ -169,10 +174,17 @@ class FailedEmail extends LSActiveRecord
         ];
     }
 
-    public function getButtons()
-    {
-        $buttons = 'insert viewfile here';
+    public function getButtons() {
+        $buttons = App()->getController()->renderPartial('/failedEmail/partials/buttons', [], true);
         return $buttons;
+    }
+
+    public function getRawMailBody() {
+        $mailer = \LimeMailer::getInstance(true);
+        $mailer->setSurvey(App()->request->getParam('surveyid'));
+        $mailer->setTypeWithRaw($this->email_type, $this->language);
+        $rawMail = $mailer->rawBody;
+        return $rawMail;
     }
 
     /**

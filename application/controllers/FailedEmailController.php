@@ -42,18 +42,34 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException
      */
-    public function actionResend(): void
-    {
+    public function actionResend(): void {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
-        if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
             return;
         }
-
-        $failedEmailModel = FailedEmail::model()->findAllByAttributes(['email_type', 'recipient'], 'surveyid = :surveyid', [':surveyid' => $surveyId]);
-        sendSubmitNotifications($surveyId, $failedEmailModel);
+        $preserveResend = App()->request->getParam('preserveResend');
+        $selectedItems = json_decode(App()->request->getParam('sItems'));
+        if (!empty($selectedItems)) {
+            $criteria = new CDbCriteria();
+            $criteria->select = 'id, email_type, recipient';
+            $criteria->addCondition('surveyid', $surveyId);
+            $criteria->addInCondition('id', $selectedItems);
+            $failedEmails = FailedEmail::model()->findAll($criteria);
+            if (isset($failedEmails)) {
+                foreach ($failedEmails as $failedEmail) {
+                    $emailsByType[$failedEmail->email_type][$failedEmail->id] = $failedEmail->recipient;
+                }
+                if (isset($emailsByType)) {
+                    sendSubmitNotifications($surveyId, $emailsByType, $preserveResend);
+                    // TODO: return message
+                }
+            }
+            // TODO: return message
+        }
+        // TODO: return message
     }
 
     /**
@@ -68,7 +84,16 @@ class FailedEmailController extends LSBaseController
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
             return;
         }
-
-
+        $selectedItems = json_decode(App()->request->getParam('sItems'));
+        if (!empty($selectedItems)) {
+            $criteria = new CDbCriteria();
+            $criteria->select = 'id, email_type, recipient';
+            $criteria->addCondition('surveyid', $surveyId);
+            $criteria->addInCondition('id', $selectedItems);
+            $failedEmails = new FailedEmail;
+            $failedEmails->deleteAll($criteria);
+            // TODO: return message
+        }
+        // TODO: return message
     }
 }

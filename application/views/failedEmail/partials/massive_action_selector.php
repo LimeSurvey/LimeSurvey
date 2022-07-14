@@ -21,23 +21,26 @@ if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) 
         'sModalTitle'   => gT('Delete failed e-mail notifications'),
         'htmlModalBody' => gT('Are you sure you want to delete the selected notifications?'),
         'aCustomDatas'  => [
-            ['name' =>'surveyid', 'value' => $surveyId],
+            ['name' => 'surveyid', 'value' => $surveyId],
         ]
     ];
     $buttons[] = [
-        'type' => 'action',
-        'action' => 'resend',
-        'url' => App()->createUrl('failedemail/resend/', ['surveyid' => $surveyId]),
+        'type'        => 'action',
+        'action'      => 'resend',
+        'url'         => App()->createUrl('failedemail/resend/', ['surveyid' => $surveyId]),
         'iconClasses' => 'fa fa-envelope',
-        'text' => gT('Resend e-mails'),
+        'text'        => gT('Resend e-mails'),
         'grid-reload' => 'yes',
         //modal
-        'actionType' => 'modal',
-        'modalType' => 'cancel-resend',
-        'keepopen' => 'yes',
+        'actionType'  => 'modal',
+        'modalType'   => 'cancel-resend',
+        'keepopen'    => 'yes',
 
-        'sModalTitle' => gT('Resend selected e-mails'),
-        'htmlModalBody' => $this->renderPartial('./partials/resend/modal_body', [], true)
+        'sModalTitle'   => gT('Resend selected e-mails'),
+        'htmlModalBody' => App()->getController()->renderPartial('/failedEmail/partials/modal/resend_body', [], true),
+        'aCustomDatas'  => [
+            ['name' => 'surveyid', 'value' => $surveyId],
+        ]
     ];
 }
 

@@ -25,7 +25,7 @@ var onClickListAction =  function () {
     var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
     var $grididvalue   = $gridid.attr('id');
     var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
-    var $oCheckedItems = JSON.stringify($oCheckedItems);
+    $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType     = $that.data('actionType');   
     var selectedList   = $(".selected-items-list");
 
