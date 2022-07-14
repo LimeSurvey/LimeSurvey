@@ -103,7 +103,6 @@ class CaptchaExtendedAction extends CCaptchaAction{
 	* Run action
 	*/
 	public function run(){
-
 		if(!extension_loaded('mbstring')){
 			throw new CHttpException(500, Yii::t('main','Missing extension "{ext}"', array('{ext}' => 'mbstring')));
 		}
@@ -465,9 +464,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 	 * @return string image content
 	 */
 	protected function renderImage($code){
-
 		$image = imagecreatetruecolor($this->width,$this->height);
-
 		$backColor = imagecolorallocate($image,
 				(int)($this->backColor % 0x1000000 / 0x10000),
 				(int)($this->backColor % 0x10000 / 0x100),
@@ -480,7 +477,8 @@ class CaptchaExtendedAction extends CCaptchaAction{
 		}
 
 		if($this->fontFile === null){
-			$this->fontFile = dirname(__FILE__) . '/Duality.ttf';
+			$this->fontFile = realname(Yii::app()->basePath."/../assets/fonts/font-src/lato-v11-latin-700.ttf");
+			
 		}
 
 		$length = strlen($code);
@@ -554,12 +552,11 @@ class CaptchaExtendedAction extends CCaptchaAction{
 
 		imagecolordeallocate($image,$foreColor);
 
-		header('Pragma: public');
 		header('Expires: 0');
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header("Cache-Control: must-revalidate, no-store, no-cache");
 		header('Content-Transfer-Encoding: binary');
 		header("Content-type: image/png");
-		imagepng($image);
+        imagepng($image); //This will normally output the image, but because of ob_start(), it won't.
 		imagedestroy($image);
 	}
 
