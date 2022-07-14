@@ -391,5 +391,19 @@ return array(
         'depends' => array(
             'jquery',
         )
-    )
+    ),
+    // DateTimePicker for BS5
+    'tempus-dominus' => array(
+        'devBaseUrl' => 'assets/packages/datetimepicker',
+        'basePath' => 'core.datetimepicker',
+        'css' => array(
+            'build/tempus-dominus.min.css',
+        ),
+        'js' => array(
+            'build/popper-tempus.min.js'
+        ),
+        'depends' => array(
+            'moment'
+        )
+    ),
 );

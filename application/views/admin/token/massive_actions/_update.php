@@ -7,7 +7,7 @@
  $aCoreTokenFields = array('validfrom', 'validuntil', 'firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft' );
  $oSurvey = Survey::model()->findByPk($iSurveyId);
  $sCointainerClass = ($oSurvey->anonymized != 'Y' ?  'yes-no-date-container' : 'yes-no-container');
-
+ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>
 
 <form class="custom-modal-datas form form-horizontal makeDisabledInputsTransparent">
@@ -50,7 +50,7 @@
                         </label>
                     </div>
                     <label class="col-md-3 form-label" for='massedit_completed'><?php eT("Completed?"); ?></label>
-                    <div class="col-md-8 <?php echo($oSurvey->anonymized != 'Y' ? 'yes-no-date-container' : 'yes-no-container'); ?>" id="massedit_completed-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                    <div class="col-md-8 <?php echo($oSurvey->anonymized != 'Y' ? 'yes-no-date-container' : 'yes-no-container'); ?>" id="massedit_completed-yes-no-date-container" data-locale="<?php echo $locale ?>">
                         <div class="row">
 
                             <?php if ($oSurvey->anonymized != 'Y'): ?>
@@ -99,7 +99,8 @@
                                                 type="text"
                                                 value="<?php echo date($dateformatdetails['phpdate']); ?>"
                                                 name="completed-date"
-                                                data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                data-locale="<?php echo $locale ?>"
+                                                data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                             >
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
@@ -181,7 +182,7 @@
                         </label>
                     </div>
                     <label class="col-md-3 form-label" for='sent'><?php eT("Invitation sent?"); ?></label>
-                    <div class="col-md-8 <?php echo $sCointainerClass; ?>" id="massedit_sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                    <div class="col-md-8 <?php echo $sCointainerClass; ?>" id="massedit_sent-yes-no-date-container" data-locale="<?php echo $locale ?>">
                         <div class="row">
                             <div class="col-md-4">
                                 <?php if ($oSurvey->anonymized !== 'Y'): ?>
@@ -219,7 +220,8 @@
                                             type="text"
                                             value="<?php echo date($dateformatdetails['phpdate']); ?>"
                                             name="sent-date"
-                                            data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                            data-locale="<?php echo $locale ?>"
+                                            data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                         >
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
@@ -238,7 +240,7 @@
                     </div>
                     <!-- Reminder sent -->
                     <label class="col-md-3 form-label" for='massedit_remindersent'><?php eT("Reminder sent?"); ?></label>
-                    <div class="col-md-8 <?php echo $sCointainerClass; ?>" id="massedit_remind-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                    <div class="col-md-8 <?php echo $sCointainerClass; ?>" id="massedit_remind-yes-no-date-container" data-locale="<?php echo $locale ?>">
 
                         <div class="row">
                             <div class="col-md-4">
@@ -278,7 +280,8 @@
                                             type="text"
                                             value="<?php echo date($dateformatdetails['phpdate']); ?>"
                                             name="remind-date"
-                                            data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                            data-locale="<?php echo $locale ?>"
+                                            data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                         >
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
@@ -334,8 +337,8 @@
                                 type="text"
                                 value="lskeep"
                                 name="validfrom_date"
-                                data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
-                                data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>"
+                                data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                data-locale="<?php echo $locale ?>"
                                 disabled
                             >
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -360,8 +363,8 @@
                                 type="text"
                                 value="lskeep"
                                 name="validuntil_date"
-                                data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
-                                data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>"
+                                data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                data-locale="<?php echo $locale ?>"
                                 disabled
                             >
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>

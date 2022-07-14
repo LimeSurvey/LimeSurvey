@@ -2,17 +2,14 @@
 /**
  * Date Html, selector style :
  * @var $name
- * @var $qid
- * @var $iLength
+ * @var $coreClass
  * @var $dateoutput
  * @var $mindate
  * @var $maxdate
  * @var $dateformatdetails
  * @var $dateformatdetailsjs
- * @var $goodchars
- * @var $checkconditionFunction
- * @var $language
  * @var $hidetip
+ * @var $dateTimeWidget // by passing that over here the tempus dominus datepicker is automatically loaded
  */
 #}
 
@@ -50,19 +47,4 @@
     <div id='datemax{{ name }}'>{{ maxdate }}</div>
     <div id='dateformat{{ name }}'>{{ dateformatdetailsjs }}</div>
 </div>
-
-{# Set option for launch, can not set to default : maybe more than one datetimepicker in page #}
-    {# get the same default value than qanda_helper #}
-    {% set aJsonOption = json_encode({
-        'format' : dateformatdetailsjs,
-        'minDate' : '{' in mindate ? '1900-01-01' : mindate,
-        'maxDate' : '{' in maxdate ? '2037-12-31' : maxdate,
-        'stepping' : minuteStep,
-        'sideBySide' :  true
-    }) %}
-    
-    {{ registerScript("doDatetimepicker_" ~ name, "jQuery('#answer" ~ name ~ "_datetimepicker').datetimepicker(" ~ aJsonOption ~ ");" , 'POS_POSTSCRIPT' ) }}
-    {# Min and max date sets default value, so use this to override it #}
-    {{ registerScript("resetDate" ~ name,"$('#answer" ~ name ~ "').val('" ~ dateoutput ~ "');", 'POS_POSTSCRIPT') }}
-
 <!-- end of answer -->

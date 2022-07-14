@@ -47,7 +47,6 @@ class RenderDate extends QuestionBaseRenderer
 
         $this->aPackages = [
             'moment',
-            'bootstrap-datetimepicker'
         ];
 
         parent::registerAssets();
@@ -56,16 +55,6 @@ class RenderDate extends QuestionBaseRenderer
     public function getTranslatorData()
     {
         $data = [];
-        $data['dateparts'] = [
-            'year' => gT('Year'),
-            'month' => gT('Month'),
-            'day' => gT('Day'),
-            'hour' => gT('Hour'),
-            'minute' => gT('Minute'),
-            'second' => gT('Second'),
-            'millisecond' => gT('Millisecond')
-        ];
-
         switch ((int) trim($this->getQuestionAttribute('dropdown_dates_month_style'))) {
             case 0:
                 $data['montharray'] = array(
@@ -83,20 +72,6 @@ class RenderDate extends QuestionBaseRenderer
                 $data['montharray'] = array('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12');
                 break;
         }
-        $data['tooltips'] = array(
-            'clear' => gT('Clear selection'),
-            'prevMonth' => gT('Previous month'),
-            'nextMonth' => gT('Next month'),
-            'selectYear' => gT('Select year'),
-            'prevYear' => gT('Previous year'),
-            'nextYear' => gT('Next year'),
-            'selectDecade' => gT('Select decade'),
-            'prevDecade' => gT('Previous decade'),
-            'nextDecade' => gT('Next decade'),
-            'prevCentury' => gT('Previous century'),
-            'nextCentury' => gT('Next century'),
-            'selectTime' => gT('Select time')
-        );
 
         return $data;
     }
@@ -238,43 +213,6 @@ class RenderDate extends QuestionBaseRenderer
 
     public function renderDatepicker($dateoutput, $coreClass)
     {
-        // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
-        // "+1" makes room for a trailing space in date/time values
-        $iLength = strlen(date($this->aDateformatDetails['phpdate'], mktime(23, 59, 59, 12, 30, 1999))) + 1;
-
-        // Hide calendar (but show hour/minute) if there's no year, month or day in format
-        $hideCalendar = strpos($this->aDateformatDetails['jsdate'], 'Y') === false
-                     && strpos($this->aDateformatDetails['jsdate'], 'D') === false
-                     && strpos($this->aDateformatDetails['jsdate'], 'M') === false;
-
-        
-        $this->aPackages[] = 'bootstrap-datetimepicker';
-        $aDefaultDatePicker = array(
-            'locale' => convertLStoDateTimePickerLocale(App()->language),
-            'tooltips' => $this->getTranslatorData()['tooltips'],
-            'icons' => array(
-                'time' => 'fa fa-clock-o',
-                'date' => 'fa fa-calendar',
-                'up' => 'fa fa-chevron-up',
-                'down' => 'fa fa-chevron-down',
-                'previous' => 'fa fa-chevron-left',
-                'next' => 'fa fa-chevron-right',
-                'today' => 'fa fa-calendar-check-o',
-                'clear' => 'fa fa-trash-o',
-                'close' => 'fa fa-closee'
-            ),
-            'allowInputToggle' => true,
-            'showClear' => true,
-            'sideBySide' => true,
-            //~ 'debug'=>true
-        );
-
-        $this->addScript(
-            "setDatePickerGlobalOption",
-            "$.extend( $.fn.datetimepicker.defaults, " . json_encode($aDefaultDatePicker) . " )",
-            LSYii_ClientScript::POS_BEGIN
-        );
-
         $this->addScript(
             'doPopupDate',
             "doPopupDate({$this->oQuestion->qid});",
@@ -289,20 +227,32 @@ class RenderDate extends QuestionBaseRenderer
             'name'                   => $this->sSGQA,
             'basename'               => $this->sSGQA,
             'coreClass'              => $coreClass,
-            'iLength'                => $iLength,
             'mindate'                => $this->minDate,
             'maxdate'                => $this->maxDate,
             'dateformatdetails'      => $this->aDateformatDetails['dateformat'],
             'dateformatdetailsjs'    => $this->aDateformatDetails['jsdate'],
             'dateformatdetailsphp'   => $this->aDateformatDetails['phpdate'],
-            'minuteStep'             => $this->getQuestionAttribute('dropdown_dates_minute_step'),
-            'goodchars'              => "", // "return window.LS.goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
-            'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
-            'language'               => App()->language,
             'hidetip'                => trim($this->getQuestionAttribute('hide_tip')) == 0,
             'dateoutput'             => $dateoutput,
-            'qid'                    => $this->oQuestion->qid,
-            'hideCalendar'           => $hideCalendar
+            'dateTimeWidget'         => App()->getController()->widget(
+                'ext.DateTimePickerWidget.DateTimePicker',
+                array(
+                    'name' => $this->sSGQA,
+                    'id' => 'answer' . $this->sSGQA,
+                    'value' => $dateoutput,
+                    'pluginOptions' => array(
+                        'format' => $this->aDateformatDetails['jsdate'],
+                        'allowInputToggle' => true,
+                        'showClear' => true,
+                        'sideBySide' => true,
+                        'minDate' => $this->minDate,
+                        'maxDate' => $this->maxDate,
+                        'stepping' => $this->getQuestionAttribute('dropdown_dates_minute_step'),
+                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
+                    )
+                ),
+                true
+            )
             ),
             true
         );
@@ -417,7 +367,6 @@ class RenderDate extends QuestionBaseRenderer
             $answer = $this->renderDropdownDates($dateoutput, $coreClass);
         } else {
             $answer = $this->renderDatepicker($dateoutput, $coreClass);
-            $coreClass .= " text-item";
         }
 
         $this->registerAssets();
