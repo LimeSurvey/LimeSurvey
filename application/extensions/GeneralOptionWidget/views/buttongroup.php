@@ -8,7 +8,7 @@
                 <input 
                     type="radio" 
                     name="question[<?= $this->generalOption->name; ?>]" 
-                    value="<?= Chtml::encode($option->value); ?>"
+                    value="<?= CHtml::encode($option->value); ?>"
                     checked="checked"
                 />
                 <?= $option->text; ?>
@@ -18,7 +18,7 @@
                 <input 
                     type="radio" 
                     name="question[<?= $this->generalOption->name; ?>]" 
-                    value="<?= Chtml::encode($option->value); ?>"
+                    value="<?= CHtml::encode($option->value); ?>"
                 />
                 <?= $option->text; ?>
             </label>
