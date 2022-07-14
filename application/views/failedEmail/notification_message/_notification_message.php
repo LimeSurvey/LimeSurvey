@@ -9,11 +9,9 @@
 ?>
 <p>
     <?php
-    eT('One or more failed send attempts of emails after participants completed a survey.') ?>
-</p>
-<p>
+    eT('Dear survey administrator') ?>,<br>
     <?php
-    eT('Affected surveys') ?>:
+    eT("There were one or more confirmation emails that failed to be sent. Please check the 'Failed email notifications' section in the survey(s) listed below") ?>:
 </p>
 <ul>
     <?php
