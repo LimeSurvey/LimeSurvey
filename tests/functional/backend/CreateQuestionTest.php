@@ -78,6 +78,8 @@ class CreateQuestionTest extends TestBaseClassWeb
                 // Do nothing.
             }
 
+            $web->dismissModal();
+
             // Go to structure sidebar
             $selectStructureSidebar = $web->findById('adminsidepanel__sidebar--selectorStructureButton');
             $selectStructureSidebar->click();
