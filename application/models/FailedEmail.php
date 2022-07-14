@@ -135,37 +135,42 @@ class FailedEmail extends LSActiveRecord
                 'header' => gT('Status'),
                 'name'   => 'status',
                 'value'  => '$data->status',
+                'htmlOptions' => ['class' => 'nowrap']
             ],
-            [
-                'header' => gT('Error Message'),
-                'name'   => 'error_message',
-                'value'  => '$data->error_message',
-            ],
+//            [
+//                'header' => gT('Error Message'),
+//                'name'   => 'error_message',
+//                'value'  => '$data->error_message',
+//            ],
             [
                 'header' => gT('Created'),
                 'name'   => 'created',
                 'value'  => '$data->created',
+                'htmlOptions' => ['class' => 'nowrap']
             ],
             [
                 'header' => gT('Updated'),
                 'name'   => 'updated',
                 'value'  => '$data->updated',
+                'htmlOptions' => ['class' => 'nowrap']
             ],
             [
                 'header' => gT('Email type'),
                 'name'   => 'email_type',
                 'value'  => '$data->email_type',
+                'htmlOptions' => ['class' => 'nowrap']
             ],
             [
                 'header' => gT("Recipient"),
                 'name'   => 'recipient',
                 'value'  => '$data->recipient',
+                'htmlOptions' => ['class' => 'nowrap']
             ],
-            [
-                'header' => gT('Content'),
-                'type' => 'raw',
-                'value'  => '$data->rawMailBody',
-            ],
+//            [
+//                'header' => gT('Content'),
+//                'type' => 'raw',
+//                'value'  => '$data->rawMailBody',
+//            ],
             [
                 'header' => gT('Language'),
                 'name'   => 'language',
@@ -175,7 +180,7 @@ class FailedEmail extends LSActiveRecord
     }
 
     public function getButtons() {
-        $buttons = App()->getController()->renderPartial('/failedEmail/partials/buttons', [], true);
+        $buttons = App()->getController()->renderPartial('/failedEmail/partials/buttons', ['id' => $this->id], true);
         return $buttons;
     }
 

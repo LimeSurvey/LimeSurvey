@@ -27,6 +27,7 @@ class FailedEmailController extends LSBaseController
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
+        App()->getClientScript()->registerScriptFile('/application/views/failedEmail/javascript/failedEmail.js', LSYii_ClientScript::POS_BEGIN);
 
         $failedEmailModel = FailedEmail::model();
         $pageSizeTokenView = App()->user->getState('pageSizeTokenView', App()->params['defaultPageSize']);
@@ -42,7 +43,8 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException
      */
-    public function actionResend(): void {
+    public function actionResend(): void
+    {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
@@ -95,5 +97,12 @@ class FailedEmailController extends LSBaseController
             // TODO: return message
         }
         // TODO: return message
+    }
+
+    public function actionModalContent()
+    {
+        $contentFile = App()->request->getParam('contentFile');
+        $id = App()->request->getParam('id');
+        return App()->getController()->renderPartial('/failedEmail/partials/modal/' . $contentFile, ['id' => $id]);
     }
 }
