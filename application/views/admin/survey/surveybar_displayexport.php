@@ -1,8 +1,9 @@
 <?php
 /**
  * Subview of surveybar_view.
- * @param $respstatsread
- * @param $surveyexport
+ * @param $hasTokensExportPermission
+ * @param $hasResponsesExportPermission
+ * @param $hasSurveyExportPermission
  * @param $oSurvey
  * @param $onelanguage
  */
@@ -22,7 +23,11 @@
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/".$oSurvey->sid),
         "download" => true,
     ];
-    if(($respstatsread && $surveyexport)) {
+    if (
+        $hasResponsesExportPermission
+        && $hasSurveyExportPermission
+        && (!$oSurvey->hasTokensTable || $hasTokensExportPermission)
+    ) {
         $aExportItemsArray["surveyarchive"] = ($oSurvey->isActive)
         ? [
             "key" => "surveyarchive",

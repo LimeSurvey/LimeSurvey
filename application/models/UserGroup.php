@@ -208,7 +208,7 @@ class UserGroup extends LSActiveRecord
     {
         $sQuery = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid";
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            $sQuery .= "  AND uid = :userid ";
+            $sQuery .= "  AND (owner_id = :userid OR uid = :userid) ";
         }
         $sQuery .= " ORDER BY name";
         $command = Yii::app()->db->createCommand($sQuery)->bindParam(":ugid", $ugId, PDO::PARAM_INT);

@@ -223,6 +223,7 @@ class Translate extends SurveyCommonAction
                     $aResultTo2 = !empty($type2) ? $oResultTo2->questionl10ns[$tolang]->getAttributes() : $aResultTo;
                 } elseif ($class == 'Answer') {
                     $aRowfrom = $oRowfrom->answerl10ns[$baselang]->getAttributes();
+                    $aRowfrom['question_title'] = $oRowfrom->question->title;
                     $aResultBase2 = !empty($type2) ? $oResultBase2->answerl10ns[$baselang]->getAttributes() : $aRowfrom;
                     $aResultTo = $oResultTo->answerl10ns[$tolang]->getAttributes();
                     $aResultTo2 = !empty($type2) ? $oResultTo2->answerl10ns[$tolang]->getAttributes() : $aResultTo;
@@ -335,10 +336,11 @@ class Translate extends SurveyCommonAction
         $langs = $oSurvey->additionalLanguages;
         $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
 
-        $language_list .= CHtml::openTag('div', array('class' => 'mb-3 row ms-auto col-4 float-start')); // Opens .menubar-right div
-
+        $language_list .= CHtml::openTag('div', array('class' => 'row row-cols-lg-auto g-1 align-items-center mb-3')); // Opens .menubar-right div
+        $language_list .= CHtml::openTag('div', array('class' => 'col-12'));
         $language_list .= CHtml::tag('label', array('for' => 'translationlanguage', 'class' => 'text-nowrap col col-form-label col-form-label-sm'), gT("Translate to") . ":");
-        $language_list .= CHtml::openTag('div', array('class' => 'col'));
+        $language_list .= CHtml::closeTag('div');
+        $language_list .= CHtml::openTag('div', array('class' => 'col-12'));
         $language_list .= CHtml::openTag(
             'select',
             array(
@@ -885,12 +887,16 @@ class Translate extends SurveyCommonAction
     {
 
         $translateoutput = "<table class='table table-striped'>";
-            $translateoutput .= '<thead>';
-            $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
-            $translateoutput .= $threeRows ? '<th class="col-lg-2 text-strong">' . gT('Question code / ID') . "</th>" : '';
-            $translateoutput .= '<th class="' . ($threeRows ? "col-md-5 text-strong" : "col-md-6") . '" >' . $baselangdesc . "</th>";
-            $translateoutput .= '<th class="' . ($threeRows ? "col-md-5 text-strong" : "col-md-6") . '" >' . $tolangdesc . "</th>";
-            $translateoutput .= '</thead>';
+        $translateoutput .= '<thead>';
+        $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
+        if ($type == 'answer') {
+            $translateoutput .= '<th class="col-lg-2 text-strong">' . gT('QCode / Answer Code / ID') . "</th>";
+        } elseif ($threeRows) {
+            $translateoutput .= '<th class="col-lg-2 text-strong">' . gT('Question code / ID') . "</th>";
+        }
+        $translateoutput .= '<th class="' . ($threeRows ? "col-md-5 text-strong" : "col-md-6") . '" >' . $baselangdesc . "</th>";
+        $translateoutput .= '<th class="' . ($threeRows ? "col-md-5 text-strong" : "col-md-6") . '" >' . $tolangdesc . "</th>";
+        $translateoutput .= '</thead>';
 
         return $translateoutput;
     }
@@ -933,7 +939,7 @@ class Translate extends SurveyCommonAction
             // Display text in original language
             // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
         if ($type == 'answer') {
-            $translateoutput .= "<td class='col-md-2'>" . htmlspecialchars($rowfrom['answer']) . " (" . $rowfrom['qid'] . ") </td>";
+            $translateoutput .= "<td class='col-md-2'>" . htmlspecialchars($rowfrom['question_title'] . " / " . $rowfrom['code']) . " (" . $rowfrom['aid'] . ") </td>";
         }
         if ($type == 'question_help' || $type == 'question') {
             $translateoutput .= "<td class='col-md-2'>" . htmlspecialchars($rowfrom['title']) . " ({$rowfrom['qid']}) </td>";

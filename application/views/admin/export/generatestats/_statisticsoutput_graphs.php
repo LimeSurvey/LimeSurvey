@@ -16,7 +16,7 @@
  $qqid = str_replace ( '-', '__' , $qqid );
 ?>
 <tr>
-    <td colspan='4 id='statzone_<?php echo $rt;?>'>
+    <td colspan='4' id='statzone_<?php echo $rt;?>'>
     <?php if(count($labels) < 70): ?>
         <!-- Charts -->
         <div class="row">
