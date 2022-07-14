@@ -148,9 +148,7 @@ $(window).bind("load", function () {
     initColumnFilter();
 });
 
-$(document).on('pjax:scriptcomplete', function() {
-    onDocumentReadyListresponse();
-});
+$(document).off('pjax:scriptcomplete.listresponse').on('pjax:scriptcomplete.listresponse', onDocumentReadyListresponse);
 
 
 function initColumnFilter() {
