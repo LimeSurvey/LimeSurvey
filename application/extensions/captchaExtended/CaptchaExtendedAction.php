@@ -58,6 +58,11 @@ class CaptchaExtendedAction extends CCaptchaAction{
 		MODE_WORDS = 'words';
 
 	/**
+	* If True, regenerate captcha if user enters valid code
+	*/
+	public $regenerateOnValid = true;
+
+	/**
 	 * @var integer padding around the text. Defaults to 2.
 	 */
 	public $offset = 2;
@@ -80,24 +85,25 @@ class CaptchaExtendedAction extends CCaptchaAction{
 	public $fileWords;
 
 	/**
-	* Dots density around characters 0 - 100 [%], defaults 5.
+	* Dots density around characters 0 - 100%
 	*/
-	public $density = 5; // dots density 0 - 100%
+	public $density = 3;
 
 	/**
-	* The number of lines drawn through the generated captcha picture, default 3.
+	* The number of lines drawn through the generated captcha picture
 	*/
-	public $lines = 3;
+	public $lines = 2;
 
 	/**
-	* The number of sections to be filled with random flood color, default 10.
+	* The number of sections to be filled with random flood color
 	*/
-	public $fillSections = 10;
+	public $fillSections = 5;
 
 	/**
 	* Run action
 	*/
 	public function run(){
+
 		if(!extension_loaded('mbstring')){
 			throw new CHttpException(500, Yii::t('main','Missing extension "{ext}"', array('{ext}' => 'mbstring')));
 		}
@@ -195,6 +201,11 @@ class CaptchaExtendedAction extends CCaptchaAction{
 		if(!file_exists($this->fileWords)){
 			throw new CHttpException(500, Yii::t('main','File not found in "{path}"', array('{path}' => $this->fileWords)));
 		}
+		// get previous code
+		$session = Yii::app()->session;
+		$name = $this->getSessionKey();
+		$previous = $session[$name];
+		// load list of words
 		$words = file_get_contents($this->fileWords);
 		$words = explode(' ', $words);
 		$found = array();
@@ -206,13 +217,16 @@ class CaptchaExtendedAction extends CCaptchaAction{
 			}
 			// purify word
 			$w = $this->purifyWord($w[0]);
-			if(strlen($w)>3){
+			if(strlen($w) > 3 && $w != $previous){
 				// accept only word with at least 3 characters
 				$found[] = $w;
-				if(strlen(implode('', $found))>10){
+				break; // change: we pull out only 1 word to ease user experience
+				/*
+				if(strlen(implode('', $found)) > 10){
 					// words must have at least 10 characters together
 					break;
 				}
+				*/
 			}
 		}
 		$code = implode('', $found); // without whitespaces
@@ -241,11 +255,11 @@ class CaptchaExtendedAction extends CCaptchaAction{
 		$n2 = mt_rand(1,9);
 		if(mt_rand(1,100) > 50){
 			$n1 = mt_rand(1,9)*10+$n2;
-			$code = $n1.'-'.$n2.'=';
+			$code = $n1.' - '.$n2.' =';
 			$r = $n1-$n2;
 		}else{
 			$n1 = mt_rand(1,10)*10-$n2;
-			$code = $n1.'+'.$n2.'=';
+			$code = $n1.' + '.$n2.' =';
 			$r = $n1+$n2;
 		}
 		return array('code' => $code, 'result' => $r);
@@ -285,7 +299,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 	* Return code for logical formula like min(one,7,four)
 	*/
 	protected function getCodeLogical(){
-		$t = mt_rand(2,4);
+		$t = mt_rand(2,3);
 		$a = array();
 		for($i=0;$i<$t;++$i){
 			// we dont use zero
@@ -365,7 +379,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 				$equal = '=';
 				break;
 			case 2:
-				$equal = str_repeat('.', mt_rand(2,5));
+				$equal = str_repeat('.', mt_rand(2,3));
 				break;
 		}
 
@@ -395,8 +409,9 @@ class CaptchaExtendedAction extends CCaptchaAction{
 		if(empty($_POST['ajax'])){
 			$name = $this->getSessionKey() . 'count';
 			$session[$name] = $session[$name] + 1;
-			if($valid || $session[$name] > $this->testLimit && $this->testLimit > 0){
+			if(($valid && $this->regenerateOnValid) || ($this->testLimit > 0 && $session[$name] > $this->testLimit)){
 				// generate new code also each time correctly entered
+				$session[$name] = 0;
 				$this->getVerifyCode(true);
 			}
 		}
@@ -430,7 +445,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 	*/
 	public function getVerifyResult($regenerate=false){
 		if($this->fixedVerifyCode !== null){
-			return $this->fixedVerifyCode;
+			return (string) $this->fixedVerifyCode;
 		}
 		$session = Yii::app()->session;
 		$session->open();
@@ -441,7 +456,7 @@ class CaptchaExtendedAction extends CCaptchaAction{
 			$session[$name . 'result'] = $code['result'];
 			$session[$name . 'count'] = 1;
 		}
-		return $session[$name . 'result'];
+		return (string) $session[$name . 'result'];
 	}
 
 	/**
@@ -450,7 +465,9 @@ class CaptchaExtendedAction extends CCaptchaAction{
 	 * @return string image content
 	 */
 	protected function renderImage($code){
+
 		$image = imagecreatetruecolor($this->width,$this->height);
+
 		$backColor = imagecolorallocate($image,
 				(int)($this->backColor % 0x1000000 / 0x10000),
 				(int)($this->backColor % 0x10000 / 0x100),
@@ -463,25 +480,24 @@ class CaptchaExtendedAction extends CCaptchaAction{
 		}
 
 		if($this->fontFile === null){
-			$this->fontFile = realname(Yii::app()->basePath."/../assets/fonts/font-src/lato-v11-latin-700.ttf");
-			
+			$this->fontFile = dirname(__FILE__) . '/Duality.ttf';
 		}
 
 		$length = strlen($code);
-		$box = imagettfbbox(25,0,$this->fontFile,$code);
+		$box = imagettfbbox(22,0,$this->fontFile,$code);
 		$w = $box[4] - $box[0] + $this->offset * ($length - 1);
 		$h = $box[1] - $box[5];
 		$scale = min(($this->width - $this->padding * 2) / $w,($this->height - $this->padding * 2) / $h);
-		$x = 10;
-		$y = round($this->height * 27 / 40);
+		$x = intval(($this->width - $w)/3); // center text coord X
+		$y = round($this->height * 0.80); // text coord Y
 
 		$r = (int)($this->foreColor % 0x1000000 / 0x10000);
 		$g = (int)($this->foreColor % 0x10000 / 0x100);
 		$b = $this->foreColor % 0x100;
-		$foreColor = imagecolorallocate($image, mt_rand($r-50,$r+50), mt_rand($g-50,$g+50),mt_rand($b-50,$b+50));
+		$foreColor = imagecolorallocate($image, mt_rand(max(0, $r-50),$r+50), mt_rand($g-50,$g+50),mt_rand($b-50,min(255, $b+50)));
 
 		for($i = 0; $i < $length; ++$i){
-			$fontSize = (int)(rand(26,32) * $scale * 0.8);
+			$fontSize = (int)(rand(16,20) * $scale);
 			$angle = rand(-10,10);
 			$letter = $code[$i];
 
@@ -492,8 +508,8 @@ class CaptchaExtendedAction extends CCaptchaAction{
 			}
 
 			// randomize font color
-			if(mt_rand(0,10)>7){
-				$foreColor = imagecolorallocate($image, mt_rand($r-50,$r+50), mt_rand($g-50,$g+50),mt_rand($b-50,$b+50));
+			if(mt_rand(0,10)>5){
+				$foreColor = imagecolorallocate($image, mt_rand(max(0, $r-50),$r+50), mt_rand($g-50,$g+50),mt_rand($b-50,min(255, $b+50)));
 			}
 
 			$box = imagettftext($image,$fontSize,$angle,$x,$y,$foreColor,$this->fontFile,$letter);
@@ -536,13 +552,14 @@ class CaptchaExtendedAction extends CCaptchaAction{
 			}
 		}
 
-        imagecolordeallocate($image,$foreColor);
+		imagecolordeallocate($image,$foreColor);
 
-		header('Expires:0');
-        header("Cache-Control: must-revalidate, no-store, no-cache");
-		header('Content-Transfer-Encoding:binary');
-        header("Content-type:image/png");
-        imagepng($image); //This will normally output the image, but because of ob_start(), it won't.
+		header('Pragma: public');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Content-Transfer-Encoding: binary');
+		header("Content-type: image/png");
+		imagepng($image);
 		imagedestroy($image);
 	}
 
