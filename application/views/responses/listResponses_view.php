@@ -274,11 +274,6 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     ';
                 $script = '
                     var postUrl = "' . Yii::app()->getController()->createUrl("responses/setSession") . '"; // For massive export
-                    jQuery(document).on("change", "#pageSize", function(){
-                        var data = $("#responses-grid .filters input, #responses-grid .filters select").serialize();
-                        data += (data ? "&" : "") + "pageSize=" + $(this).val();
-                        $.fn.yiiGridView.update("responses-grid", {data: data});
-                    });
                     $(".grid-view [data-toggle=\'popover\']").popover();
                     ';
                 App()->getClientScript()->registerScript('listresponses', $scriptVars, LSYii_ClientScript::POS_BEGIN);
