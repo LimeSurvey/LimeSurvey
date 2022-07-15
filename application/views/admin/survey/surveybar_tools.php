@@ -14,7 +14,7 @@
 
 ?>
 
-<div class="btn-group d-none d-sm-block">
+<div class="btn-group d-none d-md-block">
 
     <!-- Main button dropdown -->
     <button id="ls-tools-button" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
