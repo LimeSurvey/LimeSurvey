@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <div class="form container-center">
                     <div class='form-group row'>
-                        <label class='control-label col-sm-4' for='attributes'><?php eT('Attributes to export:');?></label>
+                        <label class='control-label col-sm-4' for='attributes'><?php  eT('Attributes to export:');?></label>
                         <div class='col-sm-8'>
                             <select id="attributes" name="attributes" multiple="multiple" >
                                 <?php
@@ -65,11 +65,13 @@
 </div>
 
 <?php
+   // @todo THis seems to be a duplicate to the same snippet in participantpanel.js
     App()->getClientScript()->registerScript('ExportCSVMultiSelectInit', "
     $('#attributes').multiselect({
         includeSelectAllOption: true, 
         enableFiltering: true,
         enableCaseInsensitiveFiltering: true, 
+        selectAllValue: 0,
         filterBehavior : \"text\",
         selectAllText: '".gT("Select all")."',
         filterPlaceholder: '".gT("Search for something...")."'

@@ -89,7 +89,7 @@ class CreateQuestionTest extends TestBaseClassWeb
             );
             $input->clear()->sendKeys($questionCode);
             $web->findById('relevance')->click();
-            sleep(1);
+            sleep(2);
             $checkValidateText = trim($web->findById('question-title-warning')->getText());
             $this->assertEquals(
                 "",

@@ -130,7 +130,7 @@ $(window).bind("load", function(){
     reinstallResponsesFilterDatePicker();
 });
 
-$(document).on('pjax:scriptcomplete', onDocumentReadyListresponse);
+$(document).off('pjax:scriptcomplete.listresponse').on('pjax:scriptcomplete.listresponse', onDocumentReadyListresponse);
 
 $(function () {
     // hide and submit Modal on click for pjax preventDefault submit
