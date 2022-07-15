@@ -71,7 +71,7 @@
 
 <!-- Edit Token Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="editTokenModal">
-    <div class="modal-dialog" style="width: 1100px">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><?php eT('Edit survey participant');?></h5>

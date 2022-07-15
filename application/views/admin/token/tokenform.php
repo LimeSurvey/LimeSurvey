@@ -62,9 +62,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
             <!-- Tabs content-->
             <div class="tab-content">
                 <div id="general" class="tab-pane fade show active">
-                    <div class="ls-flex-column ls-space padding left-5 right-35 col-lg-6">
+                <div class="row">
                         <!-- General -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <!-- ID  -->
                             <label class="form-label">ID:</label>
                             <div class="">
@@ -79,7 +79,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 </p>
                             </div>
                         </div>
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <!--
                             TODO:
                             To take in account the anonomyzed survey case (completed field contain no date, but a {Y,N}), the code become more complexe
@@ -153,7 +153,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </div>
 
                         <!-- First name, Last name -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='firstname'>
                                 <?php eT("First name:"); ?>
                             </label>
@@ -167,7 +167,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 ); ?>
                             </div>
                         </div>
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='lastname'>
                                 <?php eT("Last name:"); ?>
                             </label>
@@ -183,7 +183,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </div>
 
                         <!-- Token, language -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='token'>
                                 <?php eT("Access code:"); ?>
                             </label>
@@ -202,7 +202,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='language'>
                                 <?php eT("Language:"); ?>
                             </label>
@@ -215,10 +215,10 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                             </div>
                         </div>
                     </div>
-                    <div class="ls-flex-column ls-space padding left-5 right-35 col-lg-6">
+                    <div class="row">
 
                         <!-- Email, Email Status  -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='email'>
                                 <?php eT("Email:"); ?>
                             </label>
@@ -236,7 +236,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </div>
 
                         <!-- Email Status -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='emailstatus'>
                                 <?php eT("Email status:"); ?>
                             </label>
@@ -254,7 +254,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </div>
 
                         <!-- Invitation sent, Reminder sent -->
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <!-- Invitation sent -->
                             <label class="form-label" for='sent'>
                                 <?php eT("Invitation sent?"); ?>
@@ -329,7 +329,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo "N"; }?>" />
                             </div>
                         </div>
-                        <div class="ex-form-group mb-3">
+
+                        <div class="ex-form-group mb-3 col-6">
                             <!-- Reminder sent -->
                             <label class="form-label" for='remindersent'>
                                 <?php eT("Reminder sent?"); ?>
@@ -379,20 +380,21 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 </div>
                                 <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent) && $remindersent!='N') {echo $remindersent; } else {echo "N"; }?>" />
                             </div>
+                        </div>
 
-                            <!-- Reminder count, Uses left -->
-                            <div class="ex-form-group mb-3">
-                                <!-- Reminder count -->
-                                <?php if ($token_subaction == "edit"): ?>
-                                    <label class="form-label" for='remindercount'>
-                                        <?php eT("Reminder count:"); ?>
-                                    </label>
-                                    <input class='form-control' type='number' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>"/>
-                                <?php endif; ?>
-                            </div>
+                            <!-- Reminder count -->
+                            <?php if ($token_subaction == "edit"): ?>
+                                <!-- Reminder count, Uses left -->
+                                <div class="ex-form-group mb-3 col-6">
+                                        <label class="form-label" for='remindercount'>
+                                            <?php eT("Reminder count:"); ?>
+                                        </label>
+                                        <input class='form-control' type='number' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>"/>
+                                </div>
+                            <?php endif; ?>
 
                             <!-- Uses left -->
-                            <div class="ex-form-group mb-3">
+                            <div class="ex-form-group mb-3 col-6">
                                 <label class="form-label" for='usesleft'>
                                     <?php eT("Uses left:"); ?>
                                 </label>
@@ -403,53 +405,47 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 } ?>"/>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="ls-flex-column ls-space padding left-5 right-35 col-12">
-                        <!-- Valid from to  -->
-                        <div class="ex-form-group mb-3">
-                            <?php
-                            if (isset($validfrom) && $validfrom != 'N') {
-                                $validfrom = convertToGlobalSettingFormat($validfrom, true);
-                            }
+                    <div class="row">
+                        <div class="col-6">
+                            <!-- Valid from to  -->
+                            <div class="ex-form-group mb-3">
+                                <?php
+                                if (isset($validfrom) && $validfrom != 'N') {
+                                    $validfrom = convertToGlobalSettingFormat($validfrom, true);
+                                }
 
-                            if (isset($validuntil) && $validuntil != 'N') {
-                                $validuntil = convertToGlobalSettingFormat($validuntil, true);
-                            }
-                            ?>
+                                if (isset($validuntil) && $validuntil != 'N') {
+                                    $validuntil = convertToGlobalSettingFormat($validuntil, true);
+                                }
+                                ?>
 
-                            <!-- From -->
-                            <label class="form-label" for='validfrom'>
-                                <?php eT("Valid from"); ?>:</label>
-                            <div class=" has-feedback">
-                                <div id="validfrom_datetimepicker" class="input-group date">
-                                    <input class="YesNoDatePicker form-control"
-                                           id="validfrom"
-                                           type="text"
-                                           value="<?php echo isset($validfrom) ? $validfrom : '' ?>"
-                                           name="validfrom"
-                                           data-locale="<?php echo $locale ?>"
-                                           data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                    <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
+                                <!-- From -->
+                                <label class="form-label" for='validfrom'>
+                                    <?php eT("Valid from"); ?>:</label>
+                                <div class=" has-feedback">
+                                    <div id="validfrom_datetimepicker" class="input-group date">
+                                    <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo isset($validfrom) ? $validfrom : '' ?>" name="validfrom"
+                                           data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="ex-form-group mb-3">
-                            <!-- To -->
-                            <label class="form-label" for='validuntil'>
-                                <?php eT('Until:'); ?>
-                            </label>
-                            <div class="has-feedback">
-                                <div id="validuntil_datetimepicker" class="input-group date">
-                                    <input class="YesNoDatePicker form-control"
-                                           id="validuntil"
-                                           type="text"
-                                           value="<?php echo isset($validuntil) ? $validuntil : '' ?>"
-                                           name="validuntil"
-                                           data-locale="<?php echo $locale ?>"
-                                           data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                    <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
+                        <div class="col-6">
+                            <div class="ex-form-group mb-3">
+                                <!-- To -->
+                                <label class="form-label" for='validuntil'>
+                                    <?php eT('Until:'); ?>
+                                </label>
+                                <div class="has-feedback">
+                                    <div id="validuntil_datetimepicker" class="input-group date">
+                                    <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : '' ?>" name="validuntil"
+                                           data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -460,7 +456,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 <div id="custom" class="tab-pane fade">
                     <!-- Attributes -->
                     <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
-                        <div class="ex-form-group mb-3">
+                        <div class="ex-form-group mb-3 col-6">
                             <label class="form-label" for='<?php echo $attr_name; ?>'>
                                 <?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:
                             </label>
