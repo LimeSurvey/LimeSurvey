@@ -1647,11 +1647,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         // TODO: How to show internal errors?
         // eslint-disable-next-line no-alert
         console.error(ex);
-        var errorMessage = ex.name + ": " + ex.message;
-        if (ex.hasOwnProperty('stack')) {
-          errorMessage = errorMessage + "\n" + ex.stack;
-        }
-        alert(`Internal error in updateQuestionAttributes: ${errorMessage}`);
+        alert(`Internal error in updateQuestionAttributes: ${ex}`);
       }
     },
 
