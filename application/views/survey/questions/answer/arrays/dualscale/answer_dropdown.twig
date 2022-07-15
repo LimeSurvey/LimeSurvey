@@ -62,7 +62,7 @@
 
             <td class="answer-item dropdown-item{% if ansrow.mandatoryviolation and ansrow.sActualAnswer0=='' %} has-error{% endif %}">
                 {% if leftheader != '' %}
-                    <div  class='visible-xs leftheader control-label'>{{ leftheader }}</div>
+                    <div  class='d-block d-sm-none leftheader control-label'>{{ leftheader }}</div>
                 {% endif %}
                 {% if ddsuffix != '' or ddprefix != '' %}
                     <div class="ls-input-group">
@@ -120,7 +120,7 @@
 
             <td class="answer-item dropdown-item{% if ansrow.mandatoryviolation and ansrow.sActualAnswer1=='' %} has-error{% endif %}">
                 {% if rightheader != '' %}
-                    <div  class='visible-xs rightheader control-label'>{{ rightheader }}</div>
+                    <div  class='d-block d-sm-none rightheader control-label'>{{ rightheader }}</div>
                 {% endif %}
                 <!-- We don't need another label : aria-labelledby for accessibility, and we have only 2 line in phone and no-more-table -->
                 {% if ddprefix != '' or ddsuffix != '' %}
