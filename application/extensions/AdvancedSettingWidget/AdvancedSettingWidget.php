@@ -1,5 +1,7 @@
 <?php
 
+use Hamcrest\Type\IsString;
+
 class AdvancedSettingWidget extends CWidget
 {
     /** @var AdvancedSetting */
@@ -45,7 +47,7 @@ class AdvancedSettingWidget extends CWidget
         // Translate options
         if (!empty($this->setting['options'])) {
             foreach ($this->setting['options'] as $optionValue => $optionText) {
-                $this->setting['options'][$optionValue] = gT($optionText);
+                $this->setting['options'][$optionValue] = is_string($optionText) ? gT($optionText) : $optionText;
             }
         }
 
