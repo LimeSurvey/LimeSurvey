@@ -3409,7 +3409,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'question' and 'help' INSERTANS tags in questions
-    $sql = "SELECT q.qid, language, question, help from {{questions}} q
+    $sql = "SELECT l.id, question, help from {{questions}} q
     join {{question_l10ns}} l on q.qid=l.qid
     WHERE sid=" . $newsid . " AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
     $result = Yii::app()->db->createCommand($sql)->query();
@@ -3417,8 +3417,6 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     foreach ($aResultData as $qentry) {
         $question = $qentry['question'];
         $help = $qentry['help'];
-        $qid = $qentry['qid'];
-        $language = $qentry['language'];
 
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
             $pattern = $sOldFieldname;
@@ -3438,12 +3436,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
             'help' => $help
             );
 
-            $where = array(
-            'qid' => $qid,
-            'language' => $language
-            );
-
-            QuestionL10n::model()->updateByPk($where, $data);
+            QuestionL10n::model()->updateByPk($qentry['id'], $data);
         } // Enf if modified
     } // end while qentry
 
