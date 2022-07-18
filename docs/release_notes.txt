@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.19 (build 220712) to 3.28.20 (build 220719) July 18, 2022
+-Fixed issue #18183: Date filter at statistics is not applied correctly (#2493) (Gabriel Jenik)
+-Fixed issue #18106: Missing survey ID replacements at registration screen (Gabriel Jenik)
+#Updated translation: Japanese by nomoto
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Basque by admin67
+
+
 Changes from 3.28.18 (build 220706) to 3.28.19 (build 220712) July 11, 2022
 -Fixed issue #17952: Command action tries to open unneeded session (#2496) (Denis Chenu)
 -Fixed issue #17488: Cannot view survey after updating to version 3.27.9 with custom twig extension (breaks survey) (#2360) (Gabriel Jenik)
