@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-07-11 09:22:12+00:00\n"
+"POT-Creation-Date: 2022-07-18 08:32:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -210,10 +210,10 @@ msgstr ""
 #: application/controllers/admin/SurveymenuEntryController.php:18
 #: application/controllers/admin/SurveysGroupsController.php:47
 #: application/controllers/admin/SurveysGroupsController.php:118
-#: application/controllers/admin/SurveysGroupsController.php:221
-#: application/controllers/admin/SurveysGroupsController.php:242
-#: application/controllers/admin/SurveysGroupsController.php:357
-#: application/controllers/admin/SurveysGroupsController.php:430
+#: application/controllers/admin/SurveysGroupsController.php:234
+#: application/controllers/admin/SurveysGroupsController.php:255
+#: application/controllers/admin/SurveysGroupsController.php:370
+#: application/controllers/admin/SurveysGroupsController.php:443
 #: application/controllers/admin/Tokens.php:45
 #: application/controllers/admin/Tokens.php:243
 #: application/controllers/admin/Tokens.php:266
@@ -1163,7 +1163,7 @@ msgstr ""
 #: application/controllers/SurveysGroupsPermissionController.php:353
 #: application/controllers/SurveysGroupsPermissionController.php:367
 #: application/controllers/admin/Saved.php:87
-#: application/controllers/admin/SurveysGroupsController.php:402
+#: application/controllers/admin/SurveysGroupsController.php:415
 #: application/core/SurveyCommonAction.php:1205
 msgid "Invalid action"
 msgstr ""
@@ -2656,7 +2656,7 @@ msgid "You need to add questions"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:2957
-#: application/controllers/admin/SurveysGroupsController.php:285
+#: application/controllers/admin/SurveysGroupsController.php:298
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:168
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:35
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:329
@@ -3235,7 +3235,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:250
 #: application/controllers/UploaderController.php:278
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3124
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3125
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -6389,11 +6389,11 @@ msgstr ""
 msgid "Update survey group: "
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:256
+#: application/controllers/admin/SurveysGroupsController.php:269
 msgid "You do not have permission to update survey settings."
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:316
+#: application/controllers/admin/SurveysGroupsController.php:329
 #: application/controllers/admin/globalsettings.php:517
 #: application/core/LsDefaultDataSets.php:867
 #: application/models/Survey.php:2222 application/models/SurveysGroups.php:314
@@ -6401,23 +6401,23 @@ msgstr ""
 msgid "Survey settings"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:340
+#: application/controllers/admin/SurveysGroupsController.php:353
 msgid "Survey settings for group: "
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:363
+#: application/controllers/admin/SurveysGroupsController.php:376
 msgid "You can't delete the default survey group!"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:366
+#: application/controllers/admin/SurveysGroupsController.php:379
 msgid "You can't delete a group if it's not empty!"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:369
+#: application/controllers/admin/SurveysGroupsController.php:382
 msgid "You can't delete a group because one or more groups depend on it as parent!"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:375
+#: application/controllers/admin/SurveysGroupsController.php:388
 msgid "The survey group '%s' was deleted."
 msgstr ""
 
@@ -19388,14 +19388,14 @@ msgstr ""
 msgid "There are no participants to be exported."
 msgstr ""
 
-#: application/views/admin/participants/modal_subviews/_exportCSV.php:74
+#: application/views/admin/participants/modal_subviews/_exportCSV.php:76
 #: application/views/admin/participants/participantsPanel_view.php:23
 #: application/views/responses/modal_subviews/filterColumns.php:28
 #: application/views/userManagement/partial/edittemplatepermissions.php:19
 msgid "Select all"
 msgstr ""
 
-#: application/views/admin/participants/modal_subviews/_exportCSV.php:75
+#: application/views/admin/participants/modal_subviews/_exportCSV.php:77
 msgid "Search for something..."
 msgstr ""
 
@@ -24914,7 +24914,7 @@ msgid "Add new user group"
 msgstr ""
 
 #: application/views/userManagement/massiveAction/_selector.php:8
-msgid "Selected users(s)..."
+msgid "Selected user(s)..."
 msgstr ""
 
 #: application/views/userManagement/massiveAction/_selector.php:26
