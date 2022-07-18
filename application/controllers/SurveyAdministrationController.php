@@ -2225,7 +2225,10 @@ class SurveyAdministrationController extends LSBaseController
             if (!empty($aGrouplist)) {
                 $oFirstGroup = $aGrouplist[0];
                 $oFirstQuestion = Question::model()->findByAttributes(
-                    ['gid' => $oFirstGroup->gid],
+                    [
+                        'gid' => $oFirstGroup->gid,
+                        'parent_qid' => 0
+                    ],
                     ['order' => 'question_order ASC']
                 );
 
