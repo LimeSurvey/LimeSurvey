@@ -54,7 +54,7 @@ function triggerEmRelevanceGroup(){
         $(this).addClass("ls-irrelevant ls-hidden");
     });
 }
-/* On sub-question and answers-list */
+/* On subquestion and answers-list */
 function triggerEmRelevanceSubQuestion(){
     $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
