@@ -1,10 +1,10 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 CKEDITOR.editorConfig = function (a) {
     
-        a.plugins = "a11ychecker,dialogui,dialog,a11yhelp,about,xml,ajax,basicstyles,bidi,blockquote,notification,button,toolbar,clipboard,codemirror,panelbutton,panel,floatpanel,colorbutton,colordialog,menu,contextmenu,copyformatting,dialogadvtab,div,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,floatingspace,listblock,richcombo,font,format,horizontalrule,htmlwriter,iframe,image,indent,indentblock,indentlist,justify,menubutton,language,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastefromword,pastetext,removeformat,resize,save,scayt,selectall,showblocks,showborders,smiley,sourcearea,specialchar,stylescombo,tab,table,tabletools,undo,videodetector,wsc,wysiwygarea,lineutils,widgetselection,widget,html5video,markdown";
+        a.plugins = "a11ychecker,dialogui,dialog,a11yhelp,about,xml,ajax,basicstyles,bidi,blockquote,notification,button,toolbar,clipboard,codemirror,panelbutton,panel,floatpanel,colorbutton,colordialog,menu,contextmenu,copyformatting,dialogadvtab,div,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,floatingspace,listblock,richcombo,font,format,horizontalrule,htmlwriter,iframe,image,indent,indentblock,indentlist,justify,menubutton,language,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastefromword,pastetext,removeformat,resize,save,scayt,selectall,showblocks,showborders,emoji,sourcearea,specialchar,stylescombo,tab,table,tabletools,undo,videodetector,wsc,wysiwygarea,lineutils,widgetselection,widget,html5video,markdown";
        
         a.filebrowserBrowseUrl = CKEDITOR.basePath + "../../../third_party/kcfinder/browse.php?type\x3dfiles";
         a.filebrowserImageBrowseUrl = CKEDITOR.basePath + "../../../third_party/kcfinder/browse.php?type\x3dimages";
@@ -26,7 +26,7 @@ CKEDITOR.editorConfig = function (a) {
         a.toolbar_popup = [
             ["Save", "Sourcedialog", "Createlimereplacementfields"],
             ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
-            "Image Html5video VideoDetector Flash Table HorizontalRule Smiley SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
+            "Image Html5video VideoDetector Flash Table HorizontalRule EmojiPanel SpecialChar SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
             "NumberedList BulletedList - Outdent Indent Blockquote CreateDiv".split(" "), ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["BidiLtr", "BidiRtl"],
             ["Link", "Unlink", "Anchor", "Iframe"], "/", ["Styles", "Format", "Font", "FontSize"],
@@ -37,7 +37,7 @@ CKEDITOR.editorConfig = function (a) {
             ["Maximize", "Sourcedialog", "Createlimereplacementfields", "SwitchToolbar"],
             ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
             ["Image", "Html5video", "VideoDetector", "Flash"],
-            ["Table", "HorizontalRule", "Smiley", "SpecialChar"],
+            ["Table", "HorizontalRule", "EmojiPanel", "SpecialChar"],
             ["Bold", "Italic", "Underline", "Strike"],
             ["Subscript", "Superscript"],
             ["NumberedList", "BulletedList"],
@@ -62,7 +62,7 @@ CKEDITOR.editorConfig = function (a) {
             ["Sourcedialog", "Createlimereplacementfields"],
             ["Cut","Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
             ["Image", "Html5video","VideoDetector", "Flash"],
-            ["Table", "HorizontalRule", "Smiley", "SpecialChar"],
+            ["Table", "HorizontalRule", "EmojiPanel", "SpecialChar"],
             ["Bold", "Italic", "Underline", "Strike"],
             ["Subscript", "Superscript"],
             ["NumberedList", "BulletedList"],

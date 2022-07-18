@@ -38,7 +38,10 @@ $.fn.YesNoDate = function(options)
             {
                 // Show date
                 $elDateContainer.show();
-                $elHiddenInput.val(moment().format($elDate.data('date-format')));
+                // If there is a date currently set in the date picker, assign that to the hidden input.
+                // Otherwise, use the current date.
+                const currentDate = $elDate.data('DateTimePicker').date() ?? moment();
+                $elHiddenInput.attr('value', currentDate.format($elDate.data('date-format')));
             }
             else
             {

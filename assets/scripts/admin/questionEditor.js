@@ -1363,9 +1363,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
        * @return {void}
        */
       success(successMessage) {
-        LS.LsGlobalNotifier.create(
+        LS.LsGlobalNotifier.createFlash(
           successMessage,
-          'well-lg bg-success text-center'
+          'alert-success fade in'
         );
       },
       /**
@@ -1374,9 +1374,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
        */
       error(data) {
         if (data.responseJSON) {
-          LS.LsGlobalNotifier.create(
+          LS.LsGlobalNotifier.createFlash(
             data.responseJSON.message,
-            'well-lg bg-danger text-center'
+            'alert-danger fade in'
           );
         } else {
           alert('Internal eror from Ajax call');
@@ -1514,9 +1514,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
       // Check uniqueness.
       if (!checkSubquestionCodeUnique(table, msg)) {
-        LS.LsGlobalNotifier.create(
+        LS.LsGlobalNotifier.createFlash(
           msg,
-          'well-lg bg-danger text-center'
+          'alert-danger fade in'
         );
         hasError = true;
       }
@@ -1528,10 +1528,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const code = that.value;
         if (code.length > 20) {
           $(that.parentElement).addClass('has-error');
-          LS.LsGlobalNotifier.create(
+          LS.LsGlobalNotifier.createFlash(
             // TODO: Translation
             'Subquestion code is too long. Maximal number of characters is: 20.',
-            'well-lg bg-danger text-center'
+            'alert-danger fade in'
           );
           hasError = true;
         }
@@ -1852,15 +1852,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             if (textStatus === 'success') {
               // Show confirm message.
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createFlash(
                 json.message,
-                'well-lg bg-primary text-center'
+                'alert-success fade in'
               );
             } else {
               // Show error message.
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createFlash(
                 json.message,
-                'well-lg bg-danger text-center'
+                'alert-danger fade in'
               );
             }
             updateQuestionSummary();
@@ -1868,9 +1868,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
           error: (data) => {
             $('#ls-loading').hide();
             if (data.responseJSON) {
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createFlash(
                 data.responseJSON.message,
-                'well-lg bg-danger text-center'
+                'alert-danger fade in'
               );
             } else {
               alert('Internal error from saveFormWithAjax: no data.responseJSON found');
