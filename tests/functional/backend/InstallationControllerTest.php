@@ -88,7 +88,7 @@ class InstallationControllerTest extends TestBaseClassWeb
 
         // Run installer.
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $urlMan->setBaseUrl('https://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('');
         \Yii::import('application.helpers.common_helper', true);
         $installerForm = new \InstallerConfigForm();
@@ -105,6 +105,9 @@ class InstallationControllerTest extends TestBaseClassWeb
             // Accept license.
             $accept = self::$webDriver->findElement(WebDriverBy::id('ls-accept-license'));
             $accept->click();
+
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
 
             // Click next at pre-check.
             $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
@@ -123,6 +126,8 @@ class InstallationControllerTest extends TestBaseClassWeb
             $dbpwdInput->clear()->sendKeys($dbpwd);
             $dbnameInput->sendKeys($databaseName);
 
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
 
             // Click next.
             $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
@@ -131,6 +136,9 @@ class InstallationControllerTest extends TestBaseClassWeb
             // Click "Create database".
             $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
             $button->click();
+
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
 
             // Click "Populate".
             $button = self::$webDriver->findElement(WebDriverBy::cssSelector('input[type="submit"]'));
