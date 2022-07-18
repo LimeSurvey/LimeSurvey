@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.24 (build 220711) to 5.3.25 (build 220718) July 18, 2022
+-Fixed issue: Error when trying to export participants from CPDB (Carsten Schmitz)
+-Fixed issue #18239: "Theme options for this survey group" gridview filter not working (Gabriel Jenik)
+-Fixed issue #18141: changing display mode from extended to compact in survey responses windows causes freeze (Gabriel Jenik)
+-Fixed issue #18117: Error in captcha challenge image generation (#2516) (Adam Zammit)
+-Fixed issue #17671: Grammar Correct: User management -> Selected user(s) (Gabriel Jenik)
+-Fixed issue #16328: invite_participants exits on first error (#2508) (Gabriel Jenik)
+
+
 Changes from 5.3.23 (build 220705) to 5.3.24 (build 220711) July 11, 2022
 -Fixed issue: Missing minimum value restriction for login retries/ban time (Carsten Schmitz)
 -Fixed issue: Better control on archive export (Gabriel Jenik)
