@@ -44,7 +44,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
  * @property QuestionType $questionType
- * @property array $allSubQuestionIds QID-s of all question sub-questions, empty array returned if no sub-questions
+ * @property array $allSubQuestionIds QID-s of all question subquestions, empty array returned if no subquestions
  * @inheritdoc
  */
 class Question extends LSActiveRecord
