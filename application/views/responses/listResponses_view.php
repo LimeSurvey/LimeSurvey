@@ -79,7 +79,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     <input type="hidden" id="locale" name="locale" value="<?= convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']) ?>"/>
                     <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>'/>
 
-                    <?php if (App()->user->getState('sql_' . $surveyid) !== null) : ?>
+                    <?php if (!empty(App()->user->getState('sql_' . $surveyid))) : ?>
                         <!-- Filter is on -->
                         <?php eT("Showing filtered results"); ?>
 

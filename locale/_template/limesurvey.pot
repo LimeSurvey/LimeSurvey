@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-07-18 08:32:30+00:00\n"
+"POT-Creation-Date: 2022-07-18 11:36:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13209,7 +13209,7 @@ msgid "In the printable version the condition is being replaced with this explan
 msgstr ""
 
 #: application/helpers/questionHelper.php:824
-msgid "Condition replacement text for printable survey"
+msgid "Condition help for printable survey"
 msgstr ""
 
 #: application/helpers/questionHelper.php:834
@@ -13708,7 +13708,7 @@ msgid "Date/Time format"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1435
-msgid "Visual minute step interval"
+msgid "Minute step interval when using select boxes"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1436

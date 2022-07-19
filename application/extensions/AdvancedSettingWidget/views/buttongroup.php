@@ -13,7 +13,7 @@
                 checked
             />
             <label class="btn btn-outline-secondary" for="<?= $inputBaseName  . $value ?>">
-                <?= $text; ?>
+                <?= gT($text); ?>
             </label>
         <?php else: ?>
             <input 
@@ -24,7 +24,7 @@
                 value="<?= CHtml::encode($value); ?>"
             />
             <label class="btn btn-outline-secondary" for="<?= $inputBaseName . $value ?>">
-                <?= $text; ?>
+                <?= gT($text); ?>
             </label>
         <?php endif; ?>
     <?php endforeach; ?>
