@@ -119,6 +119,9 @@ class QuestionThemeTest extends TestBaseClassWeb
         $button->click();
         sleep(1);
 
+        self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+        sleep(1);
+
         $button = $web->findById('button-collapse-Custom_options');
         $button->click();
 
