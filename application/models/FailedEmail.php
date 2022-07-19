@@ -90,6 +90,7 @@ class FailedEmail extends LSActiveRecord
      */
     public function search(): CActiveDataProvider
     {
+        $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
         $criteria = new CDbCriteria();
 
         $criteria->compare('id', $this->id);
@@ -101,9 +102,12 @@ class FailedEmail extends LSActiveRecord
         $criteria->compare('status', $this->status, true);
         $criteria->compare('updated', $this->updated, true);
 
-        return new CActiveDataProvider($this, [
+        return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
-        ]);
+            'pagination' => array(
+                'pageSize' => $pageSize
+            )
+        ));
     }
 
     /**
@@ -127,7 +131,7 @@ class FailedEmail extends LSActiveRecord
             ],
             [
                 'name'        => 'buttons',
-                "type"        => 'raw',
+                'type'        => 'raw',
                 'filter'      => false,
                 'header'      => gT('Action'),
             ],
@@ -137,21 +141,18 @@ class FailedEmail extends LSActiveRecord
                 'value'  => '$data->status',
                 'htmlOptions' => ['class' => 'nowrap']
             ],
-//            [
-//                'header' => gT('Error Message'),
-//                'name'   => 'error_message',
-//                'value'  => '$data->error_message',
-//            ],
             [
                 'header' => gT('Created'),
                 'name'   => 'created',
                 'value'  => '$data->created',
+                'filter'      => false,
                 'htmlOptions' => ['class' => 'nowrap']
             ],
             [
                 'header' => gT('Updated'),
                 'name'   => 'updated',
                 'value'  => '$data->updated',
+                'filter'      => false,
                 'htmlOptions' => ['class' => 'nowrap']
             ],
             [
@@ -166,11 +167,6 @@ class FailedEmail extends LSActiveRecord
                 'value'  => '$data->recipient',
                 'htmlOptions' => ['class' => 'nowrap']
             ],
-//            [
-//                'header' => gT('Content'),
-//                'type' => 'raw',
-//                'value'  => '$data->rawMailBody',
-//            ],
             [
                 'header' => gT('Language'),
                 'name'   => 'language',
@@ -180,13 +176,26 @@ class FailedEmail extends LSActiveRecord
     }
 
     public function getButtons() {
-        $buttons = App()->getController()->renderPartial('/failedEmail/partials/buttons', ['id' => $this->id], true);
+        $permissions = [
+            'update' => Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'update'),
+            'delete' => Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'delete'),
+            'read'   => Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'read')
+        ];
+        $buttons = App()->getController()->renderPartial('/failedEmail/partials/buttons', [
+            'id' => $this->id,
+            'permissions' => $permissions
+        ], true);
         return $buttons;
     }
 
-    public function getRawMailBody() {
+    /**
+     * @return string
+     * @throws CException
+     * @throws CHttpException
+     */
+    public function getRawMailBody(): string {
         $mailer = \LimeMailer::getInstance(true);
-        $mailer->setSurvey(App()->request->getParam('surveyid'));
+        $mailer->setSurvey($this->surveyid);
         $mailer->setTypeWithRaw($this->email_type, $this->language);
         $rawMail = $mailer->rawBody;
         return $rawMail;

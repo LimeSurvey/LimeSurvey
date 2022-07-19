@@ -8,8 +8,7 @@ class FailedEmailController extends LSBaseController
      * @param string $view
      * @return bool
      */
-    public function beforeRender($view)
-    {
+    public function beforeRender($view) {
         $surveyId = (int)App()->request->getParam('surveyid');
         $this->aData['surveyid'] = $surveyId;
         LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
@@ -21,39 +20,54 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException
      */
-    public function actionIndex(): void
-    {
+    public function actionIndex(): void {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
+        $permissions = [
+            'update' => Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update'),
+            'delete' => Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete'),
+            'read'   => Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')
+        ];
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
-        App()->getClientScript()->registerScriptFile('/application/views/failedEmail/javascript/failedEmail.js', LSYii_ClientScript::POS_BEGIN);
+        if (!$permissions['read']) {
+            App()->user->setFlash('error', gT("You do not have permission to access this page."));
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
+        }
 
+        App()->getClientScript()->registerScriptFile('/application/views/failedEmail/javascript/failedEmail.js', LSYii_ClientScript::POS_BEGIN);
         $failedEmailModel = FailedEmail::model();
-        $pageSizeTokenView = App()->user->getState('pageSizeTokenView', App()->params['defaultPageSize']);
-        $massiveAction = App()->getController()->renderPartial('/failedEmail/partials/massive_action_selector', ['surveyId' => $surveyId], true);
+        $failedEmailModel->setAttributes(App()->getRequest()->getParam('FailedEmail'), false);
+        $pageSize = App()->request->getParam('pageSize') ?? App()->user->getState('pageSize', App()->params['defaultPageSize']);
+        $massiveAction = App()->getController()->renderPartial('/failedEmail/partials/massive_action_selector', [
+            'surveyId'    => $surveyId,
+            'permissions' => $permissions
+        ], true);
+
 
         $this->render('failedEmail_index', [
-            'failedEmailModel'  => $failedEmailModel,
-            'pageSizeTokenView' => $pageSizeTokenView,
-            'massiveAction'     => $massiveAction
+            'failedEmailModel' => $failedEmailModel,
+            'pageSize'         => $pageSize,
+            'massiveAction'    => $massiveAction,
         ]);
     }
 
     /**
      * @throws CHttpException
      */
-    public function actionResend(): void
-    {
+    public function actionResend() {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
-            return;
+            App()->user->setFlash('error', gT("You do not have permission to access this page."));
+            $this->redirect(['failedemail/index/', 'surveyid' => $surveyId]);
         }
-        $preserveResend = App()->request->getParam('preserveResend');
-        $selectedItems = json_decode(App()->request->getParam('sItems'));
+        $preserveResend = App()->request->getParam('preserveResend') ?? false;
+        $item = [App()->request->getParam('item')];
+        $items = json_decode(App()->request->getParam('sItems'));
+        $selectedItems = $items ?? $item;
         if (!empty($selectedItems)) {
             $criteria = new CDbCriteria();
             $criteria->select = 'id, email_type, recipient';
@@ -65,44 +79,94 @@ class FailedEmailController extends LSBaseController
                     $emailsByType[$failedEmail->email_type][$failedEmail->id] = $failedEmail->recipient;
                 }
                 if (isset($emailsByType)) {
-                    sendSubmitNotifications($surveyId, $emailsByType, $preserveResend);
-                    // TODO: return message
+                    $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
+                    if (!$preserveResend) {
+                        $criteria->addCondition('status', FailedEmail::STATE_SUCCESS);
+                        $failedEmails->deleteAll($criteria);
+                    }
+                    if ($items) {
+                        return $this->renderPartial('partials/modal/resend_result_body', [
+                            'successfullEmailCount' => $result['successfullEmailCount'],
+                            'failedEmailCount'      => $result['failedEmailCount']
+                        ]);
+                    }
+                    return $this->renderPartial('/admin/super/_renderJson', [
+                        "data" => [
+                            'success' => true,
+                            'html'    => $this->renderPartial('partials/modal/resend_result', [
+                                'successfullEmailCount' => $result['successfullEmailCount'],
+                                'failedEmailCount'      => $result['failedEmailCount']
+                            ], true)
+                        ]
+                    ]);
                 }
             }
-            // TODO: return message
+            return $this->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'message' => gT('No match could be found for selection'),
+                ]
+            ]);
         }
-        // TODO: return message
+        return $this->renderPartial('/admin/super/_renderJson', [
+            "data" => [
+                'success' => false,
+                'message' => gT('Please select at least one item'),
+            ]
+        ]);
     }
 
     /**
-     * @throws CHttpException
+     * @throws CHttpException|CException
      */
-    public function actionDelete(): void
-    {
+    public function actionDelete() {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
-        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
-            return;
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
+            App()->user->setFlash('error', gT("You do not have permission to access this page."));
+            $this->redirect(['failedemail/index/', 'surveyid' => $surveyId]);
         }
-        $selectedItems = json_decode(App()->request->getParam('sItems'));
+        $item = [App()->request->getParam('item')];
+        $items = json_decode(App()->request->getParam('sItems'));
+        $selectedItems = $items ?? $item;
         if (!empty($selectedItems)) {
             $criteria = new CDbCriteria();
             $criteria->select = 'id, email_type, recipient';
             $criteria->addCondition('surveyid', $surveyId);
             $criteria->addInCondition('id', $selectedItems);
             $failedEmails = new FailedEmail;
-            $failedEmails->deleteAll($criteria);
-            // TODO: return message
+            $deletedCount = $failedEmails->deleteAll($criteria);
+            if ($items) {
+                return $this->renderPartial('partials/modal/delete_result_body', [
+                    'deletedCount' => $deletedCount,
+                ]);
+            }
+            return $this->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => true,
+                    'html'    => $this->renderPartial('partials/modal/delete_result', [
+                        'deletedCount' => $deletedCount,
+                    ], true),
+                ]
+            ]);
         }
-        // TODO: return message
+        return $this->renderPartial('/admin/super/_renderJson', [
+            "data" => [
+                'success' => false,
+                'message' => gT('Please select at least one item'),
+            ]
+        ]);
     }
 
-    public function actionModalContent()
-    {
+    public function actionModalContent() {
         $contentFile = App()->request->getParam('contentFile');
         $id = App()->request->getParam('id');
-        return App()->getController()->renderPartial('/failedEmail/partials/modal/' . $contentFile, ['id' => $id]);
+        $failedEmailModel = new FailedEmail();
+        $failedEmail = $failedEmailModel->findByPk($id);
+        $surveyId = $failedEmail->surveyid;
+        return App()->getController()->renderPartial('/failedEmail/partials/modal/' . $contentFile,
+            ['id' => $id, 'surveyId' => $surveyId, 'failedEmail' => $failedEmail]);
     }
 }

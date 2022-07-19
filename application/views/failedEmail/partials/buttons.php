@@ -1,13 +1,15 @@
 <?php
 /**
  * @var $id int The FailedEmail ID
+ * @var $permissions array
  */
 ?>
 <div class="icon-btn-row">
     <button data-toggle="tooltip" title="<?= gT("Resend E-mail") ?>"
             class="btn btn-default btn-sm failedemail-action-modal-open"
             data-href="<?= App()->createUrl('/failedemail/modalcontent', ['id' => $id]) ?>"
-            data-contentFile="resend_form">
+            data-contentFile="resend_form"
+            <?= !$permissions['update'] ? "disabled='disabled'" : "" ?>>
         <i class="fa fa-envelope-square"></i>
     </button>
     <button data-toggle="tooltip" title="<?= gT("E-mail content") ?>"
@@ -25,7 +27,8 @@
     <button data-toggle="tooltip" title="<?= gT("Delete") ?>"
             class="btn btn-default btn-sm failedemail-action-modal-open"
             data-href="<?= App()->createUrl('/failedemail/modalcontent', ['id' => $id]) ?>"
-            data-contentFile="delete_form">
+            data-contentFile="delete_form"
+            <?= !$permissions['delete'] ? "disabled='disabled'" : "" ?>>
         <i class="fa fa-trash text-danger"></i>
     </button>
 </div>

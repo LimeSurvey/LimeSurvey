@@ -440,9 +440,10 @@ function submittokens($quotaexit = false)
 * Send a submit notification to the email address specified in the notifications tab in the survey settings
  * @var int $surveyid survey ID of currently used survey
  * @var array $emails Emailnotifications that should be sent ['responseTo' => ['failedEmailId1' => 'recipient1', 'failedEmailId2' => 'recipient2'], 'notificationTo' => ['failedEmailId1' => 'recipient1', 'failedEmailId2', 'recipient2']]
- * @var boolean $preserveResend whether previously failed emails should be kept after a successfull resend
+ * @var boolean $preserveResend whether previously failed emails should be kept in the FailedEmail table after a successfull resend
+ * @var boolean $return whether the function should return values
 */
-function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveResend = false)
+function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveResend = false, bool $return = false)
 {
     // @todo: Remove globals
     global $thissurvey;
@@ -465,6 +466,8 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
     $aReplacementVars['ANSWERTABLE'] = '';
     $aEmailNotificationTo = $emails['admin_notification'] ?? [];
     $aEmailResponseTo = $emails['admin_responses'] ?? [];
+    $failedEmailCount = 0;
+    $successfullEmailCount = 0;
 
     if (!empty($thissurvey['emailnotificationto']) && empty($emails)) {
         $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
@@ -535,15 +538,19 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
         foreach ($aEmailNotificationTo as $key => $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
+                $failedEmails++;
                 saveFailedEmail($sRecipient, $surveyid, 'admin_notification', $emailLanguage, $mailer->getError());
-
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     echo CHtml::tag("div", array('class' => 'alert alert-danger'), sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError()));
                 }
             } elseif($preserveResend) {
+                $successfullEmailCount++;
                 //preserve failedEmail if it exists
                 preserveSuccessFailedEmail($key);
+
+            } else {
+                $successfullEmailCount++;
             }
         }
     }
@@ -554,17 +561,26 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
         foreach ($aEmailResponseTo as $key => $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
+                $failedEmails++;
                 saveFailedEmail($sRecipient, $surveyid, 'admin_responses', $emailLanguage, $mailer->getError());
-
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     echo CHtml::tag("div", array('class' => 'alert alert-danger'), sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError()));
                 }
             } elseif($preserveResend) {
+                $successfullEmailCount++;
                 //preserve failedEmail if it exists
                 preserveSuccessFailedEmail($key);
+            } else {
+                $successfullEmailCount++;
             }
         }
+    }
+    if ($return) {
+        return [
+            'successfullEmailCount' => $successfullEmailCount,
+            'failedEmailCount'      => $failedEmailCount,
+        ];
     }
 }
 
@@ -600,8 +616,9 @@ function preserveSuccessFailedEmail($id) {
     if (isset($failedEmail)) {
         $failedEmail->status = 'SEND SUCCESS';
         $failedEmail->updated = date('Y-m-d H:i:s');
-        $failedEmail->save();
+        return $failedEmail->save();;
     }
+    return false;
 }
 
 /**
@@ -933,8 +950,8 @@ function randomizationGroupsAndQuestions($surveyid, $preview = false, $fieldmap 
 
     $fieldmap = (empty($fieldmap)) ? $_SESSION['survey_' . $surveyid]['fieldmap'] : $fieldmap;
 
-    list($fieldmap, $randomized1) = randomizationGroup($surveyid, $fieldmap, $preview); // Randomization groups for groups
-    list($fieldmap, $randomized2) = randomizationQuestion($surveyid, $fieldmap, $preview); // Randomization groups for questions
+    [$fieldmap, $randomized1] = randomizationGroup($surveyid, $fieldmap, $preview); // Randomization groups for groups
+    [$fieldmap, $randomized2] = randomizationQuestion($surveyid, $fieldmap, $preview); // Randomization groups for questions
 
     $randomized = $randomized1 || $randomized2;
     ;
