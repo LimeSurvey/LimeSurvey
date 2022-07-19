@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['5.6' , '7.4']
+        php-versions: ['7.2', '7.4', '8.0']
       # Run all jobs, even if some fail
       fail-fast: false
     # Env vars for this job
@@ -107,4 +107,4 @@ jobs:
 
       - name: Run the test script
         run: |
-          DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure
+          php ./third_party/bin/phpunit --stop-on-failure

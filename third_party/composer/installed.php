@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '705ed38edf3249279345c02bd1489e691ae68b66',
+        'reference' => 'd668853a69e65cf864b583a373d43a290ae0965e',
         'name' => 'limesurvey/limesurvey',
         'dev' => true,
     ),
@@ -31,7 +31,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '705ed38edf3249279345c02bd1489e691ae68b66',
+            'reference' => 'd668853a69e65cf864b583a373d43a290ae0965e',
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
