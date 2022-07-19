@@ -107,4 +107,7 @@ jobs:
 
       - name: Run the test script
         run: |
-          php ./third_party/bin/phpunit --debug --stop-on-failure
+          ./third_party/bin/phpunit --version
+      - name: Run the test script
+        run: |
+          ./third_party/bin/phpunit 
