@@ -9,7 +9,7 @@ namespace ls\tests;
 class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 {
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         parent::setUpBeforeClass();
         $fileName = self::$surveysFolder . '/limesurvey_survey_454287.lss';

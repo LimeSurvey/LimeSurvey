@@ -13,7 +13,7 @@ class DateTimeTest extends TestBaseClass
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         parent::setUpBeforeClass();
 

@@ -18,7 +18,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
 
     /**
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass() : void
     {
         parent::setupBeforeClass();
 
@@ -74,7 +74,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
     /**
      * 
      */
-    public static function teardownAfterClass()
+    public static function teardownAfterClass() : void
     {
         $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
         if (!$result) {

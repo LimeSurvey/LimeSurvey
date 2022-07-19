@@ -45,7 +45,7 @@ class TestBaseClassWeb extends TestBaseClass
     /**
      * @throws \Exception
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         parent::setUpBeforeClass();
 
@@ -73,7 +73,7 @@ class TestBaseClassWeb extends TestBaseClass
     /**
      * @return void
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass() : void
     {
         parent::tearDownAfterClass();
         self::$webDriver->quit();

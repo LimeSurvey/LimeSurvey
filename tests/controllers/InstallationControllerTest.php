@@ -13,7 +13,7 @@ class InstallationControllerTest extends TestBaseClassWeb
     /**
      * 
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass() : void
     {
         // NB: Does not call parent, because there might not
         // be a database (happens if this test is run multiple
@@ -26,7 +26,7 @@ class InstallationControllerTest extends TestBaseClassWeb
     /**
      *
      */
-    public static function teardownAfterClass()
+    public static function teardownAfterClass() : void
     {
         $configFile = \Yii::app()->getBasePath() . '/config/config.php';
         if (file_exists($configFile)) {

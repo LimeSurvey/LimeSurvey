@@ -12,7 +12,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
     /**
      * Setup before class.
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass() : void
     {
         parent::setUpBeforeClass();
 

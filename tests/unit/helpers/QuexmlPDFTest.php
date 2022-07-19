@@ -10,7 +10,7 @@ class QuexmlPDFTest extends TestBaseClass
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         global $dom, $quexmllang, $iSurveyID;
 

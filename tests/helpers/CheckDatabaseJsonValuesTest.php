@@ -12,7 +12,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
     /**
      * 
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass() : void
     {
         parent::setupBeforeClass();
     }
@@ -20,7 +20,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
     /**
      * Tear down fixtures.
      */
-    public static function teardownAfterClass()
+    public static function teardownAfterClass() : void
     {
         self::$testHelper->teardownDatabase('__test_check_database_json');
         self::$testHelper->teardownDatabase('__test_update_helper_258');

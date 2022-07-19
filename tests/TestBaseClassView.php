@@ -25,7 +25,7 @@ class TestBaseClassView extends TestBaseClassWeb
     /**
      * 
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass() : void
     {
         parent::setupBeforeClass();
         $username = getenv('ADMINUSERNAME');

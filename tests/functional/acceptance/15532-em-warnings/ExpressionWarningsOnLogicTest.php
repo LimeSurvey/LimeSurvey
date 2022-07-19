@@ -15,7 +15,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass() : void
     {
         parent::setUpBeforeClass();
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_SurveyLogicWarnings.lss';
@@ -321,7 +321,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
      * @inheritdoc
      * Log out to try to disable issue in Installer test
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass() : void
     {
         $url = self::getUrl(['login', 'route'=>'authentication/sa/logout']);
         self::openView($url);
