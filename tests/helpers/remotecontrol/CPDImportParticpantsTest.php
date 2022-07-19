@@ -4,7 +4,7 @@ namespace ls\tests;
 
 class CPDImportParticpantsTest extends BaseTest
 {
-    public function setUp()
+    public function setUp() : void
     {
         \Yii::app()->db->createCommand()->truncateTable('{{participants}}');
         \Yii::app()->db->createCommand()->truncateTable('{{participant_attribute}}');

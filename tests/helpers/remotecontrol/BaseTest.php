@@ -14,7 +14,7 @@ abstract class BaseTest extends TestHelper
     /* @var string see .travis.yml */
     const REMOTECONTROL_PASSWORD = 'password';
 
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->importAll();
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);

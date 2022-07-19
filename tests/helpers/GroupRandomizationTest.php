@@ -59,7 +59,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
     /**
      * Selenium setup.
      */
-    public function setUp()
+    public function setUp() : void
     {
         $domain = getenv('DOMAIN');
         if (empty($domain)) {
@@ -86,7 +86,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
     /**
      * Tear down fixture.
      */
-    public function tearDown()
+    public function tearDown() : void
     {
         // Close Firefox.
         self::$webDriver->quit();

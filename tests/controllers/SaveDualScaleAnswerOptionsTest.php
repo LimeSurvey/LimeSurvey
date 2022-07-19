@@ -40,7 +40,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
     /**
      * 
      */
-    public function setup()
+    public function setup() : void
     {
         // Import survey with dual scale question type.
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_677328.lss';
@@ -50,7 +50,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
     /**
      * 
      */
-    public function tearDown()
+    public function tearDown() : void
     {
         if (self::$testSurvey) {
             self::$testSurvey->delete();
