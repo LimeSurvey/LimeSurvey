@@ -109,7 +109,7 @@ class QuestionThemeTest extends TestBaseClassWeb
         $button = $web->findById('trigger_questionTypeSelector_button');
         $button->click();
 
-        $group = $web->findByLinkText('Mask questions');
+        $group = $web->findElement(WebDriverBy::xpath("//*[contains(text(),'Mask questions')]"));
         $group->click();
 
         $question = $web->findByPartialLinkText('Range Slider');
