@@ -43,6 +43,9 @@ class MinMaxCompareTest extends TestBaseClassWeb
             $MultiText3ResultJS = self::$webDriver->findElement(WebDriverBy::id('MultiText3'))->getText();
             $MultiText4ResultJS = self::$webDriver->findElement(WebDriverBy::id('MultiText4'))->getText();
             
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
+            sleep(1);
+
             /* Move next */
             $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $nextButton->click();
