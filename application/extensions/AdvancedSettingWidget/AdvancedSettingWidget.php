@@ -1,7 +1,5 @@
 <?php
 
-use Hamcrest\Type\IsString;
-
 class AdvancedSettingWidget extends CWidget
 {
     /** @var AdvancedSetting */
