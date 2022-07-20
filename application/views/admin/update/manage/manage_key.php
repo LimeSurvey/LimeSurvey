@@ -57,9 +57,11 @@
                         ?>
                         </td>
                         <td>
-                            <a data-post-url="<?php echo App()->createUrl('/admin/update/sa/deleteKey');?>" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
-                                <span class="fa fa-trash text-danger"></span>
-                            </a>
+                            <span data-bs-toggle="tooltip" title="<?php eT("Delete");?>" >
+                                <a data-post-url="<?php echo App()->createUrl('/admin/update/sa/deleteKey');?>" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#confirmation-modal">
+                                    <span class="fa fa-trash text-danger"></span>
+                                </a>
+                            </span>
                         </td>
                     </tr>
                     </tbody>

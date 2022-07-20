@@ -1221,29 +1221,6 @@ fieldset[disabled] .checkbox label {
 }
 
 @media (min-width: 768px) {
-  .form-inline .radio,
-.form-inline .checkbox {
-    display: inline-block;
-    margin-top: 0;
-    margin-bottom: 0;
-    vertical-align: middle;
-  }
-
-  .form-inline .radio label,
-.form-inline .checkbox label {
-    padding-right: 0;
-  }
-
-  .form-inline .radio input[type=radio],
-.form-inline .checkbox input[type=checkbox] {
-    position: relative;
-    margin-right: 0;
-  }
-
-  .form-inline .has-feedback .form-control-feedback {
-    top: 0;
-  }
-
   .navbar-form .radio,
 .navbar-form .checkbox {
     display: inline-block;

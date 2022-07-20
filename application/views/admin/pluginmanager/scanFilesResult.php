@@ -19,9 +19,9 @@
                     <?php elseif ($scannedPlugin['isCompatible']) : ?>
                         <?php echo CHtml::beginForm($installUrl, 'post', ['style' => 'display: inline-block;']); ?>
                         <input type='hidden' name='pluginName' value='<?php echo $name; ?>'/>
-                    <button href='' type="button" class='btn btn-success' data-bs-toggle='tooltip' title='<?php eT('Install this plugin'); ?>'>
-                        <i class='fa fa-download'></i>
-                        &nbsp;
+                        <button href='' class='btn btn-success' data-bs-toggle='tooltip' title='<?php eT('Install this plugin'); ?>'>
+                            <i class='fa fa-download'></i>
+                            &nbsp;
                             <?php eT('Install'); ?>
                         </button>
                         <?= CHtml::endForm() ?>

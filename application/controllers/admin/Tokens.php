@@ -30,6 +30,7 @@ class Tokens extends SurveyCommonAction
      */
     public function index(int $surveyid)
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = $surveyid;
         $iSurveyId = (int) $iSurveyId;
@@ -306,6 +307,7 @@ class Tokens extends SurveyCommonAction
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
         // Javascript
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
 
         Yii::app()->loadHelper('surveytranslator');
@@ -499,6 +501,8 @@ class Tokens extends SurveyCommonAction
     {
         $aData = array();
         App()->getClientScript()->registerScriptFile(App()
+                ->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(App()
                 ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -520,6 +524,8 @@ class Tokens extends SurveyCommonAction
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " ("
             . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
+        App()->getClientScript()->registerScriptFile(App()
+                ->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()
                 ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $request = App()->request;
@@ -632,6 +638,7 @@ class Tokens extends SurveyCommonAction
      */
     public function edit($iSurveyId, $iTokenId, $ajax = false)
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
         $iTokenId = (int) $iTokenId;
@@ -767,6 +774,7 @@ class Tokens extends SurveyCommonAction
      */
     public function delete($iSurveyID)
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyID = (int) $iSurveyID;
         $sTokenIDs = Yii::app()->request->getPost('tid');

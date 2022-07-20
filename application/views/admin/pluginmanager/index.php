@@ -21,7 +21,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                 <a
                     href=''
                     class='btn btn-outline-secondary '
-                    data-tooltip='true'
+                    data-bs-toggle='tooltip'
                     title='<?php eT('Install plugins from the extension shop'); ?>'
                 >
                     <i class='fa fa-shopping-cart'></i>&nbsp;

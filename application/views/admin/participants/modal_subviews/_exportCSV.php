@@ -67,11 +67,13 @@
 </div>
 
 <?php
+   // @todo THis seems to be a duplicate to the same snippet in participantpanel.js
     App()->getClientScript()->registerScript('ExportCSVMultiSelectInit', "
     $('#attributes').multiselect({
         includeSelectAllOption: true, 
         enableFiltering: true,
         enableCaseInsensitiveFiltering: true, 
+        selectAllValue: 0,
         filterBehavior : \"text\",
         selectAllText: '".gT("Select all")."',
         filterPlaceholder: '".gT("Search for something...")."'

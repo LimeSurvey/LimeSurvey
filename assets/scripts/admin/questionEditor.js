@@ -1788,8 +1788,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @return {void}
      */
     checkQuestionValidateTitle: function(code, qid) {
-      $('#question-code-unique-warning').text("");
-      $('#question-code-unique-warning').addClass('d-none');
+      $('#question-title-warning').text("");
+      $('#question-title-warning').addClass('d-none');
       $.ajax({
         url: languageJson.checkQuestionValidateTitleURL,
         method: 'GET',
@@ -1800,8 +1800,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         },
         success: (data) => {
           if (data) {
-            $('#question-code-unique-warning').removeClass('d-none');
-            $('#question-code-unique-warning').text(data);
+            $('#question-title-warning').removeClass('d-none');
+            $('#question-title-warning').text(data);
           } else {
               // Continue
           }
@@ -1961,8 +1961,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         },
         success: (data) => {
           if (data) {
-              $('#question-code-unique-warning').text(data);
-              $('#question-code-unique-warning').removeClass('d-none');
+              $('#question-title-warning').text(data);
+              $('#question-title-warning').removeClass('d-none');
           } else {
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
@@ -1980,7 +1980,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 button.click();
               }
             }
-            $('#question-code-unique-warning').removeClass('d-none');
+            $('#question-title-warning').removeClass('d-none');
           }
         },
         error: (response) => {

@@ -821,7 +821,7 @@ class questionHelper
             'i18n' => true,
             'default' => "",
             "help" => gT('In the printable version the condition is being replaced with this explanation text.'),
-            "caption" => gT("Condition replacement text for printable survey")
+            "caption" => gT("Condition help for printable survey")
         );
 
         self::$attributes["public_statistics"] = array(
@@ -1432,7 +1432,7 @@ class questionHelper
             'sortorder' => 100,
             "inputtype" => "integer",
             'default' => 1,
-            "help" => gT("Visual minute step interval"),
+            "help" => gT("Minute step interval when using select boxes"),
             "caption" => gT("Minute step interval")
         );
 

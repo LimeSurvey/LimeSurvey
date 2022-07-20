@@ -14,17 +14,18 @@
 </a>
 
 <!-- Quick Add Contitions Button -->
-<button
-    id='quick-add-condition-button'
-    role="button"
-    type="button"
-    class='btn btn-outline-secondary'
-    data-bs-toggle='modal'
-    data-bs-target='#quick-add-condition-modal'
-    data-tooltip='true'
-    data-title='<?php eT('Add multiple conditions without a page reload'); ?>'>
-        <span class="fa fa-plus-circle"></span>
-        &nbsp;
-        <?php eT('Quick-add conditions'); ?>
-</button>
+<span data-bs-toggle="tooltip" title='<?php eT('Add multiple conditions without a page reload'); ?>'>
+    <button
+        id='quick-add-condition-button'
+        role="button"
+        type="button"
+        class='btn btn-outline-secondary'
+        data-bs-toggle='modal'
+        data-bs-target='#quick-add-condition-modal'>
+            <span class="fa fa-plus-circle"></span>
+            &nbsp;
+            <?php eT('Quick-add conditions'); ?>
+    </button>
+</span>
+
 

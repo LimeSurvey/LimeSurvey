@@ -1595,30 +1595,6 @@ fieldset[disabled] .checkbox label {
 }
 
 @media screen and (min-width: 768px) {
-
-    .form-inline .radio,
-    .form-inline .checkbox {
-        display: inline-block;
-        margin-top: 0;
-        margin-bottom: 0;
-        vertical-align: middle;
-    }
-
-    .form-inline .radio label,
-    .form-inline .checkbox label {
-        padding-left: 0;
-    }
-
-    .form-inline .radio input[type="radio"],
-    .form-inline .checkbox input[type="checkbox"] {
-        position: relative;
-        margin-left: 0;
-    }
-
-    .form-inline .has-feedback .form-control-feedback {
-        top: 0;
-    }
-
     .navbar-form .radio,
     .navbar-form .checkbox {
         display: inline-block;
@@ -1933,7 +1909,6 @@ textarea,
 .uneditable-input {
     display: inline-block;
     font-size: 14px;
-    line-height: 18px;
     border: 1px solid #ccc;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -2315,10 +2290,6 @@ html body .nav-tabs > li.active > a:focus {
 .btnaddanswer:hover,
 .btndelanswer:hover {
     cursor: pointer;
-}
-
-span[data-tooltip] {
-    display: inline-block;
 }
 
 .glyphicon-move:hover {
@@ -2973,11 +2944,6 @@ table#responsedetail tr td {
     display: -ms-flexbox;
     display: flex;
     margin-bottom: 30px;
-}
-
-input[type="file"].form-control {
-    border: none;
-    padding-left: 0px;
 }
 
 #insertmethod-container {

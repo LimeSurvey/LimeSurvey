@@ -10,7 +10,8 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
+    <input type='hidden' id="dateFormatDetails" name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
+    <input type="hidden" id="locale" name="locale" value="<?= convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']) ?>"/>
     <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
     <h3><?php eT("Survey participants"); ?></h3>
 
@@ -70,7 +71,7 @@
 
 <!-- Edit Token Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="editTokenModal">
-    <div class="modal-dialog" style="width: 1100px">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><?php eT('Edit survey participant');?></h5>
