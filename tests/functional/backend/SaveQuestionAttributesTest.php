@@ -108,7 +108,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
             $attribute1 = $web->findElement(WebDriverBy::id('advancedSettings_display_cssclass'));
             $attribute1->sendKeys('test-class<script>console.log("Test");</script>');
 
-            $web->executeScript('window.scrollTo(0,document.body.scrollHeight);');                                                                                                
+            $web->executeScript('window.scrollTo(0,document.body.scrollHeight);');
             sleep(1);
 
             $testCategoryTitle = $web->findElement(WebDriverBy::id('button-collapse-Test'));
