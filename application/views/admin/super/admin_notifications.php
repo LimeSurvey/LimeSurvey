@@ -1,7 +1,7 @@
 <!-- Admin notification system -->
 <?php if ($nrOfNotifications == 0): ?>
-    <li id='nav-link notification-li' class='dropdown nav-item'>
-        <a aria-expanded='false' 
+    <li id='notification-li' class='dropdown nav-item'>
+        <a aria-expanded='false' class="nav-link"
             href='#'>
             <span class='fa fa-bell text-muted'></span>
 	    <span class='sr-only'>Notifications</span>
