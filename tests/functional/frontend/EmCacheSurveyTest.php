@@ -204,6 +204,7 @@ class EmCacheSurveyTest extends TestBaseClassWeb
             $textQuestion = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $this->assertEquals('bla bla bla', $textQuestion->getText(), 'Answer remain when going back');
 
+            self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
             sleep(1);
 
             // Submit survey.

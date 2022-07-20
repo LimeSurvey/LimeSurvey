@@ -134,8 +134,7 @@ class IntvalFloatvalTest extends TestBaseClassWeb
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
-                'Url: ' . $url . PHP_EOL .
-                'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
+                self::$testHelper->javaTrace($ex)
             );
         }
     }
