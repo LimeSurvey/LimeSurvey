@@ -10,12 +10,18 @@
         <label class="col-md-12 form-label" for=''>
         <?php eT("Export questions as:"); ?>
       </label>
-      <div class="btn-group col-md-12" data-toggle="buttons">
+      <div class="btn-group col-md-12">
         <?php foreach($headexports as $type=>$headexport):?>
-          <label class="btn btn-outline-secondary <?php if($headexport['checked']=='checked'){ echo 'active';}?>">
-            <input value="<?php echo $type; ?>" id="headstyle-<?php echo $type; ?>" type="radio" name="headstyle" <?php if($headexport[ 'checked']=='checked' ){ echo 'checked';} ?> />
-            <?php echo $headexport['label'];?>
-          </label>
+            <input
+                class="btn-check"
+                value="<?= $type; ?>"
+                id="headstyle-<?= $type; ?>"
+                type="radio"
+                name="headstyle" <?php if($headexport[ 'checked']=='checked' ){ echo 'checked';} ?>
+            />
+            <label class="btn btn-outline-secondary" for="headstyle-<?= $type; ?>">
+                <?= $headexport['label'];?>
+            </label>
         <?php endforeach; ?>
       </div>
     </div>
