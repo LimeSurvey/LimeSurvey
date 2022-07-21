@@ -22,8 +22,8 @@
                        href=""
                        role="button"
                        data-bs-toggle="modal"
-                       data-bs-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>">
-                        >
+                       data-bs-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
+                    >
                             <span class="icon-import text-success"></span>
                             <?php eT("Upload & install"); ?>
                     </a>
