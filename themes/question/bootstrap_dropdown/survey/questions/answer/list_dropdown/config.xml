@@ -7,6 +7,7 @@
     <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadata>
         <name>bootstrap_dropdown</name>
+        <type>question_theme</type>
         <title>Bootstrap Dropdown</title>
         <creationDate>2021-09-29</creationDate>
         <author>Adam Zammit</author>

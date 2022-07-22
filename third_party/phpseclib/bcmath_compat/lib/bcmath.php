@@ -150,3 +150,36 @@ if (!function_exists('bcadd')) {
         return BCMath::sub($left_operand, $right_operand, $scale);
     }
 }
+
+// the following were introduced in PHP 7.0.0
+if (!class_exists('Error')) {
+    class Error extends Exception
+    {
+    }
+
+    class ArithmeticError extends Error
+    {
+    }
+
+    class DivisionByZeroError extends ArithmeticError
+    {
+    }
+
+    class TypeError extends Error
+    {
+    }
+}
+
+// the following was introduced in PHP 7.1.0
+if (!class_exists('ArgumentCountError')) {
+    class ArgumentCountError extends TypeError
+    {
+    }
+}
+
+// the following was introduced in PHP 8.0.0
+if (!class_exists('ValueError')) {
+    class ValueError extends Error
+    {
+    }
+}

@@ -188,7 +188,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -206,7 +206,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -224,7 +224,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -242,7 +242,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -260,7 +260,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -278,7 +278,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -296,7 +296,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -314,7 +314,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -332,7 +332,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -350,7 +350,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -386,7 +386,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq1]]></title>
-    <question><![CDATA[First sub-question]]></question>
+    <question><![CDATA[First subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -404,7 +404,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq2]]></title>
-    <question><![CDATA[Second sub-question]]></question>
+    <question><![CDATA[Second subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -422,7 +422,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq3]]></title>
-    <question><![CDATA[Third sub-question]]></question>
+    <question><![CDATA[Third subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -440,7 +440,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq4]]></title>
-    <question><![CDATA[Fourth sub-question]]></question>
+    <question><![CDATA[Fourth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -458,7 +458,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <gid><![CDATA[2]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[sq5]]></title>
-    <question><![CDATA[Fifth sub-question]]></question>
+    <question><![CDATA[Fifth subquestion]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -1275,7 +1275,7 @@ and <b>{count(afeK_sq1.NAOK,afeK_sq2.NAOK,afeK_sq3.NAOK,afeK_sq4.NAOK,afeK_sq5.N
     <surveyls_survey_id><![CDATA[36161]]></surveyls_survey_id>
     <surveyls_language><![CDATA[en]]></surveyls_language>
     <surveyls_title><![CDATA[Sub-Question Relevance Test]]></surveyls_title>
-    <surveyls_description><![CDATA[Shows how array_filter and array_filter_exclude can be mixed with calculations, and only relevant sub-questions contribute to those calculations.]]></surveyls_description>
+    <surveyls_description><![CDATA[Shows how array_filter and array_filter_exclude can be mixed with calculations, and only relevant subquestions contribute to those calculations.]]></surveyls_description>
     <surveyls_welcometext/>
     <surveyls_endtext/>
     <surveyls_url/>

@@ -495,7 +495,7 @@ class questionHelper
             'sortorder' => 101,
             'inputtype' => 'text',
             'expression' => 1,/* As static */
-            "help" => gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude'),
+            "help" => gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude. Latitude and longtitude should be in decimal dot notation (for example "-3.1234 5.1424").'),
             "caption" => gT('Default position')
         );
 
@@ -821,7 +821,7 @@ class questionHelper
             'i18n' => true,
             'default' => "",
             "help" => gT('In the printable version the condition is being replaced with this explanation text.'),
-            "caption" => gT("Condition replacement text for printable survey")
+            "caption" => gT("Condition help for printable survey")
         );
 
         self::$attributes["public_statistics"] = array(
@@ -1432,7 +1432,7 @@ class questionHelper
             'sortorder' => 100,
             "inputtype" => "integer",
             'default' => 1,
-            "help" => gT("Visual minute step interval"),
+            "help" => gT("Minute step interval when using select boxes"),
             "caption" => gT("Minute step interval")
         );
 

@@ -378,6 +378,8 @@ class Quotas extends SurveyCommonAction
         $aData['oQuota'] = $oQuota;
         $aData['aQuotaLanguageSettings'] = array();
         foreach ($oQuota->languagesettings as $languagesetting) {
+            /* url is decoded before usage @see https://github.com/LimeSurvey/LimeSurvey/blob/8d8420a4efcf8e71c4fccbb6708648ace263ca80/application/views/admin/survey/editLocalSettings_view.php#L60 */
+            $languagesetting['quotals_url'] = htmlspecialchars_decode($languagesetting['quotals_url']);
             $aData['aQuotaLanguageSettings'][$languagesetting->quotals_language] = $languagesetting;
         }
 

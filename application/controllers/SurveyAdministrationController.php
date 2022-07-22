@@ -895,7 +895,7 @@ class SurveyAdministrationController extends LSBaseController
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
-                $curGroup['group_name'] = $group->questiongroupl10ns[$baselang]->group_name;
+                $curGroup['group_name'] = viewHelper::flatEllipsizeText($group->questiongroupl10ns[$baselang]->group_name, true, 150);
                 $curGroup['link'] = $this->createUrl(
                     "questionGroupsAdministration/view",
                     ['surveyid' => $surveyid, 'gid' => $group->gid]
@@ -916,16 +916,13 @@ class SurveyAdministrationController extends LSBaseController
                             "questionAdministration/view",
                             ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid' => $question->qid]
                         );
-                        $curQuestion['editLink'] = $this->createUrl(
-                            "questionAdministration/view",
-                            ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid' => $question->qid]
-                        );
                         $curQuestion['hidden'] = isset($question->questionattributes['hidden']) &&
                             !empty($question->questionattributes['hidden']->value);
                         $questionText = isset($question->questionl10ns[$baselang])
                             ? $question->questionl10ns[$baselang]->question
                             : '';
-                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true);
+                        // We have to limit the question text length here, otherwise the whole question is loaded into the navigation tree
+                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true, 150);
                         $curGroup['questions'][] = $curQuestion;
                     }
                 }
@@ -1252,8 +1249,9 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return void
      */
-    public function actionApplythemeoptions(int $iSurveyID = 0)
+    public function actionApplythemeoptions(int $surveyid = 0)
     {
+        $iSurveyID = $surveyid;
         if ((int)$iSurveyID > 0 && Yii::app()->request->isPostRequest) {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             $sTemplateName = $oSurvey->template;

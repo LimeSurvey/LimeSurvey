@@ -5,21 +5,24 @@
             <?= $this->setting['aFormElementOptions']['inputGroup']['prefix']; ?>
         </div>
     <?php endif; ?>
-    <?php if (isset($this->setting['i18n']) && $this->setting['i18n'] == 1): ?>
+    <?php if ($this->setting['i18n']): ?>
         <?php foreach ($this->survey->allLanguages as $lang): ?>
             <div class="lang-hide lang-<?= $lang; ?>">
                 <textarea
                     class="form-control" 
-                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>][<?= $lang; ?>]"
-                    id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>][<?= $lang; ?>]"
+                    name="<?= $inputBaseName; ?>[<?= $lang; ?>]"
+                    id="<?= CHtml::getIdByName($inputBaseName . "[" . $lang ."]"); ?>"
+                    aria-labelledby="label-<?= CHtml::getIdByName($inputBaseName); ?>"
+                    <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
                     ><?= $this->setting[$lang]['value']; ?></textarea>
             </div>
         <?php endforeach; ?>
     <?php else: ?>
         <textarea
             class="form-control" 
-            name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-            id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+            name="<?= $inputBaseName ?>"
+            id="<?= CHtml::getIdByName($inputBaseName); ?>"
+            <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
             ><?= $this->setting['value']; ?></textarea>
         <?php endif; ?>
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['suffix'])) : ?>

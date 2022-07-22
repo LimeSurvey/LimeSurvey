@@ -89,13 +89,13 @@ $codeids = '';
 
             <!-- Action Buttons Quick Add and Save Changes -->
             <div class="action-buttons text-right">
-            <?php $i++;
-            if (Permission::model()->hasGlobalPermission('labelsets','update'))
-            { ?>
+            <?php $i++; ?>
+            <?php if (Permission::model()->hasGlobalPermission('labelsets','update')): ?>
                     <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-default " data-toggle="modal" data-target="#quickadd">
                         <?php eT('Quick add labels') ?>
                     </button>
-                <?php }; ?>
+            <?php endif; ?>
+            </div>
         </div>
         <?php  $first=false;
         endforeach;?>

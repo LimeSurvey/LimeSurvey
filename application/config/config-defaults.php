@@ -91,7 +91,7 @@ $config['customassetversionnumber']  = 1;        // Used to generate the path of
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
 $config['allowedthemeimageformats'] = 'gif,ico,jpg,png'; // Image file types allowed to be uploaded in the themes section.
-$config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig'; // Other file types allowed to be uploaded in the themes section.
+$config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
 $config['allowedfileuploads'] = [
     //Documents
     'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
@@ -291,8 +291,7 @@ $config['demoModePrefill'] = false;
 *
 * $column_style defines how columns are rendered for survey answers.
 * There are four possible options:
-*     'css'   using one of the various CSS only methods for creating
-columns (see theme style sheet for details).
+*     'css'   using one of the various CSS only methods for creating columns (see theme style sheet for details).
 *     'ul'    using multiple floated unordered lists. (DEFAULT)
 *     'table' using conventional tables based layout.
 *     NULL    blocks the use of columns

@@ -600,7 +600,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $loginID = (int) $loginID;
         $criteria = $this->getDBCriteria();
-        $criteriaPerm = self::getPermissionCriteria();
+        $criteriaPerm = self::getPermissionCriteria($loginID);
         $criteria->mergeWith($criteriaPerm, 'AND');
         return $this;
     }

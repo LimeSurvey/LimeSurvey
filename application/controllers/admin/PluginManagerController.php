@@ -223,7 +223,7 @@ class PluginManagerController extends SurveyCommonAction
             }
 
             // Load the plugin:
-            App()->getPluginManager()->loadPlugin($oPlugin->name, $pluginId, false);
+            App()->getPluginManager()->loadPlugin($oPlugin->name, $pluginId);
             $result = App()->getPluginManager()->dispatchEvent(
                 new PluginEvent('beforeActivate', $this),
                 $oPlugin->name
