@@ -65,7 +65,8 @@ class Labels extends SurveyCommonAction
             $zip = new PclZip($zipfilename);
 
             if (!is_writeable($basedestdir)) {
-                $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                Yii::app()->setFlashMessage(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), 'error');
+                $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
 
             if (!is_dir($destdir)) {
