@@ -19,19 +19,17 @@
             {# columns/col.twig #}
             {{ sColumns }}
     </colgroup>
-    <thead aria-hidden="true">
+    <tbody>
         <tr class="ls-heading">
                 {# rows/cell/thead.twig #}
                 {{ sHeaders }}
         </tr>
-    </thead>
-    <tbody>
         {% if anscount==0 %}
             <tr>
-                <th class="answertext">
+                <td class="answertext">
                     
                     {{ gT('Error: This question has no answers.') }}
-                </th>
+                </td>
             </tr>
         {% endif %}
 
