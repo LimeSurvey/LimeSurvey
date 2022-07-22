@@ -69,7 +69,7 @@
             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa fa-eye"></span>
             <?php eT("Preview question"); ?> <span class="caret"></span>
-            </a>
+            </button>
             <ul class="dropdown-menu" style="min-width : 252px;">
                 <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
                     <li>
