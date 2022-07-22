@@ -161,7 +161,7 @@
                 <a 
                     href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" 
                     class="btn btn-outline-secondary" 
-                    style="margin-top:10px;">
+                >
                         <span class="fa fa-key text-success"></span>
                         <?php eT("Manage your key"); ?>
                     </a>
