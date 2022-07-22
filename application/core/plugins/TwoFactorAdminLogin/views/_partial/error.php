@@ -11,7 +11,7 @@
     <?=gT('Error')?>
 </div>
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
         <div class="row">
             <div class="col-12 text-center">
                 <div class="cross_mark">

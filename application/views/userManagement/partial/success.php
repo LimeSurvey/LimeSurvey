@@ -5,7 +5,7 @@ Yii::app()->getController()->renderPartial(
 );
 ?>
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
         <div class="row selector--animated_row">
             <div class="col-12 text-center">
                 <div class="check_mark">

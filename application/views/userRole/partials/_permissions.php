@@ -17,7 +17,7 @@ Yii::app()->getController()->renderPartial(
 ) ?>
 
 <div class="modal-body selector--edit-permissions-container">
-    <div class="container-center">
+    <div class="container">
         <input type='hidden' name='ptid' value='<?php
         echo(isset($oModel) ? $oModel->ptid : ''); ?>'/>
         <table id='RoleControl--permissions-table' class='activecell table table-striped'>

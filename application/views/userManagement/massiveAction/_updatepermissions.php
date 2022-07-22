@@ -21,7 +21,7 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
 ?>
 
 <div class="modal-body selector--edit-permissions-container">
-    <div class="container-center">        
+    <div class="container">        
         <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>
             <thead>
                 <tr>

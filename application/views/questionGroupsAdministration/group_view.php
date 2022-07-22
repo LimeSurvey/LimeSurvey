@@ -6,7 +6,7 @@
 
 ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <div class='container-center'>
+    <div class='container'>
         <div class="pagetitle h3"><?php eT('Group summary'); ?></div>
     </div>
     <div class="row">

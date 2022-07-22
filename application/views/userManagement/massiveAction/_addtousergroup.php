@@ -3,7 +3,7 @@
 ?>
 
 <div class="modal-body selector--edit-usergroup-container">
-    <div class="container-center form">
+    <div class="container form">
         <?php if ($aUsergoups) : ?>
             <div class="mb-3">
                 <label for="addtousergroup"><?= gT("Select user group to add users to") ?></label>

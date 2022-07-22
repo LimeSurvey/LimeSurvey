@@ -6,7 +6,7 @@ echo viewHelper::getViewTestTag('expressionsFunctions');
 $aFunctions = ExpressionManager::GetAllowableFunctions();
 
 ?>
-<div class="container container-center">
+<div class="container">
     <div class="row">
         <div class="col-12">
             <h3>Functions available within ExpressionScript Engine</h3>

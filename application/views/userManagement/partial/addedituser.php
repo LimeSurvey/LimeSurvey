@@ -16,7 +16,7 @@ Yii::app()->getController()->renderPartial(
 )); ?>
 
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
 
         <?= $form->hiddenField($oUser, 'uid', ['uid' => 'User_Form_users_id']) ?>
         <div class="mb-3" id="UserManagement--errors">

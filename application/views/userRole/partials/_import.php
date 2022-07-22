@@ -13,7 +13,7 @@ Yii::app()->getController()->renderPartial(
 ) ?>
 
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
         <div class="mb-3" id="RoleControl--errors">
         </div>
         <div class="mb-3" id="RoleControl--errors">
