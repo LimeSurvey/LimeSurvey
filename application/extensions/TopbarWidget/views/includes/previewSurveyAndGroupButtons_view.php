@@ -14,7 +14,7 @@
         <ul class="dropdown-menu" style="min-width : 252px;">
             <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
                 <li>
-                    <a target='_blank' href='<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$languageCode));?>'>
+                    <a class="dropdown-item" target='_blank' href='<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$languageCode));?>'>
                         <?php echo $languageName; ?>
                     </a>
                 </li>
@@ -44,7 +44,7 @@
             <ul class="dropdown-menu" style="min-width : 252px;">
                 <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
                     <li>
-                        <a target="_blank" href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $languageCode); ?>" >
+                        <a class="dropdown-item" target="_blank" href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $languageCode); ?>" >
                             <?php echo $languageName; ?>
                         </a>
                     </li>
