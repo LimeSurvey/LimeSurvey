@@ -122,7 +122,7 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException|CException
      */
-    public function actionDelete()
+    public function actionDelete(): string
     {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
@@ -164,7 +164,7 @@ class FailedEmailController extends LSBaseController
         ]);
     }
 
-    public function actionModalContent()
+    public function actionModalContent(): string
     {
         $contentFile = App()->request->getParam('contentFile');
         $id = App()->request->getParam('id');
