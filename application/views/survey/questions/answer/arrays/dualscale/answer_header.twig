@@ -16,7 +16,7 @@
         <td class="d-none"></td>
     {% endif %}
     {% for ld in labelans0 %}
-        <th class='answer-text'>{{ processString(ld) }}</th>
+        <td class='answer-text'>{{ processString(ld) }}</td>
     {% endfor %}
     {% if labelans1|length > 0 %}
         <td class="header_separator">
@@ -27,13 +27,13 @@
             <td class="d-none"></td>
         {% endif %}
         {% for ld in labelans1 %}
-            <th class='answer-text'>{{ processString(ld) }}</th>
+            <td class='answer-text'>{{ processString(ld) }}</td>
         {% endfor %}
     {% endif %}
     {% if shownoanswer or rightexists %}
         <td class="header_separator rigth_separator"></td>
     {% endif %}
     {% if shownoanswer %}
-        <th class="answer-text noanswer-text">{{ gT('No answer') }}</th>
+        <td class="answer-text noanswer-text">{{ gT('No answer') }}</td>
     {% endif %}
 </tr>
