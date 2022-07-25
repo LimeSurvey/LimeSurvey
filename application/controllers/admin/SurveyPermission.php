@@ -584,7 +584,6 @@ class SurveyPermission extends SurveyCommonAction
             }
             $uids = [$postuserid => $postuserid];
         } elseif ($postusergroupid) {
-
             if (shouldFilterUserGroupList() && !in_array($postusergroupid, getUserGroupList())) {
                 throw new CHttpException(403, gT("You do not have permission to this user group."));
             }
