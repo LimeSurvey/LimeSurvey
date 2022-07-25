@@ -34,6 +34,27 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.26 (build 220720) to 5.3.27 (build 220725) July 25, 2022
+-Fixed issue: When browsing responses the message "Showing filtered results" appears even though they are not filtered (Carsten Schmitz)
+-Fixed issue #18243: ARIA Attribute role on Array question not correct. (#2512) (Denis Chenu)
+-Fixed issue #18155: Translation missing in question editor (Gabriel Jenik)
+-Fixed issue #17625: Untranslated texts (Carsten Schmitz)
+-Fixed issue #17458: Check integrty broke fpor subquestion with only number (#2313) (Denis Chenu)
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.3.25 (build 220718) to 5.3.26 (build 220720) July 18, 2022
 -Fixed issue: Multiple choice questions turned into image select (Carsten Schmitz)
 -Fixed issue #18255: use findAll() instead of findAllByAttributes() (#2517) (Marko Bischof)
