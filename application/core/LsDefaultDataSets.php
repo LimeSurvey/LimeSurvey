@@ -447,7 +447,7 @@ class LsDefaultDataSets
                 'envelope-square',
                 'fontawesome',
                 '',
-                'failedemail/index/',
+                'failedEmail/index/',
                 '',
                 '',
                 '',
