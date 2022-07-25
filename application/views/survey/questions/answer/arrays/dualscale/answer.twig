@@ -9,7 +9,7 @@
 #}
 
 <!-- answer -->
-<table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+<table class="{{ coreClass }} table table-bordered table-hover" role="presentation" aria-labelledby="ls-question-text-{{ basename }}">
     <col class="col-answers" style='width: {{ answerwidth }}%;' >
     {% if leftheader != '' or rightheader !='' %}
         <col style='width: 0%;'  class="hidden"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
@@ -36,27 +36,26 @@
     {% if shownoanswer %}
         <col class="col-no-answer"  style="width: {{ cellwidth }}%;" />
     {% endif %}
-
-    <thead>
+    <tbody>
         {% if leftheader != '' or rightheader !='' %}
             <tr class="ls-heading groups header_row">
-                <th class="header_answer_text"></th>
+                <td class="header_answer_text"></td>
                 {% if leftheader != '' or rightheader !='' %}
                     <td class="hidden"></td>
                 {% endif %}
-                <th colspan="{{ labelans0|length }}" class="dsheader">{{ processString(leftheader) }}</th>
+                <td colspan="{{ labelans0|length }}" class="dsheader  answer-text">{{ processString(leftheader) }}</td>
                 {% if labelans1|length > 0 %}
                     <td class="header_separator"></td>  <!-- // Separator -->
                     {% if leftheader != '' or rightheader !='' %}
                         <td class="hidden"></td>
                     {% endif %}
-                    <th colspan="{{ labelans1|length }}" class="dsheader">{{ processString(rightheader) }}</th>
+                    <td colspan="{{ labelans1|length }}" class="dsheader  answer-text">{{ processString(rightheader) }}</td>
                 {% endif %}
 
                 {% if shownoanswer or rightexists %}
                     <td class="header_separator {{ rightclass }}"></td>
                     {% if shownoanswer %}
-                        <th class="header_no_answer"></th>
+                        <td class="header_no_answer"></td>
                     {% endif %}
                 {% endif %}
             </tr>
@@ -76,10 +75,6 @@
                 true
             )
         }}
-
-    </thead>
-
-    <tbody>
         <!-- Loop all subquestions -->
         {% for ansrow in aSubQuestions %}
             <!-- Check for repeat headings -->
@@ -107,7 +102,7 @@
             <tr id="javatbd{{ ansrow.myfname }}" role="group" aria-labelledby="answertext{{ ansrow.myfname }}"
                 class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %}"
             >
-            <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
+            <td id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
                 {{ processString(ansrow.answertext) }}
                 {# Value for expression manager javascript (use id) ; no need to submit #}
                 {{ C.Html.hiddenField("java"~ansrow.myfid0,ansrow.sessionfname0,({
@@ -123,7 +118,7 @@
                     }}
                 {% endif %}
 
-            </th>
+            </td>
 
             <!-- First label set -->
             {% for j, ld in labelcode0 %}
@@ -136,9 +131,10 @@
                         name="{{ ansrow.myfname0 }}"
                         value="{{ ld }}"
                         id="answer{{ ansrow.myfid0 }}-{{ ld }}"
+                        aria-labelledby="label-{{ ansrow.myfid0 }}-{{ ld }}"
                         {{ labelcode0_checked[ansrow.title][ld] }}
                     />
-                    <label for="answer{{ ansrow.myfid0 }}-{{ ld }}" class="ls-label-xs-visibility">
+                    <label for="answer{{ ansrow.myfid0 }}-{{ ld }}" class="ls-label-xs-visibility" id="label-{{ ansrow.myfid0 }}-{{ ld }}">
                         {{ processString(labelans0[j]) }}
                     </label>
                 </td>
@@ -153,9 +149,10 @@
                             name='{{ ansrow.myfname0 }}'
                             value=''
                             id='answer{{ ansrow.myfid0 }}-'
+                            aria-labelledby="label-{{ ansrow.myfid0 }}-"
                             {{ ansrow.myfname0_notset }}
                         />
-                        <label for='answer{{ ansrow.myfid0 }}-' class='ls-label-xs-visibility'>
+                        <label for='answer{{ ansrow.myfid0 }}-' class='ls-label-xs-visibility' id="label-{{ ansrow.myfid0 }}-">
                             {{ gT("No answer") }}
                         </label>
                     </div>
@@ -174,9 +171,10 @@
                             name="{{ ansrow.myfname1 }}"
                             value="{{ ld }}"
                             id="answer{{ ansrow.myfid1 }}-{{ ld }}"
+                            aria-labelledby="label-{{ ansrow.myfid1 }}-{{ ld }}"
                             {{ labelcode1_checked[ansrow.title][ld] }}
                         />
-                        <label for="answer{{ ansrow.myfid1 }}-{{ ld }}" class="ls-label-xs-visibility">
+                        <label for="answer{{ ansrow.myfid1 }}-{{ ld }}" class="ls-label-xs-visibility" id="label-{{ ansrow.myfid1 }}-{{ ld }}">
                             {{ processString(labelans1[k]) }}
                         </label>
                     </td>
@@ -197,20 +195,22 @@
                                 name='{{ ansrow.myfname1 }}'
                                 value=''
                                 id='answer{{ ansrow.myfid1 }}-'
+                                aria-labelledby="label-{{ ansrow.myfid1 }}-"
                                 {{ ansrow.myfname1_notset }}
                             />
-                        <label for='answer{{ ansrow.myfid1 }}-' class="ls-label-xs-visibility">
+                        <label for='answer{{ ansrow.myfid1 }}-' class="ls-label-xs-visibility" id="label-{{ ansrow.myfid1 }}-">
                             {{ gT("No answer") }}
                         </label>
                     {% else %}
                             <input
                                 type='radio'
-                                name='{{ ansrow.myfname0 }}'
+                                name='{{ ansrow.myfname1 }}'
                                 value=''
-                                id='answer{{ ansrow.myfid0 }}-'
-                                {{ ansrow.myfname0_notset }}
+                                id='answer{{ ansrow.myfid1 }}-'
+                                aria-labelledby="label-{{ ansrow.myfid1 }}-"
+                                {{ ansrow.myfname1_notset }}
                             />
-                        <label for='answer{{ ansrow.myfid0 }}-' class="ls-label-xs-visibility">
+                        <label for='answer{{ ansrow.myfid1 }}-' class="ls-label-xs-visibility" id="label-{{ ansrow.myfid1 }}-">
                             {{ gT("No answer") }}
                         </label>
                     {% endif %}

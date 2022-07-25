@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-07-18 11:36:00+00:00\n"
+"POT-Creation-Date: 2022-07-25 08:08:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -415,9 +415,9 @@ msgstr ""
 #: application/controllers/admin/Expressions.php:42
 #: application/controllers/admin/Expressions.php:92
 #: application/controllers/admin/Labels.php:46
-#: application/controllers/admin/Labels.php:122
-#: application/controllers/admin/Labels.php:235
-#: application/controllers/admin/Labels.php:341
+#: application/controllers/admin/Labels.php:123
+#: application/controllers/admin/Labels.php:236
+#: application/controllers/admin/Labels.php:342
 #: application/controllers/admin/PrintableSurvey.php:37
 #: application/controllers/admin/Quotas.php:66
 #: application/controllers/admin/Quotas.php:76
@@ -977,7 +977,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:1986
 #: application/controllers/SurveyAdministrationController.php:2057
 #: application/controllers/UserGroupController.php:406
-#: application/controllers/admin/Labels.php:520
+#: application/controllers/admin/Labels.php:521
 #: application/controllers/admin/ParticipantsAction.php:630
 #: application/controllers/admin/SurveymenuController.php:53
 #: application/controllers/admin/SurveymenuController.php:123
@@ -2014,7 +2014,7 @@ msgid "This file is not a valid ZIP file archive. Import failed. "
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:640
-#: application/controllers/admin/Labels.php:98
+#: application/controllers/admin/Labels.php:99
 msgid "This ZIP archive contains no valid Resources files. Import failed."
 msgstr ""
 
@@ -2023,8 +2023,8 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:2096
 #: application/controllers/UserRoleController.php:319
 #: application/controllers/admin/DataEntry.php:192
-#: application/controllers/admin/Labels.php:101
-#: application/controllers/admin/Labels.php:140
+#: application/controllers/admin/Labels.php:102
+#: application/controllers/admin/Labels.php:141
 #: application/controllers/admin/ParticipantsAction.php:819
 #: application/controllers/admin/Themes.php:254
 #: application/controllers/admin/Themes.php:417
@@ -2843,8 +2843,8 @@ msgstr ""
 #: application/controllers/UserGroupController.php:266
 #: application/controllers/UserGroupController.php:316
 #: application/controllers/admin/DataEntry.php:1326
-#: application/controllers/admin/Labels.php:218
-#: application/controllers/admin/Labels.php:304
+#: application/controllers/admin/Labels.php:219
+#: application/controllers/admin/Labels.php:305
 #: application/controllers/admin/PluginManagerController.php:361
 #: application/extensions/TopbarWidget/views/includes/addGroupTopbarRight_view.php:11
 #: application/extensions/TopbarWidget/views/includes/editGroupTopbarRight_view.php:26
@@ -3886,74 +3886,74 @@ msgstr ""
 msgid "Deleting conditions: %u conditions deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:756
+#: application/controllers/admin/CheckIntegrity.php:758
 msgid "No matching CQID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:766
+#: application/controllers/admin/CheckIntegrity.php:768
 msgid "No matching QID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:781
+#: application/controllers/admin/CheckIntegrity.php:783
 msgid "No matching CFIELDNAME group!"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:788
+#: application/controllers/admin/CheckIntegrity.php:790
 msgid "No CFIELDNAME field set!"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:848
+#: application/controllers/admin/CheckIntegrity.php:850
 msgid "No matching survey"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:858
-#: application/controllers/admin/CheckIntegrity.php:934
+#: application/controllers/admin/CheckIntegrity.php:860
+#: application/controllers/admin/CheckIntegrity.php:936
 msgid "No matching group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:871
-#: application/controllers/admin/CheckIntegrity.php:946
+#: application/controllers/admin/CheckIntegrity.php:873
+#: application/controllers/admin/CheckIntegrity.php:948
 msgid "No parent question"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:882
+#: application/controllers/admin/CheckIntegrity.php:884
 msgid "No parent answer"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:922
+#: application/controllers/admin/CheckIntegrity.php:924
 msgid "The related survey is missing."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:959
+#: application/controllers/admin/CheckIntegrity.php:961
 msgid "There is no matching survey."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:972
+#: application/controllers/admin/CheckIntegrity.php:974
 #: application/models/SurveysGroups.php:365
 msgid "No parent group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:984
+#: application/controllers/admin/CheckIntegrity.php:986
 msgid "There is no matching user %s in group %s."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1023
+#: application/controllers/admin/CheckIntegrity.php:1025
 msgid "responses"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1028
+#: application/controllers/admin/CheckIntegrity.php:1030
 msgid "timings"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1049
+#: application/controllers/admin/CheckIntegrity.php:1051
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1100
+#: application/controllers/admin/CheckIntegrity.php:1102
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1165
+#: application/controllers/admin/CheckIntegrity.php:1167
 msgid "Some automatic fixes were already applied."
 msgstr ""
 
@@ -5255,28 +5255,28 @@ msgstr ""
 msgid "Survey logic file"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:188
+#: application/controllers/admin/Labels.php:189
 msgid "New label set"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:189
+#: application/controllers/admin/Labels.php:190
 #: application/views/admin/labels/labelsetsbar_view.php:34
 msgid "Create or import new label set(s)"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:191
 #: application/controllers/admin/Labels.php:192
+#: application/controllers/admin/Labels.php:193
 #: application/models/LabelSet.php:131
 #: application/views/admin/labels/labelsetsbar_view.php:49
 msgid "Edit label set"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:308
+#: application/controllers/admin/Labels.php:309
 msgid "Save & close"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:313
-#: application/controllers/admin/Labels.php:442
+#: application/controllers/admin/Labels.php:314
+#: application/controllers/admin/Labels.php:443
 #: application/controllers/admin/PluginManagerController.php:349
 #: application/core/plugins/TwoFactorAdminLogin/views/_partial/error.php:35
 #: application/extensions/TopbarWidget/views/includes/copyQuestionTopbarRight_view.php:4
@@ -5346,43 +5346,43 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:328
+#: application/controllers/admin/Labels.php:329
 msgid "Label sets list"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:351
+#: application/controllers/admin/Labels.php:352
 msgid "Label set successfully saved."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:362
+#: application/controllers/admin/Labels.php:363
 msgid "Label set sucessfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:391
+#: application/controllers/admin/Labels.php:392
 msgid "Label set sucessfully created."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:394
+#: application/controllers/admin/Labels.php:395
 msgid "Label could not be created."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:409
+#: application/controllers/admin/Labels.php:410
 msgid "You are not authorized to delete label sets."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:414
+#: application/controllers/admin/Labels.php:415
 msgid "Invalid label set."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:417
+#: application/controllers/admin/Labels.php:418
 msgid "Label set “%s” was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:419
+#: application/controllers/admin/Labels.php:420
 msgid "Unable to delete label set %s."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:438
+#: application/controllers/admin/Labels.php:439
 #: application/extensions/TopbarWidget/views/includes/editGroupToolsDropdownItems.php:16
 #: application/extensions/TopbarWidget/views/includes/groupToolsDropdownItems.php:16
 #: application/extensions/TopbarWidget/views/includes/questionToolsDropdownItems.php:26
@@ -5418,33 +5418,33 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:445
+#: application/controllers/admin/Labels.php:446
 #: application/views/admin/labels/labelsetsbar_view.php:104
 msgid "Export multiple label sets"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:489
+#: application/controllers/admin/Labels.php:490
 msgid "Could not save label set: Label set name is empty."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:493
+#: application/controllers/admin/Labels.php:494
 msgid "Could not save label set: Found no answers."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:510
-#: application/controllers/admin/Labels.php:676
+#: application/controllers/admin/Labels.php:511
+#: application/controllers/admin/Labels.php:677
 msgid "Label set successfully saved"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:527
+#: application/controllers/admin/Labels.php:528
 msgid "Could not update label set: Label set id is empty."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:532
+#: application/controllers/admin/Labels.php:533
 msgid "Found no label set with this id"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:551
+#: application/controllers/admin/Labels.php:552
 msgid "Label set successfully updated"
 msgstr ""
 
@@ -14450,6 +14450,30 @@ msgstr ""
 
 #: application/helpers/twig_translation_helper.php:44
 msgid "Quick add"
+msgstr ""
+
+#: application/helpers/twig_translation_helper.php:45
+msgid "After specific subquestion"
+msgstr ""
+
+#: application/helpers/twig_translation_helper.php:46
+msgid "Relevance help for printable survey"
+msgstr ""
+
+#: application/helpers/twig_translation_helper.php:47
+msgid "Specify how array-filtered sub-questions should be displayed"
+msgstr ""
+
+#: application/helpers/twig_translation_helper.php:48
+msgid "Indicates where the 'Other' option should be placed"
+msgstr ""
+
+#: application/helpers/twig_translation_helper.php:49
+msgid "Answer code for 'After specific answer option'"
+msgstr ""
+
+#: application/helpers/twig_translation_helper.php:50
+msgid "The code of the answer option after which the 'Other:' option will be placed if the position is set to 'After specific answer option'"
 msgstr ""
 
 #: application/helpers/update/update_helper.php:39

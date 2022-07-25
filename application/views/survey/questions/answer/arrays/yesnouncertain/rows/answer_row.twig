@@ -19,7 +19,7 @@
 <!-- answer_row -->
 <tr id="javatbd{{ myfname }}" class="answers-list radio-list {% if odd %}ls-odd {% else %}ls-even{% endif %} {% if error %} has-error{% endif %}" role="radiogroup" aria-labelledby="answertext{{ myfname }}">
     <!-- Answer text /  Errors -->
-    <th class="answertext control-label{% if error %} error-mandatory{% endif %}{% if answerwidth==0 %} sr-only{% endif %}" id="answertext{{ myfname }}">
+    <td class="answertext control-label{% if error %} error-mandatory{% endif %}{% if answerwidth==0 %} sr-only{% endif %}" id="answertext{{ myfname }}">
         {{ processString(answertext) }}
         {# Value for expression manager javascript (use id) ; no need to submit #}
         {{ C.Html.hiddenField("java"~myfname,value,({
@@ -27,7 +27,7 @@
             'disabled' : true,
         }))
         }}
-    </th>
+    </td>
 
     <!-- Yes -->
     <td class="answer_cell_Y answer-item radio-item">
@@ -35,10 +35,11 @@
             type="radio"
             name="{{ myfname }}"
             id="answer{{ myfname }}-Y"
+            aria-labelledby="label-{{ myfname }}-Y"
             value="Y"
             {{ Ychecked }}
             />
-        <label for="answer{{ myfname }}-Y" class="ls-label-xs-visibility">
+        <label for="answer{{ myfname }}-Y" class="ls-label-xs-visibility" id="label-{{ myfname }}-Y">
             {{ gT("Yes") }}
         </label>
     </td>
@@ -49,10 +50,11 @@
             type="radio"
             name="{{ myfname }}"
             id="answer{{ myfname }}-U"
+            aria-labelledby="label-{{ myfname }}-U"
             value="U"
             {{ Uchecked }}
         />
-        <label for="answer{{ myfname }}-U" class="ls-label-xs-visibility">
+        <label for="answer{{ myfname }}-U" class="ls-label-xs-visibility" id="label-{{ myfname }}-U">
             {{ gT("Uncertain") }}
         </label>
     </td>
@@ -63,10 +65,11 @@
             type="radio"
             name="{{ myfname }}"
             id="answer{{ myfname }}-N"
+            aria-labelledby="label-{{ myfname }}-N"
             value="N"
             {{ Nchecked }}
         />
-        <label for="answer{{ myfname }}-N" class="ls-label-xs-visibility">
+        <label for="answer{{ myfname }}-N" class="ls-label-xs-visibility" id="label-{{ myfname }}-N">
             {{ gT("No") }}
         </label>
     </td>
@@ -78,10 +81,11 @@
                 type="radio"
                 name="{{ myfname }}"
                 id="answer{{ myfname }}-"
+                aria-labelledby="label-{{ myfname }}-"
                 value=""
                 {{ NAchecked }}
             />
-            <label for="answer{{ myfname }}-" class="ls-label-xs-visibility">
+            <label for="answer{{ myfname }}-" class="ls-label-xs-visibility" id="label-{{ myfname }}-">
                 {{ gT("No answer") }}
             </label>
         </td>
