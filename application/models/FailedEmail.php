@@ -175,7 +175,8 @@ class FailedEmail extends LSActiveRecord
         ];
     }
 
-    public function getButtons() {
+    public function getButtons()
+    {
         $permissions = [
             'update' => Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'update'),
             'delete' => Permission::model()->hasSurveyPermission($this->surveyid, 'responses', 'delete'),
@@ -193,7 +194,8 @@ class FailedEmail extends LSActiveRecord
      * @throws CException
      * @throws CHttpException
      */
-    public function getRawMailBody(): string {
+    public function getRawMailBody(): string
+    {
         $mailer = \LimeMailer::getInstance(true);
         $mailer->setSurvey($this->surveyid);
         $mailer->setTypeWithRaw($this->email_type, $this->language);

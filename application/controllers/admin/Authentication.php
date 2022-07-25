@@ -425,7 +425,7 @@ class Authentication extends SurveyCommonAction
     {
         $failedEmailModel = new FailedEmail();
         $failedEmailSurveyTitles = $failedEmailModel->getFailedEmailSurveyTitles();
-        if(!empty($failedEmailSurveyTitles)) {
+        if (!empty($failedEmailSurveyTitles)) {
             $uniqueNotification = new UniqueNotification(
                 array(
                     'user_id' => App()->user->id,

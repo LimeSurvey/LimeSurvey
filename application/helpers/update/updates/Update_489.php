@@ -38,5 +38,4 @@ class Update_489 extends DatabaseUpdateBase
             }
         }
     }
-
 }

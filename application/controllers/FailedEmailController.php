@@ -8,7 +8,8 @@ class FailedEmailController extends LSBaseController
      * @param string $view
      * @return bool
      */
-    public function beforeRender($view) {
+    public function beforeRender($view)
+    {
         $surveyId = (int)App()->request->getParam('surveyid');
         $this->aData['surveyid'] = $surveyId;
         LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
@@ -20,7 +21,8 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException
      */
-    public function actionIndex(): void {
+    public function actionIndex(): void
+    {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         $permissions = [
             'update' => Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update'),
@@ -55,7 +57,8 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException
      */
-    public function actionResend() {
+    public function actionResend()
+    {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
@@ -119,7 +122,8 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException|CException
      */
-    public function actionDelete() {
+    public function actionDelete()
+    {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
@@ -136,7 +140,7 @@ class FailedEmailController extends LSBaseController
             $criteria->select = 'id, email_type, recipient';
             $criteria->addCondition('surveyid', $surveyId);
             $criteria->addInCondition('id', $selectedItems);
-            $failedEmails = new FailedEmail;
+            $failedEmails = new FailedEmail();
             $deletedCount = $failedEmails->deleteAll($criteria);
             if ($items) {
                 return $this->renderPartial('partials/modal/delete_result_body', [
@@ -160,13 +164,16 @@ class FailedEmailController extends LSBaseController
         ]);
     }
 
-    public function actionModalContent() {
+    public function actionModalContent()
+    {
         $contentFile = App()->request->getParam('contentFile');
         $id = App()->request->getParam('id');
         $failedEmailModel = new FailedEmail();
         $failedEmail = $failedEmailModel->findByPk($id);
         $surveyId = $failedEmail->surveyid;
-        return App()->getController()->renderPartial('/failedEmail/partials/modal/' . $contentFile,
-            ['id' => $id, 'surveyId' => $surveyId, 'failedEmail' => $failedEmail]);
+        return App()->getController()->renderPartial(
+            '/failedEmail/partials/modal/' . $contentFile,
+            ['id' => $id, 'surveyId' => $surveyId, 'failedEmail' => $failedEmail]
+        );
     }
 }
