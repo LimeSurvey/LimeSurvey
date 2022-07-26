@@ -30,6 +30,9 @@
                 "application/helpers/update",
                 "application/helpers/update/updates"
             ],
+            "LimeSurvey\\Helpers\\RemoteControl\\": [
+                "application/helpers/remotecontrol"
+            ],
 			"LimeSurvey\\Models\\Services\\": "application/models/services",
 			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects",
 			"LimeSurvey\\Exceptions\\": "application/exceptions"

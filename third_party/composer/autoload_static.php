@@ -43,6 +43,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'LimeSurvey\\Models\\Services\\' => 27,
             'LimeSurvey\\Menu\\' => 16,
             'LimeSurvey\\Helpers\\Update\\' => 26,
+            'LimeSurvey\\Helpers\\RemoteControl\\' => 33,
             'LimeSurvey\\Helpers\\' => 19,
             'LimeSurvey\\ExtensionInstaller\\' => 30,
             'LimeSurvey\\Exceptions\\' => 22,
@@ -96,6 +97,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         array (
             0 => __DIR__ . '/../..' . '/application/helpers/update',
             1 => __DIR__ . '/../..' . '/application/helpers/update/updates',
+        ),
+        'LimeSurvey\\Helpers\\RemoteControl\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/helpers/remotecontrol',
         ),
         'LimeSurvey\\Helpers\\' => 
         array (

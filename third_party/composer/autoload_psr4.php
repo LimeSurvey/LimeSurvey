@@ -17,6 +17,7 @@ return array(
     'LimeSurvey\\Models\\Services\\' => array($baseDir . '/application/models/services'),
     'LimeSurvey\\Menu\\' => array($baseDir . '/application/libraries/MenuObjects'),
     'LimeSurvey\\Helpers\\Update\\' => array($baseDir . '/application/helpers/update', $baseDir . '/application/helpers/update/updates'),
+    'LimeSurvey\\Helpers\\RemoteControl\\' => array($baseDir . '/application/helpers/remotecontrol'),
     'LimeSurvey\\Helpers\\' => array($baseDir . '/application/helpers'),
     'LimeSurvey\\ExtensionInstaller\\' => array($baseDir . '/application/libraries/ExtensionInstaller'),
     'LimeSurvey\\Exceptions\\' => array($baseDir . '/application/exceptions'),
