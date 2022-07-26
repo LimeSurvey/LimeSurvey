@@ -196,10 +196,13 @@ class FailedEmail extends LSActiveRecord
      */
     public function getRawMailBody(): string
     {
-        $mailer = \LimeMailer::getInstance(true);
-        $mailer->setSurvey($this->surveyid);
-        $mailer->setTypeWithRaw($this->email_type, $this->language);
-        $rawMail = $mailer->rawBody;
+        $mailer = \LimeMailer::getInstance();
+        $rawMail = '';
+        if ($mailer) {
+            $mailer->setSurvey($this->surveyid);
+            $mailer->setTypeWithRaw($this->email_type, $this->language);
+            $rawMail = $mailer->rawBody;
+        }
         return $rawMail;
     }
 
