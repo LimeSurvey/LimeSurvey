@@ -4129,13 +4129,24 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 }
 
 /**
+* Determines whether the list of user groups will need filtering before viewing.
+* @returns bool
+*/
+function shouldFilterUserGroupList()
+{
+    $bUserControlSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy', true);
+    $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
+    return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
+}
+
+/**
 * Get a list of all user groups
 * @returns array
 */
 function getUserGroupList()
 {
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+    if (shouldFilterUserGroupList()) {
         $sQuery .= "AND uid = " . Yii::app()->session['loginID'];
     }
     $sQuery .= " ORDER BY name";
@@ -4424,7 +4435,7 @@ function getSurveyUserGroupList($outputformat, $surveyid)
     $aResult = $surveyidresult->readAll();
 
     $authorizedGroupsList = [];
-    if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
+    if (shouldFilterUserGroupList()) {
         $authorizedGroupsList = getUserGroupList();
     }
 

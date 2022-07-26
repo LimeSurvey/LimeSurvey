@@ -42,6 +42,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('.codeval').on('keyup change', sync_label);
     $('.assessmentval').on('keyup change', sync_label);
 
+    $('#neweditlblset0 .answertable tbody').sortable({
+        update:sort_complete,
+        distance:2
+    });
+
     $('#btnqareplace').click(quickaddfunction);
     $('#btnqainsert').click(quickaddfunction);
 

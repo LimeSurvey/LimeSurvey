@@ -41,13 +41,13 @@ var filterData = {};
              } else {
                  // Hide date, set hidden input to "N"
                  $elDateContainer.classList.add('d-none');
-                 $elHiddenInput.value = 'N';
+                $elHiddenInput.val('N');
              }
          });
 
          // When user change date
          $elDate.addEventListener('change', function (e) {
-             $elHiddenInput.value = $elDate.value;
+            $elHiddenInput.val(e.date.format($elDate.data('date-format')));
          });
      },
      YesNo: function (el) {
@@ -226,14 +226,35 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
         document.querySelectorAll('.yes-no-date-container').forEach((el) => {
             Tokens.YesNoDate(el);
-        });
-
-        document.querySelectorAll('.yes-no-container').forEach((el) => {
-            Tokens.YesNo(el);
-        });
-
+        })
+        $('.yes-no-container').each(function(i,el){
+            $(this).YesNo();
+        })
         initValidFromValidUntilPickers();
     }
+
+    var modal = $('#massive-actions-modal-edit-0');
+    if (modal.length) {
+        modal.on('shown.bs.modal', function () {
+            $('.yes-no-date-container').each(function(i,el){
+                $(this).YesNoDate().onReadyMethod();
+            });
+
+            $('.yes-no-container').each(function(i,el){
+                $(this).YesNo().onReadyMethod();
+            });
+        });
+    }
+
+    $(document).on('actions-updated', function() {
+        $('.yes-no-date-container').each(function(i,el){
+            $(this).YesNoDate().onReadyMethod();
+        });
+
+        $('.yes-no-container').each(function(i,el){
+            $(this).YesNo().onReadyMethod();
+        });
+    });
 
     var initialScrollValue = $('.scrolling-wrapper').scrollLeft();
     var useRtl = $('input[name="rtl"]').val() === '1';
