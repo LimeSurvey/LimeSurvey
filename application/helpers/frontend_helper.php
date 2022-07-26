@@ -584,7 +584,18 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
     }
 }
 
-function saveFailedEmail($id, $recipient, $surveyId, $emailType, $language, $errorMessage) {
+/**
+ * Saves a failed email whenever processing and sensing an email fails or overwrites a found entry with updated values
+ *
+ * @param $id
+ * @param $recipient
+ * @param $surveyId
+ * @param $emailType
+ * @param $language
+ * @param $errorMessage
+ * @return bool
+ */
+function saveFailedEmail($id, $recipient, $surveyId, $emailType, $language, $errorMessage): bool {
     $failedEmailModel = new FailedEmail;
     $failedEmail = $failedEmailModel->findByPk($id);
     if (isset($failedEmail)) {
@@ -605,9 +616,6 @@ function saveFailedEmail($id, $recipient, $surveyId, $emailType, $language, $err
     $failedEmailModel->updated = date('Y-m-d H:i:s');
 
     return $failedEmailModel->save(false);
-
-    Yii::log(\CVarDumper::dumpAsString($model->getErrors()), 'warning', 'application.models.FailedEmail.insertRecords');
-    return null;
 }
 
 function preserveSuccessFailedEmail($id) {
