@@ -1,5 +1,12 @@
 <?php
 
+namespace LimeSurvey\Helpers\RemoteControl;
+
+use CDbCriteria;
+use Session;
+use User;
+use Yii;
+
 /**
  * Base class for all remote commands.
  */

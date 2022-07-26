@@ -26,45 +26,6 @@ class remotecontrol_handle
         $this->controller = $controller;
     }
 
-
-    /**
-     * Create and return a session key.
-     *
-     * Using this function you can create a new XML-RPC/JSON-RPC session key.
-     * This is mandatory for all following LSRC2 function calls.
-     *
-     * * In case of success : Return the session key in string
-     * * In case of error:
-     *     * for protocol-level errors (invalid format etc), an error message.
-     *     * For invalid username and password, returns a null error and the result body contains a 'status' name-value pair with the error message.
-     *
-     * @access public
-     * @param string $username
-     * @param string $password
-     * @param string $plugin to be used
-     * @return string|array
-     */
-    public function get_session_key($username, $password, $plugin = 'Authdb')
-    {
-        $username = (string) $username;
-        $password = (string) $password;
-        $loginResult = $this->_doLogin($username, $password, $plugin);
-        if ($loginResult === true) {
-            $this->_jumpStartSession($username);
-            $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
-            $session = new Session();
-            $session->id = $sSessionKey;
-            $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
-            $session->data = $username;
-            $session->save();
-            return $sSessionKey;
-        }
-        if (is_string($loginResult)) {
-            return array('status' => $loginResult);
-        }
-        return array('status' => 'Invalid user name or password');
-    }
-
     /**
      * Close the RPC session
      *
@@ -3355,90 +3316,6 @@ class remotecontrol_handle
         }
         return $fieldmap;
     }
-
-    /**
-     * Login with username and password
-     *
-     * @access protected
-     * @param string $sUsername username
-     * @param string $sPassword password
-     * @param string $sPlugin plugin to be used
-     * @return bool|string
-     */
-    protected function _doLogin($sUsername, $sPassword, $sPlugin)
-    {
-        /* @var $identity LSUserIdentity */
-        $identity = new LSUserIdentity($sUsername, $sPassword);
-        $identity->setPlugin($sPlugin);
-        $event = new PluginEvent('remoteControlLogin');
-        $event->set('identity', $identity);
-        $event->set('plugin', $sPlugin);
-        $event->set('username', $sUsername);
-        $event->set('password', $sPassword);
-        App()->getPluginManager()->dispatchEvent($event, array($sPlugin));
-        if (!$identity->authenticate()) {
-            if ($identity->errorMessage) {
-                // don't return an empty string
-                return $identity->errorMessage;
-            }
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Fills the session with necessary user info on the fly
-     *
-     * @access protected
-     * @param string $username The username
-     * @return bool
-     */
-    protected function _jumpStartSession($username)
-    {
-        $aUserData = User::model()->findByAttributes(array('users_name' => (string) $username))->attributes;
-
-        $session = array(
-            'loginID' => intval($aUserData['uid']),
-            'user' => $aUserData['users_name'],
-            'full_name' => $aUserData['full_name'],
-            'htmleditormode' => $aUserData['htmleditormode'],
-            'templateeditormode' => $aUserData['templateeditormode'],
-            'questionselectormode' => $aUserData['questionselectormode'],
-            'dateformat' => $aUserData['dateformat'],
-            'adminlang' => 'en'
-        );
-        foreach ($session as $k => $v) {
-            Yii::app()->session[$k] = $v;
-        }
-        Yii::app()->user->setId($aUserData['uid']);
-
-        return true;
-    }
-
-    /**
-     * Check if the session key is valid. If yes returns true, otherwise false and sends an error message with error code 1
-     *
-     * @access protected
-     * @param string $sSessionKey Auth credentials
-     * @return bool
-     */
-    protected function _checkSessionKey($sSessionKey)
-    {
-        $sSessionKey = (string) $sSessionKey;
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'expire < ' . time();
-        Session::model()->deleteAll($criteria);
-        $oResult = Session::model()->findByPk($sSessionKey);
-
-        if (is_null($oResult)) {
-            return false;
-        } else {
-            $this->_jumpStartSession($oResult->data);
-            return true;
-        }
-    }
-
 
     /**
      * Import a participant into the LimeSurvey CPDB
