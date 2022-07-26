@@ -28,38 +28,38 @@ class LSjsonRPCServer extends jsonRPCServer
         if (is_null($request)) {
             // Can not decode the json, issue error
             $response = array(
-                                'id' => null,
-                                'result' => null,
-                                'error' => sprintf('unable to decode malformed json')
-                                );
+                'id' => null,
+                'result' => null,
+                'error' => sprintf('unable to decode malformed json')
+            );
         } else {
             try {
                 $result = @call_user_func_array(array($object, $request['method']), $request['params']);
                 if ($result !== false) {
                     $response = array(
-                                        'id' => $request['id'],
-                                        'result' => $result,
-                                        'error' => null
-                                        );
+                        'id' => $request['id'],
+                        'result' => $result,
+                        'error' => null
+                    );
                 } else {
                     $response = array(
-                                        'id' => $request['id'],
-                                        'result' => null,
-                                        'error' => 'unknown method or incorrect parameters'
-                                        );
+                        'id' => $request['id'],
+                        'result' => null,
+                        'error' => 'unknown method or incorrect parameters'
+                    );
                 }
             } catch (Exception $e) {
                 $response = array(
-                                    'id' => $request['id'],
-                                    'result' => null,
-                                    'error' => $e->getMessage()
-                                    );
+                    'id' => $request['id'],
+                    'result' => null,
+                    'error' => $e->getMessage()
+                );
             }
         }
 
         // output the response
         if (is_null($request) || !empty($request['id'])) {
-// notifications don't want response
+            // notifications don't want response
             header('content-type: text/javascript');
             BigData::json_echo($response);
         }
