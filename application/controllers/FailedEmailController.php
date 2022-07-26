@@ -57,7 +57,8 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException|CException
      */
-    public function actionResend(): string {
+    public function actionResend(): string
+    {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
