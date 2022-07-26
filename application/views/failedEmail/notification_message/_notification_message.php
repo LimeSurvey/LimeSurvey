@@ -19,7 +19,7 @@
         <li>
             <?= CHtml::link(
                 $surveyTitle,
-                Yii::app()->createUrl("failedemail/index/", ['surveyid' => $surveyId])
+                Yii::app()->createUrl("failedEmail/index/", ['surveyid' => $surveyId])
             ) ?>
         </li>
     <?php

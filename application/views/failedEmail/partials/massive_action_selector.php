@@ -8,7 +8,7 @@ $buttons[] = [
     // dropdown button
     'type'          => 'action',
     'action'        => 'delete',
-    'url'           => App()->createUrl("failedemail/delete/", ['surveyId' => $surveyId]),
+    'url'           => App()->createUrl("failedEmail/delete/", ['surveyId' => $surveyId]),
     'iconClasses'   => 'fa fa-trash text-danger',
     'text'          => gT('Delete'),
     'grid-reload'   => 'yes',
@@ -27,7 +27,7 @@ $buttons[] = [
     // dropdown button
     'type'        => 'action',
     'action'      => 'resend',
-    'url'         => App()->createUrl('failedemail/resend/', ['surveyid' => $surveyId]),
+    'url'         => App()->createUrl('failedEmail/resend/', ['surveyid' => $surveyId]),
     'iconClasses' => 'fa fa-envelope',
     'text'        => gT('Resend e-mails'),
     'grid-reload' => 'yes',

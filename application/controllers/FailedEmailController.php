@@ -65,7 +65,7 @@ class FailedEmailController extends LSBaseController
         }
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
-            $this->redirect(['failedemail/index/', 'surveyid' => $surveyId]);
+            $this->redirect(['failedEmail/index/', 'surveyid' => $surveyId]);
         }
         $preserveResend = App()->request->getParam('preserveResend') ?? false;
         $item = [App()->request->getParam('item')];
@@ -130,7 +130,7 @@ class FailedEmailController extends LSBaseController
         }
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
-            $this->redirect(['failedemail/index/', 'surveyid' => $surveyId]);
+            $this->redirect(['failedEmail/index/', 'surveyid' => $surveyId]);
         }
         $item = [App()->request->getParam('item')];
         $items = json_decode(App()->request->getParam('sItems'));
