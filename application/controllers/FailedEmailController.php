@@ -19,7 +19,7 @@ class FailedEmailController extends LSBaseController
     }
 
     /**
-     * @throws CHttpException
+     * @throws CHttpException|CException
      */
     public function actionIndex(): void
     {
@@ -55,10 +55,9 @@ class FailedEmailController extends LSBaseController
     }
 
     /**
-     * @throws CHttpException
+     * @throws CHttpException|CException
      */
-    public function actionResend()
-    {
+    public function actionResend(): string {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
@@ -71,21 +70,22 @@ class FailedEmailController extends LSBaseController
         $item = [App()->request->getParam('item')];
         $items = json_decode(App()->request->getParam('sItems'));
         $selectedItems = $items ?? $item;
+        $emailsByType = [];
         if (!empty($selectedItems)) {
             $criteria = new CDbCriteria();
             $criteria->select = 'id, email_type, recipient';
             $criteria->addCondition('surveyid', $surveyId);
             $criteria->addInCondition('id', $selectedItems);
             $failedEmails = FailedEmail::model()->findAll($criteria);
-            if (isset($failedEmails)) {
+            if (!empty($failedEmails)) {
                 foreach ($failedEmails as $failedEmail) {
                     $emailsByType[$failedEmail->email_type][$failedEmail->id] = $failedEmail->recipient;
                 }
-                if (isset($emailsByType)) {
+                if (!empty($emailsByType)) {
                     $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
                     if (!$preserveResend) {
                         $criteria->addCondition('status', FailedEmail::STATE_SUCCESS);
-                        $failedEmails->deleteAll($criteria);
+                        FailedEmail::model()->deleteAll($criteria);
                     }
                     if ($items) {
                         return $this->renderPartial('partials/modal/resend_result_body', [
@@ -164,12 +164,19 @@ class FailedEmailController extends LSBaseController
         ]);
     }
 
+    /**
+     * @throws CHttpException
+     * @throws CException
+     */
     public function actionModalContent(): string
     {
         $contentFile = App()->request->getParam('contentFile');
         $id = App()->request->getParam('id');
         $failedEmailModel = new FailedEmail();
         $failedEmail = $failedEmailModel->findByPk($id);
+        if (!$failedEmail) {
+            throw new CHttpException(403, gT("Invalid ID"));
+        }
         $surveyId = $failedEmail->surveyid;
         return App()->getController()->renderPartial(
             '/failedEmail/partials/modal/' . $contentFile,
