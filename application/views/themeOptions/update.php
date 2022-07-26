@@ -34,9 +34,11 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </div>
         </div>
     </div>
+<div class="container-fluid">
 <?php else : ?>
-<div class="col-12 side-body <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
-    <?php endif; ?>
+    <div class="col-12 side-body <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
+<?php endif; ?>
+
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
         <div class="col-12">
@@ -125,9 +127,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </form>
         </div>
     </div>
-    <?php if (!empty($model->sid)) : // If we are in survey view, we have an additional div that we need to close    ?>
 </div>
-<?php endif; ?>
 
 <!-- Form for image file upload -->
 <div class="d-none">
