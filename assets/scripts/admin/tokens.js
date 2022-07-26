@@ -9,7 +9,7 @@ var LS = LS || {
  */
 var filterData = {};
 
- Tokens = {
+Tokens = {
      /**
       * jQuery Plugin to manage the date in token modal edit.
       * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
@@ -63,7 +63,6 @@ var filterData = {};
          });
      }
  };
-
 
 /**
  * Provide to this function a element containing form-groups,
@@ -218,7 +217,7 @@ function validateNotEmptyTokenForm() {
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-$(document).on('ready  pjax:scriptcomplete', function(){
+$(document).on('ready pjax:scriptcomplete', function(){
 
     if($('#sent-yes-no-date-container').length > 0)
     {
@@ -226,10 +225,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
         document.querySelectorAll('.yes-no-date-container').forEach((el) => {
             Tokens.YesNoDate(el);
-        })
-        $('.yes-no-container').each(function(i,el){
-            $(this).YesNo();
-        })
+        });
+
+        document.querySelectorAll('.yes-no-container').forEach((el) => {
+            Tokens.YesNo(el);
+        });
         initValidFromValidUntilPickers();
     }
 
@@ -237,22 +237,22 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     if (modal.length) {
         modal.on('shown.bs.modal', function () {
             $('.yes-no-date-container').each(function(i,el){
-                $(this).YesNoDate().onReadyMethod();
+                Tokens.YesNoDate().onReadyMethod();
             });
 
             $('.yes-no-container').each(function(i,el){
-                $(this).YesNo().onReadyMethod();
+                Tokens.YesNo().onReadyMethod();
             });
         });
     }
 
     $(document).on('actions-updated', function() {
         $('.yes-no-date-container').each(function(i,el){
-            $(this).YesNoDate().onReadyMethod();
+            Tokens.YesNoDate(el).onReadyMethod();
         });
 
         $('.yes-no-container').each(function(i,el){
-            $(this).YesNo().onReadyMethod();
+            Tokens.YesNo(el).onReadyMethod();
         });
     });
 
