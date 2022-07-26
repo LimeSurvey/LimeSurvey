@@ -5,6 +5,7 @@
  * @var string $massiveAction
  */
 ?>
+<?= viewHelper::getViewTestTag('surveyFailedEmail') ?>
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
         <h3><?php eT("Failed e-mail notifications"); ?></h3>
         <p class="alert alert-info alert-dismissible">
