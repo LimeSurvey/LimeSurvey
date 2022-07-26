@@ -2224,11 +2224,8 @@ class SurveyAdministrationController extends LSBaseController
             // Make the link point to the first group/question if available
             if (!empty($aGrouplist)) {
                 $oFirstGroup = $aGrouplist[0];
-                $oFirstQuestion = Question::model()->findByAttributes(
-                    [
-                        'gid' => $oFirstGroup->gid,
-                        'parent_qid' => 0
-                    ],
+                $oFirstQuestion = Question::model()->primary()->findByAttributes(
+                    ['gid' => $oFirstGroup->gid],
                     ['order' => 'question_order ASC']
                 );
 
