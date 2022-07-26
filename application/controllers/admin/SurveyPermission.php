@@ -75,7 +75,7 @@ class SurveyPermission extends SurveyCommonAction
 
             // Foot first
 
-            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
+            if (shouldFilterUserGroupList()) {
                 $authorizedGroupsList = getUserGroupList();
             }
 
@@ -433,7 +433,7 @@ class SurveyPermission extends SurveyCommonAction
                 throw new CHttpException(403, gT("You can not set your own permission."));
             }
         } elseif ($action == "setusergroupsurveysecurity") {
-            if (!in_array($postusergroupid, getUserGroupList())) {
+            if (shouldFilterUserGroupList() && !in_array($postusergroupid, getUserGroupList())) {
                 throw new CHttpException(403, gT("You do not have permission to this user group."));
             }
             $postuserid = null;
@@ -584,9 +584,7 @@ class SurveyPermission extends SurveyCommonAction
             }
             $uids = [$postuserid => $postuserid];
         } elseif ($postusergroupid) {
-            $isInArray = in_array($postusergroupid, getUserGroupList());
-
-            if (!$isInArray) {
+            if (shouldFilterUserGroupList() && !in_array($postusergroupid, getUserGroupList())) {
                 throw new CHttpException(403, gT("You do not have permission to this user group."));
             }
 
