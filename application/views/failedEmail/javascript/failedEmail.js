@@ -119,6 +119,7 @@ var FailedEmail = function () {
             },
             error: function (xhr, status, error) {
                 console.log(JSON.parse(xhr.responseText));
+                triggerModalClose();
             }
         });
     };

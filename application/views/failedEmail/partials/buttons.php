@@ -6,7 +6,7 @@
 ?>
 <div class="icon-btn-row">
     <button data-toggle="tooltip" title="<?= gT("Resend E-mail") ?>"
-            class="btn btn-default btn-sm failedemail-action-modal-open"
+            class="btn btn-default btn-sm <?= !$permissions['update'] ? "" : "failedemail-action-modal-open" ?>"
             data-href="<?= App()->createUrl('/failedEmail/modalcontent', ['id' => $id]) ?>"
             data-contentFile="resend_form"
             <?= !$permissions['update'] ? "disabled='disabled'" : "" ?>>
@@ -25,7 +25,7 @@
         <i class="fa fa-exclamation"></i>
     </button>
     <button data-toggle="tooltip" title="<?= gT("Delete") ?>"
-            class="btn btn-default btn-sm failedemail-action-modal-open"
+            class="btn btn-default btn-sm <?= !$permissions['delete'] ? "" : "failedemail-action-modal-open" ?>"
             data-href="<?= App()->createUrl('/failedEmail/modalcontent', ['id' => $id]) ?>"
             data-contentFile="delete_form"
             <?= !$permissions['delete'] ? "disabled='disabled'" : "" ?>>
