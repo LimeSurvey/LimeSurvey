@@ -14,19 +14,19 @@
 <div class='menubar surveybar' id="<?= !(empty($topbarId)) ? $topbarId : 'surveybarid' ?>">
     <div class="container-fluid">
         <div class='row'>
-            <?php if (!empty($leftSideContent)) : ?>
-                <!-- Left Side -->
-                <div class="<?= !empty($rightSideContent) ? 'col-lg-6' : 'col-12' ?>">
+            <!-- Left Side -->
+            <div class="col">
+                <?php if (!empty($leftSideContent)) : ?>
                     <?= $leftSideContent ?>
-                </div>
-            <?php endif; ?>
+                <?php endif; ?>
+            </div>
 
-            <?php if (!empty($rightSideContent)) : ?>
-                <!-- Right Side -->
-                <div class="<?= !empty($leftSideContent) ? 'col-lg-6' : 'col-12' ?> pull-right text-end">
+            <!-- Right Side -->
+            <div class="col-md-auto pull-right text-end">
+                <?php if (!empty($rightSideContent)) : ?>
                     <?= $rightSideContent ?>
-                </div>
-            <?php endif; ?>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
