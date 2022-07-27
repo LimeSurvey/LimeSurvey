@@ -128,7 +128,7 @@ echo viewHelper::getViewTestTag('index');
     <?php if( $bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
         <div class="row text-end">
             <div class="col-xl-9 col-md-9  ">
-                <div class='pull-right'>
+                <div class='float-end'>
                 <?php if($showLastSurvey):?>
                     <span id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:");?>

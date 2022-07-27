@@ -48,7 +48,7 @@
 
 <!-- Save -->
 <?php if (!empty($showSaveButton)): ?>
-    <a id="save-button" class="btn btn-success pull-right">
+    <a id="save-button" class="btn btn-success float-end">
         <i class="fa fa-check"></i>
         <?php eT("Save"); ?>
     </a>

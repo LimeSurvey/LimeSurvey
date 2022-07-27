@@ -1052,7 +1052,7 @@ class LsDefaultDataSets
                 'template' => ""
                 . "<div class='popover tour lstutorial__template--mainContainer'>"
                 . "<div class='arrow'></div>"
-                . "<button class='pull-right ls-space margin top-5 right-5 btn btn-warning btn-sm' type='button' data-role='end' data-bs-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='fa fa-close'></i></button>"
+                . "<button class='float-end ls-space margin top-5 right-5 btn btn-warning btn-sm' type='button' data-role='end' data-bs-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='fa fa-close'></i></button>"
                 . "<h3 class='popover-title lstutorial__template--title'></h3>"
                     . "<div class='popover-content lstutorial__template--content'></div>"
                     . "<div class='popover-navigation lstutorial__template--navigation'>"

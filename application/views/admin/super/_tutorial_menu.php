@@ -10,7 +10,7 @@ if (!empty($aTutorials) && Permission::model()->hasGlobalPermission('surveys', '
     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
         <span class="fa fa-rocket" ></span>
         <?php eT('Tutorials');?>
-        <i class="fa fa-chevron-right pull-right"></i>
+        <i class="fa fa-chevron-right float-end"></i>
     </a>
     <ul class="dropdown-menu larger-dropdown" id="tutorials-dropdown">
         <?php foreach ($aTutorials as $oTutorial) { ?>
@@ -26,14 +26,14 @@ if (!empty($aTutorials) && Permission::model()->hasGlobalPermission('surveys', '
                 <a href="<?=App()->createUrl('admin/tutorials/sa/view')?>">
                     <span class="fa fa-rocket" ></span>
                     <?php eT('See all Tutorial');?>
-                    <i class="fa fa-search pull-right"></i>
+                    <i class="fa fa-search float-end"></i>
                 </a>
             </li>
             <li>
                 <a href="<?=App()->createUrl('admin/tutorials/sa/create')?>">
                     <span class="fa fa-rocket" ></span>
                     <?php eT('Create Tutorial');?>
-                    <i class="fa fa-plus pull-right"></i>
+                    <i class="fa fa-plus float-end"></i>
                 </a>
             </li>
         <?php } ?>

@@ -3,7 +3,7 @@
         <div class='container-center'>
             <h3 class="col-12">
                 <?php eT("queXML PDF export");?>
-                <button role="button" type='submit' class="btn btn-primary pull-right">
+                <button role="button" type='submit' class="btn btn-primary float-end">
                     <?php eT("queXML PDF export"); ?>
                 </button>
             </h3>

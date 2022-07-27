@@ -20,7 +20,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         <h3><?php eT('Survey responses'); ?></h3>
         <!-- Display mode -->
         <div class="text-end in-title">
-            <div class="pull-right">
+            <div class="float-end">
                 <div class="form text-end">
                     <form action="<?= App()->createUrl('/responses/browse/', ['surveyId' => $surveyid]) ?>" class="pjax" method="POST" id="change-display-mode-form">
                         <div class="form-group">

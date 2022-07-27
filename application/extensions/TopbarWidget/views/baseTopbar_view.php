@@ -23,7 +23,7 @@
 
             <?php if (!empty($rightSideContent)) : ?>
                 <!-- Right Side -->
-                <div class="<?= !empty($leftSideContent) ? 'col-lg-6' : 'col-12' ?> pull-right text-end">
+                <div class="<?= !empty($leftSideContent) ? 'col-lg-6' : 'col-12' ?> float-end text-end">
                     <?= $rightSideContent ?>
                 </div>
             <?php endif; ?>

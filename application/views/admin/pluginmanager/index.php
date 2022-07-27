@@ -16,7 +16,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 ?>
 <div class='container-fluid'>
     <div class='row'>
-        <div class='pull-right'>
+        <div class='float-end'>
             <?php /* Disabled for prototype 1.
                 <a
                     href=''
