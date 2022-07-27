@@ -14,7 +14,7 @@
  */
 #}
 <!-- answer -->
-<table class="{{ coreClass }} {{ extraclass }} table table-bordered table-hover" role="presentation" aria-labelledby="ls-question-text-{{ basename }}">
+<table class="{{ coreClass }} {{ extraclass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
 
     <colgroup class="col-responses">
         <col class="answertext" style='width: {{ answerwidth }}%;'/>
@@ -27,18 +27,22 @@
             <col class="answertextright {# TODO: array2 alternation #}" style='width: {{ answerwidth }}%;' />
         {% endif %}
     </colgroup>
-    <tbody>
-        <tr class="ls-heading" aria-hidden="true">
+
+    <thead aria-hidden="true">
+        <tr class="ls-heading">
             <td></td>
 
             {% for ld in labelans %}
-                <td>{{ processString(ld) }}</td>
+                <th>{{ processString(ld) }}</th>
             {% endfor %}
 
             {% if right_exists %}
                 <td></td>
             {% endif %}
         </tr>
+    </thead>
+
+    <tbody>
             {# rows/answer_row.twig #}
             {{ sAnswerRows }}
     </tbody>
