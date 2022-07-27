@@ -497,7 +497,8 @@ class Survey extends LSActiveRecord
             array('running', 'safe', 'on'=>'search'),
             array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true)
+            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('expires', 'checkExpireAfterStart'),
         );
     }
 
@@ -1999,4 +2000,16 @@ return $s->hasTokensTable; });
         return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
     }
 
+    /**
+     * Validates the Expiration Date is not lower than the Start Date
+     */
+    public function checkExpireAfterStart($attributes, $params)
+    {
+        if(empty($this->startdate) || empty($this->expires)) {
+            return true;
+        }
+        if ($this->expires < $this->startdate) {
+            $this->addError('expires', gT("Expiration date can't be lower than the start date", 'unescaped'));
+        }
+    }
 }
