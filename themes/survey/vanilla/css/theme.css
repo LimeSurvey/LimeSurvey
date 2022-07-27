@@ -544,7 +544,7 @@ table > tbody > tr > td.ddprefix {
     }
 
     /* Line header ; color is h4 color */
-    table.ls-answers  tr td.answer-text,table.ls-answers  tr td.control-label {
+    table.ls-answers tr th {
         font-size: 1.1em;
         text-align: left;
     }
@@ -666,10 +666,7 @@ table > tbody > tr > td.ddprefix {
 .table > tbody > tr > th {
     vertical-align: middle;
 }
-.table > tbody > tr.ls-heading > td.answer-text,.table > tbody > tr.ls-heading > td.control-label
-{
-    vertical-align: bottom;
-}
+
 .othertext-label-checkox-container {
     padding-top: 5px;
     margin-right: 5px;

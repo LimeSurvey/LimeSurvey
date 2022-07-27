@@ -25,7 +25,7 @@
 <!-- Multi Text -->
 
 <!-- answer -->
-<table {{ q_table_id_HTML }} class="{{ coreClass }} {{ extraclass }} table table-bordered table-hover {{ totals_class }}" role="presentation" aria-labelledby="ls-question-text-{{ basename }}">
+<table {{ q_table_id_HTML }} class="{{ coreClass }} {{ extraclass }} table table-bordered table-hover {{ totals_class }}" role="group" aria-labelledby="ls-question-text-{{ basename }}">
     <colgroup class="col-responses">
 
         <!-- Column for answer label -->
@@ -46,15 +46,16 @@
             <col class="grandtotal {# TODO: array2 alternation #}" style='width: {{ cellwidth }}%;' />
         {% endif %}
     </colgroup>
-    <tbody>
+
+    <thead aria-hidden="true">
         <tr class="ls-heading">
             <td>
                 &nbsp;
             </td>
             {% for i, ld in labelans %}
-                <td class="answer-text">
+                <th>
                     {{ processString(ld) }}
-                </td>
+                </th>
             {% endfor %}
 
             {% if right_exists %}
@@ -63,6 +64,10 @@
 
             {{ col_head }}
         </tr>
+    </thead>
+
+    <tbody>
+
             {# Defined in answer_row view #}
             {{ sRows }}
 
