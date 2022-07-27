@@ -661,7 +661,7 @@ function getUserList($outputformat = 'fullinfoarray')
     if (!empty(Yii::app()->session['loginID'])) {
         $myuid = sanitize_int(Yii::app()->session['loginID']);
     }
-    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
+    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
     if (
         !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
@@ -4141,17 +4141,19 @@ function shouldFilterUserGroupList()
 
 /**
 * Get a list of all user groups
+* All user group or filtered according to usercontrolSameGroupPolicy
 * @returns array
 */
 function getUserGroupList()
 {
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
     if (shouldFilterUserGroupList()) {
-        $sQuery .= "AND uid = " . Yii::app()->session['loginID'];
+        $userid = intval(App()->session['loginID']);
+        $sQuery .= "AND (b.uid = {$userid})";
     }
     $sQuery .= " ORDER BY name";
 
-    $sresult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
+    $sresult = App()->db->createCommand($sQuery)->query(); //Checked
     if (!$sresult) {
         return "Database Error";
     }
@@ -4424,27 +4426,22 @@ function getSurveyUserGroupList($outputformat, $surveyid)
     $surveyid = sanitize_int($surveyid);
 
     $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
-    FROM {{user_groups}} AS a
-    LEFT JOIN (
-    SELECT b.ugid
-    FROM {{user_in_groups}} AS b
-    LEFT JOIN (SELECT * FROM {{permissions}}
-    WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
-    ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
+        FROM {{user_groups}} AS a
+        LEFT JOIN (
+        SELECT b.ugid
+        FROM {{user_in_groups}} AS b
+        LEFT JOIN (SELECT * FROM {{permissions}}
+        WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
+        ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query(); //Checked
     $aResult = $surveyidresult->readAll();
 
-    $authorizedGroupsList = [];
-    if (shouldFilterUserGroupList()) {
-        $authorizedGroupsList = getUserGroupList();
-    }
-
+    $authorizedGroupsList = getUserGroupList();
     $svexist = false;
     $surveyselecter = "";
     $simpleugidarray = [];
     foreach ($aResult as $sv) {
         if (
-            Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
             in_array($sv['ugid'], $authorizedGroupsList)
         ) {
             $surveyselecter .= "<option";
