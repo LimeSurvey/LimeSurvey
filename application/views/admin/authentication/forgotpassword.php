@@ -11,8 +11,8 @@
 
                 <!-- Header -->
                 <div class="card-body">
-                    <div class="row">
-                        <img alt="logo" id="profile-img" class="profile-img-card center-block" src="<?php echo LOGO_URL;?>" />
+                    <div class="d-flex justify-content-center">
+                        <img alt="logo" id="profile-img" class="profile-img-card" src="<?php echo LOGO_URL; ?>"/>
                     </div>
                 </div>
 

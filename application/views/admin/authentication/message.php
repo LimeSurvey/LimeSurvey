@@ -5,10 +5,8 @@
 
                 <!-- Header -->
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                          <img alt='logo' id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
-                        </div>
+                    <div class="d-flex justify-content-center">
+                          <img alt='logo' id="profile-img" class="profile-img-card img-responsive" src="<?php echo LOGO_URL;?>" />
                     </div>
                 </div>
 

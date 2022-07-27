@@ -15,9 +15,13 @@ echo viewHelper::getViewTestTag('login');
 
                 <!-- Header -->
                 <div class="card-body">
-                    <div class="row">
-                        <img alt="logo" id="profile-img" class="profile-img-card center-block" src="<?php echo LOGO_URL;?>" />
-                        <p><?php eT("Administration");?></p>
+                    <div class="d-flex flex-column justify-content-center">
+                        <div>
+                            <img alt="logo" id="profile-img" class="profile-img-card" src="<?php echo LOGO_URL; ?>"/>
+                        </div>
+                        <div>
+                            <p><?php eT("Administration"); ?></p>
+                        </div>
                     </div>
                 </div>
 
