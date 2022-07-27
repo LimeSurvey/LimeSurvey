@@ -8,7 +8,8 @@ class FailedEmailController extends LSBaseController
      * @param string $view
      * @return bool
      */
-    public function beforeRender($view) {
+    public function beforeRender($view)
+    {
         $surveyId = (int)App()->request->getParam('surveyid');
         $this->aData['surveyid'] = $surveyId;
         LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
@@ -20,7 +21,8 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException|CException
      */
-    public function actionIndex(): void {
+    public function actionIndex(): void
+    {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         $permissions = [
             'update' => Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update'),
@@ -55,7 +57,8 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException|CException
      */
-    public function actionResend(): string {
+    public function actionResend(): string
+    {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
@@ -120,7 +123,8 @@ class FailedEmailController extends LSBaseController
     /**
      * @throws CHttpException|CException
      */
-    public function actionDelete(): string {
+    public function actionDelete(): string
+    {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
