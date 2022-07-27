@@ -34,6 +34,124 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.27 (build 220725) to 5.3.28 (build 220727) July 27, 2022
+-Fixed issue : Invalid var in 1st page (Denis Chenu)
+-Fixed issue #18276: Changed HTML in arrays causing issues with JavaScript and CSS. (Olle Haerstedt)
+-Fixed issue #18224: Can't set Survey Permissions for User Group when usercontrolSameGroupPolicy is false (skwzrd)
+-Fixed issue #18212: Edit label sets - cannot drag&drop (#2514) (Gabriel Jenik)
+-Fixed issue #18128: Broken javascript on welcome page (#2381) (Denis Chenu)
+-Fixed issue #18119: Batch Edit: Dates are saved as Y/N (#2492) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by d_inoue
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.3.26 (build 220720) to 5.3.27 (build 220725) July 25, 2022
+-Fixed issue: When browsing responses the message "Showing filtered results" appears even though they are not filtered (Carsten Schmitz)
+-Fixed issue #18243: ARIA Attribute role on Array question not correct. (#2512) (Denis Chenu)
+-Fixed issue #18155: Translation missing in question editor (Gabriel Jenik)
+-Fixed issue #17625: Untranslated texts (Carsten Schmitz)
+-Fixed issue #17458: Check integrty broke fpor subquestion with only number (#2313) (Denis Chenu)
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.3.25 (build 220718) to 5.3.26 (build 220720) July 18, 2022
+-Fixed issue: Multiple choice questions turned into image select (Carsten Schmitz)
+-Fixed issue #18255: use findAll() instead of findAllByAttributes() (#2517) (Marko Bischof)
+#Updated translation: Ukrainian by Oksana
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Mongolian by amidral
+#Updated translation: Lithuanian by simasj
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Georgian by llasha, riversampling1
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by zengqing, Zoctan
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.3.24 (build 220711) to 5.3.25 (build 220718) July 18, 2022
+-Fixed issue: Error when trying to export participants from CPDB (Carsten Schmitz)
+-Fixed issue #18239: "Theme options for this survey group" gridview filter not working (Gabriel Jenik)
+-Fixed issue #18141: changing display mode from extended to compact in survey responses windows causes freeze (Gabriel Jenik)
+-Fixed issue #18117: Error in captcha challenge image generation (#2516) (Adam Zammit)
+-Fixed issue #17671: Grammar Correct: User management -> Selected user(s) (Gabriel Jenik)
+-Fixed issue #16328: invite_participants exits on first error (#2508) (Gabriel Jenik)
+
+
+Changes from 5.3.23 (build 220705) to 5.3.24 (build 220711) July 11, 2022
+-Fixed issue: Missing minimum value restriction for login retries/ban time (Carsten Schmitz)
+-Fixed issue: Better control on archive export (Gabriel Jenik)
+-Fixed issue #18235: No control on response and token export on survey archive export (Gabriel Jenik)
+-Fixed issue #18220: Question image theme doesn't seem to work (#2497) (Gabriel Jenik)
+-Fixed issue #18085: Renamed custom theme not updated in global survey settings (#2436) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+
+
+Changes from 5.3.22 (build 220628) to 5.3.23 (build 220705) July 5, 2022
+-Fixed issue: Some minor performance fix (Carsten Schmitz)
+-Fixed issue: Applying original theme option on survey theme import did not work (Carsten Schmitz)
+-Fixed issue [security] #18042: Path-relative stylesheet import (PRSSI) vulnerability (#2374) (Gabriel Jenik)
+-Fixed issue #18209: Missing RemoteControl function to get the field mapping (#2479) (Gabriel Jenik)
+-Fixed issue #18201: Unable to import LSA file with MSSQL and debug set (#2473) (Denis Chenu)
+-Fixed issue #18189: Fonts showing differently on mobile Vs desktop (#2488) (Gabriel Jenik)
+-Fixed issue #18146: Unable to use "other" as subquestion code (#2443) (Denis Chenu)
+-Fixed issue #18136: Core plugin PasswordRequirement shows duplicate setting fields (#2452) (Denis Chenu)
+-Fixed issue #18116: Ability to disable animation layer regarding saving in header section (#2462) (Gabriel Jenik)
+-Fixed issue #18092: File upload show title/comment=off not yet fully respected (#2427) (Gabriel Jenik)
+-Fixed issue #18073: Can't change reminder / invitation date (#2420) (Gabriel Jenik)
+-Fixed issue #17952: Command action potentially try to open uneeded session (#2293) (Denis Chenu)
+-Fixed issue #17938: Deleting first question group jumps to system frontpage (#2413) (Gabriel Jenik)
+-Fixed issue #17881: Question code / ID on quick translation screen showing question text not ID making it impossible to translate surveys (#2357) (Gabriel Jenik)
+-Fixed issue #17836: Adding a "smiley" to a question creates an image that does not survive upgrades (Carsten Schmitz)
+-Fixed issue #17655: Launch survey via token link : unclear icon (#2449) (Denis Chenu)
+#Updated translation: Zulu by erik.lamontagne
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by arnaud21, aschwey, b00z00, c_schmitz, DenisChenu, jayce, JMI, Xave
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Deutsch -AT by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, johnxan, zengqing, zhanginshanghai
+
+
 Changes from 5.3.21 (build 220620) to 5.3.22 (build 220628) June 27, 2022
 -Fixed issue: Class CHtml not found after user deletion (Carsten Schmitz)
 -Fixed issue #18185: Error message "No scope _renderErrorString" when trying to update (Carsten Schmitz)
@@ -3908,7 +4026,7 @@ Changes from 3.15.1 (build 181017) to 3.15.2 (build 181107)  November 07, 2018
 -Fixed issue #13982: Allow kcfinder use with CHttpSession derived classes (#1112) (Casey Lucas)
 -Fixed issue #14062: No languages list when clicking the hamburger icon in Token page (Dominik Vitt)
 -Fixed issue #14066: Broken link on reset button from mass-action response export (Anton Victorson)
--Fixed issue #14098: Subquestion incorrectly named 'Sub-question' (Carsten Schmitz)
+-Fixed issue #14098: Subquestion incorrectly named 'Subquestion' (Carsten Schmitz)
 -Fixed issue #14101: Missing CSS-class "form-horizontal" for multiple-short-text-questions (Denis Chenu)
 -Fixed issue #14106: Button "Add new question to group" does not work (Dominik Vitt)
 -Fixed issue #14124: Changing invitation/reminder dates for a certain tokens changes the date format at the database (Dominik Vitt)
@@ -6112,7 +6230,7 @@ Changes from 1.91+ (build 120302) to 1.92+ (build 120303) Mar 11, 2012
 +New feature: EM reserved word "this" which refers the the current sgqa code (tmswhite)
 +New feature: Question_attribute 'em_validation_q': "Boolean equation to validate the whole question" (tmswhite)
 +New feature: Question_attribute 'em_validation_q_tip': "Tip to show user describing the Question Validation Equation" (tmswhite)
-+New feature: Question_attribute 'em_validation_sq': "Boolean equation to validate each sub-question." (tmswhite)
++New feature: Question_attribute 'em_validation_sq': "Boolean equation to validate each subquestion." (tmswhite)
 +New feature: Question_attribute 'em_validation_sq_tip': "Tip to show user describing the Sub-Question Validation Equation." (tmswhite)
 +New feature: Added Tools button to access Expression Manager Test Suite (tmswhite)
 +New feature: Allow Regular-Expression validation of question type ';' (ARRAY (Multi Flexi) Text) (tmswhite)
@@ -6208,7 +6326,7 @@ Changes from 1.87+ (build 8518) to 1.90+ (build 9561) Legend: # updated feature,
 +New feature: While creating a survey you can now copy an existing one (machaven)
 +New feature: Completely reworked XML-based import/export format for questions/groups/surveys/label sets (cschmitz)
 +New feature: Label sets are no longer connected to questions - they are merely templates for subquestions or answers (cschmitz)
-+New feature: New concept of sub-questions was introduced (cschmitz)
++New feature: New concept of subquestions was introduced (cschmitz)
 +New feature: Completely new AJAX interface for editing answers/subquestion including the ability to quick-add/replace from label sets or by pasting from Excel or CSV (cschmitz)
 +New feature: Integrity check now checks and removes invalid survey permissions automatically (c_schmitz)
 +New feature: Integrity check now checks for orphaned survey language settings (c_schmitz)

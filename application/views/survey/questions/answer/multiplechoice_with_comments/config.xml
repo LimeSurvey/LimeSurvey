@@ -269,7 +269,7 @@
             <i18n>1</i18n>
             <default></default>
             <help>In the printable version the condition is being replaced with this explanation text.</help>
-            <caption>Relevance help for printable survey</caption>
+            <caption>Condition help for printable survey</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
@@ -394,7 +394,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Specify how array-filtered sub-questions should be displayed</help>
+            <help>Specify how array-filtered subquestions should be displayed</help>
             <caption>Array filter style</caption>
             <i18n></i18n>
             <readonly></readonly>

@@ -42,4 +42,10 @@ function dummy_twig_translation_helper()
     gT("Load label set"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
     gT("Save label set"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
     gT("Quick add"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
+    gT("After specific subquestion"); // From application/views/survey/questions/answer/multiplechoice/config.xml
+    gT("Relevance help for printable survey"); // From application/views/survey/questions/answer/5pointchoice/config.xml
+    gT("Specify how array-filtered sub-questions should be displayed"); // From application/views/survey/questions/answer/arrays/10point/config.xml
+    gT("Indicates where the 'Other' option should be placed"); // From application/views/survey/questions/answer/list_dropdown/config.xml
+    gT("Answer code for 'After specific answer option'"); // From application/views/survey/questions/answer/list_dropdown/config.xml
+    gT("The code of the answer option after which the 'Other:' option will be placed if the position is set to 'After specific answer option'"); // From application/views/survey/questions/answer/list_dropdown/config.xml
 }

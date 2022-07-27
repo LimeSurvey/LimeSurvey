@@ -47,13 +47,13 @@ $.fn.YesNoDate = function(options)
             {
                 // Hide date, set hidden input to "N"
                 $elDateContainer.hide();
-                $elHiddenInput.attr('value', 'N');
+                $elHiddenInput.val('N');
             }
         });
 
         // When user change date
         $elDate.on('dp.change', function(e){
-            $elHiddenInput.attr('value', e.date.format($elDate.data('date-format')));
+            $elHiddenInput.val(e.date.format($elDate.data('date-format')));
         })
     };
     return that;
@@ -236,14 +236,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     {
         $('#general').stickLabelOnLeft();
 
-        $('.yes-no-date-container').each(function(i,el){
-            $(this).YesNoDate();
-        });
-
-        $('.yes-no-container').each(function(i,el){
-            $(this).YesNo();
-        });
-
         $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
         $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
 
@@ -252,6 +244,29 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             $prev.data("DateTimePicker").show();
         });
     }
+
+    var modal = $('#massive-actions-modal-edit-0');
+    if (modal.length) {
+        modal.on('shown.bs.modal', function () {
+            $('.yes-no-date-container').each(function(i,el){
+                $(this).YesNoDate().onReadyMethod();
+            });
+
+            $('.yes-no-container').each(function(i,el){
+                $(this).YesNo().onReadyMethod();
+            });
+        });
+    }
+
+    $(document).on('actions-updated', function() {
+        $('.yes-no-date-container').each(function(i,el){
+            $(this).YesNoDate().onReadyMethod();
+        });
+
+        $('.yes-no-container').each(function(i,el){
+            $(this).YesNo().onReadyMethod();
+        });
+    });
 
     var initialScrollValue = $('.scrolling-wrapper').scrollLeft();
     var useRtl = $('input[name="rtl"]').val() === '1';

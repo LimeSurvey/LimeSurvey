@@ -137,7 +137,7 @@ foreach ($tokendata as $Key => $Value) {
 
                     <?php if ($oSurvey->anonymized != 'Y'):?>
                         <div class="">
-                            <div id="sent-date-container" class="date-container"  <?php if (!$bCompletedValue):?>style="display: none;"<?php endif; ?>>
+                            <div id="completed-date-container" class="date-container"  <?php if (!$bCompletedValue):?>style="display: none;"<?php endif; ?>>
                             <div id="completed-date_datetimepicker" class="input-group date">
                                 <input class="YesNoDatePicker form-control" id="completed-date" type="text" value="<?php echo isset($completed) ? $completed : ''?>" name="completed-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
