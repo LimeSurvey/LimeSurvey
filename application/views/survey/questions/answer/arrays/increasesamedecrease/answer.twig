@@ -15,24 +15,27 @@
 <!-- Array  increasesamedecrease -->
 
 <!-- answer -->
-<table class="{{ coreClass }} table table-bordered table-hover" role="presentation" aria-labelledby="ls-question-text-{{ basename }}">
+<table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
     <colgroup class="col-responses">
         <col class="col-answers"  style='width: {{ answerwidth }}%;'  />
             {# columns/col.php #}
             {{ sColumns }}
     </colgroup>
-    <tbody>
+    <thead aria-hidden="true">
         <tr class="ls-heading">
                 {# rows/cell/thead.php #}
                 {{ sHeaders }}
         </tr>
+    </thead>
+    <tbody>
         {% if anscount==0 %}
             <tr>
-                <td class="answertext">
+                <th class="answertext">
                     {{ gT('Error: This question has no answers.') }}
-                </td>
+                </th>
             </tr>
         {% endif %}
+
             {# rows/answer_row.php #}
             {{ sRows }}
     </tbody>
