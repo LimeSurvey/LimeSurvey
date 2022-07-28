@@ -60,7 +60,7 @@ Yii::app()->getController()->renderPartial(
                         <?= gT("Yes") ?>
                     </label>
                     <input class="btn-check" type="radio" id="utility_set_password_no" checked="checked" name="preset_password" value="0">
-                    <label for="utility_set_password_no" class="btn btn-outline-secondary col-xs-6 active">
+                    <label for="utility_set_password_no" class="btn btn-outline-secondary col-xs-6">
                         <?= gT("No") ?>
                     </label>
                 </div>
