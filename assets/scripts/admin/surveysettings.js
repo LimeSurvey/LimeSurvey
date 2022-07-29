@@ -152,6 +152,38 @@ function guidGenerator() {
     return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4());
 }
 
+/**
+ * Validate settings form depending on form name
+ */
+function validateSettingsForm($form) {
+    switch ($form.attr('id')) {
+        case 'publication':
+            return validateEndDate();
+        default:
+            return true;
+    }
+}
+
+/**
+ * Validates that the expiration date is not lower than the start date
+ */
+function validateEndDate() {
+    const startDatePicker = $('#startdate_datetimepicker').data('DateTimePicker');
+    if (!startDatePicker || !startDatePicker.date()) {
+        return true;
+    }
+    const expiresDatePicker = $('#expires_datetimepicker').data('DateTimePicker');
+    if (!expiresDatePicker || !expiresDatePicker.date()) {
+        return true;
+    }
+    const difference = expiresDatePicker.date().diff(startDatePicker.date());
+    if (difference >= 0) {
+        return true;
+    }
+    LS.LsGlobalNotifier.createFlash(expirationLowerThanStartError, 'alert-danger fade in');
+    return false;
+}
+
 $(document).on('ready  pjax:scriptcomplete', function(){
     if (window.PanelIntegrationData) {
         var i10n = window.PanelIntegrationData.i10n;
