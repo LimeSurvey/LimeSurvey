@@ -292,7 +292,7 @@ class QuestionGroup extends LSActiveRecord
                 . ' data-tooltip="true"'
                 . ' title="' . gT("Cannot delete this group because it's the only group in the survey.", "js") . '">'
                     . '<i class="fa fa-trash text-muted "></i>'
-                    . '<span class="sr-only">' . gT('Deleting question group not possible') . '</span>'
+                    . '<span class="visually-hidden">' . gT('Deleting question group not possible') . '</span>'
                 . '</button>'
                 . '</span>';
             } elseif (is_null($condarray)) {
@@ -305,7 +305,7 @@ class QuestionGroup extends LSActiveRecord
                     . ' data-message="' . gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js") . '"'
                     . '>'
                         . '<i class="fa fa-trash text-danger "></i>'
-                        . '<span class="sr-only">' . gT('Delete question group') . '</span>'
+                        . '<span class="visually-hidden">' . gT('Delete question group') . '</span>'
                     . '</button>'
                     . '</span>';
             } else {
@@ -317,7 +317,7 @@ class QuestionGroup extends LSActiveRecord
                     . ' data-tooltip="true"'
                     . ' title="' . gT("Impossible to delete this group because there is at least one question having a condition on its content", "js") . '">'
                         . '<i class="fa fa-trash text-muted "></i>'
-                        . '<span class="sr-only">' . gT('Deleting question group not possible') . '</span>'
+                        . '<span class="visually-hidden">' . gT('Deleting question group not possible') . '</span>'
                     . '</button>'
                     . '</span>';
             }

@@ -179,7 +179,7 @@ echo viewHelper::getViewTestTag('index');
             <div class="card-body">
                 <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'>
                     <span class="icon-list" style="font-size: 4em"></span>
-            <span class="sr-only"><?php eT('List surveys');?></span>
+            <span class="visually-hidden"><?php eT('List surveys');?></span>
                 </a><br><br>
                 <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'><?php eT('List surveys');?></a>
             </div>
@@ -192,7 +192,7 @@ echo viewHelper::getViewTestTag('index');
             <div class="card-body">
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>
                     <span class="icon-settings" style="font-size: 4em"></span>
-                    <span class="sr-only"><?php eT('Edit global settings');?></span>
+                    <span class="visually-hidden"><?php eT('Edit global settings');?></span>
                 </a><br><br>
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'><?php eT('Edit global settings');?></a>
             </div>

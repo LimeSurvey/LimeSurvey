@@ -62,7 +62,7 @@
 <!-- Loading wrapper -->
 <div id='ls-loading'>
     <span id='ls-loading-spinner' class='fa fa-spinner fa-spin fa-4x'></span>
-    <span class='sr-only'><?php eT('Loading...'); ?></span>
+    <span class='visually-hidden'><?php eT('Loading...'); ?></span>
 </div>
 
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>

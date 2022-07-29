@@ -35,7 +35,7 @@
             )
         );
         if ($survey->isPublicStatistics){
-            $surveyLine .= CHtml::link('<span class="fa fa-bar-chart" aria-hidden="true"></span><span class="sr-only">'. gT('View statistics') .'</span>',
+            $surveyLine .= CHtml::link('<span class="fa fa-bar-chart" aria-hidden="true"></span><span class="visually-hidden">'. gT('View statistics') .'</span>',
                 array('statistics_user/action', 'surveyid' => $survey->sid,'language' => $surveylang),
                 array(
                     'class'=>'view-stats btn btn-success col-2 col-lg-1',

@@ -10,7 +10,7 @@
             <div class=""><?php echo viewHelper::filterScript(gT($title)); ?></div>
         </div>
         <div class="card-body d-flex align-items-center justify-content-center">
-            <span class="sr-only"><?php echo viewHelper::filterScript(gT($title)); ?></span>
+            <span class="visually-hidden"><?php echo viewHelper::filterScript(gT($title)); ?></span>
             <span class="<?php echo CHtml::encode($ico); ?>" style="font-size: 4em">
             </span>
         </div>

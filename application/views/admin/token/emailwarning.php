@@ -75,7 +75,7 @@
             aria-valuemin="0" 
             aria-valuemax="100" 
             style="width:100%">
-            <span class="sr-only"><?php neT("{n} second to go|{n} seconds to go", Yii::app()->getConfig('sendingrate')); ?></span>
+            <span class="visually-hidden"><?php neT("{n} second to go|{n} seconds to go", Yii::app()->getConfig('sendingrate')); ?></span>
         </div>
     </div>
 </div>

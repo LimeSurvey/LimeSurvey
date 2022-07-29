@@ -22,7 +22,7 @@ App()->getClientScript()->registerScript("plugin-panel-variables", "
                 <div class="">
                     <a class="btn btn-outline-secondary btn-xs hide-button opened handleAccordion d-none d-lg-block">
                         <span class="fa fa-chevron-left"></span>
-			<span class="sr-only"><?php eT("Expand/Collapse");?></span>
+			<span class="visually-hidden"><?php eT("Expand/Collapse");?></span>
                     </a>
                     <a id="button-plugin<?php echo $id; ?>" class="collapsed" data-parent="#accordion" role="button" data-toggle="collapse" href="#plugin<?php echo $id; ?>" aria-expanded="false" aria-controls="plugin<?php echo $id; ?>">
                         <?php printf(gT("Settings for plugin %s"), $plugin['name']); ?>

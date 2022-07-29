@@ -174,7 +174,7 @@ function getRatingSlider(qID){
   //hide the basic radioes
     pinUpHtml();
     bindEventsToContainer();
-    answersList.addClass("slidered-list sr-only");
+    answersList.addClass("slidered-list visually-hidden");
   //if a value is set, set it in the emojis
   var openValue = checkOpenValue();
     if(openValue){
