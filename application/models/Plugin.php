@@ -269,7 +269,7 @@ class Plugin extends LSActiveRecord
         );
         $output .= "
                 <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button type='button' data-bs-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to deactivate this plugin?') . "\");' title='" . gT('Deactivate plugin') . "' class='btntooltip btn btn-warning btn-sm'>
+                <button data-bs-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to deactivate this plugin?') . "\");' title='" . gT('Deactivate plugin') . "' class='btntooltip btn btn-warning btn-sm'>
                     <i class='fa fa-power-off'></i>
                 </button>
             </form>
