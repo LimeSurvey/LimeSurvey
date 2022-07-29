@@ -101,7 +101,7 @@ var RoleControl = function () {
                     }
                     $('#RoleControl--errors').html(
                         "<div class='alert alert-danger'>" + result.errors + "</div>"
-                    ).removeClass('hidden');
+                    ).removeClass('d-none');
                 },
                 error: function () {
                     alert('An error occured while trying to save, please reload the page Code:1571314170100');

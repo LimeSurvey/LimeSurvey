@@ -1,4 +1,4 @@
-<div class="form-group <?= $this->setting['hidden'] ? 'hidden' : '' ?>">
+<div class="form-group <?= $this->setting['hidden'] ? 'd-none' : '' ?>">
     <div class="question-option-general-setting-block">
         <?php if (in_array($this->setting['inputtype'], AdvancedSettingWidget::SINGLEINPUTTYPE) && !$this->setting['i18n']): ?>
             <label class="form-label" for="<?= CHtml::getIdByName($inputBaseName); ?>">

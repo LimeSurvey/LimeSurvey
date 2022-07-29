@@ -385,7 +385,7 @@
                 {{ C.Html.form(createUrl('/admin/themes/sa/upload'), 'post', { 'id' : 'upload_frontend', 'name' : 'upload_frontend', 'enctype' :'multipart/form-data' }) }}
                     <span id="fileselector_frontend">
                         <label class="btn btn-outline-secondary col-8" for="upload_image_frontend">
-                            <input class="hidden" id="upload_image_frontend" name="upload_image_frontend" type="file">
+                            <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
                             <i class="fa fa-upload ls-space margin right-10"></i>
                             {{ gT("Upload") }}
                         </label>

@@ -18,8 +18,8 @@
 #}
 
 <!--answer_row_inputtext -->
-<li id="javatbd{{ myfname }}" class="selector--inputondemand-list-item hidden question-item answer-item text-item form-group{% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }} >
-    <label class="control-label col-12 col-md-{{ sLabelWidth }}{% if sLabelWidth == 0 %} hidden{% endif %}" for="answer{{ myfname }}">
+<li id="javatbd{{ myfname }}" class="selector--inputondemand-list-item d-none question-item answer-item text-item form-group{% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }} >
+    <label class="control-label col-12 col-md-{{ sLabelWidth }}{% if sLabelWidth == 0 %} d-none{% endif %}" for="answer{{ myfname }}">
         {{ question }}
     </label>
     <div class="col-12 col-md-{{ sInputContainerWidth }}">

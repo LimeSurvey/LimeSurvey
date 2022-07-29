@@ -85,24 +85,24 @@ var ThemeScripts = function(){
         $('.question-help-container').each(function(){
             /* Only if have only script tag inside or empty tag */
             if($(this).text().trim()=='' && !/<img/.test($(this).html())){
-                $(this).addClass('hidden');
+                $(this).addClass('d-none');
             }
         });
         $('.group-description').each(function(){
             /* Only if have only script tag inside or empty tag */
             if($(this).text().trim()=='' && !/<img/.test($(this).html())){
-                $(this).addClass('hidden');
+                $(this).addClass('d-none');
             }
         });
         $('.question-help-container.hidden').on('html:updated',function(){
             if($(this).text().trim()!=''  && !/<img/.test($(this).html())){
-                $(this).removeClass('hidden');
+                $(this).removeClass('d-none');
             }
         });
         // .question-help-container:not(.hidden) don't work ?
         $('.question-help-container').on('html:updated',function(){ 
             if($(this).text().trim()==''  && !/<img/.test($(this).html())){
-                $(this).addClass('hidden');
+                $(this).addClass('d-none');
             }
         });
     };
