@@ -46,8 +46,7 @@ $internalConfig = array(
         // bootstrap 5 configuration
         'bootstrap' => realpath(__DIR__ . '/../../assets/bootstrap_5'),
         // yiistrap configuration
-        // TODO: remove yiistrap/yiiwheels
-        'yiistrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
+        'yiistrap_fork' => realpath(__DIR__ . '/../extensions/bootstrap5'),
         'vendor.twbs.bootstrap.dist' => realpath(__DIR__ . '/../extensions/bootstrap'),
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
@@ -95,9 +94,7 @@ $internalConfig = array(
         'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
-        'yiistrap.helpers.*',
-        'yiistrap.widgets.*',
-        'yiistrap.behaviors.*',
+        'yiistrap_fork.widgets.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'third_party.Twig.*',
         'third_party.sodium.*',
@@ -107,10 +104,6 @@ $internalConfig = array(
     ),
     'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
-        // yiistrap configuration
-        'bootstrap' => array(
-            'class' => 'yiistrap.components.TbApi',
-        ),
         // yiiwheels configuration
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',

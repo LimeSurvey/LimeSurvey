@@ -2,7 +2,7 @@
 
 Yii::import('zii.widgets.grid.CGridView');
 
-class CLSGridView extends CGridView
+class CLSGridView extends TbGridView
 {
     /**
      * @var string
@@ -48,6 +48,4 @@ class CLSGridView extends CGridView
 
         echo '</div>';
     }
-
-
 }
