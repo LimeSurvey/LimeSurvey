@@ -132,12 +132,12 @@ Yii::app()->getClientScript()->registerScript(
             var savedValue = parent.find('.inherit-edit').data('saved-value');
     
             if (newValue == 'Y'){
-                parent.find('.inherit-edit').addClass('d-none').removeClass('show').val(inheritValue);
-                parent.find('.inherit-readonly').addClass('show').removeClass('d-none');
+                parent.find('.inherit-edit').addClass('d-none').removeClass('d-block').val(inheritValue);
+                parent.find('.inherit-readonly').addClass('d-block').removeClass('d-none');
             } else {
                 var inputValue = (savedValue === inheritValue) ? \"\" : savedValue;
-                parent.find('.inherit-edit').addClass('show').removeClass('d-none').val(inputValue);
-                parent.find('.inherit-readonly').addClass('d-none').removeClass('show');
+                parent.find('.inherit-edit').addClass('d-block').removeClass('d-none').val(inputValue);
+                parent.find('.inherit-readonly').addClass('d-none').removeClass('d-block');
             }
         });
     

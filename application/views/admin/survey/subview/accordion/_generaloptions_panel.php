@@ -152,12 +152,12 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="row">
                 <div class="col-12 col-lg-8 content-right">
                     <label class=" form-label" for='admin'><?php eT("Administrator:"); ?></label>
-                    <input class="form-control inherit-edit <?php echo($bShowInherited && $admin === 'inherit' ? 'd-none' : 'show'); ?>" type='text' size='50' id='admin' name='admin'
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $admin === 'inherit' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='admin' name='admin'
                            value="<?php echo htmlspecialchars($admin); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $admin; ?>"/>
-                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $admin === 'inherit' ? 'show' : 'd-none'); ?>" type='text' size='50'
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $admin === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
                            value="<?php echo htmlspecialchars($oSurveyOptions->admin); ?>" readonly/>
                 </div>
-                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
+                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='admin'><?php eT("Inherit:"); ?></label>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'adminbutton',
@@ -178,12 +178,12 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="row">
                 <div class="col-12 col-lg-8 content-right">
                     <label class=" form-label" for='adminemail'><?php eT("Administrator email address:"); ?></label>
-                    <input class="form-control inherit-edit <?php echo($bShowInherited && $adminemail === 'inherit' ? 'd-none' : 'show'); ?>" type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>'
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $adminemail === 'inherit' ? 'd-none' : 'd-block'); ?>" type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>'
                            size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($adminemail); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $adminemail; ?>"/>
-                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $adminemail === 'inherit' ? 'show' : 'd-none'); ?>" type='text' size='50'
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $adminemail === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
                            value="<?php echo htmlspecialchars($oSurveyOptions->adminemail); ?>" readonly/>
                 </div>
-                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
+                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='adminemail'><?php eT("Inherit:"); ?></label>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'adminemailbutton',
@@ -204,13 +204,13 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="row">
                 <div class="col-12 col-lg-8 content-right">
                     <label class=" form-label" for='bounce_email'><?php eT("Bounce email address:"); ?></label>
-                    <input class="form-control inherit-edit <?php echo($bShowInherited && $bounce_email === 'inherit' ? 'd-none' : 'show'); ?>"
+                    <input class="form-control inherit-edit <?php echo($bShowInherited && $bounce_email === 'inherit' ? 'd-none' : 'd-block'); ?>"
                            type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>"
                            data-inherit-value="inherit" data-saved-value="<?php echo $bounce_email; ?>"/>
-                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $bounce_email === 'inherit' ? 'show' : 'd-none'); ?>" type='text' size='50'
+                    <input class="form-control inherit-readonly <?php echo($bShowInherited && $bounce_email === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50'
                            value="<?php echo htmlspecialchars($oSurveyOptions->bounce_email); ?>" readonly/>
                 </div>
-                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
+                <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                     <label class=" form-label content-center col-12" for='bounce_email'><?php eT("Inherit:"); ?></label>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'bounce_emailbutton',

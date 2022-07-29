@@ -3225,8 +3225,7 @@ class LimeExpressionManager
      * @param array $afelist - the list of array_filter_exclude $qroot codes
      * @return array
      */
-    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist)
-    {
+    private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist) {
         if (isset($this->qrootVarName2arrayFilter[$qroot])) {
             if (isset($this->qrootVarName2arrayFilter[$qroot]['array_filter'])) {
                 $_afs = explode(';', $this->qrootVarName2arrayFilter[$qroot]['array_filter']);
