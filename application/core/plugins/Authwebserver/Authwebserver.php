@@ -78,13 +78,14 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             if (isset($aUserMappings[$sUser])) {
                 $sUser = $aUserMappings[$sUser];
             }
+            $authEvent = $this->getEvent();
             $oUser = $this->api->getUserByName($sUser);
             if (
                 ($oUser && Permission::model()->hasGlobalPermission('auth_webserver', 'read', $oUser->uid))
                 || (!$oUser && $this->api->getConfigKey('auth_webserver_autocreate_user'))
             ) {
                 $this->setUsername($sUser);
-                $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
+                $this->setAuthPlugin($authEvent); // This plugin handles authentication, halt further execution of auth plugins
                 return;
             }
         }
