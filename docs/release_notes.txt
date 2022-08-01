@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.21 (build 220726) to 3.28.22 (build 220802) August 1, 2022
+-Fixed issue #17972: Events are dispatched if the plugin is deactivated (#2335) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Thai by tomzt
+#Updated translation: French (France) by c_schmitz, DenisChenu, eddylackmann, fradeff, frederic93190, Xave
+
+
 Changes from 3.28.20 (build 220719) to 3.28.21 (build 220726) July 25, 2022
 -Fixed issue #17458: Check integrity broke with SQL error (#2312) (Denis Chenu)
 #Updated translation: Swedish by maxzomborszki
