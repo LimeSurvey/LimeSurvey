@@ -86,8 +86,10 @@ class Question extends LSActiveRecord
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
     public $gid;
-    /** Set default relevance **/
+    /** Defaut relevance **/
     public $relevance = '';
+    /** defaut same_script , avoid public break during update **/
+    public $same_script = 0;
 
     /** @var QuestionTheme cached question theme*/
     private $relatedQuestionTheme;
