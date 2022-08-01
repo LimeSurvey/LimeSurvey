@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.28 (build 220727) to 5.3.29 (build 220801) August 1, 2022
+-Fixed issue #18284: Function editlocalsettings seems gone in master branch (#2550) (Gabriel Jenik)
+-Fixed issue #18196: Property "Question.same_script" is not defined. (#2469) (Denis Chenu)
+-Fixed issue #18006: Unable to use statCountIf to have a "unicity" control (#2319) (Denis Chenu)
+
+
 Changes from 5.3.27 (build 220725) to 5.3.28 (build 220727) July 27, 2022
 -Fixed issue : Invalid var in 1st page (Denis Chenu)
 -Fixed issue #18276: Changed HTML in arrays causing issues with JavaScript and CSS. (Olle Haerstedt)
