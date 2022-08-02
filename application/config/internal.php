@@ -95,6 +95,7 @@ $internalConfig = array(
         'application.controllers.*',
         'application.modules.*',
         'yiistrap_fork.widgets.*',
+        'yiistrap_fork.helpers.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'third_party.Twig.*',
         'third_party.sodium.*',

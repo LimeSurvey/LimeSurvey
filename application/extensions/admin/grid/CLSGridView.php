@@ -48,4 +48,19 @@ class CLSGridView extends TbGridView
 
         echo '</div>';
     }
+
+    /**
+     * Creates column objects and initializes them.
+     */
+    protected function initColumns()
+    {
+        foreach ($this->columns as $i => $column) {
+            if (is_array($column) && !isset($column['class'])) {
+                $this->columns[$i]['class'] = '\TbDataColumn';
+            }
+        }
+        parent::initColumns();
+    }
+
+
 }
