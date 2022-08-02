@@ -128,7 +128,7 @@
             <!-- First label set -->
             {% for j, ld in labelcode0 %}
                 {% if j == 0 and (leftheader != '' or rightheader !='') %}
-                    <td class='d-block d-sm-none leftheader information-item'>{{ leftheader }}</td>
+                    <td class='d-block d-md-none leftheader information-item'>{{ leftheader }}</td>
                 {% endif %}
                 <td class="answer_cell_1_{{ ld }} answer-item radio-item">
                     <input
@@ -166,7 +166,7 @@
                 <!-- Second label set -->
                 {% for k, ld in labelcode1 %}
                     {% if k == 0 and (leftheader != '' or rightheader !='') %}
-                        <td class='d-block d-sm-none rightheader information-item'>{{ rightheader }}</td>
+                        <td class='d-block d-md-none rightheader information-item'>{{ rightheader }}</td>
                     {% endif %}
                     <td class="answer_cell_2_{{ ld }} answer-item radio-item">
                         <input
