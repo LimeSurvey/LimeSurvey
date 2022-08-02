@@ -487,6 +487,7 @@ class SettingsWidget extends CWidget
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
         $htmlOptions = $this->htmlOptions($metaData, $form);
+        $htmlOptions['class'] .= 'form-select ';
         $select2Options=array_merge(
             [
                 'minimumResultsForSearch' => 8,
@@ -617,28 +618,14 @@ class SettingsWidget extends CWidget
     {
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $value = isset($metaData['current']) ? $metaData['current'] : '';
-        $html = Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+        $html = Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                 'name' => $name,
                 'id' => $name,
                 'value' => $value,
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                    'allowInputToggle' =>true,
+                    'allowInputToggle' => true,
                     'showClear' => true,
-                    'tooltips' => array(
-                        'clear'=> gT('Clear selection'),
-                        'prevMonth'=> gT('Previous month'),
-                        'nextMonth'=> gT('Next month'),
-                        'selectYear'=> gT('Select year'),
-                        'prevYear'=> gT('Previous year'),
-                        'nextYear'=> gT('Next year'),
-                        'selectDecade'=> gT('Select decade'),
-                        'prevDecade'=> gT('Previous decade'),
-                        'nextDecade'=> gT('Next decade'),
-                        'prevCentury'=> gT('Previous century'),
-                        'nextCentury'=> gT('Next century'),
-                        'selectTime'=> gT('Select time')
-                    ),
                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 )
             ), true

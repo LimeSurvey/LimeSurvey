@@ -845,4 +845,43 @@ class User extends LSActiveRecord
         }
         return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
     }
+
+    /**
+     * @param $userGroupId
+     * @return CActiveDataProvider
+     */
+    public function searchUserGroupMembers($userGroupId)
+    {
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $criteria = new CDbCriteria();
+        $criteria->join = 'INNER JOIN {{user_in_groups}} uig on t.uid = uig.uid';
+        $criteria->condition .= 'uig.ugid=:ugid';
+        $criteria->params = array(':ugid' => $userGroupId);
+        $criteria->compare('t.users_name', $this->users_name, true);
+        $criteria->compare('t.email', $this->email, true);
+
+
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => $pageSize
+            )
+        ));
+    }
+
+    /**
+     * Returns button for gridview.
+     * @return string
+     */
+    public function getGroupMemberListButtons()
+    {
+        $userGroupId = Yii::app()->request->getQuery('ugid', 0);
+        $userGroup = UserGroup::model()->findByPk($userGroupId);
+        $currentUserId = $this->uid;
+
+        return Yii::app()->getController()->renderPartial(
+            '_deleteGroupUserButton',
+            ['userGroupId' => $userGroupId, 'userGroup' => $userGroup, 'currentUserId' => $currentUserId]
+        );
+    }
 }

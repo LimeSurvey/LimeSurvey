@@ -61,7 +61,7 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
     />
     <div id="advanced-question-editor" class="row"<?= empty($visibilityEditor) ? ' style="display:none;"' : '' ?>>
         <div class="col-xl-7">
-            <div class="container-center scoped-new-questioneditor">
+            <div class="container scoped-new-questioneditor">
                 <div class="pagetitle h3 scoped-unset-pointer-events">
                     <x-test id="action::addQuestion"></x-test>
                     <?php if ($oQuestion->qid === 0): ?>
@@ -128,7 +128,7 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
             </div>
         </div>
         <div class="col-xl-5">
-            <div class="container-center">
+            <div class="container">
                 <div class="pagetitle h3">
                     <?= gT('Settings'); ?>
                 </div>

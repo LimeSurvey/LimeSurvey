@@ -10,14 +10,14 @@
                 <?php eT("Export responses as:"); ?>
             </label>
             <!-- Answer codes / Full answers -->
-            <div class="btn-group col-md-6" data-toggle="buttons">
-                <label class="btn btn-outline-secondary">
-                    <input name="answers" value="short" type="radio" id="answers-short" />
+            <div class="btn-group col-md-6">
+                <input class="btn-check" name="answers" value="short" type="radio" id="answers-short" autocomplete="off" />
+                <label class="btn btn-outline-secondary" for="answers-short">
                     <?php eT("Answer codes");?>
                 </label>
 
-                <label class="btn btn-outline-secondary active">
-                    <input name="answers" value="long" type="radio" checked='checked' id="answers-long" autofocus="true" />
+                <input class="btn-check" name="answers" value="long" type="radio" id="answers-long" autocomplete="off" checked />
+                <label class="btn btn-outline-secondary" for="answers-long">
                     <?php eT("Full answers");?>
                 </label>
             </div>

@@ -63,7 +63,7 @@ App()->getClientScript()->registerScriptFile(
     <div class="container-fluid">
         <div class='row'>
 
-            <div class="col-lg-9">
+            <div class="col">
                 <?php if (Permission::model()->hasGlobalPermission('participantpanel', 'read')) : ?>
                     <!-- Display participants -->
                 <a class="btn btn-outline-secondary" 
@@ -154,7 +154,7 @@ App()->getClientScript()->registerScriptFile(
                 <?php endif; ?>
             </div>
 
-            <div class="col-lg-3 text-end">
+            <div class="col-md-auto text-end">
 
                 <!-- Add Attribute -->
                 <?php if (isset($ownsAddAttributeButton) && ($ownsAddAttributeButton)) : ?>

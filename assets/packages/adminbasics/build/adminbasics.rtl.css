@@ -1483,32 +1483,6 @@ div.card.disabled a {
   margin-right: 3px;
 }
 
-/**
-*  Radio / Check box buttons
-*/
-input[type=checkbox],
-input[type=radio] {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 0;
-}
-
-input[type=radio],
-input[type=checkbox] {
-  margin: 4px 0 0;
-  margin-top: 1px \9 ;
-  line-height: normal;
-}
-
-input[type=file]:focus,
-input[type=radio]:focus,
-input[type=checkbox]:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-
 .btn-group .btn-check {
   position: absolute;
 }
@@ -1528,15 +1502,6 @@ input[type=checkbox]:focus {
   margin-bottom: 0;
   font-weight: normal;
   cursor: pointer;
-}
-
-.radio input[type=radio],
-.radio-inline input[type=radio],
-.checkbox input[type=checkbox],
-.checkbox-inline input[type=checkbox] {
-  position: absolute;
-  margin-right: -20px;
-  margin-top: 4px;
 }
 
 .radio + .radio,
@@ -1559,15 +1524,6 @@ input[type=checkbox]:focus {
 .checkbox-inline + .checkbox-inline {
   margin-top: 0;
   margin-right: 10px;
-}
-
-input[type=radio][disabled],
-input[type=checkbox][disabled],
-input[type=radio].disabled,
-input[type=checkbox].disabled,
-fieldset[disabled] input[type=radio],
-fieldset[disabled] input[type=checkbox] {
-  cursor: not-allowed;
 }
 
 .radio-inline.disabled,
@@ -1624,29 +1580,6 @@ fieldset[disabled] .checkbox label {
 }
 
 @media screen and (min-width: 768px) {
-  .form-inline .radio,
-.form-inline .checkbox {
-    display: inline-block;
-    margin-top: 0;
-    margin-bottom: 0;
-    vertical-align: middle;
-  }
-
-  .form-inline .radio label,
-.form-inline .checkbox label {
-    padding-right: 0;
-  }
-
-  .form-inline .radio input[type=radio],
-.form-inline .checkbox input[type=checkbox] {
-    position: relative;
-    margin-right: 0;
-  }
-
-  .form-inline .has-feedback .form-control-feedback {
-    top: 0;
-  }
-
   .navbar-form .radio,
 .navbar-form .checkbox {
     display: inline-block;
@@ -1658,12 +1591,6 @@ fieldset[disabled] .checkbox label {
   .navbar-form .radio label,
 .navbar-form .checkbox label {
     padding-right: 0;
-  }
-
-  .navbar-form .radio input[type=radio],
-.navbar-form .checkbox input[type=checkbox] {
-    position: relative;
-    margin-right: 0;
   }
 
   .navbar .navbar-nav .nav-link {
@@ -1687,79 +1614,11 @@ fieldset[disabled] .checkbox label {
   min-height: 30px;
 }
 
-[data-toggle=buttons] > .btn input[type=radio],
-[data-toggle=buttons] > .btn-group > .btn input[type=radio],
-[data-toggle=buttons] > .btn input[type=checkbox],
-[data-toggle=buttons] > .btn-group > .btn input[type=checkbox] {
-  position: absolute;
-  clip: rect(0, 0, 0, 0);
-  pointer-events: none;
-}
-
-.input-group-addon input[type=radio],
-.input-group-addon input[type=checkbox] {
-  margin-top: 0;
-}
-
 .radio label,
 .radio-inline label,
 .checkbox label,
 .checkbox-inline label {
   padding-right: 25px;
-}
-
-.radio input[type=radio],
-.radio-inline input[type=radio],
-.checkbox input[type=radio],
-.checkbox-inline input[type=radio],
-.radio input[type=checkbox],
-.radio-inline input[type=checkbox],
-.checkbox input[type=checkbox],
-.checkbox-inline input[type=checkbox] {
-  margin-right: -25px;
-}
-
-input[type=radio],
-.radio input[type=radio],
-.radio-inline input[type=radio] {
-  position: relative;
-  margin-top: 6px;
-  margin-left: 4px;
-  vertical-align: top;
-  border: none;
-  background-color: transparent;
-  -webkit-appearance: none;
-  appearance: none;
-  cursor: pointer;
-}
-
-input[type=radio]:focus,
-.radio input[type=radio]:focus,
-.radio-inline input[type=radio]:focus {
-  outline: none;
-}
-
-input[type=radio]:after,
-.radio input[type=radio]:after,
-.radio-inline input[type=radio]:after {
-  position: relative;
-  top: -3px;
-  border: 2px solid #666666;
-}
-
-input[type=radio]:checked:after,
-.radio input[type=radio]:checked:after,
-.radio-inline input[type=radio]:checked:after {
-  border-color: #2196f3;
-}
-
-input[type=radio]:disabled:after,
-.radio input[type=radio]:disabled:after,
-.radio-inline input[type=radio]:disabled:after,
-input[type=radio]:disabled:checked:after,
-.radio input[type=radio]:disabled:checked:after,
-.radio-inline input[type=radio]:disabled:checked:after {
-  border-color: #bbbbbb;
 }
 
 input[type=checkbox],
@@ -1959,7 +1818,6 @@ textarea,
 .uneditable-input {
   display: inline-block;
   font-size: 14px;
-  line-height: 18px;
   border: 1px solid #ccc;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -2340,10 +2198,6 @@ html body .nav-tabs > li.active > a:focus {
 .btnaddanswer:hover,
 .btndelanswer:hover {
   cursor: pointer;
-}
-
-span[data-tooltip] {
-  display: inline-block;
 }
 
 .glyphicon-move:hover {
@@ -2987,11 +2841,6 @@ table#responsedetail tr td {
   display: -ms-flexbox;
   display: flex;
   margin-bottom: 30px;
-}
-
-input[type=file].form-control {
-  border: none;
-  padding-right: 0px;
 }
 
 #insertmethod-container {
@@ -4394,6 +4243,70 @@ label {
   background-color: #eee;
 }
 
+#selectable .ui-selecting {
+  background: #8CCE00;
+}
+
+#selectable .ui-selected {
+  background: #C1DD7F;
+  color: #000000;
+}
+
+#selectable {
+  list-style-type: none;
+  margin: 2px;
+  padding: 0;
+  width: 90%;
+}
+
+#selectable li {
+  padding: 1em;
+  font-size: 1em;
+  height: 9px;
+  text-align: center;
+  margin: 4px;
+}
+
+#feedback {
+  font-size: 1.4em;
+}
+
+#selectableadd .ui-selecting {
+  background: #0066CC;
+}
+
+#selectableadd .ui-selected {
+  background: #0066CC;
+  color: white;
+}
+
+#selectableadd {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 90%;
+  text-align: center;
+}
+
+#selectableadd li {
+  margin: 3px;
+  padding: 0.4em;
+  font-size: 1em;
+  height: 18px;
+  text-align: center;
+}
+
+.popupgroup {
+  border: 1px solid #DAE5F4;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 8px;
+}
+
+#cpdbatt {
+  min-height: 100px;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -4511,68 +4424,30 @@ label {
   display: none;
 }
 
-#cpdbatt {
-  min-height: 100px;
+.translate > table {
+  table-layout: fixed;
 }
 
-#selectable .ui-selecting {
-  background: #8CCE00;
+.translate td._from_ > .question-text-from {
+  width: 100%;
+  overflow: auto;
+  word-wrap: break-word;
 }
 
-#selectable .ui-selected {
-  background: #C1DD7F;
-  color: #000000;
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 
-#selectable {
-  list-style-type: none;
-  margin: 2px;
-  padding: 0;
-  width: 90%;
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
 }
 
-#selectable li {
-  padding: 1em;
-  font-size: 1em;
-  height: 9px;
-  text-align: center;
-  margin: 4px;
-}
-
-#feedback {
-  font-size: 1.4em;
-}
-
-#selectableadd .ui-selecting {
-  background: #0066CC;
-}
-
-#selectableadd .ui-selected {
-  background: #0066CC;
-  color: white;
-}
-
-#selectableadd {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 90%;
-  text-align: center;
-}
-
-#selectableadd li {
-  margin: 3px;
-  padding: 0.4em;
-  font-size: 1em;
-  height: 18px;
-  text-align: center;
-}
-
-.popupgroup {
-  border: 1px solid #DAE5F4;
-  padding: 10px;
-  border-radius: 3px;
-  margin: 8px;
+.responses-column-filter-modal-checkbox-buttons {
+  text-align: right;
+  padding-bottom: 15px;
 }
 
 .draggable-container {
@@ -4680,32 +4555,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 /* Existing attribute column in CSV CPDB import */
 .centralatt {
   min-height: 100px;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: right;
-  padding-bottom: 15px;
-}
-
-.translate > table {
-  table-layout: fixed;
-}
-
-.translate td._from_ > .question-text-from {
-  width: 100%;
-  overflow: auto;
-  word-wrap: break-word;
 }
 
 .grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {

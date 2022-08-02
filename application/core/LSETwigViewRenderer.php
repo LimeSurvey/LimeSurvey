@@ -33,6 +33,24 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     private $_twig;
 
     /**
+     * @var array Custom LS Users Extensions
+     * Example: array('HelloWorld_Twig_Extension')
+     */
+    public $user_extensions = [];
+
+    /**
+     * @inheritdoc
+     */
+    function init()
+    {
+        parent::init();
+        // Adding user custom extensions
+        if (!empty($this->user_extensions)) {
+            $this->addUserExtensions($this->user_extensions);
+        }
+    }
+
+    /**
      * Main method to render a survey.
      * @param string $sLayout the name of the layout to render
      * @param array $aData the datas needed to fill the layout
@@ -811,5 +829,18 @@ window.addEventListener('message', function(event) {
     public function getLoader()
     {
         return $this->_twig->getLoader();
+    }
+
+    /**
+     * Adds custom user extensions
+     * @param array $extensions @see self::$user_extensions
+     */
+    public function addUserExtensions($extensions)
+    {
+        foreach ($extensions as $extName) {
+            Yii::setPathOfAlias('extName_' . $extName, Yii::app()->getConfig('usertwigextensionrootdir') . '/' . $extName . '/');
+            Yii::import("extName_" . $extName . ".*");
+            $this->_twig->addExtension(new $extName());
+        }
     }
 }

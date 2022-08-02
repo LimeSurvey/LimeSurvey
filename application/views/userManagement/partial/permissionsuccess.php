@@ -8,7 +8,7 @@
     <h5 class="modal-title"><?= gT('Saved successfully') ?></h5>
 </div>
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
         <div class="row">
             <div class="col-12 text-center">
                 <div class="check_mark">

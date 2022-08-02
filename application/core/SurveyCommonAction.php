@@ -597,7 +597,7 @@ class SurveyCommonAction extends CAction
                 //Count answer-options for this question
                 $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid));
 
-                //Count sub-questions for this question
+                //Count subquestions for this question
                 $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid));
 
                 $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
@@ -1026,7 +1026,7 @@ class SurveyCommonAction extends CAction
             if (!empty($ugid)) {
                 $userGroup = UserGroup::model()->findByPk($ugid);
                 $uid = Yii::app()->session['loginID'];
-                if (($userGroup && $userGroup->hasUser($uid)) || Permission::model()->hasGlobalPermission('superadmin')) {
+                if (($userGroup && ($userGroup->hasUser($uid)) || $userGroup->owner_id == $uid) || Permission::model()->hasGlobalPermission('superadmin')) {
                     $data['userGroup'] = $userGroup;
                 } else {
                     $data['userGroup'] = null;

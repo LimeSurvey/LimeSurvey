@@ -25,34 +25,34 @@
                     ]
                 ); ?>
             </div>
-            <div class="row float-end">
+
                 <!-- Search Box -->
-                <?php $form = $this->beginWidget('TbActiveForm', array(
-                    'action' => Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid),
-                    'method' => 'get',
-                    'htmlOptions' => array(
-                        'class' => 'row ms-auto',
-                    ),
-                )); ?>
-                    <div class="col row mb-3">
+            <?php $form = $this->beginWidget('TbActiveForm', array(
+                'action' => Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid),
+                'method' => 'get',
+                'htmlOptions' => array(
+                    'class' => '',
+                ),
+            )); ?>
+                <div class="row row-cols-lg-auto g-1 align-items-center mb-3 float-end">
+                    <div class="col-12">
                         <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class' => 'text-nowrap col-sm-7 col-form-label col-form-label-sm')); ?>
-                        <div class="col-sm-5">
-                            <?php echo $form->textField($model, 'group_name', array('class' => 'form-control')); ?>
-                        </div>
+                    </div>
+                    <div class="col-12">
+                        <?php echo $form->textField($model, 'group_name', array('class' => 'form-control')); ?>
                     </div>
 
-                    <div class="col row mb-3">
-                        <div class="col-12">
-                            <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>
-                            <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
-                               class="btn btn-warning">
-                                <span class="fa fa-refresh"></span>
-                                <?php eT('Reset');?>
-                            </a>
-                        </div>
+
+                    <div class="col-12">
+                        <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-success')); ?>
+                        <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/' . $surveyid);?>"
+                           class="btn btn-warning">
+                            <span class="fa fa-refresh"></span>
+                            <?php eT('Reset');?>
+                        </a>
                     </div>
-                <?php $this->endWidget(); ?>
-            </div>
+                </div>
+            <?php $this->endWidget(); ?>
         </div>
     </div>
     <hr/>

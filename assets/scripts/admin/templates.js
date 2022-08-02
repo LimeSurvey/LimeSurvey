@@ -11,8 +11,15 @@ $(document).on('ready pjax:scriptcomplete', function(){
     });
 
     $('.jquery-ace-wrapper').addClass('card');
-    document.getElementById('changes__ace').style.width = null;
-    document.getElementById('editor-toolbar').style.width = null;
+
+    const changesAce = document.getElementById('changes__ace');
+    if (changesAce) {
+        changesAce.style.width = null;
+    }
+    const editorToolbar = document.getElementById('editor-toolbar');
+    if (editorToolbar) {
+        editorToolbar.style.width = null;
+    }
 
     $('#iphone').click(function(){
       $('#previewiframe').css("width", "320px");

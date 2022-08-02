@@ -575,7 +575,7 @@ class SurveyAdministrationController extends LSBaseController
         if (!empty($iSurveyID)) {
             if (Yii::app()->getConfig('demoMode')) {
                 Yii::app()->user->setFlash('error', gT("Demo mode only: Uploading files is disabled in this system."));
-                $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
+                $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
             }
 
             // Create temporary directory
@@ -595,7 +595,7 @@ class SurveyAdministrationController extends LSBaseController
                     gT("Incorrect permissions in your %s folder."),
                     $basedestdir
                 ));
-                $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
+                $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
             }
 
 
@@ -612,7 +612,7 @@ class SurveyAdministrationController extends LSBaseController
                         'error',
                         gT("This file is not a valid ZIP file archive. Import failed. ") . $zip->errorInfo(true)
                     );
-                    $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
+                    $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
                 }
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
@@ -2125,7 +2125,7 @@ class SurveyAdministrationController extends LSBaseController
             // Make the link point to the first group/question if available
             if (!empty($aGrouplist)) {
                 $oFirstGroup = $aGrouplist[0];
-                $oFirstQuestion = Question::model()->findByAttributes(
+                $oFirstQuestion = Question::model()->primary()->findByAttributes(
                     ['gid' => $oFirstGroup->gid],
                     ['order' => 'question_order ASC']
                 );

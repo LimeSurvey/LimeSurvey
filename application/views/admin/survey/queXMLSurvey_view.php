@@ -1,6 +1,6 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <?php echo CHtml::form(array("admin/export/sa/quexml/surveyid/{$surveyid}/"), 'post'); ?>
-        <div class='container-center'>
+        <div class='container'>
             <h3 class="col-12">
                 <?php eT("queXML PDF export");?>
                 <button role="button" type='submit' class="btn btn-primary pull-right">

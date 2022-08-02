@@ -3,7 +3,13 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
- Tokens = {
+/**
+ *
+ * @type {{}}
+ */
+var filterData = {};
+
+Tokens = {
      /**
       * jQuery Plugin to manage the date in token modal edit.
       * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
@@ -22,9 +28,7 @@ var LS = LS || {
          });
 
          // Generate the date time picker
-         // $elDate.datetimepicker({
-         //     locale: el.dataset.locale
-         // });
+         initDatePicker($elDate, $elDate.name, $elDate.dataset.locale, $elDate.dataset.dateformat);
 
          console.ls.log('$elSwitch', $elSwitch);
          // When user switch
@@ -33,7 +37,7 @@ var LS = LS || {
              if ($elSwitch.querySelector('input').checked) {
                  // Show date
                  $elDateContainer.classList.remove('d-none');
-                 $elHiddenInput.value = moment().format($elDate.dataset.dateFormat);
+                 $elHiddenInput.value = $elDate.value = moment().format($elDate.dataset.dateformat);
              } else {
                  // Hide date, set hidden input to "N"
                  $elDateContainer.classList.add('d-none');
@@ -43,7 +47,7 @@ var LS = LS || {
 
          // When user change date
          $elDate.addEventListener('change', function (e) {
-             $elHiddenInput.value = e.date.format($elDate.dataset.dateFormat);
+             $elHiddenInput.value = $elDate.value;
          });
      },
      YesNo: function (el) {
@@ -59,7 +63,6 @@ var LS = LS || {
          });
      }
  };
-
 
 /**
  * Provide to this function a element containing form-groups,
@@ -86,7 +89,6 @@ $.fn.stickLabelOnLeft  = function(options)
     $distanceFromBorder = ( $maxWidth - $elWidestLeftLabel.width());
     if ( $distanceFromBorder < 0)
     {
-        console.log(that);
         that.css({
             position: "relative",
             left: $distanceFromBorder,
@@ -132,7 +134,9 @@ function submitEditToken(){
 
         success : function(result, stat) {
             if (result.success) {
-                modal.hide();
+                $modal.hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
             } else {
                 var errorMsg = result.error.message ? result.error.message : result.error;
                 if (!errorMsg) errorMsg = "Unexpected error";
@@ -144,14 +148,18 @@ function submitEditToken(){
             try {
                 $.fn.yiiGridView.update($gridId, {
                     complete: function(s){
-                        modal.hide();
+                        $modal.hide();
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
                     } // Update the surveys list
                 });
             }
             catch (e){
                 if (e) {
                     console.ls.error(e);
-                    modal.hide();
+                    $modal.hide();
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                 }
             }
         },
@@ -208,7 +216,7 @@ function validateNotEmptyTokenForm() {
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-$(document).on('ready  pjax:scriptcomplete', function(){
+$(document).on('ready pjax:scriptcomplete', function(){
 
     if($('#sent-yes-no-date-container').length > 0)
     {
@@ -221,15 +229,31 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         document.querySelectorAll('.yes-no-container').forEach((el) => {
             Tokens.YesNo(el);
         });
+        initValidFromValidUntilPickers();
+    }
 
-        $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
-        $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+    var modal = $('#massive-actions-modal-edit-0');
+    if (modal.length) {
+        modal.on('shown.bs.modal', function () {
+            $('.yes-no-date-container').each(function(i,el){
+                Tokens.YesNoDate(el);
+            });
 
-        $('.date .input-group-addon').on('click', function(){
-            $prev = $(this).siblings();
-            $prev.data("DateTimePicker").show();
+            $('.yes-no-container').each(function(i,el){
+                Tokens.YesNo(el);
+            });
         });
     }
+
+    $(document).on('actions-updated', function() {
+        $('.yes-no-date-container').each(function(i,el){
+            Tokens.YesNoDate(el);
+        });
+
+        $('.yes-no-container').each(function(i,el){
+            Tokens.YesNo(el);
+        });
+    });
 
     var initialScrollValue = $('.scrolling-wrapper').scrollLeft();
     var useRtl = $('input[name="rtl"]').val() === '1';
@@ -438,12 +462,11 @@ var startEditToken = function(){
                 Tokens.YesNo(el);
             });
 
-            $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
-            $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
+            initValidFromValidUntilPickers();
 
             $('.date .input-group-addon').on('click', function(){
                 $prev = $(this).siblings();
-                $prev.data("DateTimePicker").show();
+                // $prev.data("DateTimePicker").show();
             });
 
             var elGeneral  = $('#general');
@@ -515,26 +538,50 @@ function onUpdateTokenGrid(){
  * @return
  */
 function reinstallParticipantsFilterDatePicker() {
-
     // Since grid view is updated with Ajax, we need to fetch date format each update
-    var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
-
-    $('#TokenDynamic_validfrom').datetimepicker({
-        format: dateFormatDetails.jsdate + ' HH:mm'
-    });
-    $('#TokenDynamic_validuntil').datetimepicker({
-        format: dateFormatDetails.jsdate + ' HH:mm'
-    });
-
-    $('#TokenDynamic_validfrom').on('focusout', function() {
-        var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
-        $.fn.yiiGridView.update('token-grid', {data: data});
-    });
-
-    $('#TokenDynamic_validuntil').on('focusout', function() {
-        var data = $('#token-grid .filters input, #token-grid .filters select').serialize();
-        $.fn.yiiGridView.update('token-grid', {data: data});
-    });
+    var dateFormatDetails = document.getElementById('dateFormatDetails');
+    var locale = document.getElementById('locale');
+    var validfromElement = document.getElementsByName('TokenDynamic[validfrom]')[0];
+    var validuntilElement = document.getElementsByName('TokenDynamic[validuntil]')[0];
+    if ((dateFormatDetails && dateFormatDetails.value) && (locale && locale.value)) {
+        dateFormatDetails = JSON.parse(dateFormatDetails.value);
+        var dateFormat = dateFormatDetails.jsdate + ' HH:mm';
+        if (validfromElement) {
+            initDatePicker(validfromElement, 'TokenDynamic_validfrom', locale.value, dateFormat);
+            validfromElement.addEventListener("hide.td", function () {
+                reloadTokenGrid();
+            });
+        }
+        if (validuntilElement) {
+            initDatePicker(validuntilElement, 'TokenDynamic_validuntil', locale.value, dateFormat);
+            validuntilElement.addEventListener("hide.td", function () {
+                reloadTokenGrid();
+            });
+        }
+    }
     $(document).trigger('actions-updated');
+}
 
+/**
+ * reload gridview only when data of filter input has changed
+ */
+function reloadTokenGrid() {
+    var newData = $('#token-grid .filters input, #token-grid .filters select').serialize();
+    if (filterData !== newData) {
+        filterData = newData;
+        $.fn.yiiGridView.update('token-grid', {data: filterData});
+    }
+}
+
+function initValidFromValidUntilPickers() {
+    var validfromElement = document.getElementById('validfrom');
+    var validuntilElement = document.getElementById('validuntil');
+    var dateFormat = validfromElement.dataset.dateformat;
+    var locale = validfromElement.dataset.locale;
+    if (validfromElement) {
+        initDatePicker(validfromElement, 'validfrom', locale, dateFormat);
+    }
+    if (validuntilElement) {
+        initDatePicker(validuntilElement, 'validuntil', locale, dateFormat);
+    }
 }

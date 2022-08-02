@@ -8,7 +8,7 @@ Yii::app()->getController()->renderPartial(
 <?=TbHtml::formTb(null, App()->createUrl('userManagement/runAddDummyUser'), 'post', ["id"=>"UserManagement--modalform"])?>
 
 <div class="modal-body">
-        <div class="container-center">
+        <div class="container">
             <div class="mb-3">
                 <label for="AnonUser_times"><?=gT('How many users should be created')?></label>
                 <input id="AnonUser_times" name="times" class="form-control" type="number" value="1">

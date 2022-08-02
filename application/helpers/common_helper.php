@@ -661,7 +661,7 @@ function getUserList($outputformat = 'fullinfoarray')
     if (!empty(Yii::app()->session['loginID'])) {
         $myuid = sanitize_int(Yii::app()->session['loginID']);
     }
-    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
+    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
     if (
         !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
@@ -3409,7 +3409,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'question' and 'help' INSERTANS tags in questions
-    $sql = "SELECT q.qid, language, question, help from {{questions}} q
+    $sql = "SELECT l.id, question, help from {{questions}} q
     join {{question_l10ns}} l on q.qid=l.qid
     WHERE sid=" . $newsid . " AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
     $result = Yii::app()->db->createCommand($sql)->query();
@@ -3417,8 +3417,6 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     foreach ($aResultData as $qentry) {
         $question = $qentry['question'];
         $help = $qentry['help'];
-        $qid = $qentry['qid'];
-        $language = $qentry['language'];
 
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
             $pattern = $sOldFieldname;
@@ -3438,12 +3436,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
             'help' => $help
             );
 
-            $where = array(
-            'qid' => $qid,
-            'language' => $language
-            );
-
-            QuestionL10n::model()->updateByPk($where, $data);
+            QuestionL10n::model()->updateByPk($qentry['id'], $data);
         } // Enf if modified
     } // end while qentry
 
@@ -4129,18 +4122,31 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 }
 
 /**
+* Determines whether the list of user groups will need filtering before viewing.
+* @returns bool
+*/
+function shouldFilterUserGroupList()
+{
+    $bUserControlSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy', true);
+    $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
+    return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
+}
+
+/**
 * Get a list of all user groups
+* All user group or filtered according to usercontrolSameGroupPolicy
 * @returns array
 */
 function getUserGroupList()
 {
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-        $sQuery .= "AND uid = " . Yii::app()->session['loginID'];
+    if (shouldFilterUserGroupList()) {
+        $userid = intval(App()->session['loginID']);
+        $sQuery .= "AND (b.uid = {$userid})";
     }
     $sQuery .= " ORDER BY name";
 
-    $sresult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
+    $sresult = App()->db->createCommand($sQuery)->query(); //Checked
     if (!$sresult) {
         return "Database Error";
     }
@@ -4413,27 +4419,22 @@ function getSurveyUserGroupList($outputformat, $surveyid)
     $surveyid = sanitize_int($surveyid);
 
     $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
-    FROM {{user_groups}} AS a
-    LEFT JOIN (
-    SELECT b.ugid
-    FROM {{user_in_groups}} AS b
-    LEFT JOIN (SELECT * FROM {{permissions}}
-    WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
-    ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
+        FROM {{user_groups}} AS a
+        LEFT JOIN (
+        SELECT b.ugid
+        FROM {{user_in_groups}} AS b
+        LEFT JOIN (SELECT * FROM {{permissions}}
+        WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
+        ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query(); //Checked
     $aResult = $surveyidresult->readAll();
 
-    $authorizedGroupsList = [];
-    if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
-        $authorizedGroupsList = getUserGroupList();
-    }
-
+    $authorizedGroupsList = getUserGroupList();
     $svexist = false;
     $surveyselecter = "";
     $simpleugidarray = [];
     foreach ($aResult as $sv) {
         if (
-            Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
             in_array($sv['ugid'], $authorizedGroupsList)
         ) {
             $surveyselecter .= "<option";

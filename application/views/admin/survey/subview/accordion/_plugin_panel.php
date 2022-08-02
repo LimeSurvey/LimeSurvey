@@ -19,15 +19,13 @@ App()->getClientScript()->registerScript("plugin-panel-variables", "
     if (!empty($plugin['settings'])): ?>
         <div class="card card-primary">
             <div class="card-header bg-primary" role="tab" id="heading-plugin<?php echo $id; ?>">
-                <div class="">
-                    <a class="btn btn-outline-secondary btn-xs hide-button d-none d-sm-block opened handleAccordion d-block d-sm-none d-md-block">
-                        <span class="fa fa-chevron-left"></span>
-			<span class="sr-only"><?php eT("Expand/Collapse");?></span>
-                    </a>
-                    <a id="button-plugin<?php echo $id; ?>" class="collapsed" data-parent="#accordion" role="button" data-toggle="collapse" href="#plugin<?php echo $id; ?>" aria-expanded="false" aria-controls="plugin<?php echo $id; ?>">
-                        <?php printf(gT("Settings for plugin %s"), $plugin['name']); ?>
-                    </a>
-                </div>
+                <a class="btn btn-outline-secondary btn-xs">
+                    <span class="fa fa-chevron-left"></span>
+                    <span class="sr-only"><?php eT("Expand/Collapse");?></span>
+                </a>
+                <a id="button-plugin<?php echo $id; ?>" class="collapsed bg-primary" data-bs-parent="#accordion" role="button" data-bs-toggle="collapse" href="#plugin<?php echo $id; ?>" aria-expanded="false" aria-controls="plugin<?php echo $id; ?>">
+                    <?php printf(gT("Settings for plugin %s"), $plugin['name']); ?>
+                </a>
             </div>
             <div id="plugin<?php echo $id; ?>" class="panel-collapse collapse" role="tabpanel">
                 <div class="card-body">

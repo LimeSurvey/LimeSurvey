@@ -29,7 +29,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             <div class="mb-3">
                 <label class=" form-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
                 <div class=" has-feedback">
-                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
                             'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->startdate)) : ''),
@@ -37,20 +37,6 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
                                 'showClear' => true,
-                                'tooltips' => array(
-                                    'clear'=> gT('Clear selection'),
-                                    'prevMonth'=> gT('Previous month'),
-                                    'nextMonth'=> gT('Next month'),
-                                    'selectYear'=> gT('Select year'),
-                                    'prevYear'=> gT('Previous year'),
-                                    'nextYear'=> gT('Next year'),
-                                    'selectDecade'=> gT('Select decade'),
-                                    'prevDecade'=> gT('Previous decade'),
-                                    'nextDecade'=> gT('Next decade'),
-                                    'prevCentury'=> gT('Previous century'),
-                                    'nextCentury'=> gT('Next century'),
-                                    'selectTime'=> gT('Select time')
-                                ),
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
@@ -62,7 +48,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             <div class="mb-3">
                 <label class=" form-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
                 <div class=" has-feedback">
-                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                             'name' => "expires",
                             'id' => 'expires',
                             'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->expires)) : ''),
@@ -70,20 +56,6 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
                                 'showClear' => true,
-                                'tooltips' => array(
-                                    'clear'=> gT('Clear selection'),
-                                    'prevMonth'=> gT('Previous month'),
-                                    'nextMonth'=> gT('Next month'),
-                                    'selectYear'=> gT('Select year'),
-                                    'prevYear'=> gT('Previous year'),
-                                    'nextYear'=> gT('Next year'),
-                                    'selectDecade'=> gT('Select decade'),
-                                    'prevDecade'=> gT('Previous decade'),
-                                    'nextDecade'=> gT('Next decade'),
-                                    'prevCentury'=> gT('Previous century'),
-                                    'nextCentury'=> gT('Next century'),
-                                        'selectTime'=> gT('Select time')
-                                ),
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));

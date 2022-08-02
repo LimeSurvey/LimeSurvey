@@ -2,7 +2,7 @@
     <h2>Register 2FA Method</h2>
 </div>
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
         <div class="row">
         <div class="errorContainer"></div>
         </div>

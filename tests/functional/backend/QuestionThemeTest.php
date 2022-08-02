@@ -109,7 +109,7 @@ class QuestionThemeTest extends TestBaseClassWeb
         $button = $web->findById('trigger_questionTypeSelector_button');
         $button->click();
 
-        $group = $web->findByLinkText('Mask questions');
+        $group = $web->findElement(WebDriverBy::xpath("//*[contains(text(),'Mask questions')]"));
         $group->click();
 
         $question = $web->findByPartialLinkText('Range Slider');
@@ -117,6 +117,9 @@ class QuestionThemeTest extends TestBaseClassWeb
 
         $button = $web->findById('selector__select-this-questionTypeSelector');
         $button->click();
+        sleep(1);
+
+        self::$webDriver->executeScript('window.scrollTo(0,document.body.scrollHeight);');
         sleep(1);
 
         $button = $web->findById('button-collapse-Custom_options');

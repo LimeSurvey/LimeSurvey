@@ -64,26 +64,13 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 ?>
             <div class="col-md-10 has-feedback">
                 <?php if(canShowDatePicker($dateformatdetails)): ?>
-                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                         'name' => $fieldname,
+                        'id' => 'q_date_' . $fieldname,
                         'pluginOptions' => array(
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' =>true,
                             'showClear' => true,
-                            'tooltips' => array(
-                                'clear'=> gT('Clear selection'),
-                                'prevMonth'=> gT('Previous month'),
-                                'nextMonth'=> gT('Next month'),
-                                'selectYear'=> gT('Select year'),
-                                'prevYear'=> gT('Previous year'),
-                                'nextYear'=> gT('Next year'),
-                                'selectDecade'=> gT('Select decade'),
-                                'prevDecade'=> gT('Previous decade'),
-                                'nextDecade'=> gT('Next decade'),
-                                'prevCentury'=> gT('Previous century'),
-                                'nextCentury'=> gT('Next century'),
-                                'selectTime'=> gT('Select time')
-                            ),
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     )); ?>

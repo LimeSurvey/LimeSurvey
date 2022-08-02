@@ -13,7 +13,7 @@ Yii::app()->getController()->renderPartial(
 ));?>
 
 <div class="modal-body selector--edit-role-container">
-    <div class="container-center form">
+    <div class="container form">
         <input type="hidden" name="userid" value="<?=$oUser->uid?>" />
         <div class="row">
             <div class="col-12 alert alert-info">

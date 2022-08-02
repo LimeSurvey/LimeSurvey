@@ -16,7 +16,7 @@ Yii::app()->getController()->renderPartial(
 )); ?>
 
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
 
         <?= $form->hiddenField($oUser, 'uid', ['uid' => 'User_Form_users_id']) ?>
         <div class="mb-3" id="UserManagement--errors">
@@ -55,12 +55,12 @@ Yii::app()->getController()->renderPartial(
                     <label><?= gT("Set password now?") ?></label>
                 </div>
                 <div class="btn-group col-6" data-bs-toggle="buttons">
+                    <input class="btn-check" type="radio" id="utility_set_password_yes" name="preset_password" value="1">
                     <label for="utility_set_password_yes" class="btn btn-outline-secondary col-xs-6">
-                        <input type="radio" id="utility_set_password_yes" name="preset_password" value="1">
                         <?= gT("Yes") ?>
                     </label>
-                    <label for="utility_set_password_no" class="btn btn-outline-secondary col-xs-6 active">
-                        <input type="radio" id="utility_set_password_no" checked="checked" name="preset_password" value="0">
+                    <input class="btn-check" type="radio" id="utility_set_password_no" checked="checked" name="preset_password" value="0">
+                    <label for="utility_set_password_no" class="btn btn-outline-secondary col-xs-6">
                         <?= gT("No") ?>
                     </label>
                 </div>

@@ -6,7 +6,6 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyResources');
 
-
 App()->getClientScript()->registerScript(
   "resources-panel-variables", "
 var jsonUrl = '';
@@ -25,9 +24,9 @@ var sAddParam = '';
 // @TODO Fix rendering!
 ?>
 
-<div class="row">
+<div class="container-fluid">
   <!-- resources panel -->
-    <div id='resources' class="container-fluid">
+    <div id='resources'>
         <div class="row">
             <!-- Export -->
             <div class="col-md-3">
@@ -41,29 +40,29 @@ var sAddParam = '';
                         'images' => gT('Images', 'unescaped')
                     ),
                     array(
-                    'class'=>'btn btn-outline-secondary',
-                        "data-href" => App()->request->getBaseUrl() . "/third_party/kcfinder/browse.php?language=" . sTranslateLangCode2CK(App()->language)
+                        'class'     =>'form-select',
+                        'data-href' => App()->request->getBaseUrl() . "/third_party/kcfinder/browse.php?language=" . sTranslateLangCode2CK(App()->language)
                     )
                 );
                 ?>
             </div>
-            <div class="col-md-6">
-        <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
+            <div class="col-md-auto mb-3">
+                <a href="<?php echo $this->createUrl('admin/export/sa/resources/export/survey/surveyid/'.$surveyid); ?>" target="_blank" class="btn btn-outline-secondary">
+                    <span class="fa fa-upload"></span>
                     <?php eT("Export resources as ZIP archive") ?>
                 </a>
-        <a class="btn btn-outline-secondary" href="" target='_blank' data-bs-toggle="modal" data-bs-target="#importRessourcesModal">
+                <a class="btn btn-outline-secondary" href="" target='_blank' data-bs-toggle="modal" data-bs-target="#importRessourcesModal">
                     <span class="fa fa-download"></span>
                     <?php eT("Import resources ZIP archive"); ?>
                 </a>
             </div>
-        </div>
-        <div class="row">
-            <br>
-        </div>
-        <div class="row">
             <div class="col-12">
-                <iframe id="browseiframe" src="<?php echo App()->request->getBaseUrl(); ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK(App()->language); ?>'"
-                        width="100%" height="600px"></iframe>
+                <iframe
+                    id="browseiframe"
+                    src="<?php echo App()->request->getBaseUrl(); ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK(App()->language); ?>'"
+                    width="100%"
+                    height="600px">
+                </iframe>
             </div>
         </div>
     </div>
@@ -81,4 +80,3 @@ var sAddParam = '';
     );
     ?>
 </div>
-

@@ -118,7 +118,8 @@ class UserGroupController extends LSBaseController
             $uid = Yii::app()->user->id;
             if (
                 $userGroup &&
-                ($userGroup->hasUser($uid) || Permission::model()->hasGlobalPermission('superadmin', 'read'))
+                (($userGroup->hasUser($uid) || $userGroup->owner_id == $uid) ||
+                    Permission::model()->hasGlobalPermission('superadmin', 'read'))
             ) {
                 $aData['userGroup'] = $userGroup;
             }
@@ -133,8 +134,8 @@ class UserGroupController extends LSBaseController
         if (Yii::app()->session['loginID']) {
             $aData["usergroupid"] = $ugid;
             $result = UserGroup::model()->requestViewGroup($ugid, Yii::app()->session["loginID"]);
-            $crow = $result[0];
             if ($result) {
+                $crow = $result[0];
                 $aData["groupfound"] = true;
                 $aData["groupname"] = $crow['name'];
                 if (!empty($crow['description'])) {
@@ -143,36 +144,8 @@ class UserGroupController extends LSBaseController
                     $aData["usergroupdescription"] = "";
                 }
             }
-
-            $aUserInGroupsResult = UserGroup::model()->findByPk($ugid);
-
-            $row = 1;
-            $userloop = array();
-            $bgcc = "oddrow";
-            foreach ($aUserInGroupsResult->users as $oUser) {
-                // @todo: Move the zebra striping to view
-                if ($bgcc == "evenrow") {
-                    $bgcc = "oddrow";
-                } else {
-                    $bgcc = "evenrow";
-                }
-                $userloop[$row]["userid"] = $oUser->uid;
-
-                //  output users
-                $userloop[$row]["rowclass"] = $bgcc;
-                if (Permission::model()->hasGlobalPermission('usergroups', 'update') && $oUser->parent_id == Yii::app()->session['loginID']) {
-                    $userloop[$row]["displayactions"] = true;
-                } else {
-                    $userloop[$row]["displayactions"] = false;
-                }
-
-                $userloop[$row]["username"] = $oUser->users_name;
-                $userloop[$row]["email"] = $oUser->email;
-
-                $row++;
-            }
-            $aData["userloop"] = $userloop;
-
+            $aData["useradddialog"] = false;
+            $aData["addableUsers"] = [];
             $aSearchCriteria = new CDbCriteria();
             $aSearchCriteria->compare("ugid", $ugid);
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -188,7 +161,7 @@ class UserGroupController extends LSBaseController
                     return \CHtml::encode($user->users_name) . " (" . \CHtml::encode($user->full_name) . ')';
                 });
                 // Remove group owner because an owner is automatically member of a group
-                unset($aNewUserListData[$aUserInGroupsResult->owner_id]);
+                unset($aNewUserListData[$userGroup->owner_id]);
                 $aData["addableUsers"] = array('-1' => gT("Please choose...")) + $aNewUserListData;
                 $aData["useraddurl"] = "";
             }
@@ -205,17 +178,25 @@ class UserGroupController extends LSBaseController
         $userGroupName = $aData['groupname'];
         $aData['pageTitle'] = $basePageTitle . ' : ' . $userGroupName;
 
+        if (isset($_GET['pageSize'])) {
+            Yii::app()->user->setState('pageSize', (int)$_GET['pageSize']);
+        }
+        $model = User::model();
+        $filterForm = Yii::app()->request->getPost('User', false);
+        if ($filterForm) {
+            $model->setAttributes($filterForm, false);
+        }
+
         $this->aData = $aData;
 
         $this->render('viewUserGroup_view', [
             'ugid' => $aData['ugid'],
-            'groupname' => $aData['groupname'],
             'groupfound' => $aData['groupfound'],
             'usergroupdescription' => $aData["usergroupdescription"],
             'headercfg' => $aData["headercfg"],
-            'userloop' => $aData["userloop"],
             'useradddialog' => $aData["useradddialog"],
-            'addableUsers' => $aData["addableUsers"]
+            'addableUsers' => $aData["addableUsers"],
+            'model' => $model
         ]);
     }
 
