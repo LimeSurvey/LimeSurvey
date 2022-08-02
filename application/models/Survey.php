@@ -2289,7 +2289,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function checkExpireAfterStart($attributes, $params)
     {
-        if(empty($this->startdate) || empty($this->expires)) {
+        if (empty($this->startdate) || empty($this->expires)) {
             return true;
         }
         if ($this->expires < $this->startdate) {
