@@ -41,13 +41,13 @@ Tokens = {
              } else {
                  // Hide date, set hidden input to "N"
                  $elDateContainer.classList.add('d-none');
-                $elHiddenInput.val('N');
+                 $elHiddenInput.value = 'N';
              }
          });
 
          // When user change date
          $elDate.addEventListener('change', function (e) {
-            $elHiddenInput.val(e.date.format($elDate.data('date-format')));
+             $elHiddenInput.value = $elDate.value;
          });
      },
      YesNo: function (el) {
@@ -89,7 +89,6 @@ $.fn.stickLabelOnLeft  = function(options)
     $distanceFromBorder = ( $maxWidth - $elWidestLeftLabel.width());
     if ( $distanceFromBorder < 0)
     {
-        console.log(that);
         that.css({
             position: "relative",
             left: $distanceFromBorder,
@@ -237,22 +236,22 @@ $(document).on('ready pjax:scriptcomplete', function(){
     if (modal.length) {
         modal.on('shown.bs.modal', function () {
             $('.yes-no-date-container').each(function(i,el){
-                Tokens.YesNoDate().onReadyMethod();
+                Tokens.YesNoDate(el);
             });
 
             $('.yes-no-container').each(function(i,el){
-                Tokens.YesNo().onReadyMethod();
+                Tokens.YesNo(el);
             });
         });
     }
 
     $(document).on('actions-updated', function() {
         $('.yes-no-date-container').each(function(i,el){
-            Tokens.YesNoDate(el).onReadyMethod();
+            Tokens.YesNoDate(el);
         });
 
         $('.yes-no-container').each(function(i,el){
-            Tokens.YesNo(el).onReadyMethod();
+            Tokens.YesNo(el);
         });
     });
 
