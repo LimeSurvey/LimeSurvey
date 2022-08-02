@@ -11,8 +11,8 @@
  * @uses YiiStrap.helpers.TbArray
  * @uses YiiStrap.helpers.TbHtml
  */
-Yii::import('yiistrap.helpers.TbArray');
-Yii::import('yiistrap.helpers.TbHtml');
+Yii::import('yiistrap_fork.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbHtml');
 
 class WhSwitch extends CInputWidget
 {

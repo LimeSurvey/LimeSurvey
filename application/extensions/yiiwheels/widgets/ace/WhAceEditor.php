@@ -9,8 +9,8 @@
  * @package YiiWheels.widgets.ace
  * @uses Yiistrap.helpers.TbHtml
  */
-Yii::import('yiistrap.helpers.TbHtml');
-Yii::import('yiistrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbHtml');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhAceEditor extends CInputWidget
 {

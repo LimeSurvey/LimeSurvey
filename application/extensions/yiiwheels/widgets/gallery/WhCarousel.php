@@ -12,8 +12,8 @@
  * @uses YiiStrap.helpers.TbArray
  * @uses YiiStrap.helpers.TbHtml
  */
-Yii::import('yiistrap.helpers.TbHtml');
-Yii::import('yiistrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbHtml');
+Yii::import('yiistrap_fork.helpers.TbArray');
 Yii::import('yiiwheels.widgets.gallery.WhGallery');
 
 class WhCarousel extends WhGallery
