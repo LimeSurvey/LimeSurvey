@@ -276,7 +276,6 @@ var onClickListAction =  function () {
      // Bootstrap switch with class "bootstrap-switch-boolean" will use the default boolean values.
      // e.g: question mandatory, question other, etc
      $('.bootstrap-switch-boolean').each(function(){
-         $(this).bootstrapSwitch();
          $(this).attr('value', false);                                           // we specify its value in a "visible" way (see point 1)
 
          // Switch change
@@ -290,7 +289,6 @@ function prepareBsSwitchInteger($gridid){
     // Bootstrap switch with class "bootstrap-switch-integer" will use integer values
     // e.g: question statistics_showgraph, question public_statistics, etc
     $('.bootstrap-switch-integer').each(function(){
-        $(this).bootstrapSwitch();
         $(this).attr('value', 0);                                               // we specify its value in a "visible" way (see point 1)
 
         // Switch change

@@ -91,7 +91,7 @@
 
                             <div class="col-md-7 offset-md-1">
                                 <?php if ($oSurvey->anonymized != 'Y'): ?>
-                                    <div id="massedit_completed-date-container" class="date-container selector_datechange"  style="display: none;">
+                                    <div id="massedit_completed-date-container" class="date-container selector_datechange d-none">
                                         <div id="massedit_completed-date_datetimepicker" class="input-group date">
                                             <input
                                                 class="YesNoDatePicker form-control"
@@ -211,7 +211,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <div id="massedit_sent-date-container" class="date-container selector_datechange" style="display: none;">
+                                <div id="massedit_sent-date-container" class="date-container selector_datechange d-none">
                                     <!-- Sent Date -->
                                     <div id="massedit_sent-date_datetimepicker" class="input-group date">
                                         <input
@@ -271,7 +271,7 @@
 
                             <div class="col-md-8">
 
-                                <div id="massedit_remind-date-container" class="date-container selector_datechange" style="display: none;">
+                                <div id="massedit_remind-date-container" class="date-container selector_datechange d-none">
 
                                     <div id="massedit_remind-date_datetimepicker" class="input-group date">
                                         <input
