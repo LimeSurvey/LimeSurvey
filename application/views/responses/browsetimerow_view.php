@@ -17,7 +17,7 @@
     </script>
     <?php
     $this->widget(
-        'yiistrap.widgets.TbGridView',
+        'yiistrap_fork.widgets.TbGridView',
         [
             'dataProvider'    => $model->search($surveyId, $language),
             'id'              => 'time-grid',

@@ -159,7 +159,7 @@ class SavedControl extends LSActiveRecord
         return array(
             array(
                 'header' => gT('Action'),
-                'class' => 'yiistrap.widgets.TbButtonColumn',
+                'class' => 'yiistrap_fork.widgets.TbButtonColumn',
                 'template' => '{editresponse}{delete}',
                 'htmlOptions' => array('class' => 'icon-btn-row'),
                 'buttons' => $this->gridButtons,

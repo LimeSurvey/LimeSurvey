@@ -8,7 +8,7 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body ">
 <?php
     $form = $this->beginWidget(
-        'yiistrap.widgets.TbActiveForm',
+        'yiistrap_fork.widgets.TbActiveForm',
         array(
             'id' => 'shareParticipantActiveForm',
             'action' => array('admin/participants/sa/shareParticipants'),
