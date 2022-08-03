@@ -96,12 +96,9 @@ class QuestionAdministrationController extends LSBaseController
         $this->aData['showSaveAndNewGroupButton'] = true;
         $this->aData['showSaveAndNewQuestionButton'] = true;
         $this->aData['closeUrl'] = Yii::app()->createUrl(
-            'questionGroupsAdministration/view/',
+            'questionAdministration/listquestions',
             [
-                'surveyid' => $oQuestion->sid,
-                'gid' => $oQuestion->gid,
-                'landOnSideMenuTab' => 'structure',
-                'mode' => 'overview',
+                'surveyid' => $surveyid
             ]
         );
 
