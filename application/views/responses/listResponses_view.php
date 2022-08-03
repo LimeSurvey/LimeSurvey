@@ -150,7 +150,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'filter' => TbHtml::dropDownList(
                                 'SurveyDynamic[completed_filter]',
                                 $model->completed_filter,
-                                ['' => gT('All'), 'Y' => gT('Yes'), 'N' => gT('No')]
+                                ['' => gT('All'), 'Y' => gT('Yes'), 'N' => gT('No')],
+                                ['class' => 'form-select']
                             )
                         ];
                     }

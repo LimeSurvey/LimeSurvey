@@ -487,6 +487,7 @@ class SettingsWidget extends CWidget
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
         $htmlOptions = $this->htmlOptions($metaData, $form);
+        $htmlOptions['class'] .= 'form-select ';
         $select2Options=array_merge(
             [
                 'minimumResultsForSearch' => 8,

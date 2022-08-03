@@ -11,7 +11,7 @@
     <h5 class="modal-title"><?=gT('Error')?></h5>
 </div>
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
         <div class="row selector--animated_row">
             <div class="col-12 text-center">
                 <div class="cross_mark">

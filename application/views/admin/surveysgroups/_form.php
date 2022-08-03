@@ -4,8 +4,8 @@
 /* @var $model SurveysGroups */
 /* @var $form CActiveForm */
 ?>
-<div class="row ls-flex-row align-content-center align-items-center">
-    <div class="form col-md-10">
+<div class="container-fluid">
+    <div class="form col-lg-5">
         <?php $updateRigth = $aRigths['update'] ?>
 
         <?php
@@ -29,24 +29,24 @@
         <?php echo $form->hiddenField($model, 'owner_id'); ?>
         <?php echo $form->hiddenField($model, 'gsid'); ?>
 
-        <div class="row">
+        <div class="mb-3">
             <?php echo $form->labelEx($model, 'name'); ?>
             <?php echo $form->textField($model, 'name', array('size' => 60, 'maxlength' => 100, 'readonly' => !$model->isNewRecord || !$updateRigth)); ?>
             <?php echo $form->error($model, 'name', array('errorCssClass' => 'text-danger')); ?>
         </div>
-        <div class="row">
+        <div class="mb-3">
             <?php echo $form->labelEx($model, 'title'); ?>
             <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 100, 'readonly' => !$updateRigth)); ?>
             <?php echo $form->error($model, 'title', array('errorCssClass' => 'text-danger')); ?>
         </div>
 
-        <div class="row">
+        <div class="mb-3">
             <?php echo $form->labelEx($model, 'description'); ?>
             <?php echo $form->textArea($model, 'description', array('rows' => 6, 'cols' => 50, 'readonly' => !$updateRigth)); ?>
             <?php echo $form->error($model, 'description', array('errorCssClass' => 'text-danger')); ?>
         </div>
 
-        <div class="row">
+        <div class="mb-3">
             <?php $model->sortorder = $model->sortorder ? $model->sortorder : $model->getNextOrderPosition(); ?>
             <?php echo $form->labelEx($model, 'sortorder'); ?>
             <?php echo $form->textField($model, 'sortorder', array('readonly' => !$updateRigth)); ?>
@@ -54,27 +54,27 @@
         </div>
 
         <!-- should be a selector based on group name -->
-        <div class="row">
+        <div class="mb-3">
             <?php echo $form->labelEx($model, 'parent_id'); ?>
-            <?php echo $form->dropDownList($model, 'parent_id', $model->getParentGroupOptions($model->gsid), array('disabled' => !$updateRigth)); ?>
+            <?php echo $form->dropDownList($model, 'parent_id', $model->getParentGroupOptions($model->gsid), array('disabled' => !$updateRigth, 'class' => 'form-select')); ?>
             <?php echo $form->error($model, 'parent_id', array('errorCssClass' => 'text-danger')); ?>
         </div>
 
         <!-- User list -->
-        <div class="row">
+        <div class="mb-3">
             <?php echo $form->labelEx($model, 'owner_id'); ?>
-            <?php echo $form->dropDownList($model, 'owner_id', CHtml::listData($oUsers, 'uid', 'full_name'), array('disabled' => !$aRigths['owner_id'])); ?>
+            <?php echo $form->dropDownList($model, 'owner_id', CHtml::listData($oUsers, 'uid', 'full_name'), array('disabled' => !$aRigths['owner_id'], 'class' => 'form-select')); ?>
             <?php echo $form->error($model, 'owner_id', array('errorCssClass' => 'text-danger')); ?>
         </div>
 
         <!-- User list -->
-        <div class="row">
-            <?php echo $form->labelEx($model, 'alwaysavailable'); ?>
-            <?php echo $form->checkBox($model, 'alwaysavailable', array('disabled' => !$updateRigth && $model->gsid == 1)); ?>
+        <div class="form-check">
+            <?php echo $form->checkBox($model, 'alwaysavailable', array('disabled' => !$updateRigth && $model->gsid == 1, 'class' => 'form-check-input')); ?>
+            <?php echo $form->labelEx($model, 'alwaysavailable', array('class' => 'form-check-label')); ?>
             <?php echo $form->error($model, 'alwaysavailable', array('errorCssClass' => 'text-danger')); ?>
-            <p class="help-block"><?= gT("When public mode is active, any user can see the survey group. This allows any user to put surveys in this group."); ?></p>
+            <div class="form-text"><?= gT("When public mode is active, any user can see the survey group. This allows any user to put surveys in this group."); ?></div>
             <?php if ($model->gsid == 1) : ?>
-                <p class="help-block"><?= gT("The default group is always public."); ?></p>
+                <div class="form-text"><?= gT("The default group is always public."); ?></div>
             <?php endif; ?>
         </div>
 

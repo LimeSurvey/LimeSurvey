@@ -18,23 +18,23 @@ $rightSideContentSummary = $this->render('includes/questionSummaryTopbarRight_vi
         <?php if ($oQuestion->qid !== 0) : ?>
             <div id="question-summary-topbar" class='row' <?= empty($tabOverviewEditor) || $tabOverviewEditor == 'editor' ? 'style="display: none;"' : "" ?>>
                 <!-- Left Side -->
-                <div class="col-lg-8">
+                <div class="col">
                     <?= $leftSideContentSummary ?>
                 </div>
 
-                <div class="col-lg-4 pull-right text-end">
+                <div class="col-md-auto pull-right text-end">
                     <?= $rightSideContentSummary ?>
                 </div>
             </div>
         <?php endif; ?>
         <div id="question-create-edit-topbar" class='row' <?= !empty($tabOverviewEditor) && $tabOverviewEditor != 'editor' ? 'style="display: none;"' : "" ?>>
             <!-- Left Side -->
-            <div class="<?= !empty($rightSideContent) ? 'col-lg-6' : 'col-12' ?>">
+            <div class="col">
                 <?= $leftSideContentEditor ?>
             </div>
 
             <!-- Right Side -->
-            <div class="<?= !empty($leftSideContentEditor) ? 'col-lg-6' : 'col-12' ?> pull-right text-end">
+            <div class="col-md-auto pull-right text-end">
                 <?= $rightSideContent ?>
             </div>
         </div>

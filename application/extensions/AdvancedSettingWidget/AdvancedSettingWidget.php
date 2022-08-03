@@ -41,6 +41,14 @@ class AdvancedSettingWidget extends CWidget
             /* @fixme : Must be done in Model : QuestionTheme must be allowed to have own translation, plugin can have own translation */
             $this->setting['help'] = gT($this->setting['help'], 'unescaped');
         }
+
+        // Translate options
+        if (!empty($this->setting['options'])) {
+            foreach ($this->setting['options'] as $optionValue => $optionText) {
+                $this->setting['options'][$optionValue] = is_string($optionText) ? gT($optionText) : $optionText;
+            }
+        }
+
         $inputBaseName = "advancedSettings[" . strtolower($this->setting['category']) . "][" . $this->setting['name'] ."]";
         $content = $this->render($this->setting['inputtype'],
             ['inputBaseName' => $inputBaseName]

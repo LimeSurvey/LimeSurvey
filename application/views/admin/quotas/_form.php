@@ -5,7 +5,7 @@
 /* @var CActiveForm $form */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings */
 ?>
-<div class="container-center">
+<div class="container">
     <?php $form = $this->beginWidget('CActiveForm', array('id'=>'editquota',)); ?>
     <?php echo $form->errorSummary($oQuota); ?>
         

@@ -11,7 +11,7 @@
     <?php if ($question->qid !== 0): ?>
         <form>
         <!-- Question summary -->
-        <div class="container-center scoped-new-questioneditor">
+        <div class="container-fluid scoped-new-questioneditor">
             <div class="pagetitle h3">
                 <?php eT('Question summary'); ?>&nbsp;
                 <small>

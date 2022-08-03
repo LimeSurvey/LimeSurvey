@@ -9,7 +9,7 @@ var LS = LS || {
  */
 var filterData = {};
 
- Tokens = {
+Tokens = {
      /**
       * jQuery Plugin to manage the date in token modal edit.
       * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
@@ -64,7 +64,6 @@ var filterData = {};
      }
  };
 
-
 /**
  * Provide to this function a element containing form-groups,
  * it will stick the text labels on its border
@@ -90,7 +89,6 @@ $.fn.stickLabelOnLeft  = function(options)
     $distanceFromBorder = ( $maxWidth - $elWidestLeftLabel.width());
     if ( $distanceFromBorder < 0)
     {
-        console.log(that);
         that.css({
             position: "relative",
             left: $distanceFromBorder,
@@ -218,7 +216,7 @@ function validateNotEmptyTokenForm() {
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-$(document).on('ready  pjax:scriptcomplete', function(){
+$(document).on('ready pjax:scriptcomplete', function(){
 
     if($('#sent-yes-no-date-container').length > 0)
     {
@@ -231,9 +229,31 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         document.querySelectorAll('.yes-no-container').forEach((el) => {
             Tokens.YesNo(el);
         });
-
         initValidFromValidUntilPickers();
     }
+
+    var modal = $('#massive-actions-modal-edit-0');
+    if (modal.length) {
+        modal.on('shown.bs.modal', function () {
+            $('.yes-no-date-container').each(function(i,el){
+                Tokens.YesNoDate(el);
+            });
+
+            $('.yes-no-container').each(function(i,el){
+                Tokens.YesNo(el);
+            });
+        });
+    }
+
+    $(document).on('actions-updated', function() {
+        $('.yes-no-date-container').each(function(i,el){
+            Tokens.YesNoDate(el);
+        });
+
+        $('.yes-no-container').each(function(i,el){
+            Tokens.YesNo(el);
+        });
+    });
 
     var initialScrollValue = $('.scrolling-wrapper').scrollLeft();
     var useRtl = $('input[name="rtl"]').val() === '1';

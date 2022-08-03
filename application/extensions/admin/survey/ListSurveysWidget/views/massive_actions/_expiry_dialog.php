@@ -7,7 +7,7 @@ $dateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
 <?php
 $form = $this->beginWidget('CActiveForm', array('id' => 'survey-expiry',)); ?>
 
-<div id='publication' class="container-center">
+<div id='publication' class="container">
     <div class="row">
         <!-- Expiry date/time -->
         <div class="mb-3">

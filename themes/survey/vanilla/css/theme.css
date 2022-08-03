@@ -522,7 +522,7 @@ table > tbody > tr > td.ddprefix {
     table.ls-answers tr {
         padding: 1em;
     }
-
+    table.ls-answers  tr th {
     table.ls-answers tr th {
         font-size: 1.1em;
         text-align: center;

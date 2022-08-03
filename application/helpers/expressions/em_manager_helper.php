@@ -162,9 +162,18 @@ class LimeExpressionManager
     private $pageRelevanceInfo;
 
     /**
-     *
-     * @var array
-     */
+    * @var array|null $pageTailorInfo
+    * Array of array of information about HTML id to update with javascript function
+    * [[
+    *   'questionNum' : question number
+    *   'num' : internal number of javascript function
+    *   'id' : id of HTML element
+    *   'raw' : Raw Expression
+    *   'result' :
+    *   'vars' : var used in javascript function
+    *   'js' : final javascript function
+    * ]]
+    */
     private $pageTailorInfo;
     /**
      * internally set to true (1) for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
@@ -6892,6 +6901,7 @@ class LimeExpressionManager
 
         $jsParts = [];
         $inputParts = [];
+        /* string[] all needed variable for LEMalias2varName and LEMvarNameAttr */
         $allJsVarsUsed = [];
         $rowdividList = [];   // list of subquestions needing relevance entries
         /* All function for expression manager */
@@ -6953,24 +6963,25 @@ class LimeExpressionManager
                     }
                 }
             }
-            $pageRelevanceInfo[] = array(
-                'qid' => 0,
-                'gseq' => $LEM->currentGroupSeq,
-                'eqn' => '',
-                'result' => true,
-                'numJsVars' => 0,
-                'relevancejs' => '',
-                'relevanceVars' => '',
-                'jsResultVar' => '',
-                'type' => '',
-                'hidden' => false,
-                'hasErrors' => false,
-            );
+        }
+
+        /**
+         * @var array[] the javascript and related variable,
+         * reconstruct from $LEM->pageTailorInfoto get questionId as key
+         **/
+        $pageTailorInfo = array();
+        if (is_array($LEM->pageTailorInfo)) {
+            foreach ($LEM->pageTailorInfo as $tailors) {
+                if (is_array($tailors)) {
+                    foreach ($tailors as $tailor) {
+                        $pageTailorInfo[$tailor['questionNum']][] = $tailor;
+                    }
+                }
+            }
         }
         $valEqns = [];
         $relEqns = [];
         $relChangeVars = [];
-
         $dynamicQinG = []; // array of questions, per group, that might affect group-level visibility in all-in-one mode
         $GalwaysRelevant = []; // checks whether a group is always relevant (e.g. has at least one question that is always shown)
         if (is_array($pageRelevanceInfo)) {
@@ -6986,17 +6997,13 @@ class LimeExpressionManager
                 $valParts = [];    // validation
                 $relJsVarsUsed = [];   // vars used in relevance and tailoring
                 $valJsVarsUsed = [];   // vars used in validations
-                foreach ($LEM->pageTailorInfo as $tailor) {
-                    if (is_array($tailor)) {
-                        foreach ($tailor as $sub) {
-                            if ($sub['questionNum'] == $arg['qid']) {
-                                $tailorParts[] = $sub['js'];
-                                $vars = explode('|', $sub['vars']);
-                                if (is_array($vars)) {
-                                    $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
-                                    $relJsVarsUsed = array_merge($relJsVarsUsed, $vars);
-                                }
-                            }
+                if (!empty($pageTailorInfo[$arg['qid']])) {
+                    foreach ($pageTailorInfo[$arg['qid']] as $tailor) {
+                        $tailorParts[] = $tailor['js'];
+                        $vars = array_filter(explode('|', $tailor['vars']));
+                        if (!empty($vars)) {
+                            $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
+                            $relJsVarsUsed = array_merge($relJsVarsUsed, $vars);
                         }
                     }
                 }
@@ -7038,7 +7045,7 @@ class LimeExpressionManager
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
-                if ($arg['qid'] && ($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
+                if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
@@ -7313,10 +7320,8 @@ class LimeExpressionManager
                     // Launch updated event after update value to allow equation update propagation
                     $relParts[] = "  $('#" . substr($jsResultVar, 1, -1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('updated');\n";
                 }
-                if ($arg['qid']) {
-                    $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
-                    $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
-                }
+                $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
+                $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
 
                 $relParts[] = "}\n";
                 if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
@@ -7331,10 +7336,10 @@ class LimeExpressionManager
                     $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
-                } elseif ($arg['qid']) {
+                } else {
                     // Second time : now if relevance is true: Group is always visible (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
-                    if ($arg['qid'] && !($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                    if (!($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
                         $GalwaysRelevant[$arg['gseq']] = true;
                     }
                 }
@@ -7518,8 +7523,32 @@ class LimeExpressionManager
                 }
             }
         }
-
+        /* Tailoring out of question scope */
+        if (!empty($pageTailorInfo[0])) {
+            $jsParts[] = "LEMrel0(sgqa);\n";
+        }
         $jsParts[] = "\n}\n";
+        /* ailoring out of question scope for global action */
+        if (!empty($pageTailorInfo[0])) {
+            $tailorParts = [];
+            $tailorJsVarsUsed = [];
+            foreach ($pageTailorInfo[0] as $tailor) {
+                $tailorParts[] = $tailor['js'];
+                $vars = array_filter(explode('|', $tailor['vars']));
+                if (!empty($vars)) {
+                    $tailorJsVarsUsed = array_unique(array_merge($tailorJsVarsUsed, $vars));
+                }
+            }
+            $allJsVarsUsed = array_merge($allJsVarsUsed, $tailorJsVarsUsed);
+            $globalJS = "function LEMrel0(sgqa){\n";
+            $globalJS .= "  var UsesVars = ' " . implode(' ', $tailorJsVarsUsed) . " ';\n";
+            $globalJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+            $globalJS .= "    return;\n";
+            $globalJS .= "  }\n";
+            $globalJS .= implode("", $tailorParts);
+            $globalJS .= "}\n";
+            $relEqns[] = $globalJS;
+        }
 
         $jsParts[] = implode("\n", $relEqns);
         $jsParts[] = implode("\n", $valEqns);

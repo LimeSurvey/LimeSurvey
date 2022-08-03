@@ -8,7 +8,7 @@
     </h3>
 </div>
 <div class="modal-body">
-    <div class="container-center">        
+    <div class="container">        
         <?=TbHtml::formTb(null, App()->createUrl('admin/usermanagement', ['sa' => 'saveUserPermissions']), 'post', ["id"=>"UserManagement--modalform"])?>
             <input type='hidden' name='userid' value='<?php echo $oUser->uid;?>' />
             <div class="row ls-space margin top-5">

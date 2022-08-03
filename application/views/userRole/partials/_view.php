@@ -8,7 +8,7 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
         <div class="card">
             <div class="col-12 card-body">
                 <?=$oModel->description?>

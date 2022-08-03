@@ -4,7 +4,7 @@
 /* @var CActiveForm $form */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings */
 ?>
-<div class="container-center">
+<div class="container">
     <div class="row">
         <div class="col-12 border-start border-2 border-secondary">
                 <!-- Language tabs -->

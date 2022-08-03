@@ -6,7 +6,7 @@ Yii::app()->getController()->renderPartial(
 );
 ?>
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
         <div class="row">
             <div class="col-12 text-center">
                 <div class="check_mark">
@@ -23,7 +23,7 @@ Yii::app()->getController()->renderPartial(
             <ul class="list-group">
             <?php foreach($randomUsers as $randomUser) {?>
                 <li class="list-group-item">
-                    <div class="container-center">
+                    <div class="container">
                         <div class="row">
                             <div class="col-6">
                                 <?=gT('Username')?>   

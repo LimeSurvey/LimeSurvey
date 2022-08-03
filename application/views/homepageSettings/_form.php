@@ -6,7 +6,7 @@
 /* @var $icons_length interger */
 /* @var $icons array */
 ?>
-<div class="container container-center">
+<div class="container">
     <?php $form = $this->beginWidget('TbActiveForm',
         array(
             'id' => 'boxes-form',

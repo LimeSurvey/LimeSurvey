@@ -11,7 +11,7 @@ echo viewHelper::getViewTestTag('modifyUser');
 </div>
 
 
-<div class="container container-center">
+<div class="container">
     <div class="row" style="margin-bottom: 100px">
       <div class="col-12 content-right">
         <?php $form=$this->beginWidget('TbActiveForm', array(

@@ -23,7 +23,7 @@ Yii::app()->getController()->renderPartial(
 )?>
 
 <div class="modal-body">
-    <div class="container-center">
+    <div class="container">
         <div class="row">
             <div class="alert alert-info">
                 <?=$note?>

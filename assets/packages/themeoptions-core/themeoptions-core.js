@@ -454,9 +454,6 @@ var prepare = function () {
 
     var deferred = $.Deferred();
 
-    //activate the bootstrap switch for checkboxes
-    $('.action_activate_bootstrapswitch').bootstrapSwitch();
-
     var themeOptionStarter = new ThemeOptions();
     themeOptionStarter();
 
