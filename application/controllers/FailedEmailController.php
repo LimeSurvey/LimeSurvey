@@ -85,6 +85,7 @@ class FailedEmailController extends LSBaseController
                 if (!empty($emailsByType)) {
                     $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
                     if (!$preserveResend) {
+                        // only delete FailedEmail entries that have succeeded
                         $criteria->addCondition('status', FailedEmail::STATE_SUCCESS);
                         FailedEmail::model()->deleteAll($criteria);
                     }

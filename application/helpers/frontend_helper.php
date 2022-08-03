@@ -437,12 +437,13 @@ function submittokens($quotaexit = false)
 }
 
 /**
-* Send a submit notification to the email address specified in the notifications tab in the survey settings
- * @var int $surveyid survey ID of currently used survey
- * @var array $emails Emailnotifications that should be sent ['responseTo' => ['failedEmailId1' => 'recipient1', 'failedEmailId2' => 'recipient2'], 'notificationTo' => ['failedEmailId1' => 'recipient1', 'failedEmailId2', 'recipient2']]
- * @var boolean $preserveResend whether previously failed emails should be kept in the FailedEmail table after a successfull resend
- * @var boolean $return whether the function should return values
-*/
+ * Send a submit notification to the email address specified in the notifications tab in the survey settings
+ * @throws CException
+ * @param array $emails Emailnotifications that should be sent ['responseTo' => ['failedEmailId1' => 'recipient1', 'failedEmailId2' => 'recipient2'], 'notificationTo' => ['failedEmailId1' => 'recipient1', 'failedEmailId2', 'recipient2']]
+ * @param boolean $preserveResend whether previously failed emails should be kept in the FailedEmail table after a successfull resend
+ * @param bool $return whether the function should return values
+ * @param int $surveyid survey ID of currently used survey
+ */
 function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveResend = false, bool $return = false)
 {
     // @todo: Remove globals
@@ -538,7 +539,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
         foreach ($aEmailNotificationTo as $key => $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
-                $failedEmails++;
+                $failedEmailCount++;
                 saveFailedEmail($sRecipient, $surveyid, 'admin_notification', $emailLanguage, $mailer->getError());
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
@@ -561,7 +562,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
         foreach ($aEmailResponseTo as $key => $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
-                $failedEmails++;
+                $failedEmailCount++;
                 saveFailedEmail($sRecipient, $surveyid, 'admin_responses', $emailLanguage, $mailer->getError());
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
@@ -595,8 +596,9 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
  * @param $errorMessage
  * @return bool
  */
-function saveFailedEmail($id, $recipient, $surveyId, $emailType, $language, $errorMessage): bool {
-    $failedEmailModel = new FailedEmail;
+function saveFailedEmail($id, $recipient, $surveyId, $emailType, $language, $errorMessage): bool
+{
+    $failedEmailModel = new FailedEmail();
     $failedEmail = $failedEmailModel->findByPk($id);
     if (isset($failedEmail)) {
         $failedEmail->surveyid = $surveyId;
@@ -618,13 +620,14 @@ function saveFailedEmail($id, $recipient, $surveyId, $emailType, $language, $err
     return $failedEmailModel->save(false);
 }
 
-function preserveSuccessFailedEmail($id) {
+function preserveSuccessFailedEmail($id)
+{
     $model = new FailedEmail();
     $failedEmail = $model->findByPk($id);
     if (isset($failedEmail)) {
         $failedEmail->status = 'SEND SUCCESS';
         $failedEmail->updated = date('Y-m-d H:i:s');
-        return $failedEmail->save();;
+        return $failedEmail->save();
     }
     return false;
 }
