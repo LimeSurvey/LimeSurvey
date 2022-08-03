@@ -7,7 +7,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <img alt='logo' id="profile-img" class="profile-img-card img-responsive mx-auto"
+                                <img alt='logo' id="profile-img" class="profile-img-card img-fluid mx-auto"
                                      src="<?php
                                      echo LOGO_URL; ?>"/>
                             </div>

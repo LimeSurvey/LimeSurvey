@@ -303,8 +303,8 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
 
     $('.selector__open_lightbox').on('click', function (e) {
         e.preventDefault();
-        var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
-        var imgTitle = $($(this).data('target')).val();
+        var imgSrc = $($(this).data('bs-target')).find('option:selected').data('lightbox-src');
+        var imgTitle = $($(this).data('bs-target')).val();
         imgTitle = imgTitle.split('/').pop();
         $('#lightbox-modal').find('.selector__title').text(imgTitle);
         $('#lightbox-modal').find('.selector__image').attr({'src': imgSrc, 'alt': imgTitle});
