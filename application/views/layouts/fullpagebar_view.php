@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Left actions -->
-            <div class="col-lg-6 text-start">
+            <div class="col text-start">
 
                 <!-- Themes -->
                 <?php if (isset($fullpagebar['themes'])) : ?>
@@ -78,7 +78,7 @@
             </div>
 
             <!-- Right actions -->
-            <div class="col-lg-6 text-end">
+            <div class="col-md-auto text-end">
 
                 <!-- Close -->
             <?php if (isset($fullpagebar['closebutton']['url'])) : ?>
