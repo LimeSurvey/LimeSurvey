@@ -158,29 +158,38 @@ function guidGenerator() {
 function validateSettingsForm($form) {
     switch ($form.attr('id')) {
         case 'publication':
-            return validateEndDate();
+            return validatePublicationForm();
         default:
             return true;
     }
 }
 
 /**
- * Validates that the expiration date is not lower than the start date
+ * Validates the "Publication & access" form
  */
-function validateEndDate() {
+ function validatePublicationForm() {
     const startDatePicker = $('#startdate_datetimepicker').data('DateTimePicker');
+    const expiresDatePicker = $('#expires_datetimepicker').data('DateTimePicker');
+
+    // expirationLowerThanStartError defined in _publication_panel.php
+    return validateEndDateHigherThanStart(startDatePicker, expiresDatePicker, expirationLowerThanStartError);
+ }
+
+/**
+ * Validates that an end date is not lower than a start date
+ */
+function validateEndDateHigherThanStart(startDatePicker, endDatePicker, errorMessage) {
     if (!startDatePicker || !startDatePicker.date()) {
         return true;
     }
-    const expiresDatePicker = $('#expires_datetimepicker').data('DateTimePicker');
-    if (!expiresDatePicker || !expiresDatePicker.date()) {
+    if (!endDatePicker || !endDatePicker.date()) {
         return true;
     }
-    const difference = expiresDatePicker.date().diff(startDatePicker.date());
+    const difference = endDatePicker.date().diff(startDatePicker.date());
     if (difference >= 0) {
         return true;
     }
-    LS.LsGlobalNotifier.createFlash(expirationLowerThanStartError, 'alert-danger fade in');
+    LS.LsGlobalNotifier.createFlash(errorMessage, 'alert-danger fade in');
     return false;
 }
 
