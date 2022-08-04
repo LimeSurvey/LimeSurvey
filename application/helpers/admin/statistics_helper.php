@@ -584,6 +584,7 @@ class statistics_helper
         $qtitle = "";
         $qquestion = "";
         $qtype = "";
+        $subquestionText = "";
         $sQuestionType = substr($rt, 0, 1);
         $fieldmap = createFieldMap($survey, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
@@ -1162,6 +1163,7 @@ class statistics_helper
                     //list IDs and answer codes in brackets
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1179,6 +1181,7 @@ class statistics_helper
 
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1197,6 +1200,7 @@ class statistics_helper
                     //output
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1213,6 +1217,7 @@ class statistics_helper
                     }
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1231,6 +1236,7 @@ class statistics_helper
 
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "] [" . $ltext . "]";
+                    $subquestionText = $atext;
                     break;
 
                 case Question::QT_COLON_ARRAY_NUMBERS: // Array (Multiple Flexi) (Numbers)
@@ -1287,6 +1293,7 @@ class statistics_helper
                     //output
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1380,6 +1387,7 @@ class statistics_helper
                     //adapt title and question
                     $qtitle = $qtitle . " [" . $sSubquestion . "][" . $labelno . "]";
                     $qquestion = $qastring . $labelheader;
+                    $subquestionText = $sSubquestion;
                     break;
 
 
@@ -1409,7 +1417,15 @@ class statistics_helper
             $alist[] = array("", gT("No answer"), false, 'is_no_answer');
         }
 
-        return array("alist" => $alist, "qtitle" => $qtitle, "qquestion" => $qquestion, "qtype" => $qtype, "statisticsoutput" => $statisticsoutput, "parentqid" => (int)$qqid);
+        return [
+            "alist" => $alist,
+            "qtitle" => $qtitle,
+            "qquestion" => $qquestion,
+            "qtype" => $qtype,
+            "statisticsoutput" => $statisticsoutput,
+            "parentqid" => (int)$qqid,
+            "subquestionText" => $subquestionText,
+        ];
     }
 
     /**
