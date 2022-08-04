@@ -89,4 +89,94 @@ class SurveyURLParameter extends LSActiveRecord
     {
         return Yii::app()->db->createCommand()->insert('{{survey_url_parameters}}', $aData);
     }
+
+    /**
+     * @return CActiveDataProvider
+     */
+    public function search()
+    {
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+
+        $survey = Survey::model()->findByPk($this->sid);
+        $language = $survey->language;
+
+        $criteria = new CDbCriteria();
+        $criteria->with = ['question', 'question.questionl10ns', 'subquestion', 'subquestion.questionl10ns' => ['alias' => 'subquestionl10ns']];
+        $criteria->together = true;
+        $criteria->condition = 't.sid=:surveyid AND (questionl10ns.language=:language OR questionl10ns.language IS NULL) AND (subquestionl10ns.language=:language OR subquestionl10ns.language IS NULL)';
+        $criteria->params = (array(':surveyid' => $this->sid, ':language' => $language));
+        //$criteria->compare('group_name', $this->group_name, true);
+
+        /*$surveyId = $this->sid;
+        $sBaseLanguage = Survey::model()->findByPk($surveyId)->language;
+        $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $surveyId]);
+        
+        $rows = [];
+        foreach ($aSurveyParameters as $oSurveyParameter) {
+            $row = $oSurveyParameter;//->attributes;
+            $rows[] = $row;
+        }*/
+
+        $sort = new CSort();
+        $sort->defaultOrder = array('parameter' => false, 'target_question' => false);
+        $sort->attributes = array(
+            'parameter' => array(
+                'asc' => 'parameter',
+                'desc' => 'parameter desc',
+            ),
+            'target_question' => array(
+                'asc' => 'question.title, questionl10ns.question, subquestionl10ns.question',
+                'desc' => 'subquestionl10ns.question desc, questionl10ns.question desc, question.title desc',
+            ),
+        );
+
+        /*$dataProvider = new CArrayDataProvider($rows, array(
+            'pagination' => array(
+                'pageSize' => $pageSize,
+                'pageVar' => 'page'
+            ),
+        ));*/
+
+        $dataProvider = new CActiveDataProvider(get_class($this), array(
+            'criteria' => $criteria,
+
+            'sort' => $sort,
+
+            'pagination' => array(
+                'pageSize' => $pageSize,
+            ),
+        ));
+
+        return $dataProvider;
+    }
+
+    /**
+     * @return string
+     */
+    public function getButtons()
+    {
+        $buttons = "<div class='icon-btn-row'>";
+
+        // Edit
+        $buttons .= '<button class="btn btn-sm btn-default surveysettings_edit_intparameter" data-id="' . $this->id . '" data-sid="' . $this->sid . '" data-qid="' . $this->targetqid . '" data-sqid="' . $this->targetsqid . '"><i class="fa fa-pencil"></i></button>';
+
+        // Delete
+        $buttons .= '<button class="btn btn-sm btn-default surveysettings_delete_intparameter" data-id="' . $this->id . '" data-sid="' . $this->sid . '" data-qid="' . $this->targetqid . '" data-sqid="' . $this->targetsqid . '"><i class="fa fa-trash text-danger"></i></button>';
+
+        $buttons .= "</div>";
+        return $buttons;
+    }
+
+    public function getQuestionTitle()
+    {
+        $baseLanguage = Survey::model()->findByPk($this->sid)->language;
+        $title = '';
+        if ($this->targetqid != '') {
+            $title = $this->question->title . ": " . ellipsize(flattenText($this->question->questionl10ns[$baseLanguage]->question, false, true), 43, .70);
+        }
+        if ($this->targetsqid != '') {
+            $title .= (' - ' . ellipsize(flattenText($this->subquestion->questionl10ns[$baseLanguage]->question, false, true), 30, .75));
+        }
+        return $title;
+    }
 }

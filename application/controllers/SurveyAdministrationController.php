@@ -3195,6 +3195,21 @@ class SurveyAdministrationController extends LSBaseController
         ];
         $aData['questions'] = $aQuestions;
 
+        $model = new SurveyURLParameter('search');
+        $model->sid = $survey->sid;
+
+        $aData['updateUrl'] = Yii::app()->createUrl('surveyAdministration/getUrlParamsJson', ['surveyid' => $survey->sid, 'subaction' => 'panelintegration']);
+
+        /*if (isset($_GET['QuestionGroup'])) {
+            $model->attributes = $_GET['QuestionGroup'];
+        }*/
+
+        if (isset($_GET['pageSize'])) {
+            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+        }
+
+        $aData['model'] = $model;
+
         App()->getClientScript()->registerPackage('jquery-datatable');
         return $aData;
     }

@@ -26,7 +26,7 @@ var defineActions = function (dataArray) {
  * Bind to submit event
  */
 function PostParameterGrid() {
-    var rowsData = [],
+    /*var rowsData = [],
         dt = $('#urlparams').DataTable();
     dt.rows().every(
         function (rowId, tableLoop, rowLoop) {
@@ -36,7 +36,7 @@ function PostParameterGrid() {
     var jsonString = '{}';
     try {
         jsonString = JSON.stringify(rowsData);
-    } catch (e) {}
+    } catch (e) {}*/
     $('#allurlparams').val(jsonString);
 
 }
@@ -209,7 +209,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                     dataSet.push(rowArray);
                 });
 
-                $("#urlparams").DataTable({
+                /*$("#urlparams").DataTable({
                     columns:[
                         {data: 'id', visible: false},
                         {data: 'actionBtn', label: i10n['Action'], orderable: false},
@@ -233,13 +233,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                     rowId: 'id',
                     paging: false,
                     dom: "<'#dt-toolbar'>f<t>i"
-                });
-                var addParamButton = $('<button class="btn btn-success" id="addParameterButton">'+i10n['Add URL parameter']+'</button>');
-                $('#dt-toolbar').addClass('pull-left clearfix').append(addParamButton)
-                    .on('click', '#addParameterButton', function(e){
+                });*/
+                $('#addParameterButton').on('click', function(e){
                         e.preventDefault();
                         newParameter(e);
-                    });
+                });
                 $("#urlparams").css('width','100%')
                     .on('click', '.surveysettings_edit_intparameter', function(e){
                         e.preventDefault();
