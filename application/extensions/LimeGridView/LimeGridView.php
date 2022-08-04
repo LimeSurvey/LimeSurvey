@@ -74,5 +74,18 @@ class LimeGridView extends CLSGridView
         }
         $cs->registerScriptFile($this->baseScriptUrl . '/jquery.yiigridview.js', LSYii_ClientScript::POS_PREBEGIN);
         $cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#$id').yiiGridView($options);", LSYii_ClientScript::POS_POSTSCRIPT);
+
+		$script = '
+			jQuery(document).on("change", "#' . $id . ' .changePageSize", function(){
+				var pageSizeName = $(this).attr("name");
+				if (!pageSizeName) {
+					pageSizeName = "pageSize";
+				}
+				var data = $("#' . $id . ' .filters input, #' . $id . ' .filters select").serialize();
+				data += (data ? "&" : "") + pageSizeName + "=" + $(this).val();
+				$.fn.yiiGridView.update("' . $id . '", {data: data});
+			});
+		';
+		Yii::app()->getClientScript()->registerScript('pageChanger#' . $id, $script, LSYii_ClientScript::POS_POSTSCRIPT);
     }
 }

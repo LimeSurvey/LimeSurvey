@@ -1706,7 +1706,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
         $('.lang-hide').hide();
         const languages = languageJson.langs.split(';');
-        $('.lang-' + languages[0]).show();
+        $('.lang-switch-button[data-lang="' + languages[0] + '"]').trigger('click');
 
         // TODO: Duplication.
         $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
