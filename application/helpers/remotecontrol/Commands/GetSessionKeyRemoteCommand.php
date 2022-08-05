@@ -55,9 +55,9 @@ class GetSessionKeyRemoteCommand extends RemoteCommandBase
     protected function doLogin($sUsername, $sPassword, $sPlugin)
     {
         /* @var $identity LSUserIdentity */
-        $identity = new LSUserIdentity($sUsername, $sPassword);
+        $identity = new \LSUserIdentity($sUsername, $sPassword);
         $identity->setPlugin($sPlugin);
-        $event = new PluginEvent('remoteControlLogin');
+        $event = new \PluginEvent('remoteControlLogin');
         $event->set('identity', $identity);
         $event->set('plugin', $sPlugin);
         $event->set('username', $sUsername);

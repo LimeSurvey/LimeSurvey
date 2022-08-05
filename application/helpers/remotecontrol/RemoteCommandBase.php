@@ -12,6 +12,8 @@ use Yii;
  */
 abstract class RemoteCommandBase
 {
+    public const INVALID_SESSION_KEY = 'Invalid session key';
+
     abstract public function run();
 
     protected function checkSessionKey($sessionKey)
