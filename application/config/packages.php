@@ -119,7 +119,8 @@ return array(
         )
     ),
 
-    'bootstrap-rtl'=>array( /* Adding boostrap rtl package */
+    /*
+    'bootstrap-rtl'=>array(
         'devBaseUrl'  => 'assets/bootstrap_5/',
         'basePath' => 'bootstrap',
         'css'=> array(
@@ -129,6 +130,7 @@ return array(
             'build/js/bootstrap_5.min.js',
         ),
     ),
+     */
     'ckeditor' => array(
         'devBaseUrl'  => 'assets/packages/ckeditor',
         'basePath' => 'core.ckeditor',

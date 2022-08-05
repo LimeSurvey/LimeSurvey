@@ -37,7 +37,40 @@ return array(
     // This package replace the Yiistrap register() function
     // Then instead of using the composer dependency system for themes
     // We can use the package dependency system (easier for now)
-    'bootstrap' => array(
+    'bootstrap' => new class() implements ArrayAccess {
+        private $value = [
+            'devBaseUrl' => 'assets/bootstrap_5/',
+            'basePath' => 'bootstrap',
+            'css' => [
+                'build/css/bootstrap_5.min.css',
+            ],
+            'js' => [
+                'build/js/bootstrap_5.min.js',
+            ]
+        ];
+        public function offsetExists($offset) {
+            return isset($this->value[$offset]);
+        }
+        public function offsetGet($offset) {
+            $this->setRtl();
+            return $this->value[$offset];
+        }
+        public function offsetSet($offset, $value) {
+            $this->value[$offset] = $value;
+        }
+        public function offsetUnset($offset) {
+            unset($this->value[$offset]);
+        }
+        private function setRtl() {
+            $dir = (getLanguageRTL(App()->getLanguage())) ? 'rtl' : 'ltr';
+            if ($dir == "rtl") {
+                $this->value['css'] = [
+                    'build/css/bootstrap_5-rtl.min.css',
+                ];
+            }
+        }
+    },
+    /*array(
         'devBaseUrl' => 'assets/bootstrap_5/',
         'basePath' => 'bootstrap',
         'css'=> array(
@@ -47,6 +80,7 @@ return array(
             'build/js/bootstrap_5.min.js',
         ),
     ),
+     */
 
     // Bootstrap admin
     // must be different for theme editor not to colide with theme files replacement

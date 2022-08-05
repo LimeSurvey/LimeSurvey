@@ -148,6 +148,12 @@ class AdminTheme extends CFormModel
            window.LS = window.LS || {}; window.LS.globalUserId = "' . Yii::app()->user->id . '";', CClientScript::POS_HEAD);
             App()->getClientScript()->registerPackage('jquery'); // jquery
             App()->getClientScript()->registerPackage('jqueryui'); // Added for nestedSortable to work (question organizer)
+            //if ($dir == "rtl") {
+                //App()->getClientScript()->unregisterPackage('bootstrap');
+                //App()->getClientScript()->registerPackage('bootstrap-rtl');
+            //} else {
+                App()->getClientScript()->registerPackage('bootstrap');
+            //}
             App()->getClientScript()->registerPackage('js-cookie'); // js-cookie
             App()->getClientScript()->registerPackage('fontawesome'); // fontawesome
 //            App()->getClientScript()->registerPackage('bootstrap-switch');
@@ -162,10 +168,6 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('ckeditor'); //
             App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global scope
             App()->getClientScript()->registerPackage('modaleditor');
-            if ($dir == "rtl") {
-                App()->getClientScript()->unregisterPackage('bootstrap');
-                App()->getClientScript()->registerPackage('bootstrap-rtl');
-            }
         }
 
         $aCssFiles = array();
@@ -243,10 +245,6 @@ class AdminTheme extends CFormModel
         Yii::app()->clientScript->addPackage('admin-theme', $package); // add the package
         Yii::app()->clientScript->registerPackage('admin-theme'); // register the package
         Yii::app()->clientScript->registerPackage('moment'); // register moment for correct dateTime calculation
-
-        if ($dir == "rtl") {
-            App()->getClientScript()->unregisterPackage('bootstrap');
-        }
     }
 
     /**
