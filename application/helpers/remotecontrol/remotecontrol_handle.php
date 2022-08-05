@@ -3453,7 +3453,7 @@ class remotecontrol_handle
         } else {
             $classname = $this->getCommandClassname($name);
             // TODO: Windows compatible?
-            if (file_exists(__DIR__ . '/commands/' . $classname . '.php')) {
+            if (file_exists(__DIR__ . '/Commands/' . $classname . '.php')) {
                 $this->callCommand($classname, $args);
             } else {
                 throw new InvalidArgumentException('Found no command with name ' . $name);
