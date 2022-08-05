@@ -3443,4 +3443,42 @@ class remotecontrol_handle
         }
         return false;
     }
+
+    /**
+     */
+    public function __call($name, $args)
+    {
+        if (method_exists($this, $name)) {
+            $this->$name(...$args);
+        } else {
+            $classname = $this->getCommandClassname($name);
+            // TODO: Windows compatible?
+            if (file_exists(__DIR__ . '/commands/' . $classname . '.php')) {
+                $this->callCommand($classname, $args);
+            } else {
+                throw new InvalidArgumentException('Found no command with name ' . $name);
+            }
+        }
+    }
+
+    /**
+     * @param string $name Old command name, like get_session_key
+     * @return string New command filename, like GetSessionkeyRemoteCommand.php
+     */
+    private function getCommandClassname(string $name)
+    {
+        return implode(
+            "",
+            array_map(
+                function ($part) { return ucfirst($part); },
+                    explode('_', $name)
+            )
+        ) . 'RemoteCommand';
+    }
+
+    private function callCommand($classname, $args)
+    {
+        $fullClassname = '\LimeSurvey\Helpers\RemoteControl\Commands\\' . $classname;
+        $command = new $fullClassname;
+    }
 }

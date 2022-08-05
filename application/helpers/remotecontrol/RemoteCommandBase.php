@@ -12,7 +12,7 @@ use Yii;
  */
 abstract class RemoteCommandBase
 {
-    public function run();
+    abstract public function run();
 
     protected function checkSessionKey($sessionKey)
     {
