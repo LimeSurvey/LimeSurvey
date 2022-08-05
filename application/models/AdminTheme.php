@@ -160,6 +160,10 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('ckeditor'); //
             App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global scope
             App()->getClientScript()->registerPackage('modaleditor');
+            $dir = (getLanguageRTL(App()->getLanguage())) ? 'rtl' : 'ltr';
+            if ($dir == "rtl") {
+                App()->getClientScript()->registerPackage('bootstrap-rtl');
+            }
         }
 
         $aCssFiles = array();
