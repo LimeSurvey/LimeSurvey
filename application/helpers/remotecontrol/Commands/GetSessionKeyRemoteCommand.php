@@ -22,19 +22,31 @@ use LimeSurvey\Helpers\RemoteControl\RemoteCommandBase;
  */
 class GetSessionKeyRemoteCommand extends RemoteCommandBase
 {
-    public function run() // $username, $password, $plugin = 'Authdb')
+    private $username;
+    private $password;
+    private $plugin;
+
+    public function __construct($username, $password, $plugin = 'Authdb')
     {
-        $username = (string) $username;
-        $password = (string) $password;
+        $this->username = $username;
+        $this->password = $password;
+        $this->plugin   = $plugin;
+    }
+
+    public function run()
+    {
+        $username = $this->username;
+        $password = $this->password;
+        $plugin   = $this->plugin;
         $loginResult = $this->doLogin($username, $password, $plugin);
         if ($loginResult === true) {
             $this->jumpStartSession($username);
-            $sessionKey = Yii::app()->securityManager->generateRandomString(32);
-            $session = new Session();
+            $sessionKey = \Yii::app()->securityManager->generateRandomString(32);
+            $session = new \Session();
             $session->id = $sessionKey;
-            $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
+            $session->expire = time() + (int) \Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
             $session->data = $username;
-            $session->save();
+            $result = $session->save();
             return $sessionKey;
         }
         if (is_string($loginResult)) {

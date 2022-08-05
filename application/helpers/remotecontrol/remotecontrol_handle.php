@@ -3433,7 +3433,28 @@ class remotecontrol_handle
     private function callCommand($classname, $args)
     {
         $fullClassname = '\LimeSurvey\Helpers\RemoteControl\Commands\\' . $classname;
-        $command = new $fullClassname;
+        switch (count($args)) {
+            case 0:
+            $command = new $fullClassname();
+            break;
+            case 1:
+            $command = new $fullClassname($args[0]);
+            break;
+            case 2:
+            $command = new $fullClassname($args[0], $args[1]);
+            break;
+            case 3:
+            $command = new $fullClassname($args[0], $args[1], $args[2]);
+            break;
+            case 4:
+            $command = new $fullClassname($args[0], $args[1], $args[2], $args[3]);
+            break;
+            case 5:
+            $command = new $fullClassname($args[0], $args[1], $args[2], $args[3], $args[4]);
+            break;
+            default:
+            throw new InvalidArgumentException('Invalid number of arguments');
+        }
         return $command->run();
     }
 }
