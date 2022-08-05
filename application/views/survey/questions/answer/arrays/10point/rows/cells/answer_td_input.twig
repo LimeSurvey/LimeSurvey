@@ -15,11 +15,10 @@
         type="radio"
         name="{{ myfname }}"
         id="answer{{ myfname }}-{{ i }}"
-        aria-labelledby="label-{{ myfname }}-{{ i }}"
         value="{{ value }}"
         {{ CHECKED }}
      />
-    <label for="answer{{ myfname }}-{{ i }}"  class="ls-label-xs-visibility" id="label-{{ myfname }}-{{ i }}">
+    <label for="answer{{ myfname }}-{{ i }}"  class="ls-label-xs-visibility">
         {{ processString(labelText) }}
     </label>
 </td>

@@ -1427,8 +1427,7 @@ class ConditionsAction extends SurveyCommonAction
                                 array(
                                     'qid' => $rows['qid'],
                                     'scale_id' => 0,
-                                ),
-                                array('order' => 'sortorder, code')
+                                )
                             );
                             foreach ($fresult as $frow) {
                                 $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], $frow['code'], $frow->answerl10ns[$this->language]->answer);
@@ -1515,7 +1514,7 @@ class ConditionsAction extends SurveyCommonAction
                             'answerl10ns' => array(
                                 'condition' => 'answerl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
-                            )))->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0), array('order' => 'sortorder, answer'));
+                            )))->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0));
                     foreach ($lresult as $lrows) {
                         $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#0", "{$lrows['code']}", "{$lrows['code']}");
                     }
@@ -1526,9 +1525,9 @@ class ConditionsAction extends SurveyCommonAction
                                 'condition' => 'answerl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(array(
-                        'qid' => $rows['qid'],
-                        'scale_id' => 1
-                            ), array('order' => 'sortorder, answer'));
+                                'qid' => $rows['qid'],
+                                'scale_id' => 1
+                            ));
 
                     foreach ($lresult as $lrows) {
                         $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'] . "#1", "{$lrows['code']}", "{$lrows['code']}");
@@ -1564,10 +1563,9 @@ class ConditionsAction extends SurveyCommonAction
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(
                                 array(
-                                "qid" => $rows['qid'],
-                                "scale_id" => 0,
-                                ),
-                                array('order' => 'sortorder, answer')
+                                    "qid" => $rows['qid'],
+                                    "scale_id" => 0,
+                                )
                             );
 
                 $acount = count($aresult);
@@ -1653,9 +1651,9 @@ class ConditionsAction extends SurveyCommonAction
                                 'params' => array(':lang' => $this->language),
                                 'alias' => 'answerl10ns',
                             )))->findAllByAttributes(array(
-                            'qid' => $rows['qid'],
-                            'scale_id' => 0,
-                            ), array('order' => 'sortorder, answer'));
+                                'qid' => $rows['qid'],
+                                'scale_id' => 0,
+                            ));
 
                         foreach ($aresult as $arows) {
                             $theanswer = $arows->answerl10ns[$this->language]->answer;

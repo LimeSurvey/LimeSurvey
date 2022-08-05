@@ -22,12 +22,9 @@
     {{ C.Html.checkBox(myfname2,value,({
         'class' : extraclass,
         'id' : "cbox"~myfname2,
-        'aria-labelledby' : "label-"~myfname2,
         'value' : "1"
     }))
     }}
-    <label for="cbox{{ myfname2 }}" class="ls-label-xs-visibility" id="label-{{ myfname2 }}">
-        {{ dataTitle }}
-    </label>
+    <label for="cbox{{ myfname2 }}" class="ls-label-xs-visibility">{{ dataTitle }}</label>
 </td>
 <!-- end of answer_td_checkboxes -->

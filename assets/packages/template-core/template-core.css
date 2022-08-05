@@ -20,8 +20,7 @@ li.question-item.answer-item.text-item.form-group {
 
 /* The sub question part must not be more visible than question */
 .ls-answers label,
-.ls-answers td.control-label,
-.ls-answers td.answer-text {
+.ls-answers th {
     font-weight: 400
 }
 
@@ -147,7 +146,7 @@ table.ls-answers {
     text-align: right;
 }
 
-.ls-answers .ls-heading td.answer-text,.ls-answers .ls-heading td.control-label {
+.ls-answers .ls-heading th {
     text-align: center;
 }
 
@@ -285,10 +284,7 @@ only screen and (max-width: 760px),
     .dir-ltr table.ls-answers,.dir-ltr table.ls-answers thead,.dir-ltr table.ls-answers tbody,.dir-ltr table.ls-answers th,.dir-ltr table.ls-answers td,table.ls-answers tr {text-align:left;}
     .dir-rtl table.ls-answers,.dir-rtl table.ls-answers thead,.dir-rtl table.ls-answers tbody,.dir-rtl table.ls-answers th,.dir-rtl table.ls-answers td,table.ls-answers tr {text-align:right;}
 
-    table.ls-answers thead,
-    table.ls-answers .ls-heading
-    {display:none}
-    /* We don't need it for accessibility : we already have the label */
+    table.ls-answers thead{display:none} /* We don't need it for accessibility : we already have the label */
 
     table.ls-answers tbody td{text-align:left;}
     table.ls-answers .information-item:empty{display:none}
