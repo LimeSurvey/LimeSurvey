@@ -158,8 +158,8 @@ var onDocumentReadyAttributeMapToken = function(){
             $('#attribute-map-token-modal').on('hide.bs.modal' , function (e) {
                 $(location).attr('href',redUrl);
             });
-            $('#attribute-map-token-modal').modal();
-
+            const modal = new bootstrap.Modal(document.getElementById('attribute-map-token-modal'), {});
+            modal.show();
         });
     });
 
