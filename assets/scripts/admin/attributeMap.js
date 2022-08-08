@@ -172,7 +172,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                 $('#attribute-map-participant-modal').on('hide.bs.modal' , function (e) {
                     $(location).attr('href',redUrl);
                 });
-                $('#attribute-map-participant-modal').modal();
+                const modal = new bootstrap.Modal(document.getElementById('attribute-map-participant-modal'), {});
+                modal.show();
         });
     });
 

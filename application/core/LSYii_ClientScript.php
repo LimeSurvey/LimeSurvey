@@ -228,7 +228,7 @@ class LSYii_ClientScript extends CClientScript
     public function getRecursiveDependencies($sPackageName)
     {
         $aPackages = Yii::app()->clientScript->packages;
-        if (array_key_exists('depends', $aPackages[$sPackageName])) {
+        if (isset($aPackages[$sPackageName]['depends'])) {
             $aDependencies = $aPackages[$sPackageName]['depends'];
 
             foreach ($aDependencies as $sDpackageName) {

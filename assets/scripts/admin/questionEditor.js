@@ -1528,7 +1528,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
       const aLanguages = languageJson.langs.split(';');
       $.post(languageJson.sCheckLabelURL, { languages: aLanguages, lid, bCheckAssessments: 1 }, (data) => {
         $('#strReplaceMessage').html(data);
-        $('#dialog-confirm-replaceModal').modal();
+        const modal = new bootstrap.Modal(document.getElementById('dialog-confirm-replaceModal'), {});
+        modal.show();
         $('#btnlconfirmreplace').click(() => {
           saveLabelSetAjax(event, tableClassName);
         });

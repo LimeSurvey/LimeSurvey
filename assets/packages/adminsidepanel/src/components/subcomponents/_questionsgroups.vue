@@ -331,9 +331,7 @@ export default {
                         >
                         {{ questiongroup.group_name }}
                         </span>
-                        <div
-                            :class="$store.getters.isRTL ? 'me-auto' : 'ms-auto'"
-                        >
+                        <div class="ms-auto">
                           <span
                               class="badge rounded-pill ls-space margin right-5"
                               @click.stop="openQuestionGroup(questiongroup)"
