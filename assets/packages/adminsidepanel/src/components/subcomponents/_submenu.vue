@@ -94,11 +94,9 @@ export default {
             <div class="d-flex" :class="menuItem.menu_class"
             v-bind:title="reConvertHTML(menuItem.menu_description)"  
             data-bs-toggle="tooltip" >
-                <div
-                    :class="$store.getters.isRTL ? 'ls-space padding all-0 ms-auto' : 'ls-space padding all-0 me-auto'"
-                >
+                <div class="ls-space padding all-0 me-auto">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
-                    <span v-html="menuItem.menu_title"></span>
+                    <span v-html="menuItem.menu_title"> ASD</span>
                     <i class="fa fa-external-link" v-if="menuItem.link_external == true">&nbsp;</i>
                 </div>
                 <div class="text-center ls-space padding right-15 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
