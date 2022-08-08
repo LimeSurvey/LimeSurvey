@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.22 (build 220802) to 3.28.23 (build 220809) August 8, 2022
+#Updated translation: Lithuanian by c_schmitz, simasj
+
+
 Changes from 3.28.21 (build 220726) to 3.28.22 (build 220802) August 1, 2022
 -Fixed issue #17972: Events are dispatched if the plugin is deactivated (#2335) (Denis Chenu)
 #Updated translation: Turkish by kayazeren
