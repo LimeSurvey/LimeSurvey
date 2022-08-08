@@ -100,98 +100,94 @@ class UserGroupController extends LSBaseController
      */
     public function actionViewGroup($ugid, bool $header = false)
     {
-        if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
+        if (empty(Yii::app()->session['loginID']) || !Permission::model()->hasGlobalPermission('usergroups', 'read')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->redirect(App()->createUrl("/admin"));
         }
 
+        $ugid = (int)$ugid;
+        if (empty($ugid)) {
+            Yii::app()->user->setFlash('error', gT('GroupId missing'));
+            $this->redirect('index');
+        }
+
+        $userGroup = UserGroup::model()->findByPk($ugid);
+        if (empty($userGroup)) {
+            throw new CHttpException(404, gT("User group not found."));
+        }
+
+        // Only allow access if user is:
+        // - Superadmin
+        // - Owner of the group
+        // - Member of the group
+        if (!(
+            $userGroup->owner_id == Yii::app()->user->id ||
+            $userGroup->hasUser(Yii::app()->user->id) ||
+            Permission::model()->hasGlobalPermission('superadmin', 'read')
+        )) {
+            throw new CHttpException(403);
+        }
+        
         $aData = [];
         if (!empty($header)) {
             $aData['headercfg'] = $header;
         } else {
             $aData['headercfg'] = null;
         }
-
-        if ($ugid != false) {
-            $ugid = (int)$ugid;
-            $userGroup = UserGroup::model()->findByPk($ugid);
-            $uid = Yii::app()->user->id;
-            if (
-                $userGroup &&
-                ($userGroup->hasUser($uid) || Permission::model()->hasGlobalPermission('superadmin', 'read'))
-            ) {
-                $aData['userGroup'] = $userGroup;
-            }
-        } else {
-            $sFlashType = 'error';
-            $sFlashMessage = gT('GroupId missing');
-            Yii::app()->user->setFlash($sFlashType, $sFlashMessage);
-            $this->redirect('index');
-        }
-
+        $aData['userGroup'] = $userGroup;
         $aData['ugid'] = $ugid;
-        if (Yii::app()->session['loginID']) {
-            $aData["usergroupid"] = $ugid;
-            $result = UserGroup::model()->requestViewGroup($ugid, Yii::app()->session["loginID"]);
-            $crow = $result[0];
-            if ($result) {
-                $aData["groupfound"] = true;
-                $aData["groupname"] = $crow['name'];
-                if (!empty($crow['description'])) {
-                    $aData["usergroupdescription"] = $crow['description'];
-                } else {
-                    $aData["usergroupdescription"] = "";
-                }
+        $aData["usergroupid"] = $ugid;
+        $aData["groupfound"] = true;
+        $aData["groupname"] = $userGroup->name;
+        $aData["usergroupdescription"] = $userGroup->description;
+
+        $row = 1;
+        $userloop = array();
+        $bgcc = "oddrow";
+        foreach ($userGroup->users as $oUser) {
+            // @todo: Move the zebra striping to view
+            if ($bgcc == "evenrow") {
+                $bgcc = "oddrow";
+            } else {
+                $bgcc = "evenrow";
+            }
+            $userloop[$row]["userid"] = $oUser->uid;
+
+            //  output users
+            $userloop[$row]["rowclass"] = $bgcc;
+            if (Permission::model()->hasGlobalPermission('usergroups', 'update') && $oUser->parent_id == Yii::app()->session['loginID']) {
+                $userloop[$row]["displayactions"] = true;
+            } else {
+                $userloop[$row]["displayactions"] = false;
             }
 
-            $aUserInGroupsResult = UserGroup::model()->findByPk($ugid);
+            $userloop[$row]["username"] = $oUser->users_name;
+            $userloop[$row]["email"] = $oUser->email;
 
-            $row = 1;
-            $userloop = array();
-            $bgcc = "oddrow";
-            foreach ($aUserInGroupsResult->users as $oUser) {
-                // @todo: Move the zebra striping to view
-                if ($bgcc == "evenrow") {
-                    $bgcc = "oddrow";
-                } else {
-                    $bgcc = "evenrow";
-                }
-                $userloop[$row]["userid"] = $oUser->uid;
+            $row++;
+        }
+        $aData["userloop"] = $userloop;
 
-                //  output users
-                $userloop[$row]["rowclass"] = $bgcc;
-                if (Permission::model()->hasGlobalPermission('usergroups', 'update') && $oUser->parent_id == Yii::app()->session['loginID']) {
-                    $userloop[$row]["displayactions"] = true;
-                } else {
-                    $userloop[$row]["displayactions"] = false;
-                }
+        $aSearchCriteria = new CDbCriteria();
+        $aSearchCriteria->compare("ugid", $ugid);
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            $aSearchCriteria->compare("owner_id", Yii::app()->session['loginID']);
+        }
+        $aFilteredUserGroups = UserGroup::model()->count($aSearchCriteria);
 
-                $userloop[$row]["username"] = $oUser->users_name;
-                $userloop[$row]["email"] = $oUser->email;
+        $aData["useradddialog"] = false;
+        $aData["addableUsers"] = [];
+        if ($aFilteredUserGroups > 0) {
+            $aData["useradddialog"] = true;
 
-                $row++;
-            }
-            $aData["userloop"] = $userloop;
-
-            $aSearchCriteria = new CDbCriteria();
-            $aSearchCriteria->compare("ugid", $ugid);
-            if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $aSearchCriteria->compare("owner_id", Yii::app()->session['loginID']);
-            }
-            $aFilteredUserGroups = UserGroup::model()->count($aSearchCriteria);
-
-            if ($aFilteredUserGroups > 0) {
-                $aData["useradddialog"] = true;
-
-                $aUsers = User::model()->findAll(['join' => "LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition' => "id IS NULL ORDER BY users_name"]);
-                $aNewUserListData = CHtml::listData($aUsers, 'uid', function ($user) {
-                    return \CHtml::encode($user->users_name) . " (" . \CHtml::encode($user->full_name) . ')';
-                });
-                // Remove group owner because an owner is automatically member of a group
-                unset($aNewUserListData[$aUserInGroupsResult->owner_id]);
-                $aData["addableUsers"] = array('-1' => gT("Please choose...")) + $aNewUserListData;
-                $aData["useraddurl"] = "";
-            }
+            $aUsers = User::model()->findAll(['join' => "LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition' => "id IS NULL ORDER BY users_name"]);
+            $aNewUserListData = CHtml::listData($aUsers, 'uid', function ($user) {
+                return \CHtml::encode($user->users_name) . " (" . \CHtml::encode($user->full_name) . ')';
+            });
+            // Remove group owner because an owner is automatically member of a group
+            unset($aNewUserListData[$userGroup->owner_id]);
+            $aData["addableUsers"] = array('-1' => gT("Please choose...")) + $aNewUserListData;
+            $aData["useraddurl"] = "";
         }
 
         $aData['usergroupbar']['edit'] = true;

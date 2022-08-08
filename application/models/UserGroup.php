@@ -203,6 +203,7 @@ class UserGroup extends LSActiveRecord
      * @param integer $ugId
      * @param integer $userId
      * @return array
+     * @deprecated Not needed anymore
      */
     public function requestViewGroup($ugId, $userId)
     {
