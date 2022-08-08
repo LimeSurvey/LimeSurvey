@@ -54,10 +54,10 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
                         <label class=" form-label"  for='tokenlength'><?php  eT("Set access code length to:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-none' : 'show'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars($tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
-                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength == '-1' ? 'show' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->tokenlength); ?>" readonly />
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-none' : 'd-block'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars($tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength == '-1' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->tokenlength); ?>" readonly />
                     </div>
-                    <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'd-none'); ?>">
+                    <div class="col-12 col-lg-4 content-right <?php echo ($bShowInherited ? 'd-block' : 'd-none'); ?>">
                         <label class=" form-label content-center col-12"  for='tokenlength'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'tokenlengthbutton',
@@ -154,7 +154,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
                             ? array_merge($optionsOnOff, ['I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->htmlemail . ']'])
                             : $optionsOnOff,
                     ]);
-                    $this->widget('yiistrap.widgets.TbModal', [
+                    $this->widget('yiistrap_fork.widgets.TbModal', [
                         'id'      => 'htmlemailModal',
                         'header'  => gT('Error', 'unescaped'),
                         'content' => '<p>' . gT("If you change the email format, you'll have to review your email templates to fit the new format") . '</p>',
@@ -179,13 +179,13 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
     </div>
 </div>
     <?php
-    $this->widget('yiistrap.widgets.TbModal', array(
+    $this->widget('yiistrap_fork.widgets.TbModal', array(
         'id' => 'alertPrivacy1',
         'header' => gT('Warning','unescaped'),                    
         'content' => '<p>'.gT("You can't use 'Anonymized responses' when participant-based response persistence is enabled.").'</p>',
         'footer' => TbHtml::button('Close', array('data-bs-dismiss' => 'modal'))
     ));
-    $this->widget('yiistrap.widgets.TbModal', array(
+    $this->widget('yiistrap_fork.widgets.TbModal', array(
         'id' => 'alertPrivacy2',
         'header' => gT('Warning','unescaped'),
         'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',

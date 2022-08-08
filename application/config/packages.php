@@ -125,9 +125,9 @@ return array(
         'css'=> array(
             'build/css/bootstrap_5-rtl.min.css',
         ),
-        'depends' => array(
-            'bootstrap',
-        )
+        'js'=>array(
+            'build/js/bootstrap_5.min.js',
+        ),
     ),
     'ckeditor' => array(
         'devBaseUrl'  => 'assets/packages/ckeditor',

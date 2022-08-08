@@ -133,9 +133,6 @@
 <!-- To update rows per page via ajax -->
 <?php App()->getClientScript()->registerScript("ListQuestionGroups-pagination", "
         var bindPageSizeChange = function(){
-            $('#pageSize').on('change', function(){
-                $.fn.yiiGridView.update('question-group-grid',{ data:{ pageSize: $(this).val() }});
-            });
             $(document).trigger('actions-updated');
         };
     ", LSYii_ClientScript::POS_BEGIN); ?>

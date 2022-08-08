@@ -234,7 +234,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                     <div class="row">
                         <div class="progress">
                             <div id="upload_progress_frontend" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                                <span class="sr-only">0%</span>
+                                <span class="visually-hidden">0%</span>
                             </div>
                         </div>
                     </div>
@@ -258,7 +258,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                            <img class="selector__image img-responsive" src="" alt="title"/>
+                            <img class="selector__image img-fluid" src="" alt="title"/>
                         </div>
                     </div>
                 </div>

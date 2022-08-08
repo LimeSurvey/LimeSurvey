@@ -163,7 +163,7 @@ Yii::app()->getClientScript()->registerScript(
                 }
                 // update progressbars classes so it fits your code
                 $progressBar.css("width", String(percent)+"%");
-                $progressBar.find(\'span.sr-only\').text(percent + "%");
+                $progressBar.find(\'span.visually-hidden\').text(percent + "%");
             };
 
             $activeInput.on(\'change\', function(e){
@@ -187,19 +187,19 @@ Yii::app()->getClientScript()->registerScript(
                     success: function (data) {
                         console.log(data);
                         if(data.success === true){
-                            $(\'#notif-container\').append(\'<div class="alert alert-success" role="alert"><button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"></button>\'+data.message+\'</div>\');
+                            $(\'#notif-container\').append(\'<div class="alert alert-success" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>\'+data.message+\'</div>\');
                             $progressBar.css("width", "0%");
-                            $progressBar.find(\'span.sr-only\').text(\'0%\');
+                            $progressBar.find(\'span.visually-hidden\').text(\'0%\');
                             onSuccess();
                         } else {
-                            $(\'#notif-container\').append(\'<div class="alert alert-danger" role="alert"><button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"></button>\'+data.message+\'</div>\');
+                            $(\'#notif-container\').append(\'<div class="alert alert-danger" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>\'+data.message+\'</div>\');
                             $progressBar.css("width", "0%");
-                            $progressBar.find(\'span.sr-only\').text(\'0%\');
+                            $progressBar.find(\'span.visually-hidden\').text(\'0%\');
                         }
                     },
                     error: function (error) {
                         $progressBar.css("width", "0%");
-                        $progressBar.find(\'span.sr-only\').text(\'0%\');
+                        $progressBar.find(\'span.visually-hidden\').text(\'0%\');
                         console.log(error);
                     },
                     async: true,

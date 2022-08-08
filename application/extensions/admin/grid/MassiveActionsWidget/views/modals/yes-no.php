@@ -20,7 +20,7 @@
                         For specific input (like text, selector, etc) that should be filled by user
                         parse a form to htmlModalBody and attribute to the wanted input the class "custom-data"
                     -->
-                    <div class="custom-modal-datas hidden">
+                    <div class="custom-modal-datas d-none">
                         <?php foreach($aAction['aCustomDatas'] as $aCustomData):?>
                             <input class="custom-data" type="hidden" name="<?php echo $aCustomData['name'];?>" value="<?php echo $aCustomData['value'];?>" />
                         <?php endforeach;?>

@@ -11,12 +11,12 @@ echo viewHelper::getViewTestTag('tutorialentries');
             <?php eT('Tutorial entries')?> 
         </div>
         <div class="col-12">
-            <a role="button" class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewtutorialentry">
+            <a role="button" class="btn btn-primary float-end col-xs-6 col-sm-3 col-md-2" id="createnewtutorialentry">
                 &nbsp;
                 <?php eT('New') ?>
             </a>
             <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
-                <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2"
+                <a class="btn btn-danger float-end ls-space margin right-10 col-xs-6 col-sm-3 col-md-2"
                    href="#restoremodal" data-bs-toggle="modal">
                     <i class="fa fa-refresh"></i>&nbsp;
                     <?php eT('Reset'); ?>
@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('tutorialentries');
         </div>
 		<div class="col-12 ls-space margin top-15">
 			<div class="col-12 ls-flex-item">
-				<?php $this->widget('yiistrap.widgets.TbGridView', array(
+				<?php $this->widget('yiistrap_fork.widgets.TbGridView', array(
 					'dataProvider' => $model->search(),
 					// Number of row per page selection
 					'id' => 'tutorial-grid',

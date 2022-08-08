@@ -8,7 +8,7 @@
  * @package YiiWheels.widgets.timepicker
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('yiistrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhTimePicker extends CInputWidget
 {

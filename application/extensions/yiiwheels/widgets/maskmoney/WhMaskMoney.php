@@ -9,7 +9,7 @@
  * @uses YiiStrap.helpers.TbArray
  */
 
-Yii::import('yiistrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhMaskMoney extends CInputWidget
 {

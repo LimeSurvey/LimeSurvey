@@ -116,7 +116,7 @@ class SavedControl extends LSActiveRecord
     {
         $gridButtons = array();
         $gridButtons['editresponse'] = array(
-            'label' => '<span class="sr-only">' . gT("Edit") . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Edit") . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/dataentry/sa/editdata/subaction/edit",array("surveyid"=>$data->sid,"id"=>$data->srid));',
             'options' => array(
@@ -127,7 +127,7 @@ class SavedControl extends LSActiveRecord
             'visible' => 'boolval(' . Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update') . ')',
         );
         $gridButtons['resend_accesscode'] = array(
-            'label' => '<span class="sr-only">' . gT("Edit") . '</span><span class="fa fa-refresh" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Edit") . '</span><span class="fa fa-refresh" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/saved/sa/resend_accesscode",array("surveyid"=>$data->sid,"id"=>$data->srid));',
             'options' => array(
@@ -139,7 +139,7 @@ class SavedControl extends LSActiveRecord
             'visible' => false,
         );
         $gridButtons['delete'] = array(
-            'label' => '<span class="sr-only">' . gT("Delete") . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Delete") . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
             'imageUrl' => false,
             'icon' => false,
             'url' => 'App()->createUrl("admin/saved/sa/actionDelete",array("surveyid"=>$data->sid,"scid"=>$data->scid,"srid"=>$data->srid));',
@@ -159,7 +159,7 @@ class SavedControl extends LSActiveRecord
         return array(
             array(
                 'header' => gT('Action'),
-                'class' => 'yiistrap.widgets.TbButtonColumn',
+                'class' => 'yiistrap_fork.widgets.TbButtonColumn',
                 'template' => '{editresponse}{delete}',
                 'htmlOptions' => array('class' => 'icon-btn-row'),
                 'buttons' => $this->gridButtons,

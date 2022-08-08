@@ -10,7 +10,7 @@
  * @package YiiWheels.widgets.datetimepicker
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('yiistrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhDateTimePicker extends CInputWidget
 {

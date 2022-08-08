@@ -188,10 +188,10 @@ $googleAnalyticsStyleOptions = array(
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
                         <label class=" form-label"  for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-none' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="<?php echo htmlspecialchars($emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailnotificationto; ?>"/>
-                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'show' : 'd-none'); ?>" type='text' size='50' value="<?= htmlspecialchars($oSurveyOptions->emailnotificationto ?? '') ?>" readonly />
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="<?php echo htmlspecialchars($emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailnotificationto; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-block' : 'd-none'); ?>" type='text' size='50' value="<?= htmlspecialchars($oSurveyOptions->emailnotificationto ?? '') ?>" readonly />
                     </div>
-                    <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
+                    <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                         <label class=" form-label content-center col-12" for='emailnotificationto'><?php eT("Inherit:"); ?></label>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'emailnotificationtobutton',
@@ -211,14 +211,14 @@ $googleAnalyticsStyleOptions = array(
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
                         <label class=" form-label" for='emailresponseto'><?php eT("Send detailed admin notification email to:"); ?></label>
-                        <input class="form-control inherit-edit <?php echo($bShowInherited && $emailresponseto === 'inherit' ? 'd-none' : 'show'); ?>"
+                        <input class="form-control inherit-edit <?php echo($bShowInherited && $emailresponseto === 'inherit' ? 'd-none' : 'd-block'); ?>"
                                type='<?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailresponseto' name='emailresponseto'
                                value="<?php echo htmlspecialchars($emailresponseto); ?>" data-inherit-value="inherit"
                                data-saved-value="<?php echo $emailresponseto; ?>"/>
-                        <input class="form-control inherit-readonly <?php echo($bShowInherited && $emailresponseto === 'inherit' ? 'show' : 'd-none'); ?>"
+                        <input class="form-control inherit-readonly <?php echo($bShowInherited && $emailresponseto === 'inherit' ? 'd-block' : 'd-none'); ?>"
                                type='text' size='50' value="<?= htmlspecialchars($oSurveyOptions->emailresponseto ?? '') ?>" readonly/>
                     </div>
-                    <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'show' : 'd-none'); ?>">
+                    <div class="col-12 col-lg-4 content-right <?php echo($bShowInherited ? 'd-block' : 'd-none'); ?>">
                         <label class=" form-label content-center col-12" for='emailresponseto'><?php eT("Inherit:"); ?></label>
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'emailresponsetobutton',

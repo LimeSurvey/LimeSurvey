@@ -54,7 +54,7 @@
                 <div class="row">
                     <div class="progress">
                         <div id="upload_progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                            <span class="sr-only">0%</span>
+                            <span class="visually-hidden">0%</span>
                         </div>
                     </div>
                 </div>

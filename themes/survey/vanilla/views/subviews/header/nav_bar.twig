@@ -28,7 +28,7 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
         {# Logo option #}
         {% if( aSurveyInfo.options.brandlogo == "on") %}
             <div class="navbar-brand logo-container d-none d-md-block">
-                {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-responsive"}) }}
+                {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-fluid"}) }}
             </div>
         {% else %}
             <div class="navbar-brand">

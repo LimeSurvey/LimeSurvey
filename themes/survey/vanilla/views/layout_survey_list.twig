@@ -120,10 +120,10 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                         <div class="col-12">
                             {# include the alert for no JavaScript #}
                             {{ include('./subviews/messages/no_js_alert.twig') }}
-                            <div class="row">
+                            <div class="row justify-content-center">
                                 <div
                                     id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
-                                    {{ image('./files/survey_list_header.png', aSurveyInfo.name, {"class": "img-responsive center-block"}) }}
+                                    {{ image('./files/survey_list_header.png', aSurveyInfo.name, {"class": "img-fluid"}) }}
                                     {{ aSurveyInfo.sSiteName }}
                                     <div class="ls-js-hidden">
                                         {{ include('./subviews/navigation/language_changer_form.twig') }}
@@ -176,9 +176,9 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                         <div
                             class="{{ aSurveyInfo.class.surveylistfootercont }} container" {{ aSurveyInfo.attr.surveylistfootercont }}>
                             <div {{ aSurveyInfo.attr.surveylistfootercontp }} class="row">
-                                <div class="col-6 col-md-12 text-center">
-                                    <a {{ aSurveyInfo.attr.surveylistfootercontpaa }} class="center-block text-center">
-                                        {{ image("./files/poweredby.png", "LimeSurvey Survey Software", {class: 'img-responsive center-block '}) }}
+                                <div class="col-6 col-md-12">
+                                    <a {{ aSurveyInfo.attr.surveylistfootercontpaa }}>
+                                        {{ image("./files/poweredby.png", "LimeSurvey Survey Software", {class: 'img-fluid'}) }}
                                     </a>
                                 </div>
                                 <div class="col-12 d-block d-sm-none d-md-block text-center">

@@ -9,8 +9,8 @@ var PrepEmailTemplates = function(){
 
     var KCFinder_callback = function (url)
     {
-        if($(currentTarget).closest('.selector__table-container').hasClass('hidden')){
-            $(currentTarget).closest('.selector__table-container').removeClass('hidden');
+        if($(currentTarget).closest('.selector__table-container').hasClass('d-none')){
+            $(currentTarget).closest('.selector__table-container').removeClass('d-none');
         }
         addAttachment(currentTarget, url);
         window.KCFinder = null;

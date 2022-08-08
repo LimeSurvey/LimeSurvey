@@ -42,8 +42,8 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-right ms-auto">
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
                 if ($sMaintenanceMode === 'hard' || $sMaintenanceMode === 'soft') { ?>

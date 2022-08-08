@@ -201,7 +201,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
                     dom: "<'#dt-toolbar'>f<t>i"
                 });
                 var addParamButton = $('<button type="button" class="btn btn-success" id="addParameterButton">'+i10n['Add URL parameter']+'</button>');
-                $('#dt-toolbar').addClass('pull-left clearfix').append(addParamButton)
+                $('#dt-toolbar').addClass('float-start clearfix').append(addParamButton)
                     .on('click', '#addParameterButton', function(e){
                         e.preventDefault();
                         newParameter(e);

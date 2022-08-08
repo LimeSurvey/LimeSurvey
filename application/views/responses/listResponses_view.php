@@ -42,7 +42,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         <h3><?php eT('Survey responses'); ?></h3>
         <!-- Display mode -->
         <div class="text-end in-title">
-            <div class="pull-right">
+            <div class="float-end">
                 <div class="form text-end">
                     <form action="<?= App()->createUrl('/responses/browse/', ['surveyId' => $surveyid]) ?>" class="pjax" method="POST" id="change-display-mode-form">
                         <div class="mb-3">
@@ -112,7 +112,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         ],
 //                        [
 //                            'header'      => gT('Action'),
-//                            'class'       => 'yiistrap.widgets.TbButtonColumn',
+//                            'class'       => 'yiistrap_fork.widgets.TbButtonColumn',
 //                            'template'    => '{edit}{detail}{quexmlpdf}{downloadfiles}{deletefiles}<span data-bs-toggle="tooltip" title="' . gT("Delete this response") . '">{deleteresponse}</span>',
 //                            'htmlOptions' => ['class' => 'icon-btn-row'],
 //                            'buttons'     => $model->getGridButtons(),
@@ -291,9 +291,6 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     ';
                 $script = '
                     var postUrl = "' . Yii::app()->getController()->createUrl("responses/setSession") . '"; // For massive export
-                    jQuery(document).on("change", "#pageSize", function(){
-                        $.fn.yiiGridView.update("responses-grid",{ data:{ pageSize: $(this).val() }});
-                    });
                     $(".grid-view [data-bs-toggle=\'popover\']").popover();
                     ';
                 App()->getClientScript()->registerScript('listresponses', $scriptVars, LSYii_ClientScript::POS_BEGIN);

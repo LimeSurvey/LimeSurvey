@@ -19,10 +19,17 @@
 
 <!-- Close -->
 <?php if(!empty($showCloseButton)): ?>
-    <a class="btn btn-outline-secondary" href="#" onclick="LS.questionEditor.showOverview(); return false;">
-        <span class="fa fa-close"></span>
-        <?php eT("Close");?>
-    </a>
+    <?php if (!empty($oQuestion->qid)): ?>
+        <a class="btn btn-default" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
+            <span class="fa fa-close"></span>
+            <?php eT("Close");?>
+        </a>
+    <?php else: ?>
+        <a class="btn btn-default" href="<?= $closeUrl ?>" role="button">
+            <span class="fa fa-close"></span>
+            <?php eT("Close");?>
+        </a>
+    <?php endif; ?>
 <?php endif;?>
 
 <!-- Save and close -->
