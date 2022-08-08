@@ -816,7 +816,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
-                'class' => "btn btn-default btn-sm",
+                'class' => "btn btn-outline-secondary btn-sm",
                 'target' => "_blank",
                 'data-toggle' => "tooltip",
                 'title' => gT("Preview the survey with this participant")

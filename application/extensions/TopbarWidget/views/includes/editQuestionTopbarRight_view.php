@@ -20,12 +20,12 @@
 <!-- Close -->
 <?php if(!empty($showCloseButton)): ?>
     <?php if (!empty($oQuestion->qid)): ?>
-        <a class="btn btn-default" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
+        <a class="btn btn-outline-secondary" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
             <span class="fa fa-close"></span>
             <?php eT("Close");?>
         </a>
     <?php else: ?>
-        <a class="btn btn-default" href="<?= $closeUrl ?>" role="button">
+        <a class="btn btn-outline-secondary" href="<?= $closeUrl ?>" role="button">
             <span class="fa fa-close"></span>
             <?php eT("Close");?>
         </a>
