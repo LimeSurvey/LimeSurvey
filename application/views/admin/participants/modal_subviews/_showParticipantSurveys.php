@@ -4,7 +4,7 @@
 </div>
 <div class="modal-body ">
     <?php $form = $this->beginWidget(
-        'yiistrap.widgets.TbActiveForm',
+        'yiistrap_fork.widgets.TbActiveForm',
         [
             'id'          => 'participantSurveysActiveForm',
             'action'      => ['admin/participants/sa/editValueParticipantPanel'],
@@ -15,7 +15,7 @@
     <input type="hidden" name="Participant[participant_id]" value="<?php echo $model->participant_id; ?>"/>
     <div class="container-fluid">
         <?php
-        $this->widget('yiistrap.widgets.TbGridView', [
+        $this->widget('yiistrap_fork.widgets.TbGridView', [
             'id'              => 'list_participant_surveys',
             'dataProvider'    => $surveymodel->search(),
             'columns'         => $surveymodel->columns,

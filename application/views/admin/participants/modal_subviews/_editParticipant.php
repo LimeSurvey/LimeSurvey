@@ -15,7 +15,7 @@ Yii::app()->getController()->renderPartial(
 <div class="modal-body edit-participant-modal-body ">
 <?php
     $form = $this->beginWidget(
-        'yiistrap.widgets.TbActiveForm',
+        'yiistrap_fork.widgets.TbActiveForm',
         array(
             'id' => 'editPartcipantActiveForm',
             'action' => array('admin/participants/sa/editParticipant'),

@@ -9,7 +9,7 @@
  * @uses YiiStrap.helpers.TbHtml
  */
 
-Yii::import('yiistrap.helpers.TbHtml');
+Yii::import('yiistrap_fork.helpers.TbHtml');
 Yii::import('zii.widgets.CDetailView');
 
 class WhDetailView extends CDetailView

@@ -10,7 +10,7 @@
  * @package YiiWheels.widgets.rangeslider
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('yiistrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhRangeSlider extends CInputWidget
 {

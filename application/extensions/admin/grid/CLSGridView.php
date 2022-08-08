@@ -2,7 +2,7 @@
 
 Yii::import('zii.widgets.grid.CGridView');
 
-class CLSGridView extends CGridView
+class CLSGridView extends TbGridView
 {
     /**
      * @var string
@@ -47,6 +47,19 @@ class CLSGridView extends CGridView
         parent::renderContent();
 
         echo '</div>';
+    }
+
+    /**
+     * Creates column objects and initializes them.
+     */
+    protected function initColumns()
+    {
+        foreach ($this->columns as $i => $column) {
+            if (is_array($column) && !isset($column['class'])) {
+                $this->columns[$i]['class'] = '\TbDataColumn';
+            }
+        }
+        parent::initColumns();
     }
 
 
