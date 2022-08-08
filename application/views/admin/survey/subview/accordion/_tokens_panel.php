@@ -24,11 +24,13 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
     function alertPrivacy()
     {
         if ($('#tokenanswerspersistence_opt1').is(':checked') == true) {
-            $('#alertPrivacy1').modal();
+            const modal = new bootstrap.Modal(document.getElementById('alertPrivacy1'), {});
+            modal.show();
             document.getElementById('anonymized').value = '0';
         }
         else if ($('#anonymized_1').is(':checked') == true) {
-            $('#alertPrivacy2').modal();
+            const modal = new bootstrap.Modal(document.getElementById('alertPrivacy2'), {});
+            modal.show();
         }
     }
     window.addEventListener('load', (event) => {
@@ -36,7 +38,8 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
             alertPrivacy();
         });
         document.getElementById('htmlemail').addEventListener('change', (event) => {
-            $('#htmlemailModal').modal();
+            const modal = new bootstrap.Modal(document.getElementById('htmlemailModal'), {});
+            modal.show();
         });
     });
     
