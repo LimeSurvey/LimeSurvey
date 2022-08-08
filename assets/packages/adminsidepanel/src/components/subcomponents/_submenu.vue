@@ -96,7 +96,7 @@ export default {
             data-bs-toggle="tooltip" >
                 <div class="ls-space padding all-0 me-auto">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
-                    <span v-html="menuItem.menu_title"> ASD</span>
+                    <span v-html="menuItem.menu_title"></span>
                     <i class="fa fa-external-link" v-if="menuItem.link_external == true">&nbsp;</i>
                 </div>
                 <div class="text-center ls-space padding right-15 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
