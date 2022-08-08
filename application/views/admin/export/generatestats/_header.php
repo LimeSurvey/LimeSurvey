@@ -15,7 +15,7 @@
 
 <!-- Message Box -->
 
-<div style="clear: both; margin-bottom: 10px;" class="hidden-print"></div>
+<div style="clear: both; margin-bottom: 10px;" class="d-print-none"></div>
 <div class="jumbotron message-box">
 
     <h2><?php eT("Results"); ?></h2>
@@ -30,7 +30,7 @@
         <?php echo CHtml::form(["responses/browse/", 'surveyId' => $surveyid], 'post') . "\n"; ?>
         <p>
             <?php Yii::app()->user->setState('sql_' . $surveyid, $sql); ?>
-            <input type='submit' class='btn btn-outline-secondary hidden-print' value='<?php eT("Browse"); ?>'/>
+            <input type='submit' class='btn btn-outline-secondary d-print-none' value='<?php eT("Browse"); ?>'/>
             <input type='hidden' name='subaction' value='all'/>
         </p>
         <?php echo CHtml::endForm() ?>

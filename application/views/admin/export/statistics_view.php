@@ -14,11 +14,11 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage' => $sStatisticsLanguage, 'surveyid' => $surveyid, 'showtextinline' => $showtextinline)); ?>
 <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name' => 'generate-statistics', 'class' => '', 'id' => 'generate-statistics')); ?>
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="h1 visible-print-block text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?></div>
-    <div class="row hidden-print">
+    <div class="h1 d-print-block d-none text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?></div>
+    <div class="row d-print-none">
         <div class="col-12">
             <div class="col-lg-3 text-start">
-                <h4 class="hidden-print">
+                <h4 class="d-print-none">
                     <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
                     <?php eT("Statistics"); ?>
                 </h4>
@@ -28,7 +28,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 
 
     <!-- General filters -->
-    <div class="row hidden-print">
+    <div class="row d-print-none">
         <div class="col-12 content-right">
 
             <!-- Header -->
@@ -61,7 +61,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
     </div>
 
     <!-- Response filter -->
-    <div class="row hidden-print">
+    <div class="row d-print-none">
         <div class="col-12 content-right">
             <div style='clear: both'></div>
 
@@ -136,7 +136,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             </div>
         </div>
     </div>
-    <div class="row hidden-print">
+    <div class="row d-print-none">
         <div class="col-12 content-left">
             <button 
                 type="button"
