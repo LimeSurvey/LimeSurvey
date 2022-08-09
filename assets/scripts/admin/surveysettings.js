@@ -158,22 +158,15 @@ function guidGenerator() {
 function validateSettingsForm($form) {
     switch ($form.attr('id')) {
         case 'publication':
-            return validatePublicationForm();
+            return validateEndDateHigherThanStart(
+                $('#startdate_datetimepicker').data('DateTimePicker'),
+                $('#expires_datetimepicker').data('DateTimePicker'),
+                expirationLowerThanStartError
+            );
         default:
             return true;
     }
 }
-
-/**
- * Validates the "Publication & access" form
- */
- function validatePublicationForm() {
-    const startDatePicker = $('#startdate_datetimepicker').data('DateTimePicker');
-    const expiresDatePicker = $('#expires_datetimepicker').data('DateTimePicker');
-
-    // expirationLowerThanStartError defined in _publication_panel.php
-    return validateEndDateHigherThanStart(startDatePicker, expiresDatePicker, expirationLowerThanStartError);
- }
 
 /**
  * Validates that an end date is not lower than a start date
