@@ -5,20 +5,6 @@
 import LOG from '../components/lslog';
 
 const globalWindowMethods = {
-    renderBootstrapSwitch : () => {
-        try{
-            if(!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
-                $('[data-is-bootstrap-switch]').bootstrapSwitch({
-                    onInit: () => LOG.log("BootstrapSwitch Initialized")
-                });
-            }
-        } catch(e) { LOG.error(e); }
-    },
-    unrenderBootstrapSwitch : () => {
-        try{
-            $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
-        } catch(e) { LOG.error(e); }
-    },
     validatefilename: (form, strmessage) => {
         if (form.the_file.value == "") {
             $('#pleaseselectfile-popup').modal();
