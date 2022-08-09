@@ -29709,26 +29709,6 @@
    * Also bootstrapping methods and window bound methods are set here
    */
   var globalWindowMethods = {
-    renderBootstrapSwitch: function renderBootstrapSwitch() {
-      try {
-        if (!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
-          $('[data-is-bootstrap-switch]').bootstrapSwitch({
-            onInit: function onInit() {
-              return adminCoreLSConsole.log("BootstrapSwitch Initialized");
-            }
-          });
-        }
-      } catch (e) {
-        adminCoreLSConsole.error(e);
-      }
-    },
-    unrenderBootstrapSwitch: function unrenderBootstrapSwitch() {
-      try {
-        $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
-      } catch (e) {
-        adminCoreLSConsole.error(e);
-      }
-    },
     validatefilename: function validatefilename(form, strmessage) {
       if (form.the_file.value == "") {
         $('#pleaseselectfile-popup').modal();
