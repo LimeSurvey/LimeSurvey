@@ -4,7 +4,7 @@
  */ ?>
 <div class="container-center">
     <div class="row">
-        <div class="col-sm-12">
+        <div id="failedemail-action-modal--resendresult" class="col-sm-12">
             <p><?= sprintf(gT('Sucessfull emails: %s'), $successfullEmailCount) ?></p>
             <p><?= sprintf(gT('Failed emails: %s'), $failedEmailCount) ?></p>
         </div>

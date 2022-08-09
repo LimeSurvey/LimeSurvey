@@ -4,7 +4,7 @@
  * @var $failedEmail FailedEmail
  **/ ?>
 <?= App()->getController()->renderPartial('/layouts/partial_modals/modal_header', ['modalTitle' => gT('Error message')]) ?>
-<div class="modal-body">
+<div id="failedemail-action-modal--emailerror" class="modal-body">
     <?= $failedEmail->error_message ?>
 </div>
 <div class="modal-footer modal-footer-buttons">
