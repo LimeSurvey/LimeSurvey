@@ -319,6 +319,13 @@ class UserManagementController extends LSBaseController
             }
         }
 
+        // Transfer any User Groups owned by this user to site's admin
+        $userGroupsTranferred = UserGroup::model()->updateAll(['owner_id' => 1], 'owner_id = :owner_id', [':owner_id' => $userId]);
+        if ($userGroupsTranferred) {
+            $transferredToName = User::model()->findByPk(1)->users_name;
+            $message .= sprintf(gT("All of the user's user groups were transferred to %s."), $transferredToName) . " ";
+        }
+
         $oUser = User::model()->findByPk($userId);
         //todo REFACTORING user permissions should be deleted also ... (in table permissions)
         $oUser->delete();
