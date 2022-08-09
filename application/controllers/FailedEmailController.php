@@ -40,6 +40,7 @@ class FailedEmailController extends LSBaseController
         App()->getClientScript()->registerScriptFile('/application/views/failedEmail/javascript/failedEmail.js', LSYii_ClientScript::POS_BEGIN);
         $failedEmailModel = FailedEmail::model();
         $failedEmailModel->setAttributes(App()->getRequest()->getParam('FailedEmail'), false);
+        $failedEmailModel->setAttribute('surveyid', $surveyId);
         $pageSize = App()->request->getParam('pageSize') ?? App()->user->getState('pageSize', App()->params['defaultPageSize']);
         $massiveAction = App()->getController()->renderPartial('/failedEmail/partials/massive_action_selector', [
             'surveyId' => $surveyId,
@@ -82,29 +83,27 @@ class FailedEmailController extends LSBaseController
                 foreach ($failedEmails as $failedEmail) {
                     $emailsByType[$failedEmail->email_type][$failedEmail->id] = $failedEmail->recipient;
                 }
-                if (!empty($emailsByType)) {
-                    $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
-                    if (!$preserveResend) {
-                        // only delete FailedEmail entries that have succeeded
-                        $criteria->addCondition('status', FailedEmail::STATE_SUCCESS);
-                        FailedEmail::model()->deleteAll($criteria);
-                    }
-                    if ($items) {
-                        return $this->renderPartial('partials/modal/resend_result_body', [
-                            'successfullEmailCount' => $result['successfullEmailCount'],
-                            'failedEmailCount'      => $result['failedEmailCount']
-                        ]);
-                    }
-                    return $this->renderPartial('/admin/super/_renderJson', [
-                        "data" => [
-                            'success' => true,
-                            'html'    => $this->renderPartial('partials/modal/resend_result', [
-                                'successfullEmailCount' => $result['successfullEmailCount'],
-                                'failedEmailCount'      => $result['failedEmailCount']
-                            ], true)
-                        ]
+                $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
+                if (!$preserveResend) {
+                    // only delete FailedEmail entries that have succeeded
+                    $criteria->addCondition('status', FailedEmail::STATE_SUCCESS);
+                    FailedEmail::model()->deleteAll($criteria);
+                }
+                if ($items) {
+                    return $this->renderPartial('partials/modal/resend_result_body', [
+                        'successfullEmailCount' => $result['successfullEmailCount'],
+                        'failedEmailCount'      => $result['failedEmailCount']
                     ]);
                 }
+                return $this->renderPartial('/admin/super/_renderJson', [
+                    "data" => [
+                        'success' => true,
+                        'html'    => $this->renderPartial('partials/modal/resend_result', [
+                            'successfullEmailCount' => $result['successfullEmailCount'],
+                            'failedEmailCount'      => $result['failedEmailCount']
+                        ], true)
+                    ]
+                ]);
             }
             return $this->renderPartial('/admin/super/_renderJson', [
                 "data" => [

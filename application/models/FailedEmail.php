@@ -17,8 +17,11 @@
  */
 class FailedEmail extends LSActiveRecord
 {
-    /** @var string all attributes that have the value "NO" */
-    const STATE_SUCCESS = 'SEND SUCCESS';
+    /** @var string The success status */
+    public const STATE_SUCCESS = 'SEND SUCCESS';
+
+    /** @var string The failed status */
+    public const STATE_FAILED = 'SEND FAILED';
 
     /**
      * @inheritdoc
@@ -94,6 +97,7 @@ class FailedEmail extends LSActiveRecord
         $criteria = new CDbCriteria();
 
         $criteria->compare('id', $this->id);
+        $criteria->compare('surveyid', $this->surveyid);
         $criteria->compare('email_type', $this->email_type, true);
         $criteria->compare('recipient', $this->recipient, true);
         $criteria->compare('language', $this->language, true);
