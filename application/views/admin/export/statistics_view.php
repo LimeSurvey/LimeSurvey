@@ -149,8 +149,3 @@ echo viewHelper::getViewTestTag('statisticsIndex');
         </div>
     </div>
 </div>
-<?php
-                                                                                                            App()->getClientScript()->registerScript('StatisticsViewBSSwitcher', "
-LS.renderBootstrapSwitch();
-", LSYii_ClientScript::POS_POSTSCRIPT);
-?>

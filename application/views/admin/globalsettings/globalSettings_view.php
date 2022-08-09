@@ -7,7 +7,6 @@
 echo viewHelper::getViewTestTag('globalsettings');
 
 App()->getClientScript()->registerPackage('jquery-selectboxes');
-App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "LS.renderBootstrapSwitch();", LSYii_ClientScript::POS_POSTSCRIPT);
 
 ?>
 <?php if (YII_DEBUG): ?>

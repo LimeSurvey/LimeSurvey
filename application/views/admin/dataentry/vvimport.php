@@ -160,8 +160,6 @@
 </div></div></div>
 <?php
 App()->getClientScript()->registerScript('VVImportBSSwitcher', "
-LS.renderBootstrapSwitch();
-
 $('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
     if (!state){
         $('#insertmethod').removeAttr('disabled');

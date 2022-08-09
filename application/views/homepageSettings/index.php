@@ -6,12 +6,6 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('homepageSettings');
 
-App()->getClientScript()->registerScript(
-    'HomepageSettingsBSSwitcher',
-    "LS.renderBootstrapSwitch();",
-    LSYii_ClientScript::POS_POSTSCRIPT
-);
-
 ?>
 <script type="text/javascript">
     strConfirm = '<?php eT('Please confirm', 'js');?>';

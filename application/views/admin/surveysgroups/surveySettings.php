@@ -115,9 +115,7 @@ Yii::app()->getClientScript()->registerScript(
     <?php
     Yii::app()->getClientScript()->registerScript(
         "editLocalSettings_submit",
-        "window.LS.unrenderBootstrapSwitch();
-        window.LS.renderBootstrapSwitch();
-    
+        "
         $('#surveySettings a').click(function (e) {
             window.location.hash = $(this).attr('href');
             e.preventDefault();

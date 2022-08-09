@@ -512,14 +512,6 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
         </div>
     </div>
 </div>
-<?php
-App()->getClientScript()->registerScript('TokenformViewBSSwitcher',
-    "
-LS.renderBootstrapSwitch();
-",
-    LSYii_ClientScript::POS_POSTSCRIPT
-);
-?>
 
 <?php if ($token_subaction == "addnew"): ?>
     <!-- Empty Token Confirmation Modal -->

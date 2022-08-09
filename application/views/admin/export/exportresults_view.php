@@ -67,8 +67,3 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
     <input type='submit' class="btn btn-outline-secondary d-none" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
     </form>
 </div>
-<?php
-App()->getClientScript()->registerScript('ExportResultsBSSwitcher', "
-LS.renderBootstrapSwitch();
-", LSYii_ClientScript::POS_POSTSCRIPT);
-?>

@@ -98,9 +98,6 @@ $optionsOnOff = array(
 </div>
 
 <script>
-    window.LS.unrenderBootstrapSwitch();
-    window.LS.renderBootstrapSwitch();
-
     $('#surveySettings a').click(function (e) {
         window.location.hash = $(this).attr('href');
         e.preventDefault();

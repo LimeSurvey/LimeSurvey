@@ -236,8 +236,6 @@
             return false;
         });
         jQuery(function(){jQuery('#ParticipantAttributeName_attribute_type').trigger('change');});
-
-        LS.renderBootstrapSwitch();
     </script>
 </div>
 <div class="modal-footer">
