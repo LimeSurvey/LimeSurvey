@@ -2,9 +2,10 @@
     <h3 class='pagetitle'><?php neT("Select which fields to import as attributes with your {n} participant.|Select which fields to import as attributes with your {n} participants.", $linecount); ?></h3>
 </div>
 
-<div class='row draggable-container' style='z-index: 1;'>
-    <div class='col-md-4'>
-        <div id="csvattribute" class="card card-primary">
+<div class="container-fluid">
+<div class="row justify-content-start">
+    <div class='col-4'>
+        <div id="csvattribute" class="card card-primary h-100">
             <div class="card-header bg-primary">
                 <?php eT("CSV field names "); ?>
                 <div class='float-end'>
@@ -28,8 +29,8 @@
             </div>
         </div>
     </div>
-    <div class='col-md-4'>
-        <div id="newcreated" class="card">
+    <div class='col-4'>
+        <div id="newcreated" class="card card-primary h-100">
             <div class="card-header bg-primary">
                 <?php eT("Attributes to be created") ?>
             </div>
@@ -40,8 +41,8 @@
             </div>
         </div>
     </div>
-    <div class='col-md-4'>
-        <div id="centralattribute" class="card">
+    <div class='col-4'>
+        <div id="centralattribute" class="card card-primary h-100">
             <div class="card-header bg-primary"><?php eT("Existing attribute"); ?></div>
             <div class='card-body'>
                 <p class='help-block'><?php eT("Drop a CSV field into an existing participant attribute listed below to import your data into it."); ?></p>
@@ -74,12 +75,13 @@
             </div>
         </div>
     </div>
-    <div class='mb-3 col-12 text-center'>
-        <input class='btn btn-outline-secondary' type="button" name="attmapcancel" id="attmapcancel" value="<?php eT("Cancel") ?>" />
+    <div class='m-3 col-12 text-center'>
+        <input class='btn btn-cancel' type="button" name="attmapcancel" id="attmapcancel" value="<?php eT("Cancel") ?>" />
         <input class='btn btn-outline-secondary' type="button" name="attreset" id="attreset" value="<?php eT("Reset") ?>" onClick="window.location.reload();" />
         <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT("Continue"); ?>" />
     </div>
     <div id="processing" title="<?php eT("Processing...") ?>" style="display:none">
         <img src="<?php echo Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif'; ?>" alt="<?php eT('Loading...'); ?>" title="<?php eT('Loading...'); ?>" />
     </div>
+</div>
 </div>
