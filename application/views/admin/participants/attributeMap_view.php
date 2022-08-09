@@ -37,9 +37,10 @@
     $columnstyle = "attrcol_".$columncount;
 ?>
 
+<div class="container-fluid">
 <div class='row'>
-    <div class='col-md-4'>
-        <div id="centralattribute" class="card <?php echo $columnstyle ?>">
+    <div class='col-4'>
+        <div id="centralattribute" class="card card-primary <?php echo $columnstyle ?> h-100">
             <div class="card-header bg-primary"><?php eT("Unmapped participant attributes"); ?></div>
             <div class='card-body'>
                 <div id="cpdbatt">
@@ -55,8 +56,8 @@
             </div>
         </div>
     </div>
-    <div class='col-md-4'>
-        <div id="newcreated" class="card <?php echo $columnstyle ?>">
+    <div class='col-4'>
+        <div id="newcreated" class="card card-primary <?php echo $columnstyle ?>">
             <div class="card-header bg-primary"><?php eT("Survey participant attributes to create"); ?></div>
             <div class='card-body' style="height:100%;">
                 <div class="newcreate" id="sortable" style ="height:100%;">
@@ -64,9 +65,9 @@
             </div>
         </div>
     </div>
-    <div class='col-md-4'>
+    <div class='col-4'>
         <div id='tokenattribute'>
-            <div class='card'>
+            <div class='card card-primary mb-3'>
                 <div class="card-header bg-primary">
                     <?php eT("Existing survey participant attributes"); ?>
                 </div>
@@ -107,18 +108,18 @@
                     </div>
 
                     <?php if(!empty($selectedtokenattribute)): ?>
-                        <div class='explanation row'>
-                            <div class='mb-3'>
-                                <label class='form-label col-md-10 text-end' for='overwriteman'><?php eT("Overwrite existing participant attribute values if a participant already exists?") ?></label>
-                                <div class='col-md-2'>
-                                    <input type='checkbox' id='overwriteman' name='overwriteman' />
-                                </div>
+                        <div class='explanation row m-3'>
+                            <div class='form-check'>
+                                <input class="form-check-input" type='checkbox' id='overwriteman' name='overwriteman' />
+                                <label class='form-check-label' for='overwriteman'>
+                                    <?php eT("Overwrite existing participant attribute values if a participant already exists?") ?>
+                                </label>
                             </div>
-                            <div class='mb-3'>
-                                <label class='form-label col-md-10 text-end' for='createautomap'><?php eT("Make these mappings automatic in future") ?></label>
-                                <div class='col-md-2'>
-                                    <input type='checkbox' id='createautomap' name='createautomap' />
-                                </div>
+                            <div class='form-check'>
+                                <input class="form-check-input" type='checkbox' id='createautomap' name='createautomap' />
+                                <label class='form-check-label' for='createautomap'>
+                                    <?php eT("Make these mappings automatic in future") ?>
+                                </label>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -138,8 +139,11 @@
                                 }
                                 ?>
                             </div>
-                            <div class='explanation'>
-                                <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php eT("Overwrite existing auto mapped attribute values if a participant already exists?") ?></label>
+                            <div class='explanation form-check'>
+                                <input class="form-check-input" type='checkbox' id='overwrite' name='overwrite' />
+                                <label class="form-check-label" for='overwrite'>
+                                    <?php eT("Overwrite existing auto mapped attribute values if a participant already exists?") ?>
+                                </label>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -147,7 +151,7 @@
                 </div>
             </div>
 
-            <div class='card'>
+            <div class='card card-primary'>
                 <div class='card-header bg-primary'><?php eT("Standard participant fields") ?></div>
                 <div class='card-body'>
                     <div class="standardfields">
@@ -162,16 +166,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class='explanation'>
-                        <div class='mb-3'>
-                            <label class='form-label col-md-10 text-end' for='overwritest'>
+                    <div class='explanation row m-3'>
+                        <div class='form-check'>
+                            <input class="form-check-input" type='checkbox' id='overwritest' name='overwritest' />
+                            <label class='form-check-label form-label col-md-10' for='overwritest'>
                                 <?php eT("Overwrite existing standard field values if a participant already exists?") ?>
                             </label>
-                            <div class='col-md-2'>
-                                <input type='checkbox' id='overwritest' name='overwritest' />
-                            </div>
                         </div>
-                        <span class='help-block col-md-10 text-end'><?php eT("Note: Standard participant fields cannot be automatically mapped") ?></span>
+                        <div class='form-text'><?php eT("Note: Standard participant fields cannot be automatically mapped") ?></div>
                     </div>
                 </div>
             </div>
@@ -180,8 +182,8 @@
     </div>
 </div>
 
-<div class='mb-3 col-12 text-center'>
-    <input class='btn btn-outline-secondary' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
+<div class='m-3 col-12 text-center'>
+    <input class='btn btn-cancel' type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Cancel')?>" />
     <input class='btn btn-outline-secondary' type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
     <input class='btn btn-outline-secondary' type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />
 </div>
@@ -212,3 +214,4 @@ $ajaxloader = array(
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+</div>
