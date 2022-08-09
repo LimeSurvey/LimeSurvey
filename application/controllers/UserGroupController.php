@@ -120,14 +120,13 @@ class UserGroupController extends LSBaseController
         // - Superadmin
         // - Owner of the group
         // - Member of the group
-        if (!(
-            $userGroup->owner_id == Yii::app()->user->id ||
+        if (!($userGroup->owner_id == Yii::app()->user->id ||
             $userGroup->hasUser(Yii::app()->user->id) ||
             Permission::model()->hasGlobalPermission('superadmin', 'read')
-        )) {
+            )) {
             throw new CHttpException(403);
         }
-        
+
         $aData = [];
         if (!empty($header)) {
             $aData['headercfg'] = $header;
