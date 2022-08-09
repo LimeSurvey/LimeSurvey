@@ -126,7 +126,7 @@ class UserGroupController extends LSBaseController
                 $userGroup->hasUser(Yii::app()->user->id) ||
                 Permission::model()->hasGlobalPermission('superadmin', 'read')
               )
-           ) {
+        ) {
             throw new CHttpException(403);
         }
 
