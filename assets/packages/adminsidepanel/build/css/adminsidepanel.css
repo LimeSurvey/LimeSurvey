@@ -137,10 +137,6 @@
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
-#sidebar div[class^=col-].nofloat,
-#sidebar div[class*=" col-"].nofloat {
-  float: none;
-}
 #sidebar .button-sub-bar {
   min-height: 32px;
 }
