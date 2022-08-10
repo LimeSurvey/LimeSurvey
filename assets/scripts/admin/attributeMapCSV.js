@@ -2,16 +2,18 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$(document).on('ready  pjax:scriptcomplete', function() {
+
+$(document).on('ready pjax:scriptcomplete', function() {
+
     if(!$('#csvattribute').length ) {
         //alert("All the attributes are automatically mapped");
     }
     
     // Find the biggest column and set both to that height
+    // TODO: Not needed since BS5 can adjust height.
     function adjustHeights() {
-
         var max = Math.max($('.droppable-new').height(), $('.droppable-csv').height());
-        console.ls.log('max', max);
+        console.log('max', max);
 
         $('.droppable-new').css('min-height', max);
         $('.droppable-csv').css('min-height', max);

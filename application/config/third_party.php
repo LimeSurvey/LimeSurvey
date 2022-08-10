@@ -62,11 +62,14 @@ return array(
             unset($this->value[$offset]);
         }
         private function setRtl() {
-            $dir = (getLanguageRTL(App()->getLanguage())) ? 'rtl' : 'ltr';
-            if ($dir === "rtl") {
-                $this->value['css'] = [
-                    'build/css/bootstrap_5-rtl.min.css',
-                ];
+            // NB: During installation, getLanguageRTL won't be loaded here.
+            if (function_exists('getLanguageRTL')) {
+                $dir = getLanguageRTL(App()->getLanguage()) ? 'rtl' : 'ltr';
+                if ($dir === "rtl") {
+                    $this->value['css'] = [
+                        'build/css/bootstrap_5-rtl.min.css',
+                    ];
+                }
             }
         }
     },
