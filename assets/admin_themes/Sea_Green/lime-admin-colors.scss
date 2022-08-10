@@ -2941,9 +2941,9 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
     }
     .selected {
         padding-left: 20px;
-        background: linear-gradient(to right, $primary-bg_selected 0px, lighten($primary, 15%) 13px, $white 13px, $white 100%);
+        background: /*!rtl:linear-gradient(to left, $primary-bg_selected 0px, lighten($primary, 15%) 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected 0px, lighten($primary, 15%) 13px, $white 13px, $white 100%);
         &.activated {
-            background: linear-gradient(to right, $primary 0px, $primary 13px, $white 13px, $white 100%);
+            background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary 0px, $primary 13px, $white 13px, $white 100%);
         }
         transition-property: all;
         transition-duration: .25s;
@@ -2961,32 +2961,32 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 
     .menu-selected {
         padding-left: 10px;
-        background: linear-gradient(to right, $primary 0px, $primary 6px, $white 6px, $white 100%);
+        background: /*!rtl:linear-gradient(to left, $primary 0px, $primary 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary 0px, $primary 6px, $white 6px, $white 100%);
     }
 
     .subpanel {
         &.level-0 {
             .menu-selected {
-                background: linear-gradient(to right, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 6px, $white 6px, $white 100%);
+                background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 6px, $white 6px, $white 100%);
             }
             .selected {
-                background: linear-gradient(to right, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 13px, $white 13px, $white 100%);
+                background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 13px, $white 13px, $white 100%);
             }
         }
         &.level-1 {
             .menu-selected {
-                background: linear-gradient(to right, $primary-bg_selected 0px, $primary-bg_selected 6px, $white 6px, $white 100%);
+                background: /*!rtl:linear-gradient(to left, $primary-bg_selected 0px, $primary-bg_selected 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected 0px, $primary-bg_selected 6px, $white 6px, $white 100%);
             }
             .selected {
-                background: linear-gradient(to right, $primary-bg_selected 0px, $primary-bg_selected 13px, $white 13px, $white 100%);
+                background: /*!rtl:linear-gradient(to left, $primary-bg_selected 0px, $primary-bg_selected 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected 0px, $primary-bg_selected 13px, $white 13px, $white 100%);
             }
         }
         &.level-2 {
             .menu-selected {
-                background: linear-gradient(to right, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 6px, $white 6px, $white 100%);
+                background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 6px, $white 6px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 6px, $white 6px, $white 100%);
             }
             .selected {
-                background: linear-gradient(to right, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 13px, $white 13px, $white 100%);
+                background: /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 13px, $white 13px, $white 100%)*/ linear-gradient(to right, $primary-bg_selected_subpanel_2 0px, $primary-bg_selected_subpanel_2 13px, $white 13px, $white 100%);
             }
         }
     }
