@@ -57,8 +57,9 @@ class FailedEmailController extends LSBaseController
 
     /**
      * @throws CHttpException|CException
+     * @return string|void
      */
-    public function actionResend(): string
+    public function actionResend()
     {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
@@ -89,12 +90,14 @@ class FailedEmailController extends LSBaseController
                     $criteria->addCondition('status', FailedEmail::STATE_SUCCESS);
                     FailedEmail::model()->deleteAll($criteria);
                 }
+                // massive action
                 if ($items) {
                     return $this->renderPartial('partials/modal/resend_result_body', [
                         'successfullEmailCount' => $result['successfullEmailCount'],
                         'failedEmailCount'      => $result['failedEmailCount']
                     ]);
                 }
+                // single action
                 return $this->renderPartial('/admin/super/_renderJson', [
                     "data" => [
                         'success' => true,
