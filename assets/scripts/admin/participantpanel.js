@@ -107,8 +107,7 @@ LS.CPDB = (function() {
                             var val = $('#attributes').val();
                             if (val) {
                                 dldata.attributes = val.join('+');
-                            }
-                            else {
+                            } else {
                                 dldata.attributes = '';
                             }
                             var dlForm = $("<form></form>")
@@ -128,15 +127,6 @@ LS.CPDB = (function() {
                             dlForm.css('display', 'none').appendTo('body').submit();
                             $(self).modal("hide");
                         });
-                        $('#attributes')
-                            .multiselect({ 
-                                includeSelectAllOption:true, 
-                                selectAllValue: '0',
-                                selectAllText: sSelectAllText,
-                                nonSelectedText: sNonSelectedText,
-                                nSelectedText: sNSelectedText,
-                                maxHeight: 140 
-                            });
                     });
                     /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
                 }

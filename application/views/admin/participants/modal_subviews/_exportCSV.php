@@ -10,14 +10,16 @@
                     <div class='mb-3 row'>
                         <label class='form-label col-md-4' for='attributes'><?php eT('Attributes to export:');?></label>
                         <div class='col-md-8'>
-                            <select id="attributes" name="attributes" multiple="multiple" >
-                                <?php
-                                foreach ($aAttributes as $value)
-                                {
-                                    echo "<option value=" . $value['attribute_id'] . ">" . $value['defaultname'] . "</option>\n";
-                                }
-                                ?>
-                            </select>
+                            <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
+                                array(
+                                    'asDropDownList' => true,
+                                    'htmlOptions' => ['multiple' => 'multiple', 'id' => 'attributes'],
+                                    'data' => array_combine(array_column($aAttributes, 'attribute_id'), array_column($aAttributes, 'defaultname')),
+                                    'value' => null,
+                                    'name' => 'attributes',
+                                    'pluginOptions' => []
+                                )
+                            ); ?>
                         </div>
                     </div>
                 <?php if (Yii::app()->getConfig('hideblacklisted') != 'N'): ?>
@@ -65,18 +67,3 @@
         </div>
     </div>
 </div>
-
-<?php
-   // @todo THis seems to be a duplicate to the same snippet in participantpanel.js
-    App()->getClientScript()->registerScript('ExportCSVMultiSelectInit', "
-    $('#attributes').multiselect({
-        includeSelectAllOption: true, 
-        enableFiltering: true,
-        enableCaseInsensitiveFiltering: true, 
-        selectAllValue: 0,
-        filterBehavior : \"text\",
-        selectAllText: '".gT("Select all")."',
-        filterPlaceholder: '".gT("Search for something...")."'
-    });
-    ", LSYii_ClientScript::POS_POSTSCRIPT);
-?>

@@ -51,7 +51,9 @@ return array(
         public function offsetExists($offset) {
             return isset($this->value[$offset]);
         }
-        public function offsetGet($offset) {
+        // NB: '&' is needed to unset values in $value property after getting it
+        // Else, a copy of the array will be returned (so called "value semantics").
+        public function &offsetGet($offset) {
             $this->setRtl();
             return $this->value[$offset];
         }
