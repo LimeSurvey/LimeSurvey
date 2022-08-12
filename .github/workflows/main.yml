@@ -139,4 +139,5 @@ jobs:
       - name: Run functional tests
         env:
             DOMAIN: localhost
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
+#       TODO: activated for testing purpose, remove after
+        run: php third_party/bin/phpunit --testdox --stop-on-failure ls\tests\FailedEmailTest
