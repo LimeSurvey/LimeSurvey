@@ -77,17 +77,20 @@ class FailedEmailController extends LSBaseController
         if (!empty($selectedItems)) {
             $criteria = new CDbCriteria();
             $criteria->select = 'id, email_type, recipient';
-            $criteria->addCondition('surveyid', $surveyId);
+            $criteria->addCondition('surveyid = ' . (int) $surveyId);
             $criteria->addInCondition('id', $selectedItems);
             $failedEmails = FailedEmail::model()->findAll($criteria);
             if (!empty($failedEmails)) {
                 foreach ($failedEmails as $failedEmail) {
                     $emailsByType[$failedEmail->email_type][$failedEmail->id] = $failedEmail->recipient;
                 }
+                global $thissurvey;
+                $thissurvey = getSurveyInfo($surveyId);
                 $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
                 if (!$preserveResend) {
                     // only delete FailedEmail entries that have succeeded
-                    $criteria->addCondition('status', FailedEmail::STATE_SUCCESS);
+                    $criteria->addCondition('status = :status');
+                    $criteria->params['status'] = FailedEmail::STATE_SUCCESS;
                     FailedEmail::model()->deleteAll($criteria);
                 }
                 // massive action
@@ -143,7 +146,7 @@ class FailedEmailController extends LSBaseController
         if (!empty($selectedItems)) {
             $criteria = new CDbCriteria();
             $criteria->select = 'id, email_type, recipient';
-            $criteria->addCondition('surveyid', $surveyId);
+            $criteria->addCondition('surveyid =' . (int) $surveyId);
             $criteria->addInCondition('id', $selectedItems);
             $failedEmails = new FailedEmail();
             $deletedCount = $failedEmails->deleteAll($criteria);
