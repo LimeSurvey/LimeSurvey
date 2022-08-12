@@ -207,6 +207,7 @@ class Answer extends LSActiveRecord
      * @param string $lang
      * @param bool $return_query
      * @return array|CDbCommand
+     * @deprecated
      */
     public function getAnswerQuery($surveyid, $lang, $return_query = true)
     {
