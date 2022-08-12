@@ -540,12 +540,12 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
                 $failedEmailCount++;
-                saveFailedEmail($sRecipient, $surveyid, 'admin_notification', $emailLanguage, $mailer->getError());
-                if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
+                saveFailedEmail($key, $sRecipient, $surveyid, 'admin_notification', $emailLanguage, $mailer->getError());
+                if ($debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div", array('class' => 'alert alert-danger'), sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError()));
+                    echo CHtml::tag("div", ['class' => 'alert alert-danger'], sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError()));
                 }
-            } elseif($preserveResend) {
+            } elseif ($preserveResend) {
                 $successfullEmailCount++;
                 //preserve failedEmail if it exists
                 preserveSuccessFailedEmail($key);
@@ -563,12 +563,12 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
                 $failedEmailCount++;
-                saveFailedEmail($sRecipient, $surveyid, 'admin_responses', $emailLanguage, $mailer->getError());
-                if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
+                saveFailedEmail($key, $sRecipient, $surveyid, 'admin_responses', $emailLanguage, $mailer->getError());
+                if ($debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div", array('class' => 'alert alert-danger'), sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError()));
+                    echo CHtml::tag("div", ['class' => 'alert alert-danger'], sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError()));
                 }
-            } elseif($preserveResend) {
+            } elseif ($preserveResend) {
                 $successfullEmailCount++;
                 //preserve failedEmail if it exists
                 preserveSuccessFailedEmail($key);

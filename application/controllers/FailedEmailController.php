@@ -125,8 +125,9 @@ class FailedEmailController extends LSBaseController
 
     /**
      * @throws CHttpException|CException
+     * @return string|void
      */
-    public function actionDelete(): string
+    public function actionDelete()
     {
         $surveyId = sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
