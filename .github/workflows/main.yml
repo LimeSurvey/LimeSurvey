@@ -140,4 +140,4 @@ jobs:
         env:
             DOMAIN: localhost
 #       TODO: activated for testing purpose, remove after
-        run: php third_party/bin/phpunit --testdox --stop-on-failure ls\tests\FailedEmailTest
+        run: php third_party/bin/phpunit --testdox --stop-on-failure --filter 'ls\tests\\FailedEmailTest' tests/functional
