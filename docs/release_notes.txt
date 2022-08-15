@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.30 (build 220808) to 5.3.31 (build 220815) August 15, 2022
+-Fixed issue #15195: Expiration date can be set before start date (#2558) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Portuguese (Portugal) by jbfloripa, marciojv, samarta
+#Updated translation: Portuguese (Brazil) by femariso, josesiqueira, marcelovincenzi, reimorster
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+
+
 Changes from 5.3.29 (build 220801) to 5.3.30 (build 220808) August 8, 2022
 -Fixed issue: Missing 'Soft' mandatory in question summary (Olle Haerstedt)
 -Fixed issue: Include bootstrap-rtl for admin themes (Olle Haerstedt)
