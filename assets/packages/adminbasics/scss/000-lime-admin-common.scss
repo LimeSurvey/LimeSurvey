@@ -4208,3 +4208,15 @@ label {
     cursor: not-allowed;
     background-color: #eee;
 }
+
+#survey-nav {
+    .nav-link {
+        border: none;
+    }
+    .nav-link:hover {
+        color: #333;
+    }
+    .nav-link:focus {
+        color: #333;
+    }
+}

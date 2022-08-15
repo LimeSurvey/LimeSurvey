@@ -47,7 +47,7 @@ There is two possible displays for index, depending on Survey Mode:
                     {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
                         {% set statusClass = statusClass ~  ' disabled' %}
                     {% endif %}
-                    <li class="{{ indexItem.coreClass }} {{ statusClass }}">
+                    <li class="list-group-item{{ indexItem.coreClass }} {{ statusClass }}">
                         <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'
                            class='dropdown-item aminate'>
                             {{ indexItem.text }}
