@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-08-08 07:14:02+00:00\n"
+"POT-Creation-Date: 2022-08-15 08:18:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -383,7 +383,7 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:271
 #: application/core/LsDefaultDataSets.php:473
-#: application/models/Survey.php:2150
+#: application/models/Survey.php:2151
 #: application/models/TemplateManifest.php:172
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/assessment/assessments_view.php:14
@@ -2406,8 +2406,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:259
-#: application/models/Question.php:700 application/models/Survey.php:1048
-#: application/models/Survey.php:1056
+#: application/models/Question.php:700 application/models/Survey.php:1049
+#: application/models/Survey.php:1057
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:624
 #: application/views/admin/dataentry/content_view.php:693
@@ -2569,8 +2569,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:259
-#: application/models/Question.php:700 application/models/Survey.php:1048
-#: application/models/Survey.php:1056
+#: application/models/Question.php:700 application/models/Survey.php:1049
+#: application/models/Survey.php:1057
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:623
@@ -2680,11 +2680,11 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:236
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:249
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:262
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:103
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:115
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:137
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:150
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:163
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:104
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:116
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:138
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:151
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:164
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:83
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:102
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:129
@@ -4557,8 +4557,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:309
 #: application/views/admin/export/statistics_subviews/_question.php:340
 #: application/views/admin/participants/participantsPanel_view.php:42
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:41
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:74
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:42
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:75
 #: application/views/admin/token/dummytokenform.php:101
 #: application/views/admin/token/dummytokenform.php:131
 #: application/views/responses/modal_subviews/filterColumns.php:31
@@ -4577,8 +4577,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:310
 #: application/views/admin/export/statistics_subviews/_question.php:341
 #: application/views/admin/participants/participantsPanel_view.php:45
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:42
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:75
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:43
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:76
 #: application/views/admin/token/dummytokenform.php:102
 #: application/views/admin/token/dummytokenform.php:132
 msgid "Previous month"
@@ -4596,8 +4596,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:311
 #: application/views/admin/export/statistics_subviews/_question.php:342
 #: application/views/admin/participants/participantsPanel_view.php:46
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:43
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:76
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:44
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:77
 #: application/views/admin/token/dummytokenform.php:103
 #: application/views/admin/token/dummytokenform.php:133
 msgid "Next month"
@@ -4615,8 +4615,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:312
 #: application/views/admin/export/statistics_subviews/_question.php:343
 #: application/views/admin/participants/participantsPanel_view.php:47
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:44
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:77
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:45
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:78
 #: application/views/admin/token/dummytokenform.php:104
 #: application/views/admin/token/dummytokenform.php:134
 msgid "Select year"
@@ -4634,8 +4634,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:313
 #: application/views/admin/export/statistics_subviews/_question.php:344
 #: application/views/admin/participants/participantsPanel_view.php:48
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:45
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:78
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:46
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:79
 #: application/views/admin/token/dummytokenform.php:105
 #: application/views/admin/token/dummytokenform.php:135
 msgid "Previous year"
@@ -4653,8 +4653,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:314
 #: application/views/admin/export/statistics_subviews/_question.php:345
 #: application/views/admin/participants/participantsPanel_view.php:49
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:46
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:79
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:47
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:80
 #: application/views/admin/token/dummytokenform.php:106
 #: application/views/admin/token/dummytokenform.php:136
 msgid "Next year"
@@ -4672,8 +4672,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:315
 #: application/views/admin/export/statistics_subviews/_question.php:346
 #: application/views/admin/participants/participantsPanel_view.php:50
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:47
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:80
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:48
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:81
 #: application/views/admin/token/dummytokenform.php:107
 #: application/views/admin/token/dummytokenform.php:137
 msgid "Select decade"
@@ -4691,8 +4691,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:316
 #: application/views/admin/export/statistics_subviews/_question.php:347
 #: application/views/admin/participants/participantsPanel_view.php:51
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:48
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:81
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:49
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:82
 #: application/views/admin/token/dummytokenform.php:108
 #: application/views/admin/token/dummytokenform.php:138
 msgid "Previous decade"
@@ -4710,8 +4710,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:317
 #: application/views/admin/export/statistics_subviews/_question.php:348
 #: application/views/admin/participants/participantsPanel_view.php:52
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:49
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:82
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:50
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:83
 #: application/views/admin/token/dummytokenform.php:109
 #: application/views/admin/token/dummytokenform.php:139
 msgid "Next decade"
@@ -4729,8 +4729,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:318
 #: application/views/admin/export/statistics_subviews/_question.php:349
 #: application/views/admin/participants/participantsPanel_view.php:53
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:50
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:83
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:51
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:84
 #: application/views/admin/token/dummytokenform.php:110
 #: application/views/admin/token/dummytokenform.php:140
 msgid "Previous century"
@@ -4748,8 +4748,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:319
 #: application/views/admin/export/statistics_subviews/_question.php:350
 #: application/views/admin/participants/participantsPanel_view.php:54
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:51
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:84
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:52
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:85
 #: application/views/admin/token/dummytokenform.php:111
 #: application/views/admin/token/dummytokenform.php:141
 msgid "Next century"
@@ -4765,8 +4765,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:289
 #: application/views/admin/export/statistics_subviews/_question.php:320
 #: application/views/admin/export/statistics_subviews/_question.php:351
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:52
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:85
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:53
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:86
 #: application/views/admin/token/dummytokenform.php:112
 #: application/views/admin/token/dummytokenform.php:142
 msgid "Select time"
@@ -6053,7 +6053,7 @@ msgstr ""
 
 #: application/controllers/admin/Quotas.php:156
 #: application/core/LsDefaultDataSets.php:445
-#: application/models/Survey.php:2157
+#: application/models/Survey.php:2158
 #: application/views/admin/survey/copySurvey_view.php:55
 #: application/views/surveyAdministration/importSurvey_view.php:83
 msgid "Quotas"
@@ -6136,7 +6136,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:829
 #: application/helpers/userstatistics_helper.php:2575
-#: application/models/Survey.php:1512 application/models/Survey.php:2172
+#: application/models/Survey.php:1513 application/models/Survey.php:2173
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:18
 #: application/views/admin/export/statistics_view.php:23
@@ -6397,7 +6397,7 @@ msgstr ""
 #: application/controllers/admin/SurveysGroupsController.php:329
 #: application/controllers/admin/globalsettings.php:517
 #: application/core/LsDefaultDataSets.php:867
-#: application/models/Survey.php:2222 application/models/SurveysGroups.php:314
+#: application/models/Survey.php:2223 application/models/SurveysGroups.php:314
 #: application/models/SurveysGroups.php:449
 msgid "Survey settings"
 msgstr ""
@@ -7612,7 +7612,7 @@ msgid "Open general survey settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:80
-#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2206
+#: application/core/LsDefaultDataSets.php:82 application/models/Survey.php:2207
 #: tmp/runtime/twig_cache/91/912efc421c4791f374babd30d136d666212e84e90403e3ee4e3276111285742d.php:42
 msgid "Survey text elements"
 msgstr ""
@@ -7767,7 +7767,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:528
 #: application/core/LsDefaultDataSets.php:529
 #: application/core/LsDefaultDataSets.php:530
-#: application/models/Survey.php:2162
+#: application/models/Survey.php:2163
 #: application/views/admin/export/exportresult_panels/_responses.php:4
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
@@ -9764,7 +9764,7 @@ msgstr ""
 
 #: application/extensions/TopbarWidget/views/includes/listquestiongroupsTopbarLeft_view.php:5
 #: application/extensions/TopbarWidget/views/includes/listquestiongroupsTopbarLeft_view.php:16
-#: application/models/Survey.php:1506
+#: application/models/Survey.php:1507
 #: application/views/admin/survey/subview/_survey_quickaction.php:105
 #: application/views/admin/survey/subview/_survey_quickaction.php:109
 #: application/views/admin/survey/subview/_survey_quickaction.php:152
@@ -9777,7 +9777,7 @@ msgstr ""
 #: application/extensions/TopbarWidget/views/includes/listquestionsTopbarLeft_view.php:5
 #: application/extensions/TopbarWidget/views/includes/listquestionsTopbarLeft_view.php:17
 #: application/extensions/TopbarWidget/views/includes/listquestionsTopbarLeft_view.php:28
-#: application/models/Survey.php:1504
+#: application/models/Survey.php:1505
 #: application/views/admin/survey/subview/_survey_quickaction.php:125
 #: application/views/admin/survey/subview/_survey_quickaction.php:131
 #: application/views/admin/survey/subview/_survey_quickaction.php:179
@@ -10272,7 +10272,7 @@ msgid "This will update the survey group for all selected surveys."
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:13
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:63
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:64
 msgid "Expiry date/time:"
 msgstr ""
 
@@ -10392,7 +10392,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/common_helper.php:169 application/models/Quota.php:96
-#: application/models/Survey.php:1165
+#: application/models/Survey.php:1166
 msgid "Active"
 msgstr ""
 
@@ -10401,7 +10401,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:177 application/models/Survey.php:1132
+#: application/helpers/common_helper.php:177 application/models/Survey.php:1133
 msgid "Inactive"
 msgstr ""
 
@@ -10567,7 +10567,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2586
 #: application/helpers/userstatistics_helper.php:2691
 #: application/helpers/userstatistics_helper.php:2792
-#: application/models/Survey.php:2182 application/models/Surveymenu.php:336
+#: application/models/Survey.php:2183 application/models/Surveymenu.php:336
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:22
 #: application/views/admin/super/quickmenu.php:6
 msgid "Survey"
@@ -15620,93 +15620,98 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:1152
+#: application/models/Survey.php:1153
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1153
+#: application/models/Survey.php:1154
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1154
+#: application/models/Survey.php:1155
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1515
+#: application/models/Survey.php:1516
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:2039
+#: application/models/Survey.php:2040
 msgid "Show policy"
 msgstr ""
 
-#: application/models/Survey.php:2151
+#: application/models/Survey.php:2152
 msgid "Permission to create/view/update/delete assessments rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2158
+#: application/models/Survey.php:2159
 msgid "Permission to create/view/update/delete quota rules for a survey"
 msgstr ""
 
-#: application/models/Survey.php:2163
+#: application/models/Survey.php:2164
 msgid "Permission to create(data entry)/view/update/delete/import/export responses"
 msgstr ""
 
-#: application/models/Survey.php:2173
+#: application/models/Survey.php:2174
 msgid "Permission to view statistics"
 msgstr ""
 
-#: application/models/Survey.php:2183
+#: application/models/Survey.php:2184
 msgid "Permission on survey (delete). Read permission is used to give access to this group."
 msgstr ""
 
-#: application/models/Survey.php:2192
+#: application/models/Survey.php:2193
 msgid "Survey activation"
 msgstr ""
 
-#: application/models/Survey.php:2193
+#: application/models/Survey.php:2194
 msgid "Permission to activate/deactivate a survey"
 msgstr ""
 
-#: application/models/Survey.php:2197
+#: application/models/Survey.php:2198
 msgid "Survey content"
 msgstr ""
 
-#: application/models/Survey.php:2198
+#: application/models/Survey.php:2199
 msgid "Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"
 msgstr ""
 
-#: application/models/Survey.php:2207
+#: application/models/Survey.php:2208
 msgid "Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"
 msgstr ""
 
-#: application/models/Survey.php:2213
+#: application/models/Survey.php:2214
 msgid "Survey security"
 msgstr ""
 
-#: application/models/Survey.php:2214
+#: application/models/Survey.php:2215
 msgid "Permission to modify survey security settings"
 msgstr ""
 
-#: application/models/Survey.php:2223
+#: application/models/Survey.php:2224
 msgid "Permission to view/update the survey settings including survey participants table creation"
 msgstr ""
 
-#: application/models/Survey.php:2227
+#: application/models/Survey.php:2228
 #: application/views/admin/survey/subview/accordion/_accordion_container.php:109
 msgid "Participants"
 msgstr ""
 
-#: application/models/Survey.php:2227
+#: application/models/Survey.php:2228
 msgid "Permission to create/update/delete/import/export participants"
 msgstr ""
 
-#: application/models/Survey.php:2235
+#: application/models/Survey.php:2236
 msgid "Quick translation"
 msgstr ""
 
-#: application/models/Survey.php:2236
+#: application/models/Survey.php:2237
 msgid "Permission to view & update the translations using the quick-translation feature"
+msgstr ""
+
+#: application/models/Survey.php:2296
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:20
+msgid "Expiration date can't be lower than the start date"
 msgstr ""
 
 #: application/models/SurveyDynamic.php:288
@@ -20257,7 +20262,7 @@ msgstr ""
 #: application/views/admin/super/welcome.php:97
 #: application/views/admin/survey/subview/_survey_quickaction.php:44
 #: application/views/admin/survey/subview/_survey_quickaction.php:52
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:170
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:171
 #: application/views/admin/token/invite.php:18
 #: application/views/admin/token/remind.php:16
 #: application/views/themeOptions/update.php:112
@@ -21015,32 +21020,32 @@ msgstr ""
 msgid "Automatically load end URL when survey complete:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:30
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:31
 #: tmp/runtime/twig_cache/25/25db9d6705fec19efc74aca5c86a6768175cb0d233a35796791b0da06e2379ba.php:54
 msgid "Start date/time:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:98
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:99
 msgid "Link survey on %spublic index page%s:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:110
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:111
 msgid "Set cookie to prevent repeated participation:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:132
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:133
 msgid "Use CAPTCHA for survey access:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:145
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:146
 msgid "Use CAPTCHA for registration:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:158
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:159
 msgid "Use CAPTCHA for save and load:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:170
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:171
 msgid "The CAPTCHA settings won't have any effect because you don't have the required GD library activated in your PHP configuration."
 msgstr ""
 
