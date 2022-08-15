@@ -439,7 +439,7 @@ function submittokens($quotaexit = false)
 /**
  * Send a submit notification to the email address specified in the notifications tab in the survey settings
  * @throws CException
- * @param array $emails Emailnotifications that should be sent ['responseTo' => ['failedEmailId1' => 'recipient1', 'failedEmailId2' => 'recipient2'], 'notificationTo' => ['failedEmailId1' => 'recipient1', 'failedEmailId2', 'recipient2']]
+ * @param array $emails Emailnotifications that should be sent ['responseTo' => ['failedEmailId' => 'failedEmailId1, 'recipient' => recipient1']['language' => 'language1'][...]], 'notificationTo' => [[..., ..., ...][...]]]
  * @param boolean $preserveResend whether previously failed emails should be kept in the FailedEmail table after a successfull resend
  * @param bool $return whether the function should return values
  * @param int $surveyid survey ID of currently used survey
@@ -536,20 +536,29 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
     if (count($aEmailNotificationTo) > 0) {
         $mailer = \LimeMailer::getInstance();
         $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
-        foreach ($aEmailNotificationTo as $key => $sRecipient) {
-            $mailer->setTo($sRecipient);
+        foreach ($aEmailNotificationTo as $sRecipient) {
+            $notificationId = null;
+            $notificationRecipient = $sRecipient;
+            if (!empty($emails)) {
+                $notificationId = $sRecipient['id'];
+                $notificationRecipient = $sRecipient['recipient'];
+                $emailLanguage = $sRecipient['language'];
+                $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
+            }
+            $mailer->setTo($notificationRecipient);
             if (!$mailer->SendMessage()) {
                 $failedEmailCount++;
-                saveFailedEmail($key, $sRecipient, $surveyid, 'admin_notification', $emailLanguage, $mailer->getError());
-                if ($debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
+                saveFailedEmail($notificationId, $notificationRecipient, $surveyid, 'admin_notification', $emailLanguage, $mailer->getError());
+                if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div", ['class' => 'alert alert-danger'], sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError()));
+                    echo CHtml::tag("div",
+                        ['class' => 'alert alert-danger'],
+                        sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError()));
                 }
             } elseif ($preserveResend) {
                 $successfullEmailCount++;
                 //preserve failedEmail if it exists
-                preserveSuccessFailedEmail($key);
-
+                preserveSuccessFailedEmail($notificationId);
             } else {
                 $successfullEmailCount++;
             }
@@ -559,19 +568,29 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
     if (count($aEmailResponseTo) > 0) {
         $mailer = \LimeMailer::getInstance();
         $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
-        foreach ($aEmailResponseTo as $key => $sRecipient) {
-            $mailer->setTo($sRecipient);
+        foreach ($aEmailResponseTo as $sRecipient) {
+            $responseId = null;
+            $responseRecipient = $sRecipient;
+            if (!empty($emails)) {
+                $responseId = $sRecipient['id'];
+                $responseRecipient = $sRecipient['recipient'];
+                $emailLanguage = $sRecipient['language'];
+                $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
+            }
+            $mailer->setTo($responseRecipient);
             if (!$mailer->SendMessage()) {
                 $failedEmailCount++;
-                saveFailedEmail($key, $sRecipient, $surveyid, 'admin_responses', $emailLanguage, $mailer->getError());
-                if ($debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
+                saveFailedEmail($responseId, $responseRecipient, $surveyid, 'admin_responses', $emailLanguage, $mailer->getError());
+                if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div", ['class' => 'alert alert-danger'], sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError()));
+                    echo CHtml::tag("div",
+                        ['class' => 'alert alert-danger'],
+                        sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError()));
                 }
             } elseif ($preserveResend) {
                 $successfullEmailCount++;
                 //preserve failedEmail if it exists
-                preserveSuccessFailedEmail($key);
+                preserveSuccessFailedEmail($responseId);
             } else {
                 $successfullEmailCount++;
             }
@@ -588,25 +607,25 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
 /**
  * Saves a failed email whenever processing and sensing an email fails or overwrites a found entry with updated values
  *
- * @param $id
- * @param $recipient
- * @param $surveyId
- * @param $emailType
- * @param $language
- * @param $errorMessage
+ * @param int|null $id
+ * @param string|null $recipient
+ * @param int $surveyId
+ * @param string|null $emailType
+ * @param string|null $language
+ * @param string $errorMessage
  * @return bool
  */
-function saveFailedEmail($id, $recipient, $surveyId, $emailType, $language, $errorMessage): bool
+function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, string $emailType, ?string $language, string $errorMessage): bool
 {
     $failedEmailModel = new FailedEmail();
-    $failedEmail = $failedEmailModel->findByPk($id);
-    if (isset($failedEmail)) {
-        $failedEmail->surveyid = $surveyId;
-        $failedEmail->email_type = $emailType;
-        $failedEmail->language = $language;
-        $failedEmail->error_message = $errorMessage;
-        $failedEmail->updated = date('Y-m-d H:i:s');
-        return $failedEmailModel->save(false);
+    if (isset($id)) {
+        $failedEmail = $failedEmailModel->findByPk($id);
+        if (isset($failedEmail)) {
+            $failedEmail->surveyid = $surveyId;
+            $failedEmail->error_message = $errorMessage;
+            $failedEmail->updated = date('Y-m-d H:i:s');
+            return $failedEmail->save(false);
+        }
     }
     $failedEmailModel->recipient = $recipient;
     $failedEmailModel->surveyid = $surveyId;

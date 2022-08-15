@@ -63,7 +63,7 @@ class FailedEmailController extends LSBaseController
      */
     public function actionResend()
     {
-        $surveyId = sanitize_int(App()->request->getParam('surveyid'));
+        $surveyId = (int)sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
@@ -84,7 +84,11 @@ class FailedEmailController extends LSBaseController
             $failedEmails = FailedEmail::model()->findAll($criteria);
             if (!empty($failedEmails)) {
                 foreach ($failedEmails as $failedEmail) {
-                    $emailsByType[$failedEmail->email_type][$failedEmail->id] = $failedEmail->recipient;
+                    $emailsByType[$failedEmail->email_type][] = [
+                        'id'        => $failedEmail->id,
+                        'recipient' => $failedEmail->recipient,
+                        'language' => $failedEmail->language,
+                    ];
                 }
                 global $thissurvey;
                 $thissurvey = getSurveyInfo($surveyId);
