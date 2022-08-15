@@ -15,14 +15,6 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
   <!-- Container -->
   <div id='panelintegration' class=" tab-pane fade in" >
     <div class="container-center">
-        <!--div class="row table-responsive">
-            <table id="urlparams" class='table dataTable table-hover table-borders' >
-            <thead><tr>
-                <th></th><th><?php eT('Action');?></th><th><?php eT('Parameter');?></th><th><?php eT('Target question');?></th><th></th><th></th><th></th>
-            </tr></thead>
-            </table>
-            <input type='hidden' id='allurlparams' name='allurlparams' value='' />
-        </div-->
         <div class="row">
             <div class="col-lg-12 ls-flex ls-flex-row">
                 <div class="ls-flex-item text-left">
@@ -35,7 +27,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                             <label class="control-label text-right" for="search_query">Search:</label>
                             <input class="form-control" name="search_query" id="search_query" type="text">
                         </div>
-                        <button class="btn btn-success" type="button" id="searchParameterButton" data-update-url="<?= $updateUrl ?>"><?= gT('Search', 'unescaped') ?></button>
+                        <button class="btn btn-success" type="button" id="searchParameterButton"><?= gT('Search', 'unescaped') ?></button>
                         <a href="<?= $updateUrl ?>" class="btn btn-warning"><?= gT('Reset') ?></a>
                     </div>
                 </div>
@@ -46,11 +38,11 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
             $this->widget(
                 'ext.LimeGridView.LimeGridView',
                 [
-                    'id'              => 'urlparams',
+                    'id' => 'urlparams',
                     'dataProvider'    => $model->search(),
                     'emptyText'       => gT('No parameters defined'),
                     'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
-                    'template'        => "{items}\n<div id='questiongroupListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'template'        => "{items}\n<div id='integrationPanelPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                     'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                         gT('%s rows per page'),
                         CHtml::dropDownList(
@@ -65,7 +57,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                     ),
 
                     // Columns to dispplay
-                    'columns'         => [
+                    'columns' => [
 
                         // Action buttons (defined in model)
                         [
@@ -85,16 +77,16 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                         [
                             'header' => gT('Target question'),
                             'name'   => 'target_question',
-                            'value'  => '$data->questionTitle'
+                            'value'  => '$data->questionTitle',
+                            'type'=>'raw'
                         ],
 
                     ],
-                    'ajaxUpdate'      => 'urlparams',
-                    //'afterAjaxUpdate' => 'bindPageSizeChange'
+                    'ajaxUpdate' => 'urlparams',
+                    'rowHtmlOptionsExpression' => '["data-id" => $data->id, "data-parameter" => $data->parameter, "data-qid" => $data->targetqid, "data-sqid" => $data->targetsqid]',
                 ]
             );
             ?>
-            <input type='hidden' id='allurlparams' name='allurlparams' value='' />
         </div>
     </div>
 </div>
