@@ -843,7 +843,13 @@ class TemplateConfiguration extends TemplateConfig
     public function getHasOptionPage()
     {
         $filteredName = Template::templateNameFilter($this->template->name);
-        $oRTemplate = $this->prepareTemplateRendering($filteredName);
+        $oRTemplate = $this;
+        $oRTemplate->setBasics($filteredName);
+        $oRTemplate->setMotherTemplates();
+        //$oRTemplate->setThisTemplate();
+        //$oRTemplate->createTemplatePackage($oRTemplate);
+        //$oRTemplate->removeFiles();
+        //$oRTemplate->getshowpopups();
 
         $sOptionFile = 'options' . DIRECTORY_SEPARATOR . 'options.twig';
         while (!file_exists($oRTemplate->path . $sOptionFile)) {
@@ -852,7 +858,7 @@ class TemplateConfiguration extends TemplateConfig
                 return false;
                 break;
             }
-            $oRTemplate = $oMotherTemplate->prepareTemplateRendering($this->template->name);
+            $oRTemplate = $oMotherTemplate; //->prepareTemplateRendering($this->template->name);
         }
         return true;
     }
@@ -1186,7 +1192,14 @@ class TemplateConfiguration extends TemplateConfig
             $sMotherTemplateName   = $this->template->extends;
             $instance = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
             $instance->template->checkTemplate();
-            $this->oMotherTemplate = $instance->prepareTemplateRendering($sMotherTemplateName, '');
+
+            $instance->setBasics($sMotherTemplateName);
+            $instance->setMotherTemplates();
+            //$instance->setThisTemplate();
+            //$instance->createTemplatePackage($instance);
+            //$instance->removeFiles();
+            //$instance->getshowpopups();
+            $this->oMotherTemplate = $instance; //->prepareTemplateRendering($sMotherTemplateName, '');
         }
     }
 
