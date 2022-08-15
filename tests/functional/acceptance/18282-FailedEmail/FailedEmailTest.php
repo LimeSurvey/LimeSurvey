@@ -72,6 +72,7 @@ class FailedEmailTest extends TestBaseClassWeb
         // Email Content
         $exitModal = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #exitForm'));
         $exitModal->click();
+        $web->wait(5)->until(WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::cssSelector('.modal-backdrop')));
         $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid:not(.grid-view-loading)')));
         $emailContent = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child [data-contentfile="email_content"]'));
         $emailContent->click();
@@ -82,6 +83,7 @@ class FailedEmailTest extends TestBaseClassWeb
         // Error message
         $exitModal = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #exitForm'));
         $exitModal->click();
+        $web->wait(5)->until(WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::cssSelector('.modal-backdrop')));
         $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid:not(.grid-view-loading)')));
         $errorMessage = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child [data-contentfile="email_error"]'));
         $errorMessage->click();
@@ -92,6 +94,7 @@ class FailedEmailTest extends TestBaseClassWeb
         // Delete Email
         $exitModal = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #exitForm'));
         $exitModal->click();
+        $web->wait(5)->until(WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::cssSelector('.modal-backdrop')));
         $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid:not(.grid-view-loading)')));
         $deleteEmail = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child [data-contentfile="delete_form"]'));
         $deleteEmail->click();
