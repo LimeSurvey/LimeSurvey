@@ -24,6 +24,23 @@
  */
 class SurveyURLParameter extends LSActiveRecord
 {
+    public $searched_value = null;
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        return [
+            ['sid', 'required'],
+            ['sid', 'numerical', 'integerOnly' => true],
+            ['parameter', 'required'],
+            ['targetqid', 'required'],
+            ['targetqid', 'numerical', 'integerOnly' => true],
+            ['targetsqid', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
+        ];
+    }
+
     /**
      * @inheritdoc
      * @return SurveyURLParameter
@@ -103,19 +120,16 @@ class SurveyURLParameter extends LSActiveRecord
         $criteria = new CDbCriteria();
         $criteria->with = ['question', 'question.questionl10ns', 'subquestion', 'subquestion.questionl10ns' => ['alias' => 'subquestionl10ns']];
         $criteria->together = true;
-        $criteria->condition = 't.sid=:surveyid AND (questionl10ns.language=:language OR questionl10ns.language IS NULL) AND (subquestionl10ns.language=:language OR subquestionl10ns.language IS NULL)';
-        $criteria->params = (array(':surveyid' => $this->sid, ':language' => $language));
-        //$criteria->compare('group_name', $this->group_name, true);
-
-        /*$surveyId = $this->sid;
-        $sBaseLanguage = Survey::model()->findByPk($surveyId)->language;
-        $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $surveyId]);
-        
-        $rows = [];
-        foreach ($aSurveyParameters as $oSurveyParameter) {
-            $row = $oSurveyParameter;//->attributes;
-            $rows[] = $row;
-        }*/
+        $criteria->compare('t.parameter', $this->searched_value, true);
+        $criteria->compare('question.title', $this->searched_value, true, 'OR');
+        $criteria->compare('questionl10ns.question', $this->searched_value, true, 'OR');
+        $criteria->compare('question.title', $this->searched_value, true, 'OR');
+        $criteria->compare('subquestionl10ns.question', $this->searched_value, true, 'OR');
+        $criteria->addCondition('t.sid=:surveyid');
+        $criteria->addCondition('questionl10ns.language=:language OR questionl10ns.language IS NULL');
+        $criteria->addCondition('subquestionl10ns.language=:language OR subquestionl10ns.language IS NULL');
+        $criteria->params[':surveyid'] = $this->sid;
+        $criteria->params[':language'] = $language;
 
         $sort = new CSort();
         $sort->defaultOrder = array('parameter' => false, 'target_question' => false);
@@ -129,13 +143,6 @@ class SurveyURLParameter extends LSActiveRecord
                 'desc' => 'subquestionl10ns.question desc, questionl10ns.question desc, question.title desc',
             ),
         );
-
-        /*$dataProvider = new CArrayDataProvider($rows, array(
-            'pagination' => array(
-                'pageSize' => $pageSize,
-                'pageVar' => 'page'
-            ),
-        ));*/
 
         $dataProvider = new CActiveDataProvider(get_class($this), array(
             'criteria' => $criteria,
@@ -158,10 +165,10 @@ class SurveyURLParameter extends LSActiveRecord
         $buttons = "<div class='icon-btn-row'>";
 
         // Edit
-        $buttons .= '<button class="btn btn-sm btn-default surveysettings_edit_intparameter" data-id="' . $this->id . '" data-sid="' . $this->sid . '" data-qid="' . $this->targetqid . '" data-sqid="' . $this->targetsqid . '"><i class="fa fa-pencil"></i></button>';
+        $buttons .= '<button class="btn btn-sm btn-default surveysettings_edit_intparameter"><i class="fa fa-pencil"></i></button>';
 
         // Delete
-        $buttons .= '<button class="btn btn-sm btn-default surveysettings_delete_intparameter" data-id="' . $this->id . '" data-sid="' . $this->sid . '" data-qid="' . $this->targetqid . '" data-sqid="' . $this->targetsqid . '"><i class="fa fa-trash text-danger"></i></button>';
+        $buttons .= '<button class="btn btn-sm btn-default surveysettings_delete_intparameter"><i class="fa fa-trash text-danger"></i></button>';
 
         $buttons .= "</div>";
         return $buttons;

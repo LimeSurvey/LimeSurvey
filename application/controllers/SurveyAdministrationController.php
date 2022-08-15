@@ -1949,7 +1949,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
-        if ($subaction === 'resources') {
+        if ($subaction === 'resources' /*|| $subaction === 'panelintegration'*/) {
             $aData['topBar']['showSaveButton'] = false;
         } else {
             $aData['topBar']['showSaveButton'] = true;
@@ -3197,8 +3197,9 @@ class SurveyAdministrationController extends LSBaseController
 
         $model = new SurveyURLParameter('search');
         $model->sid = $survey->sid;
+        $model->searched_value = Yii::app()->request->getParam('search_query');
 
-        $aData['updateUrl'] = Yii::app()->createUrl('surveyAdministration/getUrlParamsJson', ['surveyid' => $survey->sid, 'subaction' => 'panelintegration']);
+        $aData['updateUrl'] = Yii::app()->createUrl('surveyAdministration/rendersidemenulink', ['surveyid' => $survey->sid, 'subaction' => 'panelintegration']);
 
         /*if (isset($_GET['QuestionGroup'])) {
             $model->attributes = $_GET['QuestionGroup'];
@@ -3212,5 +3213,127 @@ class SurveyAdministrationController extends LSBaseController
 
         App()->getClientScript()->registerPackage('jquery-datatable');
         return $aData;
+    }
+
+    /**
+     * Method to save URL Params (Panel Integration)
+     *
+     * @throws CException
+     */
+    public function actionSaveUrlParam()
+    {
+        $paramData = Yii::app()->request->getPost('URLParam');
+        if (empty($paramData)) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Invalid request")]]
+            );
+        }
+
+        $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Access denied!")]]
+            );
+        }
+
+        // Based on Database::actionUpdateSurveyLocaleSettings()
+        $paramData['parameter'] = trim($paramData['parameter'] ?? '');
+        if (
+            $paramData['parameter'] == ''
+            || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $paramData['parameter'])
+            || $paramData['parameter'] == 'sid'
+            || $paramData['parameter'] == 'newtest'
+            || $paramData['parameter'] == 'token'
+            || $paramData['parameter'] == 'lang'
+        ) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Invalid URL parameter")]]
+            );
+        }
+
+        if ($paramData['targetqid'] == '') {
+            $paramData['targetqid'] = null;
+        }
+        if ($paramData['targetsqid'] == '') {
+            $paramData['targetsqid'] = null;
+        }
+
+        $paramId = !empty($paramData['id']) ? sanitize_int($paramData['id']) : null;
+        if (empty($paramId)) {
+            $URLParam = new SurveyURLParameter();
+            $paramData['sid'] = $surveyId;
+        } else {
+            $URLParam = SurveyURLParameter::model()->findByPk($paramId);
+            if (empty($URLParam || $URLParam->sid != $surveyId)) {
+                return $this->renderPartial(
+                    '/admin/super/_renderJson',
+                    ['data' => ['success' => false, 'message' => gT("URL parameter not found")]]
+                );
+            }
+            unset($paramData['id']);
+        }
+
+        $URLParam->setAttributes($paramData);
+        if ($URLParam->save()) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => true, 'message' => gT("URL parameter saved")]]
+            );
+        } else {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Could not save URL parameter"), 'errors' => $URLParam->getErrors()]]
+            );
+        }
+    }
+
+    /**
+     * Method to delete URL Params (Panel Integration)
+     *
+     * @throws CException
+     */
+    public function actionDeleteUrlParam()
+    {
+        $URLParam = Yii::app()->request->getPost('URLParam');
+        if (empty($URLParam) || empty($URLParam['id'])) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Invalid request")]]
+            );
+        }
+
+        $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Access denied!")]]
+            );
+        }
+
+        $paramId = sanitize_int($URLParam['id']);
+
+        $URLParam = SurveyURLParameter::model()->findByPk($paramId);
+        if (empty($URLParam)) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("URL parameter not found")]]
+            );
+        }
+
+        // Delete the record
+        if ($URLParam->delete()) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => true, 'message' => gT("URL parameter deleted")]]
+            );
+        } else {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => ['success' => false, 'message' => gT("Could not delete URL parameter")]]
+            );
+        }
     }
 }
