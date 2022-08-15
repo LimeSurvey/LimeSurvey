@@ -1297,12 +1297,6 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/' . $iSurveyId; // Close button
 
-        if (Yii::app()->request->getParam('action') == "remind") {
-            $aData['token_bar']['sendreminderbutton'] = true;
-        } else {
-            $aData['token_bar']['sendinvitationbutton'] = true; // Invitation button
-        }
-
         $aTokenIds = $this->getTokenIds();
         $sSubAction = $this->getSubAction();
         $bIsInvitation = $sSubAction == 'invite';
@@ -2753,6 +2747,12 @@ class tokens extends Survey_Common_Action
         $bHtml = (getEmailFormat($iSurveyId) == 'html');
         $bEmail = $sSubAction == 'invite';
         $aTokenIds = $this->getTokenIds();
+
+        if ($sSubAction == "remind") {
+            $aData['token_bar']['sendreminderbutton'] = true;
+        } else {
+            $aData['token_bar']['sendinvitationbutton'] = true; // Invitation button
+        }
 
         // Fill empty email template by default text
         foreach ($aSurveyLangs as $sSurveyLanguage) {
