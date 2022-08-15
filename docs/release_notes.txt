@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.23 (build 220809) to 3.28.24 (build 220816) August 15, 2022
+#Updated translation: Croatian by rovinj
+
+
 Changes from 3.28.22 (build 220802) to 3.28.23 (build 220809) August 8, 2022
 #Updated translation: Lithuanian by c_schmitz, simasj
 
