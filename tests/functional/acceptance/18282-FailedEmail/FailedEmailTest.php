@@ -152,7 +152,7 @@ class FailedEmailTest extends TestBaseClassWeb
         $massiveAction->click();
         $massiveActionResend = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="resend"]'));
         $massiveActionResend->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend')));
+        $web->wait()->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend')));
         $massiveActionResendPreserve = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend'));
         $massiveActionResendPreserve->click();
         $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 .btn-ok')));
@@ -171,7 +171,7 @@ class FailedEmailTest extends TestBaseClassWeb
         $checkboxAll->click();
         $massiveAction = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions .dropdown-toggle'));
         $massiveAction->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedEmailActions [data-action="delete"]')));
+        $web->wait()->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedEmailActions [data-action="delete"]')));
         $massiveActionDelete = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="delete"]'));
         $massiveActionDelete->click();
         $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 .btn-ok')));
