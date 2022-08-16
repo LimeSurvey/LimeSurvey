@@ -91,9 +91,9 @@ class SurveyDynamic extends LSActiveRecord
                 'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
             );
         } else {
-        	return array(
-            	'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
-        	);
+            return array(
+                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
+            );
         }
     }
 
