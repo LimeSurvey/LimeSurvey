@@ -88,12 +88,12 @@ class SurveyDynamic extends LSActiveRecord
             return array(
                 'survey'   => array(self::HAS_ONE, 'Survey', array(), 'condition' => ('sid = ' . self::$sid)),
                 'tokens'   => array(self::HAS_ONE, 'TokenDynamic', array('token' => 'token')),
-                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'))
+                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
             );
         } else {
-            return array(
-                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'))
-            );
+        	return array(
+            	'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
+        	);
         }
     }
 
