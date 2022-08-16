@@ -823,3 +823,10 @@ p.return-to-survey {
 label::after {
     background-color: #337ab7
 }
+
+#survey-nav .nav-link:hover {
+    color: #333;
+}
+#survey-nav .nav-link:focus {
+    color: #333;
+}
