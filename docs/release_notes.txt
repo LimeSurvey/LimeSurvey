@@ -34,6 +34,74 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.31 (build 220815) to 5.3.32 (build 220817) August 17, 2022
+-Fixed issue: Cannot load previously saved response to resume, instead the message "There is no matching saved response" is shown after entering identifier and password (Carsten Schmitz)
+-Fixed issue #18314: Save-button under Survey settings does not work (Olle Haerstedt)
+-Fixed issue #16795: Typo in default text for confirmation email (in English) (#2573) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.3.30 (build 220808) to 5.3.31 (build 220815) August 15, 2022
+-Fixed issue #15195: Expiration date can be set before start date (#2558) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Portuguese (Portugal) by jbfloripa, marciojv, samarta
+#Updated translation: Portuguese (Brazil) by femariso, josesiqueira, marcelovincenzi, reimorster
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+
+
+Changes from 5.3.29 (build 220801) to 5.3.30 (build 220808) August 8, 2022
+-Fixed issue: Missing 'Soft' mandatory in question summary (Olle Haerstedt)
+-Fixed issue: Include bootstrap-rtl for admin themes (Olle Haerstedt)
+-Fixed issue #18299: Simple statistics, "Text Display" questions are shown (#2557) (Gabriel Jenik)
+-Fixed issue #18298: Saving in question organizer always prompts (#2559) (Gabriel Jenik)
+-Fixed issue #18297: Survey permissions menu does not work (Denis Chenu)
+-Fixed issue #18288: Can't assign groups to surveys (#2549) (Denis Chenu)
+-Fixed issue #18280: Conditions Designer Crash with Database Error (#2548) (Denis Chenu)
+-Fixed issue #18271: Blank page after clicking "Close" (#2547) (Gabriel Jenik)
+-Fixed issue #18270: Language switch is not repopulated correctly after change question type (#2546) (Gabriel Jenik)
+-Fixed issue #18261: Simple statistics, 'Array (5 point choice)' dont show subquestions (#2554) (Gabriel Jenik)
+-Fixed issue #18259: Add surveyId to select box (#2519) (Marko Bischof)
+-Fixed issue #18249: INSERTANS correction broken when import (#2524) (Gabriel Jenik)
+-Fixed issue #18199: Top menu language changer didn't appear for register (#2523) (Gabriel Jenik)
+-Fixed issue #18194: Link after import survey goes to subquestion edit (#2522) (Gabriel Jenik)
+-Fixed issue #18162: Design options: missing translation / icon (#2552) (Gabriel Jenik)
+-Fixed issue #17872: Answerfilters reset after pagination changed (#2437) (Gabriel Jenik)
+-Fixed issue #17745: Incomplete instructions to export response data to SPSS using Python (#2555) (Gabriel Jenik)
+-Fixed issue #17488: Cannot view survey after updating to version 3.27.9 with custom twig extension (breaks survey) (#2518) (Gabriel Jenik)
+-Fixed issue #17135: Activating public statistics option causes json to display (#2545) (Gabriel Jenik)
+-Fixed issue #17067: Subquestion Relevance in array by column does not work (#2553) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Thai by tomzt
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Russian by kvolk2lim, vipgroup, watslaw
+#Updated translation: Romanian by cdorin
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Lithuanian by simasj
+#Updated translation: Japanese by d_inoue, yuasaron
+#Updated translation: Hungarian by kkd
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 5.3.28 (build 220727) to 5.3.29 (build 220801) August 1, 2022
+-Fixed issue #18284: Function editlocalsettings seems gone in master branch (#2550) (Gabriel Jenik)
+-Fixed issue #18196: Property "Question.same_script" is not defined. (#2469) (Denis Chenu)
+-Fixed issue #18006: Unable to use statCountIf to have a "unicity" control (#2319) (Denis Chenu)
+
+
 Changes from 5.3.27 (build 220725) to 5.3.28 (build 220727) July 27, 2022
 -Fixed issue : Invalid var in 1st page (Denis Chenu)
 -Fixed issue #18276: Changed HTML in arrays causing issues with JavaScript and CSS. (Olle Haerstedt)

@@ -72,6 +72,9 @@ $('#".$entryData['name']."').off('.editLocalsettings');
 
 $('#".$entryData['name']."').on('submit.editLocalsettings', function(e){
     e.preventDefault();
+    //if (!validateSettingsForm($(this))) {
+      //return false;
+    //}
     var data = $(this).serializeArray();
     var uri = $(this).attr('action');
     $.ajax({

@@ -149,9 +149,6 @@ $baseLanguage = $oSurvey->language;
 <!-- To update rows per page via ajax -->
 <?php App()->getClientScript()->registerScript("ListQuestions-pagination", "
         var bindPageSizeChange = function(){
-            $('#pageSize').on('change', function(){
-                $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
-            });
             $(document).trigger('actions-updated');
         };
     ", LSYii_ClientScript::POS_BEGIN); ?>
