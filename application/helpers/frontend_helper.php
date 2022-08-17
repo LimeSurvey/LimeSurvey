@@ -607,7 +607,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
 /**
  * Saves a failed email whenever processing and sensing an email fails or overwrites a found entry with updated values
  *
- * @param int|null $id
+ * @param int|null $id Id of failed email
  * @param string|null $recipient
  * @param int $surveyId
  * @param string|null $emailType
