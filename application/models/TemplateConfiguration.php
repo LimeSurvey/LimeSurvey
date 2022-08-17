@@ -1195,10 +1195,10 @@ class TemplateConfiguration extends TemplateConfig
 
             $instance->setBasics($sMotherTemplateName);
             $instance->setMotherTemplates();
-            //$instance->setThisTemplate();
-            //$instance->createTemplatePackage($instance);
-            //$instance->removeFiles();
-            //$instance->getshowpopups();
+            $instance->setThisTemplate();
+            $instance->createTemplatePackage($instance);
+            $instance->removeFiles();
+            $instance->getshowpopups();
             $this->oMotherTemplate = $instance; //->prepareTemplateRendering($sMotherTemplateName, '');
         }
     }
@@ -1424,7 +1424,6 @@ class TemplateConfiguration extends TemplateConfig
             $aReplace = $aAsset[1];
             $this->aReplacements[$sType][] = $aReplace;
         }
-
 
         return $this->aReplacements[$sType];
     }
