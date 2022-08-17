@@ -139,4 +139,4 @@ jobs:
       - name: Run functional tests
         env:
             DOMAIN: localhost
-        run: php third_party/bin/phpunit --testdox --stop-on-failure
+        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
