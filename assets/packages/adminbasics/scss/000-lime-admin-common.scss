@@ -4345,3 +4345,8 @@ html[dir="rtl"] th {
 .w-100 {
     width: 100% !important;
 }
+
+/** List Questions Grid **/
+#question-grid {
+    overflow-x: visible;
+}
