@@ -207,6 +207,7 @@ class Answer extends LSActiveRecord
      * @param string $lang
      * @param bool $return_query
      * @return array|CDbCommand
+     * @deprecated
      */
     public function getAnswerQuery($surveyid, $lang, $return_query = true)
     {
@@ -215,8 +216,8 @@ class Answer extends LSActiveRecord
         $query->from("{{answers}}, {{questions}}");
         $query->where("{{questions}}.sid = :surveyid AND {{questions}}.qid = {{answers}}.qid AND {{questions}}.language = {{answers}}.language AND {{questions}}.language = :lang");
         $query->order('qid, code, sortorder');
-        $query->bindParams(":surveyid", $surveyid, PDO::PARAM_INT);
-        $query->bindParams(":lang", $lang, PDO::PARAM_STR);
+        $query->bindParam(":surveyid", $surveyid, PDO::PARAM_INT);
+        $query->bindParam(":lang", $lang, PDO::PARAM_STR);
         return ($return_query) ? $query->queryAll() : $query;
     }
 
