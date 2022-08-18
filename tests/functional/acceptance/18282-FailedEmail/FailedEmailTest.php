@@ -149,6 +149,8 @@ class FailedEmailTest extends TestBaseClassWeb
         $web->get($url);
         $web->wait(5)->until(WebDriverExpectedCondition::urlIs($url));
 
+        sleep(1);
+
         // Massive action Resend Email
         $checkboxAll = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid .checkbox-column [name="id_all"]'));
         $checkboxAll->click();
