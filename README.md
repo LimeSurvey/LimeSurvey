@@ -1,4 +1,4 @@
-![LimeSurvey Logo](https://account.limesurvey.org/images/logos/logo_main.png)
+<img src="https://www.limesurvey.org/images/limesurvey/svg/logo_limesurvey_head.svg" width="600" alt='LimeSurvey Logo' />
 # Sophisticated online survey software
 ![Build status](https://github.com/LimeSurvey/LimeSurvey/actions/workflows/main.yml/badge.svg)
 
