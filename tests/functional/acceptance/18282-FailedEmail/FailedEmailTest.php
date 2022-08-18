@@ -153,7 +153,7 @@ class FailedEmailTest extends TestBaseClassWeb
         $massiveActionResend = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="resend"]'));
         $massiveActionResend->click();
 
-        $body = $this->web->findElement(WebDriverBy::tagName('body'));
+        $body = $web->findElement(WebDriverBy::tagName('body'));
         var_dump($body->getText());
 
         $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend')));
