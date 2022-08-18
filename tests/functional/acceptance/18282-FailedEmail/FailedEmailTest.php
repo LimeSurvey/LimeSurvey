@@ -57,6 +57,9 @@ class FailedEmailTest extends TestBaseClassWeb
         $web->get($url);
         $web->wait(5)->until(WebDriverExpectedCondition::urlIs($url));
 
+        $web->dismissModal();
+        $web->dismissModal();
+
         // Resend Email
         $resendEmail = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child [data-contentfile="resend_form"]'));
         $resendEmail->click();
