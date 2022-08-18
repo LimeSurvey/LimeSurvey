@@ -231,6 +231,7 @@ require_once __DIR__ . '/TestBaseClassWeb.php';
 require_once __DIR__ . '/TestBaseClassView.php';
 require_once __DIR__ . '/DummyController.php';
 require_once __DIR__ . '/unit/helpers/remotecontrol/BaseTest.php';
+require_once __DIR__ . '/unit/models/BaseModelTestCase.php';
 
 define('PHP_ENV', 'test');
 // TODO: Move this logic to installater test.
