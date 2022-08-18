@@ -5,6 +5,7 @@ namespace ls\tests;
 use Exception;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Exception\TimeOutException;
 use FailedEmail;
 
 class FailedEmailTest extends TestBaseClassWeb
@@ -156,10 +157,14 @@ class FailedEmailTest extends TestBaseClassWeb
         $massiveActionResend = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="resend"]'));
         $massiveActionResend->click();
 
-        $body = $web->findElement(WebDriverBy::tagName('body'));
-        var_dump($body->getText());
+        try {
+            $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend')));
+        } catch (TimeOutException $ex) {
+            $body = $web->findElement(WebDriverBy::tagName('body'));
+            var_dump($body->getText());
+            throw $ex;
+        }
 
-        $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend')));
         $massiveActionResendPreserve = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend'));
         $massiveActionResendPreserve->click();
         $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 .btn-ok')));
