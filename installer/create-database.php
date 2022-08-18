@@ -1158,6 +1158,21 @@ function populateDatabase($oDB)
             $oDB->createCommand()->insert("{{plugins}}", $plugin);
         }
 
+        $oDB->createCommand()->createTable(
+            '{{failed_email}}',
+            [
+                'id' => "pk",
+                'surveyid' => "integer NOT NULL",
+                'email_type' => "string(200) NOT NULL",
+                'recipient' => "string(320) NOT NULL",
+                'language' => "string(20) NOT NULL DEFAULT 'en'",
+                'error_message'  => "text",
+                'created' => "datetime NOT NULL",  //this one has always to be set to delete after x days ...
+                'status' => "string(20) NULL DEFAULT 'SEND FAILED'",
+                'updated' => "datetime NULL",
+            ]
+        );
+
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
     } catch (Exception $e) {
