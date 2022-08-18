@@ -104,7 +104,7 @@ class TestBaseClassWeb extends TestBaseClass
     public static function getUrl(array $view)
     {
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $urlMan->setBaseUrl('https://' . self::$domain . '/index.php');
         //this is for testing new controllers (REFACTORING Controllers)
         if(isset($view['noAdminInFront']) && $view['noAdminInFront']){
             $url = $urlMan->createUrl($view['route']);
@@ -120,7 +120,7 @@ class TestBaseClassWeb extends TestBaseClass
     protected function getSurveyUrl($lang = 'en')
     {
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $urlMan->setBaseUrl('https://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
             'survey/index',
             [
