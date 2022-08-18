@@ -149,9 +149,8 @@ class FailedEmailTest extends TestBaseClassWeb
         $web->get($url);
         $web->wait(5)->until(WebDriverExpectedCondition::urlIs($url));
 
-        sleep(1);
-
         // Massive action Resend Email
+        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid:not(.grid-view-loading)')));
         $checkboxAll = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid .checkbox-column [name="id_all"]'));
         $checkboxAll->click();
         $massiveAction = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions .dropdown-toggle'));
@@ -195,5 +194,4 @@ class FailedEmailTest extends TestBaseClassWeb
         $massiveActionDeleteSuccess = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 #failedemail-action-modal--deleteresult'));
         $this->assertTrue($massiveActionDeleteSuccess->isDisplayed());
     }
-
 }
