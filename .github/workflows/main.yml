@@ -101,8 +101,8 @@ jobs:
           # sed -i '84s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
-          ##- name: Run syntax check, CodeSniffer, MessDetector, ...
-          ##run: composer test
+      - name: Run syntax check, CodeSniffer, MessDetector, ...
+        run: composer test
 
       - name: Test the server
         run: |
@@ -115,10 +115,10 @@ jobs:
         # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
         # unzip chromedriver_linux64.zip
 
-          ##- name: Run unit tests
-          ##env:
-          ##XDEBUG_MODE: coverage
-          ##run: php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
+      - name: Run unit tests
+        env:
+            XDEBUG_MODE: coverage
+        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
         run: php tests/bin/check_coverage.php cov.xml 37
@@ -139,4 +139,4 @@ jobs:
       - name: Run functional tests
         env:
             DOMAIN: localhost
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional/acceptance/18282-FailedEmail/
+        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
