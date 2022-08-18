@@ -3080,6 +3080,40 @@ class remotecontrol_handle
         return $uploaded_files;
     }
 
+    /**
+     * Get survey fieldmap (RPC function)
+     *
+     * Returns the requested survey's fieldmap in an array
+     *
+     * @access public
+     * @param string $sessionKey Auth credentials
+     * @param int $surveyId ID of the Survey
+     * @param string $language (optional) language of the survey to use (default from Survey)
+     * @return array
+     */
+    public function get_fieldmap($sessionKey, $surveyId, $language = null)
+    {
+        if (!$this->_checkSessionKey($sessionKey)) {
+            return ['status' => 'Invalid session key'];
+        }
+        $surveyId = (int) $surveyId;
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!isset($survey)) {
+            return ['status' => 'Error: Invalid survey ID'];
+        }
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'read')) {
+            return ['status' => 'No permission'];
+        }
+        if (empty($language) || !in_array($language, $survey->allLanguages)) {
+            $language = $survey->language;
+        }
+        // Get the fieldmap
+        $fieldmap = createFieldMap($survey, 'full', true, false, $language);
+        if (empty($fieldmap)) {
+            return ['status' => 'Can not obtain field map'];
+        }
+        return $fieldmap;
+    }
 
     /**
      * Login with username and password
