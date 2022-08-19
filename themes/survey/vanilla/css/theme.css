@@ -831,3 +831,7 @@ label::after {
 #survey-nav .nav-link:focus {
     color: #333;
 }
+
+label {
+    font-weight: bold;
+}
