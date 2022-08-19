@@ -429,6 +429,9 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aAssessments']["datas"]["subtotal_score"][1]      = 3;
         $thissurvey['aAssessments']["datas"]["total_score"]            = 3;
 
+        $thissurvey['aLoadForm']['aCaptcha']['show'] = true;
+        $thissurvey['aLoadForm']['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => 1));
+
         // Those values can be overwritten by XML
         $thissurvey['name'] = gT("Template Sample");
         $thissurvey['description'] =
