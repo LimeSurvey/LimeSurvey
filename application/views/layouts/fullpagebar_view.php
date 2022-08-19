@@ -58,8 +58,9 @@
                     isset($fullpagebar['listSurveys']['buttons']['createSurveyGroup']) &&
                     Permission::model()->hasGlobalPermission('surveysgroups', 'create')
                 ) : ?>
-                <a class="btn btn-outline-secondary tab-dependent-button d-none"
+                <a class="btn btn-outline-secondary tab-dependent-button"
                    data-tab="#surveygroups"
+                   style="display: none;"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurveyGroup']['url']; ?>">
                         <span class="icon-add text-success"></span>
                     <?php eT("Create survey group"); ?>
