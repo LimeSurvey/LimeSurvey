@@ -820,9 +820,9 @@ class Database extends SurveyCommonAction
                         'updated' => $updatedFields,
                         'DEBUG' => ['POST' => $_POST,
                                     'reloaded' => $oSurvey->attributes,
-                                    'aURLParams' => isset($aURLParams) ? $aURLParams : '',
-                                    'initial' => isset($aOldAttributes) ? $aOldAttributes : '',
-                                    'afterApply' => isset($aAfterApplyAttributes) ? $aAfterApplyAttributes : '']
+                                    'aURLParams' => $aURLParams ?? '',
+                                    'initial' => $aOldAttributes ?? '',
+                                    'afterApply' => $aAfterApplyAttributes ?? '']
                     ],
                 ),
                 false,
@@ -960,7 +960,7 @@ class Database extends SurveyCommonAction
         }
 
         if ($newValue === null) {
-            $newValue = isset($aSurvey[$fieldArrayName]) ? $aSurvey[$fieldArrayName] : $oSurvey->{$fieldArrayName};
+            $newValue = $aSurvey[$fieldArrayName] ?? $oSurvey->{$fieldArrayName};
         } else {
             $this->updatedFields[] = $fieldArrayName;
         }

@@ -231,9 +231,9 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function getQuestionAttribute($key1, $key2 = null)
     {
-        $result =  isset($this->aQuestionAttributes[$key1]) ? $this->aQuestionAttributes[$key1] : null;
+        $result =  $this->aQuestionAttributes[$key1] ?? null;
         if ($key2 !== null && $result !== null) {
-            $result =  isset($result[$key2]) ? $result[$key2] : null;
+            $result =  $result[$key2] ?? null;
         }
         return $result;
     }
@@ -261,9 +261,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function getFromSurveySession($sIndex, $default = "")
     {
-        return isset($_SESSION['survey_' . $this->oQuestion->sid][$sIndex])
-            ? $_SESSION['survey_' . $this->oQuestion->sid][$sIndex]
-            : $default;
+        return $_SESSION['survey_' . $this->oQuestion->sid][$sIndex] ?? $default;
     }
 
     protected function applyPackages()

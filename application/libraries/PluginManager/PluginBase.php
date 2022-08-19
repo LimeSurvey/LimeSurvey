@@ -176,7 +176,7 @@ abstract class PluginBase implements iPlugin
         $settings = $this->settings;
         foreach ($settings as $name => &$setting) {
             if ($getValues) {
-                $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null);
+                $setting['current'] = $this->get($name, null, null, $setting['default'] ?? null);
             }
             if ($setting['type'] == 'logo') {
                 $setting['path'] = $this->publish($setting['path']);
@@ -551,7 +551,7 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerScript($relativePathToScript, $parentPlugin = null)
     {
-        $parentPlugin = $parentPlugin === null ? get_class($this) : $parentPlugin;
+        $parentPlugin = $parentPlugin ?? get_class($this);
 
         $scriptToRegister = null;
         if (file_exists(\Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToScript)) {
@@ -577,7 +577,7 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerCss($relativePathToCss, $parentPlugin = null)
     {
-        $parentPlugin = $parentPlugin === null ? get_class($this) : $parentPlugin;
+        $parentPlugin = $parentPlugin ?? get_class($this);
 
         $cssToRegister = null;
         if (file_exists(\Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {

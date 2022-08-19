@@ -12,7 +12,7 @@
     }
     $counter2 = 0;
 ?>
- 
+
 
 
 
@@ -88,13 +88,13 @@
                         <div class='form-group row'>
                         <label for='".$myfield2."' class='col-sm-4 control-label'>".gT("Number greater than:")."</label>
                         <div class='col-sm-6'>"
-                        .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                        .CHtml::numberField($myfield2,$_POST[$myfield2] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                         ."</div>
                         </div>
                         <div class='form-group row'>
                         <label for='N".$myfield3."' class='col-sm-4 control-label'>".gT("Number less than:")."</label>
                         <div class='col-sm-6'>"
-                        .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                        .CHtml::numberField($myfield3,$_POST[$myfield3] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                         ."</div>
                         </div>";                
                     }
@@ -129,7 +129,7 @@
                     echo $oStatisticsHelper::_showSpeaker($flt[3]." - ".flattenText($row['question'],true))
                     ."<br /><p style='padding: 1em;'>\n"
                     ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n";
-                    echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('class'=>'form-control'));
+                    echo CHtml::textField($myfield2,$_POST[$myfield2] ?? '',array('class'=>'form-control'));
                     echo "</p>";
                     echo '</div></div>';
                 }
@@ -152,7 +152,7 @@
                 ."<br />\n"
                 ."\t<span class='smalltext'>".gT("Responses containing").":</span>
                 </div>\n"
-                .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'40'));
+                .CHtml::textArea($myfield2,$_POST[$myfield2] ?? '',array('rows'=>'3','cols'=>'40'));
                 break;
 
 
@@ -170,7 +170,7 @@
                 ."<br />\n"
                 ."\t<span class='smalltext'>".gT("Responses containing").":</span>
                 </div>\n"
-                .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('class'=>'form-control'));
+                .CHtml::textField($myfield2,$_POST[$myfield2] ?? '',array('class'=>'form-control'));
                 break;
 
 
@@ -200,13 +200,13 @@
                 <div class='form-group row'>
                 <label for='".$myfield2."' class='col-sm-4 control-label'>".gT("Number greater than:")."</label>
                 <div class='col-sm-6'>"
-                .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                .CHtml::numberField($myfield2,$_POST[$myfield2] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>
                 <div class='form-group row'>
                 <label for='N".$myfield3."' class='col-sm-4 control-label'>".gT("Number less than:")."</label>
                 <div class='col-sm-6'>"
-                .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                .CHtml::numberField($myfield3,$_POST[$myfield3] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>";                
                 break;
@@ -221,13 +221,13 @@
                 <div class='form-group row'>
                 <label for='".$myfield2."' class='col-sm-4 control-label'>".gT("Number of files greater than:")."</label>
                 <div class='col-sm-6'>"
-                .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                .CHtml::numberField($myfield2,$_POST[$myfield2] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>
                 <div class='form-group row'>
                 <label for='N".$myfield3."' class='col-sm-4 control-label'>".gT("Number of files less than:")."</label>
                 <div class='col-sm-6'>"
-                .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                .CHtml::numberField($myfield3,$_POST[$myfield3] ?? '',array( 'class'=>'form-control', 'step'=>'any'))
                 ."</div>
                 </div>";                
                 break;
@@ -269,7 +269,7 @@
                 Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                     'name' => $myfield3,
                     'id' => $myfield3,
-                    'value' => isset($_POST[$myfield3]) ? $_POST[$myfield3] : '',
+                    'value' => $_POST[$myfield3] ?? '',
                     'pluginOptions' => array(
                         'format' => $dateformatdetails['jsdate'] . " HH:mm",
                         'allowInputToggle' =>true,
@@ -300,7 +300,7 @@
               Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                   'name' => $myfield4,
                   'id' => $myfield4,
-                  'value' => isset($_POST[$myfield4]) ? $_POST[$myfield4] : '',
+                  'value' => $_POST[$myfield4] ?? '',
                   'pluginOptions' => array(
                       'format' => $dateformatdetails['jsdate'] . " HH:mm",
                       'allowInputToggle' =>true,
@@ -331,7 +331,7 @@
             Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                 'name' => $myfield5,
                 'id' => $myfield5,
-                'value' => isset($_POST[$myfield5]) ? $_POST[$myfield5] : '',
+                'value' => $_POST[$myfield5] ?? '',
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' =>true,
@@ -628,7 +628,7 @@
                         .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question']." [".$frow['question']."]")." - ".$row['title']."/".$frow['title'])
                         ."<br />\n";
                         echo "\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
-                        .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('class'=>'form-control') );
+                        .CHtml::textField($myfield2,$_POST[$myfield2] ?? '',array('class'=>'form-control') );
                         echo "<hr/>";
                         $counter2++;
                     }

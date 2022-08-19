@@ -496,7 +496,7 @@ class Statistics extends SurveyCommonAction
 
         $aData['error'] = $error;
         $aData['oStatisticsHelper'] = $helper;
-        $aData['fresults'] = (isset($aData['fresults'])) ? $aData['fresults'] : false;
+        $aData['fresults'] = $aData['fresults'] ?? false;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         if (!isset($aData['result'])) {

@@ -67,7 +67,7 @@ class Authdb extends AuthPluginBase
             return;
         }
 
-        $new_pass = $presetPassword === null ? createPassword() : $presetPassword;
+        $new_pass = $presetPassword ?? createPassword();
         $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
