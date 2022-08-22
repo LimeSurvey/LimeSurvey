@@ -40,7 +40,7 @@ body {
 /* specific for survey listing */
 @media (min-width: 761px) {
   .surveys-list .btn-group {
-    width: 50%;
+    width: 49%;
   }
 }
 
