@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.24 (build 220816) to 3.28.25 (build 220822) August 22, 2022
+-Fixed issue: Cannot load previously saved response to resume, instead the message "There is no matching saved response" is shown after entering identifier and password (Carsten Schmitz)
+-Fixed issue #17485: The getAnswerQuery method cannot be used in the Answers model (#2569) (Gabriel Jenik)
+-Fixed issue #18209: Missing RemoteControl function to get the field mapping (#2490) (Gabriel Jenik)
+-Fixed issue #16795: Typo in default text for confirmation email (in English) (#2572) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.28.23 (build 220809) to 3.28.24 (build 220816) August 15, 2022
 #Updated translation: Croatian by rovinj
 
