@@ -5,6 +5,7 @@ namespace ls\tests;
 use Exception;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Exception\TimeOutException;
 use FailedEmail;
 
 class FailedEmailTest extends TestBaseClassWeb
@@ -56,6 +57,9 @@ class FailedEmailTest extends TestBaseClassWeb
         $url = $urlManager->createUrl('failedEmail/index/', ['surveyid' => self::$surveyId]);
         $web->get($url);
         $web->wait(5)->until(WebDriverExpectedCondition::urlIs($url));
+
+        $web->dismissModal();
+        $web->dismissModal();
 
         // Resend Email
         $resendEmail = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child [data-contentfile="resend_form"]'));
@@ -146,13 +150,22 @@ class FailedEmailTest extends TestBaseClassWeb
         $web->wait(5)->until(WebDriverExpectedCondition::urlIs($url));
 
         // Massive action Resend Email
+        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid:not(.grid-view-loading)')));
         $checkboxAll = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid .checkbox-column [name="id_all"]'));
         $checkboxAll->click();
         $massiveAction = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions .dropdown-toggle'));
         $massiveAction->click();
         $massiveActionResend = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="resend"]'));
         $massiveActionResend->click();
-        $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend')));
+
+        try {
+            $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend')));
+        } catch (TimeOutException $ex) {
+            $body = $web->findElement(WebDriverBy::tagName('body'));
+            var_dump($body->getText());
+            throw $ex;
+        }
+
         $massiveActionResendPreserve = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend'));
         $massiveActionResendPreserve->click();
         $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 .btn-ok')));
@@ -181,5 +194,4 @@ class FailedEmailTest extends TestBaseClassWeb
         $massiveActionDeleteSuccess = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 #failedemail-action-modal--deleteresult'));
         $this->assertTrue($massiveActionDeleteSuccess->isDisplayed());
     }
-
 }
