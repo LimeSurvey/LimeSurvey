@@ -33,8 +33,8 @@
     {# This will display the script and the hidden inputs needed for ExpressionScript Engine #}
     {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-    <div class="{{ aSurveyInfo.class.savemessage }} well clearfix" {{ aSurveyInfo.attr.savemessage }}>
-        <div class="{{ aSurveyInfo.class.savemessagetitle }} h2" {{ aSurveyInfo.attr.savemessagetitle }}>{{ gT("Load unfinished survey") }}</div>
+    <div class="{{ aSurveyInfo.class.savemessage }} card card-body bg-light clearfix mb-3" {{ aSurveyInfo.attr.savemessage }}>
+        <div class="{{ aSurveyInfo.class.savemessagetitle }} card-title h2" {{ aSurveyInfo.attr.savemessagetitle }}>{{ gT("Load unfinished survey") }}</div>
         <div class="{{ aSurveyInfo.class.savemessagetext }} text-info" {{ aSurveyInfo.attr.savemessagetext }}>
             <p {{ aSurveyInfo.attr.savemessagetextp }} > {{ gT("You can load a survey that you have previously saved from this screen.") }} </p>
             <p {{ aSurveyInfo.attr.savemessagetextpb }} > {{ gT("Type in the 'name' you used to save the survey, and the password.") }} </p>

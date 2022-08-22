@@ -725,3 +725,7 @@ body .checkbox-item label::after {
     border-right: none;
     outline: none;
 }
+
+label {
+    font-weight: bold;
+}
