@@ -285,6 +285,16 @@ class LSYii_Application extends CWebApplication
         return isset($this->config[$name]) ? $this->config[$name] : $default;
     }
 
+    /**
+     * Returns the array of available configurations
+     *
+     * @access public
+     * @return array
+     */
+    public function getAvailableConfigs()
+    {
+        return $this->config;
+    }
 
     /**
      * For future use, cache the language app wise as well.
