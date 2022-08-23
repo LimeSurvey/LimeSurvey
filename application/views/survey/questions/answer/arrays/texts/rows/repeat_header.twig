@@ -7,15 +7,12 @@
  * @var $right_exists
  */
 #}
-</tbody>
-
-<tbody>
     <tr class="ls-heading ls-heading-repeat hidden-xs" aria-hidden="true">
         <td></td>
         {% for i, ld in labelans %}
-            <th>
+            <td class="answer-text">
                 {{ processString(ld) }}
-            </th>
+            </td>
         {% endfor %}
 
         {% if right_exists %}

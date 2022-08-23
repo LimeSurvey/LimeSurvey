@@ -21,7 +21,7 @@
 <!-- answer_row -->
 <tr id="javatbd{{ myfname }}" class="row-inc-same-dec answers-list radio-list {% if odd %}ls-odd{% else %}ls-even{% endif %} {% if error %} ls-error-mandatory has-error{%endif %}" role="radiogroup"  aria-labelledby="answertext{{ myfname }}">
     <!-- Answer text /  Errors -->
-    <th id="answertext{{ myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
+    <td id="answertext{{ myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
         {{ processString(answertext) }}
         {# Value for expression manager javascript (use id) ; no need to submit #}
         {{ C.Html.hiddenField("java"~myfname,value,({
@@ -29,7 +29,7 @@
             'disabled' : true,
         }))
         }}
-    </th>
+    </td>
 
     <!-- Increase -->
     <td class="answer_cell_I answer-item radio-item">
@@ -37,10 +37,11 @@
             type="radio"
             name="{{ myfname }}"
             id="answer{{ myfname }}-I"
+            aria-labelledby="label-{{ myfname }}-I"
             value="I"
             {{ Ichecked }}
             />
-        <label for="answer{{ myfname }}-I" class="ls-label-xs-visibility">
+        <label for="answer{{ myfname }}-I" class="ls-label-xs-visibility" id="label-{{ myfname }}-I">
             {{ gT("Increase") }}
         </label>
     </td>
@@ -51,10 +52,11 @@
             type="radio"
             name="{{ myfname }}"
             id="answer{{ myfname }}-S"
+            aria-labelledby="label-{{ myfname }}-S"
             value="S"
             {{ Schecked }}
         />
-        <label for="answer{{ myfname }}-S" class="ls-label-xs-visibility">
+        <label for="answer{{ myfname }}-S" class="ls-label-xs-visibility" id="label-{{ myfname }}-S">
             {{ gT("Same") }}
         </label>
     </td>
@@ -65,10 +67,11 @@
             type="radio"
             name="{{ myfname }}"
             id="answer{{ myfname }}-D"
+            aria-labelledby="label-{{ myfname }}-D"
             value="D"
             {{ Dchecked }}
         />
-        <label for="answer{{ myfname }}-D" class="ls-label-xs-visibility">
+        <label for="answer{{ myfname }}-D" class="ls-label-xs-visibility" id="label-{{ myfname }}-D">
             {{ gT("Decrease") }}
         </label>
     </td>

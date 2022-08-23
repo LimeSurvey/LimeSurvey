@@ -30,7 +30,7 @@
             'disabled' : true,
         }))
         }}
-        <label for="answer{{ myfname2 }}" class='ls-label-xs-visibility'>
+        <label for="answer{{ myfname2 }}" class='ls-label-xs-visibility' id="label-{{ myfname2 }}">
             {{ processString(dataTitle) }}
         </label>
         {% if inputboxlayout == false %}
@@ -38,7 +38,9 @@
             <select
                 class="multiflexiselect form-control text-right"
                 name="{{ myfname2 }}"
-                id="answer{{ myfname2 }}">
+                id="answer{{ myfname2 }}"
+                aria-labelledby="label-{{ myfname2 }}"
+                >
                 <option value="">
                     {{ gT('...') }}
                 </option>
@@ -53,6 +55,7 @@
             <!-- InputBox Layout -->
             {{ C.Html.textField(myfname2,value,({
                 'id' : "answer"~myfname2,
+                'aria-labelledby' : "label-"~myfname2,
                 'class' : "multiflexitext form-control "~answertypeclass~" text-right ",
                 'title' : gT('Only numbers may be entered in this field.'),
                 'size' : (inputsize ? inputsize : null),
