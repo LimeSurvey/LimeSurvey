@@ -291,7 +291,13 @@ body {
 }
 
 /* Show more the heading in table */
-.ls-answers .ls-heading th{font-weight:700}
+.ls-answers .ls-heading th,
+.ls-answers .ls-heading td.control-label,
+.ls-answers .ls-heading td.answer-text,
+.ls-answers .ls-heading td.answertext
+{
+    font-weight:700
+}
 /* Max width for some answer part */
 @media (min-width: 768px) {
   .yesno-button,.gender-button {
@@ -462,10 +468,13 @@ only screen and (max-width: 760px),
     table.ls-answers  tr{
         padding: 1em;
     }
-    table.ls-answers  tr th {
+    table.ls-answers  tr th,
+    table.ls-answers tr td.answer-text,
+    table.ls-answers  tr td.control-label,
+    table.ls-answers  tr td.answertext
+    {
         font-size: 1.1em;
-        text-align: center;
-
+        text-align: left;
     }
 
     /* Add some margin for Multiple short text */
@@ -480,12 +489,6 @@ only screen and (max-width: 760px),
     table.ls-answers  tr{
         padding: 0;
         margin-bottom:1em;
-    }
-
-    /* Line header ; color is h4 color */
-    table.ls-answers tr th {
-        font-size: 1.1em;
-        text-align: left;
     }
 
     .array-by-columns .answertext {
@@ -602,12 +605,17 @@ only screen and (max-width: 760px),
  * Display adjust, question type by question type
  */
 
-
-.table > tbody > tr > th
+.table > tbody > tr > th,
+.table > tbody > tr > td.answer-text,
+.table > tbody > tr > td.control-label
 {
     vertical-align: middle;
 }
-
+.table > tbody > tr.ls-heading > td.answer-text,
+.table > tbody > tr.ls-heading > td.control-label
+{
+    vertical-align: bottom;
+}
 .othertext-label-checkox-container {
     padding-top: 5px;
     margin-right: 5px;

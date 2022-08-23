@@ -20,7 +20,9 @@ li.question-item.answer-item.text-item.form-group {
 
 /* The sub question part must not be more visible than question */
 .ls-answers label,
-.ls-answers th {
+.ls-answers th,
+.ls-answers td.control-label,
+.ls-answers td.answer-text {
     font-weight: 400
 }
 
@@ -117,21 +119,22 @@ table.ls-answers {
 }
 
 /* Basic alignment forced vertical due to bs*/
-.ls-answers>tbody>tr>td {
+.ls-answers > tbody > tr > td {
     vertical-align: middle
 }
-
-.ls-answers>tbody>tr>th {
+.ls-answers > tbody > tr > th {
     vertical-align: middle
 }
-
-.ls-answers .ls-heading>th {
+.ls-answers > tbody > tr.ls-heading > th,
+.ls-answers > tbody > tr.ls-heading > td.control-label,
+.ls-answers > tbody > tr.ls-heading > td.answer-text
+{
     vertical-align: bottom
 }
 
 /* class replace multiple tag */
 /* Basic alignment base horizontal due to no-more-table*/
-.ls-answers tbody td {
+.ls-answers > tbody > tr > td {
     text-align: center
 }
 
@@ -146,23 +149,25 @@ table.ls-answers {
     text-align: right;
 }
 
-.ls-answers .ls-heading th {
+.ls-answers > tbody > tr.ls-heading > th,
+.ls-answers > tbody > tr.ls-heading > td.answer-text,
+.ls-answers > tbody > tr.ls-heading > td.control-label {
     text-align: center;
 }
 
-.ls-answers tbody .answertext {
+.ls-answers > tbody > tr > td.answertext {
     text-align: right
 }
 
-.ls-answers .answertextright {
+ls-answers > tbody > tr > td.answertextright {
     text-align: left
 }
 
-.dir-rtl .ls-answers tbody .answertext {
+.dir-rtl .ls-answers > tbody > tr > td.answertext {
     text-align: left
 }
 
-.dir-rtl .ls-answers .answertextright {
+.dir-rtl .ls-answers > tbody > tr > td.answertextright {
     text-align: right
 }
 
@@ -284,7 +289,7 @@ only screen and (max-width: 760px),
     .dir-ltr table.ls-answers,.dir-ltr table.ls-answers thead,.dir-ltr table.ls-answers tbody,.dir-ltr table.ls-answers th,.dir-ltr table.ls-answers td,table.ls-answers tr {text-align:left;}
     .dir-rtl table.ls-answers,.dir-rtl table.ls-answers thead,.dir-rtl table.ls-answers tbody,.dir-rtl table.ls-answers th,.dir-rtl table.ls-answers td,table.ls-answers tr {text-align:right;}
 
-    table.ls-answers thead{display:none} /* We don't need it for accessibility : we already have the label */
+    table.ls-answers thead,table.ls-answers .ls-heading{display:none}
 
     table.ls-answers tbody td{text-align:left;}
     table.ls-answers .information-item:empty{display:none}

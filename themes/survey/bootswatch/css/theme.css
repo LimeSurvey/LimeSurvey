@@ -295,7 +295,11 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 }
 
 /* Show more the heading in table */
-.ls-answers .ls-heading th{font-weight:700}
+.ls-answers .ls-heading th,
+.ls-answers .ls-heading td.control-label,
+.ls-answers .ls-heading td.answer-text {
+    font-weight:700
+}
 /* Max width for some answer part */
 @media (min-width: 768px) {
   .yesno-button,.gender-button {
@@ -487,8 +491,11 @@ only screen and (max-width: 760px),
         margin-bottom:1em;
     }
 
-    /* Line header ; color is h4 color */
-    table.ls-answers tr th {
+    table.ls-answers  tr th,
+    table.ls-answers tr td.answer-text,
+    table.ls-answers  tr td.control-label,
+    table.ls-answers  tr td.answertext
+    {
         font-size: 1.1em;
         text-align: left;
     }
@@ -608,11 +615,16 @@ only screen and (max-width: 760px),
 /**
  * Display adjust, question type by question type
  */
-
-
-.table > tbody > tr > th
+.table > tbody > tr > th,
+.table > tbody > tr > td.answer-text,
+.table > tbody > tr > td.control-label
 {
     vertical-align: middle;
+}
+.table > tbody > tr.ls-heading > td.answer-text,
+.table > tbody > tr.ls-heading > td.control-label
+{
+    vertical-align: bottom;
 }
 
 .othertext-label-checkox-container {

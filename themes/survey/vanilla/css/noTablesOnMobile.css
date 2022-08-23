@@ -38,6 +38,8 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     .dir-ltr table.ls-answers tbody,
     .dir-ltr table.ls-answers th,
     .dir-ltr table.ls-answers td,
+    .dir-ltr table.ls-answers td.answertext,
+    .dir-ltr table.ls-answers td.answertextright
     table.ls-answers tr {
         text-align: left;
     }
@@ -47,11 +49,14 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     .dir-rtl table.ls-answers tbody,
     .dir-rtl table.ls-answers th,
     .dir-rtl table.ls-answers td,
+    .dir-rtl table.ls-answers td.answertext,
+    .dir-rtl table.ls-answers td.answertextright
     table.ls-answers tr {
         text-align: right;
     }
 
-    table.ls-answers thead {
+    table.ls-answers thead,
+    table.ls-answers .ls-heading {
         display: none
     }
 
