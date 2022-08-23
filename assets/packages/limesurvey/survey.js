@@ -109,29 +109,31 @@ function updateLineClass(line){
 function updateRepeatHeading(answers){
     /* Update only (at start) when all hidden line is done : @todo : do it only once */
     $(function() {
-        if($(answers).data("repeatHeading") || $(answers).find("tbody").find(".ls-heading").length){
+        if($(answers).data("repeatHeading") || $(answers).find("tbody").find(".ls-heading").length > 1){
             /* set the data the first time */
             if(!$(answers).data("repeatHeading")){
-                var repeatHeading=$(answers).find("tbody:first tr").length;/* first body don't have heading */
+                var repeatHeading = $(answers).find("tr").index($(answers).find("tr.ls-heading").eq(1)) -1;
                 $(answers).data("repeatHeading",repeatHeading)
-                $(answers).data("repeatHeader",$(answers).find("tbody .ls-heading").filter(":first")[0].outerHTML);
+                $(answers).data("repeatHeader",$(answers).find("tbody .ls-heading:not(.ls-header)").filter(":first")[0].outerHTML);
             }else{
                 var repeatHeading=$(answers).data("repeatHeading");
             }
             /* can remove the heading and clone this one of thead */
-            var header = $(answers).data("repeatHeader");
-            $(answers).find("tbody .ls-heading").remove();
-            var lines=$(answers).find('tr:visible');
-            var max=$(answers).find('tr:visible').length-1;
-            $(lines).each(function(index){
-                if(index != 0 && index % repeatHeading == 0 && index < max)
-                {
-                    $(header).insertAfter($(this));
-                }
-            });
+            if(repeatHeading > 0) {
+                var header = $(answers).data("repeatHeader");
+                $(answers).find("tbody .ls-heading:not(.ls-header)").remove();
+                var lines = $(answers).find('tr:visible');
+                var max = $(answers).find('tr:visible').length-1;
+                $(lines).each(function(index){
+                    if(index != 0 && index % repeatHeading == 0 && index < max) {
+                        $(header).insertAfter($(this));
+                    }
+                });
+            }
         }
     });
 }
+
 /**
  * Manage the index
  */
