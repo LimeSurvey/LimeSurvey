@@ -13,7 +13,7 @@ App()->getClientScript()->registerScriptFile(
     <div class="container-fluid">
         <div class='row'>
             <!-- Left side -->
-            <div class="col-xl-6 col-md-8">
+            <div class="col">
 
                 <!-- Add -->
                 <?php if (Permission::model()->hasGlobalPermission('usergroups', 'create') && isset($usergroupbar['returnbutton']['url'])) : ?>
@@ -56,7 +56,7 @@ App()->getClientScript()->registerScriptFile(
             </div>
 
             <!-- Right side -->
-            <div class="col-xl-6 col-md-4 text-end">
+            <div class="col-md-auto text-end">
 
                 <!-- Close -->
             <?php if (isset($usergroupbar['closebutton']['url'])) : ?>
