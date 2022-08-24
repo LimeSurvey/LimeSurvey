@@ -266,7 +266,7 @@ var UserManagement = function () {
     var wireRoleSet = function () {
         $('#UserManagement--modalform').find('select').each(
             function(i,item) {
-                $(item).select2();
+                jQuery(item).select2({'theme':'bootstrap\x2D5'});
             }
         );
     }

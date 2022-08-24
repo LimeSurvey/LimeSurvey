@@ -3,6 +3,7 @@ Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
     ['modalTitle' => gT('Edit user roles')]
 );
+
 ?>
 
 <?php $form = $this->beginWidget('TbActiveForm', array(
@@ -22,20 +23,19 @@ Yii::app()->getController()->renderPartial(
         </div>
         <div class="mb-3">
             <label for="roleselector"><?=gT("Select role(s):")?></label>
-            <select name="roleselector[]" id="roleselector"  class="form-select select" style="width:150px;" multiple>
-                <?php
-                foreach ($aPossibleRoles as $key => $name) {
-                    echo sprintf(
-                        "<option value='%s' %s> %s </option>",
-                        $key,
-                        in_array($key, $aCurrentRoles) ? 'selected' : '',
-                        $name
-                    );
-                }
-                ?>
-            </select>
-        </div>        
-
+            <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
+                [
+                    'asDropDownList' => true,
+                            'htmlOptions' => array(
+                                'style' => 'width:100%;',
+                                'multiple' => true
+                            ),
+                    'data' => $aPossibleRoles,
+                    'value' => null,
+                    'name' => 'roleselector[]',
+                ]
+            ); ?>
+        </div>
     </div>
 </div>
 
