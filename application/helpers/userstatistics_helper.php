@@ -885,7 +885,7 @@ class userstatistics_helper
                             break;
                         case 'html':
                             // Multiple numerical and numerical field summary
-                            $statisticsoutput .= "\n<div class='well'><table class='table table-striped statisticstable' >\n"
+                            $statisticsoutput .= "\n<div class='card card-body bg-light mb-5'><table class='table table-striped statisticstable' >\n"
                                 . "\t<thead><tr><th colspan='2' class='text-center'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
                                 . "</th></tr>\n"
                                 . "\t<tr><th colspan='2' class='text-center'><strong>$qquestion</strong></th></tr>\n"
@@ -1424,7 +1424,7 @@ class userstatistics_helper
                 break;
             case 'html':
                 //output
-                $statisticsoutput .= "<div class='well'><table class='table table-striped statisticstable'>\n"
+                $statisticsoutput .= "<div class='card card-body bg-light mb-5'><table class='table table-striped statisticstable'>\n"
                 . "\t<thead><tr><th colspan='4' class='text-center'><strong>"
 
                 //headline
@@ -2693,7 +2693,7 @@ class userstatistics_helper
                 break;
 
             case 'html':
-                $sOutputHTML .= "<br />\n<div class='well'><table class='table table-striped statisticssummary' >\n"
+                $sOutputHTML .= "<br />\n<div class='card card-body bg-light mb-5'><table class='table table-striped statisticssummary' >\n"
                     . "\t<thead><tr><th class='text-center' colspan='2'>" . gT("Results") . "</th></tr></thead>\n"
                     . "\t<tr><th style='text-align:left'>" . gT("Number of records in this query:") . '</th>'
                     . "<td style='text-align:right'>$results</td></tr>\n"
