@@ -46,7 +46,7 @@ function dummy_twig_translation_helper()
     gT("Question help text position"); // From themes/survey/fruity/options/options.twig
     gT("Top"); // From themes/survey/fruity/options/options.twig
     gT("Bottom"); // From themes/survey/fruity/options/options.twig
-    gT("Break tables"); // From themes/survey/fruity/options/options.twig
+    gT("Wrap tables"); // From themes/survey/fruity/options/options.twig
     gT("Always on"); // From themes/survey/fruity/options/options.twig
     gT("Small screens"); // From themes/survey/fruity/options/options.twig
     gT("After specific subquestion"); // From application/views/survey/questions/answer/multiplechoice/config.xml
