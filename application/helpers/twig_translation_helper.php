@@ -42,7 +42,7 @@ function dummy_twig_translation_helper()
     gT("Load label set"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
     gT("Save label set"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
     gT("Quick add"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
-    gT("Show Clear All button"); // From themes/survey/fruity/options/options.twig
+    gT("Show link/button to delete response & exit survey"); // From themes/survey/fruity/options/options.twig
     gT("Question help text position"); // From themes/survey/fruity/options/options.twig
     gT("Top"); // From themes/survey/fruity/options/options.twig
     gT("Bottom"); // From themes/survey/fruity/options/options.twig
