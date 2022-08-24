@@ -37,7 +37,9 @@
 
                             <?php if(isset($sSubaction) && !isset($oQuestionGroup) && !isset($oQuestion)):  ?>
                                 <li class="breadcrumb-item active" aria-current="page">
-                                    <?php echo $sSubaction; ?>
+                                    <div>
+                                        <?php echo $sSubaction; ?>
+                                    </div>
                                 </li>
                             <?php /* else: ?>
                                 <li class="breadcrumb-item">
