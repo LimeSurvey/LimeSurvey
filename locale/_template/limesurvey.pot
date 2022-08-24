@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-08-24 07:54:50+00:00\n"
+"POT-Creation-Date: 2022-08-24 08:22:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,9 +23,9 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:1629
 #: application/controllers/admin/DataEntry.php:1632
 #: application/controllers/admin/DataEntry.php:1635
-#: application/controllers/admin/DataEntry.php:1884
-#: application/controllers/admin/DataEntry.php:1895
-#: application/controllers/admin/DataEntry.php:1906
+#: application/controllers/admin/DataEntry.php:1883
+#: application/controllers/admin/DataEntry.php:1894
+#: application/controllers/admin/DataEntry.php:1905
 #: application/controllers/survey/index.php:93
 #: application/controllers/survey/index.php:324
 #: application/controllers/survey/index.php:345
@@ -4443,8 +4443,8 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:78
 #: application/controllers/admin/DataEntry.php:508
 #: application/controllers/admin/DataEntry.php:1575
-#: application/controllers/admin/DataEntry.php:2332
-#: application/controllers/admin/DataEntry.php:2335
+#: application/controllers/admin/DataEntry.php:2331
+#: application/controllers/admin/DataEntry.php:2334
 #: application/extensions/TopbarWidget/views/includes/responsesTopbarLeft_view.php:22
 #: application/views/admin/dataentry/caption_view.php:5
 #: application/views/admin/dataentry/dataentry_header_view.php:3
@@ -4848,7 +4848,7 @@ msgid "Your survey responses have been saved successfully.  You will be sent a c
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1798
-msgid "A survey participant entry for the saved survey has been created too."
+msgid "A survey participant entry for the saved survey has been created, too."
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1807
@@ -4857,8 +4857,7 @@ msgid "Saved Survey Details"
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1808
-#: application/libraries/Save.php:218
-msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this email for your reference - we cannot retrieve the password for you."
+msgid "Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1810
@@ -4878,75 +4877,61 @@ msgid "Name"
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1811
-#: application/controllers/admin/UserAction.php:155
-#: application/controllers/admin/UserAction.php:157
-#: application/controllers/admin/UserAction.php:421
-#: application/controllers/admin/UserAction.php:431
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:380
-#: application/core/plugins/Authdb/Authdb.php:129
-#: application/libraries/Save.php:221 application/models/User.php:131
-#: application/views/admin/authentication/newPassword.php:41
-#: application/views/admin/user/modifyuser.php:53
-#: application/views/userManagement/partial/createdrandoms.php:32
-msgid "Password"
-msgstr ""
-
-#: application/controllers/admin/DataEntry.php:1812
 #: application/libraries/Save.php:222
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1817
-msgid "An email has been sent with details about your saved survey"
+#: application/controllers/admin/DataEntry.php:1816
+msgid "An email has been sent with details about your saved survey. Please make sure to remember your password."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1819
+#: application/controllers/admin/DataEntry.php:1818
 msgid "Unable to send email about your saved survey (Error: %s)."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1885
+#: application/controllers/admin/DataEntry.php:1884
 msgid "This is a closed-access survey, so you must supply a access code.  Please contact the administrator for assistance."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1896
+#: application/controllers/admin/DataEntry.php:1895
 msgid "The access code have provided is not valid or has already been used."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1907
+#: application/controllers/admin/DataEntry.php:1906
 msgid "There is already a recorded answer for this access code"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1920
+#: application/controllers/admin/DataEntry.php:1919
 msgid "Follow the following link to update it"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1924
+#: application/controllers/admin/DataEntry.php:1923
 #: application/extensions/TopbarWidget/views/includes/responseViewTopbarRight_view.php:6
 msgid "Edit this entry"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:1937
+#: application/controllers/admin/DataEntry.php:1936
 msgid "This surveys uses anonymized responses, so you can't update your response."
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2030
+#: application/controllers/admin/DataEntry.php:2029
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2033
+#: application/controllers/admin/DataEntry.php:2032
 msgid "The answer(s) must meet these validation criteria:"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2039
+#: application/controllers/admin/DataEntry.php:2038
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2295
+#: application/controllers/admin/DataEntry.php:2294
 #: application/controllers/admin/PrintableSurvey.php:1475
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
-#: application/controllers/admin/DataEntry.php:2304
+#: application/controllers/admin/DataEntry.php:2303
 #: application/controllers/admin/PrintableSurvey.php:1488
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
@@ -7264,6 +7249,19 @@ msgstr ""
 
 #: application/controllers/admin/UserAction.php:149
 msgid "You can use now the following credentials to log into the site:"
+msgstr ""
+
+#: application/controllers/admin/UserAction.php:155
+#: application/controllers/admin/UserAction.php:157
+#: application/controllers/admin/UserAction.php:421
+#: application/controllers/admin/UserAction.php:431
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:380
+#: application/core/plugins/Authdb/Authdb.php:129
+#: application/libraries/Save.php:221 application/models/User.php:131
+#: application/views/admin/authentication/newPassword.php:41
+#: application/views/admin/user/modifyuser.php:53
+#: application/views/userManagement/partial/createdrandoms.php:32
+msgid "Password"
 msgstr ""
 
 #: application/controllers/admin/UserAction.php:157
@@ -14739,6 +14737,10 @@ msgstr ""
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr ""
 
+#: application/libraries/Save.php:218
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please make sure to remember your password - we cannot retrieve it for you."
+msgstr ""
+
 #: application/libraries/Save.php:231
 msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
 msgstr ""
@@ -14884,7 +14886,8 @@ msgid "Email language"
 msgstr ""
 
 #: application/models/FailedEmail.php:75
-msgid "Date of email failing"
+#: application/models/ParticipantAttributeName.php:173
+msgid "Date"
 msgstr ""
 
 #: application/models/FailedEmail.php:78
@@ -15115,10 +15118,6 @@ msgstr ""
 
 #: application/models/ParticipantAttributeName.php:172
 msgid "Drop-down list"
-msgstr ""
-
-#: application/models/ParticipantAttributeName.php:173
-msgid "Date"
 msgstr ""
 
 #: application/models/ParticipantAttributeName.php:174
@@ -15464,10 +15463,6 @@ msgstr ""
 
 #: application/models/QuestionTheme.php:381
 msgid "Extension configuration file is missing at %s."
-msgstr ""
-
-#: application/models/QuestionTheme.php:393
-msgid "Missing questionType in metadata"
 msgstr ""
 
 #: application/models/QuestionTheme.php:509
@@ -23390,7 +23385,7 @@ msgid "Add new assessment rule"
 msgstr ""
 
 #: application/views/failedEmail/failedEmail_index.php:14
-msgid "Note that entries in this table will be automatically deleted after 30 days."
+msgid "Please note that failed email notifications will be automatically deleted after 30 days."
 msgstr ""
 
 #: application/views/failedEmail/failedEmail_index.php:25
@@ -23398,11 +23393,11 @@ msgid "No failed email notifications found"
 msgstr ""
 
 #: application/views/failedEmail/notification_message/_notification_message.php:12
-msgid "Dear survey administrator"
+msgid "Dear survey administrator,<br>There were one or more notification emails that failed to be sent. Please check the 'Failed email notifications' section in the survey(s) listed below."
 msgstr ""
 
-#: application/views/failedEmail/notification_message/_notification_message.php:14
-msgid "There were one or more confirmation emails that failed to be sent. Please check the 'Failed email notifications' section in the survey(s) listed below"
+#: application/views/failedEmail/notification_message/_notification_message.php:19
+msgid "%s (ID: %s)"
 msgstr ""
 
 #: application/views/failedEmail/partials/buttons.php:8
