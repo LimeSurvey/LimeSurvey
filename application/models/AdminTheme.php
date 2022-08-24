@@ -139,8 +139,6 @@ class AdminTheme extends CFormModel
         // and move the rest to the bootstrap package.
         // NB: registerAllScripts could be replaced by js definition in package. If needed: not a problem to do it
 
-        $dir = (getLanguageRTL(App()->getLanguage())) ? 'rtl' : 'ltr';
-
         if (!Yii::app()->request->getQuery('isAjax', false)) {
             Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport'); // See: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l108-l115
 //            App()->bootstrap->registerTooltipAndPopover(); // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
@@ -162,10 +160,6 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('ckeditor'); //
             App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global scope
             App()->getClientScript()->registerPackage('modaleditor');
-            if ($dir == "rtl") {
-                App()->getClientScript()->unregisterPackage('bootstrap');
-                App()->getClientScript()->registerPackage('bootstrap-rtl');
-            }
         }
 
         $aCssFiles = array();
@@ -243,10 +237,6 @@ class AdminTheme extends CFormModel
         Yii::app()->clientScript->addPackage('admin-theme', $package); // add the package
         Yii::app()->clientScript->registerPackage('admin-theme'); // register the package
         Yii::app()->clientScript->registerPackage('moment'); // register moment for correct dateTime calculation
-
-        if ($dir == "rtl") {
-            App()->getClientScript()->unregisterPackage('bootstrap');
-        }
     }
 
     /**
