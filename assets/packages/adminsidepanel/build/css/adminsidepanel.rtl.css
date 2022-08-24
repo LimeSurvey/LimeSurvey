@@ -137,10 +137,6 @@
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
-#sidebar div[class^=col-].nofloat,
-#sidebar div[class*=" col-"].nofloat {
-  float: none;
-}
 #sidebar .button-sub-bar {
   min-height: 32px;
 }
@@ -203,13 +199,19 @@
   margin-bottom: 0;
 }
 .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {
+  border-bottom: 1px solid #dadada;
   margin-bottom: 10px;
 }
 .ls-ba .breadcrumb > li + li:before {
   float: none;
   padding: 0 5px;
-  content: "\F061";
+  color: #ccc;
+  content:  "\f060";
   font: normal normal normal 18px/1 FontAwesome;
+}
+.ls-ba .pager li > a, .ls-ba .pager li > span {
+  border-radius: 4px;
+  margin: 1px;
 }
 
 .fade-enter-active {
@@ -444,6 +446,11 @@ footer.footer,
 }
 .black-caret {
   color: black;
+}
+
+div[class^=col-].nofloat,
+div[class*=" col-"].nofloat {
+  float: none;
 }
 
 .ls-flex, .ls-flex-column, .ls-flex-row {
@@ -968,33 +975,4 @@ footer.footer,
 }
 .ls-space.padding.all-50 {
   padding: 50px;
-}
-
-.ls-ba .list-group {
-  padding-left: 0;
-}
-.ls-ba .list-group > .list-group-item {
-  padding-left: 0;
-}
-.ls-ba .list-group > .list-group-item .list-group {
-  margin-bottom: 0;
-}
-.ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {
-  border-bottom: 1px solid #dadada;
-  margin-bottom: 10px;
-}
-.ls-ba .breadcrumb > li + li:before {
-  padding: 0 5px;
-  color: #ccc;
-  content: "\F061";
-  font: normal normal normal 18px/1 FontAwesome;
-}
-.ls-ba .pager li > a, .ls-ba .pager li > span {
-  border-radius: 4px;
-  margin: 1px;
-}
-
-div[class^=col-].nofloat,
-div[class*=" col-"].nofloat {
-  float: none;
 }
