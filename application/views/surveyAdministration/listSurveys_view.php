@@ -53,11 +53,11 @@ echo viewHelper::getViewTestTag('listSurveys');
         </div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     $('#surveysystem a').on('shown.bs.tab', function () {
         var tabId = $(this).attr('href');
-        $('.tab-dependent-button:not([data-tab="' + tabId + '"])').hide();
-        $('.tab-dependent-button[data-tab="' + tabId + '"]').show();
+        $('.tab-dependent-button:not([data-tab="' + tabId + '"])').toggleClass("d-none");
+        $('.tab-dependent-button[data-tab="' + tabId + '"]').toggleClass("d-none");
     });
     $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){

@@ -41,7 +41,7 @@
         <rtl>
             <css>
                 <!-- Still need these files -->
-                <filename>lime-admin-colors.css</filename>
+                <filename>lime-admin-colors-rtl.css</filename>
                 <filename>statistics-rtl.css</filename>
             </css>
             <js>
