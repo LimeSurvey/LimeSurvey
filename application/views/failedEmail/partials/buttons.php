@@ -5,14 +5,14 @@
  */
 ?>
 <div class="icon-btn-row">
-    <button data-toggle="tooltip" title="<?= gT("Resend E-mail") ?>"
+    <button data-toggle="tooltip" title="<?= gT("Resend email") ?>"
             class="btn btn-default btn-sm <?= !$permissions['update'] ? "" : "failedemail-action-modal-open" ?>"
             data-href="<?= App()->createUrl('/failedEmail/modalcontent', ['id' => $id]) ?>"
             data-contentFile="resend_form"
             <?= !$permissions['update'] ? "disabled='disabled'" : "" ?>>
         <i class="fa fa-envelope-square"></i>
     </button>
-    <button data-toggle="tooltip" title="<?= gT("E-mail content") ?>"
+    <button data-toggle="tooltip" title="<?= gT("Email content") ?>"
             class="btn btn-default btn-sm failedemail-action-modal-open"
             data-href="<?= App()->createUrl('/failedEmail/modalcontent', ['id' => $id]) ?>"
             data-contentFile="email_content">

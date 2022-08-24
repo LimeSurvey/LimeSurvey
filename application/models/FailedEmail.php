@@ -72,7 +72,7 @@ class FailedEmail extends LSActiveRecord
             'recipient'     => gt('Recipient'),
             'email_type'    => gt('Email type'),
             'language'      => gt('Email language'),
-            'created'       => gt('Date of email failing'),
+            'created'       => gt('Date'),
             'status'        => gt('Status'),
             'updated'       => gt('Updated'),
             'error_message' => gt('Error message')

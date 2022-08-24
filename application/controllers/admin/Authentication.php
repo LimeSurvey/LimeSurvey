@@ -429,7 +429,7 @@ class Authentication extends SurveyCommonAction
             $uniqueNotification = new UniqueNotification(
                 array(
                     'user_id' => App()->user->id,
-                    'title' => gT('Failed e-mail notifications'),
+                    'title' => gT('Failed email notifications'),
                     'markAsNew' => false,
                     'importance' => Notification::NORMAL_IMPORTANCE,
                     'message' => Yii::app()->getController()->renderPartial('//failedEmail/notification_message/_notification_message', [

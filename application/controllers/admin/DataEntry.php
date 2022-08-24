@@ -1780,7 +1780,7 @@ class DataEntry extends SurveyCommonAction
                     $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
                     $arSaveControl->save();
                     if ($arSaveControl->save()) {
-                        $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
+                        $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."));
                         $tokens_table = "{{tokens_$surveyid}}";
                         if (tableExists($tokens_table)) {
                             $tokendata = array(
@@ -1795,7 +1795,7 @@ class DataEntry extends SurveyCommonAction
                             $aToken = new Token($surveyid);
                             $aToken->setAttributes($tokendata, false);
                             $aToken->encryptSave(true);
-                            $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
+                            $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created, too."));
                         }
                         if ($saver['email']) {
                             //Send email
@@ -1805,16 +1805,15 @@ class DataEntry extends SurveyCommonAction
                                 $mailer->setSurvey($surveyid);
                                 $mailer->emailType = 'savesurveydetails';
                                 $mailer->Subject = gT("Saved Survey Details");
-                                $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
+                                $message = gT("Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off.");
                                 $message .= "\n\n" . $thissurvey['name'] . "\n\n";
                                 $message .= gT("Name") . ": " . $saver['identifier'] . "\n";
-                                $message .= gT("Password") . ": " . $saver['password'] . "\n\n";
                                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):") . "\n";
-                                $aParams = array('lang' => $saver['language'], 'loadname' => $saver['identifier'], 'loadpass' => $saver['password']);
+                                $aParams = array('lang' => $saver['language'], 'loadname' => $saver['identifier']);
                                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$arSaveControl->scid}/", $aParams);
                                 $mailer->Body = $message;
                                 if ($mailer->sendMessage()) {
-                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'successtitle text-success'), gT("An email has been sent with details about your saved survey"));
+                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'successtitle text-success'), gT("An email has been sent with details about your saved survey. Please make sure to remember your password."));
                                 } else {
                                     $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'errortitle text-danger'), sprintf(gT("Unable to send email about your saved survey (Error: %s)."), $mailer->getError()));
                                 }

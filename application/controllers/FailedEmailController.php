@@ -14,8 +14,8 @@ class FailedEmailController extends LSBaseController
         $this->aData['surveyid'] = $surveyId;
         LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
         $this->layout = 'layout_questioneditor';
-        $this->aData['title_bar']['title'] = gT('Failed e-mail notifications');
-        $this->aData['subaction'] = gT("Failed e-mail notifications");
+        $this->aData['title_bar']['title'] = gT('Failed email notifications');
+        $this->aData['subaction'] = gT("Failed email notifications");
 
         return parent::beforeRender($view);
     }
