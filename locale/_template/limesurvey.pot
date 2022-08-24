@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-08-24 07:52:30+00:00\n"
+"POT-Creation-Date: 2022-08-24 07:54:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -413,7 +413,6 @@ msgstr ""
 #: application/controllers/FailedEmailController.php:18
 #: application/core/LsDefaultDataSets.php:444
 #: application/core/LsDefaultDataSets.php:445
-#: application/views/failedEmail/failedEmail_index.php:10
 msgid "Failed e-mail notifications"
 msgstr ""
 
@@ -3795,6 +3794,7 @@ msgid "Reloading screen. Please wait."
 msgstr ""
 
 #: application/controllers/admin/Authentication.php:432
+#: application/views/failedEmail/failedEmail_index.php:10
 msgid "Failed email notifications"
 msgstr ""
 
@@ -4844,7 +4844,7 @@ msgid "Your passwords do not match."
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1783
-msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
+msgid "Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1798
@@ -4857,7 +4857,8 @@ msgid "Saved Survey Details"
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1808
-msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
+#: application/libraries/Save.php:218
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this email for your reference - we cannot retrieve the password for you."
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1810
@@ -14738,10 +14739,6 @@ msgstr ""
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr ""
 
-#: application/libraries/Save.php:218
-msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this email for your reference - we cannot retrieve the password for you."
-msgstr ""
-
 #: application/libraries/Save.php:231
 msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
 msgstr ""
@@ -23397,7 +23394,7 @@ msgid "Note that entries in this table will be automatically deleted after 30 da
 msgstr ""
 
 #: application/views/failedEmail/failedEmail_index.php:25
-msgid "No failed e-mail notifications found"
+msgid "No failed email notifications found"
 msgstr ""
 
 #: application/views/failedEmail/notification_message/_notification_message.php:12
@@ -23419,7 +23416,8 @@ msgid "Email content"
 msgstr ""
 
 #: application/views/failedEmail/partials/massive_action_selector.php:20
-msgid "Delete failed e-mail notifications"
+#: application/views/failedEmail/partials/modal/delete_form.php:9
+msgid "Delete failed email notifications"
 msgstr ""
 
 #: application/views/failedEmail/partials/massive_action_selector.php:21
@@ -23436,11 +23434,7 @@ msgid "Resend selected emails"
 msgstr ""
 
 #: application/views/failedEmail/partials/massive_action_selector.php:52
-msgid "Selected e-mail(s)..."
-msgstr ""
-
-#: application/views/failedEmail/partials/modal/delete_form.php:9
-msgid "Delete failed email notifications"
+msgid "Selected email(s)..."
 msgstr ""
 
 #: application/views/failedEmail/partials/modal/delete_result.php:6
