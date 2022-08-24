@@ -155,7 +155,9 @@ class LSYii_ClientScript extends CClientScript
         if (!empty(Yii::app()->clientScript->packages[$sPackageName])) {
             if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])) {
                 $key = array_search($sFileName, Yii::app()->clientScript->packages[$sPackageName][$sType]);
-                unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
+                if ($key !== false) {
+                    unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
+                }
             }
         }
     }

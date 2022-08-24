@@ -8,7 +8,7 @@ $black:    #000;
 // END gray-color-variables
 
 // START theme-color-variables
-$primary:       #328637;
+$primary:       #0d6efd;
 $primary-hover: #0f3e12;
 $secondary:     #6C757D;
 $success:       #198754;
@@ -51,17 +51,6 @@ $spacers: (
     7: $spacer * 6,
 );
 // END spacer
-
-// START navbar-light
-$navbar-light-color:                $primary;
-$navbar-light-hover-color:          $white;
-$navbar-light-active-color:         $white;
-$navbar-light-disabled-color:       $primary;
-$navbar-light-toggler-icon-bg:      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-light-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
-$navbar-light-toggler-border-color: $primary;
-$navbar-light-brand-color:          $primary;
-$navbar-light-brand-hover-color:    $primary-hover;
-// END navbar-light
 
 // START btn-variables
 $btn-hover-bg-shade-amount: 30%;
