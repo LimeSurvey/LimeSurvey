@@ -17,7 +17,7 @@ $buttons[] = [
     'actionType'    => 'modal',
     'modalType'     => 'cancel-delete',
     'keepopen'      => 'yes',
-    'sModalTitle'   => gT('Delete failed e-mail notifications'),
+    'sModalTitle'   => gT('Delete failed email notifications'),
     'htmlModalBody' => gT('Are you sure you want to delete the selected notifications?'),
     'aCustomDatas'  => [
         ['name' => 'surveyid', 'value' => $surveyId],
@@ -49,7 +49,7 @@ $this->widget(
         'pk'         => 'id',
         'gridid'     => 'failedemail-grid',
         'dropupId'   => 'failedEmailActions',
-        'dropUpText' => gT('Selected e-mail(s)...'),
+        'dropUpText' => gT('Selected email(s)...'),
         'aActions'   => $buttons
     ]
 );

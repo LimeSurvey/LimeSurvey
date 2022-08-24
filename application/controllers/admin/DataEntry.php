@@ -1780,7 +1780,7 @@ class DataEntry extends SurveyCommonAction
                     $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
                     $arSaveControl->save();
                     if ($arSaveControl->save()) {
-                        $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
+                        $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."));
                         $tokens_table = "{{tokens_$surveyid}}";
                         if (tableExists($tokens_table)) {
                             $tokendata = array(
@@ -1805,7 +1805,7 @@ class DataEntry extends SurveyCommonAction
                                 $mailer->setSurvey($surveyid);
                                 $mailer->emailType = 'savesurveydetails';
                                 $mailer->Subject = gT("Saved Survey Details");
-                                $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
+                                $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this email for your reference - we cannot retrieve the password for you.");
                                 $message .= "\n\n" . $thissurvey['name'] . "\n\n";
                                 $message .= gT("Name") . ": " . $saver['identifier'] . "\n";
                                 $message .= gT("Password") . ": " . $saver['password'] . "\n\n";
