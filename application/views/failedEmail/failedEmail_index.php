@@ -11,7 +11,7 @@
         <p class="alert alert-info alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
             <span class="fa fa-info-circle"></span>
-            <?php eT("Note that entries in this table will be automatically deleted after 30 days."); ?>
+            <?php eT("Please note that failed email notifications will be automatically deleted after 30 days."); ?>
         </p>
         <!-- Grid -->
         <div class="row">
