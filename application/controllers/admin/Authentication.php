@@ -315,6 +315,12 @@ class Authentication extends SurveyCommonAction
         }
     }
 
+    /**
+     * Check if db update is necessary and does the update
+     *
+     * @return void
+     * @throws Exception
+     */
     public static function runDbUpgrade()
     {
         // Check if the DB is up to date
@@ -374,14 +380,66 @@ class Authentication extends SurveyCommonAction
     }
 
     /**
-     * Redirect after login
+     * Redirect after login.
+     * Do a db update if any exists.
+     * Clean failed_email table (delete entries older then 30days)
+     *
      * @return void
      */
     private static function doRedirect()
     {
         self::runDbUpgrade();
+        self::cleanFailedEmailTable();
+        self::createNewFailedEmailsNotification();
         $returnUrl = App()->user->getReturnUrl(array('/admin'));
         Yii::app()->getController()->redirect($returnUrl);
+    }
+
+    /**
+     * Delete all entries from failed_email table which are older then 30days
+     *
+     * @return void
+     */
+    private static function cleanFailedEmailTable()
+    {
+        $criteria = new CDbCriteria();
+
+        //filter for 'created' date comparison
+        $dateNow = new DateTime();
+
+        //minus 30days
+        $dateNow = $dateNow->sub(new DateInterval('P30D'));
+        $dateNowFormatted = $dateNow->format('Y-m-d H:i');
+
+        $criteria->addCondition('created < \'' . $dateNowFormatted . '\'');
+
+        FailedEmail::model()->deleteAll($criteria);
+    }
+
+    /**
+     * Checks failed_email table for entries for this user and creates a UniqueNotification
+     *
+     * @return void
+     */
+    private static function createNewFailedEmailsNotification()
+    {
+        $failedEmailModel = new FailedEmail();
+        $failedEmailSurveyTitles = $failedEmailModel->getFailedEmailSurveyTitles();
+        if (!empty($failedEmailSurveyTitles)) {
+            $uniqueNotification = new UniqueNotification(
+                array(
+                    'user_id' => App()->user->id,
+                    'title' => gT('Failed email notifications'),
+                    'markAsNew' => false,
+                    'importance' => Notification::NORMAL_IMPORTANCE,
+                    'message' => Yii::app()->getController()->renderPartial('//failedEmail/notification_message/_notification_message', [
+                        'failedEmailSurveyTitles' => $failedEmailSurveyTitles
+                    ], true)
+                )
+            );
+
+            $uniqueNotification->save();
+        }
     }
 
     /**

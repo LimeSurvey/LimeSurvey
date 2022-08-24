@@ -462,6 +462,9 @@ class TestHelper extends TestCase
                 $profile->setPreference('browser.tabs.remote.autostart', false);
                 $profile->setPreference('browser.tabs.remote.autostart.2', false);
 
+                $capabilities->setCapability('acceptSslCerts', true);
+                $capabilities->setCapability('acceptInsecureCerts', true);
+
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);
 

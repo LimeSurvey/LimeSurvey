@@ -242,7 +242,7 @@ class LSActiveRecord extends CActiveRecord
 
     /**
      * Overriding of Yii's findByAttributes method to provide encrypted attribute value search
-     * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+     * @param array $attributes list of attribute values (indexed by attribute names) that the active record should match.
      * An attribute value can be an array which will be used to generate an IN condition.
      * @param mixed $condition query condition or criteria.
      * @param array $params parameters to be bound to an SQL statement.

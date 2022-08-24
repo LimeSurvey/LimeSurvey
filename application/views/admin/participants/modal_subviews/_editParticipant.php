@@ -49,7 +49,7 @@ Yii::app()->getController()->renderPartial(
         </div>
         <div class='mb-3'>
             <label class='form-label '>
-                <?php eT('E-mail:'); ?>
+                <?php eT('Email:'); ?>
             </label>
             <div class='0'>
                 <?=$form->textField($model, 'email')?>
