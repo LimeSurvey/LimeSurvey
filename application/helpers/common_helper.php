@@ -2474,6 +2474,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'B' ||
                 $captchamode == 'D' ||
+                $captchamode == 'F' ||
+                $captchamode == 'G' ||
+                $captchamode == 'I' ||
+                $captchamode == 'M' ||
+                $captchamode == 'U' ||
                 $captchamode == 'R'
             ) {
                 return true;
@@ -2484,6 +2489,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'B' ||
                 $captchamode == 'C' ||
+                $captchamode == 'F' ||
+                $captchamode == 'H' ||
+                $captchamode == 'K' ||
+                $captchamode == 'O' ||
+                $captchamode == 'T' ||
                 $captchamode == 'X'
             ) {
                 return true;
@@ -2494,6 +2504,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'C' ||
                 $captchamode == 'D' ||
+                $captchamode == 'G' ||
+                $captchamode == 'H' ||
+                $captchamode == 'J' ||
+                $captchamode == 'L' ||
+                $captchamode == 'P' ||
                 $captchamode == 'S'
             ) {
                 return true;
