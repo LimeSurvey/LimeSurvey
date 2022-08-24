@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-08-24 08:22:25+00:00\n"
+"POT-Creation-Date: 2022-08-24 08:25:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -411,9 +411,11 @@ msgstr ""
 
 #: application/controllers/FailedEmailController.php:17
 #: application/controllers/FailedEmailController.php:18
+#: application/controllers/admin/Authentication.php:432
 #: application/core/LsDefaultDataSets.php:444
 #: application/core/LsDefaultDataSets.php:445
-msgid "Failed e-mail notifications"
+#: application/views/failedEmail/failedEmail_index.php:10
+msgid "Failed email notifications"
 msgstr ""
 
 #: application/controllers/FailedEmailController.php:35
@@ -3791,11 +3793,6 @@ msgstr ""
 
 #: application/controllers/admin/Authentication.php:362
 msgid "Reloading screen. Please wait."
-msgstr ""
-
-#: application/controllers/admin/Authentication.php:432
-#: application/views/failedEmail/failedEmail_index.php:10
-msgid "Failed email notifications"
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:52
@@ -7777,7 +7774,7 @@ msgid "Edit the templates for invitation, reminder and registration emails"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:446
-msgid "View and resend failed e-mail notifications"
+msgid "View and resend failed email notifications"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:472
@@ -14516,7 +14513,7 @@ msgid "Bottom"
 msgstr ""
 
 #: application/helpers/twig_translation_helper.php:49
-msgid "Break tables"
+msgid "Wrap tables"
 msgstr ""
 
 #: application/helpers/twig_translation_helper.php:50
@@ -17377,6 +17374,7 @@ msgid "Confirm password:"
 msgstr ""
 
 #: application/views/admin/dataentry/active_html_view.php:69
+#: application/views/admin/participants/modal_subviews/_editParticipant.php:52
 #: application/views/admin/pluginmanager/overview.php:32
 #: application/views/admin/token/massive_actions/_update.php:160
 #: application/views/admin/token/tokenform.php:209
@@ -19483,10 +19481,6 @@ msgstr ""
 #: application/views/survey/frontpage/registerForm/form.php:11
 #: tmp/runtime/twig_cache/78/781d5263cbef938c990f501a9034588666804acfba182bfdbc4ba7e62c14e121.php:98
 msgid "Last name:"
-msgstr ""
-
-#: application/views/admin/participants/modal_subviews/_editParticipant.php:52
-msgid "E-mail:"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:61
