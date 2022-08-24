@@ -1,6 +1,6 @@
 <?php
 ?>
-<label class="control-label" for="preserveResend"><?= gT('Preserve Successfull e-mails?') ?></label>
+<label class="control-label" for="preserveResend"><?= gT('Preserve successful emails?') ?></label>
 <div>
     <input class="custom-data" type="checkbox" name="preserveResend" id="preserveResend"/>
 </div>

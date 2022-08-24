@@ -6,7 +6,7 @@
  */
 ?>
 
-<?= App()->getController()->renderPartial('/layouts/partial_modals/modal_header', ['modalTitle' => gT('Delete failed e-mail notifications')]) ?>
+<?= App()->getController()->renderPartial('/layouts/partial_modals/modal_header', ['modalTitle' => gT('Delete failed email notifications')]) ?>
 <?= CHtml::form(['/failedEmail/delete/', 'surveyid' => $surveyId, 'item' => $id], 'post', ['id' => 'failedemail-action-modal--form']) ?>
 <div class="modal-body">
     <p><?= gT('Are you sure you want to delete the selected notifications?') ?></p>

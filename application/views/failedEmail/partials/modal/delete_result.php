@@ -3,7 +3,7 @@
  **/ ?>
 <div class="modal-header">
     <div class="modal-title h4">
-        <?= gT('Deleted e-mail notifications') ?>
+        <?= gT('Deleted email notifications') ?>
     </div>
 </div>
 <div class="modal-body">
