@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-08-23 13:25:08+00:00\n"
+"POT-Creation-Date: 2022-08-24 07:46:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20504,7 +20504,7 @@ msgid "Random order:"
 msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:15
-msgid "Please select and option"
+msgid "Please select an option"
 msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:17
@@ -23421,11 +23421,11 @@ msgid "Are you sure you want to delete the selected notifications?"
 msgstr ""
 
 #: application/views/failedEmail/partials/massive_action_selector.php:32
-msgid "Resend e-mails"
+msgid "Resend emails"
 msgstr ""
 
 #: application/views/failedEmail/partials/massive_action_selector.php:39
-msgid "Resend selected e-mails"
+msgid "Resend selected emails"
 msgstr ""
 
 #: application/views/failedEmail/partials/massive_action_selector.php:52
@@ -23441,7 +23441,7 @@ msgid "Sucessfully deleted email notifications: %s"
 msgstr ""
 
 #: application/views/failedEmail/partials/modal/email_content.php:6
-msgid "Email Content"
+msgid "Email content"
 msgstr ""
 
 #: application/views/failedEmail/partials/modal/resend_body.php:3
