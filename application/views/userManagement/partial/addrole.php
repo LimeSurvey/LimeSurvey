@@ -31,7 +31,7 @@ Yii::app()->getController()->renderPartial(
                                 'multiple' => true
                             ),
                     'data' => $aPossibleRoles,
-                    'value' => null,
+                    'value' => $aCurrentRoles,
                     'name' => 'roleselector[]',
                 ]
             ); ?>
