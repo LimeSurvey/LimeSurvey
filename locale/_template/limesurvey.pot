@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-08-24 07:46:47+00:00\n"
+"POT-Creation-Date: 2022-08-24 07:52:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -411,7 +411,6 @@ msgstr ""
 
 #: application/controllers/FailedEmailController.php:17
 #: application/controllers/FailedEmailController.php:18
-#: application/controllers/admin/Authentication.php:432
 #: application/core/LsDefaultDataSets.php:444
 #: application/core/LsDefaultDataSets.php:445
 #: application/views/failedEmail/failedEmail_index.php:10
@@ -3795,6 +3794,10 @@ msgstr ""
 msgid "Reloading screen. Please wait."
 msgstr ""
 
+#: application/controllers/admin/Authentication.php:432
+msgid "Failed email notifications"
+msgstr ""
+
 #: application/controllers/admin/CheckIntegrity.php:52
 #: application/views/admin/checkintegrity/fix_view.php:1
 msgid "Check data integrity"
@@ -4854,7 +4857,6 @@ msgid "Saved Survey Details"
 msgstr ""
 
 #: application/controllers/admin/DataEntry.php:1808
-#: application/libraries/Save.php:218
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr ""
 
@@ -14736,6 +14738,10 @@ msgstr ""
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr ""
 
+#: application/libraries/Save.php:218
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this email for your reference - we cannot retrieve the password for you."
+msgstr ""
+
 #: application/libraries/Save.php:231
 msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
 msgstr ""
@@ -23403,15 +23409,16 @@ msgid "There were one or more confirmation emails that failed to be sent. Please
 msgstr ""
 
 #: application/views/failedEmail/partials/buttons.php:8
-msgid "Resend E-mail"
+#: application/views/failedEmail/partials/modal/resend_form.php:9
+msgid "Resend email"
 msgstr ""
 
 #: application/views/failedEmail/partials/buttons.php:15
-msgid "E-mail content"
+#: application/views/failedEmail/partials/modal/email_content.php:6
+msgid "Email content"
 msgstr ""
 
 #: application/views/failedEmail/partials/massive_action_selector.php:20
-#: application/views/failedEmail/partials/modal/delete_form.php:9
 msgid "Delete failed e-mail notifications"
 msgstr ""
 
@@ -23432,24 +23439,20 @@ msgstr ""
 msgid "Selected e-mail(s)..."
 msgstr ""
 
+#: application/views/failedEmail/partials/modal/delete_form.php:9
+msgid "Delete failed email notifications"
+msgstr ""
+
 #: application/views/failedEmail/partials/modal/delete_result.php:6
-msgid "Deleted e-mail notifications"
+msgid "Deleted email notifications"
 msgstr ""
 
 #: application/views/failedEmail/partials/modal/delete_result_body.php:7
 msgid "Sucessfully deleted email notifications: %s"
 msgstr ""
 
-#: application/views/failedEmail/partials/modal/email_content.php:6
-msgid "Email content"
-msgstr ""
-
 #: application/views/failedEmail/partials/modal/resend_body.php:3
-msgid "Preserve Successfull e-mails?"
-msgstr ""
-
-#: application/views/failedEmail/partials/modal/resend_form.php:9
-msgid "Resend e-mail"
+msgid "Preserve successful emails?"
 msgstr ""
 
 #: application/views/failedEmail/partials/modal/resend_form.php:16
