@@ -1241,6 +1241,10 @@ fieldset[disabled] .btn-link:focus {
 .nav-tabs > li > a:hover {
   border: 1px solid #9cba9e #9cba9e #9cba9e;
 }
+.nav-tabs .nav-link {
+  color: #328637;
+}
+
 .navbar-collapse {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
