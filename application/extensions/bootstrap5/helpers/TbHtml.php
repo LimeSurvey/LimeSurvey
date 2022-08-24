@@ -501,7 +501,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const ICON_ZOOM_OUT = 'fa-zoom-out';
 
     // Default close text.
-    const CLOSE_TEXT = '&times;';
+    const CLOSE_TEXT = '';
 
     /**
      * @var string the CSS class for displaying error summaries.
@@ -4583,12 +4583,14 @@ EOD;
         self::addCssClass('modal-header', $htmlOptions);
         $closeOptions = TbArray::popValue('closeOptions', $htmlOptions, array());
         $closeOptions['dismiss'] = 'modal';
+        $closeOptions['data-bs-dismiss'] = 'modal';
+        $closeOptions['class'] = 'btn-close';
         $headingOptions = TbArray::popValue('headingOptions', $htmlOptions, array());
         $closeLabel = TbArray::popValue('closeLabel', $htmlOptions, self::CLOSE_TEXT);
         $closeButton = self::closeButton($closeLabel, $closeOptions);
         self::addCssClass('modal-title', $headingOptions);
-        $header = self::tag('h4', $headingOptions, $content);
-        return self::tag('div', $htmlOptions, $closeButton . $header);
+        $header = self::tag('h5', $headingOptions, $content);
+        return self::tag('div', $htmlOptions, $header . $closeButton);
     }
 
     /**

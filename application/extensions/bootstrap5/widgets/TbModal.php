@@ -203,15 +203,15 @@ class TbModal extends CWidget
     public function renderButton()
     {
         if (!empty($this->buttonOptions) && is_array($this->buttonOptions)) {
-            TbArray::defaultValue('data-toggle', 'modal', $this->buttonOptions);
+            TbArray::defaultValue('data-bs-toggle', 'modal', $this->buttonOptions);
 
             if ($this->remote !== null) {
-                $this->buttonOptions['data-remote'] = CHtml::normalizeUrl($this->remote);
+                $this->buttonOptions['data-bs-remote'] = CHtml::normalizeUrl($this->remote);
             }
 
             $selector = '#' . $this->htmlOptions['id'];
             $label = TbArray::popValue('label', $this->buttonOptions, 'button');
-            $attr = isset($this->buttonOptions['data-remote']) ? 'data-target' : 'href';
+            $attr = isset($this->buttonOptions['data-bs-remote']) ? 'data-bs-target' : 'href';
             TbArray::defaultValue($attr, $selector, $this->buttonOptions);
             echo TbHtml::button($label, $this->buttonOptions);
         }
