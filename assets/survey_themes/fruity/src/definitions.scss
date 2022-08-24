@@ -165,7 +165,7 @@ body {
             color: $color_green_pea_approx;
         }
         &.text-info:hover {
-            color: $color_eden_approx;
+            color: $color_eden_approx !important;
         }
         &.text-warning:hover {
             color: $color_warning;
@@ -198,38 +198,38 @@ body {
         border-top: 1px solid $color_norway_approx;
     }
     .text-muted {
-        color: $color_gunsmoke_approx;
+        color: $color_gunsmoke_approx !important;
     }
     .text-primary {
-        color: $base-color;
+        color: $base-color !important;
     }
     .text-success {
-        color: $base-color;
+        color: $base-color !important;
     }
     .text-info {
-        color: $color_info;
+        color: $color_info !important;
     }
     .text-warning {
-        color: $color_warning;
+        color: $color_warning !important;
     }
     .text-danger {
-        color: $color_danger;
+        color: $color_danger !important;
     }
     .bg-primary {
-        color:            $white;
-        background-color: $base-color;
+        color:            $white !important;
+        background-color: $base-color !important;
     }
     .bg-success {
-        background-color: $color_sea_mist_approx;
+        background-color: $color_sea_mist_approx !important;
     }
     .bg-info {
-        background-color: $color_opal_approx;
+        background-color: $color_opal_approx !important;
     }
     .bg-warning {
-        background-color: $color_quicksand_approx;
+        background-color: $color_quicksand_approx !important;
     }
     .bg-danger {
-        background-color: $color_contessa_approx;
+        background-color: $color_contessa_approx !important;
     }
     .page-header {
         border-bottom: 1px solid $color_norway_approx;
