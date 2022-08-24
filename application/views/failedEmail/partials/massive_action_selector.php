@@ -29,14 +29,14 @@ $buttons[] = [
     'action'      => 'resend',
     'url'         => App()->createUrl('failedEmail/resend/', ['surveyid' => $surveyId]),
     'iconClasses' => 'fa fa-envelope',
-    'text'        => gT('Resend e-mails'),
+    'text'        => gT('Resend emails'),
     'grid-reload' => 'yes',
     'disabled'    => !$permissions['update'],
     //modal
     'actionType'  => 'modal',
     'modalType'   => 'cancel-resend',
     'keepopen'    => 'yes',
-    'sModalTitle'   => gT('Resend selected e-mails'),
+    'sModalTitle'   => gT('Resend selected emails'),
     'htmlModalBody' => App()->getController()->renderPartial('/failedEmail/partials/modal/resend_body', [], true),
     'aCustomDatas'  => [
         ['name' => 'surveyid', 'value' => $surveyId],

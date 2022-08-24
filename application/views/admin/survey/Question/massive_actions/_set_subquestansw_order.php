@@ -12,7 +12,7 @@ $surveyid = App()->request->getParam('surveyid', 0);
         <label class="col-sm-4 control-label"><?php eT("Random order:"); ?></label>
         <div class="col-sm-8">
             <select class="form-control custom-data attributes-to-update" id="random_order" name="random_order" required>
-                <option value="" selected="selected"><?php eT('Please select and option');?></option>
+                <option value="" selected="selected"><?php eT('Please select an option');?></option>
                 <option value="0"><?php eT('Off');?></option>
                 <option value="1"><?php eT('Randomize on each page load');?></option>
             </select>

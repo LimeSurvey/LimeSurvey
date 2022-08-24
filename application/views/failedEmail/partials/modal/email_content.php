@@ -3,7 +3,7 @@
  * @var $this FailedEmailController
  * @var $failedEmail FailedEmail
  **/ ?>
-<?= App()->getController()->renderPartial('/layouts/partial_modals/modal_header', ['modalTitle' => gT('Email Content')]) ?>
+<?= App()->getController()->renderPartial('/layouts/partial_modals/modal_header', ['modalTitle' => gT('Email content')]) ?>
 <div id="failedemail-action-modal--emailcontent" class="modal-body">
     <?= $failedEmail->getRawMailBody() ?>
 </div>
