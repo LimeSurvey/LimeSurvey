@@ -214,7 +214,7 @@ class Permissiontemplates extends CActiveRecord
                 data-title='" . gt('Delete user role') . "'
                 data-bs-target='#confirmation-modal'
                 data-btnClass='btn-danger'
-                data-post-url ='" . $deleteUrl . "' 
+                data-url ='" . $deleteUrl . "' 
                 data-ptid='" . $this->ptid . "'
                 data-action='delrole'         
                 data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")'
