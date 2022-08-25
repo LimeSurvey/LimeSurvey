@@ -1,11 +1,12 @@
 <?php
 
 /**
- * This is the model class for table "{{failed_email}}".
+ * This is the model class for table "{{failed_emails}}".
  *
- * The following are the available columns in table '{{failed_email}}':
+ * The following are the available columns in table '{{failed_emails}}':
  * @property integer $id primary key
  * @property integer $surveyid the surveyid this one belongs to
+ * @property integer $responseid the id of the participants response
  * @property string $email_type the email type
  * @property string $recipient the recipients email address
  * @property string $language the email language
@@ -29,7 +30,7 @@ class FailedEmail extends LSActiveRecord
      */
     public function tableName(): string
     {
-        return '{{failed_email}}';
+        return '{{failed_emails}}';
     }
 
     /**
@@ -39,14 +40,14 @@ class FailedEmail extends LSActiveRecord
     public function rules(): array
     {
         return [
-            ['id, surveyid, email_type, recipient, error_message, created', 'required'],
+            ['id, surveyid, responseid, email_type, recipient, error_message, created', 'required'],
             ['email_type', 'length', 'max' => 200],
             ['recipient', 'length', 'max' => 320],
             ['status', 'length', 'max' => 20],
             ['language', 'length', 'max' => 20],
             ['created, updated', 'safe'],
             // The following rule is used by search().
-            ['id, email_type, recipient, language, created, error_message, status, updated', 'safe', 'on' => 'search'],
+            ['id, responseid, email_type, recipient, language, created, error_message, status, updated', 'safe', 'on' => 'search'],
         ];
     }
 
@@ -98,6 +99,7 @@ class FailedEmail extends LSActiveRecord
 
         $criteria->compare('id', $this->id);
         $criteria->compare('surveyid', $this->surveyid);
+        $criteria->compare('responseid', $this->responseid);
         $criteria->compare('email_type', $this->email_type, true);
         $criteria->compare('recipient', $this->recipient, true);
         $criteria->compare('language', $this->language, true);
@@ -146,6 +148,12 @@ class FailedEmail extends LSActiveRecord
                 'htmlOptions' => ['class' => 'nowrap']
             ],
             [
+                'header' => gT('Response ID'),
+                'name'   => 'responseUrl',
+                'type'   => 'raw',
+                'filter' => false,
+            ],
+            [
                 'header' => gT('Created'),
                 'name'   => 'created',
                 'value'  => '$data->created',
@@ -191,6 +199,22 @@ class FailedEmail extends LSActiveRecord
             'permissions' => $permissions
         ], true);
         return $buttons;
+    }
+
+    /**
+     * create a link to the response if it exists, else just return the id
+     * @return string
+     */
+    public function getResponseUrl(): string
+    {
+        $response = Response::model($this->surveyid)->findByPk($this->responseid);
+        if (!empty($response)) {
+            $responseUrl = App()->createUrl("responses/view/", ['surveyId' => $this->surveyid, 'id' => $this->responseid]);
+            $responseLink = '<a href="' . $responseUrl . '" role="button" data-toggle="tooltip" title="' . gT('View response details') . '">' . $this->responseid . '</a>';
+        } else {
+            $responseLink = (string)$this->responseid;
+        }
+        return $responseLink;
     }
 
     /**
