@@ -28,7 +28,7 @@ There is two possible displays for index, depending on Survey Mode:
 {% if (aSurveyInfo.aQuestionIndex.bShow == true) %}
     {% if aSurveyInfo.format == 'G' %}
         <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
-        <li class="dropdown nav-item ls-no-js-hidden index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
+        <li class="dropdown nav-item ls-no-js-hidden px-2 index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
             <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
                aria-expanded="false" href="#">
                 {{ gT("Question index") }}
@@ -47,9 +47,9 @@ There is two possible displays for index, depending on Survey Mode:
                     {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
                         {% set statusClass = statusClass ~  ' disabled' %}
                     {% endif %}
-                    <li class="list-group-item{{ indexItem.coreClass }} {{ statusClass }}">
+                    <li class="list-group-item{{ indexItem.coreClass }}">
                         <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'
-                           class='dropdown-item aminate'>
+                           class='dropdown-item  {{ statusClass }}'>
                             {{ indexItem.text }}
                         </a>
                     </li>
@@ -62,7 +62,7 @@ There is two possible displays for index, depending on Survey Mode:
     {% if aSurveyInfo.format == 'S' %}
         <!-- Question index, question by question, {{ aSurveyInfo.aQuestionIndex.type }} -->
         <li class="dropdown nav-item ls-no-js-hidden dropdown index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
-            <a class="dropdown-toggle animate" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
+            <a class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
                aria-expanded="false">
                 {{ gT("Question index") }}
                 <span class="caret"></span>
