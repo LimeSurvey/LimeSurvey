@@ -19,9 +19,9 @@ via survey configuration, at start page, when survey is completed, etc
 #}
 {% if aSurveyInfo.aNavigator.load.show == "Y" %}
     <!-- Load unfinished survey button -->
-    <li class="nav-item ls-no-js-hidden px-2" {{ aSurveyInfo.attr.loadlinksli }}>
+    <li class="nav-item ls-no-js-hidden" {{ aSurveyInfo.attr.loadlinksli }}>
         <a href="#" data-limesurvey-submit='{ "loadall":"loadall" }'
-           class='nav-link ls-link-action ls-link-loadall'>
+           class='nav-link ls-link-action ls-link-loadall animate'>
             {{ gT('Load unfinished survey') }}
         </a>
     </li>
@@ -30,7 +30,7 @@ via survey configuration, at start page, when survey is completed, etc
 {% if aSurveyInfo.aNavigator.save.show == "Y" %}
     <!-- Resume later button -->
     <li class="nav-item ls-no-js-hidden">
-        <a href="#" data-limesurvey-submit='{ "saveall":"saveall" }' class='nav-link'>
+        <a href="#" data-limesurvey-submit='{ "saveall":"saveall" }' class='nav-link animate'>
             {{ gT('Resume later') }}
         </a>
         {% if(aSurveyInfo.saved.text and aSurveyInfo.options.showpopups > 0) %}

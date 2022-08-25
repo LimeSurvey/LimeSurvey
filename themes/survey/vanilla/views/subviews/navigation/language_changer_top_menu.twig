@@ -29,8 +29,8 @@ The language change is done via javascript
     {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
 
     <!-- Language Changer, top menu version -->
-    <li class="ls-no-js-hidden form-change-lang dropdown nav-item px-2">
-        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
+    <li class="ls-no-js-hidden form-change-lang dropdown">
+        <a class="nav-link dropdown-toggle animate" role="button" data-bs-toggle="dropdown"
            data-bs-target="#language-dropdown">
             {# NOTE:  {{gT( aLCD.aListLang[aLCD.sSelected] )}}: retreives the language name of the selected language and translates it #}
             {{ gT("Language:") }} {{ aLCD.aListLang[aLCD.sSelected] }}
@@ -40,7 +40,7 @@ The language change is done via javascript
             {# List of available languages. #}
             {% for value, lang in aLCD.aListLang %}
                 <li class="index-item">
-                    <a href='#' data-limesurvey-lang='{{ value }}' class="dropdown-item ls-language-link">
+                    <a href='#' data-limesurvey-lang='{{ value }}' class="dropdown-item ls-language-link animate">
                         {{ lang }}
                     </a>
                 </li>

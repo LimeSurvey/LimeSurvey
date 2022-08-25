@@ -1245,32 +1245,32 @@ body {
                 color: $color_gravel_approx;
                 &:hover {
                     color:            $white;
-                    background-color: $color_parsley_approx !important;
+                    background-color: $color_parsley_approx;
                 }
                 &:focus {
                     color:            $white;
-                    background-color: $color_parsley_approx !important;
+                    background-color: $color_parsley_approx;
                 }
             }
             .active > a {
                 color:            $white;
-                background-color: $color_parsley_approx !important;
+                background-color: $color_parsley_approx;
                 &:hover {
                     color:            $white;
-                    background-color: $color_parsley_approx !important;
+                    background-color: $color_parsley_approx;
                 }
                 &:focus {
                     color:            $white;
-                    background-color: $color_parsley_approx !important;
+                    background-color: $color_parsley_approx;
                 }
             }
-            li > a.disabled {
+            .disabled > a {
                 color: $color_gunsmoke_approx;
-                :hover {
-                    color: $color_gunsmoke_approx !important;
+                &:hover {
+                    color: $color_gunsmoke_approx;
                 }
-                :focus {
-                    color: $color_gunsmoke_approx !important;
+                &:focus {
+                    color: $color_gunsmoke_approx;
                 }
             }
         }
@@ -1862,51 +1862,42 @@ body {
         @extend %extend_19;
     }
     .navbar {
-        background-color: $white !important;
+        background-color: $white;
         box-shadow:       0 3px 3px $color_gunsmoke_10_approx;
         border-radius:    0 !important;
         a {
             text-decoration: none;
             line-height:     1.8rem;
-            font-size:       1.2rem;
-        }
-        @media(min-width: 769px) {
-            .navbar-nav .nav-item .nav-link:hover {
-                text-decoration: none;
-            }
-            .navbar-nav .nav-item .nav-link:active {
-                text-decoration: none;
-            }
-            .navbar-nav .nav-item .nav-link:focus {
-                text-decoration: none;
-            }
-            .navbar-nav .nav-item .nav-link {
-                padding-bottom: 0;
-                padding-left: 0;
-            }
-            .navbar-nav .nav-item {
-                position: relative;
-            }
+            font-size:       1.6rem;
 
-            .navbar-nav .nav-item::after {
-                text-align:       right;
-                content:          '';
-                display:          block;
-                width:            0;
-                height:           2px;
-                background-color: $base-color;
-                transition: width 0.3s;
+            @media(min-width: 769px) {
+                &.animate {
+                    text-decoration: none;
+                    border:          none;
+                    &:after {
+                        text-align:       right;
+                        content:          '';
+                        display:          block;
+                        width:            0;
+                        height:           2px;
+                        background-color: $base-color;
+                    }
+                    &:hover {
+                        text-decoration: none;
+                        border:          none;
+                        &:after {
+                            transition: width 0.3s;
+                            width:      100%;
+                        }
+                    }
+                }
             }
-            .navbar-nav .nav-item:hover::after {
-                width: 100%;
+            @media(max-width: 768px) {
+                padding-top:    15px;
+                padding-bottom: 15px;
+                box-shadow:     1px 2px 3px $color_gunsmoke_10_approx;
             }
         }
-        @media(max-width: 768px) {
-            padding-top:    15px;
-            padding-bottom: 15px;
-            box-shadow:     1px 2px 3px $color_gunsmoke_10_approx;
-        }
-
         .nav-icon-btn.nav-icon-btn-danger .label {
             background: $color_danger;
         }

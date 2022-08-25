@@ -825,7 +825,9 @@ label::after {
     background-color: #337ab7
 }
 
-.dropdown-item:focus, .dropdown-item:hover {
-    background-color: #e9ecef !important;
+#survey-nav .nav-link:hover {
+    color: #333;
 }
-
+#survey-nav .nav-link:focus {
+    color: #333;
+}
