@@ -1,17 +1,13 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'liststyle', 'az', {
-	armenian: 'Erməni nömrələmə',
 	bulletedTitle: 'Markerlənmiş siyahının xüsusiyyətləri',
 	circle: 'Dəirəcik',
 	decimal: 'Rəqəm (1, 2, 3 və s.)',
-	decimalLeadingZero: 'Aparıcı sıfır olan rəqəm (01, 02, 03 və s.)',
 	disc: 'Disk',
-	georgian: 'Gürcü nömrələmə (an, ban, gan, və s.)',
 	lowerAlpha: 'Kiçik hərflər (a, b, c, d, e və s.)',
-	lowerGreek: 'Kiçik Yunan hərfləri (alfa, beta, qamma və s.)',
 	lowerRoman: 'Rum rəqəmləri (i, ii, iii, iv, v və s.)',
 	none: 'Yoxdur',
 	notset: '<seçilməmiş>',

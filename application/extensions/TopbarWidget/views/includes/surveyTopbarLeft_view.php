@@ -276,8 +276,9 @@
     <?php App()->getController()->renderPartial(
         '/admin/survey/surveybar_displayexport',
         [
-            'respstatsread' => $hasResponsesStatisticsReadPermission,
-            'surveyexport'  => Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export'),
+            'hasResponsesExportPermission' => $hasResponsesExportPermission,
+            'hasTokensExportPermission' => $hasSurveyTokensExportPermission,
+            'hasSurveyExportPermission' => $hasSurveyExportPermission,
             'oSurvey'       => $oSurvey,
             'onelanguage'   => (count($oSurvey->allLanguages) == 1)
         ]

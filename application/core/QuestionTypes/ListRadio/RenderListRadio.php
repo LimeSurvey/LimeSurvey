@@ -29,12 +29,32 @@ class RenderListRadio extends QuestionBaseRenderer
     private $iRowCount = 0;
     private $bColumnIsOpen = false;
     private $inputnames = [];
+
+    /** @var boolean indicates if the question has the 'Other' option enabled */
+    protected $hasOther;
+
+    /** @var int the position where the 'Other' option should be placed. Possible values: 0 (Before no answer), 1 (At beginning), 2 (At end), 3 (After specific option)*/
+    protected $otherPosition;
+
+    /** @var string the code of the answer after which the 'Other' option should be placed (if $otherPosition == 3) */
+    protected $answerBeforeOther;
+
+    const OTHER_POS_BEFORE_NOANSWER = 'default';
+    const OTHER_POS_START = 'beginning';
+    const OTHER_POS_END = 'end';
+    const OTHER_POS_AFTER_OPTION = 'specific';
     
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->sOthertext = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')); // text for 'other'
         $this->iNbCols   = @$this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1); // number of columns
+        $this->hasOther = $this->oQuestion->other == 'Y';
+        $this->otherPosition = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_position'), self::OTHER_POS_BEFORE_NOANSWER);
+        $this->answerBeforeOther = '';
+        if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION) {
+            $this->answerBeforeOther = $this->getQuestionAttribute('other_position_code');
+        }
         $this->setAnsweroptions();
 
         if ($this->iNbCols > 1) {
@@ -59,7 +79,15 @@ class RenderListRadio extends QuestionBaseRenderer
 
     public function renderRowsArray()
     {
+        $otherRendered = false;
+
         $aRows = [];
+
+        if ($this->hasOther && $this->otherPosition == self::OTHER_POS_START) {
+            $aRows[] = $this->addOtherRow();
+            $otherRendered = true;
+        }
+
         foreach ($this->aAnswerOptions[0] as $iterator => $oAnswer) {
             $aRows[] = Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/answer_row', array(
                 'name'          => $this->sSGQA,
@@ -68,14 +96,22 @@ class RenderListRadio extends QuestionBaseRenderer
                 'checkedState'  => ($this->mSessionValue == $oAnswer->code ? 'CHECKED' : ''),
                 'myfname'       => $this->sSGQA . $oAnswer->code,
                 ), true);
-        }
-
-        if ($this->oQuestion->other == 'Y') {
-            $aRows[] = $this->addOtherRow();
+            if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $oAnswer->code) {
+                $aRows[] = $this->addOtherRow();
+                $otherRendered = true;
+            }
         }
 
         if (($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
+            if ($this->hasOther && $this->otherPosition == self::OTHER_POS_BEFORE_NOANSWER) {
+                $aRows[] = $this->addOtherRow();
+                $otherRendered = true;
+            }
             $aRows[] = $this->addNoAnswerRow();
+        }
+
+        if ($this->hasOther && !$otherRendered) {
+            $aRows[] = $this->addOtherRow();
         }
 
         return $aRows;
@@ -192,7 +228,8 @@ class RenderListRadio extends QuestionBaseRenderer
             'name'      => $this->sSGQA,
             'basename'  => $this->sSGQA,
             'value'     => $this->mSessionValue,
-            'coreClass' => $this->sCoreClass
+            'coreClass' => $this->sCoreClass,
+            'othertext' => $this->sOthertext
         ), true);
 
         $this->registerAssets();

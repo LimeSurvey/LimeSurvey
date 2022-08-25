@@ -6,11 +6,11 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
- * Check if Reponses are edit- and saveable
+ * Check if Responses are edit- and saveable
  *
  * @group responses
  */
-class SaveEditedReponseTest extends TestBaseClassWeb
+class SaveEditedResponseTest extends TestBaseClassWeb
 {
     /**
      * Setup
@@ -44,7 +44,7 @@ class SaveEditedReponseTest extends TestBaseClassWeb
      */
     public function testQuestionEditor()
     {
-        $surveyFile = self::$surveysFolder . '/survey_archive_SaveEditedReponseTest.lsa';
+        $surveyFile = self::$surveysFolder . '/survey_archive_SaveEditedResponseTest.lsa';
         self::importSurvey($surveyFile);
 
         $survey = \Survey::model()->findByPk(self::$surveyId);
@@ -52,7 +52,7 @@ class SaveEditedReponseTest extends TestBaseClassWeb
         $this->assertCount(1, $survey->groups, 'Wrong number of groups: ' . count($survey->groups));
         $this->assertCount(1, $survey->groups[0]->questions, 'We have exactly one question');
 
-        $reponseID = 1;
+        $responseID = 1;
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -61,7 +61,7 @@ class SaveEditedReponseTest extends TestBaseClassWeb
                 'sa'       => 'editdata',
                 'subaction' => 'edit',
                 'surveyid' => self::$surveyId,
-                'id'      => $reponseID
+                'id'      => $responseID
             ]
         );
 
@@ -76,8 +76,12 @@ class SaveEditedReponseTest extends TestBaseClassWeb
         sleep(5);
 
         $completedElement = $web->findElement(WebDriverBy::id('startlanguage'));
-        $completedElement->clear();
-        $completedElement->sendKeys("de");
+        $allOptions = $completedElement->findElement(WebDriverBy::tagName('option'));
+        foreach ($allOptions as $option) {
+            if ($option->getAttribute('value') == 'en') {
+                $option->click();
+            };
+        }
 
         sleep(1);
 
@@ -89,7 +93,7 @@ class SaveEditedReponseTest extends TestBaseClassWeb
         $oNotifCOntainer = $this->waitForElementShim($web, '#notif-container', 20);
         $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($oNotifCOntainer));
 
-        $question = \Response::model(self::$surveyId)->findAllByAttributes([], 'id = :id', [':id' => $reponseID]);
-        $this->assertEquals('de', $question[0]->startlanguage);
+        $question = \Response::model(self::$surveyId)->findAllByAttributes([], 'id = :id', [':id' => $responseID]);
+        $this->assertEquals('en', $question[0]->startlanguage);
     }
 }

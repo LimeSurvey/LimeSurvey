@@ -15,10 +15,7 @@
             <!-- Plugin Manager -->
             <?php if (isset($fullpagebar['pluginManager'])) : ?>
                 <!-- Install Plugin Zip -->
-                <?php if (
-                    isset($fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']) &&
-                    !$fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']
-                ) : ?>
+                <?php if (!empty($fullpagebar['pluginManager']['buttons']['showUpload'])) : ?>
                     <a
                         href=''
                         class='btn btn-default'

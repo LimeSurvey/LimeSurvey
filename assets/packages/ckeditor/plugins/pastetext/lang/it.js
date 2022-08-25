@@ -1,8 +1,9 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'pastetext', 'it', {
 	button: 'Incolla come testo semplice',
-	pasteNotification: 'Il browser non permette di incollare il testo semplice in questo modo. Premere %1 per incollare.'
+	pasteNotification: 'Premere %1 per incollare. Il tuo browser non permette di incollare tramite il pulsante della barra degli strumenti o tramite la voce del menu contestuale.',
+	title: 'Incolla come testo semplice'
 } );

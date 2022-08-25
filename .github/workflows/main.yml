@@ -18,7 +18,6 @@ jobs:
       matrix:
         # Specify what versions of php you want to test
         php-versions: ['7.2', '8.0']
-        nodeJS-versions: [ '10.16.3' ]
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -95,12 +94,12 @@ jobs:
           php application/commands/console.php install admin password TravisLS no@email.com verbose
           cp application/config/config-sample-mysql.php application/config/config.php
 
-        # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
-        # TODO: Disable, a lines was added to config file and some tests started to fail.
-        # NB: EmCache is always disabled when debug => 2
-        # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
-        # sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
-        # cat application/config/config.php
+          # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
+          # TODO: Disable, a lines was added to config file and some tests started to fail.
+          # NB: EmCache is always disabled when debug => 2
+          # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
+          # sed -i '84s/.*/        "debug"=>2,/' application/config/config.php
+          # cat application/config/config.php
 
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
@@ -141,18 +140,3 @@ jobs:
         env:
             DOMAIN: localhost
         run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
-
-      # Prepare the packages that need to be tested and update the nvm
-      - name: Prepare the nvm with Node ${{ matrix.nodeJS-versions }}
-        run: |
-          # Update
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-          source ~/.nvm/nvm.sh
-
-          # Install Node.js
-          nvm install ${{ matrix.nodeJS-versions }}
-          nvm use ${{ matrix.nodeJS-versions }}
-          node ./buildVueComponents.js -s adminbasics -p
-
-      - name: Run JS tests
-        run: yarn --cwd ./assets/packages/adminbasics run test

@@ -9,6 +9,9 @@
     btnUpload: 'Envoyer vers le serveur',
     advanced: 'Avancé',
     autoplay: 'Jouer automatiquement ?',
+    allowdownload: 'Allow download?',
+    advisorytitle: 'Advisory title',
     yes: 'Oui',
-    no: 'Non'
+    no: 'Non',
+    controls: 'Afficher les contrôles ?'
 } );

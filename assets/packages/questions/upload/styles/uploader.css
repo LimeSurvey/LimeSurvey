@@ -39,7 +39,9 @@ margin:0;
     }
 }
 
-
+.file-preview span {
+    margin-left: 1em;
+}
 
 .file-info label{
     float:left;
@@ -68,6 +70,7 @@ margin:0;
 }
 .upload-div{
     text-align: center;
+    margin-bottom: 0.5em;    
 }
 .uploadmsg {
     text-align: center;
@@ -92,3 +95,4 @@ img.uploaded {
 .uploadedfiles thead tr th {
     font-weight: bold;
 }
+

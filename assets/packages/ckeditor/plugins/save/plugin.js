@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -61,7 +61,7 @@
  * Fired when the user clicks the Save button on the editor toolbar.
  * This event allows to overwrite the default Save button behavior.
  *
- * @since 4.2
+ * @since 4.2.0
  * @event save
  * @member CKEDITOR.editor
  * @param {CKEDITOR.editor} editor This editor instance.

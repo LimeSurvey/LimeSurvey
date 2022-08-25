@@ -119,14 +119,12 @@ function nice_addslashes($string)
 function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true)
 {
     // sanitize filename
-    $filename = preg_replace(
-        '~
-        [<>:"/\\|?*]|
+    $filename = mb_ereg_replace(
+        '[<>:"\\|?*]|
         [\x00-\x1F]|
         [\x7F\xA0\xAD]|
         [#\[\]@!$&\'()+,;=]|
-        [{}^\~`]
-        ~x',
+        [{}^\~`]',
         '-',
         $filename
     );
@@ -141,7 +139,7 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
     // maximise filename length to 255 bytes http://serverfault.com/a/9548/44086
     $ext = pathinfo($filename, PATHINFO_EXTENSION);
     $filename = mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)) . ($ext ? '.' . $ext : '');
-    $filename = ($alphanumeric) ? preg_replace("/[^a-zA-Z0-9]/", "", $filename) : $filename;
+    $filename = ($alphanumeric) ? mb_ereg_replace("[^a-zA-Z0-9]", "", $filename) : $filename;
 
     if ($force_lowercase) {
         $filename = mb_strtolower($filename, 'UTF-8');
@@ -171,8 +169,6 @@ function beautify_filename($filename)
         // "file...name..zip" becomes "file.name.zip"
         '/\.{2,}/'
     ), '.', $filename);
-    // lowercase for windows/unix interoperability http://support.microsoft.com/kb/100625
-    $filename = mb_strtolower($filename, mb_detect_encoding($filename));
     // ".file-name.-" becomes "file-name"
     $filename = trim($filename, '.-');
     return $filename;

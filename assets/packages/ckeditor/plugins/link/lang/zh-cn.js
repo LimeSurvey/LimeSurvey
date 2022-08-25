@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'zh-cn', {
 	acccessKey: '访问键',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'zh-cn', {
 	noAnchors: '(此文档没有可用的锚点)',
 	noEmail: '请输入电子邮件地址',
 	noUrl: '请输入超链接地址',
+	noTel: '请输入电话号码',
 	other: '<其他>',
+	phoneNumber: '电话号码',
 	popupDependent: '依附 (NS)',
 	popupFeatures: '弹出窗口属性',
 	popupFullScreen: '全屏 (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'zh-cn', {
 	toAnchor: '页内锚点链接',
 	toEmail: '电子邮件',
 	toUrl: '地址',
+	toPhone: '电话',
 	toolbar: '插入/编辑超链接',
 	type: '超链接类型',
 	unlink: '取消超链接',

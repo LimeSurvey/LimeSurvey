@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'zh', {
 	acccessKey: '便捷鍵',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'zh', {
 	noAnchors: '(本文件中無可用之錨點)',
 	noEmail: '請輸入電子郵件',
 	noUrl: '請輸入連結 URL',
+	noTel: 'Please type the phone number', // MISSING
 	other: '<其他>',
+	phoneNumber: 'Phone number', // MISSING
 	popupDependent: '獨立 (Netscape)',
 	popupFeatures: '快顯視窗功能',
 	popupFullScreen: '全螢幕 (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'zh', {
 	toAnchor: '文字中的錨點連結',
 	toEmail: '電子郵件',
 	toUrl: '網址',
+	toPhone: 'Phone', // MISSING
 	toolbar: '連結',
 	type: '連結類型',
 	unlink: '取消連結',

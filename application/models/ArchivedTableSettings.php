@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{archived_table_settings}}".
  *
- * The followings are the available columns in table '{{archived_table_settings}}':
+ * The following are the available columns in table '{{archived_table_settings}}':
  * @property integer $id
  * @property integer $survey_id
  * @property integer $user_id

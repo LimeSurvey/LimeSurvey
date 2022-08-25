@@ -1,0 +1,13 @@
+﻿/**
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+CKEDITOR.plugins.setLang( 'filetools', 'id', {
+	loadError: 'Error terjadi ketika berkas dibaca',
+	networkError: 'Jaringan error terjadi ketika mengunggah berkas',
+	httpError404: 'HTTP error terjadi ketika mengunggah berkas (404: Berkas tidak ditemukan)',
+	httpError403: 'HTTP error terjadi ketika mengunggah berkas (403: Gangguan)',
+	httpError: 'HTTP error terjadi ketika mengunggah berkas (status error: %1)',
+	noUrlError: 'Unggahan URL tidak terdefinisi',
+	responseError: 'Respon server tidak sesuai'
+} );

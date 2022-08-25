@@ -88,11 +88,11 @@ class SurveyDynamic extends LSActiveRecord
             return array(
                 'survey'   => array(self::HAS_ONE, 'Survey', array(), 'condition' => ('sid = ' . self::$sid)),
                 'tokens'   => array(self::HAS_ONE, 'TokenDynamic', array('token' => 'token')),
-                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'))
+                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
             );
         } else {
             return array(
-                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'))
+                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
             );
         }
     }
@@ -325,30 +325,42 @@ class SurveyDynamic extends LSActiveRecord
 
         /* deletefiles button */
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid) && Response::model(self::$sid)->findByPk($this->id)->someFileExists()) {
-            $buttons .= "<a
-            href='" . App()->createUrl("responses/deleteAttachments", ["surveyId" => self::$sid, "responseId" => $this->id]) . "'
-            class='btn btn-default btn-sm btn-deletefiles'
+            $buttons .= "
+            <span
+            data-toggle='modal'
+            data-target='#confirmation-modal'
+            data-btnclass='btn-danger'
+            data-post-url='" . App()->createUrl("responses/deleteAttachments") . "'
+            data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
+            data-btntext='" . gt("Delete") . "'
+            data-message='" . gt("Do you want to delete all files of this response?") . "'>
+            <button
             data-toggle='tooltip'
-            title='" . gt("Delete all files of this response") . "'
-            onclick='function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }'>
-                <i class='fa fa-paperclip text-danger'></i>
-            </a>";
+            class='btn btn-default btn-sm btn-deletefiles'
+            title='" . gt("Delete all files of this response") . "'>
+            <i class='fa fa-paperclip text-danger'></i>
+            </button>
+            </span>";
         }
 
         /* delete  button */
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $buttons .= "<button
-            class='btn btn-default btn-sm btn-delete'
+            $buttons .= "
+            <span
             data-toggle='modal'
             data-target='#confirmation-modal'
             data-btnclass='btn-danger'
             data-post-url='" . App()->createUrl("responses/deleteSingle") . "'
             data-post-datas='" . json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]) . "'
             data-btntext='" . gt("Delete") . "'
-            title='" . gt("Delete this response") . "'
             data-message='" . gt("Do you want to delete this response?") . "<br/>" . gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.") . "'>
-                <i class='fa fa-trash text-danger'></i>
-            </button>";
+            <button
+            data-toggle='tooltip'
+            class='btn btn-default btn-sm btn-delete'
+            title='" . gt("Delete this response") . "'>
+            <i class='fa fa-trash text-danger'></i>
+            </button>
+            </span>";
         }
         return $buttons;
     }
@@ -386,7 +398,7 @@ class SurveyDynamic extends LSActiveRecord
 
         // Upload question
         if ($oFieldMap->type == Question::QT_VERTICAL_FILE_UPLOAD && strpos($oFieldMap->fieldname, 'filecount') === false) {
-            $sSurveyEntry = "<table class='table table-condensed upload-question'><tr>";
+            $sSurveyEntry = "<table class='table table-condensed upload-question'>";
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
@@ -763,16 +775,16 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Get an array to find question data responsively
      * This should be part of the question object.
-     * And in future developement this should be part of the specific question type object
+     * And in future development this should be part of the specific question type object
      *
      * @param Question $oQuestion
      * @param SurveyDynamic $oResponses
      * @param boolean $bHonorConditions
      * @param boolean $subquestion
-     * @param boolean $getComment
+     * @param boolean $getCommentOnly If should only returns the "comments" or "other" response.
      * @return array | boolean
      */
-    public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion = false, $getComment = false, $sLanguage = null)
+    public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion = false, $getCommentOnly = false, $sLanguage = null)
     {
 
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
@@ -859,7 +871,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
 
-        if ($getComment === true) {
+        if ($getCommentOnly) {
             $fieldname .= 'comment';
         }
 
@@ -985,6 +997,12 @@ class SurveyDynamic extends LSActiveRecord
             if (strpos($aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
                 $aQuestionAttributes['answervalue'] = rtrim(rtrim($aQuestionAttributes['answervalue'], "0"), ".");
             }
+        }
+
+        // If trying to retrieve main question ($getCommentOnly = false), retrieve comment in a new attribute
+        // Check if $getCommentOnly = false to avoid endless recursivity
+        if ($oQuestion->type == 'O' && !$getCommentOnly) {
+            $aQuestionAttributes['comment'] = $this->getQuestionArray($oQuestion, $oResponses, $bHonorConditions, true, true);
         }
 
         return $aQuestionAttributes;

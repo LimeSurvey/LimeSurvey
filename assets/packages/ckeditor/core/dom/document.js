@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -43,6 +43,8 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype, {
 	 * @param {String} cssFileUrl The CSS file URL.
 	 */
 	appendStyleSheet: function( cssFileUrl ) {
+		cssFileUrl = CKEDITOR.appendTimestamp( cssFileUrl );
+
 		if ( this.$.createStyleSheet )
 			this.$.createStyleSheet( cssFileUrl );
 		else {
@@ -124,7 +126,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype, {
 	 * but an element with focus is always the active element in a document.
 	 *
 	 * @returns {CKEDITOR.dom.element} Active element or `null` if an IE8-9 bug is encountered.
-	 * See [#10030](http://dev.ckeditor.com/ticket/10030).
+	 * See [#10030](https://dev.ckeditor.com/ticket/10030).
 	 */
 	getActive: function() {
 		var $active;
@@ -258,11 +260,11 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype, {
 	 *			'</html>'
 	 *		);
 	 *
-	 * @since 3.5
+	 * @since 3.5.0
 	 * @param {String} html The HTML defining the document content.
 	 */
 	write: function( html ) {
-		// Don't leave any history log in IE. (http://dev.ckeditor.com/ticket/5657)
+		// Don't leave any history log in IE. (https://dev.ckeditor.com/ticket/5657)
 		this.$.open( 'text/html', 'replace' );
 
 		// Support for custom document.domain in IE.
@@ -283,8 +285,8 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype, {
 	 *
 	 * **Note:** The returned list is not a live collection (like the result of native `querySelectorAll`).
 	 *
-	 * @since 4.3
-	 * @param {String} selector
+	 * @since 4.3.0
+	 * @param {String} selector A valid [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors).
 	 * @returns {CKEDITOR.dom.nodeList}
 	 */
 	find: function( selector ) {
@@ -295,8 +297,8 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype, {
 	 * Wrapper for `querySelector`. Returns the first element within this document that matches
 	 * the specified `selector`.
 	 *
-	 * @since 4.3
-	 * @param {String} selector
+	 * @since 4.3.0
+	 * @param {String} selector A valid [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors).
 	 * @returns {CKEDITOR.dom.element}
 	 */
 	findOne: function( selector ) {
@@ -308,7 +310,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype, {
 	/**
 	 * Internet Explorer 8 only method. It returns a document fragment which has all HTML5 elements enabled.
 	 *
-	 * @since 4.3
+	 * @since 4.3.0
 	 * @private
 	 * @returns DocumentFragment
 	 */

@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'image', 'lv', {
 	alt: 'Alternatīvais teksts',
@@ -10,7 +10,7 @@ CKEDITOR.plugins.setLang( 'image', 'lv', {
 	hSpace: 'Horizontālā telpa',
 	img2Button: 'Vai vēlaties pārveidot izvēlēto attēlu uz attēla pogas?',
 	infoTab: 'Informācija par attēlu',
-	linkTab: 'Hipersaite',
+	linkTab: 'Saite',
 	lockRatio: 'Nemainīga Augstuma/Platuma attiecība',
 	menu: 'Attēla īpašības',
 	resetSize: 'Atjaunot sākotnējo izmēru',

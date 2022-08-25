@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -14,8 +14,8 @@
  * settings to make the editor produce `<p>` tags when
  * using the <kbd>Enter</kbd> key.
  *
- * Read more in the [documentation](#!/guide/dev_enterkey) and see the
- * [SDK sample](http://sdk.ckeditor.com/samples/enterkey.html).
+ * Read more in the {@glink features/enterkey documentation} and see the
+ * {@glink examples/enterkey example}.
  *
  * @readonly
  * @property {Number} [=1]
@@ -29,8 +29,8 @@ CKEDITOR.ENTER_P = 1;
  * settings to make the editor produce `<br>` tags when
  * using the <kbd>Enter</kbd> key.
  *
- * Read more in the [documentation](#!/guide/dev_enterkey) and see the
- * [SDK sample](http://sdk.ckeditor.com/samples/enterkey.html).
+ * Read more in the {@glink features/enterkey documentation} and see the
+ * {@glink examples/enterkey example}.
  *
  * @readonly
  * @property {Number} [=2]
@@ -44,8 +44,8 @@ CKEDITOR.ENTER_BR = 2;
  * settings to make the editor produce `<div>` tags when
  * using the <kbd>Enter</kbd> key.
  *
- * Read more in the [documentation](#!/guide/dev_enterkey) and see the
- * [SDK sample](http://sdk.ckeditor.com/samples/enterkey.html).
+ * Read more in the {@glink features/enterkey documentation} and see the
+ * {@glink examples/enterkey example}.
  *
  * @readonly
  * @property {Number} [=3]
@@ -59,7 +59,7 @@ CKEDITOR.ENTER_DIV = 3;
  * instance.
  *
  * Read more about setting CKEditor configuration in the
- * [documentation](#!/guide/dev_configuration).
+ * {@glink guide/dev_configuration documentation}.
  *
  * @class
  * @singleton
@@ -74,7 +74,7 @@ CKEDITOR.config = {
 	 * other custom configuration files.
 	 *
 	 * Read more about setting CKEditor configuration in the
-	 * [documentation](#!/guide/dev_configuration).
+	 * {@glink guide/dev_configuration documentation}.
 	 *
 	 *		// Load a specific configuration file.
 	 *		CKEDITOR.replace( 'myfield', { customConfig: '/myconfig.js' } );
@@ -100,8 +100,8 @@ CKEDITOR.config = {
 	 * the language specified in the {@link CKEDITOR.config#defaultLanguage}
 	 * configuration setting is used.
 	 *
-	 * Read more in the [documentation](#!/guide/dev_uilanguage) and see the
-	 * [SDK sample](http://sdk.ckeditor.com/samples/uilanguages.html).
+	 * Read more in the {@glink features/uilanguage documentation} and see the
+	 * {@glink examples/uilanguages example}.
 	 *
 	 *		// Load the German interface.
 	 *		config.language = 'de';
@@ -114,8 +114,8 @@ CKEDITOR.config = {
 	 * The language to be used if the {@link CKEDITOR.config#language}
 	 * setting is left empty and it is not possible to localize the editor to the user language.
 	 *
-	 * Read more in the [documentation](#!/guide/dev_uilanguage) and see the
-	 * [SDK sample](http://sdk.ckeditor.com/samples/uilanguages.html).
+	 * Read more in the {@glink features/uilanguage documentation} and see the
+	 * {@glink examples/uilanguages example}.
 	 *
 	 *		config.defaultLanguage = 'it';
 	 *
@@ -129,12 +129,12 @@ CKEDITOR.config = {
 	 *
 	 * * `''` (an empty string) &ndash; Indicates that content direction will be the same as either
 	 *      the editor UI direction or the page element direction depending on the editor type:
-	 *     * [Classic editor](#!/guide/dev_framed) &ndash; The same as the user interface language direction.
-	 *     * [Inline editor](#!/guide/dev_inline)&ndash; The same as the editable element text direction.
+	 *     * {@glink guide/dev_framed Classic editor} &ndash; The same as the user interface language direction.
+	 *     * {@glink guide/dev_inline Inline editor}&ndash; The same as the editable element text direction.
 	 * * `'ltr'` &ndash; Indicates a Left-To-Right text direction (like in English).
 	 * * `'rtl'` &ndash; Indicates a Right-To-Left text direction (like in Arabic).
 	 *
-	 * See the [SDK sample](http://sdk.ckeditor.com/samples/language.html).
+	 * See the {@glink examples/language example}.
 	 *
 	 * Example:
 	 *
@@ -157,8 +157,8 @@ CKEDITOR.config = {
 	 * **Note**: It is recommended to use the {@link CKEDITOR#ENTER_P} setting because of
 	 * its semantic value and correctness. The editor is optimized for this setting.
 	 *
-	 * Read more in the [documentation](#!/guide/dev_enterkey) and see the
-	 * [SDK sample](http://sdk.ckeditor.com/samples/enterkey.html).
+	 * Read more in the {@glink features/enterkey documentation} and see the
+	 * {@glink examples/enterkey example}.
 	 *
 	 *		// Not recommended.
 	 *		config.enterMode = CKEDITOR.ENTER_BR;
@@ -174,8 +174,8 @@ CKEDITOR.config = {
 	 * `<div>` element will create a new paragraph with a `<p>`
 	 * instead of a `<div>`.
 	 *
-	 * Read more in the [documentation](#!/guide/dev_enterkey) and see the
-	 * [SDK sample](http://sdk.ckeditor.com/samples/enterkey.html).
+	 * Read more in the {@glink features/enterkey documentation} and see the
+	 * {@glink examples/enterkey example}.
 	 *
 	 *		// Not recommended.
 	 *		config.forceEnterMode = true;
@@ -195,8 +195,8 @@ CKEDITOR.config = {
 	 * * {@link CKEDITOR#ENTER_BR} (2) &ndash; Lines are broken with `<br>` elements.
 	 * * {@link CKEDITOR#ENTER_DIV} (3) &ndash; New `<div>` blocks are created.
 	 *
-	 * Read more in the [documentation](#!/guide/dev_enterkey) and see the
-	 * [SDK sample](http://sdk.ckeditor.com/samples/enterkey.html).
+	 * Read more in the {@glink features/enterkey documentation} and see the
+	 * {@glink examples/enterkey example}.
 	 *
 	 * Example:
 	 *
@@ -225,7 +225,7 @@ CKEDITOR.config = {
 	 *
 	 *		config.bodyId = 'contents_id';
 	 *
-	 * @since 3.1
+	 * @since 3.1.0
 	 * @cfg
 	 */
 	bodyId: '',
@@ -243,9 +243,9 @@ CKEDITOR.config = {
 	 * copy them to the `contents.css` file that the editor loads by default or set the {@link #contentsCss}
 	 * option.
 	 *
-	 * **Note:** This setting only applies to [classic editor](#!/guide/dev_framed) (the one that uses `iframe`).
+	 * **Note:** This setting only applies to {@glink guide/dev_framed classic editor} (the one that uses `iframe`).
 	 *
-	 * @since 3.1
+	 * @since 3.1.0
 	 * @cfg
 	 */
 	bodyClass: '',
@@ -256,12 +256,12 @@ CKEDITOR.config = {
 	 * The final output will also reflect this setting, including the
 	 * `<body>` content only if this setting is disabled.
 	 *
-	 * Read more in the [documentation](#!/guide/dev_fullpage) and see the
-	 * [SDK sample](http://sdk.ckeditor.com/samples/fullpage.html).
+	 * Read more in the {@glink features/fullpage documentation} and see the
+	 * {@glink examples/fullpage example}.
 	 *
 	 *		config.fullPage = true;
 	 *
-	 * @since 3.1
+	 * @since 3.1.0
 	 * @cfg
 	 */
 	fullPage: false,
@@ -271,10 +271,10 @@ CKEDITOR.config = {
 	 * option accepts an integer (to denote a value in pixels) or any CSS-defined length unit
 	 * except percent (`%`) values which are not supported.
 	 *
-	 * **Note:** This configuration option is ignored by [inline editor](#!/guide/dev_inline).
+	 * **Note:** This configuration option is ignored by {@glink guide/dev_inline inline editor}.
 	 *
-	 * Read more in the [documentation](#!/guide/dev_size) and see the
-	 * [SDK sample](http://sdk.ckeditor.com/samples/size.html).
+	 * Read more in the {@glink features/size documentation} and see the
+	 * {@glink examples/size example}.
 	 *
 	 *		config.height = 500;		// 500 pixels.
 	 *		config.height = '25em';		// CSS length.
@@ -289,13 +289,14 @@ CKEDITOR.config = {
 	 * reflect the CSS used in the target pages where the content is to be
 	 * displayed.
 	 *
-	 * **Note:** This configuration value is ignored by [inline editor](#!/guide/dev_inline)
+	 * **Note:** This configuration value is used only in {@glink guide/dev_framed `<iframe>`-based editor }
+	 * and ignored by {@glink guide/dev_inline inline editor}
 	 * as it uses the styles that come directly from the page that CKEditor is
 	 * rendered on. It is also ignored in the {@link #fullPage full page mode} in
 	 * which the developer has full control over the page HTML code.
 	 *
-	 * Read more in the [documentation](#!/guide/dev_styles) and see the
-	 * [SDK sample](http://sdk.ckeditor.com/samples/styles.html).
+	 * Read more in the {@glink features/styles documentation} and see the
+	 * {@glink examples/styles example}.
 	 *
 	 *		config.contentsCss = '/css/mysitestyles.css';
 	 *		config.contentsCss = [ '/css/mysitestyles.css', '/css/anotherfile.css' ];
@@ -309,22 +310,22 @@ CKEDITOR.config = {
 	 * the actual plugins that are to be loaded could still be affected by two other settings:
 	 * {@link CKEDITOR.config#extraPlugins} and {@link CKEDITOR.config#removePlugins}.
 	 *
-	 * @cfg {String} [="<default list of plugins>"]
+	 * @cfg {String/String[]} [="<default list of plugins>"]
 	 */
-	plugins: 'a11ychecker,dialogui,dialog,a11yhelp,about,xml,ajax,basicstyles,bidi,blockquote,notification,button,toolbar,clipboard,codemirror,panelbutton,panel,floatpanel,colorbutton,colordialog,menu,contextmenu,copyformatting,dialogadvtab,div,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo,font,format,horizontalrule,htmlwriter,iframe,image,indent,indentblock,indentlist,justify,menubutton,language,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastefromword,pastetext,removeformat,resize,save,scayt,selectall,showblocks,showborders,smiley,sourcearea,sourcedialog,specialchar,stylescombo,tab,table,tabletools,undo,videodetector,wsc,wysiwygarea,lineutils,widgetselection,widget,html5video,markdown', // %REMOVE_LINE%
+	plugins: 'a11ychecker,dialogui,dialog,a11yhelp,about,xml,ajax,basicstyles,bidi,blockquote,notification,button,toolbar,clipboard,codemirror,panelbutton,panel,floatpanel,colorbutton,colordialog,menu,contextmenu,copyformatting,dialogadvtab,div,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo,font,format,horizontalrule,htmlwriter,iframe,image,indent,indentblock,indentlist,justify,menubutton,language,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastefromword,pastetext,removeformat,resize,save,scayt,selectall,showblocks,showborders,smiley,sourcedialog,specialchar,stylescombo,tab,table,tabletools,undo,videodetector,wsc,wysiwygarea,lineutils,widgetselection,widget,html5video,markdown', // %REMOVE_LINE%
 
 	/**
 	 * A list of additional plugins to be loaded. This setting makes it easier
 	 * to add new plugins without having to touch the {@link CKEDITOR.config#plugins} setting.
 	 *
 	 * **Note:** The most recommended way to
-	 * [add CKEditor plugins](http://docs.ckeditor.com/#!/guide/dev_plugins) is through
-	 * [CKEditor Builder](http://ckeditor.com/builder). Read more in the
-	 * [documentation](#!/guide/dev_plugins).
+	 * [add CKEditor plugins](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_plugins.html) is through
+	 * [CKEditor Builder](https://ckeditor.com/cke4/builder). Read more in the
+	 * {@glink guide/dev_plugins documentation}.
 	 *
 	 *		config.extraPlugins = 'myplugin,anotherplugin';
 	 *
-	 * @cfg
+	 * @cfg {String/String[]}
 	 */
 	extraPlugins: '',
 
@@ -339,7 +340,7 @@ CKEDITOR.config = {
 	 *
 	 *		config.removePlugins = 'elementspath,save,font';
 	 *
-	 * @cfg
+	 * @cfg {String/String[]}
 	 */
 	removePlugins: '',
 
@@ -359,14 +360,30 @@ CKEDITOR.config = {
 	/**
 	 * The editor `tabindex` value.
 	 *
-	 * Read more in the [documentation](#!/guide/dev_tabindex) and see the
-	 * [SDK sample](http://sdk.ckeditor.com/samples/tabindex.html).
+	 * Read more in the {@glink features/tabindex documentation} and see the
+	 * {@glink examples/tabindex example}.
 	 *
 	 *		config.tabIndex = 1;
 	 *
 	 * @cfg
 	 */
 	tabIndex: 0,
+
+	/**
+	 * Indicates that some of the editor features, like alignment and text
+	 * direction, should use the "computed value" of the feature to indicate its
+	 * on/off state instead of using the "real value".
+	 *
+	 * If enabled in a Left-To-Right written document, the "Left Justify"
+	 * alignment button will be shown as active, even if the alignment style is not
+	 * explicitly applied to the current paragraph in the editor.
+	 *
+	 *		config.useComputedState = false;
+	 *
+	 * @since 3.4.0
+	 * @cfg {Boolean} [useComputedState=true]
+	 */
+	useComputedState: true,
 
 	/**
 	 * The editor UI outer width. This configuration option accepts an integer
@@ -376,10 +393,10 @@ CKEDITOR.config = {
 	 * one will set the outer width of the entire editor UI, not for the
 	 * editing area only.
 	 *
-	 * **Note:** This configuration option is ignored by [inline editor](#!/guide/dev_inline).
+	 * **Note:** This configuration option is ignored by {@glink guide/dev_inline inline editor}.
 	 *
-	 * Read more in the [documentation](#!/guide/dev_size) and see the
-	 * [SDK sample](http://sdk.ckeditor.com/samples/size.html).
+	 * Read more in the {@glink features/size documentation} and see the
+	 * {@glink examples/size example}.
 	 *
 	 *		config.width = 850;		// 850 pixels wide.
 	 *		config.width = '75%';	// CSS unit.
@@ -418,26 +435,11 @@ CKEDITOR.config = {
 };
 
 /**
- * Indicates that some of the editor features, like alignment and text
- * direction, should use the "computed value" of the feature to indicate its
- * on/off state instead of using the "real value".
- *
- * If enabled in a Left-To-Right written document, the "Left Justify"
- * alignment button will be shown as active, even if the alignment style is not
- * explicitly applied to the current paragraph in the editor.
- *
- *		config.useComputedState = false;
- *
- * @since 3.4
- * @cfg {Boolean} [useComputedState=true]
- */
-
-/**
  * The base user interface color to be used by the editor. Not all skins are
- * [compatible with this setting](#!/guide/skin_sdk_chameleon).
+ * {@glink guide/skin_sdk_chameleon compatible with this setting}.
  *
- * Read more in the [documentation](#!/guide/dev_uicolor) and see the
- * [SDK sample](http://sdk.ckeditor.com/samples/uicolor.html).
+ * Read more in the {@glink features/uicolor documentation} and see the
+ * {@glink examples/uicolor example}.
  *
  *		// Using a color code.
  *		config.uiColor = '#AADC6E';

@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'lv', {
 	acccessKey: 'Pieejas taustiņš',
@@ -19,23 +19,25 @@ CKEDITOR.plugins.setLang( 'link', 'lv', {
 	anchorName: 'Pēc iezīmes nosaukuma',
 	charset: 'Pievienotā resursa kodējums',
 	cssClasses: 'Stilu saraksta klases',
-	download: 'Force Download', // MISSING
-	displayText: 'Display Text', // MISSING
+	download: 'Piespiedu ielāde',
+	displayText: 'Attēlot tekstu',
 	emailAddress: 'E-pasta adrese',
-	emailBody: 'Ziņas saturs',
-	emailSubject: 'Ziņas tēma',
+	emailBody: 'Ziņojuma pamatteksts',
+	emailSubject: 'Ziņojuma tēma',
 	id: 'ID',
-	info: 'Hipersaites informācija',
+	info: 'Saites informācija',
 	langCode: 'Valodas kods',
 	langDir: 'Valodas lasīšanas virziens',
 	langDirLTR: 'No kreisās uz labo (LTR)',
 	langDirRTL: 'No labās uz kreiso (RTL)',
-	menu: 'Labot hipersaiti',
+	menu: 'Rediģēt saiti',
 	name: 'Nosaukums',
 	noAnchors: '(Šajā dokumentā nav iezīmju)',
-	noEmail: 'Lūdzu norādi e-pasta adresi',
-	noUrl: 'Lūdzu norādi hipersaiti',
+	noEmail: 'Lūdzu, ievadiet e-pasta adresi',
+	noUrl: 'Lūdzu, ievadiet saites URL',
+	noTel: 'Lūdzu, ievadiet tālruņa numuru',
 	other: '<cits>',
+	phoneNumber: 'Tālruņa numurs',
 	popupDependent: 'Atkarīgs (Netscape)',
 	popupFeatures: 'Uznirstošā loga nosaukums īpašības',
 	popupFullScreen: 'Pilnā ekrānā (IE)',
@@ -56,12 +58,13 @@ CKEDITOR.plugins.setLang( 'link', 'lv', {
 	targetFrameName: 'Mērķa ietvara nosaukums',
 	targetPopup: '<uznirstošā logā>',
 	targetPopupName: 'Uznirstošā loga nosaukums',
-	title: 'Hipersaite',
+	title: 'Saite',
 	toAnchor: 'Iezīme šajā lapā',
 	toEmail: 'E-pasts',
 	toUrl: 'Adrese',
-	toolbar: 'Ievietot/Labot hipersaiti',
-	type: 'Hipersaites tips',
-	unlink: 'Noņemt hipersaiti',
+	toPhone: 'Tālrunis',
+	toolbar: 'Saite',
+	type: 'Saites tips',
+	unlink: 'Atsaistīt',
 	upload: 'Augšupielādēt'
 } );

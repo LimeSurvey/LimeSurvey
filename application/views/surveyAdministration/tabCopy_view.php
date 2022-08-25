@@ -61,7 +61,7 @@
                 <div class="ls-flex-column col-md-4">
                     <!-- Convert resource links -->
                     <div class="form-group">
-                        <label class=" control-label" for='copysurveytranslinksfields'><?php echo  eT("Convert resource links and expression fields?"); ?> </label>
+                        <label class=" control-label" for='copysurveytranslinksfields'><?php echo  eT("Copy survey resource files and adapt links"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveytranslinksfields',
@@ -75,7 +75,7 @@
 
                     <!-- Exclude quotas -->
                     <div class="form-group">
-                        <label class=" control-label" for='copysurveyexcludequotas'><?php echo  eT("Exclude quotas?"); ?> </label>
+                        <label class=" control-label" for='copysurveyexcludequotas'><?php echo  eT("Exclude quotas"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyexcludequotas',
@@ -89,7 +89,7 @@
 
                     <!-- Exclude survey permissions -->
                     <div class="form-group">
-                        <label class=" control-label" for='copysurveyexcludepermissions'><?php echo  eT("Exclude survey permissions?"); ?> </label>
+                        <label class=" control-label" for='copysurveyexcludepermissions'><?php echo  eT("Exclude survey permissions"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyexcludepermissions',
@@ -103,7 +103,7 @@
 
                     <!-- Exclude answers -->
                     <div class="form-group">
-                        <label class=" control-label" for='copysurveyexcludeanswers'><?php echo  eT("Exclude answers?"); ?> </label>
+                        <label class=" control-label" for='copysurveyexcludeanswers'><?php echo  eT("Exclude answers"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyexcludeanswers',
@@ -117,7 +117,7 @@
 
                     <!-- Reset conditions/relevance -->
                     <div class="form-group">
-                        <label class=" control-label" for='copysurveyresetconditions'><?php echo  eT("Reset conditions?"); ?> </label>
+                        <label class=" control-label" for='copysurveyresetconditions'><?php echo  eT("Reset conditions"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyresetconditions',
@@ -131,7 +131,7 @@
 
                     <!-- Reset start/end date/time -->
                     <div class="form-group">
-                        <label class=" control-label" for='copysurveyresetstartenddate'><?php echo  eT("Reset start/end date/time?"); ?> </label>
+                        <label class=" control-label" for='copysurveyresetstartenddate'><?php echo  eT("Reset start/end date/time"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyresetstartenddate',
@@ -144,7 +144,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class=" control-label" for='copysurveyresetresponsestartid'><?php echo  eT("Reset response start ID?"); ?> </label>
+                        <label class=" control-label" for='copysurveyresetresponsestartid'><?php echo  eT("Reset response start ID"); ?> </label>
                         <div class="">
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => 'copysurveyresetresponsestartid',

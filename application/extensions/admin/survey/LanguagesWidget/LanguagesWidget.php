@@ -17,7 +17,7 @@ class LanguagesWidget extends WhSelect2
         $this->pluginOptions['dataAdapter'] = new CJavaScriptExpression('$.fn.select2.amd.require("select2/data/languagesWidgetDataAdapter")');
         $this->pluginOptions['messages'] = [
             'cannotRemoveBaseLanguage' => gT("You cannot delete the base language. Please select a different language as base language, first."),
-            'removeLanguageConfirmation' => gT("Are you sure, you want to delete this language? This will remove all survey content with this language permanently."),
+            'removeLanguageConfirmation' => gT("Are you sure, you want to delete this language? This will remove all survey content of this language permanently."),
             'delete' => gT("Delete"),
             'cancel' => gT("Cancel"),
         ];

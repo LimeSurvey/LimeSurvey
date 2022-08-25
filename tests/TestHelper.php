@@ -39,6 +39,19 @@ class TestHelper extends TestCase
     }
 
     /**
+     * Reset existing cache (file by default)
+     */
+    public function resetCache()
+    {
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
+        if (method_exists(Yii::app()->cache, 'gc')) {
+            Yii::app()->cache->gc();
+        }
+    }
+
+    /**
      * @param string $title
      * @param int $surveyId
      * @return array
@@ -446,6 +459,9 @@ class TestHelper extends TestCase
                 // This two lines are necessary to avoid issue https://github.com/SeleniumHQ/docker-selenium/issues/388.
                 $profile->setPreference('browser.tabs.remote.autostart', false);
                 $profile->setPreference('browser.tabs.remote.autostart.2', false);
+
+                $capabilities->setCapability('acceptSslCerts', true);
+                $capabilities->setCapability('acceptInsecureCerts', true);
 
                 $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);

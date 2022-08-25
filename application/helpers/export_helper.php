@@ -131,13 +131,13 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
         $oResponse = Response::model($iSurveyID);
         $oResponse->setAttributes($row, false);
         $oResponse->decrypt();
-        $row = $oResponse->attributes;
+        $row = array_merge($row, $oResponse->attributes);
 
         if ($survey->hasTokensTable) {
             $oToken = Token::model($iSurveyID);
             $oToken->setAttributes($row, false);
             $oToken->decrypt();
-            $row = array_merge($oToken->attributes, $oResponse->attributes);
+            $row = array_merge($row, $oToken->attributes);
         }
 
         $rownr++;
@@ -2367,8 +2367,8 @@ function tokensExport($iSurveyID)
         }
 
         $tokenoutput .= '"' . trim($brow['tid']) . '",';
-        $tokenoutput .= '"' . trim($brow['firstname']) . '",';
-        $tokenoutput .= '"' . trim($brow['lastname']) . '",';
+        $tokenoutput .= '"' . str_replace('"', '""', trim($brow['firstname'])) . '",';
+        $tokenoutput .= '"' . str_replace('"', '""', trim($brow['lastname'])) . '",';
         $tokenoutput .= '"' . trim($brow['email']) . '",';
         $tokenoutput .= '"' . trim($brow['emailstatus']) . '",';
         $tokenoutput .= '"' . trim($brow['token']) . '",';
@@ -2384,10 +2384,11 @@ function tokensExport($iSurveyID)
             $tokenoutput .= '"' . trim($brow['started']) . '",';
         }
         foreach ($attrfieldnames as $attr_name) {
-            $tokenoutput .= '"' . trim($brow[$attr_name]) . '",';
+            $tokenoutput .= '"' . str_replace('"', '""', trim($brow[$attr_name])) . '",';
         }
         $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
         $tokenoutput .= "\n";
+        // @todo: Use proper fputcsv, instead
         echo $tokenoutput;
         $tokenoutput = '';
 
@@ -2554,6 +2555,7 @@ function tsvSurveyExport($surveyid)
         'other',
         'default',
         'same_default',
+        'same_script',
     );
 
     $survey = Survey::model()->findByPk($surveyid);
@@ -2889,6 +2891,7 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['encrypted'] = !empty($question['encrypted']) ? $question['encrypted'] : 'N';
                         $tsv_output['other'] = $question['other'];
                         $tsv_output['same_default'] = $question['same_default'];
+                        $tsv_output['same_script'] = $question['same_script'];
 
                         if (array_key_exists($language, $defaultvalues) && array_key_exists($qid, $defaultvalues[$language])) {
                             $tsv_output['default'] = $defaultvalues[$language][$qid];
@@ -2953,6 +2956,7 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['mandatory'] = !empty($subquestion['mandatory']) ? $subquestion['mandatory'] : '';
                                 $tsv_output['other'] = $subquestion['other'];
                                 $tsv_output['same_default'] = $subquestion['same_default'];
+                                $tsv_output['same_script'] = $subquestion['same_script'];
 
                                 if (array_key_exists($language, $defaultvalues) && array_key_exists($subquestion['qid'], $defaultvalues[$language])) {
                                     $tsv_output['default'] = $defaultvalues[$language][$subquestion['qid']];

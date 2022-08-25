@@ -91,7 +91,11 @@ class QuestionAttributeFetcher
         $questionAttributeHelper = new QuestionAttributeHelper();
 
         // Get attribute values
-        $attributeValues = \QuestionAttribute::model()->getAttributesAsArrayFromDB($this->question->qid);
+        if (!empty($this->question->qid)) {
+            $attributeValues = \QuestionAttribute::model()->getAttributesAsArrayFromDB($this->question->qid);
+        } else {
+            $attributeValues = $questionAttributeHelper->getUserDefaultsForQuestionType($this->question->type);
+        }
 
         // Fill attributes with values
         $languages = is_null($language) ? $survey->allLanguages : [$language];

@@ -62,71 +62,9 @@ class Save
      */
     public $aSaveErrors = array();
     /**
-     * Show the save form
-     * @param integer $iSurveyId
-     *
-     * @return void
+     * @var null|string[] $saveData : data when save try to submit save form
      */
-    function showsaveform($iSurveyId)
-    {
-        //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
-        //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
-        $thisstep    = isset($_SESSION['survey_' . $iSurveyId]['step']) ? $_SESSION['survey_' . $iSurveyId]['step'] : 0;
-        $clienttoken = isset($_SESSION['survey_' . $iSurveyId]['token']) ? $_SESSION['survey_' . $iSurveyId]['token'] : '';
-
-        $aData = array(
-            'surveyid' => $iSurveyId,
-            'clienttoken' => $clienttoken, // send in caller, call only one time
-        );
-
-        $oSurvey   = Survey::model()->findByPk($iSurveyId);
-        $sTemplate = $oSurvey->template;
-        $oTemplate = Template::model()->getInstance($sTemplate);
-
-        $aReplacements['SAVEHEADING'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/heading", array(), true);
-        $aReplacements['SAVEMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/message", array(), true);
-
-        if ($oSurvey->anonymized == "Y") {
-            $aReplacements['SAVEALERT'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/anonymized", array(), true);
-        }
-
-        if (!empty($this->aSaveErrors)) {
-            $aReplacements['SAVEERROR'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/error", array('aSaveErrors' => $this->aSaveErrors), true);
-        } else {
-                $aReplacements['SAVEERROR'] = "";
-        }
-
-        /* Construction of the form */
-        if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)) {
-            $captcha = Yii::app()->getController()->createUrl('/verification/image', array('sid' => $iSurveyId));
-        } else {
-            $captcha = null;
-        }
-
-        $saveForm  = CHtml::beginForm(array("/survey/index", "sid" => $iSurveyId), 'post', array('id' => 'form-save', 'class' => 'ls-form'));
-        $saveForm .= CHtml::hiddenField('savesubmit', 'save');
-        $saveForm .= App()->getController()->renderPartial("/survey/frontpage/saveForm/form", array('captcha' => $captcha), true);
-
-        if ($clienttoken) {
-            $saveForm .= CHtml::hiddenField('token', $clienttoken);
-        }
-
-        $saveForm .= CHtml::endForm();
-
-        $aReplacements['SAVEFORM'] = $saveForm;
-        $content                   = templatereplace(file_get_contents($oTemplate->pstplPath . "save.pstpl"), $aReplacements, $aData);
-
-        App()->getController()->layout           = "survey";
-        App()->getController()->sTemplate        = $sTemplate;
-        App()->getController()->aGlobalData      = $aData;
-        App()->getController()->aReplacementData = $aReplacements;
-
-        App()->getController()->render("/survey/system/display", array(
-            'content' => $content,
-        ));
-        Yii::app()->end();
-    }
-
+    public $saveData = null;
 
     function getSaveFormDatas($iSurveyId)
     {
@@ -139,9 +77,8 @@ class Save
         $sTemplate = $oSurvey->template;
         $oTemplate = Template::model()->getInstance($sTemplate);
 
-
         $aSaveForm['aErrors'] = $this->aSaveErrors;
-
+        $this->launchSaveFormEvent($iSurveyId);
         /* Construction of the form */
         $aSaveForm['aCaptcha']['show'] = false;
         if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)) {
@@ -182,26 +119,29 @@ class Save
 
         $aSaveForm  = array();
         $timeadjust = getGlobalSetting('timeadjust');
+        $this->saveData = array(
+            'identifier'  => App()->request->getPost('savename'),
+            'email' => App()->request->getPost('saveemail'),
+            'clearpassword' => App()->request->getPost('savepass'),
+            'clearpasswordconfirm' => App()->request->getPost('savepass2'),
+        );
 
         // Check that the required fields have been completed.
         $errormsg = '';
-        if (!Yii::app()->request->getPost('savename')) {
+        if (empty($this->saveData['identifier'])) {
             $this->aSaveErrors[] = gT("You must supply a name for this saved session.");
         }
-        if (!Yii::app()->request->getPost('savepass')) {
+        if (empty($this->saveData['clearpassword'])) {
             $this->aSaveErrors[] = gT("You must supply a password for this saved session.");
         }
-        if (Yii::app()->request->getPost('savepass') != Yii::app()->request->getPost('savepass2')) {
+        if ($this->saveData['clearpassword'] != $this->saveData['clearpasswordconfirm']) {
             $this->aSaveErrors[] = gT("Your passwords do not match.");
         }
-
-        $saveName  = Yii::app()->request->getPost('savename');
-        $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $saveName));
-
+        $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $this->saveData['identifier']));
         // Check name
         if (
-            strpos($saveName, '/') !== false || strpos($saveName, '/') !== false || strpos($saveName, '&') !== false || strpos($saveName, '&') !== false
-            || strpos($saveName, '\\') !== false || strpos($saveName, '\\') !== false
+            strpos($this->saveData['identifier'], '/') !== false || strpos($this->saveData['identifier'], '/') !== false || strpos($this->saveData['identifier'], '&') !== false || strpos($this->saveData['identifier'], '&') !== false
+            || strpos($this->saveData['identifier'], '\\') !== false || strpos($this->saveData['identifier'], '\\') !== false
         ) {
             $this->aSaveErrors[] = gT("You may not use slashes or ampersands in your name or password.");
         } elseif (!empty($duplicate) && $duplicate->count() > 0) {
@@ -218,10 +158,9 @@ class Save
                 $this->aSaveErrors[] = gT("The answer to the security question is incorrect.");
             }
         }
-
+        $this->launchSaveFormEvent($surveyid, 'validate');
         if (empty($this->aSaveErrors)) {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
-
             if (!isset($_SESSION['survey_' . $surveyid]['srid'])) {
                 $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                 $sdata = array(
@@ -232,7 +171,7 @@ class Save
                 );
 
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)) {
-                    $srid                                  = getLastInsertID($survey->responsesTableName);
+                    $srid = getLastInsertID($survey->responsesTableName);
                     $_SESSION['survey_' . $surveyid]['srid'] = $srid;
                 } else {
                     // TODO: $this->aSaveErrors
@@ -244,9 +183,9 @@ class Save
             $saved_control                 = new SavedControl();
             $saved_control->sid            = $surveyid;
             $saved_control->srid           = $_SESSION['survey_' . $surveyid]['srid'];
-            $saved_control->identifier     = $_POST['savename']; // Binding does escape, so no quoting/escaping necessary
-            $saved_control->access_code    = password_hash($_POST['savepass'], PASSWORD_DEFAULT);
-            $saved_control->email          = $_POST['saveemail'];
+            $saved_control->identifier     = $this->saveData['identifier'];
+            $saved_control->access_code    = password_hash($this->saveData['clearpassword'], PASSWORD_DEFAULT);
+            $saved_control->email          = $this->saveData['email'];
             $saved_control->ip             = ($thissurvey['ipaddr'] == 'Y') ? getIPAddress() : '';
             $saved_control->saved_thisstep = $thisstep;
             $saved_control->status         = 'S';
@@ -259,24 +198,24 @@ class Save
             }
 
             if ($saved_control->save()) {
-                $scid                                  = getLastInsertID('{{saved_control}}');
+                $scid = getLastInsertID('{{saved_control}}');
                 $_SESSION['survey_' . $surveyid]['scid'] = $scid;
             } else {
                 // TODO: $this->aSaveErrors
                 $this->aSaveErrors[] = "Unable to insert record into saved_control table.";
             }
 
-            $_SESSION['survey_' . $surveyid]['holdname'] = $_POST['savename']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
-            $_SESSION['survey_' . $surveyid]['holdpass'] = $_POST['savepass']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
+            $_SESSION['survey_' . $surveyid]['holdname'] = $this->saveData['identifier']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
+            $_SESSION['survey_' . $surveyid]['holdpass'] = $this->saveData['clearpassword']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
 
             //Email if needed
-            if (Yii::app()->getRequest()->getPost('saveemail') && validateEmailAddress(Yii::app()->getRequest()->getPost('saveemail'))) {
+            if ($this->saveData['email'] && validateEmailAddress($this->saveData['email'])) {
                 $mailer = new \LimeMailer();
                 $mailer->setSurvey($thissurvey['sid']);
                 $mailer->emailType = 'savesurveydetails';
                 $mailer->isHTML(false);
                 $mailer->Subject = gT("Saved Survey Details") . " - " . $thissurvey['name'];
-                $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
+                $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please make sure to remember your password - we cannot retrieve it for you.");
                 $message .= "\n\n" . $thissurvey['name'] . "\n\n";
                 $message .= gT("Name") . ": " . Yii::app()->getRequest()->getPost('savename') . "\n";
                 $message .= gT("Password") . ": ***************\n\n";
@@ -287,10 +226,8 @@ class Save
                 }
                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload", $aParams);
                 $mailer->Body = $message;
-                $mailer->addAddress(Yii::app()->getRequest()->getPost('saveemail'));
-                if ($mailer->sendMessage()) {
-                    $emailsent = "Y";
-                } else {
+                $mailer->addAddress($this->saveData['email']);
+                if (!$mailer->sendMessage()) {
                     $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
                     if (Permission::model()->hasSurveyPermission($thissurvey['sid'], 'surveysettings')) {
                         $errormsg .= sprintf(gT("Email error message %s"), $mailer->getError());
@@ -303,11 +240,8 @@ class Save
             return array('success' => true, 'message' => gT('Your survey was successfully saved.'));
         }
 
-        if (!empty($this->aSaveErrors)) {
-            $aSaveForm['success']     = false;
-            $aSaveForm['aSaveErrors'] = $this->aSaveErrors;
-        }
-
+        $aSaveForm['success']     = false;
+        $aSaveForm['aSaveErrors'] = $this->aSaveErrors;
         return $aSaveForm;
     }
 
@@ -350,5 +284,22 @@ class Save
             . " WHERE id = " . $_SESSION['survey_' . $thissurvey['sid']]['srid'];
         }
         Yii::app()->db->createCommand($query)->execute();
+    }
+
+    /**
+     * Launch the event SaveForm
+     * @param $state
+     * @return void
+     */
+    private function launchSaveFormEvent($surveyid, $state = 'show')
+    {
+        $saveSurveyEvent = new PluginEvent('saveSurveyForm');
+        $saveSurveyEvent->set('surveyid', $surveyid);
+        $saveSurveyEvent->set('state', $state);
+        $saveSurveyEvent->set('aSaveErrors', $this->aSaveErrors);
+        $saveSurveyEvent->set('saveData', $this->saveData);
+        Yii::app()->getPluginManager()->dispatchEvent($saveSurveyEvent);
+        $this->aSaveErrors = $saveSurveyEvent->get('aSaveErrors');
+        $this->saveData = $saveSurveyEvent->get('saveData');
     }
 }

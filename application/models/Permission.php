@@ -165,12 +165,12 @@ class Permission extends LSActiveRecord
          * Using $event->append('globalBasePermissions', $newGlobalBasePermissions);
          * $newGlobalBasePermissions=[
          *  permissionName=>[
-         *       'create' : create (optionnal)
-         *       'read' : read (optionnal)
-         *       'update' : update (optionnal)
-         *       'delete' : delete (optionnal)
-         *       'import' : import (optionnal)
-         *       'export' : export (optionnal)
+         *       'create' : create (optional)
+         *       'read' : read (optional)
+         *       'update' : update (optional)
+         *       'delete' : delete (optional)
+         *       'import' : import (optional)
+         *       'export' : export (optional)
          *       'title' : translated title/name
          *       'description' : translated description
          *       'img': icon name class
@@ -872,7 +872,7 @@ class Permission extends LSActiveRecord
      * @param $aTemplatePermissions array -- permissions to be set
      * @return array
      */
-    public static function editThemePermissionsUser($userId, $aTemplatePermissions)
+    public static function editThemePermissionsUser(int $userId, $aTemplatePermissions)
     {
         $results = [];
         foreach ($aTemplatePermissions as $key => $value) {
@@ -880,7 +880,7 @@ class Permission extends LSActiveRecord
             if (empty($oPermission)) {
                 $oPermission = new Permission();
                 $oPermission->uid = $userId;
-                $oPermission->permission = $key;
+                $oPermission->permission = $key; // maybe this one should be checked before
                 $oPermission->entity = 'template';
                 $oPermission->entity_id = 0;
             }

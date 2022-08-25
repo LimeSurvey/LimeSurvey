@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -17,12 +17,13 @@
 		icons: 'image', // %REMOVE_LINE_CORE%
 		hidpi: true, // %REMOVE_LINE_CORE%
 		init: function( editor ) {
-			// Abort when Image2 is to be loaded since both plugins
-			// share the same button, command, etc. names (http://dev.ckeditor.com/ticket/11222).
-			if ( editor.plugins.image2 )
-				return;
-
 			var pluginName = 'image';
+
+			// Abort when Easyimage or Image2 are to be loaded since this plugins
+			// share the same functionality (#1791).
+			if ( editor.plugins.detectConflict( pluginName, [ 'easyimage', 'image2' ] ) ) {
+				return;
+			}
 
 			// Register the dialog.
 			CKEDITOR.dialog.add( pluginName, this.path + 'dialogs/image.js' );
@@ -78,11 +79,11 @@
 		},
 		afterInit: function( editor ) {
 			// Abort when Image2 is to be loaded since both plugins
-			// share the same button, command, etc. names (http://dev.ckeditor.com/ticket/11222).
+			// share the same button, command, etc. names (https://dev.ckeditor.com/ticket/11222).
 			if ( editor.plugins.image2 )
 				return;
 
-			// Customize the behavior of the alignment commands. (http://dev.ckeditor.com/ticket/7430)
+			// Customize the behavior of the alignment commands. (https://dev.ckeditor.com/ticket/7430)
 			setupAlignCommand( 'left' );
 			setupAlignCommand( 'right' );
 			setupAlignCommand( 'center' );
@@ -158,7 +159,7 @@
  *
  *		config.image_prefillDimensions = false;
  *
- * @since 4.5
+ * @since 4.5.0
  * @cfg {Boolean} [image_prefillDimensions=true]
  * @member CKEDITOR.config
  */

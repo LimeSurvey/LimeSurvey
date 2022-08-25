@@ -21,8 +21,25 @@ class RenderListDropdown extends QuestionBaseRenderer
     protected $othertext;
     protected $optCategorySeparator;
     protected $bPrefix;
+
+    /** @var boolean indicates if the question has the 'Other' option enabled */
+    protected $hasOther = false;
+
+    /** @var int the position where the 'Other' option should be placed. Possible values: 0 (Before no answer), 1 (At beginning), 2 (At end), 3 (After specific option)*/
+    protected $otherPosition;
+
+    /** @var string the code of the answer after which the 'Other' option should be placed (if $otherPosition == 3) */
+    protected $answerBeforeOther;
+
+    /** @var boolean indicates if 'Other' option has already been rendered */
+    protected $otherRendered = false;
     
     private $iRowNum = 0;
+
+    const OTHER_POS_BEFORE_NOANSWER = 'default';
+    const OTHER_POS_START = 'beginning';
+    const OTHER_POS_END = 'end';
+    const OTHER_POS_AFTER_OPTION = 'specific';
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
@@ -32,12 +49,19 @@ class RenderListDropdown extends QuestionBaseRenderer
         $this->optCategorySeparator   = @$this->setDefaultIfEmpty($this->getQuestionAttribute('category_separator'), false);
         $this->sCoreClass             = "ls-answers answer-item dropdown-item";
         $this->bPrefix                = @(sanitize_int($this->getQuestionAttribute('dropdown_prefix')) == 1);
+        $this->hasOther               = $this->oQuestion->other == 'Y';
+        $this->otherPosition          = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_position'), self::OTHER_POS_BEFORE_NOANSWER);
+        $this->answerBeforeOther = '';
+        if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION) {
+            $this->answerBeforeOther = $this->getQuestionAttribute('other_position_code');
+        }
         $this->setAnsweroptions();
     }
 
     public function getRows()
     {
         $sOptions = '';
+        $this->otherRendered = false;
 
         // If no answer previously selected
         if (!$this->mSessionValue || $this->mSessionValue === '') {
@@ -49,28 +73,45 @@ class RenderListDropdown extends QuestionBaseRenderer
                 ), true);
         }
 
-        if ($this->optCategorySeparator !== false) {
-            return $this->getOptGroupRows($sOptions);
+        if ($this->hasOther && $this->otherPosition == self::OTHER_POS_START) {
+            $sOptions .= $this->getOtherOption();
+            $this->otherRendered = true;
         }
 
-        foreach ($this->aAnswerOptions[0] as $oAnsweroption) {
-            $opt_select = $this->mSessionValue == $oAnsweroption->code ? SELECTED : '';
+        if ($this->optCategorySeparator !== false) {
+            $sOptions .= $this->getOptGroupRows($sOptions);
+        } else {
+            foreach ($this->aAnswerOptions[0] as $oAnsweroption) {
+                $opt_select = $this->mSessionValue == $oAnsweroption->code ? SELECTED : '';
 
-            $_prefix = $this->bPrefix ? ++$this->iRowNum . ') ' : '';
-            
-            $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
-                'name' => $this->sSGQA,
-                'value' => $oAnsweroption->code,
-                'opt_select' => $opt_select,
-                'answer' => $_prefix . $oAnsweroption->answerl10ns[$this->sLanguage]->answer,
-                ), true);
+                $_prefix = $this->bPrefix ? ++$this->iRowNum . ') ' : '';
+                
+                $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
+                    'name' => $this->sSGQA,
+                    'value' => $oAnsweroption->code,
+                    'opt_select' => $opt_select,
+                    'answer' => $_prefix . $oAnsweroption->answerl10ns[$this->sLanguage]->answer,
+                    ), true);
+
+                if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $oAnsweroption->code) {
+                    $sOptions .= $this->getOtherOption();
+                    $this->otherRendered = true;
+                }
+            }
+
+            $sOptions .= $this->getNoAnswerOption();
+        }
+
+        if ($this->hasOther && !$this->otherRendered) {
+            $sOptions .= $this->getOtherOption();
         }
 
         return $sOptions;
     }
 
-    public function getOptGroupRows($sOptions)
+    public function getOptGroupRows()
     {
+        $sOptions = '';
         $defaultopts = [];
         $optgroups = [];
 
@@ -95,6 +136,10 @@ class RenderListDropdown extends QuestionBaseRenderer
                     'opt_select' => ($this->mSessionValue == $optionarray['code'] ? SELECTED : ''),
                     'answer' => flattenText($optionarray['answer'])
                     ), true);
+                if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $optionarray['code']) {
+                    $sOptGroupOptions .= $this->getOtherOption();
+                    $this->otherRendered = true;
+                }
             }
 
             $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/optgroup', array(
@@ -110,6 +155,10 @@ class RenderListDropdown extends QuestionBaseRenderer
                 'opt_select' => ($this->mSessionValue == $optionarray['code'] ? SELECTED : ''),
                 'answer' => flattenText($optionarray['answer'])
                 ), true);
+            if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_OPTION && $this->answerBeforeOther == $optionarray['code']) {
+                $sOptions .= $this->getOtherOption();
+                $this->otherRendered = true;
+            }
         }
         return $sOptions;
     }
@@ -141,9 +190,15 @@ class RenderListDropdown extends QuestionBaseRenderer
 
     public function getNoAnswerOption()
     {
+        /** @var string the HTML for the options */
+        $options = '';
         if (!(is_null($this->mSessionValue) || $this->mSessionValue === "") && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
+            if ($this->hasOther && $this->otherPosition == self::OTHER_POS_BEFORE_NOANSWER) {
+                $options .= $this->getOtherOption();
+                $this->otherRendered = true;
+            }
             $_prefix = $this->bPrefix ? ++$this->iRowNum . ') ' : '';
-            return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
+            $options .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
                 'name' => $this->sSGQA,
                 'classes' => 'noanswer-item',
                 'value' => '',
@@ -151,7 +206,7 @@ class RenderListDropdown extends QuestionBaseRenderer
                 'answer' => $_prefix . gT('No answer')
             ), true);
         }
-        return '';
+        return $options;
     }
 
     public function getDropdownSize()
@@ -192,14 +247,10 @@ class RenderListDropdown extends QuestionBaseRenderer
         $this->sCoreClass = $this->sCoreClass . ' ' . $sCoreClasses;
         
         $sOptions = $this->getRows();
-        if ($this->oQuestion->other == 'Y') {
+        if ($this->hasOther == 'Y') {
             $sOther = $this->getOtherInput();
-            ;
-            $sOptions .= $this->getOtherOption();
             $inputnames[] = $this->sSGQA . 'other';
         }
-        
-        $sOptions .= $this->getNoAnswerOption();
 
         $answer =  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'sOptions'               => $sOptions,

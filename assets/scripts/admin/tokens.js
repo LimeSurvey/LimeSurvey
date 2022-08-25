@@ -38,19 +38,22 @@ $.fn.YesNoDate = function(options)
             {
                 // Show date
                 $elDateContainer.show();
-                $elHiddenInput.attr('value', moment().format($elDate.data('date-format')));
+                // If there is a date currently set in the date picker, assign that to the hidden input.
+                // Otherwise, use the current date.
+                const currentDate = $elDate.data('DateTimePicker').date() ?? moment();
+                $elHiddenInput.attr('value', currentDate.format($elDate.data('date-format')));
             }
             else
             {
                 // Hide date, set hidden input to "N"
                 $elDateContainer.hide();
-                $elHiddenInput.attr('value', 'N');
+                $elHiddenInput.val('N');
             }
         });
 
         // When user change date
         $elDate.on('dp.change', function(e){
-            $elHiddenInput.attr('value', e.date.format($elDate.data('date-format')));
+            $elHiddenInput.val(e.date.format($elDate.data('date-format')));
         })
     };
     return that;
@@ -209,6 +212,22 @@ function validateAdditionalAttributes() {
 }
 
 /**
+ * Validates some form fields checking that at least one is not empty when creating a participant.
+ * @returns {boolean} false if all of the checked fields are empty and the subaction is inserttoken.
+ */
+function validateNotEmptyTokenForm() {
+    if ($('#edittoken').find('[name="subaction"]').val() != 'inserttoken') {
+        return true;
+    }
+    var isFormEmpty = $('#email').val() == '' && $('#firstname').val() == '' && $('#lastname').val() == '';
+    if (isFormEmpty) {
+        $('#emptyTokenConfirmationModal').modal('show');
+        return false;
+    }
+    return true;
+}
+
+/**
  * Scroll the pager and the footer when scrolling horizontally
  */
 $(document).on('ready  pjax:scriptcomplete', function(){
@@ -216,14 +235,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     if($('#sent-yes-no-date-container').length > 0)
     {
         $('#general').stickLabelOnLeft();
-
-        $('.yes-no-date-container').each(function(i,el){
-            $(this).YesNoDate();
-        });
-
-        $('.yes-no-container').each(function(i,el){
-            $(this).YesNo();
-        });
 
         $('#validfrom').datetimepicker({locale: $('#validfrom').data('locale')});
         $('#validuntil').datetimepicker({locale: $('#validuntil').data('locale')});
@@ -233,6 +244,29 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             $prev.data("DateTimePicker").show();
         });
     }
+
+    var modal = $('#massive-actions-modal-edit-0');
+    if (modal.length) {
+        modal.on('shown.bs.modal', function () {
+            $('.yes-no-date-container').each(function(i,el){
+                $(this).YesNoDate().onReadyMethod();
+            });
+
+            $('.yes-no-container').each(function(i,el){
+                $(this).YesNo().onReadyMethod();
+            });
+        });
+    }
+
+    $(document).on('actions-updated', function() {
+        $('.yes-no-date-container').each(function(i,el){
+            $(this).YesNoDate().onReadyMethod();
+        });
+
+        $('.yes-no-container').each(function(i,el){
+            $(this).YesNo().onReadyMethod();
+        });
+    });
 
     var initialScrollValue = $('.scrolling-wrapper').scrollLeft();
     var useRtl = $('input[name="rtl"]').val() === '1';
@@ -282,7 +316,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
     $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', startEditToken);
 
-    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event){
+    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
+        var eventParams = params || {};
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();
@@ -290,6 +325,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         }
         if (!validateAdditionalAttributes()) {
             event.preventDefault();
+            return false;
+        }
+        if (!eventParams.confirm_empty_save && !validateNotEmptyTokenForm()) {
             return false;
         }
     });
@@ -301,6 +339,13 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         if (validateAdditionalAttributes()) {
             submitEditToken();
         }
+    });
+
+    /**
+     * Confirm save empty token
+     */
+    $("#save-empty-token").off('click.token-save').on('click.token-save', function() {
+        $('#edittoken').trigger('submit', {confirm_empty_save: true});
     });
 
 

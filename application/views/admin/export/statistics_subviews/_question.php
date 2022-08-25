@@ -261,7 +261,7 @@
                 {echo " checked='checked'";}
 
                 echo " />";
-                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext)."</strong>
+                echo $oStatisticsHelper::_showSpeaker($niceqtext)."
 
                 <div class='form-group row' style='margin-top:1em;'>
                 <label for='".$myfield3."' class='col-sm-4 col-form-label smalltext'>".gT("Date equals:")."</label>
@@ -500,7 +500,7 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .'<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question'])." - # ".$flt[3]).'</strong>'
+                    .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question'])." - # ".$flt[3])
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row['title']}[]' multiple='multiple' class='form-control'>\n";
 
@@ -538,9 +538,9 @@
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE)
                     {echo " checked='checked'";}
 
-                    echo " />&nbsp;<strong>"
+                    echo " />&nbsp;"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[15])." - # ".$flt[3])
-                    ."</strong>\n"
+                    ."\n"
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-control'>\n"
                     ."\t<option value='Y'";
@@ -585,9 +585,9 @@
 
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
-                    echo " />&nbsp;<strong>"
+                    echo " />&nbsp;"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[15])." - # ".$flt[3])
-                    ."</strong>\n"
+                    ."\n"
                     ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'  class='form-control'>\n"
                     ."\t<option value='I'";
@@ -624,9 +624,9 @@
                         echo " -->\n";
                         echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
-                        echo " />&nbsp;<strong>"
+                        echo " />&nbsp;"
                         .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question']." [".$frow['question']."]")." - ".$row['title']."/".$frow['title'])
-                        ."</strong><br />\n";
+                        ."<br />\n";
                         echo "\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
                         .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('class'=>'form-control') );
                         echo "<hr/>";
@@ -683,9 +683,9 @@
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
                         echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
-                        echo " />&nbsp;<strong>"
+                        echo " />&nbsp;"
                         .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question']." [".$frow->questionl10ns[$language]->question."]")." - ".$row['title']."/".$frow['title'])
-                        ."</strong>\n"
+                        ."\n"
                         ."</div>\n";
                         echo "\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5' class='form-control'>\n";
                         for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
@@ -725,10 +725,9 @@
 
                     if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
 
-                    echo " />&nbsp;<strong>"
+                    echo " />&nbsp;"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question'])." - # ".$flt[3])
-                    ."</strong>
-                    </div>\n";
+                    ."</div>\n";
 
                     /*
                     * when hoovering the speaker symbol we show the whole question
@@ -801,10 +800,9 @@
                     //pre-check
                     if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {echo " checked='checked'";}
 
-                    echo " />&nbsp;<strong>"
+                    echo " />&nbsp;"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row->answerl10ns[$language]->answer)." - # ".$flt[3])
-                    ."</strong>
-                    </div>\n"
+                    ."</div>\n"
                     ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple' class='form-control'>\n";
 
                     //output lists of ranking items
@@ -880,10 +878,8 @@
                     }
 
                     echo " />&nbsp;"
-                    ."<strong>"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", $row[15])."] - ".gT("Label").": ".$labeltitle)
-                    ."</strong>
-                    </div>\n";
+                    ."</div>\n";
 
                     /* get labels
                     * table "labels" contains
@@ -951,10 +947,9 @@
                         $labeltitle2 = '';
                     }
 
-                    echo " />&nbsp;<strong>"
+                    echo " />&nbsp;"
                     .$oStatisticsHelper::_showSpeaker($niceqtext." [".str_replace("'", "`", $row[15])."] - ".gT("Label").": ".$labeltitle2)
-                    ."</strong>
-                    </div>\n";
+                    ."</div>\n";
                     $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '$language' AND scale_id = 1", 'sortorder, code');
 
                     //this is for debugging only

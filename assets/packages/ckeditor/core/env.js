@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
@@ -43,7 +43,7 @@ if ( !CKEDITOR.env ) {
 			 *
 			 * See also {@link #ie}.
 			 *
-			 * @since 4.5
+			 * @since 4.5.0
 			 * @property {Boolean}
 			 */
 			edge: !!edge,
@@ -136,7 +136,7 @@ if ( !CKEDITOR.env ) {
 				var domain = document.domain,
 					hostname = window.location.hostname;
 
-				return domain != hostname && domain != ( '[' + hostname + ']' ); // IPv6 IP support (http://dev.ckeditor.com/ticket/5434)
+				return domain != hostname && domain != ( '[' + hostname + ']' ); // IPv6 IP support (https://dev.ckeditor.com/ticket/5434)
 			},
 
 			/**
@@ -276,15 +276,15 @@ if ( !CKEDITOR.env ) {
 		env.version = version;
 
 		/**
-		 * Since CKEditor 4.5 this property is a blacklist of browsers incompatible with CKEditor. It means that it is
-		 * set to `false` only in browsers that are known to be incompatible. Before CKEditor 4.5 this
+		 * Since CKEditor 4.5.0 this property is a blacklist of browsers incompatible with CKEditor. It means that it is
+		 * set to `false` only in browsers that are known to be incompatible. Before CKEditor 4.5.0 this
 		 * property was a whitelist of browsers that were known to be compatible with CKEditor.
 		 *
 		 * The reason for this change is the rising fragmentation of the browser market (especially the mobile segment).
 		 * It became too complicated to check in which new environments CKEditor is going to work.
 		 *
 		 * In order to enable CKEditor 4.4.x and below in unsupported environments see the
-		 * [Enabling CKEditor in Unsupported Environments](#!/guide/dev_unsupported_environments) article.
+		 * {@glink guide/dev_unsupported_environments Enabling CKEditor in Unsupported Environments} article.
 		 *
 		 *		if ( CKEDITOR.env.isCompatible )
 		 *			alert( 'Your browser is not known to be incompatible with CKEditor!' );
@@ -313,7 +313,7 @@ if ( !CKEDITOR.env ) {
 		 * Indicates that CKEditor is running in a browser which uses a bogus
 		 * `<br>` filler in order to correctly display caret in empty blocks.
 		 *
-		 * @since 4.3
+		 * @since 4.3.0
 		 * @property {Boolean}
 		 */
 		env.needsBrFiller = env.gecko || env.webkit || ( env.ie && version > 10 );
@@ -322,7 +322,7 @@ if ( !CKEDITOR.env ) {
 		 * Indicates that CKEditor is running in a browser which needs a
 		 * non-breaking space filler in order to correctly display caret in empty blocks.
 		 *
-		 * @since 4.3
+		 * @since 4.3.0
 		 * @property {Boolean}
 		 */
 		env.needsNbspFiller = env.ie && version < 11;

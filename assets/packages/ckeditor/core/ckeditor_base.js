@@ -1,17 +1,16 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 /**
  * @fileOverview Contains the first and essential part of the {@link CKEDITOR}
- *		object definition.
+ * object definition.
  */
 
 // #### Compressed Code
 // Compressed code in ckeditor.js must be be updated on changes in the script.
-// The Closure Compiler online service should be used when updating this manually:
-// http://closure-compiler.appspot.com/
+// Simply run `grunt ckeditor-base-replace` after changing this file.
 
 // #### Raw code
 // ATTENTION: read the above "Compressed Code" notes when changing this code.
@@ -20,6 +19,7 @@ if ( !window.CKEDITOR ) {
 	/**
 	 * This is the API entry point. The entire CKEditor code runs under this object.
 	 * @class CKEDITOR
+	 * @mixins CKEDITOR.event
 	 * @singleton
 	 */
 	window.CKEDITOR = ( function() {
@@ -32,10 +32,6 @@ if ( !window.CKEDITOR ) {
 			 * is used, by default, to build the URL for all resources loaded
 			 * by the editor code, guaranteeing clean cache results when
 			 * upgrading.
-			 *
-			 * **Note:** There is [a known issue where "icons.png" does not include
-			 * timestamp](http://dev.ckeditor.com/ticket/10685) and might get cached.
-			 * We are working on having it fixed.
 			 *
 			 *		alert( CKEDITOR.timestamp ); // e.g. '87dm'
 			 */
@@ -178,11 +174,30 @@ if ( !window.CKEDITOR ) {
 				if ( resource.indexOf( ':/' ) == -1 && resource.indexOf( '/' ) !== 0 )
 					resource = this.basePath + resource;
 
-				// Add the timestamp, except for directories.
-				if ( this.timestamp && resource.charAt( resource.length - 1 ) != '/' && !( /[&?]t=/ ).test( resource ) )
-					resource += ( resource.indexOf( '?' ) >= 0 ? '&' : '?' ) + 't=' + this.timestamp;
+				resource = this.appendTimestamp( resource );
 
 				return resource;
+			},
+
+			/**
+			 * Appends {@link CKEDITOR#timestamp} to the provided URL as querystring parameter ("t").
+			 *
+			 * Leaves the URL unchanged if it is a directory URL or it already contains querystring parameter.
+			 *
+			 * @since 4.17.2
+			 * @param {String} resource The resource URL to which the timestamp should be appended.
+			 * @returns {String} The resource URL with cache key appended whenever possible.
+			 */
+			appendTimestamp: function( resource ) {
+				if ( !this.timestamp ||
+					resource.charAt( resource.length - 1 ) === '/' ||
+					( /[&?]t=/ ).test( resource )
+				) {
+					return resource;
+				}
+
+				var concatenateSign = resource.indexOf( '?' ) >= 0 ? '&' : '?';
+				return resource + concatenateSign + 't=' + this.timestamp;
 			},
 
 			/**
@@ -204,11 +219,13 @@ if ( !window.CKEDITOR ) {
 						// Cleanup functions for the document ready method
 						if ( document.addEventListener ) {
 							document.removeEventListener( 'DOMContentLoaded', onReady, false );
+							window.removeEventListener( 'load', onReady, false );
 							executeCallbacks();
 						}
 						// Make sure body exists, at least, in case IE gets a little overzealous.
 						else if ( document.attachEvent && document.readyState === 'complete' ) {
 							document.detachEvent( 'onreadystatechange', onReady );
+							window.detachEvent( 'onload', onReady );
 							executeCallbacks();
 						}
 					} catch ( er ) {}
@@ -311,7 +328,7 @@ if ( !window.CKEDITOR ) {
  * @param {CKEDITOR.config} config A configuration object containing the
  * settings defined for a {@link CKEDITOR.editor} instance up to this
  * function call. Note that not all settings may still be available. See
- * [Configuration Loading Order](http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Setting_Configurations#Configuration_Loading_Order)
+ * [Configuration Loading Order](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_configuration.html)
  * for details.
  */
 

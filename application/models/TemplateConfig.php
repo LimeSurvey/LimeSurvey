@@ -25,9 +25,6 @@ class TemplateConfig extends CActiveRecord
     /** @var string $sTemplateName The template name */
     public $sTemplateName = '';
 
-    /** @var array of prepared to render TemplateConfig */
-    public static $aPreparedToRender;
-
     /** @var string $sPackageName Name of the asset package of this template*/
     public $sPackageName;
 
@@ -69,7 +66,8 @@ class TemplateConfig extends CActiveRecord
     /**  @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update */
     protected $apiVersion;
 
-    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive
+    /**
+     * @var int? $iSurveyId The current Survey Id. It can be void. It's use only to retrieve
      * the current template of a given survey
      */
     protected $iSurveyId = '';
@@ -77,7 +75,7 @@ class TemplateConfig extends CActiveRecord
     /** @var string $hasConfigFile Does it has a config.xml file? */
     protected $hasConfigFile = ''; //
 
-    /** @var stdClass[] $packages Array of package dependencies defined in config.xml*/
+    /** @var string[] $packages Array of package dependencies defined in config.xml*/
     protected $packages;
 
     /** @var string $xmlFile What xml config file does it use? (config/minimal) */
@@ -114,54 +112,6 @@ class TemplateConfig extends CActiveRecord
         return $this->sTemplateurl;
     }
 
-
-    /**
-     * Prepare all the needed datas to render the temple
-     * If any problem (like template doesn't exist), it will load the default theme configuration
-     * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the
-     *         same for all mother templates
-     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it
-     *         only before rendering anything related to the template.
-     *
-     * @param  string $sTemplateName the name of the template to load.
-     *                               The string comes from the template selector in survey settings
-     * @param  string $iSurveyId the id of the survey. If
-     * @param bool $bUseMagicInherit
-     * @return $this
-     */
-    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
-    {
-        if (!empty($sTemplateName) && !empty($iSurveyId)) {
-            if (!empty(self::$aPreparedToRender[$sTemplateName])) {
-                if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId])) {
-                    if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
-                        return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
-                    } else {
-                        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                    }
-                } else {
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                }
-            } else {
-                self::$aPreparedToRender = array();
-                self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
-                self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-            }
-        }
-
-        $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
-        $this->setMotherTemplates(); // Recursive mother templates configuration
-        $this->setThisTemplate(); // Set the main config values of this template
-        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
-        $this->removeFiles();
-        $this->getshowpopups();
-
-        if (!empty($sTemplateName) && !empty($iSurveyId)) {
-            self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
-        }
-        return $this;
-    }
 
     /**
      * Remove the css/js files defined in theme config, from any package (even the core ones)
@@ -250,68 +200,6 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * Create a package for the asset manager.
-     * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
-     * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
-     * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
-     *
-     * @param TemplateConfiguration $oTemplate TemplateManifest
-     */
-    protected function createTemplatePackage($oTemplate)
-    {
-        // Each template in the inheritance tree needs a specific alias
-        $sPathName  = 'survey.template-' . $oTemplate->sTemplateName . '.path';
-        $sViewName  = 'survey.template-' . $oTemplate->sTemplateName . '.viewpath';
-
-        Yii::setPathOfAlias($sPathName, $oTemplate->path);
-        Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
-
-        // First we add the framework replacement (bootstrap.css must be loaded before template.css)
-        $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
-        $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
-
-        // This variable will be used to add the variation name to the body class
-        // via $aClassAndAttributes['class']['body']
-        $this->aCssFrameworkReplacement = $aCssFiles;
-
-        // Then we add the template config files
-        $aTCssFiles = $this->getFilesToLoad($oTemplate, 'css');
-        $aTJsFiles  = $this->getFilesToLoad($oTemplate, 'js');
-
-        $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
-        $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
-
-        // Remove/Replace mother template files
-        if (
-            App()->getConfig('force_xmlsettings_for_survey_rendering') ||
-            ($this->template instanceof Template &&  $this->template->extends) ||
-            !empty($this->config->metadata->extends)
-        ) {
-              $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
-              $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
-        }
-
-        // Then we add the direction files if they exist
-        // TODO: attribute system rather than specific fields for RTL
-
-        $this->sPackageName = 'survey-template-' . $this->sTemplateName;
-        $sTemplateurl       = $oTemplate->getTemplateURL();
-
-        $aDepends = empty($oTemplate->depends) ? array() : $oTemplate->depends;
-
-        // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
-        // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );
-        // Depending on settings, it will create the asset directory, and publish the css and js files
-        App()->clientScript->addPackage($this->sPackageName, array(
-            'devBaseUrl'  => $sTemplateurl, // Used when asset manager is off
-            'basePath'    => $sPathName, // Used when asset manager is on
-            'css'         => $aCssFiles,
-            'js'          => $aJsFiles,
-            'depends'     => $aDepends,
-        ));
-    }
-
-    /**
      * Get the file path for a given template.
      * It will check if css/js (relative to path), or view (view path)
      * It will search for current template and mother templates
@@ -326,7 +214,7 @@ class TemplateConfig extends CActiveRecord
         $sFile = trim($sFile, '.');
         $sFile = trim($sFile, '/');
 
-        // Retreive the correct template for this file (can be a mother template)
+        // Retrieve the correct template for this file (can be a mother template)
         $oTemplate = $this->getTemplateForFile($sFile, $oTemplate, false);
 
         if ($oTemplate instanceof TemplateConfiguration) {
@@ -347,7 +235,7 @@ class TemplateConfig extends CActiveRecord
      * Get the depends package
      * @uses self::@package
      * @param TemplateConfiguration $oTemplate
-     * @return stdClass[]
+     * @return string[]
      */
     protected function getDependsPackages($oTemplate)
     {
@@ -389,31 +277,6 @@ class TemplateConfig extends CActiveRecord
     // For list, so no "setConfiguration" before
 
     /**
-     * @todo document me
-     * @return array|mixed|string|null
-     */
-    public function getPreview()
-    {
-        if (empty($this->sPreviewImgTag)) {
-            if (is_a($this->template, 'Template')) {
-                $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
-                $previewPath         = Template::getTemplatePath($this->template->name) . '/' . $sTemplateFileFolder;
-
-                if ($previewPath && file_exists($previewPath . '/preview.png')) {
-                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder;
-                    $this->sPreviewImgTag = '<img src="' .
-                        $previewUrl .
-                        '/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
-                }
-            } else {
-                $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
-            }
-        }
-
-        return $this->sPreviewImgTag;
-    }
-
-    /**
      * @param string|null $sCustomMessage
      * @throws CException
      * @todo document me
@@ -431,7 +294,7 @@ class TemplateConfig extends CActiveRecord
             $sMessage .= $sCustomMessage;
         }
 
-        App()->clientScript->registerScript('error_' . $this->template_name, "throw Error(\"$sMessage\");");
+        App()->clientScript->registerScript('error_' . $this->sTemplateName, "throw Error(\"$sMessage\");");
     }
 
 
@@ -1243,62 +1106,4 @@ class TemplateConfig extends CActiveRecord
 
         return $oRTemplate;
     }
-
-
-    // TODO: try to refactore most of those methods in TemplateConfiguration and TemplateManifest so we can define their
-    // TODO: body here.
-    // It will consist in adding private methods to get the values of variables...
-    // See what has been done for createTemplatePackage
-    // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and
-    // format the data
-    // Note: signature are already the same
-    /*
-    public static function rename($sOldName, $sNewName)
-    {
-    }
-    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
-    {
-    }
-    public function addFileReplacement($sFile, $sType)
-    {
-    }
-
-    protected function getTemplateConfigurationForAttribute($oRTemplate, $attribute)
-    {
-    }
-
-    /**
-     * @param string $sType
-     */
-    /*
-    protected function getFilesToLoad($oTemplate, $sType)
-    {
-    }
-    */
-
-    /**
-     * @param string $sType
-     */
-        /*
-    protected function getFrameworkAssetsToReplace($sType, $bInlcudeRemove = false)
-    {
-    }
-    */
-    /**
-     * @param string $sType
-     */
-        /*
-    protected function getFrameworkAssetsReplacement($sType)
-    {
-    }
-    protected function removeFileFromPackage($sPackageName, $sType, $aSettings)
-    {
-    }
-    protected function setMotherTemplates()
-    {
-    }
-    protected function setThisTemplate()
-    {
-    }
-    */
 }

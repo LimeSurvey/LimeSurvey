@@ -99,7 +99,7 @@ class ExpressionValidate extends SurveyCommonAction
         }
         $sType = Yii::app()->request->getQuery('type');
         $this->sLang = $sLang = $lang;
-        $this->iSurveyId = $iSurveyId; // This start the survey before Expression : is this allways needed ?
+        $this->iSurveyId = $iSurveyId; // This start the survey before Expression : is this always needed ?
 
         $aTypeAttributes = array(
             'invitation' => array(
@@ -196,6 +196,7 @@ class ExpressionValidate extends SurveyCommonAction
                 $aReplacement["OPTOUTURL"] = gT("URL for a respondent to opt-out of this survey");
                 $aReplacement["GLOBALOPTOUTURL"] = gT("URL for a respondent to opt-out of central participant list for this site");
                 $aReplacement["OPTINURL"] = gT("URL for a respondent to opt-in to this survey");
+                $aReplacement["GLOBALOPTINURL"] = gT("URL for a respondent to opt-in to the central participant list for this site");
                 $aReplacement["SURVEYURL"] = gT("Survey URL");
                 $aReplacement['SURVEYSHORTURL'] = gT("Survey short URL");
                 foreach ($aAttributes as $sAttribute => $aAttribute) {
@@ -249,8 +250,8 @@ class ExpressionValidate extends SurveyCommonAction
     /**
      * Get the complete HTML from a string
      * @param string $sExpression : the string to parse
-     * @param array $aReplacement : optionnal array of replacemement
-     * @param string $sDebugSource : optionnal debug source (for templatereplace)
+     * @param array $aReplacement : optional array of replacemement
+     * @param string $sDebugSource : optional debug source (for templatereplace)
      * @uses ExpressionValidate::$iSurveyId
      * @uses ExpressionValidate::$sLang
      *

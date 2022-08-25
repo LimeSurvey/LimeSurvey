@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'clipboard', 'zh', {
 	copy: '複製',
@@ -8,5 +8,8 @@ CKEDITOR.plugins.setLang( 'clipboard', 'zh', {
 	cut: '剪下',
 	cutError: '瀏覽器的安全性設定不允許編輯器自動執行剪下動作。請使用鏐盤快捷鍵 (Ctrl/Cmd+X) 剪下。',
 	paste: '貼上',
-	pasteNotification: 'Your browser doesn\'t allow you to paste this way. Press %1 to paste.' // MISSING
+	pasteNotification: '請按下「%1」貼上。您的瀏覽器不支援工具列按鈕或是內容功能表選項。',
+	pasteArea: '貼上區',
+	pasteMsg: '請將您的內容貼於下方區域中並按下「OK」。',
+	fileFormatNotSupportedNotification: '不支援此檔案格式。您可以試試看使用其中一種支援的檔案格式：${formats}。'
 } );

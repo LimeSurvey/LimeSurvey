@@ -21,7 +21,7 @@ class SurveyRuntimeHelper
      * hard to move piece of code to subfuntions.
      * Those private variables are just a step to make easier refactorisation
      * of this file, to have a global overview about what is set in this
-     * helper, and to move easely piece of code to new methods:
+     * helper, and to move easily piece of code to new methods:
      * The methods get/set the private variables, and defore calling
      * get_defined_vars, variables are created from those private variables.
      * It's just a first step. get_defined_vars should be removed, and most of
@@ -171,7 +171,7 @@ class SurveyRuntimeHelper
     private $completed; // The string containing the completed message
 
     // Boolean helpers
-    private $okToShowErrors; // true if we must show error in page : it's a submited ($_POST) page and show the same page again for some reason
+    private $okToShowErrors; // true if we must show error in page : it's a submitted ($_POST) page and show the same page again for some reason
 
     // Group
     private $gid;
@@ -420,7 +420,7 @@ class SurveyRuntimeHelper
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1);
+            $aGroup['name']        = $gl['group_name'];
             LimeExpressionManager::updateReplacementFields(array(
                 'GROUPNAME' => $aGroup['name'],
             ));
@@ -439,7 +439,7 @@ class SurveyRuntimeHelper
 
             $aGroup['showgroupinfo'] = $showgroupinfo_;
             $aGroup['showdescription']  = (!$this->previewquestion && trim($gl['description']) != "" && $showgroupdesc_);
-            $aGroup['description']      = LimeExpressionManager::ProcessString($gl['description'], null, null, 3, 1);
+            $aGroup['description']      = $gl['description'];
 
             // one entry per QID
             foreach ($qanda as $qa) {
@@ -688,7 +688,7 @@ class SurveyRuntimeHelper
 
 
     /**
-     * Retreive the survey format (mode?)
+     * Retrieve the survey format (mode?)
      * TODO: move to survey model
      *
      * @return string
@@ -710,7 +710,7 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * Retreive the radix
+     * Retrieve the radix
      * @return string
      */
     private function getRadix()
@@ -799,7 +799,17 @@ class SurveyRuntimeHelper
 
         //$_SESSION[$this->LEMsessid]['step'] can not be less than 0, fix it always #09772
         $_SESSION[$this->LEMsessid]['step'] = $_SESSION[$this->LEMsessid]['step'] < 0 ? 0 : $_SESSION[$this->LEMsessid]['step'];
-        LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
+        LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions, true, $this->LEMdebugLevel);
+        if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])) {
+            /* Move to max step in all condition with force */
+            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step']) {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['maxstep']);
+                LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['maxstep'], false, false);
+            } else {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['step']);
+            }
+            unset($_SESSION[$this->LEMsessid]['LEMtokenResume']);
+        }
         LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false);
     }
 
@@ -821,10 +831,17 @@ class SurveyRuntimeHelper
     /**
      * It checks if user used the browser navigation (prev, next, reload page etc)
      * and feed te backpopup variable if needed
-     *
      */
     private function checkIfUseBrowserNav()
     {
+        // Possibility to suppress the warning when Ajax is used to get survey content.
+        if (isset($_GET['ignorebrowsernavigationwarning'])
+            || isset($_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'])
+        ) {
+            $_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'] = 1;
+            return;
+        }
+
         // retrieve datas from local variable
         if (isset($_SESSION[$this->LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey', $_SESSION[$this->LEMsessid]['LEMpostKey']) != $_SESSION[$this->LEMsessid]['LEMpostKey']) {
             // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
@@ -911,14 +928,14 @@ class SurveyRuntimeHelper
         // retrieve datas from local variable
         if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])) {
             LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
-
-            // Do it only if needed : we don't need it if we don't have index
-            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step'] && $this->aSurveyInfo['questionindex']) {
+            /* Move to max step in all condition with force */
+            if (isset($_SESSION[$this->LEMsessid]['maxstep']) && $_SESSION[$this->LEMsessid]['maxstep'] > $_SESSION[$this->LEMsessid]['step']) {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['maxstep']);
                 LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['maxstep'], false, false);
+            } else {
+                LimeExpressionManager::SetRelevanceTo($_SESSION[$this->LEMsessid]['step']);
             }
-
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, false); // if late in the survey, will re-validate contents, which may be overkill
-
             unset($_SESSION[$this->LEMsessid]['LEMtokenResume']);
         } elseif (!$this->LEMskipReprocessing) {
             //Move current step ###########################################################################
@@ -1255,7 +1272,7 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show'] = false;
             if ($this->aSurveyInfo['publicstatistics'] == 'Y') {
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show']  = true;
-                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sUrl']  = $surveyActive ? Yii::app()->getController()->createUrl("/statistics_user/action/", array('surveyid' => $this->iSurveyid, 'language' => App()->getLanguage())) : "#";
+                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sUrl']  = $surveyActive ? Yii::app()->getController()->createUrl("/StatisticsUser/action/", array('surveyid' => $this->iSurveyid, 'language' => App()->getLanguage())) : "#";
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sText'] =  gT("View the statistics for this survey.");
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sTitle'] =  $surveyActive ? $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sText'] : gT("Note: This link only works if the survey is activated.");
             }
@@ -1473,7 +1490,7 @@ class SurveyRuntimeHelper
     {
         $sessionSurvey = Yii::app()->session["survey_{$this->iSurveyid}"];
         if (App()->request->getPost('confirm-clearall') != 'confirm') {
-            /* Save current reponse, and come back to survey if clearll is not confirmed */
+            /* Save current response, and come back to survey if clearll is not confirmed */
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true, false);
             /* Todo : add an error in HTML view … */
             //~ $aErrorHtmlMessage                             = array(gT("You need to confirm clear all action"));
@@ -1655,7 +1672,7 @@ class SurveyRuntimeHelper
         $aEnterTokenData['aEnterErrors']    = $aEnterErrors;
         $renderWay                          = getRenderWay($renderToken, $renderCaptcha);
 
-        /* This funtion end if an form need to be shown */
+        /* This function end if an form need to be shown */
         renderRenderWayForm($renderWay, $scenarios, $this->sTemplateViewPath, $aEnterTokenData, $this->iSurveyid, $this->aSurveyInfo);
     }
 
@@ -1832,7 +1849,7 @@ class SurveyRuntimeHelper
         return $data;
     }
     /**
-     * Retreive the question classes for a given question id
+     * Retrieve the question classes for a given question id
      *
      * @param  int      $iQid the question id
      * @return string   the classes

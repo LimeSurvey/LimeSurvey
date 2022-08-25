@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'clipboard', 'fa', {
 	copy: 'رونوشت',
@@ -8,5 +8,8 @@ CKEDITOR.plugins.setLang( 'clipboard', 'fa', {
 	cut: 'برش',
 	cutError: 'تنظیمات امنیتی مرورگر شما اجازه نمیدهد که ویرایشگر به طور خودکار عملکردهای برش را انجام دهد. لطفا با دکمههای صفحه کلید این کار را انجام دهید (Ctrl/Cmd+X).',
 	paste: 'چسباندن',
-	pasteNotification: 'Your browser doesn\'t allow you to paste this way. Press %1 to paste.' // MISSING
+	pasteNotification: '1% را فشاردهید تا قرار داده شود. مرورگر شما از قراردهی با دکمه نوارابزار یا گزینه منوی زمینه پشتیبانی نمیکند',
+	pasteArea: 'محل چسباندن',
+	pasteMsg: 'محتوای خود را در ناحیه زیر قرار دهید و OK را فشار دهید',
+	fileFormatNotSupportedNotification: 'This file format is not supported. You can try with one of the supported formats: ${formats}.' // MISSING
 } );

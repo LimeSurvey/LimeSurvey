@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{permissiontemplates}}".
  *
- * The followings are the available columns in table '{{permissiontemplates}}':
+ * The following are the available columns in table '{{permissiontemplates}}':
  * @property integer $ptid
  * @property string $name
  * @property string $description
@@ -66,8 +66,12 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
-     * Apply to user.
-     * @todo Apply what to user?
+     * Apply a user role to the user.
+     *
+     * A user role is defined in table prefix_permissiontemplates.
+     * If user does not have the user role already, a new entry will be made in
+     * table prefix_user_in_permissionrole
+     *
      * @param int $iUserId
      * @param int $ptid Permissiontemplates id
      * @return boolean
@@ -209,7 +213,7 @@ class Permissiontemplates extends CActiveRecord
                 data-toggle='modal' 
                 data-title='" . gt('Delete user role') . "'
                 data-target='#confirmation-modal'
-                data-post-url ='" . $deleteUrl . "' 
+                data-url ='" . $deleteUrl . "' 
                 data-ptid='" . $this->ptid . "'
                 data-action='delrole'         
                 data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")'

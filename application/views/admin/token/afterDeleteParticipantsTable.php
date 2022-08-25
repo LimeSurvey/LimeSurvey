@@ -1,9 +1,7 @@
 <?php
-
     /**
      * View which will appear, if the particpants table is deleted.
      */
-
 ?>
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <div class="row welcom survey-action">

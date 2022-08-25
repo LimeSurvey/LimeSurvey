@@ -34,6 +34,12 @@ class Index extends CAction
         $thisstep    = $param['thisstep'];
         $move        = getMove();
 
+        /* Newtest must be done bedore all other action */
+        if (isset($param['newtest']) && $param['newtest'] == "Y") {
+            killSurveySession($surveyid);
+            resetQuestionTimers($surveyid);
+        }
+
         /* Get client token by POST or GET value */
         $clienttoken = trim($param['token']);
         /* If not set : get by SESSION to avoid multiple submit of same token in different navigator */
@@ -73,11 +79,6 @@ class Index extends CAction
         $loadname = $param['loadname'];
         $loadpass = $param['loadpass'];
         $sitename = Yii::app()->getConfig('sitename');
-
-        if (isset($param['newtest']) && $param['newtest'] == "Y") {
-            killSurveySession($surveyid);
-            resetQuestionTimers($surveyid);
-        }
 
         $surveyExists   = ($oSurvey != null);
         $isSurveyActive = ($surveyExists && $oSurvey->isActive);
@@ -417,6 +418,10 @@ class Index extends CAction
                 }
             }
 
+            if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
+                $aLoadErrorMsg['tooManyRetries'] = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
+            }
+
             if (empty($aLoadErrorMsg)) {
                 LimeExpressionManager::SetDirtyFlag();
                 buildsurveysession($surveyid);
@@ -436,7 +441,9 @@ class Index extends CAction
                 randomizationGroupsAndQuestions($surveyid);
                 initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
             }
+            usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"), Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
             if (count($aLoadErrorMsg)) {
+                FailedLoginAttempt::model()->addAttempt(FailedLoginAttempt::TYPE_TOKEN);
                 Yii::app()->setConfig('move', "loadall"); // Show loading form
             }
         }

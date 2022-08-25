@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{surveymenu}}".
  *
- * The followings are the available columns in table '{{surveymenu}}':
+ * The following are the available columns in table '{{surveymenu}}':
  * @property integer $id
  * @property integer $parent_id
  * @property integer $survey_id
@@ -18,7 +18,7 @@
  * @property integer $created_by
  * @property integer $active
  *
- * The followings are the available model relations:
+ * The following are the available model relations:
  * @property SurveymenuEntries[] $surveymenuEntries
  */
 class Surveymenu extends LSActiveRecord

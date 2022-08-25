@@ -138,7 +138,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             $oAddUserList = User::model()->findAll($oCriteria);
             /* User group according to rights */
             $oCriteria = new CDbCriteria();
-            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true && !Permission::model()->hasGlobalPermission('superadmin')) {
+            if (shouldFilterUserGroupList()) {
                 $authorizedGroupsList = getUserGroupList();
                 $oCriteria->addInCondition("ugid", $authorizedGroupsList);
             }
@@ -176,7 +176,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $id SurveysGroups id
      * @return void
      */
-    public function actionAddUser($id)
+    public function actionAddUser(int $id)
     {
         $model = $this->loadModel($id);
         if (!$model->hasPermission('permission', 'create')) {
@@ -234,7 +234,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $id SurveysGroups id
      * @return void
      */
-    public function actionAddUserGroup($id)
+    public function actionAddUserGroup(int $id)
     {
         $model = $this->loadModel($id);
         if (!$model->hasPermission('permission', 'create')) {
@@ -245,7 +245,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             throw new CHttpException(400, gT("Invalid action"));
         }
         /* Check if logged user can see user group */
-        if (!in_array($ugid, getUserGroupList())) {
+        if (shouldFilterUserGroupList() && !in_array($ugid, getUserGroupList())) {
             throw new CHttpException(403, gT("You do not have permission to this user group."));
         }
         $aData = array(
@@ -298,7 +298,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $to user id
      * @return void
      */
-    public function actionViewUser($id, $to)
+    public function actionViewUser(int $id, int $to)
     {
         $oUser = User::model()->findByPk($to);
         if (empty($oUser)) {
@@ -319,14 +319,14 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $to group id
      * @return void
      */
-    public function actionViewUserGroup($id, $to)
+    public function actionViewUserGroup(int $id, int $to)
     {
         $oUserGroup = UserGroup::model()->findByPk($to);
         if (empty($oUserGroup)) {
             throw new CHttpException(401, gT("User group not found"));
         }
         /* Check if logged user can see user group */
-        if (!in_array($to, getUserGroupList())) {
+        if (shouldFilterUserGroupList() && !in_array($to, getUserGroupList())) {
             throw new CHttpException(403, gT("You do not have permission to access this user group."));
         }
         $this->viewUserOrUserGroup($id, $to, 'group');
@@ -339,7 +339,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $id SurveysGroups id
      * @return void
      */
-    public function actionSave($id)
+    public function actionSave(int $id)
     {
         $model = $this->loadModel($id);
         $uid = null;
@@ -409,7 +409,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * @param integer $uid user id
      * @return void
      */
-    public function actionDeleteUser($id, $uid)
+    public function actionDeleteUser(int $id, int $uid)
     {
         $model = $this->loadModel($id);
         if (!$model->hasPermission('permission', 'delete')) {

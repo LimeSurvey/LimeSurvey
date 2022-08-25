@@ -65,7 +65,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>'/>
                     <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>'/>
 
-                    <?php if (App()->user->getState('sql_' . $surveyid) !== null) : ?>
+                    <?php if (!empty(App()->user->getState('sql_' . $surveyid))) : ?>
                         <!-- Filter is on -->
                         <?php eT("Showing filtered results"); ?>
 
@@ -81,7 +81,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     $massiveAction = App()->getController()->renderPartial('/responses/massive_actions/_selector', [], true);
 
 
-                    // The first few colums are fixed.
+                    // The first few columns are fixed.
                     // Specific columns at start
                     $aColumns = [
                         [
@@ -245,12 +245,12 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'dataProvider'    => $model->search(),
                             'filter'          => $model,
                             'columns'         => $aColumns,
-                            'htmlOptions'     => ['class' => 'table-responsive'],
+                            //'htmlOptions'     => ['class' => 'table-responsive'],
                             'id'              => 'responses-grid',
                             'ajaxUpdate'      => 'responses-grid',
                             'ajaxType'        => 'POST',
                             'afterAjaxUpdate' => 'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-toggle=\'popover\']").popover(); }',
-                            'template'        => "{items}\n<div id='reponsesListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                            'template'        => "{items}\n<div id='responsesListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                             'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                                 gT('%s rows per page'),
                                 CHtml::dropDownList(
@@ -274,9 +274,6 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     ';
                 $script = '
                     var postUrl = "' . Yii::app()->getController()->createUrl("responses/setSession") . '"; // For massive export
-                    jQuery(document).on("change", "#pageSize", function(){
-                        $.fn.yiiGridView.update("responses-grid",{ data:{ pageSize: $(this).val() }});
-                    });
                     $(".grid-view [data-toggle=\'popover\']").popover();
                     ';
                 App()->getClientScript()->registerScript('listresponses', $scriptVars, LSYii_ClientScript::POS_BEGIN);

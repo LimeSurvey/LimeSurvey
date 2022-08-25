@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -8,10 +10,10 @@
  *
  */
 
-if (!file_exists(dirname(__FILE__).'/config.php')) {
-    $userConfig = require(dirname(__FILE__).'/config-sample-mysql.php');
+if (!file_exists(dirname(__FILE__) . '/config.php')) {
+    $userConfig = require(dirname(__FILE__) . '/config-sample-mysql.php');
 } else {
-    $userConfig = require(dirname(__FILE__).'/config.php');
+    $userConfig = require(dirname(__FILE__) . '/config.php');
 }
 
 if (!date_default_timezone_set(@date_default_timezone_get())) {
@@ -22,9 +24,6 @@ if (!date_default_timezone_set(@date_default_timezone_get())) {
 if (function_exists('mb_internal_encoding')) {
     // Needed to substring arabic etc
     mb_internal_encoding('UTF-8');
-    if (ini_get('mbstring.internal_encoding')) {
-        ini_set('mbstring.internal_encoding', 'UTF-8');
-    }
 } else {
     // Do nothing, will be checked in installation
 }
@@ -39,22 +38,22 @@ $internalConfig = array(
     'aliases' => array(
 
         // LimeSurvey's Yii modules
-        'modules' => realpath(__DIR__.'/../../modules'),
+        'modules' => realpath(__DIR__ . '/../../modules'),
 
         // Third party path
-        'third_party' => realpath(__DIR__.'/../../third_party'),
-        'core' => realpath(__DIR__.'/../../assets/packages'),
-        'fonts' => realpath(__DIR__.'/../../assets/fonts'),
+        'third_party' => realpath(__DIR__ . '/../../third_party'),
+        'core' => realpath(__DIR__ . '/../../assets/packages'),
+        'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
         // yiistrap configuration
-        'bootstrap' => realpath(__DIR__.'/../extensions/bootstrap'),
-        'vendor.twbs.bootstrap.dist' => realpath(__DIR__.'/../extensions/bootstrap'),
+        'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
+        'vendor.twbs.bootstrap.dist' => realpath(__DIR__ . '/../extensions/bootstrap'),
         // yiiwheels configuration
-        'yiiwheels' => realpath(__DIR__.'/../extensions/yiiwheels'),
+        'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
         'vendor.twbs.bootstrap.dist',
 
         //Basic questiontype objects
-        'questiontypes' => realpath(__DIR__.'/../core/QuestionTypes')
+        'questiontypes' => realpath(__DIR__ . '/../core/QuestionTypes')
     ),
 
     /*
@@ -66,7 +65,7 @@ $internalConfig = array(
 
         //Root Modules are real Yii Modules and can be initiate like this:
         'HelloWorld' => array(
-          'class'=>'modules.root.HelloWorld.HelloWorldModule',
+          'class' => 'modules.root.HelloWorld.HelloWorldModule',
         ),
 
         /* Here you can unlock Gii
@@ -78,12 +77,12 @@ $internalConfig = array(
         ),
         */
     ),
-    'params'=>array(
-        'defaultPageSize'=>10, // Default page size for most of the grids
-        'pageSizeOptions'=>array(5=>5, 10=>10, 20=>20, 50=>50, 100=>100), // Default page size options for most of the grids
-        'pageSizeOptionsTokens'=>array(5=>5, 10=>10, 25=>25, 50=>50, 100=>100, 250=>250, 500=>500, 1000=>1000, 2500=>2500, 5000=>5000, 10000=>10000), // Tokens needs different options
-        'defaultEllipsizeHeaderValue'=>30, // Default max characters before ellipsizing the headers of responses grid
-        'defaultEllipsizeQuestionValue'=>50, // Default max characters before ellipsizing the questions inside responses grid
+    'params' => array(
+        'defaultPageSize' => 10, // Default page size for most of the grids
+        'pageSizeOptions' => array(5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100), // Default page size options for most of the grids
+        'pageSizeOptionsTokens' => array(5 => 5, 10 => 10, 25 => 25, 50 => 50, 100 => 100, 250 => 250, 500 => 500, 1000 => 1000, 2500 => 2500, 5000 => 5000, 10000 => 10000), // Tokens needs different options
+        'defaultEllipsizeHeaderValue' => 30, // Default max characters before ellipsizing the headers of responses grid
+        'defaultEllipsizeQuestionValue' => 50, // Default max characters before ellipsizing the questions inside responses grid
     ),
 
     'import' => array(
@@ -115,13 +114,13 @@ $internalConfig = array(
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',
         ),
-        'sodium'=>array(
+        'sodium' => array(
             'class' => 'LSSodium',
        ),
         'sodiumOld' => [
             'class' => 'LSSodiumOld'
         ],
-        'clientScript'=>array(
+        'clientScript' => array(
             'packages' => array_merge(
                 require('third_party.php'),
                 require('packages.php'),
@@ -145,11 +144,11 @@ $internalConfig = array(
         'errorHandler' => [
         ],
         'request' => array(
-            'class'=>'LSHttpRequest',
-            'enableCsrfValidation'=>true, // CSRF protection
-            'enableCookieValidation'=>false, // Enable to activate cookie protection
-            'noCsrfValidationParams'=>array(),
-            'noCsrfValidationRoutes'=>array(
+            'class' => 'LSHttpRequest',
+            'enableCsrfValidation' => true, // CSRF protection
+            'enableCookieValidation' => false, // Enable to activate cookie protection
+            'noCsrfValidationParams' => array(),
+            'noCsrfValidationRoutes' => array(
                 'remotecontrol',
                 'plugins/unsecure',
             ),
@@ -182,12 +181,12 @@ $internalConfig = array(
                 )
             )
         ),
-        'cache'=>array(
+        'cache' => array(
             'class' => defined('YII_DEBUG') && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
         ),
         // For more info about the emcache, see application/helpers/expressions/em_cache_helper.php.
         // Disabled by default. Enable by adding emcache in config.php after installation.
-        'emcache'=>array(
+        'emcache' => array(
             'class' => 'system.caching.CDummyCache'
         ),
         'db' => array(
@@ -202,19 +201,20 @@ $internalConfig = array(
                 'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443))
             ),
         ),
+        'sourceLanguage' => 'en',
         'messages' => array(
-            'class' => 'CGettextMessageSource',
-            'cachingDuration'=>3600,
+            'class' => 'application.core.LSMessageSource',
+            'cachingDuration' => 3600,
             'forceTranslation' => true,
             'useMoFile' => true,
-            'basePath' => __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
+            'basePath' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'locale'
         ),
         'pluginManager' => array(
             'class' => "\\LimeSurvey\\PluginManager\\PluginManager",
             'api' => "\\LimeSurvey\\PluginManager\\LimesurveyApi"
         ),
-        'format'=>array(
-            'class'=>'application.extensions.CustomFormatter'
+        'format' => array(
+            'class' => 'application.extensions.CustomFormatter'
         ),
         'LimeMailer' => array(
             /* This allow update LimeMailer in config, but no namespace in this condition … */
@@ -231,7 +231,7 @@ $internalConfig = array(
             // All parameters below are optional, change them to your needs
             'fileExtension' => '.twig',
             'options' => array(
-                'debug' => defined('YII_DEBUG') && YII_DEBUG ?true:false,
+                'debug' => defined('YII_DEBUG') && YII_DEBUG ? true : false,
             ),
             'extensions' => array(
                 'LS_Twig_Extension',
@@ -269,6 +269,7 @@ $internalConfig = array(
                 'ellipsizeString'         => 'LS_Twig_Extension::ellipsizeString',
                 'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText', /* Temporary keep it */
                 'str_replace'             => 'str_replace',
+                'strpos'                  => 'strpos',
                 'getConfig'               => 'LS_Twig_Extension::getConfig',
                 'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',/* Not in 3.X */
                 'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',/* Not in 3.X */
@@ -385,6 +386,7 @@ $internalConfig = array(
                     'ellipsizeString',
                     'flatEllipsizeText',
                     'str_replace',
+                    'strpos',
                     'flattenText',
                     'getConfig',
                     'getExpressionManagerOutput',
@@ -450,7 +452,7 @@ $result = CMap::mergeArray($internalConfig, $userConfig);
  */
 $result['defaultController'] = ($result['defaultController'] == 'survey') ? $internalConfig['defaultController'] : $result['defaultController'];
 /**
- * Allways add needed routes at end
+ * Always add needed routes at end
  */
 $result['components']['urlManager']['rules']['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 

@@ -98,7 +98,8 @@ var UserManagement = function () {
                             window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? 'bg-primary' : 'bg-danger'));
                             if (result.hasOwnProperty('href')) {
                                 setTimeout(function() {
-                                    openModal(result.href);
+                                    const modalSize = result.hasOwnProperty('modalsize') ? result.modalsize : '';
+                                    openModal(result.href, modalSize);
                                 }, 500);
                             }
                             return;

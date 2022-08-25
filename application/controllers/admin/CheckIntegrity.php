@@ -612,7 +612,7 @@ class CheckIntegrity extends SurveyCommonAction
                 $aColumns = $model->getMetaData()->columns;
                 $aQids    = array();
 
-                // We get the columns of the reponses table
+                // We get the columns of the responses table
                 foreach ($aColumns as $oColumn) {
                     // Question columns start with the SID
                     if (strpos($oColumn->name, (string)$oSurvey->sid) !== false) {
@@ -633,12 +633,14 @@ class CheckIntegrity extends SurveyCommonAction
                                 // It was just the QID....
                                 $sQID = $sDirtyQid;
                             }
-                            if ((string) intval($sQID) !== $sQID) {
-                                throw new \Exception('sQID is not an integer: ' . $sQID);
-                            }
 
                             // Here, we get the question as defined in backend
-                            $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'sid' => $oSurvey->sid ]);
+                            try {
+                                $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'language' => $oSurvey->language, 'sid' => $oSurvey->sid ]);
+                            } catch (Exception $e) {
+                                // QID potentially invalid , see #17458, reset $oQuestion
+                                $oQuestion = null;
+                            }
                             if (is_a($oQuestion, 'Question')) {
                                 // We check if its GID is the same as the one defined in the column name
                                 if ($oQuestion->gid != $sGid) {
@@ -744,7 +746,7 @@ class CheckIntegrity extends SurveyCommonAction
         /*     Check conditions                                               */
         /**********************************************************************/
         $okQuestion = array();
-        $sQuery = 'SELECT cqid,cid,cfieldname FROM {{conditions}}';
+        $sQuery = 'SELECT cqid,cid,cfieldname,qid FROM {{conditions}}';
         $aConditions = Yii::app()->db->createCommand($sQuery)->queryAll();
         $aDelete = array();
         foreach ($aConditions as $condition) {
@@ -757,6 +759,15 @@ class CheckIntegrity extends SurveyCommonAction
                     } else {
                         $okQuestion[$condition['cqid']] = $condition['cqid'];
                     }
+                }
+            }
+            // Check that QID exists
+            if (!array_key_exists($condition['qid'], $okQuestion)) {
+                $iRowCount = Question::model()->countByAttributes(array('qid' => $condition['qid']));
+                if (!$iRowCount) {
+                    $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No matching QID'));
+                } else {
+                    $okQuestion[$condition['qid']] = $condition['qid'];
                 }
             }
             //Only do this if there actually is a 'cfieldname'

@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'colorbutton', 'de', {
 	auto: 'Automatisch',
@@ -46,15 +46,15 @@ CKEDITOR.plugins.setLang( 'colorbutton', 'de', {
 		F0F8FF: 'Alice Blau',
 		E6E6FA: 'Lavendel',
 		FFF: 'Weiß',
-		'1ABC9C': 'Strong Cyan', // MISSING
+		'1ABC9C': 'Kräftiges Cyan',
 		'2ECC71': 'Smaragdgrün',
-		'3498DB': 'Bright Blue', // MISSING
+		'3498DB': 'Helles Blau',
 		'9B59B6': 'Amethystblau',
 		'4E5F70': 'Graublau',
-		'F1C40F': 'Vivid Yellow', // MISSING
+		'F1C40F': 'Lebhaftes Gelb',
 		'16A085': 'Dunkelcyan',
 		'27AE60': 'Dunkelsmaragdgrün',
-		'2980B9': 'Strong Blue', // MISSING
+		'2980B9': 'Kräftiges Blau',
 		'8E44AD': 'Dunkelviolett',
 		'2C3E50': 'Entsättigtes blau',
 		'F39C12': 'Orange',
@@ -64,7 +64,7 @@ CKEDITOR.plugins.setLang( 'colorbutton', 'de', {
 		'95A5A6': 'Helles Graublau',
 		'DDD': 'Hellgrau',
 		'D35400': 'Kürbisfarben',
-		'C0392B': 'Strong Red', // MISSING
+		'C0392B': 'Kräftiges Rot',
 		'BDC3C7': 'Silber',
 		'7F8C8D': 'Graucyan',
 		'999': 'Dunkelgrau'

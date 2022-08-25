@@ -26,7 +26,7 @@ class UpdateForm extends CFormModel
     /** @var string $build The build id */
     public $build;
 
-    /** @var  string $view The view to display : used only for welcome type views to let the server choose wich view will be displayed */
+    /** @var  string $view The view to display : used only for welcome type views to let the server choose which view will be displayed */
     public $view;
 
     // Proxy infos
@@ -306,7 +306,8 @@ class UpdateForm extends CFormModel
 
     /**
      * Delete the files tagged as deleted in the update
-     * @param string[] $updateinfos
+     *
+     * @param array $updateinfos
      * @return object
      */
     public function removeDeletedFiles($updateinfos)
@@ -315,6 +316,7 @@ class UpdateForm extends CFormModel
             $sFileToDelete = str_replace("..", "", $file['file']);
             if ($file['type'] == 'D' && file_exists($this->rootdir . $sFileToDelete)) {
                 if (is_file($this->rootdir . $sFileToDelete)) {
+                    // TODO: Deal with error here
                     if (!@unlink($this->rootdir . $sFileToDelete)) {
                         $return = array('result' => false, 'error' => 'cant_remove_deleted_files', 'message' => 'file : ' . $sFileToDelete);
                         return (object) $return;
@@ -411,7 +413,8 @@ class UpdateForm extends CFormModel
 
     /**
      * This function provide status information about files presents on the system that will be afected by the update : do they exist ? are they writable ? modified ?
-     * @param int $updateinfo  array of updated files
+     *
+     * @param array $updateinfo Array of updated files
      * @return array
      */
     public function getFileStatus($updateinfo)

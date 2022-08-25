@@ -1,11 +1,12 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'iframe', 'da', {
 	border: 'Vis kant på rammen',
 	noUrl: 'Venligst indsæt URL på iframen',
 	scrolling: 'Aktiver scrollbars',
 	title: 'Iframe egenskaber',
-	toolbar: 'Iframe'
+	toolbar: 'Iframe',
+	tabindex: 'Remove from tabindex' // MISSING
 } );

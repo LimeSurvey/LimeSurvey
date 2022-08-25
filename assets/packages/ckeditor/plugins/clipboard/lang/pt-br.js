@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'clipboard', 'pt-br', {
 	copy: 'Copiar',
@@ -8,5 +8,8 @@ CKEDITOR.plugins.setLang( 'clipboard', 'pt-br', {
 	cut: 'Recortar',
 	cutError: 'As configurações de segurança do seu navegador não permitem que o editor execute operações de recortar automaticamente. Por favor, utilize o teclado para recortar (Ctrl/Cmd+X).',
 	paste: 'Colar',
-	pasteNotification: 'Your browser doesn\'t allow you to paste this way. Press %1 to paste.' // MISSING
+	pasteNotification: 'Pressione %1 para colar. Seu navegador não permite colar pelos botões da barra de tarefas ou pelo menu de contexto.',
+	pasteArea: 'Área para Colar',
+	pasteMsg: 'Cole o conteúdo na área abaixo e pressione OK.',
+	fileFormatNotSupportedNotification: 'This file format is not supported. You can try with one of the supported formats: ${formats}.' // MISSING
 } );

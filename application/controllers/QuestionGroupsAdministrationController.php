@@ -162,7 +162,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
      *
      * * @return void
      */
-    public function actionEdit($surveyid, $gid, $landOnSideMenuTab = 'structure')
+    public function actionEdit(int $surveyid, $gid, $landOnSideMenuTab = 'structure')
     {
         //check permission for edit groups ...
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
@@ -179,6 +179,15 @@ class QuestionGroupsAdministrationController extends LSBaseController
         Yii::app()->loadHelper('surveytranslator');
 
         $sBaseLanguage = $oSurvey->language;
+
+        //todo: this action should not be used for new groups, use actionAdd instead
+        //DO NOT accept any other values for gid
+        if ($gid === null || $gid === '') {
+            //this means new group
+            $gid = null;
+        } else {
+            $gid = (int)($gid);
+        }
         $oQuestionGroup = $this->getQuestionGroupObject($surveyid, $gid);
         $aData['oQuestionGroup'] = $oQuestionGroup;
 
@@ -482,7 +491,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
      *
      * @return void
      */
-    public function actionImportView($surveyid, $landOnSideMenuTab = 'structure')
+    public function actionImportView(int $surveyid, $landOnSideMenuTab = 'structure')
     {
         $iSurveyID = $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -522,35 +531,35 @@ class QuestionGroupsAdministrationController extends LSBaseController
      *
      * @access public
      *
-     * @param integer $iGroupId  ID of group
      * @param boolean $asJson    Value of to Render as JSON
      *
      * @return void
      * @throws CHttpException if not authorized or invalid question group
      */
-    public function actionDelete($iGroupId = null, $asJson = false)
+    public function actionDelete(bool $asJson = false)
     {
-        if (is_null($iGroupId)) {
-            $iGroupId = App()->getRequest()->getPost('gid');
+        if (!App()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
         }
-        $oQuestionGroup = QuestionGroup::model()->find("gid = :gid", array(":gid" => $iGroupId));
-        if (empty($oQuestionGroup)) {
+
+        $iGroupId = App()->getRequest()->getPost('gid');
+        if ($iGroupId === null) {
             throw new CHttpException(401, gT("Invalid question group id"));
         }
+        $iGroupId = sanitize_int($iGroupId);
+
+        $oQuestionGroup = QuestionGroup::model()->find("gid = :gid", array(":gid" => $iGroupId));
         /* Test the surveyid from question, not from submitted value */
         $iSurveyId = $oQuestionGroup->sid;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete')) {
             throw new CHttpException(403, gT("You are not authorized to delete questions."));
         }
-        if (!App()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("Invalid action"));
-        }
 
         LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
 
-        $iGroupId = sanitize_int($iGroupId);
         $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
 
+        //this is only important for massaction ... (do we have massaction for survey groups?)
         if ($asJson !== false) {
             $success = $iGroupsDeleted > 0;
             $this->renderJSON(
@@ -576,7 +585,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
-        if (!empty($survey->groups)) {
+        // Make sure we have the latest groups data
+        $survey->refresh();
+        $landOnSideMenuTab = Yii::app()->request->getPost('landOnSideMenuTab');
+        if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
             $this->redirect(
                 Yii::app()->createUrl(
                     'questionGroupsAdministration/view/',
@@ -597,6 +609,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
      *
      * Returns the data for a question group. If question group
      * does not exists a new question group will be returned (not saved)
+     *
+     * todo: is this function still in use?
      *
      * @param int $surveyid
      * @param null $iQuestionGroupId
@@ -723,7 +737,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
      * @return void
      *
      */
-    public function actionSaveQuestionGroupData($sid)
+    public function actionSaveQuestionGroupData(int $sid)
     {
         $questionGroup = App()->request->getPost('questionGroup', []);
         $questionGroupI10N = App()->request->getPost('questionGroupI10N', []);
@@ -835,7 +849,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
      * @return false|null|string|string[]
      * @throws CException
      */
-    public function actionUpdateOrder($surveyid)
+    public function actionUpdateOrder(int $surveyid)
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         $success = true;
@@ -937,15 +951,19 @@ class QuestionGroupsAdministrationController extends LSBaseController
     /**
      * Ajax request to get the question group topbar as json (see view question_group_topbar)
      *
-     * @param integer $sid ID of survey
-     * @param null |integer   $gid ID of group
+     * @param int $sid ID of survey
+     * @param null |int $gid ID of group
      *
      * @return mixed
      * @throws CException
      */
-    public function actionGetQuestionGroupTopBar($sid, $gid = null)
+    public function actionGetQuestionGroupTopBar(int $sid, $gid = null)
     {
         //permission ??
+        if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
 
         $oSurvey = Survey::model()->findByPk($sid);
         $oQuestionGroup = null;

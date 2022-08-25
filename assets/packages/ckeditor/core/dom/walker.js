@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 ( function() {
@@ -319,7 +319,7 @@
 	 */
 	CKEDITOR.dom.element.prototype.isBlockBoundary = function( customNodeNames ) {
 		// Whether element is in normal page flow. Floated or positioned elements are out of page flow.
-		// Don't consider floated or positioned formatting as block boundary, fall back to dtd check in that case. (http://dev.ckeditor.com/ticket/6297)
+		// Don't consider floated or positioned formatting as block boundary, fall back to dtd check in that case. (https://dev.ckeditor.com/ticket/6297)
 		var inPageFlow = this.getComputedStyle( 'float' ) == 'none' && !( this.getComputedStyle( 'position' ) in outOfFlowPositions );
 
 		if ( inPageFlow && blockBoundaryDisplayMatch[ this.getComputedStyle( 'display' ) ] )
@@ -388,7 +388,7 @@
 		return function( node ) {
 			var isWhitespace;
 			if ( node && node.type == CKEDITOR.NODE_TEXT ) {
-				// Whitespace, as well as the Filling Char Sequence text node used in Webkit. (http://dev.ckeditor.com/ticket/9384, http://dev.ckeditor.com/ticket/13816)
+				// Whitespace, as well as the Filling Char Sequence text node used in Webkit. (https://dev.ckeditor.com/ticket/9384, https://dev.ckeditor.com/ticket/13816)
 				isWhitespace = !CKEDITOR.tools.trim( node.getText() ) ||
 					CKEDITOR.env.webkit && node.getText() == CKEDITOR.dom.selection.FILLING_CHAR_SEQUENCE;
 			}
@@ -406,7 +406,7 @@
 	 */
 	CKEDITOR.dom.walker.invisible = function( isReject ) {
 		var whitespace = CKEDITOR.dom.walker.whitespaces(),
-			// http://dev.ckeditor.com/ticket/12221 (Chrome) plus http://dev.ckeditor.com/ticket/11111 (Safari).
+			// https://dev.ckeditor.com/ticket/12221 (Chrome) plus https://dev.ckeditor.com/ticket/11111 (Safari).
 			offsetWidth0 = CKEDITOR.env.webkit ? 1 : 0;
 
 		return function( node ) {
@@ -422,7 +422,7 @@
 				// Nodes that take no spaces in wysiwyg:
 				// 1. White-spaces but not including NBSP.
 				// 2. Empty inline elements, e.g. <b></b>.
-				// 3. <br> elements (bogus, surrounded by text) (http://dev.ckeditor.com/ticket/12423).
+				// 3. <br> elements (bogus, surrounded by text) (https://dev.ckeditor.com/ticket/12423).
 				invisible = node.$.offsetWidth <= offsetWidth0;
 			}
 
@@ -475,7 +475,7 @@
 	 * Returns a function which checks whether the node is a temporary element
 	 * (element with the `data-cke-temp` attribute) or its child.
 	 *
-	 * @since 4.3
+	 * @since 4.3.0
 	 * @static
 	 * @param {Boolean} [isReject=false] Whether to return `false` for the
 	 * temporary element instead of `true` (default).
@@ -511,7 +511,7 @@
 	 * * bookmarks (see {@link CKEDITOR.dom.walker#bookmark}),
 	 * * temporary elements (see {@link CKEDITOR.dom.walker#temp}).
 	 *
-	 * @since 4.3
+	 * @since 4.3.0
 	 * @static
 	 * @param {Boolean} [isReject=false] Whether to return `false` for the
 	 * ignored element instead of `true` (default).
@@ -530,7 +530,7 @@
 	/**
 	 * Returns a function which checks whether the node is empty.
 	 *
-	 * @since 4.5
+	 * @since 4.5.0
 	 * @static
 	 * @param {Boolean} [isReject=false] Whether to return `false` for the
 	 * ignored element instead of `true` (default).
@@ -568,7 +568,7 @@
 	 * A hash of element names which in browsers that {@link CKEDITOR.env#needsBrFiller do not need `<br>` fillers}
 	 * can be selection containers despite being empty.
 	 *
-	 * @since 4.5
+	 * @since 4.5.0
 	 * @static
 	 * @property {Object} validEmptyBlockContainers
 	 */
@@ -617,7 +617,7 @@
 	 * * empty {@link #validEmptyBlockContainers blocks} which can contain text
 	 * ({@link CKEDITOR.env#needsBrFiller old IEs only}).
 	 *
-	 * @since 4.3
+	 * @since 4.3.0
 	 * @static
 	 * @param {Boolean} [isReject=false] Whether to return `false` for the
 	 * ignored element instead of `true` (default).
@@ -636,7 +636,7 @@
 	 * @returns {CKEDITOR.dom.node/Boolean} Bogus node or `false`.
 	 */
 	CKEDITOR.dom.element.prototype.getBogus = function() {
-		// Bogus are not always at the end, e.g. <p><a>text<br /></a></p> (http://dev.ckeditor.com/ticket/7070).
+		// Bogus are not always at the end, e.g. <p><a>text<br /></a></p> (https://dev.ckeditor.com/ticket/7070).
 		var tail = this;
 		do {
 			tail = tail.getPreviousSourceNode();

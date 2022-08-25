@@ -1,14 +1,14 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'font', 'lv', {
 	fontSize: {
-		label: 'Izmērs',
-		voiceLabel: 'Fonta izmeŗs',
-		panelTitle: 'Izmērs'
+		label: 'Lielums',
+		voiceLabel: 'Fonta lielums',
+		panelTitle: 'Fonta lielums'
 	},
-	label: 'Šrifts',
-	panelTitle: 'Šrifts',
+	label: 'Fonts',
+	panelTitle: 'Fonta nosaukums',
 	voiceLabel: 'Fonts'
 } );

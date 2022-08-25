@@ -83,9 +83,9 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
                 return;
             }
-            if ($this->get('is_default', null, null, $this->settings['is_default']['default'])) {
-                throw new CHttpException(401, 'Wrong credentials for LimeSurvey administration.');
-            }
+        }
+        if (!empty($serverKey) && $this->get('is_default', null, null, $this->settings['is_default']['default'])) {
+            throw new CHttpException(401, 'Wrong credentials for LimeSurvey administration.');
         }
     }
 
@@ -141,5 +141,24 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             }
         }
+    }
+
+    /**
+     * Modified getPluginSettings to check for invalid settings
+     *
+     * @param boolean $getValues
+     * @return array
+     */
+    public function getPluginSettings($getValues = true)
+    {
+        $settings = parent::getPluginSettings($getValues);
+
+        if (!empty($settings['serverkey']) && !empty($settings['serverkey']['current'])) {
+            if(!isset($_SERVER[$settings['serverkey']['current']])) {
+                $settings['serverkey']['help'] = "<p class='alert alert-danger'>" . gT("The server key is not currently set. If you set this plugin as default you will not be able to log in again.") . "<p>";
+            }
+        }
+
+        return $settings;
     }
 }

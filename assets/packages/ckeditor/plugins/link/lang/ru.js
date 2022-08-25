@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'ru', {
 	acccessKey: 'Клавиша доступа',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'ru', {
 	noAnchors: '(В документе нет ни одного якоря)',
 	noEmail: 'Пожалуйста, введите email адрес',
 	noUrl: 'Пожалуйста, введите ссылку',
+	noTel: 'Please type the phone number', // MISSING
 	other: '<другой>',
+	phoneNumber: 'Phone number', // MISSING
 	popupDependent: 'Зависимое (Netscape)',
 	popupFeatures: 'Параметры всплывающего окна',
 	popupFullScreen: 'Полноэкранное (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'ru', {
 	toAnchor: 'Ссылка на якорь в тексте',
 	toEmail: 'Email',
 	toUrl: 'Ссылка',
+	toPhone: 'Phone', // MISSING
 	toolbar: 'Вставить/Редактировать ссылку',
 	type: 'Тип ссылки',
 	unlink: 'Убрать ссылку',

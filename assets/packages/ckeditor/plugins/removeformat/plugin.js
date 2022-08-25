@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 CKEDITOR.plugins.add( 'removeformat', {
@@ -35,8 +35,7 @@ CKEDITOR.plugins.removeformat = {
 					range;
 
 				while ( ( range = iterator.getNextRange() ) ) {
-					if ( !range.collapsed )
-						range.enlarge( CKEDITOR.ENLARGE_ELEMENT );
+					range.enlarge( CKEDITOR.ENLARGE_INLINE );
 
 					// Bookmark the range so we can re-select it after processing.
 					var bookmark = range.createBookmark(),
@@ -120,7 +119,7 @@ CKEDITOR.plugins.removeformat = {
 				}
 
 				// The selection path may not changed, but we should force a selection
-				// change event to refresh command states, due to the above attribution change. (http://dev.ckeditor.com/ticket/9238)
+				// change event to refresh command states, due to the above attribution change. (https://dev.ckeditor.com/ticket/9238)
 				editor.forceNextSelectionCheck();
 				editor.getSelection().selectRanges( ranges );
 			}
@@ -153,9 +152,9 @@ CKEDITOR.plugins.removeformat = {
  *			return !( element.is( 'span' ) && CKEDITOR.tools.isEmpty( element.getAttributes() ) );
  *		} );
  *
- * @since 3.3
+ * @since 3.3.0
  * @member CKEDITOR.editor
- * @param {Function} func The function to be called, which will be passed a {CKEDITOR.dom.element} element to test.
+ * @param {Function} func The function to be called, which will be passed an {@link CKEDITOR.dom.element element} to test.
  */
 CKEDITOR.editor.prototype.addRemoveFormatFilter = function( func ) {
 	if ( !this._.removeFormatFilters )

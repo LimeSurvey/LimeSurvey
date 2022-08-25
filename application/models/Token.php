@@ -497,11 +497,6 @@ abstract class Token extends Dynamic
         return $this->getDynamicId();
     }
 
-    public static function getEncryptedAttributes()
-    {
-        return self::$aEncryptedAttributes;
-    }
-
     public static function getDefaultEncryptionOptions()
     {
         $sEncrypted = 'N';
@@ -513,5 +508,17 @@ abstract class Token extends Dynamic
                     'email' =>  $sEncrypted
                 )
         );
+    }
+
+    public function onBeforeSave($event)
+    {
+        // Mark token as "OptOut" if globally blacklisted and 'blacklistnewsurveys' is enabled
+        if (Yii::app()->getConfig('blacklistnewsurveys') == "Y" && $this->getIsNewRecord()) {
+            $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
+            if ($blacklistHandler->isTokenBlacklisted($this)) {
+                $this->emailstatus = "OptOut";
+            }
+        }
+        return parent::onBeforeSave($event);
     }
 }

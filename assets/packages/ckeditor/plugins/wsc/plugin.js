@@ -24,7 +24,7 @@ CKEDITOR.plugins.add( 'wsc', {
 	onLoad: function(editor){
 		// Append skin specific stylesheet fo moono-lisa skin.
 		if ( ( CKEDITOR.skinName || editor.config.skin ) == 'moono-lisa' ) {
-			CKEDITOR.document.appendStyleSheet( this.path + 'skins/' + CKEDITOR.skin.name + '/wsc.css' );
+			CKEDITOR.document.appendStyleSheet( CKEDITOR.getUrl(this.path + 'skins/' + CKEDITOR.skin.name + '/wsc.css') );
 		}
 	},
 	init: function( editor ) {
@@ -84,6 +84,7 @@ CKEDITOR.plugins.add( 'wsc', {
  *
  *		config.wsc_customerId  = 'encrypted-customer-id';
  *
+ * @skipsource
  * @cfg {String} [wsc_customerId='1:ua3xw1-2XyGJ3-GWruD3-6OFNT1-oXcuB1-nR6Bp4-hgQHc-EcYng3-sdRXG3-NOfFk']
  * @member CKEDITOR.config
  */
@@ -96,6 +97,7 @@ CKEDITOR.plugins.add( 'wsc', {
  *
  *		config.wsc_customDictionaryIds = '1,3001';
  *
+ * @skipsource
  * @cfg {String} [wsc_customDictionaryIds='']
  * @member CKEDITOR.config
  */
@@ -105,6 +107,7 @@ CKEDITOR.plugins.add( 'wsc', {
  *
  *		config.wsc_userDictionaryName = 'MyUserDictionaryName';
  *
+ * @skipsource
  * @cfg {String} [wsc_userDictionaryName='']
  * @member CKEDITOR.config
  */
@@ -116,6 +119,7 @@ CKEDITOR.plugins.add( 'wsc', {
  *
  *		config.wsc_customLoaderScript = "http://my-host/spellcheck/lf/22/js/wsc_fck2plugin.js";
  *
+ * @skipsource
  * @cfg {String} [wsc_customLoaderScript='']
  * @member CKEDITOR.config
  */
@@ -133,6 +137,7 @@ CKEDITOR.plugins.add( 'wsc', {
  *
  *		config.wsc_lang = 'de_DE';
  *
+ * @skipsource
  * @cfg {String} [wsc_lang='en_US']
  * @member CKEDITOR.config
  */
@@ -145,6 +150,7 @@ CKEDITOR.plugins.add( 'wsc', {
  *		// Sets active tab thesaurus.
  *		config.wsc_cmd  = 'thes';
  *
+ * @skipsource
  * @cfg {String} [wsc_cmd='spell']
  * @member CKEDITOR.config
  */
@@ -155,6 +161,7 @@ CKEDITOR.plugins.add( 'wsc', {
  *		// Set the pop-up width.
  *		config.wsc_width = 800;
  *
+ * @skipsource
  * @cfg {String} [wsc_width=580]
  * @member CKEDITOR.config
  */
@@ -165,6 +172,7 @@ CKEDITOR.plugins.add( 'wsc', {
  *		// Set the pop-up height.
  *		config.wsc_height = 800;
  *
+ * @skipsource
  * @cfg {String} [wsc_height = Content based.]
  * @member CKEDITOR.config
  */
@@ -175,6 +183,7 @@ CKEDITOR.plugins.add( 'wsc', {
  *		// Set left margin.
  *		config.wsc_left = 0;
  *
+ * @skipsource
  * @cfg {String} [wsc_left = In the middle of the screen.]
  * @member CKEDITOR.config
  */
@@ -185,6 +194,7 @@ CKEDITOR.plugins.add( 'wsc', {
  *		// Sets top margin.
  *		config.wsc_top = 0;
  *
+ * @skipsource
  * @cfg {String} [wsc_top = In the middle of the screen.]
  * @member CKEDITOR.config
  */

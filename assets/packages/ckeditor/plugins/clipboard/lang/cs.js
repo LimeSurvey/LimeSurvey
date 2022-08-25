@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'clipboard', 'cs', {
 	copy: 'Kopírovat',
@@ -8,5 +8,8 @@ CKEDITOR.plugins.setLang( 'clipboard', 'cs', {
 	cut: 'Vyjmout',
 	cutError: 'Bezpečnostní nastavení vašeho prohlížeče nedovolují editoru spustit funkci pro vyjmutí zvoleného textu do schránky. Prosím vyjměte zvolený text do schránky pomocí klávesnice (Ctrl/Cmd+X).',
 	paste: 'Vložit',
-	pasteNotification: 'Your browser doesn\'t allow you to paste this way. Press %1 to paste.' // MISSING
+	pasteNotification: 'Stiskněte %1 pro vložení. Váš prohlížeč nepodporuje vkládání pomocí tlačítka na panelu nástrojů nebo volby kontextového menu.',
+	pasteArea: 'Oblast vkládání',
+	pasteMsg: 'Vložte svůj obsah do oblasti níže a stiskněte OK.',
+	fileFormatNotSupportedNotification: 'Tento formát souboru není podporovaný. Můžete to zkusit s jedním z podporovaných formátů: ${formats}.'
 } );

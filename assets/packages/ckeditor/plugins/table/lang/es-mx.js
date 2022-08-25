@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'table', 'es-mx', {
 	border: 'Tamaño del borde',
@@ -50,6 +50,7 @@ CKEDITOR.plugins.setLang( 'table', 'es-mx', {
 	headersColumn: 'Primera columna',
 	headersNone: 'Ninguna',
 	headersRow: 'Primera fila',
+	heightUnit: 'height unit', // MISSING
 	invalidBorder: 'El tamaño del borde debe ser un número entero.',
 	invalidCellPadding: 'El relleno de la celda debe ser un número positivo.',
 	invalidCellSpacing: 'El espacio de la celda debe ser un número positivo.',

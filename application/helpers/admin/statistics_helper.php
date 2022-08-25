@@ -584,6 +584,7 @@ class statistics_helper
         $qtitle = "";
         $qquestion = "";
         $qtype = "";
+        $subquestionText = "";
         $sQuestionType = substr($rt, 0, 1);
         $fieldmap = createFieldMap($survey, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
@@ -1162,6 +1163,7 @@ class statistics_helper
                     //list IDs and answer codes in brackets
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1179,6 +1181,7 @@ class statistics_helper
 
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1197,6 +1200,7 @@ class statistics_helper
                     //output
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1213,6 +1217,7 @@ class statistics_helper
                     }
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1231,6 +1236,7 @@ class statistics_helper
 
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "] [" . $ltext . "]";
+                    $subquestionText = $atext;
                     break;
 
                 case Question::QT_COLON_ARRAY_NUMBERS: // Array (Multiple Flexi) (Numbers)
@@ -1287,6 +1293,7 @@ class statistics_helper
                     //output
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1380,6 +1387,7 @@ class statistics_helper
                     //adapt title and question
                     $qtitle = $qtitle . " [" . $sSubquestion . "][" . $labelno . "]";
                     $qquestion = $qastring . $labelheader;
+                    $subquestionText = $sSubquestion;
                     break;
 
 
@@ -1409,7 +1417,15 @@ class statistics_helper
             $alist[] = array("", gT("No answer"), false, 'is_no_answer');
         }
 
-        return array("alist" => $alist, "qtitle" => $qtitle, "qquestion" => $qquestion, "qtype" => $qtype, "statisticsoutput" => $statisticsoutput, "parentqid" => (int)$qqid);
+        return [
+            "alist" => $alist,
+            "qtitle" => $qtitle,
+            "qquestion" => $qquestion,
+            "qtype" => $qtype,
+            "statisticsoutput" => $statisticsoutput,
+            "parentqid" => (int)$qqid,
+            "subquestionText" => $subquestionText,
+        ];
     }
 
     /**
@@ -1783,7 +1799,7 @@ class statistics_helper
 
 
             /*
-            * there are 3 colums:
+            * there are 3 columns:
             *
             * 1 (50%) = answer (title and code in brackets)
             * 2 (25%) = count (absolute)
@@ -1994,7 +2010,7 @@ class statistics_helper
         //PCHART has to be enabled and we need some data
         //
         if ($usegraph == 1) {
-            $bShowGraph = $aattr["statistics_showgraph"] == "1";
+            $bShowGraph = (isset($aattr["statistics_showgraph"]) && $aattr["statistics_showgraph"] == "1");
             $bAllowPieChart = ($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE && $outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
             $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
             $bShowMap = ($bAllowMap && $aattr["statistics_showmap"] == "1");
@@ -2772,7 +2788,7 @@ class statistics_helper
 
 
             /*
-            * there are 3 colums:
+            * there are 3 columns:
             *
             * 1 (50%) = answer (title and code in brackets)
             * 2 (25%) = count (absolute)

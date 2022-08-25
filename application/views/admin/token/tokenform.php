@@ -137,7 +137,7 @@ foreach ($tokendata as $Key => $Value) {
 
                     <?php if ($oSurvey->anonymized != 'Y'):?>
                         <div class="">
-                            <div id="sent-date-container" class="date-container"  <?php if (!$bCompletedValue):?>style="display: none;"<?php endif; ?>>
+                            <div id="completed-date-container" class="date-container"  <?php if (!$bCompletedValue):?>style="display: none;"<?php endif; ?>>
                             <div id="completed-date_datetimepicker" class="input-group date">
                                 <input class="YesNoDatePicker form-control" id="completed-date" type="text" value="<?php echo isset($completed) ? $completed : ''?>" name="completed-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
@@ -480,3 +480,24 @@ App()->getClientScript()->registerScript('TokenformViewBSSwitcher', "
 LS.renderBootstrapSwitch();
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
+
+<?php if ($token_subaction == "addnew"): ?>
+    <!-- Empty Token Confirmation Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="emptyTokenConfirmationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><?= gT('Create empty participant') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <?= gT("You are about to create a participant without the basic details. Are you sure you want to proceed?") ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel");?></button>
+                    <button type="button" class="btn btn-primary" id="save-empty-token"><?php eT("Save");?></button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+<?php endif; ?>

@@ -81,7 +81,6 @@ class LSYii_Application extends CWebApplication
             $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'] . DIRECTORY_SEPARATOR . 'runtime';
         } /* No need to test runtimePath validity : Yii return an exception without issue */
 
-
         /* If LimeSurvey is configured to load custom Twig exstensions, add them to Twig Component */
         if (array_key_exists('use_custom_twig_extensions', $baseConfig) && $baseConfig ['use_custom_twig_extensions']) {
             $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
@@ -92,7 +91,8 @@ class LSYii_Application extends CWebApplication
 
         /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl) */
         $this->setConfigs();
-
+        /* Since session can be set by DB : need to be set again … */
+        $this->setSessionByDB($aApplicationConfig);
 
         /* Update asset manager path and url only if not directly set in aApplicationConfig (from config.php),
          *  must do after reloading to have valid publicurl (the tempurl) */
@@ -306,7 +306,6 @@ class LSYii_Application extends CWebApplication
         }
 
         $sLanguage = preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
-        $this->messages->catalog = $sLanguage;
         App()->session['_lang'] = $sLanguage; // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
         parent::setLanguage($sLanguage);
     }
@@ -402,14 +401,8 @@ class LSYii_Application extends CWebApplication
             /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
             return;
         }
-        if (
-            Yii::app()->request->isAjaxRequest &&
-            $event->exception instanceof CHttpException
-        ) {
-            header('Content-Type: application/json');
-            http_response_code($event->exception->statusCode);
-            die(json_encode(['message' => $event->exception->getMessage()]));
-        }
+        // Handle specific exception cases, like "user friendly" exceptions and exceptions on ajax requests
+        $this->handleSpecificExceptions($event->exception);
         $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
             /* Can restrict to admin ? */
@@ -443,7 +436,6 @@ class LSYii_Application extends CWebApplication
         }
         $realFilePath = realpath($filePath);
         $baseDir = realpath($baseDir);
-        
         if (!is_file($realFilePath)) {
             /* Not existing file */
             Yii::log("Try to read invalid file " . $filePath, 'warning', 'application.security.files.is_file');
@@ -568,5 +560,100 @@ class LSYii_Application extends CWebApplication
         }
 
         return null;
+    }
+
+    /**
+     * Handles specific exception cases, like "user friendly" exceptions and exceptions on ajax requests.
+     *
+     * @param CException $exception
+     * @return void
+     */
+    private function handleSpecificExceptions($exception)
+    {
+        if (
+            Yii::app()->request->isAjaxRequest &&
+            $exception instanceof CHttpException
+        ) {
+            $this->outputJsonError($exception);
+        } elseif ($exception instanceof LSUserException) {
+            $this->handleFriendlyException($exception);
+        }
+    }
+
+    /**
+     * Handles "friendly" exceptions by setting a flash message and redirecting.
+     * If the exception doesn't specify a redirect URL, the referrer is used.
+     *
+     * @param array $error
+     * @param LSUserException $exception
+     * @return void
+     */
+    private function handleFriendlyException($exception)
+    {
+        $message = "<p>" . $exception->getMessage() . "</p>" . $exception->getDetailedErrorSummary();
+        Yii::app()->setFlashMessage($message, 'error');
+        if ($exception->getRedirectUrl() != null) {
+            $redirectTo = $exception->getRedirectUrl();
+        } else {
+            $redirectTo = Yii::app()->request->urlReferrer;
+        }
+        Yii::app()->request->redirect($redirectTo);
+    }
+
+    /**
+     * Outputs an exception as JSON.
+     *
+     * @param CHttpException $exception
+     * @return void
+     */
+    private function outputJsonError($exception)
+    {
+        $outputData = [
+            'success' => false,
+            'message' => $exception->getMessage(),
+        ];
+        if ($exception instanceof LSUserException) {
+            if ($exception->getRedirectUrl() != null) {
+                $outputData['redirectTo'] = $exception->getRedirectUrl();
+            }
+            if ($exception->getNoReload() != null) {
+                $outputData['noReload'] = $exception->getNoReload();
+            }
+            // Add the detailed errors to the message, so simple handlers can just show it.
+            $outputData['message'] = "<p>" . $exception->getMessage() . "</p>". $exception->getDetailedErrorSummary();
+            // But save the "simpler" message on 'error', and the list of errors on "detailedErrors"
+            // so that more complex handlers can decide what to show.
+            $outputData['error'] = $exception->getMessage();
+            $outputData['detailedErrors'] = $exception->getDetailedErrors();
+        }
+        header('Content-Type: application/json');
+        http_response_code($exception->statusCode);
+        die(json_encode($outputData));
+    }
+
+    /**
+     * Set the session after start,
+     * Limited to DbHttpSession
+     * @param array Application config
+     * @return void
+     */
+    private function setSessionByDB($aApplicationConfig)
+    {
+        if (empty($aApplicationConfig['components']['session']['class'])) {
+            /* No specific session */
+            return;
+        }
+        if ($aApplicationConfig['components']['session']['class'] != "application.core.web.DbHttpSession") {
+            /* Not included DbHttpSession */
+            return;
+        }
+        if (!empty($aApplicationConfig['components']['session']['cookieParams']['lifetime'])) {
+            /* lifetime already updated */
+            return;
+        }
+        $lifetime = intval(App()->getConfig('iSessionExpirationTime', ini_get('session.cookie_lifetime')));
+        App()->getSession()->setCookieParams([
+            'lifetime' => $lifetime
+        ]);
     }
 }

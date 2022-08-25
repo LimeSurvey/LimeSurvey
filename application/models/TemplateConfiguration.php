@@ -12,12 +12,12 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-/*
+/**
  * This is the model class for table "{{template_configuration}}".
  *
  * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
  *
- * The followings are the available columns in table '{{template_configuration}}':
+ * The following are the available columns in table '{{template_configuration}}':
  * @property integer $id Primary key
  * @property string $template_name
  * @property integer $sid Survey ID
@@ -34,11 +34,11 @@
  * @property string $packages_ltr
  * @property string $packages_rtl
  * @property string $packages_rtl
+ * @property Template $template
  *
  * @package       LimeSurvey
  * @subpackage    Backend
  */
-
 class TemplateConfiguration extends TemplateConfig
 {
     /**
@@ -414,7 +414,7 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyGroup(
                 $iSurveyGroupId,
                 $sTemplateName,
-                $abstractInstance
+                true
             );
         }
 
@@ -422,7 +422,7 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyId(
                 $iSurveyId,
                 $sTemplateName,
-                $abstractInstance
+                true
             );
         }
 
@@ -745,7 +745,7 @@ class TemplateConfiguration extends TemplateConfig
             </a>";
 
         $OptionLink = '';
-        if ($this->hasOptionPage) {
+        if ($this->getHasOptionPage()) {
             $OptionLink .= "<a
                 id='template_options_link_" . $this->template_name . "'
                 href='" . $sOptionUrl . "'
@@ -1039,6 +1039,8 @@ class TemplateConfiguration extends TemplateConfig
         $oSimpleInheritance->options = 'inherit';
         $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($this->template->name);
 
+        // TODO: It's not clear which class prepareTemplateRendering() returns or should return.
+        /** @var Template */
         $oTemplate = $this->prepareTemplateRendering($this->template->name);
 
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
@@ -1227,6 +1229,8 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Set the default configuration values for the template, and use the motherTemplate value if needed
+     *
+     * @return void
      */
     protected function setThisTemplate()
     {
@@ -1335,8 +1339,8 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * @todo document me
      *
-     * @param $packages
-     * @return array
+     * @param string[] $packages
+     * @return string[]
      */
     protected function addMotherTemplatePackage($packages)
     {
@@ -1623,5 +1627,143 @@ class TemplateConfiguration extends TemplateConfig
     private function getAttributeValue($attributeName)
     {
         return $this->getTemplateConfigurationForAttribute($this, $attributeName)->template->$attributeName;
+    }
+
+    /**
+     * @todo document me
+     * @return array|mixed|string|null
+     */
+    public function getPreview()
+    {
+        if (empty($this->sPreviewImgTag)) {
+            if (is_a($this->template, 'Template')) {
+                $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
+                $previewPath         = Template::getTemplatePath($this->template->name) . '/' . $sTemplateFileFolder;
+
+                if ($previewPath && file_exists($previewPath . '/preview.png')) {
+                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder;
+                    $this->sPreviewImgTag = '<img src="' .
+                        $previewUrl .
+                        '/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
+                }
+            } else {
+                $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
+            }
+        }
+
+        return $this->sPreviewImgTag;
+    }
+
+    /**
+     * Prepare all the needed datas to render the temple
+     * If any problem (like template doesn't exist), it will load the default theme configuration
+     * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the
+     *         same for all mother templates
+     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it
+     *         only before rendering anything related to the template.
+     *
+     * @param  string $sTemplateName the name of the template to load.
+     *                               The string comes from the template selector in survey settings
+     * @param  string $iSurveyId the id of the survey. If
+     * @param bool $bUseMagicInherit
+     * @return self
+     */
+    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
+    {
+        if (!empty($sTemplateName) && !empty($iSurveyId)) {
+            if (!empty(self::$aPreparedToRender[$sTemplateName])) {
+                if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId])) {
+                    if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+                        return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
+                    } else {
+                        /** @psalm-supress InvalidArrayOffset */
+                        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+                    }
+                } else {
+                    self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
+                    /** @psalm-suppress InvalidArrayOffset */
+                    self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+                }
+            } else {
+                self::$aPreparedToRender = array();
+                self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
+                /** @psalm-suppress InvalidArrayOffset */
+                self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+            }
+        }
+
+        $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
+        $this->setMotherTemplates(); // Recursive mother templates configuration
+        $this->setThisTemplate(); // Set the main config values of this template
+        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
+        $this->removeFiles();
+        $this->getshowpopups();
+
+        if (!empty($sTemplateName) && !empty($iSurveyId)) {
+            self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
+        }
+        return $this;
+    }
+
+    /**
+     * Create a package for the asset manager.
+     * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
+     * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
+     * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
+     *
+     * @param TemplateConfiguration $oTemplate TemplateManifest
+     */
+    protected function createTemplatePackage($oTemplate)
+    {
+        // Each template in the inheritance tree needs a specific alias
+        $sPathName  = 'survey.template-' . $oTemplate->sTemplateName . '.path';
+        $sViewName  = 'survey.template-' . $oTemplate->sTemplateName . '.viewpath';
+
+        Yii::setPathOfAlias($sPathName, $oTemplate->path);
+        Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
+
+        // First we add the framework replacement (bootstrap.css must be loaded before template.css)
+        $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
+        $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
+
+        // This variable will be used to add the variation name to the body class
+        // via $aClassAndAttributes['class']['body']
+        $this->aCssFrameworkReplacement = $aCssFiles;
+
+        // Then we add the template config files
+        $aTCssFiles = $this->getFilesToLoad($oTemplate, 'css');
+        $aTJsFiles  = $this->getFilesToLoad($oTemplate, 'js');
+
+        $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
+        $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
+
+        // Remove/Replace mother template files
+        if (
+            App()->getConfig('force_xmlsettings_for_survey_rendering') ||
+            ($this->template instanceof Template &&  $this->template->extends) ||
+            !empty($this->config->metadata->extends)
+        ) {
+              $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
+              $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
+        }
+
+        // Then we add the direction files if they exist
+        // TODO: attribute system rather than specific fields for RTL
+
+        $this->sPackageName = 'survey-template-' . $this->sTemplateName;
+        $sTemplateurl       = $oTemplate->getTemplateURL();
+
+        $aDepends = empty($oTemplate->depends) ? array() : $oTemplate->depends;
+
+        // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
+        // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );
+        // Depending on settings, it will create the asset directory, and publish the css and js files
+        App()->clientScript->addPackage($this->sPackageName, array(
+            'devBaseUrl'  => $sTemplateurl, // Used when asset manager is off
+            'basePath'    => $sPathName, // Used when asset manager is on
+            'css'         => $aCssFiles,
+            'js'          => $aJsFiles,
+            'depends'     => $aDepends,
+        ));
     }
 }

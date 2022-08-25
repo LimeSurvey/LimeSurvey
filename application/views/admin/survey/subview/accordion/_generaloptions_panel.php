@@ -81,7 +81,7 @@
                 <?php if(!$oSurvey->isNewRecord):?>
                 <!-- Survey Languages -->
                 <div class="form-group">
-                    <label class=" control-label"  for='additional_languages'><?php  eT("Survey Languages"); ?>:</label>
+                    <label class=" control-label"  for='additional_languages'><?php  eT("Survey languages"); ?>:</label>
                     <div class="">
                         <?php
                         $aAllLanguages = getLanguageDataRestricted (false,'short');

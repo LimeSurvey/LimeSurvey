@@ -1,10 +1,9 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'fakeobjects', 'lt', {
 	anchor: 'Žymė',
-	flash: 'Flash animacija',
 	hiddenfield: 'Paslėptas laukas',
 	iframe: 'IFrame',
 	unknown: 'Nežinomas objektas'

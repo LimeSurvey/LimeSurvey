@@ -42,6 +42,8 @@ class UserRoleController extends LSBaseController
         }
 
         $model = Permissiontemplates::model();
+
+        //todo do we need that param here? seems not to be used anywhere
         $aPermissiontemplatesParam = $request->getParam('Permissiontemplates');
         if ($aPermissiontemplatesParam) {
             $model->setAttributes($aPermissiontemplatesParam, false);
@@ -91,6 +93,11 @@ class UserRoleController extends LSBaseController
      */
     public function actionApplyEdit()
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->getController()->redirect(array('/admin'));
+        }
+
         $aPermissiontemplate = Yii::app()->request->getPost('Permissiontemplates');
         $model = $this->loadModel($aPermissiontemplate['ptid']);
 
@@ -139,31 +146,6 @@ class UserRoleController extends LSBaseController
 
         // Check permissions
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
-
-        /**
-         * REFACTORED
-         *
-         * this part could never be reached at any time, because same if-clause above is already
-         * returning with an error ...
-         *
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            // if not superadmin filter the available permissions as no admin may give more permissions than he owns
-            Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
-            $aFilteredPermissions = array();
-            foreach ($aBasePermissions as $PermissionName => $aPermission) {
-                foreach ($aPermission as $sPermissionKey => &$sPermissionValue) {
-                    if ($sPermissionKey != 'title' && $sPermissionKey != 'img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) {
-                        $sPermissionValue = false;
-                    }
-                }
-                // Only show a row for that permission if there is at least one permission he may give to other users
-                if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
-                    $aFilteredPermissions[$PermissionName] = $aPermission;
-                }
-            }
-            $aBasePermissions = $aFilteredPermissions;
-        }
-         */
 
         $aAllSurveys = Survey::model()->findAll();
         $aMySurveys = array_filter($aAllSurveys, function ($oSurvey) {
@@ -268,8 +250,6 @@ class UserRoleController extends LSBaseController
      */
     public function actionDelete()
     {
-        $this->requirePostRequest();
-
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));

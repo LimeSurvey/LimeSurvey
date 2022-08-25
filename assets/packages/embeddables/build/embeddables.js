@@ -1,7 +1,7 @@
 (function (factory) {
 	typeof define === 'function' && define.amd ? define(factory) :
 	factory();
-}((function () { 'use strict';
+})((function () { 'use strict';
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -10,9 +10,8 @@
 	}
 
 	var embedo = createCommonjsModule(function (module) {
-
 	(function (root, factory) {
-	  if ( module.exports) {
+	  if (module.exports) {
 	    module.exports = factory();
 	  } else if (root) {
 	    root.Embedo = window.Embedo = factory();
@@ -50,14 +49,14 @@
 	      SOURCES: {
 	        facebook: {
 	          GLOBAL: 'FB',
-	          SDK: '//connect.facebook.net/${locale}/all.js',
-	          oEmbed: '//www.facebook.com/plugins/${type}/oembed.json',
+	          SDK: '//connect.facebook.net/${locale}/sdk.js',
+	          oEmbed: '//graph.facebook.com/${version}/oembed_${type}',
 	          REGEX: /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?([\w\-]*)?/g,
 	          PARAMS: {
 	            version: 'v3.2',
 	            cookie: true,
 	            appId: null,
-	            xfbml: true
+	            access_token: null
 	          }
 	        },
 	        twitter: {
@@ -70,9 +69,12 @@
 	        instagram: {
 	          GLOBAL: 'instgrm',
 	          SDK: '//www.instagram.com/embed.js',
-	          oEmbed: '//api.instagram.com/oembed',
+	          oEmbed: '//graph.facebook.com/${version}/instagram_oembed',
 	          REGEX: /(http|https)?:\/\/(www\.)?instagram.com\/p\/[a-zA-Z0-9_\/\?\-\=]+/gi,
-	          PARAMS: {}
+	          PARAMS: {
+	            version: 'v8.0',
+	            access_token: null
+	          }
 	        },
 	        youtube: {
 	          GLOBAL: null,
@@ -306,9 +308,7 @@
 	       * @returns
 	       */
 	      validateURL: function validateURL(url) {
-	        return /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(
-	          url
-	        );
+	        return /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(url);
 	      },
 
 	      /**
@@ -380,13 +380,13 @@
 	       * @returns HTMLElement
 	       */
 	      validateElement: function validateElement(obj) {
-	        return typeof HTMLElement === 'object' ?
-	          obj instanceof window.HTMLElement :
-	          obj &&
-	          typeof obj === 'object' &&
-	          obj !== null &&
-	          obj.nodeType === 1 &&
-	          typeof obj.nodeName === 'string';
+	        return typeof HTMLElement === 'object'
+	          ? obj instanceof window.HTMLElement
+	          : obj &&
+	              typeof obj === 'object' &&
+	              obj !== null &&
+	              obj.nodeType === 1 &&
+	              typeof obj.nodeName === 'string';
 	      },
 
 	      /**
@@ -653,16 +653,12 @@
 	       */
 	      dimensions: function dimensions(el, width, height) {
 	        var el_width = Embedo.utils.compute(el, 'width');
-	        width = width ?
-	          width :
-	          el_width > 0 ?
-	          el_width :
-	          Embedo.utils.compute(el.parentNode, 'width');
-	        height = height ?
-	          height :
-	          el_width > 0 ?
-	          el_width / 1.5 :
-	          Embedo.utils.compute(el.parentNode, 'height');
+	        width = width ? width : el_width > 0 ? el_width : Embedo.utils.compute(el.parentNode, 'width');
+	        height = height
+	          ? height
+	          : el_width > 0
+	          ? el_width / 1.5
+	          : Embedo.utils.compute(el.parentNode, 'height');
 	        return {
 	          width: width,
 	          height: height
@@ -719,7 +715,7 @@
 	        }
 	        url = url.split('#')[0];
 	        var scripts = document.getElementsByTagName('script');
-	        for (var i = scripts.length; i--;) {
+	        for (var i = scripts.length; i--; ) {
 	          if (scripts[i].src === url) {
 	            return true;
 	          }
@@ -825,9 +821,11 @@
 	      if (!type || !props) {
 	        return;
 	      }
-	      var sdk = Embedo.utils.replacer(Embedo.defaults.SOURCES[type.toLowerCase()].SDK, {
-	        locale: props.locale || window.navigator.language || 'en_US'
-	      });
+	      var sdk =
+	        props.sdk ||
+	        Embedo.utils.replacer(Embedo.defaults.SOURCES[type.toLowerCase()].SDK, {
+	          locale: props.locale || window.navigator.language || 'en_US'
+	        });
 
 	      if (!Embedo.utils.handleScriptValidation(sdk)) {
 	        if (props && typeof props === 'object') {
@@ -844,17 +842,20 @@
 	   */
 	  Embedo.prototype.domify = function domify() {
 	    var embedos = document.querySelectorAll('[data-embedo-url]');
-	    [].forEach.call(embedos, function (embedo_el) {
-	      var options = Object.keys(embedo_el.dataset || {}).reduce(function (acc, cur) {
-	        if (cur.indexOf('embedo') !== -1) {
-	          var option = Embedo.utils.camelToSnake(cur).replace('embedo-', '');
-	          acc[option] = embedo_el.dataset[cur];
-	        }
-	        return acc;
-	      }, {});
+	    [].forEach.call(
+	      embedos,
+	      function (embedo_el) {
+	        var options = Object.keys(embedo_el.dataset || {}).reduce(function (acc, cur) {
+	          if (cur.indexOf('embedo') !== -1) {
+	            var option = Embedo.utils.camelToSnake(cur).replace('embedo-', '');
+	            acc[option] = embedo_el.dataset[cur];
+	          }
+	          return acc;
+	        }, {});
 
-	      this.render(embedo_el, options.url, options);
-	    }.bind(this));
+	        this.render(embedo_el, options.url, options);
+	      }.bind(this)
+	    );
 	  };
 
 	  /**
@@ -869,6 +870,7 @@
 	   */
 	  Embedo.prototype.facebook = function facebook(id, element, url, options, callback) {
 	    var type, fb_html_class;
+	    var globalOptions = this.options.facebook || {};
 
 	    if (/^([^\/?].+\/)?post|photo(s|\.php)[\/?].*$/gm.test(url)) {
 	      type = url.match(/comment_id|reply_comment_id/) ? 'comment' : 'post';
@@ -878,10 +880,13 @@
 
 	    if (type && type.match(/post|video/)) {
 	      var embed_uri = Embedo.utils.replacer(Embedo.defaults.SOURCES.facebook.oEmbed, {
+	        version: globalOptions.version || 'v8.0',
 	        type: type
 	      });
-	      var query = Embedo.utils.merge({
+	      var query = Embedo.utils.merge(
+	        {
 	          url: encodeURI(url),
+	          access_token: globalOptions.access_token,
 	          omitscript: true
 	        },
 	        options,
@@ -909,13 +914,13 @@
 	        fb_html_class = 'fb-comments';
 	      } else {
 	        fb_html_class = 'fb-page';
-	        options['data-height'] =
-	          options['data-height'] || options.maxheight || options.height || 500;
+	        options['data-height'] = options['data-height'] || options.maxheight || options.height || 500;
 	      }
 
 	      var fb_html = Embedo.utils.generateElement(
 	        'div',
-	        Embedo.utils.merge({
+	        Embedo.utils.merge(
+	          {
 	            class: fb_html_class,
 	            'data-href': url,
 	            'data-width': options['data-width'] || options.maxwidth || options.width || 350
@@ -935,7 +940,8 @@
 
 	      facebookify(
 	        element,
-	        container, {
+	        container,
+	        {
 	          id: id,
 	          url: url,
 	          strict: options.strict,
@@ -970,7 +976,8 @@
 	   */
 	  Embedo.prototype.twitter = function twitter(id, element, url, options, callback) {
 	    var embed_uri = Embedo.defaults.SOURCES.twitter.oEmbed;
-	    var query = Embedo.utils.merge({
+	    var query = Embedo.utils.merge(
+	      {
 	        url: encodeURI(url),
 	        omit_script: 1
 	      },
@@ -998,7 +1005,8 @@
 
 	      twitterify(
 	        element,
-	        container, {
+	        container,
+	        {
 	          id: id,
 	          url: url,
 	          strict: options.strict,
@@ -1032,9 +1040,14 @@
 	   * @return callback
 	   */
 	  Embedo.prototype.instagram = function (id, element, url, options, callback) {
-	    var embed_uri = Embedo.defaults.SOURCES.instagram.oEmbed;
-	    var query = Embedo.utils.merge({
+	    var globalOptions = this.options.instagram || {};
+	    var embed_uri = Embedo.utils.replacer(Embedo.defaults.SOURCES.instagram.oEmbed, {
+	      version: globalOptions.version || 'v8.0'
+	    });
+	    var query = Embedo.utils.merge(
+	      {
 	        url: encodeURI(url),
+	        access_token: globalOptions.access_token,
 	        omitscript: true,
 	        hidecaption: true
 	      },
@@ -1053,44 +1066,48 @@
 
 	    var method = options.jsonp ? 'jsonp' : 'ajax';
 
-	    Embedo.utils[method](embed_uri, function (err, content) {
-	      if (err) {
-	        Embedo.log('error', 'instagram', err);
-	        // If oembed or instagram embed script is unavailable.
-	        if (options.jsonp === undefined || options.jsonp === null) {
-	          var extracted_url = url.match(Embedo.defaults.SOURCES.instagram.REGEX);
-	          url = extracted_url && extracted_url.length > 0 ? extracted_url[0].replace(/\/$/, '') : url;
-	          return this.iframe(id, element, url + '/embed/', options, callback);
-	        }
-	        return callback(err);
-	      }
-
-	      var container = Embedo.utils.generateEmbed(id, 'instagram', content.html);
-	      element.appendChild(container);
-
-	      instagramify(
-	        element,
-	        container, {
-	          id: id,
-	          url: url,
-	          strict: options.strict,
-	          width: options.width,
-	          height: options.height,
-	          centerize: options.centerize
-	        },
-	        function (err, result) {
-	          if (err) {
-	            return callback(err);
+	    Embedo.utils[method](
+	      embed_uri,
+	      function (err, content) {
+	        if (err) {
+	          Embedo.log('error', 'instagram', err);
+	          // If oembed or instagram embed script is unavailable.
+	          if (options.jsonp === undefined || options.jsonp === null) {
+	            var extracted_url = url.match(Embedo.defaults.SOURCES.instagram.REGEX);
+	            url = extracted_url && extracted_url.length > 0 ? extracted_url[0].replace(/\/$/, '') : url;
+	            return this.iframe(id, element, url + '/embed/', options, callback);
 	          }
-	          callback(null, {
-	            id: id,
-	            el: element,
-	            width: result.width,
-	            height: result.height
-	          });
+	          return callback(err);
 	        }
-	      );
-	    }.bind(this));
+
+	        var container = Embedo.utils.generateEmbed(id, 'instagram', content.html);
+	        element.appendChild(container);
+
+	        instagramify(
+	          element,
+	          container,
+	          {
+	            id: id,
+	            url: url,
+	            strict: options.strict,
+	            width: options.width,
+	            height: options.height,
+	            centerize: options.centerize
+	          },
+	          function (err, result) {
+	            if (err) {
+	              return callback(err);
+	            }
+	            callback(null, {
+	              id: id,
+	              el: element,
+	              width: result.width,
+	              height: result.height
+	            });
+	          }
+	        );
+	      }.bind(this)
+	    );
 	  };
 
 	  /**
@@ -1110,16 +1127,19 @@
 	    }
 
 	    var youtube_uri = Embedo.defaults.SOURCES.youtube.oEmbed + getYTVideoID(url);
-	    youtube_uri += '?' + Embedo.utils.querystring(
-	      Embedo.utils.merge({
-	          modestbranding: 1,
-	          autohide: 1,
-	          showinfo: 0
-	        },
-	        options,
-	        Embedo.defaults.RESTRICTED
-	      )
-	    );
+	    youtube_uri +=
+	      '?' +
+	      Embedo.utils.querystring(
+	        Embedo.utils.merge(
+	          {
+	            modestbranding: 1,
+	            autohide: 1,
+	            showinfo: 0
+	          },
+	          options,
+	          Embedo.defaults.RESTRICTED
+	        )
+	      );
 
 	    this.iframe(id, element, youtube_uri, options, callback);
 
@@ -1149,7 +1169,8 @@
 	   */
 	  Embedo.prototype.vimeo = function (id, element, url, options, callback) {
 	    var size = Embedo.utils.dimensions(element, options.width, options.height);
-	    var embed_options = Embedo.utils.merge({
+	    var embed_options = Embedo.utils.merge(
+	      {
 	        url: url,
 	        width: size.width,
 	        height: size.height,
@@ -1158,8 +1179,7 @@
 	      options,
 	      Embedo.defaults.RESTRICTED
 	    );
-	    var embed_uri =
-	      Embedo.defaults.SOURCES.vimeo.oEmbed + '?' + Embedo.utils.querystring(embed_options);
+	    var embed_uri = Embedo.defaults.SOURCES.vimeo.oEmbed + '?' + Embedo.utils.querystring(embed_options);
 
 	    Embedo.utils.fetch(embed_uri, function (error, content) {
 	      if (error) {
@@ -1193,7 +1213,8 @@
 	    var pin_size = size.width > 600 ? 'large' : size.width < 345 ? 'small' : 'medium';
 	    var pin_el = Embedo.utils.generateElement(
 	      'a',
-	      Embedo.utils.merge({
+	      Embedo.utils.merge(
+	        {
 	          href: url,
 	          'data-pin-do': options['data-pin-do'] || 'embedPin',
 	          'data-pin-lang': options['data-pin-lang'] || 'en',
@@ -1208,7 +1229,8 @@
 
 	    pinterestify(
 	      element,
-	      container, {
+	      container,
+	      {
 	        id: id,
 	        url: url,
 	        strict: options.strict,
@@ -1243,8 +1265,10 @@
 	   */
 	  Embedo.prototype.github = function github(id, element, url, options, callback) {
 	    var size = Embedo.utils.dimensions(element, options.width, options.height);
-	    var iframe = Embedo.utils.generateElement('iframe',
-	      Embedo.utils.merge({
+	    var iframe = Embedo.utils.generateElement(
+	      'iframe',
+	      Embedo.utils.merge(
+	        {
 	          width: size.width,
 	          height: size.height
 	        },
@@ -1258,15 +1282,17 @@
 	    iframe.contentWindow.document.open();
 	    iframe.contentWindow.document.write(
 	      '<body><style type="text/css">body,html{margin:0;padding:0;border-radius:3px;}' +
-	      '.gist .gist-file{margin:0 !important;padding:0;}</style>' +
-	      '<script src="' + url + '"></script>' +
-	      '</body>'
+	        '.gist .gist-file{margin:0 !important;padding:0;}</style>' +
+	        '<script src="' +
+	        url +
+	        '"></script>' +
+	        '</body>'
 	    );
 	    iframe.contentWindow.document.close();
 	    iframe.onerror = function (err) {
 	      callback(err);
 	    };
-	    iframe.addEventListener("load", function (event) {
+	    iframe.addEventListener('load', function (event) {
 	      callback(null, {
 	        id: id,
 	        el: element,
@@ -1296,15 +1322,15 @@
 	      options.maxheight = options.maxheight || options.height;
 	    }
 	    var size = Embedo.utils.dimensions(element, options.maxwidth, options.maxheight);
-	    var embed_options = Embedo.utils.merge({
+	    var embed_options = Embedo.utils.merge(
+	      {
 	        url: encodeURI(url),
 	        format: 'js' // Defaults JSONP
 	      },
 	      options,
 	      Embedo.defaults.RESTRICTED
 	    );
-	    var embed_uri =
-	      Embedo.defaults.SOURCES.soundcloud.oEmbed + '?' + Embedo.utils.querystring(embed_options);
+	    var embed_uri = Embedo.defaults.SOURCES.soundcloud.oEmbed + '?' + Embedo.utils.querystring(embed_options);
 
 	    Embedo.utils.fetch(embed_uri, function (error, content) {
 	      if (error) {
@@ -1356,8 +1382,10 @@
 	    var has_video = extension.match(/(mp4|ogg|webm|ogv|ogm)/);
 	    var el_type = has_video ? 'video' : options.tagName || 'embed';
 	    var override = Embedo.utils.merge({}, options, Embedo.defaults.RESTRICTED);
-	    var embed_el = Embedo.utils.generateElement(el_type,
-	      Embedo.utils.merge({
+	    var embed_el = Embedo.utils.generateElement(
+	      el_type,
+	      Embedo.utils.merge(
+	        {
 	          type: mimetype,
 	          src: url,
 	          width: size.width,
@@ -1383,7 +1411,7 @@
 	      embed_el.onerror = function (err) {
 	        callback(err);
 	      };
-	      embed_el.addEventListener("load", function (event) {
+	      embed_el.addEventListener('load', function (event) {
 	        callback(null, {
 	          id: id,
 	          el: element,
@@ -1457,7 +1485,11 @@
 
 	    this.emit('watch', 'load', request);
 
-	    this[source](id, element, url, options,
+	    this[source](
+	      id,
+	      element,
+	      url,
+	      options,
 	      function (err, data) {
 	        if (err) {
 	          this.emit('error', err);
@@ -1740,10 +1772,7 @@
 	      var instagram_embed_timer = setInterval(handleInstagramRendered, 250);
 
 	      function handleInstagramRendered() {
-	        if (
-	          childNode.firstChild &&
-	          childNode.firstChild.className.match(/instagram-media-rendered/)
-	        ) {
+	        if (childNode.firstChild && childNode.firstChild.className.match(/instagram-media-rendered/)) {
 	          clearInterval(instagram_embed_timer);
 	          if (options.centerize !== false) {
 	            Embedo.utils.centerize(parentNode, childNode, options);
@@ -1891,4 +1920,4 @@
 	  });
 	});
 
-})));
+}));

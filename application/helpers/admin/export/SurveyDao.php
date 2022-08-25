@@ -44,9 +44,9 @@ class SurveyDao
 
         $survey->groups = QuestionGroup::model()->findAll(array("condition" => 'sid=' . $intId, 'order' => 'group_order'));
         $survey->questions = Question::model()->findAll(array("condition" => 'sid=' . $intId, 'order' => 'question_order'));
-        $aAnswers = Answer::model()->with('answerl10ns', 'question')->findAll(array('condition' => 'question.sid=' . $intId . ' AND ' . Yii::app()->db->quoteTableName('answerl10ns') . '.language = \'' . $lang . '\'', 'order' => 'question.question_order, t.scale_id, sortorder'));
+        $aAnswers = Answer::model()->with('answerl10ns', 'question')->findAll(array('condition' => 'question.sid=' . $intId . ' AND ' . Yii::app()->db->quoteTableName('answerl10ns') . '.language = \'' . $lang . '\'', 'order' => 'question.question_order, t.scale_id'));
         foreach ($aAnswers as $aAnswer) {
-            if (!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1  && Yii::app()->controller->action->id != 'remotecontrol') {
+            if (!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1) {
                 $answer = stripTagsFull($aAnswer->answerl10ns[$lang]->answer);
             } else {
                 $answer = $aAnswer->answerl10ns[$lang]->answer;
@@ -92,7 +92,7 @@ class SurveyDao
         if (!empty($aFields)) {
             $aSelectFields = array_intersect($aFields, $aSelectFields);
         }
-        // Allways add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
+        // Always add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField) {
             $sField = $oSurvey->responsesTableName . "." . $sField;
         }

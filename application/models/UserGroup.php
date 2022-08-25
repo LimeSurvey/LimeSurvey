@@ -88,7 +88,7 @@ class UserGroup extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        return $this->db->insert('user_groups', $data);
+        return Yii::app()->db->insert('user_groups', $data);
     }
 
     // TODO seems to be unused, probably shouldn't be done like that
@@ -130,7 +130,7 @@ class UserGroup extends LSActiveRecord
     /**
      * @param string $group_name
      * @param string $group_description
-     * @return boolean
+     * @return int
      * @todo should use save() and afterSave() methods!!
      */
     public function addGroup($group_name, $group_description)
@@ -143,7 +143,7 @@ class UserGroup extends LSActiveRecord
         $result = $command->query();
         if ($result) {
 //Checked
-            $id = getLastInsertID($this->tableName()); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');
+            $id = (int) getLastInsertID($this->tableName());
             if ($id > 0) {
                     $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
                     Yii::app()->db->createCommand($user_in_groups_query)
@@ -153,7 +153,7 @@ class UserGroup extends LSActiveRecord
             }
             return $id;
         } else {
-                    return -1;
+            return -1;
         }
     }
 

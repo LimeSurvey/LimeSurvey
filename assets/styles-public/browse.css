@@ -31,6 +31,10 @@
     margin-left: 3px;
 }
 
+#responses-grid table.upload-question > tbody > tr:first-child > td {
+    border: none;
+}
+
 /*!
  * Style for browsing response : in jqgrid
  * TODO: Is not in use anymore

@@ -85,6 +85,7 @@ class PluginManagerController extends SurveyCommonAction
             'scanFiles' => [
                 'url' => $scanFilesUrl,
             ],
+            'showUpload' => !Yii::app()->getConfig('demoMode') && !Yii::app()->getConfig('disablePluginUpload'),
         ];
 
         $this->renderWrappedTemplate('pluginmanager', 'index', $aData);
@@ -301,7 +302,7 @@ class PluginManagerController extends SurveyCommonAction
         }
 
         $plugin      = Plugin::model()->findByPk($id);
-        $oPluginObject = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id);
+        $oPluginObject = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id, false);
 
         if (empty($oPluginObject)) {
             Yii::app()->user->setFlash('error', gT('Could not load plugin'));
@@ -514,6 +515,8 @@ class PluginManagerController extends SurveyCommonAction
      */
     public function upload()
     {
+        $this->checkUploadEnabled();
+
         $this->checkUpdatePermission();
 
         // Redirect back if demo mode is set.
@@ -546,6 +549,8 @@ class PluginManagerController extends SurveyCommonAction
      */
     public function uploadConfirm()
     {
+        $this->checkUploadEnabled();
+
         $this->checkUpdatePermission();
 
         /** @var PluginInstaller */
@@ -559,6 +564,11 @@ class PluginManagerController extends SurveyCommonAction
             if (empty($config)) {
                 $installer->abort();
                 $this->errorAndRedirect(gT('Could not read plugin configuration file.'));
+            }
+
+            if (!$installer->isWhitelisted()) {
+                $installer->abort();
+                $this->errorAndRedirect(gT('The plugin is not in the plugin whitelist.'));
             }
 
             if (!$config->isCompatible()) {
@@ -593,6 +603,8 @@ class PluginManagerController extends SurveyCommonAction
      */
     public function installUploadedPlugin()
     {
+        $this->checkUploadEnabled();
+
         $this->checkUpdatePermission();
 
         /** @var LSHttpRequest */
@@ -745,6 +757,18 @@ class PluginManagerController extends SurveyCommonAction
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+    }
+
+    /**
+     * Blocks action if plugin upload is disabled.
+     * @return void
+     */
+    protected function checkUploadEnabled()
+    {
+        if (Yii::app()->getConfig('disablePluginUpload')) {
+            Yii::app()->setFlashMessage(gT('Plugin upload is disabled'), 'error');
             $this->getController()->redirect($this->getPluginManagerUrl());
         }
     }

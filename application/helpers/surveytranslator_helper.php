@@ -167,8 +167,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['bg']['momentjs'] = 'bg';
 
     // Catalan
-    $supportedLanguages['ca-valencia']['description'] = gT('Catalan (Valencian)');
-    $supportedLanguages['ca-valencia']['nativedescription'] = 'Catal&#224; (Valenci&#224;)';
+    $supportedLanguages['ca-valencia']['description'] = gT('Valencian');
+    $supportedLanguages['ca-valencia']['nativedescription'] = 'Valenci&#224;';
     $supportedLanguages['ca-valencia']['rtl'] = false;
     $supportedLanguages['ca-valencia']['dateformat'] = 1;
     $supportedLanguages['ca-valencia']['radixpoint'] = 1;
@@ -442,6 +442,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['id']['radixpoint'] = 1;
     $supportedLanguages['id']['momentjs'] = 'id';
 
+    // Inuktitut
+    $supportedLanguages['ike']['description'] = gT('Inuktitut');
+    $supportedLanguages['ike']['nativedescription'] = '&#x1403;&#x14C4;&#x1483;&#x144E;&#x1450;&#x1466;';
+    $supportedLanguages['ike']['rtl'] = false;
+    $supportedLanguages['ike']['dateformat'] = 5;
+    $supportedLanguages['ike']['radixpoint'] = 1;
+    $supportedLanguages['ike']['momentjs'] = null;
+
     // Irish
     $supportedLanguages['ie']['description'] = gT('Irish');
     $supportedLanguages['ie']['nativedescription'] = 'Gaeilge';
@@ -482,6 +490,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ja']['dateformat'] = 6;
     $supportedLanguages['ja']['radixpoint'] = 0;
     $supportedLanguages['ja']['momentjs'] = 'ja';
+
+    // Kannada
+    $supportedLanguages['kn']['description'] = gT('Kannada');
+    $supportedLanguages['kn']['nativedescription'] = '&#xC95;&#xCA8;&#xCCD;&#xCA8;&#xCA1;';
+    $supportedLanguages['kn']['rtl'] = false;
+    $supportedLanguages['kn']['dateformat'] = 2;
+    $supportedLanguages['kn']['radixpoint'] = 0;
+    $supportedLanguages['kn']['momentjs'] = 'kn';
 
     // Kazakh
     $supportedLanguages['kk']['description'] = gT('Kazakh');
@@ -527,7 +543,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     // Kurdish (Kurmanji)
     $supportedLanguages['kmr']['description'] = gT('Kurdish (Kurmanji)');
     $supportedLanguages['kmr']['nativedescription'] = 'Kurmanc&#xEE;';
-    $supportedLanguages['kmr']['rtl'] = true;
+    $supportedLanguages['kmr']['rtl'] = false;
     $supportedLanguages['kmr']['dateformat'] = 1;
     $supportedLanguages['kmr']['radixpoint'] = 1;
     $supportedLanguages['kmr']['cldr'] = 'ku';
@@ -745,8 +761,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ru']['momentjs'] = 'ru';
 
     // Sami
-    $supportedLanguages['smi']['description'] = gT('Sami');
-    $supportedLanguages['smi']['nativedescription'] = 'Sámi';
+    $supportedLanguages['smi']['description'] = gT('Sami (Northern)');
+    $supportedLanguages['smi']['nativedescription'] = 'Davvisámegiella';
     $supportedLanguages['smi']['rtl'] = false;
     $supportedLanguages['smi']['dateformat'] = 4;
     $supportedLanguages['smi']['radixpoint'] = 1;
@@ -897,6 +913,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ta']['dateformat'] = 2;
     $supportedLanguages['ta']['radixpoint'] = 0;
     $supportedLanguages['ta']['momentjs'] = 'ta';
+
+    // Telugu
+    $supportedLanguages['te']['description'] = gT('Telugu');
+    $supportedLanguages['te']['nativedescription'] = '&#xC24;&#xC46;&#xC32;&#xC41;&#xC17;&#xC41;';
+    $supportedLanguages['te']['rtl'] = false;
+    $supportedLanguages['te']['dateformat'] = 2;
+    $supportedLanguages['te']['radixpoint'] = 0;
+    $supportedLanguages['te']['momentjs'] = 'te';
 
     // Thai
     $supportedLanguages['th']['description'] = gT('Thai');
@@ -1173,9 +1197,9 @@ function canShowDatePicker($dateformatdetails, $dateformats = null)
 }
 
 /**
+ * Returns a language code from the name
  *
- *
- * @param string $languagetosearch this is the shortname for the language (e.g. 'en' see array in getLanguageData())
+ * @param string $languagetosearch this is the name of the language (e.g. 'English' see array in getLanguageData())
  * @return int|string
  */
 function getLanguageCodefromLanguage($languagetosearch)

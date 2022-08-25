@@ -56,9 +56,13 @@ $config['admintheme']         = 'Sea_Green'; // This setting specifys the direct
 $config['adminthemeiconsize'] = 32; // This settings describes the icon size for a normal toolbar icon - default for gringegreen is 32
 
 
-// If the user enters password incorrectly
+// If the user (admins) enters password incorrectly
 $config['maxLoginAttempt']    = 3; // Lock them out after 3 attempts
 $config['timeOutTime']        = 60 * 10; // Lock them out for 10 minutes.
+
+// If participant enters wrong access token
+$config['maxLoginAttemptParticipants']    = 3; // Lock them out after 3 attempts
+$config['timeOutParticipants']        = 60 * 10; // Lock them out for 10 minutes.
 
 // Site Settings
 $config['printanswershonorsconditions'] = 1; // If set to 1, only relevant answers to questions can be printed by user. If set to 0, also questions not shown are printed
@@ -87,7 +91,7 @@ $config['customassetversionnumber']  = 1;        // Used to generate the path of
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
 $config['allowedthemeimageformats'] = 'gif,ico,jpg,png'; // Image file types allowed to be uploaded in the themes section.
-$config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig'; // Other file types allowed to be uploaded in the themes section.
+$config['allowedthemeuploads'] = 'css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,lss,lsa,lsq,lsg'; // Other file types allowed to be uploaded in the themes section.
 $config['allowedfileuploads'] = [
     //Documents
     'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
@@ -200,7 +204,7 @@ $config['auth_webserver_autocreate_user'] = false;
 
 // auth_webserver_autocreate_profile
 // This is an array describing the default profile to use for auto-created users
-// This profile will be the same for all users (unless you define the optionnal
+// This profile will be the same for all users (unless you define the optional
 // 'hook_get_auth_webserver_profile' function).
 //
 $config['auth_webserver_autocreate_profile'] = Array(
@@ -215,7 +219,7 @@ $config['auth_webserver_autocreate_permissions'] = Array(
 );
 
 // hook_get_auth_webserver_profile
-// The optionnal 'hook_get_auth_webserver_profile' function is for advanced user usage only.
+// The optional 'hook_get_auth_webserver_profile' function is for advanced user usage only.
 // It is used to customize the profile of the imported user
 // If set, the this function will overwrite the auth_webserver_autocreate_profile
 // defined above by its return value
@@ -287,8 +291,7 @@ $config['demoModePrefill'] = false;
 *
 * $column_style defines how columns are rendered for survey answers.
 * There are four possible options:
-*     'css'   using one of the various CSS only methods for creating
-columns (see theme style sheet for details).
+*     'css'   using one of the various CSS only methods for creating columns (see theme style sheet for details).
 *     'ul'    using multiple floated unordered lists. (DEFAULT)
 *     'table' using conventional tables based layout.
 *     NULL    blocks the use of columns
@@ -367,9 +370,9 @@ $config['maxforgottenpasswordemaildelay'] = 1500000;
 
 $config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 /**
-*  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific langage - this font are included in tcpdf core
+*  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific language - this font are included in tcpdf core
 *  Only used if $pdfdefaultfont is set to auto or set to a PDF core fonts
-*  Some langage are not tested : need translation for Yes,No and Gender : ckb, swh
+*  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile'] = array(
     'ar'=>'dejavusans', // 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
@@ -449,7 +452,7 @@ $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of re
 */
 $config['chartfontfile'] = 'auto';
 /**
-*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific langage - this font must reside in <limesurvey root folder>/fonts
+*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/fonts
 *  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
 */
 $config['alternatechartfontfile'] = array(
@@ -740,9 +743,9 @@ $config['overwritefiles'] = 'off';
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
 
-// (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
+// (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric characters; 0 : leave all characters
 $config['bFixNumAuto']             = 1;
-// (javascript) Send real value entered when using Numeric question type in ExpressionScript Engine : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
+// (javascript) Send real value entered when using Numeric question type in ExpressionScript Engine : 0 : {NUMERIC} with bad characters send '', 1 : {NUMERIC} send all characters entered
 $config['bNumRealValue'] = 0;
 
 // Home page default Settings
@@ -788,21 +791,21 @@ $config['max_execution_time'] = 1200;
 // This is useful when developing a theme, so changes to XML files are immediately applied without the need to uninstall and reinstall the theme.
 $config['force_xmlsettings_for_survey_rendering'] = false;
 
+/**
+ * When this setting is true, plugins that are not in the white list (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
+ * already installed plugins.
+ * Core plugins are implicitly whitelisted, but can be excluded using the black list.
+ */
 $config['usePluginWhitelist'] = false;
 
-$config['pluginCoreList'] = [
-    'AuditLog',
-    'ExportR',
-    'ExportSTATAxml',
-    'ExportSPSSsav',
-    'extendedStartPage',
-    'oldUrlCompat',
-    'AuthLDAP',
-    'Authdb',
-    'Authwebserver'
-];
-
+// List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly whitelisted.
 $config['pluginWhitelist'] = [];
+
+// List of core plugin names forbidden when 'usePluginWhitelist' is true.
+$config['corePluginBlacklist'] = [];
+
+// When this setting is true, the "Plugin Upload" feature is disabled.
+$config['disablePluginUpload'] = false;
 
 /* replaced in generated application/config/security.php if exist */
 $config['encryptionkeypair'] = '';

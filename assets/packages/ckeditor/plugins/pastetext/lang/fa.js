@@ -1,8 +1,9 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'pastetext', 'fa', {
 	button: 'چسباندن به عنوان متن ساده',
-	pasteNotification: 'Your browser does not allow you to paste plain text this way. Press %1 to paste.' // MISSING
+	pasteNotification: '1% را فشاردهید تا بچسبد. مرورگر شما از چسباندن با دکمه نوارابزار یا گزینه منوی زمینه پشتیبانی نمیکند',
+	title: 'چسباندن به عنوان متن ساده'
 } );

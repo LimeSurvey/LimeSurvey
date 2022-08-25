@@ -9,6 +9,9 @@
     btnUpload: 'Відвантажити на сервер',
     advanced: 'Додатково',
     autoplay: 'Автовідтворення?',
+    allowdownload: 'Allow download?',
+    advisorytitle: 'Advisory title',
     yes: 'Так',
-    no: 'Ні'
+    no: 'Ні',
+    controls: 'Показати елементи керування?'
 } );

@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'link', 'az', {
 	acccessKey: 'Qısayol düyməsi',
@@ -35,7 +35,9 @@ CKEDITOR.plugins.setLang( 'link', 'az', {
 	noAnchors: '(heç bir xeş tapılmayıb)',
 	noEmail: 'E-poçt ünvanı daxil edin',
 	noUrl: 'Linkin URL-ı daxil edin',
+	noTel: 'Please type the phone number', // MISSING
 	other: '<digər>',
+	phoneNumber: 'Phone number', // MISSING
 	popupDependent: 'Asılı (Netscape)',
 	popupFeatures: 'Pəncərənin xüsusiyyətləri',
 	popupFullScreen: 'Tam ekran rejimi (IE)',
@@ -60,6 +62,7 @@ CKEDITOR.plugins.setLang( 'link', 'az', {
 	toAnchor: 'Xeş',
 	toEmail: 'E-poçt',
 	toUrl: 'URL',
+	toPhone: 'Phone', // MISSING
 	toolbar: 'Link',
 	type: 'Linkin növü',
 	unlink: 'Linki sil',

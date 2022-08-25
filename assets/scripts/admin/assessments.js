@@ -52,7 +52,12 @@ var bindAction = function(){
                 $.each(responseData.editData, function(key, value){
                     var itemToChange = $('#assessmentsform').find('[name='+key+']');
                     if(!itemToChange.is('input[type=checkbox]') && !itemToChange.is('input[type=radio]')) {
-                        itemToChange.val(value).trigger('change');
+                        const oCKeditor_itemToChange = CKEDITOR.instances[key];
+                        if (oCKeditor_itemToChange) {
+                            oCKeditor_itemToChange.setData(value);
+                        } else {
+                            itemToChange.val(value).trigger('change');
+                        }
                     } else {
                         $('#assessmentsform').find('[name='+key+'][value='+value+']').prop('checked',true).trigger('change');
                     }

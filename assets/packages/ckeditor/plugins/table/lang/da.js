@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'table', 'da', {
 	border: 'Rammebredde',
@@ -50,6 +50,7 @@ CKEDITOR.plugins.setLang( 'table', 'da', {
 	headersColumn: 'Første kolonne',
 	headersNone: 'Ingen',
 	headersRow: 'Første række',
+	heightUnit: 'højde enhed',
 	invalidBorder: 'Rammetykkelse skal være et tal.',
 	invalidCellPadding: 'Cellemargen skal være et tal.',
 	invalidCellSpacing: 'Celleafstand skal være et tal.',

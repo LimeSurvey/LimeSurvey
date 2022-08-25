@@ -285,12 +285,17 @@ class InstallerConfigForm extends CFormModel
         }
 
         if ($this->isMysql && $this->dbengine === self::ENGINE_TYPE_INNODB) {
-            $mariadb = preg_match('/MariaDB/i', $this->getMySqlConfigValue('version'));
-            $match = preg_match('/^\d+\.\d+\.\d+/', $this->getMySqlConfigValue('version'), $version);
+            $version = $this->getMySqlConfigValue('version');
+            if (is_null($version)) {
+                $this->addError($attribute, gT('Could not determine the database engine version. Please check your credentials.'));
+                return;
+            }
+            $mariadb = preg_match('/MariaDB/i', $version);
+            $match = preg_match('/^\d+\.\d+\.\d+/', $version, $matchedVersion);
             if (
                 !$match
-                    || (!$mariadb && version_compare($version[0], '8.0.0') < 0)
-                    || ($mariadb && version_compare($version[0], '10.2.2') < 0)
+                    || (!$mariadb && version_compare($matchedVersion[0], '8.0.0') < 0)
+                    || ($mariadb && version_compare($matchedVersion[0], '10.2.2') < 0)
             ) {
                 // Only for older db-engine
                 if (!$this->isInnoDbLargeFilePrefixEnabled()) {
@@ -526,8 +531,8 @@ class InstallerConfigForm extends CFormModel
         $port = $this->getDbPort();
 
         // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
-        if (substr($this->dblocation, 0, 1) == "/") {
-            $sDSN = "mysql:unix_socket={$this->dblocation}";
+        if (substr($this->dblocation, 0, 1) === "/") {
+            $sDSN = "mysql:unix_socket={$this->dblocation};";
         } else {
             $sDSN = "mysql:host={$this->dblocation};port={$port};";
         }

@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
 CKEDITOR.plugins.add( 'richcombo', {
@@ -21,7 +21,8 @@ CKEDITOR.plugins.add( 'richcombo', {
 			' hidefocus="true"' +
 			' role="button"' +
 			' aria-labelledby="{id}_label"' +
-			' aria-haspopup="true"';
+			' aria-haspopup="listbox"',
+		specialClickHandler = '';
 
 	// Some browsers don't cancel key events in the keydown but in the
 	// keypress.
@@ -34,11 +35,15 @@ CKEDITOR.plugins.add( 'richcombo', {
 	if ( CKEDITOR.env.gecko )
 		template += ' onblur="this.style.cssText = this.style.cssText;"';
 
+	// In IE/Edge right click opens rich combo (#2845).
+	if ( CKEDITOR.env.ie ) {
+		specialClickHandler = 'return false;" onmouseup="CKEDITOR.tools.getMouseButton(event)==CKEDITOR.MOUSE_BUTTON_LEFT&&';
+	}
+
 	template +=
 		' onkeydown="return CKEDITOR.tools.callFunction({keydownFn},event,this);"' +
-		' onfocus="return CKEDITOR.tools.callFunction({focusFn},event);" ' +
-			( CKEDITOR.env.ie ? 'onclick="return false;" onmouseup' : 'onclick' ) + // http://dev.ckeditor.com/ticket/188
-				'="CKEDITOR.tools.callFunction({clickFn},this);return false;">' +
+		' onfocus="return CKEDITOR.tools.callFunction({focusFn},event);"' +
+		' onclick="' + specialClickHandler + 'CKEDITOR.tools.callFunction({clickFn},this);return false;">' +
 			'<span id="{id}_text" class="cke_combo_text cke_combo_inlinelabel">{label}</span>' +
 			'<span class="cke_combo_open">' +
 				'<span class="cke_combo_arrow">' +
@@ -94,7 +99,8 @@ CKEDITOR.plugins.add( 'richcombo', {
 
 			this._ = {
 				panelDefinition: panelDefinition,
-				items: {}
+				items: {},
+				listeners: []
 			};
 		},
 
@@ -106,15 +112,17 @@ CKEDITOR.plugins.add( 'richcombo', {
 			},
 
 			/**
-			 * Renders the combo.
+			 * Renders the rich combo.
 			 *
 			 * @param {CKEDITOR.editor} editor The editor instance which this button is
 			 * to be used by.
-			 * @param {Array} output The output array to which append the HTML relative
-			 * to this button.
+			 * @param {Array} output The output array that the HTML relative
+			 * to this button will be appended to.
 			 */
 			render: function( editor, output ) {
-				var env = CKEDITOR.env;
+				var env = CKEDITOR.env,
+					instance,
+					selLocked;
 
 				var id = 'cke_' + this.id;
 				var clickFn = CKEDITOR.tools.addFunction( function( el ) {
@@ -127,7 +135,8 @@ CKEDITOR.plugins.add( 'richcombo', {
 				}, this );
 
 				var combo = this;
-				var instance = {
+
+				instance = {
 					id: id,
 					combo: this,
 					focus: function() {
@@ -160,7 +169,7 @@ CKEDITOR.plugins.add( 'richcombo', {
 				};
 
 				function updateState() {
-					// Don't change state while richcombo is active (http://dev.ckeditor.com/ticket/11793).
+					// Don't change state while richcombo is active (https://dev.ckeditor.com/ticket/11793).
 					if ( this.getState() == CKEDITOR.TRISTATE_ON )
 						return;
 
@@ -178,11 +187,11 @@ CKEDITOR.plugins.add( 'richcombo', {
 				}
 
 				// Update status when activeFilter, mode, selection or readOnly changes.
-				editor.on( 'activeFilterChange', updateState, this );
-				editor.on( 'mode', updateState, this );
-				editor.on( 'selectionChange', updateState, this );
+				this._.listeners.push( editor.on( 'activeFilterChange', updateState, this ) );
+				this._.listeners.push( editor.on( 'mode', updateState, this ) );
+				this._.listeners.push( editor.on( 'selectionChange', updateState, this ) );
 				// If this combo is sensitive to readOnly state, update it accordingly.
-				!this.readOnly && editor.on( 'readOnly', updateState, this );
+				!this.readOnly && this._.listeners.push( editor.on( 'readOnly', updateState, this ) );
 
 				var keyDownFn = CKEDITOR.tools.addFunction( function( ev, element ) {
 					ev = new CKEDITOR.dom.event( ev );
@@ -209,7 +218,7 @@ CKEDITOR.plugins.add( 'richcombo', {
 					instance.onfocus && instance.onfocus();
 				} );
 
-				var selLocked = 0;
+				selLocked = 0;
 
 				// For clean up
 				instance.keyDownFn = keyDownFn;
@@ -309,6 +318,21 @@ CKEDITOR.plugins.add( 'richcombo', {
 
 					textElement.setText( typeof text != 'undefined' ? text : value );
 				}
+
+				var newLabel = createLabel( typeof text != 'undefined' ? text : value, this.label ),
+					labelElement = this.document.getById( 'cke_' + this.id + '_label' );
+
+				if ( labelElement ) {
+					labelElement.setText( newLabel );
+				}
+
+				function createLabel( newLabel, initialLabel ) {
+					if ( newLabel === initialLabel ) {
+						return newLabel;
+					}
+
+					return newLabel + ', ' + initialLabel;
+				}
 			},
 
 			getValue: function() {
@@ -335,6 +359,13 @@ CKEDITOR.plugins.add( 'richcombo', {
 				this._.list.showAll();
 			},
 
+			/**
+			 * Adds an entry displayed inside the rich combo panel.
+			 *
+			 * @param {String} value
+			 * @param {String} html
+			 * @param {String} text
+			 */
 			add: function( value, html, text ) {
 				this._.items[ value ] = text || value;
 				this._.list.add( value, html, text );
@@ -357,12 +388,18 @@ CKEDITOR.plugins.add( 'richcombo', {
 				if ( this._.state == state )
 					return;
 
-				var el = this.document.getById( 'cke_' + this.id );
+				var el = this.document.getById( 'cke_' + this.id ),
+					linkEl = el.getElementsByTag( 'a' ).getItem( 0 );
+
 				el.setState( state, 'cke_combo' );
 
 				state == CKEDITOR.TRISTATE_DISABLED ?
 					el.setAttribute( 'aria-disabled', true ) :
 					el.removeAttribute( 'aria-disabled' );
+
+				if ( linkEl ) {
+					linkEl.setAttribute( 'aria-expanded', state == CKEDITOR.TRISTATE_ON );
+				}
 
 				this._.state = state;
 			},
@@ -381,11 +418,60 @@ CKEDITOR.plugins.add( 'richcombo', {
 					this._.lastState = this._.state;
 					this.setState( CKEDITOR.TRISTATE_DISABLED );
 				}
+			},
+
+			/**
+			 * Removes all listeners from a rich combo element.
+			 *
+			 * @since 4.11.0
+			 */
+			destroy: function() {
+				CKEDITOR.tools.array.forEach( this._.listeners, function( listener ) {
+					listener.removeListener();
+				} );
+				this._.listeners = [];
+			},
+
+			/**
+			 * Selects a rich combo item based on the first matching result from the given filter function.
+			 * The filter function takes an object as an argument with `value` and `text` fields. The values of these
+			 * fields match to arguments passed in the {@link #add} method.
+			 * In order to obtain a correct result with this method, it is required to open or initialize the rich combo panel.
+			 *
+			 * ```js
+			 * 	var richCombo = editor.ui.get( 'Font' );
+			 *
+			 * 	// Required when 'richcombo' was never open in a given editor instance.
+			 * 	richCombo.createPanel( editor );
+			 *
+			 * 	richCombo.select( function( item ) {
+			 * 		return item.value === 'Tahoma' || item.text === 'Tahoma';
+			 * 	} );
+			 * ```
+			 *
+			 * @since 4.14.0
+			 * @param {Function} callback The function should return `true` if a matching element is found.
+			 * @param {Object} callback.item An object containing the `value` and `text` fields which are compared by this callback.
+			 */
+			select: function( callback ) {
+				if ( CKEDITOR.tools.isEmpty( this._.items ) ) {
+					return;
+				}
+
+				for ( var value in this._.items ) {
+					if ( callback( {
+						value: value,
+						text: this._.items[ value ]
+					} ) ) {
+						this.setValue( value );
+						return;
+					}
+				}
 			}
 		},
 
 		/**
-		 * Represents richCombo handler object.
+		 * Represents a rich combo handler object.
 		 *
 		 * @class CKEDITOR.ui.richCombo.handler
 		 * @singleton
@@ -394,7 +480,7 @@ CKEDITOR.plugins.add( 'richcombo', {
 		statics: {
 			handler: {
 				/**
-				 * Transforms a richCombo definition in a {@link CKEDITOR.ui.richCombo} instance.
+				 * Transforms a rich combo definition into a {@link CKEDITOR.ui.richCombo} instance.
 				 *
 				 * @param {Object} definition
 				 * @returns {CKEDITOR.ui.richCombo}

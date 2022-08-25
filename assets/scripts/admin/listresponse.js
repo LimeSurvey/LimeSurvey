@@ -25,7 +25,7 @@ LS.resp =  {
      * @return
      */
     setListPagerPosition : function (pager) {
-        var $elListPager = $('#ListPager');
+        var $elListPager = $('#reponsesListPager');
 
         if (useRtl) {
             var scrollAmount = Math.abs($(pager).scrollLeft() - initialScrollValue);
@@ -129,6 +129,8 @@ $(window).bind("load", function(){
     onDocumentReadyListresponse();
     reinstallResponsesFilterDatePicker();
 });
+
+$(document).off('pjax:scriptcomplete.listresponse').on('pjax:scriptcomplete.listresponse', onDocumentReadyListresponse);
 
 $(function () {
     // hide and submit Modal on click for pjax preventDefault submit

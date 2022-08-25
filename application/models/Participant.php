@@ -18,13 +18,13 @@ use LimeSurvey\Exceptions\CPDBException;
 /**
  * This is the model class for table "{{participants}}".
  *
- * The followings are the available columns in table '{{participants}}':
+ * The following are the available columns in table '{{participants}}':
  * @property string $participant_id Primary Key
  * @property string $firstname
  * @property string $lastname
  * @property string $email
  * @property string $language
- * @property integer $blacklisted
+ * @property string $blacklisted
  * @property integer $owner_uid
  * @property integer $created_by
  * @property string $created Date-time of creation

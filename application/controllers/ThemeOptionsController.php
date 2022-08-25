@@ -77,8 +77,11 @@ class ThemeOptionsController extends LSBaseController
      * Create a new model.
      * If creation is sucessful, the browser will be redirected to the 'view' page.
      *
+     * todo: function not in use (  new TemplateOptions(); there is no model class like this ..)
+     *
      * @return void
      */
+    /*
     public function actionCreate()
     {
         if (Permission::model()->hasGlobalPermission('template', 'update')) {
@@ -107,7 +110,7 @@ class ThemeOptionsController extends LSBaseController
                 $this->redirect(array("themeOptions"));
             }
         }
-    }
+    }*/
 
     /**
      * Resets all selected themes from massive action.
@@ -115,6 +118,7 @@ class ThemeOptionsController extends LSBaseController
      * @return void
      * @throws CException
      */
+    /*
     public function actionResetMultiple()
     {
         $aTemplates = json_decode(App()->request->getPost('sItems'));
@@ -124,7 +128,7 @@ class ThemeOptionsController extends LSBaseController
         if (Permission::model()->hasGlobalPermission('template', 'update')) {
             foreach ($aTemplates as $template) {
                 if ($gridid === 'questionthemes-grid') {
-                    /** @var QuestionTheme|null */
+                    /** @var QuestionTheme|null
                     $questionTheme = QuestionTheme::model()->findByPk($template);
                     $templatename = $questionTheme->name;
                     $templatefolder = $questionTheme->xml_path;
@@ -156,7 +160,7 @@ class ThemeOptionsController extends LSBaseController
             //todo: this message gets never visible for the user ...
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
-    }
+    }*/
 
     /**
      * Uninstalls all selected themes from massive action.
@@ -166,14 +170,16 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionUninstallMultiple()
     {
-        $aTemplates = json_decode(App()->request->getPost('sItems'));
-        $gridid = App()->request->getPost('grididvalue'); //what is gridid ???
+        $aTemplates = json_decode(App()->request->getPost('sItems')); //array of ids
+
+        //can be 'themeoptions-grid' (for survey themes) or 'questionthemes-grid'
+        $gridid = App()->request->getPost('grididvalue');
         $aResults = array();
 
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             foreach ($aTemplates as $template) {
                 $templateID = (int) $template;
-                $model = $this->loadModel($templateID, $gridid);
+                $model = $this->loadModel($templateID, $gridid); //model is TemplateConfiguration or QuestionTheme
 
                 if ($gridid === 'questionthemes-grid') {
                     $aResults[$template]['title'] = $model->name;
@@ -231,7 +237,7 @@ class ThemeOptionsController extends LSBaseController
 
         foreach ($aTemplates as $template) {
             $aResults[$template]['title'] = '';
-            $model = $this->loadModel($template, $gridid);
+            $model = $this->loadModel((int)$template, $gridid);
 
             if ($gridid === 'questionthemes-grid') {
                 $aResults[$template]['title'] = $model->name;
@@ -491,8 +497,11 @@ class ThemeOptionsController extends LSBaseController
     /**
      * Manages all models.
      *
+     * todo: this actions is not in use (TemplateOptions does not exist)
+     *
      * @return void
      */
+    /*
     public function actionAdmin()
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
@@ -513,6 +522,7 @@ class ThemeOptionsController extends LSBaseController
             $this->redirect(array("/admin"));
         }
     }
+    */
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
@@ -540,6 +550,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Import or install the Theme Configuration into the database.
+     * for survey theme and question theme
      *
      * @throws Exception
      * @return void
@@ -555,7 +566,7 @@ class ThemeOptionsController extends LSBaseController
                 //skip convertion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
                 $themeName = $questionTheme->importManifest($templateFolder, true);
                 if (isset($themeName)) {
-                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been sucessfully installed'), "$themeName"), 'success');
+                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been successfully installed'), "$themeName"), 'success');
                 } else {
                     App()->setFlashMessage(sprintf(gT('The Question theme "%s" could not be installed'), $themeName), 'error');
                 }
@@ -642,20 +653,25 @@ class ThemeOptionsController extends LSBaseController
     /**
      * Performs the AJAX validation.
      *
+     * todo: this function is not in use (there is no class TemplateOptions ...)
+     *
      * @param TemplateOptions $model Model to be validated.
      *
      * @return void
      */
+    /*
     public function actionPerformAjaxValidation(TemplateOptions $model)
     {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'template-options-form') {
             echo CActiveForm::validate($model);
             App()->end();
         }
-    }
+    }*/
 
     /**
      * Preview Tag.
+     *
+     * todo: maybe this action should be moved to surveyAdministrationController (it's used in 'General settings')
      *
      * @return string | string[] | null
      * @throws CException

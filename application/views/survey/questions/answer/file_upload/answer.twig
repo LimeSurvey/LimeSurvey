@@ -18,22 +18,26 @@
             href='{{uploadurl}}'
             data-toggle="modal"
             data-target="file-upload-modal-{{fileid}}"
-            data-showtitle="{{show_title}}"
-            data-showcomment="{{show_comment}}"
+            data-showtitle="{{showTitle}}"
+            data-showcomment="{{showComment}}"
             data-fieldname="{{basename}}"
         >
             <span class='fa fa-upload'></span>&nbsp;{{ uploadButtonLabel }}
         </a>
     </div>
-    <input type='hidden' id='{{ fileid }}' name='{{ fileid }}' value='{{ value }}' />
-    <input type='hidden' id='{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
+    <input type='hidden' id='java{{ fileid }}' name='{{ fileid }}' value='{{ value }}' />
+    <input type='hidden' id='java{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
     <div id='{{ fileid }}_uploadedfiles' class="hidden">
         <table width="100%" class="question uploadedfiles">
             <thead>
                 <tr>
                     <th width="20%">&nbsp;</th>
-                    <th>{{ "Title" | gT }}</th>
-                    <th>{{ "Comment" | gT }}</th>
+                    {% if showTitle %}
+                        <th>{{ "Title" | gT }}</th>
+                    {% endif %}
+                    {% if showComment %}
+                        <th>{{ "Comment" | gT }}</th>
+                    {% endif %}
                     <th>{{ "File name" | gT }}</th>
                     <th class="edit"></th>
                 </tr>
@@ -88,9 +92,9 @@
     $(document).on("ready pjax:scriptcomplete", function(){
         var fieldname = "{{fileid}}",
             filecount = $("#"+fieldname+"_filecount").val(),
-            show_title = "{{showTitle}}",
-            show_comment = "{{showComment}}";
-        window.uploadQuestionController_{{ fileid }}.displayUploadedFiles( filecount, fieldname, show_title, show_comment);
+            showTitle = "{{showTitle}}",
+            showComment = "{{showComment}}";
+        window.uploadQuestionController_{{ fileid }}.displayUploadedFiles( filecount, fieldname, showTitle, showComment);
     });
 
     $(".basic_{{fileid}}").change(function() {
@@ -123,8 +127,12 @@
 <script type="text/x-template" id="filerowtemplate_{{fileid}}">
     <tr>
         <td class="upload {imageOrPlaceholder}">{imageOrPlaceholderHtml}</td>
-        <td class="upload title">{title}</td>
-        <td class="upload comment">{comment}</td>
+        {% if showTitle %}
+            <td class="upload title">{title}</td>
+        {% endif %}
+        {% if showComment %}
+            <td class="upload comment">{comment}</td>
+        {% endif %}
         <td class="upload edit">{name}</td>
         <td>
             <a class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">

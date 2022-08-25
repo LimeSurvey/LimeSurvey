@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'table', 'az', {
 	border: 'Sərhədlərin eni',
@@ -50,6 +50,7 @@ CKEDITOR.plugins.setLang( 'table', 'az', {
 	headersColumn: 'Birinci sütun',
 	headersNone: 'yox',
 	headersRow: 'Birinci sətir',
+	heightUnit: 'height unit', // MISSING
 	invalidBorder: 'Sərhədlərin eni müsbət rəqəm olmalıdır.',
 	invalidCellPadding: 'Xanalardakı kənar boşluqlar müsbət rəqəm olmalıdır.',
 	invalidCellSpacing: 'Xanalararası interval müsbət rəqəm olmalıdır.',

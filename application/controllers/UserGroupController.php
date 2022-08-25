@@ -6,6 +6,17 @@
 class UserGroupController extends LSBaseController
 {
     /**
+     * Run filters
+     *
+     * @return array|void
+     */
+    public function filters()
+    {
+        return [
+            'postOnly + deleteGroup, addUserToGroup, deleteUserFromGroup'
+        ];
+    }
+    /**
      * @return array
      **/
     public function accessRules()
@@ -217,6 +228,10 @@ class UserGroupController extends LSBaseController
      */
     public function actionEdit(int $ugid)
     {
+        if (!Permission::model()->hasGlobalPermission('usergroups', 'update')) {
+            Yii::app()->session['flashmessage'] = gT('Access denied!');
+            $this->redirect(App()->createUrl("/admin"));
+        }
         $ugid = (int) $ugid;
 
         $aData = [];
@@ -323,10 +338,6 @@ class UserGroupController extends LSBaseController
     {
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
             $userGroupId = Yii::app()->request->getPost("ugid");
-            if ($userGroupId === null) {
-                //try to get it from get request
-                $userGroupId = Yii::app()->request->getQuery("ugid");
-            }
 
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 //superadmin can delete
@@ -351,12 +362,12 @@ class UserGroupController extends LSBaseController
     /**
      * Adds a user to a group
      *
-     * @param $ugid
      */
-    public function actionAddUserToGroup($ugid)
+    public function actionAddUserToGroup()
     {
         $uid = (int) Yii::app()->request->getPost('uid');
-        $checkPermissionsUserGroupExists = $this->checkBeforeAddDeleteUser($uid, (int)$ugid);
+        $ugid = (int) Yii::app()->request->getPost('ugid');
+        $checkPermissionsUserGroupExists = $this->checkBeforeAddDeleteUser($uid, $ugid);
         if (count($checkPermissionsUserGroupExists) > 0) {
             Yii::app()->user->setFlash('error', $checkPermissionsUserGroupExists['errorMsg']);
             $this->redirect(array($checkPermissionsUserGroupExists['redirectPath']));

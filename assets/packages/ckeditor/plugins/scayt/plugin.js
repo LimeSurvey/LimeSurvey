@@ -9,18 +9,38 @@ CKEDITOR.plugins.add('scayt', {
 	tabToOpen : null,
 	dialogName: 'scaytDialog',
 	onLoad: function(editor){
-		/*
-			Create timestamp for unique url. Timestamp was created once when plugin loaded
-		*/
-		CKEDITOR.plugins.scayt.onLoadTimestamp = new Date().getTime();
-
 		// Append skin specific stylesheet fo moono-lisa skin.
 		if ( ( CKEDITOR.skinName || editor.config.skin ) == 'moono-lisa' ) {
-			CKEDITOR.document.appendStyleSheet( this.path + 'skins/' + CKEDITOR.skin.name + '/scayt.css' );
+			CKEDITOR.document.appendStyleSheet( CKEDITOR.getUrl(this.path + 'skins/' + CKEDITOR.skin.name + '/scayt.css') );
 		}
 
 		// Append specific stylesheet for some dialog elements.
-		CKEDITOR.document.appendStyleSheet(this.path + 'dialogs/dialog.css');
+		CKEDITOR.document.appendStyleSheet( CKEDITOR.getUrl(this.path + 'dialogs/dialog.css') );
+
+		// Workaround for detecting when autocomplete panel is shown/hidden.
+		var listenerAttached = false;
+
+		CKEDITOR.on('instanceLoaded', function(evt) {
+			if (listenerAttached || !CKEDITOR.plugins.autocomplete) {
+				return;
+			}
+
+			listenerAttached = true;
+
+			var originalFn = CKEDITOR.plugins.autocomplete.prototype.getModel;
+
+			CKEDITOR.plugins.autocomplete.prototype.getModel = function(arg1) {
+				var editor = this.editor,
+					geModelFn = originalFn.bind(this),
+					model = geModelFn(arg1);
+
+				model.on('change-isActive', function(evt) {
+					evt.data ? editor.fire('autocompletePanelShow') : editor.fire('autocompletePanelHide');
+				});
+
+				return model;
+			}
+		});
 	},
 	init: function(editor) {
 		var self = this,
@@ -185,8 +205,7 @@ CKEDITOR.plugins.add('scayt', {
 				var scaytInstance = editor.scayt;
 
 				scaytInstance.tabToOpen = 'about';
-				editor.lockSelection();
-				editor.openDialog(self.dialogName);
+				plugin.openDialog(self.dialogName, editor);
 			}
 		} );
 
@@ -195,8 +214,7 @@ CKEDITOR.plugins.add('scayt', {
 				var scaytInstance = editor.scayt;
 
 				scaytInstance.tabToOpen = 'options';
-				editor.lockSelection();
-				editor.openDialog(self.dialogName);
+				plugin.openDialog(self.dialogName, editor);
 			}
 		} );
 
@@ -205,8 +223,7 @@ CKEDITOR.plugins.add('scayt', {
 				var scaytInstance = editor.scayt;
 
 				scaytInstance.tabToOpen = 'langs';
-				editor.lockSelection();
-				editor.openDialog(self.dialogName);
+				plugin.openDialog(self.dialogName, editor);
 			}
 		} );
 
@@ -215,8 +232,7 @@ CKEDITOR.plugins.add('scayt', {
 				var scaytInstance = editor.scayt;
 
 				scaytInstance.tabToOpen = 'dictionaries';
-				editor.lockSelection();
-				editor.openDialog(self.dialogName);
+				plugin.openDialog(self.dialogName, editor);
 			}
 		} );
 
@@ -569,6 +585,22 @@ CKEDITOR.plugins.add('scayt', {
 
 			dialog.selectPage(scaytInstance.tabToOpen);
 		});
+
+		editor.on('autocompletePanelShow', function(ev) {
+			var scaytInstance = editor.scayt;
+
+			if (scaytInstance && scaytInstance.setMarkupPaused) {
+				scaytInstance.setMarkupPaused(true);
+			}
+		});
+
+		editor.on('autocompletePanelHide', function(ev) {
+			var scaytInstance = editor.scayt;
+
+			if (scaytInstance && scaytInstance.setMarkupPaused) {
+				scaytInstance.setMarkupPaused(false);
+			}
+		});
 	},
 	parseConfig: function(editor) {
 		var plugin = CKEDITOR.plugins.scayt;
@@ -603,11 +635,11 @@ CKEDITOR.plugins.add('scayt', {
 		}
 
 		if(editor.config.scayt_maxSuggestions === undefined || typeof editor.config.scayt_maxSuggestions != 'number' || editor.config.scayt_maxSuggestions < 0) {
-			editor.config.scayt_maxSuggestions = 5;
+			editor.config.scayt_maxSuggestions = 3;
 		}
 
 		if(editor.config.scayt_minWordLength === undefined || typeof editor.config.scayt_minWordLength != 'number' || editor.config.scayt_minWordLength < 1) {
-			editor.config.scayt_minWordLength = 4;
+			editor.config.scayt_minWordLength = 3;
 		}
 
 		if(editor.config.scayt_customDictionaryIds === undefined || typeof editor.config.scayt_customDictionaryIds !== 'string') {
@@ -670,10 +702,7 @@ CKEDITOR.plugins.add('scayt', {
 		}
 
 		if(typeof editor.config.scayt_srcUrl !== 'string') {
-			var protocol = document.location.protocol;
-			protocol = protocol.search(/https?:/) != -1 ? protocol : 'http:';
-
-			editor.config.scayt_srcUrl = protocol + '//svc.webspellchecker.net/spellcheck31/lf/scayt3/ckscayt/ckscayt.js';
+			editor.config.scayt_srcUrl = 'https://svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js';
 		}
 
 		if(typeof CKEDITOR.config.scayt_handleCheckDirty !== 'boolean') {
@@ -686,14 +715,6 @@ CKEDITOR.plugins.add('scayt', {
 		}
 		/* checking 'undo' plugin, if no disable SCAYT handler */
 		CKEDITOR.config.scayt_handleUndoRedo = CKEDITOR.plugins.undo ? CKEDITOR.config.scayt_handleUndoRedo : false;
-
-		if(typeof editor.config.scayt_multiLanguageMode !== 'boolean') {
-			editor.config.scayt_multiLanguageMode = false;
-		}
-
-		if(typeof editor.config.scayt_multiLanguageStyles !== 'object') {
-			editor.config.scayt_multiLanguageStyles = {};
-		}
 
 		if(editor.config.scayt_ignoreAllCapsWords && typeof editor.config.scayt_ignoreAllCapsWords !== 'boolean') {
 			editor.config.scayt_ignoreAllCapsWords = false;
@@ -874,8 +895,7 @@ CKEDITOR.plugins.add('scayt', {
 						var scaytInstance = editor.scayt;
 
 						scaytInstance.tabToOpen = 'options';
-						editor.lockSelection();
-						editor.openDialog(self.dialogName);
+						plugin.openDialog(self.dialogName, editor);
 					},
 					verification: function(editor) {
 						return (editor.config.scayt_uiTabs[0] == 1) ? true : false;
@@ -889,8 +909,7 @@ CKEDITOR.plugins.add('scayt', {
 						var scaytInstance = editor.scayt;
 
 						scaytInstance.tabToOpen = 'langs';
-						editor.lockSelection();
-						editor.openDialog(self.dialogName);
+						plugin.openDialog(self.dialogName, editor);
 					},
 					verification: function(editor) {
 						return (editor.config.scayt_uiTabs[1] == 1) ? true : false;
@@ -904,8 +923,7 @@ CKEDITOR.plugins.add('scayt', {
 						var scaytInstance = editor.scayt;
 
 						scaytInstance.tabToOpen = 'dictionaries';
-						editor.lockSelection();
-						editor.openDialog(self.dialogName);
+						plugin.openDialog(self.dialogName, editor);
 					},
 					verification: function(editor) {
 						return (editor.config.scayt_uiTabs[2] == 1) ? true : false;
@@ -919,8 +937,7 @@ CKEDITOR.plugins.add('scayt', {
 						var scaytInstance = editor.scayt;
 
 						scaytInstance.tabToOpen = 'about';
-						editor.lockSelection();
-						editor.openDialog(self.dialogName);
+						plugin.openDialog(self.dialogName, editor);
 					}
 				}
 			},
@@ -1058,7 +1075,7 @@ CKEDITOR.plugins.add('scayt', {
 			itemList = {},
 			allowedOption = editor.config.scayt_contextCommands.split('|'),
 			lang = selectionNode.getAttribute(scaytInstance.getLangAttribute()) || scaytInstance.getLang(),
-			word, grammarPhrase, isScaytNode, isGrammarNode, problemDescriptionText;
+			word, phrase, rule, isScaytNode, isGrammarNode, problemDescriptionText;
 
 
 		isScaytNode = scaytInstance.isScaytNode(selectionNode);
@@ -1081,17 +1098,31 @@ CKEDITOR.plugins.add('scayt', {
 			// we clicked grammar problem
 			// get suggestions
 			menuItems = menuItems.grayt;
-			grammarPhrase = selectionNode.getAttribute(scaytInstance.getGraytNodeAttributeName());
+			phrase = selectionNode.getAttribute(scaytInstance.getGraytNodeAttributeName());
+
+			// Backword compatibility for new CKEditor plugin and old application
+			if (scaytInstance.getGraytNodeRuleAttributeName) {
+				// New plugin + new application
+				rule = selectionNode.getAttribute( scaytInstance.getGraytNodeRuleAttributeName() );
+				problemDescriptionText = scaytInstance.getProblemDescriptionText(phrase, rule, lang); // setup grammar problem description
+			} else {
+				// New plugin + old application
+				problemDescriptionText = scaytInstance.getProblemDescriptionText(phrase, lang); // setup grammar problem description
+			}
 
 			// setup grammar problem description
-			problemDescriptionText = scaytInstance.getProblemDescriptionText(grammarPhrase, lang);
+			problemDescriptionText = scaytInstance.getProblemDescriptionText(phrase, rule, lang);
 			if(menuItems.grayt_problemdescription && problemDescriptionText) {
+				// For fix bug https://webspellchecker.atlassian.net/browse/WP-1615
+				// Long description for the grammar problem corrupts the context menu
+				problemDescriptionText = problemDescriptionText.replace(/([.!?])\s/g, '$1<br>');
 				menuItems.grayt_problemdescription.label = problemDescriptionText;
 			}
 
 			scaytInstance.fire('getGrammarSuggestionsList', {
 				lang: lang,
-				phrase: grammarPhrase
+				phrase: phrase,
+				rule: rule
 			});
 
 			itemList = this.buildSuggestionMenuItems(editor, CKEDITOR.plugins.scayt.suggestions, isScaytNode);
@@ -1163,34 +1194,37 @@ CKEDITOR.plugins.scayt = {
 	*/
 	charsToObserve: [
 		{
-			charName : 'cke-fillingChar',
-	 		charCode : (function(){
-				var versArr = CKEDITOR.version.match(/^\d(\.\d*)*/),
-					version = versArr && versArr[0],
-					newest;
+			charName: 'cke-fillingChar',
+	 		charCode: (function() {
+					var version = CKEDITOR.version,
+						baseLineVersion = [4, 5, 6],
+						fillingChar = String.fromCharCode(8203),
+						fillingChars = new Array(8).join(fillingChar),
+						splittedVersion, base, current;
 
-				function compare(current, marked){
-					var itterRes,
-						lengthDiff;
-					current = current.replace(/\./g,'');
-					marked = marked.replace(/\./g,'');
-					lengthDiff = current.length - marked.length;
-					lengthDiff = (lengthDiff >= 0)? lengthDiff : 0;
-					return parseInt(current) >= (parseInt(marked) * Math.pow(10, lengthDiff));
-				}
+					if (!version) {
+						return fillingChar;
+					}
 
-				if(version){
-					newest = compare(version, '4.5.7');
-				}
-				if(newest){
-					return new Array(7).join(String.fromCharCode(8203));
-				}else{
-					return String.fromCharCode(8203);
-				}
+					splittedVersion = version.split('.');
+
+					for (var i = 0; i < baseLineVersion.length; i++) {
+						base = baseLineVersion[i];
+						current = Number(splittedVersion[i]);
+
+						if (current > base) {
+							return fillingChars;
+						}
+
+						if (current < base) {
+							return fillingChar;
+						}
+					}
+
+					return fillingChar;
 			})()
 		}
 	],
-	onLoadTimestamp : '',
 	state: {
 		scayt: {},
 		grayt: {}
@@ -1214,6 +1248,16 @@ CKEDITOR.plugins.scayt = {
 		'scayt_service_port'  : 'scayt_servicePort',
 		'scayt_service_path'  : 'scayt_servicePath',
 		'scayt_customerid'    : 'scayt_customerId'
+	},
+	openDialog: function(dialogName, editor) {
+		var scaytInstance = editor.scayt;
+
+		if ( scaytInstance.isAllModulesReady && scaytInstance.isAllModulesReady() === false ) {
+			return;
+		}
+
+		editor.lockSelection();
+		editor.openDialog(dialogName);
 	},
 	alarmCompatibilityMessage: function() {
 		var message = 'You are using the latest version of SCAYT plugin for CKEditor with the old application version. In order to have access to the newest features, it is recommended to upgrade the application version to latest one as well. Contact us for more details at support@webspellchecker.net.';
@@ -1255,8 +1299,11 @@ CKEDITOR.plugins.scayt = {
 			plugin = CKEDITOR.plugins.scayt;
 
 		this.loadScaytLibrary(editor, function(_editor) {
-			var textContainer = _editor.window && _editor.window.getFrame() || _editor.editable();
+			var textContainer;
 
+			if(_editor.window) {
+				textContainer = ( _editor.editable().$.nodeName == 'BODY' ) ? _editor.window.getFrame() : _editor.editable();
+			}
 			// Do not create SCAYT if there is no text container for usage
 			if(!textContainer) {
 				plugin.state.scayt[_editor.name] = false;
@@ -1281,8 +1328,6 @@ CKEDITOR.plugins.scayt = {
 				ignoreElementsRegex : _editor.config.scayt_elementsToIgnore,
 				ignoreGraytElementsRegex: _editor.config.grayt_elementsToIgnore,
 				minWordLength 		: _editor.config.scayt_minWordLength,
-				multiLanguageMode 	: _editor.config.scayt_multiLanguageMode,
-				multiLanguageStyles	: _editor.config.scayt_multiLanguageStyles,
 				graytAutoStartup	: _editor.config.grayt_autoStartup,
 				charsToObserve		: plugin.charsToObserve
 			};
@@ -1361,8 +1406,15 @@ CKEDITOR.plugins.scayt = {
 			scaytInstance.subscribe('selectionIsChanged', function(data) {
 				var selection = _editor.getSelection();
 
-				if(selection.isLocked) {
+				if(selection.isLocked && data.action !== 'restoreSelection') {
 					_editor.lockSelection();
+				}
+
+				// CKEditor store selection in some cases.
+				// So we need to call 'selectionChange' method after all 'restoreSelection' actions for re-store
+				// selection in CKEditor.
+				if (data.action === 'restoreSelection') {
+					_editor.selectionChange(true);
 				}
 			});
 
@@ -1420,7 +1472,7 @@ CKEDITOR.plugins.scayt = {
 		// when callback executing is delayed for a few milliseconds, and scayt can be created twise
 		// on one instance
 		if (typeof window.SCAYT === 'undefined' || typeof window.SCAYT.CKSCAYT !== 'function') {
-			scaytUrl = editor.config.scayt_srcUrl + '?' + this.onLoadTimestamp;
+			scaytUrl = editor.config.scayt_srcUrl;
 			CKEDITOR.scriptLoader.load(scaytUrl, function(success) {
 				if (success) {
 					runCallback();
@@ -1436,6 +1488,31 @@ CKEDITOR.on('dialogDefinition', function(dialogDefinitionEvent) {
 	var dialogName = dialogDefinitionEvent.data.name,
 		dialogDefinition = dialogDefinitionEvent.data.definition,
 		dialog = dialogDefinition.dialog;
+
+
+	if (dialogName !== 'scaytDialog' && dialogName !== 'checkspell') {
+		// We need to set markup on pause when dialog 'show' event is fired
+		dialog.on('show', function(showEvent) {
+			var editor = showEvent.sender && showEvent.sender.getParentEditor(),
+				plugin = CKEDITOR.plugins.scayt,
+				scaytInstance = editor.scayt;
+
+			if ( scaytInstance && plugin.state.scayt[ editor.name ] && scaytInstance.setMarkupPaused ) {
+				scaytInstance.setMarkupPaused( true );
+			}
+		});
+
+		// We need to unpause markup when dialog 'hide' event is fired
+		dialog.on('hide', function(hideEvent) {
+			var editor = hideEvent.sender && hideEvent.sender.getParentEditor(),
+				plugin = CKEDITOR.plugins.scayt,
+				scaytInstance = editor.scayt;
+
+			if ( scaytInstance && plugin.state.scayt[ editor.name ] && scaytInstance.setMarkupPaused ) {
+				scaytInstance.setMarkupPaused( false );
+			}
+		});
+	}
 
 	if (dialogName === 'scaytDialog') {
 		dialog.on('cancel', function(cancelEvent) {
@@ -1572,10 +1649,11 @@ CKEDITOR.on('scaytReady', function() {
  * Automatically enables SCAYT on editor startup. When set to `true`, this option turns on SCAYT automatically
  * after loading the editor.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_autoStartup = true;
  *
+ * @skipsource
  * @cfg {Boolean} [scayt_autoStartup=false]
  * @member CKEDITOR.config
  */
@@ -1584,10 +1662,11 @@ CKEDITOR.on('scaytReady', function() {
  * Enables Grammar As You Type (GRAYT) on SCAYT startup. When set to `true`, this option turns on GRAYT automatically
  * after SCAYT started.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.grayt_autoStartup = true;
  *
+ * @skipsource
  * @since 4.5.6
  * @cfg {Boolean} [grayt_autoStartup=false]
  * @member CKEDITOR.config
@@ -1597,10 +1676,11 @@ CKEDITOR.on('scaytReady', function() {
  * Enables SCAYT initialization when inline CKEditor is not focused. When set to `true`, SCAYT markup is
  * displayed in both inline editor states, focused and unfocused, so the SCAYT instance is not destroyed.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		 config.scayt_inlineModeImmediateMarkup = true;
  *
+ * @skipsource
  * @since 4.5.6
  * @cfg {Boolean} [scayt_inlineModeImmediateMarkup=false]
  * @member CKEDITOR.config
@@ -1617,7 +1697,7 @@ CKEDITOR.on('scaytReady', function() {
  * * Negative number &ndash; Five suggestions are shown in the main context menu. All other
  *     entries will be listed in the "More Suggestions" sub-menu.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  * Examples:
  *
@@ -1627,7 +1707,8 @@ CKEDITOR.on('scaytReady', function() {
  *		// Do not show the suggestions directly.
  *		config.scayt_maxSuggestions = 0;
  *
- * @cfg {Number} [scayt_maxSuggestions=5]
+ * @skipsource
+ * @cfg {Number} [scayt_maxSuggestions=3]
  * @member CKEDITOR.config
  */
 
@@ -1635,25 +1716,27 @@ CKEDITOR.on('scaytReady', function() {
  * Defines the minimum length of words that will be collected from the editor content for spell checking.
  * Possible value is any positive number.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  * Examples:
  *
  *		// Set the minimum length of words that will be collected from editor text.
  *		config.scayt_minWordLength = 5;
  *
- * @cfg {Number} [scayt_minWordLength=4]
+ * @skipsource
+ * @cfg {Number} [scayt_minWordLength=3]
  * @member CKEDITOR.config
  */
 
 /**
  * The parameter that receives a string with characters that will considered as separators.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		// additional separator.
  *		config.scayt_customPunctuation  = '-';
  *
+ * @skipsource
  * @cfg {String} [scayt_customPunctuation='']
  * @member CKEDITOR.config
  */
@@ -1662,11 +1745,12 @@ CKEDITOR.on('scaytReady', function() {
  * Sets the customer ID for SCAYT. Used for hosted users only. Required for migration from free
  * to trial or paid versions.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		// Load SCAYT using my customer ID.
  *		config.scayt_customerId  = 'your-encrypted-customer-id';
  *
+ * @skipsource
  * @cfg {String} [scayt_customerId='1:WvF0D4-UtPqN1-43nkD4-NKvUm2-daQqk3-LmNiI-z7Ysb4-mwry24-T8YrS3-Q2tpq2']
  * @member CKEDITOR.config
  */
@@ -1675,11 +1759,12 @@ CKEDITOR.on('scaytReady', function() {
  * Enables and disables the "More Suggestions" sub-menu in the context menu.
  * Possible values are `'on'` and `'off'`.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		// Disables the "More Suggestions" sub-menu.
  *		config.scayt_moreSuggestions = 'off';
  *
+ * @skipsource
  * @cfg {String} [scayt_moreSuggestions='on']
  * @member CKEDITOR.config
  */
@@ -1703,13 +1788,14 @@ CKEDITOR.on('scaytReady', function() {
  * Please note that availability of the "Options", "Languages" and "Dictionaries" items
  * also depends on the {@link CKEDITOR.config#scayt_uiTabs} option.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  * Example:
  *
  *		// Show "Add Word", "Ignore" and "Ignore All" in the context menu.
  *		config.scayt_contextCommands = 'add|ignore|ignoreall';
  *
+ * @skipsource
  * @cfg {String} [scayt_contextCommands='ignoreall|add']
  * @member CKEDITOR.config
  */
@@ -1723,11 +1809,12 @@ CKEDITOR.on('scaytReady', function() {
  *
  * Customers with dedicated SCAYT license may also set `'pt_BR'` and `'pt_PT'`.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		// Sets SCAYT to German.
  *		config.scayt_sLang = 'de_DE';
  *
+ * @skipsource
  * @cfg {String} [scayt_sLang='en_US']
  * @member CKEDITOR.config
  */
@@ -1738,11 +1825,12 @@ CKEDITOR.on('scaytReady', function() {
  * (disabled) value for each of the following entries, in this precise order,
  * separated by a comma (`','`): `'Options'`, `'Languages'`, and `'Dictionary'`.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		// Hides the "Languages" tab.
  *		config.scayt_uiTabs = '1,0,1';
  *
+ * @skipsource
  * @cfg {String} [scayt_uiTabs='1,1,1']
  * @member CKEDITOR.config
  */
@@ -1750,11 +1838,12 @@ CKEDITOR.on('scaytReady', function() {
 /**
  * Sets the protocol for the WebSpellChecker service (`ssrv.cgi`) full path.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		// Defines the protocol for the WebSpellChecker service (ssrv.cgi) path.
  *		config.scayt_serviceProtocol = 'https';
  *
+ * @skipsource
  * @cfg {String} [scayt_serviceProtocol='http']
  * @member CKEDITOR.config
  */
@@ -1762,11 +1851,12 @@ CKEDITOR.on('scaytReady', function() {
 /**
  * Sets the host for the WebSpellChecker service (`ssrv.cgi`) full path.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		// Defines the host for the WebSpellChecker service (ssrv.cgi) path.
  *		config.scayt_serviceHost = 'my-host';
  *
+ * @skipsource
  * @cfg {String} [scayt_serviceHost='svc.webspellchecker.net']
  * @member CKEDITOR.config
  */
@@ -1774,11 +1864,12 @@ CKEDITOR.on('scaytReady', function() {
 /**
  * Sets the port for the WebSpellChecker service (`ssrv.cgi`) full path.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		// Defines the port for the WebSpellChecker service (ssrv.cgi) path.
  *		config.scayt_servicePort = '2330';
  *
+ * @skipsource
  * @cfg {String} [scayt_servicePort='80']
  * @member CKEDITOR.config
  */
@@ -1786,11 +1877,12 @@ CKEDITOR.on('scaytReady', function() {
 /**
  * Sets the path to the WebSpellChecker service (`ssrv.cgi`).
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		// Defines the path to the WebSpellChecker service (ssrv.cgi).
  *		config.scayt_servicePath = 'my-path/ssrv.cgi';
  *
+ * @skipsource
  * @cfg {String} [scayt_servicePath='spellcheck31/script/ssrv.cgi']
  * @member CKEDITOR.config
  */
@@ -1798,14 +1890,15 @@ CKEDITOR.on('scaytReady', function() {
 /**
  * Sets the URL to SCAYT core. Required to switch to the licensed version of SCAYT.
  *
- * Refer to [SCAYT documentation](http://wiki.webspellchecker.net/doku.php?id=migration:hosredfreetolicensedck)
+ * Refer to [SCAYT documentation](@@BRANDING_MIGRATION_MANUAL_URL)
  * for more details.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_srcUrl = "http://my-host/spellcheck/lf/scayt/scayt.js";
  *
- * @cfg {String} [scayt_srcUrl='//svc.webspellchecker.net/spellcheck31/lf/scayt3/ckscayt/ckscayt.js']
+ * @skipsource
+ * @cfg {String} [scayt_srcUrl='//svc.webspellchecker.net/spellcheck31/wscbundle/wscbundle.js']
  * @member CKEDITOR.config
  */
 
@@ -1813,13 +1906,14 @@ CKEDITOR.on('scaytReady', function() {
  * Links SCAYT to custom dictionaries. This is a string containing the dictionary IDs
  * separated by commas (`','`). Available only for the licensed version.
  *
- * Refer to [SCAYT documentation](http://wiki.webspellchecker.net/doku.php?id=installationandconfiguration:customdictionaries:licensed)
+ * Refer to [SCAYT documentation](@@BRANDING_CUSTOM_DICT_MANUAL_URL)
  * for more details.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_customDictionaryIds = '3021,3456,3478';
  *
+ * @skipsource
  * @cfg {String} [scayt_customDictionaryIds='']
  * @member CKEDITOR.config
  */
@@ -1828,14 +1922,16 @@ CKEDITOR.on('scaytReady', function() {
  * Activates a User Dictionary in SCAYT. The user
  * dictionary name must be used. Available only for the licensed version.
  *
- * Refer to [SCAYT documentation](http://wiki.webspellchecker.net/doku.php?id=installationandconfiguration:userdictionaries)
+ * Refer to [SCAYT documentation](@@BRANDING_USER_DICT_MANUAL_URL)
  * for more details.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_userDictionaryName = 'MyDictionary';
  *
+ * @skipsource
  * @cfg {String} [scayt_userDictionaryName='']
+ *
  * @member CKEDITOR.config
  */
 
@@ -1848,12 +1944,13 @@ CKEDITOR.on('scaytReady', function() {
  * * `moresuggest` &ndash; The "More suggestions" word list.
  * * `control` &ndash; SCAYT commands, such as "Ignore" and "Add Word".
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  * Example:
  *
  *		config.scayt_contextMenuItemsOrder = 'moresuggest|control|suggest';
  *
+ * @skipsource
  * @cfg {String} [scayt_contextMenuItemsOrder='suggest|moresuggest|control']
  * @member CKEDITOR.config
  */
@@ -1863,10 +1960,11 @@ CKEDITOR.on('scaytReady', function() {
  * to fix SCAYT issues with incorrect `checkDirty` behavior. If set to `false`,
  * it provides better performance on big preloaded text.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_handleCheckDirty = 'false';
  *
+ * @skipsource
  * @cfg {String} [scayt_handleCheckDirty='true']
  * @member CKEDITOR.config
  */
@@ -1877,10 +1975,11 @@ CKEDITOR.on('scaytReady', function() {
  * to fix SCAYT issues with incorrect undo/redo behavior. If set to `false`,
  * it provides better performance on text undo/redo.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_handleUndoRedo = 'false';
  *
+ * @skipsource
  * @cfg {String} [scayt_handleUndoRedo='true']
  * @member CKEDITOR.config
  */
@@ -1890,10 +1989,11 @@ CKEDITOR.on('scaytReady', function() {
  * You may need to {@link CKEDITOR.config#scayt_disableOptionsStorage disable option storing} for this setting to be
  * effective because option storage has a higher priority.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_ignoreAllCapsWords = true;
  *
+ * @skipsource
  * @since 4.5.6
  * @cfg {Boolean} [scayt_ignoreAllCapsWords=false]
  * @member CKEDITOR.config
@@ -1904,10 +2004,11 @@ CKEDITOR.on('scaytReady', function() {
  * You may need to {@link CKEDITOR.config#scayt_disableOptionsStorage disable option storing} for this setting to be
  * effective because option storage has a higher priority.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_ignoreDomainNames = true;
  *
+ * @skipsource
  * @since 4.5.6
  * @cfg {Boolean} [scayt_ignoreDomainNames=false]
  * @member CKEDITOR.config
@@ -1918,10 +2019,11 @@ CKEDITOR.on('scaytReady', function() {
  * You may need to {@link CKEDITOR.config#scayt_disableOptionsStorage disable option storing} for this setting to be
  * effective because option storage has a higher priority.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_ignoreWordsWithMixedCases = true;
  *
+ * @skipsource
  * @since 4.5.6
  * @cfg {Boolean} [scayt_ignoreWordsWithMixedCases=false]
  * @member CKEDITOR.config
@@ -1932,10 +2034,11 @@ CKEDITOR.on('scaytReady', function() {
  * You may need to {@link CKEDITOR.config#scayt_disableOptionsStorage disable option storing} for this setting to be
  * effective because option storage has a higher priority.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_ignoreWordsWithNumbers = true;
  *
+ * @skipsource
  * @since 4.5.6
  * @cfg {Boolean} [scayt_ignoreWordsWithNumbers=false]
  * @member CKEDITOR.config
@@ -1953,7 +2056,7 @@ CKEDITOR.on('scaytReady', function() {
  * * `'lang'` &ndash; Disables storing of the SCAYT spell check language.
  * * `'all'` &ndash; Disables storing of all SCAYT options.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  * Example:
  *
@@ -1964,6 +2067,7 @@ CKEDITOR.on('scaytReady', function() {
  *  	config.scayt_disableOptionsStorage = ['lang', 'ignore-domain-names', 'ignore-words-with-numbers'];
  *
  *
+ * @skipsource
  * @cfg {String|Array} [scayt_disableOptionsStorage = '']
  * @member CKEDITOR.config
  */
@@ -1972,46 +2076,11 @@ CKEDITOR.on('scaytReady', function() {
  * Specifies the names of tags that will be skipped while spell checking. This is a string containing tag names
  * separated by commas (`','`). Please note that the `'style'` tag would be added to specified tags list.
  *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ * Read more in the {@glink features/spellcheck documentation} and see the {@glink examples/spellchecker SDK sample}.
  *
  *		config.scayt_elementsToIgnore = 'del,pre';
  *
+ * @skipsource
  * @cfg {String} [scayt_elementsToIgnore='style']
- * @member CKEDITOR.config
- */
-
-/**
- * Enables multi-language support in SCAYT. If set to `true`, turns on SCAYT multi-language support after loading the editor.
- *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
- *
- *		config.scayt_multiLanguageMode = true;
- *
- * @cfg {Boolean} [scayt_multiLanguageMode=false]
- * @member CKEDITOR.config
- */
-
-/**
- * Defines additional styles for misspellings for specified languages. Styles will be applied only if
- * the {@link CKEDITOR.config#scayt_multiLanguageMode} option is set to `true` and the [Language](http://ckeditor.com/addon/language)
- * plugin is included and loaded in the editor. By default, all misspellings will still be underlined with the red waveline.
- *
- * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
- *
- * Example:
- *
- *		// Display misspellings in French language with green color and underlined with red waveline.
- *		config.scayt_multiLanguageStyles = {
- *			'fr': 'color: green'
- *		};
- *
- *		// Display misspellings in Italian language with green color and underlined with red waveline
- *		// and German misspellings with red color only.
- *		config.scayt_multiLanguageStyles = {
- *			'it': 'color: green',
- *			'de': 'background-image: none; color: red'
- *		};
- *
- * @cfg {Object} [scayt_multiLanguageStyles = {}]
  * @member CKEDITOR.config
  */

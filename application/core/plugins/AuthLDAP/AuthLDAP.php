@@ -206,9 +206,10 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      * Create a LDAP user
      *
      * @param string $new_user
+     * @param string $password
      * @return null|integer New user ID
      */
-    private function _createNewUser($new_user)
+    private function _createNewUser($new_user, $password = null)
     {
         $oEvent = $this->getEvent();
 
@@ -221,6 +222,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $bindpwd        = $this->get('bindpwd');
         $mailattribute = $this->get('mailattribute');
         $fullnameattribute = $this->get('fullnameattribute');
+        $suffix             = $this->get('domainsuffix');
+        $prefix             = $this->get('userprefix');
 
         // Try to connect
         $ldapconn = $this->createConnection();
@@ -231,15 +234,12 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             return null;
         }
 
-        if (empty($ldapmode) || $ldapmode == 'simplebind') {
-            $oEvent->set('errorCode', self::ERROR_LDAP_MODE);
-            $oEvent->set('errorMessageTitle', gT("Failed to add user"));
-            $oEvent->set('errorMessageBody', gT("Simple bind LDAP configuration doesn't allow LDAP user creation"));
-            return null;
-        }
-
         // Search email address and full name
-        if (empty($binddn)) {
+        if (empty($ldapmode) || $ldapmode == 'simplebind') {
+            // Use the user's account for LDAP search
+            $ldapbindsearch = @ldap_bind($ldapconn, $prefix . $new_user . $suffix, $password);
+        }
+        else if (empty($binddn)) {
             // There is no account defined to do the LDAP search,
             // let's use anonymous bind instead
             $ldapbindsearch = @ldap_bind($ldapconn);
@@ -413,16 +413,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 unset($aPluginSettings['domainsuffix']);
             } else {
                 // Hide searchandbind settings
-                unset($aPluginSettings['searchuserattribute']);
-                unset($aPluginSettings['usersearchbase']);
-                unset($aPluginSettings['extrauserfilter']);
                 unset($aPluginSettings['binddn']);
                 unset($aPluginSettings['bindpwd']);
                 unset($aPluginSettings['ldapoptreferrals']);
-                unset($aPluginSettings['mailattribute']);
-                unset($aPluginSettings['fullnameattribute']);
-                unset($aPluginSettings['autocreate']);
-                unset($aPluginSettings['automaticsurveycreation']);
             }
         }
 
@@ -448,10 +441,10 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         // No user found!
         if ($user === null) {
             // If ldap mode is searchandbind and autocreation is enabled we can continue
-            if ($ldapmode == 'searchandbind' && $this->get('autocreate', null, null, false) == true) {
+            if ($this->get('autocreate', null, null, false) == true) {
                 $autoCreateFlag = true;
             } else {
-                // If the user doesnt exist in the LS database, he can not login
+                // If the user doesn't exist in the LS database, he can not login
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID); // Error shown : user or password invalid
                 return;
             }
@@ -567,7 +560,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // Finally, if user didn't exist and auto creation (i.e. autoCreateFlag == true) is enabled, we create it
         if ($autoCreateFlag) {
-            if (($iNewUID = $this->_createNewUser($username)) && $this->get('automaticsurveycreation', null, null, false)) {
+            if (($iNewUID = $this->_createNewUser($username, $password)) && $this->get('automaticsurveycreation', null, null, false)) {
                 Permission::model()->setGlobalPermission($iNewUID, 'surveys', array('create_p'));
             }
             $user = $this->api->getUserByName($username);
