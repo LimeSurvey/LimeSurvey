@@ -63,24 +63,20 @@ class FailedEmailController extends LSBaseController
      */
     public function actionResend()
     {
-        $surveyId = (int)sanitize_int(App()->request->getParam('surveyid'));
+        $surveyId = (int) sanitize_int(App()->request->getParam('surveyid'));
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
-
         global $thissurvey;
         $thissurvey = getSurveyInfo($surveyId);
-
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['failedEmail/index/', 'surveyid' => $surveyId]);
         }
-        $preserveResend = App()->request->getParam('preserveResend');
-        $preserveResend = !is_null($preserveResend);
+        $preserveResend = !is_null(App()->request->getParam('preserveResend'));
         $item = [App()->request->getParam('item')];
         $items = json_decode(App()->request->getParam('sItems'));
         $selectedItems = $items ?? $item;
-        $emailsByType = [];
         if (!empty($selectedItems)) {
             $criteria = new CDbCriteria();
             /** @psalm-suppress RedundantCast */
@@ -88,15 +84,12 @@ class FailedEmailController extends LSBaseController
             $criteria->addInCondition('id', $selectedItems);
             $failedEmails = FailedEmail::model()->findAll($criteria);
             if (!empty($failedEmails)) {
-                foreach ($failedEmails as $failedEmail) {
-                    $emailsByType[$failedEmail->email_type][] = [
-                        'id'        => $failedEmail->id,
-                        'responseId' => $failedEmail->responseid,
-                        'recipient' => $failedEmail->recipient,
-                        'language' => $failedEmail->language,
-                    ];
-                }
-                $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
+                $result = sendSubmitNotifications(
+                    $surveyId,
+                    $this->getEmailsByType($failedEmails),
+                    $preserveResend,
+                    true
+                );
                 if (!$preserveResend) {
                     // only delete FailedEmail entries that have succeeded
                     $criteria->addCondition('status = :status');
@@ -121,19 +114,9 @@ class FailedEmailController extends LSBaseController
                     ]
                 ]);
             }
-            return $this->renderPartial('/admin/super/_renderJson', [
-                "data" => [
-                    'success' => false,
-                    'message' => gT('No match could be found for selection'),
-                ]
-            ]);
+            return $this->renderError(gT('No match could be found for selection'));
         }
-        return $this->renderPartial('/admin/super/_renderJson', [
-            "data" => [
-                'success' => false,
-                'message' => gT('Please select at least one item'),
-            ]
-        ]);
+        return $this->renderError(gT('Please select at least one item'));
     }
 
     /**
@@ -213,5 +196,37 @@ class FailedEmailController extends LSBaseController
             '/failedEmail/partials/modal/' . $contentFile,
             ['id' => $id, 'surveyId' => $surveyId, 'failedEmail' => $failedEmail]
         );
+    }
+
+    /**
+     * @param string $text
+     * @return string
+     */
+    private function renderError($text)
+    {
+        return $this->renderPartial('/admin/super/_renderJson', [
+            "data" => [
+                'success' => false,
+                'message' => $text
+            ]
+        ]);
+    }
+
+    /**
+     * @param FailedEmail[] $failedEmails
+     * @return array
+     */
+    private function getEmailsByType($failedEmails)
+    {
+        $emailsByType = [];
+        foreach ($failedEmails as $failedEmail) {
+            $emailsByType[$failedEmail->email_type][] = [
+                'id'         => $failedEmail->id,
+                'responseId' => $failedEmail->responseid,
+                'recipient'  => $failedEmail->recipient,
+                'language'   => $failedEmail->language,
+            ];
+        }
+        return $emailsByType;
     }
 }
