@@ -281,20 +281,25 @@ class UserGroupController extends LSBaseController
      */
     public function actionAddGroup()
     {
-        $action = (isset($_POST['action'])) ? $_POST['action'] : '';
+        $action = App()->getRequest()->getPost('action');
         $aData = array();
 
         if (Permission::model()->hasGlobalPermission('usergroups', 'create')) {
             if ($action == "saveusergroup") {
                 //try to save the normal yii-way (validation rules must be implement in UserGroup()->rules(...)
                 $model = new UserGroup();
-                $model->name = flattenText($_POST['group_name'], false, true, 'UTF-8');
-                $model->description = flattenText($_POST['group_description']);
+                $model->name = flattenText(App()->getRequest()->getPost('group_name'), false, true, 'UTF-8');
+                $model->description = flattenText(App()->getRequest()->getPost('group_description'));
                 $model->owner_id = Yii::app()->user->id;
 
                 if ($model->save()) {
-                    //everythiong ok, go back to index
-                    Yii::app()->user->setFlash('success', gT("User group successfully added!"));
+                    //everything ok, go back to index
+                    App()->setFlashMessage(gT("User group successfully added!"), 'success');
+                    if ($model->addUser(Yii::app()->user->id)) {
+                        App()->setFlashMessage(gT("Your account was added to the group"));
+                    } else {
+                        App()->setFlashMessage(gT("An error happen when try to add your account to user group."), 'warning');
+                    }
                     $this->redirect(array('userGroup/index'));
                 } else {
                     //show error msg
