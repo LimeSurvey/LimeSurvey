@@ -67,6 +67,10 @@ class FailedEmailController extends LSBaseController
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
+
+        global $thissurvey;
+        $thissurvey = getSurveyInfo($surveyId);
+
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['failedEmail/index/', 'surveyid' => $surveyId]);
@@ -79,6 +83,7 @@ class FailedEmailController extends LSBaseController
         $emailsByType = [];
         if (!empty($selectedItems)) {
             $criteria = new CDbCriteria();
+            /** @psalm-suppress RedundantCast */
             $criteria->addCondition('surveyid = ' . (int) $surveyId);
             $criteria->addInCondition('id', $selectedItems);
             $failedEmails = FailedEmail::model()->findAll($criteria);
@@ -91,8 +96,6 @@ class FailedEmailController extends LSBaseController
                         'language' => $failedEmail->language,
                     ];
                 }
-                global $thissurvey;
-                $thissurvey = getSurveyInfo($surveyId);
                 $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
                 if (!$preserveResend) {
                     // only delete FailedEmail entries that have succeeded

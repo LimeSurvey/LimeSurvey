@@ -82,7 +82,8 @@
             "./third_party/bin/phpmd application/libraries/ExtensionInstaller/ text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php text tests/rulesets/phpmd_ruleset_strict.xml",
             "./third_party/bin/phpmd application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php text tests/rulesets/phpmd_ruleset_strict.xml",
-            "./third_party/bin/psalm --threads=4"
+            "./third_party/bin/psalm --threads=4",
+            "./third_party/bin/psalm -c psalm-strict.xml --threads=4"
         ]
     }
 }
