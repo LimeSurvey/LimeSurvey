@@ -74,7 +74,7 @@
             "./third_party/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset_strict.xml",
             "./third_party/bin/phpmd application/helpers/update/updates/ text tests/rulesets/phpmd_ruleset_strict.xml",
             "./third_party/bin/phpmd application/controllers/FailedEmailController.php text tests/rulesets/phpmd_ruleset_strict.xml",
-            "./third_party/bin/phpmd application/models/FailedEmailModel.php text tests/rulesets/phpmd_ruleset_strict.xml",
+            "./third_party/bin/phpmd application/models/FailedEmail.php text tests/rulesets/phpmd_ruleset_strict.xml",
             "./third_party/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateConfiguration.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateManifest.php text tests/rulesets/phpmd_ruleset.xml",
