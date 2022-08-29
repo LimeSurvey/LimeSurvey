@@ -30,7 +30,7 @@
 
 body {
      padding-bottom: 10px;
-     padding-top: 60px;/* now is redefine in JS to fit any title length */
+     padding-top: 145px;/* now is redefine in JS to fit any title length */
 }
 
 .navbar-action-link{
