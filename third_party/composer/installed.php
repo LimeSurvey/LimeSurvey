@@ -6,11 +6,20 @@
     'aliases' => 
     array (
     ),
-    'reference' => '4a1158a7cf142f8ac8c0c74881e8d4b604887421',
+    'reference' => 'ada0e803d0d81e0a15e751b72da959e218ab81d6',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
+    'html2text/html2text' => 
+    array (
+      'pretty_version' => '4.3.1',
+      'version' => '4.3.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '61ad68e934066a6f8df29a3d23a6460536d0855c',
+    ),
     'khaled.alshamaa/ar-php' => 
     array (
       'pretty_version' => 'v6.3.0',
@@ -27,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '4a1158a7cf142f8ac8c0c74881e8d4b604887421',
+      'reference' => 'ada0e803d0d81e0a15e751b72da959e218ab81d6',
     ),
     'mk-j/php_xlsxwriter' => 
     array (

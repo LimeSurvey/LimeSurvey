@@ -49,6 +49,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'LimeSurvey\\Exceptions\\' => 22,
             'LimeSurvey\\Datavalueobjects\\' => 28,
         ),
+        'H' => 
+        array (
+            'Html2Text\\' => 10,
+        ),
         'A' => 
         array (
             'ArPHP\\I18N\\' => 11,
@@ -121,6 +125,11 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'LimeSurvey\\Datavalueobjects\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/datavalueobjects',
+        ),
+        'Html2Text\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/html2text/html2text/src',
+            1 => __DIR__ . '/..' . '/html2text/html2text/test',
         ),
         'ArPHP\\I18N\\' => 
         array (
