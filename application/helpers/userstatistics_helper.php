@@ -2582,8 +2582,6 @@ class userstatistics_helper
             /**
              * Initiate the Spreadsheet_Excel_Writer
              */
-            require_once(APPPATH . '/third_party/pear/Spreadsheet/Excel/Writer.php');
-
             if ($pdfOutput == 'F') {
                 $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xls';
                 $this->workbook = new Spreadsheet_Excel_Writer($sFileName);
