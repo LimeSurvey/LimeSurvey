@@ -3,7 +3,7 @@
 // Code below copied from index.php.
 // File also used for Psalm checker.
 
-$system_path = "framework";
+$system_path = "third_party/yiisoft/yii/framework";
 $application_folder = dirname(__FILE__) . "/../../application";
 if (realpath($system_path) !== false) {
     $system_path = realpath($system_path).'/';
