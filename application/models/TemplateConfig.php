@@ -500,7 +500,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['saveformsurveydivflabel']       = ' save-survey-label label-cell ';
         $aClassAndAttributes['class']['saveformsurveydivfdiv']         = ' save-survey-input input-cell ';
         $aClassAndAttributes['class']['saveformsurveydivfdivdiv']      = '  ';
-        $aClassAndAttributes['class']['saveformsurveydivfdivdivdiv']   = ' input-group-addon captcha-image ';
+        $aClassAndAttributes['class']['saveformsurveydivfdivdivdiv']   = ' input-group-text captcha-image ';
         $aClassAndAttributes['class']['saveformsurveydivfdivdivinput'] = ' ';
         $aClassAndAttributes['class']['saveformsurveydivg']            = '  save-survey-row save-survey-submit ';
         $aClassAndAttributes['class']['saveformsurveydivgdiv']         = ' save-survey-input input-cell ';
