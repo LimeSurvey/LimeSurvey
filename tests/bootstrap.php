@@ -205,7 +205,6 @@ if (!file_exists(APPPATH . 'config/config' . EXT)) {
 // NB: This line might be needed if you have PHP in a docker container.
 //$config['components']['db']['connectionString'] = 'mysql:host=localhost;port=3306;dbname=ls4;';
 
-var_dump(BASEPATH);
 // Check that tmp and upload are set to 777 permission (OK on test system).
 if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tmp/')), -4) != '0777') {
     die('tmp folder not set to 777');
