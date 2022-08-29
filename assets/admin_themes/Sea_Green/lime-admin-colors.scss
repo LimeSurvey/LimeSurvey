@@ -51,6 +51,15 @@ $primary-navbar: #84b39a;
 $navbar-inverse-1: #101010;
 $navbar-inverse-2: #080808;
 
+$navbar-light-color:                $primary;
+$navbar-light-hover-color:          $white;
+$navbar-light-active-color:         $white;
+$navbar-light-disabled-color:       $primary;
+$navbar-light-toggler-icon-bg:      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-light-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
+$navbar-light-toggler-border-color: $primary;
+$navbar-light-brand-color:          $primary;
+$navbar-light-brand-hover-color:    $primary-hover;
+
 $hover_active_td: #e8e8e8;
 
 $primary-bg_hover_btn: #22722b;
@@ -79,6 +88,7 @@ $alert-info: #40ab82;
 
 :root {
     --LS-admintheme-basecolor: #{$primary};
+    --bs-info-rgb: 57, 153, 63;
 }
 
 //@extend-elements
@@ -1576,6 +1586,9 @@ fieldset[disabled] {
             }
         }
     }
+    .nav-link {
+        color: $primary;
+    }
 }
 // Navbar
 .navbar-collapse {
@@ -1758,6 +1771,57 @@ fieldset[disabled] {
 .navbar-toggle .icon-bar {
     background-color: $primary;
 }
+
+.navbar-light {
+    .navbar-brand {
+        color: $navbar-light-brand-color;
+
+        &:hover,
+        &:focus {
+            color: $navbar-light-brand-hover-color;
+        }
+    }
+
+    .navbar-nav {
+        .nav-link {
+            color: $navbar-light-color;
+
+            &:hover,
+            &:focus {
+                color: $navbar-light-hover-color;
+            }
+
+            &.disabled {
+                color: $navbar-light-disabled-color;
+            }
+        }
+
+        .show > .nav-link,
+        .nav-link.active {
+            color: $navbar-light-active-color;
+        }
+    }
+
+    .navbar-toggler {
+        color: $navbar-light-color;
+        border-color: $navbar-light-toggler-border-color;
+    }
+
+    .navbar-toggler-icon {
+        background-image: escape-svg($navbar-light-toggler-icon-bg);
+    }
+
+    .navbar-text {
+        color: $navbar-light-color;
+
+        a,
+        a:hover,
+        a:focus  {
+            color: $navbar-light-active-color;
+        }
+    }
+}
+
 // Breadcrumbs
 .breadcrumb {
     background-color: $gray-04;

@@ -522,7 +522,7 @@ table > tbody > tr > td.ddprefix {
     table.ls-answers tr {
         padding: 1em;
     }
-    table.ls-answers  tr th {
+
     table.ls-answers tr th {
         font-size: 1.1em;
         text-align: center;
@@ -823,4 +823,11 @@ p.return-to-survey {
 /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
 label::after {
     background-color: #337ab7
+}
+
+#survey-nav .nav-link:hover {
+    color: #333;
+}
+#survey-nav .nav-link:focus {
+    color: #333;
 }
