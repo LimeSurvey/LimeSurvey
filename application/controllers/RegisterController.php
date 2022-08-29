@@ -530,10 +530,6 @@ class RegisterController extends LSYii_Controller
             $aData['aSurveyInfo']['alanguageChanger']['show']  = true;
             $aData['aSurveyInfo']['alanguageChanger']['datas'] = $alanguageChangerDatas;
         }
-
-        $LEM =& LimeExpressionManager::singleton();
-        $LEM->setVariableAndTokenMappingsForExpressionManager($iSurveyId);
-
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
 
