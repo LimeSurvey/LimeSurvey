@@ -131,11 +131,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
 
             $lblout = array();
             if ($sLanguageCode == 'ar') {
-                if (!class_exists('I18N_Arabic_Glyphs', false)) {
-                    $Arabic = new I18N_Arabic('Glyphs');
-                } else {
-                    $Arabic = new I18N_Arabic_Glyphs();
-                }
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
 
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
@@ -220,12 +216,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $lbl = $labelTmp;
 
             if ($sLanguageCode == 'ar') {
-                if (!class_exists('I18N_Arabic_Glyphs', false)) {
-                    $Arabic = new I18N_Arabic('Glyphs');
-                } else {
-                    $Arabic = new I18N_Arabic_Glyphs();
-                }
-
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
                         //auto detect if english
@@ -3451,7 +3442,6 @@ class statistics_helper
         $survey = Survey::model()->findByPk($surveyid);
 
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode)) {
@@ -3550,7 +3540,6 @@ class statistics_helper
         //load surveytranslator helper
 
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode)) {
@@ -3770,7 +3759,6 @@ class statistics_helper
         $aStatisticsData = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         $sOutputHTML = ""; //This string carries all the actual HTML code to print.
         $sTempDir = Yii::app()->getConfig("tempdir");

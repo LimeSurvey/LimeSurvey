@@ -49,6 +49,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'LimeSurvey\\Exceptions\\' => 22,
             'LimeSurvey\\Datavalueobjects\\' => 28,
         ),
+        'A' => 
+        array (
+            'ArPHP\\I18N\\' => 11,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -117,6 +121,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'LimeSurvey\\Datavalueobjects\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/datavalueobjects',
+        ),
+        'ArPHP\\I18N\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/khaled.alshamaa/ar-php/src',
         ),
     );
 

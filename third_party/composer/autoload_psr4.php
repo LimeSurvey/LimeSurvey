@@ -22,4 +22,5 @@ return array(
     'LimeSurvey\\ExtensionInstaller\\' => array($baseDir . '/application/libraries/ExtensionInstaller'),
     'LimeSurvey\\Exceptions\\' => array($baseDir . '/application/exceptions'),
     'LimeSurvey\\Datavalueobjects\\' => array($baseDir . '/application/datavalueobjects'),
+    'ArPHP\\I18N\\' => array($vendorDir . '/khaled.alshamaa/ar-php/src'),
 );

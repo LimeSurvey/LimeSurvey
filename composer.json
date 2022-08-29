@@ -44,7 +44,8 @@
         "yiiext/twig-renderer":"dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
 		"yiisoft/yii": "^1.1",
-		"phpmailer/phpmailer": "^6.6"
+		"phpmailer/phpmailer": "^6.6",
+		"khaled.alshamaa/ar-php": "^6.3"
 	},
     "config": {
         "vendor-dir": "third_party",

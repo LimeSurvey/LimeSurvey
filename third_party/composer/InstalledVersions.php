@@ -32,11 +32,20 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'd63899dff83f4720ecab51e111a265fe4bc75160',
+    'reference' => 'b59280189f65f4a2ffedf6f82d01f746f8c62354',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
+    'khaled.alshamaa/ar-php' => 
+    array (
+      'pretty_version' => 'v6.3.0',
+      'version' => '6.3.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'a35d61400a646a0c685a98d3fc7eea8721bc404e',
+    ),
     'limesurvey/limesurvey' => 
     array (
       'pretty_version' => 'dev-develop',
@@ -44,7 +53,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'd63899dff83f4720ecab51e111a265fe4bc75160',
+      'reference' => 'b59280189f65f4a2ffedf6f82d01f746f8c62354',
     ),
     'paragonie/constant_time_encoding' => 
     array (
