@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'c4fbf974378a636b5564186bb81389ec8c948c80',
+    'reference' => '4a1158a7cf142f8ac8c0c74881e8d4b604887421',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -53,7 +53,16 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'c4fbf974378a636b5564186bb81389ec8c948c80',
+      'reference' => '4a1158a7cf142f8ac8c0c74881e8d4b604887421',
+    ),
+    'mk-j/php_xlsxwriter' => 
+    array (
+      'pretty_version' => '0.38',
+      'version' => '0.38.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '00579529fea072851789505b2dec0d14cdfffe60',
     ),
     'paragonie/constant_time_encoding' => 
     array (

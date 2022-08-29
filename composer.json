@@ -46,7 +46,8 @@
 		"yiisoft/yii": "^1.1",
 		"phpmailer/phpmailer": "^6.6",
 		"khaled.alshamaa/ar-php": "^6.3",
-		"tecnickcom/tcpdf": "^6.5"
+		"tecnickcom/tcpdf": "^6.5",
+		"mk-j/php_xlsxwriter": "^0.38.0"
 	},
     "config": {
         "vendor-dir": "third_party",

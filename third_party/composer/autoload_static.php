@@ -154,6 +154,8 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'TCPDF_IMPORT' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_import.php',
         'TCPDF_PARSER' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_parser.php',
         'TCPDF_STATIC' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_static.php',
+        'XLSXWriter' => __DIR__ . '/..' . '/mk-j/php_xlsxwriter/xlsxwriter.class.php',
+        'XLSXWriter_BuffererWriter' => __DIR__ . '/..' . '/mk-j/php_xlsxwriter/xlsxwriter.class.php',
         'Yii' => __DIR__ . '/..' . '/yiisoft/yii/framework/yii.php',
         'YiiBase' => __DIR__ . '/..' . '/yiisoft/yii/framework/YiiBase.php',
     );
