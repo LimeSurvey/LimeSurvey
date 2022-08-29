@@ -15,6 +15,8 @@
  * @property string $status status in which this entry is default 'SEND FAILED'
  * @property string $updated datetime when it was last updated
  * @property Survey $survey the surveyobject related to the entry
+ *
+ * @psalm-suppress InvalidScalarArgument
  */
 class FailedEmail extends LSActiveRecord
 {
