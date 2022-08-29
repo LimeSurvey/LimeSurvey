@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @psalm-suppress InvalidScalarArgument
+ */
 class FailedEmailController extends LSBaseController
 {
     /**
