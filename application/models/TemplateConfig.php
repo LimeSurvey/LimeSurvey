@@ -549,8 +549,8 @@ class TemplateConfig extends CActiveRecord
         // Register
         $aClassAndAttributes['class']['register']                 = '  ';
         $aClassAndAttributes['class']['registerrow']              = '  ';
-        $aClassAndAttributes['class']['registerrowjumbotron']     = ' jumbotron ';
-        $aClassAndAttributes['class']['registerrowjumbotrondiv']  = ' ';
+        $aClassAndAttributes['class']['registerrowjumbotron']     = ' card bg-light p-6 mb-3';
+        $aClassAndAttributes['class']['registerrowjumbotrondiv']  = 'card-body';
 
         $aClassAndAttributes['class']['registerform']             = ' register-form  ';
         $aClassAndAttributes['class']['registerul']               = '  ';
@@ -569,7 +569,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registerformcaptchadivb']  = '  ';
         $aClassAndAttributes['class']['registerformcaptchadivc']  = '  captcha-widget ';
         $aClassAndAttributes['class']['registerformcaptchainput'] = '  ';
-        $aClassAndAttributes['class']['registersuccessblock'] = ' col-md-12 ';
+        $aClassAndAttributes['class']['registersuccessblock'] = ' col-md-12 p-0 ';
         $aClassAndAttributes['attr']['registersuccessblock'] = ' ';
         $aClassAndAttributes['class']['registersuccesslistlabel'] = ' col-md-4 text-end  ';
         $aClassAndAttributes['attr']['registersuccesslistlabel'] = ' ';
