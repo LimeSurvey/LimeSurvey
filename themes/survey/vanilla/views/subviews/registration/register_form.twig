@@ -62,16 +62,17 @@
 
         {# Captcha box #}
         {% if aSurveyInfo.bCaptcha %}
-            <div class='{{ aSurveyInfo.class.registerformcaptcha }} mb-3 ' {{ aSurveyInfo.attr.registerformcaptcha }}>
+            <div class="{{ aSurveyInfo.class.registerformcaptcha }} mb-3" {{ aSurveyInfo.attr.maincolformdivb }}>
                 <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ gT("Please solve the following equation:") }} {{ include('./subviews/registration/required.twig') }}</label>
-                <div {{ aSurveyInfo.attr.registerformcaptchadiv }}>
-                    <div class='{{ aSurveyInfo.class.registerformcaptchadivb }} input-group' {{ aSurveyInfo.attr.registerformcaptchadivb }}>
-                        <div class='{{ aSurveyInfo.class.registerformcaptchadivc }} control-label' {{ aSurveyInfo.attr.registerformcaptchadivc }}>
+                <div class="row" {{ aSurveyInfo.attr.registerformcaptchadiv }}>
+                    <div class="{{ aSurveyInfo.class.registerformcaptchadivb }} col-2" {{ aSurveyInfo.attr.registerformcaptchadivb }}>
                             {{ renderCaptcha().renderOut() }}
-                            <!-- TODO: Problems with reload and name getting empty/not in POST. -->
-                            <a href="#" class="btn btn-sm btn-outline-secondary" onclick="window.location.reload();" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
-                        </div>
-                        <input class='{{ aSurveyInfo.class.registerformcaptchainput }} form-control' {{ aSurveyInfo.attr.registerformcaptchainput }} >
+                    </div>
+                    <div class="{{ aSurveyInfo.class.registerformcaptchadivc }} col-1 align-self-center" {{ aSurveyInfo.attr.registerformcaptchadivc }}>
+                        <a href="#" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class="col-9 align-self-center">
+                        <input class='form-control {{ aSurveyInfo.class.registerformcaptchainput }}' {{ aSurveyInfo.attr.registerformcaptchainput }}>
                     </div>
                 </div>
             </div>
