@@ -818,6 +818,10 @@ p.return-to-survey{
     color: #fff;
 }
 
+label {
+    font-weight: bold;
+}
+
 /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
 .basic label::after{background-color:#337ab7}
 .cerulean label::after{background-color:#2fa4e7;}
