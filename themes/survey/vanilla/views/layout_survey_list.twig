@@ -123,9 +123,14 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                             <div class="row justify-content-center">
                                 <div
                                     id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
-                                    {{ image('./files/survey_list_header.png', aSurveyInfo.name, {"class": "img-fluid"}) }}
-                                    {{ aSurveyInfo.sSiteName }}
-                                    <div class="ls-js-hidden">
+                                    {{ image('./files/survey_list_header.png', aSurveyInfo.name, {"class": "img-fluid mx-auto d-block"}) }}
+                                    <span class="text-center">{{ aSurveyInfo.sSiteName }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4"></div>
+                                <div class="col">
+                                    <div id="surveylist-language-changer" class="ls-js-hidden">
                                         {{ include('./subviews/navigation/language_changer_form.twig') }}
                                     </div>
                                 </div>

@@ -46,7 +46,7 @@ body {
 /* specific for survey listing */
 @media (min-width: 761px) {
     .surveys-list .btn-group {
-        width: 50%;
+        width: 49%;
     }
 }
 
@@ -526,7 +526,6 @@ table > tbody > tr > td.ddprefix {
     table.ls-answers tr th {
         font-size: 1.1em;
         text-align: center;
-
     }
 
     /* Add some margin for Multiple short text */
