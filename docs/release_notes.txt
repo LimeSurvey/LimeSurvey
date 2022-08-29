@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.25 (build 220822) to 3.28.26 (build 220829) August 29, 2022
+-Fixed issue: No response recorded when using registration (Carsten Schmitz)
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Georgian by lucas_encuesta.biz
+#Updated translation: Georgian by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Bengali by lucas_encuesta.biz
+
+
 Changes from 3.28.24 (build 220816) to 3.28.25 (build 220822) August 22, 2022
 -Fixed issue: Cannot load previously saved response to resume, instead the message "There is no matching saved response" is shown after entering identifier and password (Carsten Schmitz)
 -Fixed issue #17485: The getAnswerQuery method cannot be used in the Answers model (#2569) (Gabriel Jenik)
