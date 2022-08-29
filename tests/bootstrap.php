@@ -22,7 +22,7 @@ if (!file_exists(__DIR__ . '/../enabletests')) {
  * as this file.
  *
  */
-$system_path = "framework";
+$system_path = "third_party/yiisoft/yii/framework";
 
 /*
  *---------------------------------------------------------------
