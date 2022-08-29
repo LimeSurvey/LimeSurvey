@@ -30,7 +30,7 @@
 
 body {
      padding-bottom: 10px;
-     padding-top: 60px;/* now is redefine in JS to fit any title length */
+     padding-top: 145px;/* now is redefine in JS to fit any title length */
 }
 
 .navbar-action-link{
@@ -40,7 +40,7 @@ body {
 /* specific for survey listing */
 @media (min-width: 761px) {
   .surveys-list .btn-group {
-    width: 50%;
+    width: 49%;
   }
 }
 
@@ -814,6 +814,14 @@ p.return-to-survey{
     outline: none;
 }
 
+.bg-primary {
+    color: #fff;
+}
+
+label {
+    font-weight: bold;
+}
+
 /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
 .basic label::after{background-color:#337ab7}
 .cerulean label::after{background-color:#2fa4e7;}
@@ -832,3 +840,11 @@ p.return-to-survey{
 .superhero label::after{background-color:#df691a;}
 .united label::after{background-color:#c34113;}
 .yeti  label::after{background-color:#008cba;}
+
+.nav-link {
+    color: white;
+}
+
+dropdown-item:focus, .dropdown-item:hover {
+    background-color: #2c3e50 !important;
+}

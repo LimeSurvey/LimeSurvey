@@ -29,7 +29,7 @@
 */
 body {
      padding-bottom: 10px;
-     padding-top: 60px;/* now is redefine in JS to fit any title length */
+     padding-top: 90px;/* now is redefine in JS to fit any title length */
 }
 
 
@@ -48,7 +48,7 @@ element.style {
 /* specific for survey listing */
 @media (min-width: 761px) {
   .surveys-list .btn-group {
-    width: 50%;
+    width: 49%;
   }
 }
 
@@ -724,4 +724,8 @@ body .checkbox-item label::after {
     border-left: none;
     border-right: none;
     outline: none;
+}
+
+label {
+    font-weight: bold;
 }

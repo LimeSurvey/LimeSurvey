@@ -443,7 +443,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['captcharowlabel']       = ' save-survey-label label-cell ';
         $aClassAndAttributes['class']['captcharowcol']         = ' save-survey-input input-cell ';
         $aClassAndAttributes['class']['captcharowcoldiv']      = ' input-group ';
-        $aClassAndAttributes['class']['captcharowcoldivdiv']   = ' input-group-addon captcha-image ';
+        $aClassAndAttributes['class']['captcharowcoldivdiv']   = ' input-group-text captcha-image ';
         $aClassAndAttributes['class']['captcharowcoldivinput'] = '  ';
         $aClassAndAttributes['class']['loadrow']               = ' save-survey-row save-survey-submit ';
         $aClassAndAttributes['class']['loadrowcol']            = ' save-survey-input input-cell ';
@@ -500,7 +500,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['saveformsurveydivflabel']       = ' save-survey-label label-cell ';
         $aClassAndAttributes['class']['saveformsurveydivfdiv']         = ' save-survey-input input-cell ';
         $aClassAndAttributes['class']['saveformsurveydivfdivdiv']      = '  ';
-        $aClassAndAttributes['class']['saveformsurveydivfdivdivdiv']   = ' input-group-addon captcha-image ';
+        $aClassAndAttributes['class']['saveformsurveydivfdivdivdiv']   = ' input-group-text captcha-image ';
         $aClassAndAttributes['class']['saveformsurveydivfdivdivinput'] = ' ';
         $aClassAndAttributes['class']['saveformsurveydivg']            = '  save-survey-row save-survey-submit ';
         $aClassAndAttributes['class']['saveformsurveydivgdiv']         = ' save-survey-input input-cell ';
@@ -533,13 +533,13 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['completedwrapper']     = ' completed-wrapper ';
         $aClassAndAttributes['class']['completedtext']        = ' completed-text ';
-        $aClassAndAttributes['class']['quotamessage']         = ' quotamessage limesurveycore ';
+        $aClassAndAttributes['class']['quotamessage']         = ' quotamessage limesurveycore text-center ';
         $aClassAndAttributes['class']['navigator']            = ' navigator ';
         $aClassAndAttributes['class']['navigatorcoll']        = '  ';
         $aClassAndAttributes['class']['navigatorcollbutton']  = ' ls-move-btn ls-move-previous-btn action--ls-button-previous';
         $aClassAndAttributes['class']['navigatorcolr']        = '  ';
         $aClassAndAttributes['class']['navigatorcolrbutton']  = ' ls-move-btn ls-move-submit-btn action--ls-button-submit';
-        $aClassAndAttributes['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl ';
+        $aClassAndAttributes['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl text-center ';
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
 
         $aClassAndAttributes['attr']['navigatorcollbutton'] = '  type="submit" name="move" ';
@@ -549,8 +549,8 @@ class TemplateConfig extends CActiveRecord
         // Register
         $aClassAndAttributes['class']['register']                 = '  ';
         $aClassAndAttributes['class']['registerrow']              = '  ';
-        $aClassAndAttributes['class']['registerrowjumbotron']     = ' jumbotron ';
-        $aClassAndAttributes['class']['registerrowjumbotrondiv']  = ' ';
+        $aClassAndAttributes['class']['registerrowjumbotron']     = ' card bg-light p-6 mb-3';
+        $aClassAndAttributes['class']['registerrowjumbotrondiv']  = 'card-body';
 
         $aClassAndAttributes['class']['registerform']             = ' register-form  ';
         $aClassAndAttributes['class']['registerul']               = '  ';
@@ -569,7 +569,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registerformcaptchadivb']  = '  ';
         $aClassAndAttributes['class']['registerformcaptchadivc']  = '  captcha-widget ';
         $aClassAndAttributes['class']['registerformcaptchainput'] = '  ';
-        $aClassAndAttributes['class']['registersuccessblock'] = ' col-md-12 ';
+        $aClassAndAttributes['class']['registersuccessblock'] = ' col-md-12 p-0 ';
         $aClassAndAttributes['attr']['registersuccessblock'] = ' ';
         $aClassAndAttributes['class']['registersuccesslistlabel'] = ' col-md-4 text-end  ';
         $aClassAndAttributes['attr']['registersuccesslistlabel'] = ' ';

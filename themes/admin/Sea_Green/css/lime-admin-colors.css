@@ -1,5 +1,6 @@
 :root {
   --LS-admintheme-basecolor: #328637;
+  --bs-info-rgb: 57, 153, 63;
 }
 
 .open .dropdown-toggle.btn-outline-secondary, .btn-outline-secondary.active, .btn-outline-secondary:active, .btn-outline-secondary:focus, .btn-outline-secondary:hover {
@@ -1240,6 +1241,10 @@ fieldset[disabled] .btn-link:focus {
 .nav-tabs > li > a:hover {
   border: 1px solid #9cba9e #9cba9e #9cba9e;
 }
+.nav-tabs .nav-link {
+  color: #328637;
+}
+
 .navbar-collapse {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -1420,6 +1425,41 @@ fieldset[disabled] .btn-link:focus {
 
 .navbar-toggle .icon-bar {
   background-color: #328637;
+}
+
+.navbar-light .navbar-brand {
+  color: #328637;
+}
+.navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {
+  color: #246128;
+}
+.navbar-light .navbar-nav .nav-link {
+  color: #328637;
+}
+.navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {
+  color: #fff;
+}
+.navbar-light .navbar-nav .nav-link.disabled {
+  color: #328637;
+}
+.navbar-light .navbar-nav .show > .nav-link,
+.navbar-light .navbar-nav .nav-link.active {
+  color: #fff;
+}
+.navbar-light .navbar-toggler {
+  color: #328637;
+  border-color: #328637;
+}
+.navbar-light .navbar-toggler-icon {
+  background-image: escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#328637' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>"));
+}
+.navbar-light .navbar-text {
+  color: #328637;
+}
+.navbar-light .navbar-text a,
+.navbar-light .navbar-text a:hover,
+.navbar-light .navbar-text a:focus {
+  color: #fff;
 }
 
 .breadcrumb {

@@ -165,7 +165,7 @@ body {
             color: $color_green_pea_approx;
         }
         &.text-info:hover {
-            color: $color_eden_approx;
+            color: $color_eden_approx !important;
         }
         &.text-warning:hover {
             color: $color_warning;
@@ -198,38 +198,38 @@ body {
         border-top: 1px solid $color_norway_approx;
     }
     .text-muted {
-        color: $color_gunsmoke_approx;
+        color: $color_gunsmoke_approx !important;
     }
     .text-primary {
-        color: $base-color;
+        color: $base-color !important;
     }
     .text-success {
-        color: $base-color;
+        color: $base-color !important;
     }
     .text-info {
-        color: $color_info;
+        color: $color_info !important;
     }
     .text-warning {
-        color: $color_warning;
+        color: $color_warning !important;
     }
     .text-danger {
-        color: $color_danger;
+        color: $color_danger !important;
     }
     .bg-primary {
-        color:            $white;
-        background-color: $base-color;
+        color:            $white !important;
+        background-color: $base-color !important;
     }
     .bg-success {
-        background-color: $color_sea_mist_approx;
+        background-color: $color_sea_mist_approx !important;
     }
     .bg-info {
-        background-color: $color_opal_approx;
+        background-color: $color_opal_approx !important;
     }
     .bg-warning {
-        background-color: $color_quicksand_approx;
+        background-color: $color_quicksand_approx !important;
     }
     .bg-danger {
-        background-color: $color_contessa_approx;
+        background-color: $color_contessa_approx !important;
     }
     .page-header {
         border-bottom: 1px solid $color_norway_approx;
@@ -1245,32 +1245,32 @@ body {
                 color: $color_gravel_approx;
                 &:hover {
                     color:            $white;
-                    background-color: $color_parsley_approx;
+                    background-color: $color_parsley_approx !important;
                 }
                 &:focus {
                     color:            $white;
-                    background-color: $color_parsley_approx;
+                    background-color: $color_parsley_approx !important;
                 }
             }
             .active > a {
                 color:            $white;
-                background-color: $color_parsley_approx;
+                background-color: $color_parsley_approx !important;
                 &:hover {
                     color:            $white;
-                    background-color: $color_parsley_approx;
+                    background-color: $color_parsley_approx !important;
                 }
                 &:focus {
                     color:            $white;
-                    background-color: $color_parsley_approx;
+                    background-color: $color_parsley_approx !important;
                 }
             }
-            .disabled > a {
+            li > a.disabled {
                 color: $color_gunsmoke_approx;
-                &:hover {
-                    color: $color_gunsmoke_approx;
+                :hover {
+                    color: $color_gunsmoke_approx !important;
                 }
-                &:focus {
-                    color: $color_gunsmoke_approx;
+                :focus {
+                    color: $color_gunsmoke_approx !important;
                 }
             }
         }
@@ -1862,42 +1862,51 @@ body {
         @extend %extend_19;
     }
     .navbar {
-        background-color: $white;
+        background-color: $white !important;
         box-shadow:       0 3px 3px $color_gunsmoke_10_approx;
         border-radius:    0 !important;
         a {
             text-decoration: none;
             line-height:     1.8rem;
-            font-size:       1.6rem;
-
-            @media(min-width: 769px) {
-                &.animate {
-                    text-decoration: none;
-                    border:          none;
-                    &:after {
-                        text-align:       right;
-                        content:          '';
-                        display:          block;
-                        width:            0;
-                        height:           2px;
-                        background-color: $base-color;
-                    }
-                    &:hover {
-                        text-decoration: none;
-                        border:          none;
-                        &:after {
-                            transition: width 0.3s;
-                            width:      100%;
-                        }
-                    }
-                }
+            font-size:       1.2rem;
+        }
+        @media(min-width: 769px) {
+            .navbar-nav .nav-item .nav-link:hover {
+                text-decoration: none;
             }
-            @media(max-width: 768px) {
-                padding-top:    15px;
-                padding-bottom: 15px;
-                box-shadow:     1px 2px 3px $color_gunsmoke_10_approx;
+            .navbar-nav .nav-item .nav-link:active {
+                text-decoration: none;
+            }
+            .navbar-nav .nav-item .nav-link:focus {
+                text-decoration: none;
+            }
+            .navbar-nav .nav-item .nav-link {
+                padding-bottom: 0;
+                padding-left: 0;
+            }
+            .navbar-nav .nav-item {
+                position: relative;
+            }
+
+            .navbar-nav .nav-item::after {
+                text-align:       right;
+                content:          '';
+                display:          block;
+                width:            0;
+                height:           2px;
+                background-color: $base-color;
+                transition: width 0.3s;
+            }
+            .navbar-nav .nav-item:hover::after {
+                width: 100%;
             }
         }
+        @media(max-width: 768px) {
+            padding-top:    15px;
+            padding-bottom: 15px;
+            box-shadow:     1px 2px 3px $color_gunsmoke_10_approx;
+        }
+
         .nav-icon-btn.nav-icon-btn-danger .label {
             background: $color_danger;
         }

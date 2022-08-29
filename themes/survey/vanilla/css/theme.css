@@ -30,7 +30,7 @@
 
 body {
     padding-bottom: 10px;
-    padding-top: 60px; /* now is redefine in JS to fit any title length */
+    padding-top: 90px; /* now is redefine in JS to fit any title length */
 }
 
 .script-container {
@@ -46,7 +46,7 @@ body {
 /* specific for survey listing */
 @media (min-width: 761px) {
     .surveys-list .btn-group {
-        width: 50%;
+        width: 49%;
     }
 }
 
@@ -522,11 +522,10 @@ table > tbody > tr > td.ddprefix {
     table.ls-answers tr {
         padding: 1em;
     }
-    table.ls-answers  tr th {
+
     table.ls-answers tr th {
         font-size: 1.1em;
         text-align: center;
-
     }
 
     /* Add some margin for Multiple short text */
@@ -823,4 +822,19 @@ p.return-to-survey {
 /* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
 label::after {
     background-color: #337ab7
+}
+
+#survey-nav .nav-link:hover {
+    color: #333;
+}
+#survey-nav .nav-link:focus {
+    color: #333;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+    background-color: #e9ecef !important;
+}
+
+label {
+    font-weight: bold;
 }
