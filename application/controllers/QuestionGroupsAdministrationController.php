@@ -367,8 +367,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $baselang = $survey->language;
         $model    = new QuestionGroup('search');
 
-        if (isset($_GET['QuestionGroup'])) {
-            $model->attributes = $_GET['QuestionGroup'];
+        if (isset($_GET['QuestionGroup']['group_name'])) {
+            $model->group_name = $_GET['QuestionGroup']['group_name'];
         }
 
         if (isset($_GET['pageSize'])) {
