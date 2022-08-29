@@ -9,7 +9,7 @@
  * as this file.
  *
  */
-$system_path = "framework";
+$system_path = "third_party/yiisoft/yii/framework";
 
 /*
  *---------------------------------------------------------------
