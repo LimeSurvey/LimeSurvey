@@ -43,7 +43,8 @@
 		"tiamo/spss": "^2.2",
         "yiiext/twig-renderer":"dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
-		"yiisoft/yii": "^1.1"
+		"yiisoft/yii": "^1.1",
+		"phpmailer/phpmailer": "^6.6"
 	},
     "config": {
         "vendor-dir": "third_party",

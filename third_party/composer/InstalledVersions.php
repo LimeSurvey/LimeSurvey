@@ -27,24 +27,24 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
+    'pretty_version' => 'dev-develop',
+    'version' => 'dev-develop',
     'aliases' => 
     array (
     ),
-    'reference' => 'e56d10e741ca07dc8671c1b798b9f96e1b395c99',
+    'reference' => 'd63899dff83f4720ecab51e111a265fe4bc75160',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
     'limesurvey/limesurvey' => 
     array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
+      'pretty_version' => 'dev-develop',
+      'version' => 'dev-develop',
       'aliases' => 
       array (
       ),
-      'reference' => 'e56d10e741ca07dc8671c1b798b9f96e1b395c99',
+      'reference' => 'd63899dff83f4720ecab51e111a265fe4bc75160',
     ),
     'paragonie/constant_time_encoding' => 
     array (
@@ -72,6 +72,15 @@ private static $installed = array (
       array (
       ),
       'reference' => 'ac994053faac18d386328c91c7900f930acadf1e',
+    ),
+    'phpmailer/phpmailer' => 
+    array (
+      'pretty_version' => 'v6.6.4',
+      'version' => '6.6.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'a94fdebaea6bd17f51be0c2373ab80d3d681269b',
     ),
     'phpseclib/bcmath_compat' => 
     array (

@@ -13,6 +13,7 @@ return array(
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'SPSS\\' => array($vendorDir . '/tiamo/spss/src'),
     'ParagonIE\\ConstantTime\\' => array($vendorDir . '/paragonie/constant_time_encoding/src'),
+    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'LimeSurvey\\PluginManager\\' => array($baseDir . '/application/libraries/PluginManager', $baseDir . '/application/libraries/PluginManager/Storage'),
     'LimeSurvey\\Models\\Services\\' => array($baseDir . '/application/models/services'),
     'LimeSurvey\\Menu\\' => array($baseDir . '/application/libraries/MenuObjects'),
