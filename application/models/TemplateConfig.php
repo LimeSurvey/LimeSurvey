@@ -533,13 +533,13 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['completedwrapper']     = ' completed-wrapper ';
         $aClassAndAttributes['class']['completedtext']        = ' completed-text ';
-        $aClassAndAttributes['class']['quotamessage']         = ' quotamessage limesurveycore ';
+        $aClassAndAttributes['class']['quotamessage']         = ' quotamessage limesurveycore text-center ';
         $aClassAndAttributes['class']['navigator']            = ' navigator ';
         $aClassAndAttributes['class']['navigatorcoll']        = '  ';
         $aClassAndAttributes['class']['navigatorcollbutton']  = ' ls-move-btn ls-move-previous-btn action--ls-button-previous';
         $aClassAndAttributes['class']['navigatorcolr']        = '  ';
         $aClassAndAttributes['class']['navigatorcolrbutton']  = ' ls-move-btn ls-move-submit-btn action--ls-button-submit';
-        $aClassAndAttributes['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl ';
+        $aClassAndAttributes['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl text-center ';
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
 
         $aClassAndAttributes['attr']['navigatorcollbutton'] = '  type="submit" name="move" ';
