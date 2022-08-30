@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-08-30 08:23:59+00:00\n"
+"POT-Creation-Date: 2022-08-30 11:11:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7665,12 +7665,16 @@ msgid "Text elements"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:108
+msgid "Privacy policy settings"
+msgstr ""
+
 #: application/core/LsDefaultDataSets.php:109
-msgid "Data policy settings"
+#: tmp/runtime/twig_cache/4a/4a243409e3dc520c9d40e7fbb792ac694e19f2e10d4067a2bf80d5465d85f9c3.php:86
+msgid "Privacy policy"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:110
-msgid "Edit data policy settings"
+msgid "Edit privacy policy settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:136
@@ -12191,16 +12195,16 @@ msgid "End URL:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9056
-msgid "Survey data policy notice:"
+msgid "Privacy policy notice:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9067
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:64
-msgid "Survey data policy error:"
+msgid "Privacy policy error:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9078
-msgid "Survey data policy label:"
+msgid "Privacy policy label:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9084
@@ -20590,23 +20594,23 @@ msgid "If you are using token functions or notifications emails you need to set 
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:32
-msgid "Survey data policy checkbox label:"
+msgid "Privacy policy checkbox label:"
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:40
-msgid "If you want to specify a link to the survey data policy, set \"Show survey policy text with mandatory checkbox\" to \"Collapsible text\" and use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the \"Survey data policy checkbox label\" field to define the link that opens the policy popup. If there is no placeholder given, there will be an appendix."
+msgid "If you want to specify a link to the privacy policy, set \"Show privacy policy text with mandatory checkbox\" to \"Collapsible text\" and use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the \"Privacy policy checkbox label\" field to define the link that opens the policy popup. If there is no placeholder given, there will be an appendix."
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:48
-msgid "Survey data policy message:"
+msgid "Privacy policy message:"
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:52
-msgid "Survey data policy:"
+msgid "Privacy policy:"
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:60
-msgid "Survey data policy error message:"
+msgid "Privacy policy error message:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:33
@@ -21190,7 +21194,7 @@ msgid "If the option -Anonymized responses- is activated only a dummy date stamp
 msgstr ""
 
 #: application/views/admin/survey/subview/tab_edit_view_datasecurity.php:27
-msgid "Show survey policy text with mandatory checkbox:"
+msgid "Show privacy policy text with mandatory checkbox:"
 msgstr ""
 
 #: application/views/admin/survey/subview/tab_edit_view_datasecurity.php:31
@@ -23446,7 +23450,7 @@ msgid "Sucessfully deleted email notifications: %s"
 msgstr ""
 
 #: application/views/failedEmail/partials/modal/resend_body.php:3
-msgid "Preserve successful emails?"
+msgid "Delete email(s) from list after sending was successful"
 msgstr ""
 
 #: application/views/failedEmail/partials/modal/resend_form.php:16
@@ -25510,10 +25514,6 @@ msgstr ""
 msgid "Date in the format: %s"
 msgstr ""
 
-#: tmp/runtime/twig_cache/4a/4a243409e3dc520c9d40e7fbb792ac694e19f2e10d4067a2bf80d5465d85f9c3.php:86
-msgid "Survey data policy"
-msgstr ""
-
 #: tmp/runtime/twig_cache/4a/4a243409e3dc520c9d40e7fbb792ac694e19f2e10d4067a2bf80d5465d85f9c3.php:101
 msgid "Accept"
 msgstr ""
@@ -25524,6 +25524,10 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/4d/4d8c4be80e3b5bfbfda303721dafa74e680e41ca8c1d2b872776242b4cb0e1ef.php:33
 msgid "Public statistics"
+msgstr ""
+
+#: tmp/runtime/twig_cache/5e/5ef749ac06ee60bffb47f4cec8d80fd2118c7b8bf9c24d4c60acb0664f2be524.php:33
+msgid "Your privacy policy text is shown here."
 msgstr ""
 
 #: tmp/runtime/twig_cache/73/7328e1b15a113f44037ff129db8a4944807bcf7fb51a65eaa803d6f8eaf0cb3b.php:66
@@ -25655,10 +25659,6 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/b4/b4563aca9044774f8bed5a68b17bca143a6616f6a76e21cec3a154307dafbc75.php:141
 msgid "For further information please contact %s:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/b7/b73a246ddd6f94b1a8607732438b9da563112156109bc17acfb45c01e9a41840.php:33
-msgid "Your Privacy policy text is shown here."
 msgstr ""
 
 #: tmp/runtime/twig_cache/c0/c0377aa082d7528491d9a96eadbf048413b5a43b46d2559943b2b7f4f5702a2c.php:47
