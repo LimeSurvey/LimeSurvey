@@ -12,7 +12,7 @@
         <label class="col-sm-4 control-label"><?php eT("Option 'Other':"); ?></label>
         <div class="col-sm-8">
             <select class="form-control custom-data attributes-to-update" id="other" name="other" required>
-                <option value="" selected="selected"><?php eT('Please select aan option');?></option>
+                <option value="" selected="selected"><?php eT('Please select an option');?></option>
                 <option value="false"><?php eT('Off');?></option>
                 <option value="true"><?php eT('On');?></option>
             </select>
