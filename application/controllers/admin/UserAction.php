@@ -458,7 +458,7 @@ class UserAction extends SurveyCommonAction
         }
 
         $iUserID = (int) App()->request->getPost('uid');
-        // A user may not modify his own permissions
+        // A user may not modify their own permissions
         if (Yii::app()->session['loginID'] == $iUserID) {
             Yii::app()->setFlashMessage(gT("You are not allowed to edit your own user permissions."), "error");
             $this->getController()->redirect(array("admin/user/sa/index"));

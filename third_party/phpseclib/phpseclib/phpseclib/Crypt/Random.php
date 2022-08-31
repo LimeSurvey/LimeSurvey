@@ -79,7 +79,7 @@ abstract class Random
         // another user visits the page and the serialization of their data is utilized along with the
         // server environment stuff and a hash of the previous http request data (which itself utilizes
         // a hash of the session data before that). certainly an attacker should be assumed to have
-        // full control over his own http requests. he, however, is not going to have control over
+        // full control over their own http requests. he, however, is not going to have control over
         // everyone's http requests.
         static $crypto = false, $v;
         if ($crypto === false) {

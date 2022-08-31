@@ -1,4 +1,4 @@
-// Checks the X-forwarded-for header, that is not always present and not very reliable, but his is better than nothing.
+// Checks the X-forwarded-for header.  It's not always present and not very reliable, but at least better than nothing.
 jQuery.fn.extend({
     checkIsProxy : function(){
         var deferred = $.Deferred();
