@@ -543,19 +543,14 @@ class LSYii_Application extends CWebApplication
             $criteria->params[':alias'] = $alias;
             $criteria->index = 'surveyls_language';
 
-            $language = $this->request->getParam('lang');
-            if (!empty($language)) {
-                $criteria->addCondition('surveyls_language = :language');
-                $criteria->params[':language'] = $language;
-            }
-
             $languageSettings = SurveyLanguageSetting::model()->find($criteria);
             if (!empty($languageSettings)) {
                 // If no language is specified in the request, add a GET param based on the survey's language for this alias
+                $language = $this->request->getParam('lang');
                 if (empty($language)) {
                     $_GET['lang'] = $languageSettings->surveyls_language;
                 }
-                return $this->createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
+                return parent::createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
             }
         }
 

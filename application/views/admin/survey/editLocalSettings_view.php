@@ -50,7 +50,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                                 [
                                     'class' => 'form-control',
                                     'size' => "80",
-                                    'maxlength' => 200,
+                                    'maxlength' => 100,
                                     'id' => "alias_{$aSurveyLanguageSettings['surveyls_language']}",
                                     //'pattern' => '[\w\d-]+'
                                 ]

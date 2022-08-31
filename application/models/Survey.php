@@ -2296,6 +2296,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @param string|null $language
      * @param array<string,mixed> $params   Optional parameters to include in the URL.
      * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
+     * @return string
      */
     public function getSurveyUrl($language = null, $params = [], $preferShortUrl = true)
     {
@@ -2303,20 +2304,21 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $language = $this->language;
         }
         if ($preferShortUrl) {
-            $alias = isset($this->languagesettings[$language]) ? $this->languagesettings[$language]->surveyls_alias : null;
+            $alias = $this->getAliasForLanguage($language);
 
             if (!empty($alias)) {
-                // Check if there is other language with the same alias
+                // Check if there is other language with the same alias. If it does, we need to include the 'lang' parameter in the URL.
                 foreach ($this->languagesettings as $otherLang => $settings) {
-                    if ($otherLang == $language || !isset($this->languagesettings[$otherLang])) {
+                    if ($otherLang == $language || empty($settings->surveyls_alias)) {
                         continue;
                     }
-                    if ($this->languagesettings[$otherLang]->surveyls_alias == $alias) {
+                    if ($settings->surveyls_alias == $alias) {
                         $params['lang'] = $language;
                         break;
                     }
                 }
 
+                // Create the URL according to the configured format
                 $urlManager = Yii::app()->getUrlManager();
                 $urlFormat = $urlManager->getUrlFormat();
                 if ($urlFormat == CUrlManager::GET_FORMAT) {
@@ -2337,6 +2339,22 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
         $url = Yii::app()->createAbsoluteUrl('survey/index', $urlParams);
         return $url;
+    }
+
+    /**
+     * Returns the survey alias for the specified language.
+     * @param string|null $language
+     * @return string|null
+     */
+    public function getAliasForLanguage($language = null)
+    {
+        if (!empty($language) && !empty($this->languagesettings[$language]->surveyls_alias)) {
+            return $this->languagesettings[$language]->surveyls_alias;
+        }
+        if (!empty($this->languagesettings[$this->language]->surveyls_alias)) {
+            return $this->languagesettings[$this->language]->surveyls_alias;
+        }
+        return null;
     }
 
     /**
