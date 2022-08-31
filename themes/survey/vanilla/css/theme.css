@@ -838,3 +838,16 @@ label::after {
 label {
     font-weight: bold;
 }
+
+/* Multiplechoice bootstrap buttons unchecked focus*/
+.btn-check .btn-primary:focus, .btn-check:focus+.btn-primary {
+    background-color: #0d6efd;
+    border: 1px solid #0d6efd;
+    box-shadow: none;
+    color: #fff;
+}
+.btn-check:focus:checked + .btn-primary, .btn-check .btn-primary:focus:checked {
+    background-color: #0a58ca;
+    border-color: #0a53be;
+    color: #fff;
+ }

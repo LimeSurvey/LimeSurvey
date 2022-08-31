@@ -238,6 +238,10 @@ $(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :c
 $(document).on("updated",".answer-item :hidden, .upload-item :hidden",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'equation', 'updated')
 });
+/* new multiple choice bootstrap buttons */
+$(document).on("change",".button-item.btn-check",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
+});
 /**
  * For number
  */
