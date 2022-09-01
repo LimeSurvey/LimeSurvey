@@ -619,7 +619,6 @@ function populateDatabase($oDB)
             'startdate' => "datetime NULL",
             'adminemail' => "string(254) NULL",
             'anonymized' => "string(1) NOT NULL default 'N'",
-            'faxto' => "string(20) NULL",
             'format' => "string(1) NULL",
             'savetimings' => "string(1) NOT NULL default 'N'",
             'template' => "string(100) default 'default'",
