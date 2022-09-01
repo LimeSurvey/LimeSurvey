@@ -6,7 +6,7 @@ class Menu implements MenuInterface
 {
     /**
      * If true, render this menu as a dropdown.
-     * @var boolean
+     * @var bool
      */
     protected $isDropDown = false;
 
@@ -42,6 +42,12 @@ class Menu implements MenuInterface
     protected $tooltip = "";
 
     /**
+     * If true, render this menu before the main menu.
+     * @var bool
+     */
+    protected $isPrepended = false;
+
+    /**
      * @param array $options - Options for either dropdown menu or plain link
      * @return void
      */
@@ -74,10 +80,14 @@ class Menu implements MenuInterface
         if (isset($options['tooltip'])) {
             $this->tooltip = $options['tooltip'];
         }
+
+        if (isset($options['isPrepended'])) {
+            $this->isPrepended = $options['isPrepended'];
+        }
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDropDown()
     {
@@ -130,5 +140,21 @@ class Menu implements MenuInterface
     public function getTooltip()
     {
         return $this->tooltip;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrepended()
+    {
+        return $this->isPrepended;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isButton()
+    {
+        return false;
     }
 }

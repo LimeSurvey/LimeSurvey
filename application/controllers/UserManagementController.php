@@ -327,6 +327,13 @@ class UserManagementController extends LSBaseController
             }
         }
 
+        // Transfer any Participants owned by this user to site's admin
+        $participantsTranferred = Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
+        if ($participantsTranferred) {
+            $transferredToName = User::model()->findByPk(1)->users_name;
+            $message .= sprintf(gT("All participants owned by this user were transferred to %s."), $transferredToName) . " ";
+        }
+
         $oUser = User::model()->findByPk($userId);
         //todo REFACTORING user permissions should be deleted also ... (in table permissions)
         $oUser->delete();
@@ -637,7 +644,7 @@ class UserManagementController extends LSBaseController
         $allowFileType = ".csv";
 
         if ($importFormat == 'json') {
-            $importNote = sprintf(gT("Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+            $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
             $allowFileType = ".json,application/json";
         }
 
@@ -664,11 +671,7 @@ class UserManagementController extends LSBaseController
             );
         }
 
-        $overwriteUsers = false;
-
-        if (isset($_POST['overwrite'])) {
-            $overwriteUsers = true;
-        }
+        $overwriteUsers = boolval(App()->getRequest()->getPost('overwrite'));
 
         switch ($importFormat) {
             case "json":
@@ -678,7 +681,11 @@ class UserManagementController extends LSBaseController
             default:
                 $aNewUsers = UserParser::getDataFromCSV($_FILES); //importFormat default is csv ...
         }
-
+        if (empty($aNewUsers)) {
+            Yii::app()->setFlashMessage(gT("No user definition found in file."), 'error');
+            $this->redirect(['userManagement/index']);
+            App()->end();
+        }
         $created = [];
         $updated = [];
 
@@ -731,7 +738,7 @@ class UserManagementController extends LSBaseController
         }
 
         Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
-        $this->redirect('index');
+        $this->redirect(['userManagement/index']);
     }
 
 

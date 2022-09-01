@@ -105,7 +105,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
 
             sleep(1);
 
-            $attribute1 = $web->findElement(WebDriverBy::id('advancedSettings[display][cssclass]'));
+            $attribute1 = $web->findElement(WebDriverBy::id('advancedSettings_display_cssclass'));
             $attribute1->sendKeys('test-class<script>console.log("Test");</script>');
 
             $testCategoryTitle = $web->findElement(WebDriverBy::id('button-collapse-Test'));
@@ -113,7 +113,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
 
             sleep(1);
 
-            $attribute2 = $web->findElement(WebDriverBy::id('advancedSettings[test][nonFilteredAttribute]'));
+            $attribute2 = $web->findElement(WebDriverBy::id('advancedSettings_test_nonFilteredAttribute'));
             $attribute2->sendKeys('<script>console.log(1);</script>');
 
             $savebutton = $web->findElement(WebDriverBy::id('save-and-close-button-create-question'));
@@ -180,7 +180,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
             $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#installPluginZipModal #the_file')));
             $fileInput = $web->findByCss('#installPluginZipModal #the_file');
             $fileInput->setFileDetector(new LocalFileDetector());
-            $file = BASEPATH . '../tests/data/file_upload/NewQuestionAttributesPlugin.zip';
+            $file = ROOT . '/tests/data/file_upload/NewQuestionAttributesPlugin.zip';
             $this->assertTrue(file_exists($file));
             $fileInput->sendKeys($file)->submit();
 

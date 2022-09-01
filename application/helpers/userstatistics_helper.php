@@ -132,12 +132,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
 
 
             if ($sLanguageCode == 'ar') {
-                if (!class_exists('I18N_Arabic_Glyphs', false)) {
-                    $Arabic = new I18N_Arabic('Glyphs');
-                } else {
-                    $Arabic = new I18N_Arabic_Glyphs();
-                }
-
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
 //auto detect if english
@@ -222,11 +217,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $lbl = $labelTmp;
 
             if ($sLanguageCode == 'ar') {
-                if (!class_exists('I18N_Arabic_Glyphs', false)) {
-                    $Arabic = new I18N_Arabic('Glyphs');
-                } else {
-                    $Arabic = new I18N_Arabic_Glyphs();
-                }
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
 
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
@@ -1449,6 +1440,12 @@ class userstatistics_helper
         } elseif (incompleteAnsFilterState() == "complete") {
             $criteria->addCondition("submitdate is not null");
         }
+
+        //check for any "sql" that has been passed from another script
+        if (!empty($sql)) {
+            $criteria->addCondition($sql);
+        }
+        
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
         foreach ($oResponses as $key => $oResponse) {
@@ -1564,21 +1561,6 @@ class userstatistics_helper
                     }
                 }
             }
-
-            //check filter option
-            if (incompleteAnsFilterState() == "incomplete") {
-                $query .= " AND submitdate is null";
-            } elseif (incompleteAnsFilterState() == "complete") {
-                $query .= " AND submitdate is not null";
-            }
-
-            //check for any "sql" that has been passed from another script
-            if (!empty($sql)) {
-                $query .= " AND $sql";
-            }
-
-
-            // $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
 
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero
@@ -1953,7 +1935,7 @@ class userstatistics_helper
 
 
             /*
-            * there are 3 colums:
+            * there are 3 columns:
             *
             * 1 (50%) = answer (title and code in brackets)
             * 2 (25%) = count (absolute)
@@ -2463,7 +2445,6 @@ class userstatistics_helper
         $aStatisticsData = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         $sTempDir = Yii::app()->getConfig("tempdir");
 
@@ -2601,8 +2582,6 @@ class userstatistics_helper
             /**
              * Initiate the Spreadsheet_Excel_Writer
              */
-            require_once(APPPATH . '/third_party/pear/Spreadsheet/Excel/Writer.php');
-
             if ($pdfOutput == 'F') {
                 $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xls';
                 $this->workbook = new Spreadsheet_Excel_Writer($sFileName);

@@ -97,3 +97,7 @@ tr.info, tr.danger {
     vertical-align: middle;
     float: none;
 }
+
+.question-filter-container label {
+    font-weight: normal;
+}

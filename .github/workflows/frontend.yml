@@ -46,10 +46,10 @@ jobs:
           cd ${{ github.workspace }}
           yarn --cwd ./assets/packages/adminbasics build
         
-      - name: Install adminsidepanel
-        run: |
-          cd ${{ github.workspace }}
-          yarn --cwd ./assets/packages/adminsidepanel
+     # - name: Install adminsidepanel
+     #   run: |
+     #     cd ${{ github.workspace }}
+      #    yarn --cwd ./assets/packages/adminsidepanel
           
      # TODO: Enable this step, when its possible to build adminsidepanel again 
      # - name: Build adminsidepanel
@@ -84,15 +84,15 @@ jobs:
           cd ${{ github.workspace }}
           yarn --cwd ./assets/packages/adminbasics
 
-      - name: Install adminsidepanel
-        run: |
-          cd ${{ github.workspace }}
-          yarn --cwd ./assets/packages/adminsidepanel
+    #  - name: Install adminsidepanel
+    #    run: |
+     #     cd ${{ github.workspace }}
+     #     yarn --cwd ./assets/packages/adminsidepanel
       
       - name: Run Tests
         run: |
           cd ${{ github.workspace }}
           yarn --cwd ./assets/packages/adminbasics run test
-          yarn --cwd ./assets/packages/adminsidepanel run test
+        #  yarn --cwd ./assets/packages/adminsidepanel run test
   
     

@@ -625,7 +625,7 @@ function do_language($ia)
     $answerlangs            = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs[]          = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
     $sLang                  = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['s_lang'];
-    $coreClass              = "ls-answers answer-item dropdow-item langage-item";
+    $coreClass              = "ls-answers answer-item dropdow-item language-item";
     $inputnames = [];
 
     if (!in_array($sLang, $answerlangs)) {
@@ -2398,10 +2398,10 @@ function do_shortfreetext($ia)
         $sSeparator             = $sSeparator['separator'];
         $extraclass            .= " numberonly";
         $coreClass             .= " numeric-item";
-        $checkconditionFunction = "fixnum_checkconditions";
+        $numberonly             = true; 
     } else {
         $sSeparator = '';
-        $checkconditionFunction = "checkconditions";
+        $numberonly             = false; 
     }
     if (intval(trim($aQuestionAttributes['maximum_chars'])) > 0) {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -2473,7 +2473,6 @@ function do_shortfreetext($ia)
             'name'                   => $ia[1],
             'basename'               => $ia[1],
             'drows'                  => $drows,
-            'checkconditionFunction' => $checkconditionFunction . '(this.value, this.name, this.type)',
             'dispVal'                => $dispVal,
             'maxlength'              => $maxlength,
             'kpclass'                => $kpclass,
@@ -2481,7 +2480,8 @@ function do_shortfreetext($ia)
             'suffix'                 => $suffix,
             'inputsize'              => $inputsize,
             'placeholder'            => $placeholder,
-            'withColumn'             => $withColumn
+            'withColumn'             => $withColumn,
+            'numberonly'             => $numberonly,
             ), true);
     } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 1) {
         $coreClass       = "ls-answers map-item geoloc-item";
@@ -2548,7 +2548,6 @@ function do_shortfreetext($ia)
             'name'                   => $ia[1],
             'qid'                    => $ia[0],
             'basename'               => $ia[1],
-            'checkconditionFunction' => $checkconditionFunction . '(this.value, this.name, this.type)',
             'value'                  => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
             'kpclass'                => $kpclass,
             'currentLocation'        => $currentLocation,
@@ -2613,7 +2612,6 @@ function do_shortfreetext($ia)
             'name' => $ia[1],
             'qid' => $ia[0],
             'basename'               => $ia[1],
-            'checkconditionFunction' => $checkconditionFunction . '(this.value, this.name, this.type)',
             'value' => $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]],
             'strBuild' => $strBuild,
             'location_mapservice' => $aQuestionAttributes['location_mapservice'],
@@ -2636,7 +2634,6 @@ function do_shortfreetext($ia)
             $dispVal = str_replace('.', $sSeparator, $dispVal);
         }
         $dispVal = htmlspecialchars($dispVal, ENT_QUOTES, 'UTF-8');
-
         $itemDatas = array(
             'extraclass' => $extraclass,
             'coreClass' => $coreClass,
@@ -2647,6 +2644,7 @@ function do_shortfreetext($ia)
             'kpclass' => $kpclass,
             'dispVal' => $dispVal,
             'maxlength' => $maxlength,
+            'numberonly' => $numberonly,
             'inputsize'              => $inputsize,
             'placeholder'            => $placeholder,
             'withColumn'             => $withColumn
@@ -4711,7 +4709,7 @@ function do_array_dual($ia)
         $useDropdownLayout = true;
         $coreClass .= " dropdown-array";
         $answertypeclass .= " dropdown";
-        $doDualScaleFunction = "doDualScaleDropDown"; // javascript funtion to lauch at end of answers
+        $doDualScaleFunction = "doDualScaleDropDown"; // javascript function to lauch at end of answers
     } else {
         $useDropdownLayout = false;
         $coreClass .= " radio-array";
@@ -4732,7 +4730,7 @@ function do_array_dual($ia)
         $answerwidth = 33;
         $defaultWidth = false;
     }
-    // Find if we have rigth and center text
+    // Find if we have right and center text
     /* All of this part seem broken actually : we don't send it to view and don't explode it */
     $sQuery         = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=" . $ia[0] . " and scale_id=0 AND question like '%|%'";
     $rigthCount     = Yii::app()->db->createCommand($sQuery)->queryScalar();

@@ -269,6 +269,7 @@ $internalConfig = array(
                 'ellipsizeString'         => 'LS_Twig_Extension::ellipsizeString',
                 'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText', /* Temporary keep it */
                 'str_replace'             => 'str_replace',
+                'strpos'                  => 'strpos',
                 'getConfig'               => 'LS_Twig_Extension::getConfig',
                 'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',/* Not in 3.X */
                 'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',/* Not in 3.X */
@@ -385,6 +386,7 @@ $internalConfig = array(
                     'ellipsizeString',
                     'flatEllipsizeText',
                     'str_replace',
+                    'strpos',
                     'flattenText',
                     'getConfig',
                     'getExpressionManagerOutput',
@@ -450,7 +452,7 @@ $result = CMap::mergeArray($internalConfig, $userConfig);
  */
 $result['defaultController'] = ($result['defaultController'] == 'survey') ? $internalConfig['defaultController'] : $result['defaultController'];
 /**
- * Allways add needed routes at end
+ * Always add needed routes at end
  */
 $result['components']['urlManager']['rules']['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 

@@ -622,6 +622,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   function labelSetDestruct() {
     $('#labelsets').select2('destroy');
     $('#labelsetpreview').empty();
+    $('#labelsetalert').hide();
   }
 
   /**
@@ -631,63 +632,119 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function showLabelSetPreview(lid /*: number */) /*: void */ {
+    $('#labelsetpreview').html($('#labelsetsLoader').html());
+    hideLabelSetAlert();
     return $.ajax({
       url: languageJson.lsdetailurl,
       data: {sid, lid},
       cache: true,
-      success(json /*: {results: Array<{label_name: string, labels: Array<{code: string, title: string}>}>, languages: {}} */) {
-        if (json.languages === []) {
-          alert('Internal error: No languages');
-          throw 'abort';
-        }
+        success(json /*: {success: bool, results: Array<{label_name: string, labels: Array<{code: string, title: string}>}>, languages: {}} */) {
+        if (json.success !== true) {
+          $('#labelsetpreview').empty();
+          showLabelSetAlert(languageJson.labelSetNotFound, 'danger'); // This could mean the label set is not found or it has no languages
+        } else {
+          if (json.languages === []) {
+            alert('Internal error: No languages');
+            throw 'abort';
+          }
 
-        const $liTemplate = $('<li role="presentation"></li>');
-        const $aTemplate = $('<a data-toggle="tab"></a>');
-        const $tabTodyTemplate = $('<div></div>');
-        const $listTemplate = $('<div class="list-group selector_label-list"></div>');
-        const $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
-        const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
-        const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
+          const $liTemplate = $('<li role="presentation"></li>');
+          const $aTemplate = $('<a data-toggle="tab"></a>');
+          const $tabTodyTemplate = $('<div></div>');
+          const $listTemplate = $('<div class="list-group selector_label-list"></div>');
+          const $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
+          const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
+          const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
 
-        const i = 0;
-        $.each(json.languages, (language, languageName) => {
-          const $linkItem = $aTemplate.clone();
-          const $bodyItem = $tabTodyTemplate.clone();
-          let $itemList = $listTemplate.clone();
+          $('#labelsetpreview').empty();
 
-          const classLink = i === 0 ? 'active' : '';
-          const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
+          let hasInvalidCodes = false;
+          let isEmpty = true;
+          const source = $('#labelsetbrowserModal').data('source');
+          const i = 0;
+          $.each(json.languages, (language, languageName) => {
+            const $linkItem = $aTemplate.clone();
+            const $bodyItem = $tabTodyTemplate.clone();
+            let $itemList = $listTemplate.clone();
 
-          $linkItem.addClass(classLink).attr('href', `#language_${language}`).text(languageName);
-          $liTemplate.clone().append($linkItem).appendTo($tabindex);
+            const classLink = i === 0 ? 'active' : '';
+            const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
 
-          $bodyItem.addClass(classBody).attr('id', `language_${language}`);
-          $tabbody.append($bodyItem);
+            $linkItem.addClass(classLink).attr('href', `#language_${language}`).text(languageName);
+            $liTemplate.clone().append($linkItem).appendTo($tabindex);
 
-          const labelSet = json.results[language];
+            $bodyItem.addClass(classBody).attr('id', `language_${language}`);
+            $tabbody.append($bodyItem);
 
-          $itemList = $listTemplate.clone();
+            const labelSet = json.results[language];
 
-          labelSet.labels.forEach((label) => {
-            // Label title is not concatenated directly because it may have non-encoded HTML
-            const $labelTitleDiv = $('<div class="col-md-8"></div>');
-            $labelTitleDiv.text(label.title);
-            const $listItem = $listItemTemplate.clone();
-            $listItem.append(`<div class="col-md-3 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
-            $listItem.append($labelTitleDiv);
-            $listItem.append('<div class="col-md-1"></div>');
-            $listItem.attr('data-label', JSON.stringify(label));
-            $itemList.append($listItem);
+            $itemList = $listTemplate.clone();
+
+            if (labelSet.labels) {
+              isEmpty = false;
+              labelSet.labels.forEach((label) => {
+                // Label title is not concatenated directly because it may have non-encoded HTML
+                const $labelTitleDiv = $('<div class="col-md-7"></div>');
+                $labelTitleDiv.text(label.title);
+                const $listItem = $listItemTemplate.clone();
+                $listItem.append(`<div class="col-md-5 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+                $listItem.append($labelTitleDiv);
+                $listItem.attr('data-label', JSON.stringify(label));
+                $itemList.append($listItem);
+
+                if (source === 'answeroptions' && label.code.length > 5) {
+                  hasInvalidCodes = true;
+                }
+              });
+            }
+
+            $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
+            $itemList.appendTo($bodyItem);
           });
-
-          $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
-          $itemList.appendTo($bodyItem);
-        });
+          
+          if (isEmpty) {
+            showLabelSetAlert(languageJson.labelSetEmpty);
+          } else {
+            if (hasInvalidCodes) {
+              showLabelSetAlert(languageJson.answeroptions.truncationWarning);
+            }
+            $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
+            $tabindex.find('li').first().find('a').trigger('click');
+          }
+        }
+      },
+      error(jqXHR, textStatus, errorThrown) {
         $('#labelsetpreview').empty();
-        $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
-        $tabindex.find('li').first().find('a').trigger('click');
+        showLabelSetAlert(languageJson.labelSetFail, 'danger');
+        console.error(errorThrown);
       },
     });
+  }
+
+  /**
+   * Shows an alert in the label set's modal
+   *
+   * @param {string} message The message to show
+   * @param {?string} type Alert type (eg. 'danger')
+   * @return {void}
+   */
+  function showLabelSetAlert(message /*: mixed */, type /*?: string */) /*: void */ {
+    if (typeof message !== 'string') {
+        throw 'expected string';
+    }
+    const alertType = type ?? 'warning';
+    const alert = $('#labelsetalert');
+    const alertHtml = '<div class="alert alert-' + alertType + ' ls-space margin bottom-0 top-15">' + message + '</div>';
+    alert.html(alertHtml).show();
+  }
+
+  /**
+   * Hides the alert in the label set's modal
+   * 
+   * @return {void}
+   */
+  function hideLabelSetAlert() /*: void */ {
+    $('#labelsetalert').empty().hide();
   }
 
   /**
@@ -708,6 +765,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
       throw 'abort';
     }
 
+    $('#labelsetsModalContent').hide();
+    $('#labelsetsLoader').show();
+
     // TODO: Send as input, not in DOM.
     if ($('#current_scale_id').length === 0) {
         $('body').append(`<input type="hidden" id="current_scale_id" value="${scaleId}" name="current_scale_id" />`);
@@ -717,12 +777,18 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     $('#labelsets').select2();
     $('#labelsetpreview').html('');
+    $('#labelsetsSelectorContainer').hide();
+    hideLabelSetAlert();
     $.ajax({
       url: languageJson.lspickurl,
-      data: { sid, match: 1 },
+      data: {
+        sid,
+        match: 1,
+        language: languageJson.langs.split(';')[0]
+      },
       success(jsonString) {
         if (jsonString.success !== true) {
-          $('#labelsetpreview').html(`<p class='alert'>${languageJson.strNoLabelSet}</p>`);
+          showLabelSetAlert(languageJson.strNoLabelSet);
           $('#btnlsreplace').addClass('disabled');
           $('#btnlsinsert').addClass('disabled');
           $('#btnlsreplace').attr('disabled', 'disabled');
@@ -733,13 +799,25 @@ $(document).on('ready pjax:scriptcomplete', function () {
             const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);  // jshint ignore: line
             $('#labelsets').append(newOption).trigger('change');
           });
+          $('#labelsetsSelectorContainer').show();
+          $('#btnlsreplace').removeClass('disabled');
+          $('#btnlsinsert').removeClass('disabled');
+          $('#btnlsreplace').removeAttr('disabled');
+          $('#btnlsinsert').removeAttr('disabled');
         }
+      },
+      error(jqXHR, textStatus, errorThrown) {
+        showLabelSetAlert(languageJson.labelSetFail, 'danger');
+        console.error(errorThrown);
+      },
+      complete() {
+        $('#labelsetsLoader').hide();
+        $('#labelsetsModalContent').show();
       }
-      // TODO: error?
     });
 
     // Label set select2 element.
-    $('#labelsets').on('change', function () {
+    $('#labelsets').off('select2:select').on('select2:select', function () {
       const value = $(this).val();
       showLabelSetPreview(parseInt(value));
     });
@@ -811,6 +889,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
               $tr = $row.eq(4);
             } else if (source === 'answeroptions') {
               $tr = $row.eq(2);
+
+              // Make sure codes are limited to 5 characters
+              label.code = label.code.substr(0, 5);
             } else {
               throw 'source is not subquestions or answeroptions: ' + source;
             }
@@ -834,8 +915,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
               langIds[i] = randId;
             }
 
-            $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', langIds[i]));
-            $tr.attr('id', $tr.attr('id').replace('/new[0-9]{3-6}/', langIds[i]));
+            $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/, langIds[i]));
+            $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3,6}/, langIds[i]));
 
             $row.find('input').each((j /*: number */, inputField) => {
               $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/, langIds[i]));
@@ -1348,9 +1429,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
        * @return {void}
        */
       success(successMessage) {
-        LS.LsGlobalNotifier.create(
+        LS.LsGlobalNotifier.createFlash(
           successMessage,
-          'well-lg bg-success text-center'
+          'alert-success fade in'
         );
       },
       /**
@@ -1359,9 +1440,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
        */
       error(data) {
         if (data.responseJSON) {
-          LS.LsGlobalNotifier.create(
+          LS.LsGlobalNotifier.createFlash(
             data.responseJSON.message,
-            'well-lg bg-danger text-center'
+            'alert-danger fade in'
           );
         } else {
           alert('Internal eror from Ajax call');
@@ -1480,7 +1561,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     return duplicateCodes.length == 0;
   }
-
+  
   /**
    * Return a function that can be used to check code uniqueness.
    * Used by subquestions and answer options.
@@ -1499,9 +1580,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
       // Check uniqueness.
       if (!checkSubquestionCodeUnique(table, msg)) {
-        LS.LsGlobalNotifier.create(
+        LS.LsGlobalNotifier.createFlash(
           msg,
-          'well-lg bg-danger text-center'
+          'alert-danger fade in'
         );
         hasError = true;
       }
@@ -1513,10 +1594,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const code = that.value;
         if (code.length > 20) {
           $(that.parentElement).addClass('has-error');
-          LS.LsGlobalNotifier.create(
+          LS.LsGlobalNotifier.createFlash(
             // TODO: Translation
             'Subquestion code is too long. Maximal number of characters is: 20.',
-            'well-lg bg-danger text-center'
+            'alert-danger fade in'
           );
           hasError = true;
         }
@@ -1620,7 +1701,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
         $('.lang-hide').hide();
         const languages = languageJson.langs.split(';');
-        $('.lang-' + languages[0]).show();
+        $('.lang-switch-button[data-lang="' + languages[0] + '"]').trigger('click');
 
         // TODO: Duplication.
         $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
@@ -1672,6 +1753,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
       $('#labelsetbrowserModal').modal('show');
 
       initLabelSetModal(event);
+
+      $('#labelsetbrowserModal').data('source', source);
     },
 
     /**
@@ -1699,10 +1782,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @param {number} qid Question id (0 when creating new question)
      * @return {void}
      */
-    checkQuestionCodeUniqueness: function(code, qid) {
-      $('#question-code-unique-warning').addClass('hidden');
+    checkQuestionValidateTitle: function(code, qid) {
+      $('#question-title-warning').text("");
+      $('#question-title-warning').addClass('hidden');
       $.ajax({
-        url: languageJson.checkQuestionCodeIsUniqueURL,
+        url: languageJson.checkQuestionValidateTitleURL,
         method: 'GET',
         data: {
           sid,
@@ -1710,8 +1794,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data !== 'true') {
-            $('#question-code-unique-warning').removeClass('hidden');
+          if (data) {
+              $('#question-title-warning').text(data);
+              $('#question-title-warning').removeClass('hidden');
+          } else {
+              // Continue
           }
         },
         error: (data) => {
@@ -1831,15 +1918,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             if (textStatus === 'success') {
               // Show confirm message.
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createFlash(
                 json.message,
-                'well-lg bg-primary text-center'
+                'alert-success fade in'
               );
             } else {
               // Show error message.
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createFlash(
                 json.message,
-                'well-lg bg-danger text-center'
+                'alert-danger fade in'
               );
             }
             updateQuestionSummary();
@@ -1847,9 +1934,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
           error: (data) => {
             $('#ls-loading').hide();
             if (data.responseJSON) {
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createFlash(
                 data.responseJSON.message,
-                'well-lg bg-danger text-center'
+                'alert-danger fade in'
               );
             } else {
               alert('Internal error from saveFormWithAjax: no data.responseJSON found');
@@ -1860,7 +1947,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       };
 
       $.ajax({
-        url: languageJson.checkQuestionCodeIsUniqueURL,
+        url: languageJson.checkQuestionValidateTitleURL,
         method: 'GET',
         data: {
           sid,
@@ -1868,7 +1955,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data === 'true') {
+          if (data) {
+              $('#question-title-warning').text(data);
+              $('#question-title-warning').removeClass('hidden');
+          } else {
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
@@ -1885,12 +1975,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 button.click();
               }
             }
-          } else {
-            $('#question-code-unique-warning').removeClass('hidden');
           }
         },
         error: (response) => {
-          alert('Internal error in checkIfSaveIsValid: ' + response);
+          alert('Internal error in checkQuestionValidateTitle: ' + response);
           throw 'abort';
         }
       });
@@ -1910,11 +1998,27 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
+  $("#questionCode").on('blur', function() {
+    let qid = 0;
+    if ($(this).data('qid')) {
+      qid = $(this).data('qid');
+    }
+    LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
+  });
+
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {
       return;
     }
     $('#general-setting-help-relevance').show();
+  }
+
+  function showSameScriptForAllLanguagesWarning() {
+    if ($('#same_script').is(":checked")) {
+      $('.same-script-alert').removeClass("hidden");
+    } else {
+      $('.same-script-alert').addClass("hidden");
+    }
   }
 
   // Below, things run on pjax:scriptcomplete.
@@ -1945,7 +2049,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       });
     });
 
-    $('#labelsets').click(showLabelSetPreview);
     $('.bthsaveaslabel').click(getLabel);
     $('input[name=savelabeloption]:radio').click(saveAsLabelSetOptionClick);
     updateRowProperties();
@@ -1991,6 +2094,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $('.lang-hide').hide();
     const languages = languageJson.langs.split(';');
     $('.lang-' + languages[0]).show();
+
+    // Show 'Use for all languages' warning
+    $('#same_script').on('change', showSameScriptForAllLanguagesWarning);
+    showSameScriptForAllLanguagesWarning();
 
     // Land on summary page if qid != 0 (not new question).
     // TODO: Fix

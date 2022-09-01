@@ -538,8 +538,6 @@ class Statistics extends SurveyCommonAction
         require_once(Yii::app()->basePath . '/third_party/pchart/pData.class.php');
         require_once(Yii::app()->basePath . '/third_party/pchart/pCache.class.php');
 
-        Yii::import('application.third_party.ar-php.Arabic', true);
-
         $tempdir = Yii::app()->getConfig("tempdir");
         $MyCache = new pCache($tempdir . '/');
         $aData['success'] = 1;
@@ -757,6 +755,7 @@ class Statistics extends SurveyCommonAction
                 case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 case Question::QT_SEMICOLON_ARRAY_TEXT:
+                case Question::QT_X_TEXT_DISPLAY:
                     break;
 
 

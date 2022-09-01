@@ -33,6 +33,24 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     private $_twig;
 
     /**
+     * @var array Custom LS Users Extensions
+     * Example: array('HelloWorld_Twig_Extension')
+     */
+    public $user_extensions = [];
+
+    /**
+     * @inheritdoc
+     */
+    function init()
+    {
+        parent::init();
+        // Adding user custom extensions
+        if (!empty($this->user_extensions)) {
+            $this->addUserExtensions($this->user_extensions);
+        }
+    }
+
+    /**
      * Main method to render a survey.
      * @param string $sLayout the name of the layout to render
      * @param array $aData the datas needed to fill the layout
@@ -288,14 +306,17 @@ window.addEventListener('message', function(event) {
 
             // check if this method is called from theme editor
             if (empty($aData['bIsThemeEditor'])) {
-                    $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+                    // Add 'question_template_attribute' globally so it's available on includes.
+                    $this->_twig->addGlobal("question_template_attribute", $oQuestionTemplate->getCustomAttributes());
                     $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
                     $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
                     $aData['this'] = App()->getController();
             } else {
-                $aData['question_template_attribute'] = null;
+                $this->_twig->addGlobal("question_template_attribute", null);
             }
             $template = $this->_twig->loadTemplate($sView . '.twig')->render($aData);
+            // Clear 'question_template_attribute' just in case.
+            $this->_twig->addGlobal("question_template_attribute", null);
             return $template;
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
@@ -652,7 +673,7 @@ window.addEventListener('message', function(event) {
                 $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
             }
         }
-        // We retreive the definition of the core class and attributes
+        // We retrieve the definition of the core class and attributes
         // (in the future, should be template dependant done via XML file)
         $aData["aSurveyInfo"] = array_merge($aData["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 
@@ -808,5 +829,18 @@ window.addEventListener('message', function(event) {
     public function getLoader()
     {
         return $this->_twig->getLoader();
+    }
+
+    /**
+     * Adds custom user extensions
+     * @param array $extensions @see self::$user_extensions
+     */
+    public function addUserExtensions($extensions)
+    {
+        foreach ($extensions as $extName) {
+            Yii::setPathOfAlias('extName_' . $extName, Yii::app()->getConfig('usertwigextensionrootdir') . '/' . $extName . '/');
+            Yii::import("extName_" . $extName . ".*");
+            $this->_twig->addExtension(new $extName());
+        }
     }
 }

@@ -393,7 +393,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice implements Zend_Http_UserAgent
     }
 
     /**
-     * Extract and sets informations from the User Agent chain
+     * Extract and sets information from the User Agent chain
      *
      * @param  string $userAgent User Agent chain
      * @return array

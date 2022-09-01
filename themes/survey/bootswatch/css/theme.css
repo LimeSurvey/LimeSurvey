@@ -471,23 +471,6 @@ only screen and (max-width: 760px),
         border: 0 none;
         padding: 1em;
     }
-    table.ls-answers  tr th {
-        font-size: 1.1em;
-        text-align: center;
-        color: #317eac;
-    }
-    /*
-        No more table transformation applies when screen is under 801px (for a few exotic tablet screens, see #11016),
-        whereas visible-xs-block respect bootstrap standards (767px)
-        If too many bugs of this kind appears in the future, we should just refuse to support weird exotic tablet screens.
-        We should repsect standards, we should not try to fit to non standards devices.
-    */
-    .visible-xs-block{
-        display: block !important;
-    }
-    .visible-xs-inline-block{
-        display: inline-block !important;
-    }
 
     /* Add some margin for Multiple short text */
     .form-group.row {
@@ -508,7 +491,6 @@ only screen and (max-width: 760px),
     table.ls-answers tr th {
         font-size: 1.1em;
         text-align: left;
-        color: #317eac;
     }
 
     .array-by-columns .answertext {

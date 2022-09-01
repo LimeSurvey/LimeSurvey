@@ -2,55 +2,36 @@
   "name": "adminsidepanel",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "yarn run dev && yarn run prod",
     "prod": "vue-cli-service build",
     "dev": "vue-cli-service build --mode developement",
     "lint": "vue-cli-service lint",
-    "watch": "vue-cli-service build --mode=developement --watch",
-    "test": "jest"
+    "watch": "vue-cli-service build --mode=developement --watch"
   },
   "dependencies": {
-    "core-js": "^2.6.5",
-    "jquery": "^3.6.0",
-    "lodash": "^4.17.4",
-    "vue": "^2.6.10",
-    "vue-jest": "^3.0.7",
     "@babel/polyfill": "^7.4.4",
+    "core-js": "^2.6.5",
+    "lodash": "^4.17.21",
+    "vue": "^2.6.10",
     "vue-localstorage": "^0.5.0",
     "vuex": "^2.3.1",
     "vuex-persist": "^1.0.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.16.0",
-    "@testing-library/vue": "^5.8.2",
-    "@vue/babel-preset-app": "^5.0.1",
-    "@vue/test-utils": "^1.2.2",
-    "@vue/vue2-jest": "^27.0.0-alpha.3",
-    "babel-jest": "^27.3.1",
-    "core-js": "^3.21.0",
-    "jest": "^27.3.1",
-    "jsdom": "^18.1.1",
-    "jsdom-global": "^3.0.2",
-    "lodash": "^4.17.4",
-    "vue": "^3.2.31",
-    "vue-localstorage": "^0.6.2",
-    "vue-template-compiler": "^2.5.21",
-    "vuex": "^4.0.2",
-    "vuex-persist": "^3.1.3",
     "@vue/cli-plugin-babel": "^3.6.0",
     "@vue/cli-plugin-eslint": "^3.6.0",
     "@vue/cli-service": "^3.6.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "4.14",
     "rtlcss-webpack-plugin": "^4.0.3",
-    "sass": "^1.49.8",
-    "sass-loader": "^7.1.0"
+    "mini-css-extract-plugin": "0.9.0",
+    "sass-loader": "7",
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "4.5"
   },
   "eslintConfig": {
     "root": true,
@@ -75,8 +56,5 @@
     "> 0.25%",
     "not dead",
     "not ie <= 8"
-  ],
-  "transform": {
-    "\\.[jt]sx?$": "babel-jest"
-  }
+  ]
 }

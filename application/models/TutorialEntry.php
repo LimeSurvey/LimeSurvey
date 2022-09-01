@@ -3,14 +3,14 @@
 /**
  * This is the model class for table "{{tutorial_entry}}".
  *
- * The followings are the available columns in table '{{tutorial_entry}}':
+ * The following are the available columns in table '{{tutorial_entry}}':
  * @property integer $teid
  * @property integer $tid
  * @property string $title
  * @property string $content
  * @property string $settings
  *
- * The followings are the available model relations:
+ * The following are the available model relations:
  * @property Tutorial $t
  */
 class TutorialEntry extends LSActiveRecord

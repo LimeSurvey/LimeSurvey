@@ -22,7 +22,7 @@ if (!file_exists(__DIR__ . '/../enabletests')) {
  * as this file.
  *
  */
-$system_path = "framework";
+$system_path = "third_party/yiisoft/yii/framework";
 
 /*
  *---------------------------------------------------------------
@@ -206,16 +206,16 @@ if (!file_exists(APPPATH . 'config/config' . EXT)) {
 //$config['components']['db']['connectionString'] = 'mysql:host=localhost;port=3306;dbname=ls4;';
 
 // Check that tmp and upload are set to 777 permission (OK on test system).
-if (substr(sprintf('%o', fileperms(BASEPATH . '../tmp/')), -4) != '0777') {
+if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tmp/')), -4) != '0777') {
     die('tmp folder not set to 777');
 }
-if (substr(sprintf('%o', fileperms(BASEPATH . '../tmp/runtime/')), -4) != '0777') {
+if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tmp/runtime/')), -4) != '0777') {
     die('tmp/runtime folder not set to 777');
 }
-if (substr(sprintf('%o', fileperms(BASEPATH . '../upload/')), -4) != '0777') {
+if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../upload/')), -4) != '0777') {
     die('upload folder not set to 777');
 }
-if (substr(sprintf('%o', fileperms(BASEPATH . '../tests/tmp/')), -4) != '0777') {
+if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tests/tmp/')), -4) != '0777') {
     die('tests/tmp folder not set to 777');
 }
 
@@ -231,6 +231,7 @@ require_once __DIR__ . '/TestBaseClassWeb.php';
 require_once __DIR__ . '/TestBaseClassView.php';
 require_once __DIR__ . '/DummyController.php';
 require_once __DIR__ . '/unit/helpers/remotecontrol/BaseTest.php';
+require_once __DIR__ . '/unit/models/BaseModelTestCase.php';
 
 define('PHP_ENV', 'test');
 // TODO: Move this logic to installater test.

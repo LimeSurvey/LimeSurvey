@@ -51,7 +51,7 @@ abstract class Random
         }
 
         try {
-            return \random_bytes($length);
+            return random_bytes($length);
         } catch (\Exception $e) {
             // random_compat will throw an Exception, which in PHP 5 does not implement Throwable
         } catch (\Throwable $e) {
@@ -184,7 +184,7 @@ abstract class Random
             $i = $crypto->encrypt(microtime()); // strlen(microtime()) == 21
             $r = $crypto->encrypt($i ^ $v); // strlen($v) == 20
             $v = $crypto->encrypt($r ^ $i); // strlen($r) == 20
-            $result.= $r;
+            $result .= $r;
         }
 
         return substr($result, 0, $length);

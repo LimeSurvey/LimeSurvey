@@ -26,7 +26,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $startdate Survey Start date (YYYY-MM-DD hh:mm:ss)
  * @property string $adminemail Survey administrator email address
  * @property string $anonymized Whether survey is anonymized or not (Y/N)
- * @property string $faxto
  * @property string $format A : All in one, G : Group by group, Q : question by question, I : inherit value from survey group
  * @property string $savetimings Whether survey timings are saved (Y/N)
  * @property string $template Template name
@@ -107,7 +106,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $responsesTableName Name of survey resonses table
  * @property string $timingsTableName Name of survey timings table
  * @property boolean $hasTokensTable Whether survey has a tokens table or not
- * @property boolean $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
+ * @property boolean $hasResponsesTable Wheteher the survey responses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
@@ -331,6 +330,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             PluginSetting::model()->deleteAllByAttributes(array("model" => 'Survey', "model_id" => $this->sid));
             // Delete all uploaded files.
             rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid);
+            // Delete all failed email notifications
+            FailedEmail::model()->deleteAllByAttributes(array('surveyid' => $this->sid));
         }
 
         // Remove from cache
@@ -443,7 +444,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order' => 'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
-            'surveysettings' => array(self::BELONGS_TO, 'SurveysGroupSettings', array('gsid' => 'gsid')),
+            'surveysettings' => array(self::BELONGS_TO, SurveysGroupsettings::class, array('gsid' => 'gsid')),
             'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template')),
             'templateConfiguration' => array(self::HAS_ONE, 'TemplateConfiguration', array('sid' => 'sid'))
         );
@@ -476,9 +477,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('datecreated', 'default', 'value' => date("Y-m-d H:m:s")),
             array('startdate', 'default', 'value' => null),
             array('expires', 'default', 'value' => null),
-            array('admin,faxto', 'LSYii_Validators'),
+            array('admin', 'LSYii_Validators'),
             array('admin', 'length', 'min' => 1, 'max' => 50),
-            array('faxto', 'length', 'min' => 0, 'max' => 20),
             array('adminemail', 'filter', 'filter' => 'trim'),
             array('bounce_email', 'filter', 'filter' => 'trim'),
             //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
@@ -531,7 +531,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('running', 'safe', 'on' => 'search'),
             array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true)
+            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('expires', 'checkExpireAfterStart'),
         );
     }
 
@@ -600,7 +601,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $loginID = (int) $loginID;
         $criteria = $this->getDBCriteria();
-        $criteriaPerm = self::getPermissionCriteria();
+        $criteriaPerm = self::getPermissionCriteria($loginID);
         $criteria->mergeWith($criteriaPerm, 'AND');
         return $this;
     }
@@ -765,7 +766,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Wheteher the survey reponses (data) table exists in DB
+     * Wheteher the survey responses (data) table exists in DB
      * @return boolean
      */
     public function getHasResponsesTable()
@@ -776,7 +777,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Wheteher the survey reponses timings exists in DB
+     * Wheteher the survey responses timings exists in DB
      * @return boolean
      */
     public function getHasTimingsTable()
@@ -2026,31 +2027,24 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return $result !== false;
     }
 
+    /**
+     * Get the final label for survey id
+     * @param string $dataSecurityNoticeLabel current label
+     * @param integer $surveyId unused
+     * @return string
+     */
     public static function replacePolicyLink($dataSecurityNoticeLabel, $surveyId)
     {
-
-        $STARTPOLICYLINK = "";
-        $ENDPOLICYLINK = "";
-
-        if (self::model()->findByPk($surveyId)->showsurveypolicynotice == 2) {
-            $STARTPOLICYLINK = "<a href='#data-security-modal-" . $surveyId . "' data-toggle='collapse'>";
-            $ENDPOLICYLINK = "</a>";
-            if (!preg_match('/(\{STARTPOLICYLINK\}|\{ENDPOLICYLINK\})/', $dataSecurityNoticeLabel)) {
-                $dataSecurityNoticeLabel .= "<br/> {STARTPOLICYLINK}" . gT("Show policy") . "{ENDPOLICYLINK}";
-            }
-        }
-
-
-
-        $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK, $dataSecurityNoticeLabel);
-
-        $countEndLabel = 0;
-        $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK, $dataSecurityNoticeLabel, -1, $countEndLabel);
-        if ($countEndLabel == 0) {
-            $dataSecurityNoticeLabel .= '</a>';
-        }
-
-        return $dataSecurityNoticeLabel;
+        /* @var string[] to go to automatic translation */
+        $translation = [
+            gT("Show policy")
+        ];
+        return App()->twigRenderer->renderPartial(
+            '/subviews/privacy/privacy_datasecurity_notice_label.twig',
+            [
+                'dataSecurityNoticeLabel' => $dataSecurityNoticeLabel,
+            ]
+        );
     }
 
     /**
@@ -2254,10 +2248,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
     {
         $sGlobalCRUD = $sCRUD;
-        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, response , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
-        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, response , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
         /* Global */
@@ -2288,5 +2282,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         );
         return $aSurveys;
+    }
+
+    /**
+     * Validates the Expiration Date is not lower than the Start Date
+     */
+    public function checkExpireAfterStart($attributes, $params)
+    {
+        if (empty($this->startdate) || empty($this->expires)) {
+            return true;
+        }
+        if ($this->expires < $this->startdate) {
+            $this->addError('expires', gT("Expiration date can't be lower than the start date", 'unescaped'));
+        }
     }
 }

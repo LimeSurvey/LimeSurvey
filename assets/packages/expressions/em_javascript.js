@@ -235,7 +235,7 @@ $(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :c
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* hidden item */
-$(document).on("updated",".answer-item :hidden",function(event){
+$(document).on("updated",".answer-item :hidden, .upload-item :hidden",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'equation', 'updated')
 });
 /**
@@ -457,14 +457,12 @@ function LEMis_int(mixed_var)
 }
 /**
  * Test if mixed_var is a PHP numeric value
- * From: http://phpjs.org/functions/is_numeric/
+ * Do not use locutus because of LEMradix
  */
 function LEMis_numeric(mixed_var)
 {
     var isNumericRegex = new RegExp(/^(-)?\d*(,|\.)?\d*$/);
     return ( ( ( typeof mixed_var === 'string' && isNumericRegex.test(mixed_var)) || typeof mixed_var === 'number') && mixed_var !== '' && !isNaN(mixed_var));
-    // var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
-    // return (typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -1)) && mixed_var !== '' && !isNaN(mixed_var);
 }
 
 function LEMis_string(a)
@@ -956,8 +954,7 @@ function LEMval(alias)
         try{
             newval = new Decimal(newval);
         } catch(e){
-            if(e)
-                newval = new Decimal(newval.toString().replace(/,/,'.'));
+            // Nothing to do : already done before if needed (accordig to LEMradix)
         }
     }
     if (newval == parseFloat(newval)) {
@@ -1252,7 +1249,8 @@ function LEMval(alias)
                     }
                     value = Number(value); /* If it's a number : always return a number */
                 }
-                if(LSvar.bNumRealValue) {
+                /* Always check if value are not updated, see #17963 */
+                if(Number(value).toString() != value.toString() || LSvar.bNumRealValue) {
                     return value;
                 }
                 return Number(value);

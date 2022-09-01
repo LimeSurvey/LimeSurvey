@@ -20,6 +20,8 @@ use Composer\Semver\VersionParser;
 
 
 
+
+
 class InstalledVersions
 {
 private static $installed = array (
@@ -30,11 +32,29 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '0417917dc15116766d0143117d9176cf5aa60bc4',
+    'reference' => '5861a00ec0ef3d8b775020d7a612f46b8ab86e65',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
+    'html2text/html2text' => 
+    array (
+      'pretty_version' => '4.3.1',
+      'version' => '4.3.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '61ad68e934066a6f8df29a3d23a6460536d0855c',
+    ),
+    'khaled.alshamaa/ar-php' => 
+    array (
+      'pretty_version' => 'v6.3.0',
+      'version' => '6.3.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'a35d61400a646a0c685a98d3fc7eea8721bc404e',
+    ),
     'limesurvey/limesurvey' => 
     array (
       'pretty_version' => 'dev-develop',
@@ -42,16 +62,25 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '0417917dc15116766d0143117d9176cf5aa60bc4',
+      'reference' => '5861a00ec0ef3d8b775020d7a612f46b8ab86e65',
     ),
-    'paragonie/constant_time_encoding' => 
+    'mk-j/php_xlsxwriter' => 
     array (
-      'pretty_version' => 'v2.5.0',
-      'version' => '2.5.0.0',
+      'pretty_version' => '0.38',
+      'version' => '0.38.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9229e15f2e6ba772f0c55dd6986c563b937170a8',
+      'reference' => '00579529fea072851789505b2dec0d14cdfffe60',
+    ),
+    'paragonie/constant_time_encoding' => 
+    array (
+      'pretty_version' => 'v2.6.3',
+      'version' => '2.6.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '58c3f47f650c94ec05a151692652a868995d2938',
     ),
     'paragonie/random_compat' => 
     array (
@@ -64,48 +93,118 @@ private static $installed = array (
     ),
     'paragonie/sodium_compat' => 
     array (
-      'pretty_version' => 'v1.17.0',
-      'version' => '1.17.0.0',
+      'pretty_version' => 'v1.17.1',
+      'version' => '1.17.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c59cac21abbcc0df06a3dd18076450ea4797b321',
+      'reference' => 'ac994053faac18d386328c91c7900f930acadf1e',
+    ),
+    'pear/console_getopt' => 
+    array (
+      'pretty_version' => 'v1.4.3',
+      'version' => '1.4.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'a41f8d3e668987609178c7c4a9fe48fecac53fa0',
+    ),
+    'pear/ole' => 
+    array (
+      'pretty_version' => 'v1.0.0RC8',
+      'version' => '1.0.0.0-RC8',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '1ee17e4ac71d6e39ff98f78c4674e8a748d16db3',
+    ),
+    'pear/pear-core-minimal' => 
+    array (
+      'pretty_version' => 'v1.10.11',
+      'version' => '1.10.11.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '68d0d32ada737153b7e93b8d3c710ebe70ac867d',
+    ),
+    'pear/pear_exception' => 
+    array (
+      'pretty_version' => 'v1.0.2',
+      'version' => '1.0.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'b14fbe2ddb0b9f94f5b24cf08783d599f776fff0',
+    ),
+    'pear/spreadsheet_excel_writer' => 
+    array (
+      'pretty_version' => 'v0.9.7',
+      'version' => '0.9.7.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f6e1821bf20cbcd8202b21dc5104b0e5688386c5',
+    ),
+    'phpmailer/phpmailer' => 
+    array (
+      'pretty_version' => 'v6.6.4',
+      'version' => '6.6.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'a94fdebaea6bd17f51be0c2373ab80d3d681269b',
     ),
     'phpseclib/bcmath_compat' => 
     array (
-      'pretty_version' => '1.0.4',
-      'version' => '1.0.4.0',
+      'pretty_version' => '2.0.1',
+      'version' => '2.0.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f805922db4b3d8c1e174dafb74ac7374264e8880',
+      'reference' => '2ffea8bfe1702b4535a7b3c2649c4301968e9a3c',
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.12',
-      'version' => '3.0.12.0',
+      'pretty_version' => '3.0.14',
+      'version' => '3.0.14.0',
       'aliases' => 
       array (
       ),
-      'reference' => '89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb',
+      'reference' => '2f0b7af658cbea265cbb4a791d6c29a6613f98ef',
+    ),
+    'rsky/pear-core-min' => 
+    array (
+      'replaced' => 
+      array (
+        0 => 'v1.10.11',
+      ),
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '30885182c981ab175d4d034db0f6f469898070ab',
+      'reference' => '6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4',
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0abb51d2f102e00a4eefcf46ba7fec406d245825',
+      'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
+    ),
+    'tecnickcom/tcpdf' => 
+    array (
+      'pretty_version' => '6.5.0',
+      'version' => '6.5.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'cc54c1503685e618b23922f53635f46e87653662',
     ),
     'tiamo/spss' => 
     array (
@@ -135,6 +234,15 @@ private static $installed = array (
       ),
       'reference' => '3cb9b60a0d579855c17d7830d5015b74705c9fdd',
     ),
+    'yiisoft/yii' => 
+    array (
+      'pretty_version' => '1.1.25',
+      'version' => '1.1.25.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '43e38602b579a45d63c80140b46331987d443fe9',
+    ),
   ),
 );
 private static $canGetVendors;
@@ -152,7 +260,6 @@ $packages = array();
 foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
-
 
 if (1 === \count($packages)) {
 return $packages[0];
@@ -345,6 +452,7 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
+
 
 
 

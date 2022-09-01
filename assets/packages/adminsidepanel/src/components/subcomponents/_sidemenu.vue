@@ -64,7 +64,11 @@ export default {
     },
     mounted(){
         const self = this;
-        this.updatePjaxLinks(this.$store);
+        this.updatePjaxLinks();
+
+        $(document).on('vue-reload-remote', ()=>{
+            //this.$forceUpdate();
+        });
     }
 }
 </script>

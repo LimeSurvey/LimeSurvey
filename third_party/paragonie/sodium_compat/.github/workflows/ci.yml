@@ -13,7 +13,7 @@ jobs:
         php-versions: ['5.3', '5.4', '5.5', '5.6', '7.0']
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -27,7 +27,7 @@ jobs:
         run: composer self-update --1
 
       - name: Install Composer dependencies
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: PHPUnit tests
         run: vendor/bin/phpunit
@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -56,11 +56,11 @@ jobs:
 
       - name: Install Composer dependencies (PHP < 8.1)
         if: ${{ matrix.php-versions != '8.1' }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: Install Composer dependencies - ignore-platform-reqs (PHP 8.1)
         if: ${{ matrix.php-versions == '8.1' }}
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --ignore-platform-reqs
 

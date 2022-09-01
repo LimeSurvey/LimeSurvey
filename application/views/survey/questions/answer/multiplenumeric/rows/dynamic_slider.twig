@@ -22,7 +22,7 @@
                 </div>
             {% endif %}
             <div id="remainingvalue_{{ id }}" class="form-control-static numeric dynamic-remaining" data-number="1"><!-- alternative class : form-control : display like an input:text -->
-                {{ processString('{'~sumRemainingEqn~'}') }}
+                {{ sumRemainingEqn }}
             </div>
             {% if suffix %}
                 <div class="suffix-text suffix">
@@ -40,7 +40,7 @@
                 {{gT('Total:')}}
             </div>
             <div id="totalvalue_{{ id }}" class="form-control-static numeric dynamic-total" data-number="1">
-                {{ processString('{'~sumEqn~'}') }}
+                {{ sumEqn }}
             </div>
         </div>
     </li>

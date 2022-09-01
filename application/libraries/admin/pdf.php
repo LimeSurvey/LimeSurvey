@@ -156,8 +156,6 @@ require(APPPATH . 'config/tcpdf' . EXT);
 */
 (!defined('K_TCPDF_CALLS_IN_HTML')) ? (define('K_TCPDF_CALLS_IN_HTML', isset($tcpdf['tcpdf_in_html']) ? $tcpdf['tcpdf_in_html'] : true)) : '';
 
-require_once($tcpdf['base_directory'] . '/tcpdf.php');
-
 
 /************************************************************
 * TCPDF - CodeIgniter Integration

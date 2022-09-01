@@ -106,7 +106,7 @@ function checkLSSession()
     // define BASEPATH in order to access LS config.php
     if (!defined('BASEPATH'))
     {
-        define("BASEPATH", realpath($sLimesurveyFolder . "/../framework") . "/");
+        define("BASEPATH", realpath($sLimesurveyFolder . "/../third_party/yiisoft/yii/framework") . "/");
     }
     require_once APPPATH . '../third_party/autoload.php';
     require_once BASEPATH . 'yii.php';

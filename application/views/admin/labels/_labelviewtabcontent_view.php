@@ -45,7 +45,7 @@ $codeids = '';
 
                                 <td>
                                     <input type='hidden' class='hiddencode' value='<?php echo $row['code'] ?>'/>
-                                    <input type='text' class='codeval  form-control  ' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='5' size='6' value='<?php echo $row['code'] ?>'/>
+                                    <input type='text' class='codeval  form-control  ' id='code_<?php echo $row['sortorder'] ?>' name='code_<?php echo $row['sortorder'] ?>' maxlength='20' size='20' value='<?php echo $row['code'] ?>'/>
                                 </td>
 
                                 <td>
@@ -89,13 +89,13 @@ $codeids = '';
 
             <!-- Action Buttons Quick Add and Save Changes -->
             <div class="action-buttons text-right">
-            <?php $i++;
-            if (Permission::model()->hasGlobalPermission('labelsets','update'))
-            { ?>
+            <?php $i++; ?>
+            <?php if (Permission::model()->hasGlobalPermission('labelsets','update')): ?>
                     <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-default " data-toggle="modal" data-target="#quickadd">
                         <?php eT('Quick add labels') ?>
                     </button>
-                <?php }; ?>
+            <?php endif; ?>
+            </div>
         </div>
         <?php  $first=false;
         endforeach;?>

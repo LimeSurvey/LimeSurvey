@@ -44,7 +44,6 @@ class Database extends SurveyCommonAction
     private $updateableFields = [
                 'owner_id' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'admin' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'faxto' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'format' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'expires' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'startdate' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
@@ -768,7 +767,7 @@ class Database extends SurveyCommonAction
             if ($oSurvey->save()) {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
             } else {
-                Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey, Chtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
+                Yii::app()->setFlashMessage(CHtml::errorSummary($oSurvey, CHtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
             }
         }
         $oSurvey->refresh();
@@ -865,7 +864,6 @@ class Database extends SurveyCommonAction
         $oSurvey->admin = $request->getPost('admin');
         $oSurvey->adminemail = $request->getPost('adminemail');
         $oSurvey->bounce_email = $request->getPost('bounce_email');
-        $oSurvey->faxto = $request->getPost('faxto');
         $oSurvey->gsid = $request->getPost('gsid');
         $oSurvey->format = $request->getPost('format');
 
@@ -940,7 +938,7 @@ class Database extends SurveyCommonAction
         if ($oSurvey->save()) {
             Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
         } else {
-            Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey, Chtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
+            Yii::app()->setFlashMessage(CHtml::errorSummary($oSurvey, CHtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
         }
         Yii::app()->end();
     }

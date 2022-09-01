@@ -171,7 +171,7 @@ class User extends LSActiveRecord
     {
         $dateCreated = $this->created;
         $date = new DateTime($dateCreated);
-        return $date->format($this->dateformat);
+        return $date->format($this->getDateFormat());
     }
 
     /**
@@ -726,7 +726,8 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo Not used?
+     * Returns the last login formatted for displaying.
+     * @return string
      */
     public function getLastloginFormatted()
     {
@@ -736,7 +737,7 @@ class User extends LSActiveRecord
         }
 
         $date = new DateTime($lastLogin);
-        return $date->format($this->dateformat) . ' ' . $date->format('H:i');
+        return $date->format($this->getDateFormat()) . ' ' . $date->format('H:i');
     }
 
     public function getManagementCheckbox()
@@ -956,5 +957,17 @@ class User extends LSActiveRecord
             $expired = new DateTime($expirationTime) < new DateTime($now);
         }
         return $expired;
+    }
+
+    /**
+     * Get the decription to be used in list
+     * @return $string
+     */
+    public function getDisplayName()
+    {
+        if (empty($this->full_name)) {
+            return $this->users_name;
+        }
+        return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
     }
 }

@@ -13,6 +13,7 @@ return array(
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'SPSS\\' => array($vendorDir . '/tiamo/spss/src'),
     'ParagonIE\\ConstantTime\\' => array($vendorDir . '/paragonie/constant_time_encoding/src'),
+    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'LimeSurvey\\PluginManager\\' => array($baseDir . '/application/libraries/PluginManager', $baseDir . '/application/libraries/PluginManager/Storage'),
     'LimeSurvey\\Models\\Services\\' => array($baseDir . '/application/models/services'),
     'LimeSurvey\\Menu\\' => array($baseDir . '/application/libraries/MenuObjects'),
@@ -21,4 +22,6 @@ return array(
     'LimeSurvey\\ExtensionInstaller\\' => array($baseDir . '/application/libraries/ExtensionInstaller'),
     'LimeSurvey\\Exceptions\\' => array($baseDir . '/application/exceptions'),
     'LimeSurvey\\Datavalueobjects\\' => array($baseDir . '/application/datavalueobjects'),
+    'Html2Text\\' => array($vendorDir . '/html2text/html2text/src', $vendorDir . '/html2text/html2text/test'),
+    'ArPHP\\I18N\\' => array($vendorDir . '/khaled.alshamaa/ar-php/src'),
 );

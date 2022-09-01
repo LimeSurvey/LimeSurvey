@@ -325,12 +325,12 @@ class SurveyAdministrationController extends LSBaseController
         $iGroupNumber = 0;
         $iGroupSequence = 0;
         $oQuestions = Question::model()
-            ->with(['group', 'questionl10ns'])
+            ->with(['group' => ['alias' => 'g'], 'questionl10ns'])
             ->findAll(
                 array(
                     'select' => 't.qid,t.gid',
                     'condition' => "t.sid=:sid and questionl10ns.language=:language and parent_qid=0",
-                    'order' => 'group.group_order, question_order',
+                    'order' => 'g.group_order, question_order',
                     'params' => array(':sid' => $iSurveyID, ':language' => $oSurvey->language)
                 )
             );
@@ -396,13 +396,10 @@ class SurveyAdministrationController extends LSBaseController
             'custom' => gT('Custom', 'unescaped'),
         );
 
-        $defaultLanguage = App()->getConfig('defaultlang');
-
         $testLanguages = getLanguageDataRestricted(true, 'short');
 
         $aData['edittextdata']['listLanguagesCode'] = $testLanguages;
         $aData['edittextdata']['aSurveyGroupList'] = SurveysGroups::getSurveyGroupsList();
-        $aData['edittextdata']['defaultLanguage'] =  getLanguageCodefromLanguage($defaultLanguage);
 
         $arrayed_data = array();
         $arrayed_data['oSurvey'] = $survey;
@@ -578,7 +575,7 @@ class SurveyAdministrationController extends LSBaseController
         if (!empty($iSurveyID)) {
             if (Yii::app()->getConfig('demoMode')) {
                 Yii::app()->user->setFlash('error', gT("Demo mode only: Uploading files is disabled in this system."));
-                $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
+                $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
             }
 
             // Create temporary directory
@@ -598,7 +595,7 @@ class SurveyAdministrationController extends LSBaseController
                     gT("Incorrect permissions in your %s folder."),
                     $basedestdir
                 ));
-                $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
+                $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
             }
 
 
@@ -615,7 +612,7 @@ class SurveyAdministrationController extends LSBaseController
                         'error',
                         gT("This file is not a valid ZIP file archive. Import failed. ") . $zip->errorInfo(true)
                     );
-                    $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
+                    $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
                 }
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
@@ -898,7 +895,7 @@ class SurveyAdministrationController extends LSBaseController
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
-                $curGroup['group_name'] = $group->questiongroupl10ns[$baselang]->group_name;
+                $curGroup['group_name'] = viewHelper::flatEllipsizeText($group->questiongroupl10ns[$baselang]->group_name, true, 150);
                 $curGroup['link'] = $this->createUrl(
                     "questionGroupsAdministration/view",
                     ['surveyid' => $surveyid, 'gid' => $group->gid]
@@ -919,16 +916,13 @@ class SurveyAdministrationController extends LSBaseController
                             "questionAdministration/view",
                             ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid' => $question->qid]
                         );
-                        $curQuestion['editLink'] = $this->createUrl(
-                            "questionAdministration/view",
-                            ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid' => $question->qid]
-                        );
                         $curQuestion['hidden'] = isset($question->questionattributes['hidden']) &&
                             !empty($question->questionattributes['hidden']->value);
                         $questionText = isset($question->questionl10ns[$baselang])
                             ? $question->questionl10ns[$baselang]->question
                             : '';
-                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true);
+                        // We have to limit the question text length here, otherwise the whole question is loaded into the navigation tree
+                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true, 150);
                         $curGroup['questions'][] = $curQuestion;
                     }
                 }
@@ -1255,8 +1249,9 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return void
      */
-    public function actionApplythemeoptions(int $iSurveyID = 0)
+    public function actionApplythemeoptions(int $surveyid = 0)
     {
+        $iSurveyID = $surveyid;
         if ((int)$iSurveyID > 0 && Yii::app()->request->isPostRequest) {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             $sTemplateName = $oSurvey->template;
@@ -2229,7 +2224,7 @@ class SurveyAdministrationController extends LSBaseController
             // Make the link point to the first group/question if available
             if (!empty($aGrouplist)) {
                 $oFirstGroup = $aGrouplist[0];
-                $oFirstQuestion = Question::model()->findByAttributes(
+                $oFirstQuestion = Question::model()->primary()->findByAttributes(
                     ['gid' => $oFirstGroup->gid],
                     ['order' => 'question_order ASC']
                 );

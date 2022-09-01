@@ -1,7 +1,4 @@
 <?php
-
-require_once(APPPATH . '/third_party/phpmailer/load_phpmailer.php');
-
 /**
  * WIP
  * A SubClass of phpMailer adapted for LimeSurvey
@@ -103,7 +100,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /* @var string $eventName to send to events */
     private $eventName = 'beforeEmail';
 
-    /* @var string $eventMessage optionnal event message to return (used in some event (beforeTokenRegister) */
+    /* @var string $eventMessage optional event message to return (used in some event (beforeTokenRegister) */
     private $eventMessage = null;
 
     /* @var string[] $debug the debug lines one by one */
@@ -231,7 +228,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             /* no need to reset if new */
             return self::$instance;
         }
-        /* Some part must be always resetted */
+        /* Some part must be always reset */
         if ($reset) {
             self::$instance->init();
             if (self::$instance->surveyId) {
@@ -681,7 +678,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $url = $aReplacements["{$urlPlaceholder}URL"];
                 $string = str_replace("@@{$urlPlaceholder}URL@@", $url, $string);
                 if ($this->getIsHtml()) {
-                    $aReplacements["{$urlPlaceholder}URL"] = Chtml::link($url, $url);
+                    $aReplacements["{$urlPlaceholder}URL"] = CHtml::link($url, $url);
                 }
             }
         }
@@ -715,7 +712,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
                 foreach ($aAttachments[$attachementType] as $aAttachment) {
-                    if ($this->attachementExists($aAttachment)) {
+                    if ($this->attachementExists($aAttachment) && LimeExpressionManager::ProcessRelevance($aAttachment['relevance'])) {
                         $this->addAttachment($aAttachment['url']);
                     }
                 }

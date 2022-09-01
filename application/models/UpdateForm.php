@@ -26,7 +26,7 @@ class UpdateForm extends CFormModel
     /** @var string $build The build id */
     public $build;
 
-    /** @var  string $view The view to display : used only for welcome type views to let the server choose wich view will be displayed */
+    /** @var  string $view The view to display : used only for welcome type views to let the server choose which view will be displayed */
     public $view;
 
     // Proxy infos
@@ -513,8 +513,8 @@ class UpdateForm extends CFormModel
             $dbChecks = $this->getDbChecks($destinationBuild);
 
             // Test if user defined by himself a max size for dbBackup
-            if (Yii::app()->getConfig("maxdbsizeforbackup")) {
-                $dbChecks->dbSize = Yii::app()->getConfig("maxdbsizeforbackup");
+            if (Yii::app()->getConfig("maxdbsizeforbackup") && Yii::app()->getConfig("maxdbsizeforbackup") > 0) {
+                 $dbChecks->dbSize = Yii::app()->getConfig("maxdbsizeforbackup");
             }
 
             if ($dbChecks->result) {

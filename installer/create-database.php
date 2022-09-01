@@ -146,7 +146,7 @@ function populateDatabase($oDB)
             'ip' =>  "string(40) NOT NULL",
             'last_attempt' =>  "string(20) NOT NULL",
             'number_attempts' =>  "integer NOT NULL",
-            'is_frontend' => "boolean NOT NULL DEFAULT 0"
+            'is_frontend' => "boolean NOT NULL"
         ), $options);
 
 
@@ -173,7 +173,7 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createTable('{{labels}}', array(
             'id' =>  "pk",
             'lid' =>  "integer NOT NULL DEFAULT 0",
-            'code' =>  "string(5) NOT NULL default ''",
+            'code' =>  "string(20) NOT NULL default ''",
             'sortorder' =>  "integer NOT NULL",
             'assessment_value' =>  "integer NOT NULL default '0'",
         ), $options);
@@ -381,7 +381,8 @@ function populateDatabase($oDB)
             'same_default' =>  "integer NOT NULL default '0'",
             'relevance' =>  "text",
             'question_theme_name' => "string(150) NULL",
-            'modulename' =>  "string(255) NULL"
+            'modulename' =>  "string(255) NULL",
+            'same_script' => "integer NOT NULL default '0'",
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
         $oDB->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
@@ -618,7 +619,6 @@ function populateDatabase($oDB)
             'startdate' => "datetime NULL",
             'adminemail' => "string(254) NULL",
             'anonymized' => "string(1) NOT NULL default 'N'",
-            'faxto' => "string(20) NULL",
             'format' => "string(1) NULL",
             'savetimings' => "string(1) NOT NULL default 'N'",
             'template' => "string(100) default 'default'",
@@ -1157,6 +1157,22 @@ function populateDatabase($oDB)
             unset($plugin['id']);
             $oDB->createCommand()->insert("{{plugins}}", $plugin);
         }
+
+        $oDB->createCommand()->createTable(
+            '{{failed_emails}}',
+            [
+                'id' => "pk",
+                'surveyid' => "integer NOT NULL",
+                'responseid' => "integer NOT NULL",
+                'email_type' => "string(200) NOT NULL",
+                'recipient' => "string(320) NOT NULL",
+                'language' => "string(20) NOT NULL DEFAULT 'en'",
+                'error_message'  => "text",
+                'created' => "datetime NOT NULL",  //this one has always to be set to delete after x days ...
+                'status' => "string(20) NULL DEFAULT 'SEND FAILED'",
+                'updated' => "datetime NULL",
+            ]
+        );
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);

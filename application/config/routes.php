@@ -40,7 +40,8 @@ $route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens', 'matchValue'=>tr
 $route['optout/participants/<surveyid:\d+>'] = array('optout/participants', 'matchValue'=>true);
 $route['optin/tokens/<surveyid:\d+>'] = array('optin/tokens', 'matchValue'=>true);
 $route['optin/participants/<surveyid:\d+>'] = array('optin/participants', 'matchValue'=>true);
-$route['statistics_user/<surveyid:\d+>'] = array('statistics_user/action', 'matchValue'=>true);
+$route['statistics_user/<surveyid:\d+>'] = array('StatisticsUser/action', 'matchValue'=>true);
+$route['statistics_user/action'] = 'StatisticsUser/action';
 
 $route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 

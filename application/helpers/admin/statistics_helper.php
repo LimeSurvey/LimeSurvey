@@ -131,11 +131,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
 
             $lblout = array();
             if ($sLanguageCode == 'ar') {
-                if (!class_exists('I18N_Arabic_Glyphs', false)) {
-                    $Arabic = new I18N_Arabic('Glyphs');
-                } else {
-                    $Arabic = new I18N_Arabic_Glyphs();
-                }
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
 
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
@@ -220,12 +216,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $lbl = $labelTmp;
 
             if ($sLanguageCode == 'ar') {
-                if (!class_exists('I18N_Arabic_Glyphs', false)) {
-                    $Arabic = new I18N_Arabic('Glyphs');
-                } else {
-                    $Arabic = new I18N_Arabic_Glyphs();
-                }
-
+                $Arabic = new \ArPHP\I18N\Arabic('Glyphs');
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
                         //auto detect if english
@@ -584,6 +575,7 @@ class statistics_helper
         $qtitle = "";
         $qquestion = "";
         $qtype = "";
+        $subquestionText = "";
         $sQuestionType = substr($rt, 0, 1);
         $fieldmap = createFieldMap($survey, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
@@ -1162,6 +1154,7 @@ class statistics_helper
                     //list IDs and answer codes in brackets
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1179,6 +1172,7 @@ class statistics_helper
 
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1197,6 +1191,7 @@ class statistics_helper
                     //output
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1213,6 +1208,7 @@ class statistics_helper
                     }
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1231,6 +1227,7 @@ class statistics_helper
 
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "] [" . $ltext . "]";
+                    $subquestionText = $atext;
                     break;
 
                 case Question::QT_COLON_ARRAY_NUMBERS: // Array (Multiple Flexi) (Numbers)
@@ -1287,6 +1284,7 @@ class statistics_helper
                     //output
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1380,6 +1378,7 @@ class statistics_helper
                     //adapt title and question
                     $qtitle = $qtitle . " [" . $sSubquestion . "][" . $labelno . "]";
                     $qquestion = $qastring . $labelheader;
+                    $subquestionText = $sSubquestion;
                     break;
 
 
@@ -1409,7 +1408,15 @@ class statistics_helper
             $alist[] = array("", gT("No answer"), false, 'is_no_answer');
         }
 
-        return array("alist" => $alist, "qtitle" => $qtitle, "qquestion" => $qquestion, "qtype" => $qtype, "statisticsoutput" => $statisticsoutput, "parentqid" => (int)$qqid);
+        return [
+            "alist" => $alist,
+            "qtitle" => $qtitle,
+            "qquestion" => $qquestion,
+            "qtype" => $qtype,
+            "statisticsoutput" => $statisticsoutput,
+            "parentqid" => (int)$qqid,
+            "subquestionText" => $subquestionText,
+        ];
     }
 
     /**
@@ -1783,7 +1790,7 @@ class statistics_helper
 
 
             /*
-            * there are 3 colums:
+            * there are 3 columns:
             *
             * 1 (50%) = answer (title and code in brackets)
             * 2 (25%) = count (absolute)
@@ -2772,7 +2779,7 @@ class statistics_helper
 
 
             /*
-            * there are 3 colums:
+            * there are 3 columns:
             *
             * 1 (50%) = answer (title and code in brackets)
             * 2 (25%) = count (absolute)
@@ -3435,7 +3442,6 @@ class statistics_helper
         $survey = Survey::model()->findByPk($surveyid);
 
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode)) {
@@ -3534,7 +3540,6 @@ class statistics_helper
         //load surveytranslator helper
 
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode)) {
@@ -3754,7 +3759,6 @@ class statistics_helper
         $aStatisticsData = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.third_party.ar-php.Arabic', true);
 
         $sOutputHTML = ""; //This string carries all the actual HTML code to print.
         $sTempDir = Yii::app()->getConfig("tempdir");
@@ -3854,8 +3858,6 @@ class statistics_helper
             /**
              * Initiate the Spreadsheet_Excel_Writer
              */
-            require_once(APPPATH . '/third_party/pear/Spreadsheet/Excel/Writer.php');
-
             if ($outputTarget == 'F') {
                 $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xls';
                 $this->workbook = new Spreadsheet_Excel_Writer($sFileName);

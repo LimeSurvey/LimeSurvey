@@ -36,6 +36,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'P' => 
         array (
             'ParagonIE\\ConstantTime\\' => 23,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'L' => 
         array (
@@ -47,6 +48,14 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'LimeSurvey\\ExtensionInstaller\\' => 30,
             'LimeSurvey\\Exceptions\\' => 22,
             'LimeSurvey\\Datavalueobjects\\' => 28,
+        ),
+        'H' => 
+        array (
+            'Html2Text\\' => 10,
+        ),
+        'A' => 
+        array (
+            'ArPHP\\I18N\\' => 11,
         ),
     );
 
@@ -78,6 +87,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'ParagonIE\\ConstantTime\\' => 
         array (
             0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'LimeSurvey\\PluginManager\\' => 
         array (
@@ -113,6 +126,15 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         array (
             0 => __DIR__ . '/../..' . '/application/datavalueobjects',
         ),
+        'Html2Text\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/html2text/html2text/src',
+            1 => __DIR__ . '/..' . '/html2text/html2text/test',
+        ),
+        'ArPHP\\I18N\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/khaled.alshamaa/ar-php/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -123,10 +145,54 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
                 0 => __DIR__ . '/..' . '/twig/twig/lib',
             ),
         ),
+        'S' => 
+        array (
+            'Spreadsheet' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/spreadsheet_excel_writer',
+            ),
+        ),
+        'O' => 
+        array (
+            'OLE' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/ole',
+            ),
+        ),
+        'C' => 
+        array (
+            'Console' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/console_getopt',
+            ),
+        ),
+    );
+
+    public static $fallbackDirsPsr0 = array (
+        0 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
+        'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
+        'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
+        'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
+        'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
+        'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
+        'TCPDFBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_1d.php',
+        'TCPDF_COLORS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_colors.php',
+        'TCPDF_FILTERS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_filters.php',
+        'TCPDF_FONTS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_fonts.php',
+        'TCPDF_FONT_DATA' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_font_data.php',
+        'TCPDF_IMAGES' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_images.php',
+        'TCPDF_IMPORT' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_import.php',
+        'TCPDF_PARSER' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_parser.php',
+        'TCPDF_STATIC' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_static.php',
+        'XLSXWriter' => __DIR__ . '/..' . '/mk-j/php_xlsxwriter/xlsxwriter.class.php',
+        'XLSXWriter_BuffererWriter' => __DIR__ . '/..' . '/mk-j/php_xlsxwriter/xlsxwriter.class.php',
+        'Yii' => __DIR__ . '/..' . '/yiisoft/yii/framework/yii.php',
+        'YiiBase' => __DIR__ . '/..' . '/yiisoft/yii/framework/YiiBase.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -135,6 +201,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             $loader->prefixLengthsPsr4 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInitddb1a145e450f862353420acc5153e40::$classMap;
 
         }, null, ClassLoader::class);

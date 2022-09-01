@@ -44,8 +44,6 @@ define('LEM_DEBUG_VALIDATION_SUMMARY', 2);   // also includes  SQL error message
 define('LEM_DEBUG_VALIDATION_DETAIL', 4);
 define('LEM_PRETTY_PRINT_ALL_SYNTAX', 32);
 
-define('LEM_DEFAULT_PRECISION', 12);
-
 class LimeExpressionManager
 {
     /**
@@ -130,7 +128,7 @@ class LimeExpressionManager
 
     /**
      * variables temporarily set for substitution purposes
-     * temporarily mean for this page, until resetted. Not for next page
+     * temporarily mean for this page, until reset. Not for next page
      *
      * These are typically the LimeReplacement Fields passed in via templatereplace()
      * Each has the following structure:  array(
@@ -164,9 +162,18 @@ class LimeExpressionManager
     private $pageRelevanceInfo;
 
     /**
-     *
-     * @var array
-     */
+    * @var array|null $pageTailorInfo
+    * Array of array of information about HTML id to update with javascript function
+    * [[
+    *   'questionNum' : question number
+    *   'num' : internal number of javascript function
+    *   'id' : id of HTML element
+    *   'raw' : Raw Expression
+    *   'result' :
+    *   'vars' : var used in javascript function
+    *   'js' : final javascript function
+    * ]]
+    */
     private $pageTailorInfo;
     /**
      * internally set to true (1) for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
@@ -1692,7 +1699,7 @@ class LimeExpressionManager
                             $validationEqn[$questionNum] = [];
                         }
                         // sumEqn and sumRemainingEqn may need to be rounded if using sliders
-                        $precision = LEM_DEFAULT_PRECISION;    // default is not to round
+                        $precision = null;    // default is not to round
                         if (isset($qattr['slider_layout']) && $qattr['slider_layout'] == '1') {
                             $precision = 0;   // default is to round to whole numbers
                             if (isset($qattr['slider_accuracy']) && trim($qattr['slider_accuracy']) != '') {
@@ -1704,7 +1711,7 @@ class LimeExpressionManager
                             }
                         }
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                        $sumRemainingEqn = '(' . $equals_num_value . ' - sum(' . implode(', ', $sq_names) . '))';
+                        $sumRemainingEqn = 'sum(' . $equals_num_value . ', sum(' . implode(', ', $sq_names) . ') * -1)';
                         $mainEqn = 'sum(' . implode(', ', $sq_names) . ')';
 
                         if (!is_null($precision)) {
@@ -2193,11 +2200,6 @@ class LimeExpressionManager
                         }
 
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                        $precision = LEM_DEFAULT_PRECISION;
-                        if (!is_null($precision)) {
-                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
-                        }
-
                         $noanswer_option = '';
                         if ($value_range_allows_missing) {
                             $noanswer_option = ' || count(' . implode(', ', $sq_names) . ') == 0';
@@ -2247,10 +2249,6 @@ class LimeExpressionManager
                         }
 
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
-                        $precision = LEM_DEFAULT_PRECISION;
-                        if (!is_null($precision)) {
-                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
-                        }
 
                         $noanswer_option = '';
                         if ($value_range_allows_missing) {
@@ -3708,7 +3706,7 @@ class LimeExpressionManager
                     ;
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
-                    $jsVarName = $sgqa;
+                    $jsVarName = 'java' . $sgqa;
                     $jsVarName_on = $jsVarName;
                     break;
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
@@ -4202,16 +4200,8 @@ class LimeExpressionManager
         if ($groupSeq > -1 && $questionSeq == -1 && isset($LEM->groupSeqInfo[$groupSeq]['qend'])) {
             $questionSeq = $LEM->groupSeqInfo[$groupSeq]['qend'];
         }
-        // EM core need questionSeq + question id â€¦ */
-        $qid = 0;
-        if ($questionSeq > -1 && !is_null($questionSeq)) {
-            $aQid = array_keys($LEM->questionId2questionSeq, $questionSeq);
-            if (isset($aQid[0])) {
-                $qid = $aQid[0];
-            }
-        }
         // Replace in string
-        $string = $LEM->em->sProcessStringContainingExpressions($string, $qid, $numRecursionLevels, 1, $groupSeq, $questionSeq, $static);
+        $string = $LEM->em->sProcessStringContainingExpressions($string, 0, $numRecursionLevels, 1, $groupSeq, $questionSeq, $static);
         return $string;
     }
 
@@ -4773,7 +4763,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) { // Did we need it ?
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -4988,7 +4977,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
@@ -5489,7 +5477,6 @@ class LimeExpressionManager
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
                     }
-
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq, $force);
@@ -6589,7 +6576,7 @@ class LimeExpressionManager
                 $LEM->updatedValues[$sq] = null;
             }
         }
-        // Regardless of whether relevant or hidden, allways set a $_SESSION for quanda_helper, use default value if exist
+        // Regardless of whether relevant or hidden, always set a $_SESSION for quanda_helper, use default value if exist
         // Set this after testing relevance for default value hidden by relevance
         $allSQs = explode('|', $LEM->qid2code[$qid]);
         foreach ($allSQs as $sgqa) {
@@ -6770,7 +6757,6 @@ class LimeExpressionManager
         $LEM->groupRelevanceInfo = [];
         if (!is_null($gseq)) {
             $LEM->currentGroupSeq = $gseq;
-
             if (!is_null($surveyid)) {
                 $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh, $anonymized);
                 if ($gseq > $LEM->maxGroupSeq) {
@@ -6877,7 +6863,7 @@ class LimeExpressionManager
             $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
             Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
             Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
@@ -6889,7 +6875,7 @@ class LimeExpressionManager
             $LEM =& LimeExpressionManager::singleton();
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
             Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
             Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
@@ -6915,6 +6901,7 @@ class LimeExpressionManager
 
         $jsParts = [];
         $inputParts = [];
+        /* string[] all needed variable for LEMalias2varName and LEMvarNameAttr */
         $allJsVarsUsed = [];
         $rowdividList = [];   // list of subquestions needing relevance entries
         /* All function for expression manager */
@@ -6932,7 +6919,7 @@ class LimeExpressionManager
         );
 
         if (!$bReturnArray) {
-            $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+            $jsParts[] = "\n<script type='text/javascript' id='lemscripts'>\n<!--\n";
         }
 
         $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
@@ -6978,13 +6965,25 @@ class LimeExpressionManager
             }
         }
 
+        /**
+         * @var array[] the javascript and related variable,
+         * reconstruct from $LEM->pageTailorInfoto get questionId as key
+         **/
+        $pageTailorInfo = array();
+        if (is_array($LEM->pageTailorInfo)) {
+            foreach ($LEM->pageTailorInfo as $tailors) {
+                if (is_array($tailors)) {
+                    foreach ($tailors as $tailor) {
+                        $pageTailorInfo[$tailor['questionNum']][] = $tailor;
+                    }
+                }
+            }
+        }
         $valEqns = [];
         $relEqns = [];
         $relChangeVars = [];
-
         $dynamicQinG = []; // array of questions, per group, that might affect group-level visibility in all-in-one mode
         $GalwaysRelevant = []; // checks whether a group is always relevant (e.g. has at least one question that is always shown)
-
         if (is_array($pageRelevanceInfo)) {
             foreach ($pageRelevanceInfo as $arg) {
                 if (!$LEM->allOnOnePage && $LEM->currentGroupSeq != $arg['gseq']) {
@@ -6998,17 +6997,13 @@ class LimeExpressionManager
                 $valParts = [];    // validation
                 $relJsVarsUsed = [];   // vars used in relevance and tailoring
                 $valJsVarsUsed = [];   // vars used in validations
-                foreach ($LEM->pageTailorInfo as $tailor) {
-                    if (is_array($tailor)) {
-                        foreach ($tailor as $sub) {
-                            if ($sub['questionNum'] == $arg['qid']) {
-                                $tailorParts[] = $sub['js'];
-                                $vars = explode('|', $sub['vars']);
-                                if (is_array($vars)) {
-                                    $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
-                                    $relJsVarsUsed = array_merge($relJsVarsUsed, $vars);
-                                }
-                            }
+                if (!empty($pageTailorInfo[$arg['qid']])) {
+                    foreach ($pageTailorInfo[$arg['qid']] as $tailor) {
+                        $tailorParts[] = $tailor['js'];
+                        $vars = array_filter(explode('|', $tailor['vars']));
+                        if (!empty($vars)) {
+                            $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
+                            $relJsVarsUsed = array_merge($relJsVarsUsed, $vars);
                         }
                     }
                 }
@@ -7049,9 +7044,7 @@ class LimeExpressionManager
 
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
-
                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
-
                 if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
@@ -7344,7 +7337,7 @@ class LimeExpressionManager
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
                 } else {
-                    // Second time : now if relevance is true: Group is allways visible (see bug #08315).
+                    // Second time : now if relevance is true: Group is always visible (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
                     if (!($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
                         $GalwaysRelevant[$arg['gseq']] = true;
@@ -7530,8 +7523,32 @@ class LimeExpressionManager
                 }
             }
         }
-
+        /* Tailoring out of question scope */
+        if (!empty($pageTailorInfo[0])) {
+            $jsParts[] = "LEMrel0(sgqa);\n";
+        }
         $jsParts[] = "\n}\n";
+        /* ailoring out of question scope for global action */
+        if (!empty($pageTailorInfo[0])) {
+            $tailorParts = [];
+            $tailorJsVarsUsed = [];
+            foreach ($pageTailorInfo[0] as $tailor) {
+                $tailorParts[] = $tailor['js'];
+                $vars = array_filter(explode('|', $tailor['vars']));
+                if (!empty($vars)) {
+                    $tailorJsVarsUsed = array_unique(array_merge($tailorJsVarsUsed, $vars));
+                }
+            }
+            $allJsVarsUsed = array_merge($allJsVarsUsed, $tailorJsVarsUsed);
+            $globalJS = "function LEMrel0(sgqa){\n";
+            $globalJS .= "  var UsesVars = ' " . implode(' ', $tailorJsVarsUsed) . " ';\n";
+            $globalJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+            $globalJS .= "    return;\n";
+            $globalJS .= "  }\n";
+            $globalJS .= implode("", $tailorParts);
+            $globalJS .= "}\n";
+            $relEqns[] = $globalJS;
+        }
 
         $jsParts[] = implode("\n", $relEqns);
         $jsParts[] = implode("\n", $valEqns);
@@ -8462,13 +8479,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             if (!preg_match('/_filecount$/', $sq)) {
                                 $json = $value;
                                 $aFiles = json_decode($json);
-                                $iSize = (is_null($aFiles)) ? 0 : @count($aFiles);
                                 // if the files have not been saved already,
                                 // move the files from tmp to the files folder
-
-                                $tmp = $LEM->surveyOptions['tempdir'] . 'upload' . DIRECTORY_SEPARATOR;
-                                if (!is_null($aFiles) && $iSize > 0) {
+                                if (!empty($aFiles) && is_array($aFiles)) {
+                                    $iSize = count($aFiles);
                                     // Move the (unmoved, temp) files from temp to files directory.
+                                    $tmp = $LEM->surveyOptions['tempdir'] . 'upload' . DIRECTORY_SEPARATOR;
                                     // Check all possible file uploads
                                     for ($i = 0; $i < $iSize; $i++) {
                                         $aFiles[$i]->name = sanitize_filename($aFiles[$i]->name, false, false, true);
@@ -8946,7 +8962,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         ];
 
         $varNamesUsed = []; // keeps track of whether variables have been declared
-        /* tempVars are resetted when ProcessString call with replacement, review it in 4.0 that have specific functions for this.*/
+        /* tempVars are reset when ProcessString call with replacement, review it in 4.0 that have specific functions for this.*/
         $standardsReplacementFields = getStandardsReplacementFields(
             [
                 'sid' => $sid,
@@ -9037,7 +9053,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
             if ($aSurveyInfo['surveyls_policy_error'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
@@ -9048,7 +9064,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
             if ($aSurveyInfo['surveyls_policy_notice_label'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
@@ -9059,7 +9075,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
         }
 
@@ -9660,7 +9676,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * @param string $type : question type
      * @param string $value : the value
      * @param string $sgq : the sgqa
-     * @param array $qinfo : an array with information from question with mandatory ['qid'=>$qid] , optionnal (but must be 'other'=>$other)
+     * @param array $qinfo : an array with information from question with mandatory ['qid'=>$qid] , optional (but must be 'other'=>$other)
      * @param boolean $set : update the invalid string or not. Used for #14649 (invalid default value)
      * @throw Exception
      *
