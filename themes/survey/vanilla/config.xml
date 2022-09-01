@@ -336,8 +336,8 @@
                 <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
                 <showsurveypolicynotice>2</showsurveypolicynotice>
-                <datasecurity_notice_label type="data" twig="on"><![CDATA[ <a href='#data-security-modal-' data-bs-toggle='collapse'> {{ gT('Show Policy') }} </a>  ]]></datasecurity_notice_label>
-                <datasecurity_notice type="data" twig="on"><![CDATA[ {{ gT("Your Privacy policy text is shown here.") }} ]]></datasecurity_notice>
+                <datasecurity_notice_label type="data" twig="on"><![CDATA[ <a href='#data-security-modal-' data-bs-toggle='collapse'> {{ gT('Show privacy policy') }} </a>  ]]></datasecurity_notice_label>
+                <datasecurity_notice type="data" twig="on"><![CDATA[ {{ gT("Your privacy policy text is shown here.") }} ]]></datasecurity_notice>
               </survey>
               <group type="core">
                 <name type="data" twig="on"><![CDATA[ {{ gT("Group 1: The first lot of questions") }} ]]></name>

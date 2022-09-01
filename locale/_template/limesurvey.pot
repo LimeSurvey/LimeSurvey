@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-08-29 07:57:58+00:00\n"
+"POT-Creation-Date: 2022-08-30 11:11:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -142,10 +142,10 @@ msgid "Version"
 msgstr ""
 
 #: application/controllers/AssessmentController.php:58
-#: application/controllers/FailedEmailController.php:38
-#: application/controllers/FailedEmailController.php:75
-#: application/controllers/FailedEmailController.php:150
-#: application/controllers/FailedEmailController.php:210
+#: application/controllers/FailedEmailController.php:41
+#: application/controllers/FailedEmailController.php:78
+#: application/controllers/FailedEmailController.php:153
+#: application/controllers/FailedEmailController.php:213
 #: application/controllers/ResponsesController.php:103
 #: application/controllers/ResponsesController.php:130
 #: application/controllers/ResponsesController.php:519
@@ -409,8 +409,8 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: application/controllers/FailedEmailController.php:17
-#: application/controllers/FailedEmailController.php:18
+#: application/controllers/FailedEmailController.php:20
+#: application/controllers/FailedEmailController.php:21
 #: application/controllers/admin/Authentication.php:432
 #: application/core/LsDefaultDataSets.php:444
 #: application/core/LsDefaultDataSets.php:445
@@ -418,9 +418,9 @@ msgstr ""
 msgid "Failed email notifications"
 msgstr ""
 
-#: application/controllers/FailedEmailController.php:35
-#: application/controllers/FailedEmailController.php:68
-#: application/controllers/FailedEmailController.php:147
+#: application/controllers/FailedEmailController.php:38
+#: application/controllers/FailedEmailController.php:71
+#: application/controllers/FailedEmailController.php:150
 #: application/controllers/ResponsesController.php:122
 #: application/controllers/ResponsesController.php:382
 #: application/controllers/ResponsesController.php:416
@@ -442,17 +442,17 @@ msgstr ""
 msgid "Invalid survey ID"
 msgstr ""
 
-#: application/controllers/FailedEmailController.php:127
+#: application/controllers/FailedEmailController.php:130
 msgid "No match could be found for selection"
 msgstr ""
 
-#: application/controllers/FailedEmailController.php:134
-#: application/controllers/FailedEmailController.php:180
+#: application/controllers/FailedEmailController.php:137
+#: application/controllers/FailedEmailController.php:183
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:10
 msgid "Please select at least one item"
 msgstr ""
 
-#: application/controllers/FailedEmailController.php:196
+#: application/controllers/FailedEmailController.php:199
 #: application/controllers/admin/DataEntry.php:1419
 msgid "Invalid ID"
 msgstr ""
@@ -904,7 +904,7 @@ msgid "General"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:454
-#: application/controllers/admin/Translate.php:502
+#: application/controllers/admin/Translate.php:505
 #: application/views/admin/conditions/includes/form_editconditions_header.php:126
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:91
 #: application/views/admin/survey/copySurvey_view.php:31
@@ -1242,7 +1242,7 @@ msgstr ""
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:63
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:14
-#: application/models/FailedEmail.php:77 application/models/FailedEmail.php:145
+#: application/models/FailedEmail.php:79 application/models/FailedEmail.php:147
 #: application/models/Notification.php:165
 #: application/views/admin/participants/massive_actions/_update_results.php:18
 #: application/views/admin/pluginmanager/index.php:92
@@ -2780,7 +2780,7 @@ msgstr ""
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:113
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:101
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:46
-#: application/models/Assessment.php:129 application/models/FailedEmail.php:142
+#: application/models/Assessment.php:129 application/models/FailedEmail.php:144
 #: application/models/Participant.php:375
 #: application/models/ParticipantAttributeName.php:249
 #: application/models/ParticipantShare.php:221
@@ -3395,7 +3395,7 @@ msgid "GroupId missing"
 msgstr ""
 
 #: application/controllers/UserGroupController.php:192
-#: application/controllers/admin/Translate.php:358
+#: application/controllers/admin/Translate.php:361
 #: application/core/QuestionTypes/ArrayFlexibleRow/RenderArrayFlexibleRow.php:190
 #: application/core/QuestionTypes/ListDropdown/RenderListDropdown.php:72
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:76
@@ -3557,7 +3557,7 @@ msgid "All of the user's surveys were transferred to %s."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:326
-msgid "All of the user's Participants were transferred to %s."
+msgid "All participants owned by this user were transferred to %s."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:332
@@ -5040,7 +5040,7 @@ msgid "Registration attachments:"
 msgstr ""
 
 #: application/controllers/admin/EmailTemplates.php:264
-#: application/controllers/admin/Translate.php:728
+#: application/controllers/admin/Translate.php:731
 msgid "Basic admin notification"
 msgstr ""
 
@@ -5057,7 +5057,7 @@ msgid "Basic notification attachments:"
 msgstr ""
 
 #: application/controllers/admin/EmailTemplates.php:278
-#: application/controllers/admin/Translate.php:758
+#: application/controllers/admin/Translate.php:761
 msgid "Detailed admin notification"
 msgstr ""
 
@@ -5175,7 +5175,7 @@ msgid "Validate quota"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:108
-#: application/controllers/admin/Translate.php:563
+#: application/controllers/admin/Translate.php:566
 msgid "Invitation email subject"
 msgstr ""
 
@@ -5184,7 +5184,7 @@ msgid "Invitation email body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:118
-#: application/controllers/admin/Translate.php:593
+#: application/controllers/admin/Translate.php:596
 msgid "Reminder email subject"
 msgstr ""
 
@@ -5193,7 +5193,7 @@ msgid "Reminder email body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:128
-#: application/controllers/admin/Translate.php:623
+#: application/controllers/admin/Translate.php:626
 msgid "Confirmation email subject"
 msgstr ""
 
@@ -5202,7 +5202,7 @@ msgid "Confirmation email body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:138
-#: application/controllers/admin/Translate.php:653
+#: application/controllers/admin/Translate.php:656
 msgid "Registration email subject"
 msgstr ""
 
@@ -5211,7 +5211,7 @@ msgid "Registration email body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:148
-#: application/controllers/admin/Translate.php:713
+#: application/controllers/admin/Translate.php:716
 msgid "Basic admin notification subject"
 msgstr ""
 
@@ -5220,7 +5220,7 @@ msgid "Basic admin notification body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:158
-#: application/controllers/admin/Translate.php:743
+#: application/controllers/admin/Translate.php:746
 msgid "Detailed admin notification subject"
 msgstr ""
 
@@ -5516,7 +5516,7 @@ msgstr ""
 #: application/controllers/admin/SurveymenuController.php:156
 #: application/controllers/admin/SurveymenuEntryController.php:202
 #: application/controllers/admin/Tokens.php:464
-#: application/models/FailedEmail.php:78 application/models/FailedEmail.php:164
+#: application/models/FailedEmail.php:80 application/models/FailedEmail.php:166
 msgid "Updated"
 msgstr ""
 
@@ -7077,15 +7077,15 @@ msgstr ""
 msgid "Saved"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:341
+#: application/controllers/admin/Translate.php:344
 msgid "Translate to"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:412
+#: application/controllers/admin/Translate.php:415
 msgid "Survey title and description"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:427
+#: application/controllers/admin/Translate.php:430
 #: application/helpers/expressions/em_manager_helper.php:9012
 #: application/models/Box.php:59
 #: application/views/admin/pluginmanager/overview.php:20
@@ -7105,11 +7105,11 @@ msgstr ""
 msgid "Description:"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:442
+#: application/controllers/admin/Translate.php:445
 msgid "Welcome and end text"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:457
+#: application/controllers/admin/Translate.php:460
 #: application/helpers/expressions/em_manager_helper.php:9034
 #: application/views/admin/survey/editLocalSettings_view.php:128
 #: application/views/admin/survey/editLocalSettings_view.php:132
@@ -7119,22 +7119,22 @@ msgstr ""
 msgid "End message:"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:472
+#: application/controllers/admin/Translate.php:475
 #: application/views/admin/survey/copySurvey_view.php:30
 #: application/views/questionGroupsAdministration/import_view.php:29
 #: application/views/surveyAdministration/importSurvey_view.php:58
 msgid "Question groups"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:487
+#: application/controllers/admin/Translate.php:490
 msgid "Group description"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:517
+#: application/controllers/admin/Translate.php:520
 msgid "Question help"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:532
+#: application/controllers/admin/Translate.php:535
 #: application/views/admin/survey/copySurvey_view.php:35
 #: application/views/questionAdministration/extraOptions.php:15
 #: application/views/questionAdministration/import.php:22
@@ -7143,34 +7143,34 @@ msgstr ""
 msgid "Subquestions"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:548
+#: application/controllers/admin/Translate.php:551
 #: application/views/questionAdministration/extraOptions.php:27
 msgid "Answer options"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:578
+#: application/controllers/admin/Translate.php:581
 msgid "Invitation email"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:608
+#: application/controllers/admin/Translate.php:611
 msgid "Reminder email"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:638
-#: application/controllers/admin/Translate.php:683
-#: application/controllers/admin/Translate.php:698
+#: application/controllers/admin/Translate.php:641
+#: application/controllers/admin/Translate.php:686
+#: application/controllers/admin/Translate.php:701
 msgid "Confirmation email"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:668
+#: application/controllers/admin/Translate.php:671
 msgid "Registration email"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:890
+#: application/controllers/admin/Translate.php:893
 msgid "QCode / Answer Code / ID"
 msgstr ""
 
-#: application/controllers/admin/Translate.php:892
+#: application/controllers/admin/Translate.php:895
 msgid "Question code / ID"
 msgstr ""
 
@@ -7665,12 +7665,16 @@ msgid "Text elements"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:108
+msgid "Privacy policy settings"
+msgstr ""
+
 #: application/core/LsDefaultDataSets.php:109
-msgid "Data policy settings"
+#: tmp/runtime/twig_cache/4a/4a243409e3dc520c9d40e7fbb792ac694e19f2e10d4067a2bf80d5465d85f9c3.php:86
+msgid "Privacy policy"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:110
-msgid "Edit data policy settings"
+msgid "Edit privacy policy settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:136
@@ -10244,7 +10248,7 @@ msgid "No surveys found."
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:90
-#: application/models/FailedEmail.php:157
+#: application/models/FailedEmail.php:159
 #: application/models/Notification.php:163
 #: application/models/Permissiontemplates.php:276
 msgid "Created"
@@ -11217,7 +11221,7 @@ msgid "Expired"
 msgstr ""
 
 #: application/helpers/common_helper.php:1302
-#: application/models/FailedEmail.php:151
+#: application/models/FailedEmail.php:153
 msgid "Response ID"
 msgstr ""
 
@@ -12191,16 +12195,16 @@ msgid "End URL:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9056
-msgid "Survey data policy notice:"
+msgid "Privacy policy notice:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9067
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:64
-msgid "Survey data policy error:"
+msgid "Privacy policy error:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9078
-msgid "Survey data policy label:"
+msgid "Privacy policy label:"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9084
@@ -14785,7 +14789,7 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: application/models/Assessment.php:87 application/models/FailedEmail.php:183
+#: application/models/Assessment.php:87 application/models/FailedEmail.php:185
 #: application/models/Participant.php:252
 #: application/models/QuestionGroupL10n.php:81
 #: application/models/SurveymenuEntries.php:197
@@ -14875,24 +14879,24 @@ msgstr ""
 msgid "No XML config loaded"
 msgstr ""
 
-#: application/models/FailedEmail.php:73 application/models/FailedEmail.php:177
+#: application/models/FailedEmail.php:75 application/models/FailedEmail.php:179
 msgid "Recipient"
 msgstr ""
 
-#: application/models/FailedEmail.php:74 application/models/FailedEmail.php:171
+#: application/models/FailedEmail.php:76 application/models/FailedEmail.php:173
 msgid "Email type"
 msgstr ""
 
-#: application/models/FailedEmail.php:75
+#: application/models/FailedEmail.php:77
 msgid "Email language"
 msgstr ""
 
-#: application/models/FailedEmail.php:76
+#: application/models/FailedEmail.php:78
 #: application/models/ParticipantAttributeName.php:173
 msgid "Date"
 msgstr ""
 
-#: application/models/FailedEmail.php:79
+#: application/models/FailedEmail.php:81
 #: application/views/failedEmail/partials/buttons.php:21
 #: application/views/failedEmail/partials/modal/email_error.php:6
 #: application/views/themeOptions/availablethemelist.php:54
@@ -14900,7 +14904,7 @@ msgstr ""
 msgid "Error message"
 msgstr ""
 
-#: application/models/FailedEmail.php:213
+#: application/models/FailedEmail.php:215
 #: application/models/SurveyDynamic.php:288
 #: application/models/SurveyTimingDynamic.php:207
 #: application/models/TokenDynamic.php:790
@@ -20494,7 +20498,8 @@ msgid "Option 'Other':"
 msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:15
-msgid "Please select and option"
+#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:15
+msgid "Please select an option"
 msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:13
@@ -20507,10 +20512,6 @@ msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:12
 msgid "Random order:"
-msgstr ""
-
-#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:15
-msgid "Please select an option"
 msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:17
@@ -20593,23 +20594,23 @@ msgid "If you are using token functions or notifications emails you need to set 
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:32
-msgid "Survey data policy checkbox label:"
+msgid "Privacy policy checkbox label:"
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:40
-msgid "If you want to specify a link to the survey data policy, set \"Show survey policy text with mandatory checkbox\" to \"Collapsible text\" and use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the \"Survey data policy checkbox label\" field to define the link that opens the policy popup. If there is no placeholder given, there will be an appendix."
+msgid "If you want to specify a link to the privacy policy, set \"Show privacy policy text with mandatory checkbox\" to \"Collapsible text\" and use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the \"Privacy policy checkbox label\" field to define the link that opens the policy popup. If there is no placeholder given, there will be an appendix."
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:48
-msgid "Survey data policy message:"
+msgid "Privacy policy message:"
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:52
-msgid "Survey data policy:"
+msgid "Privacy policy:"
 msgstr ""
 
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:60
-msgid "Survey data policy error message:"
+msgid "Privacy policy error message:"
 msgstr ""
 
 #: application/views/admin/survey/editLocalSettings_view.php:33
@@ -21193,7 +21194,7 @@ msgid "If the option -Anonymized responses- is activated only a dummy date stamp
 msgstr ""
 
 #: application/views/admin/survey/subview/tab_edit_view_datasecurity.php:27
-msgid "Show survey policy text with mandatory checkbox:"
+msgid "Show privacy policy text with mandatory checkbox:"
 msgstr ""
 
 #: application/views/admin/survey/subview/tab_edit_view_datasecurity.php:31
@@ -23449,7 +23450,7 @@ msgid "Sucessfully deleted email notifications: %s"
 msgstr ""
 
 #: application/views/failedEmail/partials/modal/resend_body.php:3
-msgid "Preserve successful emails?"
+msgid "Delete email(s) from list after sending was successful"
 msgstr ""
 
 #: application/views/failedEmail/partials/modal/resend_form.php:16
@@ -25513,10 +25514,6 @@ msgstr ""
 msgid "Date in the format: %s"
 msgstr ""
 
-#: tmp/runtime/twig_cache/4a/4a243409e3dc520c9d40e7fbb792ac694e19f2e10d4067a2bf80d5465d85f9c3.php:86
-msgid "Survey data policy"
-msgstr ""
-
 #: tmp/runtime/twig_cache/4a/4a243409e3dc520c9d40e7fbb792ac694e19f2e10d4067a2bf80d5465d85f9c3.php:101
 msgid "Accept"
 msgstr ""
@@ -25527,6 +25524,10 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/4d/4d8c4be80e3b5bfbfda303721dafa74e680e41ca8c1d2b872776242b4cb0e1ef.php:33
 msgid "Public statistics"
+msgstr ""
+
+#: tmp/runtime/twig_cache/5e/5ef749ac06ee60bffb47f4cec8d80fd2118c7b8bf9c24d4c60acb0664f2be524.php:33
+msgid "Your privacy policy text is shown here."
 msgstr ""
 
 #: tmp/runtime/twig_cache/73/7328e1b15a113f44037ff129db8a4944807bcf7fb51a65eaa803d6f8eaf0cb3b.php:66
@@ -25658,10 +25659,6 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/b4/b4563aca9044774f8bed5a68b17bca143a6616f6a76e21cec3a154307dafbc75.php:141
 msgid "For further information please contact %s:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/b7/b73a246ddd6f94b1a8607732438b9da563112156109bc17acfb45c01e9a41840.php:33
-msgid "Your Privacy policy text is shown here."
 msgstr ""
 
 #: tmp/runtime/twig_cache/c0/c0377aa082d7528491d9a96eadbf048413b5a43b46d2559943b2b7f4f5702a2c.php:47

@@ -1,7 +1,4 @@
 <?php
-
-require_once(APPPATH . '/third_party/phpmailer/load_phpmailer.php');
-
 /**
  * WIP
  * A SubClass of phpMailer adapted for LimeSurvey

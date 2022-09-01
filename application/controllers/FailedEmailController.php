@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @psalm-suppress InvalidScalarArgument
+ */
 class FailedEmailController extends LSBaseController
 {
     /**
@@ -75,8 +78,8 @@ class FailedEmailController extends LSBaseController
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['failedEmail/index/', 'surveyid' => $surveyId]);
         }
-        $preserveResend = App()->request->getParam('preserveResend');
-        $preserveResend = !is_null($preserveResend);
+        $deleteAfterResend = App()->request->getParam('deleteAfterResend');
+        $preserveResend = is_null($deleteAfterResend);
         $item = [App()->request->getParam('item')];
         $items = json_decode(App()->request->getParam('sItems'));
         $selectedItems = $items ?? $item;

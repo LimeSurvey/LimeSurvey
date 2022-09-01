@@ -518,11 +518,11 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
         $mailer = \LimeMailer::getInstance();
         $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
         foreach ($aEmailNotificationTo as $sRecipient) {
-            $notificationId = null;
+            $failedNotificationId = null;
             $notificationRecipient = $sRecipient;
             /** set mailer params for @see FailedEmailController::actionResend() */
             if (!empty($emails)) {
-                $notificationId = $sRecipient['id'];
+                $failedNotificationId = $sRecipient['id'];
                 $responseId = $sRecipient['responseId'];
                 $notificationRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
@@ -531,7 +531,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
             $mailer->setTo($notificationRecipient);
             if (!$mailer->SendMessage()) {
                 $failedEmailCount++;
-                saveFailedEmail($notificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage, $mailer->getError());
+                saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage, $mailer->getError());
                 if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     echo CHtml::tag("div",
@@ -541,7 +541,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
             } elseif ($preserveResend) {
                 $successfullEmailCount++;
                 //preserve failedEmail if it exists
-                preserveSuccessFailedEmail($notificationId);
+                preserveSuccessFailedEmail($failedNotificationId);
             } else {
                 $successfullEmailCount++;
             }
@@ -550,7 +550,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
 
     if (count($aEmailResponseTo) > 0) {
         // there was no token used so lets remove the token field from insertarray
-        if (isset($_SESSION['survey_' . $surveyid])) {
+        if (isset($_SESSION['survey_' . $surveyid]['insertarray'][0])) {
             if (!isset($_SESSION['survey_' . $surveyid]['token']) && $_SESSION['survey_' . $surveyid]['insertarray'][0] === 'token') {
                 unset($_SESSION['survey_' . $surveyid]['insertarray'][0]);
             }
@@ -558,11 +558,11 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
         $mailer = \LimeMailer::getInstance();
         $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
         foreach ($aEmailResponseTo as $sRecipient) {
-            $notificationId = null;
+            $failedNotificationId = null;
             $responseRecipient = $sRecipient;
             /** set mailer params for @see FailedEmailController::actionResend() */
             if (!empty($emails)) {
-                $notificationId = $sRecipient['id'];
+                $failedNotificationId = $sRecipient['id'];
                 $responseId = $sRecipient['responseId'];
                 $responseRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
@@ -595,7 +595,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
             $mailer->setTo($responseRecipient);
             if (!$mailer->SendMessage()) {
                 $failedEmailCount++;
-                saveFailedEmail($notificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage, $mailer->getError());
+                saveFailedEmail($failedNotificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage, $mailer->getError());
                 if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     echo CHtml::tag("div",
@@ -605,7 +605,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
             } elseif ($preserveResend) {
                 $successfullEmailCount++;
                 //preserve failedEmail if it exists
-                preserveSuccessFailedEmail($responseId);
+                preserveSuccessFailedEmail($failedNotificationId);
             } else {
                 $successfullEmailCount++;
             }

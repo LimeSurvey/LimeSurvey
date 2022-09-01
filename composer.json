@@ -10,7 +10,6 @@
 			"role" : "Developer"
 		}
 	],
-	
 	"support" : {
 		"wiki" : "https://manual.limesurvey.org/LimeSurvey_Manual",
 		"source" : "https://github.com/LimeSurvey/LimeSurvey",
@@ -42,10 +41,18 @@
 		"phpseclib/phpseclib": "^3.0",
 		"tiamo/spss": "^2.2",
         "yiiext/twig-renderer":"dev-master",
+		"symfony/polyfill-mbstring": "^1.26",
+		"yiisoft/yii": "^1.1",
+		"phpmailer/phpmailer": "^6.6",
 		"twbs/bootstrap": "5.1.3",
 		"select2/select2": "^4.0",
 		"apalfrey/select2-bootstrap-5-theme": "^1.3",
-		"symfony/polyfill-mbstring": "^1.26"
+		"khaled.alshamaa/ar-php": "^6.3",
+		"tecnickcom/tcpdf": "^6.5",
+		"mk-j/php_xlsxwriter": "^0.38.0",
+		"html2text/html2text": "^4.3",
+		"pear/ole": "1.*@dev",
+		"pear/spreadsheet_excel_writer": "^0.9.7"
 	},
     "config": {
         "vendor-dir": "third_party",
