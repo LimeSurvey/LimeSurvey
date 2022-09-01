@@ -513,8 +513,8 @@ class UpdateForm extends CFormModel
             $dbChecks = $this->getDbChecks($destinationBuild);
 
             // Test if user defined by himself a max size for dbBackup
-            if (Yii::app()->getConfig("maxdbsizeforbackup")) {
-                $dbChecks->dbSize = Yii::app()->getConfig("maxdbsizeforbackup");
+            if (Yii::app()->getConfig("maxdbsizeforbackup") && Yii::app()->getConfig("maxdbsizeforbackup") > 0) {
+                 $dbChecks->dbSize = Yii::app()->getConfig("maxdbsizeforbackup");
             }
 
             if ($dbChecks->result) {

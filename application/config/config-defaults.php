@@ -72,8 +72,11 @@ $config['repeatheadings']            = '25'; // The number of answers to show be
 $config['minrepeatheadings']         = 3; // The minimum number of remaining answers that are required before repeating the headings in array (flexible) questions.
 $config['defaultlang']               = 'en'; // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 $config['timeadjust']                = 0; // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
-$config['allowexportalldb']          = 0; // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
-$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+
+$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouput in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+$config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 for no limit
+$config['allowexportalldb']          = 0; // Default 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported (use carefully)
+
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
