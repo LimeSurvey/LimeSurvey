@@ -534,9 +534,9 @@ class Statistics extends SurveyCommonAction
         Yii::app()->loadHelper("surveytranslator");
 
         // Initialise PCHART
-        require_once(Yii::app()->basePath . '/third_party/pchart/pChart.class.php');
-        require_once(Yii::app()->basePath . '/third_party/pchart/pData.class.php');
-        require_once(Yii::app()->basePath . '/third_party/pchart/pCache.class.php');
+        require_once(Yii::app()->basePath . '/../vendor/pchart/pChart.class.php');
+        require_once(Yii::app()->basePath . '/../vendor/pchart/pData.class.php');
+        require_once(Yii::app()->basePath . '/../vendor/pchart/pCache.class.php');
 
         $tempdir = Yii::app()->getConfig("tempdir");
         $MyCache = new pCache($tempdir . '/');

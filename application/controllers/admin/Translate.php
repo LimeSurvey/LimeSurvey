@@ -1109,7 +1109,7 @@ class Translate extends SurveyCommonAction
         $error = false;
 
         try {
-            require_once(APPPATH . '/third_party/gtranslate-api/GTranslate.php');
+            require_once(APPPATH . '/../vendor/gtranslate-api/GTranslate.php');
             $gtranslate = new Gtranslate();
             $objGt = $gtranslate;
 
