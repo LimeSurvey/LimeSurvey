@@ -187,7 +187,7 @@ $config['default_displayed_auth_method'] = 'Authdb';
 // unless a username mapping is used see auth_webserver_user_map below
 //
 // The user still needs to be defined in the limesurvey database in order to
-// login and get his permissions (unless auth_webserver_autocreate_user is set to true)
+// login and get their permissions (unless auth_webserver_autocreate_user is set to true)
 $config['auth_webserver'] = false;
 
 // auth_webserver_user_map

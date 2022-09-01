@@ -4210,7 +4210,7 @@ module.exports = function(fn, that, length){
   };
 };
 },{"./_a-function":37}],42:[function(require,module,exports){
-// Thank's IE8 for his funny defineProperty
+// Thanks to IE8 for your funny defineProperty
 module.exports = !require('./_fails')(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });

@@ -622,7 +622,7 @@ class User extends LSActiveRecord
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            //Prevent users to modify original superadmin. Original superadmin can change his password on his account setting!
+            //Prevent users from modifying the original superadmin. Original superadmin can change the password on their account setting!
             if ($this->uid == 1) {
                 $editUserButton = "";
             }
