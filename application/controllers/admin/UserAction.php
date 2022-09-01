@@ -198,7 +198,6 @@ class UserAction extends SurveyCommonAction
         }
     }
 
- 
     /**
      * Renders template(s) wrapped in header and footer
      *
