@@ -2391,6 +2391,29 @@ class remotecontrol_handle
     }
 
     /**
+     * List the survey groups belonging to a user
+     *
+     * If user is admin he can get survey groups of every user (parameter sUser) or all survey groups (sUser=null)
+     * Else only the survey groups belonging to the user requesting will be shown.
+     *
+     * Returns array with survey group attributes
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param string|null $sUsername (optional) username to get list of survey groups
+     * @return array In case of success the list of survey groups
+     */
+    public function list_survey_groups($sSessionKey, $sUsername = null)
+    {
+        // TODO: Something like this
+        $request = new Request();
+        $request->sSessionKey = $sSessionKey;
+        $request->sUsername = $sUsername;
+        $command = new ListSurveyGroupsRemoteCommand();
+        return $command->run($request);
+    }
+
+    /**
      * Get list the ids and info of administration user(s) (RPC function)
      *
      * Returns array of ids and info.
