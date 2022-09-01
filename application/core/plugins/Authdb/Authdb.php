@@ -164,7 +164,11 @@ class Authdb extends AuthPluginBase
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
-
+        if ($user->isExpired()) {
+            // TODO: Should we show the actual error? Taking a conservative approach of not revealing the actual cause for now.
+            $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+            return;
+        }
 
         if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && hash('sha256', $onepass) == $user->one_time_pw) {
             $user->one_time_pw = '';
@@ -177,6 +181,7 @@ class Authdb extends AuthPluginBase
             $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
             return;
         }
+
         $this->setAuthSuccess($user);
     }
 

@@ -938,4 +938,23 @@ class User extends LSActiveRecord
 
         return $this->save();
     }
+
+    /**
+     * Returns true if the user has expired.
+     *
+     * @return boolean
+     */
+    public function isExpired()
+    {
+        $expired = false;
+        if (!empty($this->expires)) {
+            // Time adjust
+            $now = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $expirationTime = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)));
+
+            // Time comparison
+            $expired = new DateTime($expirationTime) < new DateTime($now);
+        }
+        return $expired;
+    }
 }
