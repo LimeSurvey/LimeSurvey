@@ -125,8 +125,8 @@ return array(
 
     // Bootstrap select2
     'select2' => array(
-        'devBaseUrl' => 'third_party/',
-        'basePath' => 'third_party',
+        'devBaseUrl' => 'vendor/',
+        'basePath' => 'vendor',
         'js' => array(
             'select2/select2/dist/js/select2.full.min.js'
         ),
