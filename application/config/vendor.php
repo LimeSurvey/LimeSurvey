@@ -333,14 +333,14 @@ return array(
     ),
 
     'jquery-datatable' => array(
-        'basePath' => 'vendor.datatables',
+        'basePath' => 'node_modules',
         'position' => CClientScript::POS_BEGIN,
         'css' => array(
-            'css/datatables'.$minVersion.'.css'
+            'datatables.net-bs5/css/dataTables.bootstrap5'.$minVersion.'.css'
         ),
         'js' => array(
-            'js/jquery.dataTables'.$minVersion.'.js',
-            'js/dataTables.bootstrap'.$minVersion.'.js'
+            'datatables.net/js/jquery.dataTables'.$minVersion.'.js',
+            'datatables.net-bs5/js/dataTables.bootstrap5'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',

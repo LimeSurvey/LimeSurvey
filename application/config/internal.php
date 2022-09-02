@@ -40,6 +40,7 @@ $internalConfig = array(
 
         // Third party path
         'vendor' => realpath(__DIR__ . '/../../vendor'),
+        'node_modules' => realpath(__DIR__ . '/../../node_modules'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
