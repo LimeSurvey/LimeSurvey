@@ -22,7 +22,7 @@ if (!file_exists(__DIR__ . '/../enabletests')) {
  * as this file.
  *
  */
-$system_path = "third_party/yiisoft/yii/framework";
+$system_path = "vendor/yiisoft/yii/framework";
 
 /*
  *---------------------------------------------------------------
@@ -177,7 +177,7 @@ if (version_compare(PHP_VERSION, '5.3.3', '<')) {
 }
 
 
-require_once __DIR__ . '/../third_party/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 /*
  * --------------------------------------------------------------------

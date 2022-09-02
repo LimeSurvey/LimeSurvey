@@ -295,8 +295,8 @@ class AdminTheme extends CFormModel
             //'application/extensions/bootstrap/', we'll touch all the subdirectories of extensions
 
             // Third party assets
-            'third_party/jquery-tablesorter/tests/assets',
-            'third_party/jquery-tablesorter/docs/assets',
+            'vendor/jquery-tablesorter/tests/assets',
+            'vendor/jquery-tablesorter/docs/assets',
         );
     }
 
