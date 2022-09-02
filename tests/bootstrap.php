@@ -177,7 +177,7 @@ if (version_compare(PHP_VERSION, '5.3.3', '<')) {
 }
 
 
-require_once __DIR__ . '/../framework/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 /*
  * --------------------------------------------------------------------
