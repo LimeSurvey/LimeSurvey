@@ -256,12 +256,10 @@ return array(
 
     // Ace
     'ace' => array(
-        'devBaseUrl' => 'vendor/ace',
+        'devBaseUrl' => 'node_modules/ace-builds',
         'basePath' => 'vendor.ace',
         'position' => CClientScript::POS_BEGIN,
-        'js' => array(
-            $minFolder.'/ace.js'
-        ),
+        'js' => ($debug > 0) ? array("/src/ace.js") : array("/src-min/ace.js"),
         'depends' => array(
             'jquery-ace'
         )
