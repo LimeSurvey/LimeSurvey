@@ -73,10 +73,11 @@
 /styles/
 
 #ignore most of the js-build stuff
-node_modules/
-!node_modules/ace-builds/
-!node_modules/datatables.net/
-!node_modules/datatables.net-bs5/
+node_modules/*
+!/node_modules/ace-builds/
+!/node_modules/datatables.net/
+!/node_modules/datatables.net-bs5/
+!/node_modules/decimal.js/
 vendor/**/docs/
 vendor/**/scripts/
 vendor/**/tests/
