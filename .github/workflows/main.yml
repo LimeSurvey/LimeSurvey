@@ -51,7 +51,7 @@ jobs:
           touch enabletests
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
-          ./third_party/bin/phpunit --version
+          ./vendor/bin/phpunit --version
 
       - name: Set up Apache+PHP
         run: |
@@ -118,7 +118,7 @@ jobs:
       - name: Run unit tests
         env:
             XDEBUG_MODE: coverage
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
+        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
         run: php tests/bin/check_coverage.php cov.xml 37
@@ -139,4 +139,4 @@ jobs:
       - name: Run functional tests
         env:
             DOMAIN: localhost
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
+        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/functional
