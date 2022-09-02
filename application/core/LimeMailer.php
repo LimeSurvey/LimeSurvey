@@ -132,8 +132,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $emailcharset = Yii::app()->getConfig("emailcharset");
 
         /* Set language for errors */
-        if (!$this->SetLanguage(Yii::app()->getConfig("defaultlang"), APPPATH . '/third_party/phpmailer/language/')) {
-            $this->SetLanguage('en', APPPATH . '/third_party/phpmailer/language/');
+        if (!$this->SetLanguage(Yii::app()->getConfig("defaultlang"), APPPATH . '/vendor/phpmailer/language/')) {
+            $this->SetLanguage('en', APPPATH . '/vendor/phpmailer/language/');
         }
         /* Default language to current one */
         $this->mailLanguage = Yii::app()->getLanguage();

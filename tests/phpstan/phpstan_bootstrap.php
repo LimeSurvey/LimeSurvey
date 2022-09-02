@@ -3,7 +3,7 @@
 // Code below copied from index.php.
 // File also used for Psalm checker.
 
-$system_path = "third_party/yiisoft/yii/framework";
+$system_path = "vendor/yiisoft/yii/framework";
 $application_folder = dirname(__FILE__) . "/../../application";
 if (realpath($system_path) !== false) {
     $system_path = realpath($system_path).'/';
@@ -21,7 +21,7 @@ define('FCPATH', str_replace(SELF, '', __FILE__));
 define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 define('YII_DEBUG', true);
 
-require_once __DIR__ . '/../../third_party/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 $config = require_once(APPPATH . 'config/internal' . EXT);
