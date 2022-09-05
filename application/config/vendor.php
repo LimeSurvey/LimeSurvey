@@ -303,7 +303,6 @@ return array(
     // Decimal.js calculate in js
     'decimal' => array(
         'position' => CClientScript::POS_BEGIN,
-        'devBaseUrl' => 'node_modules/decimal.js',
         'basePath' => 'node_modules',
         'js' => array(
             'decimal.js/decimal'.$minVersion.'.js'
