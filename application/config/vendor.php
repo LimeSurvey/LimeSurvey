@@ -319,9 +319,9 @@ return array(
     // Decimal.js calculate in js
     'decimal' => array(
         'position' => CClientScript::POS_BEGIN,
-        'basePath' => 'node_modules',
+        'basePath' => 'node_modules_decimal',
         'js' => array(
-            'decimal.js/decimal'.$minVersion.'.js'
+            'decimal'.$minVersion.'.js'
         ),
         'depends' => array(
         )
@@ -348,20 +348,32 @@ return array(
     ),
 
     'jquery-datatable' => array(
-        'basePath' => 'node_modules',
+        'basePath' => 'node_modules_datatables',
         'position' => CClientScript::POS_BEGIN,
-        'css' => array(
-            'datatables.net-bs5/css/dataTables.bootstrap5'.$minVersion.'.css'
-        ),
+
         'js' => array(
-            'datatables.net/js/jquery.dataTables'.$minVersion.'.js',
-            'datatables.net-bs5/js/dataTables.bootstrap5'.$minVersion.'.js'
+            'js/jquery.dataTables'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',
             'bootstrap'
         )
     ),
+
+    'jquery-datatable-bs5' => array(
+        'basePath' => 'node_modules_datatables_bs5',
+        'position' => CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/dataTables.bootstrap5'.$minVersion.'.css'
+        ),
+        'js' => array(
+            'js/dataTables.bootstrap5'.$minVersion.'.js'
+        ),
+        'depends' => array(
+            'jquery-datatable'
+        )
+    ),
+    
     'es6promise' => array(
         'basePath' => 'vendor.es6promise',
         'js' => array(

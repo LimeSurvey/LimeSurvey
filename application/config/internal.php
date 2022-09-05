@@ -41,6 +41,9 @@ $internalConfig = array(
         // Third party path
         'vendor' => realpath(__DIR__ . '/../../vendor'),
         'node_modules' => realpath(__DIR__ . '/../../node_modules'),
+        'node_modules_datatables' => realpath(__DIR__ . '/../../node_modules/datatables.net'),
+        'node_modules_datatables_bs5' => realpath(__DIR__ . '/../../node_modules/datatables.net-bs5'),
+        'node_modules_decimal' => realpath(__DIR__ . '/../../node_modules/decimal.js'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 

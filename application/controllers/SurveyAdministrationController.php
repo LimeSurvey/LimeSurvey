@@ -3096,7 +3096,7 @@ class SurveyAdministrationController extends LSBaseController
         ];
         $aData['questions'] = $aQuestions;
 
-        App()->getClientScript()->registerPackage('jquery-datatable');
+        App()->getClientScript()->registerPackage('jquery-datatable-bs5');
         return $aData;
     }
 }
