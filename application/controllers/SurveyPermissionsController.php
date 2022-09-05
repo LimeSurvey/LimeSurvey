@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\PermissionManager;
+
 class SurveyPermissionsController extends LSBaseController
 {
     /**
@@ -113,9 +115,10 @@ class SurveyPermissionsController extends LSBaseController
     /**
      * Open settings permission page
      *
-     *
+     * @param $surveyid int
      * @param $action string the action could be 'user' or 'usergroup'
      * @param $id int userid or groupid depending on the action
+     *
      * @return void
      */
     public function actionSettingsPermissions($surveyid, $action, $id)
@@ -124,8 +127,43 @@ class SurveyPermissionsController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+        if (!in_array($action, ['user', 'usergroup'])) {
+            Yii::app()->user->setFlash('error', gT("Unknown action."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
         // 2.  set permissions for user table
         // 3.  redirect to index giving flash message in both cases (success and failed)
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $PermissionManagerService = new PermissionManager(
+            App()->request,
+            App()->user,
+            $oSurvey,
+            App()
+        );
+        $isUserGroup = $action === 'usergroup';
+        if ($isUserGroup) {
+            $oUserGroup = UserGroup::model()->findByPk($id);
+            $aPermissions = $PermissionManagerService->getPermissionData();
+        } else {
+            $oUser = User::model()->findByPk($id);
+            $aPermissions = $PermissionManagerService->getPermissionData($id);
+        }
+        $aData['surveyid'] = $surveyid;
+        $aData['sidemenu']['state'] = false;
+        $aData['topBar']['showSaveButton'] = true;
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
+        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        $this->aData = $aData;
+        return $this->render(
+            'settingsPermission',
+            [
+                'surveyid' => $surveyid,
+                'aPermissions' => $aPermissions,
+                'isUserGroup' => $isUserGroup,
+                'id' => $id,
+                'name' => 'devTEST', //todo: set the correct name
+            ]
+        );
     }
 
     /**
