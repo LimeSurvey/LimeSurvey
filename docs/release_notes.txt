@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.26 (build 220829) to 3.28.27 (build 220905) September 5, 2022
+#Updated translation: Valencian by joamuran, vbraque
+#Updated translation: Turkish by kayazeren
+#Updated translation: Thai by adzpire, tomzt
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Galician by Calidonia
+#Updated translation: Chinese (Simplified) by johnxan
+
+
 Changes from 3.28.25 (build 220822) to 3.28.26 (build 220829) August 29, 2022
 -Fixed issue: No response recorded when using registration (Carsten Schmitz)
 #Updated translation: German by c_schmitz
