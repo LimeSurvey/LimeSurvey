@@ -359,17 +359,22 @@ return array(
             'dist/dom-to-image.min.js',
         )
     ),
-
+    'file-saver' => array(
+        'basePath' => 'node_modules.file-saver.src',
+        'js' => array(
+            'FileSaver.js'
+        )
+    ),
     'jspdf' => array(
         'basePath' => 'node_modules.jspdf.dist',
         'js' => array(
-            'jspdf.min.js',
-            'createpdf_worker.js'
+            'jspdf.min.js'
         ),
         'depends' => array(
             'dom2image',
             'es6promise',
             'jquery',
+            'file-saver'
         )
     ),
     /* Used by ranking question type */
@@ -408,13 +413,13 @@ return array(
         ),
     ),
     'jszip' => array(
-        'basePath' => 'vendor.jszip',
+        'basePath' => 'node_modules.jszip.dist',
         'js' => array(
-            'jszip.js',
-            'fileSaver.js',
+            'jszip'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',
+            'file-saver'
         )
     ),
     // DateTimePicker for BS5
