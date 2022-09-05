@@ -1,8 +1,7 @@
-function doBootstrapRadio(){
+function doBootstrapRadioOther(){
     $(document).off('ready.bbothersetup').on('ready.bbothersetup', function() {
-
         // Setup the change event for bootstrap button's "other" option
-        $(".button-item .bootstrap-radio").on('change.bbother', function() {
+        $(".btn-check").on('change', function() {
             name = $(this).attr('name');
             // conditionaly show or hide "other" input field
             if ($(this).val() === '-oth-') {
@@ -17,9 +16,16 @@ function doBootstrapRadio(){
         });
 
         // Trigger the change event for the checked bootstrap buttons
-        $(".button-item .bootstrap-radio:checked").trigger("change");
+        $(".btn-check:checked").trigger("change");
 
         // Unbind this setup event
         $(document).off('ready.bbothersetup');
+    });
+}
+
+function doBootstrapRadio(){
+    $(document).off('ready.bbradiosetup').on('ready.bbradiosetup', function() {
+        console.log('sadsadsdsadadad');
+        $(".btn-check:checked").trigger("change");
     });
 }
