@@ -257,7 +257,7 @@ return array(
     // Ace
     'ace' => array(
         'devBaseUrl' => 'node_modules/ace-builds',
-        'basePath' => 'vendor.ace',
+        'basePath' => 'node_modules.ace',
         'position' => CClientScript::POS_BEGIN,
         'js' => ($debug > 0) ? array("/src/ace.js") : array("/src-min/ace.js"),
         'depends' => array(
