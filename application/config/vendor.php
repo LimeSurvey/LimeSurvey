@@ -402,7 +402,7 @@ return array(
         ),
     ),
     'devbridge-autocomplete' => array(
-        'basePath' => 'vendor.devbridge-autocomplete.dist', /* For geoname search autocomplete without jquery */
+        'basePath' => 'node_modules.devbridge-autocomplete.dist', /* For geoname search autocomplete without jquery */
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.autocomplete'.$minVersion.'.js'
