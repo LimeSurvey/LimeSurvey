@@ -87,14 +87,18 @@ node_modules/**/src
 !/node_modules/nestedSortable/
 !/node_modules/jquery/dist/
 !/node_modules/jquery-ui-dist/
+
 !/node_modules/select2
 /node_modules/select2/*
 !/node_modules/select2/dist/
+
 !/node_modules/select2-bootstrap-5-theme
 /node_modules/select2-bootstrap-5-theme/*
 !/node_modules/select2-bootstrap-5-theme/dist/
 
-
+!/node_modules/jquery-migrate
+/node_modules/jquery-migrate/*
+!/node_modules/jquery-migrate/dist/
 
 
 vendor/**/docs/

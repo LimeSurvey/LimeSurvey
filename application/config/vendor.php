@@ -202,12 +202,27 @@ return array(
             'jquery-ui' . $minVersion . '.js',
         ),
         'css' => array(
-       //     'jquery-ui.structure.css', /* else autocomplete or other broken */
+            'jquery-ui' . $minVersion . '.css', /* else autocomplete or other broken */
+        ),
+        'depends' => array(
+            'jquery',
+            'jquery-migrate'
+        )
+    ),
+
+    // jQuery migrate
+    'jquery-migrate' => array(
+        'devBaseUrl' => 'node_modules/jquery-migrate/dist',
+        'basePath' => 'node_modules.jquery-migrate.dist',
+        'position' => CClientScript::POS_HEAD,
+        'js' => array(
+            'jquery-migrate' . $minVersion . '.js',
         ),
         'depends' => array(
             'jquery',
         )
     ),
+
 
     // jquery bindWithDelay
     'jquery-bindWithDelay' => array(
