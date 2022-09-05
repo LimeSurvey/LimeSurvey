@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-08-30 11:11:12+00:00\n"
+"POT-Creation-Date: 2022-09-05 09:10:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -239,15 +239,6 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:2267
 #: application/controllers/admin/Tokens.php:2326
 #: application/controllers/admin/Tokens.php:2390
-#: application/controllers/admin/UserAction.php:63
-#: application/controllers/admin/UserAction.php:109
-#: application/controllers/admin/UserAction.php:207
-#: application/controllers/admin/UserAction.php:273
-#: application/controllers/admin/UserAction.php:292
-#: application/controllers/admin/UserAction.php:366
-#: application/controllers/admin/UserAction.php:456
-#: application/controllers/admin/UserAction.php:550
-#: application/controllers/admin/UserAction.php:625
 #: application/controllers/admin/globalsettings.php:35
 #: application/controllers/admin/globalsettings.php:83
 msgid "You do not have permission to access this page."
@@ -646,9 +637,6 @@ msgstr ""
 
 #: application/controllers/InstallerController.php:535
 #: application/controllers/admin/SurveyPermission.php:530
-#: application/controllers/admin/UserAction.php:336
-#: application/controllers/admin/UserAction.php:421
-#: application/controllers/admin/UserAction.php:431
 msgid "Success!"
 msgstr ""
 
@@ -2072,7 +2060,6 @@ msgid "Survey update failed"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:826
-#: application/controllers/admin/UserAction.php:175
 #: application/helpers/SurveyRuntimeHelper.php:1147
 #: application/helpers/update/update_helper.php:37
 #: application/models/services/PasswordManagement.php:99
@@ -3552,7 +3539,6 @@ msgid "You cannot delete yourself."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:318
-#: application/controllers/admin/UserAction.php:332
 msgid "All of the user's surveys were transferred to %s."
 msgstr ""
 
@@ -3565,7 +3551,6 @@ msgid "User successfully deleted."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:411
-#: application/controllers/admin/UserAction.php:514
 #: application/views/userManagement/massiveAction/_updatepermissions.php:6
 #: application/views/userRole/massiveAction/_updatepermissions.php:6
 msgid "Note: You can only give limited permissions to other users because your own permissions are limited, too."
@@ -3612,7 +3597,6 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1087
 #: application/controllers/admin/SurveyPermission.php:67
 #: application/controllers/admin/SurveyPermission.php:528
-#: application/controllers/admin/UserAction.php:150
 #: application/core/LsDefaultDataSets.php:2937
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:379
 #: application/core/plugins/Authdb/Authdb.php:128
@@ -3684,7 +3668,6 @@ msgid "You do not have permission for this action."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1275
-#: application/controllers/admin/UserAction.php:118
 msgid "A username was not supplied or the username is invalid."
 msgstr ""
 
@@ -3693,8 +3676,6 @@ msgid "A user with this username already exists."
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1291
-#: application/controllers/admin/UserAction.php:117
-#: application/controllers/admin/UserAction.php:128
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:286
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:301
 #: application/core/plugins/Authdb/Authdb.php:65
@@ -3703,7 +3684,6 @@ msgid "Failed to add user"
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1292
-#: application/controllers/admin/UserAction.php:129
 msgid "Plugin is not active"
 msgstr ""
 
@@ -4158,7 +4138,6 @@ msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:663
 #: application/controllers/admin/Tokens.php:1536
-#: application/controllers/admin/UserAction.php:181
 #: application/helpers/SurveyRuntimeHelper.php:1162
 #: application/views/admin/dataentry/import.php:34
 #: application/views/admin/dataentry/vvimport_result.php:22
@@ -6224,7 +6203,6 @@ msgstr ""
 #: application/controllers/admin/SurveyPermission.php:364
 #: application/controllers/admin/SurveyPermission.php:375
 #: application/controllers/admin/SurveyPermission.php:382
-#: application/controllers/admin/UserAction.php:185
 #: application/views/SurveysGroupsPermission/subviews/addUserResult.php:2
 #: application/views/admin/super/permissions/addUserForm.php:23
 #: application/views/admin/user/editusers.php:12
@@ -6266,7 +6244,6 @@ msgstr ""
 #: application/controllers/admin/SurveyPermission.php:650
 #: application/controllers/admin/Tokens.php:2572
 #: application/controllers/admin/Tokens.php:2630
-#: application/controllers/admin/UserAction.php:923
 #: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:6
 #: application/views/admin/authentication/message.php:35
 #: application/views/admin/participants/attributeMapCSV_view.php:80
@@ -6342,7 +6319,6 @@ msgid "Deleting User"
 msgstr ""
 
 #: application/controllers/admin/SurveyPermission.php:532
-#: application/controllers/admin/UserAction.php:230
 msgid "Could not delete user. User was not supplied."
 msgstr ""
 
@@ -7229,160 +7205,34 @@ msgstr ""
 msgid "Key can't be empty!"
 msgstr ""
 
-#: application/controllers/admin/UserAction.php:78
-#: application/views/admin/globalsettings/globalSettings_view.php:29
-#: modules/admin/globalsettings/views/globalSettings_view.php:29
-msgid "User administration"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:123
-msgid "The username already exists."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:147
-#: application/models/services/PasswordManagement.php:265
-msgid "Hello %s,"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:148
-msgid "This is an automated email to notify that a user has been created for you on the site '%s'."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:149
-msgid "You can use now the following credentials to log into the site:"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:155
-#: application/controllers/admin/UserAction.php:157
-#: application/controllers/admin/UserAction.php:421
-#: application/controllers/admin/UserAction.php:431
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:380
-#: application/core/plugins/Authdb/Authdb.php:129
-#: application/libraries/Save.php:221 application/models/User.php:131
-#: application/views/admin/authentication/newPassword.php:41
-#: application/views/admin/user/modifyuser.php:53
-#: application/views/userManagement/partial/createdrandoms.php:32
-msgid "Password"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:157
-#: application/views/userManagement/partial/usernotificationemail.php:312
-msgid "Please contact your LimeSurvey administrator for your password."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:161
-msgid "Click here to log in."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:162
-#: application/views/userManagement/partial/usernotificationemail.php:392
-msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:166
-#: application/core/LsDefaultDataSets.php:2945
-msgid "User registration at '%s'"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:172
-msgid "Username: %s - Email: %s"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:173
-msgid "An email with a generated password was sent to the user."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:178
-#: application/models/services/PasswordManagement.php:90
-msgid "Email to %s (%s) failed."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:190
-msgid "Set user permissions"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:223
-msgid "Initial Superadmin cannot be deleted!"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:302
-msgid "This superadmin cannot be deleted."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:328
-msgid "User '%s' was successfully deleted."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:401
-#: application/controllers/admin/UserAction.php:436
-#: application/controllers/admin/UserAction.php:441
-msgid "Could not modify user data."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:401
-msgid "Email address is not valid."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:421
-msgid "Unchanged"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:463
-msgid "You are not allowed to edit your own user permissions."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:468
-msgid "The permissions of this superadmin cannot be updated!"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:487
-msgid "Permissions were successfully updated."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:490
-msgid "There was a problem updating the user permissions."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:619
-msgid "Template permissions were updated successfully."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:621
-msgid "Error while updating template permissions."
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:642
+#: application/controllers/admin/UserAction.php:51
 msgid "You can't change password if demo mode is active."
 msgstr ""
 
-#: application/controllers/admin/UserAction.php:651
-#: application/controllers/admin/UserAction.php:682
+#: application/controllers/admin/UserAction.php:60
+#: application/controllers/admin/UserAction.php:91
 msgid "The current password is not correct."
 msgstr ""
 
-#: application/controllers/admin/UserAction.php:673
+#: application/controllers/admin/UserAction.php:82
 msgid "You can't change your email adress if demo mode is active."
 msgstr ""
 
-#: application/controllers/admin/UserAction.php:720
+#: application/controllers/admin/UserAction.php:129
 msgid "Your personal settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/UserAction.php:723
+#: application/controllers/admin/UserAction.php:132
 msgid "There was an error when saving your personal settings."
 msgstr ""
 
-#: application/controllers/admin/UserAction.php:740
+#: application/controllers/admin/UserAction.php:149
 #: application/views/admin/participants/importCSV_view.php:59
 msgid "(Autodetect)"
 msgstr ""
 
-#: application/controllers/admin/UserAction.php:759
+#: application/controllers/admin/UserAction.php:168
 msgid "My Account"
-msgstr ""
-
-#: application/controllers/admin/UserAction.php:846
-msgid "Could not save theme %s: %s"
 msgstr ""
 
 #: application/controllers/admin/dumpdb.php:38
@@ -8843,6 +8693,10 @@ msgstr ""
 msgid "Thank you"
 msgstr ""
 
+#: application/core/LsDefaultDataSets.php:2945
+msgid "User registration at '%s'"
+msgstr ""
+
 #: application/core/QuestionTypes/Date/RenderDate.php:40
 msgid "Date entered is invalid!"
 msgstr ""
@@ -9078,6 +8932,15 @@ msgstr ""
 
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:351
 msgid "Error creating LDAP connection"
+msgstr ""
+
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:380
+#: application/core/plugins/Authdb/Authdb.php:129
+#: application/libraries/Save.php:221 application/models/User.php:131
+#: application/views/admin/authentication/newPassword.php:41
+#: application/views/admin/user/modifyuser.php:53
+#: application/views/userManagement/partial/createdrandoms.php:32
+msgid "Password"
 msgstr ""
 
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:541
@@ -10520,11 +10383,11 @@ msgid "Please use the survey navigation buttons or index.  It appears you attemp
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1064
-msgid "To continue please first accept our survey data policy."
+msgid "To continue please first accept our survey privacy policy."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1068
-msgid "We are sorry but you can't proceed without first agreeing to our survey data policy."
+msgid "We are sorry but you can't proceed without first agreeing to our survey privacy policy."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1148
@@ -16718,6 +16581,10 @@ msgstr ""
 msgid "Participant ID cannot be empty"
 msgstr ""
 
+#: application/models/services/PasswordManagement.php:90
+msgid "Email to %s (%s) failed."
+msgstr ""
+
 #: application/models/services/PasswordManagement.php:104
 msgid "Username : %s - Email : %s."
 msgstr ""
@@ -16748,6 +16615,10 @@ msgstr ""
 
 #: application/models/services/PasswordManagement.php:221
 msgid "Your login credentials have been reset"
+msgstr ""
+
+#: application/models/services/PasswordManagement.php:265
+msgid "Hello %s,"
 msgstr ""
 
 #: application/models/services/PasswordManagement.php:267
@@ -17092,11 +16963,11 @@ msgstr ""
 msgid "The following old participant tables exist and may be deleted if no longer required:"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:338
+#: application/views/admin/checkintegrity/check_view.php:337
 msgid "Delete checked items!"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:341
+#: application/views/admin/checkintegrity/check_view.php:340
 msgid "Note that you cannot undo a delete if you proceed. The data will be gone."
 msgstr ""
 
@@ -17866,13 +17737,11 @@ msgid "Incomplete only"
 msgstr ""
 
 #: application/views/admin/export/spss_view.php:29
-#: application/views/admin/pluginmanager/overview.php:44
-#: application/views/admin/pluginmanager/uploadConfirm.php:48
-msgid "Version:"
+msgid "SPSS version:"
 msgstr ""
 
 #: application/views/admin/export/spss_view.php:35
-msgid "Prior to 16"
+msgid "Prior to 16 / PSPP"
 msgstr ""
 
 #: application/views/admin/export/spss_view.php:36
@@ -18773,6 +18642,11 @@ msgstr ""
 #: application/views/admin/globalsettings/globalSettings_view.php:28
 #: modules/admin/globalsettings/views/globalSettings_view.php:28
 msgid "Security"
+msgstr ""
+
+#: application/views/admin/globalsettings/globalSettings_view.php:29
+#: modules/admin/globalsettings/views/globalSettings_view.php:29
+msgid "User administration"
 msgstr ""
 
 #: application/views/admin/globalsettings/globalSettings_view.php:32
@@ -19761,6 +19635,11 @@ msgstr ""
 msgid "Web page:"
 msgstr ""
 
+#: application/views/admin/pluginmanager/overview.php:44
+#: application/views/admin/pluginmanager/uploadConfirm.php:48
+msgid "Version:"
+msgstr ""
+
 #: application/views/admin/pluginmanager/overview.php:50
 msgid "Last updated:"
 msgstr ""
@@ -19840,7 +19719,7 @@ msgstr ""
 
 #: application/views/admin/quotas/_form.php:37
 #: application/views/admin/quotas/viewquotas_quota_members.php:14
-msgid "Allow user to modify his last answers before terminate survey."
+msgid "Allow user to modify their last answers before terminating the survey."
 msgstr ""
 
 #: application/views/admin/quotas/_newanswer_equation.php:8
@@ -19878,7 +19757,7 @@ msgid "Question selection"
 msgstr ""
 
 #: application/views/admin/quotas/newanswererror_view.php:3
-msgid "Sorry there are no supported question types in this survey."
+msgid "Sorry, there are no supported question types in this survey."
 msgstr ""
 
 #: application/views/admin/quotas/newanswertwo_view.php:17
@@ -19962,7 +19841,7 @@ msgid "Quota could not be added!"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotas_view.php:30
-msgid "It is missing a quota message for the following languages:"
+msgid "Missing a quota message for the following languages:"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotas_view.php:44
@@ -20126,7 +20005,7 @@ msgid "Tutorials"
 msgstr ""
 
 #: application/views/admin/super/_tutorial_menu.php:28
-msgid "See all Tutorial"
+msgid "See all Tutorials"
 msgstr ""
 
 #: application/views/admin/super/_tutorial_menu.php:35
@@ -20311,7 +20190,7 @@ msgid "Some piece-of-cake steps to create your very own first survey:"
 msgstr ""
 
 #: application/views/admin/super/welcome.php:59
-msgid "Create a new survey clicking on the %s icon."
+msgid "Create a new survey by clicking on the %s icon."
 msgstr ""
 
 #: application/views/admin/super/welcome.php:61
@@ -21154,7 +21033,7 @@ msgid "Anonymized responses:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:94
-msgid "With non-anonymized responses (and the survey participants table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."
+msgid "With non-anonymized responses (and the survey participants table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link), their previous answers will be reloaded."
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:95
@@ -21162,7 +21041,7 @@ msgid "Enable participant-based response persistence:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:121
-msgid "If participant-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."
+msgid "If participant-based response persistence is enabled then a participant can update their responses after completion, otherwise a participant can add new responses without restriction."
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:122
@@ -25321,6 +25200,14 @@ msgstr ""
 msgid "Click here to reset your password"
 msgstr ""
 
+#: application/views/userManagement/partial/usernotificationemail.php:312
+msgid "Please contact your LimeSurvey administrator for your password."
+msgstr ""
+
+#: application/views/userManagement/partial/usernotificationemail.php:392
+msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
+msgstr ""
+
 #: application/views/userManagement/partial/usernotificationemail.php:456
 msgid "If the button above is not working, please copy this link into the address line of your browser"
 msgstr ""
@@ -25435,10 +25322,6 @@ msgstr ""
 #: tmp/runtime/twig_cache/0d/0d53621db6c2c41d5902eb9e449da39d6188c2adef2cbcb19304f7bb6e9383b2.php:36
 #: tmp/runtime/twig_cache/73/732bbc6c1430da204b217b451bc2251694d51ca23359ee34d0c34075c57fa872.php:36
 msgid "Error: This question has no answers."
-msgstr ""
-
-#: tmp/runtime/twig_cache/16/161feb7acb8e7612dd1a876dacef07d5e02030d9c9fcd57dcd4ec76b34e8ec86.php:33
-msgid "Show Policy"
 msgstr ""
 
 #: tmp/runtime/twig_cache/16/16a459dc3a20a813f256854523cb79849f16f9cf989e32dbade7ed1dc6508a37.php:33
@@ -25699,6 +25582,10 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/dd/dd3366c0963012d6fe5a810fbfdec2dcd59c7ea01d6673e299af956df3ad5423.php:60
 msgid "This action need to be confirmed."
+msgstr ""
+
+#: tmp/runtime/twig_cache/de/de5262e7094e07618777c6854c5745c129fb188bb00fc909ab44cd65cf6a4dfb.php:33
+msgid "Show privacy policy"
 msgstr ""
 
 #: tmp/runtime/twig_cache/ef/ef182984749c90a6f822571897560e1f3f46f7ba8568f6086becb1c778493938.php:40
