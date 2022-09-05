@@ -24,12 +24,11 @@ return array(
 
     // jQuery
     'jquery' => array(
-        'devBaseUrl' => 'vendor/jquery',
-        'basePath' => 'vendor.jquery',
-        'position' =>CClientScript::POS_HEAD,
+        'devBaseUrl' => 'node_modules/jquery/dist',
+        'basePath' => 'node_modules.jquery.dist',
+        'position' => CClientScript::POS_HEAD,
         'js' => array(
-            'jquery-3.5.1'.$minVersion.'.js',
-            'jquery-migrate-3.3.2'.$minVersion.'.js',
+            'jquery' . $minVersion . '.js'
         )
     ),
 
@@ -176,14 +175,14 @@ return array(
 
     // jQuery UI
     'jqueryui' => array(
-        'devBaseUrl' => 'vendor/jquery-ui',
-        'basePath' => 'vendor.jquery-ui',
-        'position' =>CClientScript::POS_HEAD,
+        'devBaseUrl' => 'node_modules/jquery-ui-dist',
+        'basePath' => 'node_modules.jquery-ui-dist',
+        'position' => CClientScript::POS_HEAD,
         'js' => array(
             'jquery-ui'.$minVersion.'.js',
         ),
         'css' => array(
-            'jquery-ui.structure.css', /* else autocomplete or other broken */
+       //     'jquery-ui.structure.css', /* else autocomplete or other broken */
         ),
         'depends' => array(
             'jquery',
@@ -244,7 +243,7 @@ return array(
 
     // jQuery NestedSortable
     'jquery-nestedSortable' => array(
-        'basePath' => 'vendor.jquery-nestedSortable',
+        'basePath' => 'node_modules.nestedSortable',
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.mjs.nestedSortable.js'

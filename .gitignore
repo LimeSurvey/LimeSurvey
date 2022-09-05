@@ -82,7 +82,9 @@ node_modules/*
 !/node_modules/dom-to-image/
 !/node_modules/jspdf/
 !/node_modules/jszip/
-!/node_modules/file-saver/
+!/node_modules/nestedSortable/
+!/node_modules/jquery/
+!/node_modules/jquery-ui-dist/
 vendor/**/docs/
 vendor/**/scripts/
 vendor/**/tests/
