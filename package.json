@@ -27,6 +27,6 @@
     "decimal.js": "^10.4.0",
     "devbridge-autocomplete": "^1.4.11",
     "dom-to-image": "^2.6.0",
-    "jspdf": "^2.5.1"
+    "jspdf": "1.5.3"
   }
 }

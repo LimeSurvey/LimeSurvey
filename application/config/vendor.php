@@ -361,7 +361,7 @@ return array(
     ),
 
     'jspdf' => array(
-        'basePath' => 'vendor.jspdf',
+        'basePath' => 'node_modules.jspdf.dist',
         'js' => array(
             'jspdf.min.js',
             'createpdf_worker.js'
