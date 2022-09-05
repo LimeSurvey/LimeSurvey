@@ -304,9 +304,9 @@ return array(
     'decimal' => array(
         'position' => CClientScript::POS_BEGIN,
         'devBaseUrl' => 'node_modules/decimal.js',
-        'basePath' => 'node_modules.decimal.js',
+        'basePath' => 'node_modules',
         'js' => array(
-            'decimal'.$minVersion.'.js'
+            'decimal.js/decimal'.$minVersion.'.js'
         ),
         'depends' => array(
         )
