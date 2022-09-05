@@ -74,6 +74,8 @@
 
 #ignore most of the js-build stuff
 node_modules/*
+node_modules/**/docs
+node_modules/**/src
 !/node_modules/devbridge-autocomplete/
 !/node_modules/ace-builds/
 !/node_modules/datatables.net/
@@ -83,8 +85,18 @@ node_modules/*
 !/node_modules/jspdf/
 !/node_modules/jszip/
 !/node_modules/nestedSortable/
-!/node_modules/jquery/
+!/node_modules/jquery/dist/
 !/node_modules/jquery-ui-dist/
+!/node_modules/select2
+/node_modules/select2/*
+!/node_modules/select2/dist/
+!/node_modules/select2-bootstrap-5-theme
+/node_modules/select2-bootstrap-5-theme/*
+!/node_modules/select2-bootstrap-5-theme/dist/
+
+
+
+
 vendor/**/docs/
 vendor/**/scripts/
 vendor/**/tests/

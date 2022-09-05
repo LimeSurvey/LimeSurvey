@@ -124,20 +124,36 @@ return array(
 
     // Bootstrap select2
     'select2' => array(
-        'devBaseUrl' => 'vendor/',
-        'basePath' => 'vendor',
+        'devBaseUrl' => 'node_modules/select2/dist',
+        'basePath' => 'node_modules.select2.dist',
         'js' => array(
-            'select2/select2/dist/js/select2.full.min.js'
+            'js/select2.full'.$minVersion.'.js'
         ),
         'css' => array(
-            'select2/select2/dist/css/select2.min.css',
-            'apalfrey/select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css'
+            'css/select2'.$minVersion.'.css',
         ),
         'depends' => array(
             'jquery',
             'bootstrap'
         )
     ),
+
+
+    'select2-bootstrap' => array(
+        'devBaseUrl' => 'node_modules/select2-bootstrap-5-theme/dist',
+        'basePath' => 'node_modules.select2-bootstrap-5-theme.dist',
+        'js' => array(
+            'js/select2.full'.$minVersion.'.js'
+        ),
+        'css' => array(
+            'select2-bootstrap-5-theme'.$minVersion.'.css',
+        ),
+        'depends' => array(
+            'select2'
+        )
+    ),
+
+
 
     'bootstrap-datetimepicker' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/datetimepicker/build',
@@ -202,6 +218,7 @@ return array(
 
     // jQuery Cookie
     'js-cookie' => array(
+        'devBaseUrl' => 'vendor/js-cookie',
         'basePath' => 'vendor.js-cookie',
         'js' => array(
             'js.cookie.js'
