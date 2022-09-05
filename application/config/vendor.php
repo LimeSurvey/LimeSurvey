@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /** @var array $userConfig */
@@ -36,39 +38,44 @@ return array(
     // This package replace the Yiistrap register() function
     // Then instead of using the composer dependency system for themes
     // We can use the package dependency system (easier for now)
-    'bootstrap' => new class() implements ArrayAccess {
+    'bootstrap' => new class () implements ArrayAccess {
         private $value = [
-            'devBaseUrl' => 'assets/bootstrap_5/',
-            'basePath' => 'bootstrap',
+            'devBaseUrl' => 'assets/bootstrap_5/build',
+            'basePath' => 'bootstrap.build',
             'css' => [
-                'build/css/bootstrap_5.min.css',
+                'css/bootstrap_5.min.css',
             ],
             'js' => [
-                'build/js/bootstrap_5.min.js',
+                'js/bootstrap_5.min.js',
             ]
         ];
-        public function offsetExists($offset) {
+        public function offsetExists($offset)
+        {
             return isset($this->value[$offset]);
         }
         // NB: '&' is needed to unset values in $value property after getting it
         // Else, a copy of the array will be returned (so called "value semantics").
-        public function &offsetGet($offset) {
+        public function &offsetGet($offset)
+        {
             $this->setRtl();
             return $this->value[$offset];
         }
-        public function offsetSet($offset, $value) {
+        public function offsetSet($offset, $value)
+        {
             $this->value[$offset] = $value;
         }
-        public function offsetUnset($offset) {
+        public function offsetUnset($offset)
+        {
             unset($this->value[$offset]);
         }
-        private function setRtl() {
+        private function setRtl()
+        {
             // NB: During installation, getLanguageRTL won't be loaded here.
             if (function_exists('getLanguageRTL')) {
                 $dir = getLanguageRTL(App()->getLanguage()) ? 'rtl' : 'ltr';
                 if ($dir === "rtl") {
                     $this->value['css'] = [
-                        'build/css/bootstrap_5-rtl.min.css',
+                        'css/bootstrap_5-rtl.min.css',
                     ];
                 }
             }
@@ -80,10 +87,10 @@ return array(
     'bootstrap-admin' => array(
         'devBaseUrl' => 'assets/bootstrap_5/',
         'basePath' => 'bootstrap',
-        'css'=> array(
+        'css' => array(
             'build/css/bootstrap_5.min.css',
         ),
-        'js'=>array(
+        'js' => array(
             'build/js/bootstrap_5.min.js',
         ),
     ),
@@ -93,11 +100,11 @@ return array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/slider',
         'basePath' => 'core.bootstrap.plugins.slider',
         'position' => CClientScript::POS_BEGIN,
-        'css'=> array(
-            'css/bootstrap-slider'.$minVersion.'.css'
+        'css' => array(
+            'css/bootstrap-slider' . $minVersion . '.css'
         ),
         'js' => array(
-            'bootstrap-slider'.$minVersion.'.js'
+            'bootstrap-slider' . $minVersion . '.js'
         ),
         'depends' => array(
             'jquery',
@@ -127,10 +134,10 @@ return array(
         'devBaseUrl' => 'node_modules/select2/dist',
         'basePath' => 'node_modules.select2.dist',
         'js' => array(
-            'js/select2.full'.$minVersion.'.js'
+            'js/select2.full' . $minVersion . '.js'
         ),
         'css' => array(
-            'css/select2'.$minVersion.'.css',
+            'css/select2' . $minVersion . '.css',
         ),
         'depends' => array(
             'jquery',
@@ -142,11 +149,8 @@ return array(
     'select2-bootstrap' => array(
         'devBaseUrl' => 'node_modules/select2-bootstrap-5-theme/dist',
         'basePath' => 'node_modules.select2-bootstrap-5-theme.dist',
-        'js' => array(
-            'js/select2.full'.$minVersion.'.js'
-        ),
         'css' => array(
-            'select2-bootstrap-5-theme'.$minVersion.'.css',
+            'select2-bootstrap-5-theme' . $minVersion . '.css',
         ),
         'depends' => array(
             'select2'
@@ -160,7 +164,7 @@ return array(
         'basePath' => 'core.bootstrap.plugins.datetimepicker.build',
         'position' => CClientScript::POS_BEGIN,
         'css' => array(
-            'css/bootstrap-datetimepicker'.$minVersion.'.css'
+            'css/bootstrap-datetimepicker' . $minVersion . '.css'
         ),
         'js' => array(
             'js/bootstrap-datetimepicker.min.js'
@@ -177,10 +181,10 @@ return array(
         'basePath' => 'core.bootstrap.plugins.switch',
         'position' => CClientScript::POS_BEGIN,
         'css' => array(
-            'css/bootstrap-switch'.$minVersion.'.css'
+            'css/bootstrap-switch' . $minVersion . '.css'
         ),
         'js' => array(
-            'js/bootstrap-switch'.$minVersion.'.js'
+            'js/bootstrap-switch' . $minVersion . '.js'
         ),
         'depends' => array(
             'jquery',
@@ -195,7 +199,7 @@ return array(
         'basePath' => 'node_modules.jquery-ui-dist',
         'position' => CClientScript::POS_HEAD,
         'js' => array(
-            'jquery-ui'.$minVersion.'.js',
+            'jquery-ui' . $minVersion . '.js',
         ),
         'css' => array(
        //     'jquery-ui.structure.css', /* else autocomplete or other broken */
@@ -321,7 +325,7 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'basePath' => 'node_modules_decimal',
         'js' => array(
-            'decimal'.$minVersion.'.js'
+            'decimal' . $minVersion . '.js'
         ),
         'depends' => array(
         )
@@ -332,7 +336,7 @@ return array(
         'devBaseUrl' => 'vendor/moment',
         'basePath' => 'vendor.moment',
         'js' => array(
-            'moment-with-locales'.$minVersion.'.js'
+            'moment-with-locales' . $minVersion . '.js'
         ),
         'depends' => array(
         )
@@ -352,7 +356,7 @@ return array(
         'position' => CClientScript::POS_BEGIN,
 
         'js' => array(
-            'js/jquery.dataTables'.$minVersion.'.js'
+            'js/jquery.dataTables' . $minVersion . '.js'
         ),
         'depends' => array(
             'jquery',
@@ -364,16 +368,16 @@ return array(
         'basePath' => 'node_modules_datatables_bs5',
         'position' => CClientScript::POS_BEGIN,
         'css' => array(
-            'css/dataTables.bootstrap5'.$minVersion.'.css'
+            'css/dataTables.bootstrap5' . $minVersion . '.css'
         ),
         'js' => array(
-            'js/dataTables.bootstrap5'.$minVersion.'.js'
+            'js/dataTables.bootstrap5' . $minVersion . '.js'
         ),
         'depends' => array(
             'jquery-datatable'
         )
     ),
-    
+
     'es6promise' => array(
         'basePath' => 'vendor.es6promise',
         'js' => array(
@@ -405,7 +409,7 @@ return array(
         'basePath' => 'vendor.sortable', /* for sorting ability */
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
-            'jquery.fn.sortable'.$minVersion.'.js'
+            'jquery.fn.sortable' . $minVersion . '.js'
             )
         ),
     'jquery-actual' => array(
@@ -413,7 +417,7 @@ return array(
         'devBaseUrl' => 'vendor/jquery-actual',
         'basePath' => 'vendor.jquery-actual', /* for samechoiceheight/samelistheight */
         'js' => array(
-            'jquery.actual'.$minVersion.'.js'
+            'jquery.actual' . $minVersion . '.js'
         ),
     ),
     /* Used by short text with map by leaflet */
@@ -431,13 +435,13 @@ return array(
         'basePath' => 'node_modules.devbridge-autocomplete.dist', /* For geoname search autocomplete without jquery */
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
-            'jquery.autocomplete'.$minVersion.'.js'
+            'jquery.autocomplete' . $minVersion . '.js'
         ),
     ),
     'jszip' => array(
         'basePath' => 'node_modules.jszip',
         'js' => array(
-            'dist/jszip'.$minVersion.'.js',
+            'dist/jszip' . $minVersion . '.js',
             'vendor/FileSaver.js'
         ),
         'depends' => array(
