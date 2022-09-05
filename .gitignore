@@ -79,6 +79,7 @@ node_modules/*
 !/node_modules/datatables.net/
 !/node_modules/datatables.net-bs5/
 !/node_modules/decimal.js/
+!/node_modules/dom-to-image/
 vendor/**/docs/
 vendor/**/scripts/
 vendor/**/tests/

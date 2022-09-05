@@ -355,7 +355,7 @@ return array(
     ),
 
     'dom2image' => array(
-        'basePath' => 'vendor.dom-to-image',
+        'basePath' => 'node_modules.dom-to-image',
         'js' => array(
             'dist/dom-to-image.min.js',
         )
