@@ -1920,7 +1920,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
 

@@ -696,7 +696,7 @@ function getUserList($outputformat = 'fullinfoarray')
     $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
 
     if (count($uresult) == 0 && !empty($myuid)) {
-//user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
+//user is not in a group and usercontrolSameGroupPolicy is activated - at least show their own userinfo
         $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=" . $myuid;
         $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
     }
