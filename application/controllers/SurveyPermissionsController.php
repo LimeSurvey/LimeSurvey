@@ -64,6 +64,11 @@ class SurveyPermissionsController extends LSBaseController
 
         $this->aData = $aData;
         $aBaseSurveyPermissions = Permission::model()->getSurveyBasePermissions();
+        //function get table content as array
+        //structure should be
+        /*
+         *
+         */
         return $this->render('index', [
             'basePermissions' => $aBaseSurveyPermissions,
             'userCreatePermission' => Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create'),
@@ -80,7 +85,10 @@ class SurveyPermissionsController extends LSBaseController
      */
     public function actionAddUser($surveyid)
     {
-        // 1.  check the permission (has current user permission to add new user permission to survey
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
+            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
         // 2.  add the user in permission table
         // 3.  redirect to index if failed, or redirect to 'add permission page'; giving flash message in both cases
     }
@@ -89,29 +97,53 @@ class SurveyPermissionsController extends LSBaseController
      * Add group users to permission table for this survey.
      * and redirects to settings permission page
      *
-     * @param $survey
+     * @param $surveyid
      * @return void
      */
-    public function actionAddUserGroup($survey)
+    public function actionAddUserGroup($surveyid)
     {
-        // 1.  check the permission (has current user permision to add new user permission to survey
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
+            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
         // 2.  add the user in permission table
-        // 3. redirect to index if failed, or redirect to 'add permission page'; giving flash message in both cases
+        // 3.  redirect to index if failed, or redirect to 'add permission page'; giving flash message in both cases
     }
 
     /**
      * Open settings permission page
      *
+     *
+     * @param $action string the action could be 'user' or 'usergroup'
+     * @param $id int userid or groupid depending on the action
      * @return void
      */
-    public function actionSettingsPermissions()
+    public function actionSettingsPermissions($surveyid, $action, $id)
     {
-        // 1.  check the permission (has current user permission to add new user permission to survey)
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
+            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
         // 2.  set permissions for user table
         // 3.  redirect to index giving flash message in both cases (success and failed)
     }
 
-    public function actionSavePermissions(){
+    /**
+     * Save permissions for a user or a usergroup
+     *
+     * @param $surveyid
+     * @return void
+     */
+    public function actionSavePermissions($surveyid)
+    {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
+            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+        //get post-params
+        $action = Yii::app()->request->getPost('action'); //the action could be 'user' or 'usergroup'
+        // 1. save the permissions
+        // 2. redirect to overview (index)
 
     }
 }
