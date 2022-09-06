@@ -223,7 +223,7 @@ $(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item
     }
 });
 /* select/dropdown item */
-$(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
+$(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange]), select.dropdown-item:not([onchange])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
 });
 /* radio/button item */
