@@ -410,7 +410,8 @@ return array(
     ),
     /* Used by short text with map by leaflet */
     'leaflet' => array(
-        'basePath' => 'vendor.leaflet',
+        'devBaseUrl' => 'node_modules/leaflet/dist',
+        'basePath' => 'node_modules.leaflet.dist',
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'leaflet.js'

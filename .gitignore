@@ -115,6 +115,11 @@ node_modules/**/src
 /node_modules/moment/*
 !/node_modules/moment/min/
 
+!/node_modules/leaflet
+/node_modules/leaflet/*
+!/node_modules/leaflet/dist/
+
+
 vendor/**/docs/
 vendor/**/scripts/
 vendor/**/tests/
