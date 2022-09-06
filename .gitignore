@@ -104,6 +104,9 @@ node_modules/**/src
 /node_modules/tablesorter/*
 !/node_modules/tablesorter/dist/
 
+!/node_modules/js-cookie
+/node_modules/js-cookie/*
+!/node_modules/js-cookie/dist/
 
 vendor/**/docs/
 vendor/**/scripts/

@@ -237,10 +237,10 @@ return array(
 
     // jQuery Cookie
     'js-cookie' => array(
-        'devBaseUrl' => 'vendor/js-cookie',
-        'basePath' => 'vendor.js-cookie',
+        'devBaseUrl' => 'node_modules/js-cookie/dist',
+        'basePath' => 'vendor.js-cookie.dist',
         'js' => array(
-            'js.cookie.js'
+            'js.cookie' . $minVersion . '.js'
         )
     ),
 
