@@ -91,6 +91,7 @@ node_modules/**/src
 !/node_modules/jquery-ui-dist/
 !/node_modules/jquery.actual/
 !/node_modules/jsuri/
+!/node_modules/jquery-ui-touch-punch/
 
 
 !/node_modules/select2

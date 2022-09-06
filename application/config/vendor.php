@@ -298,9 +298,9 @@ return array(
 
     // jQuery touch punch : seems uneended now ?
     'jquery-touch-punch' => array(
-        'basePath' => 'vendor.jquery-touch-punch',
+        'basePath' => 'node_modules.jquery-ui-touch-punch',
         'js' => array(
-            'jquery.ui.touch-punch.min.js'
+            'jquery.ui.touch-punch' . $minVersion . '.js'
         ),
         'depends' => array(
             'jqueryui'
