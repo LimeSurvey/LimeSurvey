@@ -291,12 +291,7 @@ class AdminTheme extends CFormModel
             'application/extensions/FlashMessage/assets',
             'application/extensions/admin/survey/question/PositionWidget/assets',
             'application/extensions/admin/grid/MassiveActionsWidget/assets',
-            'application/extensions/admin/survey/question/PositionWidget/assets',
-            //'application/extensions/bootstrap/', we'll touch all the subdirectories of extensions
-
-            // Third party assets
-            'vendor/jquery-tablesorter/tests/assets',
-            'vendor/jquery-tablesorter/docs/assets',
+            'application/extensions/admin/survey/question/PositionWidget/assets'
         );
     }
 
