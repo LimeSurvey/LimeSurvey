@@ -220,17 +220,6 @@ return array(
         )
     ),
 
-    // jquery bindWithDelay
-    'jquery-bindWithDelay' => array(
-        'basePath' => 'vendor.jquery-bindWithDelay',
-        'js' => array(
-            'bindWithDelay.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-
     // jQuery Cookie
     'js-cookie' => array(
         'devBaseUrl' => 'node_modules/js-cookie/dist',
@@ -285,16 +274,7 @@ return array(
         )
     ),
 
-    // jQuery selectboxes
-    'jquery-selectboxes' => array(
-        'basePath' => 'vendor.jquery-selectboxes.selectboxes',
-        'js' => array(
-            'jquery.selectboxes.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
+
 
     // jQuery touch punch : seems uneended now ?
     'jquery-touch-punch' => array(
