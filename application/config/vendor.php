@@ -253,6 +253,7 @@ return array(
 
     // jQuery NestedSortable
     'jquery-nestedSortable' => array(
+        'devBaseUrl' => 'node_modules/nestedSortable',
         'basePath' => 'node_modules.nestedSortable',
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
