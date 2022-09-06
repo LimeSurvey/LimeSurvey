@@ -48,7 +48,9 @@
 		"khaled.alshamaa/ar-php": "^6.3",
 		"tecnickcom/tcpdf": "^6.5",
 		"mk-j/php_xlsxwriter": "^0.38.0",
-		"html2text/html2text": "^4.3"
+		"html2text/html2text": "^4.3",
+		"pear/ole": "1.*@dev",
+		"pear/spreadsheet_excel_writer": "^0.9.7"
 	},
     "config": {
         "vendor-dir": "vendor",

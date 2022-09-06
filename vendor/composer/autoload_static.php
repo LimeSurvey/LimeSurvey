@@ -145,12 +145,38 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
                 0 => __DIR__ . '/..' . '/twig/twig/lib',
             ),
         ),
+        'S' => 
+        array (
+            'Spreadsheet' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/spreadsheet_excel_writer',
+            ),
+        ),
+        'O' => 
+        array (
+            'OLE' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/ole',
+            ),
+        ),
+        'C' => 
+        array (
+            'Console' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/console_getopt',
+            ),
+        ),
+    );
+
+    public static $fallbackDirsPsr0 = array (
+        0 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
+        'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
         'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
         'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
         'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
@@ -175,6 +201,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             $loader->prefixLengthsPsr4 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInitddb1a145e450f862353420acc5153e40::$classMap;
 
         }, null, ClassLoader::class);

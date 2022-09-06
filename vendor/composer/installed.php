@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '3caee4836ea7d897dc3e18cd737d2d62cbbb457d',
+    'reference' => '70bf5a13f594b4fdd826af472229ce5748011aab',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '3caee4836ea7d897dc3e18cd737d2d62cbbb457d',
+      'reference' => '70bf5a13f594b4fdd826af472229ce5748011aab',
     ),
     'mk-j/php_xlsxwriter' => 
     array (
@@ -74,6 +74,51 @@
       ),
       'reference' => 'ac994053faac18d386328c91c7900f930acadf1e',
     ),
+    'pear/console_getopt' => 
+    array (
+      'pretty_version' => 'v1.4.3',
+      'version' => '1.4.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'a41f8d3e668987609178c7c4a9fe48fecac53fa0',
+    ),
+    'pear/ole' => 
+    array (
+      'pretty_version' => 'v1.0.0RC8',
+      'version' => '1.0.0.0-RC8',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '1ee17e4ac71d6e39ff98f78c4674e8a748d16db3',
+    ),
+    'pear/pear-core-minimal' => 
+    array (
+      'pretty_version' => 'v1.10.11',
+      'version' => '1.10.11.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '68d0d32ada737153b7e93b8d3c710ebe70ac867d',
+    ),
+    'pear/pear_exception' => 
+    array (
+      'pretty_version' => 'v1.0.2',
+      'version' => '1.0.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'b14fbe2ddb0b9f94f5b24cf08783d599f776fff0',
+    ),
+    'pear/spreadsheet_excel_writer' => 
+    array (
+      'pretty_version' => 'v0.9.7',
+      'version' => '0.9.7.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f6e1821bf20cbcd8202b21dc5104b0e5688386c5',
+    ),
     'phpmailer/phpmailer' => 
     array (
       'pretty_version' => 'v6.6.4',
@@ -100,6 +145,13 @@
       array (
       ),
       'reference' => '7181378909ed8890be4db53d289faac5b77f8b05',
+    ),
+    'rsky/pear-core-min' => 
+    array (
+      'replaced' => 
+      array (
+        0 => 'v1.10.11',
+      ),
     ),
     'symfony/polyfill-ctype' => 
     array (
