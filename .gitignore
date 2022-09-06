@@ -90,6 +90,8 @@ node_modules/**/src
 !/node_modules/jquery/dist/
 !/node_modules/jquery-ui-dist/
 !/node_modules/jquery.actual/
+!/node_modules/jsuri/
+
 
 !/node_modules/select2
 /node_modules/select2/*

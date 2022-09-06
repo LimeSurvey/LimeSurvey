@@ -332,7 +332,7 @@ return array(
     // leaflet, needed for short text question with map (OSM)
 
     'jsuri' => array(
-        'basePath' => 'vendor.jsUri',
+        'basePath' => 'node_modules.jsUri',
         'js' => array(
             'Uri.js'
         ),
