@@ -300,19 +300,6 @@ return array(
         )
     ),
 
-    // jQuery Ace
-        'jquery-ace' => array(
-            'devBaseUrl' => 'vendor/jquery-ace',
-            'basePath' => 'vendor.jquery-ace',
-            'position' => CClientScript::POS_BEGIN,
-        'js' => array(
-            'jquery.ace.js',
-        ),
-        'depends' => array(
-            'jquery',
-        )
-    ),
-
     // jQuery selectboxes
     'jquery-selectboxes' => array(
         'basePath' => 'vendor.jquery-selectboxes.selectboxes',
