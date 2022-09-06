@@ -100,6 +100,10 @@ node_modules/**/src
 /node_modules/jquery-migrate/*
 !/node_modules/jquery-migrate/dist/
 
+!/node_modules/tablesorter
+/node_modules/tablesorter/*
+!/node_modules/tablesorter/dist/
+
 
 vendor/**/docs/
 vendor/**/scripts/

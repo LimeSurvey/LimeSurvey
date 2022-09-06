@@ -255,22 +255,11 @@ return array(
         )
     ),
 
-    // jQuery blockUI
-    'jquery-blockUI' => array(
-        'basePath' => 'vendor.jquery-blockui',
-        'js' => array(
-            'jquery.blockUI.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-
     // jQuery Table Sorter
     'jquery-tablesorter' => array(
-        'basePath' => 'vendor.jquery-tablesorter',
+        'basePath' => 'node_modules.tablesorter.dist.js',
         'js' => array(
-            'jquery.tablesorter.min.js'
+            'jquery.tablesorter' . $minVersion . '.js'
         ),
         'depends' => array(
             'jquery'

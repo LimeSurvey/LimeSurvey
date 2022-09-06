@@ -45,7 +45,6 @@ class UserGroupController extends LSBaseController
      */
     public function beforeRender($view)
     {
-        App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'users.js');
 
         Yii::app()->loadHelper('database');
