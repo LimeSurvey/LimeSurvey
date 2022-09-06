@@ -145,7 +145,6 @@ return array(
         )
     ),
 
-
     'select2-bootstrap' => array(
         'devBaseUrl' => 'node_modules/select2-bootstrap-5-theme/dist',
         'basePath' => 'node_modules.select2-bootstrap-5-theme.dist',
@@ -156,8 +155,6 @@ return array(
             'select2'
         )
     ),
-
-
 
     'bootstrap-datetimepicker' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/datetimepicker/build',
@@ -222,7 +219,6 @@ return array(
             'jquery',
         )
     ),
-
 
     // jquery bindWithDelay
     'jquery-bindWithDelay' => array(
