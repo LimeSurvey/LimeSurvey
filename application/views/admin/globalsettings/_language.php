@@ -46,12 +46,12 @@
                         <td class="p-1">
                             <div class="d-grid gap-2">
                                 <button class="btn btn-outline-secondary" id="btnAdd" type="button">
-                                    <span class="ui-icon ui-icon-carat-1-<?php if (getLanguageRTL($_SESSION['adminlang'])) { echo 'e'; } else { echo 'w'; } ?>"></span>
+                                    <span class="fa fa-arrow-<?php if (getLanguageRTL($_SESSION['adminlang'])) { echo 'right'; } else { echo 'left'; } ?>"></span>
                                     <?php eT("Add"); ?>
                                 </button>
                                 <button class="btn btn-outline-secondary" type="button" id="btnRemove">
                                     <?php eT("Remove"); ?>
-                                    <span class="ui-icon ui-icon-carat-1-<?php if (getLanguageRTL($_SESSION['adminlang'])) { echo 'w'; } else { echo 'e'; } ?>"></span>
+                                    <span class="fa fa-arrow-<?php if (getLanguageRTL($_SESSION['adminlang'])) { echo 'left'; } else { echo 'right'; } ?>"></span>
                                 </button>
                             </div>
                         </td>
