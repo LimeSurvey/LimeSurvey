@@ -403,10 +403,11 @@ return array(
             'jquery.fn.sortable' . $minVersion . '.js'
             )
         ),
+    /* Used for samechoiceheight/samelistheight */    
     'jquery-actual' => array(
         'position' => CClientScript::POS_BEGIN,
-        'devBaseUrl' => 'vendor/jquery-actual',
-        'basePath' => 'vendor.jquery-actual', /* for samechoiceheight/samelistheight */
+        'devBaseUrl' => 'node_modules/jquery.actual',
+        'basePath' => 'node_modules_jquery_actual',
         'js' => array(
             'jquery.actual' . $minVersion . '.js'
         ),
