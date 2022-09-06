@@ -111,6 +111,10 @@ node_modules/**/src
 /node_modules/js-cookie/*
 !/node_modules/js-cookie/dist/
 
+!/node_modules/moment
+/node_modules/moment/*
+!/node_modules/moment/min/
+
 vendor/**/docs/
 vendor/**/scripts/
 vendor/**/tests/

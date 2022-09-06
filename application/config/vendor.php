@@ -320,8 +320,8 @@ return array(
 
     // Moment.js use real simple dateTime modification
     'moment' => array(
-        'devBaseUrl' => 'vendor/moment',
-        'basePath' => 'vendor.moment',
+        'devBaseUrl' => 'node_modules/moment/min',
+        'basePath' => 'node_modules.moment.min',
         'js' => array(
             'moment-with-locales' . $minVersion . '.js'
         ),
