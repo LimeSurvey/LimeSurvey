@@ -5,8 +5,8 @@
 
 
 /**
- * Core packages , no third_party
- * sees third_party.php for third party package
+ * Core packages , no vendor
+ * sees vendor.php for third party package
  * @license GPL v3
  * core path is application/core/packages
  *
@@ -17,7 +17,7 @@
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
 $minVersion = ($debug > 0) ? "" : ".min";
-/* needed ? @see third_party.php */
+/* needed ? @see vendor.php */
 if (isset($_GET['isAjax'])) {
     return array();
 }
@@ -439,10 +439,23 @@ return array(
             'popup-dialog.css'
         ),
         'js' => array(
-            'emailtemplates'.$minVersion.'.js',
+            'emailtemplates.js',
         ),
         'depends' => array(
             'adminbasics',
         )
     ),
+    // jQuery Ace
+    'jquery-ace' => array(
+        'devBaseUrl' => 'assets/packages/jquery-ace/',
+        'basePath' => 'core.jquery-ace',
+        'position' => CClientScript::POS_BEGIN,
+    'js' => array(
+        'jquery.ace.js',
+    ),
+    'depends' => array(
+        'jquery',
+    )
+    )
+
 );

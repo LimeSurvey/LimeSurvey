@@ -11,8 +11,7 @@
         <file name="application/models/FailedEmail.php" />
         <file name="application/controllers/FailedEmailController.php" />
         <ignoreFiles>
-            <directory name="third_party" />
-            <directory name="framework" />
+            <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
 </psalm>

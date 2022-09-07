@@ -13,7 +13,7 @@
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
 $minVersion = ($debug > 0) ? "" : ".min";
-/* needed ? @see third_party.php */
+/* needed ? @see vendor.php */
 if (isset($_GET['isAjax'])) {
     return array();
 }
@@ -22,7 +22,7 @@ $coreFonts = array(
     'fontawesome' => array(
         'title' => 'Font Awesome',
         'type' => 'core',
-        //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
+        //'basePath' => 'vendor.bootstrap', // Need fix vendor alias
         'devBaseUrl' => 'assets/fonts/font-src/fontawesome/',
         'basePath' => 'fonts.font-src.fontawesome',
         'css'=> array(

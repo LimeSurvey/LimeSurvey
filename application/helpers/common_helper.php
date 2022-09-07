@@ -696,7 +696,7 @@ function getUserList($outputformat = 'fullinfoarray')
     $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
 
     if (count($uresult) == 0 && !empty($myuid)) {
-//user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
+//user is not in a group and usercontrolSameGroupPolicy is activated - at least show their own userinfo
         $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=" . $myuid;
         $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
     }
@@ -3307,13 +3307,13 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
 */
 function includeKeypad()
 {
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.plugin.min.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir') . '/third_party/jquery-keypad/jquery.keypad-' . App()->language . '.js';
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js');
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js');
+    $localefile = Yii::app()->getConfig('rootdir') . '/vendor/jquery-keypad/jquery.keypad-' . App()->language . '.js';
     if (App()->language != 'en' && file_exists($localefile)) {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
     }
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
+    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
 }
 
 

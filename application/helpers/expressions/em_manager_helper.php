@@ -9056,7 +9056,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
             if ($aSurveyInfo['surveyls_policy_error'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
@@ -9067,7 +9067,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
             if ($aSurveyInfo['surveyls_policy_notice_label'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
@@ -9078,7 +9078,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
         }
 

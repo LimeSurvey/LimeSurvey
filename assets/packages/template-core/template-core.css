@@ -268,7 +268,7 @@ table.ls-answers input[type="radio"] {
     left: -10000px;
 }
 
-/* Align survey policy checkbox to top */
+/* Align privacy policy checkbox to top */
 #datasecurity_accepted {
     vertical-align: top;
 }

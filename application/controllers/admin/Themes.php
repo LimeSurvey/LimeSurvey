@@ -1206,7 +1206,6 @@ JAVASCRIPT
                 $groupoutput[] = templatereplace(file_get_contents("$templatedir/print_group.pstpl"), array('QUESTIONS' => implode(' ', $questionoutput)), $aData, 'Unspecified', false, null, array(), false, $oEditedTemplate);
 
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/print_survey.pstpl"), array('GROUPS' => implode(' ', $groupoutput),
-                    'FAX_TO' => gT("Please fax your completed survey to:") . " 000-000-000",
                     'SUBMIT_TEXT' => gT("Submit your survey."),
                     'HEADELEMENTS' => getPrintableHeader(),
                     'SUBMIT_BY' => sprintf(gT("Please submit by %s"), date('d.m.y')),

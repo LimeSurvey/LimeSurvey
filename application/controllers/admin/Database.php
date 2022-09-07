@@ -44,7 +44,6 @@ class Database extends SurveyCommonAction
     private $updateableFields = [
                 'owner_id' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'admin' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'faxto' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'format' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'expires' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'startdate' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
@@ -865,7 +864,6 @@ class Database extends SurveyCommonAction
         $oSurvey->admin = $request->getPost('admin');
         $oSurvey->adminemail = $request->getPost('adminemail');
         $oSurvey->bounce_email = $request->getPost('bounce_email');
-        $oSurvey->faxto = $request->getPost('faxto');
         $oSurvey->gsid = $request->getPost('gsid');
         $oSurvey->format = $request->getPost('format');
 

@@ -1,3 +1,5 @@
+
+
 # exclude build/devel/test files from export to zip/tarball
 .bowerrc                export-ignore
 buildVueComponents.js   export-ignore
@@ -36,3 +38,4 @@ yarn.lock               export-ignore
 *.gif binary
 *.ico binary
 *.mo binary
+node_modules/* binary

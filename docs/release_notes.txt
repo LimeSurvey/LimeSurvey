@@ -1270,7 +1270,7 @@ Changes from 5.0.10 (build 210723) to 5.0.11 (build 210727) July 27, 2021
 -Fixed issue #17436: When editing 'General Settings' site name and pressing 'enter', a layover appears and screen freezes (#1978) (Gabriel Jenik)
 -Fixed issue #17427: Bug in 'Answer options' - 'Quick add' (encuestabizdevgit)
 -Fixed issue #17425: Misuse of progress bar (#1958) (Denis Chenu)
--Fixed issue #17363: Survey data policy error message not displayed (#1938) (Denis Chenu)
+-Fixed issue #17363: Privacy policy error message not displayed (#1938) (Denis Chenu)
 -Fixed issue #17269: Canceling activation of survey gives error (#1974) (Gabriel Jenik)
 
 
@@ -2740,7 +2740,7 @@ Changes from 4.1.11 (build 200316) to 4.1.12 (build 200324) March 24, 2020
 -Fixed issue #15943: Save and save and close buttons in quick-add conditions not working (Jessica Höck)
 -Fixed issue #15912: Error updating database on upgrade from 3.x (Carsten Schmitz)
 -Fixed issue #15838: Check database integrity error (Carsten Schmitz)
--Fixed issue #14004: language changer not automatically changing language on selection and will also work without checking the data policy checkbox (Patrick Teichmann)
+-Fixed issue #14004: language changer not automatically changing language on selection and will also work without checking the privacy policy checkbox (Patrick Teichmann)
 #Updated translation: Swedish by Norfa97
 #Updated translation: German by c_schmitz
 #Updated translation: French (France) by b00z00, GuillaumeZ6, DenisChenu, eddylackmann
@@ -4486,7 +4486,7 @@ Changes from 3.13.2 (build 180709) to 3.14.0 (build 180730) July 30, 2018
 
 Changes from 3.13.1 (build 180629) to 3.13.2 (build 180709) July 09, 2018
 -Fixed issue #13345: showpopups in config.php seems to have no effect anymore (Dominik Vitt)
--Fixed issue #13802: Unable to see Survey policy without javascript activated (Markus Flür)
+-Fixed issue #13802: Unable to see privacy policy without javascript activated (Markus Flür)
 -Fixed issue #13804: Error about Data security policy shown when change language + clear all (Markus Flür)
 -Fixed issue #13805: Multi-line Text Messages Do Not Exist in Translation. (imacat)
 -Fixed issue #13821: When importing a survey I receive a "Failed to Insert [3]" error message (#1090) (githubLewis)
@@ -7934,7 +7934,7 @@ Fixed #1868: Double Tooltips at "Execute this Survey"-Button (lemeur)
 Fixed #1815: Unknown Menubar-Object "LimeReplacementFields"/"LimeFitWin" + some information about updates in config files and release-notes (lemeur)
 Fixed #1873: Changing answers codes doesn't update conditions (lemeur)
 Fixed #1797: Entered answers lost when Save All not clicked (lemeur)
-Fixed #1828: User unable to change password. A user is now able to modify his own information (name and password whatever his permissions). He is also able to delete himself if he's got the DELETE_USER permission (lemeur)
+Fixed #1828: User unable to change password. A user is now able to modify their own information (name and password whatever their permissions). They are also able to delete themselves if they've got the DELETE_USER permission (lemeur)
 Fixed #1831: Super User cannot change quotas for other users' surveys (lemeur)
 Fixed #1840: Translation error and accent issue in calendar in French (lemeur)
 Fixed #1830: User can Activate survey from the list survey section even though there are no questions (lemeur)
