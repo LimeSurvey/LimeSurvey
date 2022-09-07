@@ -16,9 +16,9 @@
     <h3>
         <?php
         if ($isUserGroup) {
-            echo sprintf(gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($userGroupName) . "</em>");
+            echo sprintf(gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($name) . "</em>");
         } else {
-            echo sprintf(gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($userName) . "</em>");
+            echo sprintf(gT("Edit survey permissions for user %s"), "<em>" . \CHtml::encode($name) . "</em>");
         }
         ?>
     </h3>
@@ -33,13 +33,14 @@
                 true
             );?>
             <input class='btn btn-default hidden'  type='submit' value='<?=gT("Save Now") ?>' />"
-            <input type='hidden' name='action' value='surveyrights' />
             <?php
             if ($isUserGroup) { ?>
-                    <input type='hidden' name='ugid' value="<?= $userGroupId?>>" />
+                    <input type='hidden' name='ugid' value="<?= $id?>" />
+                    <input type='hidden' name='action' value='usergroup' />
                 <?php
             } else {?>
-                    <input type='hidden' name='uid' value="<?= $userId?>" />
+                    <input type='hidden' name='uid' value="<?= $id?>" />
+                    <input type='hidden' name='action' value='user' />
             <?php }
             ?>
             <?php echo CHtml::endForm(); ?>

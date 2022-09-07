@@ -131,8 +131,6 @@ class SurveyPermissionsController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Unknown action."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
-        // 2.  set permissions for user table
-        // 3.  redirect to index giving flash message in both cases (success and failed)
         $oSurvey = Survey::model()->findByPk($surveyid);
         $PermissionManagerService = new PermissionManager(
             App()->request,
@@ -143,9 +141,19 @@ class SurveyPermissionsController extends LSBaseController
         $isUserGroup = $action === 'usergroup';
         if ($isUserGroup) {
             $oUserGroup = UserGroup::model()->findByPk($id);
+            if (!isset($oUserGroup)) {
+                Yii::app()->user->setFlash('error', gT("Unknown usergroup."));
+                $this->redirect(Yii::app()->request->urlReferrer);
+            }
+            $name = $oUserGroup->name;
             $aPermissions = $PermissionManagerService->getPermissionData();
         } else {
             $oUser = User::model()->findByPk($id);
+            if (!isset($oUserGroup)) {
+                Yii::app()->user->setFlash('error', gT("Unknown user."));
+                $this->redirect(Yii::app()->request->urlReferrer);
+            }
+            $name = $oUser->full_name;
             $aPermissions = $PermissionManagerService->getPermissionData($id);
         }
         $aData['surveyid'] = $surveyid;
@@ -161,7 +169,7 @@ class SurveyPermissionsController extends LSBaseController
                 'aPermissions' => $aPermissions,
                 'isUserGroup' => $isUserGroup,
                 'id' => $id,
-                'name' => 'devTEST', //todo: set the correct name
+                'name' => $name,
             ]
         );
     }
@@ -180,8 +188,24 @@ class SurveyPermissionsController extends LSBaseController
         }
         //get post-params
         $action = Yii::app()->request->getPost('action'); //the action could be 'user' or 'usergroup'
+        $userId = Yii::app()->request->getPost('uid');
+        $userGroupId = Yii::app()->request->getPost('ugid');
         // 1. save the permissions
         // 2. redirect to overview (index)
 
+        $this->redirect(array('surveyPermissions/index', 'surveyid' => $surveyid));
+    }
+
+
+    public function actionDeleteUserPermissions(){
+        $surveyid = (int) Yii::app()->request->getPost('surveyid');
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'delete')) {
+            Yii::app()->user->setFlash('error', gT("No permission to delete survey permissions from user."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        // get POST data userid
+        //remove all permissions for that specific user (except for yourself or admin users)
+        // display a flash message
     }
 }
