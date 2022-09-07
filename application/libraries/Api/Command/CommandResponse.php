@@ -4,9 +4,9 @@ namespace LimeSurvey\Api\Command;
 
 class CommandResponse
 {
-    private $data = array();
+    private $data = null;
 
-    public function __construct(array $data)
+    public function __construct($data)
     {
         $this->data = $data;
     }
