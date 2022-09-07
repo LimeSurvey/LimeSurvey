@@ -293,7 +293,7 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'basePath' => 'node_modules_decimal',
         'js' => array(
-            'decimal' . $minVersion . '.js'
+            'decimal.js'
         ),
         'depends' => array(
         )
@@ -380,7 +380,7 @@ return array(
             'jquery.fn.sortable' . $minVersion . '.js'
             )
         ),
-    /* Used for samechoiceheight/samelistheight */    
+    /* Used for samechoiceheight/samelistheight */
     'jquery-actual' => array(
         'position' => CClientScript::POS_BEGIN,
         'devBaseUrl' => 'node_modules/jquery.actual',
