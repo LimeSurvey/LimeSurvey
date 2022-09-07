@@ -92,6 +92,8 @@ class SurveyPermissionsController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         // 2.  add the user in permission table
+        $userId = (int)Yii::app()->request->getPost('uid');
+
         // 3.  redirect to index if failed, or redirect to 'add permission page'; giving flash message in both cases
     }
 
@@ -109,6 +111,7 @@ class SurveyPermissionsController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         // 2.  add the user in permission table
+        $userId = (int)Yii::app()->request->getPost('ugid');
         // 3.  redirect to index if failed, or redirect to 'add permission page'; giving flash message in both cases
     }
 

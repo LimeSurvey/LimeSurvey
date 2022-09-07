@@ -17,7 +17,7 @@
 
             if ($userCreatePermission) { //only show adduser and addusergroup buttons if permission is set
                 echo CHtml::form(
-                    array("admin/surveypermission/sa/adduser/surveyid/{$surveyid}"),
+                    array("surveyPermissions/adduser/surveyid/{$surveyid}"),
                     'post',
                     array('class' => "form44")
                 ); ?>
@@ -44,7 +44,7 @@
 
                 <?php
                 echo CHtml::form(
-                    array("admin/surveypermission/sa/addusergroup/surveyid/{$surveyid}"),
+                    array("surveyPermissions/addusergroup/surveyid/{$surveyid}"),
                     'post',
                     array('class' => "form44")
                 ); ?>
