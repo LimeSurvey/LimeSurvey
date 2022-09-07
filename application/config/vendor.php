@@ -31,6 +31,9 @@ return array(
         'position' => CClientScript::POS_HEAD,
         'js' => array(
             'jquery' . $minVersion . '.js'
+        ),
+        'depends' => array(
+            'jquery-migrate'
         )
     ),
 
