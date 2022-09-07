@@ -48,6 +48,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'LimeSurvey\\ExtensionInstaller\\' => 30,
             'LimeSurvey\\Exceptions\\' => 22,
             'LimeSurvey\\Datavalueobjects\\' => 28,
+            'LimeSurvey\\Api\\' => 15,
         ),
         'H' => 
         array (
@@ -125,6 +126,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'LimeSurvey\\Datavalueobjects\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/datavalueobjects',
+        ),
+        'LimeSurvey\\Api\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/libraries/Api',
         ),
         'Html2Text\\' => 
         array (

@@ -22,6 +22,7 @@ return array(
     'LimeSurvey\\ExtensionInstaller\\' => array($baseDir . '/application/libraries/ExtensionInstaller'),
     'LimeSurvey\\Exceptions\\' => array($baseDir . '/application/exceptions'),
     'LimeSurvey\\Datavalueobjects\\' => array($baseDir . '/application/datavalueobjects'),
+    'LimeSurvey\\Api\\' => array($baseDir . '/application/libraries/Api'),
     'Html2Text\\' => array($vendorDir . '/html2text/html2text/src', $vendorDir . '/html2text/html2text/test'),
     'ArPHP\\I18N\\' => array($vendorDir . '/khaled.alshamaa/ar-php/src'),
 );
