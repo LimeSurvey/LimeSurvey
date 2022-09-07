@@ -33,7 +33,7 @@ class SessionKeyCreate implements CommandInterface
             $session->expire = time() + (int) \Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
             $session->data = $username;
             $session->save();
-            return $sSessionKey;
+            return new CommandResponse($sSessionKey);
         }
         if (is_string($loginResult)) {
             return new CommandResponse(array('status' => $loginResult));

@@ -2,6 +2,7 @@
 
 use LimeSurvey\Api\Command\CommandRequest;
 use LimeSurvey\Api\Command\V1\SessionKeyCreate;
+use LimeSurvey\Api\Command\V1\SessionKeyRelease;
 
 /**
  * This class handles all methods of the RemoteControl 2 API
@@ -49,15 +50,11 @@ class remotecontrol_handle
      */
     public function get_session_key($username, $password, $plugin = 'Authdb')
     {
-        $commandRequest = new CommandRequest(array(
-            'username' => (string) $username,
-            'password' => (string) $password
-        ));
-
-        $commandResponse = (new SessionKeyCreate)
-            ->run($commandRequest);
-
-        return $commandResponse;
+        return (new SessionKeyCreate)
+            ->run(new CommandRequest(array(
+                'username' => (string) $username,
+                'password' => (string) $password
+            )))->getData();
     }
 
     /**
@@ -71,12 +68,10 @@ class remotecontrol_handle
      */
     public function release_session_key($sSessionKey)
     {
-        $sSessionKey = (string) $sSessionKey;
-        Session::model()->deleteAllByAttributes(array('id' => $sSessionKey));
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'expire < ' . time();
-        Session::model()->deleteAll($criteria);
-        return 'OK';
+        return (new SessionKeyRelease)
+            ->run(new CommandRequest(array(
+                'sessionKey' => (string) $sSessionKey
+            )))->getData();
     }
 
     /**
