@@ -240,12 +240,11 @@ $(document).on("updated",".answer-item :hidden, .upload-item :hidden",function(e
 });
 /* new multiple choice bootstrap buttons */
 $(document).on("change","input:checkbox.button-item.btn-check",function(event){
-    console.log('sdfdsf');
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* new singlechoice radio bootstrap buttons */
 $(document).on("change","input:radio.button-item.btn-check",function(event){
-    console.log('radio');
+    console.log('click on the radio btn')
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /**

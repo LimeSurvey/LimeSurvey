@@ -16,7 +16,7 @@
     {{ sRows }}
 
     {# Value for expression manager javascript (use id) ; no need to submit #}
-    {{ C.Html.textField("java"~name,value,({
+    {{ C.Html.hiddenField("java"~name,value,({
         'id' : "java"~name,
         'disabled' : true,
     }))
@@ -35,5 +35,6 @@
         </div>
     </div>
 </div>
+<script>doBootstrapRadioOther();</script>
 
 <!-- end of answer -->

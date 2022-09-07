@@ -17,16 +17,15 @@
 <div id="javatbd{{ myfname }}" class="bootstrap-buttons-div col-12 {{ max_buttons_row }}">
     <div class="form-check col-12 {% if checkedState!='' %} active {% endif %}">
         <input
-            class="btn-checkX visually-hiddenX button-item"
+            class="btn-check visually-hidden button-item"
             type="radio"
             name="{{ name }}"
             id="answer{{ name }}{{ code }}"
             value={{ code }}
             {{ checkedState }}
         >
-        <label class="btn btn-primary w-100 {{ button_size_class }}" for="answer{{ name }}"> {{ processString(answer) }}
+        <label class="btn btn-primary w-100 {{ button_size_class }}" for="answer{{ name }}{{ code }}"> {{ processString(answer) }}
         </label>
     </div>
 </div>
-<script>doBootstrapRadio();</script>
 <!-- end of answer_row -->
