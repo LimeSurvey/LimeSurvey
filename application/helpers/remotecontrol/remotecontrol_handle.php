@@ -5,6 +5,7 @@ use LimeSurvey\Api\Command\V1\SessionKeyCreate;
 use LimeSurvey\Api\Command\V1\SessionKeyRelease;
 use LimeSurvey\Api\Command\V1\SiteSettingsGet;
 use LimeSurvey\Api\Command\V1\SurveyAdd;
+use LimeSurvey\Api\Command\V1\SurveyDelete;
 
 /**
  * This class handles all methods of the RemoteControl 2 API
@@ -137,17 +138,11 @@ class remotecontrol_handle
      */
     public function delete_survey($sSessionKey, $iSurveyID)
     {
-        $iSurveyID = (int) $iSurveyID;
-        if ($this->_checkSessionKey($sSessionKey)) {
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-                Survey::model()->deleteSurvey($iSurveyID, true);
-                return array('status' => 'OK');
-            } else {
-                return array('status' => 'No permission');
-            }
-        } else {
-            return array('status' => self::INVALID_SESSION_KEY);
-        }
+        return (new SurveyDelete)
+            ->run(new CommandRequest(array(
+                'sessionKey' => (string) $sSessionKey,
+                'surveyID' => (int) $iSurveyID
+            )))->getData();
     }
 
     /**
