@@ -4,6 +4,8 @@ namespace LimeSurvey\Api;
 
 class ApiSession
 {
+    const INVALID_SESSION_KEY = 'Invalid session key';
+
     /**
      * Login with username and password
      *

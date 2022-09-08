@@ -3,6 +3,8 @@
 use LimeSurvey\Api\Command\CommandRequest;
 use LimeSurvey\Api\Command\V1\SessionKeyCreate;
 use LimeSurvey\Api\Command\V1\SessionKeyRelease;
+use LimeSurvey\Api\Command\V1\SiteSettingsGet;
+use LimeSurvey\Api\Command\V1\SurveyAdd;
 
 /**
  * This class handles all methods of the RemoteControl 2 API
@@ -86,20 +88,11 @@ class remotecontrol_handle
      */
     public function get_site_settings($sSessionKey, $sSetttingName)
     {
-        if ($this->_checkSessionKey($sSessionKey)) {
-            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $sSetttingName = (string) $sSetttingName;
-                if (Yii::app()->getConfig($sSetttingName) !== false) {
-                    return Yii::app()->getConfig($sSetttingName);
-                } else {
-                    return array('status' => 'Invalid setting');
-                }
-            } else {
-                return array('status' => 'Invalid setting');
-            }
-        } else {
-            return array('status' => self::INVALID_SESSION_KEY);
-        }
+        return (new SiteSettingsGet)
+            ->run(new CommandRequest(array(
+                'sessionKey' => (string) $sSessionKey,
+                'setttingName' => (string) $sSetttingName
+            )))->getData();
     }
 
 
@@ -122,57 +115,14 @@ class remotecontrol_handle
      */
     public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
     {
-        $iSurveyID = (int) $iSurveyID;
-        $sSurveyTitle = (string) $sSurveyTitle;
-        $sSurveyLanguage = (string) $sSurveyLanguage;
-        Yii::app()->loadHelper("surveytranslator");
-        if ($this->_checkSessionKey($sSessionKey)) {
-            if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
-                if ($sSurveyTitle == '' || $sSurveyLanguage == '' || !array_key_exists($sSurveyLanguage, getLanguageDataRestricted()) || !in_array($sformat, array('A', 'G', 'S'))) {
-                    return array('status' => 'Faulty parameters');
-                }
-
-                $aInsertData = array(
-                    'template' => App()->getConfig('defaulttheme'),
-                    'owner_id' => Yii::app()->session['loginID'],
-                    'active' => 'N',
-                    'language' => $sSurveyLanguage,
-                    'format' => $sformat
-                );
-
-                if (!is_null($iSurveyID)) {
-                    $aInsertData['wishSID'] = $iSurveyID;
-                }
-
-                try {
-                    $newSurvey = Survey::model()->insertNewSurvey($aInsertData);
-                    if (!$newSurvey->sid) {
-                        return array('status' => 'Creation Failed'); // status are a string, another way to send errors ?
-                    }
-                    $iNewSurveyid = $newSurvey->sid;
-
-                    $sTitle = html_entity_decode($sSurveyTitle, ENT_QUOTES, "UTF-8");
-
-                    $aInsertData = array(
-                        'surveyls_survey_id' => $iNewSurveyid,
-                        'surveyls_title' => $sTitle,
-                        'surveyls_language' => $sSurveyLanguage,
-                    );
-
-                    $langsettings = new SurveyLanguageSetting();
-                    $langsettings->insertNewSurvey($aInsertData);
-                    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
-
-                    return (int) $iNewSurveyid;
-                } catch (Exception $e) {
-                    return array('status' => $e->getmessage());
-                }
-            } else {
-                return array('status' => 'No permission');
-            }
-        } else {
-            return array('status' => self::INVALID_SESSION_KEY);
-        }
+        return (new SurveyAdd)
+            ->run(new CommandRequest(array(
+                'sessionKey' => (string) $sSessionKey,
+                'surveyID' => (int) $iSurveyID,
+                'surveyTitle' => (string) $sSurveyTitle,
+                'surveyLanguage' => (string) $sSurveyLanguage,
+                'format' => (string) $sformat
+            )))->getData();
     }
 
     /**
