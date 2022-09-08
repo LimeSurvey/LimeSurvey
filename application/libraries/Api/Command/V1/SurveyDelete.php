@@ -32,9 +32,13 @@ class SurveyDelete implements CommandInterface
                 )
             ) {
                 \Survey::model()->deleteSurvey($iSurveyID, true);
-                return new CommandResponse(array('status' => 'OK'));
+                return new CommandResponse(
+                    array('status' => 'OK')
+                );
             } else {
-                return new CommandResponse(array('status' => 'No permission'));
+                return new CommandResponse(
+                    array('status' => 'No permission')
+                );
             }
         } else {
             return new CommandResponse(

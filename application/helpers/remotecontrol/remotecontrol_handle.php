@@ -7,6 +7,8 @@ use LimeSurvey\Api\Command\V1\SiteSettingsGet;
 use LimeSurvey\Api\Command\V1\SurveyAdd;
 use LimeSurvey\Api\Command\V1\SurveyDelete;
 use LimeSurvey\Api\Command\V1\SurveyPropertiesGet;
+use LimeSurvey\Api\Command\V1\SurveyGroupAdd;
+use LimeSurvey\Api\Command\V1\SurveyGroupDelete;
 
 /**
  * This class handles all methods of the RemoteControl 2 API
@@ -907,42 +909,13 @@ class remotecontrol_handle
      */
     public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription = '')
     {
-        if ($this->_checkSessionKey($sSessionKey)) {
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
-                $iSurveyID = (int) $iSurveyID;
-                $oSurvey = Survey::model()->findByPk($iSurveyID);
-                if (!isset($oSurvey)) {
-                    return array('status' => 'Error: Invalid survey ID');
-                }
-
-                if ($oSurvey->isActive) {
-                    return array('status' => 'Error:Survey is active and not editable');
-                }
-
-                $oGroup = new QuestionGroup();
-                $oGroup->sid = $iSurveyID;
-                $oGroup->group_order = getMaxGroupOrder($iSurveyID);
-                if (!$oGroup->save()) {
-                    return array('status' => 'Creation Failed');
-                }
-
-                $oQuestionGroupL10n = new QuestionGroupL10n();
-                $oQuestionGroupL10n->group_name = $sGroupTitle;
-                $oQuestionGroupL10n->description = $sGroupDescription;
-                $oQuestionGroupL10n->language = Survey::model()->findByPk($iSurveyID)->language;
-                $oQuestionGroupL10n->gid = $oGroup->gid;
-
-                if ($oQuestionGroupL10n->save()) {
-                    return (int) $oGroup->gid;
-                } else {
-                    return array('status' => 'Creation Failed');
-                }
-            } else {
-                return array('status' => 'No permission');
-            }
-        } else {
-            return array('status' => self::INVALID_SESSION_KEY);
-        }
+        return (new SurveyGroupAdd)
+            ->run(new CommandRequest(array(
+                'sessionKey' => (string) $sSessionKey,
+                'surveyID' => (int) $iSurveyID,
+                'groupTitle' => (string) $sGroupTitle,
+                'groupDescription' => (string) $sGroupDescription
+            )))->getData();
     }
 
     /**
@@ -958,43 +931,12 @@ class remotecontrol_handle
      */
     public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
     {
-        if ($this->_checkSessionKey($sSessionKey)) {
-            $iSurveyID = (int) $iSurveyID;
-            $iGroupID = (int) $iGroupID;
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
-            }
-
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete')) {
-                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
-                if (!isset($oGroup)) {
-                    return array('status' => 'Error: Invalid group ID');
-                }
-
-                if ($oSurvey->isActive) {
-                    return array('status' => 'Error:Survey is active and not editable');
-                }
-
-                $depented_on = getGroupDepsForConditions($oGroup->sid, "all", $iGroupID, "by-targgid");
-                if (isset($depented_on)) {
-                    return array('status' => 'Group with depencdencies - deletion not allowed');
-                }
-
-                $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID, $iSurveyID);
-
-                if ($iGroupsDeleted === 1) {
-                    QuestionGroup::model()->updateGroupOrder($iSurveyID);
-                    return (int) $iGroupID;
-                } else {
-                    return array('status' => 'Group deletion failed');
-                }
-            } else {
-                return array('status' => 'No permission');
-            }
-        } else {
-            return array('status' => self::INVALID_SESSION_KEY);
-        }
+        return (new SurveyGroupDelete)
+            ->run(new CommandRequest(array(
+                'sessionKey' => (string) $sSessionKey,
+                'surveyID' => (int) $iSurveyID,
+                'groupID' => (int) $iGroupID
+            )))->getData();
     }
 
     /**
