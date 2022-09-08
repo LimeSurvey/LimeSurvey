@@ -163,7 +163,7 @@ class SettingsWidget extends CWidget
      * @param string $wrapper
      * @return string|void
      */
-    protected function renderSetting($name, $metaData, $form = null, $return = false, $wrapper = 'div')
+    public function renderSetting($name, $metaData, $form = null, $return = false, $wrapper = 'div')
     {
         // TODO: Weird hack that fixes some rendering issues after moving to Bootstrap2
         echo "&nbsp;";

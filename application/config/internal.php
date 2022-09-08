@@ -440,6 +440,9 @@ $internalConfig = array(
         'versionFetcherServiceLocator' => array(
             'class' => '\LimeSurvey\ExtensionInstaller\VersionFetcherServiceLocator',
         ),
+        'formExtensionService' => [
+            'class' => '\LimeSurvey\Libraries\FormExtension\FormExtensionService',
+        ]
     )
 );
 
