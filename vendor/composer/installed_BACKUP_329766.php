@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'e670066f76922d7e92177bc0cc2d97ccf6507e29',
+    'reference' => '70bf5a13f594b4fdd826af472229ce5748011aab',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'e670066f76922d7e92177bc0cc2d97ccf6507e29',
+      'reference' => '70bf5a13f594b4fdd826af472229ce5748011aab',
     ),
     'mk-j/php_xlsxwriter' => 
     array (

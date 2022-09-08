@@ -43,6 +43,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'LimeSurvey\\PluginManager\\' => 25,
             'LimeSurvey\\Models\\Services\\' => 27,
             'LimeSurvey\\Menu\\' => 16,
+            'LimeSurvey\\Libraries\\' => 21,
             'LimeSurvey\\Helpers\\Update\\' => 26,
             'LimeSurvey\\Helpers\\' => 19,
             'LimeSurvey\\ExtensionInstaller\\' => 30,
@@ -104,6 +105,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'LimeSurvey\\Menu\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/MenuObjects',
+        ),
+        'LimeSurvey\\Libraries\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/libraries',
         ),
         'LimeSurvey\\Helpers\\Update\\' => 
         array (

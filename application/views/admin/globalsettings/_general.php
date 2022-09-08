@@ -4,6 +4,9 @@
  *
  */
 
+use LimeSurvey\Libraries\FormExtension\FormExtensionWidget;
+use LimeSurvey\Libraries\FormExtension\Inputs\GlobalSettingsRenderer;
+
 ?>
 <?php
 $thisdefaulttheme                = getGlobalSetting('defaulttheme');
@@ -350,6 +353,14 @@ Full lock - none of participants are allowed to take survey, even if they alread
             </div>
         <?php endif; ?>
     </div>
+
+    <div class="ls-flex-column ls-space padding left-5 right-5 col-md-7">
+        <?= FormExtensionWidget::render(
+            App()->formExtensionService->getAll('globalsettings.general'),
+            new GlobalSettingsRenderer()
+        ); ?>
+    </div>
+    
 </div>
 </div>
 

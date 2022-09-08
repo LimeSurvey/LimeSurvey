@@ -20,8 +20,6 @@ use Composer\Semver\VersionParser;
 
 
 
-
-
 class InstalledVersions
 {
 private static $installed = array (
@@ -32,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '70bf5a13f594b4fdd826af472229ce5748011aab',
+    'reference' => 'e670066f76922d7e92177bc0cc2d97ccf6507e29',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -62,7 +60,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '70bf5a13f594b4fdd826af472229ce5748011aab',
+      'reference' => 'e670066f76922d7e92177bc0cc2d97ccf6507e29',
     ),
     'mk-j/php_xlsxwriter' => 
     array (
@@ -277,6 +275,7 @@ foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
 
+
 if (1 === \count($packages)) {
 return $packages[0];
 }
@@ -468,7 +467,6 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
-
 
 
 
