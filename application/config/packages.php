@@ -30,7 +30,7 @@ return array(
             'em_javascript.js',
         ),
         'depends' => array(
-            'jquery',
+            'jquery-migrate',
             'moment', // Used by LEMval function
             'decimalcustom', // Use by fixnum_checkconditions
         )

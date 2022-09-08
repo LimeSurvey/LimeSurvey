@@ -32,9 +32,6 @@ return array(
         'js' => array(
             'jquery' . $minVersion . '.js'
         ),
-        'depends' => array(
-            'jquery-migrate'
-        )
     ),
 
     // Bootstrap
@@ -206,7 +203,6 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'jquery-migrate'
         )
     ),
 
