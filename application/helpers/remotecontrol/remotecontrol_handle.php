@@ -6,6 +6,7 @@ use LimeSurvey\Api\Command\V1\SessionKeyRelease;
 use LimeSurvey\Api\Command\V1\SiteSettingsGet;
 use LimeSurvey\Api\Command\V1\SurveyAdd;
 use LimeSurvey\Api\Command\V1\SurveyDelete;
+use LimeSurvey\Api\Command\V1\SurveyPropertiesGet;
 
 /**
  * This class handles all methods of the RemoteControl 2 API
@@ -261,34 +262,12 @@ class remotecontrol_handle
      */
     public function get_survey_properties($sSessionKey, $iSurveyID, $aSurveySettings = null)
     {
-        Yii::app()->loadHelper("surveytranslator");
-        if ($this->_checkSessionKey($sSessionKey)) {
-            $iSurveyID = (int) $iSurveyID;
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
-            }
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
-                $aBasicDestinationFields = Survey::model()->tableSchema->columnNames;
-                if (!empty($aSurveySettings)) {
-                    $aSurveySettings = array_intersect($aSurveySettings, $aBasicDestinationFields);
-                } else {
-                    $aSurveySettings = $aBasicDestinationFields;
-                }
-                if (empty($aSurveySettings)) {
-                    return array('status' => 'No valid Data');
-                }
-                $aResult = array();
-                foreach ($aSurveySettings as $sPropertyName) {
-                    $aResult[$sPropertyName] = $oSurvey->$sPropertyName;
-                }
-                return $aResult;
-            } else {
-                return array('status' => 'No permission');
-            }
-        } else {
-            return array('status' => self::INVALID_SESSION_KEY);
-        }
+        return (new SurveyPropertiesGet)
+            ->run(new CommandRequest(array(
+                'sessionKey' => (string) $sSessionKey,
+                'surveyID' => (int) $iSurveyID,
+                'surveySettings' => (array) $aSurveySettings
+            )))->getData();
     }
 
     /**
