@@ -9,6 +9,7 @@ use LimeSurvey\Api\Command\V1\SurveyDelete;
 use LimeSurvey\Api\Command\V1\SurveyPropertiesGet;
 use LimeSurvey\Api\Command\V1\SurveyGroupAdd;
 use LimeSurvey\Api\Command\V1\SurveyGroupDelete;
+use LimeSurvey\Api\Command\V1\SurveyGroupPropertiesGet;
 
 /**
  * This class handles all methods of the RemoteControl 2 API
@@ -1067,53 +1068,13 @@ class remotecontrol_handle
      */
     public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings = null, $sLanguage = null)
     {
-        if ($this->_checkSessionKey($sSessionKey)) {
-            $iGroupID = (int) $iGroupID;
-            $oGroup = QuestionGroup::model()->with('questiongroupl10ns')->findByAttributes(array('gid' => $iGroupID));
-            if (!isset($oGroup)) {
-                return array('status' => 'Error: Invalid group ID');
-            }
-
-            if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'read')) {
-                $iSurveyID = $oGroup->sid;
-                if (is_null($sLanguage)) {
-                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
-                }
-
-                if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return array('status' => 'Error: Invalid language');
-                }
-
-                $aBasicDestinationFields = QuestionGroup::model()->tableSchema->columnNames;
-                array_push($aBasicDestinationFields, 'group_name');
-                array_push($aBasicDestinationFields, 'description');
-                if (!empty($aGroupSettings)) {
-                    $aGroupSettings = array_intersect($aGroupSettings, $aBasicDestinationFields);
-                } else {
-                    $aGroupSettings = $aBasicDestinationFields;
-                }
-
-                if (empty($aGroupSettings)) {
-                    return array('status' => 'No valid Data');
-                }
-
-                foreach ($aGroupSettings as $sGroupSetting) {
-                    if (isset($oGroup->$sGroupSetting)) {
-                        $aResult[$sGroupSetting] = $oGroup->$sGroupSetting;
-                    } elseif (
-                        isset($oGroup->questiongroupl10ns[$sLanguage])
-                        && isset($oGroup->questiongroupl10ns[$sLanguage]->$sGroupSetting)
-                    ) {
-                        $aResult[$sGroupSetting] = $oGroup->questiongroupl10ns[$sLanguage]->$sGroupSetting;
-                    }
-                }
-                return $aResult;
-            } else {
-                return array('status' => 'No permission');
-            }
-        } else {
-            return array('status' => self::INVALID_SESSION_KEY);
-        }
+        return (new SurveyGroupPropertiesGet)
+            ->run(new CommandRequest(array(
+                'sessionKey' => (string) $sSessionKey,
+                'groupID' => (int) $iGroupID,
+                'groupSettings' => $aGroupSettings,
+                'language' => $sLanguage
+            )))->getData();
     }
 
 
