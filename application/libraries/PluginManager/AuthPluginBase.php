@@ -4,6 +4,7 @@ namespace LimeSurvey\PluginManager;
 
 use User;
 use LSAuthResult;
+use LimeSurvey\PluginManager\PluginEvent;
 
 abstract class AuthPluginBase extends PluginBase
 {
@@ -88,7 +89,7 @@ abstract class AuthPluginBase extends PluginBase
      * @param \LimeSurvey\PluginManager\PluginEvent, current event if not set
      * @return AuthPluginBase
      */
-    public function setAuthSuccess(User $user, \LimeSurvey\PluginManager\PluginEvent $event = null)
+    public function setAuthSuccess(User $user, PluginEvent $event = null)
     {
         if (empty($event)) {
             $event = $this->getEvent();
@@ -109,7 +110,7 @@ abstract class AuthPluginBase extends PluginBase
      * @param \LimeSurvey\PluginManager\PluginEvent, current event if not set
      * @return AuthPluginBase
      */
-    public function setAuthFailure($code = self::ERROR_UNKNOWN_IDENTITY, $message = '', \LimeSurvey\PluginManager\PluginEvent $event = null)
+    public function setAuthFailure($code = self::ERROR_UNKNOWN_IDENTITY, $message = '', PluginEvent $event = null)
     {
         if (empty($event)) {
             $event = $this->getEvent();
@@ -126,7 +127,7 @@ abstract class AuthPluginBase extends PluginBase
      * @param \LimeSurvey\PluginManager\PluginEvent, current event if not set
      * @return AuthPluginBase
      */
-    public function setAuthPlugin(\LimeSurvey\PluginManager\PluginEvent $event = null)
+    public function setAuthPlugin(PluginEvent $event = null)
     {
         if (empty($event)) {
             $event = $this->getEvent();
