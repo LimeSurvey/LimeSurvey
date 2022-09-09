@@ -1341,13 +1341,12 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
 }
 
 /**
- * Resets all session variables for this survey
+ * Resets all needed session variables for this survey, keep s_lang
  * @param int $surveyid
  * @return void
  */
 function resetAllSessionVariables($surveyid)
 {
-    Yii:app()->session->regenerateID(true);
     unset($_SESSION['survey_' . $surveyid]['grouplist']);
     unset($_SESSION['survey_' . $surveyid]['fieldarray']);
     unset($_SESSION['survey_' . $surveyid]['insertarray']);
