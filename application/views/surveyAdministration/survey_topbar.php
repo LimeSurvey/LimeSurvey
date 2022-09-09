@@ -245,7 +245,7 @@ if ($hasSurveyReadPermission) {
 if (!$isActive && $hasSurveyContentPermission) {
     // Divider
     $buttons['divider'] = [
-        'role' => 'seperator',
+        'role' => 'separator',
         'class' => 'divider',
         'id' => 'divider---1'
     ];
@@ -284,7 +284,7 @@ if (!empty($extraToolsMenuItems)) {
         if ($menuItem->isDivider()) {
             // Divider
             $buttons['divider' . $i] = [
-                'role' => 'seperator',
+                'role' => 'separator',
                 'class' => 'divider',
                 'id' => 'divider---1' . $i
             ];
@@ -423,7 +423,7 @@ if (!empty($beforeSurveyBarRender)) {
                 if ($item->isDivider()) {
                     // Divider
                     $item = [
-                        'role' => 'seperator',
+                        'role' => 'separator',
                         'class' => 'divider',
                         'id' => 'divider---1' . $i
                     ];

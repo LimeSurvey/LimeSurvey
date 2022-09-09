@@ -2920,36 +2920,36 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to update response
      * @param array $aResponseData The actual response
-     * @return string|boolean TRUE(bool) on success. errormessage on error
+     * @return array|boolean TRUE(bool) on success. Array with error status on failure.
      */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return self::INVALID_SESSION_KEY;
+            return array('status' => self::INVALID_SESSION_KEY);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) {
-            return 'Error: Invalid survey ID';
+            return array('status' => 'Invalid survey ID');
         }
         if (!$oSurvey->isActive) {
-            return 'Error: Survey is not active.';
+            return array('status' => 'Survey is not active');
         }
 
         if (!$oSurvey->isAllowEditAfterCompletion) {
-            return 'Error: Survey does not allow edit after completion.';
+            return array('status' => 'Survey does not allow edit after completion');
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'update')) {
             if (!Yii::app()->db->schema->getTable($oSurvey->responsesTableName)) {
-                            return 'Error: No survey response table';
+                return array('status' => 'No survey response table');
             }
 
             if (
                 !isset($aResponseData['id'])
                 && !isset($aResponseData['token'])
             ) {
-                return 'Error: Missing response identifier (id|token).';
+                return array('status' => 'Missing response identifier (id|token)');
             }
 
             SurveyDynamic::sid($iSurveyID);
@@ -2962,16 +2962,16 @@ class remotecontrol_handle
             }
 
             if (empty($aResponses)) {
-                            return 'Error: No matching Response.';
+                return array('status' => 'No matching Response');
             }
             if (count($aResponses) > 1) {
-                            return 'Error: More then one matching response, updateing multiple responses at once is not supported.';
+                return array('status' => 'More then one matching response, updateing multiple responses at once is not supported');
             }
 
             $aBasicDestinationFields = $oSurveyDynamic->tableSchema->columnNames;
             $aInvalidFields = array_diff_key($aResponseData, array_flip($aBasicDestinationFields));
             if (count($aInvalidFields) > 0) {
-                            return 'Error: Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields));
+                return array('status' => 'Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields)));
             }
 
             unset($aResponseData['token']);
@@ -2985,10 +2985,10 @@ class remotecontrol_handle
             if ($bResult) {
                 return $bResult;
             } else {
-                return 'Unable to edit response';
+                return array('status' => 'Unable to edit response');
             }
         } else {
-            return 'No permission';
+            return array('status' => 'No permission');
         }
     }
 

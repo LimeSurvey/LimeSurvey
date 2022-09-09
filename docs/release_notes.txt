@@ -34,6 +34,68 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.3.31 (build 220815) to 5.3.32 (build 220817) August 17, 2022
+-Fixed issue: Cannot load previously saved response to resume, instead the message "There is no matching saved response" is shown after entering identifier and password (Carsten Schmitz)
+-Fixed issue #18314: Save-button under Survey settings does not work (Olle Haerstedt)
+-Fixed issue #16795: Typo in default text for confirmation email (in English) (#2573) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.3.30 (build 220808) to 5.3.31 (build 220815) August 15, 2022
+-Fixed issue #15195: Expiration date can be set before start date (#2558) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Portuguese (Portugal) by jbfloripa, marciojv, samarta
+#Updated translation: Portuguese (Brazil) by femariso, josesiqueira, marcelovincenzi, reimorster
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+
+
+Changes from 5.3.29 (build 220801) to 5.3.30 (build 220808) August 8, 2022
+-Fixed issue: Missing 'Soft' mandatory in question summary (Olle Haerstedt)
+-Fixed issue: Include bootstrap-rtl for admin themes (Olle Haerstedt)
+-Fixed issue #18299: Simple statistics, "Text Display" questions are shown (#2557) (Gabriel Jenik)
+-Fixed issue #18298: Saving in question organizer always prompts (#2559) (Gabriel Jenik)
+-Fixed issue #18297: Survey permissions menu does not work (Denis Chenu)
+-Fixed issue #18288: Can't assign groups to surveys (#2549) (Denis Chenu)
+-Fixed issue #18280: Conditions Designer Crash with Database Error (#2548) (Denis Chenu)
+-Fixed issue #18271: Blank page after clicking "Close" (#2547) (Gabriel Jenik)
+-Fixed issue #18270: Language switch is not repopulated correctly after change question type (#2546) (Gabriel Jenik)
+-Fixed issue #18261: Simple statistics, 'Array (5 point choice)' dont show subquestions (#2554) (Gabriel Jenik)
+-Fixed issue #18259: Add surveyId to select box (#2519) (Marko Bischof)
+-Fixed issue #18249: INSERTANS correction broken when import (#2524) (Gabriel Jenik)
+-Fixed issue #18199: Top menu language changer didn't appear for register (#2523) (Gabriel Jenik)
+-Fixed issue #18194: Link after import survey goes to subquestion edit (#2522) (Gabriel Jenik)
+-Fixed issue #18162: Design options: missing translation / icon (#2552) (Gabriel Jenik)
+-Fixed issue #17872: Answerfilters reset after pagination changed (#2437) (Gabriel Jenik)
+-Fixed issue #17745: Incomplete instructions to export response data to SPSS using Python (#2555) (Gabriel Jenik)
+-Fixed issue #17488: Cannot view survey after updating to version 3.27.9 with custom twig extension (breaks survey) (#2518) (Gabriel Jenik)
+-Fixed issue #17135: Activating public statistics option causes json to display (#2545) (Gabriel Jenik)
+-Fixed issue #17067: Subquestion Relevance in array by column does not work (#2553) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Thai by tomzt
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Russian by kvolk2lim, vipgroup, watslaw
+#Updated translation: Romanian by cdorin
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Lithuanian by simasj
+#Updated translation: Japanese by d_inoue, yuasaron
+#Updated translation: Hungarian by kkd
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 5.3.28 (build 220727) to 5.3.29 (build 220801) August 1, 2022
 -Fixed issue #18284: Function editlocalsettings seems gone in master branch (#2550) (Gabriel Jenik)
 -Fixed issue #18196: Property "Question.same_script" is not defined. (#2469) (Denis Chenu)
@@ -1208,7 +1270,7 @@ Changes from 5.0.10 (build 210723) to 5.0.11 (build 210727) July 27, 2021
 -Fixed issue #17436: When editing 'General Settings' site name and pressing 'enter', a layover appears and screen freezes (#1978) (Gabriel Jenik)
 -Fixed issue #17427: Bug in 'Answer options' - 'Quick add' (encuestabizdevgit)
 -Fixed issue #17425: Misuse of progress bar (#1958) (Denis Chenu)
--Fixed issue #17363: Survey data policy error message not displayed (#1938) (Denis Chenu)
+-Fixed issue #17363: Privacy policy error message not displayed (#1938) (Denis Chenu)
 -Fixed issue #17269: Canceling activation of survey gives error (#1974) (Gabriel Jenik)
 
 
@@ -2678,7 +2740,7 @@ Changes from 4.1.11 (build 200316) to 4.1.12 (build 200324) March 24, 2020
 -Fixed issue #15943: Save and save and close buttons in quick-add conditions not working (Jessica Höck)
 -Fixed issue #15912: Error updating database on upgrade from 3.x (Carsten Schmitz)
 -Fixed issue #15838: Check database integrity error (Carsten Schmitz)
--Fixed issue #14004: language changer not automatically changing language on selection and will also work without checking the data policy checkbox (Patrick Teichmann)
+-Fixed issue #14004: language changer not automatically changing language on selection and will also work without checking the privacy policy checkbox (Patrick Teichmann)
 #Updated translation: Swedish by Norfa97
 #Updated translation: German by c_schmitz
 #Updated translation: French (France) by b00z00, GuillaumeZ6, DenisChenu, eddylackmann
@@ -4424,7 +4486,7 @@ Changes from 3.13.2 (build 180709) to 3.14.0 (build 180730) July 30, 2018
 
 Changes from 3.13.1 (build 180629) to 3.13.2 (build 180709) July 09, 2018
 -Fixed issue #13345: showpopups in config.php seems to have no effect anymore (Dominik Vitt)
--Fixed issue #13802: Unable to see Survey policy without javascript activated (Markus Flür)
+-Fixed issue #13802: Unable to see privacy policy without javascript activated (Markus Flür)
 -Fixed issue #13804: Error about Data security policy shown when change language + clear all (Markus Flür)
 -Fixed issue #13805: Multi-line Text Messages Do Not Exist in Translation. (imacat)
 -Fixed issue #13821: When importing a survey I receive a "Failed to Insert [3]" error message (#1090) (githubLewis)
@@ -6082,7 +6144,7 @@ Changes from 2.05+ (build 131209) to 2.05+ (build 150520) May 20, 2015
 
 Changes from 2.00+ (build 131206) to 2.05 (build 131209) Dec 06, 2013
 -New feature #5740: Improve VV response import (Denis Chenu)
--New feature #6477: optionnal comment place with  "multi choice with comment" (Denis Chenu)
+-New feature #6477: optional comment place with  "multi choice with comment" (Denis Chenu)
 -New feature #6880: Allow adaptation of 5 point slider (Denis Chenu)
 -New feature #7002: allow return to email template in email template edition (Denis Chenu)
 -New feature #7371: Allow to reset slider answer (Denis Chenu)
@@ -7872,7 +7934,7 @@ Fixed #1868: Double Tooltips at "Execute this Survey"-Button (lemeur)
 Fixed #1815: Unknown Menubar-Object "LimeReplacementFields"/"LimeFitWin" + some information about updates in config files and release-notes (lemeur)
 Fixed #1873: Changing answers codes doesn't update conditions (lemeur)
 Fixed #1797: Entered answers lost when Save All not clicked (lemeur)
-Fixed #1828: User unable to change password. A user is now able to modify his own information (name and password whatever his permissions). He is also able to delete himself if he's got the DELETE_USER permission (lemeur)
+Fixed #1828: User unable to change password. A user is now able to modify their own information (name and password whatever their permissions). They are also able to delete themselves if they've got the DELETE_USER permission (lemeur)
 Fixed #1831: Super User cannot change quotas for other users' surveys (lemeur)
 Fixed #1840: Translation error and accent issue in calendar in French (lemeur)
 Fixed #1830: User can Activate survey from the list survey section even though there are no questions (lemeur)

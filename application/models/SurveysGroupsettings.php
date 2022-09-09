@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{surveys_groupsettings}}".
  *
- * The followings are the available columns in table '{{surveys_groupsettings}}':
+ * The following are the available columns in table '{{surveys_groupsettings}}':
  * @property integer $gsid
  * @property integer $owner_id
  * @property string $admin

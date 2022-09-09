@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'a71b463ecacc8912444df68b68cea66ec8927415',
+    'reference' => 'e56d10e741ca07dc8671c1b798b9f96e1b395c99',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -18,16 +18,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'a71b463ecacc8912444df68b68cea66ec8927415',
+      'reference' => 'e56d10e741ca07dc8671c1b798b9f96e1b395c99',
     ),
     'paragonie/constant_time_encoding' => 
     array (
-      'pretty_version' => 'v2.5.0',
-      'version' => '2.5.0.0',
+      'pretty_version' => 'v2.6.3',
+      'version' => '2.6.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9229e15f2e6ba772f0c55dd6986c563b937170a8',
+      'reference' => '58c3f47f650c94ec05a151692652a868995d2938',
     ),
     'paragonie/random_compat' => 
     array (
@@ -110,6 +110,15 @@
         0 => '9999999-dev',
       ),
       'reference' => '3cb9b60a0d579855c17d7830d5015b74705c9fdd',
+    ),
+    'yiisoft/yii' => 
+    array (
+      'pretty_version' => '1.1.25',
+      'version' => '1.1.25.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '43e38602b579a45d63c80140b46331987d443fe9',
     ),
   ),
 );

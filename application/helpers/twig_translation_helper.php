@@ -42,6 +42,13 @@ function dummy_twig_translation_helper()
     gT("Load label set"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
     gT("Save label set"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
     gT("Quick add"); // From /var/www/html/limesurvey/application/views/questionAdministration/subquestions.twig
+    gT("Show link/button to delete response & exit survey"); // From themes/survey/fruity/options/options.twig
+    gT("Question help text position"); // From themes/survey/fruity/options/options.twig
+    gT("Top"); // From themes/survey/fruity/options/options.twig
+    gT("Bottom"); // From themes/survey/fruity/options/options.twig
+    gT("Wrap tables"); // From themes/survey/fruity/options/options.twig
+    gT("Always on"); // From themes/survey/fruity/options/options.twig
+    gT("Small screens"); // From themes/survey/fruity/options/options.twig
     gT("After specific subquestion"); // From application/views/survey/questions/answer/multiplechoice/config.xml
     gT("Relevance help for printable survey"); // From application/views/survey/questions/answer/5pointchoice/config.xml
     gT("Specify how array-filtered sub-questions should be displayed"); // From application/views/survey/questions/answer/arrays/10point/config.xml

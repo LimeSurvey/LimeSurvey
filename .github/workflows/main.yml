@@ -94,12 +94,12 @@ jobs:
           php application/commands/console.php install admin password TravisLS no@email.com verbose
           cp application/config/config-sample-mysql.php application/config/config.php
 
-        # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
-        # TODO: Disable, a lines was added to config file and some tests started to fail.
-        # NB: EmCache is always disabled when debug => 2
-        # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
-        # sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
-        # cat application/config/config.php
+          # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
+          # TODO: Disable, a lines was added to config file and some tests started to fail.
+          # NB: EmCache is always disabled when debug => 2
+          # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
+          # sed -i '84s/.*/        "debug"=>2,/' application/config/config.php
+          # cat application/config/config.php
 
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test

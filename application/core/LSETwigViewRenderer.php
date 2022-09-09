@@ -673,7 +673,7 @@ window.addEventListener('message', function(event) {
                 $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
             }
         }
-        // We retreive the definition of the core class and attributes
+        // We retrieve the definition of the core class and attributes
         // (in the future, should be template dependant done via XML file)
         $aData["aSurveyInfo"] = array_merge($aData["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 

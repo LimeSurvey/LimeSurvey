@@ -244,9 +244,12 @@ class Translate extends SurveyCommonAction
                 $gid = ($amTypeOptions["gid"] == true) ? $gid = $aRowfrom['gid'] : null;
                 $qid = ($amTypeOptions["qid"] == true) ? $qid = $aRowfrom['qid'] : null;
 
-                $textform_length = strlen(trim($textfrom));
+                $textfrom_length = strlen(trim($textfrom));
+                $textfrom2_length = $associated ? strlen(trim($textfrom2)) : 0;
 
-                $all_fields_empty = !($textform_length > 0);
+                if ($textfrom_length > 0 || $textfrom2_length > 0) {
+                    $all_fields_empty = false;
+                }
 
                 $aData = array_merge($aData, array(
                                 'textfrom' => $this->cleanup($textfrom, array()),
@@ -1081,7 +1084,7 @@ class Translate extends SurveyCommonAction
 
     public function ajaxtranslategoogleapi()
     {
-        // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin rigth can post
+        // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin right can post
         /* No Permission check on survey, seems unneded (return a josn with current string posted */
         if (Yii::app()->request->isPostRequest) {
             echo self::translateGoogleApi();
