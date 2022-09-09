@@ -1341,7 +1341,9 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
 }
 
 /**
- * Resets all needed session variables for this survey, keep s_lang
+ * Resets all needed session variables for this survey,
+ * keep related current survey : s_lang, srid, token …
+ * @see killSurveySession to reset ALL session
  * @param int $surveyid
  * @return void
  */
