@@ -1059,3 +1059,18 @@ label {
     background-color: #007095;
     border-color: #00698c;
 }
+
+/*Adjustments for btn-outline-secondary*/
+.cerulean .btn-outline-secondary, .flatly .btn-outline-secondary, .journal .btn-outline-secondary,
+.lumen .btn-outline-secondary, .simplex .btn-outline-secondary, .united .btn-outline-secondary {
+    color: #495057;
+}
+
+.spacelab .btn-outline-secondary {
+    color: #777;
+}
+
+.yeti .btn-outline-secondary {
+    color: #222;
+    font-weight: 400;
+}
