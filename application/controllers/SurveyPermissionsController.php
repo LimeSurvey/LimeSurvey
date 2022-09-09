@@ -17,12 +17,12 @@ class SurveyPermissionsController extends LSBaseController
             [
                 'allow',
                 'actions' => [],
-                'users'   => ['*'], //everybody
+                'users' => ['*'], //everybody
             ],
             [
                 'allow',
                 'actions' => ['index'],
-                'users'   => ['@'], //only login users
+                'users' => ['@'], //only login users
             ],
             ['deny'], //always deny all actions not mentioned above
         ];
@@ -87,14 +87,28 @@ class SurveyPermissionsController extends LSBaseController
      */
     public function actionAddUser($surveyid)
     {
+        $surveyid = sanitize_int($surveyid);
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
             Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         // 2.  add the user in permission table
         $userId = (int)Yii::app()->request->getPost('uid');
-
-        // 3.  redirect to index if failed, or redirect to 'add permission page'; giving flash message in both cases
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $surveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions($oSurvey);
+        $userAdded = $surveyPermissions->addUserToSurveyPermission($userId);
+        if ($userAdded) {
+            Yii::app()->user->setFlash('success', gT("User added."));
+            $this->redirect(array(
+                    'surveyPermissions/settingsPermissions',
+                    'surveyid' => $surveyid,
+                    'action' => 'user',
+                    'id' => $userId
+                ));
+        } else {
+            Yii::app()->user->setFlash('error', gT("User could not be added to survey permissions."));
+            $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
+        }
     }
 
     /**
@@ -152,7 +166,7 @@ class SurveyPermissionsController extends LSBaseController
             $aPermissions = $PermissionManagerService->getPermissionData();
         } else {
             $oUser = User::model()->findByPk($id);
-            if (!isset($oUserGroup)) {
+            if (!isset($oUser)) {
                 Yii::app()->user->setFlash('error', gT("Unknown user."));
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
@@ -200,8 +214,9 @@ class SurveyPermissionsController extends LSBaseController
     }
 
 
-    public function actionDeleteUserPermissions(){
-        $surveyid = (int) Yii::app()->request->getPost('surveyid');
+    public function actionDeleteUserPermissions()
+    {
+        $surveyid = (int)Yii::app()->request->getPost('surveyid');
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'delete')) {
             Yii::app()->user->setFlash('error', gT("No permission to delete survey permissions from user."));
             $this->redirect(Yii::app()->request->urlReferrer);
