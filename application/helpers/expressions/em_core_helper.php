@@ -39,20 +39,23 @@ class ExpressionManager
         'valueNAOK',
         'value',
     );
-    // These are the allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
+    /* var string[] allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
+     * @see LimeExpressionManager->knownVars definition
+     */
     private $aRDP_regexpStaticAttribute = array(
         'qid',
-        'grelevance',
-        'gseq',
-        'jsName',
-        'mandatory',
-        'qid',
-        'qseq',
+        'gid',
         'question',
-        'relevance',
-        'rowdivid',
         'sgqa',
         'type',
+        'relevance',
+        'grelevance',
+        'qseq',
+        'gseq',
+        'jsName',
+        'jsName_on',
+        'mandatory',
+        'rowdivid',
     );
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
