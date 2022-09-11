@@ -12,8 +12,9 @@ use LimeSurvey\Api\Command\V1\SurveyGroupDelete;
 use LimeSurvey\Api\Command\V1\SurveyGroupPropertiesGet;
 use LimeSurvey\Api\Command\V1\SurveyGroupPropertiesSet;
 use LimeSurvey\Api\Command\V1\SurveyQuestionImport;
-use LimeSurvey\Api\Command\V1\SurveyQuestionPropertiesGet;
 use LimeSurvey\Api\Command\V1\SurveyQuestionDelete;
+use LimeSurvey\Api\Command\V1\SurveyQuestionPropertiesGet;
+use LimeSurvey\Api\Command\V1\SurveyQuestionPropertiesSet;
 
 /**
  * This class handles all methods of the RemoteControl 2 API
@@ -1312,6 +1313,15 @@ class remotecontrol_handle
      */
     public function set_question_properties($sSessionKey, $iQuestionID, $aQuestionData, $sLanguage = null)
     {
+        return (new SurveyQuestionPropertiesSet)
+            ->run(new CommandRequest(array(
+                'sessionKey' => (string) $sSessionKey,
+                'questionID' => (int) $iQuestionID,
+                'questionData' => $aQuestionData,
+                'language' => $sLanguage
+            )))->getData();
+
+        /*
         if ($this->_checkSessionKey($sSessionKey)) {
             Yii::app()->loadHelper("surveytranslator");
             $iQuestionID = (int) $iQuestionID;
@@ -1385,6 +1395,7 @@ class remotecontrol_handle
         } else {
             return array('status' => self::INVALID_SESSION_KEY);
         }
+        */
     }
 
 
