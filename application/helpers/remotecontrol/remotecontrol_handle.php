@@ -7,6 +7,7 @@ use LimeSurvey\Api\Command\V1\SiteSettingsGet;
 use LimeSurvey\Api\Command\V1\SurveyAdd;
 use LimeSurvey\Api\Command\V1\SurveyDelete;
 use LimeSurvey\Api\Command\V1\SurveyPropertiesGet;
+use LimeSurvey\Api\Command\V1\SurveyGroupList;
 use LimeSurvey\Api\Command\V1\SurveyGroupAdd;
 use LimeSurvey\Api\Command\V1\SurveyGroupDelete;
 use LimeSurvey\Api\Command\V1\SurveyGroupPropertiesGet;
@@ -1320,89 +1321,10 @@ class remotecontrol_handle
                 'questionData' => $aQuestionData,
                 'language' => $sLanguage
             )))->getData();
-
-        /*
-        if ($this->_checkSessionKey($sSessionKey)) {
-            Yii::app()->loadHelper("surveytranslator");
-            $iQuestionID = (int) $iQuestionID;
-            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
-            if (is_null($oQuestion)) {
-                return array('status' => 'Error: Invalid group ID');
-            }
-
-            $iSurveyID = $oQuestion->sid;
-
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
-                if (is_null($sLanguage)) {
-                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
-                }
-
-                if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return array('status' => 'Error: Invalid language');
-                }
-
-                $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
-                if (!isset($oQuestion)) {
-                    return array('status' => 'Error: Invalid questionid');
-                }
-
-                // Remove fields that may not be modified
-                unset($aQuestionData['qid']);
-                unset($aQuestionData['gid']);
-                unset($aQuestionData['sid']);
-                unset($aQuestionData['parent_qid']);
-                unset($aQuestionData['language']);
-                unset($aQuestionData['type']);
-                // Remove invalid fields
-                $aDestinationFields = array_flip(Question::model()->tableSchema->columnNames);
-                $aQuestionData = array_intersect_key($aQuestionData, $aDestinationFields);
-                $aQuestionAttributes = $oQuestion->getAttributes();
-
-                if (empty($aQuestionData)) {
-                    return array('status' => 'No valid Data');
-                }
-
-                foreach ($aQuestionData as $sFieldName => $sValue) {
-                    //all the dependencies that this question has to other questions
-                    $dependencies = getQuestDepsForConditions($oQuestion->sid, $oQuestion->gid, $iQuestionID);
-                    //all dependencies by other questions to this question
-                    $is_criteria_question = getQuestDepsForConditions($oQuestion->sid, $oQuestion->gid, "all", $iQuestionID, "by-targqid");
-                    //We do not allow questions with dependencies in the same group to change order - that would lead to broken dependencies
-
-                    if ((isset($dependencies) || isset($is_criteria_question)) && $sFieldName == 'question_order') {
-                        $aResult[$sFieldName] = 'Questions with dependencies - Order cannot be changed';
-                        continue;
-                    }
-                    $oQuestion->setAttribute($sFieldName, $sValue);
-
-                    try {
-                        $bSaveResult = $oQuestion->save(); // save the change to database
-                        Question::model()->updateQuestionOrder($oQuestion->gid);
-                        $aResult[$sFieldName] = $bSaveResult;
-                        //unset fields that failed
-                        if (!$bSaveResult) {
-                            $oQuestion->$sFieldName = $aQuestionAttributes[$sFieldName];
-                        }
-                    } catch (Exception $e) {
-                        //unset fields that caused exception
-                        $oQuestion->$sFieldName = $aQuestionAttributes[$sFieldName];
-                    }
-                }
-                return $aResult;
-            } else {
-                return array('status' => 'No permission');
-            }
-        } else {
-            return array('status' => self::INVALID_SESSION_KEY);
-        }
-        */
     }
 
 
-
-
     /* Participant-Token specific functions */
-
 
 
     /**
@@ -1649,38 +1571,12 @@ class remotecontrol_handle
      */
     public function list_groups($sSessionKey, $iSurveyID, $sLanguage = null)
     {
-        if ($this->_checkSessionKey($sSessionKey)) {
-            $iSurveyID = (int) $iSurveyID;
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
-            }
-
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
-                $oGroupList = QuestionGroup::model()->with('questiongroupl10ns')->findAllByAttributes(array("sid" => $iSurveyID));
-                if (count($oGroupList) == 0) {
-                    return array('status' => 'No groups found');
-                }
-
-                if (is_null($sLanguage)) {
-                    $sLanguage = $oSurvey->language;
-                }
-
-                foreach ($oGroupList as $oGroup) {
-                    $L10ns = $oGroup->questiongroupl10ns[$sLanguage];
-                    $tmp = array('id' => $oGroup->primaryKey) + $oGroup->attributes;
-                    $tmp['group_name'] = $L10ns['group_name'];
-                    $tmp['description'] = $L10ns['description'];
-                    $tmp['language'] = $sLanguage;
-                    $aData[] = $tmp;
-                }
-                return $aData;
-            } else {
-                return array('status' => 'No permission');
-            }
-        } else {
-            return array('status' => self::INVALID_SESSION_KEY);
-        }
+        return (new SurveyGroupList)
+            ->run(new CommandRequest(array(
+                'sessionKey' => (string) $sSessionKey,
+                'surveyID' => (int) $iSurveyID,
+                'language' => $sLanguage
+            )))->getData();
     }
 
     /**

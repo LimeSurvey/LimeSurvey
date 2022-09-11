@@ -10,7 +10,7 @@ use LimeSurvey\Api\Command\CommandResponse;
 class SurveyQuestionPropertiesSet implements CommandInterface
 {
     /**
-     * Run survey question delete command.
+     * Run survey question properties set command.
      *
      * @access public
      * @param LimeSurvey\Api\Command\CommandRequest $request
