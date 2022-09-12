@@ -162,6 +162,8 @@ class UserManagementController extends LSBaseController
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
             $datetimeobj = new Date_Time_Converter($expires, $dateformatdetails['phpdate'] . ' H:i');
             $aUser['expires'] = $datetimeobj->convert("Y-m-d H:i:s");
+        } else {
+            $aUser['expires'] = null;
         }
 
         if (isset($aUser['uid']) && $aUser['uid']) {
