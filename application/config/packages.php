@@ -30,7 +30,7 @@ return array(
             'em_javascript.js',
         ),
         'depends' => array(
-            'jquery',
+            'jquery-migrate',
             'moment', // Used by LEMval function
             'decimalcustom', // Use by fixnum_checkconditions
         )
@@ -439,10 +439,23 @@ return array(
             'popup-dialog.css'
         ),
         'js' => array(
-            'emailtemplates'.$minVersion.'.js',
+            'emailtemplates.js',
         ),
         'depends' => array(
             'adminbasics',
         )
     ),
+    // jQuery Ace
+    'jquery-ace' => array(
+        'devBaseUrl' => 'assets/packages/jquery-ace/',
+        'basePath' => 'core.jquery-ace',
+        'position' => CClientScript::POS_BEGIN,
+    'js' => array(
+        'jquery.ace.js',
+    ),
+    'depends' => array(
+        'jquery',
+    )
+    )
+
 );

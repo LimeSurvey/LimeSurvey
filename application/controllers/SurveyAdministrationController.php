@@ -1821,7 +1821,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
@@ -3096,7 +3096,7 @@ class SurveyAdministrationController extends LSBaseController
         ];
         $aData['questions'] = $aQuestions;
 
-        App()->getClientScript()->registerPackage('jquery-datatable');
+        App()->getClientScript()->registerPackage('jquery-datatable-bs5');
         return $aData;
     }
 }

@@ -126,7 +126,7 @@ class Statistics extends SurveyCommonAction
         //Call the javascript file
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'json-js/json2.min.js');
-
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'createpdf_worker.js');
         yii::app()->clientScript->registerPackage('jszip');
         $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 
@@ -787,6 +787,7 @@ class Statistics extends SurveyCommonAction
         //Call the javascript file
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'json-js/json2.min.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'createpdf_worker.js');
         yii::app()->clientScript->registerPackage('jspdf');
         yii::app()->clientScript->registerPackage('jszip');
         echo $this->renderWrappedTemplate('export', 'statistics_user_view', $aData);

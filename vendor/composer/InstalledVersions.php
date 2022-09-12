@@ -20,8 +20,6 @@ use Composer\Semver\VersionParser;
 
 
 
-
-
 class InstalledVersions
 {
 private static $installed = array (
@@ -32,20 +30,11 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '32310a26275752258b21ece642621df499d65ab1',
+    'reference' => 'e670066f76922d7e92177bc0cc2d97ccf6507e29',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
-    'apalfrey/select2-bootstrap-5-theme' => 
-    array (
-      'pretty_version' => '1.3.0',
-      'version' => '1.3.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'ab448b2ac36a6f7f90b162e384ca2b1469a3cc1f',
-    ),
     'html2text/html2text' => 
     array (
       'pretty_version' => '4.3.1',
@@ -71,7 +60,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '32310a26275752258b21ece642621df499d65ab1',
+      'reference' => 'e670066f76922d7e92177bc0cc2d97ccf6507e29',
     ),
     'mk-j/php_xlsxwriter' => 
     array (
@@ -174,12 +163,12 @@ private static $installed = array (
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.14',
-      'version' => '3.0.14.0',
+      'pretty_version' => '3.0.16',
+      'version' => '3.0.16.0',
       'aliases' => 
       array (
       ),
-      'reference' => '2f0b7af658cbea265cbb4a791d6c29a6613f98ef',
+      'reference' => '7181378909ed8890be4db53d289faac5b77f8b05',
     ),
     'rsky/pear-core-min' => 
     array (
@@ -187,15 +176,6 @@ private static $installed = array (
       array (
         0 => 'v1.10.11',
       ),
-    ),
-    'select2/select2' => 
-    array (
-      'pretty_version' => '4.0.13',
-      'version' => '4.0.13.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '45f2b83ceed5231afa7b3d5b12b58ad335edd82e',
     ),
     'symfony/polyfill-ctype' => 
     array (
@@ -294,6 +274,7 @@ $packages = array();
 foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
+
 
 if (1 === \count($packages)) {
 return $packages[0];
@@ -486,7 +467,6 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
-
 
 
 

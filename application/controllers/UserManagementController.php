@@ -48,7 +48,7 @@ class UserManagementController extends LSBaseController
             Yii::app()->user->setState('pageSize', Yii::app()->request->getParam('pageSize'));
         }
         App()->getClientScript()->registerPackage('usermanagement');
-        App()->getClientScript()->registerPackage('select2');
+        App()->getClientScript()->registerPackage('select2-bootstrap');
 
         $aData = [];
         $model = new User('search');
