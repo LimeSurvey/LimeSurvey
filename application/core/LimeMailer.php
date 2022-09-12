@@ -616,25 +616,17 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (empty($this->oToken)) { // Did need to check if sent to token ?
             return $aTokenReplacements;
         }
-        $survey = Survey::model()->findByPk($this->surveyId);
         $language = Yii::app()->getLanguage();
-        if (!in_array($language, $survey->getAllLanguages())) {
-            $language = $survey->language;
+        if (!in_array($language, Survey::model()->findByPk($this->surveyId)->getAllLanguages())) {
+            $language = Survey::model()->findByPk($this->surveyId)->language;
         }
         $token = $this->oToken->token;
         if (!empty($this->oToken->language)) {
             $language = trim($this->oToken->language);
         }
-        $dateFormat = $survey->languagesettings[$language]->surveyls_dateformat;
-        $dateformatdetails = getDateFormatData($dateFormat);
         LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
         if ($this->replaceTokenAttributes) {
             foreach ($this->oToken->attributes as $attribute => $value) {
-                // Use localized date format for date attributes
-                if ($attribute == 'validfrom' || $attribute == 'validuntil') {
-                    $datetimeobj = new Date_Time_Converter($value, "Y-m-d H:i:s");
-                    $value = $datetimeobj->convert($dateformatdetails['phpdate']);
-                }
                 $aTokenReplacements[strtoupper($attribute)] = $value;
             }
         }
