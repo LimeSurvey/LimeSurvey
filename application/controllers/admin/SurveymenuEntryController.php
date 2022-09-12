@@ -284,7 +284,7 @@ class SurveymenuEntryController extends SurveyCommonAction
                 $success[$menuEntryid] = $model->delete();
             }
 
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -330,7 +330,7 @@ class SurveymenuEntryController extends SurveyCommonAction
                 $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             }
             $success = $model->delete();
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
 
             $returnData = array(
                 'data' => [
@@ -370,7 +370,7 @@ class SurveymenuEntryController extends SurveyCommonAction
         if (Yii::app()->request->isPostRequest) {
             $model = SurveymenuEntries::model();
             $success = $model->reorder();
-            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $debug = $userConfig['config']['debug'] ?? 0;
 
             $returnData = array(
                 'data' => [

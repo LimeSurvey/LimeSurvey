@@ -760,7 +760,7 @@ function buildsurveysession($surveyid, $preview = false)
     // NOTE: All of this is already done in survey controller.
     // We keep it here only for Travis Tested thar are still not using Selenium
     // As soon as the tests are rewrote to use selenium, those lines can be removed
-    $lang = isset($_SESSION['survey_' . $surveyid]['s_lang']) ? $_SESSION['survey_' . $surveyid]['s_lang'] : '';
+    $lang = $_SESSION['survey_' . $surveyid]['s_lang'] ?? '';
     if (empty($lang)) {
         // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
 
@@ -1299,7 +1299,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $aForm['sType']           = ($scenarios['tokenRequired']) ? 'token' : 'captcha';
             $aForm['token']           = array_key_exists('token', $aEnterTokenData) ? $aEnterTokenData['token'] : null;
             $aForm['aEnterErrors']    = $aEnterTokenData['aEnterErrors'];
-            $aForm['bCaptchaEnabled'] = (isset($aEnterTokenData['bCaptchaEnabled'])) ? $aEnterTokenData['bCaptchaEnabled'] : '';
+            $aForm['bCaptchaEnabled'] = $aEnterTokenData['bCaptchaEnabled'] ?? '';
             if ($aForm['bCaptchaEnabled']) {
                 Yii::app()->getController()->createAction('captcha');
             }
@@ -1441,9 +1441,9 @@ function getNavigatorDatas()
 
     $sMoveNext          = "movenext";
     $sMovePrev          = "";
-    $iSessionStep       = (isset($_SESSION['survey_' . $surveyid]['step'])) ? $_SESSION['survey_' . $surveyid]['step'] : false;
-    $iSessionMaxStep    = (isset($_SESSION['survey_' . $surveyid]['maxstep'])) ? $_SESSION['survey_' . $surveyid]['maxstep'] : false;
-    $iSessionTotalSteps = (isset($_SESSION['survey_' . $surveyid]['totalsteps'])) ? $_SESSION['survey_' . $surveyid]['totalsteps'] : false;
+    $iSessionStep       = $_SESSION['survey_' . $surveyid]['step'] ?? false;
+    $iSessionMaxStep    = $_SESSION['survey_' . $surveyid]['maxstep'] ?? false;
+    $iSessionTotalSteps = $_SESSION['survey_' . $surveyid]['totalsteps'] ?? false;
 
     // Count down
     $aNavigator['disabled'] = '';
@@ -1490,8 +1490,8 @@ function getNavigatorDatas()
         $bAnonymized                = $thissurvey["anonymized"] == 'Y';
         $bTokenanswerspersistence   = $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_' . $surveyid);
         $bAlreadySaved              = isset($_SESSION['survey_' . $surveyid]['scid']);
-        $iSessionStep               = (isset($_SESSION['survey_' . $surveyid]['step']) ? $_SESSION['survey_' . $surveyid]['step'] : false);
-        $iSessionMaxStep            = (isset($_SESSION['survey_' . $surveyid]['maxstep']) ? $_SESSION['survey_' . $surveyid]['maxstep'] : false);
+        $iSessionStep               = ($_SESSION['survey_' . $surveyid]['step'] ?? false);
+        $iSessionMaxStep            = ($_SESSION['survey_' . $surveyid]['maxstep'] ?? false);
 
         // Find out if the user has any saved data
         if ($thissurvey['format'] == 'A') {
@@ -1865,7 +1865,7 @@ function checkCompletedQuota($surveyid, $return = false)
     // We need to construct the page and do all needed action
     $aSurveyInfo = getSurveyInfo($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
 
-    $sClientToken = isset($_SESSION['survey_' . $surveyid]['token']) ? $_SESSION['survey_' . $surveyid]['token'] : "";
+    $sClientToken = $_SESSION['survey_' . $surveyid]['token'] ?? "";
     // $redata for templatereplace
     $aDataReplacement = array(
         'thissurvey' => $aSurveyInfo,
@@ -1913,7 +1913,7 @@ function checkCompletedQuota($surveyid, $return = false)
     $thissurvey['aQuotas']['bShowNavigator']     = !$closeSurvey;
     $thissurvey['aQuotas']['sClientToken']       = $sClientToken;
     $thissurvey['aQuotas']['sQuotaStep']         = 'returnfromquota';
-    $thissurvey['aQuotas']['aPostedQuotaFields'] = isset($aPostedQuotaFields) ? $aPostedQuotaFields : '';
+    $thissurvey['aQuotas']['aPostedQuotaFields'] = $aPostedQuotaFields ?? '';
     $thissurvey['aQuotas']['sPluginBlocks']      = implode("\n", $blocks);
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
@@ -1922,7 +1922,7 @@ function checkCompletedQuota($surveyid, $return = false)
 
     $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="' . $surveyid . '" />
                                               <input type="hidden" name="token"    value="' . $thissurvey['aQuotas']['sClientToken'] . '" />
-                                              <input type="hidden" name="thisstep" value="' . (isset($_SESSION['survey_' . $surveyid]['step']) ? $_SESSION['survey_' . $surveyid]['step'] : 0) . '" />';
+                                              <input type="hidden" name="thisstep" value="' . ($_SESSION['survey_' . $surveyid]['step'] ?? 0) . '" />';
 
 
     if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])) {
@@ -2144,8 +2144,8 @@ function getMove()
     if ($move == 'default') {
         $surveyid = Yii::app()->getConfig('surveyID');
         $thissurvey = getsurveyinfo($surveyid);
-        $iSessionStep = (isset($_SESSION['survey_' . $surveyid]['step'])) ? $_SESSION['survey_' . $surveyid]['step'] : false;
-        $iSessionTotalSteps = (isset($_SESSION['survey_' . $surveyid]['totalsteps'])) ? $_SESSION['survey_' . $surveyid]['totalsteps'] : false;
+        $iSessionStep = $_SESSION['survey_' . $surveyid]['step'] ?? false;
+        $iSessionTotalSteps = $_SESSION['survey_' . $surveyid]['totalsteps'] ?? false;
         if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps) || $thissurvey['format'] == 'A') {
             $move = "movesubmit";
         } else {

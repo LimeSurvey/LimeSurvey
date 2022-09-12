@@ -161,7 +161,7 @@ class TwoFactorAuth
 
     private function getTime($time)
     {
-        return ($time === null) ? $this->getTimeProvider()->getTime() : $time;
+        return $time ?? $this->getTimeProvider()->getTime();
     }
 
     private function getTimeSlice($time = null, $offset = 0)

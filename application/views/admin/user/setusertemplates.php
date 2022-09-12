@@ -59,6 +59,7 @@
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                 'name' => $trow['folder'] . '_use',
                                 'checkedOption' => $templaterights[$trow['folder']]['use'] ?? 0,
+                                'value' => $templaterights[$trow['folder']]['use'] ?? 0,
                                 'selectOptions' => [
                                     '1' => gT('On'),
                                     '0' => gT('Off'),
