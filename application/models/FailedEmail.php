@@ -211,7 +211,7 @@ class FailedEmail extends LSActiveRecord
     public function getResponseUrl(): string
     {
         $survey = Survey::model()->findByPk($this->surveyid);
-        if ( $survey !== null && $survey->hasResponsesTable) {
+        if ($survey !== null && $survey->hasResponsesTable) {
             $response = Response::model($this->surveyid)->findByPk($this->responseid);
             if (!empty($response)) {
                 $responseUrl = App()->createUrl("responses/view/", ['surveyId' => $this->surveyid, 'id' => $this->responseid]);
