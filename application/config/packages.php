@@ -14,7 +14,7 @@
  * To enjoy this feature, add to your package definition a 'devBaseUrl' with the relative url to your package
  *
  */
-$debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+$debug = $userConfig['config']['debug'] ?? 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
 $minVersion = ($debug > 0) ? "" : ".min";
 /* needed ? @see vendor.php */

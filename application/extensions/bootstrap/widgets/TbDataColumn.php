@@ -29,7 +29,7 @@ class TbDataColumn extends CDataColumn
     {
         if ($this->grid->enableSorting && $this->sortable && $this->name !== null) {
             $sort = $this->grid->dataProvider->getSort();
-            $label = isset($this->header) ? $this->header : $sort->resolveLabel($this->name);
+            $label = $this->header ?? $sort->resolveLabel($this->name);
 
             if ($sort->resolveAttribute($this->name) !== false) {
                 $label .= '<span class="caret"></span>';
