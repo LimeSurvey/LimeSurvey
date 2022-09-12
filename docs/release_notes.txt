@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.27 (build 220905) to 3.28.28 (build 220912) September 12, 2022
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 3.28.26 (build 220829) to 3.28.27 (build 220905) September 5, 2022
 #Updated translation: Valencian by joamuran, vbraque
 #Updated translation: Turkish by kayazeren
