@@ -75,110 +75,79 @@ class SurveyPermissions
         $isrresult = false;
         $userGroup = \UserGroup::model()->findByPk($userGroupId);
         if (isset($userGroup) && in_array($userGroupId, getSurveyUserGroupList('simpleugidarray', $this->survey->sid))) {
-
         }
         return $isrresult;
     }
 
     /**
-     *
-     *
-     * todo: OLD Retrieve a HTML <OPTION> list of survey admin users
-     *
-     * todo: remove HTML and put it in the view itself
+     * Returns a list of users which still not have survey permissions and
+     * could be added to survey permissions
      * todo: rewrite the sql with yii-query builder CDBCriteria ...
      *
-     * @return string
+     * @return array
      */
     public function getSurveyUserList()
     {
         $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
-    LEFT OUTER JOIN (SELECT uid AS id FROM {{permissions}} WHERE entity_id = {$surveyid} and entity='survey') AS b ON a.uid = b.id
+    LEFT OUTER JOIN (SELECT uid AS id FROM {{permissions}} WHERE entity_id = {$this->survey->sid} and entity='survey') AS b ON a.uid = b.id
     WHERE id IS NULL ";
         $sSurveyIDQuery .= 'ORDER BY a.users_name';
-        $oSurveyIDResult = Yii::app()->db->createCommand($sSurveyIDQuery)->query(); //Checked
+        $oSurveyIDResult = \Yii::app()->db->createCommand($sSurveyIDQuery)->query(); //Checked
         $aSurveyIDResult = $oSurveyIDResult->readAll();
-
-        $surveyselecter = "";
         $authorizedUsersList = [];
+        $userList = [];
 
-        if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
+        if (\Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
             $authorizedUsersList = getUserList('onlyuidarray');
         }
-
-        $svexist = false;
+        $index = 0;
         foreach ($aSurveyIDResult as $sv) {
             if (
-                Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
+                \Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
                 in_array($sv['uid'], $authorizedUsersList)
             ) {
-                $surveyselecter .= "<option";
-                $surveyselecter .= " value='{$sv['uid']}'>" . \CHtml::encode($sv['users_name']) . " " . \CHtml::encode($sv['full_name']) . "</option>\n";
-                $svexist = true;
+                $userList[$index]['userid'] = $sv['uid'];
+                $userList[$index]['fullname'] = $sv['full_name'];
+                $userList[$index]['usersname'] = $sv['users_name'];
+                $index++;
             }
         }
-
-        if ($svexist) {
-            $surveyselecter = "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>\n" . $surveyselecter;
-        } else {
-            $surveyselecter = "<option value='-1'>" . gT("None") . "</option>\n" . $surveyselecter;
-        }
-
-        return $surveyselecter;
+        return $userList;
     }
 
 
     /**
      * Return HTML <option> list of user groups
      *
-     * * todo: remove HTML and put it in the view itself
      * todo: rewrite the sql with yii-query builder CDBCriteria ...
      *
-     * @param string $outputformat 'htmloptions' or 'simpleugidarray' (todo: check if this is correct)
-     * @param int $surveyid
-     * @return string|array
+     * @return array
      */
-    public function getSurveyUserGroupList($outputformat, $surveyid)
+    public function getSurveyUserGroupList()
     {
-
-        $surveyid = sanitize_int($surveyid);
-
         $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
         FROM {{user_groups}} AS a
         LEFT JOIN (
         SELECT b.ugid
         FROM {{user_in_groups}} AS b
         LEFT JOIN (SELECT * FROM {{permissions}}
-        WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
+        WHERE entity_id = {$this->survey->sid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
         ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
-        $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query(); //Checked
+        $surveyidresult = \Yii::app()->db->createCommand($surveyidquery)->query(); //Checked
         $aResult = $surveyidresult->readAll();
 
         $authorizedGroupsList = getUserGroupList();
-        $svexist = false;
-        $surveyselecter = "";
         $simpleugidarray = [];
+        $index = 0;
         foreach ($aResult as $sv) {
-            if (
-                in_array($sv['ugid'], $authorizedGroupsList)
-            ) {
+            if (in_array($sv['ugid'], $authorizedGroupsList)) {
                 $surveyselecter .= "<option";
                 $surveyselecter .= " value='{$sv['ugid']}'>{$sv['name']}</option>\n";
-                $simpleugidarray[] = $sv['ugid'];
-                $svexist = true;
+                $simpleugidarray[$index]['ugid'] = $sv['ugid'];
+                $simpleugidarray[$index]['name'] = $sv['name'];
+                $index++;
             }
         }
-
-        if ($svexist) {
-            $surveyselecter = "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>\n" . $surveyselecter;
-        } else {
-            $surveyselecter = "<option value='-1'>" . gT("None") . "</option>\n" . $surveyselecter;
-        }
-
-        if ($outputformat == 'simpleugidarray') {
-            return $simpleugidarray;
-        } else {
-            return $surveyselecter;
-        }
+        return $simpleugidarray;
     }
 }

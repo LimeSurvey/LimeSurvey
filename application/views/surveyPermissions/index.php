@@ -2,6 +2,8 @@
 /* @var $basePermissions array the base permissions a user could have */
 /* @var $userCreatePermission bool true if current user has permission to set survey permission for other users */
 /* @var $surveyid int */
+/* @var $userList array users that could be added to survey permissions */
+/* @var $userGroupList array usergroups that could be added to survey permissions */
 
 ?>
 <div id='edit-permission' class='side-body  <?= getSideBodyClass(false) ?> "'>
@@ -29,7 +31,18 @@
                         </label>
                         <div class='col-sm-4'>
                             <select id='uidselect' name='uid' class='form-control'>
-                                <?php echo getSurveyUserList(false, $surveyid); ?>
+                                <?php
+                                if (count($userList) > 0) {
+                                    echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
+                                    foreach ($userList as $selectableUser) {
+                                        echo "<option value='{$selectableUser['uid']}'>"
+                                            . \CHtml::encode($selectableUser['usersname']) . " "
+                                            . \CHtml::encode($selectableUser['full_name']) . "</option>\n";
+                                    }
+                                } else {
+                                    echo "<option value='-1'>" . gT("None") . "</option>";
+                                }
+                                ?>
                             </select>
                         </div>
                         <input style='width: 15em;' class='btn btn-default' type='submit' value='<?= gT("Add user") ?>'
@@ -55,7 +68,16 @@
                         </label>
                         <div class='col-sm-4'>
                             <select id='ugidselect' name='ugid' class='form-control'>
-                                <?php echo getSurveyUserGroupList('htmloptions', $surveyid); ?>
+                                <?php
+                                if (count($userGroupList) > 0) {
+                                    echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
+                                    foreach ($userGroupList as $userGroup) {
+                                        echo "<option value='{$userGroup['ugid']}'>{$userGroup['name']}</option>";
+                                    }
+                                } else {
+                                    echo "<option value='-1'>" . gT("None") . "</option>";
+                                }
+                                ?>
                             </select>
                         </div>
                         <input style='width: 15em;' class='btn btn-default' type='submit'

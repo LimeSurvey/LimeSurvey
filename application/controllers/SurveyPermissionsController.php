@@ -71,10 +71,13 @@ class SurveyPermissionsController extends LSBaseController
         /*
          *
          */
+        $oSurveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions($oSurvey);
         return $this->render('index', [
             'basePermissions' => $aBaseSurveyPermissions,
             'userCreatePermission' => Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create'),
-            'surveyid' => $surveyid
+            'surveyid' => $surveyid,
+            'userList' => $oSurveyPermissions->getSurveyUserList(),
+            'userGroupList' => $oSurveyPermissions->getSurveyUserGroupList()
         ]);
     }
 
