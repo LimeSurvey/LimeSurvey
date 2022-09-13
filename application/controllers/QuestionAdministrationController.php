@@ -3017,7 +3017,7 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(404, gT("Invalid survey id"));
         }
         if ($qid) {
-            $oQuestion = Question::model()->findByPk($qid);
+            $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'sid' => $sid]);
             if (empty($oQuestion)) {
                 throw new CHttpException(404, gT("Invalid question id"));
             }
@@ -3032,8 +3032,11 @@ class QuestionAdministrationController extends LSBaseController
             $oQuestion->parent_qid = 0; // Unsure needed it, but we need it's a parent_qid=0
         }
         $oQuestion->title = $code;
+        header('Content-Type: application/json');
         if (!$oQuestion->validate(['title'])) {
-            echo $oQuestion->getError('title');
+            echo json_encode(['message' => $oQuestion->getError('title')]);
+        } else {
+            echo json_encode(['message' => null]);
         }
         Yii::app()->end();
     }
