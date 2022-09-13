@@ -70,6 +70,8 @@
     },
     "scripts": {
         "test": [
+            "./tests/bin/lint-tests",
+            "./tests/bin/lint-application",
             "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models",
             "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/controllers",
             "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller",
