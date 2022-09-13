@@ -44,7 +44,7 @@ $route['statistics_user/<surveyid:\d+>'] = array('StatisticsUser/action', 'match
 $route['statistics_user/action'] = 'StatisticsUser/action';
 
 // REST
-// GET, PUT, DELETE resource by $id on the URL path - $id is injected as a parameter to the action method
+// - GET, PUT, DELETE resource by $id on the URL path - $id is injected as a parameter to the action method
 $route['rest/<_api_version:\w+>/<_controller:\w+>/<_action:\w+>/<id:\w+>'] = array(
     'rest/<_api_version>/<_controller>/<_action>',
     'verb' => 'GET, PUT, DELETE',
