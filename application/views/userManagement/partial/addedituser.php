@@ -44,14 +44,34 @@ Yii::app()->getController()->renderPartial(
             <?php echo $form->emailField($oUser, 'email', ['id'=>'User_Form_email', 'required' => 'required']); ?>
             <?php echo $form->error($oUser, 'email'); ?>
         </div>
-        <?php if (!$oUser->isNewRecord) { ?>
-        <div class="row ls-space margin top-10">
-            <div class="col-xs-12">
-                <input type="checkbox" id="utility_change_password">
-                <label for="utility_change_password"><?=gT("Change password?")?></label>
+        <div class="row ls-space margin top-5">
+            <?php echo $form->labelEx($oUser, 'expires', ['for' => 'User_Form_expires']); ?>
+            <div id="expires_datetimepicker" class="input-group date">
+                <input
+                    class="form-control"
+                    id="User_Form_expires"
+                    type="text"
+                    value="<?= $oUser->expires ? date($dateformatdetails['phpdate']." H:i",strtotime($oUser->expires)) : '' ?>"
+                    name="expires"
+                    data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                    data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>"
+                >
+                <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
             </div>
+            <?php echo $form->error($oUser, 'expires'); ?>
         </div>
-        <?php } else { ?>
+        <?php if (!$oUser->isNewRecord): ?>
+            <div class="row ls-space margin top-5">
+                <?php echo $form->labelEx($oUser, 'last_login', ['for' => 'User_Form_last_login']); ?>
+                <input class="form-control" type="text" value="<?= !empty($oUser->last_login) ? convertToGlobalSettingFormat($oUser->last_login, true) : gT("Never") ?>" disabled="true" />
+            </div>
+            <div class="row ls-space margin top-10">
+                <div class="col-xs-12">
+                    <input type="checkbox" id="utility_change_password">
+                    <label for="utility_change_password"><?=gT("Change password?")?></label>
+                </div>
+            </div>
+        <?php else: ?>
             <div class="row ls-space margin top-10" id="utility_set_password">
                 <div class="col-xs-6" >
                     <label><?=gT("Set password now?")?></label>
@@ -67,7 +87,7 @@ Yii::app()->getController()->renderPartial(
                     </label>
                 </div>
             </div>
-        <?php } ?>        
+        <?php endif; ?>
 
         <div class="row ls-space margin top-5 hidden" id="utility_change_password_container">
             <div class="row ls-space margin top-5">
