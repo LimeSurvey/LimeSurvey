@@ -71,7 +71,10 @@ class SurveyPermissionsController extends LSBaseController
         /*
          *
          */
-        $oSurveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions($oSurvey);
+        $oSurveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions(
+            $oSurvey,
+            Yii::app()->getConfig('usercontrolSameGroupPolicy')
+        );
         return $this->render('index', [
             'basePermissions' => $aBaseSurveyPermissions,
             'userCreatePermission' => Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create'),
@@ -98,7 +101,10 @@ class SurveyPermissionsController extends LSBaseController
         // 2.  add the user in permission table
         $userId = (int)Yii::app()->request->getPost('uid');
         $oSurvey = Survey::model()->findByPk($surveyid);
-        $surveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions($oSurvey);
+        $surveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions(
+            $oSurvey,
+            Yii::app()->getConfig('usercontrolSameGroupPolicy')
+        );
         $userAdded = $surveyPermissions->addUserToSurveyPermission($userId);
         if ($userAdded) {
             Yii::app()->user->setFlash('success', gT("User added."));
@@ -123,13 +129,31 @@ class SurveyPermissionsController extends LSBaseController
      */
     public function actionAddUserGroup($surveyid)
     {
+        $surveyid = sanitize_int($surveyid);
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
             Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         // 2.  add the user in permission table
-        $userId = (int)Yii::app()->request->getPost('ugid');
-        // 3.  redirect to index if failed, or redirect to 'add permission page'; giving flash message in both cases
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $userGroupId = (int)Yii::app()->request->getPost('ugid');
+        $surveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions(
+            $oSurvey,
+            Yii::app()->getConfig('usercontrolSameGroupPolicy')
+        );
+        $amountUsersAdded = $surveyPermissions->addUserGroupToSurveyPermissions($userGroupId);
+        if ($amountUsersAdded == 0) {
+            Yii::app()->user->setFlash('error', gT("No users from group could be added."));
+            $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
+        } else {
+            Yii::app()->user->setFlash('success', $amountUsersAdded . gT("users from group could be added"));
+            $this->redirect(array(
+                'surveyPermissions/settingsPermissions',
+                'surveyid' => $surveyid,
+                'action' => 'usergroup',
+                'id' => $userGroupId
+            ));
+        }
     }
 
     /**

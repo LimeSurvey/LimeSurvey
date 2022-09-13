@@ -35,7 +35,7 @@
                                 if (count($userList) > 0) {
                                     echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
                                     foreach ($userList as $selectableUser) {
-                                        echo "<option value='{$selectableUser['uid']}'>"
+                                        echo "<option value='{$selectableUser['userid']}'>"
                                             . \CHtml::encode($selectableUser['usersname']) . " "
                                             . \CHtml::encode($selectableUser['full_name']) . "</option>\n";
                                     }

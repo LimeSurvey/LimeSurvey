@@ -4,7 +4,7 @@ namespace LimeSurvey\Models\Services;
 
 /**
  * This class is responsible for the relationship between permissions, users and surveys.
- * It could be hanled as specific permissions system for surveys.
+ * It could be handled as a specific permissions system for surveys.
  *
  */
 class SurveyPermissions
@@ -12,13 +12,19 @@ class SurveyPermissions
     /* @var $survey \Survey */
     private $survey;
 
+    /* @var $usercontrolSameGroupPolicy boolean */
+    private $userControlSameGroupPolicy;
+
     /**
-     * PasswordManagement constructor.
-     * @param $user \User
+     * SurveyPermissions constructor.
+     *
+     * @param \Survey $survey
+     * @param bool $userControlSameGroupPolicy
      */
-    public function __construct(\Survey $survey)
+    public function __construct(\Survey $survey, $userControlSameGroupPolicy)
     {
         $this->survey = $survey;
+        $this->userControlSameGroupPolicy = $userControlSameGroupPolicy;
     }
 
     /**
@@ -47,10 +53,10 @@ class SurveyPermissions
      */
     public function addUserToSurveyPermission($userid)
     {
-        $isrresult = false;
+        $isResult = false;
         $user = \User::model()->findByPk($userid);
         if (isset($user) && in_array($userid, getUserList('onlyuidarray'))) {
-            $isrresult = \Permission::model()->insertSomeRecords(
+            $isResult = \Permission::model()->insertSomeRecords(
                 array(
                 'entity_id' => $this->survey->sid,
                 'entity' => 'survey',
@@ -60,28 +66,53 @@ class SurveyPermissions
             );
         }
 
-        return $isrresult;
+        return $isResult;
     }
 
     /**
-     * Adds users from a group to survey permissions. This includes that the users get the
+     * Adds users from a group to survey permissions.
+     * This includes that the users get the
      * permission 'read' for this survey.
      *
      * @param $userGroupId
-     * @return false
+     * @return int amount of users from the given group added
      */
     public function addUserGroupToSurveyPermissions($userGroupId)
     {
-        $isrresult = false;
+        $amountAdded = 0;
         $userGroup = \UserGroup::model()->findByPk($userGroupId);
-        if (isset($userGroup) && in_array($userGroupId, getSurveyUserGroupList('simpleugidarray', $this->survey->sid))) {
+        if (
+            isset($userGroup) && in_array(
+                $userGroupId,
+                array_column($this->getSurveyUserGroupList(), 'ugid')
+            )
+        ) {
+            $users = \User::model()->getCommonUID($this->survey->sid, $userGroupId); //Checked
+            $users = $users->readAll();
+            if (count($users) > 0) {
+                foreach ($users as $user) {
+                    $isResult = \Permission::model()->insertSomeRecords(
+                        [
+                            'entity_id' => $this->survey->sid,
+                            'entity' => 'survey',
+                            'uid' => $user['uid'],
+                            'permission' => 'survey',
+                            'read_p' => 1
+                        ]
+                    );
+                    if ($isResult) {
+                        $amountAdded++;
+                    }
+                }
+            }
         }
-        return $isrresult;
+        return $amountAdded;
     }
 
     /**
      * Returns a list of users which still not have survey permissions and
-     * could be added to survey permissions
+     * could be added to survey permissions,
+     * including the check for usercontrolSameGroupPolicy (see config file for more information).
      * todo: rewrite the sql with yii-query builder CDBCriteria ...
      *
      * @return array
@@ -97,14 +128,13 @@ class SurveyPermissions
         $authorizedUsersList = [];
         $userList = [];
 
-        if (\Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
+        if ($this->userControlSameGroupPolicy) {
             $authorizedUsersList = getUserList('onlyuidarray');
         }
         $index = 0;
         foreach ($aSurveyIDResult as $sv) {
             if (
-                \Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
-                in_array($sv['uid'], $authorizedUsersList)
+                !$this->userControlSameGroupPolicy || in_array($sv['uid'], $authorizedUsersList)
             ) {
                 $userList[$index]['userid'] = $sv['uid'];
                 $userList[$index]['fullname'] = $sv['full_name'];
@@ -117,11 +147,13 @@ class SurveyPermissions
 
 
     /**
-     * Return HTML <option> list of user groups
+     * Return a list (array) of usergroups which could still be added to survey permissions.
+     * A user group could be added to survey permissions if there is at least one user in the group
+     * which has not already been added to survey permissions of this survey.
      *
      * todo: rewrite the sql with yii-query builder CDBCriteria ...
      *
-     * @return array
+     * @return array containing ['ugid'] and ['name']
      */
     public function getSurveyUserGroupList()
     {
@@ -141,8 +173,6 @@ class SurveyPermissions
         $index = 0;
         foreach ($aResult as $sv) {
             if (in_array($sv['ugid'], $authorizedGroupsList)) {
-                $surveyselecter .= "<option";
-                $surveyselecter .= " value='{$sv['ugid']}'>{$sv['name']}</option>\n";
                 $simpleugidarray[$index]['ugid'] = $sv['ugid'];
                 $simpleugidarray[$index]['name'] = $sv['name'];
                 $index++;
