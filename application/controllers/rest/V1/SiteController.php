@@ -14,18 +14,10 @@
 */
 
 use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\V1\SiteSettingsCreate;
 use LimeSurvey\Api\Command\V1\SiteSettingsGet;
 
 class SiteController extends LSYii_ControllerRest
 {
-    public function actionSettingsPost()
-    {
-        $commandRequest = new CommandRequest([]);
-        $commandResponse = (new SiteSettingsCreate)->run($commandRequest);
-
-        $this->renderJson($commandResponse->getData());
-    }
 
     public function actionSettingsGet()
     {

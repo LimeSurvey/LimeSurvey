@@ -10,7 +10,6 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-*
 */
 
 use LimeSurvey\Api\Command\CommandRequest;
@@ -21,16 +20,25 @@ class SessionController extends LSYii_ControllerRest
 {
     public function actionKeyPost()
     {
-        $commandRequest = new CommandRequest([]);
-        $commandResponse = (new SessionKeyCreate)->run($commandRequest);
+        $request = \Yii::app()->request;
+        $requestData = [
+            'username' =>  $request->getPost('username'),
+            'password' =>  $request->getPost('password')
+        ];
+        $commandResponse = (new SessionKeyCreate)
+            ->run(new CommandRequest($requestData));
 
         $this->renderJson($commandResponse->getData());
     }
 
-    public function actionKeyDelete()
+    public function actionKeyDelete($id)
     {
-        $commandRequest = new CommandRequest([]);
-        $commandResponse = (new SessionKeyRelease)->run($commandRequest);
+        $requestData = [
+            'sessionKey' => $id
+        ];
+        $commandResponse = (new SessionKeyRelease)->run(
+            new CommandRequest($requestData)
+        );
 
         $this->renderJson($commandResponse->getData());
     }

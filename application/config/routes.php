@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) {
+<?php if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -20,7 +20,7 @@ $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/tk-<_token:\w+>/*'] = "survey/index/si
 $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>";
 $route['<_sid:\d+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/token/<_token>";
 $route['<_sid:\d+>/*'] = "survey/index/sid/<_sid>";
-$route['<sid:\d+>'] = array('survey/index', 'matchValue'=>true);
+$route['<sid:\d+>'] = array('survey/index', 'matchValue' => true);
 
 //Admin Routes
 $route['admin/index'] = "admin";
@@ -36,12 +36,20 @@ $route['admin/expressions'] = "admin/expressions/index";
 
 //optout - optin
 $route['optout/<_sid:\d+>/(:any)/(:any)'] = "optout/index/<_sid>/$2/$3";
-$route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens', 'matchValue'=>true);
-$route['optout/participants/<surveyid:\d+>'] = array('optout/participants', 'matchValue'=>true);
-$route['optin/tokens/<surveyid:\d+>'] = array('optin/tokens', 'matchValue'=>true);
-$route['optin/participants/<surveyid:\d+>'] = array('optin/participants', 'matchValue'=>true);
-$route['statistics_user/<surveyid:\d+>'] = array('StatisticsUser/action', 'matchValue'=>true);
+$route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens', 'matchValue' => true);
+$route['optout/participants/<surveyid:\d+>'] = array('optout/participants', 'matchValue' => true);
+$route['optin/tokens/<surveyid:\d+>'] = array('optin/tokens', 'matchValue' => true);
+$route['optin/participants/<surveyid:\d+>'] = array('optin/participants', 'matchValue' => true);
+$route['statistics_user/<surveyid:\d+>'] = array('StatisticsUser/action', 'matchValue' => true);
 $route['statistics_user/action'] = 'StatisticsUser/action';
+
+// REST
+// GET, PUT, DELETE resource by $id on the URL path - $id is injected as a parameter to the action method
+$route['rest/<_api_version:\w+>/<_controller:\w+>/<_action:\w+>/<id:\w+>'] = array(
+    'rest/<_api_version>/<_controller>/<_action>',
+    'verb' => 'GET, PUT, DELETE',
+    'matchValue' => true
+);
 
 $route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 
