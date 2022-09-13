@@ -18,6 +18,12 @@ if (!defined('BASEPATH')) {
 
 abstract class LSYii_ControllerRest extends LSYii_Controller
 {
+    /**
+     * Run REST controller action.
+     * 
+     * @param string $actionID
+     * @return void
+     */
     public function run($actionID)
     {
         if ($actionID == null)
@@ -35,7 +41,9 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
 
     /**
      * Return data to browser as JSON and end application.
+     * 
      * @param array $data
+     * @return void
      */
     protected function renderJSON($data)
     {
@@ -50,7 +58,16 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
         Yii::app()->end();
     }
 
-    public function displayError($code, $message, $file, $line)
+    /**
+     * Return error as JSON.
+     * 
+     * @param string $code
+     * @param string $message
+     * @param string $file
+     * @param string $line
+     * @return void
+     */
+    protected function displayError($code, $message, $file, $line)
     {
         $error = [];
         $error['code'] = $code;
@@ -64,7 +81,13 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
         $this->renderJson(['error' => $error]);
     }
 
-    public function displayException($exception)
+    /**
+     * Return Exception as JSON.
+     * 
+     * @param Exception $exception
+     * @return void
+     */
+    protected function displayException($exception)
     {
         $error = [];
         $error['code'] = get_class($exception);
@@ -76,5 +99,96 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
         }
 
         $this->renderJson(['error' => $error]);
+    }
+
+    /**
+     * Get auth token.
+     * 
+     * Attempts to read from authorisation bearer token and falls back to 'sessionKey' GET parameter.
+     * 
+     * @return string|null
+     */
+    public function getAuthToken()
+    {
+        $token = $this->getAuthBearerToken();
+        if (!$token) {
+            $token = Yii::app()->request->getParam('sessionKey');
+        }
+        return $token;
+    }
+
+    /**
+     * Get auth bearer token.
+     * 
+     * Attempts to read bearer token from authorisation header.
+     * 
+     * @return string|null
+     */
+    protected function getAuthBearerToken()
+    {
+        $headers = $this->getAllHeaders();
+
+        $token = null;
+        if (
+            isset($headers['Authorization'])
+            && strpos(
+                $headers['Authorization'],
+                'Bearer '
+            ) === 0
+        ) {
+            $token = substr($headers['Authorization'], 7);
+        }
+
+        return $token;
+    }
+
+    /**
+     * Get all HTTP header key/values as an associative array for the current request.
+     * 
+     * @source https://github.com/ralouphie/getallheaders ralouphie/getallheader
+     * @return string[string] The HTTP header key/value pairs.
+     */
+    protected function getAllHeaders()
+    {
+        $headers = array();
+
+        $copy_server = array(
+            'CONTENT_TYPE'   => 'Content-Type',
+            'CONTENT_LENGTH' => 'Content-Length',
+            'CONTENT_MD5'    => 'Content-Md5',
+        );
+
+        foreach ($_SERVER as $key => $value) {
+            if (substr($key, 0, 5) === 'HTTP_') {
+                $key = substr($key, 5);
+                if (!isset($copy_server[$key]) || !isset($_SERVER[$key])) {
+                    $key = str_replace(
+                        ' ',
+                        '-',
+                        ucwords(
+                            strtolower(
+                                str_replace('_', ' ', $key)
+                            )
+                        )
+                    );
+                    $headers[$key] = $value;
+                }
+            } elseif (isset($copy_server[$key])) {
+                $headers[$copy_server[$key]] = $value;
+            }
+        }
+
+        if (!isset($headers['Authorization'])) {
+            if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+                $headers['Authorization'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+            } elseif (isset($_SERVER['PHP_AUTH_USER'])) {
+                $basic_pass = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
+                $headers['Authorization'] = 'Basic ' . base64_encode($_SERVER['PHP_AUTH_USER'] . ':' . $basic_pass);
+            } elseif (isset($_SERVER['PHP_AUTH_DIGEST'])) {
+                $headers['Authorization'] = $_SERVER['PHP_AUTH_DIGEST'];
+            }
+        }
+
+        return $headers;
     }
 }

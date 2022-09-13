@@ -21,7 +21,7 @@ class SurveyGroupController extends LSYii_ControllerRest
     {
         $request = \Yii::app()->request;
         $requestData = [
-            'sessionKey' => $request->getParam('sessionKey'),
+            'sessionKey' => $this->getAuthToken(),
             'surveyID' => $id,
             'language' => $request->getParam('language') ?? 'en',
         ];
