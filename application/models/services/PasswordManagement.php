@@ -238,8 +238,6 @@ class PasswordManagement
 
         $emailType = "addadminuser";
 
-        $oCurrentlyLoggedInUser = \User::model()->findByPk(\Yii::app()->user->id);
-
         $mailer = new \LimeMailer();
         $mailer->addAddress($this->user->email, $this->user->full_name);
         $mailer->Subject = $subject;
