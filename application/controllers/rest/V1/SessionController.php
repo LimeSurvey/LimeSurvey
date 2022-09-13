@@ -31,10 +31,10 @@ class SessionController extends LSYii_ControllerRest
         $this->renderJson($commandResponse->getData());
     }
 
-    public function actionKeyDelete($id)
+    public function actionKeyDelete()
     {
         $requestData = [
-            'sessionKey' => $id
+            'sessionKey' => $this->getAuthToken()
         ];
         $commandResponse = (new SessionKeyRelease)->run(
             new CommandRequest($requestData)
