@@ -243,7 +243,7 @@ class PasswordManagement
         $mailer = new \LimeMailer();
         $mailer->addAddress($this->user->email, $this->user->full_name);
         $mailer->Subject = $subject;
-        $mailer->setFrom($oCurrentlyLoggedInUser->email, $oCurrentlyLoggedInUser->users_name);
+        $mailer->setFrom(Yii::app()->getConfig("siteadminemail"), Yii::app()->getConfig("siteadminname"));
         $mailer->Body = $body;
         $mailer->isHtml(true);
         $mailer->emailType = $emailType;
