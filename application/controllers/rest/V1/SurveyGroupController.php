@@ -23,7 +23,7 @@ class SurveyGroupController extends LSYii_ControllerRest
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
             'surveyID' => $id,
-            'language' => $request->getParam('language') ?? 'en',
+            'language' => $request->getParam('language')
         ];
         $commandResponse = (new SurveyGroupList)
             ->run(new CommandRequest($requestData));

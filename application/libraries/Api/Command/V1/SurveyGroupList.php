@@ -20,7 +20,7 @@ class SurveyGroupList implements CommandInterface
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iSurveyID = (int) $request->getData('surveyID');
-        $sLanguage = (string) $request->getData('language');
+        $sLanguage = $request->getData('language');
 
         $apiSession = new ApiSession;
         if ($apiSession->checkKey($sSessionKey)) {
