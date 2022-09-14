@@ -14,8 +14,6 @@
  * ?>
  * </code>
  *
- * @category  Crypt
- * @package   Random
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2007 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -27,9 +25,7 @@ namespace phpseclib3\Crypt;
 /**
  * Pure-PHP Random Number Generator
  *
- * @package Random
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class Random
 {
@@ -79,7 +75,7 @@ abstract class Random
         // another user visits the page and the serialization of their data is utilized along with the
         // server environment stuff and a hash of the previous http request data (which itself utilizes
         // a hash of the session data before that). certainly an attacker should be assumed to have
-        // full control over their own http requests. he, however, is not going to have control over
+        // full control over his own http requests. he, however, is not going to have control over
         // everyone's http requests.
         static $crypto = false, $v;
         if ($crypto === false) {
