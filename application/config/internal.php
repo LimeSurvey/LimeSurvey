@@ -65,7 +65,7 @@ $internalConfig = array(
 
         //Root Modules are real Yii Modules and can be initiate like this:
         'HelloWorld' => array(
-          'class' => 'modules.root.HelloWorld.HelloWorldModule',
+            'class' => 'modules.root.HelloWorld.HelloWorldModule',
         ),
 
         /* Here you can unlock Gii
@@ -116,7 +116,7 @@ $internalConfig = array(
         ),
         'sodium' => array(
             'class' => 'LSSodium',
-       ),
+        ),
         'sodiumOld' => [
             'class' => 'LSSodiumOld'
         ],
@@ -141,14 +141,14 @@ $internalConfig = array(
             'class' => 'application.core.LSYii_AssetManager'
         ),
         /* Leave default errorhandler : managed in LSYii_Application->onException */
-        'errorHandler' => [
-        ],
+        'errorHandler' => [],
         'request' => array(
             'class' => 'LSHttpRequest',
             'enableCsrfValidation' => true, // CSRF protection
             'enableCookieValidation' => false, // Enable to activate cookie protection
             'noCsrfValidationParams' => array(),
             'noCsrfValidationRoutes' => array(
+                'rest',
                 'remotecontrol',
                 'plugins/unsecure',
             ),
