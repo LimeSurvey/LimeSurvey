@@ -104,15 +104,15 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
     /**
      * Get auth token.
      * 
-     * Attempts to read from authorisation bearer token and falls back to 'sessionKey' GET parameter.
+     * Attempts to read from 'authToken' GET parameter and falls back to authorisation bearer token.
      * 
      * @return string|null
      */
     public function getAuthToken()
     {
-        $token = $this->getAuthBearerToken();
+        $token = Yii::app()->request->getParam('authToken');
         if (!$token) {
-            $token = Yii::app()->request->getParam('sessionKey');
+            $token = $this->getAuthBearerToken();
         }
         return $token;
     }

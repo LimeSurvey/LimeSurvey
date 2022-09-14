@@ -22,8 +22,8 @@ class SessionController extends LSYii_ControllerRest
     {
         $request = \Yii::app()->request;
         $requestData = [
-            'username' =>  $request->getPost('username'),
-            'password' =>  $request->getPost('password')
+            'username' => $request->getPost('username'),
+            'password' => $request->getPost('password')
         ];
         $commandResponse = (new SessionKeyCreate)
             ->run(new CommandRequest($requestData));
