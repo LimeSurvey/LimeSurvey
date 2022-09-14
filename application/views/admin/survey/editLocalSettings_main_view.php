@@ -69,6 +69,10 @@ $('#".$entryData['name']."').off('.editLocalsettings');
 
 $('#".$entryData['name']."').on('submit.editLocalsettings', function(e){
     e.preventDefault();
+    if (!validateSettingsForm($(this))) {
+        $('#in_survey_common').trigger('lsStopLoading');  // Remove the 'loading' state
+        return false;
+    }
     var data = $(this).serializeArray();
     var uri = $(this).attr('action');
     $.ajax({
