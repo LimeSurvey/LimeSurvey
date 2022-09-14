@@ -12,21 +12,21 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-use LimeSurvey\Api\Command\CommandRequest;
+use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\V1\SurveyGroupList;
 
 class SurveyGroupController extends LSYii_ControllerRest
 {
     public function actionListGet($id)
     {
-        $request = \Yii::app()->request;
+        $request = Yii::app()->request;
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
             'surveyID' => $id,
             'language' => $request->getParam('language')
         ];
         $commandResponse = (new SurveyGroupList)
-            ->run(new CommandRequest($requestData));
+            ->run(new Request($requestData));
 
         $this->renderJson($commandResponse->getData());
     }

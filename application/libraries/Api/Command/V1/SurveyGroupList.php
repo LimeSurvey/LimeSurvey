@@ -2,10 +2,13 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\ApiSession;
+use Permission;
+use QuestionGroup;
+use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\ApiSession;
 
 class SurveyGroupList implements CommandInterface
 {
@@ -13,10 +16,10 @@ class SurveyGroupList implements CommandInterface
      * Run group list command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request\Request $request
+     * @return LimeSurvey\Api\Command\Response\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iSurveyID = (int) $request->getData('surveyID');
@@ -25,15 +28,15 @@ class SurveyGroupList implements CommandInterface
         $apiSession = new ApiSession;
         if ($apiSession->checkKey($sSessionKey)) {
             $iSurveyID = (int) $iSurveyID;
-            $oSurvey = \Survey::model()->findByPk($iSurveyID);
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return new CommandResponse(array('status' => 'Error: Invalid survey ID'));
+                return new Response(array('status' => 'Error: Invalid survey ID'));
             }
 
-            if (\Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
-                $oGroupList = \QuestionGroup::model()->with('questiongroupl10ns')->findAllByAttributes(array("sid" => $iSurveyID));
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+                $oGroupList = QuestionGroup::model()->with('questiongroupl10ns')->findAllByAttributes(array("sid" => $iSurveyID));
                 if (count($oGroupList) == 0) {
-                    return new CommandResponse(array('status' => 'No groups found'));
+                    return new Response(array('status' => 'No groups found'));
                 }
 
                 if (is_null($sLanguage)) {
@@ -48,12 +51,12 @@ class SurveyGroupList implements CommandInterface
                     $tmp['language'] = $sLanguage;
                     $aData[] = $tmp;
                 }
-                return new CommandResponse($aData);
+                return new Response($aData);
             } else {
-                return new CommandResponse(array('status' => 'No permission'));
+                return new Response(array('status' => 'No permission'));
             }
         } else {
-            return new CommandResponse(array('status' => ApiSession::INVALID_SESSION_KEY));
+            return new Response(array('status' => ApiSession::INVALID_SESSION_KEY));
         }
     }
 }

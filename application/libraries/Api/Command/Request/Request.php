@@ -1,8 +1,8 @@
 <?php
 
-namespace LimeSurvey\Api\Command;
+namespace LimeSurvey\Api\Command\Request;
 
-class CommandRequest
+class Request
 {
     private $data = array();
 

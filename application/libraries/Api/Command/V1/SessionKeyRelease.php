@@ -2,9 +2,11 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
+use CDbCriteria;
+use Session;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
 
 class SessionKeyRelease implements CommandInterface
 {
@@ -12,19 +14,19 @@ class SessionKeyRelease implements CommandInterface
      * Run session key release command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request\Request $request
+     * @return LimeSurvey\Api\Command\Response\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sessionKey = (string) $request->getData('sessionKey');
-        \Session::model()
+        Session::model()
             ->deleteAllByAttributes(array(
                 'id' => $sessionKey
             ));
-        $criteria = new \CDbCriteria();
+        $criteria = new CDbCriteria();
         $criteria->condition = 'expire < ' . time();
-        \Session::model()->deleteAll($criteria);
-        return new CommandResponse('OK');
+        Session::model()->deleteAll($criteria);
+        return new Response('OK');
     }
 }

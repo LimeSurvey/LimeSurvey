@@ -2,10 +2,17 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\ApiSession;
+use Answer;
+use DefaultValue;
+use Permission;
+use Question;
+use Survey;
+use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Models\Services\QuestionAttributeHelper;
 
 class SurveyQuestionPropertiesGet implements CommandInterface
 {
@@ -13,10 +20,10 @@ class SurveyQuestionPropertiesGet implements CommandInterface
      * Run survey question properties get command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request $request
+     * @return LimeSurvey\Api\Command\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iQuestionID = (int) $request->getData('questionID');
@@ -25,33 +32,33 @@ class SurveyQuestionPropertiesGet implements CommandInterface
 
         $apiSession = new ApiSession;
         if ($apiSession->checkKey($sSessionKey)) {
-            \Yii::app()->loadHelper("surveytranslator");
-            $oQuestion = \Question::model()->findByAttributes(array('qid' => $iQuestionID));
+            Yii::app()->loadHelper("surveytranslator");
+            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion)) {
-                return new CommandResponse(array('status' => 'Error: Invalid questionid'));
+                return new Response(array('status' => 'Error: Invalid questionid'));
             }
 
             $iSurveyID = $oQuestion->sid;
 
-            if (\Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
                 if (is_null($sLanguage)) {
-                    $sLanguage = \Survey::model()->findByPk($iSurveyID)->language;
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return new CommandResponse(array('status' => 'Error: Invalid language'));
+                    return new Response(array('status' => 'Error: Invalid language'));
                 }
 
-                $oQuestion = \Question::model()->with('questionl10ns')
+                $oQuestion = Question::model()->with('questionl10ns')
                     ->find(
                         't.qid = :qid and questionl10ns.language = :language',
                         array(':qid' => $iQuestionID, ':language' => $sLanguage)
                     );
                 if (!isset($oQuestion)) {
-                    return new CommandResponse(array('status' => 'Error: Invalid questionid'));
+                    return new Response(array('status' => 'Error: Invalid questionid'));
                 }
 
-                $aBasicDestinationFields = \Question::model()->tableSchema->columnNames;
+                $aBasicDestinationFields = Question::model()->tableSchema->columnNames;
                 array_push($aBasicDestinationFields, 'available_answers');
                 array_push($aBasicDestinationFields, 'subquestions');
                 array_push($aBasicDestinationFields, 'attributes');
@@ -68,13 +75,13 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                 }
 
                 if (empty($aQuestionSettings)) {
-                    return new CommandResponse(array('status' => 'No valid Data'));
+                    return new Response(array('status' => 'No valid Data'));
                 }
 
                 $aResult = array();
                 foreach ($aQuestionSettings as $sPropertyName) {
                     if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions') {
-                        $oSubQuestions = \Question::model()->with('questionl10ns')
+                        $oSubQuestions = Question::model()->with('questionl10ns')
                             ->findAll(
                                 't.parent_qid = :parent_qid and questionl10ns.language = :language',
                                 array(':parent_qid' => $iQuestionID, ':language' => $sLanguage),
@@ -105,7 +112,7 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                         }
                     } elseif ($sPropertyName == 'attributes') {
 
-                        $questionAttributeHelper = new \LimeSurvey\Models\Services\QuestionAttributeHelper();
+                        $questionAttributeHelper = new QuestionAttributeHelper();
                         $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, null, null, true);
                         $data = [];
                         foreach ($questionAttributes as $attributeName => $attributeData) {
@@ -120,7 +127,7 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                             $aResult['attributes'] = 'No available attributes';
                         }
                     } elseif ($sPropertyName == 'attributes_lang') {
-                        $questionAttributeHelper = new \LimeSurvey\Models\Services\QuestionAttributeHelper();
+                        $questionAttributeHelper = new QuestionAttributeHelper();
                         $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, $sLanguage, null, true);
                         $data = [];
                         foreach ($questionAttributes as $attributeName => $attributeData) {
@@ -135,7 +142,7 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                             $aResult['attributes_lang'] = 'No available attributes';
                         }
                     } elseif ($sPropertyName == 'answeroptions') {
-                        $oAttributes = \Answer::model()->with('answerl10ns')
+                        $oAttributes = Answer::model()->with('answerl10ns')
                             ->findAll(
                                 't.qid = :qid and answerl10ns.language = :language',
                                 array(':qid' => $iQuestionID, ':language' => $sLanguage),
@@ -157,7 +164,7 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                             $aResult['answeroptions'] = 'No available answer options';
                         }
                     } elseif ($sPropertyName == 'answeroptions_multiscale') {
-                        $oAttributes = \Answer::model()->findAllByAttributes(
+                        $oAttributes = Answer::model()->findAllByAttributes(
                             array('qid' => $iQuestionID, 'language' => $sLanguage),
                             array('order' => 'sortorder')
                         );
@@ -175,7 +182,7 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                             $aResult['answeroptions'] = 'No available answer options';
                         }
                     } elseif ($sPropertyName == 'defaultvalue') {
-                        $aResult['defaultvalue'] = \DefaultValue::model()->with('defaultvaluel10ns')
+                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultvaluel10ns')
                             ->find(
                                 'qid = :qid AND defaultvaluel10ns.language = :language',
                                 array(':qid' => $iQuestionID, ':language' => $sLanguage)
@@ -185,12 +192,12 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                         $aResult[$sPropertyName] = $oQuestion->$sPropertyName;
                     }
                 }
-                return new CommandResponse($aResult);
+                return new Response($aResult);
             } else {
-                return new CommandResponse(array('status' => 'No permission'));
+                return new Response(array('status' => 'No permission'));
             }
         } else {
-            return new CommandResponse(array('status' => ApiSession::INVALID_SESSION_KEY));
+            return new Response(array('status' => ApiSession::INVALID_SESSION_KEY));
         }
     }
 }

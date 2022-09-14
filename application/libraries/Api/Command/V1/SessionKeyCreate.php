@@ -2,9 +2,11 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
+use Session;
+use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\ApiSession;
 
 class SessionKeyCreate implements CommandInterface
@@ -13,10 +15,10 @@ class SessionKeyCreate implements CommandInterface
      * Run session key create command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request\Request $request
+     * @return LimeSurvey\Api\Command\Response\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $apiSession = new ApiSession;
 
@@ -27,17 +29,17 @@ class SessionKeyCreate implements CommandInterface
         $loginResult = $apiSession->doLogin($username, $password, $plugin);
         if ($loginResult === true) {
             $apiSession->jumpStartSession($username);
-            $sSessionKey = \Yii::app()->securityManager->generateRandomString(32);
-            $session = new \Session();
+            $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
+            $session = new Session();
             $session->id = $sSessionKey;
-            $session->expire = time() + (int) \Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
+            $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
             $session->data = $username;
             $session->save();
-            return new CommandResponse($sSessionKey);
+            return new Response($sSessionKey);
         }
         if (is_string($loginResult)) {
-            return new CommandResponse(array('status' => $loginResult));
+            return new Response(array('status' => $loginResult));
         }
-        return new CommandResponse(array('status' => 'Invalid user name or password'));
+        return new Response(array('status' => 'Invalid user name or password'));
     }
 }

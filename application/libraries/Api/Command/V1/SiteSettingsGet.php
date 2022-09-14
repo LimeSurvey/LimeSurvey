@@ -2,11 +2,12 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\ApiSession;
+use Permission;
+use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
-
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\ApiSession;
 
 class SiteSettingsGet implements CommandInterface
 {
@@ -14,27 +15,27 @@ class SiteSettingsGet implements CommandInterface
      * Run site settings get command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request\Request $request
+     * @return LimeSurvey\Api\Command\Response\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sessionKey = (string) $request->getData('sessionKey');
-        $setttingName = (string) $request->getData('setttingName');
+        $settingName = (string) $request->getData('settingName');
 
         $apiSession = new ApiSession;
         if ($apiSession->checkKey($sessionKey)) {
-            if (\Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                if (\Yii::app()->getConfig($setttingName) !== false) {
-                    return new CommandResponse(\Yii::app()->getConfig($setttingName));
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                if (Yii::app()->getConfig($settingName) !== false) {
+                    return new Response(Yii::app()->getConfig($settingName));
                 } else {
-                    return new CommandResponse(array('status' => 'Invalid setting'));
+                    return new Response(array('status' => 'Invalid setting'));
                 }
             } else {
-                return new CommandResponse(array('status' => 'Invalid setting'));
+                return new Response(array('status' => 'Invalid setting'));
             }
         } else {
-            return new CommandResponse(array('status' => ApiSession::INVALID_SESSION_KEY));
+            return new Response(array('status' => ApiSession::INVALID_SESSION_KEY));
         }
     }
 }

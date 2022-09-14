@@ -2,10 +2,13 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\ApiSession;
+use Permission;
+use Survey;
+use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\ApiSession;
 
 class SurveyPropertiesGet implements CommandInterface
 {
@@ -13,33 +16,33 @@ class SurveyPropertiesGet implements CommandInterface
      * Run survey properties get command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request\Request $request
+     * @return LimeSurvey\Api\Command\Response\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iSurveyID = (int) $request->getData('surveyID');
         $aSurveySettings = $request->getData('surveySettings', array());
 
-        \Yii::app()->loadHelper('surveytranslator');
+        Yii::app()->loadHelper('surveytranslator');
         $apiSession = new ApiSession;
         if ($apiSession->checkKey($sSessionKey)) {
             $iSurveyID = (int) $iSurveyID;
-            $oSurvey = \Survey::model()->findByPk($iSurveyID);
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return new CommandResponse(
+                return new Response(
                     array('status' => 'Error: Invalid survey ID')
                 );
             }
             if (
-                \Permission::model()->hasSurveyPermission(
+                Permission::model()->hasSurveyPermission(
                     $iSurveyID,
                     'surveysettings',
                     'read'
                 )
             ) {
-                $aBasicDestinationFields = \Survey::model()
+                $aBasicDestinationFields = Survey::model()
                     ->tableSchema
                     ->columnNames;
                 if (!empty($aSurveySettings)) {
@@ -51,7 +54,7 @@ class SurveyPropertiesGet implements CommandInterface
                     $aSurveySettings = $aBasicDestinationFields;
                 }
                 if (empty($aSurveySettings)) {
-                    return new CommandResponse(
+                    return new Response(
                         array('status' => 'No valid Data')
                     );
                 }
@@ -59,14 +62,14 @@ class SurveyPropertiesGet implements CommandInterface
                 foreach ($aSurveySettings as $sPropertyName) {
                     $aResult[$sPropertyName] = $oSurvey->$sPropertyName;
                 }
-                return new CommandResponse($aResult);
+                return new Response($aResult);
             } else {
-                return new CommandResponse(
+                return new Response(
                     array('status' => 'No permission')
                 );
             }
         } else {
-            return new CommandResponse(
+            return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY)
             );
         }

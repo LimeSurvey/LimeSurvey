@@ -2,10 +2,13 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\ApiSession;
+use Permission;
+use QuestionGroup;
+use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\ApiSession;
 
 class SurveyGroupPropertiesGet implements CommandInterface
 {
@@ -13,10 +16,10 @@ class SurveyGroupPropertiesGet implements CommandInterface
      * Run group properties get command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request\Request $request
+     * @return LimeSurvey\Api\Command\Response\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iGroupID = (int) $request->getData('groupID');
@@ -25,17 +28,17 @@ class SurveyGroupPropertiesGet implements CommandInterface
 
         $apiSession = new ApiSession;
         if ($apiSession->checkKey($sSessionKey)) {
-            $oGroup = \QuestionGroup::model()
+            $oGroup = QuestionGroup::model()
                 ->with('questiongroupl10ns')
                 ->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup)) {
-                return new CommandResponse(
+                return new Response(
                     array('status' => 'Error: Invalid group ID')
                 );
             }
 
             if (
-                \Permission::model()
+                Permission::model()
                 ->hasSurveyPermission(
                     $oGroup->sid,
                     'survey',
@@ -44,16 +47,16 @@ class SurveyGroupPropertiesGet implements CommandInterface
             ) {
                 $iSurveyID = $oGroup->sid;
                 if (is_null($sLanguage)) {
-                    $sLanguage = \Survey::model()->findByPk($iSurveyID)->language;
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return new CommandResponse(
+                    return new Response(
                         array('status' => 'Error: Invalid language')
                     );
                 }
 
-                $aBasicDestinationFields = \QuestionGroup::model()->tableSchema->columnNames;
+                $aBasicDestinationFields = QuestionGroup::model()->tableSchema->columnNames;
                 array_push($aBasicDestinationFields, 'group_name');
                 array_push($aBasicDestinationFields, 'description');
                 if (!empty($aGroupSettings)) {
@@ -66,7 +69,7 @@ class SurveyGroupPropertiesGet implements CommandInterface
                 }
 
                 if (empty($aGroupSettings)) {
-                    return new CommandResponse(array('status' => 'No valid Data'));
+                    return new Response(array('status' => 'No valid Data'));
                 }
 
                 foreach ($aGroupSettings as $sGroupSetting) {
@@ -79,14 +82,14 @@ class SurveyGroupPropertiesGet implements CommandInterface
                         $aResult[$sGroupSetting] = $oGroup->questiongroupl10ns[$sLanguage]->$sGroupSetting;
                     }
                 }
-                return new CommandResponse($aResult);
+                return new Response($aResult);
             } else {
-                return new CommandResponse(
+                return new Response(
                     array('status' => 'No permission')
                 );
             }
         } else {
-            return new CommandResponse(array(
+            return new Response(array(
                 'status' => ApiSession::INVALID_SESSION_KEY
             ));
         }

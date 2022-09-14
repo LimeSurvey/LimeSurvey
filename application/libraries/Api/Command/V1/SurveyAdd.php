@@ -2,10 +2,15 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\ApiSession;
+use Exception;
+use Permission;
+use Survey;
+use SurveyLanguageSetting;
+use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\ApiSession;
 
 class SurveyAdd implements CommandInterface
 {
@@ -13,10 +18,10 @@ class SurveyAdd implements CommandInterface
      * Run survey add command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request\Request $request
+     * @return LimeSurvey\Api\Command\Response\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iSurveyID = (int) $request->getData('surveyID');
@@ -26,9 +31,9 @@ class SurveyAdd implements CommandInterface
 
         $apiSession = new ApiSession;
 
-        \Yii::app()->loadHelper("surveytranslator");
+        Yii::app()->loadHelper("surveytranslator");
         if ($apiSession->checkKey($sSessionKey)) {
-            if (\Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
                 if (
                     $sSurveyTitle == ''
                     || $sSurveyLanguage == ''
@@ -40,7 +45,7 @@ class SurveyAdd implements CommandInterface
 
                 $aInsertData = array(
                     'template' => App()->getConfig('defaulttheme'),
-                    'owner_id' => \Yii::app()->session['loginID'],
+                    'owner_id' => Yii::app()->session['loginID'],
                     'active' => 'N',
                     'language' => $sSurveyLanguage,
                     'format' => $sformat
@@ -51,7 +56,7 @@ class SurveyAdd implements CommandInterface
                 }
 
                 try {
-                    $newSurvey = \Survey::model()->insertNewSurvey($aInsertData);
+                    $newSurvey = Survey::model()->insertNewSurvey($aInsertData);
                     if (!$newSurvey->sid) {
                         return array('status' => 'Creation Failed'); // status are a string, another way to send errors ?
                     }
@@ -65,22 +70,22 @@ class SurveyAdd implements CommandInterface
                         'surveyls_language' => $sSurveyLanguage,
                     );
 
-                    $langsettings = new \SurveyLanguageSetting();
+                    $langsettings = new SurveyLanguageSetting();
                     $langsettings->insertNewSurvey($aInsertData);
-                    \Permission::model()->giveAllSurveyPermissions(
-                        \Yii::app()->session['loginID'],
+                    Permission::model()->giveAllSurveyPermissions(
+                        Yii::app()->session['loginID'],
                         $iNewSurveyid
                     );
 
-                    return new CommandResponse((int) $iNewSurveyid);
-                } catch (\Exception $e) {
-                    return new CommandResponse(array('status' => $e->getMessage()));
+                    return new Response((int) $iNewSurveyid);
+                } catch (Exception $e) {
+                    return new Response(array('status' => $e->getMessage()));
                 }
             } else {
-                return new CommandResponse(array('status' => 'No permission'));
+                return new Response(array('status' => 'No permission'));
             }
         } else {
-            return new CommandResponse(array('status' => ApiSession::INVALID_SESSION_KEY));
+            return new Response(array('status' => ApiSession::INVALID_SESSION_KEY));
         }
     }
 }

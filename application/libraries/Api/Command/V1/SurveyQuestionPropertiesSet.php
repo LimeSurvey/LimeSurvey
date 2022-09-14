@@ -2,10 +2,15 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\ApiSession;
+use Exception;
+use Permission;
+use Question;
+use Survey;
+use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\ApiSession;
 
 class SurveyQuestionPropertiesSet implements CommandInterface
 {
@@ -13,10 +18,10 @@ class SurveyQuestionPropertiesSet implements CommandInterface
      * Run survey question properties set command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request $request
+     * @return LimeSurvey\Api\Command\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iQuestionID = (int) $request->getData('questionID');
@@ -25,27 +30,27 @@ class SurveyQuestionPropertiesSet implements CommandInterface
 
         $apiSession = new ApiSession;
         if ($apiSession->checkKey($sSessionKey)) {
-            \Yii::app()->loadHelper("surveytranslator");
+            Yii::app()->loadHelper("surveytranslator");
             $iQuestionID = (int) $iQuestionID;
-            $oQuestion = \Question::model()->findByAttributes(array('qid' => $iQuestionID));
+            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion)) {
-                return new CommandResponse(array('status' => 'Error: Invalid group ID'));
+                return new Response(array('status' => 'Error: Invalid group ID'));
             }
 
             $iSurveyID = $oQuestion->sid;
 
-            if (\Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
                 if (is_null($sLanguage)) {
-                    $sLanguage = \Survey::model()->findByPk($iSurveyID)->language;
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return new CommandResponse(array('status' => 'Error: Invalid language'));
+                    return new Response(array('status' => 'Error: Invalid language'));
                 }
 
-                $oQuestion = \Question::model()->findByAttributes(array('qid' => $iQuestionID));
+                $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
                 if (!isset($oQuestion)) {
-                    return new CommandResponse(array('status' => 'Error: Invalid questionid'));
+                    return new Response(array('status' => 'Error: Invalid questionid'));
                 }
 
                 // Remove fields that may not be modified
@@ -56,12 +61,12 @@ class SurveyQuestionPropertiesSet implements CommandInterface
                 unset($aQuestionData['language']);
                 unset($aQuestionData['type']);
                 // Remove invalid fields
-                $aDestinationFields = array_flip(\Question::model()->tableSchema->columnNames);
+                $aDestinationFields = array_flip(Question::model()->tableSchema->columnNames);
                 $aQuestionData = array_intersect_key($aQuestionData, $aDestinationFields);
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
                 if (empty($aQuestionData)) {
-                    return new CommandResponse(array('status' => 'No valid Data'));
+                    return new Response(array('status' => 'No valid Data'));
                 }
 
                 foreach ($aQuestionData as $sFieldName => $sValue) {
@@ -79,23 +84,23 @@ class SurveyQuestionPropertiesSet implements CommandInterface
 
                     try {
                         $bSaveResult = $oQuestion->save(); // save the change to database
-                        \Question::model()->updateQuestionOrder($oQuestion->gid);
+                        Question::model()->updateQuestionOrder($oQuestion->gid);
                         $aResult[$sFieldName] = $bSaveResult;
                         //unset fields that failed
                         if (!$bSaveResult) {
                             $oQuestion->$sFieldName = $aQuestionAttributes[$sFieldName];
                         }
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         //unset fields that caused exception
                         $oQuestion->$sFieldName = $aQuestionAttributes[$sFieldName];
                     }
                 }
-                return new CommandResponse($aResult);
+                return new Response($aResult);
             } else {
-                return new CommandResponse(array('status' => 'No permission'));
+                return new Response(array('status' => 'No permission'));
             }
         } else {
-            return new CommandResponse(array('status' => ApiSession::INVALID_SESSION_KEY));
+            return new Response(array('status' => ApiSession::INVALID_SESSION_KEY));
         }
     }
 }

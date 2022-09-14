@@ -2,10 +2,13 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\ApiSession;
+use Permission;
+use QuestionGroup;
+use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\ApiSession;
 
 class SurveyGroupDelete implements CommandInterface
 {
@@ -13,10 +16,10 @@ class SurveyGroupDelete implements CommandInterface
      * Run group delete command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request\Request $request
+     * @return LimeSurvey\Api\Command\Response\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iSurveyID = (int) $request->getData('surveyID');
@@ -24,31 +27,31 @@ class SurveyGroupDelete implements CommandInterface
 
         $apiSession = new ApiSession;
         if ($apiSession->checkKey($sSessionKey)) {
-            $oSurvey = \Survey::model()->findByPk($iSurveyID);
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return new CommandResponse(
+                return new Response(
                     array('status' => 'Error: Invalid survey ID')
                 );
             }
 
             if (
-                \Permission::model()
+                Permission::model()
                 ->hasSurveyPermission(
                     $iSurveyID,
                     'surveycontent',
                     'delete'
                 )
             ) {
-                $oGroup = \QuestionGroup::model()
+                $oGroup = QuestionGroup::model()
                     ->findByAttributes(array('gid' => $iGroupID));
                 if (!isset($oGroup)) {
-                    return new CommandResponse(
+                    return new Response(
                         array('status' => 'Error: Invalid group ID')
                     );
                 }
 
                 if ($oSurvey->isActive) {
-                    return new CommandResponse(
+                    return new Response(
                         array('status' => 'Error:Survey is active and not editable')
                     );
                 }
@@ -60,32 +63,32 @@ class SurveyGroupDelete implements CommandInterface
                     "by-targgid"
                 );
                 if (isset($dependantOn)) {
-                    return new CommandResponse(
+                    return new Response(
                         array('status' => 'Group with dependencies - deletion not allowed')
                     );
                 }
 
-                $iGroupsDeleted = \QuestionGroup::deleteWithDependency(
+                $iGroupsDeleted = QuestionGroup::deleteWithDependency(
                     $iGroupID,
                     $iSurveyID
                 );
 
                 if ($iGroupsDeleted === 1) {
-                    \QuestionGroup::model()
+                    QuestionGroup::model()
                         ->updateGroupOrder($iSurveyID);
-                    return new CommandResponse((int) $iGroupID);
+                    return new Response((int) $iGroupID);
                 } else {
-                    return new CommandResponse(
+                    return new Response(
                         array('status' => 'Group deletion failed')
                     );
                 }
             } else {
-                return new CommandResponse(
+                return new Response(
                     array('status' => 'No permission')
                 );
             }
         } else {
-            return new CommandResponse(
+            return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY)
             );
         }

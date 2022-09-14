@@ -2,10 +2,14 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\ApiSession;
+use Permission;
+use QuestionGroup;
+use Survey;
+use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\ApiSession;
 
 class SurveyQuestionList implements CommandInterface
 {
@@ -13,10 +17,10 @@ class SurveyQuestionList implements CommandInterface
      * Run survey question list command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request $request
+     * @return LimeSurvey\Api\Command\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iSurveyID = (int) $request->getData('surveyID');
@@ -25,18 +29,18 @@ class SurveyQuestionList implements CommandInterface
 
         $apiSession = new ApiSession;
         if ($apiSession->checkKey($sSessionKey)) {
-            \Yii::app()->loadHelper("surveytranslator");
+            Yii::app()->loadHelper("surveytranslator");
             $iSurveyID = (int) $iSurveyID;
-            $oSurvey = \Survey::model()->findByPk($iSurveyID);
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
 
             if (empty($oSurvey)) {
-                return new CommandResponse(
+                return new Response(
                     ['status' => 'Error: Invalid survey ID']
                 );
             }
 
             if (
-                \Permission::model()
+                Permission::model()
                 ->hasSurveyPermission(
                     $iSurveyID,
                     'survey',
@@ -53,24 +57,24 @@ class SurveyQuestionList implements CommandInterface
                         getLanguageDataRestricted()
                     ) || !in_array($sLanguage, $oSurvey->allLanguages)
                 ) {
-                    return new CommandResponse(
+                    return new Response(
                         ['status' => 'Error: Invalid language']
                     );
                 }
 
                 if ($iGroupID != null) {
                     $iGroupID = (int) $iGroupID;
-                    $oGroup = \QuestionGroup::model()
+                    $oGroup = QuestionGroup::model()
                         ->findByPk($iGroupID);
 
                     if (empty($oGroup)) {
-                        return new CommandResponse(
+                        return new Response(
                             ['status' => 'Error: group not found']
                         );
                     }
 
                     if ($oGroup->sid != $oSurvey->sid) {
-                        return new CommandResponse(
+                        return new Response(
                             ['status' => 'Error: Mismatch in surveyid and groupid']
                         );
                     } else {
@@ -81,7 +85,7 @@ class SurveyQuestionList implements CommandInterface
                 }
 
                 if (count($aQuestionList) == 0) {
-                    return new CommandResponse(
+                    return new Response(
                         ['status' => 'No questions found']
                     );
                 }
@@ -98,14 +102,14 @@ class SurveyQuestionList implements CommandInterface
                         $oQuestion->attributes
                     );
                 }
-                return new CommandResponse($aData);
+                return new Response($aData);
             } else {
-                return new CommandResponse(
+                return new Response(
                     ['status' => 'No permission']
                 );
             }
         } else {
-            return new CommandResponse(
+            return new Response(
                 ['status' => ApiSession::INVALID_SESSION_KEY]
             );
         }

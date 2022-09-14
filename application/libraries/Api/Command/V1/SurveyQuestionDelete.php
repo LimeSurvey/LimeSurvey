@@ -2,10 +2,15 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\ApiSession;
+use Condition;
+use Exception;
+use LimeExpressionManager;
+use Permission;
+use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
-use LimeSurvey\Api\Command\CommandRequest;
-use LimeSurvey\Api\Command\CommandResponse;
+use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\ApiSession;
 
 class SurveyQuestionDelete implements CommandInterface
 {
@@ -13,10 +18,10 @@ class SurveyQuestionDelete implements CommandInterface
      * Run survey question delete command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\CommandRequest $request
-     * @return LimeSurvey\Api\Command\CommandResponse
+     * @param LimeSurvey\Api\Command\Request\Request $request
+     * @return LimeSurvey\Api\Command\Response\Response
      */
-    public function run(CommandRequest $request)
+    public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iQuestionID = (int) $request->getData('questionID');
@@ -26,46 +31,46 @@ class SurveyQuestionDelete implements CommandInterface
             $apiSession->checkKey($sSessionKey)
         ) {
             $iQuestionID = (int) $iQuestionID;
-            $oQuestion = \Question::model()->findByPk($iQuestionID);
+            $oQuestion = Question::model()->findByPk($iQuestionID);
             if (!isset($oQuestion)) {
-                return new CommandResponse(array('status' => 'Error: Invalid question ID'));
+                return new Response(array('status' => 'Error: Invalid question ID'));
             }
 
             $iSurveyID = $oQuestion['sid'];
 
-            if (\Permission::model()
+            if (Permission::model()
                 ->hasSurveyPermission(
                     $iSurveyID,
                     'surveycontent',
                     'delete'
                 )
             ) {
-                $oSurvey = \Survey::model()->findByPk($iSurveyID);
+                $oSurvey = Survey::model()->findByPk($iSurveyID);
 
                 if ($oSurvey->isActive) {
-                    return new CommandResponse(array('status' => 'Survey is active and not editable'));
+                    return new Response(array('status' => 'Survey is active and not editable'));
                 }
 
-                $oCondition = \Condition::model()->findAllByAttributes(array('cqid' => $iQuestionID));
+                $oCondition = Condition::model()->findAllByAttributes(array('cqid' => $iQuestionID));
                 if (count($oCondition) > 0) {
-                    return new CommandResponse(
+                    return new Response(
                         array('status' => 'Cannot delete Question. Others rely on this question')
                     );
                 }
 
-                \LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $iQuestionID);
+                LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $iQuestionID);
 
                 try {
                     $oQuestion->delete();
-                    return new CommandResponse((int) $iQuestionID);
-                } catch (\Exception $e) {
-                    return new CommandResponse(array('status' => $e->getMessage()));
+                    return new Response((int) $iQuestionID);
+                } catch (Exception $e) {
+                    return new Response(array('status' => $e->getMessage()));
                 }
             } else {
-                return new CommandResponse(array('status' => 'No permission'));
+                return new Response(array('status' => 'No permission'));
             }
         } else {
-            return new CommandResponse(array('status' => ApiSession::INVALID_SESSION_KEY));
+            return new Response(array('status' => ApiSession::INVALID_SESSION_KEY));
         }
     }
 }

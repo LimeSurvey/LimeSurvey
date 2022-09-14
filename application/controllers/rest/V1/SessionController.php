@@ -12,7 +12,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-use LimeSurvey\Api\Command\CommandRequest;
+use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\V1\SessionKeyCreate;
 use LimeSurvey\Api\Command\V1\SessionKeyRelease;
 
@@ -20,13 +20,13 @@ class SessionController extends LSYii_ControllerRest
 {
     public function actionKeyPost()
     {
-        $request = \Yii::app()->request;
+        $request = Yii::app()->request;
         $requestData = [
             'username' => $request->getPost('username'),
             'password' => $request->getPost('password')
         ];
         $commandResponse = (new SessionKeyCreate)
-            ->run(new CommandRequest($requestData));
+            ->run(new Request($requestData));
 
         $this->renderJson($commandResponse->getData());
     }
@@ -37,7 +37,7 @@ class SessionController extends LSYii_ControllerRest
             'sessionKey' => $this->getAuthToken()
         ];
         $commandResponse = (new SessionKeyRelease)->run(
-            new CommandRequest($requestData)
+            new Request($requestData)
         );
 
         $this->renderJson($commandResponse->getData());
