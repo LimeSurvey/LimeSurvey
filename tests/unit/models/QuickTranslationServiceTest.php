@@ -29,6 +29,14 @@ class QuickTranslationServiceTest extends TestBaseClass
         $this->assertEquals($ts[0]->surveyls_title, 'translation');
     }
 
+    public function testGetTranslationsQuestion()
+    {
+        $qt = new QuickTranslation(self::$testSurvey);
+        $ts = $qt->getTranslations('question', 'en');
+        $this->assertNotEmpty($ts[0]->questionl10ns);
+        $this->assertEquals($ts[0]->questionl10ns['en']->help, 'This is a question help text.');
+    }
+
     public function testUpdateTranslationUnknownField()
     {
         $qt = new QuickTranslation(self::$testSurvey);
