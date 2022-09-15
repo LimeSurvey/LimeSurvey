@@ -28,7 +28,7 @@ class SessionController extends LSYii_ControllerRest
         $commandResponse = (new SessionKeyCreate)
             ->run(new Request($requestData));
 
-        $this->renderJson($commandResponse->getData());
+        $this->renderCommandResponse($commandResponse);
     }
 
     public function actionKeyDelete()
@@ -40,6 +40,6 @@ class SessionController extends LSYii_ControllerRest
             new Request($requestData)
         );
 
-        $this->renderJson($commandResponse->getData());
+        $this->renderCommandResponse($commandResponse);
     }
 }

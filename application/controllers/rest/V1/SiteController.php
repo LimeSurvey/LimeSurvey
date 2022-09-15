@@ -24,6 +24,6 @@ class SiteController extends LSYii_ControllerRest
         $commandRequest = new Request([]);
         $commandResponse = (new SiteSettingsGet)->run($commandRequest);
 
-        $this->renderJson($commandResponse->getData());
+        $this->renderCommandResponse($commandResponse);
     }
 }

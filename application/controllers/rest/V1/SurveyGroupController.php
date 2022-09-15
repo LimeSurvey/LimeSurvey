@@ -28,6 +28,6 @@ class SurveyGroupController extends LSYii_ControllerRest
         $commandResponse = (new SurveyGroupList)
             ->run(new Request($requestData));
 
-        $this->renderJson($commandResponse->getData());
+        $this->renderCommandResponse($commandResponse);
     }
 }

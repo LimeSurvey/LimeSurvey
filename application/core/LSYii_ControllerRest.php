@@ -16,6 +16,9 @@ if (!defined('BASEPATH')) {
  *
  */
 
+ use LimeSurvey\Api\Command\Response\Response;
+ use LimeSurvey\Api\Command\Response\Status\StatusAbstract;
+
 abstract class LSYii_ControllerRest extends LSYii_Controller
 {
     /**
@@ -40,13 +43,29 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
     }
 
     /**
+     * Return data to browser as JSON with the correct http response code.
+     * 
+     * @param Response $response
+     * @return void
+     */
+    protected function renderCommandResponse(Response $response)
+    {
+        $this->renderJSON(
+            $response->getData(), 
+            $this->getHttpResponseCode($response->getStatus())
+        );
+    }
+
+    /**
      * Return data to browser as JSON and end application.
      * 
      * @param array $data
+     * @param int $responseCode
      * @return void
      */
-    protected function renderJSON($data)
+    protected function renderJSON($data, $responseCode = 200)
     {
+        http_response_code($responseCode);
         header('Content-type: application/json');
         echo CJSON::encode($data);
 
@@ -56,6 +75,32 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
             }
         }
         Yii::app()->end();
+    }
+
+    protected function getHttpResponseCode(StatusAbstract $status)
+    {
+        $httpCode = 200;
+        switch ($status->getCode()) {
+            case 'success':
+                $httpCode = 200;
+            break;
+            case 'success_created':
+                $httpCode = 201;
+            break;
+            case 'error':
+                $httpCode = 400;
+            break;
+            case 'error_unauthorised':
+                $httpCode = 401;
+            break;
+            case 'error_bad_request':
+                $httpCode = 400;
+            break;
+            case 'error_not_found':
+                $httpCode = 404;
+            break;
+        }
+        return $httpCode;
     }
 
     /**
