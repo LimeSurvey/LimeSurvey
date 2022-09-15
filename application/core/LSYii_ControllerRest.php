@@ -16,8 +16,8 @@ if (!defined('BASEPATH')) {
  *
  */
 
- use LimeSurvey\Api\Command\Response\Response;
- use LimeSurvey\Api\Command\Response\Status\StatusAbstract;
+use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\Response\Status\StatusAbstract;
 
 abstract class LSYii_ControllerRest extends LSYii_Controller
 {
@@ -43,7 +43,7 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
     }
 
     /**
-     * Return data to browser as JSON with the correct http response code.
+     * Return data to browser as JSON with the correct hHTTPttp response code.
      * 
      * @param Response $response
      * @return void
@@ -77,6 +77,12 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
         Yii::app()->end();
     }
 
+    /**
+     * Get HTTP response code from command response status.
+     * 
+     * @param StatusAbstract $status
+     * @return void
+     */
     protected function getHttpResponseCode(StatusAbstract $status)
     {
         $httpCode = 200;
