@@ -18,9 +18,9 @@ class dateFunctions extends PluginBase
                 '\dateFunctions\EMFunctions::localize_date',
                 null, // No javascript function : set as static function
                 $this->gT("Formats a date according to the Survey's date format for the specified language. Example: localize_date(VALIDUNTIL, TOKEN:LANGUAGE)"), // Description for admin
-                'string localize_date(date, language)', // Extra description
+                'string localize_date(date [, language])', // Extra description
                 'https://manual.limesurvey.org/', // Help url
-                2 // Number of arguments : 2
+                1, 2 // Number of arguments : 1 or 2 (language is optional)
             )
         );
         $this->getEvent()->append('functions', $newFunctions);

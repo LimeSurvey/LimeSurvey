@@ -15,10 +15,10 @@ class EMFunctions
     /**
      * Formats a date according to the Survey's date format for the specified language
      * @param string $date : a date in "Y-m-d H:i:s" format. Example: VALIDFROM.
-     * @param string $language : the language used for localization. If the language is not configured in the survey, the base language will be used. Example: TOKEN:LANGUAGE
+     * @param string|null $language : the language used for localization. Defaults to current session language. If the language is not configured in the survey, the base language will be used. Example: TOKEN:LANGUAGE
      * @return string
      */
-    public static function localize_date($date, $language)
+    public static function localize_date($date, $language = null)
     {
         if (empty($date)) {
             return '';
@@ -31,7 +31,11 @@ class EMFunctions
             return '';
         }
 
-        // If the specified language is note one of the survey's languages, fallback to the survey's base language.
+        if (empty($language)) {
+            $language = \Yii::app()->getLanguage();
+        }
+
+        // If the specified language is not one of the survey's languages, fallback to the survey's base language.
         if (!in_array($language, $survey->getAllLanguages()) || empty($survey->languagesettings[$language])) {
             $language = $survey->language;
         }
