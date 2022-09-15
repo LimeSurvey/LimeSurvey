@@ -9,6 +9,11 @@ use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
+use LimeSurvey\Api\Command\Response\Status\StatusError;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
 class SurveyQuestionList implements CommandInterface
@@ -35,7 +40,8 @@ class SurveyQuestionList implements CommandInterface
 
             if (empty($oSurvey)) {
                 return new Response(
-                    ['status' => 'Error: Invalid survey ID']
+                    ['status' => 'Error: Invalid survey ID'],
+                    new StatusErrorNotFound
                 );
             }
 
@@ -58,7 +64,8 @@ class SurveyQuestionList implements CommandInterface
                     ) || !in_array($sLanguage, $oSurvey->allLanguages)
                 ) {
                     return new Response(
-                        ['status' => 'Error: Invalid language']
+                        ['status' => 'Error: Invalid language'],
+                        new StatusErrorBadRequest
                     );
                 }
 
@@ -69,13 +76,15 @@ class SurveyQuestionList implements CommandInterface
 
                     if (empty($oGroup)) {
                         return new Response(
-                            ['status' => 'Error: group not found']
+                            ['status' => 'Error: group not found'],
+                            new StatusErrorNotFound
                         );
                     }
 
                     if ($oGroup->sid != $oSurvey->sid) {
                         return new Response(
-                            ['status' => 'Error: Mismatch in surveyid and groupid']
+                            ['status' => 'Error: Mismatch in surveyid and groupid'],
+                            new StatusErrorNotFound
                         );
                     } else {
                         $aQuestionList = $oGroup->allQuestions;
@@ -86,7 +95,8 @@ class SurveyQuestionList implements CommandInterface
 
                 if (count($aQuestionList) == 0) {
                     return new Response(
-                        ['status' => 'No questions found']
+                        ['status' => 'No questions found'],
+                        new StatusSuccess
                     );
                 }
 
@@ -102,15 +112,20 @@ class SurveyQuestionList implements CommandInterface
                         $oQuestion->attributes
                     );
                 }
-                return new Response($aData);
+                return new Response(
+                    $aData, 
+                    new StatusSuccess
+                );
             } else {
                 return new Response(
-                    ['status' => 'No permission']
+                    ['status' => 'No permission'],
+                    new StatusErrorUnauthorised
                 );
             }
         } else {
             return new Response(
                 ['status' => ApiSession::INVALID_SESSION_KEY]
+                new StatusErrorUnauthorised
             );
         }
     }

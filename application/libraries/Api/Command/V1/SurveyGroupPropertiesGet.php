@@ -8,6 +8,11 @@ use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
+use LimeSurvey\Api\Command\Response\Status\StatusError;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
 class SurveyGroupPropertiesGet implements CommandInterface
@@ -33,7 +38,8 @@ class SurveyGroupPropertiesGet implements CommandInterface
                 ->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup)) {
                 return new Response(
-                    array('status' => 'Error: Invalid group ID')
+                    array('status' => 'Error: Invalid group ID'),
+                    new StatusErrorNotFound
                 );
             }
 
@@ -52,7 +58,8 @@ class SurveyGroupPropertiesGet implements CommandInterface
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
                     return new Response(
-                        array('status' => 'Error: Invalid language')
+                        array('status' => 'Error: Invalid language'),
+                        new StatusErrorBadRequest
                     );
                 }
 
@@ -69,7 +76,10 @@ class SurveyGroupPropertiesGet implements CommandInterface
                 }
 
                 if (empty($aGroupSettings)) {
-                    return new Response(array('status' => 'No valid Data'));
+                    return new Response(
+                        array('status' => 'No valid Data'),
+                        new StatusSuccess
+                    );
                 }
 
                 foreach ($aGroupSettings as $sGroupSetting) {
@@ -82,15 +92,20 @@ class SurveyGroupPropertiesGet implements CommandInterface
                         $aResult[$sGroupSetting] = $oGroup->questiongroupl10ns[$sLanguage]->$sGroupSetting;
                     }
                 }
-                return new Response($aResult);
+                return new Response(
+                    $aResult, 
+                    new StatusSuccess
+                );
             } else {
                 return new Response(
-                    array('status' => 'No permission')
+                    array('status' => 'No permission'),
+                    new StatusErrorUnauthorised
                 );
             }
         } else {
             return new Response(array(
-                'status' => ApiSession::INVALID_SESSION_KEY
+                'status' => ApiSession::INVALID_SESSION_KEY,
+                new StatusErrorUnauthorised
             ));
         }
     }

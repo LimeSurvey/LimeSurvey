@@ -9,6 +9,11 @@ use QuestionGroupL10n;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
+use LimeSurvey\Api\Command\Response\Status\StatusError;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
 class SurveyGroupPropertiesSet implements CommandInterface
@@ -34,7 +39,8 @@ class SurveyGroupPropertiesSet implements CommandInterface
                 ->findByAttributes(array('gid' => $iGroupID));
             if (is_null($oGroup)) {
                 return new Response(
-                    array('status' => 'Error: Invalid group ID')
+                    array('status' => 'Error: Invalid group ID'),
+                    new StatusErrorNotFound
                 );
             }
             if (
@@ -127,10 +133,14 @@ class SurveyGroupPropertiesSet implements CommandInterface
                 if (empty($aGroupData)) {
                     if (empty($aResult)) {
                         return new Response(
-                            array('status' => 'No valid Data')
+                            array('status' => 'No valid Data'),
+                            new StatusSuccess
                         );
                     } else {
-                        return new Response($aResult);
+                        return new Response(
+                            $aResult, 
+                            new StatusSuccess
+                        );
                     }
                 }
 
@@ -172,15 +182,20 @@ class SurveyGroupPropertiesSet implements CommandInterface
                         $oGroup->$sFieldName = $aGroupAttributes[$sFieldName];
                     }
                 }
-                return new Response($aResult);
+                return new Response(
+                    $aResult, 
+                    new StatusSuccess
+                );
             } else {
                 return new Response(
-                    array('status' => 'No permission')
+                    array('status' => 'No permission'),
+                    new StatusErrorUnauthorised
                 );
             }
         } else {
             return new Response(
-                array('status' => ApiSession::INVALID_SESSION_KEY)
+                array('status' => ApiSession::INVALID_SESSION_KEY),
+                new StatusErrorUnauthorised
             );
         }
     }

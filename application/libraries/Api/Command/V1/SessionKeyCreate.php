@@ -7,6 +7,8 @@ use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\ApiSession;
 
 class SessionKeyCreate implements CommandInterface
@@ -35,11 +37,20 @@ class SessionKeyCreate implements CommandInterface
             $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
             $session->data = $username;
             $session->save();
-            return new Response($sSessionKey);
+            return new Response(
+                $sSessionKey, 
+                new StatusSuccess
+            );
         }
         if (is_string($loginResult)) {
-            return new Response(array('status' => $loginResult));
+            return new Response(
+                array('status' => $loginResult), 
+                new StatusSuccess
+            );
         }
-        return new Response(array('status' => 'Invalid user name or password'));
+        return new Response(
+            array('status' => 'Invalid user name or password', 
+            new StatusErrorBadRequest)
+        );
     }
 }

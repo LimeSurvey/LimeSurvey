@@ -10,6 +10,11 @@ use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
+use LimeSurvey\Api\Command\Response\Status\StatusError;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
 class SurveyQuestionPropertiesSet implements CommandInterface
@@ -34,7 +39,10 @@ class SurveyQuestionPropertiesSet implements CommandInterface
             $iQuestionID = (int) $iQuestionID;
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion)) {
-                return new Response(array('status' => 'Error: Invalid group ID'));
+                return new Response(
+                    array('status' => 'Error: Invalid group ID'),
+                    new StatusErrorNotFound
+                );
             }
 
             $iSurveyID = $oQuestion->sid;
@@ -45,12 +53,18 @@ class SurveyQuestionPropertiesSet implements CommandInterface
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return new Response(array('status' => 'Error: Invalid language'));
+                    return new Response(
+                        array('status' => 'Error: Invalid language'),
+                        new StatusErrorBadRequest
+                    );
                 }
 
                 $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
                 if (!isset($oQuestion)) {
-                    return new Response(array('status' => 'Error: Invalid questionid'));
+                    return new Response(
+                        array('status' => 'Error: Invalid questionid'),
+                        new StatusErrorBadRequest
+                    );
                 }
 
                 // Remove fields that may not be modified
@@ -66,7 +80,10 @@ class SurveyQuestionPropertiesSet implements CommandInterface
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
                 if (empty($aQuestionData)) {
-                    return new Response(array('status' => 'No valid Data'));
+                    return new Response(
+                        array('status' => 'No valid Data'),
+                        new StatusSuccess
+                    );
                 }
 
                 foreach ($aQuestionData as $sFieldName => $sValue) {
@@ -95,12 +112,21 @@ class SurveyQuestionPropertiesSet implements CommandInterface
                         $oQuestion->$sFieldName = $aQuestionAttributes[$sFieldName];
                     }
                 }
-                return new Response($aResult);
+                return new Response(
+                    $aResult, 
+                    new StatusSuccess
+                );
             } else {
-                return new Response(array('status' => 'No permission'));
+                return new Response(
+                    array('status' => 'No permission'),
+                    new StatusErrorUnauthorised
+                );
             }
         } else {
-            return new Response(array('status' => ApiSession::INVALID_SESSION_KEY));
+            return new Response(
+                array('status' => ApiSession::INVALID_SESSION_KEY),
+                new StatusErrorUnauthorised
+            );
         }
     }
 }

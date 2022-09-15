@@ -11,6 +11,11 @@ use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
+use LimeSurvey\Api\Command\Response\Status\StatusError;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 use LimeSurvey\Models\Services\QuestionAttributeHelper;
 
@@ -35,7 +40,10 @@ class SurveyQuestionPropertiesGet implements CommandInterface
             Yii::app()->loadHelper("surveytranslator");
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion)) {
-                return new Response(array('status' => 'Error: Invalid questionid'));
+                return new Response(
+                    array('status' => 'Error: Invalid questionid'),
+                    new StatusErrorNotFound
+                );
             }
 
             $iSurveyID = $oQuestion->sid;
@@ -46,7 +54,10 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return new Response(array('status' => 'Error: Invalid language'));
+                    return new Response(
+                        array('status' => 'Error: Invalid language'),
+                        new StatusErrorBadRequest
+                    );
                 }
 
                 $oQuestion = Question::model()->with('questionl10ns')
@@ -55,7 +66,10 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                         array(':qid' => $iQuestionID, ':language' => $sLanguage)
                     );
                 if (!isset($oQuestion)) {
-                    return new Response(array('status' => 'Error: Invalid questionid'));
+                    return new Response(
+                        array('status' => 'Error: Invalid questionid'),
+                        new StatusErrorBadRequest
+                    );
                 }
 
                 $aBasicDestinationFields = Question::model()->tableSchema->columnNames;
@@ -75,7 +89,10 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                 }
 
                 if (empty($aQuestionSettings)) {
-                    return new Response(array('status' => 'No valid Data'));
+                    return new Response(
+                        array('status' => 'No valid Data'),
+                        new StatusSuccess
+                    );
                 }
 
                 $aResult = array();
@@ -192,12 +209,21 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                         $aResult[$sPropertyName] = $oQuestion->$sPropertyName;
                     }
                 }
-                return new Response($aResult);
+                return new Response(
+                    $aResult, 
+                    new StatusSuccess
+                );
             } else {
-                return new Response(array('status' => 'No permission'));
+                return new Response(
+                    array('status' => 'No permission'),
+                    new StatusErrorUnauthorised
+                );
             }
         } else {
-            return new Response(array('status' => ApiSession::INVALID_SESSION_KEY));
+            return new Response(
+                array('status' => ApiSession::INVALID_SESSION_KEY)
+                new StatusErrorUnauthorised
+            );
         }
     }
 }

@@ -7,6 +7,8 @@ use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\ApiSession;
 
 class SiteSettingsGet implements CommandInterface
@@ -27,15 +29,27 @@ class SiteSettingsGet implements CommandInterface
         if ($apiSession->checkKey($sessionKey)) {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 if (Yii::app()->getConfig($settingName) !== false) {
-                    return new Response(Yii::app()->getConfig($settingName));
+                    return new Response(
+                        Yii::app()->getConfig($settingName), 
+                        new StatusSuccess
+                    );
                 } else {
-                    return new Response(array('status' => 'Invalid setting'));
+                    return new Response(
+                        array('status' => 'Invalid setting'), 
+                        new StatusErrorBadRequest
+                    );
                 }
             } else {
-                return new Response(array('status' => 'Invalid setting'));
+                return new Response(
+                    array('status' => 'Invalid setting'), 
+                    new StatusErrorBadRequest
+                );
             }
         } else {
-            return new Response(array('status' => ApiSession::INVALID_SESSION_KEY));
+            return new Response(
+                array('status' => ApiSession::INVALID_SESSION_KEY), 
+                new StatusErrorBadRequest
+            );
         }
     }
 }

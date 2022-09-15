@@ -2,10 +2,10 @@
 
 namespace LimeSurvey\Api\Command\Response\Status;
 
-class StatusErrorUnauthorised extends StatusError
+class StatusError extends StatusAbstract
 {
     public function __construct()
     {
-        $this->code = 'error_unauthorised';
+        $this->code = 'error';
     }
 }
