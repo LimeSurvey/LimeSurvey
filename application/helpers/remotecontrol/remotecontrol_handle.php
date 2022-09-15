@@ -1,6 +1,6 @@
 <?php
 
-use LimeSurvey\Api\Command\CommandRequest;
+use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\V1\SessionKeyCreate;
 use LimeSurvey\Api\Command\V1\SessionKeyRelease;
 use LimeSurvey\Api\Command\V1\SiteSettingsGet;
