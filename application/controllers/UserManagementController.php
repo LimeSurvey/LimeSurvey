@@ -448,14 +448,33 @@ class UserManagementController extends LSBaseController
     public function actionSaveUserPermissions(): string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return $this->renderPartial(
-                'partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => true,// With false : nothing was updated
+                    'html'    => $this->renderPartial(
+                        'partial/error',
+                        ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true],
+                        true
+                    )
+                ]
+            ]);
         }
         $userId = Yii::app()->request->getPost('userid');
+        /* Can not update self */
+        if (Yii::app()->session['loginID'] == $userId) {
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => true,// With false : nothing was updated
+                    'html'    => $this->renderPartial(
+                        'partial/error',
+                        ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true],
+                        true
+                    )
+                ]
+            ]);
+        }
         $aPermissions = Yii::app()->request->getPost('Permission', []);
-
+        /* Set permission here remove roles : Another user can remove permssion from roles */
         Permissiontemplates::model()->clearUser($userId);
 
         $results = $this->applyPermissionFromArray($userId, $aPermissions);
@@ -1383,7 +1402,7 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Adds permission to a users
+     * Set permission to a users
      * Needs an array in the form of [PERMISSIONID][PERMISSION]
      *
      * todo REFACTORING this should be moved to model (user or permission)
@@ -1394,33 +1413,41 @@ class UserManagementController extends LSBaseController
      */
     protected function applyPermissionFromArray(int $iUserId, array $aPermissionArray): array
     {
-        //Delete all current Permissions
-        $oCriteria = new CDbCriteria();
-        $oCriteria->compare('uid', $iUserId);
-        // without entity
-        $oCriteria->compare('entity_id', 0);
-        // except for template entity (no entity_id is set here)
-        $oCriteria->compare('entity', "<>template");
-        Permission::model()->deleteAll($oCriteria);
-
+        /**
+         * Get current user permission to update only this permission
+         * NEVER delete existing Permission !
+         */
+        $aAllowedPermissions = $this->getCurrentUserPermission();
         $results = [];
         //Apply the permission array
-        foreach ($aPermissionArray as $sPermissionKey => $aPermissionSettings) {
-            $oPermission = new Permission();
-            $oPermission->entity = 'global';
-            $oPermission->entity_id = 0;
-            $oPermission->uid = $iUserId;
-            $oPermission->permission = $sPermissionKey;
-
-            foreach ($aPermissionSettings as $sSettingKey => $sSettingValue) {
-                $oPermissionDBSettingKey = $sSettingKey . '_p';
-                $oPermission->$oPermissionDBSettingKey = $sSettingValue == 'on' ? 1 : 0;
+        foreach ($aAllowedPermissions as $permissionKey => $aAllowedPermission) {
+            /* get the current user permission or create */
+            $oPermission = Permission::model()->find(
+                "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
+                array(
+                    ":entity" => 'global',
+                    ":entity_id" => 0,
+                    ":uid" => $iUserId,
+                    ":permission" => $permissionKey,
+                )
+            );
+            if (empty($oPermission)) {
+                $oPermission = new Permission();
+                $oPermission->entity = 'global';
+                $oPermission->entity_id = 0;
+                $oPermission->uid = $iUserId;
+                $oPermission->permission = $permissionKey;
             }
-
-            $aPermissionData = Permission::getGlobalPermissionData($sPermissionKey);
-
-            $results[$sPermissionKey] = [
-                'descriptionData' => $aPermissionData,
+            foreach ($aAllowedPermission as $action => $havePermission) {
+                if ($havePermission) {
+                    $oPermission->setAttribute(
+                        $action . '_p',
+                        intval(!empty($aPermissionArray[$permissionKey][$action]))
+                    );
+                }
+            }
+            $results[$permissionKey] = [
+                'descriptionData' => Permission::getGlobalPermissionData($permissionKey),
                 'success' => $oPermission->save(),
                 'storedValue' => $oPermission->attributes
             ];
@@ -1428,6 +1455,48 @@ class UserManagementController extends LSBaseController
         return $results;
     }
 
+    /**
+     * Get user permission (CRUD) as array
+     * @return array
+     */
+    private function getCurrentUserPermission(): array
+    {
+        $aBasePermissions = Permission::model()->getGlobalBasePermissions();
+        /* Get only CRUD part */
+        $aBasePermissions = array_map(
+            function ($aBasePermission) {
+                return array(
+                    'create' => $aBasePermission['read'],
+                    'read' => $aBasePermission['read'],
+                    'update' => $aBasePermission['read'],
+                    'delete' => $aBasePermission['read'],
+                    'import' => $aBasePermission['read'],
+                    'export' => $aBasePermission['read'],
+                );
+            },
+            $aBasePermissions
+        );
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+            $aFilteredPermissions = array();
+            foreach ($aBasePermissions as $PermissionName => $aPermission) {
+                foreach ($aPermission as $sPermissionKey => &$sPermissionValue) {
+                    if (!Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) {
+                        $sPermissionValue = false;
+                    }
+                }
+                // Only show a row for that permission if there is at least one permission he may give to other users
+                if (
+                    $aPermission['create'] || $aPermission['read'] || $aPermission['update']
+                    || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']
+                ) {
+                    $aFilteredPermissions[$PermissionName] = $aPermission;
+                }
+            }
+            $aBasePermissions = $aFilteredPermissions;
+        }
+        return $aBasePermissions;
+    }
     /**
      * CURRENTLY UNUSED
      * Add a tenplated permission to a users
