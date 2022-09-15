@@ -329,18 +329,15 @@ class ResponsesController extends LSBaseController
                         $answervalue = "";
                     }
                 } else {
-                    $answervalue = htmlspecialchars(
-                        strip_tags(
-                            stripJavaScript(
-                                getExtendedAnswer(
-                                    $surveyId,
-                                    $fnames[$i][0],
-                                    $aResult[$fnames[$i][0]],
-                                    $sBrowseLanguage
-                                )
+                    $answervalue = CHtml::encode(
+                        stripJavaScript(
+                            getExtendedAnswer(
+                                $surveyId,
+                                $fnames[$i][0],
+                                $aResult[$fnames[$i][0]],
+                                $sBrowseLanguage
                             )
-                        ),
-                        ENT_QUOTES
+                        )
                     );
                 }
                 $aData['inserthighlight'] = $inserthighlight;
