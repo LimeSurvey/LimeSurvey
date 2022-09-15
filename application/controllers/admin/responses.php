@@ -636,7 +636,7 @@ class responses extends Survey_Common_Action
             if (isset($aQuestionFiles[$iIndex])) {
                 $aFile = $aQuestionFiles[$iIndex];
                 // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
-                $sDir = realpath(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/") . '/';
+                $sDir = realpath(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/") . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
                 $sRealUserPath = realpath($sFileRealName);
                 if ($sRealUserPath === false || strpos($sRealUserPath, $sDir) !== 0) {
