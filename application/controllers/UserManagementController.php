@@ -405,36 +405,17 @@ class UserManagementController extends LSBaseController
         $oUser = User::model()->findByPk($userId);
 
         // Check permissions
-        $aBasePermissions = Permission::model()->getGlobalBasePermissions();
+        $aCurrentUserPermissions = $this->getCurrentUserPermission(false);
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+            // if not superadmin filter show a warning, filter is done un getCurrentUserPermission
             Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
-            $aFilteredPermissions = array();
-            foreach ($aBasePermissions as $PermissionName => $aPermission) {
-                foreach ($aPermission as $sPermissionKey => &$sPermissionValue) {
-                    if (
-                        $sPermissionKey != 'title' && $sPermissionKey != 'img' &&
-                        !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)
-                    ) {
-                        $sPermissionValue = false;
-                    }
-                }
-                // Only show a row for that permission if there is at least one permission he may give to other users
-                if (
-                    $aPermission['create'] || $aPermission['read'] || $aPermission['update']
-                    || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']
-                ) {
-                    $aFilteredPermissions[$PermissionName] = $aPermission;
-                }
-            }
-            $aBasePermissions = $aFilteredPermissions;
         }
 
         return $this->renderPartial(
             'partial/editpermissions',
             [
                 "oUser" => $oUser,
-                "aBasePermissions" => $aBasePermissions,
+                "aBasePermissions" => $aCurrentUserPermissions,
             ]
         );
     }
@@ -1457,31 +1438,35 @@ class UserManagementController extends LSBaseController
 
     /**
      * Get user permission (CRUD) as array
+     * @var boolean $onlyCrud : retuirn only right part or ddetail too (img, description)
      * @return array
      */
-    private function getCurrentUserPermission(): array
+    private function getCurrentUserPermission($onlyCrud = true): array
     {
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
-        /* Get only CRUD part */
-        $aBasePermissions = array_map(
-            function ($aBasePermission) {
-                return array(
-                    'create' => $aBasePermission['read'],
-                    'read' => $aBasePermission['read'],
-                    'update' => $aBasePermission['read'],
-                    'delete' => $aBasePermission['read'],
-                    'import' => $aBasePermission['read'],
-                    'export' => $aBasePermission['read'],
-                );
-            },
-            $aBasePermissions
-        );
+        if ($onlyCrud) {
+            /* Get only CRUD part */
+            $aBasePermissions = array_map(
+                function ($aBasePermission) {
+                    return array(
+                        'create' => $aBasePermission['read'],
+                        'read' => $aBasePermission['read'],
+                        'update' => $aBasePermission['read'],
+                        'delete' => $aBasePermission['read'],
+                        'import' => $aBasePermission['read'],
+                        'export' => $aBasePermission['read'],
+                    );
+                },
+                $aBasePermissions
+            );
+        }
+        $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             $aFilteredPermissions = array();
             foreach ($aBasePermissions as $PermissionName => $aPermission) {
                 foreach ($aPermission as $sPermissionKey => &$sPermissionValue) {
-                    if (!Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) {
+                    if (in_array($sPermissionKey, $aCruds) && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) {
                         $sPermissionValue = false;
                     }
                 }
