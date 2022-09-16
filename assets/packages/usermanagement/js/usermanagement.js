@@ -271,6 +271,14 @@ var UserManagement = function () {
         );
     }
 
+    var wireDatePicker = function () {
+        $('#expires_datetimepicker').datetimepicker({
+            locale: $('#User_Form_expires').data('locale'),
+            allowInputToggle: true,
+            showClear: true
+        });
+    }
+
     var applyModalHtml = function (html) {
         $('#UserManagement-action-modal').find('.modal-content').html(html);
         wirePasswordOptions();
@@ -278,6 +286,7 @@ var UserManagement = function () {
         wireTemplatePermissions();
         wireRoleSet();
         wireForm();
+        wireDatePicker();
     }
 
 
