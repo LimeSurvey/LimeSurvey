@@ -32,15 +32,63 @@ class SurveyPermissions
      * for the survey. The returned array could be empty if there are no users
      * with permissions for this survey.
      *
-     * @return array
+     * @return \CActiveDataProvider
      */
     public function getUsersSurveyPermissions()
     {
-        $usersSurveyPermissions = [];
+        //$authorizedGroupsList = getUserGroupList(); // Limit the group list for the samegrouppolicy
+        $userPermissionCriteria = $this->getUserPermissionCriteria();
+        $data = \Permission::model()->findAll($userPermissionCriteria);
+        return $data;
+    }
 
-        // get all users that have permissions for this survey (except owner and admin)
+    /**
+     * @param integer $iEntityID
+     * @param string $sEntityName
+     * @return \CDbCriteria
+     */
+    public function getUserPermissionCriteria()
+    {
+        $userList = getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
+        $currentUserId = \Yii::app()->user->getId(); //current logged in user
+        $criteria = new \CDbCriteria();
+        $criteria->select = 't.entity_id, t.uid, u.users_name AS username, u.full_name';
+        $criteria->join = 'INNER JOIN {{users}} AS u ON t.uid = u.uid';
+        $criteria->condition = 't.entity_id =:entity_id';
+        $criteria->addCondition('t.entity =:entity');
+        $criteria->addNotInCondition('u.uid', [$currentUserId]);
+        $criteria->addInCondition('t.uid', $userList);
+        $criteria->params = array_merge($criteria->params, [
+            ':entity_id' => $this->survey->sid,
+            ':entity'    => 'survey'
+        ]);
+        $criteria->group = 't.entity_id, t.uid, u.users_name, u.full_name';
+        $criteria->order = 'u.users_name';
 
-        return $usersSurveyPermissions;
+        return $criteria;
+    }
+
+
+    public function getUsersSurveyPermissionEntity($userid, $permission)
+    {
+        $criteria = new \CDbCriteria();
+        $criteria->select = 'create_p, read_p, update_p, delete_p, import_p, export_p';
+        $criteria->condition = 'entity_id =:entity_id';
+        $criteria->addCondition('entity =:entity');
+        $criteria->addCondition('permission =:permission');
+        $criteria->addCondition('uid=:userid');
+        $criteria->params = [
+                ':entity_id' => $this->survey->sid,
+                ':entity'    => 'survey',
+                ':permission' => $permission,
+                ':userid' => $userid
+        ];
+        return \Permission::model()->findByAttributes([
+            'entity_id' => $this->survey->sid,
+            'entity' => 'survey',
+            'permission' => $permission,
+            'uid' => $userid
+        ]);
     }
 
     /**
@@ -179,5 +227,52 @@ class SurveyPermissions
             }
         }
         return $simpleugidarray;
+    }
+
+    /**
+     * @param $userId int
+     * @param $permissions array
+     * @return false
+     */
+    public function saveUserPermissions($userId, $permissions)
+    {
+        $isSaved = false;
+
+        //delete current survey permissions and reset the new ones
+        // ...easier as to compare all of them
+        $this->deleteUserPermissions($userId);
+
+        foreach ($permissions as $permission => $key) {
+            $isResult = \Permission::model()->insertSomeRecords(
+                [
+                    'entity_id' => $this->survey->sid,
+                    'entity' => 'survey',
+                    'uid' => $userId,
+                    'permission' => $permission,
+                    'create_p' => $key['create'] ?? 0,
+                    'read_p' => $key['read'] ?? 0,
+                    'update_p' => $key['update'] ?? 0,
+                    'delete_p' => $key['delete'] ?? 0,
+                    'import_p' => $key['import'] ?? 0,
+                    'export_pa' => $key['export'] ?? 0,
+                ]
+            );
+        }
+
+        return $isSaved;
+    }
+
+    public function saveUserGroupPermissions()
+    {
+    }
+
+    public function deleteUserPermissions($userId)
+    {
+        // todo: ONLY if user is NOT superadmin and NOT survey owner
+        \Permission::model()->deleteAllByAttributes([
+                'entity_id' => $this->survey->sid,
+                'entity' => 'survey',
+                'uid' => $userId
+        ]);
     }
 }

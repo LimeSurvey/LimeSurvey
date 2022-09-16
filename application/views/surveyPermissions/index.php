@@ -4,6 +4,8 @@
 /* @var $surveyid int */
 /* @var $userList array users that could be added to survey permissions */
 /* @var $userGroupList array usergroups that could be added to survey permissions */
+/* @var $tableContent CActiveDataProvider dataProvider for the gridview (table) */
+/* @var $oSurveyPermissions \LimeSurvey\Models\Services\SurveyPermissions */
 
 ?>
 <div id='edit-permission' class='side-body  <?= getSideBodyClass(false) ?> "'>
@@ -14,7 +16,10 @@
         <div class="col-lg-12 content-right">
             <?php
             $this->renderPartial('_overview_table', [
-                'basePermissions' => $basePermissions
+                'basePermissions' => $basePermissions,
+                'tableContent' => $tableContent,
+                'surveyid' => $surveyid,
+                'oSurveyPermissions' => $oSurveyPermissions
             ]);
 
             if ($userCreatePermission) { //only show adduser and addusergroup buttons if permission is set

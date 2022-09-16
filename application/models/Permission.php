@@ -72,6 +72,16 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function relations()
+    {
+        return [
+            'user' => array(self::BELONGS_TO, 'User', 'uid'),
+        ];
+    }
+
+    /**
      * Returns the base permissions for survey
      * @see self::getEntityBasePermissions
      *
@@ -479,10 +489,13 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * moved to SurveyPermissions service class (see getUserPermissionCriteria())
+     *
      * @param integer $iEntityID
      * @param string $sEntityName
      * @return array
      */
+    /*
     public function getUserDetails($iEntityID, $sEntityName = 'survey')
     {
         $sQuery = "SELECT p.entity_id, p.uid, u.users_name, u.full_name FROM {{permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
@@ -495,6 +508,30 @@ class Permission extends LSActiveRecord
             ->bindParam("entityid", $iEntityID, PDO::PARAM_INT)
             ->bindParam("entity", $sEntityName, PDO::PARAM_STR)
             ->query()->readAll(); //Checked
+    }*/
+
+    public function getButtons()
+    {
+        $buttons = "<div class='icon-btn-row'>";
+      //  if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'update')) {
+      //      if ($PermissionRow['uid'] != Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                // Can not update own security
+
+      //      }
+      //  }
+
+        $url = Yii::app()->createUrl("surveyPermissions/settingsPermission/ugid/$this->ugid");
+        $buttons .= ' <a 
+        class="btn btn-default btn-sm green-border" 
+        data-toggle="tooltip" 
+        data-placement="top" 
+        title="' . gT('Edit permissions') . '" 
+        href="' . $url . '" 
+        role="button">
+        <span class="fa fa-pencil" ></span></a>';
+
+        $buttons .= "</div>";
+        return $buttons;
     }
 
     /**

@@ -80,7 +80,9 @@ class SurveyPermissionsController extends LSBaseController
             'userCreatePermission' => Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create'),
             'surveyid' => $surveyid,
             'userList' => $oSurveyPermissions->getSurveyUserList(),
-            'userGroupList' => $oSurveyPermissions->getSurveyUserGroupList()
+            'userGroupList' => $oSurveyPermissions->getSurveyUserGroupList(),
+            'tableContent' => $oSurveyPermissions->getUsersSurveyPermissions(),
+            'oSurveyPermissions' => $oSurveyPermissions
         ]);
     }
 
@@ -226,16 +228,34 @@ class SurveyPermissionsController extends LSBaseController
      */
     public function actionSavePermissions($surveyid)
     {
+        $surveyid = sanitize_int($surveyid);
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
             Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         //get post-params
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $action = Yii::app()->request->getPost('action'); //the action could be 'user' or 'usergroup'
-        $userId = Yii::app()->request->getPost('uid');
-        $userGroupId = Yii::app()->request->getPost('ugid');
-        // 1. save the permissions
-        // 2. redirect to overview (index)
+        $setOfPermissions = Yii::app()->request->getPost('set');
+        $oSurveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions(
+            $oSurvey,
+            Yii::app()->getConfig('usercontrolSameGroupPolicy')
+        );
+        switch ($action) {
+            case 'user':
+                $userId = Yii::app()->request->getPost('uid');
+                $success = $oSurveyPermissions->saveUserPermissions($userId, $setOfPermissions['Survey']);
+                if ($success) {
+                    Yii::app()->user->setFlash('error', gT("Saved permissions for user."));
+                } else {
+                    Yii::app()->user->setFlash('error', gT("Error saving permissions for user."));
+                }
+                break;
+            case 'usergroup':
+                $userGroupId = Yii::app()->request->getPost('ugid');
+                break;
+            default: //error here unknown action
+        }
 
         $this->redirect(array('surveyPermissions/index', 'surveyid' => $surveyid));
     }
