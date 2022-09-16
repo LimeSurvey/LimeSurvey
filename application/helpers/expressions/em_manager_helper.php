@@ -3961,7 +3961,6 @@ class LimeExpressionManager
         } else {
             // Read list of available tokens from the tokens table so that preview and error checking works correctly
             $attrs = array_keys(getTokenFieldsAndNames($surveyid));
-
             $blankVal = [
                 'code'      => '',
                 'type'      => '',
@@ -3969,11 +3968,9 @@ class LimeExpressionManager
                 'jsName'    => '',
                 'readWrite' => 'N',
             ];
-            // DON'T set $this->knownVars['TOKEN'] = $blankVal; becuase optout/optin can need it, then don't replace this from templatereplace
+            // DON'T set $this->knownVars['TOKEN'] = $blankVal; because optout/optin can need it, then don't replace this from templatereplace
             foreach ($attrs as $key) {
-                if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/', $key)) {
-                    $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
-                }
+                $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
             }
         }
 
