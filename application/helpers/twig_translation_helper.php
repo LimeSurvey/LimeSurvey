@@ -24,4 +24,5 @@ function dummy_twig_translation_helper() {
     return;
 
     gT("Your survey responses have not been recorded. This survey is not yet active."); // From themes/survey/vanilla/views/subviews/content/submit_preview.twig:23 (2020/11/16)
+    gT("Inherit everything"); // From themes/survey/vanilla/options/options.twig
 }
