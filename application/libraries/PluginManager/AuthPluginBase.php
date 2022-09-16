@@ -166,4 +166,14 @@ abstract class AuthPluginBase extends PluginBase
 
         return $this;
     }
+
+    /**
+     * Returns the authentication method's name
+     *
+     * @return string
+     */
+    public static function getAuthMethodName()
+    {
+        return self::$name;
+    }
 }
