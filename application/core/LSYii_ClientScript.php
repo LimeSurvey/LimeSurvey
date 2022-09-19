@@ -550,7 +550,7 @@ class LSYii_ClientScript extends CClientScript
                 }
             }
         }
-        $scripts = isset($this->scripts[self::POS_END]) ? $this->scripts[self::POS_END] : array();
+        $scripts = $this->scripts[self::POS_END] ?? array();
 
         if (isset($this->scripts[self::POS_READY])) {
             if ($fullPage) {

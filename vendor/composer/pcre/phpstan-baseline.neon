@@ -1,0 +1,27 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method Composer\\\\Pcre\\\\Preg\\:\\:matchAll\\(\\) should return int\\<0, max\\> but returns int\\.$#"
+			count: 1
+			path: src/Preg.php
+
+		-
+			message: "#^Method Composer\\\\Pcre\\\\Preg\\:\\:matchAllWithOffsets\\(\\) should return int\\<0, max\\> but returns int\\.$#"
+			count: 1
+			path: src/Preg.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between int and null will always evaluate to false\\.$#"
+			count: 2
+			path: src/Preg.php
+
+		-
+			message: "#^Function preg_replace_callback invoked with 6 parameters, 3\\-5 required\\.$#"
+			count: 1
+			path: src/Preg.php
+
+		-
+			message: "#^Function preg_replace_callback_array invoked with 5 parameters, 2\\-4 required\\.$#"
+			count: 1
+			path: src/Preg.php
+
