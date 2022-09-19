@@ -186,8 +186,8 @@ class ThemeOptionsController extends LSBaseController
                     $templatename = $model->name;
                     $aResults[$template]['title'] = $templatename;
                     $aUninstallResult = QuestionTheme::uninstall($model);
-                    $aResults[$template]['result'] = isset($aUninstallResult['result']) ? $aUninstallResult['result'] : false;
-                    $aResults[$template]['error'] = isset($aUninstallResult['error']) ? $aUninstallResult['error'] : null;
+                    $aResults[$template]['result'] = $aUninstallResult['result'] ?? false;
+                    $aResults[$template]['error'] = $aUninstallResult['error'] ?? null;
                 } elseif ($gridid === 'themeoptions-grid') {
                     $aResults[$template]['title'] = $model->template_name;
                     $templatename = $model->template_name;

@@ -631,7 +631,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         }
         $iFieldNumber++;
         $fid = $iFieldNumber - $diff;
-        $lsLong = isset($typeMap[$ftype]["name"]) ? $typeMap[$ftype]["name"] : $ftype;
+        $lsLong = $typeMap[$ftype]["name"] ?? $ftype;
         $tempArray = array(
             'id' => $prefix . $fid,
             'name' => mb_substr($fieldname, 0, 8),
@@ -2883,7 +2883,7 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['class'] = 'Q';
                         $tsv_output['type/scale'] = $question['type'];
                         $tsv_output['name'] = !empty($question['title']) ? $question['title'] : '';
-                        $tsv_output['relevance'] = isset($question['relevance']) ? $question['relevance'] : '';
+                        $tsv_output['relevance'] = $question['relevance'] ?? '';
                         $tsv_output['text'] = !empty($question['question']) ? str_replace(array("\n", "\r"), '', $question['question']) : '';
                         $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
                         $tsv_output['language'] = $question['language'];

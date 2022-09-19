@@ -3505,7 +3505,7 @@ class remotecontrol_handle
             $model->firstname   = $participant['firstname'];
             $model->lastname    = $participant['lastname'];
             $model->email       = $participant['email'];
-            $model->language    = isset($participant['language']) ? $participant['language'] : 'en';
+            $model->language    = $participant['language'] ?? 'en';
             $model->owner_uid   = Yii::app()->session['loginID'];
             $model->blacklisted = (isset($participant['blacklisted']) && $participant['blacklisted'] === 'Y') ? 'Y' : 'N';
 
