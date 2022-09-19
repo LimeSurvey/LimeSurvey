@@ -150,7 +150,10 @@ class LSHttpRequest extends CHttpRequest
     {
         parent::normalizeRequest();
 
-        if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'POST') {
+        if (
+            !isset($_SERVER['REQUEST_METHOD']) 
+            || !in_array($_SERVER['REQUEST_METHOD'], ['POST', 'DELETE'])
+        ) {
             return;
         }
 
