@@ -14,28 +14,36 @@
 
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\V1\QuestionGroupList;
+use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesGet;
 
 class QuestionGroupController extends LSYii_ControllerRest
 {
-    public function actionIndexGet($id = null)
+    /**
+     * Survey id prefixed requests
+     * 
+     * /survey/$surveyId/questiongroup
+     * /survey/$surveyId/questiongroup/$id
+     *
+     * @param [type] $surveyId
+     * @param [type] $id
+     * @return void
+     */
+    public function actionIndexGet($surveyId = null, $id = null)
     {
-        return $id ? $this->actionGetOne($id) : $this->actionGetAll();
+        return $id
+            ? $this->actionGetOne($id)
+            : $this->actionGetAll($surveyId);
     }
 
-    public function actionListGet()
-    {
-        return $this->actionGetAll();
-    }
-
-    protected function actionGetAll()
+    protected function actionGetAll($surveyId)
     {
         $request = Yii::app()->request;
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
-            'surveyID' => $id,
+            'surveyID' => $surveyId,
             'language' => $request->getParam('language')
         ];
-        $commandResponse = (new QuestionGroupList)
+        $commandResponse = (new QuestionGroupList())
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
@@ -46,10 +54,10 @@ class QuestionGroupController extends LSYii_ControllerRest
         $request = Yii::app()->request;
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
-            'surveyID' => $id,
+            'groupID' => $id,
             'language' => $request->getParam('language')
         ];
-        $commandResponse = (new QuestionGroupList)
+        $commandResponse = (new QuestionGroupPropertiesGet())
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
