@@ -26,7 +26,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $startdate Survey Start date (YYYY-MM-DD hh:mm:ss)
  * @property string $adminemail Survey administrator email address
  * @property string $anonymized Whether survey is anonymized or not (Y/N)
- * @property string $faxto
  * @property string $format A : All in one, G : Group by group, Q : question by question, I : inherit value from survey group
  * @property string $savetimings Whether survey timings are saved (Y/N)
  * @property string $template Template name
@@ -331,6 +330,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             PluginSetting::model()->deleteAllByAttributes(array("model" => 'Survey', "model_id" => $this->sid));
             // Delete all uploaded files.
             rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid);
+            // Delete all failed email notifications
+            FailedEmail::model()->deleteAllByAttributes(array('surveyid' => $this->sid));
         }
 
         // Remove from cache
@@ -443,7 +444,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order' => 'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
-            'surveysettings' => array(self::BELONGS_TO, 'SurveysGroupSettings', array('gsid' => 'gsid')),
+            'surveysettings' => array(self::BELONGS_TO, SurveysGroupsettings::class, array('gsid' => 'gsid')),
             'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template')),
             'templateConfiguration' => array(self::HAS_ONE, 'TemplateConfiguration', array('sid' => 'sid'))
         );
@@ -476,9 +477,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('datecreated', 'default', 'value' => date("Y-m-d H:m:s")),
             array('startdate', 'default', 'value' => null),
             array('expires', 'default', 'value' => null),
-            array('admin,faxto', 'LSYii_Validators'),
+            array('admin', 'LSYii_Validators'),
             array('admin', 'length', 'min' => 1, 'max' => 50),
-            array('faxto', 'length', 'min' => 0, 'max' => 20),
             array('adminemail', 'filter', 'filter' => 'trim'),
             array('bounce_email', 'filter', 'filter' => 'trim'),
             //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
@@ -531,7 +531,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('running', 'safe', 'on' => 'search'),
             array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true)
+            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('expires', 'checkExpireAfterStart'),
         );
     }
 
@@ -2115,7 +2116,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getOwnerUserName()
     {
-        return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
+        return $this->owner["users_name"] ?? "";
     }
 
     /**
@@ -2281,5 +2282,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         );
         return $aSurveys;
+    }
+
+    /**
+     * Validates the Expiration Date is not lower than the Start Date
+     */
+    public function checkExpireAfterStart($attributes, $params)
+    {
+        if (empty($this->startdate) || empty($this->expires)) {
+            return true;
+        }
+        if ($this->expires < $this->startdate) {
+            $this->addError('expires', gT("Expiration date can't be lower than the start date", 'unescaped'));
+        }
     }
 }

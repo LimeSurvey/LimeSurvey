@@ -583,7 +583,7 @@ class STATAxmlWriter extends Writer
             $xml->startElement('lblname');
             $xml->writeAttribute('varname', $question['varname']);
             if (!empty($this->customFieldmap['answers'][$question['qid']]) && $question['commentother'] == false && $question['nonnumericanswercodes'] == false) {
-                $iScaleID = isset($question['scale_id']) ? $question['scale_id'] : 0;
+                $iScaleID = $question['scale_id'] ?? 0;
                 $xml->text('vall' . $question['qid'] . $iScaleID);
             }
             $xml->endElement(); //close lblname

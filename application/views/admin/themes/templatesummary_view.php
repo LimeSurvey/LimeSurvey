@@ -173,7 +173,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                             <?php }?>
                         </div>
                     </div>
-                <?php }?>
+<?php }?>
             </div>
             <br>
         </div>

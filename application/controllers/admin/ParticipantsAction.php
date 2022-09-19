@@ -186,7 +186,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     private function csvExport($search = null, $aAttributeIDs = null)
     {
-        $this->checkPermission('export');
+        $this-> checkPermission('export');
 
         Yii::app()->loadHelper('export');
         //If super admin all the participants will be visible
@@ -1211,7 +1211,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
 
         $aAttributes = explode('+', Yii::app()->request->getPost('attributes', ''));
-        $this->csvExport($search, $aAttributes);
+        $this->csvExport($search, array_filter($aAttributes)); // Array filter gets rid of empty entries
     }
 
     /**

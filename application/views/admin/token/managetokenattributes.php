@@ -134,7 +134,7 @@
                                         <?php
                                             echo CHtml::textField(
                                                 "caption_{$sTokenField}_{$sLanguage}",
-                                                isset($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '',
+                                                $tokencaptions[$sLanguage][$sTokenField] ?? '',
                                                 array('class' => 'form-control')
                                             );
                                         ?>

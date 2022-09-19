@@ -1,0 +1,51 @@
+{
+  "name": "عرٮىه ٮلا ٮٯاط",
+  "short_name": "ٮلا ٮٯاط",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f2f2f2",
+  "theme_color": "#77bb00",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "images/ar-php_72.png",
+      "type": "image/png", 
+      "sizes": "72x72"
+    },
+    {
+      "src": "images/ar-php_96.png",
+      "type": "image/png", 
+      "sizes": "96x96"
+    },
+    {
+      "src": "images/ar-php_128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "images/ar-php_144.png",
+      "type": "image/png", 
+      "sizes": "144x144"
+    },
+    {
+      "src": "images/ar-php_152.png",
+      "type": "image/png", 
+      "sizes": "152x152"
+    },
+    {
+      "src": "images/ar-php_192.png",
+      "type": "image/png", 
+      "sizes": "192x192"
+    },
+    {
+      "src": "images/ar-php_384.png",
+      "type": "image/png", 
+      "sizes": "384x384"
+    },
+    {
+      "src": "images/ar-php_512.png",
+      "type": "image/png", 
+      "sizes": "512x512"
+    }
+  ]
+}

@@ -390,7 +390,7 @@ class QuestionTheme extends LSActiveRecord
         // read all metadata from the provided $pathToXmlFolder
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
         if (!isset($questionMetaData['questionType'])) {
-            throw new Exception(gT('Missing questionType in metadata'));
+            throw new Exception('Missing attribute questionType in meta data');
         }
 
         $aQuestionThemes = QuestionTheme::model()->findAll(
@@ -418,6 +418,7 @@ class QuestionTheme extends LSActiveRecord
         // set settings as json
         $questionMetaData['settings'] = json_encode([
             'subquestions'     => $questionMetaData['subquestions'] ?? 0,
+            'other'            => $questionMetaData['other'] ?? false,
             'answerscales'     => $questionMetaData['answerscales'] ?? 0,
             'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'] ?? 0,
             'assessable'       => $questionMetaData['assessable'] ?? 0,

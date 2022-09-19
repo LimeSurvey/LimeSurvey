@@ -159,6 +159,10 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('ckeditor'); //
             App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global sope
             App()->getClientScript()->registerPackage('modaleditor');
+            $dir = (getLanguageRTL(App()->getLanguage())) ? 'rtl' : 'ltr';
+            if ($dir == "rtl") {
+                App()->getClientScript()->registerPackage('bootstrap-rtl');
+            }
         }
 
         $aCssFiles = array();
@@ -294,8 +298,8 @@ class AdminTheme extends CFormModel
             //'application/extensions/bootstrap/', we'll touch all the subdirectories of extensions
 
             // Third party assets
-            'third_party/jquery-tablesorter/tests/assets',
-            'third_party/jquery-tablesorter/docs/assets',
+            'vendor/jquery-tablesorter/tests/assets',
+            'vendor/jquery-tablesorter/docs/assets',
         );
     }
 

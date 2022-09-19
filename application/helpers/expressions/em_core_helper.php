@@ -2564,7 +2564,11 @@ class ExpressionManager
      */
     public static function gT($string, $sEscapeMode = 'html')
     {
-        return gT($string, $sEscapeMode, Yii::app()->session['adminlang']);
+        return gT(
+            $string,
+            $sEscapeMode,
+            Yii::app()->session->get('adminlang', App()->getConfig("defaultlang"))
+        );
     }
 }
 
@@ -2917,7 +2921,7 @@ function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, 
  */
 function exprmgr_date($format, $timestamp = null)
 {
-    $timestamp = isset($timestamp) ? $timestamp : time();
+    $timestamp = $timestamp ?? time();
     if (!is_numeric($timestamp)) {
         return false;
     }
@@ -3062,7 +3066,7 @@ function exprmgr_log($args)
     if (!is_numeric($number)) {
         return NAN;
     }
-    $base = (isset($args[1])) ? $args[1] : exp(1);
+    $base = $args[1] ?? exp(1);
     if (!is_numeric($base)) {
         return NAN;
     }
@@ -3085,13 +3089,13 @@ function exprmgr_log($args)
  */
 function exprmgr_mktime($hour = null, $minute = null, $second = null, $month = null, $day = null, $year = null)
 {
-    $hour = isset($hour) ? $hour : date("H");
-    $minute = isset($minute) ? $minute : date("i");
-    $second = isset($second) ? $second : date("s");
-    $month = isset($month) ? $month : date("n");
-    $day = isset($day) ? $day : date("j");
-    $year = isset($year) ? $year : date("Y");
-    $hour = isset($hour) ? $hour : date("H");
+    $hour = $hour ?? date("H");
+    $minute = $minute ?? date("i");
+    $second = $second ?? date("s");
+    $month = $month ?? date("n");
+    $day = $day ?? date("j");
+    $year = $year ?? date("Y");
+    $hour = $hour ?? date("H");
     $iInvalidArg = count(array_filter(array($hour, $minute, $second, $month, $day, $year), function ($timeValue) {
         return !is_numeric($timeValue); /* This allow get by string like "01.000" , same than javascript with 2.72.6 and default PHP(5.6) function*/
     }));

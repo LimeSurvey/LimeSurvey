@@ -144,7 +144,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['sidemenu']['questiongroups'] = true;
         $aData['sidemenu']['group_name'] = $oQuestionGroup->questiongroupl10ns[$baselang]->group_name ?? '';
         $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
+        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
         $aData['sidemenu']['explorer']['qid'] = false;
         $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
@@ -254,7 +254,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['sidemenu']['questiongroups'] = true;
         $aData['sidemenu']['group_name'] = $oQuestionGroup->questiongroupl10ns[$sBaseLanguage]->group_name ?? '';
         $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
+        $aData['sidemenu']['explorer']['gid'] = $gid ?? false;
         $aData['sidemenu']['explorer']['qid'] = false;
         $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
@@ -367,8 +367,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $baselang = $survey->language;
         $model    = new QuestionGroup('search');
 
-        if (isset($_GET['QuestionGroup'])) {
-            $model->attributes = $_GET['QuestionGroup'];
+        if (isset($_GET['QuestionGroup']['group_name'])) {
+            $model->group_name = $_GET['QuestionGroup']['group_name'];
         }
 
         if (isset($_GET['pageSize'])) {
@@ -585,6 +585,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
+        // Make sure we have the latest groups data
+        $survey->refresh();
         $landOnSideMenuTab = Yii::app()->request->getPost('landOnSideMenuTab');
         if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
             $this->redirect(
@@ -887,9 +889,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                         $oQuestiongroups
                     );
 
-                    $aQuestiongroup['questions'] = isset($aQuestiongroup['questions'])
-                        ? $aQuestiongroup['questions']
-                        : [];
+                    $aQuestiongroup['questions'] = $aQuestiongroup['questions'] ?? [];
 
                     foreach ($aQuestiongroup['questions'] as $aQuestion) {
                         $aQuestions = Question::model()->findAll(

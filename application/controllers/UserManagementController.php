@@ -107,7 +107,8 @@ class UserManagementController extends LSBaseController
             }
         }
         $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
-        return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword]);
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword, 'dateformatdetails' => $dateformatdetails]);
     }
 
     /**
@@ -154,6 +155,15 @@ class UserManagementController extends LSBaseController
                     'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
                 ]]);
             }
+        }
+
+        $expires = Yii::app()->request->getPost('expires', null);
+        if (!empty($expires)) {
+            $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+            $datetimeobj = new Date_Time_Converter($expires, $dateformatdetails['phpdate'] . ' H:i');
+            $aUser['expires'] = $datetimeobj->convert("Y-m-d H:i:s");
+        } else {
+            $aUser['expires'] = null;
         }
 
         if (isset($aUser['uid']) && $aUser['uid']) {
@@ -317,6 +327,13 @@ class UserManagementController extends LSBaseController
                 $sTransferredTo = User::model()->findByPk($transferTo)->users_name;
                 $message = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferredTo) . " ";
             }
+        }
+
+        // Transfer any Participants owned by this user to site's admin
+        $participantsTranferred = Participant::model()->updateAll(['owner_uid' => 1], 'owner_uid = :owner_uid', [':owner_uid' => $userId]);
+        if ($participantsTranferred) {
+            $transferredToName = User::model()->findByPk(1)->users_name;
+            $message .= sprintf(gT("All participants owned by this user were transferred to %s."), $transferredToName) . " ";
         }
 
         $oUser = User::model()->findByPk($userId);

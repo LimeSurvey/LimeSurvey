@@ -106,7 +106,7 @@ function getSurveyList($bReturnArray = false)
     static $cached = null;
     $bCheckIntegrity = false;
     $timeadjust = getGlobalSetting('timeadjust');
-    App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
+    App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
     if (is_null($cached)) {
@@ -661,7 +661,7 @@ function getUserList($outputformat = 'fullinfoarray')
     if (!empty(Yii::app()->session['loginID'])) {
         $myuid = sanitize_int(Yii::app()->session['loginID']);
     }
-    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
+    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
     if (
         !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
@@ -696,7 +696,7 @@ function getUserList($outputformat = 'fullinfoarray')
     $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
 
     if (count($uresult) == 0 && !empty($myuid)) {
-//user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
+//user is not in a group and usercontrolSameGroupPolicy is activated - at least show their own userinfo
         $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=" . $myuid;
         $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
     }
@@ -2474,6 +2474,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'B' ||
                 $captchamode == 'D' ||
+                $captchamode == 'F' ||
+                $captchamode == 'G' ||
+                $captchamode == 'I' ||
+                $captchamode == 'M' ||
+                $captchamode == 'U' ||
                 $captchamode == 'R'
             ) {
                 return true;
@@ -2484,6 +2489,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'B' ||
                 $captchamode == 'C' ||
+                $captchamode == 'F' ||
+                $captchamode == 'H' ||
+                $captchamode == 'K' ||
+                $captchamode == 'O' ||
+                $captchamode == 'T' ||
                 $captchamode == 'X'
             ) {
                 return true;
@@ -2494,6 +2504,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'C' ||
                 $captchamode == 'D' ||
+                $captchamode == 'G' ||
+                $captchamode == 'H' ||
+                $captchamode == 'J' ||
+                $captchamode == 'L' ||
+                $captchamode == 'P' ||
                 $captchamode == 'S'
             ) {
                 return true;
@@ -2832,12 +2847,11 @@ function getParticipantAttributes($iSurveyID)
 */
 function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 {
-
-
-    $aBasicTokenFields = array('firstname' => array(
-        'description' => gT('First name'),
-        'mandatory' => 'N',
-        'showregister' => 'Y'
+    $aBasicTokenFields = array(
+        'firstname' => array(
+            'description' => gT('First name'),
+            'mandatory' => 'N',
+            'showregister' => 'Y'
         ),
         'lastname' => array(
             'description' => gT('Last name'),
@@ -2857,32 +2871,37 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
         'token' => array(
             'description' => gT('Access code'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'language' => array(
             'description' => gT('Language code'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'sent' => array(
             'description' => gT('Invitation sent date'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'remindersent' => array(
             'description' => gT('Last reminder sent date'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'remindercount' => array(
             'description' => gT('Total numbers of sent reminders'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'usesleft' => array(
             'description' => gT('Uses left'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
+        ),
+        'completed' => array(
+            'description' => gT('Completed'),
+            'mandatory' => 'N',
+            'showregister' => 'N'
         ),
     );
 
@@ -3292,13 +3311,13 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
 */
 function includeKeypad()
 {
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.plugin.min.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir') . '/third_party/jquery-keypad/jquery.keypad-' . App()->language . '.js';
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js');
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js');
+    $localefile = Yii::app()->getConfig('rootdir') . '/vendor/jquery-keypad/jquery.keypad-' . App()->language . '.js';
     if (App()->language != 'en' && file_exists($localefile)) {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
     }
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
+    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
 }
 
 
@@ -3409,7 +3428,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'question' and 'help' INSERTANS tags in questions
-    $sql = "SELECT q.qid, language, question, help from {{questions}} q
+    $sql = "SELECT l.id, question, help from {{questions}} q
     join {{question_l10ns}} l on q.qid=l.qid
     WHERE sid=" . $newsid . " AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
     $result = Yii::app()->db->createCommand($sql)->query();
@@ -3417,8 +3436,6 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     foreach ($aResultData as $qentry) {
         $question = $qentry['question'];
         $help = $qentry['help'];
-        $qid = $qentry['qid'];
-        $language = $qentry['language'];
 
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
             $pattern = $sOldFieldname;
@@ -3438,12 +3455,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
             'help' => $help
             );
 
-            $where = array(
-            'qid' => $qid,
-            'language' => $language
-            );
-
-            QuestionL10n::model()->updateByPk($where, $data);
+            QuestionL10n::model()->updateByPk($qentry['id'], $data);
         } // Enf if modified
     } // end while qentry
 
@@ -4129,18 +4141,31 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 }
 
 /**
+* Determines whether the list of user groups will need filtering before viewing.
+* @returns bool
+*/
+function shouldFilterUserGroupList()
+{
+    $bUserControlSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy', true);
+    $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
+    return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
+}
+
+/**
 * Get a list of all user groups
+* All user group or filtered according to usercontrolSameGroupPolicy
 * @returns array
 */
 function getUserGroupList()
 {
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-        $sQuery .= "AND uid = " . Yii::app()->session['loginID'];
+    if (shouldFilterUserGroupList()) {
+        $userid = intval(App()->session['loginID']);
+        $sQuery .= "AND (b.uid = {$userid})";
     }
     $sQuery .= " ORDER BY name";
 
-    $sresult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
+    $sresult = App()->db->createCommand($sQuery)->query(); //Checked
     if (!$sresult) {
         return "Database Error";
     }
@@ -4413,27 +4438,22 @@ function getSurveyUserGroupList($outputformat, $surveyid)
     $surveyid = sanitize_int($surveyid);
 
     $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
-    FROM {{user_groups}} AS a
-    LEFT JOIN (
-    SELECT b.ugid
-    FROM {{user_in_groups}} AS b
-    LEFT JOIN (SELECT * FROM {{permissions}}
-    WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
-    ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
+        FROM {{user_groups}} AS a
+        LEFT JOIN (
+        SELECT b.ugid
+        FROM {{user_in_groups}} AS b
+        LEFT JOIN (SELECT * FROM {{permissions}}
+        WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
+        ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query(); //Checked
     $aResult = $surveyidresult->readAll();
 
-    $authorizedGroupsList = [];
-    if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
-        $authorizedGroupsList = getUserGroupList();
-    }
-
+    $authorizedGroupsList = getUserGroupList();
     $svexist = false;
     $surveyselecter = "";
     $simpleugidarray = [];
     foreach ($aResult as $sv) {
         if (
-            Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
             in_array($sv['ugid'], $authorizedGroupsList)
         ) {
             $surveyselecter .= "<option";
@@ -4827,7 +4847,7 @@ function getSerialClass($sSerial)
     $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
 
     $aParts = explode(':', $sSerial, 4);
-    return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : (isset($aParts[2]) ? trim($aParts[2], '"') : null);
+    return $aTypes[$aParts[0]] ?? (isset($aParts[2]) ? trim($aParts[2], '"') : null);
 }
 
 /**
