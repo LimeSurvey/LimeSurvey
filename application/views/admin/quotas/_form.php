@@ -34,7 +34,7 @@
                         <?php echo $form->dropDownList($oQuota,'action',
                             array(
                                 Quota::ACTION_TERMINATE =>gT("Terminate survey"),
-                                Quota::ACTION_CONFIRM_TERMINATE =>gT("Allow user to modify his last answers before terminate survey."),
+                                Quota::ACTION_CONFIRM_TERMINATE =>gT("Allow user to modify their last answers before terminating the survey."),
                             ),
                             array('class'=>'form-control')); ?>
                         <?php echo $form->error($oQuota,'action'); ?>

@@ -35,7 +35,7 @@
                         <td>
                             <?php eT("Visible:"); ?>
                             <br>
-                            <select class="form-select"  style='min-width:220px;' size='10' id='includedLanguages' name='includedLanguages' multiple='multiple'>
+                            <select class="form-select"  style='min-width:220px;min-height:300px;' size='10' id='includedLanguages' name='includedLanguages' multiple='multiple'>
                                 <?php foreach ($restrictToLanguages as $sLanguageCode): ?>
                                     <option value='<?php echo $sLanguageCode; ?>'>
                                         <?php echo $allLanguages[$sLanguageCode]['description']; ?>
@@ -46,19 +46,19 @@
                         <td class="p-1">
                             <div class="d-grid gap-2">
                                 <button class="btn btn-outline-secondary" id="btnAdd" type="button">
-                                    <span class="ui-icon ui-icon-carat-1-<?php if (getLanguageRTL($_SESSION['adminlang'])) { echo 'e'; } else { echo 'w'; } ?>"></span>
+                                    <span class="fa fa-arrow-<?php if (getLanguageRTL($_SESSION['adminlang'])) { echo 'right'; } else { echo 'left'; } ?>"></span>
                                     <?php eT("Add"); ?>
                                 </button>
                                 <button class="btn btn-outline-secondary" type="button" id="btnRemove">
                                     <?php eT("Remove"); ?>
-                                    <span class="ui-icon ui-icon-carat-1-<?php if (getLanguageRTL($_SESSION['adminlang'])) { echo 'w'; } else { echo 'e'; } ?>"></span>
+                                    <span class="fa fa-arrow-<?php if (getLanguageRTL($_SESSION['adminlang'])) { echo 'left'; } else { echo 'right'; } ?>"></span>
                                 </button>
                             </div>
                         </td>
                         <td >
                             <?php eT("Hidden:"); ?>
                             <br>
-                            <select class="form-select"  size='10' style='min-width:220px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
+                            <select class="form-select"  size='10' style='min-width:220px;min-height:300px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
                                 <?php foreach ($excludedLanguages as $sLanguageCode): ?>
                                     <option value='<?php echo $sLanguageCode; ?>'>
                                         <?php echo $allLanguages[$sLanguageCode]['description']; ?>

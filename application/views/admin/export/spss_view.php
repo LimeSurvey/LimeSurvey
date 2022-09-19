@@ -26,13 +26,13 @@ echo viewHelper::getViewTestTag('exportSpss');
         </div>
     </div>
     <div class="mb-3 row">
-        <label for='spssver'  class='col-md-2  form-form-label'><?php eT("Version:");?></label>
+        <label for='spssver'  class='col-sm-2  form-label'><?php eT("SPSS version:");?></label>
         <div class="col-md-10">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                 'name' => 'spssver',
                 'checkedOption'=> $spssver ,
-                'selectOptions'=>array(
-                    "1"=>gT("Prior to 16",'unescaped'),
+                'selectOptions'=> array(
+                    "1"=>gT("Prior to 16 / PSPP",'unescaped'),
                     "2"=>gT("16 or up",'unescaped'),
                     "3"=>gT("16 or up with Python Plugin / Essentials",'unescaped')
                 )

@@ -53,7 +53,7 @@ LS.CPDB = (function() {
 
 
         return $.ajax({
-            url: url, 
+            url: url,
             data: data,
             method: 'POST',
             success: firstSuccess,
@@ -127,6 +127,15 @@ LS.CPDB = (function() {
                             dlForm.css('display', 'none').appendTo('body').submit();
                             $(self).modal("hide");
                         });
+                        $('#attributes')
+                            .multiselect({ 
+                                includeSelectAllOption:true, 
+                                selectAllValue: '0',
+                                selectAllText: sSelectAllText,
+                                nonSelectedText: sNonSelectedText,
+                                nSelectedText: sNSelectedText,
+                                maxHeight: 140 
+                            });
                     });
                     /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
                 }
@@ -135,7 +144,7 @@ LS.CPDB = (function() {
     },
 
     // Basic settings and bindings that should take place in all three views
-    basics = function() { 
+    basics = function() {
         // Code for AJAX download
         jQuery.download = function(url, data, method){
             //url and data options required
@@ -175,7 +184,7 @@ LS.CPDB = (function() {
                 data,
                 'action_save_modal_editParticipant',
                 'editPartcipantActiveForm',
-                'list_central_participants',
+                'list_central_participants' 
                 function(result) {
                     if (!result.error) {
                         window.LS.ajaxAlerts(result.success, 'success');
@@ -209,11 +218,11 @@ LS.CPDB = (function() {
             };
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                    openModalParticipantPanel, 
+                    openModalParticipantPanel,
                     data,
                     'action_save_modal_deleteParticipant',
-                    'deleteParticipantActiveForm', 
-                    'list_central_participants' 
+                    'deleteParticipantActiveForm',
+                    'list_central_participants'
                     );
         });
         $('#list_central_participants').on('click', '.action_participant_shareParticipant', function(e) {
@@ -265,11 +274,11 @@ LS.CPDB = (function() {
             };
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                openModalParticipantPanel, 
+                openModalParticipantPanel,
                 data,
                 'action_save_modal_addToSurvey',
-                'addToSurveyActiveForm', 
-                'list_central_participants' 
+                'addToSurveyActiveForm',
+                'list_central_participants'
             );
         });
 
@@ -312,10 +321,10 @@ LS.CPDB = (function() {
             e.preventDefault();
             var data = {modalTarget: 'editattribute'};
             runBaseModal(
-                openModalParticipantPanel, 
+                openModalParticipantPanel,
                 data,
                 'action_save_modal_editAttributeName',
-                'editAttributeNameActiveForm', 
+                'editAttributeNameActiveForm',
                 'list_attributes',
                 function(result) {
                     console.ls.log(result);
@@ -323,20 +332,20 @@ LS.CPDB = (function() {
                         window.LS.ajaxAlerts(result.success, 'success');
                     }
                 }
-            ); 
+            );
         });
         $('.action_attributeNames_editModal').on('click', function(e){
             e.preventDefault();
             var data = {modalTarget: 'editattribute','attribute_id' : $(this).closest('tr').data('attribute_id')};
             runBaseModal(
-                openModalParticipantPanel, 
+                openModalParticipantPanel,
                 data,
                 'action_save_modal_editAttributeName',
-                'editAttributeNameActiveForm', 
-                'list_attributes' 
-            ); 
+                'editAttributeNameActiveForm',
+                'list_attributes'
+            );
         });
-        
+
         $('#action_toggleAllAttributeNames').on('click', function(){
             $('.selector_attributeNamesCheckbox').prop('checked',$('#action_toggleAllAttributeNames').prop('checked'));
         });

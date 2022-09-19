@@ -438,13 +438,13 @@ function submittokens($quotaexit = false)
 
 /**
  * Send a submit notification to the email address specified in the notifications tab in the survey settings
- * @throws CException
  * @param array $emails Emailnotifications that should be sent ['responseTo' => [['failedEmailId' => 'failedEmailId1', 'responseid' => 'responseid1', 'recipient' => 'recipient1', 'language' => 'language1'], [...]], 'notificationTo' => [[..., ..., ...][...]]]
- * @param boolean $preserveResend whether previously failed emails should be kept in the FailedEmail table after a successfull resend
  * @param bool $return whether the function should return values
  * @param int $surveyid survey ID of currently used survey
+ * @throws \PHPMailer\PHPMailer\Exception
+ * @throws CException
  */
-function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveResend = false, bool $return = false)
+function sendSubmitNotifications($surveyid, array $emails = [], bool $return = false)
 {
     // @todo: Remove globals
     global $thissurvey;
@@ -513,44 +513,50 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
         );
     }
 
+    // update replacement fields before we handle email sending
     LimeExpressionManager::updateReplacementFields($aReplacementVars);
+
+    // admin_notification (Basic admin notification)
     if (count($aEmailNotificationTo) > 0) {
-        $mailer = \LimeMailer::getInstance();
+        $mailer = LimeMailer::getInstance();
         $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
         foreach ($aEmailNotificationTo as $sRecipient) {
-            $notificationId = null;
-            $notificationRecipient = $sRecipient;
             /** set mailer params for @see FailedEmailController::actionResend() */
             if (!empty($emails)) {
-                $notificationId = $sRecipient['id'];
+                $failedNotificationId = $sRecipient['id'];
                 $responseId = $sRecipient['responseId'];
                 $notificationRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
                 $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
+                $mailer->setTo($notificationRecipient);
+                $mailerSuccess = $mailer->resend(json_decode($sRecipient['resendVars'],true));
+            } else {
+                $failedNotificationId = null;
+                $notificationRecipient = $sRecipient;
+                $mailer->setTo($notificationRecipient);
+                $mailerSuccess = $mailer->SendMessage();
             }
-            $mailer->setTo($notificationRecipient);
-            if (!$mailer->SendMessage()) {
+            if (!$mailerSuccess) {
                 $failedEmailCount++;
-                saveFailedEmail($notificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage, $mailer->getError());
+                saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage, $mailer);
                 if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     echo CHtml::tag("div",
                         ['class' => 'alert alert-danger'],
                         sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError()));
                 }
-            } elseif ($preserveResend) {
+            } else{
                 $successfullEmailCount++;
                 //preserve failedEmail if it exists
-                preserveSuccessFailedEmail($notificationId);
-            } else {
-                $successfullEmailCount++;
+                failedEmailSuccess($failedNotificationId);
             }
         }
     }
 
+    // admin_notification (Detailed admin notification)
     if (count($aEmailResponseTo) > 0) {
         // there was no token used so lets remove the token field from insertarray
-        if (isset($_SESSION['survey_' . $surveyid])) {
+        if (isset($_SESSION['survey_' . $surveyid]['insertarray'][0])) {
             if (!isset($_SESSION['survey_' . $surveyid]['token']) && $_SESSION['survey_' . $surveyid]['insertarray'][0] === 'token') {
                 unset($_SESSION['survey_' . $surveyid]['insertarray'][0]);
             }
@@ -558,56 +564,37 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
         $mailer = \LimeMailer::getInstance();
         $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
         foreach ($aEmailResponseTo as $sRecipient) {
-            $notificationId = null;
-            $responseRecipient = $sRecipient;
             /** set mailer params for @see FailedEmailController::actionResend() */
             if (!empty($emails)) {
-                $notificationId = $sRecipient['id'];
+                $failedNotificationId = $sRecipient['id'];
                 $responseId = $sRecipient['responseId'];
                 $responseRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
+                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
+                LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
-            }
-            $aFullResponseTable = getFullResponseTable($surveyid, $responseId, $emailLanguage);
-            $ResultTableHTML = "<table class='printouttable' >\n";
-            $ResultTableText = "\n\n";
-            Yii::import('application.helpers.viewHelper');
-            foreach ($aFullResponseTable as $sFieldname => $fname) {
-                if (substr($sFieldname, 0, 4) === 'gid_') {
-                    $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
-                    $ResultTableText .= "\n{$fname[0]}\n\n";
-                } elseif (substr($sFieldname, 0, 4) === 'qid_') {
-                    $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
-                    $ResultTableText .= "\n{$fname[0]}\n";
-                } else {
-                    $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>" . viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}", true, 0) . "</td><td class='printanswersanswertext'>" . CHtml::encode($fname[2]) . "</td></tr>\n";
-                    $ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
-                }
-            }
-            $ResultTableHTML .= "</table>\n";
-            $ResultTableText .= "\n\n";
-            if ($bIsHTML) {
-                $aReplacementVars['ANSWERTABLE'] = $ResultTableHTML;
+                $mailer->setTo($responseRecipient);
+                $mailerSuccess = $mailer->resend(json_decode($sRecipient['resendVars'],true));
             } else {
-                $aReplacementVars['ANSWERTABLE'] = $ResultTableText;
+                $failedNotificationId = null;
+                $responseRecipient = $sRecipient;
+                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
+                LimeExpressionManager::updateReplacementFields($aReplacementVars);
+                $mailer->setTo($responseRecipient);
+                $mailerSuccess = $mailer->SendMessage();
             }
-            LimeExpressionManager::updateReplacementFields($aReplacementVars);
-            $mailer->setTo($responseRecipient);
-            if (!$mailer->SendMessage()) {
+            if (!$mailerSuccess) {
                 $failedEmailCount++;
-                saveFailedEmail($notificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage, $mailer->getError());
+                saveFailedEmail($failedNotificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage, $mailer);
                 if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     echo CHtml::tag("div",
                         ['class' => 'alert alert-danger'],
                         sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError()));
                 }
-            } elseif ($preserveResend) {
-                $successfullEmailCount++;
-                //preserve failedEmail if it exists
-                preserveSuccessFailedEmail($responseId);
             } else {
                 $successfullEmailCount++;
+                failedEmailSuccess($failedNotificationId);
             }
         }
     }
@@ -620,6 +607,42 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
 }
 
 /**
+ * create ANSWERTABLE replacement field content
+ * @param $surveyid
+ * @param $responseId
+ * @param $emailLanguage
+ * @param $bIsHTML
+ * @return string
+ * @throws CException
+ */
+function getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML): string
+{
+    $aFullResponseTable = getFullResponseTable($surveyid, $responseId, $emailLanguage);
+    $ResultTableHTML = "<table class='printouttable' >\n";
+    $ResultTableText = "\n\n";
+    Yii::import('application.helpers.viewHelper');
+    foreach ($aFullResponseTable as $sFieldname => $fname) {
+        if (substr($sFieldname, 0, 4) === 'gid_') {
+            $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
+            $ResultTableText .= "\n{$fname[0]}\n\n";
+        } elseif (substr($sFieldname, 0, 4) === 'qid_') {
+            $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
+            $ResultTableText .= "\n{$fname[0]}\n";
+        } else {
+            $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>" . viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}", true, 0) . "</td><td class='printanswersanswertext'>" . CHtml::encode($fname[2]) . "</td></tr>\n";
+            $ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
+        }
+    }
+    $ResultTableHTML .= "</table>\n";
+    $ResultTableText .= "\n\n";
+
+    if ($bIsHTML) {
+        return $ResultTableHTML;
+    }
+    return $ResultTableText;
+}
+
+/**
  * Saves a failed email whenever processing and sensing an email fails or overwrites a found entry with updated values
  *
  * @param int|null $id Id of failed email
@@ -628,17 +651,20 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $preserveRe
  * @param int $responseId
  * @param string|null $emailType
  * @param string|null $language
- * @param string $errorMessage
+ * @param LimeMailer $mailer
  * @return bool
  */
-function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, int $responseId, string $emailType, ?string $language, string $errorMessage): bool
+function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, int $responseId, string $emailType, ?string $language, LimeMailer $mailer): bool
 {
     $failedEmailModel = new FailedEmail();
+    $errorMessage = $mailer->getError();
+    $resendVars = json_encode($mailer->getResendEmailVars());
     if (isset($id)) {
         $failedEmail = $failedEmailModel->findByPk($id);
         if (isset($failedEmail)) {
             $failedEmail->surveyid = $surveyId;
             $failedEmail->error_message = $errorMessage;
+            $failedEmail->status = 'SEND FAILED';
             $failedEmail->updated = date('Y-m-d H:i:s');
             return $failedEmail->save(false);
         }
@@ -652,11 +678,12 @@ function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, int $respo
     $failedEmailModel->created = date('Y-m-d H:i:s');
     $failedEmailModel->status = 'SEND FAILED';
     $failedEmailModel->updated = date('Y-m-d H:i:s');
+    $failedEmailModel->resend_vars = $resendVars;
 
     return $failedEmailModel->save(false);
 }
 
-function preserveSuccessFailedEmail($id)
+function failedEmailSuccess($id)
 {
     $model = new FailedEmail();
     $failedEmail = $model->findByPk($id);
@@ -760,7 +787,7 @@ function buildsurveysession($surveyid, $preview = false)
     // NOTE: All of this is already done in survey controller.
     // We keep it here only for Travis Tested thar are still not using Selenium
     // As soon as the tests are rewrote to use selenium, those lines can be removed
-    $lang = isset($_SESSION['survey_' . $surveyid]['s_lang']) ? $_SESSION['survey_' . $surveyid]['s_lang'] : '';
+    $lang = $_SESSION['survey_' . $surveyid]['s_lang'] ?? '';
     if (empty($lang)) {
         // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
 
@@ -992,7 +1019,7 @@ function initFieldArray($surveyid, array $fieldmap)
 function randomizationGroupsAndQuestions($surveyid, $preview = false, $fieldmap = array())
 {
     // Initialize the randomizer. Seed will be stored in response.
-    // TODO: rewrite this THE YII WAY !!!! (application/third_party + internal config for namespace + aliases; etc)
+    // TODO: rewrite this THE YII WAY !!!! (application/vendor + internal config for namespace + aliases; etc)
     ls\mersenne\setSeed($surveyid);
 
     $fieldmap = (empty($fieldmap)) ? $_SESSION['survey_' . $surveyid]['fieldmap'] : $fieldmap;
@@ -1299,7 +1326,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $aForm['sType']           = ($scenarios['tokenRequired']) ? 'token' : 'captcha';
             $aForm['token']           = array_key_exists('token', $aEnterTokenData) ? $aEnterTokenData['token'] : null;
             $aForm['aEnterErrors']    = $aEnterTokenData['aEnterErrors'];
-            $aForm['bCaptchaEnabled'] = (isset($aEnterTokenData['bCaptchaEnabled'])) ? $aEnterTokenData['bCaptchaEnabled'] : '';
+            $aForm['bCaptchaEnabled'] = $aEnterTokenData['bCaptchaEnabled'] ?? '';
             if ($aForm['bCaptchaEnabled']) {
                 Yii::app()->getController()->createAction('captcha');
             }
@@ -1441,9 +1468,9 @@ function getNavigatorDatas()
 
     $sMoveNext          = "movenext";
     $sMovePrev          = "";
-    $iSessionStep       = (isset($_SESSION['survey_' . $surveyid]['step'])) ? $_SESSION['survey_' . $surveyid]['step'] : false;
-    $iSessionMaxStep    = (isset($_SESSION['survey_' . $surveyid]['maxstep'])) ? $_SESSION['survey_' . $surveyid]['maxstep'] : false;
-    $iSessionTotalSteps = (isset($_SESSION['survey_' . $surveyid]['totalsteps'])) ? $_SESSION['survey_' . $surveyid]['totalsteps'] : false;
+    $iSessionStep       = $_SESSION['survey_' . $surveyid]['step'] ?? false;
+    $iSessionMaxStep    = $_SESSION['survey_' . $surveyid]['maxstep'] ?? false;
+    $iSessionTotalSteps = $_SESSION['survey_' . $surveyid]['totalsteps'] ?? false;
 
     // Count down
     $aNavigator['disabled'] = '';
@@ -1490,8 +1517,8 @@ function getNavigatorDatas()
         $bAnonymized                = $thissurvey["anonymized"] == 'Y';
         $bTokenanswerspersistence   = $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_' . $surveyid);
         $bAlreadySaved              = isset($_SESSION['survey_' . $surveyid]['scid']);
-        $iSessionStep               = (isset($_SESSION['survey_' . $surveyid]['step']) ? $_SESSION['survey_' . $surveyid]['step'] : false);
-        $iSessionMaxStep            = (isset($_SESSION['survey_' . $surveyid]['maxstep']) ? $_SESSION['survey_' . $surveyid]['maxstep'] : false);
+        $iSessionStep               = ($_SESSION['survey_' . $surveyid]['step'] ?? false);
+        $iSessionMaxStep            = ($_SESSION['survey_' . $surveyid]['maxstep'] ?? false);
 
         // Find out if the user has any saved data
         if ($thissurvey['format'] == 'A') {
@@ -1865,7 +1892,7 @@ function checkCompletedQuota($surveyid, $return = false)
     // We need to construct the page and do all needed action
     $aSurveyInfo = getSurveyInfo($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
 
-    $sClientToken = isset($_SESSION['survey_' . $surveyid]['token']) ? $_SESSION['survey_' . $surveyid]['token'] : "";
+    $sClientToken = $_SESSION['survey_' . $surveyid]['token'] ?? "";
     // $redata for templatereplace
     $aDataReplacement = array(
         'thissurvey' => $aSurveyInfo,
@@ -1913,7 +1940,7 @@ function checkCompletedQuota($surveyid, $return = false)
     $thissurvey['aQuotas']['bShowNavigator']     = !$closeSurvey;
     $thissurvey['aQuotas']['sClientToken']       = $sClientToken;
     $thissurvey['aQuotas']['sQuotaStep']         = 'returnfromquota';
-    $thissurvey['aQuotas']['aPostedQuotaFields'] = isset($aPostedQuotaFields) ? $aPostedQuotaFields : '';
+    $thissurvey['aQuotas']['aPostedQuotaFields'] = $aPostedQuotaFields ?? '';
     $thissurvey['aQuotas']['sPluginBlocks']      = implode("\n", $blocks);
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
@@ -1922,7 +1949,7 @@ function checkCompletedQuota($surveyid, $return = false)
 
     $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="' . $surveyid . '" />
                                               <input type="hidden" name="token"    value="' . $thissurvey['aQuotas']['sClientToken'] . '" />
-                                              <input type="hidden" name="thisstep" value="' . (isset($_SESSION['survey_' . $surveyid]['step']) ? $_SESSION['survey_' . $surveyid]['step'] : 0) . '" />';
+                                              <input type="hidden" name="thisstep" value="' . ($_SESSION['survey_' . $surveyid]['step'] ?? 0) . '" />';
 
 
     if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])) {
@@ -2144,8 +2171,8 @@ function getMove()
     if ($move == 'default') {
         $surveyid = Yii::app()->getConfig('surveyID');
         $thissurvey = getsurveyinfo($surveyid);
-        $iSessionStep = (isset($_SESSION['survey_' . $surveyid]['step'])) ? $_SESSION['survey_' . $surveyid]['step'] : false;
-        $iSessionTotalSteps = (isset($_SESSION['survey_' . $surveyid]['totalsteps'])) ? $_SESSION['survey_' . $surveyid]['totalsteps'] : false;
+        $iSessionStep = $_SESSION['survey_' . $surveyid]['step'] ?? false;
+        $iSessionTotalSteps = $_SESSION['survey_' . $surveyid]['totalsteps'] ?? false;
         if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps) || $thissurvey['format'] == 'A') {
             $move = "movesubmit";
         } else {

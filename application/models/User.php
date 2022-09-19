@@ -114,6 +114,7 @@ class User extends LSActiveRecord
             array('templateeditormode', 'default', 'value' => 'default'),
             array('templateeditormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('dateformat', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+            array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
 
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
@@ -141,6 +142,7 @@ class User extends LSActiveRecord
             'created' => gT('Created at'),
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
+            'expires' => gT("Expiry date/time:"),
         ];
     }
 
@@ -518,7 +520,7 @@ class User extends LSActiveRecord
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            //Prevent users to modify original superadmin. Original superadmin can change his password on his account setting!
+            //Prevent users from modifying the original superadmin. Original superadmin can change the password on their account setting!
             if ($this->uid == 1) {
                 $editUserButton = "";
             }
@@ -832,6 +834,25 @@ class User extends LSActiveRecord
         $this->validation_key_expiration = $datePlusMaxExpiration->format('Y-m-d H:i:s');
 
         return $this->save();
+    }
+
+    /**
+     * Returns true if the user has expired.
+     *
+     * @return boolean
+     */
+    public function isExpired()
+    {
+        $expired = false;
+        if (!empty($this->expires)) {
+            // Time adjust
+            $now = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $expirationTime = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)));
+
+            // Time comparison
+            $expired = new DateTime($expirationTime) < new DateTime($now);
+        }
+        return $expired;
     }
 
     /**

@@ -166,7 +166,7 @@ class WhBox extends CWidget
                     $options['htmlOptions'] = array();
                 }
 
-                $class                           = isset($options['htmlOptions']['class']) ? $options['htmlOptions']['class'] : '';
+                $class                           = $options['htmlOptions']['class'] ?? '';
                 $options['htmlOptions']['class'] = $class . ' pull-right';
 
                 $this->controller->widget($button, $options);
