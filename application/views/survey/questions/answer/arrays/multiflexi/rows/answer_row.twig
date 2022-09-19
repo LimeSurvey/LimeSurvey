@@ -17,7 +17,7 @@
 
 <!-- answer_row -->
 <tr id="javatbd{{ myfname }}" class="{{ coreRowClass }} {% if odd %}ls-odd{% else %}ls-even{% endif %}{% if error %} ls-error-mandatory{% endif %} {% if error and layout=="checkbox" %} has-error{% endif %}" role="group" aria-labelledby="answertext{{ myfname }}">
-    <th id="answertext{{ myfname }}" class="answertext control-label{% if error and layout!="checkbox" %} text-danger" {% endif %}{% if answerwidth==0 %} visually-hidden{% endif %}">
+    <th id="answertext{{ myfname }}" class="answertext control-label{% if error and layout!="checkbox" %} text-danger" {% endif %}{% if answerwidth==0 %} visually-hidden{% endif %}>
         {{ processString(answertext) }}
         {# Value for expression manager javascript ? Used ? #}
         {{ C.Html.hiddenField("java"~myfname,row_value,({
