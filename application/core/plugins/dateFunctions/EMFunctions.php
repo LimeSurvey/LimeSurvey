@@ -24,9 +24,18 @@ class EMFunctions
             return '';
         }
 
+        // Try to get Survey ID from the EM
         $surveyId = LimeExpressionManager::getLEMsurveyId();
-        $survey = Survey::model()->findByPk($surveyId);
 
+        // If it's not set, try to get it from the session
+        if (empty($surveyId)) {
+            $surveyId = \Yii::app()->session['LEMsid'];
+        }
+        if (empty($surveyId)) {
+            return '';
+        }
+
+        $survey = Survey::model()->findByPk($surveyId);
         if (empty($survey)) {
             return '';
         }
