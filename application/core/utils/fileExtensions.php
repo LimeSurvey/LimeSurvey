@@ -17,5 +17,7 @@ return array_merge(
         'image/heic-sequence' => 'heics',
         /* xml as text/xml : #18353 */
         'text/xml' => 'xml',
+        /* svg as image/xml : #18347 */
+        'image/svg' => 'svg',
     )
 );
