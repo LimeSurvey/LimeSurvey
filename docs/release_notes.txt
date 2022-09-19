@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.28 (build 220912) to 3.28.29 (build 220920) September 19, 2022
+-Fixed issue #18344: Unable to download file in response list (IIS) (Olle Haerstedt)
+-Fixed issue #18133: Set "Other" state has no clue about current state (Gabriel Jenik)
+-Fixed issue #16697: «inherit everything» still not translated (#2609) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
 Changes from 3.28.27 (build 220905) to 3.28.28 (build 220912) September 12, 2022
 #Updated translation: Dutch by Han
 #Updated translation: Dutch (Informal) by Han
