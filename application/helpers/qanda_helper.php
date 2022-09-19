@@ -1003,12 +1003,12 @@ function do_date($ia)
                     * expressions are not supported because contents of dropbox cannot be easily updated dynamically
                     */
                     $yearmin = (int) substr($mindate, 0, 4);
-                    if (!isset($yearmin) || $yearmin < 1900 || $yearmin > 2037) {
+                    if (empty($yearmin)) {
                         $yearmin = 1900;
                     }
 
                     $yearmax = (int) substr($maxdate, 0, 4);
-                    if (!isset($yearmax) || $yearmax < 1900 || $yearmax > 2037) {
+                    if (empty($yearmax)) {
                         $yearmax = 2037;
                     }
 
