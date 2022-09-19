@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.0 (build 220913) to 5.4.1 (build 220919) September 19, 2022
+-Fixed issue: User creation email was sent by current admin, not by siteadmin (Carsten Schmitz)
+-Fixed issue #18351: Extra token placeholder show as invalid in expression (#2600) (Denis Chenu)
+-Fixed issue #18247: PHP version 8 and remote control, error in bigdata.php (#2520) (Gabriel Jenik)
+-Fixed issue #18240: QuestioinTheme browserdetect, Show Platform information didn't work (#2595) (Gabriel Jenik)
+-Fixed issue #17870: Default value with line feed broke Expression Script (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: French (France) by arnaud21, b00z00, DenisChenu, francois-charles.hebert, Qat, riqcles
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.3.32 (build 220817) to 5.4.0 (build 220913) September 13, 2022
 +New feature #18282: Possibility to resend failed admin notification emails(#2539) (Patrick Teichmann)
 +New feature #17835: Add custom token attributes to Response details screen (#2316) (Gabriel Jenik)
