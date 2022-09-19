@@ -1200,7 +1200,7 @@ class SurveyAdministrationController extends LSBaseController
         $changes = Yii::app()->request->getPost('changes', []);
         $aSuccess = [];
 
-        $oSurvey->showsurveypolicynotice = isset($changes['showsurveypolicynotice']) ? $changes['showsurveypolicynotice'] : 0;
+        $oSurvey->showsurveypolicynotice = $changes['showsurveypolicynotice'] ?? 0;
         $aSuccess[] = $oSurvey->save();
         foreach ($oSurvey->allLanguages as $sLanguage) {
             $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk([
@@ -1214,9 +1214,9 @@ class SurveyAdministrationController extends LSBaseController
                 $oSurveyLanguageSetting->surveyls_language = $sLanguage;
             }
 
-            $oSurveyLanguageSetting->surveyls_policy_notice = isset($changes['datasecmessage'][$sLanguage]) ? $changes['datasecmessage'][$sLanguage] : '';
-            $oSurveyLanguageSetting->surveyls_policy_error = isset($changes['datasecerror'][$sLanguage]) ? $changes['datasecerror'][$sLanguage] : '';
-            $oSurveyLanguageSetting->surveyls_policy_notice_label = isset($changes['dataseclabel'][$sLanguage]) ? $changes['dataseclabel'][$sLanguage] : '';
+            $oSurveyLanguageSetting->surveyls_policy_notice = $changes['datasecmessage'][$sLanguage] ?? '';
+            $oSurveyLanguageSetting->surveyls_policy_error = $changes['datasecerror'][$sLanguage] ?? '';
+            $oSurveyLanguageSetting->surveyls_policy_notice_label = $changes['dataseclabel'][$sLanguage] ?? '';
             $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
             unset($oSurveyLanguageSetting);
         }
@@ -1821,7 +1821,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
@@ -3096,7 +3096,7 @@ class SurveyAdministrationController extends LSBaseController
         ];
         $aData['questions'] = $aQuestions;
 
-        App()->getClientScript()->registerPackage('jquery-datatable');
+        App()->getClientScript()->registerPackage('jquery-datatable-bs5');
         return $aData;
     }
 }

@@ -74,7 +74,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                             'editId' => $editId,
                             'assessmentlangs' => $assessmentlangs,
                             'baselang' => $baselang,
-                            'groups' => isset($groups) ? $groups : [],
+                            'groups' => $groups ?? [],
                             'gid' => $groupId,
                         ]
                     );

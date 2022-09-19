@@ -2087,9 +2087,9 @@ class Tokens extends SurveyCommonAction
                         $bInvalidEmail = false;
                         $bInvalidToken = false;
                         $aWriteArray['email'] = isset($aWriteArray['email']) ? trim($aWriteArray['email']) : "";
-                        $aWriteArray['firstname'] = isset($aWriteArray['firstname']) ? $aWriteArray['firstname'] : "";
-                        $aWriteArray['lastname'] = isset($aWriteArray['lastname']) ? $aWriteArray['lastname'] : "";
-                        $aWriteArray['language'] = isset($aWriteArray['language']) ? $aWriteArray['language'] : $sBaseLanguage;
+                        $aWriteArray['firstname'] = $aWriteArray['firstname'] ?? "";
+                        $aWriteArray['lastname'] = $aWriteArray['lastname'] ?? "";
+                        $aWriteArray['language'] = $aWriteArray['language'] ?? $sBaseLanguage;
 
                         // First check if we can skip because the email is blank
                         if ($bFilterBlankEmail && $aWriteArray['email'] == '') {

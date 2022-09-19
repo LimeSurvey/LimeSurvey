@@ -20,7 +20,7 @@
 function doreplacement($file, $data, $oTemplate = '')
 {
     //Produce sample page from template file
-    $aReplacements = isset($data['aReplacements']) ? $data['aReplacements'] : array();
+    $aReplacements = $data['aReplacements'] ?? array();
     return (array) templatereplace(file_get_contents($file), $aReplacements, $data, 'Unspecified', false, null, array(), false, $oTemplate);
 }
 

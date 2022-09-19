@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+ <LimeSurveyDocType>Survey</LimeSurveyDocType>
+ <DBVersion>490</DBVersion>
+ <languages>
+  <language>ar</language>
+  <language>de</language>
+  <language>sv</language>
+  <language>en</language>
+ </languages>
+ <groups>
+  <fields>
+   <fieldname>gid</fieldname>
+   <fieldname>sid</fieldname>
+   <fieldname>group_order</fieldname>
+   <fieldname>randomization_group</fieldname>
+   <fieldname>grelevance</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <gid><![CDATA[2]]></gid>
+    <sid><![CDATA[161359]]></sid>
+    <group_order><![CDATA[1]]></group_order>
+    <randomization_group/>
+    <grelevance><![CDATA[1]]></grelevance>
+   </row>
+  </rows>
+ </groups>
+ <group_l10ns>
+  <fields>
+   <fieldname>id</fieldname>
+   <fieldname>gid</fieldname>
+   <fieldname>group_name</fieldname>
+   <fieldname>description</fieldname>
+   <fieldname>language</fieldname>
+   <fieldname>sid</fieldname>
+   <fieldname>group_order</fieldname>
+   <fieldname>randomization_group</fieldname>
+   <fieldname>grelevance</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <id><![CDATA[3]]></id>
+    <gid><![CDATA[2]]></gid>
+    <group_name><![CDATA[My first question group]]></group_name>
+    <language><![CDATA[ar]]></language>
+    <sid><![CDATA[161359]]></sid>
+    <group_order><![CDATA[1]]></group_order>
+    <randomization_group/>
+    <grelevance><![CDATA[1]]></grelevance>
+   </row>
+   <row>
+    <id><![CDATA[4]]></id>
+    <gid><![CDATA[2]]></gid>
+    <group_name><![CDATA[My first question group]]></group_name>
+    <language><![CDATA[de]]></language>
+    <sid><![CDATA[161359]]></sid>
+    <group_order><![CDATA[1]]></group_order>
+    <randomization_group/>
+    <grelevance><![CDATA[1]]></grelevance>
+   </row>
+   <row>
+    <id><![CDATA[2]]></id>
+    <gid><![CDATA[2]]></gid>
+    <group_name><![CDATA[My first question group]]></group_name>
+    <language><![CDATA[en]]></language>
+    <sid><![CDATA[161359]]></sid>
+    <group_order><![CDATA[1]]></group_order>
+    <randomization_group/>
+    <grelevance><![CDATA[1]]></grelevance>
+   </row>
+   <row>
+    <id><![CDATA[5]]></id>
+    <gid><![CDATA[2]]></gid>
+    <group_name><![CDATA[My first question group]]></group_name>
+    <language><![CDATA[sv]]></language>
+    <sid><![CDATA[161359]]></sid>
+    <group_order><![CDATA[1]]></group_order>
+    <randomization_group/>
+    <grelevance><![CDATA[1]]></grelevance>
+   </row>
+  </rows>
+ </group_l10ns>
+ <questions>
+  <fields>
+   <fieldname>qid</fieldname>
+   <fieldname>parent_qid</fieldname>
+   <fieldname>sid</fieldname>
+   <fieldname>gid</fieldname>
+   <fieldname>type</fieldname>
+   <fieldname>title</fieldname>
+   <fieldname>preg</fieldname>
+   <fieldname>other</fieldname>
+   <fieldname>mandatory</fieldname>
+   <fieldname>encrypted</fieldname>
+   <fieldname>question_order</fieldname>
+   <fieldname>scale_id</fieldname>
+   <fieldname>same_default</fieldname>
+   <fieldname>relevance</fieldname>
+   <fieldname>question_theme_name</fieldname>
+   <fieldname>modulename</fieldname>
+   <fieldname>same_script</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <qid><![CDATA[2]]></qid>
+    <parent_qid><![CDATA[0]]></parent_qid>
+    <sid><![CDATA[161359]]></sid>
+    <gid><![CDATA[2]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[Q00]]></title>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <encrypted><![CDATA[N]]></encrypted>
+    <question_order><![CDATA[1]]></question_order>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+    <question_theme_name><![CDATA[longfreetext]]></question_theme_name>
+    <same_script><![CDATA[0]]></same_script>
+   </row>
+  </rows>
+ </questions>
+ <question_l10ns>
+  <fields>
+   <fieldname>id</fieldname>
+   <fieldname>qid</fieldname>
+   <fieldname>question</fieldname>
+   <fieldname>help</fieldname>
+   <fieldname>script</fieldname>
+   <fieldname>language</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <id><![CDATA[3]]></id>
+    <qid><![CDATA[2]]></qid>
+    <question><![CDATA[A first example question. Please answer this question:]]></question>
+    <help><![CDATA[This is a question help text.]]></help>
+    <language><![CDATA[ar]]></language>
+   </row>
+   <row>
+    <id><![CDATA[4]]></id>
+    <qid><![CDATA[2]]></qid>
+    <question><![CDATA[A first example question. Please answer this question:]]></question>
+    <help><![CDATA[This is a question help text.]]></help>
+    <language><![CDATA[de]]></language>
+   </row>
+   <row>
+    <id><![CDATA[2]]></id>
+    <qid><![CDATA[2]]></qid>
+    <question><![CDATA[A first example question. Please answer this question:]]></question>
+    <help><![CDATA[This is a question help text.]]></help>
+    <language><![CDATA[en]]></language>
+   </row>
+   <row>
+    <id><![CDATA[5]]></id>
+    <qid><![CDATA[2]]></qid>
+    <question><![CDATA[A first example question. Please answer this question:]]></question>
+    <help><![CDATA[This is a question help text.]]></help>
+    <language><![CDATA[sv]]></language>
+   </row>
+  </rows>
+ </question_l10ns>
+ <surveys>
+  <fields>
+   <fieldname>sid</fieldname>
+   <fieldname>gsid</fieldname>
+   <fieldname>admin</fieldname>
+   <fieldname>expires</fieldname>
+   <fieldname>startdate</fieldname>
+   <fieldname>adminemail</fieldname>
+   <fieldname>anonymized</fieldname>
+   <fieldname>faxto</fieldname>
+   <fieldname>format</fieldname>
+   <fieldname>savetimings</fieldname>
+   <fieldname>template</fieldname>
+   <fieldname>language</fieldname>
+   <fieldname>additional_languages</fieldname>
+   <fieldname>datestamp</fieldname>
+   <fieldname>usecookie</fieldname>
+   <fieldname>allowregister</fieldname>
+   <fieldname>allowsave</fieldname>
+   <fieldname>autonumber_start</fieldname>
+   <fieldname>autoredirect</fieldname>
+   <fieldname>allowprev</fieldname>
+   <fieldname>printanswers</fieldname>
+   <fieldname>ipaddr</fieldname>
+   <fieldname>ipanonymize</fieldname>
+   <fieldname>refurl</fieldname>
+   <fieldname>showsurveypolicynotice</fieldname>
+   <fieldname>publicstatistics</fieldname>
+   <fieldname>publicgraphs</fieldname>
+   <fieldname>listpublic</fieldname>
+   <fieldname>htmlemail</fieldname>
+   <fieldname>sendconfirmation</fieldname>
+   <fieldname>tokenanswerspersistence</fieldname>
+   <fieldname>assessments</fieldname>
+   <fieldname>usecaptcha</fieldname>
+   <fieldname>usetokens</fieldname>
+   <fieldname>bounce_email</fieldname>
+   <fieldname>attributedescriptions</fieldname>
+   <fieldname>emailresponseto</fieldname>
+   <fieldname>emailnotificationto</fieldname>
+   <fieldname>tokenlength</fieldname>
+   <fieldname>showxquestions</fieldname>
+   <fieldname>showgroupinfo</fieldname>
+   <fieldname>shownoanswer</fieldname>
+   <fieldname>showqnumcode</fieldname>
+   <fieldname>bouncetime</fieldname>
+   <fieldname>bounceprocessing</fieldname>
+   <fieldname>bounceaccounttype</fieldname>
+   <fieldname>bounceaccounthost</fieldname>
+   <fieldname>bounceaccountpass</fieldname>
+   <fieldname>bounceaccountencryption</fieldname>
+   <fieldname>bounceaccountuser</fieldname>
+   <fieldname>showwelcome</fieldname>
+   <fieldname>showprogress</fieldname>
+   <fieldname>questionindex</fieldname>
+   <fieldname>navigationdelay</fieldname>
+   <fieldname>nokeyboard</fieldname>
+   <fieldname>alloweditaftercompletion</fieldname>
+   <fieldname>googleanalyticsstyle</fieldname>
+   <fieldname>googleanalyticsapikey</fieldname>
+   <fieldname>tokenencryptionoptions</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <sid><![CDATA[161359]]></sid>
+    <gsid><![CDATA[1]]></gsid>
+    <admin><![CDATA[inherit]]></admin>
+    <adminemail><![CDATA[inherit]]></adminemail>
+    <anonymized><![CDATA[N]]></anonymized>
+    <faxto/>
+    <format><![CDATA[I]]></format>
+    <savetimings><![CDATA[I]]></savetimings>
+    <template><![CDATA[inherit]]></template>
+    <language><![CDATA[en]]></language>
+    <additional_languages><![CDATA[ar de sv]]></additional_languages>
+    <datestamp><![CDATA[I]]></datestamp>
+    <usecookie><![CDATA[I]]></usecookie>
+    <allowregister><![CDATA[I]]></allowregister>
+    <allowsave><![CDATA[I]]></allowsave>
+    <autonumber_start><![CDATA[0]]></autonumber_start>
+    <autoredirect><![CDATA[I]]></autoredirect>
+    <allowprev><![CDATA[I]]></allowprev>
+    <printanswers><![CDATA[I]]></printanswers>
+    <ipaddr><![CDATA[I]]></ipaddr>
+    <ipanonymize><![CDATA[I]]></ipanonymize>
+    <refurl><![CDATA[I]]></refurl>
+    <showsurveypolicynotice><![CDATA[0]]></showsurveypolicynotice>
+    <publicstatistics><![CDATA[I]]></publicstatistics>
+    <publicgraphs><![CDATA[I]]></publicgraphs>
+    <listpublic><![CDATA[I]]></listpublic>
+    <htmlemail><![CDATA[I]]></htmlemail>
+    <sendconfirmation><![CDATA[I]]></sendconfirmation>
+    <tokenanswerspersistence><![CDATA[I]]></tokenanswerspersistence>
+    <assessments><![CDATA[I]]></assessments>
+    <usecaptcha><![CDATA[E]]></usecaptcha>
+    <usetokens><![CDATA[N]]></usetokens>
+    <bounce_email><![CDATA[inherit]]></bounce_email>
+    <emailresponseto><![CDATA[inherit]]></emailresponseto>
+    <emailnotificationto><![CDATA[inherit]]></emailnotificationto>
+    <tokenlength><![CDATA[-1]]></tokenlength>
+    <showxquestions><![CDATA[I]]></showxquestions>
+    <showgroupinfo><![CDATA[I]]></showgroupinfo>
+    <shownoanswer><![CDATA[I]]></shownoanswer>
+    <showqnumcode><![CDATA[I]]></showqnumcode>
+    <bounceprocessing><![CDATA[N]]></bounceprocessing>
+    <showwelcome><![CDATA[I]]></showwelcome>
+    <showprogress><![CDATA[I]]></showprogress>
+    <questionindex><![CDATA[-1]]></questionindex>
+    <navigationdelay><![CDATA[-1]]></navigationdelay>
+    <nokeyboard><![CDATA[I]]></nokeyboard>
+    <alloweditaftercompletion><![CDATA[I]]></alloweditaftercompletion>
+    <tokenencryptionoptions/>
+   </row>
+  </rows>
+ </surveys>
+ <surveys_languagesettings>
+  <fields>
+   <fieldname>surveyls_survey_id</fieldname>
+   <fieldname>surveyls_language</fieldname>
+   <fieldname>surveyls_title</fieldname>
+   <fieldname>surveyls_description</fieldname>
+   <fieldname>surveyls_welcometext</fieldname>
+   <fieldname>surveyls_endtext</fieldname>
+   <fieldname>surveyls_policy_notice</fieldname>
+   <fieldname>surveyls_policy_error</fieldname>
+   <fieldname>surveyls_policy_notice_label</fieldname>
+   <fieldname>surveyls_url</fieldname>
+   <fieldname>surveyls_urldescription</fieldname>
+   <fieldname>surveyls_email_invite_subj</fieldname>
+   <fieldname>surveyls_email_invite</fieldname>
+   <fieldname>surveyls_email_remind_subj</fieldname>
+   <fieldname>surveyls_email_remind</fieldname>
+   <fieldname>surveyls_email_register_subj</fieldname>
+   <fieldname>surveyls_email_register</fieldname>
+   <fieldname>surveyls_email_confirm_subj</fieldname>
+   <fieldname>surveyls_email_confirm</fieldname>
+   <fieldname>surveyls_dateformat</fieldname>
+   <fieldname>surveyls_attributecaptions</fieldname>
+   <fieldname>email_admin_notification_subj</fieldname>
+   <fieldname>email_admin_notification</fieldname>
+   <fieldname>email_admin_responses_subj</fieldname>
+   <fieldname>email_admin_responses</fieldname>
+   <fieldname>surveyls_numberformat</fieldname>
+   <fieldname>attachments</fieldname>
+  </fields>
+  <rows>
+   <row>
+    <surveyls_survey_id><![CDATA[161359]]></surveyls_survey_id>
+    <surveyls_language><![CDATA[ar]]></surveyls_language>
+    <surveyls_title><![CDATA[Arabic]]></surveyls_title>
+    <surveyls_url/>
+    <surveyls_email_invite_subj><![CDATA[دعوة للمشاركة في استبيان]]></surveyls_email_invite_subj>
+    <surveyls_email_invite><![CDATA[عزيزنا {FIRSTNAME},<br />
+<br />
+لقد تمت دعوتك للمشاركة في استبيان(استطلاع).<br />
+<br />
+عنوان الاستبيان هو:<br />
+"{SURVEYNAME}"<br />
+<br />
+"{SURVEYDESCRIPTION}"<br />
+<br />
+لكي تشارك اضغط على الرابط أدناه.<br />
+<br />
+أطيب التحيات,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+----------------------------------------------<br />
+اضغط هنا لتشارك في الاستبيان:<br />
+{SURVEYURL}<br />
+<br />
+لو انك لا تريد المشاركة في هذا الاستبيان و لا تريد ان تستقبل المزيد من الدعوات اضغط علي العنوان الاتي: <br />
+{OPTOUTURL}<br />
+<br />
+إذا كان غير مسموح لك بالمشاركة في هذا الإستبيان وتريد أن تتلقى دعوة للمشاركة فيه نرجوا منك اتباع الرابط التالي :<br />
+{اختياري}]]></surveyls_email_invite>
+    <surveyls_email_remind_subj><![CDATA[تذكير بالمشاركة في الاستبيان]]></surveyls_email_remind_subj>
+    <surveyls_email_remind><![CDATA[عزيزنا" الاسم الأول"، /n/nلقد دعوناك مؤخرا للمشاركة في استبيان./n/nلاحظنا أنك لم تكمل الاستبيان حتى الآن، ونتمنى أن نذكرك بأن الاستبيان ما زال متاحاهل ترغب في المشاركة./n/nعنوان الاستبيان:/n" اسم الاستبيان" /n/n/" وصف الاستبيان"/ /n/nللمشاركة، من فضلك اضغط على الرابط الموجود بالأسفل./n/nالمخلص،/n/nاسم المدير" " بريده الإلكتروني"/n/n----------------------------------------------<br />
+اضغط هنا لتعمل استبيانا:/n" عنوان صفحة الويب الخاص بالاستبيان"<br />
+<br />
+لو انك لا تريد المشاركة في هذا الاستبيان و لا تريد ان تستقبل المزيد من الدعوات اضغط علي العنوان الاتي: <br />
+{OPTOUTURL}]]></surveyls_email_remind>
+    <surveyls_email_register_subj><![CDATA[تأكيد تسجيل الاستبيان]]></surveyls_email_register_subj>
+    <surveyls_email_register><![CDATA[عزيزي {FIRSTNAME},<br />
+<br />
+لقد قمت، أو قام شخص بإستخدام بريدك الإليكتروني لتسجيلك للمشاركة في الإستبيان  {SURVEYNAME}.<br />
+<br />
+لإكمال الإستبيان، انقر على هذا الرابط:<br />
+<br />
+{SURVEYURL}<br />
+<br />
+إن كان لديك اي تساؤل حول هذه الإستبيان او إذا لم تطلب التسجيل، يمكنك الإتصال ب {ADMINNAME} على هذا العنوان {ADMINEMAIL}.]]></surveyls_email_register>
+    <surveyls_email_confirm_subj><![CDATA[تأكيد مشاركتك في استبياننا]]></surveyls_email_confirm_subj>
+    <surveyls_email_confirm><![CDATA[عزيزي {FIRSTNAME},<br />
+<br />
+إن هذه الرسالة تؤكد انك انهيت الإستبانة المعنونة  {SURVEYNAME} وتم حفظ الأجوبة. شكراً لإشتراكك.<br />
+<br />
+إن كان عندك اي سؤال عن هذه الرسالة, يمكنك الإتصال ب   {ADMINNAME}  علي  {ADMINEMAIL}.<br />
+<br />
+شكراً لك ,<br />
+<br />
+{ADMINNAME}]]></surveyls_email_confirm>
+    <surveyls_dateformat><![CDATA[2]]></surveyls_dateformat>
+    <email_admin_notification_subj><![CDATA[تقديم الإجابة للاستبيان {SURVEYNAME}]]></email_admin_notification_subj>
+    <email_admin_notification><![CDATA[اهلا, <br />
+<br />
+اجابات جديدة قد تم اضافتها لهذا الاستبيان '{SURVEYNAME}'.<br />
+<br />
+اضغط علي العنوان الاتي لاعادة تحميل الاستبيان:<br />
+{RELOADURL}<br />
+<br />
+اضغط علي العنوان الاتي لروئية الاجابات المنفردة:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+اضغط علي العنوان الاتي لتعديل الاجابات المنفردة:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+شاهد الاحصائيات بالضغط هنا:<br />
+{STATISTICSURL}]]></email_admin_notification>
+    <email_admin_responses_subj><![CDATA[الاجابات تقدم لاستبيان {SURVEYNAME} مع النتائج]]></email_admin_responses_subj>
+    <email_admin_responses><![CDATA[اهلا, <br />
+<br />
+اجابات جديدة قد تم اضافتها لهذا الاستبيان '{SURVEYNAME}'.<br />
+<br />
+اضغط علي العنوان الاتي لاعادة تحميل الاستبيان:<br />
+{RELOADURL}<br />
+<br />
+اضغط علي العنوان الاتي لروئية الاجابات المنفردة:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+اضغط علي العنوان الاتي لتعديل الاجابات المنفردة:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+شاهد الاحصائيات بالضغط هنا:<br />
+{STATISTICSURL}<br />
+<br />
+<br />
+الاجابات الاتية جمعت من المشاركات:<br />
+{ANSWERTABLE}]]></email_admin_responses>
+    <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
+   </row>
+   <row>
+    <surveyls_survey_id><![CDATA[161359]]></surveyls_survey_id>
+    <surveyls_language><![CDATA[de]]></surveyls_language>
+    <surveyls_title><![CDATA[Germ]]></surveyls_title>
+    <surveyls_url/>
+    <surveyls_email_invite_subj><![CDATA[Einladung zu einer Umfrage]]></surveyls_email_invite_subj>
+    <surveyls_email_invite><![CDATA[Hallo {FIRSTNAME},<br />
+<br />
+Hiermit möchten wir dich zu einer Umfrage einladen.<br />
+<br />
+Der Titel der Umfrage ist <br />
+"{SURVEYNAME}"<br />
+<br />
+"{SURVEYDESCRIPTION}"<br />
+<br />
+Um an dieser Umfrage teilzunehmen, klicke bitte auf den unten stehenden Link.<br />
+<br />
+Mit freundlichen Grüßen,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+----------------------------------------------<br />
+Klicke hier um die Umfrage zu starten:<br />
+{SURVEYURL}<br />
+<br />
+Wenn Sie an diese Umfrage nicht teilnehmen und keine weiteren Erinnerungen erhalten möchten, klicken Sie bitte auf den folgenden Link:<br />
+{OPTOUTURL}<br />
+<br />
+Wenn Sie geblockt sind, jedoch wieder teilnehmen und weitere Einladungen erhalten möchten, klicken Sie bitte auf den folgenden Link:<br />
+{OPTINURL}]]></surveyls_email_invite>
+    <surveyls_email_remind_subj><![CDATA[Erinnerung an die Teilnahme an einer Umfrage]]></surveyls_email_remind_subj>
+    <surveyls_email_remind><![CDATA[Hallo {FIRSTNAME},<br />
+<br />
+Vor kurzem haben wir dich zu einer Umfrage eingeladen.<br />
+<br />
+Zu unserem Bedauern haben wir bemerkt, dass du die Umfrage noch nicht ausgefüllt hast. Wir möchten dir mitteilen, dass die Umfrage noch aktiv ist, und würden uns freuen, wenn du teilnehmen könntest.<br />
+<br />
+Der Titel der Umfrage ist <br />
+'{SURVEYNAME}'<br />
+<br />
+'{SURVEYDESCRIPTION}'<br />
+<br />
+Um an dieser Umfrage teilzunehmen, klicke bitte auf den unten stehenden Link.<br />
+<br />
+ Mit freundlichen Grüßen,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+----------------------------------------------<br />
+Klicke hier, um die Umfrage zu starten:<br />
+{SURVEYURL}<br />
+<br />
+Wenn Sie an diese Umfrage nicht teilnehmen und keine weiteren Erinnerungen erhalten möchten, klicken Sie bitte auf den folgenden Link:<br />
+{OPTOUTURL}]]></surveyls_email_remind>
+    <surveyls_email_register_subj><![CDATA[Registrierungsbestätigung für Teilnahmeumfrage]]></surveyls_email_register_subj>
+    <surveyls_email_register><![CDATA[Hallo {FIRSTNAME},<br />
+<br />
+du (oder jemand, der deine E-Mail-Adresse angegeben hat) hast dich für eine Umfrage mit dem Titel {SURVEYNAME} angemeldet.<br />
+<br />
+Um an dieser Umfrage teilzunehmen, klicke bitte auf folgenden Link:<br />
+<br />
+{SURVEYURL}<br />
+<br />
+Wenn du irgendwelche Fragen zu dieser Umfrage hast oder wenn du dich nicht für diese Umfrage angemeldet hast und glaubst, dass dir diese E-Mail irrtümlicherweise zugeschickt worden ist, kontaktiere bitte {ADMINNAME} unter {ADMINEMAIL}.]]></surveyls_email_register>
+    <surveyls_email_confirm_subj><![CDATA[Bestätigung für die Teilnahme an unserer Umfrage]]></surveyls_email_confirm_subj>
+    <surveyls_email_confirm><![CDATA[Hallo {FIRSTNAME},<br />
+<br />
+Vielen Dank für die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. Deine Antworten wurden bei uns gespeichert.<br />
+<br />
+Wenn du irgendwelche Fragen zu dieser E-Mail hast, kontaktiere bitte {ADMINNAME} unter {ADMINEMAIL}.<br />
+<br />
+Mit freundlichen Grüßen,<br />
+<br />
+{ADMINNAME}]]></surveyls_email_confirm>
+    <surveyls_dateformat><![CDATA[1]]></surveyls_dateformat>
+    <email_admin_notification_subj><![CDATA[Antwortabsendung für Umfrage {SURVEYNAME}]]></email_admin_notification_subj>
+    <email_admin_notification><![CDATA[Hallo,<br />
+<br />
+Eine neue Antwort wurde für die Umfrage '{SURVEYNAME}' abgegeben.<br />
+<br />
+Klicke auf den folgenden Link um den Antwortdatensatz anzusehen:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Klicke auf den folgenden Link um den Antwortdatensatz zu bearbeiten:<br />
+{EDITRESPONSEURL}<br />
+<br />
+Um die Statistik zu sehen, klicke hier:<br />
+{STATISTICSURL}]]></email_admin_notification>
+    <email_admin_responses_subj><![CDATA[Antwortabsendung für Umfrage {SURVEYNAME} mit Ergebnissen]]></email_admin_responses_subj>
+    <email_admin_responses><![CDATA[Hallo,<br />
+<br />
+Eine neue Antwort wurde für die Umfrage '{SURVEYNAME}' abgegeben.<br />
+<br />
+Klicken Sie auf den folgenden Link um den Antwortdatensatz anzusehen:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Klicken Sie auf den folgenden Link um den Antwortdatensatz zu bearbeiten:<br />
+{EDITRESPONSEURL}<br />
+<br />
+Um die Statistik zu sehen, klicken Sie hier:<br />
+{STATISTICSURL}<br />
+<br />
+<br />
+Die folgenden Antworten wurden vom Teilnehmer gegeben:<br />
+{ANSWERTABLE}]]></email_admin_responses>
+    <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
+   </row>
+   <row>
+    <surveyls_survey_id><![CDATA[161359]]></surveyls_survey_id>
+    <surveyls_language><![CDATA[en]]></surveyls_language>
+    <surveyls_title><![CDATA[translation]]></surveyls_title>
+    <surveyls_description/>
+    <surveyls_welcometext/>
+    <surveyls_endtext/>
+    <surveyls_policy_notice/>
+    <surveyls_policy_notice_label/>
+    <surveyls_url/>
+    <surveyls_urldescription/>
+    <surveyls_email_invite_subj><![CDATA[Invitation to participate in a survey]]></surveyls_email_invite_subj>
+    <surveyls_email_invite><![CDATA[Dear {FIRSTNAME},<br />
+<br />
+you have been invited to participate in a survey.<br />
+<br />
+The survey is titled:<br />
+"{SURVEYNAME}"<br />
+<br />
+"{SURVEYDESCRIPTION}"<br />
+<br />
+To participate, please click on the link below.<br />
+<br />
+Sincerely,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+----------------------------------------------<br />
+Click here to do the survey:<br />
+{SURVEYURL}<br />
+<br />
+If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:<br />
+{OPTOUTURL}<br />
+<br />
+If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:<br />
+{OPTINURL}]]></surveyls_email_invite>
+    <surveyls_email_remind_subj><![CDATA[Reminder to participate in a survey]]></surveyls_email_remind_subj>
+    <surveyls_email_remind><![CDATA[Dear {FIRSTNAME},<br />
+<br />
+Recently we invited you to participate in a survey.<br />
+<br />
+We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.<br />
+<br />
+The survey is titled:<br />
+"{SURVEYNAME}"<br />
+<br />
+"{SURVEYDESCRIPTION}"<br />
+<br />
+To participate, please click on the link below.<br />
+<br />
+Sincerely,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+----------------------------------------------<br />
+Click here to do the survey:<br />
+{SURVEYURL}<br />
+<br />
+If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:<br />
+{OPTOUTURL}]]></surveyls_email_remind>
+    <surveyls_email_register_subj><![CDATA[Survey registration confirmation]]></surveyls_email_register_subj>
+    <surveyls_email_register><![CDATA[Dear {FIRSTNAME},<br />
+<br />
+You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.<br />
+<br />
+To complete this survey, click on the following URL:<br />
+<br />
+{SURVEYURL}<br />
+<br />
+If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.]]></surveyls_email_register>
+    <surveyls_email_confirm_subj><![CDATA[Confirmation of your participation in our survey]]></surveyls_email_confirm_subj>
+    <surveyls_email_confirm><![CDATA[Dear {FIRSTNAME},<br />
+<br />
+this email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.<br />
+<br />
+If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.<br />
+<br />
+Sincerely,<br />
+<br />
+{ADMINNAME}]]></surveyls_email_confirm>
+    <surveyls_dateformat><![CDATA[9]]></surveyls_dateformat>
+    <email_admin_notification_subj><![CDATA[Response submission for survey {SURVEYNAME}]]></email_admin_notification_subj>
+    <email_admin_notification><![CDATA[Hello,<br />
+<br />
+A new response was submitted for your survey '{SURVEYNAME}'.<br />
+<br />
+Click the following link to see the individual response:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Click the following link to edit the individual response:<br />
+{EDITRESPONSEURL}<br />
+<br />
+View statistics by clicking here:<br />
+{STATISTICSURL}]]></email_admin_notification>
+    <email_admin_responses_subj><![CDATA[Response submission for survey {SURVEYNAME} with results]]></email_admin_responses_subj>
+    <email_admin_responses><![CDATA[Hello,<br />
+<br />
+A new response was submitted for your survey '{SURVEYNAME}'.<br />
+<br />
+Click the following link to see the individual response:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Click the following link to edit the individual response:<br />
+{EDITRESPONSEURL}<br />
+<br />
+View statistics by clicking here:<br />
+{STATISTICSURL}<br />
+<br />
+<br />
+The following answers were given by the participant:<br />
+{ANSWERTABLE}]]></email_admin_responses>
+    <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
+   </row>
+   <row>
+    <surveyls_survey_id><![CDATA[161359]]></surveyls_survey_id>
+    <surveyls_language><![CDATA[sv]]></surveyls_language>
+    <surveyls_title/>
+    <surveyls_url/>
+    <surveyls_email_invite_subj><![CDATA[Inbjudan att delta i en undersökning]]></surveyls_email_invite_subj>
+    <surveyls_email_invite><![CDATA[Hej  {FIRSTNAME},<br />
+<br />
+du har blivt inbjuden att delta i en undersökning.<br />
+<br />
+Undersökningen heter:<br />
+"{SURVEYNAME}"<br />
+<br />
+"{SURVEYDESCRIPTION}"<br />
+<br />
+För att delta, var snäll att klicka på länken nedan.<br />
+<br />
+Med vänlig hälsning,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+----------------------------------------------<br />
+Klicka här för att delta i undersökningan:<br />
+{SURVEYURL}<br />
+<br />
+Om du inte vill delta i denna enkät och inte heller vill ha vidare inbjudan, klicka på följande länk:<br />
+{OPTOUTURL}<br />
+<br />
+Om du tidigare valt att inte delta i enkäten (opt-out) men har ändrat dig och vill delta igen, klicka på följande länk:<br />
+{OPTINURL}]]></surveyls_email_invite>
+    <surveyls_email_remind_subj><![CDATA[Påminnelse att delta i en undersökning]]></surveyls_email_remind_subj>
+    <surveyls_email_remind><![CDATA[Hej {FIRSTNAME},<br />
+<br />
+Du har nyligen blivit inbjuden att delta i en enkät.<br />
+<br />
+Vi noterar att du ännu inte genomfört enkäten och vill påminna dig att den fortfarande är tillgänglig om du skulle vilja delta.<br />
+<br />
+Enkäten heter:<br />
+"{SURVEYNAME}"<br />
+<br />
+"{SURVEYDESCRIPTION}"<br />
+<br />
+För att delta, klicka på länken nedan.<br />
+<br />
+Med vänlig hälsning,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+----------------------------------------------<br />
+Klicka här för att komma till enkäten:<br />
+{SURVEYURL}<br />
+<br />
+Om du inte vill delta i denna enkät och inte heller vill ha vidare inbjudan, klicka på följande länk:<br />
+{OPTOUTURL}]]></surveyls_email_remind>
+    <surveyls_email_register_subj><![CDATA[Bekräftelse på enkätregistrering]]></surveyls_email_register_subj>
+    <surveyls_email_register><![CDATA[Hej {FIRSTNAME},<br />
+<br />
+Du, eller någon som angett din e-postadress, har anmält sig för att delta i en internet-enkät som heter {SURVEYNAME}.<br />
+<br />
+För att genomföra enkäten, klicka på följande länk:<br />
+<br />
+{SURVEYURL}<br />
+<br />
+Om du har några frågor om denna enkät eller om du inte anmält att du vill delta och anser att detta meddelande är felaktigt, var vänlig kontakta {ADMINNAME} på {ADMINEMAIL}.]]></surveyls_email_register>
+    <surveyls_email_confirm_subj><![CDATA[Bekräftelse av ditt deltagande i vår undersökning]]></surveyls_email_confirm_subj>
+    <surveyls_email_confirm><![CDATA[Hej  {FIRSTNAME},<br />
+<br />
+detta e-postmeddelande har sänts till dig för att bekräfta att du har slutfört undersökningen med titeln {SURVEYNAME} och ditt svar har sparats. Tack för ditt deltagande.<br />
+<br />
+Om du har ytterligare frågor om detta e-postmeddelande, vänligen kontakta {ADMINNAME} på {ADMINEMAIL}.<br />
+<br />
+Med vänlig hälsning,<br />
+<br />
+{ADMINNAME}]]></surveyls_email_confirm>
+    <surveyls_dateformat><![CDATA[6]]></surveyls_dateformat>
+    <email_admin_notification_subj><![CDATA[Svar inskickat för undersökningen {SURVEYNAME}]]></email_admin_notification_subj>
+    <email_admin_notification><![CDATA[Hej,<br />
+<br />
+En ny svar lämnades för din enkät '{SURVEYNAME}'.<br />
+<br />
+Klicka på följande länk för att ladda om undersökningen:<br />
+{RELOADURL}<br />
+<br />
+Klicka på följande länk för att se det individuella svaret:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Klicka på följande länk för att redigera det individuella svaret:<br />
+{EDITRESPONSEURL}<br />
+<br />
+Visa statistik genom att klicka här:<br />
+{STATISTICSURL}]]></email_admin_notification>
+    <email_admin_responses_subj><![CDATA[Svar inskickat för undersökningen {SURVEYNAME} med resultat]]></email_admin_responses_subj>
+    <email_admin_responses><![CDATA[Hej,<br />
+<br />
+Ett nytt svar lämnades för din enkät '{SURVEYNAME}'.<br />
+<br />
+Klicka på följande länk för att ladda om undersökningen:<br />
+{RELOADURL}<br />
+<br />
+Klicka på följande länk för att se det individuella svaret:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Klicka på följande länk för att redigera det individuella svaret:<br />
+{EDITRESPONSEURL}<br />
+<br />
+Visa statistik genom att klicka här:<br />
+{STATISTICSURL}<br />
+<br />
+<br />
+Följande svar gavs av deltagaren:<br />
+{ANSWERTABLE}]]></email_admin_responses>
+    <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
+   </row>
+  </rows>
+ </surveys_languagesettings>
+ <themes>
+  <theme>
+   <sid>161359</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>inherit</options>
+   </config>
+  </theme>
+ </themes>
+ <themes_inherited>
+  <theme>
+   <sid>161359</sid>
+   <template_name>fruity</template_name>
+   <config>
+    <options>
+     <ajaxmode>off</ajaxmode>
+     <brandlogo>on</brandlogo>
+     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <container>on</container>
+     <backgroundimage>off</backgroundimage>
+     <animatebody>off</animatebody>
+     <bodyanimation>fadeInRight</bodyanimation>
+     <bodyanimationduration>500</bodyanimationduration>
+     <animatequestion>off</animatequestion>
+     <questionanimation>flipInX</questionanimation>
+     <questionanimationduration>500</questionanimationduration>
+     <animatealert>off</animatealert>
+     <alertanimation>shake</alertanimation>
+     <alertanimationduration>500</alertanimationduration>
+     <font>noto</font>
+     <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
+     <fontcolor>#444444</fontcolor>
+     <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
+     <questionborder>on</questionborder>
+     <questioncontainershadow>on</questioncontainershadow>
+     <checkicon>f00c</checkicon>
+     <animatecheckbox>on</animatecheckbox>
+     <checkboxanimation>rubberBand</checkboxanimation>
+     <checkboxanimationduration>500</checkboxanimationduration>
+     <animateradio>on</animateradio>
+     <radioanimation>zoomIn</radioanimation>
+     <radioanimationduration>500</radioanimationduration>
+     <zebrastriping>off</zebrastriping>
+     <stickymatrixheaders>off</stickymatrixheaders>
+     <greyoutselected>off</greyoutselected>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <crosshover>off</crosshover>
+     <showpopups>1</showpopups>
+     <showclearall>off</showclearall>
+     <questionhelptextposition>top</questionhelptextposition>
+     <notables>1</notables>
+    </options>
+   </config>
+  </theme>
+ </themes_inherited>
+</document>

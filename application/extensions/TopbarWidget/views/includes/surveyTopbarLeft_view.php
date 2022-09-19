@@ -118,7 +118,7 @@
                     <!-- Quick-translation -->
                     <li>
                         <a class="dropdown-item"
-                           href="<?php echo App()->createUrl("admin/translate/sa/index/surveyid/{$oSurvey->sid}"); ?>">
+                           href="<?= App()->createUrl("quickTranslation/index/surveyid/{$oSurvey->sid}"); ?>">
                             <span class="fa fa-language"></span>
                             <?php eT("Quick-translation"); ?>
                         </a>

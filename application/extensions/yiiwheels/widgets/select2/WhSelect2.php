@@ -91,7 +91,7 @@ class WhSelect2 extends CInputWidget
         /* @var $cs CClientScript */
         $cs = Yii::app()->getClientScript();
 
-        $cs->registerPackage('select2');
+        $cs->registerPackage('select2-bootstrap');
 
 
         if ($this->language) {

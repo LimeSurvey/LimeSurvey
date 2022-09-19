@@ -6,11 +6,11 @@
  */
 
 // import variables and functions
-@import "../../../third_party/twbs/bootstrap/scss/functions";
+@import "../../../vendor/twbs/bootstrap/scss/functions";
 @import "../../bootstrap_5/scss/variables.scss";
-@import "../../../third_party/twbs/bootstrap/scss/variables";
-@import "../../../third_party/twbs/bootstrap/scss/mixins";
-@import "../../../third_party/twbs/bootstrap/scss/root";
+@import "../../../vendor/twbs/bootstrap/scss/variables";
+@import "../../../vendor/twbs/bootstrap/scss/mixins";
+@import "../../../vendor/twbs/bootstrap/scss/root";
 @import "../../bootstrap_5/scss/customizations";
 
 #ls-loading {
@@ -4219,4 +4219,9 @@ label {
     .nav-link:focus {
         color: #333;
     }
+}
+
+/** List Questions Grid **/
+#question-grid {
+    overflow-x: visible;
 }

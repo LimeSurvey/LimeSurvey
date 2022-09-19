@@ -183,7 +183,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
             $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#installPluginZipModal #the_file')));
             $fileInput = $web->findByCss('#installPluginZipModal #the_file');
             $fileInput->setFileDetector(new LocalFileDetector());
-            $file = BASEPATH . '../tests/data/file_upload/NewQuestionAttributesPlugin.zip';
+            $file = ROOT . '/tests/data/file_upload/NewQuestionAttributesPlugin.zip';
             $this->assertTrue(file_exists($file));
             $fileInput->sendKeys($file)->submit();
 

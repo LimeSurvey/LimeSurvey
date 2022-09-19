@@ -39,7 +39,12 @@ $internalConfig = array(
         'modules' => realpath(__DIR__ . '/../../modules'),
 
         // Third party path
-        'third_party' => realpath(__DIR__ . '/../../third_party'),
+        'vendor' => realpath(__DIR__ . '/../../vendor'),
+        'node_modules' => realpath(__DIR__ . '/../../node_modules'),
+        'node_modules_datatables' => realpath(__DIR__ . '/../../node_modules/datatables.net'),
+        'node_modules_datatables_bs5' => realpath(__DIR__ . '/../../node_modules/datatables.net-bs5'),
+        'node_modules_decimal' => realpath(__DIR__ . '/../../node_modules/decimal.js'),
+        'node_modules_jquery_actual' => realpath(__DIR__ . '/../../node_modules/jquery.actual'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
@@ -99,8 +104,8 @@ $internalConfig = array(
         'yiistrap_fork.behaviors.*',
         'yiistrap_fork.components.*',
         'yiiwheels.widgets.select2.WhSelect2',
-        'third_party.Twig.*',
-        'third_party.sodium.*',
+        'vendor.Twig.*',
+        'vendor.sodium.*',
         'ext.captchaExtended.CaptchaExtendedAction',
         'ext.captchaExtended.CaptchaExtendedValidator',
         'questiontypes.*'
@@ -123,7 +128,7 @@ $internalConfig = array(
         ],
         'clientScript' => array(
             'packages' => array_merge(
-                require('third_party.php'),
+                require('vendor.php'),
                 require('packages.php'),
                 require('questiontypes.php'),
                 require('fonts.php')
@@ -222,12 +227,12 @@ $internalConfig = array(
             'class' => 'application.core.LimeMailer',
         ),
         'ETwigViewRenderer' => array(
-            'class' => 'third_party.yiiext.twig-renderer.ETwigViewRenderer',
-            'twigPathAlias' => 'third_party.twig.twig.lib.Twig'
+            'class' => 'vendor.yiiext.twig-renderer.ETwigViewRenderer',
+            'twigPathAlias' => 'vendor.twig.twig.lib.Twig'
         ),
         'twigRenderer' => array(
             'class' => 'application.core.LSETwigViewRenderer',
-            'twigPathAlias' => 'third_party.twig.twig.lib.Twig',
+            'twigPathAlias' => 'vendor.twig.twig.lib.Twig',
 
             // All parameters below are optional, change them to your needs
             'fileExtension' => '.twig',
@@ -441,6 +446,9 @@ $internalConfig = array(
         'versionFetcherServiceLocator' => array(
             'class' => '\LimeSurvey\ExtensionInstaller\VersionFetcherServiceLocator',
         ),
+        'formExtensionService' => [
+            'class' => '\LimeSurvey\Libraries\FormExtension\FormExtensionService',
+        ]
     )
 );
 

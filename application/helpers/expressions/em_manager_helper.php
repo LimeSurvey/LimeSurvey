@@ -3909,7 +3909,7 @@ class LimeExpressionManager
                 //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
                 //                . "','readWrite':'" . $readWrite
                 //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
-                . "','default':'" . (is_null($defaultValue) ? '' : str_replace("'", "\'", $defaultValue))
+                . "','default':'" . (is_null($defaultValue) ? '' : json_encode($defaultValue)) // Don't found usage in em_javascript, used in expression ?
                 . "','rowdivid':'" . (is_null($rowdivid) ? '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $groupSeq
@@ -3960,7 +3960,6 @@ class LimeExpressionManager
         } else {
             // Read list of available tokens from the tokens table so that preview and error checking works correctly
             $attrs = array_keys(getTokenFieldsAndNames($surveyid));
-
             $blankVal = [
                 'code'      => '',
                 'type'      => '',
@@ -3968,11 +3967,9 @@ class LimeExpressionManager
                 'jsName'    => '',
                 'readWrite' => 'N',
             ];
-            // DON'T set $this->knownVars['TOKEN'] = $blankVal; becuase optout/optin can need it, then don't replace this from templatereplace
+            // DON'T set $this->knownVars['TOKEN'] = $blankVal; because optout/optin can need it, then don't replace this from templatereplace
             foreach ($attrs as $key) {
-                if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/', $key)) {
-                    $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
-                }
+                $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
             }
         }
 
@@ -9056,7 +9053,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
             if ($aSurveyInfo['surveyls_policy_error'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
@@ -9067,7 +9064,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
             if ($aSurveyInfo['surveyls_policy_notice_label'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
@@ -9078,7 +9075,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
         }
 
