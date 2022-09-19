@@ -15,5 +15,7 @@ return array_merge(
         'image/heif-sequence' => 'heifs',
         'image/heic' => 'heic',
         'image/heic-sequence' => 'heics',
+        /* xml as text/xml : #18353 */
+        'text/xml' => 'xml',
     )
 );
