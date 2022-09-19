@@ -4239,7 +4239,9 @@ function do_array_multiflexi($ia)
         $caption            .= gT("Please enter only numbers.");
     } else {
         $layout = "dropdown";
-        $answertypeclass     = " dropdown-item";
+        // $answertypeclass     = " dropdown-item";
+        $answertypeclass     = " ls-dropdown-item";
+        
         $coreClass          .= " dropdown-array";
         $coreRowClass .= " dropdown-list";
         $caption            .= gT("Please select an answer for each combination.");
