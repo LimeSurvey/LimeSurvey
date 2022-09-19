@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-08-17 08:32:06+00:00\n"
+"POT-Creation-Date: 2022-09-19 08:50:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7465,7 +7465,7 @@ msgstr ""
 #: application/views/admin/survey/Question/importQuestion_view.php:36
 #: application/views/admin/survey/Question/importQuestion_view.php:48
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:22
-#: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:10
+#: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:13
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:20
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:37
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:102
@@ -7567,7 +7567,7 @@ msgstr ""
 #: application/views/admin/survey/Question/importQuestion_view.php:37
 #: application/views/admin/survey/Question/importQuestion_view.php:49
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:23
-#: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:10
+#: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:12
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:21
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:38
 #: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:12
@@ -12053,6 +12053,10 @@ msgstr ""
 
 #: application/helpers/twig_translation_helper.php:26
 msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr ""
+
+#: application/helpers/twig_translation_helper.php:27
+msgid "Inherit everything"
 msgstr ""
 
 #: application/helpers/update/update_helper.php:37
@@ -17642,6 +17646,10 @@ msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_set_question_group_position.php:9
 msgid "Set question group for those question"
+msgstr ""
+
+#: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:11
+msgid "Please select an option"
 msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:10
