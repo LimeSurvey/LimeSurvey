@@ -7,15 +7,15 @@ use LimeSurvey\Api\Command\V1\SiteSettingsGet;
 use LimeSurvey\Api\Command\V1\SurveyAdd;
 use LimeSurvey\Api\Command\V1\SurveyDelete;
 use LimeSurvey\Api\Command\V1\SurveyPropertiesGet;
-use LimeSurvey\Api\Command\V1\SurveyGroupList;
-use LimeSurvey\Api\Command\V1\SurveyGroupAdd;
-use LimeSurvey\Api\Command\V1\SurveyGroupDelete;
-use LimeSurvey\Api\Command\V1\SurveyGroupPropertiesGet;
-use LimeSurvey\Api\Command\V1\SurveyGroupPropertiesSet;
-use LimeSurvey\Api\Command\V1\SurveyQuestionImport;
-use LimeSurvey\Api\Command\V1\SurveyQuestionDelete;
-use LimeSurvey\Api\Command\V1\SurveyQuestionPropertiesGet;
-use LimeSurvey\Api\Command\V1\SurveyQuestionPropertiesSet;
+use LimeSurvey\Api\Command\V1\QuestionGroupList;
+use LimeSurvey\Api\Command\V1\QuestionGroupAdd;
+use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
+use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesGet;
+use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesSet;
+use LimeSurvey\Api\Command\V1\QuestionImport;
+use LimeSurvey\Api\Command\V1\QuestionDelete;
+use LimeSurvey\Api\Command\V1\QuestionPropertiesGet;
+use LimeSurvey\Api\Command\V1\QuestionPropertiesSet;
 
 /**
  * This class handles all methods of the RemoteControl 2 API
@@ -64,7 +64,7 @@ class remotecontrol_handle
     public function get_session_key($username, $password, $plugin = 'Authdb')
     {
         return (new SessionKeyCreate)
-            ->run(new CommandRequest(array(
+            ->run(new Request(array(
                 'username' => (string) $username,
                 'password' => (string) $password
             )))->getData();
@@ -82,7 +82,7 @@ class remotecontrol_handle
     public function release_session_key($sSessionKey)
     {
         return (new SessionKeyRelease)
-            ->run(new CommandRequest(array(
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey
             )))->getData();
     }
@@ -100,7 +100,7 @@ class remotecontrol_handle
     public function get_site_settings($sSessionKey, $sSetttingName)
     {
         return (new SiteSettingsGet)
-            ->run(new CommandRequest(array(
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'setttingName' => (string) $sSetttingName
             )))->getData();
@@ -127,7 +127,7 @@ class remotecontrol_handle
     public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
     {
         return (new SurveyAdd)
-            ->run(new CommandRequest(array(
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'surveyID' => (int) $iSurveyID,
                 'surveyTitle' => (string) $sSurveyTitle,
@@ -149,7 +149,7 @@ class remotecontrol_handle
     public function delete_survey($sSessionKey, $iSurveyID)
     {
         return (new SurveyDelete)
-            ->run(new CommandRequest(array(
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'surveyID' => (int) $iSurveyID
             )))->getData();
@@ -272,7 +272,7 @@ class remotecontrol_handle
     public function get_survey_properties($sSessionKey, $iSurveyID, $aSurveySettings = null)
     {
         return (new SurveyPropertiesGet)
-            ->run(new CommandRequest(array(
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'surveyID' => (int) $iSurveyID,
                 'surveySettings' => (array) $aSurveySettings
@@ -902,7 +902,7 @@ class remotecontrol_handle
     /* Group specific functions */
 
     /**
-     * Add empty group with minimum details (RPC function)
+     * Add empty question group with minimum details (RPC function)
      *
      * Used as a placeholder for importing questions.
      * Returns the groupid of the created group.
@@ -916,8 +916,8 @@ class remotecontrol_handle
      */
     public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription = '')
     {
-        return (new SurveyGroupAdd)
-            ->run(new CommandRequest(array(
+        return (new QuestionGroupAdd)
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'surveyID' => (int) $iSurveyID,
                 'groupTitle' => (string) $sGroupTitle,
@@ -926,7 +926,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Delete a group from a chosen survey (RPC function)
+     * Delete a question group from a chosen survey (RPC function)
      *
      * Returns the id of the deleted group.
      *
@@ -938,8 +938,8 @@ class remotecontrol_handle
      */
     public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
     {
-        return (new SurveyGroupDelete)
-            ->run(new CommandRequest(array(
+        return (new QuestionGroupDelete)
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'surveyID' => (int) $iSurveyID,
                 'groupID' => (int) $iGroupID
@@ -1060,7 +1060,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Get the properties of a group of a survey .
+     * Get the properties of a question group of a survey .
      *
      * Returns array of properties needed or all properties
      * @see \QuestionGroup for available properties
@@ -1074,8 +1074,8 @@ class remotecontrol_handle
      */
     public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings = null, $sLanguage = null)
     {
-        return (new SurveyGroupPropertiesGet)
-            ->run(new CommandRequest(array(
+        return (new QuestionGroupPropertiesGet)
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'groupID' => (int) $iGroupID,
                 'groupSettings' => $aGroupSettings,
@@ -1085,7 +1085,7 @@ class remotecontrol_handle
 
 
     /**
-     * Set group properties (RPC function)
+     * Set question group properties (RPC function)
      *
      * @see \QuestionGroup for available properties and restriction
      *
@@ -1101,8 +1101,8 @@ class remotecontrol_handle
      */
     public function set_group_properties($sSessionKey, $iGroupID, $aGroupData)
     {
-        return (new SurveyGroupPropertiesSet)
-            ->run(new CommandRequest(array(
+        return (new QuestionGroupPropertiesSet)
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'groupID' => (int) $iGroupID,
                 'groupData' => $aGroupData
@@ -1124,8 +1124,8 @@ class remotecontrol_handle
      */
     public function delete_question($sSessionKey, $iQuestionID)
     {
-        return (new SurveyQuestionDelete)
-            ->run(new CommandRequest(array(
+        return (new QuestionDelete)
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'questionID' => (int) $iQuestionID
             )))->getData();
@@ -1151,8 +1151,8 @@ class remotecontrol_handle
      */
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
-        return (new SurveyQuestionImport)
-            ->run(new CommandRequest(array(
+        return (new QuestionImport)
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'surveyID' => (int) $iSurveyID,
                 'groupID' => (int) $iGroupID,
@@ -1282,8 +1282,8 @@ class remotecontrol_handle
      */
     public function get_question_properties($sSessionKey, $iQuestionID, $aQuestionSettings = null, $sLanguage = null)
     {
-        return (new SurveyQuestionPropertiesGet)
-            ->run(new CommandRequest(array(
+        return (new QuestionPropertiesGet)
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'questionID' => (int) $iQuestionID,
                 'questionSettings' => $aQuestionSettings,
@@ -1314,8 +1314,8 @@ class remotecontrol_handle
      */
     public function set_question_properties($sSessionKey, $iQuestionID, $aQuestionData, $sLanguage = null)
     {
-        return (new SurveyQuestionPropertiesSet)
-            ->run(new CommandRequest(array(
+        return (new QuestionPropertiesSet)
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'questionID' => (int) $iQuestionID,
                 'questionData' => $aQuestionData,
@@ -1520,6 +1520,8 @@ class remotecontrol_handle
                     if ($tokenCount == 0) {
                         return array('status' => 'Error: No results were found based on your attributes.');
                     } elseif ($tokenCount > 1) {
+
+
                         return array('status' => 'Error: More than 1 result was found based on your attributes.');
                     }
                     $oToken = $oTokens[0];
@@ -1559,7 +1561,7 @@ class remotecontrol_handle
 
 
     /**
-     * Get survey groups (RPC function)
+     * Get survey question groups (RPC function)
      *
      * Returns the ids and all attributes of all survey groups
      *
@@ -1571,8 +1573,8 @@ class remotecontrol_handle
      */
     public function list_groups($sSessionKey, $iSurveyID, $sLanguage = null)
     {
-        return (new SurveyGroupList)
-            ->run(new CommandRequest(array(
+        return (new QuestionGroupList)
+            ->run(new Request(array(
                 'sessionKey' => (string) $sSessionKey,
                 'surveyID' => (int) $iSurveyID,
                 'language' => $sLanguage

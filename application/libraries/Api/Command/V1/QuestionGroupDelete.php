@@ -15,7 +15,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
-class SurveyGroupDelete implements CommandInterface
+class QuestionGroupDelete implements CommandInterface
 {
     /**
      * Run group delete command.

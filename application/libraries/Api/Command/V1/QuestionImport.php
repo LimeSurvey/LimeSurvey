@@ -14,7 +14,7 @@ use LimeSurvey\Api\ApiSession;
 
 // Todo: Test. This command has not been tested.
 
-class SurveyQuestionImport implements CommandInterface
+class QuestionImport implements CommandInterface
 {
     /**
      * Run survey question import command.

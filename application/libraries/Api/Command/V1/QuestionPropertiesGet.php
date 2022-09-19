@@ -19,7 +19,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 use LimeSurvey\Models\Services\QuestionAttributeHelper;
 
-class SurveyQuestionPropertiesGet implements CommandInterface
+class QuestionPropertiesGet implements CommandInterface
 {
     /**
      * Run survey question properties get command.
@@ -210,7 +210,7 @@ class SurveyQuestionPropertiesGet implements CommandInterface
                     }
                 }
                 return new Response(
-                    $aResult, 
+                    $aResult,
                     new StatusSuccess
                 );
             } else {
@@ -221,7 +221,7 @@ class SurveyQuestionPropertiesGet implements CommandInterface
             }
         } else {
             return new Response(
-                array('status' => ApiSession::INVALID_SESSION_KEY)
+                array('status' => ApiSession::INVALID_SESSION_KEY),
                 new StatusErrorUnauthorised
             );
         }

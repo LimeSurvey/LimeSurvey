@@ -13,9 +13,9 @@
 */
 
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\V1\SurveyGroupList;
+use LimeSurvey\Api\Command\V1\QuestionGroupList;
 
-class SurveyGroupController extends LSYii_ControllerRest
+class QuestionGroupController extends LSYii_ControllerRest
 {
     public function actionIndexGet($id = null)
     {
@@ -35,7 +35,7 @@ class SurveyGroupController extends LSYii_ControllerRest
             'surveyID' => $id,
             'language' => $request->getParam('language')
         ];
-        $commandResponse = (new SurveyGroupList)
+        $commandResponse = (new QuestionGroupList)
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
@@ -49,7 +49,7 @@ class SurveyGroupController extends LSYii_ControllerRest
             'surveyID' => $id,
             'language' => $request->getParam('language')
         ];
-        $commandResponse = (new SurveyGroupList)
+        $commandResponse = (new QuestionGroupList)
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);

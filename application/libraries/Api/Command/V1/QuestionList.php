@@ -16,7 +16,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
-class SurveyQuestionList implements CommandInterface
+class QuestionList implements CommandInterface
 {
     /**
      * Run survey question list command.
@@ -113,7 +113,7 @@ class SurveyQuestionList implements CommandInterface
                     );
                 }
                 return new Response(
-                    $aData, 
+                    $aData,
                     new StatusSuccess
                 );
             } else {
@@ -124,7 +124,7 @@ class SurveyQuestionList implements CommandInterface
             }
         } else {
             return new Response(
-                ['status' => ApiSession::INVALID_SESSION_KEY]
+                ['status' => ApiSession::INVALID_SESSION_KEY],
                 new StatusErrorUnauthorised
             );
         }

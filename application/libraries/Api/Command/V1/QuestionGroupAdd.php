@@ -15,7 +15,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
-class SurveyGroupAdd implements CommandInterface
+class QuestionGroupAdd implements CommandInterface
 {
     /**
      * Run group add command.

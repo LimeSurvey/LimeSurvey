@@ -17,7 +17,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
-class SurveyQuestionPropertiesSet implements CommandInterface
+class QuestionPropertiesSet implements CommandInterface
 {
     /**
      * Run survey question properties set command.
@@ -113,7 +113,7 @@ class SurveyQuestionPropertiesSet implements CommandInterface
                     }
                 }
                 return new Response(
-                    $aResult, 
+                    $aResult,
                     new StatusSuccess
                 );
             } else {
