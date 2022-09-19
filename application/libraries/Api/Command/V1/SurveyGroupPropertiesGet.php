@@ -21,8 +21,8 @@ class SurveyGroupPropertiesGet implements CommandInterface
      * Run group properties get command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\Request\Request $request
-     * @return LimeSurvey\Api\Command\Response\Response
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @return \LimeSurvey\Api\Command\Response\Response
      */
     public function run(Request $request)
     {
@@ -93,7 +93,7 @@ class SurveyGroupPropertiesGet implements CommandInterface
                     }
                 }
                 return new Response(
-                    $aResult, 
+                    $aResult,
                     new StatusSuccess
                 );
             } else {

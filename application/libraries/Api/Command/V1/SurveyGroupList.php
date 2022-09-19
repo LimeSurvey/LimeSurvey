@@ -21,8 +21,8 @@ class SurveyGroupList implements CommandInterface
      * Run group list command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\Request\Request $request
-     * @return LimeSurvey\Api\Command\Response\Response
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @return \LimeSurvey\Api\Command\Response\Response
      */
     public function run(Request $request)
     {
@@ -63,12 +63,12 @@ class SurveyGroupList implements CommandInterface
                     $aData[] = $tmp;
                 }
                 return new Response(
-                    $aData, 
+                    $aData,
                     new StatusSuccess
                 );
             } else {
                 return new Response(
-                    array('status' => 'No permission'), 
+                    array('status' => 'No permission'),
                     new StatusErrorUnauthorised
                 );
             }

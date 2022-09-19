@@ -22,13 +22,13 @@ class SurveyAdd implements CommandInterface
      * Run survey add command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\Request\Request $request
-     * @return LimeSurvey\Api\Command\Response\Response
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @return \LimeSurvey\Api\Command\Response\Response
      */
     public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
-        $iSurveyID = (int) $request->getData('surveyID');
+        $iSurveyID = $request->getData('surveyID');
         $sSurveyTitle = (string) $request->getData('surveyTitle');
         $sSurveyLanguage = (string) $request->getData('surveyLanguage');
         $sformat = (string) $request->getData('format', 'G');
@@ -45,7 +45,7 @@ class SurveyAdd implements CommandInterface
                     || !in_array($sformat, array('A', 'G', 'S'))
                 ) {
                     return new Response(
-                        array('status' => 'Faulty parameters'), 
+                        array('status' => 'Faulty parameters'),
                         new StatusErrorBadRequest
                     );
                 }
@@ -85,7 +85,7 @@ class SurveyAdd implements CommandInterface
                     );
 
                     return new Response(
-                        (int) $iNewSurveyid, 
+                        (int) $iNewSurveyid,
                         new StatusSuccess
                     );
                 } catch (Exception $e) {
@@ -102,7 +102,7 @@ class SurveyAdd implements CommandInterface
             }
         } else {
             return new Response(
-                array('status' => ApiSession::INVALID_SESSION_KEY), 
+                array('status' => ApiSession::INVALID_SESSION_KEY),
                 new StatusErrorUnauthorised
             );
         }

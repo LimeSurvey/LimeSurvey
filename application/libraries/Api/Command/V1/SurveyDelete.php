@@ -18,8 +18,8 @@ class SurveyDelete implements CommandInterface
      * Run survey delete command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\Request\Request $request
-     * @return LimeSurvey\Api\Command\Response\Response
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @return \LimeSurvey\Api\Command\Response\Response
      */
     public function run(Request $request)
     {
@@ -30,11 +30,11 @@ class SurveyDelete implements CommandInterface
         if ($apiSession->checkKey($sSessionKey)) {
             if (
                 Permission::model()
-                    ->hasSurveyPermission(
-                        $iSurveyID,
-                        'survey',
-                        'delete'
-                    )
+                ->hasSurveyPermission(
+                    $iSurveyID,
+                    'survey',
+                    'delete'
+                )
             ) {
                 Survey::model()->deleteSurvey($iSurveyID, true);
                 return new Response(

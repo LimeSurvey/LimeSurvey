@@ -17,7 +17,31 @@ use LimeSurvey\Api\Command\V1\SurveyGroupList;
 
 class SurveyGroupController extends LSYii_ControllerRest
 {
-    public function actionListGet($id)
+    public function actionIndexGet($id = null)
+    {
+        return $id ? $this->actionGetOne($id) : $this->actionGetAll();
+    }
+
+    public function actionListGet()
+    {
+        return $this->actionGetAll();
+    }
+
+    protected function actionGetAll()
+    {
+        $request = Yii::app()->request;
+        $requestData = [
+            'sessionKey' => $this->getAuthToken(),
+            'surveyID' => $id,
+            'language' => $request->getParam('language')
+        ];
+        $commandResponse = (new SurveyGroupList)
+            ->run(new Request($requestData));
+
+        $this->renderCommandResponse($commandResponse);
+    }
+
+    protected function actionGetOne($id)
     {
         $request = Yii::app()->request;
         $requestData = [

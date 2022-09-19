@@ -17,8 +17,8 @@ class SessionKeyCreate implements CommandInterface
      * Run session key create command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\Request\Request $request
-     * @return LimeSurvey\Api\Command\Response\Response
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @return \LimeSurvey\Api\Command\Response\Response
      */
     public function run(Request $request)
     {
@@ -38,19 +38,21 @@ class SessionKeyCreate implements CommandInterface
             $session->data = $username;
             $session->save();
             return new Response(
-                $sSessionKey, 
+                $sSessionKey,
                 new StatusSuccess
             );
         }
         if (is_string($loginResult)) {
             return new Response(
-                array('status' => $loginResult), 
+                array('status' => $loginResult),
                 new StatusSuccess
             );
         }
         return new Response(
-            array('status' => 'Invalid user name or password', 
-            new StatusErrorBadRequest)
+            array(
+                'status' => 'Invalid user name or password',
+                new StatusErrorBadRequest
+            )
         );
     }
 }
