@@ -6,20 +6,11 @@
     'aliases' => 
     array (
     ),
-    'reference' => '32310a26275752258b21ece642621df499d65ab1',
+    'reference' => '2e8c714121185367fb537ea679b5ab4c5a4c848c',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
-    'apalfrey/select2-bootstrap-5-theme' => 
-    array (
-      'pretty_version' => '1.3.0',
-      'version' => '1.3.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'ab448b2ac36a6f7f90b162e384ca2b1469a3cc1f',
-    ),
     'html2text/html2text' => 
     array (
       'pretty_version' => '4.3.1',
@@ -45,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '32310a26275752258b21ece642621df499d65ab1',
+      'reference' => '2e8c714121185367fb537ea679b5ab4c5a4c848c',
     ),
     'mk-j/php_xlsxwriter' => 
     array (
@@ -76,12 +67,12 @@
     ),
     'paragonie/sodium_compat' => 
     array (
-      'pretty_version' => 'v1.17.1',
-      'version' => '1.17.1.0',
+      'pretty_version' => 'v1.18.0',
+      'version' => '1.18.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ac994053faac18d386328c91c7900f930acadf1e',
+      'reference' => '906e0b925895d3a5941eda25f371fbafb3cbc22f',
     ),
     'pear/console_getopt' => 
     array (
@@ -148,12 +139,12 @@
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.14',
-      'version' => '3.0.14.0',
+      'pretty_version' => '3.0.16',
+      'version' => '3.0.16.0',
       'aliases' => 
       array (
       ),
-      'reference' => '2f0b7af658cbea265cbb4a791d6c29a6613f98ef',
+      'reference' => '7181378909ed8890be4db53d289faac5b77f8b05',
     ),
     'rsky/pear-core-min' => 
     array (
@@ -161,15 +152,6 @@
       array (
         0 => 'v1.10.11',
       ),
-    ),
-    'select2/select2' => 
-    array (
-      'pretty_version' => '4.0.13',
-      'version' => '4.0.13.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '45f2b83ceed5231afa7b3d5b12b58ad335edd82e',
     ),
     'symfony/polyfill-ctype' => 
     array (
@@ -244,12 +226,13 @@
     ),
     'yiisoft/yii' => 
     array (
-      'pretty_version' => '1.1.25',
-      'version' => '1.1.25.0',
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
       'aliases' => 
       array (
+        0 => '1.1.x-dev',
       ),
-      'reference' => '43e38602b579a45d63c80140b46331987d443fe9',
+      'reference' => '89ff97cd81bcec982c4f8b1325a8cdc10a14b2f6',
     ),
   ),
 );

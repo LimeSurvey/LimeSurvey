@@ -90,6 +90,9 @@ node_modules/**/src
 !/node_modules/jquery/dist/
 !/node_modules/jquery-ui-dist/
 !/node_modules/jquery.actual/
+!/node_modules/jsuri/
+!/node_modules/jquery-ui-touch-punch/
+
 
 !/node_modules/select2
 /node_modules/select2/*
@@ -110,6 +113,15 @@ node_modules/**/src
 !/node_modules/js-cookie
 /node_modules/js-cookie/*
 !/node_modules/js-cookie/dist/
+
+!/node_modules/moment
+/node_modules/moment/*
+!/node_modules/moment/min/
+
+!/node_modules/leaflet
+/node_modules/leaflet/*
+!/node_modules/leaflet/dist/
+
 
 vendor/**/docs/
 vendor/**/scripts/

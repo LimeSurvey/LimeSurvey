@@ -178,6 +178,16 @@ function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = 
     }
 }
 
+/**
+ * @param $fieldtype
+ * @param $fieldname
+ * @param $fieldtext
+ * @param $surveyID
+ * @param $gID
+ * @param $qID
+ * @param $action
+ * @return string
+ */
 function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
 
@@ -207,6 +217,16 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
     return $htmlcode;
 }
 
+/**
+ * @param $fieldtype
+ * @param $fieldname
+ * @param $fieldtext
+ * @param $surveyID
+ * @param $gID
+ * @param $qID
+ * @param $action
+ * @return string
+ */
 function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
 

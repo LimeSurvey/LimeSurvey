@@ -9,7 +9,7 @@
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
         <h3><?php eT("Failed email notifications"); ?></h3>
         <p class="alert alert-info alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
             <span class="fa fa-info-circle"></span>
             <?php eT("Please note that failed email notifications will be automatically deleted after 30 days."); ?>
         </p>
