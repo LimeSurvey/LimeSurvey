@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'e670066f76922d7e92177bc0cc2d97ccf6507e29',
+    'reference' => '2e8c714121185367fb537ea679b5ab4c5a4c848c',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'e670066f76922d7e92177bc0cc2d97ccf6507e29',
+      'reference' => '2e8c714121185367fb537ea679b5ab4c5a4c848c',
     ),
     'mk-j/php_xlsxwriter' => 
     array (
@@ -67,12 +67,12 @@
     ),
     'paragonie/sodium_compat' => 
     array (
-      'pretty_version' => 'v1.17.1',
-      'version' => '1.17.1.0',
+      'pretty_version' => 'v1.18.0',
+      'version' => '1.18.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ac994053faac18d386328c91c7900f930acadf1e',
+      'reference' => '906e0b925895d3a5941eda25f371fbafb3cbc22f',
     ),
     'pear/console_getopt' => 
     array (
@@ -226,12 +226,13 @@
     ),
     'yiisoft/yii' => 
     array (
-      'pretty_version' => '1.1.25',
-      'version' => '1.1.25.0',
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
       'aliases' => 
       array (
+        0 => '1.1.x-dev',
       ),
-      'reference' => '43e38602b579a45d63c80140b46331987d443fe9',
+      'reference' => '89ff97cd81bcec982c4f8b1325a8cdc10a14b2f6',
     ),
   ),
 );

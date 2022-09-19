@@ -32,7 +32,7 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = isset(Yii::app()->session['survey_' . $surveyid]['s_lang']) ? Yii::app()->session['survey_' . $surveyid]['s_lang'] : "";
+        $sLanguage = Yii::app()->session['survey_' . $surveyid]['s_lang'] ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");

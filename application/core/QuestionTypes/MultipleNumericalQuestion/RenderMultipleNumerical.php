@@ -208,10 +208,10 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
                 if ($this->sliderOptionsArray['slider_separator'] != '') {
                     $aAnswer     = explode($this->sliderOptionsArray['slider_separator'], $sSubquestionText);
-                    $theanswer   = (isset($aAnswer[0])) ? $aAnswer[0] : "";
+                    $theanswer   = $aAnswer[0] ?? "";
                     $labelText   = $theanswer;
-                    $sliderleft  = (isset($aAnswer[1])) ? $aAnswer[1] : null;
-                    $sliderright = (isset($aAnswer[2])) ? $aAnswer[2] : null;
+                    $sliderleft  = $aAnswer[1] ?? null;
+                    $sliderright = $aAnswer[2] ?? null;
 
                     /* sliderleft and sliderright is in input, but is part of answers then take label width */
                     if (!empty($sliderleft)) {
@@ -226,9 +226,9 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                     $sliders   = false;
                 }
 
-                $aAnswer     = (isset($aAnswer)) ? $aAnswer : '';
-                $sliderleft  = (isset($sliderleft)) ? $sliderleft : null;
-                $sliderright = (isset($sliderright)) ? $sliderright : null;
+                $aAnswer     = $aAnswer ?? '';
+                $sliderleft  = $sliderleft ?? null;
+                $sliderright = $sliderright ?? null;
 
                 $aRows[] = array_merge(
                     array(

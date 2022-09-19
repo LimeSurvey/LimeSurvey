@@ -1,6 +1,7 @@
 <?php
 /** @var  User $oUser */
 
+App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'datepickerInit.js', LSYii_ClientScript::POS_BEGIN);
 $modalTitle = $oUser->isNewRecord ? gT('Add user') : gT('Edit user');
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
@@ -44,12 +45,34 @@ Yii::app()->getController()->renderPartial(
             <?php echo $form->emailField($oUser, 'email', ['id' => 'User_Form_email', 'required' => 'required']); ?>
             <?php echo $form->error($oUser, 'email'); ?>
         </div>
-        <?php if (!$oUser->isNewRecord) { ?>
+        <div class="mb-3">
+            <label class="form-label" for='expires'><?php eT("Expire date/time:"); ?></label>
+            <div class="has-feedback">
+                <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
+                        'name'  => 'expires',
+                        'id'    => 'expires',
+                        'value' => $oUser->expires ? date($dateformatdetails['phpdate']." H:i",strtotime($oUser->expires)) : '',
+                        'pluginOptions' => [
+                            'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                            'allowInputToggle' =>true,
+                            'showClear' => true,
+                            'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                        ]
+                    ));
+                ?>
+            </div>
+            <?php echo $form->error($oUser, 'expires'); ?>
+        </div>
+        <?php if (!$oUser->isNewRecord): ?>
+            <div class="mb-3">
+                <?php echo $form->labelEx($oUser, 'last_login', ['for' => 'User_Form_last_login']); ?>
+                <input class="form-control" type="text" value="<?= !empty($oUser->last_login) ? convertToGlobalSettingFormat($oUser->last_login, true) : gT("Never") ?>" disabled="true" />
+            </div>
             <div class="mb-3">
                 <input type="checkbox" id="utility_change_password">
                 <label for="utility_change_password"><?= gT("Change password?") ?></label>
             </div>
-        <?php } else { ?>
+        <?php else: ?>
             <div class="mb-3" id="utility_set_password">
                 <div class="col-6">
                     <label><?= gT("Set password now?") ?></label>
@@ -65,7 +88,7 @@ Yii::app()->getController()->renderPartial(
                     </label>
                 </div>
             </div>
-        <?php } ?>
+        <?php endif; ?>
 
         <div class="d-none" id="utility_change_password_container">
             <div class="mb-3">
