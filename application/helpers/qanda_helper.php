@@ -3374,7 +3374,6 @@ function do_array_yesnouncertain($ia)
                 'checkconditionFunction' => $checkconditionFunction,
                 'error'                  => $error,
                 'no_answer'              => $no_answer,
-                'odd'                    => ($i % 2)
                 ), true);
             $inputnames[] = $myfname;
             $fn++;
