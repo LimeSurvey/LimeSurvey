@@ -939,5 +939,4 @@ class User extends LSActiveRecord
         }
         return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
     }
-
 }
