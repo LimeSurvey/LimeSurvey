@@ -13,29 +13,30 @@
 */
 
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\V1\QuestionGroupList;
-use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesGet;
-use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesSet;
-use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
+use LimeSurvey\Api\Command\V1\QuestionList;
+use LimeSurvey\Api\Command\V1\QuestionPropertiesGet;
+use LimeSurvey\Api\Command\V1\QuestionPropertiesSet;
+use LimeSurvey\Api\Command\V1\QuestionDelete;
 
-class QuestionGroupController extends LSYii_ControllerRest
+class QuestionController extends LSYii_ControllerRest
 {
     /** 
-     * Get array of question groups or one specific question group.
+     * Get array of questions or one specific question.
      * 
-     * @param string $id Question Group Id
+     * @param string $id Question Id
      * @return void
      */
     public function actionIndexGet($id = null)
     {
-        if ($id == null) {
+        if ($id !== null) {
             $request = Yii::app()->request;
             $requestData = [
                 'sessionKey' => $this->getAuthToken(),
-                'surveyID' => $request->getParam('surveyId'),
+                'questionID' => $id,
+                'questionSettings' => $request->getParam('questionSettings'),
                 'language' => $request->getParam('language')
             ];
-            $commandResponse = (new QuestionGroupList)
+            $commandResponse = (new QuestionPropertiesGet)
                 ->run(new Request($requestData));
 
             $this->renderCommandResponse($commandResponse);
@@ -43,11 +44,11 @@ class QuestionGroupController extends LSYii_ControllerRest
             $request = Yii::app()->request;
             $requestData = [
                 'sessionKey' => $this->getAuthToken(),
-                'groupID' => $id,
-                'groupSettings' => $request->getParam('groupSettings'),
+                'surveyID' => $request->getParam('surveyId'),
+                'groupID' => $request->getParam('groupId'),
                 'language' => $request->getParam('language')
             ];
-            $commandResponse = (new QuestionGroupPropertiesGet)
+            $commandResponse = (new QuestionList)
                 ->run(new Request($requestData));
 
             $this->renderCommandResponse($commandResponse);
@@ -55,11 +56,12 @@ class QuestionGroupController extends LSYii_ControllerRest
     }
 
     /** 
-     * Update question group properties.
+     * Update question properties.
      * 
-     * @param string $id Question Group Id
+     * @param string $id Question Id
      * @return void
      */
+    /*
     public function actionIndexPut($id)
     {
         $request = Yii::app()->request;
@@ -67,35 +69,33 @@ class QuestionGroupController extends LSYii_ControllerRest
 
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
-            'groupID' => $id,
-            'groupData' => array(
-                'group_name' => isset($data['group_name']) ? $data['group_name'] : '',
+            'questionID' => $id,
+            'questionData' => array(
+                'question_name' => isset($data['question_name']) ? $data['question_name'] : '',
                 'description' => isset($data['description']) ? $data['description'] : '',
                 'language' => isset($data['language']) ? $data['language'] : '',
-                'questiongroupl10ns' => isset($data['questiongroupl10ns']) ? $data['questiongroupl10ns'] : '',
-                'group_order' => isset($data['group_order']) ? $data['group_order'] : '',
-                'grelevance' => isset($data['grelevance']) ? $data['grelevance'] : ''
             )
         ];
-        $commandResponse = (new QuestionGroupPropertiesSet)
+        $commandResponse = (new QuestionPropertiesSet)
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
     }
+    */
 
     /** 
-     * Delete question groups by question group id.
+     * Delete question by question id.
      * 
-     * @param string $id Question Group Id 
+     * @param string $id Question Id 
      * @return void
      */
     public function actionIndexDelete($id)
     {
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
-            'groupID' => $id
+            'questionID' => $id
         ];
-        $commandResponse = (new QuestionGroupDelete)
+        $commandResponse = (new QuestionDelete)
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);

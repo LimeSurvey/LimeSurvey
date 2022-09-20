@@ -23,8 +23,8 @@ class QuestionPropertiesSet implements CommandInterface
      * Run survey question properties set command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\Request $request
-     * @return LimeSurvey\Api\Command\Response
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @return \LimeSurvey\Api\Command\Response\Response
      */
     public function run(Request $request)
     {

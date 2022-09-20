@@ -6,6 +6,7 @@ use Condition;
 use Exception;
 use LimeExpressionManager;
 use Permission;
+use Question;
 use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
@@ -17,14 +18,14 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
-class SurveyQuestionDelete implements CommandInterface
+class QuestionDelete implements CommandInterface
 {
     /**
      * Run survey question delete command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\Request\Request $request
-     * @return LimeSurvey\Api\Command\Response\Response
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @return \LimeSurvey\Api\Command\Response\Response
      */
     public function run(Request $request)
     {
