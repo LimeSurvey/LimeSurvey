@@ -13,6 +13,7 @@
 */
 
 use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\V1\QuestionGroupAdd;
 use LimeSurvey\Api\Command\V1\QuestionGroupList;
 use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesGet;
 use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesSet;
@@ -20,6 +21,27 @@ use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
 
 class QuestionGroupController extends LSYii_ControllerRest
 {
+    /** 
+     * Create question group.
+     * 
+     * @return void
+     */
+    public function actionIndexPost()
+    {
+        $request = Yii::app()->request;
+        $data    = $request->getRestParams();
+        $requestData = [
+            'sessionKey' => $this->getAuthToken(),
+            'surveyID' => isset($data['survey_id']) ? $data['survey_id'] : '',
+            'groupTitle' => isset($data['group_name']) ? $data['group_name'] : '',
+            'groupDescription' => isset($data['description']) ? $data['description'] : ''
+        ];
+        $commandResponse = (new QuestionGroupAdd)
+            ->run(new Request($requestData));
+
+        $this->renderCommandResponse($commandResponse);
+    }
+
     /** 
      * Get array of question groups or one specific question group.
      * 
