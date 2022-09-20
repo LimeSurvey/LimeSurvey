@@ -1090,7 +1090,8 @@ function populateDatabase($oDB)
             'modified' => "datetime",
             'validation_key' => 'string(38)',
             'validation_key_expiration' => 'datetime',
-            'last_forgot_email_password' => 'datetime'
+            'last_forgot_email_password' => 'datetime',
+            'expires' => 'datetime'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
@@ -1170,6 +1171,7 @@ function populateDatabase($oDB)
                 'created' => "datetime NOT NULL",  //this one has always to be set to delete after x days ...
                 'status' => "string(20) NULL DEFAULT 'SEND FAILED'",
                 'updated' => "datetime NULL",
+                'resend_vars' => "text NOT NULL"
             ]
         );
 
