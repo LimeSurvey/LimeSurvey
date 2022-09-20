@@ -1199,7 +1199,8 @@ class UserManagementController extends LSBaseController
 
         // Abort if logged in user has no access to this user.
         // Using same logic as User::getButtons().
-        if (!$oUser->canEdit(Yii::app()->session['loginID'])) {
+        $userManager = new UserManager(Yii::app()->user, $oUser);
+        if (!$userManager->canEdit()) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 

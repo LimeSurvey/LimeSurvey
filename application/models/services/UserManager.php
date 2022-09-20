@@ -60,4 +60,19 @@ class UserManager
     {
         return Permission::model()->hasGlobalPermission('superadmin', 'read', $this->managingUser->id);
     }
+
+    /**
+     * Returns true if the managing user can edit the target user
+     * @return bool
+     */
+    public function canEdit()
+    {
+        return
+            Permission::model()->hasGlobalPermission('superadmin', 'read', $this->managingUser->id)
+            || $this->targetUser->uid == $this->managingUser->id
+            || (
+                Permission::model()->hasGlobalPermission('users', 'update', $this->managingUser->id)
+                && $this->targetUser->parent_id == $this->managingUser->id
+            );
+    }
 }
