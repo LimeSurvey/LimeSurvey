@@ -33,7 +33,7 @@ class QuestionController extends LSYii_ControllerRest
             $requestData = [
                 'sessionKey' => $this->getAuthToken(),
                 'questionID' => $id,
-                'questionSettings' => $request->getParam('questionSettings'),
+                'questionSettings' => $request->getParam('settings'),
                 'language' => $request->getParam('language')
             ];
             $commandResponse = (new QuestionPropertiesGet)
@@ -44,7 +44,7 @@ class QuestionController extends LSYii_ControllerRest
             $request = Yii::app()->request;
             $requestData = [
                 'sessionKey' => $this->getAuthToken(),
-                'surveyID' => $request->getParam('surveyId'),
+                'surveyID' => $request->getParam('survey_id'),
                 'groupID' => $request->getParam('groupId'),
                 'language' => $request->getParam('language')
             ];

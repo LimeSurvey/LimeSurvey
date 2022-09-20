@@ -54,7 +54,7 @@ class QuestionGroupController extends LSYii_ControllerRest
             $request = Yii::app()->request;
             $requestData = [
                 'sessionKey' => $this->getAuthToken(),
-                'surveyID' => $request->getParam('surveyId'),
+                'surveyID' => $request->getParam('survey_id'),
                 'language' => $request->getParam('language')
             ];
             $commandResponse = (new QuestionGroupList)
@@ -66,7 +66,7 @@ class QuestionGroupController extends LSYii_ControllerRest
             $requestData = [
                 'sessionKey' => $this->getAuthToken(),
                 'groupID' => $id,
-                'groupSettings' => $request->getParam('groupSettings'),
+                'groupSettings' => $request->getParam('settings'),
                 'language' => $request->getParam('language')
             ];
             $commandResponse = (new QuestionGroupPropertiesGet)
