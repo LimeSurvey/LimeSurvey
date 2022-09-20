@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
+use Exception;
 
 class TestBaseClass extends TestCase
 {
@@ -68,7 +69,7 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
-            throw new \Exception(sprintf('Survey file %s not found', $surveyFile));
+            throw new Exception(sprintf('Survey file %s not found', $surveyFile));
         }
 
         $translateLinksFields = false;
@@ -80,11 +81,14 @@ class TestBaseClass extends TestCase
             null
         );
         if ($result) {
+            if ($result['error']) {
+                throw new Exception(sprintf('Could not import survey %s: %s', $fileName, $result['error']));
+            }
             \Survey::model()->resetCache(); // Reset the cache so findByPk doesn't return a previously cached survey
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
-            throw new \Exception(sprintf('Failed to import survey file %s', $surveyFile));
+            throw new Exception(sprintf('Failed to import survey file %s', $surveyFile));
         }
     }
 
@@ -95,11 +99,11 @@ class TestBaseClass extends TestCase
     public function getAllSurveyQuestions()
     {
         if (empty(self::$surveyId)) {
-            throw new \Exception('getAllSurveyQuestions call without survey.');
+            throw new Exception('getAllSurveyQuestions call without survey.');
         }
         $survey = \Survey::model()->findByPk(self::$surveyId);
         if (empty($survey)) {
-            throw new \Exception('getAllSurveyQuestions call with an invalid survey.');
+            throw new Exception('getAllSurveyQuestions call with an invalid survey.');
         }
         $questions = [];
         foreach ($survey->groups as $group) {
@@ -178,7 +182,7 @@ class TestBaseClass extends TestCase
         $oUser->setAttributes($userData);
 
         if(!$oUser->save()) {
-            throw new \Exception( 
+            throw new Exception( 
                 "Could not save user: "
                 .print_r($oUser->getErrors(),true)
             );
