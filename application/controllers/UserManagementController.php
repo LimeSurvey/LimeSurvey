@@ -1186,6 +1186,12 @@ class UserManagementController extends LSBaseController
             throw new CException("This action is not allowed, and should never happen", 500);
         }
 
+        // Abort if logged in user has no access to this user.
+        // Using same logic as User::getButtons().
+        if (!$oUser->canEdit(Yii::app()->session['loginID'])) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
         $aUser['full_name'] = flattenText($aUser['full_name']); //to prevent xss ...
         $oUser->setAttributes($aUser);
 
