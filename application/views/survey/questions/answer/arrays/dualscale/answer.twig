@@ -9,7 +9,7 @@
 #}
 
 <!-- answer -->
-<table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+<table class="{{ coreClass }} table table-striped table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
     <col class="col-answers" style='width: {{ answerwidth }}%;' >
     {% if leftheader != '' or rightheader !='' %}
         <col style='width: 0%;'  class="d-none"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
@@ -105,7 +105,7 @@
 
             <!-- tr -->
             <tr id="javatbd{{ ansrow.myfname }}" role="group" aria-labelledby="answertext{{ ansrow.myfname }}"
-                class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %}"
+                class="answers-list radio-list {% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %}"
             >
             <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}">
                 {{ processString(ansrow.answertext) }}
