@@ -21,6 +21,18 @@ use LimeSurvey\Api\Command\V1\QuestionDelete;
 class QuestionController extends LSYii_ControllerRest
 {
     /** 
+     * Create question.
+     * 
+     * @param string $id Question Id
+     * @return void
+     */
+    public function actionIndexPost()
+    {
+        //$request = Yii::app()->request;
+        //$data    = $request->getRestParams();
+    }
+
+    /** 
      * Get array of questions or one specific question.
      * 
      * @param string $id Question Id
@@ -61,7 +73,6 @@ class QuestionController extends LSYii_ControllerRest
      * @param string $id Question Id
      * @return void
      */
-    /*
     public function actionIndexPut($id)
     {
         $request = Yii::app()->request;
@@ -70,18 +81,14 @@ class QuestionController extends LSYii_ControllerRest
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
             'questionID' => $id,
-            'questionData' => array(
-                'question_name' => isset($data['question_name']) ? $data['question_name'] : '',
-                'description' => isset($data['description']) ? $data['description'] : '',
-                'language' => isset($data['language']) ? $data['language'] : '',
-            )
+            'language' => isset($data['language']) ? $data['language'] : '',
+            'questionData' => isset($data['questionData']) ? $data['questionData'] : array()
         ];
         $commandResponse = (new QuestionPropertiesSet)
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
     }
-    */
 
     /** 
      * Delete question by question id.

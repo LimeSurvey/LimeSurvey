@@ -33,7 +33,7 @@ class QuestionGroupController extends LSYii_ControllerRest
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
             'surveyID' => isset($data['survey_id']) ? $data['survey_id'] : '',
-            'groupTitle' => isset($data['group_name']) ? $data['group_name'] : '',
+            'groupTitle' => isset($data['name']) ? $data['name'] : '',
             'groupDescription' => isset($data['description']) ? $data['description'] : ''
         ];
         $commandResponse = (new QuestionGroupAdd)
@@ -96,6 +96,7 @@ class QuestionGroupController extends LSYii_ControllerRest
                 'language' => isset($data['language']) ? $data['language'] : '',
                 'questiongroupl10ns' => isset($data['questiongroupl10ns']) ? $data['questiongroupl10ns'] : '',
                 'group_order' => isset($data['group_order']) ? $data['group_order'] : '',
+                'randomization_group' => isset($data['randomization_group']) ? $data['randomization_group'] : '',
                 'grelevance' => isset($data['grelevance']) ? $data['grelevance'] : ''
             )
         ];
