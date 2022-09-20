@@ -292,7 +292,8 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'right_exists' => intval($this->rightExists),
                     'value'      => $value,
                     'error'      => $error,
-                    'odd'        => ($i % 2), // true for odd, false for even
+                    // disabled as table striped added
+                    // 'odd'        => ($i % 2), // true for odd, false for even
                 )
                 ];
 
