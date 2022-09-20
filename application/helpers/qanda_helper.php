@@ -4093,7 +4093,6 @@ function do_array_texts($ia)
                 'rightTdEmpty'      =>  $rightTdEmpty,
                 'answerwidth'       =>  $answerwidth,
                 'formatedRowTotal'  =>  $formatedRowTotal,
-                'odd'               => ($j % 2),
                 ), true);
 
             $fn++;
