@@ -36,7 +36,7 @@ class LSHttpRequest extends CHttpRequest
 {
 
     private $_pathInfo;
-    
+
     public $noCsrfValidationRoutes = array();
     public $noCsrfValidationParams = array();
 
@@ -151,8 +151,8 @@ class LSHttpRequest extends CHttpRequest
         parent::normalizeRequest();
 
         if (
-            !isset($_SERVER['REQUEST_METHOD']) 
-            || !in_array($_SERVER['REQUEST_METHOD'], ['POST', 'DELETE'])
+            !isset($_SERVER['REQUEST_METHOD'])
+            || !in_array($_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'DELETE'])
         ) {
             return;
         }
@@ -196,7 +196,7 @@ class LSHttpRequest extends CHttpRequest
             $pathInfo = $this->getRequestUri();
 
             if (($pos = strpos($pathInfo, '?')) !== false) {
-                            $pathInfo = substr($pathInfo, 0, $pos);
+                $pathInfo = substr($pathInfo, 0, $pos);
             }
 
             $pathInfo = $this->decodePathInfo($pathInfo);
@@ -204,23 +204,23 @@ class LSHttpRequest extends CHttpRequest
             $scriptUrl = $this->getScriptUrl();
             $baseUrl = $this->getBaseUrl();
             if (strpos($pathInfo, $scriptUrl) === 0) {
-                            $pathInfo = substr($pathInfo, strlen($scriptUrl));
+                $pathInfo = substr($pathInfo, strlen($scriptUrl));
             } elseif ($baseUrl === '' || strpos($pathInfo, $baseUrl) === 0) {
-                            $pathInfo = substr($pathInfo, strlen($baseUrl));
+                $pathInfo = substr($pathInfo, strlen($baseUrl));
             } elseif (strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0) {
-                            $pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
+                $pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
             } else {
-                            throw new CException(Yii::t('yii', 'CHttpRequest is unable to determine the path info of the request.'));
+                throw new CException(Yii::t('yii', 'CHttpRequest is unable to determine the path info of the request.'));
             }
 
             if ($pathInfo === '/') {
-                            $pathInfo = '';
+                $pathInfo = '';
             } elseif (!empty($pathInfo) && $pathInfo[0] === '/') {
-                            $pathInfo = substr($pathInfo, 1);
+                $pathInfo = substr($pathInfo, 1);
             }
 
             if (($posEnd = strlen($pathInfo) - 1) > 0 && $pathInfo[$posEnd] === '/') {
-                            $pathInfo = substr($pathInfo, 0, $posEnd);
+                $pathInfo = substr($pathInfo, 0, $posEnd);
             }
 
             $this->_pathInfo = $pathInfo;

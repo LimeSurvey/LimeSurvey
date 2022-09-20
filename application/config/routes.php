@@ -44,15 +44,8 @@ $route['statistics_user/<surveyid:\d+>'] = array('StatisticsUser/action', 'match
 $route['statistics_user/action'] = 'StatisticsUser/action';
 
 // REST
-// - Sometimes a resource needs to be referenced by the survey in which it belongs, 
-// - so we need to provide both surveyId and id in the URL
-$route['rest/<_api_version:\w+>/survey/<surveyId:\d+>/<_controller:\w+>/<id:\d+>'] = array(
-    'rest/<_api_version>/<_controller>',
-    'verb' => 'GET, PUT, DELETE',
-    'matchValue' => true
-);
-// - Resource index with survey surveyId
-$route['rest/<_api_version:\w+>/survey/<surveyId:\d+>/<_controller:\w+>'] = array(
+// - Resource index
+$route['rest/<_api_version:\w+>/<_controller:\w+>'] = array(
     'rest/<_api_version>/<_controller>',
     'verb' => 'GET, PUT, DELETE',
     'matchValue' => true
@@ -65,12 +58,6 @@ $route['rest/<_api_version:\w+>/<_controller:\w+>/<id:\d+>'] = array(
 );
 // - Resource action with id
 $route['rest/<_api_version:\w+>/<_controller:\w+>/<_action:\w+>/<id:\d+>'] = array(
-    'rest/<_api_version>/<_controller>/<_action>',
-    'verb' => 'GET, PUT, DELETE',
-    'matchValue' => true
-);
-// - Resource index
-$route['rest/<_api_version:\w+>/<_controller:\w+>/<_action:\w+>'] = array(
     'rest/<_api_version>/<_controller>/<_action>',
     'verb' => 'GET, PUT, DELETE',
     'matchValue' => true

@@ -104,9 +104,8 @@ class QuestionGroupPropertiesGet implements CommandInterface
             }
         } else {
             return new Response(array(
-                'status' => ApiSession::INVALID_SESSION_KEY,
-                new StatusErrorUnauthorised
-            ));
+                'status' => ApiSession::INVALID_SESSION_KEY
+            ), new StatusErrorUnauthorised);
         }
     }
 }

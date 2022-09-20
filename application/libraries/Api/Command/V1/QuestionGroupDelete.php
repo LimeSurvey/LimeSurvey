@@ -27,11 +27,20 @@ class QuestionGroupDelete implements CommandInterface
     public function run(Request $request)
     {
         $sSessionKey = (string) $request->getData('sessionKey');
-        $iSurveyID = (int) $request->getData('surveyID');
         $iGroupID = (int) $request->getData('groupID');
 
         $apiSession = new ApiSession;
         if ($apiSession->checkKey($sSessionKey)) {
+            $oGroup = QuestionGroup::model()
+                ->findByAttributes(array('gid' => $iGroupID));
+            if (!isset($oGroup)) {
+                return new Response(
+                    array('status' => 'Error:Invalid group ID'),
+                    new StatusErrorNotFound
+                );
+            }
+            $iSurveyID = $oGroup->sid;
+
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
                 return new Response(
@@ -48,15 +57,6 @@ class QuestionGroupDelete implements CommandInterface
                     'delete'
                 )
             ) {
-                $oGroup = QuestionGroup::model()
-                    ->findByAttributes(array('gid' => $iGroupID));
-                if (!isset($oGroup)) {
-                    return new Response(
-                        array('status' => 'Error:Invalid group ID'),
-                        new StatusErrorNotFound
-                    );
-                }
-
                 if ($oSurvey->isActive) {
                     return new Response(
                         array('status' => 'Error:Survey is active and not editable'),

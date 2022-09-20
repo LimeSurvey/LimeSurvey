@@ -18,7 +18,7 @@ use LimeSurvey\Api\Command\V1\SessionKeyRelease;
 
 class SessionController extends LSYii_ControllerRest
 {
-    public function actionKeyPost()
+    public function actionIndexPost()
     {
         $request = Yii::app()->request;
         $requestData = [
@@ -31,7 +31,7 @@ class SessionController extends LSYii_ControllerRest
         $this->renderCommandResponse($commandResponse);
     }
 
-    public function actionKeyDelete()
+    public function actionIndexDelete()
     {
         $requestData = [
             'sessionKey' => $this->getAuthToken()

@@ -15,49 +15,83 @@
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\V1\QuestionGroupList;
 use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesGet;
+use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesSet;
+use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
 
 class QuestionGroupController extends LSYii_ControllerRest
 {
-    /**
-     * Survey id prefixed requests
+    /** 
+     * Get array of question groups or one specific question group.
      * 
-     * /survey/$surveyId/questiongroup
-     * /survey/$surveyId/questiongroup/$id
-     *
-     * @param [type] $surveyId
-     * @param [type] $id
+     * @param string $id Question Group Id
      * @return void
      */
-    public function actionIndexGet($surveyId = null, $id = null)
+    public function actionIndexGet($id = null)
     {
-        return $id
-            ? $this->actionGetOne($id)
-            : $this->actionGetAll($surveyId);
+        if ($id == null) {
+            $request = Yii::app()->request;
+            $requestData = [
+                'sessionKey' => $this->getAuthToken(),
+                'surveyID' => $request->getParam('surveyId'),
+                'language' => $request->getParam('language')
+            ];
+            $commandResponse = (new QuestionGroupList)
+                ->run(new Request($requestData));
+
+            $this->renderCommandResponse($commandResponse);
+        } else {
+            $request = Yii::app()->request;
+            $requestData = [
+                'sessionKey' => $this->getAuthToken(),
+                'groupID' => $id,
+                'groupSettings' => $request->getParam('groupSettings'),
+                'language' => $request->getParam('language')
+            ];
+            $commandResponse = (new QuestionGroupPropertiesGet)
+                ->run(new Request($requestData));
+
+            $this->renderCommandResponse($commandResponse);
+        }
     }
 
-    protected function actionGetAll($surveyId)
+    /** 
+     * Update question group properties.
+     * 
+     * @param string $id Question Group Id
+     * @return void
+     */
+    public function actionIndexPut($id)
     {
         $request = Yii::app()->request;
+        $data    = $request->getRestParams();
+
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
-            'surveyID' => $surveyId,
-            'language' => $request->getParam('language')
+            'groupID' => $id,
+            'language' => isset($data['language']) ? $data['language'] : '',
+            'questiongroupl10ns' => isset($data['questiongroupl10ns']) ? $data['questiongroupl10ns'] : '',
+            'group_order' => isset($data['group_order']) ? $data['group_order'] : '',
+            'grelevance' => isset($data['grelevance']) ? $data['grelevance'] : '',
         ];
-        $commandResponse = (new QuestionGroupList())
+        $commandResponse = (new QuestionGroupPropertiesSet)
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
     }
 
-    protected function actionGetOne($id)
+    /** 
+     * Delete question groups by question group id.
+     * 
+     * @param string $id Question Group Id 
+     * @return void
+     */
+    public function actionIndexDelete($id)
     {
-        $request = Yii::app()->request;
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
-            'groupID' => $id,
-            'language' => $request->getParam('language')
+            'groupID' => $id
         ];
-        $commandResponse = (new QuestionGroupPropertiesGet())
+        $commandResponse = (new QuestionGroupDelete)
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
