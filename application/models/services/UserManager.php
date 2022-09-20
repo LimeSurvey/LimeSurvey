@@ -58,6 +58,10 @@ class UserManager
      */
     public function canAssignRole()
     {
+        if (empty($this->managingUser)) {
+            return false;
+        }
+
         return Permission::model()->hasGlobalPermission('superadmin', 'read', $this->managingUser->id);
     }
 
@@ -67,6 +71,10 @@ class UserManager
      */
     public function canEdit()
     {
+        if (empty($this->managingUser) || empty($this->targetUser)) {
+            return false;
+        }
+
         return
             Permission::model()->hasGlobalPermission('superadmin', 'read', $this->managingUser->id)
             || $this->targetUser->uid == $this->managingUser->id
