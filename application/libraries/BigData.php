@@ -31,7 +31,7 @@ class BigData
         }
     }
 
-    protected static function hasStream(&$result, $item)
+    protected static function hasStream($result, $item)
     {
         if ($result === true) {
             return true;
