@@ -14,11 +14,29 @@
 */
 
 use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\V1\SurveyAdd;
 use LimeSurvey\Api\Command\V1\SurveyPropertiesGet;
 use LimeSurvey\Api\Command\V1\SurveyDelete;
 
 class SurveyController extends LSYii_ControllerRest
 {
+    public function actionIndexPost()
+    {
+        $request = Yii::app()->request;
+        $data = $request->getRestParams();
+        $commandRequest = new Request(array(
+            'sessionKey' => $this->getAuthToken(),
+            'surveyID' => isset($data['surveyID']) ? $data['surveyID'] : '',
+            'surveyTitle' => isset($data['surveyTitle']) ? $data['surveyTitle'] : '',
+            'surveyLanguage' => isset($data['surveyLanguage']) ? $data['surveyLanguage'] : '',
+            'format' => isset($data['format']) ? $data['format'] : null
+        ));
+        $commandResponse = (new SurveyAdd)
+            ->run($commandRequest);
+
+        $this->renderCommandResponse($commandResponse);
+    }
+
     public function actionIndexGet($id)
     {
         $request = Yii::app()->request;
