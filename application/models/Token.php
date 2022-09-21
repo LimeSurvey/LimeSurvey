@@ -438,12 +438,12 @@ abstract class Token extends Dynamic
             $aRules[] = array(
                 $key, 'filter',
                 'filter' => array(self::class, 'sanitizeAttribute'),
-                'on'=>'register'
+                'on' => 'register'
             );
             $aRules[] = array(
                 $key,
                 'LSYii_Validators',
-                'except'=>'finalSubmit,register'
+                'except' => 'finalSubmit,register'
             );
         }
         return $aRules;
