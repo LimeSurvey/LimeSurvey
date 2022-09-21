@@ -21,8 +21,8 @@ class SurveyPropertiesGet implements CommandInterface
      * Run survey properties get command.
      *
      * @access public
-     * @param LimeSurvey\Api\Command\Request\Request $request
-     * @return LimeSurvey\Api\Command\Response\Response
+     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @return \LimeSurvey\Api\Command\Response\Response
      */
     public function run(Request $request)
     {
@@ -70,7 +70,7 @@ class SurveyPropertiesGet implements CommandInterface
                     $aResult[$sPropertyName] = $oSurvey->$sPropertyName;
                 }
                 return new Response(
-                    $aResult, 
+                    $aResult,
                     new StatusSuccess
                 );
             } else {
