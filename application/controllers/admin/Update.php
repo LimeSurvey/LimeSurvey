@@ -405,7 +405,6 @@ class Update extends DynamicSurveyCommonAction
                         if ($unzip->result) {
                             // Should never bug (version.php is checked before))
                             $updateModel->updateVersion($destinationBuild);
-                            $updateModel->destroyGlobalSettings();
                             $updateModel->removeTmpFile('update.zip');
                             $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
