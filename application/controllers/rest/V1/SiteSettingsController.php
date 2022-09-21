@@ -16,13 +16,18 @@
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\V1\SiteSettingsGet;
 
-class SiteController extends LSYii_ControllerRest
+class SiteSettingsController extends LSYii_ControllerRest
 {
 
-    public function actionSettingsGet()
+    public function actionIndexGet($id)
     {
-        $commandRequest = new Request([]);
-        $commandResponse = (new SiteSettingsGet)->run($commandRequest);
+        $requestData = array(
+            'sessionKey' => $this->getAuthToken(),
+            'settingName' => $id
+        );
+        $commandRequest = new Request($requestData);
+        $commandResponse = (new SiteSettingsGet)
+            ->run($commandRequest);
 
         $this->renderCommandResponse($commandResponse);
     }

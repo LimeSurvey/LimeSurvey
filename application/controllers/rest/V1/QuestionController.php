@@ -14,6 +14,7 @@
 
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\V1\QuestionList;
+use LimeSurvey\Api\Command\V1\QuestionImport;
 use LimeSurvey\Api\Command\V1\QuestionPropertiesGet;
 use LimeSurvey\Api\Command\V1\QuestionPropertiesSet;
 use LimeSurvey\Api\Command\V1\QuestionDelete;
@@ -28,8 +29,19 @@ class QuestionController extends LSYii_ControllerRest
      */
     public function actionIndexPost()
     {
-        //$request = Yii::app()->request;
-        //$data    = $request->getRestParams();
+        $request = Yii::app()->request;
+        $data    = $request->getRestParams();
+        $requestData = [
+            'sessionKey' => $this->getAuthToken(),
+            'surveyID' => isset($data['survey_id']) ? $data['survey_id'] : '',
+            'groupID' => isset($data['group_id']) ? $data['group_id'] : '',
+            'groupTitle' => isset($data['name']) ? $data['name'] : '',
+            'groupDescription' => isset($data['description']) ? $data['description'] : ''
+        ];
+        $commandResponse = (new QuestionImport)
+            ->run(new Request($requestData));
+
+        $this->renderCommandResponse($commandResponse);
     }
 
     /** 

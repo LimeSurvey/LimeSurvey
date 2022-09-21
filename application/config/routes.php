@@ -51,14 +51,8 @@ $route['rest/<_api_version:\w+>/<_controller:\w+>'] = array(
     'matchValue' => true
 );
 // - Resource index with id
-$route['rest/<_api_version:\w+>/<_controller:\w+>/<id:\d+>'] = array(
+$route['rest/<_api_version:\w+>/<_controller:\w+>/<id:\w+>'] = array(
     'rest/<_api_version>/<_controller>',
-    'verb' => 'GET, PUT, DELETE',
-    'matchValue' => true
-);
-// - Resource action with id
-$route['rest/<_api_version:\w+>/<_controller:\w+>/<_action:\w+>/<id:\d+>'] = array(
-    'rest/<_api_version>/<_controller>/<_action>',
     'verb' => 'GET, PUT, DELETE',
     'matchValue' => true
 );
