@@ -15,6 +15,7 @@
 
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\V1\SurveyPropertiesGet;
+use LimeSurvey\Api\Command\V1\SurveyDelete;
 
 class SurveyController extends LSYii_ControllerRest
 {
@@ -28,6 +29,19 @@ class SurveyController extends LSYii_ControllerRest
         );
         $commandRequest = new Request($requestData);
         $commandResponse = (new SurveyPropertiesGet)
+            ->run($commandRequest);
+
+        $this->renderCommandResponse($commandResponse);
+    }
+
+    public function actionIndexDelete($id)
+    {
+        $requestData = array(
+            'sessionKey' => $this->getAuthToken(),
+            'surveyID' => $id
+        );
+        $commandRequest = new Request($requestData);
+        $commandResponse = (new SurveyDelete)
             ->run($commandRequest);
 
         $this->renderCommandResponse($commandResponse);
