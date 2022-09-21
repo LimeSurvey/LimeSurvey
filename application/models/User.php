@@ -474,11 +474,7 @@ class User extends LSActiveRecord
                 </button>";
         } else {
             if (
-                Permission::model()->hasGlobalPermission('superadmin', 'read')
-                || $this->uid == Yii::app()->session['loginID']
-                || (Permission::model()->hasGlobalPermission('users', 'update')
-                    && $this->parent_id == Yii::app()->session['loginID']
-                )
+                $this->canEdit(Yii::app()->session['loginID'])
             ) {
                 $editUser = "<button data-toggle='tooltip' data-url='" . $editUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='modifyuser' title='" . gT("Edit this user") . "' type='submit' class='btn btn-default btn-sm green-border action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
             }
@@ -969,5 +965,19 @@ class User extends LSActiveRecord
             return $this->users_name;
         }
         return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
+    }
+
+    /**
+     * Returns true if logged in user with id $loginId can edit this user
+     *
+     * @param int $loginId
+     * @return bool
+     */
+    public function canEdit($loginId)
+    {
+        return
+            Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || $this->uid == $loginId
+            || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
     }
 }
