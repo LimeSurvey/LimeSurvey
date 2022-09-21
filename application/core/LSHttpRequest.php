@@ -150,12 +150,14 @@ class LSHttpRequest extends CHttpRequest
     {
         parent::normalizeRequest();
 
+        /*
         if (
             !isset($_SERVER['REQUEST_METHOD'])
-            || !in_array($_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'DELETE'])
+            || $_SERVER['REQUEST_METHOD'] == 'GET'
         ) {
             return;
         }
+        */
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
 
