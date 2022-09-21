@@ -4480,6 +4480,7 @@ function do_array_multiflexi($ia)
                 'answertextright'   => $answertextright,
                 'answer_tds'        => $answer_tds,
                 'rightTd'           => $rightTd,
+                'odd'               => ($j % 2),
                 'layout'            => $layout
                 ), true);
             $fn++;
