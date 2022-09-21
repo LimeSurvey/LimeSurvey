@@ -425,11 +425,11 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
     $time_limit_warning_2_display_time = trim($aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_2_display_time'] + 1 : 0;
     $time_limit_message_style = trim($aQuestionAttributes['time_limit_message_style']) != '' ? $aQuestionAttributes['time_limit_message_style'] : "";
-    $time_limit_message_class = "hidden ls-timer-content ls-timer-message ls-no-js-hidden";
+    $time_limit_message_class = "d-none ls-timer-content ls-timer-message ls-no-js-hidden";
     $time_limit_warning_style = trim($aQuestionAttributes['time_limit_warning_style']) != '' ? $aQuestionAttributes['time_limit_warning_style'] : "";
-    $time_limit_warning_class = "hidden ls-timer-content ls-timer-warning ls-no-js-hidden";
+    $time_limit_warning_class = "d-none ls-timer-content ls-timer-warning ls-no-js-hidden";
     $time_limit_warning_2_style = trim($aQuestionAttributes['time_limit_warning_2_style']) != '' ? $aQuestionAttributes['time_limit_warning_2_style'] : "";
-    $time_limit_warning_2_class = "hidden ls-timer-content ls-timer-warning2 ls-no-js-hidden";
+    $time_limit_warning_2_class = "d-none ls-timer-content ls-timer-warning2 ls-no-js-hidden";
     $time_limit_timer_style = trim($aQuestionAttributes['time_limit_timer_style']) != '' ? $aQuestionAttributes['time_limit_timer_style'] : "position: relative;";
     $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
