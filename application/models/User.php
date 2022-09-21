@@ -653,13 +653,7 @@ class User extends LSActiveRecord
             $buttonArray[] = $userDetail;
         }
         // Check if user is editable
-        if (
-            $this->uid == Yii::app()->user->getId()                             //One can edit onesself of course
-            || (
-                Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to edit users given
-                && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned by admin
-            )
-        ) {
+        if ($this->canEdit(Yii::app()->session['loginID'])) {
             $buttonArray[] = $editUserButton;
         }
 
