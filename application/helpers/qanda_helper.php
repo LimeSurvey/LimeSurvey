@@ -3271,6 +3271,7 @@ function do_array_10point($ia)
             'value'         => $value,
             'error'         => $error,
             'sDisplayStyle' => $sDisplayStyle,
+            'odd'           => ($j % 2),
             'answer_tds'    => $answer_tds,
             ), true);
 
