@@ -90,6 +90,7 @@
 			"./vendor/bin/phpmd application/models/ArchivedTableSettings.php text tests/rulesets/phpmd_ruleset.xml",
 			"./vendor/bin/phpmd application/libraries/PluginManager text tests/rulesets/phpmd_ruleset.xml",
 			"./vendor/bin/phpmd application/controllers/SurveyAdministrationController.php text tests/rulesets/phpmd_ruleset.xml",
+            "./vendor/bin/phpmd application/controllers/rest/ text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/libraries/ExtensionInstaller/ text tests/rulesets/phpmd_ruleset.xml",
 			"./vendor/bin/phpmd application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php text tests/rulesets/phpmd_ruleset_strict.xml",
