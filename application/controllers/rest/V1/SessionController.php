@@ -25,7 +25,7 @@ class SessionController extends LSYii_ControllerRest
             'username' => $request->getPost('username'),
             'password' => $request->getPost('password')
         ];
-        $commandResponse = (new SessionKeyCreate)
+        $commandResponse = (new SessionKeyCreate())
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
@@ -36,7 +36,7 @@ class SessionController extends LSYii_ControllerRest
         $requestData = [
             'sessionKey' => $this->getAuthToken()
         ];
-        $commandResponse = (new SessionKeyRelease)->run(
+        $commandResponse = (new SessionKeyRelease())->run(
             new Request($requestData)
         );
 

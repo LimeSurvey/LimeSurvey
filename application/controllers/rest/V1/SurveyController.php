@@ -31,7 +31,7 @@ class SurveyController extends LSYii_ControllerRest
             'surveyLanguage' => isset($data['surveyLanguage']) ? $data['surveyLanguage'] : '',
             'format' => isset($data['format']) ? $data['format'] : null
         ));
-        $commandResponse = (new SurveyAdd)
+        $commandResponse = (new SurveyAdd())
             ->run($commandRequest);
 
         $this->renderCommandResponse($commandResponse);
@@ -46,7 +46,7 @@ class SurveyController extends LSYii_ControllerRest
             'surveySettings' => $request->getParam('settings')
         );
         $commandRequest = new Request($requestData);
-        $commandResponse = (new SurveyPropertiesGet)
+        $commandResponse = (new SurveyPropertiesGet())
             ->run($commandRequest);
 
         $this->renderCommandResponse($commandResponse);
@@ -59,7 +59,7 @@ class SurveyController extends LSYii_ControllerRest
             'surveyID' => $id
         );
         $commandRequest = new Request($requestData);
-        $commandResponse = (new SurveyDelete)
+        $commandResponse = (new SurveyDelete())
             ->run($commandRequest);
 
         $this->renderCommandResponse($commandResponse);

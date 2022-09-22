@@ -18,7 +18,6 @@ use LimeSurvey\Api\Command\V1\SiteSettingsGet;
 
 class SiteSettingsController extends LSYii_ControllerRest
 {
-
     public function actionIndexGet($id)
     {
         $requestData = array(
@@ -26,7 +25,7 @@ class SiteSettingsController extends LSYii_ControllerRest
             'settingName' => $id
         );
         $commandRequest = new Request($requestData);
-        $commandResponse = (new SiteSettingsGet)
+        $commandResponse = (new SiteSettingsGet())
             ->run($commandRequest);
 
         $this->renderCommandResponse($commandResponse);

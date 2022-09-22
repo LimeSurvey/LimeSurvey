@@ -21,9 +21,9 @@ use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
 
 class QuestionGroupController extends LSYii_ControllerRest
 {
-    /** 
+    /**
      * Create question group.
-     * 
+     *
      * @return void
      */
     public function actionIndexPost()
@@ -36,15 +36,15 @@ class QuestionGroupController extends LSYii_ControllerRest
             'groupTitle' => isset($data['name']) ? $data['name'] : '',
             'groupDescription' => isset($data['description']) ? $data['description'] : ''
         ];
-        $commandResponse = (new QuestionGroupAdd)
+        $commandResponse = (new QuestionGroupAdd())
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
     }
 
-    /** 
+    /**
      * Get array of question groups or one specific question group.
-     * 
+     *
      * @param string $id Question Group Id
      * @return void
      */
@@ -57,7 +57,7 @@ class QuestionGroupController extends LSYii_ControllerRest
                 'surveyID' => $request->getParam('survey_id'),
                 'language' => $request->getParam('language')
             ];
-            $commandResponse = (new QuestionGroupList)
+            $commandResponse = (new QuestionGroupList())
                 ->run(new Request($requestData));
 
             $this->renderCommandResponse($commandResponse);
@@ -69,16 +69,16 @@ class QuestionGroupController extends LSYii_ControllerRest
                 'groupSettings' => $request->getParam('settings'),
                 'language' => $request->getParam('language')
             ];
-            $commandResponse = (new QuestionGroupPropertiesGet)
+            $commandResponse = (new QuestionGroupPropertiesGet())
                 ->run(new Request($requestData));
 
             $this->renderCommandResponse($commandResponse);
         }
     }
 
-    /** 
+    /**
      * Update question group properties.
-     * 
+     *
      * @param string $id Question Group Id
      * @return void
      */
@@ -100,16 +100,16 @@ class QuestionGroupController extends LSYii_ControllerRest
                 'grelevance' => isset($data['grelevance']) ? $data['grelevance'] : ''
             )
         ];
-        $commandResponse = (new QuestionGroupPropertiesSet)
+        $commandResponse = (new QuestionGroupPropertiesSet())
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
     }
 
-    /** 
+    /**
      * Delete question groups by question group id.
-     * 
-     * @param string $id Question Group Id 
+     *
+     * @param string $id Question Group Id
      * @return void
      */
     public function actionIndexDelete($id)
@@ -118,7 +118,7 @@ class QuestionGroupController extends LSYii_ControllerRest
             'sessionKey' => $this->getAuthToken(),
             'groupID' => $id
         ];
-        $commandResponse = (new QuestionGroupDelete)
+        $commandResponse = (new QuestionGroupDelete())
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);

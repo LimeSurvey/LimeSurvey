@@ -21,9 +21,9 @@ use LimeSurvey\Api\Command\V1\QuestionDelete;
 
 class QuestionController extends LSYii_ControllerRest
 {
-    /** 
+    /**
      * Create question.
-     * 
+     *
      * @param string $id Question Id
      * @return void
      */
@@ -38,15 +38,15 @@ class QuestionController extends LSYii_ControllerRest
             'groupTitle' => isset($data['name']) ? $data['name'] : '',
             'groupDescription' => isset($data['description']) ? $data['description'] : ''
         ];
-        $commandResponse = (new QuestionImport)
+        $commandResponse = (new QuestionImport())
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
     }
 
-    /** 
+    /**
      * Get array of questions or one specific question.
-     * 
+     *
      * @param string $id Question Id
      * @return void
      */
@@ -60,7 +60,7 @@ class QuestionController extends LSYii_ControllerRest
                 'questionSettings' => $request->getParam('settings'),
                 'language' => $request->getParam('language')
             ];
-            $commandResponse = (new QuestionPropertiesGet)
+            $commandResponse = (new QuestionPropertiesGet())
                 ->run(new Request($requestData));
 
             $this->renderCommandResponse($commandResponse);
@@ -72,16 +72,16 @@ class QuestionController extends LSYii_ControllerRest
                 'groupID' => $request->getParam('groupId'),
                 'language' => $request->getParam('language')
             ];
-            $commandResponse = (new QuestionList)
+            $commandResponse = (new QuestionList())
                 ->run(new Request($requestData));
 
             $this->renderCommandResponse($commandResponse);
         }
     }
 
-    /** 
+    /**
      * Update question properties.
-     * 
+     *
      * @param string $id Question Id
      * @return void
      */
@@ -96,16 +96,16 @@ class QuestionController extends LSYii_ControllerRest
             'language' => isset($data['language']) ? $data['language'] : '',
             'questionData' => isset($data['questionData']) ? $data['questionData'] : array()
         ];
-        $commandResponse = (new QuestionPropertiesSet)
+        $commandResponse = (new QuestionPropertiesSet())
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
     }
 
-    /** 
+    /**
      * Delete question by question id.
-     * 
-     * @param string $id Question Id 
+     *
+     * @param string $id Question Id
      * @return void
      */
     public function actionIndexDelete($id)
@@ -114,7 +114,7 @@ class QuestionController extends LSYii_ControllerRest
             'sessionKey' => $this->getAuthToken(),
             'questionID' => $id
         ];
-        $commandResponse = (new QuestionDelete)
+        $commandResponse = (new QuestionDelete())
             ->run(new Request($requestData));
 
         $this->renderCommandResponse($commandResponse);
