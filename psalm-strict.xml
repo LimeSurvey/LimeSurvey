@@ -11,6 +11,7 @@
         <file name="application/models/FailedEmail.php" />
         <file name="application/controllers/FailedEmailController.php" />
         <directory name="application/libraries/FormExtension" />
+        <directory name="application/controllers/rest" />
         <ignoreFiles>
             <directory name="vendor" />
         </ignoreFiles>
