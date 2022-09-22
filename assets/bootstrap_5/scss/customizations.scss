@@ -22,3 +22,9 @@ a {
     margin-right: 2px;
     margin-left: 2px;
 }
+
+
+// Disable border color between thead, tbody.
+.table > :not(:first-child) {
+    border-top: 0;
+}
