@@ -31,14 +31,14 @@ class SurveyPropertiesGet implements CommandInterface
         $aSurveySettings = $request->getData('surveySettings', array());
 
         Yii::app()->loadHelper('surveytranslator');
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if ($apiSession->checkKey($sSessionKey)) {
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
                 return new Response(
                     array('status' => 'Error: Invalid survey ID'),
-                    new StatusErrorNotFound
+                    new StatusErrorNotFound()
                 );
             }
             if (
@@ -62,7 +62,7 @@ class SurveyPropertiesGet implements CommandInterface
                 if (empty($aSurveySettings)) {
                     return new Response(
                         array('status' => 'No valid Data'),
-                        new StatusSuccess
+                        new StatusSuccess()
                     );
                 }
                 $aResult = array();
@@ -71,18 +71,18 @@ class SurveyPropertiesGet implements CommandInterface
                 }
                 return new Response(
                     $aResult,
-                    new StatusSuccess
+                    new StatusSuccess()
                 );
             } else {
                 return new Response(
                     array('status' => 'No permission'),
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorUnauthorised
+                new StatusErrorUnauthorised()
             );
         }
     }

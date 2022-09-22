@@ -33,7 +33,7 @@ class SurveyAdd implements CommandInterface
         $sSurveyLanguage = (string) $request->getData('surveyLanguage');
         $sformat = (string) $request->getData('format', 'G');
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
 
         Yii::app()->loadHelper("surveytranslator");
         if ($apiSession->checkKey($sSessionKey)) {
@@ -46,7 +46,7 @@ class SurveyAdd implements CommandInterface
                 ) {
                     return new Response(
                         array('status' => 'Faulty parameters'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -86,24 +86,24 @@ class SurveyAdd implements CommandInterface
 
                     return new Response(
                         (int) $iNewSurveyid,
-                        new StatusSuccess
+                        new StatusSuccess()
                     );
                 } catch (Exception $e) {
                     return new Response(
                         array('status' => $e->getMessage()),
-                        new StatusError
+                        new StatusError()
                     );
                 }
             } else {
                 return new Response(
                     array('status' => 'No permission'),
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorUnauthorised
+                new StatusErrorUnauthorised()
             );
         }
     }

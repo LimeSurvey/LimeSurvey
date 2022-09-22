@@ -31,7 +31,7 @@ class QuestionGroupPropertiesGet implements CommandInterface
         $aGroupSettings = $request->getData('groupSettings', null);
         $sLanguage = $request->getData('language', null);
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if ($apiSession->checkKey($sSessionKey)) {
             $oGroup = QuestionGroup::model()
                 ->with('questiongroupl10ns')
@@ -39,7 +39,7 @@ class QuestionGroupPropertiesGet implements CommandInterface
             if (!isset($oGroup)) {
                 return new Response(
                     array('status' => 'Error: Invalid group ID'),
-                    new StatusErrorNotFound
+                    new StatusErrorNotFound()
                 );
             }
 
@@ -59,7 +59,7 @@ class QuestionGroupPropertiesGet implements CommandInterface
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
                     return new Response(
                         array('status' => 'Error: Invalid language'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -78,7 +78,7 @@ class QuestionGroupPropertiesGet implements CommandInterface
                 if (empty($aGroupSettings)) {
                     return new Response(
                         array('status' => 'No valid Data'),
-                        new StatusSuccess
+                        new StatusSuccess()
                     );
                 }
 
@@ -94,18 +94,18 @@ class QuestionGroupPropertiesGet implements CommandInterface
                 }
                 return new Response(
                     $aResult,
-                    new StatusSuccess
+                    new StatusSuccess()
                 );
             } else {
                 return new Response(
                     array('status' => 'No permission'),
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(array(
                 'status' => ApiSession::INVALID_SESSION_KEY
-            ), new StatusErrorUnauthorised);
+            ), new StatusErrorUnauthorised());
         }
     }
 }

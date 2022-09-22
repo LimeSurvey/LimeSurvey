@@ -32,7 +32,7 @@ class QuestionList implements CommandInterface
         $iGroupID = $request->getData('groupID');
         $sLanguage = $request->getData('language');
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if ($apiSession->checkKey($sSessionKey)) {
             Yii::app()->loadHelper("surveytranslator");
             $iSurveyID = (int) $iSurveyID;
@@ -41,7 +41,7 @@ class QuestionList implements CommandInterface
             if (empty($oSurvey)) {
                 return new Response(
                     ['status' => 'Error: Invalid survey ID'],
-                    new StatusErrorNotFound
+                    new StatusErrorNotFound()
                 );
             }
 
@@ -65,7 +65,7 @@ class QuestionList implements CommandInterface
                 ) {
                     return new Response(
                         ['status' => 'Error: Invalid language'],
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -77,14 +77,14 @@ class QuestionList implements CommandInterface
                     if (empty($oGroup)) {
                         return new Response(
                             ['status' => 'Error: group not found'],
-                            new StatusErrorNotFound
+                            new StatusErrorNotFound()
                         );
                     }
 
                     if ($oGroup->sid != $oSurvey->sid) {
                         return new Response(
                             ['status' => 'Error: Mismatch in surveyid and groupid'],
-                            new StatusErrorNotFound
+                            new StatusErrorNotFound()
                         );
                     } else {
                         $aQuestionList = $oGroup->allQuestions;
@@ -96,7 +96,7 @@ class QuestionList implements CommandInterface
                 if (count($aQuestionList) == 0) {
                     return new Response(
                         ['status' => 'No questions found'],
-                        new StatusSuccess
+                        new StatusSuccess()
                     );
                 }
 
@@ -114,18 +114,18 @@ class QuestionList implements CommandInterface
                 }
                 return new Response(
                     $aData,
-                    new StatusSuccess
+                    new StatusSuccess()
                 );
             } else {
                 return new Response(
                     ['status' => 'No permission'],
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(
                 ['status' => ApiSession::INVALID_SESSION_KEY],
-                new StatusErrorUnauthorised
+                new StatusErrorUnauthorised()
             );
         }
     }

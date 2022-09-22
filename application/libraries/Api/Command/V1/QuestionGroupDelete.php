@@ -29,14 +29,14 @@ class QuestionGroupDelete implements CommandInterface
         $sSessionKey = (string) $request->getData('sessionKey');
         $iGroupID = (int) $request->getData('groupID');
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if ($apiSession->checkKey($sSessionKey)) {
             $oGroup = QuestionGroup::model()
                 ->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup)) {
                 return new Response(
                     array('status' => 'Error:Invalid group ID'),
-                    new StatusErrorNotFound
+                    new StatusErrorNotFound()
                 );
             }
             $iSurveyID = $oGroup->sid;
@@ -45,7 +45,7 @@ class QuestionGroupDelete implements CommandInterface
             if (!isset($oSurvey)) {
                 return new Response(
                     array('status' => 'Error: Invalid survey ID'),
-                    new StatusErrorNotFound
+                    new StatusErrorNotFound()
                 );
             }
 
@@ -60,7 +60,7 @@ class QuestionGroupDelete implements CommandInterface
                 if ($oSurvey->isActive) {
                     return new Response(
                         array('status' => 'Error:Survey is active and not editable'),
-                        new StatusError
+                        new StatusError()
                     );
                 }
 
@@ -73,7 +73,7 @@ class QuestionGroupDelete implements CommandInterface
                 if (isset($dependantOn)) {
                     return new Response(
                         array('status' => 'Group with dependencies - deletion not allowed'),
-                        new StatusError
+                        new StatusError()
                     );
                 }
 
@@ -87,24 +87,24 @@ class QuestionGroupDelete implements CommandInterface
                         ->updateGroupOrder($iSurveyID);
                     return new Response(
                         (int) $iGroupID,
-                        new StatusSuccess
+                        new StatusSuccess()
                     );
                 } else {
                     return new Response(
                         array('status' => 'Group deletion failed'),
-                        new StatusError
+                        new StatusError()
                     );
                 }
             } else {
                 return new Response(
                     array('status' => 'No permission'),
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorUnauthorised
+                new StatusErrorUnauthorised()
             );
         }
     }

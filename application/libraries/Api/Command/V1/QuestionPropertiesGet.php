@@ -35,14 +35,14 @@ class QuestionPropertiesGet implements CommandInterface
         $aQuestionSettings = $request->getData('questionSettings');
         $sLanguage = (string) $request->getData('language');
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if ($apiSession->checkKey($sSessionKey)) {
             Yii::app()->loadHelper("surveytranslator");
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion)) {
                 return new Response(
                     array('status' => 'Error: Invalid questionid'),
-                    new StatusErrorNotFound
+                    new StatusErrorNotFound()
                 );
             }
 
@@ -56,7 +56,7 @@ class QuestionPropertiesGet implements CommandInterface
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
                     return new Response(
                         array('status' => 'Error: Invalid language'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -68,7 +68,7 @@ class QuestionPropertiesGet implements CommandInterface
                 if (!isset($oQuestion)) {
                     return new Response(
                         array('status' => 'Error: Invalid questionid'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -91,7 +91,7 @@ class QuestionPropertiesGet implements CommandInterface
                 if (empty($aQuestionSettings)) {
                     return new Response(
                         array('status' => 'No valid Data'),
-                        new StatusSuccess
+                        new StatusSuccess()
                     );
                 }
 
@@ -128,7 +128,6 @@ class QuestionPropertiesGet implements CommandInterface
                             $aResult[$sPropertyName] = 'No available answers';
                         }
                     } elseif ($sPropertyName == 'attributes') {
-
                         $questionAttributeHelper = new QuestionAttributeHelper();
                         $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, null, null, true);
                         $data = [];
@@ -211,18 +210,18 @@ class QuestionPropertiesGet implements CommandInterface
                 }
                 return new Response(
                     $aResult,
-                    new StatusSuccess
+                    new StatusSuccess()
                 );
             } else {
                 return new Response(
                     array('status' => 'No permission'),
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorUnauthorised
+                new StatusErrorUnauthorised()
             );
         }
     }

@@ -25,30 +25,30 @@ class SiteSettingsGet implements CommandInterface
         $sessionKey = (string) $request->getData('sessionKey');
         $settingName = (string) $request->getData('settingName');
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if ($apiSession->checkKey($sessionKey)) {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 if (Yii::app()->getConfig($settingName) !== false) {
                     return new Response(
                         Yii::app()->getConfig($settingName),
-                        new StatusSuccess
+                        new StatusSuccess()
                     );
                 } else {
                     return new Response(
                         array('status' => 'Invalid setting'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
             } else {
                 return new Response(
                     array('status' => 'Invalid setting'),
-                    new StatusErrorBadRequest
+                    new StatusErrorBadRequest()
                 );
             }
         } else {
             return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorBadRequest
+                new StatusErrorBadRequest()
             );
         }
     }

@@ -31,7 +31,7 @@ class QuestionGroupPropertiesSet implements CommandInterface
         $iGroupID = (int) $request->getData('groupID');
         $aGroupData = $request->getData('groupData', null);
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if ($apiSession->checkKey($sSessionKey)) {
             $iGroupID = (int) $iGroupID;
             $oGroup = QuestionGroup::model()
@@ -40,7 +40,7 @@ class QuestionGroupPropertiesSet implements CommandInterface
             if (is_null($oGroup)) {
                 return new Response(
                     array('status' => 'Error: Invalid group ID'),
-                    new StatusErrorNotFound
+                    new StatusErrorNotFound()
                 );
             }
             if (
@@ -134,12 +134,12 @@ class QuestionGroupPropertiesSet implements CommandInterface
                     if (empty($aResult)) {
                         return new Response(
                             array('status' => 'No valid Data'),
-                            new StatusSuccess
+                            new StatusSuccess()
                         );
                     } else {
                         return new Response(
                             $aResult,
-                            new StatusSuccess
+                            new StatusSuccess()
                         );
                     }
                 }
@@ -184,18 +184,18 @@ class QuestionGroupPropertiesSet implements CommandInterface
                 }
                 return new Response(
                     $aResult,
-                    new StatusSuccess
+                    new StatusSuccess()
                 );
             } else {
                 return new Response(
                     array('status' => 'No permission'),
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorUnauthorised
+                new StatusErrorUnauthorised()
             );
         }
     }

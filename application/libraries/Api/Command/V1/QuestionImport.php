@@ -35,7 +35,7 @@ class QuestionImport implements CommandInterface
         $sNewQuestion = (string) $request->getData('newQuestion', null);
         $sNewQuestionHelp = (string) $request->getData('newQuestionHelp', null);
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         $bOldEntityLoaderState = null;
         if ($apiSession->checkKey($sSessionKey)) {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -45,11 +45,13 @@ class QuestionImport implements CommandInterface
                 );
             }
 
-            if (Permission::model()->hasSurveyPermission(
-                $iSurveyID,
-                'survey',
-                'update'
-            )) {
+            if (
+                Permission::model()->hasSurveyPermission(
+                    $iSurveyID,
+                    'survey',
+                    'update'
+                )
+            ) {
                 if ($oSurvey->isActive) {
                     return new Response(
                         array('status' => 'Error:Survey is Active and not editable')
@@ -101,7 +103,7 @@ class QuestionImport implements CommandInterface
                         \PHP_VERSION_ID < 80000
                     ) {
                         libxml_disable_entity_loader($bOldEntityLoaderState);
-                        // Put back entity loader to its original state, to avoid 
+                        // Put back entity loader to its original state, to avoid
                         // contagion to other applications on the server
                     }
                     return new Response(array('status' => 'Really Invalid extension')); //just for symmetry!
@@ -112,7 +114,7 @@ class QuestionImport implements CommandInterface
                 if (isset($aImportResults['fatalerror'])) {
                     if (\PHP_VERSION_ID < 80000) {
                         libxml_disable_entity_loader($bOldEntityLoaderState);
-                        // Put back entity loader to its original state, 
+                        // Put back entity loader to its original state,
                         // to avoid contagion to other applications on the server
                     }
                     return new Response(array('status' => 'Error: ' . $aImportResults['fatalerror']));
@@ -143,7 +145,7 @@ class QuestionImport implements CommandInterface
 
                     if (\PHP_VERSION_ID < 80000) {
                         libxml_disable_entity_loader($bOldEntityLoaderState);
-                        // Put back entity loader to its original state, to avoid contagion 
+                        // Put back entity loader to its original state, to avoid contagion
                         // to other applications on the server
                     }
 

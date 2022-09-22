@@ -31,7 +31,7 @@ class QuestionGroupAdd implements CommandInterface
         $sGroupTitle = (string) $request->getData('groupTitle');
         $sGroupDescription = (string) $request->getData('groupDescription');
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if ($apiSession->checkKey($sSessionKey)) {
             if (
                 Permission::model()
@@ -46,14 +46,14 @@ class QuestionGroupAdd implements CommandInterface
                 if (!isset($oSurvey)) {
                     return new Response(
                         array('status' => 'Error: Invalid survey ID'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
                 if ($oSurvey->isActive) {
                     return new Response(
                         array('status' => 'Error: Survey is active and not editable'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -63,7 +63,7 @@ class QuestionGroupAdd implements CommandInterface
                 if (!$oGroup->save()) {
                     return new Response(
                         array('status' => 'Creation Failed'),
-                        new StatusError
+                        new StatusError()
                     );
                 }
 
@@ -76,24 +76,24 @@ class QuestionGroupAdd implements CommandInterface
                 if ($oQuestionGroupL10n->save()) {
                     return new Response(
                         (int) $oGroup->gid,
-                        new StatusSuccess
+                        new StatusSuccess()
                     );
                 } else {
                     return new Response(
                         array('status' => 'Creation Failed'),
-                        new StatusError
+                        new StatusError()
                     );
                 }
             } else {
                 return new Response(
                     array('status' => 'No permission'),
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorUnauthorised
+                new StatusErrorUnauthorised()
             );
         }
     }

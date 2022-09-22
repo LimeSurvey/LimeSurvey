@@ -33,7 +33,7 @@ class QuestionPropertiesSet implements CommandInterface
         $aQuestionData = $request->getData('questionData');
         $sLanguage = (string) $request->getData('language');
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if ($apiSession->checkKey($sSessionKey)) {
             Yii::app()->loadHelper("surveytranslator");
             $iQuestionID = (int) $iQuestionID;
@@ -41,7 +41,7 @@ class QuestionPropertiesSet implements CommandInterface
             if (is_null($oQuestion)) {
                 return new Response(
                     array('status' => 'Error: Invalid group ID'),
-                    new StatusErrorNotFound
+                    new StatusErrorNotFound()
                 );
             }
 
@@ -55,7 +55,7 @@ class QuestionPropertiesSet implements CommandInterface
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
                     return new Response(
                         array('status' => 'Error: Invalid language'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -63,7 +63,7 @@ class QuestionPropertiesSet implements CommandInterface
                 if (!isset($oQuestion)) {
                     return new Response(
                         array('status' => 'Error: Invalid questionid'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -82,7 +82,7 @@ class QuestionPropertiesSet implements CommandInterface
                 if (empty($aQuestionData)) {
                     return new Response(
                         array('status' => 'No valid Data'),
-                        new StatusSuccess
+                        new StatusSuccess()
                     );
                 }
 
@@ -114,18 +114,18 @@ class QuestionPropertiesSet implements CommandInterface
                 }
                 return new Response(
                     $aResult,
-                    new StatusSuccess
+                    new StatusSuccess()
                 );
             } else {
                 return new Response(
                     array('status' => 'No permission'),
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorUnauthorised
+                new StatusErrorUnauthorised()
             );
         }
     }

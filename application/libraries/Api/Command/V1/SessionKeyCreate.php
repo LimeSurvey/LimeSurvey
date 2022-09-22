@@ -22,7 +22,7 @@ class SessionKeyCreate implements CommandInterface
      */
     public function run(Request $request)
     {
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
 
         $username = (string) $request->getData('username');
         $password = (string) $request->getData('password');
@@ -39,19 +39,19 @@ class SessionKeyCreate implements CommandInterface
             $session->save();
             return new Response(
                 $sSessionKey,
-                new StatusSuccess
+                new StatusSuccess()
             );
         }
         if (is_string($loginResult)) {
             return new Response(
                 array('status' => $loginResult),
-                new StatusSuccess
+                new StatusSuccess()
             );
         }
         return new Response(
             array(
                 'status' => 'Invalid user name or password',
-                new StatusErrorBadRequest
+                new StatusErrorBadRequest()
             )
         );
     }

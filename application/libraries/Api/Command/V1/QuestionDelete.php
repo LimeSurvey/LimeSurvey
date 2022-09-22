@@ -32,7 +32,7 @@ class QuestionDelete implements CommandInterface
         $sSessionKey = (string) $request->getData('sessionKey');
         $iQuestionID = (int) $request->getData('questionID');
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if (
             $apiSession->checkKey($sSessionKey)
         ) {
@@ -41,13 +41,14 @@ class QuestionDelete implements CommandInterface
             if (!isset($oQuestion)) {
                 return new Response(
                     array('status' => 'Error: Invalid question ID'),
-                    new StatusErrorNotFound
+                    new StatusErrorNotFound()
                 );
             }
 
             $iSurveyID = $oQuestion['sid'];
 
-            if (Permission::model()
+            if (
+                Permission::model()
                 ->hasSurveyPermission(
                     $iSurveyID,
                     'surveycontent',
@@ -59,7 +60,7 @@ class QuestionDelete implements CommandInterface
                 if ($oSurvey->isActive) {
                     return new Response(
                         array('status' => 'Survey is active and not editable'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -67,7 +68,7 @@ class QuestionDelete implements CommandInterface
                 if (count($oCondition) > 0) {
                     return new Response(
                         array('status' => 'Cannot delete Question. Others rely on this question'),
-                        new StatusErrorBadRequest
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -77,24 +78,24 @@ class QuestionDelete implements CommandInterface
                     $oQuestion->delete();
                     return new Response(
                         (int) $iQuestionID,
-                        new StatusSuccess
+                        new StatusSuccess()
                     );
                 } catch (Exception $e) {
                     return new Response(
                         array('status' => $e->getMessage()),
-                        new StatusError
+                        new StatusError()
                     );
                 }
             } else {
                 return new Response(
                     array('status' => 'No permission'),
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorUnauthorised
+                new StatusErrorUnauthorised()
             );
         }
     }

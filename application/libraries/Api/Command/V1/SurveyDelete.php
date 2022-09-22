@@ -26,7 +26,7 @@ class SurveyDelete implements CommandInterface
         $sSessionKey = (string) $request->getData('sessionKey');
         $iSurveyID = (int) $request->getData('surveyID');
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         if ($apiSession->checkKey($sSessionKey)) {
             if (
                 Permission::model()
@@ -39,18 +39,18 @@ class SurveyDelete implements CommandInterface
                 Survey::model()->deleteSurvey($iSurveyID, true);
                 return new Response(
                     array('status' => 'OK'),
-                    new StatusSuccess
+                    new StatusSuccess()
                 );
             } else {
                 return new Response(
                     array('status' => 'No permission'),
-                    new StatusErrorUnauthorised
+                    new StatusErrorUnauthorised()
                 );
             }
         } else {
             return new Response(
                 array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorUnauthorised
+                new StatusErrorUnauthorised()
             );
         }
     }

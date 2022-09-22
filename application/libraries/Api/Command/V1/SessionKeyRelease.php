@@ -28,6 +28,6 @@ class SessionKeyRelease implements CommandInterface
         $criteria = new CDbCriteria();
         $criteria->condition = 'expire < ' . time();
         Session::model()->deleteAll($criteria);
-        return new Response('OK', new StatusSuccess);
+        return new Response('OK', new StatusSuccess());
     }
 }
