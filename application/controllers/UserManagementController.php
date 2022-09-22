@@ -1196,6 +1196,12 @@ class UserManagementController extends LSBaseController
             throw new CException("This action is not allowed, and should never happen", 500);
         }
 
+        // Abort if logged in user has no access to this user.
+        // Using same logic as User::getButtons().
+        if (!$oUser->canEdit(Yii::app()->session['loginID'])) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
         $aUser['full_name'] = flattenText($aUser['full_name']); //to prevent xss ...
         $oUser->setAttributes($aUser);
 
@@ -1404,33 +1410,75 @@ class UserManagementController extends LSBaseController
      */
     protected function applyPermissionFromArray(int $iUserId, array $aPermissionArray): array
     {
-        //Delete all current Permissions
-        $oCriteria = new CDbCriteria();
-        $oCriteria->compare('uid', $iUserId);
-        // without entity
-        $oCriteria->compare('entity_id', 0);
-        // except for template entity (no entity_id is set here)
-        $oCriteria->compare('entity', "<>template");
-        Permission::model()->deleteAll($oCriteria);
-
+        /**
+         * Get current user permission to update only this permission
+         * NEVER delete existing Permission !
+         */
+        $aGlobalPermissions = Permission::model()->getGlobalBasePermissions();
+        /* Get only permission part */
+        $aAllowedPermissions = array_map(
+            function ($aGlobalPermission) {
+                return array(
+                    'create' => $aGlobalPermission['read'],
+                    'read' => $aGlobalPermission['read'],
+                    'update' => $aGlobalPermission['read'],
+                    'delete' => $aGlobalPermission['read'],
+                    'import' => $aGlobalPermission['read'],
+                    'export' => $aGlobalPermission['read'],
+                );
+            },
+            $aGlobalPermissions
+        );
+        $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+            $aFilteredPermissions = array();
+            foreach ($aAllowedPermissions as $PermissionName => $aPermission) {
+                foreach ($aPermission as $sPermissionKey => &$sPermissionValue) {
+                    if (in_array($sPermissionKey, $aCruds) && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) {
+                        $sPermissionValue = false;
+                    }
+                }
+                // Only show a row for that permission if there is at least one permission he may give to other users
+                if (
+                    $aPermission['create'] || $aPermission['read'] || $aPermission['update']
+                    || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']
+                ) {
+                    $aFilteredPermissions[$PermissionName] = $aPermission;
+                }
+            }
+            $aAllowedPermissions = $aFilteredPermissions;
+        }
         $results = [];
         //Apply the permission array
-        foreach ($aPermissionArray as $sPermissionKey => $aPermissionSettings) {
-            $oPermission = new Permission();
-            $oPermission->entity = 'global';
-            $oPermission->entity_id = 0;
-            $oPermission->uid = $iUserId;
-            $oPermission->permission = $sPermissionKey;
-
-            foreach ($aPermissionSettings as $sSettingKey => $sSettingValue) {
-                $oPermissionDBSettingKey = $sSettingKey . '_p';
-                $oPermission->$oPermissionDBSettingKey = $sSettingValue == 'on' ? 1 : 0;
+        foreach ($aAllowedPermissions as $permissionKey => $aAllowedPermission) {
+            /* get the current user permission or create */
+            $oPermission = Permission::model()->find(
+                "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
+                array(
+                    ":entity" => 'global',
+                    ":entity_id" => 0,
+                    ":uid" => $iUserId,
+                    ":permission" => $permissionKey,
+                )
+            );
+            if (empty($oPermission)) {
+                $oPermission = new Permission();
+                $oPermission->entity = 'global';
+                $oPermission->entity_id = 0;
+                $oPermission->uid = $iUserId;
+                $oPermission->permission = $permissionKey;
             }
-
-            $aPermissionData = Permission::getGlobalPermissionData($sPermissionKey);
-
-            $results[$sPermissionKey] = [
-                'descriptionData' => $aPermissionData,
+            foreach ($aAllowedPermission as $action => $havePermission) {
+                if ($havePermission) {
+                    $oPermission->setAttribute(
+                        $action . '_p',
+                        intval(!empty($aPermissionArray[$permissionKey][$action]))
+                    );
+                }
+            }
+            $results[$permissionKey] = [
+                'descriptionData' => Permission::getGlobalPermissionData($permissionKey),
                 'success' => $oPermission->save(),
                 'storedValue' => $oPermission->attributes
             ];
