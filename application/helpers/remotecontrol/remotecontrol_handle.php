@@ -3516,7 +3516,7 @@ class remotecontrol_handle
                 $model->modified = date('Y-m-d H:i:s');
             }
 
-            if ($model->save()) {
+            if ($model->encryptSave(true)) {
                 foreach ($participant as $sLabel => $sAttributeValue) {
                     if (!in_array($sLabel, $aDefaultFields)) {
                         foreach ($aAttributeRecords as $sKey => $arValue) {
