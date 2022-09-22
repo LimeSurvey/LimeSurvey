@@ -3,19 +3,19 @@
  * CRedisCache class file
  *
  * @author Carsten Brandt <mail@cebe.cc>
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright 2008-2013 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 /**
- * CRedisCache implements a cache application component based on {@link http://redis.io/ redis}.
+ * CRedisCache implements a cache application component based on {@link https://redis.io/ redis}.
  *
  * CRedisCache needs to be configured with {@link hostname}, {@link port} and {@link database} of the server
  * to connect to. By default CRedisCache assumes there is a redis server running on localhost at
  * port 6379 and uses the database number 0.
  *
- * CRedisCache also supports {@link http://redis.io/commands/auth the AUTH command} of redis.
+ * CRedisCache also supports {@link https://redis.io/commands/auth the AUTH command} of redis.
  * When the server needs authentication, you can set the {@link password} property to
  * authenticate with the server after connect.
  *
@@ -62,13 +62,17 @@ class CRedisCache extends CCache
 	public $database=0;
 	/**
 	 * @var int the options to pass to the flags parameter of stream_socket_client when connecting to the redis server. Defaults to STREAM_CLIENT_CONNECT.
-	 * @see http://php.net/manual/en/function.stream-socket-client.php
+	 * @see https://php.net/manual/en/function.stream-socket-client.php
 	 */
 	public $options=STREAM_CLIENT_CONNECT;
 	/**
 	 * @var float timeout to use for connection to redis. If not set the timeout set in php.ini will be used: ini_get("default_socket_timeout")
 	 */
 	public $timeout=null;
+	/**
+	* @var boolean Send sockets over SSL protocol. Default state is false.
+	*/
+	public $ssl=false;
 	/**
 	 * @var resource redis socket connection
 	 */
@@ -90,6 +94,8 @@ class CRedisCache extends CCache
 		);
 		if ($this->_socket)
 		{
+			if($this->ssl)
+				stream_socket_enable_crypto($this->_socket,true,STREAM_CRYPTO_METHOD_TLS_CLIENT);
 			if($this->password!==null)
 				$this->executeCommand('AUTH',array($this->password));
 			$this->executeCommand('SELECT',array($this->database));
@@ -103,7 +109,7 @@ class CRedisCache extends CCache
 
 	/**
 	 * Executes a redis command.
-	 * For a list of available commands and their parameters see {@link http://redis.io/commands}.
+	 * For a list of available commands and their parameters see {@link https://redis.io/commands}.
 	 *
 	 * @param string $name the name of the command
 	 * @param array $params list of parameters for the command
@@ -116,9 +122,9 @@ class CRedisCache extends CCache
 	 *   <li><code>string</code> or <code>null</code> for commands that return "bulk reply".</li>
 	 *   <li><code>array</code> for commands that return "Multi-bulk replies".</li>
 	 * </ul>
-	 * See {@link http://redis.io/topics/protocol redis protocol description}
+	 * See {@link https://redis.io/topics/protocol redis protocol description}
 	 * for details on the mentioned reply types.
-	 * @throws CException for commands that return {@link http://redis.io/topics/protocol#error-reply error reply}.
+	 * @throws CException for commands that return {@link https://redis.io/topics/protocol#error-reply error reply}.
 	 */
 	public function executeCommand($name,$params=array())
 	{

@@ -25,6 +25,7 @@
 			],
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
 			"LimeSurvey\\Api\\": "application/libraries/Api/",
+			"LimeSurvey\\Libraries\\": "application/libraries/",
 			"LimeSurvey\\ExtensionInstaller\\": "application/libraries/ExtensionInstaller/",
 			"LimeSurvey\\Helpers\\": "application/helpers",
 			"LimeSurvey\\Helpers\\Update\\": [
@@ -44,7 +45,7 @@
 		"tiamo/spss": "^2.2",
 		"yiiext/twig-renderer": "dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
-		"yiisoft/yii": "^1.1",
+		"yiisoft/yii": "1.1.x-dev",
 		"phpmailer/phpmailer": "^6.6",
 		"khaled.alshamaa/ar-php": "^6.3",
 		"tecnickcom/tcpdf": "^6.5",
@@ -58,6 +59,9 @@
 		"bin-dir": "vendor/bin",
 		"platform": {
 			"php": "7.2.5"
+		},
+		"allow-plugins": {
+			"composer/package-versions-deprecated": true
 		}
 	},
 	"require-dev": {

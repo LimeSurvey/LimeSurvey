@@ -2116,7 +2116,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getOwnerUserName()
     {
-        return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
+        return $this->owner["users_name"] ?? "";
     }
 
     /**
