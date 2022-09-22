@@ -9,6 +9,10 @@ class Update_491 extends DatabaseUpdateBase
         // Upate 489 belongs with this update. Due to a faulty deployment, we start from scratch here with failed_emails table.
         try {
             $this->db->createCommand()->dropTable('{{failed_emails}}');
+        } catch (\Exception $e) {
+            // Ignore
+        }
+        try {
             $this->db->createCommand()->dropTable('{{failed_email}}');
         } catch (\Exception $e) {
             // Ignore
