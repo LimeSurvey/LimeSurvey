@@ -82,6 +82,7 @@
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates",
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php",
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php",
+            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/LSYii_ControllerRest.php",
 			"./vendor/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/helpers/update/updates/ text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",
