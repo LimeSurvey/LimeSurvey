@@ -244,7 +244,6 @@ $(document).on("change","input:checkbox.button-item.btn-check",function(event){
 });
 /* new singlechoice radio bootstrap buttons */
 $(document).on("change","input:radio.button-item.btn-check",function(event){
-    console.log('click on the radio btn')
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /**
