@@ -60,7 +60,7 @@ class WhDateTimePicker extends CInputWidget
 	public function init()
 	{
 		$this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
-		$this->htmlOptions['id'] = TbArray::getValue('id', $this->htmlOptions, $this->getEscapedId());
+		$this->htmlOptions['id'] = TbArray::getValue('id', $this->htmlOptions, $this->getId());
         foreach($this->pluginOptions as $key => $pluginOption){
             if(is_array($pluginOption)) continue;
             $this->htmlOptions['data-'.$key] = $pluginOption;
@@ -119,9 +119,9 @@ class WhDateTimePicker extends CInputWidget
 		$cs->registerPackage('bootstrap-datetimepicker');
 
 		/* initialize plugin */
-		$selector = null === $this->selector
-			? '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId()) . '_datetimepicker'
-			: $this->selector;
+		$selector = $this->selector ?? '#' . $this->getEscapedId(TbArray::getValue('id', $this->htmlOptions, $this->getId())) . '_datetimepicker';
+		// Selector needs additional escaping to be inserted in the script
+		$selector = str_replace('\\', '\\\\', $selector);
 
 		$this->getApi()->registerPlugin('datetimepicker', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
 
@@ -135,9 +135,12 @@ class WhDateTimePicker extends CInputWidget
      * If id contains brackets, we need to double escape it with \\
      * @return string
      */
-    protected function getEscapedId()
+    protected function getEscapedId($unescapedId = null)
     {
-        $id = str_replace('[', '\\\\[',$this->getId());
+        if (is_null($unescapedId)) {
+            $unescapedId = $this->getId();
+        }
+        $id = str_replace('[', '\\\\[',$unescapedId);
         $id = str_replace(']', '\\\\]',$id);
         return $id;
     }
