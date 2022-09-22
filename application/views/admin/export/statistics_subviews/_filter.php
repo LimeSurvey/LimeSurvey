@@ -44,7 +44,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                     Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                         'name' => "datestampE",
                         'id' => 'datestampE',
-                        'value' => isset($_POST['datestampE']) ? $_POST['datestampE'] : '',
+                        'value' => $_POST['datestampE'] ?? '',
                         'pluginOptions' => array(
                             'format' => ($dateformatdetails['jsdate']),
                             'allowInputToggle' => true,
@@ -65,7 +65,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                     Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                         'name' => "datestampG",
                         'id' => 'datestampG',
-                        'value' => isset($_POST['datestampG']) ? $_POST['datestampG'] : '',
+                        'value' => $_POST['datestampG'] ?? '',
                         'pluginOptions' => array(
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' => true,
@@ -86,7 +86,7 @@ if (isset($datestamp) && $datestamp == "Y"): ?>
                     Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                         'name' => "datestampL",
                         'id' => 'datestampL',
-                        'value' => isset($_POST['datestampL']) ? $_POST['datestampL'] : '',
+                        'value' => $_POST['datestampL'] ?? '',
                         'pluginOptions' => array(
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' => true,

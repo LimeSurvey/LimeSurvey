@@ -168,8 +168,8 @@ class DataEntry extends SurveyCommonAction
             $aData['class'] = "message-box-error";
         }
 
-        $aData['aResult']['errors'] = (isset($aResult['errors'])) ? $aResult['errors'] : false;
-        $aData['aResult']['warnings'] = (isset($aResult['warnings'])) ? $aResult['warnings'] : false;
+        $aData['aResult']['errors'] = $aResult['errors'] ?? false;
+        $aData['aResult']['warnings'] = $aResult['warnings'] ?? false;
 
         $this->renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
     }
@@ -1933,7 +1933,7 @@ class DataEntry extends SurveyCommonAction
     {
         $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
-        $lang = isset($_GET['lang']) ? $_GET['lang'] : null;
+        $lang = $_GET['lang'] ?? null;
         if (isset($lang)) {
             $lang = sanitize_languagecode($lang);
         }

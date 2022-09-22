@@ -1,9 +1,0 @@
-/.idea/
-/.php_cs.cache
-/.phpunit.result.cache
-/box/
-/dist/sodium-compat.phar
-/dist/sodium-compat.phar.sig
-/composer.lock
-/vendor/
-/psalm.xml

@@ -144,7 +144,7 @@ class AdminTheme extends CFormModel
 //            App()->bootstrap->registerTooltipAndPopover(); // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
             App()->getClientScript()->registerScript('coreuser', '
            window.LS = window.LS || {}; window.LS.globalUserId = "' . Yii::app()->user->id . '";', CClientScript::POS_HEAD);
-            App()->getClientScript()->registerPackage('jquery'); // jquery
+            App()->getClientScript()->registerPackage('jquery-migrate'); // jquery + migrate
             App()->getClientScript()->registerPackage('jqueryui'); // Added for nestedSortable to work (question organizer)
             App()->getClientScript()->registerPackage('js-cookie'); // js-cookie
             App()->getClientScript()->registerPackage('fontawesome'); // fontawesome

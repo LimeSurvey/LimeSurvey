@@ -6,7 +6,7 @@
             data-target="_blank"
         <?php endif; ?>
     >
-        <div class="card-header bg-primary p-3">
+        <div class="card-header p-3">
             <div class=""><?php echo viewHelper::filterScript(gT($title)); ?></div>
         </div>
         <div class="card-body d-flex align-items-center justify-content-center">

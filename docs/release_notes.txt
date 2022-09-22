@@ -34,6 +34,87 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.1 (build 220919) to 5.4.2 (build 220921) September 20, 2022
+-Fixed issue [security] #18355: User can grant more permissions to any user than he has himself (#2624) (Denis Chenu)
+-Fixed issue: User can delete any permission to other user. (Denis Chenu)
+-Fixed issue #18361: Admin can set email/password for any other non-super admin (Olle Haerstedt)
+#Updated translation: Japanese by nomoto
+
+
+Changes from 5.4.0 (build 220913) to 5.4.1 (build 220919) September 19, 2022
+-Fixed issue: User creation email was sent by current admin, not by siteadmin (Carsten Schmitz)
+-Fixed issue #18351: Extra token placeholder show as invalid in expression (#2600) (Denis Chenu)
+-Fixed issue #18247: PHP version 8 and remote control, error in bigdata.php (#2520) (Gabriel Jenik)
+-Fixed issue #18240: QuestioinTheme browserdetect, Show Platform information didn't work (#2595) (Gabriel Jenik)
+-Fixed issue #17870: Default value with line feed broke Expression Script (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: French (France) by arnaud21, b00z00, DenisChenu, francois-charles.hebert, Qat, riqcles
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.3.32 (build 220817) to 5.4.0 (build 220913) September 13, 2022
++New feature #18282: Possibility to resend failed admin notification emails(#2539) (Patrick Teichmann)
++New feature #17835: Add custom token attributes to Response details screen (#2316) (Gabriel Jenik)
+-Fixed issue: Missing getIconClass in admin plugin menu (Olle Haerstedt)
+-Fixed issue: Captcha not shown eventhough activated in survey settings (Carsten Schmitz)
+-Fixed issue #18316: User role cannot be deleted with action button (#2577) (Gabriel Jenik)
+-Fixed issue #18305: Deleting a user that owns survey participans causes error on view CPDB (#2567) (Gabriel Jenik)
+-Fixed issue #18301: Mass action drop-up menu looks like overflow hidden in question list (#2574) (Gabriel Jenik)
+-Fixed issue #18286: Filter by group name in Group List, does not work (#2576) (Gabriel Jenik)
+-Fixed issue #18242: Quick translation: end note not shown (#2556) (Gabriel Jenik)
+-Fixed issue #18203: Return arrays instead of strings from update_response (#2483) (Edgar R. M)
+-Fixed issue #18183: Date filter at statistics is not applied correctly (#2521) (Gabriel Jenik)
+-Fixed issue #18168: Big number of spelling errors (Fix for 2FA gridview) (Tim Willig)
+-Fixed issue #18168: Big number of spelling errors (Carsten Schmitz)
+-Fixed issue #18145: Data integrity: Cannot press button when only participant table is selected (#2533) (Denis Chenu)
+-Fixed issue #18134: Present subquestions/answer options in random order has no clue about current state (#2566) (Gabriel Jenik)
+-Fixed issue #18133: Set 'Other' state has no clue about current state (#2568) (Gabriel Jenik)
+-Fixed issue #15195: Expiration date can be set before start date (#2575) (Gabriel Jenik)
+-Fixed issue #18242: Quick translation: end note not shown (Gabriel Jenik)
+#Updated translation: Valencian by c_schmitz, joamuran, valdomir, vbraque
+#Updated translation: Ukrainian by support_cxomni
+#Updated translation: Turkish by kayazeren
+#Updated translation: Thai by tomzt
+#Updated translation: Swedish by c_schmitz, maxzomborszki
+#Updated translation: Slovak by jelen1
+#Updated translation: Slovak by dusanm, jelen1
+#Updated translation: Slovak by c_schmitz, jelen1, sweetakasha
+#Updated translation: Russian by kvolk2lim, vipgroup, watslaw
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Japanese by d_inoue
+#Updated translation: Japanese by c_schmitz, d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, sschmidt
+#Updated translation: German by c_schmitz, das-g.
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz, HonkXL
+#Updated translation: Georgian by c_schmitz, gtchumburidze
+#Updated translation: Galician by Calidonia
+#Updated translation: French (France) by arnaud21, arnaudj, b00z00, DenisChenu, francois-charles.hebert, GuillaumeZ6, Xave
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by c_schmitz, Han, markusfluer
+#Updated translation: Dutch by Han, kpadm
+#Updated translation: Dutch (Informal) by c_schmitz, Han, markusfluer
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: Czech by jelen1
+#Updated translation: Czech by c_schmitz, jelen1, VBraun
+#Updated translation: Czech (Informal) by jelen1, slansky, VBraun
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.3.31 (build 220815) to 5.3.32 (build 220817) August 17, 2022
 -Fixed issue: Cannot load previously saved response to resume, instead the message "There is no matching saved response" is shown after entering identifier and password (Carsten Schmitz)
 -Fixed issue #18314: Save-button under Survey settings does not work (Olle Haerstedt)
