@@ -230,20 +230,25 @@ class SurveyPermissions
     }
 
     /**
+     * Saves (inserts ) the survey permissions for a specific user.
+     *
      * @param $userId int
      * @param $permissions array
-     * @return false
+     * @return bool
      */
     public function saveUserPermissions($userId, $permissions)
     {
-        $isSaved = false;
+        $isSaved = true;
 
         //delete current survey permissions and reset the new ones
         // ...easier as to compare all of them
         $this->deleteUserPermissions($userId);
 
+        //but user has always 'read' permission for this specific survey ...
+        $permissions['survey']['read'] = 1;
+
         foreach ($permissions as $permission => $key) {
-            $isResult = \Permission::model()->insertSomeRecords(
+            $isSaved = $isSaved && \Permission::model()->insertSomeRecords(
                 [
                     'entity_id' => $this->survey->sid,
                     'entity' => 'survey',
@@ -254,7 +259,7 @@ class SurveyPermissions
                     'update_p' => $key['update'] ?? 0,
                     'delete_p' => $key['delete'] ?? 0,
                     'import_p' => $key['import'] ?? 0,
-                    'export_pa' => $key['export'] ?? 0,
+                    'export_p' => $key['export'] ?? 0,
                 ]
             );
         }
@@ -262,17 +267,113 @@ class SurveyPermissions
         return $isSaved;
     }
 
-    public function saveUserGroupPermissions()
+    /**
+     * Saves (inserts) permissions for a user group.
+     *
+     * @param $userGroupId int
+     * @param $permissions array
+     * @return bool
+     * @throws \Exception
+     */
+    public function saveUserGroupPermissions($userGroupId, $permissions)
     {
+        $permissionUserID = \Permission::model()->getUserId();
+        $surveysGroups    = \SurveysGroups::model()->findByPk($this->survey->sid);
+        if ($surveysGroups !== null) {
+            $surveysGroupsOwnerID = $surveysGroups->getOwnerId();
+            $oUserInGroups = \UserInGroup::model()->findAll(
+                'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveygroupsOwnerId',
+                array(
+                    ':ugid' => $userGroupId,
+                    ':currentUserId' => $permissionUserID, // Don't need to set to current user
+                    ':surveygroupsOwnerId' => $surveysGroupsOwnerID, // Don't need to set to owner (?) , get from surveyspermission
+                )
+            );
+        } else {
+            $oUserInGroups = \UserInGroup::model()->findAll(
+                'ugid = :ugid AND uid <> :currentUserId',
+                array (
+                    ':ugid' => $userGroupId,
+                    ':currentUserId' => $permissionUserID
+                )
+            );
+        }
+        $success = true;
+        foreach ($oUserInGroups as $userInGroup) {
+            /* @var $userInGroup \UserInGroup */
+            $success = $success && $this->saveUserPermissions($userInGroup->uid, $permissions);
+        }
+        return $success;
     }
 
+    /** Deletes all permissions for a user for this surveybut only if he
+     * is not superadmin and not survey owner.
+     *
+     * @param $userId
+     * @return bool true if permissions could be deleted, false otherwise
+     */
     public function deleteUserPermissions($userId)
     {
-        // todo: ONLY if user is NOT superadmin and NOT survey owner
-        \Permission::model()->deleteAllByAttributes([
+        // ONLY if user is NOT superadmin and NOT survey owner
+        $deleteOk = ($this->survey->owner_id !== $userId) && !\Permission::model()->hasSurveyPermission(
+            $this->survey->sid,
+            'surveysecurity',
+            'create'
+        );
+        if ($deleteOk) {
+            \Permission::model()->deleteAllByAttributes([
                 'entity_id' => $this->survey->sid,
                 'entity' => 'survey',
                 'uid' => $userId
-        ]);
+            ]);
+        }
+        return $deleteOk;
+    }
+
+
+    public function getUserGroupNames($userid, $usercontrolSameGroupPolicy)
+    {
+        $group_names = [];
+        $authorizedGroupsList = getUserGroupList();
+        $userInGroups = \UserInGroup::model()->with('users')->findAll('users.uid = :uid', array(':uid' => $userid));
+        foreach ($userInGroups as $userGroup) {
+            /* @var $userGroup \UserInGroup */
+            if (!$usercontrolSameGroupPolicy || in_array($userGroup->ugid, $authorizedGroupsList)) {
+                $group_names[] = $userGroup->group->name;
+            }
+        }
+
+        return $group_names;
+    }
+
+    /**
+     * @param $userId    int the user id
+     * @param $sPKey     string permission name (e.g. 'assessments' or 'quotas')
+     * @param $aPDetails array array with basic information about a permission (e.g. permission name, single permissions etc.)
+     * @return array
+     */
+    public function getTooltipAllPermissions($userId, $sPKey, $aPDetails)
+    {
+        $iCount = 0;
+        $iPermissionCount = 0;
+        $sTooltip = "";
+        foreach ($aPDetails as $sPDetailKey => $sPDetailValue) {
+            $userHasPermission = \Permission::model()->hasSurveyPermission($this->survey->sid, $sPKey, $sPDetailKey, $userId);
+            if ($sPDetailValue && $userHasPermission) {
+                $iCount++;
+                $sTooltip .= $sPDetailKey . ", ";
+            }
+            if (in_array($sPDetailKey, \PermissionInterface::SINGLE_PERMISSIONS) && $sPDetailValue) {
+                $iPermissionCount++;
+            }
+        }
+        // Remove last ',' and make first char upper-case
+        $sTooltip = substr($sTooltip, 0, -2);
+        $sTooltip = ucfirst($sTooltip);
+        return [
+            'hasPermissions' => $iCount > 0,
+            'allPermissionsSet' => $iCount == $iPermissionCount,
+            'tooltip' => $sTooltip
+        ];
     }
 }

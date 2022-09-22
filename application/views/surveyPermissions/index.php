@@ -42,7 +42,7 @@
                                     foreach ($userList as $selectableUser) {
                                         echo "<option value='{$selectableUser['userid']}'>"
                                             . \CHtml::encode($selectableUser['usersname']) . " "
-                                            . \CHtml::encode($selectableUser['full_name']) . "</option>\n";
+                                            . \CHtml::encode($selectableUser['fullname']) . "</option>\n";
                                     }
                                 } else {
                                     echo "<option value='-1'>" . gT("None") . "</option>";

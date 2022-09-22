@@ -148,7 +148,7 @@ class SurveyPermissionsController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("No users from group could be added."));
             $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
         } else {
-            Yii::app()->user->setFlash('success', $amountUsersAdded . gT("users from group could be added"));
+            Yii::app()->user->setFlash('success', $amountUsersAdded . ' ' . gT("users from group could be added"));
             $this->redirect(array(
                 'surveyPermissions/settingsPermissions',
                 'surveyid' => $surveyid,
@@ -229,6 +229,7 @@ class SurveyPermissionsController extends LSBaseController
     public function actionSavePermissions($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
+        //todo: or update permission ?!?
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
             Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
@@ -243,18 +244,28 @@ class SurveyPermissionsController extends LSBaseController
         );
         switch ($action) {
             case 'user':
-                $userId = Yii::app()->request->getPost('uid');
+                $userId = sanitize_int(Yii::app()->request->getPost('uid'));
                 $success = $oSurveyPermissions->saveUserPermissions($userId, $setOfPermissions['Survey']);
                 if ($success) {
-                    Yii::app()->user->setFlash('error', gT("Saved permissions for user."));
+                    Yii::app()->user->setFlash('success', gT("Saved permissions for user."));
                 } else {
                     Yii::app()->user->setFlash('error', gT("Error saving permissions for user."));
                 }
                 break;
             case 'usergroup':
-                $userGroupId = Yii::app()->request->getPost('ugid');
+                $userGroupId = sanitize_int(Yii::app()->request->getPost('ugid'));
+                if (shouldFilterUserGroupList() && !in_array($userGroupId, getUserGroupList())) {
+                    throw new CHttpException(403, gT("You do not have permission to this user group."));
+                }
+                $success = $oSurveyPermissions->saveUserGroupPermissions($userGroupId, $setOfPermissions['Survey']);
+                if ($success) {
+                    Yii::app()->user->setFlash('success', gT("Saved permissions for user."));
+                } else {
+                    Yii::app()->user->setFlash('error', gT("Error saving permissions for usergroup."));
+                }
                 break;
             default: //error here unknown action
+                Yii::app()->user->setFlash('error', gT("Unknown action.Error saving permissions for usergroup."));
         }
 
         $this->redirect(array('surveyPermissions/index', 'surveyid' => $surveyid));

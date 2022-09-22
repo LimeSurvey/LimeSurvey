@@ -57,7 +57,12 @@
             <?php }?>
         </td>
         <td><?php echo $content->user->users_name?></td>
-        <td> the uers group</td>
+        <td>
+            <?php
+            $groupsStr = $oSurveyPermissions->getUserGroupNames($content->uid, Yii::app()->getConfig('usercontrolSameGroupPolicy'));
+            echo implode(", ", $groupsStr);
+            ?>
+        </td>
         <td><?php echo $content->user->full_name?></td>
         <?php
         // permission columns
@@ -66,69 +71,25 @@
                 $content->uid,
                 $sPermission,
             );
-            $allPermsSet = true; ?>
+            ?>
         <td class='text-center' >
             <?php
-            $title = '';
-            $allIn = true;
-            if ($userPerm !== null) {
-                if ($aSubPermissions['create']) {
-                    if ($userPerm->create_p == 1) {
-                        $title .= ' create';
-                    } else {
-                        $allIn = false;
-                    }
-                }
-                if ($aSubPermissions['read']) {
-                    if ($userPerm->read_p == 1) {
-                        $title .= ' read';
-                    } else {
-                        $allIn = false;
-                    }
-                }
-                if ($aSubPermissions['update']) {
-                    if ($userPerm->update_p == 1) {
-                        $title .= ' update';
-                    } else {
-                        $allIn = false;
-                    }
-                }
-                if ($aSubPermissions['delete']) {
-                    if ($userPerm->delete_p == 1) {
-                        $title .= ' delete';
-                    } else {
-                        $allIn = false;
-                    }
-                }
-                if ($aSubPermissions['import']) {
-                    if ($userPerm->import_p == 1) {
-                        $title .= ' import';
-                    } else {
-                        $allIn = false;
-                    }
-                }
-                if ($aSubPermissions['export']) {
-                    if ($userPerm->export_p == 1) {
-                        $title .= ' export';
-                    } else {
-                        $allIn = false;
-                    }
-                }
-                if ($allIn) {
+            $result = [];
+            $result = $oSurveyPermissions->getTooltipAllPermissions($content->uid, $sPermission, $aSubPermissions);
+            if ($result['hasPermissions']) {
+                if ($result['allPermissionsSet']) {
                     $appendClass = 'class="fa fa-check ">&nbsp;</div>';
                 } else {
                     $appendClass = 'class="fa fa-check mixed">&nbsp;</div>';
                 }
-                echo "<div data-toggle='tooltip' title='" . $title . "'" . $appendClass;
+                echo "<div data-toggle='tooltip' title='" . $result['tooltip'] . "'" . $appendClass;
             } else {
                 echo '<div>&#8211;</div>';
             }
             ?>
 
          </td>
-        <?php }
-        // create the title 'create, read ...'
-        ?>
+        <?php } ?>
     </tr>
     <?php    }
     // ?>
