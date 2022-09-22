@@ -31,7 +31,7 @@ return array(
         'position' => CClientScript::POS_HEAD,
         'js' => array(
             'jquery' . $minVersion . '.js'
-        )
+        ),
     ),
 
     // Bootstrap
@@ -203,7 +203,6 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'jquery-migrate'
         )
     ),
 
@@ -217,17 +216,6 @@ return array(
         ),
         'depends' => array(
             'jquery',
-        )
-    ),
-
-    // jquery bindWithDelay
-    'jquery-bindWithDelay' => array(
-        'basePath' => 'vendor.jquery-bindWithDelay',
-        'js' => array(
-            'bindWithDelay.js'
-        ),
-        'depends' => array(
-            'jquery'
         )
     ),
 
@@ -264,6 +252,7 @@ return array(
 
     // jQuery NestedSortable
     'jquery-nestedSortable' => array(
+        'devBaseUrl' => 'node_modules/nestedSortable',
         'basePath' => 'node_modules.nestedSortable',
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
@@ -285,16 +274,7 @@ return array(
         )
     ),
 
-    // jQuery selectboxes
-    'jquery-selectboxes' => array(
-        'basePath' => 'vendor.jquery-selectboxes.selectboxes',
-        'js' => array(
-            'jquery.selectboxes.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
+
 
     // jQuery touch punch : seems uneended now ?
     'jquery-touch-punch' => array(
@@ -312,7 +292,7 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'basePath' => 'node_modules_decimal',
         'js' => array(
-            'decimal' . $minVersion . '.js'
+            'decimal.js'
         ),
         'depends' => array(
         )
@@ -399,7 +379,7 @@ return array(
             'jquery.fn.sortable' . $minVersion . '.js'
             )
         ),
-    /* Used for samechoiceheight/samelistheight */    
+    /* Used for samechoiceheight/samelistheight */
     'jquery-actual' => array(
         'position' => CClientScript::POS_BEGIN,
         'devBaseUrl' => 'node_modules/jquery.actual',

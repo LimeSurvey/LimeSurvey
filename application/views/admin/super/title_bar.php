@@ -25,11 +25,11 @@ if (!isset($oQuestionGroup)) {
     $oQuestionGroup = isset($gid) ? @QuestionGroup::model()->find('gid=:gid',['gid'=> $gid]) : null;
 }
 
-$subaction = isset($subaction) ? $subaction : null;
-$simpleSubaction = isset($title_bar['subaction']) ? $title_bar['subaction'] : null;
-$module_subaction = isset($title_bar['module_subaction']) ? $title_bar['module_subaction'] : null;
-$module_subaction_url  = isset($title_bar['module_subaction_url']) ? $title_bar['module_subaction_url'] : null;
-$module_current_action  = isset($title_bar['module_current_action']) ? $title_bar['module_current_action'] : null;
+$subaction = $subaction ?? null;
+$simpleSubaction = $title_bar['subaction'] ?? null;
+$module_subaction = $title_bar['module_subaction'] ?? null;
+$module_subaction_url  = $title_bar['module_subaction_url'] ?? null;
+$module_current_action  = $title_bar['module_current_action'] ?? null;
 $breadCrumbArray = array(
     'oSurvey' => $oSurvey,
     'oQuestion' => $oQuestion,
@@ -39,7 +39,7 @@ $breadCrumbArray = array(
     'module_subaction' => $module_subaction,
     'module_subaction_url' => $module_subaction_url,
     'module_current_action' => $module_current_action,
-    'title' => (isset($title_bar['title']) ? $title_bar['title'] : ' ')
+    'title' => ($title_bar['title'] ?? ' ')
 
     //'active' => ($oQuestion != null ? $oQuestion->title : ( $oQuestionGroup != null ? $oQuestionGroup->group_name : $oSurvey->defaultlanguage->surveyls_title ) )
 );

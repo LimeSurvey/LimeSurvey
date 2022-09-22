@@ -114,6 +114,7 @@ class User extends LSActiveRecord
             array('templateeditormode', 'default', 'value' => 'default'),
             array('templateeditormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('dateformat', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+            array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
 
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
@@ -141,6 +142,7 @@ class User extends LSActiveRecord
             'created' => gT('Created at'),
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
+            'expires' => gT("Expiry date/time:"),
         ];
     }
 
@@ -835,6 +837,25 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Returns true if the user has expired.
+     *
+     * @return boolean
+     */
+    public function isExpired()
+    {
+        $expired = false;
+        if (!empty($this->expires)) {
+            // Time adjust
+            $now = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $expirationTime = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)));
+
+            // Time comparison
+            $expired = new DateTime($expirationTime) < new DateTime($now);
+        }
+        return $expired;
+    }
+
+    /**
      * Get the decription to be used in list
      * @return $string
      */
@@ -883,5 +904,19 @@ class User extends LSActiveRecord
             '_deleteGroupUserButton',
             ['userGroupId' => $userGroupId, 'userGroup' => $userGroup, 'currentUserId' => $currentUserId]
         );
+    }
+    
+    /**
+     * Returns true if logged in user with id $loginId can edit this user
+     *
+     * @param int $loginId
+     * @return bool
+     */
+    public function canEdit($loginId)
+    {
+        return
+            Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || $this->uid == $loginId
+            || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
     }
 }
