@@ -67,10 +67,7 @@
         <?php
         // permission columns
         foreach ($basePermissions as $sPermission => $aSubPermissions) {
-            $userPerm = $oSurveyPermissions->getUsersSurveyPermissionEntity(
-                $content->uid,
-                $sPermission,
-            );
+            $userPerm = $oSurveyPermissions->getUsersSurveyPermissionEntity($content->uid, $sPermission);
             ?>
         <td class='text-center' >
             <?php
