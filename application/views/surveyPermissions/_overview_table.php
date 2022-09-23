@@ -82,7 +82,9 @@
                 } else {
                     $appendClass = 'class="fa fa-check mixed">&nbsp;</div>';
                 }
-                echo "<div data-toggle='tooltip' title='" . $result['tooltip'] . "'" . $appendClass;
+                $titleOutput = implode(',', $result['permissionCrudArray']);
+                $titleOutput = ucfirst($titleOutput);
+                echo "<div data-toggle='tooltip' title='" . $titleOutput . "'" . $appendClass;
             } else {
                 echo '<div>&#8211;</div>';
             }

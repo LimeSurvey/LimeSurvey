@@ -36,15 +36,15 @@ class SurveyPermissions
      */
     public function getUsersSurveyPermissions()
     {
-        //$authorizedGroupsList = getUserGroupList(); // Limit the group list for the samegrouppolicy
         $userPermissionCriteria = $this->getUserPermissionCriteria();
-        $data = \Permission::model()->findAll($userPermissionCriteria);
-        return $data;
+        return \Permission::model()->findAll($userPermissionCriteria);
     }
 
     /**
-     * @param integer $iEntityID
-     * @param string $sEntityName
+     * Returns a CDbCriteria object which selects columns from table
+     * permissions and users taking care of samegrouppolicy and not logged in
+     * user for this survey.
+     *
      * @return \CDbCriteria
      */
     public function getUserPermissionCriteria()
@@ -68,7 +68,13 @@ class SurveyPermissions
         return $criteria;
     }
 
-
+    /**
+     * Get the permissions (crud + import,export) for a survey permission like 'assessements'
+     *
+     * @param $userid int the userid
+     * @param $permission string the survey permission (e.g. 'assessments', 'responses')
+     * @return \Permission|null
+     */
     public function getUsersSurveyPermissionEntity($userid, $permission)
     {
         $criteria = new \CDbCriteria();
@@ -122,7 +128,7 @@ class SurveyPermissions
      * This includes that the users get the
      * permission 'read' for this survey.
      *
-     * @param $userGroupId
+     * @param $userGroupId int the user group id
      * @return int amount of users from the given group added
      */
     public function addUserGroupToSurveyPermissions($userGroupId)
@@ -315,16 +321,20 @@ class SurveyPermissions
      */
     public function deleteUserPermissions($userId)
     {
-            $cntDeletedRows =\Permission::model()->deleteAllByAttributes([
-                'entity_id' => $this->survey->sid,
-                'entity' => 'survey',
-                'uid' => $userId
-            ]);
-
-        return $cntDeletedRows;
+        return \Permission::model()->deleteAllByAttributes([
+            'entity_id' => $this->survey->sid,
+            'entity' => 'survey',
+            'uid' => $userId
+        ]);
     }
 
-
+    /**
+     * Returns an array of user group names including 'usercontrolSameGroupPolicy' if set.
+     *
+     * @param $userid
+     * @param $usercontrolSameGroupPolicy
+     * @return array names of user groups
+     */
     public function getUserGroupNames($userid, $usercontrolSameGroupPolicy)
     {
         $group_names = [];
@@ -341,33 +351,36 @@ class SurveyPermissions
     }
 
     /**
+     * Checks which permission entities (CRUD + import,export) a user has for the specific
+     * permission (e.g. permissionName='assessment'). Returns an array with infos.
+     *
      * @param $userId    int the user id
-     * @param $sPKey     string permission name (e.g. 'assessments' or 'quotas')
-     * @param $aPDetails array array with basic information about a permission (e.g. permission name, single permissions etc.)
-     * @return array
+     * @param $permissioName     string permission name (e.g. 'assessments' or 'quotas')
+     * @param $basicPermissionDetails array array with basic information about a permission
+     *                         (e.g. permission name, single permissions(CRUD) etc.)
+     * @return array  structure is ['hasPermissions'] --> if user has at least one permission entity
+     *                             ['allPermissions'] --> does the user has ALL possible permission entities
+     *                             ['permissionCrudArray'] --> array with permission entities the user has
      */
-    public function getTooltipAllPermissions($userId, $sPKey, $aPDetails)
+    public function getTooltipAllPermissions($userId, $permissioName, $basicPermissionDetails)
     {
         $iCount = 0;
         $iPermissionCount = 0;
-        $sTooltip = "";
-        foreach ($aPDetails as $sPDetailKey => $sPDetailValue) {
-            $userHasPermission = \Permission::model()->hasSurveyPermission($this->survey->sid, $sPKey, $sPDetailKey, $userId);
+        $permissionCrudArray = [];
+        foreach ($basicPermissionDetails as $sPDetailKey => $sPDetailValue) {
+            $userHasPermission = \Permission::model()->hasSurveyPermission($this->survey->sid, $permissioName, $sPDetailKey, $userId);
             if ($sPDetailValue && $userHasPermission) {
                 $iCount++;
-                $sTooltip .= $sPDetailKey . ", ";
+                $permissionCrudArray[] = $sPDetailKey;
             }
             if (in_array($sPDetailKey, \PermissionInterface::SINGLE_PERMISSIONS) && $sPDetailValue) {
                 $iPermissionCount++;
             }
         }
-        // Remove last ',' and make first char upper-case
-        $sTooltip = substr($sTooltip, 0, -2);
-        $sTooltip = ucfirst($sTooltip);
         return [
             'hasPermissions' => $iCount > 0,
             'allPermissionsSet' => $iCount == $iPermissionCount,
-            'tooltip' => $sTooltip
+            'permissionCrudArray' => $permissionCrudArray
         ];
     }
 }
