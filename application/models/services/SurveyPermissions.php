@@ -308,28 +308,20 @@ class SurveyPermissions
         return $success;
     }
 
-    /** Deletes all permissions for a user for this surveybut only if he
-     * is not superadmin and not survey owner.
+    /** Deletes all permissions for a user for this survey.
      *
      * @param $userId
-     * @return bool true if permissions could be deleted, false otherwise
+     * @return int number of deleted permissions, 0 means nothing has been deleted
      */
     public function deleteUserPermissions($userId)
     {
-        // ONLY if user is NOT superadmin and NOT survey owner
-        $deleteOk = ($this->survey->owner_id !== $userId) && !\Permission::model()->hasSurveyPermission(
-            $this->survey->sid,
-            'surveysecurity',
-            'create'
-        );
-        if ($deleteOk) {
-            \Permission::model()->deleteAllByAttributes([
+            $cntDeletedRows =\Permission::model()->deleteAllByAttributes([
                 'entity_id' => $this->survey->sid,
                 'entity' => 'survey',
                 'uid' => $userId
             ]);
-        }
-        return $deleteOk;
+
+        return $cntDeletedRows;
     }
 
 
