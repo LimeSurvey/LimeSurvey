@@ -655,7 +655,13 @@ function getGroupListLang($gid, $language, $surveyid)
     return $groupselecter;
 }
 
-
+/**
+ * Returns a user list. If 'usercontrolSameGroupPolicy' is set and set to true, only users which are in the same
+ * group as me (--> logged in user) will be returned. Superadmin always gets the full list of users.
+ *
+ * @param $outputformat string could be 'onlyuidarray' which only returns array with userids, default is 'fullinfoarray'
+ * @return array returns a list of user ids (param='onlyuidarray') or a list with full user details (e.g. uid, name, full_name etc.)
+ */
 function getUserList($outputformat = 'fullinfoarray')
 {
     if (!empty(Yii::app()->session['loginID'])) {
@@ -706,9 +712,23 @@ function getUserList($outputformat = 'fullinfoarray')
     foreach ($uresult as $srow) {
         if ($outputformat != 'onlyuidarray') {
             if ($srow['uid'] != Yii::app()->session['loginID']) {
-                $userlist[] = array("user" => $srow['users_name'], "uid" => $srow['uid'], "email" => $srow['email'], "password" => $srow['password'], "full_name" => $srow['full_name'], "parent_id" => $srow['parent_id']);
+                $userlist[] = array(
+                    "user" => $srow['users_name'],
+                    "uid" => $srow['uid'],
+                    "email" => $srow['email'],
+                    "password" => $srow['password'],
+                    "full_name" => $srow['full_name'],
+                    "parent_id" => $srow['parent_id']
+                );
             } else {
-                $userlist[0] = array("user" => $srow['users_name'], "uid" => $srow['uid'], "email" => $srow['email'], "password" => $srow['password'], "full_name" => $srow['full_name'], "parent_id" => $srow['parent_id']);
+                $userlist[0] = array(
+                    "user" => $srow['users_name'],
+                    "uid" => $srow['uid'],
+                    "email" => $srow['email'],
+                    "password" => $srow['password'],
+                    "full_name" => $srow['full_name'],
+                    "parent_id" => $srow['parent_id']
+                );
             }
         } else {
             if ($srow['uid'] != Yii::app()->session['loginID']) {

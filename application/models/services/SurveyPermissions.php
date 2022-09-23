@@ -176,6 +176,8 @@ class SurveyPermissions
         $authorizedUsersList = [];
         $userList = [];
 
+        //take out superadmin (makes no sense to add superadmin, because he always has the permissions for all surveys)
+
         if ($this->userControlSameGroupPolicy) {
             $authorizedUsersList = getUserList('onlyuidarray');
         }
