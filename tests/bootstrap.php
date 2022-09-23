@@ -22,7 +22,7 @@ if (!file_exists(__DIR__ . '/../enabletests')) {
  * as this file.
  *
  */
-$system_path = "third_party/yiisoft/yii/framework";
+$system_path = "vendor/yiisoft/yii/framework";
 
 /*
  *---------------------------------------------------------------
@@ -168,7 +168,7 @@ if (isset($aSettings['config']['debug'])) {
         error_reporting(0);
     }
 } else {
-    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user don't remove his 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
+    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user doesn't remove their 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
 }
 
 if (version_compare(PHP_VERSION, '5.3.3', '<')) {
@@ -177,7 +177,7 @@ if (version_compare(PHP_VERSION, '5.3.3', '<')) {
 }
 
 
-require_once __DIR__ . '/../third_party/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 /*
  * --------------------------------------------------------------------

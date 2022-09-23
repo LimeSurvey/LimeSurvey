@@ -78,8 +78,8 @@ class FailedEmailController extends LSBaseController
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['failedEmail/index/', 'surveyid' => $surveyId]);
         }
-        $preserveResend = App()->request->getParam('preserveResend');
-        $preserveResend = !is_null($preserveResend);
+        $deleteAfterResend = App()->request->getParam('deleteAfterResend');
+        $preserveResend = is_null($deleteAfterResend);
         $item = [App()->request->getParam('item')];
         $items = json_decode(App()->request->getParam('sItems'));
         $selectedItems = $items ?? $item;
@@ -97,9 +97,10 @@ class FailedEmailController extends LSBaseController
                         'responseId' => $failedEmail->responseid,
                         'recipient' => $failedEmail->recipient,
                         'language' => $failedEmail->language,
+                        'resendVars' => $failedEmail->resend_vars,
                     ];
                 }
-                $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
+                $result = sendSubmitNotifications($surveyId, $emailsByType, true);
                 if (!$preserveResend) {
                     // only delete FailedEmail entries that have succeeded
                     $criteria->addCondition('status = :status');

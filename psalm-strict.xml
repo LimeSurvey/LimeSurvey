@@ -10,8 +10,9 @@
     <projectFiles>
         <file name="application/models/FailedEmail.php" />
         <file name="application/controllers/FailedEmailController.php" />
+        <directory name="application/libraries/FormExtension" />
         <ignoreFiles>
-            <directory name="third_party" />
+            <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
 </psalm>

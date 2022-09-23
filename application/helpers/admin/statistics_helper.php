@@ -311,6 +311,7 @@ function buildSelects($allfields, $surveyid, $language)
     $selects = array();
     $aQuestionMap = array();
     $survey = Survey::model()->findByPk($surveyid);
+    $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
 
     $fieldmap = createFieldMap($survey, "full", false, false, $language);
     foreach ($fieldmap as $field) {
@@ -457,18 +458,22 @@ function buildSelects($allfields, $surveyid, $language)
 
                 //D - Date
             elseif ($firstletter == "D" && $_POST[$pv] != "") {
+                $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
                 //Date equals
                 if (substr($pv, -2) == "eq") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3)) . " = " . App()->db->quoteValue($_POST[$pv]);
+                    $dateValue = $datetimeobj->convert("Y-m-d");
+                    $columnName = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3));
+                    $selects[] = $columnName . " >= " . Yii::app()->db->quoteValue($dateValue . " 00:00:00") . " and " . $columnName . " <= " . Yii::app()->db->quoteValue($dateValue . " 23:59:59");
                 } else {
+                    $dateValue = $datetimeobj->convert("Y-m-d H:i");
                     //date less than
                     if (substr($pv, -4) == "more") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($_POST[$pv]);
+                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." >= ".App()->db->quoteValue($dateValue);
                     }
 
                     //date greater than
                     if (substr($pv, -4) == "less") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($_POST[$pv]);
+                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." <= ".App()->db->quoteValue($dateValue);
                     }
                 }
             }
@@ -476,7 +481,6 @@ function buildSelects($allfields, $surveyid, $language)
                 //check for datestamp of given answer
             elseif (substr($pv, 0, 9) == "datestamp") {
                 //timestamp equals
-                $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
                 if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
                     $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
                     $sDateValue = $datetimeobj->convert("Y-m-d");
@@ -1773,9 +1777,9 @@ class statistics_helper
         //we need to know which item we are editing
         $itemcounter = 1;
 
-        $aData['outputs'] = (isset($outputs)) ? $outputs : '';
-        $aData['bSum'] = (isset($bSum)) ? $bSum : '';
-        $aData['bAnswer'] = (isset($bAnswer)) ? $bAnswer : '';
+        $aData['outputs'] = $outputs ?? '';
+        $aData['bSum'] = $bSum ?? '';
+        $aData['bAnswer'] = $bAnswer ?? '';
         $aData['usegraph'] = $usegraph;
 
         $statisticsoutput = Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_header', $aData, true);
@@ -1894,13 +1898,13 @@ class statistics_helper
             $aData['label'] = $label;
             $aData['grawdata'] = $grawdata;
             $aData['gdata'] = $gdata;
-            $aData['extraline'] = (isset($extraline)) ? $extraline : false;
-            $aData['aggregated'] = (isset($aggregated)) ? $aggregated : false;
-            $aData['aggregatedPercentage'] = (isset($aggregatedPercentage)) ? $aggregatedPercentage : false;
-            $aData['sumitems'] = (isset($sumitems)) ? $sumitems : false;
-            $aData['sumpercentage'] = (isset($sumpercentage)) ? $sumpercentage : false;
-            $aData['TotalCompleted'] = (isset($TotalCompleted)) ? $TotalCompleted : false;
-            $aData['casepercentage'] = (isset($casepercentage)) ? $casepercentage : false;
+            $aData['extraline'] = $extraline ?? false;
+            $aData['aggregated'] = $aggregated ?? false;
+            $aData['aggregatedPercentage'] = $aggregatedPercentage ?? false;
+            $aData['sumitems'] = $sumitems ?? false;
+            $aData['sumpercentage'] = $sumpercentage ?? false;
+            $aData['TotalCompleted'] = $TotalCompleted ?? false;
+            $aData['casepercentage'] = $casepercentage ?? false;
 
             // Generate answer
             // _statisticsoutput_answer
@@ -2153,9 +2157,9 @@ class statistics_helper
 
         if ($usegraph == 1 && $outputType != 'html') {
             //for creating graphs we need some more scripts which are included here
-            require_once(APPPATH . '/third_party/pchart/pChart.class.php');
-            require_once(APPPATH . '/third_party/pchart/pData.class.php');
-            require_once(APPPATH . '/third_party/pchart/pCache.class.php');
+            require_once(APPPATH . '/../vendor/pchart/pChart.class.php');
+            require_once(APPPATH . '/../vendor/pchart/pData.class.php');
+            require_once(APPPATH . '/../vendor/pchart/pCache.class.php');
             $MyCache = new pCache($tempdir . '/');
         }
 
@@ -2762,11 +2766,11 @@ class statistics_helper
         $aData['nbcols']          = $nbcols;
         $aData['canvaWidth']      = $canvaWidth;
         $aData['canvaHeight']     = $canvaHeight;
-        $aData['outputs']         = (isset($outputs)) ? $outputs : '';
-        $aData['bSum']            = (isset($bSum)) ? $bSum : false;
-        $aData['bAnswer']         = (isset($bAnswer)) ? $bAnswer : false;
-        $aData['bShowCount']      = (isset($bShowCount)) ? $bShowCount : false;
-        $aData['bShowPercentage'] = (isset($bShowPercentage)) ? $bShowPercentage : false;
+        $aData['outputs']         = $outputs ?? '';
+        $aData['bSum']            = $bSum ?? false;
+        $aData['bAnswer']         = $bAnswer ?? false;
+        $aData['bShowCount']      = $bShowCount ?? false;
+        $aData['bShowPercentage'] = $bShowPercentage ?? false;
         $statisticsoutput         = Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_header', $aData, true);
         //loop through all available answers
         ////
@@ -3023,19 +3027,19 @@ class statistics_helper
             $aData['grawdata_percent']     = $grawdata_percents;
             $aData['gdata']                = $gdata;
 
-            $aData['extraline']            = (isset($extraline)) ? $extraline : false;
-            $aData['aggregated']           = (isset($aggregated)) ? $aggregated : false;
+            $aData['extraline']            = $extraline ?? false;
+            $aData['aggregated']           = $aggregated ?? false;
             $aData['aggregatedPercentage'] = (isset($aggregatedPercentage)) ? ($i < 6 ? $aggregatedPercentage : false) : false;
-            $aData['sumitems']             = (isset($sumitems)) ? $sumitems : false;
-            $aData['sumpercentage']        = (isset($sumpercentage)) ? $sumpercentage : false;
-            $aData['TotalCompleted']       = (isset($TotalCompleted)) ? $TotalCompleted : false;
-            $aData['casepercentage']       = (isset($casepercentage)) ? $casepercentage : false;
+            $aData['sumitems']             = $sumitems ?? false;
+            $aData['sumpercentage']        = $sumpercentage ?? false;
+            $aData['TotalCompleted']       = $TotalCompleted ?? false;
+            $aData['casepercentage']       = $casepercentage ?? false;
 
-            $aData['bNAgData']                      = (isset($bNAgData)) ? $bNAgData : false;
-            $aData['bNAgDataExtraLine']             = (isset($bNAgDataExtraLine)) ? $bNAgDataExtraLine : false;
-            $aData['showAggregatedPercentage']      = (isset($showAggregatedPercentage)) ? $showAggregatedPercentage : false;
-            $aData['showEmptyAggregatedPercentage'] = (isset($showEmptyAggregatedPercentage)) ? $showEmptyAggregatedPercentage : false;
-            $aData['bShowSumAnswer']                = (isset($bShowSumAnswer)) ? $bShowSumAnswer : false;
+            $aData['bNAgData']                      = $bNAgData ?? false;
+            $aData['bNAgDataExtraLine']             = $bNAgDataExtraLine ?? false;
+            $aData['showAggregatedPercentage']      = $showAggregatedPercentage ?? false;
+            $aData['showEmptyAggregatedPercentage'] = $showEmptyAggregatedPercentage ?? false;
+            $aData['bShowSumAnswer']                = $bShowSumAnswer ?? false;
 
             // Generate answer
             // _statisticsoutput_answer
@@ -3413,7 +3417,7 @@ class statistics_helper
                 $aData['graph_labels_percent'] = $labels_percent;
                 $aData['labels'] = $labels;
                 //$aData['COLORS_FOR_SURVEY'] = COLORS_FOR_SURVEY;
-                $aData['charttype'] = (isset($charttype)) ? $charttype : 'Bar';
+                $aData['charttype'] = $charttype ?? 'Bar';
                 $aData['sChartname'] = '';
                 $aData['grawdata'] = $grawdata;
                 $aData['color'] = 0;
@@ -3692,7 +3696,7 @@ class statistics_helper
 
         $aData['results'] = $results;
         $aData['total'] = $total;
-        $aData['percent'] = (isset($percent)) ? $percent : ''; // If nobody passed the survey
+        $aData['percent'] = $percent ?? ''; // If nobody passed the survey
         $aData['browse'] = $bBrowse;
         $aData['surveyid'] = $surveyid;
         $aData['sql'] = $sql;

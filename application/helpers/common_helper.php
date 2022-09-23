@@ -106,7 +106,7 @@ function getSurveyList($bReturnArray = false)
     static $cached = null;
     $bCheckIntegrity = false;
     $timeadjust = getGlobalSetting('timeadjust');
-    App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
+    App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
     if (is_null($cached)) {
@@ -702,7 +702,7 @@ function getUserList($outputformat = 'fullinfoarray')
     $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
 
     if (count($uresult) == 0 && !empty($myuid)) {
-//user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
+//user is not in a group and usercontrolSameGroupPolicy is activated - at least show their own userinfo
         $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=" . $myuid;
         $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
     }
@@ -2867,12 +2867,11 @@ function getParticipantAttributes($iSurveyID)
 */
 function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 {
-
-
-    $aBasicTokenFields = array('firstname' => array(
-        'description' => gT('First name'),
-        'mandatory' => 'N',
-        'showregister' => 'Y'
+    $aBasicTokenFields = array(
+        'firstname' => array(
+            'description' => gT('First name'),
+            'mandatory' => 'N',
+            'showregister' => 'Y'
         ),
         'lastname' => array(
             'description' => gT('Last name'),
@@ -2892,32 +2891,37 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
         'token' => array(
             'description' => gT('Access code'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'language' => array(
             'description' => gT('Language code'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'sent' => array(
             'description' => gT('Invitation sent date'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'remindersent' => array(
             'description' => gT('Last reminder sent date'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'remindercount' => array(
             'description' => gT('Total numbers of sent reminders'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'usesleft' => array(
             'description' => gT('Uses left'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
+        ),
+        'completed' => array(
+            'description' => gT('Completed'),
+            'mandatory' => 'N',
+            'showregister' => 'N'
         ),
     );
 
@@ -3327,13 +3331,13 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
 */
 function includeKeypad()
 {
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.plugin.min.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir') . '/third_party/jquery-keypad/jquery.keypad-' . App()->language . '.js';
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js');
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js');
+    $localefile = Yii::app()->getConfig('rootdir') . '/vendor/jquery-keypad/jquery.keypad-' . App()->language . '.js';
     if (App()->language != 'en' && file_exists($localefile)) {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
     }
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
+    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
 }
 
 
@@ -4757,7 +4761,7 @@ function getSerialClass($sSerial)
     $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
 
     $aParts = explode(':', $sSerial, 4);
-    return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : (isset($aParts[2]) ? trim($aParts[2], '"') : null);
+    return $aTypes[$aParts[0]] ?? (isset($aParts[2]) ? trim($aParts[2], '"') : null);
 }
 
 /**

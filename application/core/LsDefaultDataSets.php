@@ -105,9 +105,9 @@ class LsDefaultDataSets
                 null,
                 4,
                 'datasecurity',
-                gT('Data policy settings', 'unescaped'),
-                gT('Data policy settings', 'unescaped'),
-                gT('Edit data policy settings', 'unescaped'),
+                gT('Privacy policy settings', 'unescaped'),
+                gT('Privacy policy', 'unescaped'),
+                gT('Edit privacy policy settings', 'unescaped'),
                 'shield',
                 'fontawesome',
                 '',
@@ -2935,7 +2935,7 @@ class LsDefaultDataSets
         $template .= "<p>" . sprintf(gT("This is an automated email notification that a user has been created for you on the website %s."), "<strong>'{SITENAME}'</strong>") . "</p>";
         $template .= "<p></p><p>" . gT("You can use now the following credentials to log in:") . "</p>";
         $template .= "<p><strong>" . gT("Username") . "</strong>: {USERNAME}</p>";
-        //don't send password anymore, just send a link for the new admin to generate his own password
+        //don't send password anymore, just send a link for the new admin to generate their own password
         //$template .= "<p><strong>" . gt("Password") . "</strong>: {PASSWORD}</p>";
         $template .= '<p><a href="{LOGINURL}">' . gT("Click here to set your password") . '</a></p>';
         $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";

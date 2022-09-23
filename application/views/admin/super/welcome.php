@@ -56,7 +56,7 @@ echo viewHelper::getViewTestTag('index');
                             <div class="row" id="selector__welcome-modal--simplesteps">
                                 <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
                                 <ol>
-                                    <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'),
+                                    <li><?php echo sprintf(gT('Create a new survey by clicking on the %s icon.'),
                                                 "<i class='icon-add text-success'></i>"); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
