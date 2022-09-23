@@ -154,7 +154,8 @@ $internalConfig = array(
             ),
             'csrfCookie' => array(
                 'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)),
-                'httpOnly' => true
+                'httpOnly' => true,
+                'sameSite' => 'Strict',
             ),
         ),
         'user' => array(
@@ -198,7 +199,8 @@ $internalConfig = array(
         'session' => array(
             'cookieParams' => array(
                 'httponly' => true,
-                'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443))
+                'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)),
+                'samesite' => 'Strict',
             ),
         ),
         'sourceLanguage' => 'en',
