@@ -170,9 +170,6 @@
             $surveyID = 'uniq';
         }
 
-
-        $htmlcode = '';
-
         if ($fieldtype == 'editanswer' ||
         $fieldtype == 'addanswer' ||
         $fieldtype == 'editlabel' ||
@@ -181,28 +178,31 @@
         } else {
             $class = "editorLink input-group-addon";
         }
-        $params = array(
+        /* @var string[] parameters of the editor url */ 
+        $editorurlparams = array(
             'name' => $fieldname,
             'text' => javascriptEscape($fieldtext), // usage for title of the new window
             'type' => $fieldtype, // email_XX_lang, question_lang …
         );
         if(!empty($action)) {
-            $params['action'] = javascriptEscape($action);
+            $editorurlparams['action'] = javascriptEscape($action);
         }
         if(!empty($surveyID)) {
-            $params['sid'] = $surveyID;
+            $editorurlparams['sid'] = $surveyID;
         }
         if(!empty($gID)) {
-            $params['gid'] = $gID;
+            $editorurlparams['gid'] = $gID;
         }
         if(!empty($qID)) {
-            $params['qid'] = $qID;
+            $editorurlparams['qid'] = $qID;
         }
-        $params['lang'] = App()->language;
-        $url = App()->getController()->createUrl(
+        $editorurlparams['lang'] = App()->language;
+        /* @var string the editor url */ 
+        $editorurl = App()->getController()->createUrl(
             'admin/htmleditor_pop/sa/index',
-            $params
+            $editorurlparams
         );
+        /* @var string content of the action link */ 
         $content = CHtml::tag('i',array(
             'class' => "fa fa-pencil btneditanswerena",
             'id' => $fieldname . "_popupctrlena",
@@ -215,9 +215,10 @@
             'id' => $fieldname . "_popupctrldis",
             'style' => "display:none",
         ),'');
+        /* @var final code to return */ 
         $htmlcode = CHtml::link(
              $content,
-            "javascript:start_popup_editor('{$fieldname}','" . $url . "');",
+            "javascript:start_popup_editor('{$fieldname}','" . $editorurl . "');",
             array(
                 'id' => $fieldname."_ctrl",
                 'class' => "{$class} btn btn-default btn-xs",

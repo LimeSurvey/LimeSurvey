@@ -49,7 +49,7 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
         return null;
     }
 
-    function start_popup_editor(fieldname, url)
+    function start_popup_editor(fieldname, editorurl)
     {
         controlidena = fieldname + '_popupctrlena';
         controliddis = fieldname + '_popupctrldis';
@@ -61,7 +61,7 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
             document.getElementsByName(fieldname)[0].readOnly=true;
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
-            popup = window.open(url,'', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
+            popup = window.open(editorurl,'', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
 
             editorwindowsHash[fieldname] = popup;
         }
