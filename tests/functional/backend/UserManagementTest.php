@@ -12,9 +12,9 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
  */
 class UserManagementTest extends TestBaseClassWeb
 {
-    public static function setupBeforeClass(): void
+    protected function setUp(): void
     {
-        parent::setupBeforeClass();
+        parent::setUp();
         $username = getenv('ADMINUSERNAME');
         if (!$username) {
             $username = 'admin';
@@ -30,6 +30,12 @@ class UserManagementTest extends TestBaseClassWeb
 
         // Browser login.
         self::adminLogin($username, $password);
+    }
+
+    protected function tearDown(): void
+    {
+        self::adminLogout();
+        parent::tearDown();
     }
 
     /**
@@ -64,31 +70,12 @@ class UserManagementTest extends TestBaseClassWeb
             $addUserButton->click();
 
             // Wait for "Add user" modal
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::xpath("//*[text()[contains(.,'Add user')]][contains(@class, 'modal-title')]")
-                )
-            );
+            $this->waitForModal('Add user');
 
-            // Fill in the username.
-            $usernameInput = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id("User_Form_users_name")
-                )
-            );
-            $usernameInput->clear()->sendKeys($username);
-
-            // Fill in the full name.
-            $fullnameInput = self::$webDriver->findElement(
-                WebDriverBy::id("User_Form_full_name")
-            );
-            $fullnameInput->clear()->sendKeys($fullname);
-
-            // Fill in the email.
-            $emailInput = self::$webDriver->findElement(
-                WebDriverBy::id("User_Form_email")
-            );
-            $emailInput->clear()->sendKeys($email);
+            // Fill in basic data.
+            $this->fillInputById("User_Form_users_name", $username);
+            $this->fillInputById("User_Form_full_name", $fullname);
+            $this->fillInputById("User_Form_email", $email);
 
             // Enable "Set password now" to avoid mailing errors
             $setPasswordSwitch = self::$webDriver->findElement(
@@ -103,29 +90,20 @@ class UserManagementTest extends TestBaseClassWeb
                 )
             );
             $suggestedPassword = $suggestedPasswordInput->getAttribute('value');
+            // TODO: Remove this when suggestions are fixed
+            // Sometimes the suggestion doesn't have numbers, which makes the test fail
+            $suggestedPassword = $suggestedPassword . "1";
 
-            // Fill in the password.
-            $passwordInput = self::$webDriver->findElement(
-                WebDriverBy::id("User_Form_password")
-            );
-            $passwordInput->clear()->sendKeys($suggestedPassword);
-
-            // Fill in the password confirmation.
-            $passwordConfirmationInput = self::$webDriver->findElement(
-                WebDriverBy::id("password_repeat")
-            );
-            $passwordConfirmationInput->clear()->sendKeys($suggestedPassword);
+            // Fill in the password and confirmation.
+            $this->fillInputById("User_Form_password", $suggestedPassword);
+            $this->fillInputById("password_repeat", $suggestedPassword);
 
             // Click "Add".
             $save = self::$webDriver->findElement(WebDriverBy::id('submitForm'));
             $save->click();
 
             // Wait for "Edit Permissions" modal
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::xpath("//*[text()[contains(.,'Edit permissions')]][contains(@class, 'modal-title')]")
-                )
-            );
+            $this->waitForModal('Edit permissions');
 
             // Click "Save".
             $save = self::$webDriver->wait(10)->until(
@@ -136,11 +114,7 @@ class UserManagementTest extends TestBaseClassWeb
             $save->click();
 
             // Wait for "Saved successfully" modal
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::xpath("//*[text()[contains(.,'Saved successfully')]][contains(@class, 'modal-header')]")
-                )
-            );
+            $this->waitForModal('Saved successfully');
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
@@ -151,6 +125,17 @@ class UserManagementTest extends TestBaseClassWeb
             // Check basic attributes
             $this->assertEquals($fullname, $user->full_name);
             $this->assertEquals($email, $user->email);
+
+            // Test login
+            self::adminLogout();
+            self::adminLogin($username, $suggestedPassword);
+
+            // Check that the user menu is present
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::xpath("//a[text()[contains(.,'{$username}')]]")
+                )
+            );
         } catch (\Throwable $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -158,5 +143,283 @@ class UserManagementTest extends TestBaseClassWeb
                 self::$testHelper->javaTrace($ex)
             );
         }
+    }
+
+    /**
+     * Create a user with expiration date in the future
+     */
+    public function testCreateUserWithExpiration()
+    {
+        $username = "testuser2";
+        $fullname = "Test User 2";
+        $email = "testuser2@example.com";
+
+        // Define expiration date in default frontend and db formats
+        $dateformatdetails = getDateFormatData(1);
+        $expiration = date($dateformatdetails['phpdate'] . ' H:i', strtotime("+1 day"));
+        $datetimeobj = new \Date_Time_Converter($expiration, $dateformatdetails['phpdate'] . ' H:i');
+        $expirationDbValue = $datetimeobj->convert("Y-m-d H:i:s");
+
+        try {
+            $urlMan = \Yii::app()->urlManager;
+            $web = self::$webDriver;
+
+            // Go to User Management page
+            $url = $urlMan->createUrl('userManagement/index');
+            $web->get($url);
+
+            self::ignoreWelcomeModal();
+            self::ignoreAdminNotification();
+
+            // Click on "Add user" button.
+            $addUserButton = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::xpath("//*[text()[contains(.,'Add user')]][self::button or self::a]")
+                )
+            );
+            // Even though the "wait until elementToBeClickable" considers the button
+            // is clickable, it seems sometimes the modal backdrop is still there. So we wait a second.
+            sleep(1);
+            $addUserButton->click();
+
+            // Wait for "Add user" modal
+            $this->waitForModal('Add user');
+
+            // Fill in basic data.
+            $this->fillInputById("User_Form_users_name", $username);
+            $this->fillInputById("User_Form_full_name", $fullname);
+            $this->fillInputById("User_Form_email", $email);
+
+            // Fill in the expiration date.
+            $this->fillDateById('User_Form_expires', $expiration);
+
+            // Enable "Set password now" to avoid mailing errors
+            $setPasswordSwitch = self::$webDriver->findElement(
+                WebDriverBy::cssSelector('label[for="utility_set_password_yes"]')
+            );
+            $setPasswordSwitch->click();
+
+            // Get suggested password
+            $suggestedPasswordInput = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::name("random_example_password")
+                )
+            );
+            $suggestedPassword = $suggestedPasswordInput->getAttribute('value');
+            // TODO: Remove this when suggestions are fixed
+            // Sometimes the suggestion doesn't have numbers, which makes the test fail
+            $suggestedPassword = $suggestedPassword . "1";
+
+            // Fill in the password and confirmation.
+            $this->fillInputById("User_Form_password", $suggestedPassword);
+            $this->fillInputById("password_repeat", $suggestedPassword);
+
+            // Click "Add".
+            $save = self::$webDriver->findElement(WebDriverBy::id('submitForm'));
+            $save->click();
+
+            // Wait for "Edit Permissions" modal
+            $this->waitForModal('Edit permissions');
+
+            // Click "Save".
+            $save = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('permission-modal-submitForm')
+                )
+            );
+            $save->click();
+
+            // Wait for "Saved successfully" modal
+            $this->waitForModal('Saved successfully');
+
+            // Make sure the user was saved in database.
+            $users = \User::model()->findAllByAttributes(['users_name' => $username]);
+            $this->assertCount(1, $users);
+
+            $user = $users[0];
+
+            // Check basic attributes
+            $this->assertEquals($fullname, $user->full_name);
+            $this->assertEquals($email, $user->email);
+            $this->assertEquals($expirationDbValue, $user->expires);
+
+            // Test login
+            self::adminLogout();
+            self::adminLogin($username, $suggestedPassword);
+
+            // Check that the user menu is present
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::xpath("//a[text()[contains(.,'{$username}')]]")
+                )
+            );
+        } catch (\Throwable $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                self::$testHelper->javaTrace($ex)
+            );
+        }
+    }
+
+    /**
+     * Create a user with expiration date in the past
+     */
+    public function testCreateUserExpired()
+    {
+        $username = "testuser3";
+        $fullname = "Test User 3";
+        $email = "testuser3@example.com";
+
+        // Define expiration date in default frontend and db formats
+        $dateformatdetails = getDateFormatData(1);
+        $expiration = date($dateformatdetails['phpdate'] . ' H:i', strtotime("-1 day"));
+        $datetimeobj = new \Date_Time_Converter($expiration, $dateformatdetails['phpdate'] . ' H:i');
+        $expirationDbValue = $datetimeobj->convert("Y-m-d H:i:s");
+
+        try {
+            $urlMan = \Yii::app()->urlManager;
+            $web = self::$webDriver;
+
+            // Go to User Management page
+            $url = $urlMan->createUrl('userManagement/index');
+            $web->get($url);
+
+            self::ignoreWelcomeModal();
+            self::ignoreAdminNotification();
+
+            // Click on "Add user" button.
+            $addUserButton = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::xpath("//*[text()[contains(.,'Add user')]][self::button or self::a]")
+                )
+            );
+            // Even though the "wait until elementToBeClickable" considers the button
+            // is clickable, it seems sometimes the modal backdrop is still there. So we wait a second.
+            sleep(1);
+            $addUserButton->click();
+
+            // Wait for "Add user" modal
+            $this->waitForModal('Add user');
+
+            // Fill in basic data.
+            $this->fillInputById("User_Form_users_name", $username);
+            $this->fillInputById("User_Form_full_name", $fullname);
+            $this->fillInputById("User_Form_email", $email);
+
+            // Fill in the expiration date.
+            $this->fillDateById('User_Form_expires', $expiration);
+
+            // Enable "Set password now" to avoid mailing errors
+            $setPasswordSwitch = self::$webDriver->findElement(
+                WebDriverBy::cssSelector('label[for="utility_set_password_yes"]')
+            );
+            $setPasswordSwitch->click();
+
+            // Get suggested password
+            $suggestedPasswordInput = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::name("random_example_password")
+                )
+            );
+            $suggestedPassword = $suggestedPasswordInput->getAttribute('value');
+            // TODO: Remove this when suggestions are fixed
+            // Sometimes the suggestion doesn't have numbers, which makes the test fail
+            $suggestedPassword = $suggestedPassword . "1";
+
+            // Fill in the password and confirmation.
+            $this->fillInputById("User_Form_password", $suggestedPassword);
+            $this->fillInputById("password_repeat", $suggestedPassword);
+
+            // Click "Add".
+            $save = self::$webDriver->findElement(WebDriverBy::id('submitForm'));
+            $save->click();
+
+            // Wait for "Edit Permissions" modal
+            $this->waitForModal('Edit permissions');
+
+            // Click "Save".
+            $save = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('permission-modal-submitForm')
+                )
+            );
+            $save->click();
+
+            // Wait for "Saved successfully" modal
+            $this->waitForModal('Saved successfully');
+
+            // Make sure the user was saved in database.
+            $users = \User::model()->findAllByAttributes(['users_name' => $username]);
+            $this->assertCount(1, $users);
+
+            $user = $users[0];
+
+            // Check basic attributes
+            $this->assertEquals($fullname, $user->full_name);
+            $this->assertEquals($email, $user->email);
+            $this->assertEquals($expirationDbValue, $user->expires);
+
+            // Test login
+            self::adminLogout();
+            self::adminLogin($username, $suggestedPassword);
+
+            // Check that the login failed
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::xpath("//*[text()[contains(.,'Incorrect username')]][contains(@class, 'alert-danger')]")
+                )
+            );
+        } catch (\Throwable $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                self::$testHelper->javaTrace($ex)
+            );
+        }
+    }
+
+    protected function fillInputById($id, $value, $timeout = 10)
+    {
+        $input = self::$webDriver->wait($timeout)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id($id)
+            )
+        );
+        $input->clear()->sendKeys($value);
+    }
+
+    protected function fillDateById($id, $value, $timeout = 10)
+    {
+        $input = self::$webDriver->wait($timeout)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id($id)
+            )
+        );
+        $input->click();
+        // Give time for the datepicker to open and click again before clearing
+        sleep(1);
+        $wrapperId = $input->findElement(WebDriverBy::xpath("parent::*"))->getAttribute('id');
+        $clearButton = self::$webDriver->findElement(
+            WebDriverBy::cssSelector('#' . $wrapperId . ' .picker-switch a[data-action="clear"]')
+        );
+        $clearButton->click();
+        $input->click();
+        $input->clear()->sendKeys($value);
+    }
+
+    protected function waitForModal($title, $timeout = 10)
+    {
+        self::$webDriver->wait($timeout)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::xpath("//*[text()[contains(.,'{$title}')]][contains(@class, 'modal-title') or contains(@class, 'modal-header')]")
+            )
+        );
+    }
+
+    protected static function adminLogout()
+    {
+        $url = self::getUrl(['login', 'route'=>'authentication/sa/logout']);
+        self::openView($url);
     }
 }
