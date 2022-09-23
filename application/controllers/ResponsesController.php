@@ -425,11 +425,6 @@ class ResponsesController extends LSBaseController
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             App()->getClientScript()->registerScriptFile(
                 App()->getConfig('adminscripts') .
-                'datePickerInit.js',
-                LSYii_ClientScript::POS_BEGIN
-            );
-            App()->getClientScript()->registerScriptFile(
-                App()->getConfig('adminscripts') .
                 'listresponse.js',
                 LSYii_ClientScript::POS_BEGIN
             );
