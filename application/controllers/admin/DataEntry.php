@@ -854,8 +854,8 @@ class DataEntry extends SurveyCommonAction
                         $aDataentryoutput .= "<script type='text/javascript'>\n"
                             .  "  <!--\n"
                             . "var aRankingTranslations = {
-                                     choicetitle: '" . gT("Your Choices", 'js') . "',
-                                     ranktitle: '" . gT("Your Ranking", 'js') . "'
+                                     choicetitle: '" . gT("Your choices", 'js') . "',
+                                     ranktitle: '" . gT("Your ranking", 'js') . "'
                                     };\n"
                             . "function checkconditions(){};"
                             . "$(function() {"
