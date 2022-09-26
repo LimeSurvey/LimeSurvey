@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-09-19 08:50:26+00:00\n"
+"POT-Creation-Date: 2022-09-26 08:04:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2462,6 +2462,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:189
 #: application/controllers/admin/responses.php:190
 #: application/controllers/admin/tokens.php:1638
+#: application/helpers/common_helper.php:3010
 #: application/models/TemplateManifest.php:172 application/models/Token.php:88
 #: application/views/admin/quotas/viewquotas_view.php:77
 #: application/views/admin/token/exportdialog.php:17
@@ -2513,8 +2514,8 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:801
 #: application/helpers/common_helper.php:716
 #: application/helpers/common_helper.php:779
-#: application/helpers/common_helper.php:4540
-#: application/helpers/common_helper.php:4589
+#: application/helpers/common_helper.php:4546
+#: application/helpers/common_helper.php:4595
 #: application/helpers/questionHelper.php:1196
 #: application/views/admin/dataentry/content_view.php:253
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:201
@@ -3738,7 +3739,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3411
 #: application/helpers/expressions/em_manager_helper.php:3832
 #: application/helpers/expressions/em_manager_helper.php:3944
-#: application/helpers/expressions/em_manager_helper.php:6580
+#: application/helpers/expressions/em_manager_helper.php:6577
 #: application/helpers/qanda_helper.php:1198
 #: application/helpers/qanda_helper.php:1426
 #: application/helpers/qanda_helper.php:1942
@@ -4051,7 +4052,7 @@ msgid "Token ID"
 msgstr ""
 
 #: application/controllers/admin/responses.php:185
-#: application/helpers/common_helper.php:2959
+#: application/helpers/common_helper.php:2960
 #: application/models/Participant.php:239
 #: application/models/ParticipantShare.php:224 application/models/Token.php:78
 #: application/models/TokenDynamic.php:663
@@ -4064,7 +4065,7 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:186
-#: application/helpers/common_helper.php:2964
+#: application/helpers/common_helper.php:2965
 #: application/models/Participant.php:240
 #: application/models/ParticipantShare.php:219 application/models/Token.php:79
 #: application/models/TokenDynamic.php:671
@@ -5503,9 +5504,9 @@ msgstr ""
 #: application/helpers/common_helper.php:246
 #: application/helpers/common_helper.php:716
 #: application/helpers/common_helper.php:779
-#: application/helpers/common_helper.php:4300
-#: application/helpers/common_helper.php:4538
-#: application/helpers/common_helper.php:4587
+#: application/helpers/common_helper.php:4306
+#: application/helpers/common_helper.php:4544
+#: application/helpers/common_helper.php:4593
 #: application/helpers/qanda_helper.php:1257
 #: application/helpers/qanda_helper.php:1858
 #: application/helpers/qanda_helper.php:4322
@@ -5520,7 +5521,7 @@ msgid "Survey title and description"
 msgstr ""
 
 #: application/controllers/admin/translate.php:433
-#: application/helpers/expressions/em_manager_helper.php:9579
+#: application/helpers/expressions/em_manager_helper.php:9576
 #: application/models/Boxes.php:59
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:57
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:60
@@ -5542,7 +5543,7 @@ msgid "Welcome and end text"
 msgstr ""
 
 #: application/controllers/admin/translate.php:463
-#: application/helpers/expressions/em_manager_helper.php:9603
+#: application/helpers/expressions/em_manager_helper.php:9600
 #: application/views/admin/survey/editLocalSettings_view.php:128
 #: application/views/admin/survey/editLocalSettings_view.php:132
 #: application/views/admin/survey/subview/_create_survey_text.php:196
@@ -8675,7 +8676,7 @@ msgid "Seed"
 msgstr ""
 
 #: application/helpers/common_helper.php:1479
-#: application/helpers/common_helper.php:2979 application/models/Token.php:82
+#: application/helpers/common_helper.php:2980 application/models/Token.php:82
 #: application/models/TokenDynamic.php:697
 #: application/views/admin/dataentry/caption_view.php:36
 #: application/views/admin/participants/attributeMap_view.php:158
@@ -8725,7 +8726,7 @@ msgstr ""
 msgid "SMTP debug output:"
 msgstr ""
 
-#: application/helpers/common_helper.php:2969
+#: application/helpers/common_helper.php:2970
 #: application/models/Participant.php:241
 #: application/models/ParticipantShare.php:229
 #: application/models/SavedControl.php:173 application/models/Token.php:80
@@ -8735,181 +8736,181 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:2974 application/models/Token.php:81
+#: application/helpers/common_helper.php:2975 application/models/Token.php:81
 #: application/models/TokenDynamic.php:688
 msgid "Email status"
 msgstr ""
 
-#: application/helpers/common_helper.php:2984 application/models/Token.php:83
+#: application/helpers/common_helper.php:2985 application/models/Token.php:83
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:2989 application/models/Token.php:85
+#: application/helpers/common_helper.php:2990 application/models/Token.php:85
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2994 application/models/Token.php:86
+#: application/helpers/common_helper.php:2995 application/models/Token.php:86
 msgid "Last reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2999 application/models/Token.php:87
+#: application/helpers/common_helper.php:3000 application/models/Token.php:87
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:3004 application/models/Token.php:89
+#: application/helpers/common_helper.php:3005 application/models/Token.php:89
 #: application/models/TokenDynamic.php:748
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:4371
+#: application/helpers/common_helper.php:4377
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:4669
+#: application/helpers/common_helper.php:4675
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4670
+#: application/helpers/common_helper.php:4676
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:4671
+#: application/helpers/common_helper.php:4677
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4672
+#: application/helpers/common_helper.php:4678
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:4673
+#: application/helpers/common_helper.php:4679
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4674
+#: application/helpers/common_helper.php:4680
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4675
+#: application/helpers/common_helper.php:4681
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4676
+#: application/helpers/common_helper.php:4682
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4677
+#: application/helpers/common_helper.php:4683
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4678
+#: application/helpers/common_helper.php:4684
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4679
+#: application/helpers/common_helper.php:4685
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4680
+#: application/helpers/common_helper.php:4686
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4681
+#: application/helpers/common_helper.php:4687
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4682
+#: application/helpers/common_helper.php:4688
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4683
+#: application/helpers/common_helper.php:4689
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:4684
+#: application/helpers/common_helper.php:4690
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4685
+#: application/helpers/common_helper.php:4691
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4686
+#: application/helpers/common_helper.php:4692
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4687
+#: application/helpers/common_helper.php:4693
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:4688
+#: application/helpers/common_helper.php:4694
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:4689
+#: application/helpers/common_helper.php:4695
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4690
+#: application/helpers/common_helper.php:4696
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4691
+#: application/helpers/common_helper.php:4697
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4692
+#: application/helpers/common_helper.php:4698
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4693
+#: application/helpers/common_helper.php:4699
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4694
+#: application/helpers/common_helper.php:4700
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4695
+#: application/helpers/common_helper.php:4701
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4696
+#: application/helpers/common_helper.php:4702
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4697
+#: application/helpers/common_helper.php:4703
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4698
+#: application/helpers/common_helper.php:4704
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4699
+#: application/helpers/common_helper.php:4705
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4700
+#: application/helpers/common_helper.php:4706
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:4701
+#: application/helpers/common_helper.php:4707
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:4702
+#: application/helpers/common_helper.php:4708
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4703
+#: application/helpers/common_helper.php:4709
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4704
+#: application/helpers/common_helper.php:4710
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4708
+#: application/helpers/common_helper.php:4714
 msgid "(Automatic)"
 msgstr ""
 
@@ -9544,7 +9545,7 @@ msgid "Only integer values may be entered in these fields."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3401
-#: application/helpers/expressions/em_manager_helper.php:6583
+#: application/helpers/expressions/em_manager_helper.php:6580
 msgid "If you choose '%s' please also specify your choice in the accompanying text field."
 msgstr ""
 
@@ -9556,72 +9557,72 @@ msgstr ""
 msgid "Please check the format of your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5492
-#: application/helpers/expressions/em_manager_helper.php:5493
+#: application/helpers/expressions/em_manager_helper.php:5489
+#: application/helpers/expressions/em_manager_helper.php:5490
 msgid "Unable to insert record into survey table"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5603
+#: application/helpers/expressions/em_manager_helper.php:5600
 msgid "Error on response update"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5621
+#: application/helpers/expressions/em_manager_helper.php:5618
 msgid "This response was already submitted."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:5656
+#: application/helpers/expressions/em_manager_helper.php:5653
 msgid "An error happen when try to submit your response."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6553
+#: application/helpers/expressions/em_manager_helper.php:6550
 msgid "This question is mandatory"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6568
+#: application/helpers/expressions/em_manager_helper.php:6565
 msgid "Please check at least one item."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6609
-#: application/helpers/expressions/em_manager_helper.php:6653
+#: application/helpers/expressions/em_manager_helper.php:6606
+#: application/helpers/expressions/em_manager_helper.php:6650
 msgid "Please complete all parts."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6641
+#: application/helpers/expressions/em_manager_helper.php:6638
 msgid "Please check at least one box per row."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6665
+#: application/helpers/expressions/em_manager_helper.php:6662
 msgid "Please rank the items."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6668
+#: application/helpers/expressions/em_manager_helper.php:6665
 msgid "Please rank all items."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:6992
+#: application/helpers/expressions/em_manager_helper.php:6989
 msgid "Error in default value : %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:8982
+#: application/helpers/expressions/em_manager_helper.php:8979
 msgid "Date %s is invalid, please review your answer."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9556
+#: application/helpers/expressions/em_manager_helper.php:9553
 msgid "Invalid question - probably missing subquestions or language-specific settings for language %s"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9564
+#: application/helpers/expressions/em_manager_helper.php:9561
 msgid "Logic File for Survey # "
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9591
+#: application/helpers/expressions/em_manager_helper.php:9588
 #: application/views/admin/survey/editLocalSettings_view.php:120
 #: application/views/admin/survey/subview/_create_survey_text.php:187
 #: application/views/admin/survey/surveySummary_view.php:140
 msgid "Welcome:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9615
+#: application/helpers/expressions/em_manager_helper.php:9612
 #: application/views/admin/survey/editLocalSettings_view.php:58
 #: application/views/admin/survey/subview/_create_survey_text.php:115
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:184
@@ -9629,41 +9630,41 @@ msgstr ""
 msgid "End URL:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9627
+#: application/helpers/expressions/em_manager_helper.php:9624
 msgid "Survey data policy notice:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9639
+#: application/helpers/expressions/em_manager_helper.php:9636
 #: application/views/admin/survey/editDataSecurityLocalSettings_view.php:64
 msgid "Survey data policy error:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9651
+#: application/helpers/expressions/em_manager_helper.php:9648
 msgid "Survey data policy label:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9657
+#: application/helpers/expressions/em_manager_helper.php:9654
 msgid "Name [ID]"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9658
+#: application/helpers/expressions/em_manager_helper.php:9655
 msgid "Relevance [Validation] (Default value)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9659
+#: application/helpers/expressions/em_manager_helper.php:9656
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9698
+#: application/helpers/expressions/em_manager_helper.php:9695
 msgid "This group has at least 1 error."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9731
-#: application/helpers/expressions/em_manager_helper.php:9985
+#: application/helpers/expressions/em_manager_helper.php:9728
+#: application/helpers/expressions/em_manager_helper.php:9982
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9756
+#: application/helpers/expressions/em_manager_helper.php:9753
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:61
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:65
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:87
@@ -9674,87 +9675,87 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9758
+#: application/helpers/expressions/em_manager_helper.php:9755
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9776
+#: application/helpers/expressions/em_manager_helper.php:9773
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9776
+#: application/helpers/expressions/em_manager_helper.php:9773
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9878
+#: application/helpers/expressions/em_manager_helper.php:9875
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9890
+#: application/helpers/expressions/em_manager_helper.php:9887
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10058
+#: application/helpers/expressions/em_manager_helper.php:10055
 msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10108
+#: application/helpers/expressions/em_manager_helper.php:10105
 msgid "{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10112
+#: application/helpers/expressions/em_manager_helper.php:10109
 msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10117
+#: application/helpers/expressions/em_manager_helper.php:10114
 msgid "There are expressions with syntax errors in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10120
+#: application/helpers/expressions/em_manager_helper.php:10117
 msgid "There are expressions with syntax errors in this group."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10123
+#: application/helpers/expressions/em_manager_helper.php:10120
 msgid "There are expressions with syntax errors in this question."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10126
+#: application/helpers/expressions/em_manager_helper.php:10123
 msgid "There are expressions with syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10135
+#: application/helpers/expressions/em_manager_helper.php:10132
 msgid "No syntax errors detected in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10138
+#: application/helpers/expressions/em_manager_helper.php:10135
 msgid "This group, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10141
+#: application/helpers/expressions/em_manager_helper.php:10138
 msgid "This question, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10300
-#: application/helpers/expressions/em_manager_helper.php:10312
-#: application/helpers/expressions/em_manager_helper.php:10320
-#: application/helpers/expressions/em_manager_helper.php:10331
-#: application/helpers/expressions/em_manager_helper.php:10339
-#: application/helpers/expressions/em_manager_helper.php:10346
-#: application/helpers/expressions/em_manager_helper.php:10353
-#: application/helpers/expressions/em_manager_helper.php:10360
-#: application/helpers/expressions/em_manager_helper.php:10373
-#: application/helpers/expressions/em_manager_helper.php:10380
-#: application/helpers/expressions/em_manager_helper.php:10388
-#: application/helpers/expressions/em_manager_helper.php:10404
-#: application/helpers/expressions/em_manager_helper.php:10411
-#: application/helpers/expressions/em_manager_helper.php:10426
-#: application/helpers/expressions/em_manager_helper.php:10436
-#: application/helpers/expressions/em_manager_helper.php:10449
-#: application/helpers/expressions/em_manager_helper.php:10456
+#: application/helpers/expressions/em_manager_helper.php:10297
+#: application/helpers/expressions/em_manager_helper.php:10309
+#: application/helpers/expressions/em_manager_helper.php:10317
+#: application/helpers/expressions/em_manager_helper.php:10328
+#: application/helpers/expressions/em_manager_helper.php:10336
+#: application/helpers/expressions/em_manager_helper.php:10343
+#: application/helpers/expressions/em_manager_helper.php:10350
+#: application/helpers/expressions/em_manager_helper.php:10357
+#: application/helpers/expressions/em_manager_helper.php:10370
+#: application/helpers/expressions/em_manager_helper.php:10377
+#: application/helpers/expressions/em_manager_helper.php:10385
+#: application/helpers/expressions/em_manager_helper.php:10401
+#: application/helpers/expressions/em_manager_helper.php:10408
+#: application/helpers/expressions/em_manager_helper.php:10423
+#: application/helpers/expressions/em_manager_helper.php:10433
+#: application/helpers/expressions/em_manager_helper.php:10446
+#: application/helpers/expressions/em_manager_helper.php:10453
 msgid "%s is an invalid value for this question"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10419
+#: application/helpers/expressions/em_manager_helper.php:10416
 msgid "This question only accept 30 digits including 10 decimals."
 msgstr ""
 
