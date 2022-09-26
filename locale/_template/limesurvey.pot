@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-09-20 14:26:11+00:00\n"
+"POT-Creation-Date: 2022-09-26 08:04:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1539,8 +1539,8 @@ msgstr ""
 #: application/controllers/ResponsesController.php:153
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:125
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:115
-#: application/models/User.php:135 application/models/User.php:774
-#: application/models/User.php:834
+#: application/models/User.php:135 application/models/User.php:768
+#: application/models/User.php:828
 #: application/views/admin/token/massive_actions/_selector.php:70
 #: application/views/admin/user/modifyuser.php:35
 #: application/views/responses/listResponses_view.php:187
@@ -2779,8 +2779,8 @@ msgstr ""
 #: application/models/SurveymenuEntries.php:194
 #: application/models/SurveymenuEntries.php:207
 #: application/models/SurveysGroups.php:123
-#: application/models/TokenDynamic.php:626 application/models/User.php:757
-#: application/models/User.php:822
+#: application/models/TokenDynamic.php:626 application/models/User.php:751
+#: application/models/User.php:816
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:7
 #: application/views/admin/emailtemplates/email_language_template_tab.php:80
 #: application/views/admin/labels/_labelviewtabcontent_view.php:21
@@ -3586,8 +3586,8 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1087
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:17
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:48
-#: application/models/User.php:129 application/models/User.php:766
-#: application/models/User.php:826
+#: application/models/User.php:129 application/models/User.php:760
+#: application/models/User.php:820
 msgid "User ID"
 msgstr ""
 
@@ -3604,8 +3604,8 @@ msgstr ""
 #: application/core/plugins/Authdb/Authdb.php:128
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:117
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:105
-#: application/models/User.php:130 application/models/User.php:770
-#: application/models/User.php:830
+#: application/models/User.php:130 application/models/User.php:764
+#: application/models/User.php:824
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:8
 #: application/views/admin/authentication/forgotpassword.php:34
 #: application/views/admin/user/modifyuser.php:24
@@ -6165,8 +6165,8 @@ msgstr ""
 #: application/controllers/admin/SurveyPermission.php:69
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:121
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:110
-#: application/models/User.php:132 application/models/User.php:778
-#: application/models/User.php:838
+#: application/models/User.php:132 application/models/User.php:772
+#: application/models/User.php:832
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:9
 #: application/views/admin/user/modifyuser.php:43
 msgid "Full name"
@@ -14945,8 +14945,8 @@ msgstr ""
 
 #: application/models/Participant.php:256 application/models/Surveymenu.php:346
 #: application/models/SurveymenuEntries.php:205
-#: application/models/SurveysGroups.php:102 application/models/User.php:782
-#: application/models/User.php:855
+#: application/models/SurveysGroups.php:102 application/models/User.php:776
+#: application/models/User.php:849
 msgid "Created on"
 msgstr ""
 
@@ -15784,8 +15784,8 @@ msgstr ""
 
 #: application/models/Surveymenu.php:347
 #: application/models/SurveymenuEntries.php:206
-#: application/models/SurveysGroups.php:104 application/models/User.php:787
-#: application/models/User.php:850
+#: application/models/SurveysGroups.php:104 application/models/User.php:781
+#: application/models/User.php:844
 #: application/views/userManagement/partial/showuser.php:15
 msgid "Created by"
 msgstr ""
@@ -16468,19 +16468,19 @@ msgstr ""
 msgid "Delete User"
 msgstr ""
 
-#: application/models/User.php:794 application/models/User.php:844
+#: application/models/User.php:788 application/models/User.php:838
 msgid "No of surveys"
 msgstr ""
 
-#: application/models/User.php:799
+#: application/models/User.php:793
 msgid "Usergroups"
 msgstr ""
 
-#: application/models/User.php:804
+#: application/models/User.php:798
 msgid "Applied role"
 msgstr ""
 
-#: application/models/User.php:946
+#: application/models/User.php:940
 msgid "%s (%s)"
 msgstr ""
 
