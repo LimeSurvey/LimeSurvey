@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Command\V1;
 
 use Exception;
 use Permission;
+use Question;
 use QuestionGroup;
 use Survey;
 use Yii;

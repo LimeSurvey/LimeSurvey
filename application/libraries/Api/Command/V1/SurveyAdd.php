@@ -65,7 +65,10 @@ class SurveyAdd implements CommandInterface
                 try {
                     $newSurvey = Survey::model()->insertNewSurvey($aInsertData);
                     if (!$newSurvey->sid) {
-                        return array('status' => 'Creation Failed'); // status are a string, another way to send errors ?
+                        // status are a string, another way to send errors ?
+                        return new Response(
+                            array('status' => 'Creation Failed')
+                        );
                     }
                     $iNewSurveyid = $newSurvey->sid;
 
