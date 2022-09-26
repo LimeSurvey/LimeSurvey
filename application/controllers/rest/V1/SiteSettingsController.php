@@ -16,9 +16,18 @@
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\V1\SiteSettingsGet;
 
+/**
+ * Site Settings Controller
+ */
 class SiteSettingsController extends LSYii_ControllerRest
 {
-    public function actionIndexGet($id)
+    /** 
+     *  Handle get request
+     * 
+     * @param string $id 
+     * @return void
+     */
+    public function actionIndexGet(string $id)
     {
         $requestData = array(
             'sessionKey' => $this->getAuthToken(),

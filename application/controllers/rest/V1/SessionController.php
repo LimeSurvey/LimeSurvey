@@ -16,8 +16,16 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\V1\SessionKeyCreate;
 use LimeSurvey\Api\Command\V1\SessionKeyRelease;
 
+/**
+ * Session Controller
+ */
 class SessionController extends LSYii_ControllerRest
 {
+    /** 
+     *  Handle post request
+     * 
+     * @return void
+     */
     public function actionIndexPost()
     {
         $request = Yii::app()->request;
@@ -31,6 +39,11 @@ class SessionController extends LSYii_ControllerRest
         $this->renderCommandResponse($commandResponse);
     }
 
+    /** 
+     *  Handle delete request
+     * 
+     * @return void
+     */
     public function actionIndexDelete()
     {
         $requestData = [
