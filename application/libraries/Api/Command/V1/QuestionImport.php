@@ -98,12 +98,17 @@ class QuestionImport implements CommandInterface
                         }
                         return new Response(array('status' => 'Error: Invalid LimeSurvey question structure XML '));
                     }
+                    /**
+                     * @psalm-suppress UndefinedFunction XMLImportQuestion is loaded by the Yii environment
+                     */
                     $aImportResults = XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID);
                 } else {
                     if (
-                        \PHP_VERSION_ID < 80000
+                        \PHP_VERSION_ID < 80000 &&
+                        $bOldEntityLoaderState
+
                     ) {
-                        libxml_disable_entity_loader($bOldEntityLoaderState);
+                        libxml_disable_entity_loader(!!$bOldEntityLoaderState);
                         // Put back entity loader to its original state, to avoid
                         // contagion to other applications on the server
                     }
@@ -113,8 +118,11 @@ class QuestionImport implements CommandInterface
                 unlink($sFullFilePath);
 
                 if (isset($aImportResults['fatalerror'])) {
-                    if (\PHP_VERSION_ID < 80000) {
-                        libxml_disable_entity_loader($bOldEntityLoaderState);
+                    if (
+                        \PHP_VERSION_ID < 80000
+                        && $bOldEntityLoaderState
+                    ) {
+                        libxml_disable_entity_loader(!!$bOldEntityLoaderState);
                         // Put back entity loader to its original state,
                         // to avoid contagion to other applications on the server
                     }
@@ -144,8 +152,11 @@ class QuestionImport implements CommandInterface
                         $oQuestion->setAttribute('mandatory', 'N');
                     }
 
-                    if (\PHP_VERSION_ID < 80000) {
-                        libxml_disable_entity_loader($bOldEntityLoaderState);
+                    if (
+                        \PHP_VERSION_ID < 80000
+                        && $bOldEntityLoaderState
+                    ) {
+                        libxml_disable_entity_loader(!!$bOldEntityLoaderState);
                         // Put back entity loader to its original state, to avoid contagion
                         // to other applications on the server
                     }
