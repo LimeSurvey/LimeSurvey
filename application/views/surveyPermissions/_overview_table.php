@@ -37,18 +37,18 @@
             </a>
         <?php }?>
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'delete')) {
-                $deleteUrl = App()->createUrl("surveyPermissions/deleteUserPermissions/", array(
-                'surveyid' => $surveyid,
-                'uid' => $content->uid
-                ));
+                $deleteUrl = App()->createUrl("surveyPermissions/deleteUserPermissions/");
                 $deleteConfirmMessage = gT("Are you sure you want to delete this entry?"); ?>
                 <span data-toggle='tooltip' title=" <?= gT("Delete") ?> ">
                     <a
                         data-target='#confirmation-modal'
                         data-toggle='modal'
-                        data-btntext="Confirm"
+                        data-btntext="Delete"
+                        data-title="<?php echo gt('Delete user survey permissions')?>"
+                        data-btnclass='btn-danger'
                         data-message="<?php echo $deleteConfirmMessage;?>"
                         data-post-url="<?php echo $deleteUrl;?>"
+                        data-post-datas='<?php echo json_encode(['surveyid' => $surveyid, 'userid' => $content->uid]); ?>'
                         type='submit'
                         class='btn-sm btn btn-default'>
                         <span class='fa fa-trash text-danger'></span>

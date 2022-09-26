@@ -21,7 +21,14 @@ class SurveyPermissionsController extends LSBaseController
             ],
             [
                 'allow',
-                'actions' => ['index'],
+                'actions' => [
+                    'index',
+                    'addUser',
+                    'addUserGroups',
+                    'deleteUserPermissions',
+                    'savePermissions',
+                    'SettingsPermissions'
+                ],
                 'users' => ['@'], //only login users
             ],
             ['deny'], //always deny all actions not mentioned above
@@ -66,11 +73,6 @@ class SurveyPermissionsController extends LSBaseController
 
         $this->aData = $aData;
         $aBaseSurveyPermissions = Permission::model()->getSurveyBasePermissions();
-        //function get table content as array
-        //structure should be
-        /*
-         *
-         */
         $oSurveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions(
             $oSurvey,
             Yii::app()->getConfig('usercontrolSameGroupPolicy')
@@ -225,6 +227,7 @@ class SurveyPermissionsController extends LSBaseController
      *
      * @param $surveyid
      * @return void
+     * @throws CHttpException
      */
     public function actionSavePermissions($surveyid)
     {
@@ -271,7 +274,11 @@ class SurveyPermissionsController extends LSBaseController
         $this->redirect(array('surveyPermissions/index', 'surveyid' => $surveyid));
     }
 
-
+    /**
+     * Deletes all survey permissions the user has.
+     *
+     * @return void
+     */
     public function actionDeleteUserPermissions()
     {
         $surveyid = (int)Yii::app()->request->getPost('surveyid');
@@ -280,8 +287,17 @@ class SurveyPermissionsController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
-        // get POST data userid
-        //remove all permissions for that specific user (except for yourself or admin users)
-        // display a flash message
+        $userid = sanitize_int(Yii::app()->request->getPost('userid'));
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $oSurveyPermission = new \LimeSurvey\Models\Services\SurveyPermissions($oSurvey, Yii::app()->getConfig('usercontrolSameGroupPolicy'));
+
+        $result = $oSurveyPermission->deleteUserPermissions($userid);
+        if ($result === 0) {
+            Yii::app()->user->setFlash('error', gT("No survey permissions deleted."));
+        } else {
+            Yii::app()->user->setFlash('success', gT("Survey permissions deleted."));
+        }
+
+        $this->redirect(array('surveyPermissions/index', 'surveyid' => $surveyid));
     }
 }
