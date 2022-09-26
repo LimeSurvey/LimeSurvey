@@ -23,9 +23,9 @@ use LimeSurvey\Api\Command\V1\SurveyDelete;
  */
 class SurveyController extends LSYii_ControllerRest
 {
-    /** 
+    /**
      *  Handle post request
-     * 
+     *
      * @return void
      */
     public function actionIndexPost()
@@ -45,10 +45,10 @@ class SurveyController extends LSYii_ControllerRest
         $this->renderCommandResponse($commandResponse);
     }
 
-    /** 
+    /**
      *  Handle get request
-     * 
-     * @param string $id 
+     *
+     * @param string $id
      * @return void
      */
     public function actionIndexGet(string $id)
@@ -66,10 +66,10 @@ class SurveyController extends LSYii_ControllerRest
         $this->renderCommandResponse($commandResponse);
     }
 
-    /** 
+    /**
      *  Handle delete request
-     * 
-     * @param string $id 
+     *
+     * @param string $id
      * @return void
      */
     public function actionIndexDelete(string $id)

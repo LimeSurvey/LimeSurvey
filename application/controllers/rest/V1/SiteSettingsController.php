@@ -21,10 +21,10 @@ use LimeSurvey\Api\Command\V1\SiteSettingsGet;
  */
 class SiteSettingsController extends LSYii_ControllerRest
 {
-    /** 
+    /**
      *  Handle get request
-     * 
-     * @param string $id 
+     *
+     * @param string $id
      * @return void
      */
     public function actionIndexGet(string $id)

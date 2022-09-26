@@ -21,9 +21,9 @@ use LimeSurvey\Api\Command\V1\SessionKeyRelease;
  */
 class SessionController extends LSYii_ControllerRest
 {
-    /** 
+    /**
      *  Handle post request
-     * 
+     *
      * @return void
      */
     public function actionIndexPost()
@@ -39,9 +39,9 @@ class SessionController extends LSYii_ControllerRest
         $this->renderCommandResponse($commandResponse);
     }
 
-    /** 
+    /**
      *  Handle delete request
-     * 
+     *
      * @return void
      */
     public function actionIndexDelete()

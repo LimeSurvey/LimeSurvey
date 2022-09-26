@@ -106,7 +106,6 @@ class QuestionImport implements CommandInterface
                     if (
                         \PHP_VERSION_ID < 80000 &&
                         $bOldEntityLoaderState
-
                     ) {
                         libxml_disable_entity_loader(!!$bOldEntityLoaderState);
                         // Put back entity loader to its original state, to avoid
