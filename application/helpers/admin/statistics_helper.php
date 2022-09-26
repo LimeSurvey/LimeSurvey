@@ -335,6 +335,8 @@ function buildSelects($allfields, $surveyid, $language)
         $postvars[] = $key;
     }
 
+    $responseModel = SurveyDynamic::model($surveyid);
+
     /*
     * Iterate through postvars to create "nice" data for SQL later.
     *
@@ -380,7 +382,7 @@ function buildSelects($allfields, $surveyid, $language)
                 $thisquestion = Yii::app()->db->quoteColumnName($pv) . " IN (";
 
                 foreach ($_POST[$pv] as $condition) {
-                    $thisquestion .= "'$condition', ";
+                    $thisquestion .= "'" . getEncryptedCondition($responseModel, $pv, $condition) . "', ";
                 }
 
                 $thisquestion = substr($thisquestion, 0, -2)
@@ -401,7 +403,8 @@ function buildSelects($allfields, $surveyid, $language)
                 foreach ($aresult as $arow) {
                     // only add condition if answer has been chosen
                     if (in_array($arow['title'], $_POST[$pv])) {
-                        $mselects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)) . $arow['title']) . " = 'Y'";
+                        $fieldname = substr($pv, 1, strlen($pv)) . $arow['title'];
+                        $mselects[] = Yii::app()->db->quoteColumnName($fieldname) . " = '" . getEncryptedCondition($responseModel, $fieldname, 'Y') . "'";
                     }
                 }
                 /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
@@ -530,6 +533,13 @@ function square($number)
         $squarenumber = $number * $number;
     }
     return $squarenumber;
+}
+
+function getEncryptedCondition($responseModel, $attribute, $value)
+{
+    $attributes = [$attribute => $value];
+    $attributes = $responseModel->encryptAttributeValues($attributes);
+    return $attributes[$attribute] ?? $value;
 }
 
 class statistics_helper
