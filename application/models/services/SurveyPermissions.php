@@ -32,7 +32,7 @@ class SurveyPermissions
      * for the survey. The returned array could be empty if there are no users
      * with permissions for this survey.
      *
-     * @return \CActiveDataProvider
+     * @return \Permission[]
      */
     public function getUsersSurveyPermissions()
     {
