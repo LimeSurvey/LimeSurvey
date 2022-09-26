@@ -398,10 +398,11 @@ class UserManagementTest extends TestBaseClassWeb
         );
         $input->click();
         // Give time for the datepicker to open and click again before clearing
-        sleep(1);
         $wrapperId = $input->findElement(WebDriverBy::xpath("parent::*"))->getAttribute('id');
-        $clearButton = self::$webDriver->findElement(
-            WebDriverBy::cssSelector('#' . $wrapperId . ' .picker-switch a[data-action="clear"]')
+        $clearButton = self::$webDriver->wait($timeout)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::cssSelector('#' . $wrapperId . ' .picker-switch a[data-action="clear"]')
+            )
         );
         $clearButton->click();
         $input->click();
