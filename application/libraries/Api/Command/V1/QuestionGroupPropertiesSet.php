@@ -108,6 +108,9 @@ class QuestionGroupPropertiesSet implements CommandInterface
                             try {
                                 // save the change to database - one by one to allow for validation to work
                                 $bSaveResult = $oQuestionGroupL10n->save();
+                                if (!is_array($aResult['questiongroupl10ns'][$language])) {
+                                    $aResult['questiongroupl10ns'][$language] = array();
+                                }
                                 $aResult['questiongroupl10ns'][$language][$sFieldName] = $bSaveResult;
                                 //unset failed values
                                 if (!$bSaveResult) {
