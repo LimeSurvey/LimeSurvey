@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @psalm-suppress InvalidScalarArgument
+ */
 class FailedEmailController extends LSBaseController
 {
     /**
@@ -67,18 +70,23 @@ class FailedEmailController extends LSBaseController
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
+
+        global $thissurvey;
+        $thissurvey = getSurveyInfo($surveyId);
+
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['failedEmail/index/', 'surveyid' => $surveyId]);
         }
-        $preserveResend = App()->request->getParam('preserveResend') ?? false;
+        $deleteAfterResend = App()->request->getParam('deleteAfterResend');
+        $preserveResend = is_null($deleteAfterResend);
         $item = [App()->request->getParam('item')];
         $items = json_decode(App()->request->getParam('sItems'));
         $selectedItems = $items ?? $item;
         $emailsByType = [];
         if (!empty($selectedItems)) {
             $criteria = new CDbCriteria();
-            $criteria->select = 'id, email_type, recipient';
+            /** @psalm-suppress RedundantCast */
             $criteria->addCondition('surveyid = ' . (int) $surveyId);
             $criteria->addInCondition('id', $selectedItems);
             $failedEmails = FailedEmail::model()->findAll($criteria);
@@ -86,13 +94,13 @@ class FailedEmailController extends LSBaseController
                 foreach ($failedEmails as $failedEmail) {
                     $emailsByType[$failedEmail->email_type][] = [
                         'id'        => $failedEmail->id,
+                        'responseId' => $failedEmail->responseid,
                         'recipient' => $failedEmail->recipient,
                         'language' => $failedEmail->language,
+                        'resendVars' => $failedEmail->resend_vars,
                     ];
                 }
-                global $thissurvey;
-                $thissurvey = getSurveyInfo($surveyId);
-                $result = sendSubmitNotifications($surveyId, $emailsByType, $preserveResend, true);
+                $result = sendSubmitNotifications($surveyId, $emailsByType, true);
                 if (!$preserveResend) {
                     // only delete FailedEmail entries that have succeeded
                     $criteria->addCondition('status = :status');

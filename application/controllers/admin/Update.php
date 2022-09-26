@@ -322,7 +322,7 @@ class Update extends DynamicSurveyCommonAction
                 if ($changedFiles->result) {
                     $aData = $updateModel->getFileStatus($changedFiles->files);
 
-                    $aData['html_from_server'] = (isset($changedFiles->html)) ? $changedFiles->html : '';
+                    $aData['html_from_server'] = $changedFiles->html ?? '';
                     $aData['datasupdateinfo'] = $this->parseToView($changedFiles->files);
                     $aData['destinationBuild'] = $tobuild;
                     $aData['updateinfo'] = $changedFiles->files;
@@ -405,7 +405,6 @@ class Update extends DynamicSurveyCommonAction
                         if ($unzip->result) {
                             // Should never bug (version.php is checked before))
                             $updateModel->updateVersion($destinationBuild);
-                            $updateModel->destroyGlobalSettings();
                             $updateModel->removeTmpFile('update.zip');
                             $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 

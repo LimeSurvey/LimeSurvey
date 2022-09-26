@@ -619,7 +619,6 @@ function populateDatabase($oDB)
             'startdate' => "datetime NULL",
             'adminemail' => "string(254) NULL",
             'anonymized' => "string(1) NOT NULL default 'N'",
-            'faxto' => "string(20) NULL",
             'format' => "string(1) NULL",
             'savetimings' => "string(1) NOT NULL default 'N'",
             'template' => "string(100) default 'default'",
@@ -1092,7 +1091,8 @@ function populateDatabase($oDB)
             'modified' => "datetime",
             'validation_key' => 'string(38)',
             'validation_key_expiration' => 'datetime',
-            'last_forgot_email_password' => 'datetime'
+            'last_forgot_email_password' => 'datetime',
+            'expires' => 'datetime'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
@@ -1160,10 +1160,11 @@ function populateDatabase($oDB)
         }
 
         $oDB->createCommand()->createTable(
-            '{{failed_email}}',
+            '{{failed_emails}}',
             [
                 'id' => "pk",
                 'surveyid' => "integer NOT NULL",
+                'responseid' => "integer NOT NULL",
                 'email_type' => "string(200) NOT NULL",
                 'recipient' => "string(320) NOT NULL",
                 'language' => "string(20) NOT NULL DEFAULT 'en'",
@@ -1171,6 +1172,7 @@ function populateDatabase($oDB)
                 'created' => "datetime NOT NULL",  //this one has always to be set to delete after x days ...
                 'status' => "string(20) NULL DEFAULT 'SEND FAILED'",
                 'updated' => "datetime NULL",
+                'resend_vars' => "text NOT NULL"
             ]
         );
 

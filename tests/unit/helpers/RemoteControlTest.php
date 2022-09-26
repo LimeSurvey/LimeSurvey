@@ -383,7 +383,7 @@ class RemoteControlTest extends TestBaseClass
         );
         $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
 
-        $groupFileName = BASEPATH . '../tests/data/file_upload/limesurvey_group_472.lsg';
+        $groupFileName = ROOT . '/tests/data/file_upload/limesurvey_group_472.lsg';
         $groupData = base64_encode(file_get_contents($groupFileName));
 
         $result = $handler->import_group(

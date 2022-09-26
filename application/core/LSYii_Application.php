@@ -285,7 +285,7 @@ class LSYii_Application extends CWebApplication
      */
     public function getConfig($name, $default = false)
     {
-        return isset($this->config[$name]) ? $this->config[$name] : $default;
+        return $this->config[$name] ?? $default;
     }
 
 
@@ -403,7 +403,7 @@ class LSYii_Application extends CWebApplication
         }
         // Handle specific exception cases, like "user friendly" exceptions and exceptions on ajax requests
         $this->handleSpecificExceptions($event->exception);
-        $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
+        $statusCode = $event->exception->statusCode ?? null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
             /* Can restrict to admin ? */
             /* debug ro 2 : always send Yii debug even 404 */

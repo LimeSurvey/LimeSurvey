@@ -13,10 +13,11 @@ class Update_489 extends DatabaseUpdateBase
     public function up()
     {
         $this->db->createCommand()->createTable(
-            '{{failed_email}}',
+            '{{failed_emails}}',
             [
                 'id' => "pk",
                 'surveyid' => "integer NOT NULL",
+                'responseid' => "integer NOT NULL",
                 'email_type' => "string(200) NOT NULL",
                 'recipient' => "string(320) NOT NULL",
                 'language' => "string(20) NOT NULL DEFAULT 'en'",
@@ -24,6 +25,7 @@ class Update_489 extends DatabaseUpdateBase
                 'created' => "datetime NOT NULL",  //this one has always to be set to delete after x days ...
                 'status' => "string(20) NULL DEFAULT 'SEND FAILED'",
                 'updated' => "datetime NULL",
+                'resend_vars' => "text NOT NULL"
             ]
         );
         $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();

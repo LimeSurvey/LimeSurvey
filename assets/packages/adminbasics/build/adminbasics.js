@@ -528,7 +528,7 @@
     return EXISTS$1 ? document$3.createElement(it) : {};
   };
 
-  // Thanks to IE8 for its funny defineProperty
+  // Thanks to IE8 for your funny defineProperty
   var ie8DomDefine = !descriptors && !fails(function () {
     // eslint-disable-next-line es/no-object-defineproperty -- required for testing
     return Object.defineProperty(documentCreateElement('div'), 'a', {

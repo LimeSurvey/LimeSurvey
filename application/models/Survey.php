@@ -26,7 +26,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $startdate Survey Start date (YYYY-MM-DD hh:mm:ss)
  * @property string $adminemail Survey administrator email address
  * @property string $anonymized Whether survey is anonymized or not (Y/N)
- * @property string $faxto
  * @property string $format A : All in one, G : Group by group, Q : question by question, I : inherit value from survey group
  * @property string $savetimings Whether survey timings are saved (Y/N)
  * @property string $template Template name
@@ -478,9 +477,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('datecreated', 'default', 'value' => date("Y-m-d H:m:s")),
             array('startdate', 'default', 'value' => null),
             array('expires', 'default', 'value' => null),
-            array('admin,faxto', 'LSYii_Validators'),
+            array('admin', 'LSYii_Validators'),
             array('admin', 'length', 'min' => 1, 'max' => 50),
-            array('faxto', 'length', 'min' => 0, 'max' => 20),
             array('adminemail', 'filter', 'filter' => 'trim'),
             array('bounce_email', 'filter', 'filter' => 'trim'),
             //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
@@ -2121,7 +2119,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getOwnerUserName()
     {
-        return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
+        return $this->owner["users_name"] ?? "";
     }
 
     /**

@@ -44,7 +44,6 @@ class Database extends SurveyCommonAction
     private $updateableFields = [
                 'owner_id' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'admin' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
-                'faxto' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'format' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'expires' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
                 'startdate' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
@@ -843,9 +842,9 @@ class Database extends SurveyCommonAction
                         'updated' => $updatedFields,
                         'DEBUG' => ['POST' => $_POST,
                                     'reloaded' => $oSurvey->attributes,
-                                    'aURLParams' => isset($aURLParams) ? $aURLParams : '',
-                                    'initial' => isset($aOldAttributes) ? $aOldAttributes : '',
-                                    'afterApply' => isset($aAfterApplyAttributes) ? $aAfterApplyAttributes : '']
+                                    'aURLParams' => $aURLParams ?? '',
+                                    'initial' => $aOldAttributes ?? '',
+                                    'afterApply' => $aAfterApplyAttributes ?? '']
                     ],
                 ),
                 false,
@@ -888,7 +887,6 @@ class Database extends SurveyCommonAction
         $oSurvey->admin = $request->getPost('admin');
         $oSurvey->adminemail = $request->getPost('adminemail');
         $oSurvey->bounce_email = $request->getPost('bounce_email');
-        $oSurvey->faxto = $request->getPost('faxto');
         $oSurvey->gsid = $request->getPost('gsid');
         $oSurvey->format = $request->getPost('format');
 
@@ -983,7 +981,7 @@ class Database extends SurveyCommonAction
         }
 
         if ($newValue === null) {
-            $newValue = isset($aSurvey[$fieldArrayName]) ? $aSurvey[$fieldArrayName] : $oSurvey->{$fieldArrayName};
+            $newValue = $aSurvey[$fieldArrayName] ?? $oSurvey->{$fieldArrayName};
         } else {
             $this->updatedFields[] = $fieldArrayName;
         }

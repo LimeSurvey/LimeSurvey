@@ -1,7 +1,4 @@
 <?php
-
-require_once(APPPATH . '/third_party/phpmailer/load_phpmailer.php');
-
 /**
  * WIP
  * A SubClass of phpMailer adapted for LimeSurvey
@@ -135,8 +132,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $emailcharset = Yii::app()->getConfig("emailcharset");
 
         /* Set language for errors */
-        if (!$this->SetLanguage(Yii::app()->getConfig("defaultlang"), APPPATH . '/third_party/phpmailer/language/')) {
-            $this->SetLanguage('en', APPPATH . '/third_party/phpmailer/language/');
+        if (!$this->SetLanguage(Yii::app()->getConfig("defaultlang"), APPPATH . '/vendor/phpmailer/language/')) {
+            $this->SetLanguage('en', APPPATH . '/vendor/phpmailer/language/');
         }
         /* Default language to current one */
         $this->mailLanguage = Yii::app()->getLanguage();
@@ -222,7 +219,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * To get a singleton : some part are not needed to do X times
      * @param integer $reset totally or partially the instance
-     * return \LimeMailer
+     * @return LimeMailer
      */
     public static function getInstance($reset = self::ResetBase)
     {
@@ -315,7 +312,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * set the rawSubject and rawBody according to type
      * See if must throw error without
-     * @param string|null $emailType : set the rawSubject and rawBody at same time
+     * @param string|null $emailType set the rawSubject and rawBody at same time
      * @param string|null $language forced language
      */
     public function setTypeWithRaw($emailType, $language = null)
@@ -607,6 +604,184 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
+     * resend functionality for phpmailer, can resend saved MIME body
+     * @param $resendVars array variables needed for a resend [message_type,Subject,uniqueid,boundary[1],boundary[2],boundary[3],MIMEBody]
+     * @return bool
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    public function resend($resendVars)
+    {
+        if (Yii::app()->getConfig('demoMode')) {
+            $this->setError(gT('Email was not sent because demo-mode is activated.'));
+            return false;
+        }
+        try {
+            if (!$this->preResend($resendVars)) {
+                return false;
+            }
+
+            return $this->postSend();
+        } catch (Exception $exc) {
+            $this->mailHeader = '';
+            $this->setError($exc->getMessage());
+            if ($this->exceptions) {
+                throw $exc;
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * preResend function that sets values for the resending process @see resend()
+     * @param $resendVars array variables needed for a resend [message_type,Subject,uniqueid,boundary[1],boundary[2],boundary[3],MIMEBody]
+     * @return bool
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    public function preResend(array $resendVars): bool
+    {
+        if (
+            'smtp' === $this->Mailer
+            || ('mail' === $this->Mailer && (\PHP_VERSION_ID >= 80000 || stripos(PHP_OS, 'WIN') === 0))
+        ) {
+            //SMTP mandates RFC-compliant line endings
+            //and it's also used with mail() on Windows
+            static::setLE(self::CRLF);
+        } else {
+            //Maintain backward compatibility with legacy Linux command line mailers
+            static::setLE(PHP_EOL);
+        }
+        //Check for buggy PHP versions that add a header with an incorrect line break
+        if (
+            'mail' === $this->Mailer
+            && ((\PHP_VERSION_ID >= 70000 && \PHP_VERSION_ID < 70017)
+                || (\PHP_VERSION_ID >= 70100 && \PHP_VERSION_ID < 70103))
+            && ini_get('mail.add_x_header') === '1'
+            && stripos(PHP_OS, 'WIN') === 0
+        ) {
+            trigger_error($this->lang('buggy_php'), E_USER_WARNING);
+        }
+
+        try {
+            $this->error_count = 0; //Reset errors
+            $this->mailHeader = '';
+
+            //Dequeue recipient and Reply-To addresses with IDN
+            foreach (array_merge($this->RecipientsQueue, $this->ReplyToQueue) as $params) {
+                $params[1] = $this->punyencodeAddress($params[1]);
+                call_user_func_array([$this, 'addAnAddress'], $params);
+            }
+            if (count($this->to) + count($this->cc) + count($this->bcc) < 1) {
+                throw new Exception($this->lang('provide_address'), self::STOP_CRITICAL);
+            }
+
+            //Validate From, Sender, and ConfirmReadingTo addresses
+            foreach (['From', 'Sender', 'ConfirmReadingTo'] as $address_kind) {
+                $this->{$address_kind} = trim($this->{$address_kind});
+                if (empty($this->{$address_kind})) {
+                    continue;
+                }
+                $this->{$address_kind} = $this->punyencodeAddress($this->{$address_kind});
+                if (!static::validateAddress($this->{$address_kind})) {
+                    $error_message = sprintf(
+                        '%s (%s): %s',
+                        $this->lang('invalid_address'),
+                        $address_kind,
+                        $this->{$address_kind}
+                    );
+                    $this->setError($error_message);
+                    $this->edebug($error_message);
+                    if ($this->exceptions) {
+                        throw new Exception($error_message);
+                    }
+
+                    return false;
+                }
+            }
+
+            //Set whether the message is multipart/alternative
+            if ($this->alternativeExists()) {
+                $this->ContentType = static::CONTENT_TYPE_MULTIPART_ALTERNATIVE;
+            }
+
+            $this->message_type = $resendVars['message_type'];
+            //Trim subject consistently
+            $this->Subject = $resendVars['Subject'];
+            //Create body before headers in case body makes changes to headers (e.g. altering transfer encoding)
+            $this->MIMEHeader = '';
+            $this->uniqueid = $resendVars['uniqueid'];
+            $this->boundary[1] = $resendVars['boundary'][1];
+            $this->boundary[2] = $resendVars['boundary'][2];
+            $this->boundary[3] = $resendVars['boundary'][3];
+            $this->MIMEBody = $resendVars['MIMEBody'];
+            //createBody may have added some headers, so retain them
+            $tempheaders = $this->MIMEHeader;
+            $this->MIMEHeader = $this->createHeader();
+            $this->MIMEHeader .= $tempheaders;
+
+            //To capture the complete message when using mail(), create
+            //an extra header list which createHeader() doesn't fold in
+            if ('mail' === $this->Mailer) {
+                if (count($this->to) > 0) {
+                    $this->mailHeader .= $this->addrAppend('To', $this->to);
+                } else {
+                    $this->mailHeader .= $this->headerLine('To', 'undisclosed-recipients:;');
+                }
+                $this->mailHeader .= $this->headerLine(
+                    'Subject',
+                    $this->encodeHeader($this->secureHeader($this->Subject))
+                );
+            }
+
+            //Sign with DKIM if enabled
+            if (
+                !empty($this->DKIM_domain)
+                && !empty($this->DKIM_selector)
+                && (!empty($this->DKIM_private_string)
+                    || (!empty($this->DKIM_private)
+                        && static::isPermittedPath($this->DKIM_private)
+                        && file_exists($this->DKIM_private)
+                    )
+                )
+            ) {
+                $header_dkim = $this->DKIM_Add(
+                    $this->MIMEHeader . $this->mailHeader,
+                    $this->encodeHeader($this->secureHeader($this->Subject)),
+                    $this->MIMEBody
+                );
+                $this->MIMEHeader = static::stripTrailingWSP($this->MIMEHeader) . static::$LE .
+                    static::normalizeBreaks($header_dkim) . static::$LE;
+            }
+
+            return true;
+        } catch (Exception $exc) {
+            $this->setError($exc->getMessage());
+            if ($this->exceptions) {
+                throw $exc;
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * Variables needed to resend saved emails
+     * @return array
+     */
+    public function getResendEmailVars()
+    {
+        $resendHeader['message_type'] = $this->message_type;
+        $resendHeader['Subject'] = $this->Subject;
+        $resendHeader['uniqueid'] = $this->uniqueid;
+        $resendHeader['boundary'][1] = $this->boundary[1];
+        $resendHeader['boundary'][2] = $this->boundary[2];
+        $resendHeader['boundary'][3] = $this->boundary[3];
+        $resendHeader['MIMEBody'] = $this->MIMEBody;
+
+        return $resendHeader;
+    }
+
+    /**
      * Get the replacements for token.
      * @return string[]
      */
@@ -687,7 +862,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 }
             }
         }
-        $aReplacements = array_merge($this->aReplacements, $aReplacements);
+        $aReplacements = array_merge($aReplacements, $this->aReplacements);
         return LimeExpressionManager::ProcessString($string, null, $aReplacements, 3, 1, false, false, true);
     }
 

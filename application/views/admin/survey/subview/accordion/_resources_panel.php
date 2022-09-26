@@ -41,7 +41,7 @@ LSYii_ClientScript::POS_BEGIN
                     'images' =>  gT('Images', 'unescaped')),
                 array(
                     'class'=>'btn btn-default',
-                    "data-href" => App()->request->getBaseUrl()."/third_party/kcfinder/browse.php?language=".sTranslateLangCode2CK(App()->language)
+                    "data-href" => App()->request->getBaseUrl()."/vendor/kcfinder/browse.php?language=".sTranslateLangCode2CK(App()->language)
                 )
             ); 
         ?>
@@ -61,7 +61,7 @@ LSYii_ClientScript::POS_BEGIN
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-12">
-            <iframe id="browseiframe" src="<?php echo App()->request->getBaseUrl() ; ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" width="100%" height="600px"></iframe>
+            <iframe id="browseiframe" src="<?php echo App()->request->getBaseUrl() ; ?>/vendor/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" width="100%" height="600px"></iframe>
         </div>
     </div>
   </div>
