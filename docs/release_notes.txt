@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.29 (build 220920) to 3.28.30 (build 220927) September 26, 2022
+-Fixed issue #18351: Extra token placeholder show as invalid in expression (#2601) (Denis Chenu)
+-Fixed issue #18240: QuestionTheme browserdetect, Show Platform information didn't work (#2596) (Gabriel Jenik)
+-Fixed issue #17870: Default value with line feed broke Expression Script (Denis Chenu)
+#Updated translation: Urdu by lucas_encuesta.biz
+#Updated translation: Khmer by lucas_encuesta.biz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+
+
 Changes from 3.28.28 (build 220912) to 3.28.29 (build 220920) September 19, 2022
 -Fixed issue #18344: Unable to download file in response list (IIS) (Olle Haerstedt)
 -Fixed issue #18133: Set "Other" state has no clue about current state (Gabriel Jenik)
