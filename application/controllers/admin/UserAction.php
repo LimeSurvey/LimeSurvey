@@ -165,7 +165,7 @@ class UserAction extends SurveyCommonAction
         $aData['fullpagebar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin"));
 
         // Green Bar Page Title
-        $aData['pageTitle'] = gT('My Account');
+        $aData['pageTitle'] = gT('Account');
 
         //Get data for personal menues
         $oSurveymenu = Surveymenu::model();
