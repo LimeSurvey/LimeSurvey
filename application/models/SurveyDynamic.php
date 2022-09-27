@@ -388,12 +388,12 @@ class SurveyDynamic extends LSActiveRecord
         $oFieldMap = json_decode(base64_decode($base64jsonFieldMap));
         $value     = $this->$colName;
 
-        $sFullValue = getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage);
+        $sFullValue = strip_tags(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
         if (strlen($sFullValue) > 50) {
             $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value);
             $sValue          = '<span data-toggle="tooltip" data-placement="left" title="' . quoteText($sFullValue) . '">' . $sElipsizedValue . '</span>';
         } else {
-            $sValue          = CHtml::encode($sFullValue);
+            $sValue          = $sFullValue;
         }
 
         // Upload question
