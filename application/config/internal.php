@@ -264,6 +264,7 @@ $internalConfig = array(
                 'darkencss'               => 'LS_Twig_Extension::darkencss',
                 'lightencss'              => 'LS_Twig_Extension::lightencss',
                 'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
+                'getGoogleAnalyticsTrackingUrl'      => 'LS_Twig_Extension::getGoogleAnalyticsTrackingUrl',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -372,6 +373,7 @@ $internalConfig = array(
                     'darkencss',
                     'lightencss',
                     'getAllTokenAnswers',
+                    'getGoogleAnalyticsTrackingUrl',
                 ),
             ),
 

@@ -587,4 +587,65 @@ class LS_Twig_Extension extends Twig_Extension
         return $aResponses;
     }
 
+    /**
+     * Returns the "tracking url" for Google Analytics when style is "Survey-SID/GROUP"
+     * @param int $surveyId
+     * @return string
+     */
+    public static function getGoogleAnalyticsTrackingUrl($surveyId)
+    {
+        $survey = Survey::model()->findByPk($surveyId);
+
+        if(isset($survey->googleanalyticsapikey) && $survey->googleanalyticsapikey === "9999useGlobal9999") {
+            $googleAnalyticsAPIKey = trim(Yii::app()->getConfig('googleanalyticsapikey'));
+        } elseif (isset($survey->googleanalyticsapikey) && trim($survey->googleanalyticsapikey) != '') {
+            $googleAnalyticsAPIKey = trim($survey->googleanalyticsapikey);
+        } else {
+            $googleAnalyticsAPIKey = "";
+        }
+
+        $googleAnalyticsStyle = isset($survey->googleanalyticsstyle) ? $survey->googleanalyticsstyle : '1';
+
+        if ($googleAnalyticsAPIKey == '' || $googleAnalyticsStyle != 2) {
+            return '';
+        }
+
+        $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
+
+        $groupName = '';
+        $moveInfo = LimeExpressionManager::GetLastMoveResult();
+        if (is_null($moveInfo)) {
+            $gseq = 'welcome';
+        } elseif ($moveInfo['finished']) {
+            $gseq = 'finished';
+        } elseif (isset($moveInfo['at_start']) && $moveInfo['at_start']) {
+            $gseq = 'welcome';
+        } else {
+            if ($survey->format == 'A') {
+                $gseq = 1;
+            } elseif (
+                $showgroupinfo == 'both'
+                || $showgroupinfo == 'name'
+                || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
+                || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
+                || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
+            ) {
+                //$survey->format
+                $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
+                $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
+                $gseq = $moveInfo['gseq']+1;
+            };
+            // TODO: Handle the "printanswers" case. Not sure how to identify it.
+        }
+
+        $language = Yii::app()->getLanguage();
+        if (!isset($survey->languagesettings[$language])) {
+            $language = $survey->language;
+        }
+        $surveyName = $survey->languagesettings[$language]->surveyls_title;
+
+        $trackURL = htmlspecialchars($surveyName . '-[' . $surveyId . ']/[' . $gseq . ']-' . $groupName);
+        return $trackURL;
+    }
+
 }
