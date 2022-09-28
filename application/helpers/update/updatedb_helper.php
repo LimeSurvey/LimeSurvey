@@ -56,7 +56,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
     // Try to aquire database update lock
-    if (!$this->getDatabaseUpdateLock()) {
+    if (!getDatabaseUpdateLock()) {
         return false;
     }
 
