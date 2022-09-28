@@ -81,10 +81,10 @@ class Update extends DynamicSurveyCommonAction
 // phpcs:enable
     /**
      * Backward compatibility function for updates to 5.3 from any previous version
-     * 
+     *
      * @inheritDoc
      */
-    protected function renderWrappedTemplate ($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         if (method_exists(get_parent_class($this), 'renderWrappedTemplate')) {
             parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
@@ -322,7 +322,7 @@ class Update extends DynamicSurveyCommonAction
 
                 if ($changedFiles->result) {
                     $aData = $updateModel->getFileStatus($changedFiles->files);
-                	App()->session['update_changed_files']=json_decode(json_encode($changedFiles->files),true);
+                    App()->session['update_changed_files'] = json_decode(json_encode($changedFiles->files), true);
 
                     $aData['html_from_server'] = (isset($changedFiles->html)) ? $changedFiles->html : '';
                     $aData['destinationBuild'] = $tobuild;
@@ -343,14 +343,14 @@ class Update extends DynamicSurveyCommonAction
      */
     public function backup()
     {
-    if (Permission::model()->hasGlobalPermission('superadmin')) {
+        if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
                 $updateModel = new UpdateForm();
-				$changedFiles = App()->session['update_changed_files'];
+                $changedFiles = App()->session['update_changed_files'];
                 if ($changedFiles) {
-                	$backupInfos = $updateModel->backupFiles($changedFiles);
+                    $backupInfos = $updateModel->backupFiles($changedFiles);
 
                     if ($backupInfos->result) {
                         $dbBackupInfos = $updateModel->backupDb($destinationBuild);
@@ -407,8 +407,8 @@ class Update extends DynamicSurveyCommonAction
 
                             App()->session['update_result'] = null;
                             App()->session['security_update'] = null;
-            				App()->session['update_changed_files'] = null;
-                        
+                            App()->session['update_changed_files'] = null;
+
                             $today = new DateTime("now");
                             App()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
