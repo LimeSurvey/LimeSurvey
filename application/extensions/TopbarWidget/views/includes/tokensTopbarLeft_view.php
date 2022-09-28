@@ -159,7 +159,7 @@
     <!-- Generate tokens -->
     <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/tokenify/surveyid/$oSurvey->sid"); ?>" role="button">
         <span class="icon-do text-success"></span>
-        <?php eT("Generate tokens"); ?>
+        <?php eT("Generate access codes"); ?>
     </a>
 
     <!-- View participants of this survey in CPDB -->
