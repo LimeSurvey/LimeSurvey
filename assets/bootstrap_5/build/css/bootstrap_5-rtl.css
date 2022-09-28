@@ -10929,6 +10929,15 @@ a {
   border-top: 0;
 }
 
+.gender-button li {
+  margin-left: 0rem !important;
+}
+
+[data-toggle=buttons] > .btn input[type=radio] {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+
 @media (min-width: 768px) {
   .modal-dialog {
     width: 600px;

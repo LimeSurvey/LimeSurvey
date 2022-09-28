@@ -24,11 +24,24 @@ a {
 }
 
 
+
+
 // Disable border color between thead, tbody.
 .table > :not(:first-child) {
     border-top: 0;
 }
 
+// remove margin right between lists of gender buttons.
+.gender-button li {
+    margin-right: 0rem !important;
+}
+// hide default input checkbox in the gender buttons
+[data-toggle=buttons]>.btn input[type=radio] {
+    position: absolute;
+    clip: rect(0,0,0,0);
+}
+
+// fix width expand issue when open file upload popup
 @media (min-width: 768px){
     .modal-dialog {
         width: 600px;
