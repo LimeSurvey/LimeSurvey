@@ -622,7 +622,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   function labelSetDestruct() {
     $('#labelsets').select2('destroy');
     $('#labelsetpreview').empty();
-    $('#longcodesalert').hide();
+    $('#labelsetalert').hide();
   }
 
   /**
@@ -632,74 +632,119 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function showLabelSetPreview(lid /*: number */) /*: void */ {
+    $('#labelsetpreview').html($('#labelsetsLoader').html());
+    hideLabelSetAlert();
     return $.ajax({
       url: languageJson.lsdetailurl,
       data: {sid, lid},
       cache: true,
-      success(json /*: {results: Array<{label_name: string, labels: Array<{code: string, title: string}>}>, languages: {}} */) {
-        if (json.languages === []) {
-          alert('Internal error: No languages');
-          throw 'abort';
-        }
-
-        const $liTemplate = $('<li role="presentation"></li>');
-        const $aTemplate = $('<a data-toggle="tab"></a>');
-        const $tabTodyTemplate = $('<div></div>');
-        const $listTemplate = $('<div class="list-group selector_label-list"></div>');
-        const $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
-        const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
-        const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
-
-        var hasInvalidCodes = false;
-        const source = $('#labelsetbrowserModal').data('source');
-        const i = 0;
-        $.each(json.languages, (language, languageName) => {
-          const $linkItem = $aTemplate.clone();
-          const $bodyItem = $tabTodyTemplate.clone();
-          let $itemList = $listTemplate.clone();
-
-          const classLink = i === 0 ? 'active' : '';
-          const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
-
-          $linkItem.addClass(classLink).attr('href', `#language_${language}`).text(languageName);
-          $liTemplate.clone().append($linkItem).appendTo($tabindex);
-
-          $bodyItem.addClass(classBody).attr('id', `language_${language}`);
-          $tabbody.append($bodyItem);
-
-          const labelSet = json.results[language];
-
-          $itemList = $listTemplate.clone();
-
-          labelSet.labels.forEach((label) => {
-            // Label title is not concatenated directly because it may have non-encoded HTML
-            const $labelTitleDiv = $('<div class="col-md-7"></div>');
-            $labelTitleDiv.text(label.title);
-            const $listItem = $listItemTemplate.clone();
-            $listItem.append(`<div class="col-md-5 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
-            $listItem.append($labelTitleDiv);
-            $listItem.attr('data-label', JSON.stringify(label));
-            $itemList.append($listItem);
-
-            if (source === 'answeroptions' && label.code.length > 5) {
-              hasInvalidCodes = true;
-            }
-          });
-
-          $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
-          $itemList.appendTo($bodyItem);
-
-          if (hasInvalidCodes) {
-              $('#longcodesalert').show();
-          } else {
-              $('#longcodesalert').hide();
+        success(json /*: {success: bool, results: Array<{label_name: string, labels: Array<{code: string, title: string}>}>, languages: {}} */) {
+        if (json.success !== true) {
+          $('#labelsetpreview').empty();
+          showLabelSetAlert(languageJson.labelSetNotFound, 'danger'); // This could mean the label set is not found or it has no languages
+        } else {
+          if (json.languages === []) {
+            alert('Internal error: No languages');
+            throw 'abort';
           }
-        });
+
+          const $liTemplate = $('<li role="presentation"></li>');
+          const $aTemplate = $('<a data-toggle="tab"></a>');
+          const $tabTodyTemplate = $('<div></div>');
+          const $listTemplate = $('<div class="list-group selector_label-list"></div>');
+          const $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
+          const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
+          const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
+
+          $('#labelsetpreview').empty();
+
+          let hasInvalidCodes = false;
+          let isEmpty = true;
+          const source = $('#labelsetbrowserModal').data('source');
+          const i = 0;
+          $.each(json.languages, (language, languageName) => {
+            const $linkItem = $aTemplate.clone();
+            const $bodyItem = $tabTodyTemplate.clone();
+            let $itemList = $listTemplate.clone();
+
+            const classLink = i === 0 ? 'active' : '';
+            const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
+
+            $linkItem.addClass(classLink).attr('href', `#language_${language}`).text(languageName);
+            $liTemplate.clone().append($linkItem).appendTo($tabindex);
+
+            $bodyItem.addClass(classBody).attr('id', `language_${language}`);
+            $tabbody.append($bodyItem);
+
+            const labelSet = json.results[language];
+
+            $itemList = $listTemplate.clone();
+
+            if (labelSet.labels) {
+              isEmpty = false;
+              labelSet.labels.forEach((label) => {
+                // Label title is not concatenated directly because it may have non-encoded HTML
+                const $labelTitleDiv = $('<div class="col-md-7"></div>');
+                $labelTitleDiv.text(label.title);
+                const $listItem = $listItemTemplate.clone();
+                $listItem.append(`<div class="col-md-5 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+                $listItem.append($labelTitleDiv);
+                $listItem.attr('data-label', JSON.stringify(label));
+                $itemList.append($listItem);
+
+                if (source === 'answeroptions' && label.code.length > 5) {
+                  hasInvalidCodes = true;
+                }
+              });
+            }
+
+            $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
+            $itemList.appendTo($bodyItem);
+          });
+          
+          if (isEmpty) {
+            showLabelSetAlert(languageJson.labelSetEmpty);
+          } else {
+            if (hasInvalidCodes) {
+              showLabelSetAlert(languageJson.answeroptions.truncationWarning);
+            }
+            $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
+            $tabindex.find('li').first().find('a').trigger('click');
+          }
+        }
+      },
+      error(jqXHR, textStatus, errorThrown) {
         $('#labelsetpreview').empty();
-        $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
-        $tabindex.find('li').first().find('a').trigger('click');
+        showLabelSetAlert(languageJson.labelSetFail, 'danger');
+        console.error(errorThrown);
       },
     });
+  }
+
+  /**
+   * Shows an alert in the label set's modal
+   *
+   * @param {string} message The message to show
+   * @param {?string} type Alert type (eg. 'danger')
+   * @return {void}
+   */
+  function showLabelSetAlert(message /*: mixed */, type /*?: string */) /*: void */ {
+    if (typeof message !== 'string') {
+        throw 'expected string';
+    }
+    const alertType = type ?? 'warning';
+    const alert = $('#labelsetalert');
+    const alertHtml = '<div class="alert alert-' + alertType + ' ls-space margin bottom-0 top-15">' + message + '</div>';
+    alert.html(alertHtml).show();
+  }
+
+  /**
+   * Hides the alert in the label set's modal
+   * 
+   * @return {void}
+   */
+  function hideLabelSetAlert() /*: void */ {
+    $('#labelsetalert').empty().hide();
   }
 
   /**
@@ -720,6 +765,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
       throw 'abort';
     }
 
+    $('#labelsetsModalContent').hide();
+    $('#labelsetsLoader').show();
+
     // TODO: Send as input, not in DOM.
     if ($('#current_scale_id').length === 0) {
         $('body').append(`<input type="hidden" id="current_scale_id" value="${scaleId}" name="current_scale_id" />`);
@@ -729,12 +777,18 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     $('#labelsets').select2();
     $('#labelsetpreview').html('');
+    $('#labelsetsSelectorContainer').hide();
+    hideLabelSetAlert();
     $.ajax({
       url: languageJson.lspickurl,
-      data: { sid, match: 1 },
+      data: {
+        sid,
+        match: 1,
+        language: languageJson.langs.split(';')[0]
+      },
       success(jsonString) {
         if (jsonString.success !== true) {
-          $('#labelsetpreview').html(`<p class='alert'>${languageJson.strNoLabelSet}</p>`);
+          showLabelSetAlert(languageJson.strNoLabelSet);
           $('#btnlsreplace').addClass('disabled');
           $('#btnlsinsert').addClass('disabled');
           $('#btnlsreplace').attr('disabled', 'disabled');
@@ -743,15 +797,27 @@ $(document).on('ready pjax:scriptcomplete', function () {
           $('#labelsets').find('option').each((i, option) => { if ($(option).attr('value')) { $(option).remove(); } });
           jsonString.labelsets.forEach((item) => {
             const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);  // jshint ignore: line
-            $('#labelsets').append(newOption);
+            $('#labelsets').append(newOption).trigger('change');
           });
+          $('#labelsetsSelectorContainer').show();
+          $('#btnlsreplace').removeClass('disabled');
+          $('#btnlsinsert').removeClass('disabled');
+          $('#btnlsreplace').removeAttr('disabled');
+          $('#btnlsinsert').removeAttr('disabled');
         }
+      },
+      error(jqXHR, textStatus, errorThrown) {
+        showLabelSetAlert(languageJson.labelSetFail, 'danger');
+        console.error(errorThrown);
+      },
+      complete() {
+        $('#labelsetsLoader').hide();
+        $('#labelsetsModalContent').show();
       }
-      // TODO: error?
     });
 
     // Label set select2 element.
-    $('#labelsets').off('change').on('change', function () {
+    $('#labelsets').off('select2:select').on('select2:select', function () {
       const value = $(this).val();
       showLabelSetPreview(parseInt(value));
     });

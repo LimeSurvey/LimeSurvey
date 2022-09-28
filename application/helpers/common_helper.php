@@ -696,7 +696,7 @@ function getUserList($outputformat = 'fullinfoarray')
     $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
 
     if (count($uresult) == 0 && !empty($myuid)) {
-//user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
+//user is not in a group and usercontrolSameGroupPolicy is activated - at least show their own userinfo
         $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=" . $myuid;
         $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
     }
@@ -2474,6 +2474,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'B' ||
                 $captchamode == 'D' ||
+                $captchamode == 'F' ||
+                $captchamode == 'G' ||
+                $captchamode == 'I' ||
+                $captchamode == 'M' ||
+                $captchamode == 'U' ||
                 $captchamode == 'R'
             ) {
                 return true;
@@ -2484,6 +2489,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'B' ||
                 $captchamode == 'C' ||
+                $captchamode == 'F' ||
+                $captchamode == 'H' ||
+                $captchamode == 'K' ||
+                $captchamode == 'O' ||
+                $captchamode == 'T' ||
                 $captchamode == 'X'
             ) {
                 return true;
@@ -2494,6 +2504,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'C' ||
                 $captchamode == 'D' ||
+                $captchamode == 'G' ||
+                $captchamode == 'H' ||
+                $captchamode == 'J' ||
+                $captchamode == 'L' ||
+                $captchamode == 'P' ||
                 $captchamode == 'S'
             ) {
                 return true;
@@ -2832,12 +2847,11 @@ function getParticipantAttributes($iSurveyID)
 */
 function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 {
-
-
-    $aBasicTokenFields = array('firstname' => array(
-        'description' => gT('First name'),
-        'mandatory' => 'N',
-        'showregister' => 'Y'
+    $aBasicTokenFields = array(
+        'firstname' => array(
+            'description' => gT('First name'),
+            'mandatory' => 'N',
+            'showregister' => 'Y'
         ),
         'lastname' => array(
             'description' => gT('Last name'),
@@ -2857,32 +2871,37 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
         'token' => array(
             'description' => gT('Access code'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'language' => array(
             'description' => gT('Language code'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'sent' => array(
             'description' => gT('Invitation sent date'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'remindersent' => array(
             'description' => gT('Last reminder sent date'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'remindercount' => array(
             'description' => gT('Total numbers of sent reminders'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'usesleft' => array(
             'description' => gT('Uses left'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
+        ),
+        'completed' => array(
+            'description' => gT('Completed'),
+            'mandatory' => 'N',
+            'showregister' => 'N'
         ),
     );
 
@@ -3797,9 +3816,9 @@ function getLastInsertID($sTableName)
 /**
 * getGroupDepsForConditions() get Dependencies between groups caused by conditions
 * @param string $sid - the currently selected survey
-* @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
-* @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
-* @param string $indexby - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
+* @param string $depgid - (optional) get only the dependencies applying to the group with gid depgid
+* @param string $targgid - (optional) get only the dependencies for groups dependents on group targgid
+* @param string $indexby - (optional) "by-depgid" for result indexed with $res[$depgid][$targgid]
 *                   "by-targgid" for result indexed with $res[$targgid][$depgid]
 * @return array - returns an array describing the conditions or NULL if no dependecy is found
 *
@@ -3921,10 +3940,10 @@ function getGroupDepsForConditions($sid, $depgid = "all", $targgid = "all", $ind
 /**
 * getQuestDepsForConditions() get Dependencies between groups caused by conditions
 * @param string $sid - the currently selected survey
-* @param string $gid - (optionnal) only search dependecies inside the Group Id $gid
-* @param string $depqid - (optionnal) get only the dependencies applying to the question with qid depqid
-* @param string $targqid - (optionnal) get only the dependencies for questions dependents on question Id targqid
-* @param string $indexby - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
+* @param string $gid - (optional) only search dependecies inside the Group Id $gid
+* @param string $depqid - (optional) get only the dependencies applying to the question with qid depqid
+* @param string $targqid - (optional) get only the dependencies for questions dependents on question Id targqid
+* @param string $indexby - (optional) "by-depqid" for result indexed with $res[$depqid][$targqid]
 *                   "by-targqid" for result indexed with $res[$targqid][$depqid]
 * @return array - returns an array describing the conditions or NULL if no dependecy is found
 *
@@ -4017,7 +4036,7 @@ function dbQuoteAll($value)
 * checkMoveQuestionConstraintsForConditions()
 * @param string $sid - the currently selected survey
 * @param string $qid - qid of the question you want to check possible moves
-* @param string $newgid - (optionnal) get only constraints when trying to move to this particular GroupId
+* @param string $newgid - (optional) get only constraints when trying to move to this particular GroupId
 *                                     otherwise, get all moves constraints for this question
 *
 * @return array - returns an array describing the conditions

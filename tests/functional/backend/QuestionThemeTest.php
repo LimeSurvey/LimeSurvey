@@ -64,7 +64,7 @@ class QuestionThemeTest extends TestBaseClassWeb
         // Click "Import"
         $fileInput = $web->findByCss('#importQuestionTemplate #the_file');
         $fileInput->setFileDetector(new LocalFileDetector());
-        $file = BASEPATH . '../tests/data/file_upload/rangeslider_tpartner.zip';
+        $file = ROOT . '/tests/data/file_upload/rangeslider_tpartner.zip';
         $this->assertTrue(file_exists($file));
         $fileInput->sendKeys($file)->submit();
 
@@ -124,7 +124,7 @@ class QuestionThemeTest extends TestBaseClassWeb
 
         // Check that all custom attributes are displayed
         $themeDir = \Yii::app()->getConfig('userquestionthemerootdir') . '/Range-Slider';
-        $file = BASEPATH . '../tests/data/file_upload/rangeslider_tpartner.zip';
+        $file = ROOT . '/tests/data/file_upload/rangeslider_tpartner.zip';
         /** @var ExtensionConfig */
         $config = ExtensionConfig::loadFromZip($file);
         $this->assertNotEmpty($config, 'Loading config.xml from range slider zip file');

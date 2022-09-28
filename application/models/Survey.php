@@ -107,7 +107,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $responsesTableName Name of survey resonses table
  * @property string $timingsTableName Name of survey timings table
  * @property boolean $hasTokensTable Whether survey has a tokens table or not
- * @property boolean $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
+ * @property boolean $hasResponsesTable Wheteher the survey responses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
@@ -331,6 +331,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             PluginSetting::model()->deleteAllByAttributes(array("model" => 'Survey', "model_id" => $this->sid));
             // Delete all uploaded files.
             rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid);
+            // Delete all failed email notifications
+            FailedEmail::model()->deleteAllByAttributes(array('surveyid' => $this->sid));
         }
 
         // Remove from cache
@@ -766,7 +768,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Wheteher the survey reponses (data) table exists in DB
+     * Wheteher the survey responses (data) table exists in DB
      * @return boolean
      */
     public function getHasResponsesTable()
@@ -777,7 +779,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Wheteher the survey reponses timings exists in DB
+     * Wheteher the survey responses timings exists in DB
      * @return boolean
      */
     public function getHasTimingsTable()
@@ -2248,10 +2250,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
     {
         $sGlobalCRUD = $sCRUD;
-        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, response , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
-        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, response , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
         /* Global */

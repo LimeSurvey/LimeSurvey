@@ -18,7 +18,7 @@ use Permission;
 class countFunctions
 {
     /**
-     * Return the count of reponse on current ExpressionScript Engine survey equal to a specific value
+     * Return the count of response on current ExpressionScript Engine survey equal to a specific value
      * @param string $qCode : code of question, currently must be existing sgqa. Sample Q01.sgqa.
      * @param string $comparaison : comparre with value. Can use < or > … see https://www.yiiframework.com/doc/api/1.1/CDbCriteria#compare-detail
      * @param boolean $submitted (or not) response
@@ -54,7 +54,7 @@ class countFunctions
     }
 
     /**
-     * Return the count of reponse on current ExpressionScript Engine survey equal to a specific value
+     * Return the count of response on current ExpressionScript Engine survey equal to a specific value
      * @param string $qCode : code of question, currently must be existing sgqa. Sample Q01.sgqa.
      * @param boolean $submitted (or not)  response
      * @param boolean $self include (or not) current response

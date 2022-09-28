@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{boxes}}".
  *
- * The followings are the available columns in table '{{boxes}}':
+ * The following are the available columns in table '{{boxes}}':
  * @property integer $id Primary key
  * @property integer $position
  * @property string $url

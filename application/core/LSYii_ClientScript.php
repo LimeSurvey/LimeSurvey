@@ -163,7 +163,7 @@ class LSYii_ClientScript extends CClientScript
     /**
      * In LimeSurvey, if debug mode is OFF we use the asset manager (so participants never needs to update their webbrowser cache).
      * If debug mode is ON, we don't use the asset manager, so developpers just have to refresh their browser cache to reload the new scripts.
-     * To make developper life easier, if they want to register a single script file, they can use App()->getClientScript()->registerScriptFile({url to script file})
+     * To make developer life easier, if they want to register a single script file, they can use App()->getClientScript()->registerScriptFile({url to script file})
      * if the file exist in local file system and debug mode is off, it will find the path to the file, and it will publish it via the asset manager
      * @param string $url
      * @param string $position
@@ -253,7 +253,7 @@ class LSYii_ClientScript extends CClientScript
      */
     private function convertDevBaseUrl($package)
     {
-        // We retreive the old package
+        // We retrieve the old package
         $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
 
         // If it has an entry 'devBaseUrl', we use it to replace basePath (it will turn off asset manager for this package)
@@ -278,7 +278,7 @@ class LSYii_ClientScript extends CClientScript
 
     /**
      * This function will analyze the url of a file (css/js) to register
-     * It will check if it can be published via the asset manager and if so will retreive its path
+     * It will check if it can be published via the asset manager and if so will retrieve its path
      * @param $sUrl
      * @return array
      */

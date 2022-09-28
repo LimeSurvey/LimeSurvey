@@ -5,10 +5,11 @@
  */
 return [
 
+    // My profile/account settings
+    ['personalsettings', ['route'=>'user/sa/personalsettings']],
+
     // Users ---------------------------------------
     // --------------------------------------------------
-
-    ['usersIndex', ['route'=>'user/sa/index']],
 
     // TODO needs a POST
     //['setUserPermissions', ['route'=>'user/sa/setuserpermissions/uid/{UID}']],
@@ -18,4 +19,5 @@ return [
     // FIXME bug, also: needs a POST
     //['setUserTemplates', ['route'=>'user/sa/setusertemplates/uid/{UID}']],
 
+    ['usersIndex', ['route' => 'userManagement/index', 'noAdminInFront' => true]]
 ];

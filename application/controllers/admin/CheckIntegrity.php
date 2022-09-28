@@ -612,7 +612,7 @@ class CheckIntegrity extends SurveyCommonAction
                 $aColumns = $model->getMetaData()->columns;
                 $aQids    = array();
 
-                // We get the columns of the reponses table
+                // We get the columns of the responses table
                 foreach ($aColumns as $oColumn) {
                     // Question columns start with the SID
                     if (strpos($oColumn->name, (string)$oSurvey->sid) !== false) {
@@ -630,13 +630,13 @@ class CheckIntegrity extends SurveyCommonAction
                             if (isset($match[0][1])) {
                                 $sQID = substr($sDirtyQid, 0, $match[0][1]);
                             } else {
-                                // It was just the QID....
+                                // It was just the QID.... (maybe)
                                 $sQID = $sDirtyQid;
                             }
 
                             // Here, we get the question as defined in backend
                             try {
-                                $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'language' => $oSurvey->language, 'sid' => $oSurvey->sid ]);
+                                $oQuestion = Question::model()->findByAttributes(['qid' => $sQID , 'sid' => $oSurvey->sid]);
                             } catch (Exception $e) {
                                 // QID potentially invalid , see #17458, reset $oQuestion
                                 $oQuestion = null;

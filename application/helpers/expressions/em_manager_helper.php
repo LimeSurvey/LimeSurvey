@@ -128,7 +128,7 @@ class LimeExpressionManager
 
     /**
      * variables temporarily set for substitution purposes
-     * temporarily mean for this page, until resetted. Not for next page
+     * temporarily mean for this page, until reset. Not for next page
      *
      * These are typically the LimeReplacement Fields passed in via templatereplace()
      * Each has the following structure:  array(
@@ -3910,7 +3910,7 @@ class LimeExpressionManager
                 //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
                 //                . "','readWrite':'" . $readWrite
                 //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
-                . "','default':'" . (is_null($defaultValue) ? '' : str_replace("'", "\'", $defaultValue))
+                . "','default':'" . (is_null($defaultValue) ? '' : json_encode($defaultValue)) // Don't found usage in em_javascript, used in expression ?
                 . "','rowdivid':'" . (is_null($rowdivid) ? '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $groupSeq
@@ -3961,7 +3961,6 @@ class LimeExpressionManager
         } else {
             // Read list of available tokens from the tokens table so that preview and error checking works correctly
             $attrs = array_keys(getTokenFieldsAndNames($surveyid));
-
             $blankVal = [
                 'code'      => '',
                 'type'      => '',
@@ -3969,11 +3968,9 @@ class LimeExpressionManager
                 'jsName'    => '',
                 'readWrite' => 'N',
             ];
-            // DON'T set $this->knownVars['TOKEN'] = $blankVal; becuase optout/optin can need it, then don't replace this from templatereplace
+            // DON'T set $this->knownVars['TOKEN'] = $blankVal; because optout/optin can need it, then don't replace this from templatereplace
             foreach ($attrs as $key) {
-                if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/', $key)) {
-                    $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
-                }
+                $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
             }
         }
 
@@ -6576,7 +6573,7 @@ class LimeExpressionManager
                 $LEM->updatedValues[$sq] = null;
             }
         }
-        // Regardless of whether relevant or hidden, allways set a $_SESSION for quanda_helper, use default value if exist
+        // Regardless of whether relevant or hidden, always set a $_SESSION for quanda_helper, use default value if exist
         // Set this after testing relevance for default value hidden by relevance
         $allSQs = explode('|', $LEM->qid2code[$qid]);
         foreach ($allSQs as $sgqa) {
@@ -6863,7 +6860,7 @@ class LimeExpressionManager
             $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
             Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
             Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
@@ -6875,7 +6872,7 @@ class LimeExpressionManager
             $LEM =& LimeExpressionManager::singleton();
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
             Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
             Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
@@ -6919,7 +6916,7 @@ class LimeExpressionManager
         );
 
         if (!$bReturnArray) {
-            $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+            $jsParts[] = "\n<script type='text/javascript' id='lemscripts'>\n<!--\n";
         }
 
         $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
@@ -7337,7 +7334,7 @@ class LimeExpressionManager
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
                 } else {
-                    // Second time : now if relevance is true: Group is allways visible (see bug #08315).
+                    // Second time : now if relevance is true: Group is always visible (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
                     if (!($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
                         $GalwaysRelevant[$arg['gseq']] = true;
@@ -8962,7 +8959,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         ];
 
         $varNamesUsed = []; // keeps track of whether variables have been declared
-        /* tempVars are resetted when ProcessString call with replacement, review it in 4.0 that have specific functions for this.*/
+        /* tempVars are reset when ProcessString call with replacement, review it in 4.0 that have specific functions for this.*/
         $standardsReplacementFields = getStandardsReplacementFields(
             [
                 'sid' => $sid,
@@ -9053,7 +9050,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
             if ($aSurveyInfo['surveyls_policy_error'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
@@ -9064,7 +9061,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
             if ($aSurveyInfo['surveyls_policy_notice_label'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
@@ -9075,7 +9072,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
         }
 
@@ -9676,7 +9673,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * @param string $type : question type
      * @param string $value : the value
      * @param string $sgq : the sgqa
-     * @param array $qinfo : an array with information from question with mandatory ['qid'=>$qid] , optionnal (but must be 'other'=>$other)
+     * @param array $qinfo : an array with information from question with mandatory ['qid'=>$qid] , optional (but must be 'other'=>$other)
      * @param boolean $set : update the invalid string or not. Used for #14649 (invalid default value)
      * @throw Exception
      *

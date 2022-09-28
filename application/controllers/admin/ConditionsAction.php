@@ -634,7 +634,7 @@ class ConditionsAction extends SurveyCommonAction
     }
 
     /**
-     * This array will be used to explain wich conditions is used to evaluate the question
+     * This array will be used to explain which conditions is used to evaluate the question
      * @return array
      */
     protected function getMethod()
@@ -1498,7 +1498,7 @@ class ConditionsAction extends SurveyCommonAction
                 foreach ($aresult as $arows) {
                     $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
                     $sLanguage = $this->language;
-                    // dualscale_header are allways set, but can be empty
+                    // dualscale_header are always set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
                     $label2 = empty($attr['dualscale_headerB'][$sLanguage]) ? gT('Scale 2') : $attr['dualscale_headerB'][$sLanguage];
                     $shortanswer = "{$arows['title']}: [" . strip_tags($arows->questionl10ns[$this->language]->question) . "][$label1]";

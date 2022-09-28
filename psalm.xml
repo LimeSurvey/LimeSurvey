@@ -19,7 +19,6 @@
         <file name="application/helpers/update/updatedb_helper.php" />
         <ignoreFiles>
             <directory name="third_party" />
-            <directory name="framework" />
         </ignoreFiles>
     </projectFiles>
 </psalm>

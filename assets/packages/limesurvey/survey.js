@@ -305,7 +305,7 @@ function activateActionLink(){
 /**
  * function for replacing submit after confirm
  * @var string text : the text to be shown
- * @var string optionnal title
+ * @var string optional title
  * @var object[] submits : name.value to submit
  */
 function confirmSurveyDialog(text,title,submits){
