@@ -242,7 +242,7 @@ class SurveyPermissions
      *
      * @param $userId int
      * @param $permissions array
-     * @return bool
+     * @return bool true if all permissions could be saved, false otherwise
      */
     public function saveUserPermissions($userId, $permissions)
     {
@@ -333,7 +333,7 @@ class SurveyPermissions
      *
      * @param $userid
      * @param $usercontrolSameGroupPolicy
-     * @return array names of user groups
+     * @return array names of user groups, or empty array
      */
     public function getUserGroupNames($userid, $usercontrolSameGroupPolicy)
     {
