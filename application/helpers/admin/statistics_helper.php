@@ -382,7 +382,7 @@ function buildSelects($allfields, $surveyid, $language)
                 $thisquestion = Yii::app()->db->quoteColumnName($pv) . " IN (";
 
                 foreach ($_POST[$pv] as $condition) {
-                    $thisquestion .= "'" . getEncryptedCondition($responseModel, $pv, $condition) . "', ";
+                    $thisquestion .=  Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $pv, $condition)) . ", ";
                 }
 
                 $thisquestion = substr($thisquestion, 0, -2)
@@ -404,7 +404,8 @@ function buildSelects($allfields, $surveyid, $language)
                     // only add condition if answer has been chosen
                     if (in_array($arow['title'], $_POST[$pv])) {
                         $fieldname = substr($pv, 1, strlen($pv)) . $arow['title'];
-                        $mselects[] = Yii::app()->db->quoteColumnName($fieldname) . " = '" . getEncryptedCondition($responseModel, $fieldname, 'Y') . "'";
+                        $condition =
+                        $mselects[] = Yii::app()->db->quoteColumnName($fieldname) . " = " . Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $fieldname, 'Y'));
                     }
                 }
                 /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
