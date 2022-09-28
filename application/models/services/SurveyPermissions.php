@@ -173,28 +173,26 @@ class SurveyPermissions
      */
     public function getSurveyUserList()
     {
-        $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
-    LEFT OUTER JOIN (SELECT uid AS id FROM {{permissions}} WHERE entity_id = {$this->survey->sid} and entity='survey') AS b ON a.uid = b.id
-    WHERE id IS NULL ";
-        $sSurveyIDQuery .= 'ORDER BY a.users_name';
-        $oSurveyIDResult = \Yii::app()->db->createCommand($sSurveyIDQuery)->query(); //Checked
-        $aSurveyIDResult = $oSurveyIDResult->readAll();
+        $aUserIds = $this->getUserIdsWithSurveyPermissions();
+        $criteria = new \CDbCriteria();
+        $criteria->select = 't.uid, t.users_name, t.full_name';
+        $criteria->addNotInCondition('t.uid', $aUserIds);
+        $users = \User::model()->findAll($criteria);
+
         $authorizedUsersList = [];
         $userList = [];
-
-        //take out superadmin (makes no sense to add superadmin, because he always has the permissions for all surveys)
 
         if ($this->userControlSameGroupPolicy) {
             $authorizedUsersList = getUserList('onlyuidarray');
         }
         $index = 0;
-        foreach ($aSurveyIDResult as $sv) {
+        foreach ($users as $user) {
             if (
-                !$this->userControlSameGroupPolicy || in_array($sv['uid'], $authorizedUsersList)
+                !$this->userControlSameGroupPolicy || in_array($user->uid, $authorizedUsersList)
             ) {
-                $userList[$index]['userid'] = $sv['uid'];
-                $userList[$index]['fullname'] = $sv['full_name'];
-                $userList[$index]['usersname'] = $sv['users_name'];
+                $userList[$index]['userid'] = $user->uid;
+                $userList[$index]['fullname'] = $user->full_name;
+                $userList[$index]['usersname'] = $user->users_name;
                 $index++;
             }
         }
@@ -382,5 +380,29 @@ class SurveyPermissions
             'allPermissionsSet' => $iCount == $iPermissionCount,
             'permissionCrudArray' => $permissionCrudArray
         ];
+    }
+
+    /**
+     * Get the userids which already have survey permissions.
+     *
+     * @return array
+     */
+    public function getUserIdsWithSurveyPermissions(): array
+    {
+        $allUsersWithPermissions = new \CDbCriteria();
+        $allUsersWithPermissions->select = 't.uid';
+        $allUsersWithPermissions->condition = 't.entity_id=:entityId';
+        $allUsersWithPermissions->addCondition('t.entity=:entity');
+        $allUsersWithPermissions->params = [
+            'entityId' => $this->survey->sid,
+            'entity' => 'survey'
+        ];
+        $allUsersWithPermissions->group = 't.uid';
+        $resultUserIds = \Permission::model()->findAll($allUsersWithPermissions);
+        $aUserIds = [];
+        foreach ($resultUserIds as $userid) {
+            $aUserIds[] = $userid->uid;
+        }
+        return $aUserIds;
     }
 }

@@ -179,6 +179,18 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
     }
 
     /**
+     * Test how many users are there to add to survey permissions.
+     * (** test again after one possible user has already been inserted for survey permissions)
+     *
+     * @return void
+     */
+    public function testCntValidUsersNotAll()
+    {
+        $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        self::assertEquals(4, count($oSurveyPermissions->getSurveyUserList()));
+    }
+
+    /**
      * Test valid usergroups (how many usergroups could still be inserted for
      * survey permissions)
      *
