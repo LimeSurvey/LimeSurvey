@@ -186,8 +186,6 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
     }
 
 
-    $htmlcode = '';
-
     if (
         $fieldtype == 'editanswer' ||
         $fieldtype == 'addanswer' ||
@@ -198,12 +196,53 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
     } else {
         $class = "editorLink input-group-addon";
     }
-    $htmlcode .= ""
-    . "<a href=\"javascript:start_popup_editor('" . $fieldname . "','" . addslashes(htmlspecialchars_decode($fieldtext, ENT_QUOTES)) . "','" . $surveyID . "','" . $gID . "','" . $qID . "','" . $fieldtype . "','" . $action . "')\" id='" . $fieldname . "_ctrl' class='{$class} btn btn-default btn-xs'>\n"
-    . "\t<i class='fa fa-pencil btneditanswerena' id='" . $fieldname . "_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='" . gT("Start HTML editor in a popup window") . "'></i>"
-    . "\t<i class='fa fa-pencil btneditanswerdis' id='" . $fieldname . "_popupctrldis'  style='display:none'  ></i>"
-    . "</a>\n";
-
+    /* @var string[] parameters of the editor url */
+    $editorurlparams = array(
+        'name' => $fieldname,
+        'text' => javascriptEscape($fieldtext), // usage for title of the new window
+        'type' => $fieldtype, // email_XX_lang, question_lang …
+    );
+    if (!empty($action)) {
+        $editorurlparams['action'] = javascriptEscape($action);
+    }
+    if (!empty($surveyID)) {
+        $editorurlparams['sid'] = $surveyID;
+    }
+    if (!empty($gID)) {
+        $editorurlparams['gid'] = $gID;
+    }
+    if (!empty($qID)) {
+        $editorurlparams['qid'] = $qID;
+    }
+    $editorurlparams['lang'] = App()->language;
+    $editorurlparams['contdir'] = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+    /* @var string the editor url */
+    $editorurl = App()->getController()->createUrl(
+        'admin/htmleditorpop/sa/index',
+        $editorurlparams
+    );
+    /* @var string content of the action link */
+    $content = CHtml::tag('i', array(
+        'class' => "fa fa-pencil btneditanswerena",
+        'id' => $fieldname . "_popupctrlena",
+        'data-toggle' => "tooltip",
+        'data-placement' => "tooltip",
+        'title' => gT("Start HTML editor in a popup window")
+    ), '')
+    . CHtml::tag('i', array(
+        'class' => "fa fa-pencil btneditanswerdis",
+        'id' => $fieldname . "_popupctrldis",
+        'style' => "display:none",
+    ), '');
+    /* @var final code to return */
+    $htmlcode = CHtml::link(
+        $content,
+        "javascript:start_popup_editor('{$fieldname}','" . $editorurl . "');",
+        array(
+            'id' => $fieldname . "_ctrl",
+            'class' => "{$class} btn btn-default btn-xs",
+        )
+    );
     return $htmlcode;
 }
 
@@ -316,7 +355,7 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
                 }
 
                 // Show full toolbar if cookie is set
-			    var toolbarCookie = CKEDITOR.tools.getCookie('LS_CKE_TOOLBAR');
+                var toolbarCookie = CKEDITOR.tools.getCookie('LS_CKE_TOOLBAR');
                 if (toolbarCookie == 'full' && ckeConfig.toolbar == ckeConfig.basicToolbar) {
                     ckeConfig.toolbar = ckeConfig.fullToolbar;
                 }
