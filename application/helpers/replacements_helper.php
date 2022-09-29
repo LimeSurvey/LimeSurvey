@@ -235,35 +235,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_restart = "";
     $_return_to_survey = "";
 
-    if (isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999") {
-        $_googleAnalyticsAPIKey = trim(App()->getConfig('googleanalyticsapikey'));
-    } else if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '') {
-        $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
-    } else {
-        $_googleAnalyticsAPIKey = "";
-    }
-
-    $thissurvey['googleanalyticsapikey'] = $_googleAnalyticsAPIKey;
-
-    $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '1');
-
-    if ($_googleAnalyticsAPIKey != '' && $_googleAnalyticsStyle == 2) {
-        // SurveyName-[SID]/[GSEQ]-GroupName - create custom GSEQ based upon page step
-        $moveInfo = LimeExpressionManager::GetLastMoveResult();
-        if (is_null($moveInfo)) {
-            $gseq = 'welcome';
-        } else if ($moveInfo['finished']) {
-            $gseq = 'finished';
-        } else if (isset($moveInfo['at_start']) && $moveInfo['at_start']) {
-            $gseq = 'welcome';
-        } else if (is_null($_groupname)) {
-            $gseq = 'printanswers';
-        } else {
-            $gseq = $moveInfo['gseq'] + 1;
-        }
-
-    }
-
     $_endtext = '';
     if (isset($thissurvey['surveyls_endtext']) && trim($thissurvey['surveyls_endtext']) != '') {
         $_endtext = $thissurvey['surveyls_endtext'];

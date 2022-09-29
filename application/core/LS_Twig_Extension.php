@@ -590,61 +590,54 @@ class LS_Twig_Extension extends Twig_Extension
     /**
      * Returns the "tracking url" for Google Analytics when style is "Survey-SID/GROUP"
      * @param int $surveyId
-     * @return string
+     * @param string $trackUrlPageName  Specific page name to include in the tracking url. If it's empty, we will try to infer it from the context.
+     * @return string The tracking URL as "<survey name>-[<survey id>]/[<page name|group seq>]-<group name>"
      */
-    public static function getGoogleAnalyticsTrackingUrl($surveyId)
+    public static function getGoogleAnalyticsTrackingUrl($surveyId, $trackUrlPageName = '')
     {
         $survey = Survey::model()->findByPk($surveyId);
 
-        if(isset($survey->googleanalyticsapikey) && $survey->googleanalyticsapikey === "9999useGlobal9999") {
-            $googleAnalyticsAPIKey = trim(Yii::app()->getConfig('googleanalyticsapikey'));
-        } elseif (isset($survey->googleanalyticsapikey) && trim($survey->googleanalyticsapikey) != '') {
-            $googleAnalyticsAPIKey = trim($survey->googleanalyticsapikey);
-        } else {
-            $googleAnalyticsAPIKey = "";
-        }
-
+        $googleAnalyticsAPIKey = $survey->getGoogleanalyticsapikey();
         $googleAnalyticsStyle = isset($survey->googleanalyticsstyle) ? $survey->googleanalyticsstyle : '1';
 
+        // Tracking URL can only be used if there is an API key and the style is set to "Survey-SID/GROUP"
         if ($googleAnalyticsAPIKey == '' || $googleAnalyticsStyle != 2) {
             return '';
         }
 
-        $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
-
+        $surveyName = $survey->localizedTitle;
         $groupName = '';
-        $moveInfo = LimeExpressionManager::GetLastMoveResult();
-        if (is_null($moveInfo)) {
-            $gseq = 'welcome';
-        } elseif ($moveInfo['finished']) {
-            $gseq = 'finished';
-        } elseif (isset($moveInfo['at_start']) && $moveInfo['at_start']) {
-            $gseq = 'welcome';
+
+        // If a page name is specified, use that. Otherwise, try to get it from the context.
+        if (!empty($trackUrlPageName)) {
+            $page = $trackUrlPageName;
         } else {
-            if ($survey->format == 'A') {
-                $gseq = 1;
-            } elseif (
-                $showgroupinfo == 'both'
-                || $showgroupinfo == 'name'
-                || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
-                || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
-                || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
-            ) {
-                //$survey->format
-                $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
-                $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
-                $gseq = $moveInfo['gseq']+1;
-            };
-            // TODO: Handle the "printanswers" case. Not sure how to identify it.
+            $moveInfo = LimeExpressionManager::GetLastMoveResult();
+            if (is_null($moveInfo) || (isset($moveInfo['at_start']) && $moveInfo['at_start'])) {
+                $page = 'welcome';
+            } elseif ($moveInfo['finished']) {
+                $page = 'finished';
+            } else {
+                $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
+                if ($survey->format == 'A') {
+                    $page = 1;
+                } else {
+                    if (
+                        $showgroupinfo == 'both'
+                        || $showgroupinfo == 'name'
+                        || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
+                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
+                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
+                    ) {
+                        $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
+                        $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
+                    }
+                    $page = $moveInfo['gseq']+1;
+                };
+            }
         }
 
-        $language = Yii::app()->getLanguage();
-        if (!isset($survey->languagesettings[$language])) {
-            $language = $survey->language;
-        }
-        $surveyName = $survey->languagesettings[$language]->surveyls_title;
-
-        $trackURL = htmlspecialchars($surveyName . '-[' . $surveyId . ']/[' . $gseq . ']-' . $groupName);
+        $trackURL = htmlspecialchars($surveyName . '-[' . $surveyId . ']/[' . $page . ']-' . $groupName);
         return $trackURL;
     }
 

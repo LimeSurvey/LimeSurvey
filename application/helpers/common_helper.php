@@ -909,9 +909,7 @@ function getSurveyInfo($surveyid, $languagecode = '')
             if (!isset($thissurvey['adminname'])) {$thissurvey['adminname'] = Yii::app()->getConfig('siteadminemail'); }
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail'] = Yii::app()->getConfig('siteadminname'); }
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '') {$thissurvey['urldescrip'] = $thissurvey['surveyls_url']; }
-            if (isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999") {
-                $thissurvey['googleanalyticsapikey'] = trim(Yii::app()->getConfig('googleanalyticsapikey'));
-            }
+            $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
 
             $thissurvey['owner_username'] = $result->survey->ownerUserName;
 
