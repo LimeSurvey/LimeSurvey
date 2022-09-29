@@ -1,8 +1,5 @@
 <?php
 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -19,18 +16,20 @@ if (!defined('BASEPATH')) {
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\Status\StatusAbstract;
 
+// phpcs:ignore
 abstract class LSYii_ControllerRest extends LSYii_Controller
 {
     /**
      * Run REST controller action.
-     * 
+     *
      * @param string $actionID
      * @return void
      */
     public function run($actionID)
     {
-        if ($actionID == null)
+        if ($actionID == null) {
             $actionID = $this->defaultAction;
+        }
         $request = Yii::app()->request;
         $requestMethod = $request->getRequestType();
         $actionID = $actionID . ucfirst(strtolower($requestMethod));
@@ -44,21 +43,21 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
 
     /**
      * Return data to browser as JSON with the correct hHTTPttp response code.
-     * 
+     *
      * @param Response $response
      * @return void
      */
     protected function renderCommandResponse(Response $response)
     {
         $this->renderJSON(
-            $response->getData(), 
+            $response->getData(),
             $this->getHttpResponseCode($response->getStatus())
         );
     }
 
     /**
      * Return data to browser as JSON and end application.
-     * 
+     *
      * @param array $data
      * @param int $responseCode
      * @return void
@@ -79,7 +78,7 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
 
     /**
      * Get HTTP response code from command response status.
-     * 
+     *
      * @param StatusAbstract $status
      * @return void
      */
@@ -89,29 +88,29 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
         switch ($status->getCode()) {
             case 'success':
                 $httpCode = 200;
-            break;
+                break;
             case 'success_created':
                 $httpCode = 201;
-            break;
+                break;
             case 'error':
                 $httpCode = 400;
-            break;
+                break;
             case 'error_unauthorised':
                 $httpCode = 401;
-            break;
+                break;
             case 'error_bad_request':
                 $httpCode = 400;
-            break;
+                break;
             case 'error_not_found':
                 $httpCode = 404;
-            break;
+                break;
         }
         return $httpCode;
     }
 
     /**
      * Return error as JSON.
-     * 
+     *
      * @param string $code
      * @param string $message
      * @param string $file
@@ -134,7 +133,7 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
 
     /**
      * Return Exception as JSON.
-     * 
+     *
      * @param Exception $exception
      * @return void
      */
@@ -154,9 +153,9 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
 
     /**
      * Get auth token.
-     * 
+     *
      * Attempts to read from 'authToken' GET parameter and falls back to authorisation bearer token.
-     * 
+     *
      * @return string|null
      */
     public function getAuthToken()
@@ -170,9 +169,9 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
 
     /**
      * Get auth bearer token.
-     * 
+     *
      * Attempts to read bearer token from authorisation header.
-     * 
+     *
      * @return string|null
      */
     protected function getAuthBearerToken()
@@ -195,7 +194,7 @@ abstract class LSYii_ControllerRest extends LSYii_Controller
 
     /**
      * Get all HTTP header key/values as an associative array for the current request.
-     * 
+     *
      * @source https://github.com/ralouphie/getallheaders ralouphie/getallheader
      * @return string[string] The HTTP header key/value pairs.
      */
