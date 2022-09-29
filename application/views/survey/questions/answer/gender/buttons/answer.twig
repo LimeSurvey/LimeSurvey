@@ -13,7 +13,7 @@
 
 <!--Gender question, buttons display -->
 <!-- answer -->
-<ul class="{{ coreClass }} gender-button list-unstyled btn-group btn-group-justified" data-toggle="buttons" role="group" aria-labelledby="ls-question-text-{{basename }}">
+<ul class="{{ coreClass }} ls-button-item list-unstyled btn-group btn-group-justified" data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{basename }}">
     <!-- Female -->
     <li id="javatbd{{ name }}F" class="col-4 btn btn-primary {% if fChecked!='' %} active {% endif %}">
         <input
@@ -24,7 +24,7 @@
             value="F"
             {{ fChecked }}
         />
-        <label for="answer{{ name }}F" class=" col-12 ">
+        <label for="answer{{ name }}F" class="px-2 py-1 col-12 ">
             <span class="fa fa-venus ls-icon" aria-hidden="true"></span>
             <div>{{ gT('Female') }}</div>
         </label>
@@ -40,7 +40,7 @@
             value="M"
             {{ mChecked }}
         />
-        <label for="answer{{ name }}M" class=" col-12">
+        <label for="answer{{ name }}M" class="px-2 py-1  col-12">
             <span class="fa fa-mars ls-icon" aria-hidden="true"></span> 
             <div>{{ gT('Male') }}</div>
         </label>
@@ -57,7 +57,7 @@
             value=""
             {{ naChecked }}
         />
-        <label for="answer{{ name }}" class=" col-12 ">
+        <label for="answer{{ name }}" class="px-2 py-1 col-12 ">
             <span class="fa fa-genderless ls-icon" aria-hidden="true"></span> 
             <div>{{ gT('No answer') }}</div>
         </label>

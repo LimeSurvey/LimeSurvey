@@ -10929,11 +10929,12 @@ a {
   border-top: 0;
 }
 
-.gender-button li {
+.ls-button-item li {
   margin-left: 0rem !important;
+  padding: 0;
 }
 
-.gender-button li:has(.btn-check:checked) {
+.ls-button-item li:has(.btn-check:checked) {
   background-color: #246128;
   border: 1px solid #0f3e12;
   color: #fff;
