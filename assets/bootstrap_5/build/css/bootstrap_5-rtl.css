@@ -10933,13 +10933,8 @@ a {
   margin-left: 0rem !important;
 }
 
-[data-toggle=buttons] > .btn input[type=radio] {
-  position: absolute;
-  clip: rect(0, 0, 0, 0);
-}
-
-@media (min-width: 768px) {
-  .modal-dialog {
-    width: 600px;
-  }
+.gender-button li:has(.btn-check:checked) {
+  background-color: #246128;
+  border: 1px solid #0f3e12;
+  color: #fff;
 }
