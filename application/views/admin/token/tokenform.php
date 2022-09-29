@@ -140,7 +140,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                                value="<?php echo isset($completed) ? $completed : '' ?>"
                                                                name="completed-date"
                                                                data-locale="<?php echo $locale ?>"
-                                                               data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                               data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                                         <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
                                                     </div>
                                                 </div>
@@ -320,7 +320,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        value="<?php echo isset($sent) && $sent != 'N' ? $sent : '' ?>"
                                                        name="sent-date"
                                                        data-locale="<?php echo $locale ?>"
-                                                       data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                                 <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
                                             </div>
                                         </div>
@@ -372,7 +372,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        value="<?php echo isset($remindersent) && $remindersent != 'N' ? $remindersent : '' ?>"
                                                        name="remind-date"
                                                        data-locale="<?php echo $locale ?>"
-                                                       data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                                 <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
                                             </div>
                                         </div>
@@ -426,9 +426,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <div class=" has-feedback">
                                     <div id="validfrom_datetimepicker" class="input-group date">
                                     <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo isset($validfrom) ? $validfrom : '' ?>" name="validfrom"
-                                           data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                           data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                            data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
-                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                    <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
                                     </div>
                                 </div>
                             </div>
@@ -442,9 +442,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <div class="has-feedback">
                                     <div id="validuntil_datetimepicker" class="input-group date">
                                     <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : '' ?>" name="validuntil"
-                                           data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                           data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                            data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
-                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                    <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
                                     </div>
                                 </div>
                             </div>
