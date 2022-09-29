@@ -205,30 +205,37 @@ class SurveyPermissions
      * A user group could be added to survey permissions if there is at least one user in the group
      * which has not already been added to survey permissions of this survey.
      *
-     * todo: rewrite the sql with yii-query builder CDBCriteria ...
-     *
      * @return array containing ['ugid'] and ['name']
      */
     public function getSurveyUserGroupList()
     {
-        $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
-        FROM {{user_groups}} AS a
-        LEFT JOIN (
+        //find all groups that have not all their users already in 'survey permissions'
+        $criteria = new \CDbCriteria();
+        $criteria->select = "t.ugid, t.name, MAX(d.ugid)";
+        $criteria->join = "LEFT JOIN (
         SELECT b.ugid
         FROM {{user_in_groups}} AS b
-        LEFT JOIN (SELECT * FROM {{permissions}}
-        WHERE entity_id = {$this->survey->sid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
-        ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
-        $surveyidresult = \Yii::app()->db->createCommand($surveyidquery)->query(); //Checked
-        $aResult = $surveyidresult->readAll();
+            LEFT JOIN (
+                SELECT * FROM {{permissions}}
+                WHERE entity_id =:surveyid and entity='survey'
+            ) AS c ON b.uid = c.uid WHERE c.uid IS NULL
+        ) AS d ON t.ugid = d.ugid";
+        $criteria->params = [
+            'surveyid' => $this->survey->sid,
+        ];
+        $criteria->group = 't.ugid, t.name';
+        $criteria->having = 'MAX(d.ugid) IS NOT NULL'; //make sure that there is at least one possible group
+        $criteria->order = 't.name';
+
+        $userGroups = \UserGroup::model()->findAll($criteria);
 
         $authorizedGroupsList = getUserGroupList();
         $simpleugidarray = [];
         $index = 0;
-        foreach ($aResult as $sv) {
-            if (in_array($sv['ugid'], $authorizedGroupsList)) {
-                $simpleugidarray[$index]['ugid'] = $sv['ugid'];
-                $simpleugidarray[$index]['name'] = $sv['name'];
+        foreach ($userGroups as $userGroup) {
+            if (in_array($userGroup->ugid, $authorizedGroupsList)) {
+                $simpleugidarray[$index]['ugid'] = $userGroup->ugid;
+                $simpleugidarray[$index]['name'] = $userGroup->name;
                 $index++;
             }
         }
