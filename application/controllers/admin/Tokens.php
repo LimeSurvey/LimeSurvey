@@ -680,24 +680,29 @@ class Tokens extends SurveyCommonAction
             }
 
             // completed
-            if (trim($request->getPost('completed')) === 'N') {
+            if (trim($request->getPost('completed')) == 'N' || trim($request->getPost('completed')) == '') {
                 $_POST['completed'] = 'N';
-            } else {
+            } elseif (trim($request->getPost('completed')) == 'Y') {
                 $_POST['completed'] = 'Y';
+            } else {
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed')), $dateformatdetails['phpdate'] . ' H:i');
+                $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             //sent
-            if (trim($request->getPost('sent')) === 'N') {
+            if (trim($request->getPost('sent')) == 'N') {
                 $_POST['sent'] = 'N';
             } else {
-                 $_POST['sent'] = 'Y';
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('sent')), $dateformatdetails['phpdate'] . ' H:i');
+                $_POST['sent'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             // remindersent
-            if (trim($request->getPost('remindersent')) === 'N') {
+            if (trim($request->getPost('remindersent')) == 'N') {
                 $_POST['remindersent'] = 'N';
             } else {
-                $_POST['remindersent'] = 'Y';
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('remindersent')), $dateformatdetails['phpdate'] . ' H:i');
+                $_POST['remindersent'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             $aTokenData['firstname'] = $request->getPost('firstname');
@@ -1456,7 +1461,7 @@ class Tokens extends SurveyCommonAction
                             // Add the error when try to save token
                             $tokenSaveError = CHtml::errorSummary(
                                 $oToken,
-                                CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error occured when saving the sent date for this participant (ID: %s)."), $emrow['tid']))
+                                CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error occurred when saving the sent date for this participant (ID: %s)."), $emrow['tid']))
                             );
                         }
                         // Mark token email as send this session.
@@ -1513,7 +1518,7 @@ class Tokens extends SurveyCommonAction
                             $aData['tokenoutput'] .= "<li>" . gT("Some entries had a validity date set which was not yet valid or not valid anymore.") . "</li>";
                         }
                         if ($bSendError) {
-                            $aData['tokenoutput'] .= "<li>" . gT("Some emails were not sent because the server did not accept the email(s) or some other error occured.") . "</li>";
+                            $aData['tokenoutput'] .= "<li>" . gT("Some emails were not sent because the server did not accept the email(s) or some other error occurred.") . "</li>";
                         }
                         $aData['tokenoutput'] .= '</ul>';
                         $aData['tokenoutput'] .= '<p><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-default btn-lg">' . gT("Ok") . '</a></p>';
@@ -1792,7 +1797,7 @@ class Tokens extends SurveyCommonAction
                                     $meetminirequirements = false;
                                 }
 
-                                // The following attrs are optionnal
+                                // The following attrs are optional
                                 if (isset($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']])) {
                                                                     $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
                                 }
@@ -2128,7 +2133,7 @@ class Tokens extends SurveyCommonAction
                                 $aInvalidTokenList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
                                 $bInvalidToken = true;
                             }
-                            // We allways search for duplicate token (it's in model. Allow to reset or update token ?
+                            // We always search for duplicate token (it's in model. Allow to reset or update token ?
                             if (Token::model($iSurveyId)->count("token=:token", array(":token" => $aWriteArray['token']))) {
                                 $bDuplicateFound = true;
                                 $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
@@ -2541,7 +2546,7 @@ class Tokens extends SurveyCommonAction
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
-        // The user have rigth to create token, then don't test right after
+        // The user have right to create token, then don't test right after
         Yii::import('application.helpers.admin.token_helper', true);
 
         $aData = array();

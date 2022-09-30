@@ -20,6 +20,8 @@ use Composer\Semver\VersionParser;
 
 
 
+
+
 class InstalledVersions
 {
 private static $installed = array (
@@ -30,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'a71b463ecacc8912444df68b68cea66ec8927415',
+    'reference' => 'd459f75b595702dd4e5cd5deb2afbe785e6f0f06',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -42,16 +44,16 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'a71b463ecacc8912444df68b68cea66ec8927415',
+      'reference' => 'd459f75b595702dd4e5cd5deb2afbe785e6f0f06',
     ),
     'paragonie/constant_time_encoding' => 
     array (
-      'pretty_version' => 'v2.5.0',
-      'version' => '2.5.0.0',
+      'pretty_version' => 'v2.6.3',
+      'version' => '2.6.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9229e15f2e6ba772f0c55dd6986c563b937170a8',
+      'reference' => '58c3f47f650c94ec05a151692652a868995d2938',
     ),
     'paragonie/random_compat' => 
     array (
@@ -64,12 +66,12 @@ private static $installed = array (
     ),
     'paragonie/sodium_compat' => 
     array (
-      'pretty_version' => 'v1.17.1',
-      'version' => '1.17.1.0',
+      'pretty_version' => 'v1.18.0',
+      'version' => '1.18.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ac994053faac18d386328c91c7900f930acadf1e',
+      'reference' => '906e0b925895d3a5941eda25f371fbafb3cbc22f',
     ),
     'phpseclib/bcmath_compat' => 
     array (
@@ -82,12 +84,12 @@ private static $installed = array (
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.14',
-      'version' => '3.0.14.0',
+      'pretty_version' => '3.0.16',
+      'version' => '3.0.16.0',
       'aliases' => 
       array (
       ),
-      'reference' => '2f0b7af658cbea265cbb4a791d6c29a6613f98ef',
+      'reference' => '7181378909ed8890be4db53d289faac5b77f8b05',
     ),
     'symfony/polyfill-ctype' => 
     array (
@@ -135,6 +137,16 @@ private static $installed = array (
       ),
       'reference' => '3cb9b60a0d579855c17d7830d5015b74705c9fdd',
     ),
+    'yiisoft/yii' => 
+    array (
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
+      'aliases' => 
+      array (
+        0 => '1.1.x-dev',
+      ),
+      'reference' => '89ff97cd81bcec982c4f8b1325a8cdc10a14b2f6',
+    ),
   ),
 );
 private static $canGetVendors;
@@ -152,7 +164,6 @@ $packages = array();
 foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
-
 
 if (1 === \count($packages)) {
 return $packages[0];
@@ -345,6 +356,7 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
+
 
 
 

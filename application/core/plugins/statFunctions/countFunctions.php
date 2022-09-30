@@ -2,7 +2,7 @@
 
 /**
  * This file is part of statFunctions plugin
- * @version 0.1.2
+ * @version 0.2.0
  */
 
 namespace statFunctions;
@@ -18,16 +18,17 @@ use Permission;
 class countFunctions
 {
     /**
-     * Return the count of reponse on current ExpressionScript Engine survey equal to a specific value
+     * Return the count of response on current ExpressionScript Engine survey equal to a specific value
      * @param string $qCode : code of question, currently must be existing sgqa. Sample Q01.sgqa.
      * @param string $comparaison : comparre with value. Can use < or > … see https://www.yiiframework.com/doc/api/1.1/CDbCriteria#compare-detail
      * @param boolean $submitted (or not) response
+     * @param boolean $self include (or not) current response
      * @return integer|string
      */
-    public static function statCountIf($qCode, $comparaison, $submitted = true)
+    public static function statCountIf($qCode, $comparaison, $submitted = true, $self = true)
     {
-        $surveyId = self::getCurrentSurveyId();
-        if (!$surveyId) {
+        $surveyId = LimeExpressionManager::getLEMsurveyId();
+        if (!Survey::model()->findByPk($surveyId)->getIsActive()) {
             return 0;
         }
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
@@ -44,20 +45,25 @@ class countFunctions
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
+        if (!$self && isset($_SESSION['survey_' . $surveyId]['srid'])) {
+            $srid = $_SESSION['survey_' . $surveyId]['srid'];
+            $oCriteria->compare("id", "<>" . $srid);
+        }
         $oCriteria->compare($sQuotedColumn, $comparaison);
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
     }
 
     /**
-     * Return the count of reponse on current ExpressionScript Engine survey equal to a specific value
+     * Return the count of response on current ExpressionScript Engine survey equal to a specific value
      * @param string $qCode : code of question, currently must be existing sgqa. Sample Q01.sgqa.
      * @param boolean $submitted (or not)  response
+     * @param boolean $self include (or not) current response
      * @return integer|string
      */
-    public static function statCount($qCode, $submitted = true)
+    public static function statCount($qCode, $submitted = true, $self = true)
     {
-        $surveyId = self::getCurrentSurveyId();
-        if (!$surveyId) {
+        $surveyId = LimeExpressionManager::getLEMsurveyId();
+        if (!Survey::model()->findByPk($surveyId)->getIsActive()) {
             return 0;
         }
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
@@ -78,27 +84,10 @@ class countFunctions
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
+        if (!$self && isset($_SESSION['survey_' . $surveyId]['srid'])) {
+            $srid = $_SESSION['survey_' . $surveyId]['srid'];
+            $oCriteria->compare("id", "<>" . $srid);
+        }
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
-    }
-
-    /**
-     * Get the current valid survey id : Need to exist and activated
-     * Sometimes ExpressionManager don't get a valid survey id @see https://bugs.limesurvey.org/view.php?id=18191
-     * @return false[interger
-     */
-    private static function getCurrentSurveyId()
-    {
-        $surveyId = LimeExpressionManager::getLEMsurveyId();
-        if (empty($surveyId)) {
-            return false;
-        }
-        $survey = Survey::model()->findByPk($surveyId);
-        if (!$survey) {
-            return false;
-        }
-        if (!$survey->getIsActive()) {
-            return false;
-        }
-        return $surveyId;
     }
 }

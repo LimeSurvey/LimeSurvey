@@ -320,6 +320,7 @@ function buildSelects($allfields, $surveyid, $language)
     $selects = array();
     $aQuestionMap = array();
     $survey = Survey::model()->findByPk($surveyid);
+    $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
 
     $fieldmap = createFieldMap($survey, "full", false, false, $language);
     foreach ($fieldmap as $field) {
@@ -466,18 +467,22 @@ function buildSelects($allfields, $surveyid, $language)
 
                 //D - Date
             elseif ($firstletter == "D" && $_POST[$pv] != "") {
+                $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
                 //Date equals
                 if (substr($pv, -2) == "eq") {
-                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3)) . " = " . App()->db->quoteValue($_POST[$pv]);
+                    $dateValue = $datetimeobj->convert("Y-m-d");
+                    $columnName = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3));
+                    $selects[] = $columnName . " >= " . Yii::app()->db->quoteValue($dateValue . " 00:00:00") . " and " . $columnName . " <= " . Yii::app()->db->quoteValue($dateValue . " 23:59:59");
                 } else {
+                    $dateValue = $datetimeobj->convert("Y-m-d H:i");
                     //date less than
                     if (substr($pv, -4) == "more") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($_POST[$pv]);
+                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." >= ".App()->db->quoteValue($dateValue);
                     }
 
                     //date greater than
                     if (substr($pv, -4) == "less") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($_POST[$pv]);
+                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." <= ".App()->db->quoteValue($dateValue);
                     }
                 }
             }
@@ -485,7 +490,6 @@ function buildSelects($allfields, $surveyid, $language)
                 //check for datestamp of given answer
             elseif (substr($pv, 0, 9) == "datestamp") {
                 //timestamp equals
-                $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
                 if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
                     $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
                     $sDateValue = $datetimeobj->convert("Y-m-d");
@@ -584,6 +588,7 @@ class statistics_helper
         $qtitle = "";
         $qquestion = "";
         $qtype = "";
+        $subquestionText = "";
         $sQuestionType = substr($rt, 0, 1);
         $fieldmap = createFieldMap($survey, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
@@ -1162,6 +1167,7 @@ class statistics_helper
                     //list IDs and answer codes in brackets
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1179,6 +1185,7 @@ class statistics_helper
 
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1197,6 +1204,7 @@ class statistics_helper
                     //output
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1213,6 +1221,7 @@ class statistics_helper
                     }
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1231,6 +1240,7 @@ class statistics_helper
 
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "] [" . $ltext . "]";
+                    $subquestionText = $atext;
                     break;
 
                 case Question::QT_COLON_ARRAY_NUMBERS: // Array (Multiple Flexi) (Numbers)
@@ -1287,6 +1297,7 @@ class statistics_helper
                     //output
                     $qquestion .= $linefeed;
                     $qtitle .= "($qanswer)" . "[" . $atext . "]";
+                    $subquestionText = $atext;
                     break;
 
 
@@ -1380,6 +1391,7 @@ class statistics_helper
                     //adapt title and question
                     $qtitle = $qtitle . " [" . $sSubquestion . "][" . $labelno . "]";
                     $qquestion = $qastring . $labelheader;
+                    $subquestionText = $sSubquestion;
                     break;
 
 
@@ -1409,7 +1421,15 @@ class statistics_helper
             $alist[] = array("", gT("No answer"), false, 'is_no_answer');
         }
 
-        return array("alist" => $alist, "qtitle" => $qtitle, "qquestion" => $qquestion, "qtype" => $qtype, "statisticsoutput" => $statisticsoutput, "parentqid" => (int)$qqid);
+        return [
+            "alist" => $alist,
+            "qtitle" => $qtitle,
+            "qquestion" => $qquestion,
+            "qtype" => $qtype,
+            "statisticsoutput" => $statisticsoutput,
+            "parentqid" => (int)$qqid,
+            "subquestionText" => $subquestionText,
+        ];
     }
 
     /**
@@ -1783,7 +1803,7 @@ class statistics_helper
 
 
             /*
-            * there are 3 colums:
+            * there are 3 columns:
             *
             * 1 (50%) = answer (title and code in brackets)
             * 2 (25%) = count (absolute)
@@ -2772,7 +2792,7 @@ class statistics_helper
 
 
             /*
-            * there are 3 colums:
+            * there are 3 columns:
             *
             * 1 (50%) = answer (title and code in brackets)
             * 2 (25%) = count (absolute)

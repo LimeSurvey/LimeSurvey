@@ -39,10 +39,6 @@ margin:0;
     }
 }
 
-.file-preview {
-    display: flex;
-    align-items: center;
-}
 .file-preview span {
     margin-left: 1em;
 }
@@ -99,3 +95,4 @@ img.uploaded {
 .uploadedfiles thead tr th {
     font-weight: bold;
 }
+
