@@ -167,7 +167,6 @@ class SurveyPermissions
      * Returns a list of users which still not have survey permissions and
      * could be added to survey permissions,
      * including the check for usercontrolSameGroupPolicy (see config file for more information).
-     * todo: rewrite the sql with yii-query builder CDBCriteria ...
      *
      * @return array
      */

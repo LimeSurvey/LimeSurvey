@@ -113,12 +113,16 @@ class SurveyPermissionsController extends LSBaseController
         $userAdded = $surveyPermissions->addUserToSurveyPermission($userId);
         if ($userAdded) {
             Yii::app()->user->setFlash('success', gT("User added."));
-            $this->redirect(array(
+            if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update')) {
+                $this->redirect(array(
                     'surveyPermissions/settingsPermissions',
                     'surveyid' => $surveyid,
                     'action' => 'user',
                     'id' => $userId
                 ));
+            } else {
+                $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
+            }
         } else {
             Yii::app()->user->setFlash('error', gT("User could not be added to survey permissions."));
             $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
@@ -173,7 +177,7 @@ class SurveyPermissionsController extends LSBaseController
     {
         $surveyid = sanitize_int($surveyid);
         $id = sanitize_int($id);
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update')) {
             Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }

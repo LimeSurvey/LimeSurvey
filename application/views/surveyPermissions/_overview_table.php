@@ -20,7 +20,7 @@
     </thead>
 
     <tbody>
-    <?php //todo here we must show the data from db ...
+    <?php
     foreach ($tableContent as $content) {
         /** @var $content Permission */
         //button column
