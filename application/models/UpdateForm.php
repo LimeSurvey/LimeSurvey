@@ -215,7 +215,7 @@ class UpdateForm extends CFormModel
      * @param int $destinationBuild
      * @return mixed|stdClass
      */
-    public function getChangelog($destinationBuild)
+    public function getChangeLog($destinationBuild)
     {
         $getters = '/index.php?r=updates/changelog&frombuild=' . $this->build . '&tobuild=' . $destinationBuild;
         $content = $this->performRequest($getters);
