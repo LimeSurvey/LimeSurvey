@@ -489,31 +489,6 @@ class Permission extends LSActiveRecord
     }
 
     /**
-    public function getButtons()
-    {
-        $buttons = "<div class='icon-btn-row'>";
-      //  if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'update')) {
-      //      if ($PermissionRow['uid'] != Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                // Can not update own security
-
-      //      }
-      //  }
-
-        $url = Yii::app()->createUrl("surveyPermissions/settingsPermission/ugid/$this->ugid");
-        $buttons .= ' <a 
-        class="btn btn-default btn-sm green-border" 
-        data-toggle="tooltip" 
-        data-placement="top" 
-        title="' . gT('Edit permissions') . '" 
-        href="' . $url . '" 
-        role="button">
-        <span class="fa fa-pencil" ></span></a>';
-
-        $buttons .= "</div>";
-        return $buttons;
-    } **/
-
-    /**
      * @param integer $iSurveyIDSource
      * @param integer $iSurveyIDTarget
      */
