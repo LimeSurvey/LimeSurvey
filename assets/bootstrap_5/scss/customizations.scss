@@ -35,7 +35,7 @@ a {
 }
 
 .ls-button-item li:has(.btn-check:checked){
-    background-color: #246128;
-    border: 1px solid #0f3e12;
-    color: #fff;
+    background-color: $ls-button-active-bg;
+    border: 1px solid $ls-button-border;
+    color: $white;
 }
