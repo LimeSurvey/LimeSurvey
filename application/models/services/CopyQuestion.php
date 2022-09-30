@@ -93,7 +93,11 @@ class CopyQuestion
     public function createNewCopiedQuestion($questionCode, $groupId, $questionToCopy)
     {
         $this->newQuestion = new \Question();
-        $this->newQuestion->attributes = $questionToCopy->attributes;
+        // We need to use setAttributes here with $safeOnly=false to avoid issue #18323, because otherwise the
+        // validators are loaded before setting the attributes, and that means the wrong rules are applied.
+        // By setting $safeOnly=false here, we let the proper validators to be determined while saving, when the
+        // attributes already have their values.
+        $this->newQuestion->setAttributes($questionToCopy->attributes, false);
         $this->newQuestion->title = $questionCode;
         $this->newQuestion->gid = $groupId;
         $this->newQuestion->question_order = $this->copyQuestionValues->getQuestionPositionInGroup();
@@ -151,7 +155,11 @@ class CopyQuestion
 
         foreach ($subquestions as $subquestion) {
             $copiedSubquestion = new \Question();
-            $copiedSubquestion->attributes = $subquestion->attributes;
+            // We need to use setAttributes here with $safeOnly=false to avoid issue #18323, because otherwise the
+            // validators are loaded before setting the attributes, and that means the wrong rules are applied.
+            // By setting $safeOnly=false here, we let the proper validators to be determined while saving, when the
+            // attributes already have their values.
+            $copiedSubquestion->setAttributes($subquestion->attributes, false);
             $copiedSubquestion->parent_qid = $this->newQuestion->qid;
             $copiedSubquestion->qid = null; //new question id needed ...
             $areSubquestionsCopied = $areSubquestionsCopied && $copiedSubquestion->save();
