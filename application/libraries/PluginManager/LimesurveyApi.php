@@ -236,7 +236,7 @@ class LimesurveyApi
     /**
      * Get the current survey in current oage
      * @param boolean $onlyactivated return it only if activated
-     * @return null|integer
+     * @return false|integer
      */
     public function getCurrentSurveyid($onlyactivated = false)
     {
