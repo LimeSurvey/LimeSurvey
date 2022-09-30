@@ -1,6 +1,13 @@
 Captcha Extended Change Log
 ===========================
 
+Version 1.0.3 Feb 19, 2021
+---------------------------
+- fixed compatability issues for PHP 7.4+ (e.g. imagecolorallocate accepts only valid range 0-255)
+- fixed calculation of centered position for text inside image
+- added support for parameter "regenerateOnValid", default TRUE
+- optimized some default settings e.g. font size, number of lines or dots density
+
 Version 1.0.2 Sept 19, 2013
 ---------------------------
 - bugfix: skip captcha counter incrementation if clientajax validation is turned on. Otherwise captcha code would be silently invalidated after entering as many form fields as the number of allowed captcha attempts.

@@ -5,8 +5,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Crypt
- * @package   EC
  * @author    Jim Wiggint  on <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -37,7 +35,8 @@ class sect571k1 extends Binary
         );
         $this->setOrder(new BigInteger(
             '020000000000000000000000000000000000000000000000000000000000000000000000' .
-            '131850E1F19A63E4B391A8DB917F4138B630D84BE5D639381E91DEB45CFE778F637C1001', 16
+            '131850E1F19A63E4B391A8DB917F4138B630D84BE5D639381E91DEB45CFE778F637C1001',
+            16
         ));
     }
 }

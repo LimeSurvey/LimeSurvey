@@ -13,8 +13,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Math
- * @package   BigInteger
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -22,17 +20,15 @@
 
 namespace phpseclib3\Math\BinaryField;
 
-use phpseclib3\Math\Common\FiniteField\Integer as Base;
+use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Math\BigInteger;
 use phpseclib3\Math\BinaryField;
-use ParagonIE\ConstantTime\Hex;
+use phpseclib3\Math\Common\FiniteField\Integer as Base;
 
 /**
  * Binary Finite Fields
  *
- * @package Math
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class Integer extends Base
 {
@@ -53,7 +49,7 @@ class Integer extends Base
     /**
      * Holds the PrimeField's modulo
      *
-     * @var string[]
+     * @var array<int, string>
      */
     protected static $modulo;
 
@@ -80,6 +76,8 @@ class Integer extends Base
 
     /**
      * Set the modulo for a given instance
+     * @param int $instanceID
+     * @param string $modulo
      */
     public static function setModulo($instanceID, $modulo)
     {
@@ -216,7 +214,7 @@ class Integer extends Base
         for ($i = 0; $i < strlen($y); $i++) {
             if ($y[$i] == '1') {
                 $temp = $precomputed[$i & 7] . str_repeat("\0", $i >> 3);
-                $result^= str_pad($temp, $size, "\0", STR_PAD_LEFT);
+                $result ^= str_pad($temp, $size, "\0", STR_PAD_LEFT);
             }
         }
 
@@ -304,10 +302,10 @@ class Integer extends Base
         $z2 = ($x0 * $y2) ^ ($x1 * $y1) ^ ($x2 * $y0) ^ ($x3 * $y3);
         $z3 = ($x0 * $y3) ^ ($x1 * $y2) ^ ($x2 * $y1) ^ ($x3 * $y0);
 
-        $z0&= 0x1111111111111111;
-        $z1&= 0x2222222222222222;
-        $z2&= 0x4444444444444444;
-        $z3&= -8608480567731124088; // 0x8888888888888888 gets interpreted as a float
+        $z0 &= 0x1111111111111111;
+        $z1 &= 0x2222222222222222;
+        $z2 &= 0x4444444444444444;
+        $z3 &= -8608480567731124088; // 0x8888888888888888 gets interpreted as a float
 
         $z = $z0 | $z1 | $z2 | $z3;
 
@@ -450,7 +448,7 @@ class Integer extends Base
     /**
      * Returns the modulo
      *
-     * @return integer
+     * @return string
      */
     public static function getModulo($instanceID)
     {
@@ -474,7 +472,7 @@ class Integer extends Base
      */
     public function toHex()
     {
-        return Hex::encode($this->toBytes());
+        return Strings::bin2hex($this->toBytes());
     }
 
     /**
@@ -501,7 +499,6 @@ class Integer extends Base
     /**
      *  __toString() magic method
      *
-     * @access public
      */
     public function __toString()
     {
@@ -511,7 +508,6 @@ class Integer extends Base
     /**
      *  __debugInfo() magic method
      *
-     * @access public
      */
     public function __debugInfo()
     {

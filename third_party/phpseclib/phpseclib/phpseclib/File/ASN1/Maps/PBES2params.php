@@ -5,8 +5,6 @@
  *
  * PHP version 5
  *
- * @category  File
- * @package   ASN1
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2016 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -22,16 +20,14 @@ use phpseclib3\File\ASN1;
  *
  * from https://tools.ietf.org/html/rfc2898#appendix-A.3
  *
- * @package ASN1
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class PBES2params
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
-            'keyDerivationFunc'=> AlgorithmIdentifier::MAP,
+            'keyDerivationFunc' => AlgorithmIdentifier::MAP,
             'encryptionScheme' => AlgorithmIdentifier::MAP
         ]
     ];

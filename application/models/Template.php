@@ -489,7 +489,7 @@ class Template extends LSActiveRecord
     {
 
         if ($bForceXML === null) {
-          // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
+          // Template developer could prefer to work with XML rather than DB as a first step, for quick and easy changes
             $bForceXML = (App()->getConfig('force_xmlsettings_for_survey_rendering')) ? true : false;
         }
         // The error page from default template can be called when no survey found with a specific ID.
@@ -549,7 +549,7 @@ class Template extends LSActiveRecord
 
     /**
     * Alias function for resetAssetVersion()
-    * Don't delete this one to maintain updgrade compatibilty
+    * Don't delete this one to maintain updgrade compatibility
     * @return void
     */
     public function forceAssets()
@@ -656,6 +656,7 @@ class Template extends LSActiveRecord
         Yii::import('application.helpers.sanitize_helper', true);
         $this->deleteAssetVersion();
         Survey::model()->updateAll(array('template' => $sNewName), "template = :oldname", array(':oldname' => $this->name));
+        SurveysGroupsettings::model()->updateAll(['template' => $sNewName], "template = :oldname", [':oldname' => $this->name]);
         Template::model()->updateAll(array('name' => $sNewName, 'folder' => $sNewName), "name = :oldname", array(':oldname' => $this->name));
         Template::model()->updateAll(array('extends' => $sNewName), "extends = :oldname", array(':oldname' => $this->name));
         TemplateConfiguration::rename($this->name, $sNewName);

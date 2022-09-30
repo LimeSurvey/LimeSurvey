@@ -1,4 +1,4 @@
-<?php if (strlen(trim((string)$textfrom)) > 0) : ?>
+<?php if (strlen(trim((string)$textfrom)) > 0 || strlen(trim((string)$textfrom2)) > 0) : ?>
     <?php if (extension_loaded('tidy')) : ?>
         <?=tidy_repair_string($translateFields,array(),'utf8')?>
     <?php else:?>

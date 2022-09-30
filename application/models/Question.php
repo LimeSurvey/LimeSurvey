@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013-2022 The LimeSurvey Project Team / Carsten Schmitz
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -33,6 +33,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog ('Edit default answers')
  * @property string $relevance Questions relevane equation
  * @property string $modulename
+ * @property integer $same_script Whether the same script should be used for all languages
  *
  * @property Survey $survey
  * @property QuestionGroup $groups  //@TODO should be singular
@@ -43,7 +44,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
  * @property QuestionType $questionType
- * @property array $allSubQuestionIds QID-s of all question sub-questions, empty array returned if no sub-questions
+ * @property array $allSubQuestionIds QID-s of all question subquestions, empty array returned if no subquestions
  * @inheritdoc
  */
 class Question extends LSActiveRecord
@@ -85,8 +86,10 @@ class Question extends LSActiveRecord
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
     public $gid;
-    /** Set defaut relevance **/
+    /** Defaut relevance **/
     public $relevance = '';
+    /** defaut same_script , avoid public break during update **/
+    public $same_script = 0;
 
     /** @var QuestionTheme cached question theme*/
     private $relatedQuestionTheme;
@@ -138,6 +141,7 @@ class Question extends LSActiveRecord
      */
     public function rules()
     {
+        /* Basic rules */
         $aRules = array(
             array('title', 'required', 'on' => 'update, insert', 'message' => gT('The question code is mandatory.', 'unescaped')),
             array('title', 'length', 'min' => 1, 'max' => 20, 'on' => 'update, insert'),
@@ -152,9 +156,22 @@ class Question extends LSActiveRecord
             array('type', 'length', 'min' => 1, 'max' => 1),
             array('preg,relevance', 'safe'),
             array('modulename', 'length', 'max' => 255),
+            array('same_script', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
-        // Always enforce unicity on Sub question code (DB issue).
+        /* Filtering */
+        /* other must be no when other is not allowed */
+        $aRules[] = array('other', 'filter', 'filter' => function ($value) {
+            if ($this->getAllowOther()) {
+                return $value;
+            }
+            return 'N';
+        });
+        /* Don't save empty or 'core' question theme name */
+        $aRules[] = ['question_theme_name', 'questionThemeNameValidator'];
+        /* Specific rules to avoid collapse with column name in database */
         if ($this->parent_qid) {
+            /* Subquestion specific rules */
+            /* unicity of title by scale */
             $aRules[] = array('title', 'unique', 'caseSensitive' => false,
                 'criteria' => array(
                     'condition' => 'sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
@@ -166,22 +183,30 @@ class Question extends LSActiveRecord
                     ),
                     'message' => gT('Subquestion codes must be unique.')
             );
-            // Disallow other title if question allow other
+            /* Disallow other title if question allow other */
             $oParentQuestion = Question::model()->findByPk(array("qid" => $this->parent_qid));
             if ($oParentQuestion->other == "Y") {
-                $aRules[] = array('title', 'LSYii_CompareInsensitiveValidator', 'compareValue' => 'other', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), "other"), 'except' => 'archiveimport');
+                $aRules[] = array(
+                    'title',
+                    'LSYii_CompareInsensitiveValidator',
+                    'compareValue' => 'other',
+                    'operator' => '!=',
+                    'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), "other"),
+                    'except' => 'archiveimport'
+                );
             }
-            // #14495: comment suffix can't be used with P Question (collapse with table name in database)
+            /* #14495: comment suffix can't be used with P Question */
             if ($oParentQuestion->type == "P") {
                 $aRules[] = array('title', 'match', 'pattern' => '/comment$/', 'not' => true, 'message' => gT("'comment' suffix can not be used with multiple choice with comments."));
             }
         } else {
-            // Disallow other if sub question have 'other' for title
-            $oSubquestionOther = Question::model()->find("parent_qid=:parent_qid and LOWER(title)='other'", array("parent_qid" => $this->qid));
-            if ($oSubquestionOther) {
-                $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'), 'except' => 'archiveimport');
+            /* Question specific rules*/
+            if ($this->getHasOtherSubquestions()) {
+                // Disallow other if sub question have 'other' for title
+                $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
         }
+        /* When question exist and are already set with title, allow keep bad title */
         if (!$this->isNewRecord) {
             $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
             if ($oActualValue && $oActualValue->title == $this->title) {
@@ -190,8 +215,12 @@ class Question extends LSActiveRecord
                 return $aRules;
             }
         }
-        /* Question was new or title was updated : we add minor rules. This rules don't broke DB, only potential “ExpressionScript Engine” issue. */
-        if (!$this->parent_qid) { // 0 or empty
+        /**
+         * Question was new or title was updated : we add minor rules.
+         * This rules don't broke DB, only potential “ExpressionScript Engine” issue.
+         * usage of 'archiveimport' scenaruio for import LSA (survey archive) file
+         **/
+        if (empty($this->parent_qid)) {
             /* Unicity for ExpressionManager */
             $aRules[] = array('title', 'unique', 'caseSensitive' => true,
                 'criteria' => array(
@@ -219,15 +248,17 @@ class Question extends LSActiveRecord
                 'message' => sprintf(gT("Code: '%s' is a reserved word."), $this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
             );
-            /* Don't save empty or 'core' question theme name */
-            $aRules[] = ['question_theme_name', 'questionThemeNameValidator'];
         } else {
-            $aRules[] = array('title', 'compare', 'compareValue' => 'time', 'operator' => '!=',
+            $aRules[] = array(
+                'title', 'compare', 'compareValue' => 'time', 'operator' => '!=',
                 'message' => gT("'time' is a reserved word and can not be used for a subquestion."),
-                'except' => 'archiveimport');
-            $aRules[] = array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/',
+                'except' => 'archiveimport'
+            );
+            $aRules[] = array(
+                'title', 'match', 'pattern' => '/^[[:alnum:]]*$/',
                 'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
-                'except' => 'archiveimport');
+                'except' => 'archiveimport'
+            );
         }
         return $aRules;
     }
@@ -822,9 +853,13 @@ class Question extends LSActiveRecord
         return $sIcon;
     }
 
+    /**
+     * Return other icon according to state
+     * @return boolean
+     */
     public function getOtherIcon()
     {
-        if (($this->type == Question::QT_L_LIST) || ($this->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($this->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($this->type == Question::QT_M_MULTIPLE_CHOICE)) {
+        if ($this->getAllowOther()) {
             $sIcon = ($this->other === "Y") ? '<span class="fa fa-dot-circle-o"></span>' : '<span></span>';
         } else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
@@ -832,9 +867,35 @@ class Question extends LSActiveRecord
         return $sIcon;
     }
 
+
+    /**
+     * Return if question allow other
+     * @return boolean
+     */
+    public function getAllowOther()
+    {
+        return (
+            !$this->parent_qid
+            && $this->getQuestionType()->other
+        );
+    }
+
+    /**
+     * Return if question has managed subquestions
+     * usage in rules : allow set other even if existing subquestions 'other' exist (but deleted after)
+     * @return boolean
+     */
+    public function getAllowSubquestions()
+    {
+        return (
+            !$this->parent_qid
+            && $this->getQuestionType()->subquestions
+        );
+    }
+
     /**
      * Get an new title/code for a question
-     * @param integer $index base for question code (exemple : inde of question when survey import)
+     * @param integer $index base for question code (example : inde of question when survey import)
      * @return string|null : new title, null if impossible
      */
     public function getNewTitle($index = 0)
@@ -995,13 +1056,18 @@ class Question extends LSActiveRecord
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
         //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';
-        $criteria->with = array('group' => array('alias' => 'g'), 'questionl10ns' => array('alias' => 'ql10n', 'condition' => "language='" . $this->survey->language . "'"));
+        $criteria->with = [
+            'group' => ['alias' => 'g'],
+            'questionl10ns' => ['alias' => 'ql10n', 'condition' => "language='" . $this->survey->language . "'"],
+            'question_theme' => ['alias' => 'qt', 'condition' => "extends=''"]
+        ];
 
         if (!empty($this->title)) {
             $criteria2 = new CDbCriteria();
             $criteria2->compare('t.title', $this->title, true, 'OR');
             $criteria2->compare('ql10n.question', $this->title, true, 'OR');
             $criteria2->compare('t.type', $this->title, true, 'OR');
+            $criteria2->compare('qt.description', $this->title, true, 'OR');
             /* search exact qid and make sure it's a numeric */
             if (is_numeric($this->title)) {
                 $criteria2->compare('t.qid', $this->title, false, 'OR');
@@ -1408,13 +1474,36 @@ class Question extends LSActiveRecord
         }
     }
 
-
+    /**
+     * @deprecated 5.3.x
+     * unknow usage
+     */
     public function getHasSubquestions()
     {
     }
 
+    /**
+     * @deprecated 5.3.x
+     * unknow usage
+     */
     public function getHasAnsweroptions()
     {
+    }
+
+    /**
+     * Check if this question have subquestion with other code
+     * @return boolean
+     */
+    public function getHasOtherSubquestions()
+    {
+        if (!$this->getAllowSubquestions()) {
+            return false;
+        }
+        $otherSubQuestionCount = Question::model()->count(
+            "parent_qid=:parent_qid and LOWER(title)='other'",
+            array("parent_qid" => $this->qid)
+        );
+        return boolval($otherSubQuestionCount);
     }
 
     /**
@@ -1430,20 +1519,22 @@ class Question extends LSActiveRecord
         }
     }
 
+    /**
+     * Remove subquestion if needed when update question type
+     * @return void
+     */
     protected function removeInvalidSubquestions()
     {
-        // No need to remove anything if this is a subquestion
-        if ($this->parent_qid) {
+        if ($this->getAllowSubquestions()) {
             return;
         }
 
         // Remove subquestions if the question's type doesn't allow subquestions
-        if (!$this->getQuestionType()->subquestions) {
-            $aSubquestions = Question::model()->findAll("parent_qid=:parent_qid", array("parent_qid" => $this->qid));
-            if (!empty($aSubquestions)) {
-                foreach ($aSubquestions as $oSubquestion) {
-                    $oSubquestion->delete();
-                }
+        $aSubquestions = Question::model()->findAll("parent_qid=:parent_qid", array("parent_qid" => $this->qid));
+        if (!empty($aSubquestions)) {
+            foreach ($aSubquestions as $oSubquestion) {
+                /* Use delete to delete related model */
+                $oSubquestion->delete();
             }
         }
     }

@@ -3,8 +3,6 @@
 /**
  * EC Private Key
  *
- * @category  Crypt
- * @package   EC
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2015 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -13,25 +11,23 @@
 
 namespace phpseclib3\Crypt\EC;
 
-use phpseclib3\Crypt\EC;
-use phpseclib3\Crypt\EC\Formats\Signature\ASN1 as ASN1Signature;
-use phpseclib3\Math\BigInteger;
-use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards as TwistedEdwardsCurve;
-use phpseclib3\Crypt\EC\BaseCurves\Montgomery as MontgomeryCurve;
-use phpseclib3\Crypt\Hash;
-use phpseclib3\Crypt\EC\Curves\Ed25519;
-use phpseclib3\Crypt\EC\Curves\Curve25519;
-use phpseclib3\Crypt\EC\Formats\Keys\PKCS1;
-use phpseclib3\Crypt\Common;
-use phpseclib3\Exception\UnsupportedOperationException;
 use phpseclib3\Common\Functions\Strings;
+use phpseclib3\Crypt\Common;
+use phpseclib3\Crypt\EC;
+use phpseclib3\Crypt\EC\BaseCurves\Montgomery as MontgomeryCurve;
+use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards as TwistedEdwardsCurve;
+use phpseclib3\Crypt\EC\Curves\Curve25519;
+use phpseclib3\Crypt\EC\Curves\Ed25519;
+use phpseclib3\Crypt\EC\Formats\Keys\PKCS1;
+use phpseclib3\Crypt\EC\Formats\Signature\ASN1 as ASN1Signature;
+use phpseclib3\Crypt\Hash;
+use phpseclib3\Exception\UnsupportedOperationException;
+use phpseclib3\Math\BigInteger;
 
 /**
  * EC Private Key
  *
- * @package EC
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class PrivateKey extends EC implements Common\PrivateKey
 {
@@ -47,6 +43,11 @@ class PrivateKey extends EC implements Common\PrivateKey
      * @var object
      */
     protected $dA;
+
+    /**
+     * @var string
+     */
+    protected $secret;
 
     /**
      * Multiplies an encoded point by the private key
@@ -85,7 +86,6 @@ class PrivateKey extends EC implements Common\PrivateKey
      * Create a signature
      *
      * @see self::verify()
-     * @access public
      * @param string $message
      * @return mixed
      */
@@ -106,7 +106,7 @@ class PrivateKey extends EC implements Common\PrivateKey
 
         if ($this->curve instanceof TwistedEdwardsCurve) {
             if ($this->curve instanceof Ed25519 && self::$engines['libsodium'] && !isset($this->context)) {
-                $result = sodium_crypto_sign_detached($message, $this->toString('libsodium'));
+                $result = sodium_crypto_sign_detached($message, $this->withPassword()->toString('libsodium'));
                 return $shortFormat == 'SSH2' ? Strings::packSSH2('ss', 'ssh-' . strtolower($this->getCurve()), $result) : $result;
             }
 
@@ -117,7 +117,7 @@ class PrivateKey extends EC implements Common\PrivateKey
             $curve = $this->curve;
             $hash = new Hash($curve::HASH);
 
-            $secret = substr($hash->hash($this->dA->secret), $curve::SIZE);
+            $secret = substr($hash->hash($this->secret), $curve::SIZE);
 
             if ($curve instanceof Ed25519) {
                 $dom = !isset($this->context) ? '' :
@@ -222,14 +222,13 @@ class PrivateKey extends EC implements Common\PrivateKey
     {
         $type = self::validatePlugin('Keys', $type, 'savePrivateKey');
 
-        return $type::savePrivateKey($this->dA, $this->curve, $this->QA, $this->password, $options);
+        return $type::savePrivateKey($this->dA, $this->curve, $this->QA, $this->secret, $this->password, $options);
     }
 
     /**
      * Returns the public key
      *
      * @see self::getPrivateKey()
-     * @access public
      * @return mixed
      */
     public function getPublicKey()

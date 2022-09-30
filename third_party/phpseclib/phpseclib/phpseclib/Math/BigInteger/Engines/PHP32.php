@@ -5,8 +5,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Math
- * @package   BigInteger
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -15,16 +13,12 @@
 
 namespace phpseclib3\Math\BigInteger\Engines;
 
-use ParagonIE\ConstantTime\Hex;
-
 /**
  * Pure-PHP 32-bit Engine.
  *
  * Uses 64-bit floats if int size is 4 bits
  *
- * @package PHP32
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class PHP32 extends PHP
 {
@@ -46,49 +40,6 @@ class PHP32 extends PHP
      */
     const MAX10LEN = 7;
     const MAX_DIGIT2 = 4503599627370496;
-    /**#@-*/
-
-    /**
-     * Modular Exponentiation Engine
-     *
-     * @var string
-     */
-    protected static $modexpEngine;
-
-    /**
-     * Engine Validity Flag
-     *
-     * @var bool
-     */
-    protected static $isValidEngine;
-
-    /**
-     * Primes > 2 and < 1000
-     *
-     * @var array
-     */
-    protected static $primes;
-
-    /**
-     * BigInteger(0)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\PHP32
-     */
-    protected static $zero;
-
-    /**
-     * BigInteger(1)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\PHP32
-     */
-    protected static $one;
-
-    /**
-     * BigInteger(2)
-     *
-     * @var \phpseclib3\Math\BigInteger\Engines\PHP32
-     */
-    protected static $two;
 
     /**
      * Initialize a PHP32 BigInteger Engine instance
@@ -111,7 +62,7 @@ class PHP32 extends PHP
         }
 
         while (true) {
-            $i-= 4;
+            $i -= 4;
             if ($i < 0) {
                 if ($i == -4) {
                     break;
@@ -124,12 +75,15 @@ class PHP32 extends PHP
                 $i = 0;
             }
             list(, $digit) = unpack('N', substr($val, $i, 4));
+            if ($digit < 0) {
+                $digit += 0xFFFFFFFF + 1;
+            }
             $step = count($vals) & 3;
             if ($step) {
-                $digit>>= 2 * $step;
+                $digit = floor($digit / pow(2, 2 * $step));
             }
             if ($step != 3) {
-                $digit&= static::MAX_DIGIT;
+                $digit &= static::MAX_DIGIT;
                 $i++;
             }
             $vals[] = $digit;
@@ -199,7 +153,7 @@ class PHP32 extends PHP
      * and the divisor (basically, the "common residue" is the first positive modulo).
      *
      * @param PHP32 $y
-     * @return PHP32
+     * @return array{PHP32, PHP32}
      */
     public function divide(PHP32 $y)
     {
@@ -292,7 +246,6 @@ class PHP32 extends PHP
      *
      * @param PHP32 $y
      * @return int in case < 0 if $this is less than $y; > 0 if $this is greater than $y, and 0 if they are equal.
-     * @access public
      * @see self::equals()
      */
     public function compare(PHP32 $y)

@@ -65,7 +65,8 @@ class Labels extends SurveyCommonAction
             $zip = new PclZip($zipfilename);
 
             if (!is_writeable($basedestdir)) {
-                $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                Yii::app()->setFlashMessage(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), 'error');
+                $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
 
             if (!is_dir($destdir)) {
@@ -359,7 +360,7 @@ class Labels extends SurveyCommonAction
         }
         if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             if (LabelSet::model()->deleteLabelSet($lid)) {
-                Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."), 'success');
+                Yii::app()->setFlashMessage(gT("Label set successfully deleted."), 'success');
                 $lid = 0;
             }
         }
@@ -388,7 +389,7 @@ class Labels extends SurveyCommonAction
         $oLabelSet->label_name = $label_name;
         $oLabelSet->languages = implode(' ', $languageids);
         if ($oLabelSet->save()) {
-            Yii::app()->setFlashMessage(gT("Label set sucessfully created."), 'success');
+            Yii::app()->setFlashMessage(gT("Label set successfully created."), 'success');
             $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $oLabelSet->lid));
         } else {
             Yii::app()->setFlashMessage(gT("Label could not be created."), 'error');

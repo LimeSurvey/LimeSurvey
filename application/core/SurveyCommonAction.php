@@ -309,10 +309,10 @@ class SurveyCommonAction extends CAction
      *
      * Addition of parameters should be avoided if they can be added to $aData
      *
-     * NOTE FROM LOUIS : We want to remove this function, wich doesn't respect MVC pattern.
+     * NOTE FROM LOUIS : We want to remove this function, which doesn't respect MVC pattern.
      * The work it's doing should be handle by layout files, and subviews inside views.
      * Eg : for route "admin/survey/sa/listquestiongroups/surveyid/282267"
-     *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in wich the question group bar is called as a subview.
+     *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in which the question group bar is called as a subview.
      *
      * So for now, we try to evacuate all the renderWrappedTemplate logic (if statements, etc.)
      * to subfunctions, then it will be easier to remove.
@@ -597,7 +597,7 @@ class SurveyCommonAction extends CAction
                 //Count answer-options for this question
                 $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid));
 
-                //Count sub-questions for this question
+                //Count subquestions for this question
                 $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid));
 
                 $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));

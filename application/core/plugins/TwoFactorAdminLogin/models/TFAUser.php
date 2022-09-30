@@ -102,7 +102,7 @@ class TFAUser extends User
      * @inheritDoc
      * @return array
      */
-    public function getColums()
+    public function getColumns()
     {
         // TODO should be static
         $cols = array(

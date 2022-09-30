@@ -20,38 +20,40 @@ use Composer\Semver\VersionParser;
 
 
 
+
+
 class InstalledVersions
 {
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => 'dev-develop',
-    'version' => 'dev-develop',
+    'pretty_version' => 'dev-master',
+    'version' => 'dev-master',
     'aliases' => 
     array (
     ),
-    'reference' => '0417917dc15116766d0143117d9176cf5aa60bc4',
+    'reference' => 'd459f75b595702dd4e5cd5deb2afbe785e6f0f06',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
     'limesurvey/limesurvey' => 
     array (
-      'pretty_version' => 'dev-develop',
-      'version' => 'dev-develop',
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
       'aliases' => 
       array (
       ),
-      'reference' => '0417917dc15116766d0143117d9176cf5aa60bc4',
+      'reference' => 'd459f75b595702dd4e5cd5deb2afbe785e6f0f06',
     ),
     'paragonie/constant_time_encoding' => 
     array (
-      'pretty_version' => 'v2.5.0',
-      'version' => '2.5.0.0',
+      'pretty_version' => 'v2.6.3',
+      'version' => '2.6.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9229e15f2e6ba772f0c55dd6986c563b937170a8',
+      'reference' => '58c3f47f650c94ec05a151692652a868995d2938',
     ),
     'paragonie/random_compat' => 
     array (
@@ -64,48 +66,48 @@ private static $installed = array (
     ),
     'paragonie/sodium_compat' => 
     array (
-      'pretty_version' => 'v1.17.0',
-      'version' => '1.17.0.0',
+      'pretty_version' => 'v1.18.0',
+      'version' => '1.18.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c59cac21abbcc0df06a3dd18076450ea4797b321',
+      'reference' => '906e0b925895d3a5941eda25f371fbafb3cbc22f',
     ),
     'phpseclib/bcmath_compat' => 
     array (
-      'pretty_version' => '1.0.4',
-      'version' => '1.0.4.0',
+      'pretty_version' => '2.0.1',
+      'version' => '2.0.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f805922db4b3d8c1e174dafb74ac7374264e8880',
+      'reference' => '2ffea8bfe1702b4535a7b3c2649c4301968e9a3c',
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.12',
-      'version' => '3.0.12.0',
+      'pretty_version' => '3.0.16',
+      'version' => '3.0.16.0',
       'aliases' => 
       array (
       ),
-      'reference' => '89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb',
+      'reference' => '7181378909ed8890be4db53d289faac5b77f8b05',
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '30885182c981ab175d4d034db0f6f469898070ab',
+      'reference' => '6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4',
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0abb51d2f102e00a4eefcf46ba7fec406d245825',
+      'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
     ),
     'tiamo/spss' => 
     array (
@@ -135,6 +137,16 @@ private static $installed = array (
       ),
       'reference' => '3cb9b60a0d579855c17d7830d5015b74705c9fdd',
     ),
+    'yiisoft/yii' => 
+    array (
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
+      'aliases' => 
+      array (
+        0 => '1.1.x-dev',
+      ),
+      'reference' => '89ff97cd81bcec982c4f8b1325a8cdc10a14b2f6',
+    ),
   ),
 );
 private static $canGetVendors;
@@ -152,7 +164,6 @@ $packages = array();
 foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
-
 
 if (1 === \count($packages)) {
 return $packages[0];
@@ -345,6 +356,7 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
+
 
 
 

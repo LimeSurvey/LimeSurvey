@@ -528,7 +528,7 @@
     return EXISTS$1 ? document$3.createElement(it) : {};
   };
 
-  // Thanks to IE8 for its funny defineProperty
+  // Thanks to IE8 for your funny defineProperty
   var ie8DomDefine = !descriptors && !fails(function () {
     // eslint-disable-next-line es/no-object-defineproperty -- required for testing
     return Object.defineProperty(documentCreateElement('div'), 'a', {
@@ -29894,6 +29894,51 @@
             setTimeout(remove, options.timeout);
           }
         });
+      }
+    }, {
+      key: "createFlash",
+      value: function createFlash(text, classes, styles, customOptions) {
+        customOptions = customOptions || {};
+        var options = {
+          useHtml: customOptions.useHtml || true,
+          timeout: customOptions.timeout || 3500,
+          dismissable: customOptions.dismissable || true
+        };
+        styles = styles || {};
+        classes = classes || "alert-success";
+
+        if (options.dismissable) {
+          classes = "alert " + classes;
+        }
+
+        var container = $("<div></div>");
+        container.addClass(classes);
+        container.css(styles);
+
+        if (options.useHtml) {
+          container.html(text);
+        } else {
+          container.text(text);
+        }
+
+        if (options.dismissable) {
+          $('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>×</span></button>').appendTo(container);
+        }
+
+        var timeoutRef;
+
+        if (options.timeout) {
+          timeoutRef = setTimeout(function () {
+            container.alert('close');
+          }, options.timeout);
+        }
+
+        container.on('closed.bs.alert', function () {
+          if (options.timeout) {
+            clearTimeout(timeoutRef);
+          }
+        });
+        container.appendTo($('#notif-container'));
       }
     }]);
 

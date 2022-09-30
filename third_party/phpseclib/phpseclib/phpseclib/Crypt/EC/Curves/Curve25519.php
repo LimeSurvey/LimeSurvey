@@ -5,8 +5,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Crypt
- * @package   EC
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2019 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -53,9 +51,9 @@ class Curve25519 extends Montgomery
         //return [$this->factory->newInteger(new BigInteger($r, 256))];
 
         $d = $d->toBytes();
-        $d&= "\xF8" . str_repeat("\xFF", 30) . "\x7F";
+        $d &= "\xF8" . str_repeat("\xFF", 30) . "\x7F";
         $d = strrev($d);
-        $d|= "\x40";
+        $d |= "\x40";
         $d = new BigInteger($d, -256);
 
         return parent::multiplyPoint($p, $d);
