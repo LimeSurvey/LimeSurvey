@@ -234,6 +234,27 @@ class LimesurveyApi
     }
 
     /**
+     * Get the current survey in current oage
+     * @param boolean $onlyactivated return it only if activated
+     * @return null|integer
+     */
+    public function getCurrentSurveyid($onlyactivated = false)
+    {
+        $surveyId = \LimeExpressionManager::getLEMsurveyId();
+        if (empty($surveyId)) {
+            return false;
+        }
+        $survey = \Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            return false;
+        }
+        if ($onlyactivated && !$survey->getIsActive()) {
+            return false;
+        }
+        return $surveyId;
+    }
+
+    /**
      * Get the current Response
      * @param integer $surveyId
      * @return \Response|null
@@ -241,7 +262,7 @@ class LimesurveyApi
     public function getCurrentResponses($surveyId = null)
     {
         if (empty($surveyId)) {
-            $surveyId = \LimeExpressionManager::getLEMsurveyId();
+            $surveyId = $this->getCurrentSurveyid();
         }
         if (empty($surveyId)) {
             return;
