@@ -52,7 +52,8 @@
 		"mk-j/php_xlsxwriter": "^0.38.0",
 		"html2text/html2text": "^4.3",
 		"pear/ole": "1.*@dev",
-		"pear/spreadsheet_excel_writer": "^0.9.7"
+		"pear/spreadsheet_excel_writer": "^0.9.7",
+		"zircote/swagger-php": "^4.4"
 	},
 	"config": {
 		"vendor-dir": "vendor",
@@ -74,6 +75,7 @@
 		"tebazil/yii1-db-seeder": "^0.0.0"
 	},
 	"scripts": {
+		"openapi": "./vendor/bin/openapi ./application/controllers/rest/V1 -l -o ./docs/open-api/open-api-v1.json",
 		"test": [
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models",
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/controllers",
@@ -82,7 +84,7 @@
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates",
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php",
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php",
-            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/LSYii_ControllerRest.php",
+			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/LSYii_ControllerRest.php",
 			"./vendor/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/helpers/update/updates/ text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",
@@ -91,7 +93,7 @@
 			"./vendor/bin/phpmd application/models/ArchivedTableSettings.php text tests/rulesets/phpmd_ruleset.xml",
 			"./vendor/bin/phpmd application/libraries/PluginManager text tests/rulesets/phpmd_ruleset.xml",
 			"./vendor/bin/phpmd application/controllers/SurveyAdministrationController.php text tests/rulesets/phpmd_ruleset.xml",
-            "./vendor/bin/phpmd application/controllers/rest/ text tests/rulesets/phpmd_ruleset_strict.xml",
+			"./vendor/bin/phpmd application/controllers/rest/ text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/libraries/ExtensionInstaller/ text tests/rulesets/phpmd_ruleset.xml",
 			"./vendor/bin/phpmd application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php text tests/rulesets/phpmd_ruleset_strict.xml",

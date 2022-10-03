@@ -19,12 +19,58 @@ use LimeSurvey\Api\Command\V1\QuestionPropertiesGet;
 use LimeSurvey\Api\Command\V1\QuestionPropertiesSet;
 use LimeSurvey\Api\Command\V1\QuestionDelete;
 
+/**
+ * Question Controller
+ * 
+ */
 class QuestionController extends LSYii_ControllerRest
 {
     /**
      * Create question.
      *
-     * @param string $id Question Id
+     * @OA\Post(
+     *     path="/rest/v1/question",
+     *     summary="Create Question",
+     *     description="Create Question",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="survey_id",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="group_id",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string"
+     *                 ),
+     *                  @OA\Property(
+     *                     property="description",
+     *                     type="string"
+     *                 ),
+     *                 example={
+     *                      "survey_id": "1", 
+     *                      "group_id": "1", 
+     *                      "name": "country", 
+     *                      "description" : "In what country do you live?"
+     *                  }
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *          response="200", 
+     *          description="Success"
+     *     ),
+     *     @OA\Response(
+     *          response="400", 
+     *          description="Bad Request"
+     *     )
+     * )
+     * 
      * @return void
      */
     public function actionIndexPost()
@@ -46,6 +92,66 @@ class QuestionController extends LSYii_ControllerRest
 
     /**
      * Get array of questions or one specific question.
+     * 
+     * @OA\Get(
+     *     path="/rest/v1/question",
+     *     summary="Get question list",
+     *     description="Get question list",
+     *     @OA\Response(
+     *          response="200", 
+     *          description="Success",
+     *          @OA\JsonContent(
+     *             ref="#/components/schemas/question_list"
+     *          )
+     *     ),
+     *      @OA\Response(
+     *          response="400", 
+     *          description="Bad Request"
+     *     ),
+     *     @OA\Response(
+     *          response="401", 
+     *          description="Unauthorized"
+     *     ),
+     *      @OA\Response(
+     *          response="404", 
+     *          description="Not Found"
+     *     )
+     * )
+     * 
+     * @OA\Get(
+     *      path="/rest/v1/question/{id}",
+     *      summary="Get question by ID",
+     *      description="Get question by ID",
+     *      @OA\Parameter(
+     *          description="Question ID",
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *          @OA\JsonContent(
+     *              ref="#/components/schemas/question_detail"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response="400", 
+     *          description="Bad Request",
+     *          @OA\JsonContent(
+     *             ref="#/components/schemas/question_status_error_invalid_question_id"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response="401", 
+     *          description="Unauthorized"
+     *     ),
+     *      @OA\Response(
+     *          response="404", 
+     *          description="Not Found"
+     *     )
+     * )
      *
      * @param string $id Question Id
      * @return void
@@ -82,6 +188,48 @@ class QuestionController extends LSYii_ControllerRest
     /**
      * Update question properties.
      *
+     * @OA\Put(
+     *     path="/rest/v1/question/{id}",
+     *     summary="Update question by id",
+     *     description="Update question by id",
+     *     @OA\Parameter(
+     *         description="Question ID",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *              @OA\Property(
+     *                  property="id",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="name",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="phone",
+     *                  oneOf={
+     *                      @OA\Schema(type="string"),
+     *                      @OA\Schema(type="integer"),
+     *                  }
+     *              ),
+     *              example={
+     *                  "id": "a3fb6", 
+     *                  "name": "Jessica Smith", 
+     *                  "phone": 12345678
+     *              }
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response="200", 
+     *          description="Success"
+     *     )
+     * )
+     * 
      * @param string $id Question Id
      * @return void
      */
@@ -105,6 +253,23 @@ class QuestionController extends LSYii_ControllerRest
     /**
      * Delete question by question id.
      *
+     * @OA\Delete(
+     *     path="/rest/v1/question/{id}",
+     *     summary="Delete question by ID",
+     *     description="Delete question by ID",
+     *     @OA\Parameter(
+     *         description="Question ID",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *          response="200", 
+     *          description="Success"
+     *     )
+     * )
+     * 
      * @param string $id Question Id
      * @return void
      */
