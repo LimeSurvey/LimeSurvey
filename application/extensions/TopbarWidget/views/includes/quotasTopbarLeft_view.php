@@ -1,5 +1,5 @@
 <!-- Quick CSV report -->
-<a class="btn btn-outline-secondary" role="button" onClick="window.open('<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$surveyid/quickreport/y") ?>', '_top')">
+<a class="btn btn-outline-secondary" role="button" onClick="window.open('<?php echo Yii::App()->createUrl("quotas/quickCSVReport/surveyid/$surveyid") ?>', '_top')">
   <?php eT("Quick CSV report"); ?>
 </a>
 
