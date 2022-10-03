@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\UserManager;
+
 /**
  * Class User
  *
@@ -471,7 +473,7 @@ class User extends LSActiveRecord
                     <span class='fa fa-pencil text-success'></span>
                 </button>";
         } else {
-            $userManager = new \LimeSurvey\Models\Services\UserManager(Yii::app()->user, $this);
+            $userManager = new UserManager(Yii::app()->user, $this);
             if ($userManager->canEdit()) {
                 $editUser = "<button data-toggle='tooltip' data-url='" . $editUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='modifyuser' title='" . gT("Edit this user") . "' type='submit' class='btn btn-default btn-sm green-border action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
             }
