@@ -19,24 +19,23 @@ use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesGet;
 use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesSet;
 use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
 
-
 /**
  */
 class QuestionGroupController extends LSYii_ControllerRest
 {
     /**
      * Create question group.
-     * 
+     *
      * @OA\Post(
      *     path="/rest/v1/questionGroup",
      *     summary="Create Question Group",
      *     description="Create Question Group",
      *     @OA\Response(
-     *          response="200", 
+     *          response="200",
      *          description="Success"
      *     )
      * )
-     * 
+     *
      * @return void
      */
     public function actionIndexPost()

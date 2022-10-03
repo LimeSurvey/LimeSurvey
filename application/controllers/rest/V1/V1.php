@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @OA\Info(
  *     title="LimeSurvey REST API",

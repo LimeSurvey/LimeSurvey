@@ -2,7 +2,7 @@
 
 /**
  * Question OpenApi Schema
- * 
+ *
  *  @OA\Schema(
  *      schema="question_list",
  *      type="array",
@@ -33,7 +33,7 @@
  *          }
  *      }
  * )
- * 
+ *
  * @OA\Schema(
  *      schema="question_list_item",
  *      type="object",
@@ -145,7 +145,7 @@
  *          "same_script": "0"
  *      }
  * )
- * 
+ *
  * @OA\Schema(
  *      schema="question_detail",
  *      type="object",
@@ -299,7 +299,7 @@
  *          "defaultvalue": null
  *      }
  * )
- * 
+ *
  * @OA\Schema(
  *      schema="question_status_error_invalid_question_id",
  *      type="object",

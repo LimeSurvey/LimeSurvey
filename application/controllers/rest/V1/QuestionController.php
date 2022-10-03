@@ -21,7 +21,7 @@ use LimeSurvey\Api\Command\V1\QuestionDelete;
 
 /**
  * Question Controller
- * 
+ *
  */
 class QuestionController extends LSYii_ControllerRest
 {
@@ -53,24 +53,24 @@ class QuestionController extends LSYii_ControllerRest
      *                     type="string"
      *                 ),
      *                 example={
-     *                      "survey_id": "1", 
-     *                      "group_id": "1", 
-     *                      "name": "country", 
+     *                      "survey_id": "1",
+     *                      "group_id": "1",
+     *                      "name": "country",
      *                      "description" : "In what country do you live?"
      *                  }
      *             )
      *         )
      *     ),
      *     @OA\Response(
-     *          response="200", 
+     *          response="200",
      *          description="Success"
      *     ),
      *     @OA\Response(
-     *          response="400", 
+     *          response="400",
      *          description="Bad Request"
      *     )
      * )
-     * 
+     *
      * @return void
      */
     public function actionIndexPost()
@@ -92,32 +92,32 @@ class QuestionController extends LSYii_ControllerRest
 
     /**
      * Get array of questions or one specific question.
-     * 
+     *
      * @OA\Get(
      *     path="/rest/v1/question",
      *     summary="Get question list",
      *     description="Get question list",
      *     @OA\Response(
-     *          response="200", 
+     *          response="200",
      *          description="Success",
      *          @OA\JsonContent(
      *             ref="#/components/schemas/question_list"
      *          )
      *     ),
      *      @OA\Response(
-     *          response="400", 
+     *          response="400",
      *          description="Bad Request"
      *     ),
      *     @OA\Response(
-     *          response="401", 
+     *          response="401",
      *          description="Unauthorized"
      *     ),
      *      @OA\Response(
-     *          response="404", 
+     *          response="404",
      *          description="Not Found"
      *     )
      * )
-     * 
+     *
      * @OA\Get(
      *      path="/rest/v1/question/{id}",
      *      summary="Get question by ID",
@@ -137,18 +137,18 @@ class QuestionController extends LSYii_ControllerRest
      *          )
      *     ),
      *     @OA\Response(
-     *          response="400", 
+     *          response="400",
      *          description="Bad Request",
      *          @OA\JsonContent(
      *             ref="#/components/schemas/question_status_error_invalid_question_id"
      *          )
      *     ),
      *     @OA\Response(
-     *          response="401", 
+     *          response="401",
      *          description="Unauthorized"
      *     ),
      *      @OA\Response(
-     *          response="404", 
+     *          response="404",
      *          description="Not Found"
      *     )
      * )
@@ -218,18 +218,18 @@ class QuestionController extends LSYii_ControllerRest
      *                  }
      *              ),
      *              example={
-     *                  "id": "a3fb6", 
-     *                  "name": "Jessica Smith", 
+     *                  "id": "a3fb6",
+     *                  "name": "Jessica Smith",
      *                  "phone": 12345678
      *              }
      *          )
      *     ),
      *     @OA\Response(
-     *          response="200", 
+     *          response="200",
      *          description="Success"
      *     )
      * )
-     * 
+     *
      * @param string $id Question Id
      * @return void
      */
@@ -265,11 +265,11 @@ class QuestionController extends LSYii_ControllerRest
      *         @OA\Schema(type="string"),
      *     ),
      *     @OA\Response(
-     *          response="200", 
+     *          response="200",
      *          description="Success"
      *     )
      * )
-     * 
+     *
      * @param string $id Question Id
      * @return void
      */
