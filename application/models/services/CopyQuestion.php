@@ -94,7 +94,7 @@ class CopyQuestion
     {
         $this->newQuestion = new \Question();
         // We need to use setAttributes here with $safeOnly=false to avoid issue #18323.
-        // Otherwise validators are loaded before setting the attributes. 
+        // Otherwise validators are loaded before setting the attributes.
         // Right now, probably a bug, some rules are added as validators conditionally, depending on the attribute values.
         // Then the rules set (final validators loaded) may not match the attributes which are later set.
         $this->newQuestion->setAttributes($questionToCopy->attributes, false);
@@ -156,7 +156,7 @@ class CopyQuestion
         foreach ($subquestions as $subquestion) {
             $copiedSubquestion = new \Question();
             // We need to use setAttributes here with $safeOnly=false to avoid issue #18323.
-            // Otherwise validators are loaded before setting the attributes. 
+            // Otherwise validators are loaded before setting the attributes.
             // Right now, probably a bug, some rules are added as validators conditionally, depending on the attribute values.
             // Then the rules set (final validators loaded) may not match the attributes which are later set.
             $copiedSubquestion->setAttributes($subquestion->attributes, false);
