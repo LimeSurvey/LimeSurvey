@@ -2750,7 +2750,8 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
 
 /**
  * Return true if the variable is an integer for LimeSurvey
- * Can not really use is_int due to SQL DECIMAL system. This function can surely be improved
+ * Allow usage of numeric answercode as int
+ * Can not use is_int due to SQL DECIMAL system.
  * @param string $arg
  * @return integer
  * @link http://php.net/is_int#82857
@@ -2758,9 +2759,12 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
 function exprmgr_int($arg)
 {
     if (strpos($arg, ".")) {
-        $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0")); // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+        // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+        $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0"));
     }
-    return (preg_match("/^-?[0-9]*$/", $arg)); // Allow 000 for value, @link https://bugs.limesurvey.org/view.php?id=9550 DECIMAL sql type.
+    // Allow 000 for value
+    // Disallow '' (and false) @link https://bugs.limesurvey.org/view.php?id=17950
+    return (preg_match("/^-?\d+$/", $arg));
 }
 /**
  * Join together $args[0-N] with ', '
