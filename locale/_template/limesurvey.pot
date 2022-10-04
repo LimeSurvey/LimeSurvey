@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-09-26 08:33:12+00:00\n"
+"POT-Creation-Date: 2022-10-04 09:40:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2974,12 +2974,12 @@ msgstr ""
 #: application/views/admin/token/tokenform.php:497
 #: application/views/admin/update/manage/subscribe.php:41
 #: application/views/admin/update/updater/_error.php:162
-#: application/views/admin/update/updater/steps/_backup.php:77
-#: application/views/admin/update/updater/steps/_change_log.php:62
+#: application/views/admin/update/updater/steps/_backup.php:76
+#: application/views/admin/update/updater/steps/_change_log.php:59
 #: application/views/admin/update/updater/steps/_check_local_errors.php:170
 #: application/views/admin/update/updater/steps/_check_local_errors.php:198
-#: application/views/admin/update/updater/steps/_fileSystem.php:40
-#: application/views/admin/update/updater/steps/_fileSystem.php:55
+#: application/views/admin/update/updater/steps/_fileSystem.php:39
+#: application/views/admin/update/updater/steps/_fileSystem.php:53
 #: application/views/admin/update/updater/welcome/_error_files_update_updater.php:25
 #: application/views/admin/update/updater/welcome/_subscribe.php:47
 #: application/views/admin/update/updater/welcome/_updater_update.php:25
@@ -6256,10 +6256,10 @@ msgstr ""
 #: application/views/admin/themes/templateeditor_register_view.php:15
 #: application/views/admin/token/emailpost.php:19
 #: application/views/admin/token/emailwarning.php:11
-#: application/views/admin/update/updater/steps/_backup.php:80
-#: application/views/admin/update/updater/steps/_change_log.php:67
+#: application/views/admin/update/updater/steps/_backup.php:79
+#: application/views/admin/update/updater/steps/_change_log.php:64
 #: application/views/admin/update/updater/steps/_check_local_errors.php:202
-#: application/views/admin/update/updater/steps/_fileSystem.php:57
+#: application/views/admin/update/updater/steps/_fileSystem.php:55
 #: application/views/admin/update/updater/welcome/_key_updated.php:16
 #: application/views/admin/update/updater/welcome/_updater_update.php:27
 #: application/views/admin/update/updater/welcome/_welcome.php:84
@@ -10015,7 +10015,7 @@ msgid "Bounce settings"
 msgstr ""
 
 #: application/extensions/TopbarWidget/views/includes/tokensTopbarLeft_view.php:162
-msgid "Generate tokens"
+msgid "Generate access codes"
 msgstr ""
 
 #: application/extensions/TopbarWidget/views/includes/tokensTopbarLeft_view.php:168
@@ -16976,7 +16976,7 @@ msgstr ""
 
 #: application/views/admin/checkintegrity/fix_view.php:30
 #: application/views/admin/update/updater/steps/_check_local_errors.php:173
-#: application/views/admin/update/updater/steps/_fileSystem.php:42
+#: application/views/admin/update/updater/steps/_fileSystem.php:41
 #: application/views/installer/precheck_view.php:157
 msgid "Check again"
 msgstr ""
@@ -22766,16 +22766,16 @@ msgstr ""
 msgid "Creating file backup"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:21
+#: application/views/admin/update/updater/steps/_backup.php:22
 msgid "File backup created: %s"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:24
-#: application/views/admin/update/updater/steps/_backup.php:34
+#: application/views/admin/update/updater/steps/_backup.php:25
+#: application/views/admin/update/updater/steps/_backup.php:35
 msgid "Download this file"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:30
+#: application/views/admin/update/updater/steps/_backup.php:31
 msgid "DB backup created:"
 msgstr ""
 
@@ -22812,10 +22812,6 @@ msgstr ""
 
 #: application/views/admin/update/updater/steps/_backup.php:67
 msgid "Please check any problems above and then proceed to the final step."
-msgstr ""
-
-#: application/views/admin/update/updater/steps/_change_log.php:27
-msgid "Note: Because you are updating from a stable to an unstable version or vice versa a change log might not be available or incomplete."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:16
