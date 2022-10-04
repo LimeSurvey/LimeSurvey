@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.30 (build 220927) to 3.28.31 (build 221005) October 4, 2022
+#Updated translation: Uighur by walkingdead
+#Updated translation: Thai by tomzt
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
 Changes from 3.28.29 (build 220920) to 3.28.30 (build 220927) September 26, 2022
 -Fixed issue #18351: Extra token placeholder show as invalid in expression (#2601) (Denis Chenu)
 -Fixed issue #18240: QuestionTheme browserdetect, Show Platform information didn't work (#2596) (Gabriel Jenik)
