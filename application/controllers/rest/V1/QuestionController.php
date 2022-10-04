@@ -30,8 +30,9 @@ class QuestionController extends LSYii_ControllerRest
      *
      * @OA\Post(
      *     path="/rest/v1/question",
-     *     summary="Create Question",
-     *     description="Create Question",
+     *     summary="Create question",
+     *     description="Create question",
+     *     tags={"Question"},
      *     @OA\RequestBody(
      *         @OA\MediaType(
      *             mediaType="application/json",
@@ -73,7 +74,7 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *     @OA\Response(
      *          response="400",
-     *          description="Bad Request",
+     *          description="Bad request",
      *          @OA\JsonContent(
      *             ref="#/components/schemas/question_status_error_invalid_question_id"
      *          )
@@ -106,6 +107,7 @@ class QuestionController extends LSYii_ControllerRest
      *     path="/rest/v1/question",
      *     summary="Get question list",
      *     description="Get question list",
+     *     tags={"Question"},
      *     @OA\Response(
      *          response="200",
      *          description="Success",
@@ -115,7 +117,7 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *      @OA\Response(
      *          response="400",
-     *          description="Bad Request"
+     *          description="Bad request"
      *     ),
      *     @OA\Response(
      *          response="401",
@@ -123,16 +125,17 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *      @OA\Response(
      *          response="404",
-     *          description="Not Found"
+     *          description="Not found"
      *     )
      * )
      *
      * @OA\Get(
      *      path="/rest/v1/question/{id}",
-     *      summary="Get question by ID",
-     *      description="Get question by ID",
+     *      summary="Get question by id",
+     *      description="Get question by id",
+     *      tags={"Question"},
      *      @OA\Parameter(
-     *          description="Question ID",
+     *          description="Question id",
      *          in="path",
      *          name="id",
      *          required=true,
@@ -140,14 +143,14 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *     @OA\Response(
      *          response=200,
-     *          description="OK",
+     *          description="Success",
      *          @OA\JsonContent(
      *              ref="#/components/schemas/question_detail"
      *          )
      *     ),
      *     @OA\Response(
      *          response="400",
-     *          description="Bad Request"
+     *          description="Bad request"
      *     ),
      *     @OA\Response(
      *          response="401",
@@ -155,7 +158,7 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *      @OA\Response(
      *          response="404",
-     *          description="Not Found"
+     *          description="Not found"
      *     )
      * )
      *
@@ -198,8 +201,9 @@ class QuestionController extends LSYii_ControllerRest
      *     path="/rest/v1/question/{id}",
      *     summary="Update question by id",
      *     description="Update question by id",
+     *     tags={"Question"},
      *     @OA\Parameter(
-     *         description="Question ID",
+     *         description="Question id",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -267,7 +271,7 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *     @OA\Response(
      *          response="400",
-     *          description="Bad Request"
+     *          description="Bad request"
      *     ),
      *     @OA\Response(
      *          response="401",
@@ -275,7 +279,7 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *      @OA\Response(
      *          response="404",
-     *          description="Not Found"
+     *          description="Not found"
      *     )
      * )
      *
@@ -304,10 +308,11 @@ class QuestionController extends LSYii_ControllerRest
      *
      * @OA\Delete(
      *     path="/rest/v1/question/{id}",
-     *     summary="Delete question by ID",
-     *     description="Delete question by ID",
+     *     summary="Delete question by id",
+     *     description="Delete question by id",
+     *     tags={"Question"},
      *     @OA\Parameter(
-     *         description="Question ID",
+     *         description="Question id",
      *         in="path",
      *         name="id",
      *         required=true,
@@ -319,7 +324,7 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *     @OA\Response(
      *          response="400",
-     *          description="Bad Request"
+     *          description="Bad request"
      *     ),
      *     @OA\Response(
      *          response="401",
@@ -327,7 +332,7 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *      @OA\Response(
      *          response="404",
-     *          description="Not Found"
+     *          description="Not found"
      *     )
      * )
      *
