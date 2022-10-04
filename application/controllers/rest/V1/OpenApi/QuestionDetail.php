@@ -82,11 +82,131 @@
  *      ),
  *      @OA\Property(
  *          property="attributes",
- *          type="string"
+ *          type="object",
+ *          @OA\Property(
+ *              property="cssclass",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="display_rows",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="em_validation_q",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="hidden",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="hide_tip",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="input_size",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="maximum_chars",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="page_break",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="random_group",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="statistics_graphtype",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="statistics_showgraph",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="text_input_width",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_action",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_disable_next",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_disable_prev",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_message_delay",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_message_style",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_timer_style",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_warning",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_warning_2",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_warning_2_display_time",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_warning_2_style",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_warning_display_time",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_warning_style",
+ *              type="string"
+ *          )
  *      ),
  *      @OA\Property(
  *          property="attributes_lang",
- *          type="string"
+ *          type="object",
+ *          @OA\Property(
+ *              property="em_validation_q_tip",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_countdown_message",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_message",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_warning_2_message",
+ *              type="string"
+ *          ),
+ *          @OA\Property(
+ *              property="time_limit_warning_message",
+ *              type="string"
+ *          )
  *      ),
  *      @OA\Property(
  *          property="answeroptions",
@@ -152,18 +272,6 @@
  *          },
  *          "answeroptions": "No available answer options",
  *          "defaultvalue": null
- *      }
- * )
- *
- * @OA\Schema(
- *      schema="question_status_error_invalid_question_id",
- *      type="object",
- *      @OA\Property(
- *          property="status",
- *          type="string"
- *      ),
- *      example={
- *          "status": "Error: Invalid questionid"
  *      }
  * )
  */

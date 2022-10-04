@@ -57,7 +57,7 @@ class QuestionController extends LSYii_ControllerRest
      *                      "group_id": "1",
      *                      "name": "country",
      *                      "description" : "In what country do you live?"
-     *                  }
+     *                 }
      *             )
      *         )
      *     ),
@@ -147,10 +147,7 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *     @OA\Response(
      *          response="400",
-     *          description="Bad Request",
-     *          @OA\JsonContent(
-     *             ref="#/components/schemas/question_status_error_invalid_question_id"
-     *          )
+     *          description="Bad Request"
      *     ),
      *     @OA\Response(
      *          response="401",
@@ -210,32 +207,75 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *     @OA\RequestBody(
      *         @OA\MediaType(
-     *             mediaType="application/json",
-     *              @OA\Property(
-     *                  property="id",
-     *                  type="string"
-     *              ),
-     *              @OA\Property(
-     *                  property="name",
-     *                  type="string"
-     *              ),
-     *              @OA\Property(
-     *                  property="phone",
-     *                  oneOf={
-     *                      @OA\Schema(type="string"),
-     *                      @OA\Schema(type="integer"),
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="language",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="questionData",
+     *                      type="object",
+     *                      @OA\Property(
+     *                          property="group_order",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="randomization_group",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="grelevance",
+     *                          type="string"
+     *                      )
+     *                  ),
+     *                  example={
+     *                      "language": "en",
+     *                      "questionData": {
+     *                          "group_order": "1",
+     *                          "randomization_group": "1",
+     *                          "grelevance": "1"
+     *                      }
      *                  }
-     *              ),
-     *              example={
-     *                  "id": "a3fb6",
-     *                  "name": "Jessica Smith",
-     *                  "phone": 12345678
-     *              }
+     *              )
      *          )
      *     ),
      *     @OA\Response(
      *          response="200",
-     *          description="Success"
+     *          description="Success",
+     *          @OA\JsonContent(
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="group_order",
+     *                      type="bool"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="randomization_group",
+     *                      type="bool"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="grelevance",
+     *                      type="bool"
+     *                  ),
+     *                  example={
+     *                      "group_order": true,
+     *                      "randomization_group": true,
+     *                      "grelevance": true
+     *                  }
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response="400",
+     *          description="Bad Request"
+     *     ),
+     *     @OA\Response(
+     *          response="401",
+     *          description="Unauthorized"
+     *     ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Not Found"
      *     )
      * )
      *
@@ -276,6 +316,18 @@ class QuestionController extends LSYii_ControllerRest
      *     @OA\Response(
      *          response="200",
      *          description="Success"
+     *     ),
+     *     @OA\Response(
+     *          response="400",
+     *          description="Bad Request"
+     *     ),
+     *     @OA\Response(
+     *          response="401",
+     *          description="Unauthorized"
+     *     ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Not Found"
      *     )
      * )
      *
