@@ -73,6 +73,12 @@ abstract class PluginBase implements iPlugin
     public $allowedPublicMethods = null;
 
     /**
+     * List of settings that should be encrypted before saving.
+     * @var string[]
+     */
+    protected $encryptedSettings = [];
+
+    /**
      * Constructor for the plugin
      * @todo Add proper type hint in 3.0
      * @param PluginManager $manager    The plugin manager instantiating the object
@@ -133,7 +139,16 @@ abstract class PluginBase implements iPlugin
      */
     protected function get($key = null, $model = null, $id = null, $default = null)
     {
-        return $this->getStore()->get($this, $key, $model, $id, $default);
+        $data = $this->getStore()->get($this, $key, $model, $id, $default);
+        if (!empty($data) && in_array($key, $this->encryptedSettings)) {
+            $sodium = \Yii::app()->sodium;
+            try {
+                $data = $sodium->decrypt($data);
+            } catch (\Throwable $e) {
+                // If decryption fails, just leave the value untouched (it was probably saved as plain text)
+            }
+        }
+        return $data;
     }
 
     /**
@@ -273,6 +288,11 @@ abstract class PluginBase implements iPlugin
      */
     protected function set($key, $data, $model = null, $id = null)
     {
+        // Encrypt the attribute if needed
+        if (!is_null($data) && in_array($key, $this->encryptedSettings)) {
+            $sodium = \Yii::app()->sodium;
+            $data = $sodium->encrypt($data);
+        }
         return $this->getStore()->set($this, $key, $data, $model, $id);
     }
 
