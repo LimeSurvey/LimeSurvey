@@ -11,6 +11,10 @@ use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
+use LimeSurvey\Api\Command\Response\Status\StatusError;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
 // Todo: Test. This command has not been tested.
@@ -42,7 +46,8 @@ class QuestionImport implements CommandInterface
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
                 return new Response(
-                    array('status' => 'Error: Invalid survey ID')
+                    array('status' => 'Error: Invalid survey ID'),
+                    new StatusErrorBadRequest()
                 );
             }
 
@@ -55,7 +60,8 @@ class QuestionImport implements CommandInterface
             ) {
                 if ($oSurvey->isActive) {
                     return new Response(
-                        array('status' => 'Error:Survey is Active and not editable')
+                        array('status' => 'Error:Survey is Active and not editable'),
+                        new StatusErrorBadRequest()
                     );
                 }
 
@@ -63,19 +69,24 @@ class QuestionImport implements CommandInterface
                     ->findByAttributes(array('gid' => $iGroupID));
                 if (!isset($oGroup)) {
                     return new Response(
-                        array('status' => 'Error: Invalid group ID')
+                        array('status' => 'Error: Invalid group ID'),
+                        new StatusErrorBadRequest()
                     );
                 }
 
                 $sGroupSurveyID = $oGroup['sid'];
                 if ($sGroupSurveyID != $iSurveyID) {
                     return new Response(
-                        array('status' => 'Error: Missmatch in surveyid and groupid')
+                        array('status' => 'Error: Missmatch in surveyid and groupid'),
+                        new StatusErrorBadRequest()
                     );
                 }
 
                 if (!strtolower($sImportDataType) == 'lsq') {
-                    return new Response(array('status' => 'Invalid extension'));
+                    return new Response(
+                        array('status' => 'Invalid extension'),
+                        new StatusErrorBadRequest()
+                    );
                 }
                 libxml_use_internal_errors(true);
                 Yii::app()->loadHelper('admin/import');
@@ -96,7 +107,10 @@ class QuestionImport implements CommandInterface
                             libxml_disable_entity_loader($bOldEntityLoaderState);
                             // Put back entity loader to its original state, to avoid contagion to other applications on the server
                         }
-                        return new Response(array('status' => 'Error: Invalid LimeSurvey question structure XML '));
+                        return new Response(
+                            array('status' => 'Error: Invalid LimeSurvey question structure XML '),
+                            new StatusErrorBadRequest()
+                        );
                     }
                     /**
                      * @psalm-suppress UndefinedFunction XMLImportQuestion is loaded by the Yii environment
@@ -111,7 +125,10 @@ class QuestionImport implements CommandInterface
                         // Put back entity loader to its original state, to avoid
                         // contagion to other applications on the server
                     }
-                    return new Response(array('status' => 'Really Invalid extension')); //just for symmetry!
+                    return new Response(
+                        array('status' => 'Really Invalid extension'),
+                        new StatusErrorBadRequest()
+                    ); //just for symmetry!
                 }
 
                 unlink($sFullFilePath);
@@ -125,7 +142,10 @@ class QuestionImport implements CommandInterface
                         // Put back entity loader to its original state,
                         // to avoid contagion to other applications on the server
                     }
-                    return new Response(array('status' => 'Error: ' . $aImportResults['fatalerror']));
+                    return new Response(
+                        array('status' => 'Error: ' . $aImportResults['fatalerror']),
+                        new StatusError(),
+                    );
                 } else {
                     fixLanguageConsistency($iSurveyID);
                     $iNewqid = $aImportResults['newqid'];
@@ -165,13 +185,22 @@ class QuestionImport implements CommandInterface
                     } catch (Exception $e) {
                         // no need to throw exception
                     }
-                    return new Response((int) $aImportResults['newqid']);
+                    return new Response(
+                        (int) $aImportResults['newqid'],
+                        new StatusSuccess
+                    );
                 }
             } else {
-                return new Response(array('status' => 'No permission'));
+                return new Response(
+                    array('status' => 'No permission'),
+                    new StatusErrorUnauthorised()
+                );
             }
         } else {
-            return new Response(array('status' => ApiSession::INVALID_SESSION_KEY));
+            return new Response(
+                array('status' => ApiSession::INVALID_SESSION_KEY),
+                new StatusErrorUnauthorised()
+            );
         }
     }
 }

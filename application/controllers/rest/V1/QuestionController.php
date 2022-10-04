@@ -63,11 +63,20 @@ class QuestionController extends LSYii_ControllerRest
      *     ),
      *     @OA\Response(
      *          response="200",
-     *          description="Success"
+     *          description="Success",
+     *          @OA\JsonContent(
+     *             @OA\Schema(
+     *                 type="string",
+     *                 example=123
+     *             )
+     *          )
      *     ),
      *     @OA\Response(
      *          response="400",
-     *          description="Bad Request"
+     *          description="Bad Request",
+     *          @OA\JsonContent(
+     *             ref="#/components/schemas/question_status_error_invalid_question_id"
+     *          )
      *     )
      * )
      *

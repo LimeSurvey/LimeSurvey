@@ -6,6 +6,3 @@
  *     version="1.0"
  * )
  */
-class V1
-{
-}
