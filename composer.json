@@ -75,7 +75,7 @@
 		"tebazil/yii1-db-seeder": "^0.0.0"
 	},
 	"scripts": {
-		"openapi": "./vendor/bin/openapi ./application/controllers/rest/V1 -l -o ./docs/open-api/open-api-v1.json",
+		"openapi": "./vendor/bin/openapi ./application/controllers/rest/V1 -l -o ./docs/open-api/v1.json",
 		"test": [
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models",
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/controllers",
