@@ -27,14 +27,14 @@ class QuestionGroupController extends LSYii_ControllerRest
      * Create question group.
      *
      * @OA\Post(
-     *     path="/rest/v1/questionGroup",
-     *     summary="Create question group",
-     *     description="Create question group",
-     *     tags={"Question Group"},
-     *     @OA\Response(
+     *      path="/rest/v1/questionGroup",
+     *      summary="Create question group",
+     *      description="Create question group",
+     *      tags={"Question Group"},
+     *      @OA\Response(
      *          response="200",
      *          description="Success"
-     *     )
+     *      )
      * )
      *
      * @return void

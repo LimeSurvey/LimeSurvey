@@ -29,56 +29,61 @@ class QuestionController extends LSYii_ControllerRest
      * Create question.
      *
      * @OA\Post(
-     *     path="/rest/v1/question",
-     *     summary="Create question",
-     *     description="Create question",
-     *     tags={"Question"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="survey_id",
-     *                     type="string"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="group_id",
-     *                     type="string"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="name",
-     *                     type="string"
-     *                 ),
+     *      path="/rest/v1/question",
+     *      security={{"bearerAuth":{}}},
+     *      summary="Create question",
+     *      description="Create question",
+     *      tags={"Question"},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
      *                  @OA\Property(
-     *                     property="description",
-     *                     type="string"
-     *                 ),
-     *                 example={
+     *                      property="survey_id",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="group_id",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="name",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="description",
+     *                      type="string"
+     *                  ),
+     *                  example={
      *                      "survey_id": "1",
      *                      "group_id": "1",
      *                      "name": "country",
      *                      "description" : "In what country do you live?"
-     *                 }
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *          response="200",
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *      response="200",
      *          description="Success",
      *          @OA\JsonContent(
-     *             @OA\Schema(
-     *                 type="string",
-     *                 example=123
-     *             )
+     *              @OA\Schema(
+     *                  type="string",
+     *                  example=123
+     *              )
      *          )
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="400",
      *          description="Bad request",
      *          @OA\JsonContent(
-     *             ref="#/components/schemas/question_status_error_invalid_question_id"
+     *              ref="#/components/schemas/question_status_error_invalid_question_id"
      *          )
-     *     )
+     *      ),
+     *      @OA\Response(
+     *          response="401",
+     *          description="Unauthorized"
+     *      )
      * )
      *
      * @return void
@@ -104,33 +109,35 @@ class QuestionController extends LSYii_ControllerRest
      * Get array of questions or one specific question.
      *
      * @OA\Get(
-     *     path="/rest/v1/question",
-     *     summary="Get question list",
-     *     description="Get question list",
-     *     tags={"Question"},
-     *     @OA\Response(
+     *      path="/rest/v1/question",
+     *      security={{"bearerAuth":{}}},
+     *      summary="Get question list",
+     *      description="Get question list",
+     *      tags={"Question"},
+     *      @OA\Response(
      *          response="200",
      *          description="Success",
      *          @OA\JsonContent(
-     *             ref="#/components/schemas/question_list"
+     *              ref="#/components/schemas/question_list"
      *          )
-     *     ),
+     *      ),
      *      @OA\Response(
      *          response="400",
      *          description="Bad request"
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="401",
      *          description="Unauthorized"
-     *     ),
+     *      ),
      *      @OA\Response(
      *          response="404",
      *          description="Not found"
-     *     )
+     *      )
      * )
      *
      * @OA\Get(
      *      path="/rest/v1/question/{id}",
+     *      security={{"bearerAuth":{}}},
      *      summary="Get question by id",
      *      description="Get question by id",
      *      tags={"Question"},
@@ -199,6 +206,7 @@ class QuestionController extends LSYii_ControllerRest
      *
      * @OA\Put(
      *     path="/rest/v1/question/{id}",
+     *     security={{"bearerAuth":{}}},
      *     summary="Update question by id",
      *     description="Update question by id",
      *     tags={"Question"},
@@ -307,29 +315,30 @@ class QuestionController extends LSYii_ControllerRest
      * Delete question by question id.
      *
      * @OA\Delete(
-     *     path="/rest/v1/question/{id}",
-     *     summary="Delete question by id",
-     *     description="Delete question by id",
-     *     tags={"Question"},
-     *     @OA\Parameter(
-     *         description="Question id",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="string"),
-     *     ),
-     *     @OA\Response(
+     *      path="/rest/v1/question/{id}",
+     *      security={{"bearerAuth":{}}},
+     *      summary="Delete question by id",
+     *      description="Delete question by id",
+     *      tags={"Question"},
+     *      @OA\Parameter(
+     *          description="Question id",
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Schema(type="string"),
+     *      ),
+     *      @OA\Response(
      *          response="200",
      *          description="Success"
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="400",
      *          description="Bad request"
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="401",
      *          description="Unauthorized"
-     *     ),
+     *      ),
      *      @OA\Response(
      *          response="404",
      *          description="Not found"
