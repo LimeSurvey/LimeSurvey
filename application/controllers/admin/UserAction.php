@@ -198,6 +198,22 @@ class UserAction extends SurveyCommonAction
         }
     }
 
+     /**
+     * Toggle Setting
+     * @param int $surveyid
+     */
+    public function togglesetting($surveyid = 0)
+    {
+        $setting  = Yii::app()->request->getPost('setting');
+        $newValue = Yii::app()->request->getPost('newValue');
+
+        $result = SettingsUser::setUserSetting($setting, $newValue);
+
+        $this->renderJSON([
+            "result" => SettingsUser::getUserSettingValue($setting)
+        ]);
+    }
+
     /**
      * Renders template(s) wrapped in header and footer
      *
