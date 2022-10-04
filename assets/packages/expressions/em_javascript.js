@@ -227,11 +227,11 @@ $(document).on("change",".select-item select:not([onchange]),.ls-dropdown-item s
     checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
 });
 /* radio/button item */
-$(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick])",function(event){
+$(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick]), .ls-button-radio",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /* checkbox item */
-$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick])",function(event){
+$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick]), .ls-button-checkbox",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* hidden item */

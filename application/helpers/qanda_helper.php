@@ -2846,7 +2846,6 @@ function do_hugefreetext($ia)
  */
 function do_yesno($ia)
 {
-    $coreClass = "ls-answers answers-list";
     $yChecked = $nChecked = $naChecked = '';
     if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y') {
         $yChecked = CHECKED;
@@ -2878,10 +2877,8 @@ function do_yesno($ia)
         'displayType' => $displayType,
     );
     if ($displayType === 0) {
-        $itemDatas['coreClass'] = "{$coreClass} button-list yesno-button";
         $answer = doRender('/survey/questions/answer/yesno/buttons/item', $itemDatas, true);
     } else {
-        $itemDatas['coreClass'] = "{$coreClass} radio-list yesno-radio-list";
         $answer = doRender('/survey/questions/answer/yesno/radio/item', $itemDatas, true);
     }
 
@@ -2924,7 +2921,7 @@ function do_gender($ia)
     );
 
     if ($displayType === 0) {
-        $itemDatas['coreClass'] = "{$coreClass} button-list gender-button";
+        $itemDatas['coreClass'] = "{$coreClass} gender-button";
         $answer = doRender('/survey/questions/answer/gender/buttons/answer', $itemDatas, true);
     } else {
         $itemDatas['coreClass'] = "{$coreClass} radio-list gender-radio-list";

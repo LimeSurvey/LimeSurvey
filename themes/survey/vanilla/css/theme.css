@@ -382,12 +382,13 @@ body {
  */
 
 /* General */
-.button-item .ls-icon {
+.button-item .ls-icon, .ls-button-label .ls-icon {
     display: block;
 }
 
-.button-item .ls-icon {
+.button-item .ls-icon, .ls-button-label .ls-icon {
     font-size: 1.4em;
+    line-height: 1.4em;
 }
 
 html body .navbar.navbar-default.navbar-fixed-top {
