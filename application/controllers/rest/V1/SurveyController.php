@@ -24,7 +24,65 @@ use LimeSurvey\Api\Command\V1\SurveyDelete;
 class SurveyController extends LSYii_ControllerRest
 {
     /**
-     *  Handle post request
+     * Handle post request
+     *
+     * @OA\Post(
+     *      path="/rest/v1/survey",
+     *      security={{"bearerAuth":{}}},
+     *      summary="Create survey",
+     *      description="Create survey",
+     *      tags={"Survey"},
+     *      @OA\RequestBody(
+     *          @OA\JsonContent(
+     *              required={
+     *                  "group_name",
+     *                  "description"
+     *              },
+     *              @OA\Property(
+     *                  property="surveyID",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="surveyTitle",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="surveyLanguage",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="format",
+     *                  type="string"
+     *              ),
+     *              example={
+     *                  "surveyID": "1",
+     *                  "surveyTitle": "Test Survey",
+     *                  "surveyLanguage": "en",
+     *                  "format": null
+     *              }
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="Success - returns survey id",
+     *          @OA\JsonContent(
+     *              type="integer",
+     *              example=263491
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response="400",
+     *          description="Bad request"
+     *      ),
+     *      @OA\Response(
+     *          response="401",
+     *          description="Unauthorized"
+     *      ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Not found"
+     *      )
+     * )
      *
      * @return void
      */
@@ -46,7 +104,38 @@ class SurveyController extends LSYii_ControllerRest
     }
 
     /**
-     *  Handle get request
+     * Handle get request
+     *
+     * @OA\Get(
+     *      path="/rest/v1/survey/{id}",
+     *      security={{"bearerAuth":{}}},
+     *      summary="Get survey by id",
+     *      description="Get survey by id",
+     *      tags={"Survey"},
+     *      @OA\Parameter(
+     *          description="Survey id",
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Success"
+     *     ),
+     *     @OA\Response(
+     *          response="400",
+     *          description="Bad request"
+     *     ),
+     *     @OA\Response(
+     *          response="401",
+     *          description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          description="Not found"
+     *     )
+     * )
      *
      * @param string $id
      * @return void
@@ -67,7 +156,38 @@ class SurveyController extends LSYii_ControllerRest
     }
 
     /**
-     *  Handle delete request
+     * Handle delete request
+     *
+     * @OA\Delete(
+     *      path="/rest/v1/survey/{id}",
+     *      security={{"bearerAuth":{}}},
+     *      summary="Delete survey by id",
+     *      description="Delete survey by id",
+     *      tags={"Survey"},
+     *      @OA\Parameter(
+     *          description="Survey id",
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="Success"
+     *      ),
+     *      @OA\Response(
+     *          response="400",
+     *          description="Bad request"
+     *      ),
+     *      @OA\Response(
+     *          response="401",
+     *          description="Unauthorized"
+     *      ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Not found"
+     *     )
+     * )
      *
      * @param string $id
      * @return void
