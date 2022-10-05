@@ -217,13 +217,13 @@ class SendSubmitNotificationsCommand
      * @param int|null $id Id of failed email
      * @param string|null $recipient
      * @param int $surveyId
-     * @param int $responseId
+     * @param ?int $responseId
      * @param string $emailType
      * @param string|null $language
      * @param LimeMailer $mailer
      * @return bool
      */
-    public function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, int $responseId, string $emailType, ?string $language, LimeMailer $mailer): bool
+    public function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, ?int $responseId, string $emailType, ?string $language, LimeMailer $mailer): bool
     {
         $failedEmailModel = new FailedEmail();
         $errorMessage = $mailer->getError();
