@@ -37,32 +37,45 @@ class QuestionController extends LSYii_ControllerRest
      *      @OA\RequestBody(
      *          @OA\JsonContent(
      *              required={
-     *                  "survey_id",
-     *                  "group_id",
-     *                  "name",
-     *                  "description"
+     *                  "surveyID",
+     *                  "groupID",
+     *                  "newQuestionTitle",
+     *                  "newQuestion"
      *              },
      *              @OA\Property(
-     *                  property="survey_id",
+     *                  property="surveyID",
      *                  type="string"
      *              ),
      *              @OA\Property(
-     *                  property="group_id",
+     *                  property="groupID",
      *                  type="string"
      *              ),
      *              @OA\Property(
-     *                  property="name",
+     *                  property="importData",
      *                  type="string"
      *              ),
      *              @OA\Property(
-     *                  property="description",
+     *                  property="importDataType",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="newQuestionTitle",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="newQuestion",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="newQuestionHelp",
      *                  type="string"
      *              ),
      *              example={
-     *                  "survey_id": "1",
-     *                  "group_id": "1",
-     *                  "name": "country",
-     *                  "description" : "In what country do you live?"
+     *                  "surveyID": "1",
+     *                  "groupID": "1",
+     *                  "newQuestionTitle": "In what country do you live?",
+     *                  "newQuestion": "In what country do you live?",
+     *                  "newQuestionHelp": "In what country do you live?"
      *              }
      *          )
      *      ),
@@ -97,10 +110,13 @@ class QuestionController extends LSYii_ControllerRest
         $data    = $request->getRestParams();
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
-            'surveyID' => isset($data['survey_id']) ? $data['survey_id'] : '',
-            'groupID' => isset($data['group_id']) ? $data['group_id'] : '',
-            'groupTitle' => isset($data['name']) ? $data['name'] : '',
-            'groupDescription' => isset($data['description']) ? $data['description'] : ''
+            'surveyID' => isset($data['surveyID']) ? $data['surveyID'] : '',
+            'groupID' => isset($data['groupID']) ? $data['groupID'] : '',
+            'importData' => isset($data['importData']) ? $data['importData'] : '',
+            'importDataType' => isset($data['importDataType']) ? $data['importDataType'] : '',
+            'newQuestionTitle' => isset($data['newQuestionTitle']) ? $data['newQuestionTitle'] : '',
+            'newQuestion' => isset($data['newQuestion']) ? $data['newQuestion'] : '',
+            'newQuestionHelp' => isset($data['newQuestionHelp']) ? $data['newQuestionHelp'] : ''
         ];
         $commandResponse = (new QuestionImport())
             ->run(new Request($requestData));
@@ -117,6 +133,27 @@ class QuestionController extends LSYii_ControllerRest
      *      summary="Get question list",
      *      description="Get question list",
      *      tags={"Question"},
+     *      @OA\Parameter(
+     *          parameter="questionSettings",
+     *          name="questionSettings",
+     *          in="query",
+     *          description="Question settings",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="array",
+     *              @OA\Items(type="string")
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="language",
+     *          name="language",
+     *          in="query",
+     *          description="Language",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
      *      @OA\Response(
      *          response="200",
      *          description="Success",
@@ -150,26 +187,56 @@ class QuestionController extends LSYii_ControllerRest
      *          name="id",
      *          required=true,
      *          @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="surveyID",
+     *          name="surveyID",
+     *          in="query",
+     *          description="Survey id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="groupID",
+     *          name="groupID",
+     *          in="query",
+     *          description="Group id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="language",
+     *          name="language",
+     *          in="query",
+     *          description="Language",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
      *          response=200,
      *          description="Success",
      *          @OA\JsonContent(
      *              ref="#/components/schemas/question_detail"
      *          )
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="400",
      *          description="Bad request"
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="401",
      *          description="Unauthorized"
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="404",
      *          description="Not found"
-     *     )
+     *      )
      * )
      *
      * @param string $id Question Id
@@ -182,7 +249,7 @@ class QuestionController extends LSYii_ControllerRest
             $requestData = [
                 'sessionKey' => $this->getAuthToken(),
                 'questionID' => $id,
-                'questionSettings' => $request->getParam('settings'),
+                'questionSettings' => $request->getParam('questionSettings'),
                 'language' => $request->getParam('language')
             ];
             $commandResponse = (new QuestionPropertiesGet())
@@ -193,8 +260,8 @@ class QuestionController extends LSYii_ControllerRest
             $request = Yii::app()->request;
             $requestData = [
                 'sessionKey' => $this->getAuthToken(),
-                'surveyID' => $request->getParam('survey_id'),
-                'groupID' => $request->getParam('groupId'),
+                'surveyID' => $request->getParam('surveyID'),
+                'groupID' => $request->getParam('groupID'),
                 'language' => $request->getParam('language')
             ];
             $commandResponse = (new QuestionList())

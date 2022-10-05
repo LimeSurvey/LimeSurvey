@@ -92,14 +92,34 @@ class QuestionGroupController extends LSYii_ControllerRest
      *      description="Get question group list",
      *      tags={"Question Group"},
      *      @OA\Parameter(
-     *          parameter="query_survey_id",
+     *          parameter="survey_id",
      *          name="survey_id",
+     *          in="query",
      *          description="Survey id",
      *          @OA\Schema(
      *              type="string"
      *          ),
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="groupSettings",
+     *          name="groupSettings",
      *          in="query",
-     *          required=true
+     *          description="Group settings",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="array",
+     *              @OA\Items(type="string")
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="language",
+     *          name="language",
+     *          in="query",
+     *          description="Language",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
      *      ),
      *      @OA\Response(
      *          response="200",
@@ -134,26 +154,42 @@ class QuestionGroupController extends LSYii_ControllerRest
      *          name="id",
      *          required=true,
      *          @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="surveyID",
+     *          name="surveyID",
+     *          in="query",
+     *          description="Survey id",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="language",
+     *          name="language",
+     *          in="query",
+     *          description="Language",
+     *          required=false,
+     *          @OA\Schema(type="string")
+     *      ),
+     *      @OA\Response(
      *          response=200,
      *          description="Success",
      *          @OA\JsonContent(
      *              ref="#/components/schemas/question_group_detail"
      *          )
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="400",
      *          description="Bad request"
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="401",
      *          description="Unauthorized"
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="404",
      *          description="Not found"
-     *     )
+     *      )
      * )
      *
      * @param string $id Question Group Id
@@ -161,14 +197,15 @@ class QuestionGroupController extends LSYii_ControllerRest
      */
     public function actionIndexGet($id = null)
     {
-        if ($id == null) {
+        if ($id !== null) {
             $request = Yii::app()->request;
             $requestData = [
                 'sessionKey' => $this->getAuthToken(),
-                'surveyID' => $request->getParam('survey_id'),
+                'groupID' => $id,
+                'groupSettings' => $request->getParam('groupSettings'),
                 'language' => $request->getParam('language')
             ];
-            $commandResponse = (new QuestionGroupList())
+            $commandResponse = (new QuestionGroupPropertiesGet())
                 ->run(new Request($requestData));
 
             $this->renderCommandResponse($commandResponse);
@@ -176,11 +213,10 @@ class QuestionGroupController extends LSYii_ControllerRest
             $request = Yii::app()->request;
             $requestData = [
                 'sessionKey' => $this->getAuthToken(),
-                'groupID' => $id,
-                'groupSettings' => $request->getParam('settings'),
+                'surveyID' => $request->getParam('surveyID'),
                 'language' => $request->getParam('language')
             ];
-            $commandResponse = (new QuestionGroupPropertiesGet())
+            $commandResponse = (new QuestionGroupList())
                 ->run(new Request($requestData));
 
             $this->renderCommandResponse($commandResponse);

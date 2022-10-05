@@ -35,8 +35,8 @@ class SurveyController extends LSYii_ControllerRest
      *      @OA\RequestBody(
      *          @OA\JsonContent(
      *              required={
-     *                  "group_name",
-     *                  "description"
+     *                  "surveyTitle",
+     *                  "surveyLanguage"
      *              },
      *              @OA\Property(
      *                  property="surveyID",
@@ -118,23 +118,34 @@ class SurveyController extends LSYii_ControllerRest
      *          name="id",
      *          required=true,
      *          @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="surveySettings",
+     *          name="surveySettings",
+     *          in="query",
+     *          description="Survey settings",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="array",
+     *              @OA\Items(type="string")
+     *          )
+     *      ),
+     *      @OA\Response(
      *          response=200,
      *          description="Success"
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="400",
      *          description="Bad request"
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="401",
      *          description="Unauthorized"
-     *     ),
-     *     @OA\Response(
+     *      ),
+     *      @OA\Response(
      *          response="404",
      *          description="Not found"
-     *     )
+     *      )
      * )
      *
      * @param string $id
@@ -146,7 +157,7 @@ class SurveyController extends LSYii_ControllerRest
         $requestData = array(
             'sessionKey' => $this->getAuthToken(),
             'surveyID' => $id,
-            'surveySettings' => $request->getParam('settings')
+            'surveySettings' => $request->getParam('surveySettings')
         );
         $commandRequest = new Request($requestData);
         $commandResponse = (new SurveyPropertiesGet())
