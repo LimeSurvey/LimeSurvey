@@ -22,7 +22,53 @@ use LimeSurvey\Api\Command\V1\SessionKeyRelease;
 class SessionController extends LSYii_ControllerRest
 {
     /**
-     *  Handle post request
+     * Handle post request
+     *
+     * @OA\Post(
+     *      path="/rest/v1/session",
+     *      summary="Create session token",
+     *      description="Create session token",
+     *      tags={"Session"},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  required={
+     *                      "username",
+     *                      "password"
+     *                  },
+     *                  @OA\Property(
+     *                      property="username",
+     *                      type="string",
+     *                      description="Username"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string",
+     *                      description="Password"
+     *                  )
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *      response="200",
+     *          description="Success - returns session token",
+     *          @OA\JsonContent(
+     *              @OA\Schema(
+     *                  type="string",
+     *                  example="jMFVh92ZL4SN2~mMr7Aam_kThUgDXuu8"
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response="400",
+     *          description="Bad request"
+     *      ),
+     *      @OA\Response(
+     *          response="401",
+     *          description="Unauthorized"
+     *      )
+     * )
      *
      * @return void
      */
@@ -40,7 +86,31 @@ class SessionController extends LSYii_ControllerRest
     }
 
     /**
-     *  Handle delete request
+     * Handle delete request
+     *
+     * @OA\Delete(
+     *      path="/rest/v1/session",
+     *      security={{"bearerAuth":{}}},
+     *      summary="Delete session",
+     *      description="Delete session",
+     *      tags={"Session"},
+     *      @OA\Response(
+     *          response="200",
+     *          description="Success - session was deleted"
+     *      ),
+     *      @OA\Response(
+     *          response="400",
+     *          description="Bad request"
+     *      ),
+     *      @OA\Response(
+     *          response="401",
+     *          description="Unauthorized"
+     *      ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Not found"
+     *     )
+     * )
      *
      * @return void
      */

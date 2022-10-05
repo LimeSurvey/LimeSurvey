@@ -35,32 +35,35 @@ class QuestionController extends LSYii_ControllerRest
      *      description="Create question",
      *      tags={"Question"},
      *      @OA\RequestBody(
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *              @OA\Schema(
-     *                  @OA\Property(
-     *                      property="survey_id",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="group_id",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="name",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="description",
-     *                      type="string"
-     *                  ),
-     *                  example={
-     *                      "survey_id": "1",
-     *                      "group_id": "1",
-     *                      "name": "country",
-     *                      "description" : "In what country do you live?"
-     *                  }
-     *              )
+     *          @OA\JsonContent(
+     *              required={
+     *                  "survey_id",
+     *                  "group_id",
+     *                  "name",
+     *                  "description"
+     *              },
+     *              @OA\Property(
+     *                  property="survey_id",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="group_id",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="name",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="description",
+     *                  type="string"
+     *              ),
+     *              example={
+     *                  "survey_id": "1",
+     *                  "group_id": "1",
+     *                  "name": "country",
+     *                  "description" : "In what country do you live?"
+     *              }
      *          )
      *      ),
      *      @OA\Response(
@@ -163,7 +166,7 @@ class QuestionController extends LSYii_ControllerRest
      *          response="401",
      *          description="Unauthorized"
      *     ),
-     *      @OA\Response(
+     *     @OA\Response(
      *          response="404",
      *          description="Not found"
      *     )
@@ -218,38 +221,40 @@ class QuestionController extends LSYii_ControllerRest
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *              mediaType="application/json",
-     *              @OA\Schema(
+     *         @OA\JsonContent(
+     *              required={
+     *                  "language",
+     *                  "questionData"
+     *              },
+     *              @OA\Property(
+     *                  property="language",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="questionData",
+     *                  type="object",
+     *                  required={},
      *                  @OA\Property(
-     *                      property="language",
+     *                      property="group_order",
      *                      type="string"
      *                  ),
      *                  @OA\Property(
-     *                      property="questionData",
-     *                      type="object",
-     *                      @OA\Property(
-     *                          property="group_order",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="randomization_group",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="grelevance",
-     *                          type="string"
-     *                      )
+     *                      property="randomization_group",
+     *                      type="string"
      *                  ),
-     *                  example={
-     *                      "language": "en",
-     *                      "questionData": {
-     *                          "group_order": "1",
-     *                          "randomization_group": "1",
-     *                          "grelevance": "1"
-     *                      }
+     *                  @OA\Property(
+     *                      property="grelevance",
+     *                      type="string"
+     *                  )
+     *              ),
+     *              example={
+     *                  "language": "en",
+     *                  "questionData": {
+     *                      "group_order": "1",
+     *                      "randomization_group": "1",
+     *                      "grelevance": "1"
      *                  }
-     *              )
+     *              }
      *          )
      *     ),
      *     @OA\Response(
