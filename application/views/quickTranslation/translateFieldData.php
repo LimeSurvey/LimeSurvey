@@ -17,7 +17,6 @@ $iScaleID = (!empty($amTypeOptions["scaleid"])) ? $rowfrom[$amTypeOptions["scale
 // Display text in original language
 // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
 if ($type == 'answer') {
-    //$translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['answer']) . " (" . $rowfrom['qid'] . ") </td>";
     $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['question_title'] . " / " . $rowfrom['code']) . " (" . $rowfrom['aid'] . ") </td>";
 }
 if ($type == 'question_help' || $type == 'question') {
@@ -39,10 +38,20 @@ if (is_numeric($iScaleID)) {
 }
 $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$j}", $textto);
 
+
+$translateoutput .= '<div class="row">';
+$cols = 53;
+if($amTypeOptions['HTMLeditorDisplay'] === 'Modal'){
+    $translateoutput .= '<div class="col-sm-10">';
+    if($type == 'question_help' || $type == 'question' || $type == 'subquestion' || $type == 'answer'){
+        $cols = 44;
+    }
+}else{
+    $translateoutput .= '<div class="col-sm-12">';
+}
 $aDisplayOptions = array(
-    'class' => 'col-sm-10',
-    'cols' => '75',
-    'rows' => $nrows,
+    'cols' => $cols,
+    'rows' => 1,
     'readonly' => !Permission::model()->hasSurveyPermission($surveyId, 'translations', 'update')
 );
 if ($type == 'group') {
@@ -59,8 +68,11 @@ $htmleditor_data = array(
     $qid,
     "translate" . $amTypeOptions["HTMLeditorType"]
 );
+$translateoutput .= '</div>';
+$translateoutput .= '<div class="col-sm-1">';
 $translateoutput .= $this->loadEditor($amTypeOptions, $htmleditor_data);
-
+$translateoutput .= '</div>';
+$translateoutput .= '</div>'; //close row again
 $translateoutput .= "</td>";
 $translateoutput .= "</tr>";
 
