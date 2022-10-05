@@ -4,6 +4,6 @@
 </a>
 
 <!-- Add new quota -->
-<a class="btn btn-outline-secondary quota_new" role="button" href="<?php echo Yii::App()->createUrl("admin/quotas/sa/newquota/surveyid/$surveyid") ?>">
+<a class="btn btn-outline-secondary quota_new" role="button" href="<?php echo Yii::App()->createUrl("quotas/AddNewQuota/surveyid/$surveyid") ?>">
     <?php eT("Add new quota"); ?>
 </a>
