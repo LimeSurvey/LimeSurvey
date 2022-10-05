@@ -20,7 +20,7 @@ class QuickTranslationController extends LSBaseController
     /**
      *
      *
-     * @param $surveyid
+     * @param int $surveyid
      * @return void
      * @throws CHttpException
      */
@@ -115,10 +115,8 @@ class QuickTranslationController extends LSBaseController
     }
 
     /**
-     * @param $survey Survey the survey object
-     * @param $tolang
-     * @param $baselang
-     * @param $quickTranslation \LimeSurvey\Models\Services\QuickTranslation the quicktranslation object
+     * @param string $tolang
+     * @param \LimeSurvey\Models\Services\QuickTranslation $quickTranslation the quicktranslation object
      * @return void
      */
     private function translateSave($tolang, $quickTranslation)
@@ -162,12 +160,11 @@ class QuickTranslationController extends LSBaseController
     /**
      * Collecting database data and ckeditor data for the views.
      *
-     * @param $quickTranslation \LimeSurvey\Models\Services\QuickTranslation the quick translation object
-     * @param $tolang string language to translate to
-     * @param $baselang  string the base language
-     * @param $baselangdesc string the base language description
-     * @param $tolangdesc string the language to translate description
-     *
+     * @param \LimeSurvey\Models\Services\QuickTranslation $quickTranslation the quick translation object
+     * @param string $tolang language to translate to
+     * @param string $baselang the base language
+     * @param string $baselangdesc the base language description
+     * @param string $tolangdesc the language to translate description
      * @return array
      * @throws CException
      */
@@ -332,8 +329,6 @@ class QuickTranslationController extends LSBaseController
     }
 
     /**
-     *
-     *
      * @param $string
      * @return string|null
      */
@@ -355,7 +350,7 @@ class QuickTranslationController extends LSBaseController
      * It loads the correct editor mode (inline, popup, modal).
      * This is used in the view file translateFieldData.
      *
-     * @param $htmleditor
+     * @param array $htmleditor
      * @param string[] $aData
      * @return mixed
      */
@@ -399,8 +394,6 @@ class QuickTranslationController extends LSBaseController
     }
 
     /**
-     *
-     *
      * @return void
      */
     public function actionAjaxtranslategoogleapi()
@@ -420,6 +413,8 @@ class QuickTranslationController extends LSBaseController
     /*
      * translateGoogleApi.php
      * Creates a JSON interface for the auto-translate feature
+     *
+     * @return string
      */
     private function translateGoogleApi()
     {
@@ -435,7 +430,7 @@ class QuickTranslationController extends LSBaseController
         $error = false;
 
         try {
-            require_once(APPPATH . '/third_party/gtranslate-api/GTranslate.php');
+            require_once(ROOT . '/vendor/gtranslate-api/GTranslate.php');
             $gtranslate = new Gtranslate();
             $objGt = $gtranslate;
 
