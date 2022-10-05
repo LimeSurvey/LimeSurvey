@@ -2,8 +2,16 @@
 
 namespace LimeSurvey\Models\Services;
 
+use LimeMailer;
+use LimeExpressionManager;
+use Permission;
+use CHtml;
+use CException;
+use FailedEmail;
+
 /**
  * Refactor of old sendSubmitNotifications function, to enable injection of dependencies.
+ * Command object pattern, have one function called run() or similar.
  */
 class SendSubmitNotificationsCommand
 {
@@ -12,6 +20,9 @@ class SendSubmitNotificationsCommand
 
     /** @var LimeMailer instance */
     private $limeMailer;
+
+    /** @var bool */
+    private $debug = false;
 
     /**
      * Inject dependencies so they can be mocked.
@@ -23,14 +34,27 @@ class SendSubmitNotificationsCommand
     }
 
     /**
-     * Command object pattern, have one function called run() or similar.
+     * Set to true to enable debug mode
+     * @return void
      */
-    public function run()
+    public function setDebug(bool $value)
     {
-        // @todo: Remove globals
-        global $thissurvey;
-        $bIsHTML = ($thissurvey['htmlemail'] === 'Y'); // Needed for ANSWERTABLE
-        $debug = App()->getConfig('debug');
+        $this->debug = $value;
+    }
+
+    /**
+     * Send a submit notification to the email address specified in the notifications tab in the survey settings
+     *
+     * @param int $surveyid survey ID of currently used survey
+     * @param array $emails Emailnotifications that should be sent ['responseTo' => [['failedEmailId' => 'failedEmailId1', 'responseid' => 'responseid1', 'recipient' => 'recipient1', 'language' => 'language1'], [...]], 'notificationTo' => [[..., ..., ...][...]]]
+     * @param bool $return whether the function should return values
+     * @return array|void
+     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws CException
+     */
+    public function run(int $surveyid, array $emails = [], bool $return = false)
+    {
+        $bIsHTML = $this->thissurvey['htmlemail'] === 'Y'; // Needed for ANSWERTABLE
 
         //LimeMailer instance
         $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
@@ -64,8 +88,8 @@ class SendSubmitNotificationsCommand
         }
 
         // create array of recipients for emailnotifications
-        if (!empty($thissurvey['emailnotificationto']) && empty($emails)) {
-            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
+        if (!empty($this->thissurvey['emailnotificationto']) && empty($emails)) {
+            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailnotificationto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
             foreach ($aRecipient as $sRecipient) {
                 $sRecipient = trim($sRecipient);
                 if ($mailer::validateAddress($sRecipient)) {
@@ -74,8 +98,8 @@ class SendSubmitNotificationsCommand
             }
         }
         // // create array of recipients for emailresponses
-        if (!empty($thissurvey['emailresponseto']) && empty($emails)) {
-            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
+        if (!empty($this->thissurvey['emailresponseto']) && empty($emails)) {
+            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailresponseto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
             foreach ($aRecipient as $sRecipient) {
                 $sRecipient = trim($sRecipient);
                 if ($mailer::validateAddress($sRecipient)) {
@@ -86,7 +110,7 @@ class SendSubmitNotificationsCommand
 
         if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {
             /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
-            $reData = array('thissurvey' => $thissurvey);
+            $reData = array('thissurvey' => $this->thissurvey);
             templatereplace(
                 "{SID}",
                 array(), /* No tempvars update (except old Replacement like */
@@ -119,8 +143,8 @@ class SendSubmitNotificationsCommand
                 }
                 if (!$mailerSuccess) {
                     $failedEmailCount++;
-                    saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage, $mailer);
-                    if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
+                    $this->saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage, $mailer);
+                    if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                         /* Find a better way to show email error … */
                         echo CHtml::tag("div",
                             ['class' => 'alert alert-danger'],
@@ -166,8 +190,8 @@ class SendSubmitNotificationsCommand
                 }
                 if (!$mailerSuccess) {
                     $failedEmailCount++;
-                    saveFailedEmail($failedNotificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage, $mailer);
-                    if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
+                    $this->saveFailedEmail($failedNotificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage, $mailer);
+                    if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                         /* Find a better way to show email error … */
                         echo CHtml::tag("div",
                             ['class' => 'alert alert-danger'],
@@ -185,5 +209,46 @@ class SendSubmitNotificationsCommand
                 'failedEmailCount'      => $failedEmailCount,
             ];
         }
+    }
+
+    /**
+     * Saves a failed email whenever processing and sensing an email fails or overwrites a found entry with updated values
+     *
+     * @param int|null $id Id of failed email
+     * @param string|null $recipient
+     * @param int $surveyId
+     * @param int $responseId
+     * @param string $emailType
+     * @param string|null $language
+     * @param LimeMailer $mailer
+     * @return bool
+     */
+    public function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, int $responseId, string $emailType, ?string $language, LimeMailer $mailer): bool
+    {
+        $failedEmailModel = new FailedEmail();
+        $errorMessage = $mailer->getError();
+        $resendVars = json_encode($mailer->getResendEmailVars());
+        if (isset($id)) {
+            $failedEmail = $failedEmailModel->findByPk($id);
+            if (isset($failedEmail)) {
+                $failedEmail->surveyid = $surveyId;
+                $failedEmail->error_message = $errorMessage;
+                $failedEmail->status = 'SEND FAILED';
+                $failedEmail->updated = date('Y-m-d H:i:s');
+                return $failedEmail->save(false);
+            }
+        }
+        $failedEmailModel->recipient = $recipient;
+        $failedEmailModel->surveyid = $surveyId;
+        $failedEmailModel->responseid = $responseId;
+        $failedEmailModel->email_type = $emailType;
+        $failedEmailModel->language = $language;
+        $failedEmailModel->error_message = $errorMessage;
+        $failedEmailModel->created = date('Y-m-d H:i:s');
+        $failedEmailModel->status = 'SEND FAILED';
+        $failedEmailModel->updated = date('Y-m-d H:i:s');
+        $failedEmailModel->resend_vars = $resendVars;
+
+        return $failedEmailModel->save(false);
     }
 }

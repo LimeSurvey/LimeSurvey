@@ -642,46 +642,6 @@ function getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bI
     return $ResultTableText;
 }
 
-/**
- * Saves a failed email whenever processing and sensing an email fails or overwrites a found entry with updated values
- *
- * @param int|null $id Id of failed email
- * @param string|null $recipient
- * @param int $surveyId
- * @param int $responseId
- * @param string|null $emailType
- * @param string|null $language
- * @param LimeMailer $mailer
- * @return bool
- */
-function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, int $responseId, string $emailType, ?string $language, LimeMailer $mailer): bool
-{
-    $failedEmailModel = new FailedEmail();
-    $errorMessage = $mailer->getError();
-    $resendVars = json_encode($mailer->getResendEmailVars());
-    if (isset($id)) {
-        $failedEmail = $failedEmailModel->findByPk($id);
-        if (isset($failedEmail)) {
-            $failedEmail->surveyid = $surveyId;
-            $failedEmail->error_message = $errorMessage;
-            $failedEmail->status = 'SEND FAILED';
-            $failedEmail->updated = date('Y-m-d H:i:s');
-            return $failedEmail->save(false);
-        }
-    }
-    $failedEmailModel->recipient = $recipient;
-    $failedEmailModel->surveyid = $surveyId;
-    $failedEmailModel->responseid = $responseId;
-    $failedEmailModel->email_type = $emailType;
-    $failedEmailModel->language = $language;
-    $failedEmailModel->error_message = $errorMessage;
-    $failedEmailModel->created = date('Y-m-d H:i:s');
-    $failedEmailModel->status = 'SEND FAILED';
-    $failedEmailModel->updated = date('Y-m-d H:i:s');
-    $failedEmailModel->resend_vars = $resendVars;
-
-    return $failedEmailModel->save(false);
-}
 
 function failedEmailSuccess($id)
 {
