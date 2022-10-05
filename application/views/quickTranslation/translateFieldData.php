@@ -40,18 +40,19 @@ $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$j}", $textto);
 
 
 $translateoutput .= '<div class="row">';
-$cols = 53;
+
+$cols = 73;
 if($amTypeOptions['HTMLeditorDisplay'] === 'Modal'){
     $translateoutput .= '<div class="col-sm-10">';
     if($type == 'question_help' || $type == 'question' || $type == 'subquestion' || $type == 'answer'){
-        $cols = 44;
+        $cols = 50;
     }
 }else{
     $translateoutput .= '<div class="col-sm-12">';
 }
 $aDisplayOptions = array(
     'cols' => $cols,
-    'rows' => 1,
+    'rows' => $nrows,
     'readonly' => !Permission::model()->hasSurveyPermission($surveyId, 'translations', 'update')
 );
 if ($type == 'group') {
