@@ -93,7 +93,7 @@ class QuestionController extends LSYii_ControllerRest
      *          response="400",
      *          description="Bad request",
      *          @OA\JsonContent(
-     *              ref="#/components/schemas/question_status_error_invalid_question_id"
+     *              ref="#/components/schemas/response_status"
      *          )
      *      ),
      *      @OA\Response(
@@ -134,6 +134,26 @@ class QuestionController extends LSYii_ControllerRest
      *      description="Get question list",
      *      tags={"Question"},
      *      @OA\Parameter(
+     *          parameter="surveyID",
+     *          name="surveyID",
+     *          in="query",
+     *          description="Survey id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          parameter="groupID",
+     *          name="groupID",
+     *          in="query",
+     *          description="Group id",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
      *          parameter="questionSettings",
      *          name="questionSettings",
      *          in="query",
@@ -149,7 +169,7 @@ class QuestionController extends LSYii_ControllerRest
      *          name="language",
      *          in="query",
      *          description="Language",
-     *          required=false,
+     *          required=true,
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -189,31 +209,11 @@ class QuestionController extends LSYii_ControllerRest
      *          @OA\Schema(type="string")
      *      ),
      *      @OA\Parameter(
-     *          parameter="surveyID",
-     *          name="surveyID",
-     *          in="query",
-     *          description="Survey id",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          parameter="groupID",
-     *          name="groupID",
-     *          in="query",
-     *          description="Group id",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
      *          parameter="language",
      *          name="language",
      *          in="query",
      *          description="Language",
-     *          required=false,
+     *          required=true,
      *          @OA\Schema(
      *              type="string"
      *          )

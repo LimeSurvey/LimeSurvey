@@ -35,26 +35,26 @@ class QuestionGroupController extends LSYii_ControllerRest
      *      @OA\RequestBody(
      *          @OA\JsonContent(
      *              required={
-     *                  "survey_id",
-     *                  "group_name",
-     *                  "description"
+     *                  "surveyID",
+     *                  "groupTitle",
+     *                  "groupDescription"
      *              },
      *              @OA\Property(
-     *                  property="survey_id",
+     *                  property="surveyID",
      *                  type="string"
      *              ),
      *              @OA\Property(
-     *                  property="group_name",
+     *                  property="groupTitle",
      *                  type="string"
      *              ),
      *              @OA\Property(
-     *                  property="description",
+     *                  property="groupDescription",
      *                  type="string"
      *              ),
      *              example={
-     *                  "survey_id": "1",
-     *                  "group_name": "Test Group",
-     *                  "description" : "This is a test group"
+     *                  "surveyID": "1",
+     *                  "groupTitle": "Test Group",
+     *                  "groupDescription" : "This is a test group"
      *              }
      *          )
      *      ),
@@ -72,9 +72,9 @@ class QuestionGroupController extends LSYii_ControllerRest
         $data    = $request->getRestParams();
         $requestData = [
             'sessionKey' => $this->getAuthToken(),
-            'surveyID' => isset($data['survey_id']) ? $data['survey_id'] : '',
-            'groupTitle' => isset($data['name']) ? $data['name'] : '',
-            'groupDescription' => isset($data['description']) ? $data['description'] : ''
+            'surveyID' => isset($data['surveyID']) ? $data['surveyID'] : '',
+            'groupTitle' => isset($data['groupTitle']) ? $data['groupTitle'] : '',
+            'groupDescription' => isset($data['groupDescription']) ? $data['groupDescription'] : ''
         ];
         $commandResponse = (new QuestionGroupAdd())
             ->run(new Request($requestData));
@@ -92,8 +92,9 @@ class QuestionGroupController extends LSYii_ControllerRest
      *      description="Get question group list",
      *      tags={"Question Group"},
      *      @OA\Parameter(
-     *          parameter="survey_id",
-     *          name="survey_id",
+     *          parameter="surveyID",
+     *          name="surveyID",
+     *          required=true,
      *          in="query",
      *          description="Survey id",
      *          @OA\Schema(
@@ -152,14 +153,6 @@ class QuestionGroupController extends LSYii_ControllerRest
      *          description="Question group id",
      *          in="path",
      *          name="id",
-     *          required=true,
-     *          @OA\Schema(type="string")
-     *      ),
-     *      @OA\Parameter(
-     *          parameter="surveyID",
-     *          name="surveyID",
-     *          in="query",
-     *          description="Survey id",
      *          required=true,
      *          @OA\Schema(type="string")
      *      ),
