@@ -13,6 +13,51 @@
                 "summary": "Get question list",
                 "description": "Get question list",
                 "operationId": "ae270ed61c2473fae015fffbf95e2b9b",
+                "parameters": [
+                    {
+                        "parameter": "surveyID",
+                        "name": "surveyID",
+                        "in": "query",
+                        "description": "Survey id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "groupID",
+                        "name": "groupID",
+                        "in": "query",
+                        "description": "Group id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "questionSettings",
+                        "name": "questionSettings",
+                        "in": "query",
+                        "description": "Question settings",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "parameter": "language",
+                        "name": "language",
+                        "in": "query",
+                        "description": "Language",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -33,7 +78,12 @@
                     "404": {
                         "description": "Not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -46,27 +96,43 @@
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "surveyID",
+                                    "groupID",
+                                    "newQuestionTitle",
+                                    "newQuestion"
+                                ],
                                 "properties": {
-                                    "survey_id": {
+                                    "surveyID": {
                                         "type": "string"
                                     },
-                                    "group_id": {
+                                    "groupID": {
                                         "type": "string"
                                     },
-                                    "name": {
+                                    "importData": {
                                         "type": "string"
                                     },
-                                    "description": {
+                                    "importDataType": {
+                                        "type": "string"
+                                    },
+                                    "newQuestionTitle": {
+                                        "type": "string"
+                                    },
+                                    "newQuestion": {
+                                        "type": "string"
+                                    },
+                                    "newQuestionHelp": {
                                         "type": "string"
                                     }
                                 },
-                                "type": "object",
-                                "example": {
-                                    "survey_id": "1",
-                                    "group_id": "1",
-                                    "name": "country",
-                                    "description": "In what country do you live?"
-                                }
+                                "type": "object"
+                            },
+                            "example": {
+                                "surveyID": "1",
+                                "groupID": "1",
+                                "newQuestionTitle": "In what country do you live?",
+                                "newQuestion": "In what country do you live?",
+                                "newQuestionHelp": "In what country do you live?"
                             }
                         }
                     }
@@ -85,12 +151,20 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/question_status_error_invalid_question_id"
+                                    "$ref": "#/components/schemas/response_status"
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/rest/v1/question/{id}": {
@@ -106,6 +180,16 @@
                         "name": "id",
                         "in": "path",
                         "description": "Question id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "language",
+                        "name": "language",
+                        "in": "query",
+                        "description": "Language",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -132,7 +216,12 @@
                     "404": {
                         "description": "Not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -156,11 +245,16 @@
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "language",
+                                    "questionData"
+                                ],
                                 "properties": {
                                     "language": {
                                         "type": "string"
                                     },
                                     "questionData": {
+                                        "required": [],
                                         "properties": {
                                             "group_order": {
                                                 "type": "string"
@@ -175,14 +269,14 @@
                                         "type": "object"
                                     }
                                 },
-                                "type": "object",
-                                "example": {
-                                    "language": "en",
-                                    "questionData": {
-                                        "group_order": "1",
-                                        "randomization_group": "1",
-                                        "grelevance": "1"
-                                    }
+                                "type": "object"
+                            },
+                            "example": {
+                                "language": "en",
+                                "questionData": {
+                                    "group_order": "1",
+                                    "randomization_group": "1",
+                                    "grelevance": "1"
                                 }
                             }
                         }
@@ -206,7 +300,12 @@
                     "404": {
                         "description": "Not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -239,10 +338,84 @@
                     "404": {
                         "description": "Not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/rest/v1/questionGroup": {
+            "get": {
+                "tags": [
+                    "Question Group"
+                ],
+                "summary": "Get question group list",
+                "description": "Get question group list",
+                "operationId": "5b24b570d5cc3777ba697beacb5bf01e",
+                "parameters": [
+                    {
+                        "parameter": "surveyID",
+                        "name": "surveyID",
+                        "in": "query",
+                        "description": "Survey id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "groupSettings",
+                        "name": "groupSettings",
+                        "in": "query",
+                        "description": "Group settings",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "parameter": "language",
+                        "name": "language",
+                        "in": "query",
+                        "description": "Language",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/question_group_list"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "post": {
                 "tags": [
                     "Question Group"
@@ -250,11 +423,558 @@
                 "summary": "Create question group",
                 "description": "Create question group",
                 "operationId": "dd4be90189a7a3cde55e5b5aed060507",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "surveyID",
+                                    "groupTitle",
+                                    "groupDescription"
+                                ],
+                                "properties": {
+                                    "surveyID": {
+                                        "type": "string"
+                                    },
+                                    "groupTitle": {
+                                        "type": "string"
+                                    },
+                                    "groupDescription": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "surveyID": "1",
+                                "groupTitle": "Test Group",
+                                "groupDescription": "This is a test group"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success"
                     }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rest/v1/questionGroup/{id}": {
+            "get": {
+                "tags": [
+                    "Question Group"
+                ],
+                "summary": "Get question group by id",
+                "description": "Get question group by id",
+                "operationId": "45daa050b60dcdca9b44dac35a489345",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Question group id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "language",
+                        "name": "language",
+                        "in": "query",
+                        "description": "Language",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/question_group_detail"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Question Group"
+                ],
+                "summary": "Update question group by id",
+                "description": "Update question group by id",
+                "operationId": "3d72f81399ec30032efba789865b6292",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Question group id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "language",
+                                    "questionData"
+                                ],
+                                "properties": {
+                                    "language": {
+                                        "type": "string"
+                                    },
+                                    "questionData": {
+                                        "required": [],
+                                        "properties": {
+                                            "group_order": {
+                                                "type": "string"
+                                            },
+                                            "randomization_group": {
+                                                "type": "string"
+                                            },
+                                            "grelevance": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "group_name": "Question group Two 2",
+                                "description": "Question group Two 2 Desc",
+                                "language": "en",
+                                "questiongroupl10ns": {
+                                    "en": {
+                                        "group_name": "Question group 2 Two",
+                                        "description": ""
+                                    }
+                                },
+                                "order": "1",
+                                "randomization_group": "",
+                                "grelevance": "1"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "group_name": {
+                                            "type": "boolean"
+                                        },
+                                        "description": {
+                                            "type": "boolean"
+                                        },
+                                        "language": {
+                                            "type": "boolean"
+                                        },
+                                        "questiongroupl10ns": {
+                                            "properties": {
+                                                "en": {
+                                                    "properties": {
+                                                        "group_name": {
+                                                            "type": "string"
+                                                        },
+                                                        "description": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "order": {
+                                            "type": "string"
+                                        },
+                                        "randomization_group": {
+                                            "type": "string"
+                                        },
+                                        "grelevance": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "questiongroupl10ns": {
+                                        "en": {
+                                            "language": true,
+                                            "group_name": true,
+                                            "description": true
+                                        }
+                                    },
+                                    "group_order": true,
+                                    "randomization_group": true,
+                                    "grelevance": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Question Group"
+                ],
+                "summary": "Delete question group by id",
+                "description": "Delete question group by id",
+                "operationId": "1a6cc1072390c835e826e52efd87aeae",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Question group id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rest/v1/session": {
+            "post": {
+                "tags": [
+                    "Session"
+                ],
+                "summary": "Create session token",
+                "description": "Create session token",
+                "operationId": "c34d5a4d94a347efaecb50cfd0693566",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "description": "Username",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Password",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success - returns session token",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Session"
+                ],
+                "summary": "Delete session",
+                "description": "Delete session",
+                "operationId": "00181f41c12bd1a510306b399ed124c0",
+                "responses": {
+                    "200": {
+                        "description": "Success - session was deleted"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rest/v1/siteSettings/{id}": {
+            "get": {
+                "tags": [
+                    "Site Settings"
+                ],
+                "summary": "Get site settings",
+                "description": "Get site settings",
+                "operationId": "d4bff67730098c22afff9e0d3f90525f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Setting id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rest/v1/survey": {
+            "post": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Create survey",
+                "description": "Create survey",
+                "operationId": "838606922cdf3aaa84c1bf8ed6d59a3f",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "surveyTitle",
+                                    "surveyLanguage"
+                                ],
+                                "properties": {
+                                    "surveyID": {
+                                        "type": "string"
+                                    },
+                                    "surveyTitle": {
+                                        "type": "string"
+                                    },
+                                    "surveyLanguage": {
+                                        "type": "string"
+                                    },
+                                    "format": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "surveyID": "1",
+                                "surveyTitle": "Test Survey",
+                                "surveyLanguage": "en",
+                                "format": null
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success - returns survey id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "integer"
+                                },
+                                "example": 263491
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rest/v1/survey/{id}": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Get survey by id",
+                "description": "Get survey by id",
+                "operationId": "ce34922b77184455f19d5163f5ab8612",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Survey id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "surveySettings",
+                        "name": "surveySettings",
+                        "in": "query",
+                        "description": "Survey settings",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Delete survey by id",
+                "description": "Delete survey by id",
+                "operationId": "0703065e5b8a313d47a7cfcc60590203",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Survey id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
@@ -607,7 +1327,104 @@
                     "same_script": "0"
                 }
             },
-            "question_status_error_invalid_question_id": {
+            "question_group_detail": {
+                "properties": {
+                    "gid": {
+                        "type": "string"
+                    },
+                    "sid": {
+                        "type": "string"
+                    },
+                    "group_order": {
+                        "type": "string"
+                    },
+                    "randomization_group": {
+                        "type": "string"
+                    },
+                    "grelevance": {
+                        "type": "string"
+                    },
+                    "group_name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "gid": "1",
+                    "sid": "712896",
+                    "group_order": "0",
+                    "randomization_group": "",
+                    "grelevance": "",
+                    "group_name": "Question group 1",
+                    "description": "Description of group 1"
+                }
+            },
+            "question_group_list": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/question_group_list_item"
+                },
+                "example": [
+                    {
+                        "id": "1",
+                        "gid": "1",
+                        "sid": "712896",
+                        "group_order": "0",
+                        "randomization_group": "",
+                        "grelevance": "",
+                        "group_name": "Question group 1",
+                        "description": "",
+                        "language": "en"
+                    }
+                ]
+            },
+            "question_group_list_item": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "gid": {
+                        "type": "string"
+                    },
+                    "sid": {
+                        "type": "string"
+                    },
+                    "group_order": {
+                        "type": "string"
+                    },
+                    "randomization_group": {
+                        "type": "string"
+                    },
+                    "grelevance": {
+                        "type": "string"
+                    },
+                    "group_name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "id": "1",
+                    "gid": "1",
+                    "sid": "712896",
+                    "group_order": "0",
+                    "randomization_group": "",
+                    "grelevance": "",
+                    "group_name": "Question group 1",
+                    "description": "",
+                    "language": "en"
+                }
+            },
+            "response_status": {
                 "properties": {
                     "status": {
                         "type": "string"
@@ -615,8 +1432,16 @@
                 },
                 "type": "object",
                 "example": {
-                    "status": "Error: Invalid questionid"
+                    "status": "Error: Invalid question id"
                 }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Bearer Auth",
+                "in": "header",
+                "scheme": "bearer"
             }
         }
     }
