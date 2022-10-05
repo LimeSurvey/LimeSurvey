@@ -86,24 +86,22 @@ class QuestionGroupController extends LSYii_ControllerRest
      * Get array of question groups or one specific question group.
      *
      * @OA\Get(
-     *      path="/rest/v1/questionGroup",
+     *      path="/rest/v1/questionGroup/{id}",
      *      security={{"bearerAuth":{}}},
-     *      summary="Get question group list",
-     *      description="Get question group list",
+     *      summary="Get question group by id",
+     *      description="Get question group by id",
      *      tags={"Question Group"},
      *      @OA\Parameter(
-     *          parameter="surveyID",
-     *          name="surveyID",
+     *          description="Question group id",
+     *          in="path",
+     *          name="id",
      *          required=true,
-     *          in="query",
-     *          description="Survey id",
-     *          @OA\Schema(
-     *              type="string"
-     *          ),
+     *          @OA\Schema(type="string")
      *      ),
      *      @OA\Parameter(
      *          parameter="groupSettings",
-     *          name="groupSettings",
+     *          name="groupSettings[]",
+     *          allowReserved=true,
      *          in="query",
      *          description="Group settings",
      *          required=false,
@@ -118,15 +116,13 @@ class QuestionGroupController extends LSYii_ControllerRest
      *          in="query",
      *          description="Language",
      *          required=false,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
+     *          @OA\Schema(type="string")
      *      ),
      *      @OA\Response(
-     *          response="200",
+     *          response=200,
      *          description="Success",
      *          @OA\JsonContent(
-     *              ref="#/components/schemas/question_group_list"
+     *              ref="#/components/schemas/question_group_detail"
      *          )
      *      ),
      *      @OA\Response(
@@ -144,17 +140,20 @@ class QuestionGroupController extends LSYii_ControllerRest
      * )
      *
      * @OA\Get(
-     *      path="/rest/v1/questionGroup/{id}",
+     *      path="/rest/v1/questionGroup",
      *      security={{"bearerAuth":{}}},
-     *      summary="Get question group by id",
-     *      description="Get question group by id",
+     *      summary="Get question group list",
+     *      description="Get question group list",
      *      tags={"Question Group"},
      *      @OA\Parameter(
-     *          description="Question group id",
-     *          in="path",
-     *          name="id",
+     *          parameter="surveyID",
+     *          name="surveyID",
      *          required=true,
-     *          @OA\Schema(type="string")
+     *          in="query",
+     *          description="Survey id",
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
      *      ),
      *      @OA\Parameter(
      *          parameter="language",
@@ -162,13 +161,15 @@ class QuestionGroupController extends LSYii_ControllerRest
      *          in="query",
      *          description="Language",
      *          required=false,
-     *          @OA\Schema(type="string")
+     *          @OA\Schema(
+     *              type="string"
+     *          )
      *      ),
      *      @OA\Response(
-     *          response=200,
+     *          response="200",
      *          description="Success",
      *          @OA\JsonContent(
-     *              ref="#/components/schemas/question_group_detail"
+     *              ref="#/components/schemas/question_group_list"
      *          )
      *      ),
      *      @OA\Response(

@@ -366,19 +366,6 @@
                         }
                     },
                     {
-                        "parameter": "groupSettings",
-                        "name": "groupSettings",
-                        "in": "query",
-                        "description": "Group settings",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    {
                         "parameter": "language",
                         "name": "language",
                         "in": "query",
@@ -481,6 +468,20 @@
                         "required": true,
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "groupSettings",
+                        "name": "groupSettings[]",
+                        "in": "query",
+                        "description": "Group settings",
+                        "required": false,
+                        "allowReserved": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     },
                     {
@@ -906,10 +907,11 @@
                     },
                     {
                         "parameter": "surveySettings",
-                        "name": "surveySettings",
+                        "name": "surveySettings[]",
                         "in": "query",
                         "description": "Survey settings",
                         "required": false,
+                        "allowReserved": true,
                         "schema": {
                             "type": "array",
                             "items": {

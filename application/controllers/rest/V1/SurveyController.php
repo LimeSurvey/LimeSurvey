@@ -121,7 +121,8 @@ class SurveyController extends LSYii_ControllerRest
      *      ),
      *      @OA\Parameter(
      *          parameter="surveySettings",
-     *          name="surveySettings",
+     *          name="surveySettings[]",
+     *          allowReserved=true,
      *          in="query",
      *          description="Survey settings",
      *          required=false,
