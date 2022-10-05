@@ -339,12 +339,13 @@ class DataEntry extends SurveyCommonAction
             }
             $imported = 0;
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
+            /* @var boolean preserveIDs */
+            $preserveIDs = boolval(App()->getRequest()->getPost('preserveIDs'));
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
                 $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
-
-                if (isset($_POST['preserveIDs']) && $_POST['preserveIDs'] == 1) {
+                if ($preserveIDs) {
                     $targetResponse->id = $sourceResponse->id;
                 }
 
@@ -372,7 +373,13 @@ class DataEntry extends SurveyCommonAction
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
 
                 $imported++;
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$iSurveyId", true);
+                }
                 $targetResponse->save();
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$iSurveyId", false);
+                }
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
                 unset($targetResponse);
             }
