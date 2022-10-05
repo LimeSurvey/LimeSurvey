@@ -268,7 +268,27 @@
             ,filebrowserImageUploadUrl:'{$sFakeBrowserURL}'
             ,filebrowserFlashUploadUrl:'{$sFakeBrowserURL}'";
         }
-
+        /* @var string[] parameters of the replacementfields url */
+        $replacementfieldsurlparams = array(
+            'fieldtype' => $fieldtype, // email_XX_lang, question_lang …
+        );
+        if(!empty($action)) {
+            $replacementfieldsurlparams['action'] = javascriptEscape($action);
+        }
+        if(!empty($surveyID)) {
+            $replacementfieldsurlparams['surveyid'] = $surveyID;
+        }
+        if(!empty($gID)) {
+            $replacementfieldsurlparams['gid'] = $gID;
+        }
+        if(!empty($qID)) {
+            $replacementfieldsurlparams['qid'] = $qID;
+        }
+        /* @var string the replacementfields url */
+        $replacementfieldsurl = App()->getController()->createUrl(
+            'admin/limereplacementfields/sa/index/',
+            $replacementfieldsurlparams
+        );
         $scriptCode = ""
         . "
             if($('#".$fieldname."').length >0){
@@ -279,12 +299,7 @@
                 }
 
                 $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
-                LimeReplacementFieldsType : \"".$fieldtype."\"
-                ,LimeReplacementFieldsSID : \"".$surveyID."\"
-                ,LimeReplacementFieldsGID : \"".$gID."\"
-                ,LimeReplacementFieldsQID : \"".$qID."\"
-                ,LimeReplacementFieldsAction : \"".$action."\"
-                ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
+                LimeReplacementFieldsUrl : \"".$replacementfieldsurl."\"
                 ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
                 . $sFileBrowserAvailable
                 . $htmlformatoption
