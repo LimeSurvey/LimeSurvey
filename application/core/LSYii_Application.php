@@ -24,10 +24,10 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 * @property CLogRouter $log Log router component.
 * @property string $language Returns the language that the user is using and the application should be targeted to.
 * @property CClientScript $clientScript CClientScript manages JavaScript and CSS stylesheets for views.
-* @property CHttpRequest $request The request component.
+* @property LSHttpRequest $request The request component.
 * @property CDbConnection $db The database connection.
 * @property string $baseUrl The relative URL for the application.
-* @property CWebUser $user The user session information.
+* @property LSWebUser $user The user session information.
 * @property LSETwigViewRenderer $twigRenderer Twig rendering plugin
 * @property PluginManager $pluginManager The LimeSurvey Plugin manager
 * @property TbApi $bootstrap The bootstrap renderer

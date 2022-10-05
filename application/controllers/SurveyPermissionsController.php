@@ -57,8 +57,11 @@ class SurveyPermissionsController extends LSBaseController
     public function actionIndex($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
+        /** @var LSYii_Application */
+        $app = \Yii::app();
+        $user = $app->user;
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'read')) {
-            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
+            $user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         App()->getClientScript()->registerPackage('jquery-tablesorter');
@@ -103,20 +106,26 @@ class SurveyPermissionsController extends LSBaseController
     public function actionAddUser($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
+        /** @var LSYii_Application */
+        $app = \Yii::app();
+        $user = $app->user;
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
-            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
+            $user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         // 2.  add the user in permission table
         $userId = (int)Yii::app()->request->getPost('uid');
         $oSurvey = Survey::model()->findByPk($surveyid);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Survey not found"));
+        }
         $surveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions(
             $oSurvey,
             Yii::app()->getConfig('usercontrolSameGroupPolicy')
         );
         $userAdded = $surveyPermissions->addUserToSurveyPermission($userId);
         if ($userAdded) {
-            Yii::app()->user->setFlash('success', gT("User added."));
+            $user->setFlash('success', gT("User added."));
             if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update')) {
                 $this->redirect(array(
                     'surveyPermissions/settingsPermissions',
@@ -128,7 +137,7 @@ class SurveyPermissionsController extends LSBaseController
                 $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
             }
         } else {
-            Yii::app()->user->setFlash('error', gT("User could not be added to survey permissions."));
+            $user->setFlash('error', gT("User could not be added to survey permissions."));
             $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
         }
     }
@@ -143,11 +152,17 @@ class SurveyPermissionsController extends LSBaseController
     public function actionAddUserGroup($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
+        /** @var LSYii_Application */
+        $app = \Yii::app();
+        $user = $app->user;
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
-            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
+            $user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Survey not found"));
+        }
         $userGroupId = (int)Yii::app()->request->getPost('ugid');
         $surveyPermissions = new \LimeSurvey\Models\Services\SurveyPermissions(
             $oSurvey,
@@ -155,10 +170,10 @@ class SurveyPermissionsController extends LSBaseController
         );
         $amountUsersAdded = $surveyPermissions->addUserGroupToSurveyPermissions($userGroupId);
         if ($amountUsersAdded == 0) {
-            Yii::app()->user->setFlash('error', gT("No users from group could be added."));
+            $user->setFlash('error', gT("No users from group could be added."));
             $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
         } else {
-            Yii::app()->user->setFlash('success', $amountUsersAdded . ' ' . gT("users from group could be added"));
+            $user->setFlash('success', $amountUsersAdded . ' ' . gT("users from group could be added"));
             $this->redirect(array(
                 'surveyPermissions/settingsPermissions',
                 'surveyid' => $surveyid,
@@ -174,24 +189,30 @@ class SurveyPermissionsController extends LSBaseController
      * @param int $surveyid
      * @param string $action the action could be 'user' or 'usergroup'
      * @param int $id userid or groupid depending on the action
-     * @return string
+     * @return ?string
      */
     public function actionSettingsPermissions($surveyid, $action, $id)
     {
         $surveyid = sanitize_int($surveyid);
         $id = sanitize_int($id);
+        /** @var LSYii_Application */
+        $app = \Yii::app();
+        $user = $app->user;
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update')) {
-            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
+            $user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         if (!in_array($action, ['user', 'usergroup'])) {
-            Yii::app()->user->setFlash('error', gT("Unknown action."));
+            $user->setFlash('error', gT("Unknown action."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Survey not found"));
+        }
         $PermissionManagerService = new PermissionManager(
-            App()->request,
-            App()->user,
+            $app->request,
+            $app->user,
             $oSurvey,
             App()
         );
@@ -199,15 +220,16 @@ class SurveyPermissionsController extends LSBaseController
         if ($isUserGroup) {
             $oUserGroup = UserGroup::model()->findByPk($id);
             if (!isset($oUserGroup)) {
-                Yii::app()->user->setFlash('error', gT("Unknown usergroup."));
+                $user->setFlash('error', gT("Unknown usergroup."));
                 $this->redirect(Yii::app()->request->urlReferrer);
+                return; // This makes Psalm happy
             }
             $name = $oUserGroup->name;
             $aPermissions = $PermissionManagerService->getPermissionData();
         } else {
             $oUser = User::model()->findByPk($id);
             if (!isset($oUser)) {
-                Yii::app()->user->setFlash('error', gT("Unknown user."));
+                $user->setFlash('error', gT("Unknown user."));
                 $this->redirect(Yii::app()->request->urlReferrer);
                 return; // This makes Psalm happy
             }
