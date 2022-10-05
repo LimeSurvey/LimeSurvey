@@ -39,6 +39,29 @@
                 try{ console.log('iGroupId: '+iGroupId); } catch (e){ console.log(e); }
                 */
                 if($('textarea').length > 0){
+                    <?php
+                    /* @var string[] parameters of the replacementfields url */
+                    $replacementfieldsurlparams = array(
+                        'fieldtype' => $sFieldType, // email_XX_lang, question_lang …
+                    );
+                    if(!empty($sAction)) {
+                        $replacementfieldsurlparams['action'] = javascriptEscape($sAction);
+                    }
+                    if(!empty($iSurveyId)) {
+                        $replacementfieldsurlparams['surveyid'] = $iSurveyId;
+                    }
+                    if(!empty($iGroupId)) {
+                        $replacementfieldsurlparams['gid'] = $iGroupId;
+                    }
+                    if(!empty($iQuestionId)) {
+                        $replacementfieldsurlparams['qid'] = $iQuestionId;
+                    }
+                    /* @var string the replacementfields url */
+                    $replacementfieldsurl = App()->getController()->createUrl(
+                        'limereplacementfields/index',
+                        $replacementfieldsurlparams
+                    );
+                    ?>
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
                     
                     var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
@@ -46,12 +69,7 @@
                         toolbarStartupExpanded : true,
                         ToolbarCanCollapse : false,
                         toolbar : '<?php echo $toolbarname; ?>',
-                        LimeReplacementFieldsSID : "<?php echo $iSurveyId; ?>",
-                        LimeReplacementFieldsGID : "<?php echo $iGroupId; ?>",
-                        LimeReplacementFieldsQID : "<?php echo $iQuestionId; ?>",
-                        LimeReplacementFieldsType: "<?php echo $sFieldType; ?>",
-                        LimeReplacementFieldsAction: "<?php echo $sAction; ?>",
-                        LimeReplacementFieldsPath : "<?php echo $this->createUrl("/limereplacementfields/index"); ?>",
+                        LimeReplacementFieldsUrl : "<?php echo $replacementfieldsurl; ?>",
                         language : "<?php echo $ckLanguage ?>"
                         <?php echo !is_null($contentsLangDirection) ? ",contentsLangDirection: '{$contentsLangDirection}'" : ''; ?>
                         <?php echo $htmlformatoption; ?> });
