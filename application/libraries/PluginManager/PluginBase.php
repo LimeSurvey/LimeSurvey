@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\PluginManager;
 
+use LSActiveRecord;
+
 /**
  * Base class for plugins.
  */
@@ -140,10 +142,15 @@ abstract class PluginBase implements iPlugin
     protected function get($key = null, $model = null, $id = null, $default = null)
     {
         $data = $this->getStore()->get($this, $key, $model, $id, $default);
+        // Decrypt the attribute if needed
+        // TODO: Handle decryption in storage class. Currently there is no good way of
+        // telling the storage which attributes should be encrypted. Adding a method
+        // to the storage interface would break backward compatibility.
+        // See https://bugs.limesurvey.org/view.php?id=18375
         if (!empty($data) && in_array($key, $this->encryptedSettings)) {
-            $sodium = \Yii::app()->sodium;
             try {
-                $data = $sodium->decrypt($data);
+                $json = LSActiveRecord::decryptSingle($data);
+                $data = !empty($json) ? json_decode($json, true) : $json;
             } catch (\Throwable $e) {
                 // If decryption fails, just leave the value untouched (it was probably saved as plain text)
             }
@@ -289,9 +296,13 @@ abstract class PluginBase implements iPlugin
     protected function set($key, $data, $model = null, $id = null)
     {
         // Encrypt the attribute if needed
-        if (!is_null($data) && in_array($key, $this->encryptedSettings)) {
-            $sodium = \Yii::app()->sodium;
-            $data = $sodium->encrypt($data);
+        // TODO: Handle encryption in storage class. Currently there is no good way of
+        // telling the storage which attributes should be encrypted. Adding a method
+        // to the storage interface would break backward compatibility.
+        // See https://bugs.limesurvey.org/view.php?id=18375
+        if (!empty($data) && in_array($key, $this->encryptedSettings)) {
+            // Data is json encoded before encryption because it might be an array or object.
+            $data = LSActiveRecord::encryptSingle(json_encode($data));
         }
         return $this->getStore()->set($this, $key, $data, $model, $id);
     }
