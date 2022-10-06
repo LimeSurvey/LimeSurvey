@@ -12,6 +12,10 @@ if (!file_exists(__DIR__ . '/../enabletests')) {
     exit(9);
 }
 
+if (!isset($_SERVER['REQUEST_URI'])) {
+    $_SERVER['REQUEST_URI'] = 'localhost/index.php';
+}
+
 /*
  *---------------------------------------------------------------
  * SYSTEM FOLDER NAME
@@ -239,7 +243,7 @@ $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 
 // Enable if phpunit fails.
-// error_reporting(E_ALL);
+error_reporting(E_ALL);
 
 if (file_exists($configFile)) {
     copy($configFile, $configBackupFile);
