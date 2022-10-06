@@ -456,7 +456,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * Get the the most recent mailer error message.
      * @see parent::ErrorInfo
-     * @return null|string
+     * @return string
      */
     public function getError()
     {

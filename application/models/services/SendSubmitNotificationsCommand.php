@@ -215,15 +215,15 @@ class SendSubmitNotificationsCommand
      * Saves a failed email whenever processing and sensing an email fails or overwrites a found entry with updated values
      *
      * @param int|null $id Id of failed email
-     * @param string|null $recipient
+     * @param string $recipient
      * @param int $surveyId
-     * @param ?int $responseId
+     * @param int $responseId
      * @param string $emailType
-     * @param string|null $language
+     * @param string $language
      * @param LimeMailer $mailer
      * @return bool
      */
-    public function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, ?int $responseId, string $emailType, ?string $language, LimeMailer $mailer): bool
+    public function saveFailedEmail(?int $id, string $recipient, int $surveyId, int $responseId, string $emailType, string $language, LimeMailer $mailer): bool
     {
         $failedEmailModel = new FailedEmail();
         $errorMessage = $mailer->getError();
