@@ -197,7 +197,7 @@ class SurveysGroups extends LSActiveRecord
             'criteria'=>$criteria,
         ));
 
-        $dataProvider->setTotalItemCount(count($dataProvider->getData()));
+        $dataProvider->setTotalItemCount($this->count($criteria));
 
         return $dataProvider;
     }
