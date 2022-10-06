@@ -2096,6 +2096,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _registerScriptFiles()
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
