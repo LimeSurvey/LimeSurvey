@@ -66,7 +66,7 @@ class SessionController extends LSYii_ControllerRest
      *      ),
      *      @OA\Response(
      *          response="401",
-     *          description="Unauthorized"
+     *          description="Unauthorized - Invalid user name or password"
      *      )
      * )
      *
@@ -97,19 +97,7 @@ class SessionController extends LSYii_ControllerRest
      *      @OA\Response(
      *          response="200",
      *          description="Success - session was deleted"
-     *      ),
-     *      @OA\Response(
-     *          response="400",
-     *          description="Bad request"
-     *      ),
-     *      @OA\Response(
-     *          response="401",
-     *          description="Unauthorized"
-     *      ),
-     *      @OA\Response(
-     *          response="404",
-     *          description="Not found"
-     *     )
+     *      )
      * )
      *
      * @return void

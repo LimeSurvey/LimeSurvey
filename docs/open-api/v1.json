@@ -745,7 +745,7 @@
                         "description": "Bad request"
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Unauthorized - Invalid user name or password"
                     }
                 }
             },
@@ -759,15 +759,6 @@
                 "responses": {
                     "200": {
                         "description": "Success - session was deleted"
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "404": {
-                        "description": "Not found"
                     }
                 },
                 "security": [
