@@ -26,9 +26,17 @@ require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 $config = require_once(APPPATH . 'config/internal' . EXT);
 
-
 Yii::$enableIncludePath = false;
-$app = Yii::createApplication('LSYii_Application', $config);
+
+// Dummy version of LSYii_Application
+class LSYii_Application_dummy extends LSYii_Application
+{
+    public function initlanguage()
+    {
+        // This function writes to session in LSYii_Application, which causes errors.
+    }
+}
+$app = Yii::createApplication('LSYii_Application_dummy', $config);
 $app->init();
 
 Yii::setPathOfAlias('webroot', __DIR__ . '/../../');
@@ -54,7 +62,6 @@ Yii::import('application.helpers.update.updatedb_helper', true);
 Yii::import('application.helpers.admin.ajax_helper', true);
 Yii::import('webroot.installer.create-database', true);
 Yii::import('ext.GeneralOptionWidget.settings.*');
-Yii::app()->loadLibrary('admin.pclzip');
 // TODO: Replace with autoload
 LoadQuestionTypes::loadAll();
 
