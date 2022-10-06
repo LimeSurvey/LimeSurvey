@@ -234,8 +234,8 @@ function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
         $surveyID = 'uniq';
     }
 
-    $htmlcode = "<a href='#' class='btn btn-outline-secondary btn-sm htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-bs-toggle='tooltip' data-original-title='" . gT("Open editor") . "'>\n" .
-                "\t<i class='fa fa-edit' id='{$fieldname}_modal_icon'></i>\n" .
+    $htmlcode = "<a href='#' class='btn btn-sm btn-outline-secondary htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-bs-toggle='tooltip' data-bs-original-title='" . gT("Open editor") . "'>\n" .
+                "\t<i class='fa fa-pencil' id='{$fieldname}_modal_icon'></i>\n" .
                 "</a>\n";
 
     return $htmlcode;
