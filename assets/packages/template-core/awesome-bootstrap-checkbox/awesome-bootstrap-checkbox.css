@@ -201,7 +201,7 @@
   background-color: #fff;
 }
 
-.radio-item {
+.radio-item, .radio-text-item {
   padding-left: 20px;
 }
 .radio-item label {
