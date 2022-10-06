@@ -3310,21 +3310,23 @@ class remotecontrol_handle
             return array('status' => 'No permission');
         }
 
-        if (empty($responseId)) {
-            if (empty($sToken)) {
-                return ['status' => 'Invalid arguments: both Token and Reponse ID are empty'];
-            }
-            $oResponses = Response::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
-        } else {
-            $oResponses = [Response::model($iSurveyID)->findByPk($responseId)];
+        if (empty($responseId) and empty($sToken)) {
+            return ['status' => 'Invalid arguments: both Token and Reponse ID are empty'];
+        }
+        $criteria = new CDbCriteria();
+        if (!empty($responseId)) {
+            $criteria->addCondition('id', $responseId);
+        }
+        if (!empty($sToken)) {
+            $criteria->addCondition('token', $sToken);
+        }
+        $oResponses = Response::model($iSurveyID)->findAll($criteria);
+        if (empty($oResponses)) {
+            return ['status' => 'Could not find response for given token or response id'];
         }
 
         $uploaded_files = array();
         foreach ($oResponses as $key => $oResponse) {
-            if (!($oResponse instanceof Response)) {
-                return array('status' => 'Could not find response for given token');
-            }
-
             foreach ($oResponse->getFiles() as $aFile) {
                 $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $aFile['filename'];
 
