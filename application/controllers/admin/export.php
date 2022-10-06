@@ -1087,7 +1087,7 @@ class export extends Survey_Common_Action
     public function quexmlclear($iSurveyID)
     {
         Yii::import("application.libraries.admin.quexmlpdf", true);
-        $defaultquexmlpdf = new quexmlpdf($this->getController());
+        $defaultquexmlpdf = new quexmlpdf();
 
         $queXMLSettings = $defaultquexmlpdf->_quexmlsettings();
         foreach ($queXMLSettings as $s) {
@@ -1121,7 +1121,7 @@ class export extends Survey_Common_Action
         array_unshift($aData['slangs'], $aData['baselang']);
 
         Yii::import("application.libraries.admin.quexmlpdf", true);
-        $defaultquexmlpdf = new quexmlpdf($this->getController());
+        $defaultquexmlpdf = new quexmlpdf();
 
         $queXMLSettings = $defaultquexmlpdf->_quexmlsettings();
         foreach ($queXMLSettings as $s) {
@@ -1136,7 +1136,7 @@ class export extends Survey_Common_Action
         if (empty($_POST['ok'])) {
             $this->_renderWrappedTemplate('survey', 'queXMLSurvey_view', $aData);
         } else {
-            $quexmlpdf = new quexmlpdf($this->getController());
+            $quexmlpdf = new quexmlpdf();
 
             //Save settings globally and generate queXML document
             foreach ($queXMLSettings as $s) {
