@@ -294,4 +294,13 @@ class Authdb extends AuthPluginBase
 
         $event->set('writer', $writer);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getAuthMethodName()
+    {
+        // Using string literal here so it can be picked by translation bot
+        return gT('LimeSurvey internal database');
+    }
 }
