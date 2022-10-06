@@ -351,7 +351,7 @@ $surveyid = $oSurvey->sid;
                             <?php eT("Listed publicly:");?>
                         </div>
                         <div class="col-8">
-                            <?php echo $oSurvey->listpublic == 'y' ? gT('Yes') : gT('No');?>
+                            <?php echo $oSurvey->isListPublic ? gT('Yes') : gT('No');?>
                         </div>
                     </div>
                 </li>
