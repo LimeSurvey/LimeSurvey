@@ -8,7 +8,7 @@ use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
 class SessionKeyCreate implements CommandInterface
@@ -49,10 +49,8 @@ class SessionKeyCreate implements CommandInterface
             );
         }
         return new Response(
-            array(
-                'status' => 'Invalid user name or password',
-                new StatusErrorBadRequest()
-            )
+            array('status' => 'Invalid user name or password'),
+            new StatusErrorUnauthorised()
         );
     }
 }
