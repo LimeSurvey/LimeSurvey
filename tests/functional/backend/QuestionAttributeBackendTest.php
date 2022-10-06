@@ -7,7 +7,7 @@ use QuestionCreate;
 /**
  * @group questionattribute
  */
-class QuestionAttributeTest extends TestBaseClassWeb
+class QuestionAttributeFunctionBackendTest extends TestBaseClassWeb
 {
 
     /**
@@ -19,8 +19,8 @@ class QuestionAttributeTest extends TestBaseClassWeb
     {
         parent::setUpBeforeClass();
 
-        require_once __DIR__."/../../data/plugins/NewQuestionAttributesPlugin.php";
-        $plugin = \Plugin::model()->findByAttributes(array('name'=>'NewQuestionAttributesPlugin'));
+        require_once __DIR__ . "/../../data/plugins/NewQuestionAttributesPlugin.php";
+        $plugin = \Plugin::model()->findByAttributes(array('name' => 'NewQuestionAttributesPlugin'));
         if (!$plugin) {
             $plugin = new \Plugin();
             $plugin->name = 'NewQuestionAttributesPlugin';
@@ -31,7 +31,6 @@ class QuestionAttributeTest extends TestBaseClassWeb
             $plugin->save();
         }
         App()->getPluginManager()->loadPlugin('NewQuestionAttributesPlugin', $plugin->id);
-
     }
 
     public function testPluginQuestionAttributeProvider()
@@ -123,5 +122,4 @@ class QuestionAttributeTest extends TestBaseClassWeb
         self::deActivatePlugin('NewQuestionAttributesPlugin');
         parent::tearDownAfterClass();
     }
-
 }
