@@ -108,14 +108,14 @@ class QuotasController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
-
-        $aData['thissurvey'] = getSurveyInfo($surveyid);
+        $aData['surveyid'] = $oSurvey->sid;
+        $aData['thissurvey'] = getSurveyInfo($surveyid); //todo do we need this here? why?
         $aData['langs'] = $oSurvey->allLanguages;
         $aData['baselang'] = $oSurvey->language;
 
         $aData['sidemenu']['state'] = false;
         $aData['topBar']['showSaveButton'] = true;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
 
         $oQuota = new Quota();
@@ -142,7 +142,8 @@ class QuotasController extends LSBaseController
                 }
                 if (!$oQuota->getErrors()) {
                     Yii::app()->user->setFlash('success', gT("New quota saved"));
-                    self::redirectToIndex($iSurveyId);
+                    //self::redirectToIndex($surveyid);
+                    $this->redirect($this->createUrl("/admin/quotas/sa/index/surveyid/$surveyid"));
                 } else {
                     // if any of the parts fail to save we delete the quota and and try again
                     $oQuota->delete();
