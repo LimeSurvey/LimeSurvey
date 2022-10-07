@@ -658,8 +658,8 @@ class Database extends SurveyCommonAction
             $pluginSettings = App()->request->getPost('plugin', array());
             /* No need to unset since js is activated, do it by security in case user deactivate JS before save settings (or have a JS error)*/
             $aUpdate = (array) App()->request->getPost('update', null);
-            foreach($aUpdate as $name => $value) {
-                if(empty($value)) {
+            foreach ($aUpdate as $name => $value) {
+                if (empty($value)) {
                     unset($pluginSettings[$name]);
                 }
             }

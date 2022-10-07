@@ -330,7 +330,7 @@ class PluginManagerController extends SurveyCommonAction
             $aSave     = array();
             $aUpdate = (array) App()->request->getPost('update', null);
             foreach (array_keys($aSettings) as $name) {
-                if(!isset($aUpdate[$name]) || $aUpdate[$name]) {
+                if (!isset($aUpdate[$name]) || $aUpdate[$name]) {
                     $aSave[$name] = App()->request->getPost($name, null);
                 } else {
                     // Do not send to update array

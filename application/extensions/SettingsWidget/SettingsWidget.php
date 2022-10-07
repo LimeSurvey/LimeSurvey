@@ -546,8 +546,8 @@ class SettingsWidget extends CWidget
             $metaData,
             $form,
             array(
-                'autocomplete'=>'new-password', // Don't offer saved password https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion#the_autocomplete_attribute_and_login_fields
-                'size'=>50,
+                'autocomplete' => 'new-password', // Don't offer saved password https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion#the_autocomplete_attribute_and_login_fields
+                'size' => 50,
                 'placeholder' => gT("Empty string")
             ));
         if (empty($metaData['secure'])) { // Old settings comaptibility, need to set secure ate true
