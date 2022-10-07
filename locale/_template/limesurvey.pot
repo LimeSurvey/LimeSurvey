@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-09-26 08:04:45+00:00\n"
+"POT-Creation-Date: 2022-10-07 15:32:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -92,7 +92,7 @@ msgid "Back"
 msgstr ""
 
 #: application/controllers/AdminController.php:80
-#: application/controllers/admin/tokens.php:2401
+#: application/controllers/admin/tokens.php:2395
 #: application/views/admin/authentication/forgotpassword.php:52
 #: application/views/admin/dataentry/active_html_view.php:118
 #: application/views/admin/survey/copySurvey_view.php:15
@@ -452,14 +452,14 @@ msgstr ""
 #: application/controllers/admin/tokens.php:924
 #: application/controllers/admin/tokens.php:1087
 #: application/controllers/admin/tokens.php:1296
-#: application/controllers/admin/tokens.php:1604
-#: application/controllers/admin/tokens.php:1721
-#: application/controllers/admin/tokens.php:1969
-#: application/controllers/admin/tokens.php:2306
-#: application/controllers/admin/tokens.php:2367
-#: application/controllers/admin/tokens.php:2459
-#: application/controllers/admin/tokens.php:2526
-#: application/controllers/admin/tokens.php:2566
+#: application/controllers/admin/tokens.php:1598
+#: application/controllers/admin/tokens.php:1715
+#: application/controllers/admin/tokens.php:1963
+#: application/controllers/admin/tokens.php:2300
+#: application/controllers/admin/tokens.php:2361
+#: application/controllers/admin/tokens.php:2453
+#: application/controllers/admin/tokens.php:2520
+#: application/controllers/admin/tokens.php:2560
 #: application/controllers/admin/translate.php:98
 #: application/helpers/admin/statistics_helper.php:2426
 #: application/helpers/admin/statistics_helper.php:2436
@@ -523,7 +523,7 @@ msgstr ""
 msgid "The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey."
 msgstr ""
 
-#: application/controllers/RegisterController.php:431
+#: application/controllers/RegisterController.php:432
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
 msgstr ""
 
@@ -1152,12 +1152,12 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1176
 #: application/controllers/admin/tokens.php:1235
 #: application/controllers/admin/tokens.php:1286
-#: application/controllers/admin/tokens.php:1613
-#: application/controllers/admin/tokens.php:1711
-#: application/controllers/admin/tokens.php:1959
-#: application/controllers/admin/tokens.php:2294
-#: application/controllers/admin/tokens.php:2357
-#: application/controllers/admin/tokens.php:2418
+#: application/controllers/admin/tokens.php:1607
+#: application/controllers/admin/tokens.php:1705
+#: application/controllers/admin/tokens.php:1953
+#: application/controllers/admin/tokens.php:2288
+#: application/controllers/admin/tokens.php:2351
+#: application/controllers/admin/tokens.php:2412
 #: application/controllers/admin/useraction.php:58
 #: application/controllers/admin/useraction.php:98
 #: application/controllers/admin/useraction.php:183
@@ -1687,7 +1687,7 @@ msgid "No answer"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:644
-#: application/controllers/admin/tokens.php:1577
+#: application/controllers/admin/tokens.php:1571
 #: application/controllers/admin/useraction.php:163
 #: application/helpers/SurveyRuntimeHelper.php:1051
 #: application/views/admin/dataentry/import.php:29
@@ -1776,7 +1776,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:922
 #: application/controllers/admin/printablesurvey.php:935
 #: application/controllers/admin/quotas.php:565
-#: application/controllers/admin/tokens.php:2317
+#: application/controllers/admin/tokens.php:2311
 #: application/core/Survey_Common_Action.php:1089
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:201
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:210
@@ -1846,8 +1846,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:864 application/models/Survey.php:1087
-#: application/models/Survey.php:1095
+#: application/models/Question.php:864 application/models/Survey.php:1088
+#: application/models/Survey.php:1096
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:642
@@ -1938,7 +1938,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:924
 #: application/controllers/admin/printablesurvey.php:937
 #: application/controllers/admin/quotas.php:566
-#: application/controllers/admin/tokens.php:2319
+#: application/controllers/admin/tokens.php:2313
 #: application/core/Survey_Common_Action.php:1087
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:241
@@ -2003,8 +2003,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:864 application/models/Survey.php:1087
-#: application/models/Survey.php:1095
+#: application/models/Question.php:864 application/models/Survey.php:1088
+#: application/models/Survey.php:1096
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:643
 #: application/views/admin/dataentry/content_view.php:712
@@ -2384,7 +2384,7 @@ msgstr ""
 #: application/controllers/admin/questions.php:200
 #: application/controllers/admin/surveyadmin.php:355
 #: application/controllers/admin/surveyadmin.php:1350
-#: application/controllers/admin/surveyadmin.php:2441
+#: application/controllers/admin/surveyadmin.php:2442
 #: application/controllers/admin/themes.php:264
 #: application/controllers/admin/themes.php:359
 #: application/controllers/admin/themes.php:435
@@ -2461,7 +2461,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:251
 #: application/controllers/admin/responses.php:189
 #: application/controllers/admin/responses.php:190
-#: application/controllers/admin/tokens.php:1638
+#: application/controllers/admin/tokens.php:1632
 #: application/helpers/common_helper.php:3010
 #: application/models/TemplateManifest.php:172 application/models/Token.php:88
 #: application/views/admin/quotas/viewquotas_view.php:77
@@ -2554,8 +2554,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:90
 #: application/views/admin/participants/participantsPanel_view.php:28
 #: application/views/admin/responses/modal_subviews/filterColumns.php:26
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:40
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:73
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:41
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:74
 #: application/views/admin/token/dummytokenform.php:101
 #: application/views/admin/token/dummytokenform.php:131
 msgid "Clear selection"
@@ -2572,8 +2572,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:56
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:91
 #: application/views/admin/participants/participantsPanel_view.php:31
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:41
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:74
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:42
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:75
 #: application/views/admin/token/dummytokenform.php:102
 #: application/views/admin/token/dummytokenform.php:132
 msgid "Previous month"
@@ -2590,8 +2590,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:57
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:92
 #: application/views/admin/participants/participantsPanel_view.php:32
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:42
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:75
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:43
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:76
 #: application/views/admin/token/dummytokenform.php:103
 #: application/views/admin/token/dummytokenform.php:133
 msgid "Next month"
@@ -2608,8 +2608,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:58
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:93
 #: application/views/admin/participants/participantsPanel_view.php:33
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:43
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:76
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:44
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:77
 #: application/views/admin/token/dummytokenform.php:104
 #: application/views/admin/token/dummytokenform.php:134
 msgid "Select year"
@@ -2626,8 +2626,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:59
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:94
 #: application/views/admin/participants/participantsPanel_view.php:34
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:44
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:77
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:45
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:78
 #: application/views/admin/token/dummytokenform.php:105
 #: application/views/admin/token/dummytokenform.php:135
 msgid "Previous year"
@@ -2644,8 +2644,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:60
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:95
 #: application/views/admin/participants/participantsPanel_view.php:35
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:45
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:78
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:46
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:79
 #: application/views/admin/token/dummytokenform.php:106
 #: application/views/admin/token/dummytokenform.php:136
 msgid "Next year"
@@ -2662,8 +2662,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:61
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:96
 #: application/views/admin/participants/participantsPanel_view.php:36
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:46
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:79
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:47
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:80
 #: application/views/admin/token/dummytokenform.php:107
 #: application/views/admin/token/dummytokenform.php:137
 msgid "Select decade"
@@ -2680,8 +2680,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:62
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:97
 #: application/views/admin/participants/participantsPanel_view.php:37
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:47
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:80
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:48
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:81
 #: application/views/admin/token/dummytokenform.php:108
 #: application/views/admin/token/dummytokenform.php:138
 msgid "Previous decade"
@@ -2698,8 +2698,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:63
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:98
 #: application/views/admin/participants/participantsPanel_view.php:38
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:48
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:81
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:49
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:82
 #: application/views/admin/token/dummytokenform.php:109
 #: application/views/admin/token/dummytokenform.php:139
 msgid "Next decade"
@@ -2716,8 +2716,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:64
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:99
 #: application/views/admin/participants/participantsPanel_view.php:39
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:49
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:82
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:50
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:83
 #: application/views/admin/token/dummytokenform.php:110
 #: application/views/admin/token/dummytokenform.php:140
 msgid "Previous century"
@@ -2734,8 +2734,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:65
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:100
 #: application/views/admin/participants/participantsPanel_view.php:40
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:50
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:83
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:51
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:84
 #: application/views/admin/token/dummytokenform.php:111
 #: application/views/admin/token/dummytokenform.php:141
 msgid "Next century"
@@ -2751,8 +2751,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:32
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:66
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:101
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:51
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:84
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:52
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:85
 #: application/views/admin/token/dummytokenform.php:112
 #: application/views/admin/token/dummytokenform.php:142
 msgid "Select time"
@@ -3229,7 +3229,7 @@ msgstr ""
 
 #: application/controllers/admin/labels.php:73
 #: application/controllers/admin/surveyadmin.php:319
-#: application/controllers/admin/surveyadmin.php:2426
+#: application/controllers/admin/surveyadmin.php:2427
 #: application/controllers/admin/themes.php:1287
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
@@ -4237,7 +4237,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:433
 #: application/helpers/questionHelper.php:822
 #: application/helpers/userstatistics_helper.php:2664
-#: application/models/Permission.php:102 application/models/Survey.php:1521
+#: application/models/Permission.php:102 application/models/Survey.php:1522
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:17
 #: application/views/admin/export/statistics_view.php:18
@@ -4464,8 +4464,8 @@ msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1944
 #: application/controllers/admin/tokens.php:1202
-#: application/controllers/admin/tokens.php:1584
-#: application/controllers/admin/tokens.php:2385
+#: application/controllers/admin/tokens.php:1578
+#: application/controllers/admin/tokens.php:2379
 #: application/extensions/LimeScript/LimeScript.php:26
 #: application/helpers/SurveyRuntimeHelper.php:1326
 #: application/views/admin/conditions/deleteAllConditions.php:23
@@ -4529,43 +4529,43 @@ msgstr ""
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2115
+#: application/controllers/admin/surveyadmin.php:2116
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2211
+#: application/controllers/admin/surveyadmin.php:2212
 msgid "Warning! Notification email was not updated because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2218
+#: application/controllers/admin/surveyadmin.php:2219
 msgid "Warning! Bounce email was not updated because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2274
+#: application/controllers/admin/surveyadmin.php:2275
 msgid "Your new survey was created. We also created a first question group and an example question for you."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2284
+#: application/controllers/admin/surveyadmin.php:2285
 msgid "Your new survey was created."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2313
+#: application/controllers/admin/surveyadmin.php:2314
 msgid "My first question group"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2336
+#: application/controllers/admin/surveyadmin.php:2337
 msgid "A first example question. Please answer this question:"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2337
+#: application/controllers/admin/surveyadmin.php:2338
 msgid "This is a question help text."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2403
+#: application/controllers/admin/surveyadmin.php:2404
 msgid "You don't have sufficient permissions to upload images in this survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2443
+#: application/controllers/admin/surveyadmin.php:2444
 #: application/controllers/admin/themes.php:266
 #: application/controllers/admin/themes.php:437
 msgid "File %s uploaded"
@@ -4667,8 +4667,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:400
 #: application/controllers/admin/surveypermission.php:583
 #: application/controllers/admin/surveypermission.php:681
-#: application/controllers/admin/tokens.php:2578
-#: application/controllers/admin/tokens.php:2619
+#: application/controllers/admin/tokens.php:2572
+#: application/controllers/admin/tokens.php:2613
 #: application/controllers/admin/useraction.php:807
 #: application/views/admin/authentication/message.php:35
 #: application/views/admin/participants/attributeMapCSV_view.php:80
@@ -5155,49 +5155,49 @@ msgstr ""
 msgid "Token attribute descriptions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1374
+#: application/controllers/admin/tokens.php:1368
 msgid "Invitation %s skipped, already sent."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1376
+#: application/controllers/admin/tokens.php:1370
 msgid "Reminder %s skipped, already sent."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1430
+#: application/controllers/admin/tokens.php:1424
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1433
+#: application/controllers/admin/tokens.php:1427
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1502
+#: application/controllers/admin/tokens.php:1496
 msgid "Invitation sent to:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1505
+#: application/controllers/admin/tokens.php:1499
 msgid "Reminder sent to:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1555
+#: application/controllers/admin/tokens.php:1549
 msgid "All emails were sent."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1557
+#: application/controllers/admin/tokens.php:1551
 msgid "Not all emails were sent:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1559
+#: application/controllers/admin/tokens.php:1553
 msgid "Some entries had a validity date set which was not yet valid or not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1562
+#: application/controllers/admin/tokens.php:1556
 msgid "Some emails were not sent because the server did not accept the email(s) or some other error occured."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1565
-#: application/controllers/admin/tokens.php:2332
-#: application/controllers/admin/tokens.php:2336
+#: application/controllers/admin/tokens.php:1559
+#: application/controllers/admin/tokens.php:2326
+#: application/controllers/admin/tokens.php:2330
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:14
 #: application/views/admin/authentication/error.php:6
 #: application/views/admin/error_view.php:5
@@ -5206,58 +5206,58 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1578
+#: application/controllers/admin/tokens.php:1572
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1579
+#: application/controllers/admin/tokens.php:1573
 msgid "having a valid email address"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1580
+#: application/controllers/admin/tokens.php:1574
 msgid "not having been sent an invitation already"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1581
+#: application/controllers/admin/tokens.php:1575
 msgid "not having already completed the survey"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1582
+#: application/controllers/admin/tokens.php:1576
 msgid "having a token"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1583
+#: application/controllers/admin/tokens.php:1577
 msgid "having at least one use left"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1631
+#: application/controllers/admin/tokens.php:1625
 #: application/views/admin/token/exportdialog.php:128
 msgid "Export tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1638
+#: application/controllers/admin/tokens.php:1632
 #: application/views/admin/token/exportdialog.php:16
 msgid "All tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1638
+#: application/controllers/admin/tokens.php:1632
 #: application/views/admin/token/exportdialog.php:18
 msgid "Not completed"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1640
+#: application/controllers/admin/tokens.php:1634
 #: application/views/admin/token/exportdialog.php:19
 msgid "Not started"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1641
+#: application/controllers/admin/tokens.php:1635
 #: application/views/admin/token/exportdialog.php:20
 msgid "Started but not yet completed"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1645
-#: application/controllers/admin/tokens.php:1661
-#: application/controllers/admin/tokens.php:1670
+#: application/controllers/admin/tokens.php:1639
+#: application/controllers/admin/tokens.php:1655
+#: application/controllers/admin/tokens.php:1664
 #: application/models/Assessment.php:133
 #: application/views/admin/responses/listResponses_view.php:121
 #: application/views/admin/token/exportdialog.php:35
@@ -5266,178 +5266,178 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1654
+#: application/controllers/admin/tokens.php:1648
 #: application/views/admin/token/exportdialog.php:12
 msgid "Survey status:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1659
+#: application/controllers/admin/tokens.php:1653
 #: application/views/admin/token/exportdialog.php:28
 msgid "Invitation status:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1662
+#: application/controllers/admin/tokens.php:1656
 #: application/views/admin/token/exportdialog.php:36
 msgid "Invited"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1663
+#: application/controllers/admin/tokens.php:1657
 #: application/views/admin/token/exportdialog.php:37
 msgid "Not invited"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1668
+#: application/controllers/admin/tokens.php:1662
 #: application/views/admin/token/exportdialog.php:46
 msgid "Reminder status:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1671
+#: application/controllers/admin/tokens.php:1665
 #: application/views/admin/token/exportdialog.php:54
 msgid "Reminder(s) sent"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1672
+#: application/controllers/admin/tokens.php:1666
 #: application/views/admin/token/exportdialog.php:55
 msgid "No reminder(s) sent"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1677
+#: application/controllers/admin/tokens.php:1671
 #: application/views/admin/token/exportdialog.php:64
 msgid "Filter by language:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1682
+#: application/controllers/admin/tokens.php:1676
 #: application/views/admin/token/exportdialog.php:78
 msgid "Filter by email address:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1683
+#: application/controllers/admin/tokens.php:1677
 #: application/views/admin/token/exportdialog.php:84
 msgid "Only export entries which contain this string in the email address."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1687
+#: application/controllers/admin/tokens.php:1681
 #: application/views/admin/token/exportdialog.php:94
 msgid "Delete exported participants:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1688
+#: application/controllers/admin/tokens.php:1682
 #: application/views/admin/token/exportdialog.php:106
 msgid "Warning: Deleted participants entries cannot be recovered."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1692
+#: application/controllers/admin/tokens.php:1686
 msgid "Quote equations"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1693
+#: application/controllers/admin/tokens.php:1687
 msgid "Warning: Quotes all content that starts with an equal sign to prevent CSV injections"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1746
+#: application/controllers/admin/tokens.php:1740
 msgid "Uploading LDAP Query"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1932
+#: application/controllers/admin/tokens.php:1926
 msgid "Can't bind to the LDAP directory. Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1942
+#: application/controllers/admin/tokens.php:1936
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2001
+#: application/controllers/admin/tokens.php:1995
 msgid "Only CSV files are allowed."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2003
+#: application/controllers/admin/tokens.php:1997
 msgid "Upload file not found. Check your permissions and path (%s) for the upload directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2098
+#: application/controllers/admin/tokens.php:2092
 msgid "Line %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2119
+#: application/controllers/admin/tokens.php:2113
 msgid "Line %s : %s %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2140
-#: application/controllers/admin/tokens.php:2155
+#: application/controllers/admin/tokens.php:2134
+#: application/controllers/admin/tokens.php:2149
 #: application/controllers/admin/tokens.php:2869
 msgid "Line %s : %s %s (%s)"
 msgstr ""
 
+#: application/controllers/admin/tokens.php:2157
 #: application/controllers/admin/tokens.php:2163
-#: application/controllers/admin/tokens.php:2169
 msgid "Line %s : %s %s (%s) - token : %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2218
+#: application/controllers/admin/tokens.php:2212
 msgid "Line %s : %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2314
-#: application/controllers/admin/tokens.php:2340
+#: application/controllers/admin/tokens.php:2308
+#: application/controllers/admin/tokens.php:2334
 msgid "Create tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2315
+#: application/controllers/admin/tokens.php:2309
 msgid "Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2330
+#: application/controllers/admin/tokens.php:2324
 msgid "Only {n} token has been created.|Only {n} tokens have been created."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2331
+#: application/controllers/admin/tokens.php:2325
 msgid "Need {n} token.|Need {n} tokens."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2335
+#: application/controllers/admin/tokens.php:2329
 msgid "{n} token has been created.|{n} tokens have been created."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2379
-#: application/controllers/admin/tokens.php:2397
+#: application/controllers/admin/tokens.php:2373
+#: application/controllers/admin/tokens.php:2391
 msgid "Delete survey participants table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2380
+#: application/controllers/admin/tokens.php:2374
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2380
+#: application/controllers/admin/tokens.php:2374
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2383
+#: application/controllers/admin/tokens.php:2377
 msgid "Delete table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2398
+#: application/controllers/admin/tokens.php:2392
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2398
+#: application/controllers/admin/tokens.php:2392
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2449
+#: application/controllers/admin/tokens.php:2443
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2550
+#: application/controllers/admin/tokens.php:2544
 #: application/views/admin/token/tokenwarning.php:13
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2556
+#: application/controllers/admin/tokens.php:2550
 msgid "Tokens already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2575
-#: application/controllers/admin/tokens.php:2655
+#: application/controllers/admin/tokens.php:2569
+#: application/controllers/admin/tokens.php:2649
 #: application/core/LsDefaultDataSets.php:27
 #: application/views/admin/survey/breadcrumb.php:103
 #: application/views/admin/survey/surveybar_view.php:84
@@ -5445,15 +5445,15 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2576
+#: application/controllers/admin/tokens.php:2570
 msgid "A participant table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2616
+#: application/controllers/admin/tokens.php:2610
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2617
+#: application/controllers/admin/tokens.php:2611
 msgid "A survey participants table has been created for this survey and the old tokens were imported."
 msgstr ""
 
@@ -7489,11 +7489,11 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:371
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:385
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:399
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:101
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:114
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:129
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:141
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:154
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:102
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:115
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:130
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:142
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:155
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:67
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:87
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:115
@@ -7571,7 +7571,7 @@ msgstr ""
 #: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:12
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:21
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:38
-#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:12
+#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:13
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:102
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:107
 #: application/views/admin/survey/QuestionGroups/importGroup_view.php:37
@@ -7593,11 +7593,11 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:372
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:386
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:400
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:102
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:115
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:129
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:142
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:155
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:103
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:116
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:130
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:143
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:156
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:68
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:88
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:116
@@ -7762,7 +7762,7 @@ msgid "This will update the survey group for all selected active surveys."
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:12
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:62
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:63
 msgid "Expiry date/time:"
 msgstr ""
 
@@ -7873,7 +7873,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/common_helper.php:235 application/models/Quota.php:101
-#: application/models/Survey.php:1189
+#: application/models/Survey.php:1190
 msgid "Active"
 msgstr ""
 
@@ -7882,7 +7882,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:243 application/models/Survey.php:1154
+#: application/helpers/common_helper.php:243 application/models/Survey.php:1155
 msgid "Inactive"
 msgstr ""
 
@@ -9339,7 +9339,7 @@ msgstr ""
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2998
+#: application/helpers/expressions/em_core_helper.php:3002
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -12867,23 +12867,23 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:1175
+#: application/models/Survey.php:1176
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1176
+#: application/models/Survey.php:1177
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1177
+#: application/models/Survey.php:1178
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1517
+#: application/models/Survey.php:1518
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:1528
+#: application/models/Survey.php:1529
 #: application/views/admin/survey/subview/_survey_quickaction.php:125
 #: application/views/admin/survey/subview/_survey_quickaction.php:131
 #: application/views/admin/survey/subview/_survey_quickaction.php:179
@@ -12895,7 +12895,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:1530
+#: application/models/Survey.php:1531
 #: application/views/admin/survey/subview/_survey_quickaction.php:105
 #: application/views/admin/survey/subview/_survey_quickaction.php:109
 #: application/views/admin/survey/subview/_survey_quickaction.php:152
@@ -12905,8 +12905,13 @@ msgstr ""
 msgid "Add new group"
 msgstr ""
 
-#: application/models/Survey.php:1976
+#: application/models/Survey.php:1977
 msgid "Show policy"
+msgstr ""
+
+#: application/models/Survey.php:2012
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:20
+msgid "Expiration date can't be lower than the start date"
 msgstr ""
 
 #: application/models/SurveyDynamic.php:283
@@ -17335,7 +17340,7 @@ msgstr ""
 #: application/views/admin/super/welcome.php:93
 #: application/views/admin/survey/subview/_survey_quickaction.php:44
 #: application/views/admin/survey/subview/_survey_quickaction.php:52
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:161
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:162
 #: application/views/admin/token/invite.php:19
 #: application/views/admin/token/remind.php:16
 msgid "Warning!"
@@ -17665,7 +17670,11 @@ msgstr ""
 msgid "Random order:"
 msgstr ""
 
-#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:13
+#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:12
+msgid "Please select and option"
+msgstr ""
+
+#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:14
 msgid "Randomize on each page load"
 msgstr ""
 
@@ -18933,32 +18942,32 @@ msgstr ""
 msgid "Automatically load end URL when survey complete:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:29
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:30
 #: application/views/admin/survey/surveySummary_view.php:329
 msgid "Start date/time:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:96
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:97
 msgid "List survey publicly:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:109
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:110
 msgid "Set cookie to prevent repeated participation:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:124
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:125
 msgid "Use CAPTCHA for survey access:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:136
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:137
 msgid "Use CAPTCHA for registration:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:149
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:150
 msgid "Use CAPTCHA for save and load:"
 msgstr ""
 
-#: application/views/admin/survey/subview/accordion/_publication_panel.php:161
+#: application/views/admin/survey/subview/accordion/_publication_panel.php:162
 msgid "The CAPTCHA settings won't have any effect because you don't have the required GD library activated in your PHP configuration."
 msgstr ""
 
