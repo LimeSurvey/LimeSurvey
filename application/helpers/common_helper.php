@@ -748,7 +748,7 @@ function getUserList($outputformat = 'fullinfoarray')
 * @param integer $surveyid  The survey ID
 * @param string $languagecode The language code - if not given the base language of the particular survey is used
 * @param boolean $force If true, don't use memoization
-* @return array|bool Returns array with survey info or false, if survey does not exist
+* @return array|false Returns array with survey info or false, if survey does not exist
 */
 function getSurveyInfo($surveyid, $languagecode = '', $force = false)
 {
