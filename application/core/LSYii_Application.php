@@ -514,7 +514,7 @@ class LSYii_Application extends CWebApplication
     /**
      * @inheritdoc
      * Special handling for SEO friendly URLs
-        */
+     */
     public function createController($route, $owner=null)
     {
         $controller = parent::createController($route, $owner);
