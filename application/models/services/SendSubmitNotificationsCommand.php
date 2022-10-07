@@ -24,6 +24,9 @@ class SendSubmitNotificationsCommand
     /** @var bool */
     private $debug = false;
 
+    /** @var bool Needed for ANSWERTABLE */
+    private $isHtml = null;
+
     /**
      * Inject dependencies so they can be mocked.
      */
@@ -31,6 +34,7 @@ class SendSubmitNotificationsCommand
     {
         $this->thissurvey = $thissurvey;
         $this->limeMailer = $limeMailer;
+        $this->isHtml = $this->thissurvey['htmlemail'] === 'Y';
     }
 
     /**
@@ -54,7 +58,6 @@ class SendSubmitNotificationsCommand
      */
     public function run(int $surveyid, array $emails = [], bool $return = false)
     {
-        $bIsHTML = $this->thissurvey['htmlemail'] === 'Y'; // Needed for ANSWERTABLE
 
         //LimeMailer instance
         $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
@@ -123,89 +126,12 @@ class SendSubmitNotificationsCommand
 
         // admin_notification (Basic admin notification)
         if (count($aEmailNotificationTo) > 0) {
-            $mailer = LimeMailer::getInstance();
-            $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
-            foreach ($aEmailNotificationTo as $sRecipient) {
-                /** set mailer params for @see FailedEmailController::actionResend() */
-                if (!empty($emails)) {
-                    $failedNotificationId = $sRecipient['id'];
-                    $responseId = $sRecipient['responseId'];
-                    $notificationRecipient = $sRecipient['recipient'];
-                    $emailLanguage = $sRecipient['language'];
-                    $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
-                    $mailer->setTo($notificationRecipient);
-                    $mailerSuccess = $mailer->resend(json_decode($sRecipient['resendVars'], true));
-                } else {
-                    $failedNotificationId = null;
-                    $notificationRecipient = $sRecipient;
-                    $mailer->setTo($notificationRecipient);
-                    $mailerSuccess = $mailer->SendMessage();
-                }
-                if (!$mailerSuccess) {
-                    $failedEmailCount++;
-                    $this->saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage, $mailer);
-                    if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
-                        /* Find a better way to show email error … */
-                        echo CHtml::tag(
-                            "div",
-                            ['class' => 'alert alert-danger'],
-                            sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError())
-                        );
-                    }
-                } else {
-                    $successfullEmailCount++;
-                    //preserve failedEmail if it exists
-                    failedEmailSuccess($failedNotificationId);
-                }
-            }
+            $this->processBasicAdminNotification();
         }
 
         // admin_notification (Detailed admin notification)
         if (count($aEmailResponseTo) > 0) {
-            // there was no token used so lets remove the token field from insertarray
-            if (isset($_SESSION['survey_' . $surveyid]['insertarray'][0])) {
-                if (!isset($_SESSION['survey_' . $surveyid]['token']) && $_SESSION['survey_' . $surveyid]['insertarray'][0] === 'token') {
-                    unset($_SESSION['survey_' . $surveyid]['insertarray'][0]);
-                }
-            }
-            $mailer = \LimeMailer::getInstance();
-            $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
-            foreach ($aEmailResponseTo as $sRecipient) {
-                /** set mailer params for @see FailedEmailController::actionResend() */
-                if (!empty($emails)) {
-                    $failedNotificationId = $sRecipient['id'];
-                    $responseId = $sRecipient['responseId'];
-                    $responseRecipient = $sRecipient['recipient'];
-                    $emailLanguage = $sRecipient['language'];
-                    $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
-                    LimeExpressionManager::updateReplacementFields($aReplacementVars);
-                    $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
-                    $mailer->setTo($responseRecipient);
-                    $mailerSuccess = $mailer->resend(json_decode($sRecipient['resendVars'], true));
-                } else {
-                    $failedNotificationId = null;
-                    $responseRecipient = $sRecipient;
-                    $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
-                    LimeExpressionManager::updateReplacementFields($aReplacementVars);
-                    $mailer->setTo($responseRecipient);
-                    $mailerSuccess = $mailer->SendMessage();
-                }
-                if (!$mailerSuccess) {
-                    $failedEmailCount++;
-                    $this->saveFailedEmail($failedNotificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage, $mailer);
-                    if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
-                        /* Find a better way to show email error … */
-                        echo CHtml::tag(
-                            "div",
-                            ['class' => 'alert alert-danger'],
-                            sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError())
-                        );
-                    }
-                } else {
-                    $successfullEmailCount++;
-                    failedEmailSuccess($failedNotificationId);
-                }
-            }
+            $this->processDetailedAdminNotification();
         }
         if ($return) {
             return [
@@ -254,5 +180,110 @@ class SendSubmitNotificationsCommand
         $failedEmailModel->resend_vars = $resendVars;
 
         return $failedEmailModel->save(false);
+    }
+
+    /**
+     * @param int $id The id of the failed email
+     * @return bool
+     */
+    public function failedEmailSuccess($id)
+    {
+        $model = new FailedEmail();
+        $failedEmail = $model->findByPk($id);
+        if (isset($failedEmail)) {
+            $failedEmail->status = 'SEND SUCCESS';
+            $failedEmail->updated = date('Y-m-d H:i:s');
+            return $failedEmail->save();
+        }
+        return false;
+    }
+
+    /**
+     */
+    public function processBasicAdminNotification()
+    {
+        $mailer = LimeMailer::getInstance();
+        $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
+        foreach ($aEmailNotificationTo as $sRecipient) {
+            /** set mailer params for @see FailedEmailController::actionResend() */
+            if (!empty($emails)) {
+                $failedNotificationId = $sRecipient['id'];
+                $responseId = $sRecipient['responseId'];
+                $notificationRecipient = $sRecipient['recipient'];
+                $emailLanguage = $sRecipient['language'];
+                $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
+                $mailer->setTo($notificationRecipient);
+                $mailerSuccess = $mailer->resend(json_decode($sRecipient['resendVars'], true));
+            } else {
+                $failedNotificationId = null;
+                $notificationRecipient = $sRecipient;
+                $mailer->setTo($notificationRecipient);
+                $mailerSuccess = $mailer->SendMessage();
+            }
+            if (!$mailerSuccess) {
+                $failedEmailCount++;
+                $this->saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage, $mailer);
+                if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
+                    /* Find a better way to show email error … */
+                    echo CHtml::tag(
+                        "div",
+                        ['class' => 'alert alert-danger'],
+                        sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError())
+                    );
+                }
+            } else {
+                $successfullEmailCount++;
+                //preserve failedEmail if it exists
+                $this->failedEmailSuccess($failedNotificationId);
+            }
+        }
+    }
+
+    public function processDetailedAdminNotification()
+    {
+        // there was no token used so lets remove the token field from insertarray
+        if (isset($_SESSION['survey_' . $surveyid]['insertarray'][0])) {
+            if (!isset($_SESSION['survey_' . $surveyid]['token']) && $_SESSION['survey_' . $surveyid]['insertarray'][0] === 'token') {
+                unset($_SESSION['survey_' . $surveyid]['insertarray'][0]);
+            }
+        }
+        $mailer = \LimeMailer::getInstance();
+        $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
+        foreach ($aEmailResponseTo as $sRecipient) {
+            /** set mailer params for @see FailedEmailController::actionResend() */
+            if (!empty($emails)) {
+                $failedNotificationId = $sRecipient['id'];
+                $responseId = $sRecipient['responseId'];
+                $responseRecipient = $sRecipient['recipient'];
+                $emailLanguage = $sRecipient['language'];
+                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $isHtml);
+                LimeExpressionManager::updateReplacementFields($aReplacementVars);
+                $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
+                $mailer->setTo($responseRecipient);
+                $mailerSuccess = $mailer->resend(json_decode($sRecipient['resendVars'], true));
+            } else {
+                $failedNotificationId = null;
+                $responseRecipient = $sRecipient;
+                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $isHtml);
+                LimeExpressionManager::updateReplacementFields($aReplacementVars);
+                $mailer->setTo($responseRecipient);
+                $mailerSuccess = $mailer->SendMessage();
+            }
+            if (!$mailerSuccess) {
+                $failedEmailCount++;
+                $this->saveFailedEmail($failedNotificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage, $mailer);
+                if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
+                    /* Find a better way to show email error … */
+                    echo CHtml::tag(
+                        "div",
+                        ['class' => 'alert alert-danger'],
+                        sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError())
+                    );
+                }
+            } else {
+                $successfullEmailCount++;
+                $this->failedEmailSuccess($failedNotificationId);
+            }
+        }
     }
 }
