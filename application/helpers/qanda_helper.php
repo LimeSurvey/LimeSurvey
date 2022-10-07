@@ -887,7 +887,7 @@ function do_date($ia)
         $date_min      = trim($aQuestionAttributes['date_min']);
         $date_time_em  = strtotime(LimeExpressionManager::ProcessString("{".$date_min."}", $ia[0]));
 
-        if (ctype_digit($date_min) && (strlen($date_min) == 4) && ($date_min >= 1900) && ($date_min <= 2099)) {
+        if (ctype_digit($date_min) && (strlen($date_min) == 4)) {
             $mindate = $date_min.'-01-01'; // backward compatibility: if only a year is given, add month and day
         } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) {
             // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
@@ -906,7 +906,7 @@ function do_date($ia)
         $date_max     = trim($aQuestionAttributes['date_max']);
         $date_time_em = strtotime(LimeExpressionManager::ProcessString("{".$date_max."}", $ia[0]));
 
-        if (ctype_digit($date_max) && (strlen($date_max) == 4) && ($date_max >= 1900) && ($date_max <= 2099)) {
+        if (ctype_digit($date_max) && (strlen($date_max) == 4)) {
             $maxdate = $date_max.'-12-31'; // backward compatibility: if only a year is given, add month and day
         } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) {
             // it's a YYYY-MM-DD date (use http://www.yiiframework.com/doc/api/1.1/CDateValidator ?)
