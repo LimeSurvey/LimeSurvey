@@ -62,21 +62,9 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                             ),
                             array(
                                 'header'            => gT("Action"),
-                                'value'             => function ($oQuota) use ($oSurvey, $aEditUrls, $aDeleteUrls, $aQuotaItems) {
-                                    /** @var Quota $oQuota */
-                                    return $this->renderPartial(
-                                        'viewquotas_quota_actions',
-                                        array(
-                                            'oSurvey'     => $oSurvey,
-                                            'oQuota'      => $oQuota,
-                                            'editUrl'     => $aEditUrls[$oQuota->getPrimaryKey()],
-                                            'deleteUrl'   => $aDeleteUrls[$oQuota->getPrimaryKey()],
-                                            'aQuotaItems' => $aQuotaItems,
-                                        ),
-                                        true
-                                    );
-                                },
-                                'type'              => 'raw',
+                                'name'        => 'actions',
+                                'type'        => 'raw',
+                                'value'       => '$data->buttons',
                             ),
                             array(
                                 'name'        => gT('Quota members'),
@@ -128,3 +116,16 @@ echo viewHelper::getViewTestTag('surveyQuotas');
         </div>
     </div>
 </div>
+
+<?php
+Yii::app()->getClientScript()->registerScript('quotas_load_validationmodal', "
+    $('.selector__quota_open_validation').remoteModal({
+        saveButton: false,
+    }, {
+        closeIcon : '<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"></button>',
+        closeButton : '<button type=\"button\" class=\"btn btn-cancel\" data-bs-dismiss=\"modal\">".gT("Close")."</button>',
+        saveButton : '<button type=\"button\" class=\"btn btn-primary\">".gT("Close")."</button>'
+    })
+", LSYii_ClientScript::POS_POSTSCRIPT);
+
+?>

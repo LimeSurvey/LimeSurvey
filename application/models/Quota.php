@@ -214,4 +214,53 @@ class Quota extends LSActiveRecord
         /* If not exist or found, return the one from survey base languague */
         return $this->getMainLanguagesetting();
     }
+
+    public function getButtons()
+    {
+        $buttons = "<div class='icon-btn-row'>";
+
+        //edit
+        if (Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'update')) {
+            $url = App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $this->survey->sid, array(
+                'sid' => $this->sid,
+                'quota_id' => $this->primaryKey,
+            ));
+            $buttons .= '<a href="' . $url . '" class="btn btn-outline-secondary" data-bs-toggle="tooltip" title="' . gT("Edit") . '">
+                        <span class="fa fa-pencil"></span>
+                        </a>';
+        }
+        if (Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'delete')) {
+            $url = App()->createUrl("admin/quotas/sa/delquota/surveyid/" . $this->sid, array(
+                'sid' => $this->sid,
+                'quota_id' => $this->primaryKey,
+            ));
+            $buttons .= '<span data-bs-toggle="tooltip" title="' . gT("Delete") . '">
+        <a
+                data-post-url="' . $url . '"
+                class="btn btn-outline-secondary"
+                data-bs-toggle="modal"
+                data-bs-target="#confirmation-modal"
+                data-btnclass="btn-danger"
+                data-btntext="' . gt('Delete') . '"
+                data-message="' . gT("Are you sure you want to delete the selected quotas?", "js") . '"
+        >
+            <span class="fa fa-trash text-danger"></span>
+        </a>
+    </span>';
+        }
+        if (Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'update')) {
+            $buttons .= '<span data-bs-toggle="tooltip" title="' . sprintf(gT("Validation of quota %s"), htmlentities($this->name)) . '">
+        <a
+          href="#"
+          data-remote-link="' . App()->createUrl('admin/validate/', ["sa" => 'quota', 'sid' => $this->sid, 'quota' => $this->id]) . '"
+          class="btn btn-outline-secondary selector__quota_open_validation"
+          data-bs-toggle="modal"
+          data-bs-target="quotaValidation"
+              >
+            <i class="fa fa-tasks"></i>
+        </a>
+    </span>';
+        }
+        return $buttons;
+    }
 }

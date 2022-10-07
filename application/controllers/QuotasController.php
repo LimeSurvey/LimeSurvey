@@ -143,7 +143,7 @@ class QuotasController extends LSBaseController
                 if (!$oQuota->getErrors()) {
                     Yii::app()->user->setFlash('success', gT("New quota saved"));
                     //self::redirectToIndex($surveyid);
-                    $this->redirect($this->createUrl("/admin/quotas/sa/index/surveyid/$surveyid"));
+                    $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
                 } else {
                     // if any of the parts fail to save we delete the quota and and try again
                     $oQuota->delete();
@@ -170,5 +170,10 @@ class QuotasController extends LSBaseController
             'oQuota' => $oQuota,
             'aQuotaLanguageSettings' => $aQuotaLanguageSettings
         ]);
+    }
+
+
+    public function actionEditQuota(){
+
     }
 }

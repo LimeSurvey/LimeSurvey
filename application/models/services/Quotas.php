@@ -21,6 +21,19 @@ class Quotas
     }
 
 
+    /**
+     * In the array are
+     * qoutaId[
+     *   aQuotaItems = [
+     *      oQuestion,
+     *      answerTitle,
+     *      quotaMember
+     *      valid ???
+     *   ]
+     * ]
+     *
+     * @return array
+     */
     public function getQuotaStructure(){
         $totalquotas = 0;
         $totalcompleted = 0;
@@ -31,25 +44,7 @@ class Quotas
                 $totalquotas += $oQuota->qlimit;
                 $totalcompleted += $oQuota->completeCount;
 
-                // Edit URL  --> hmmm could be done in a function in Quota model --> getButtons()
-                $aData['aEditUrls'][$oQuota->primaryKey] =
-                    App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $this->survey->sid, array(
-                    'sid' => $this->survey->sid,
-                   // 'action' => 'quotas', --> not needed in the action itself
-                    'quota_id' => $oQuota->primaryKey,
-                   // 'subaction' => 'quota_editquota'
-                ));
-
-                // Delete URL  --> hmmm could be done in a function in Quota model --> getButtons()
-                $aData['aDeleteUrls'][$oQuota->primaryKey] =
-                    App()->createUrl("admin/quotas/sa/delquota/surveyid/" . $this->survey->sid, array(
-                    'sid' => $this->survey->sid,
-                   // 'action' => 'quotas',
-                    'quota_id' => $oQuota->primaryKey,
-                   // 'subaction' => 'quota_delquota'
-                ));
-
-                //loop through all sub-parts
+                //loop through all quotaMembers
                 foreach ($oQuota->quotaMembers as $oQuotaMember) {
                     $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $oQuota['id']);
                     if ($oQuotaMember->question->type == '*') {
@@ -86,7 +81,7 @@ class Quotas
     /**
      * Get Quota Answers
      *
-     * todo: rewrite this function, use switch instead of if-elseif... and create OOPs for questiontypes
+     * todo: rewrite this function, use switch instead of if-elseif...(done!) and create OOPs for questiontypes
      * @param integer $iQuestionId
      * @param integer $iQuotaId
      * @return array
@@ -188,5 +183,45 @@ class Quotas
         }
 
         return  $aAnswerList;
+    }
+
+
+    public function saveNewQuota($Quotaparams){
+        $oQuota = new \Quota();
+        $oQuota->sid = $this->survey->sid;
+
+        $oQuota->attributes = $_POST['Quota'];
+
+        $savingOk = $oQuota->save();
+        if ($savingOk) {
+            foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes) {
+                $oQuotaLanguageSetting = new QuotaLanguageSetting();
+                $oQuotaLanguageSetting->attributes = $settingAttributes;
+                $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
+                $oQuotaLanguageSetting->quotals_language = $language;
+
+                //Clean XSS - Automatically provided by CI
+                $oQuotaLanguageSetting->quotals_message = html_entity_decode($oQuotaLanguageSetting->quotals_message, ENT_QUOTES, "UTF-8");
+                // Fix bug with FCKEditor saving strange BR types
+                $oQuotaLanguageSetting->quotals_message = fixCKeditorText($oQuotaLanguageSetting->quotals_message);
+                $oQuotaLanguageSetting->save(false);
+
+                if (!$oQuotaLanguageSetting->validate()) {
+                    $oQuota->addErrors($oQuotaLanguageSetting->getErrors());
+                }
+            }
+            if (!$oQuota->getErrors()) {
+                Yii::app()->user->setFlash('success', gT("New quota saved"));
+                //self::redirectToIndex($surveyid);
+                $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
+            } else {
+                //todo also delete already created QuotaLanguageSettings
+
+                // if any of the parts fail to save we delete the quota and try again
+                $oQuota->delete();
+            }
+        }
+
+        return $savingOk;
     }
 }
