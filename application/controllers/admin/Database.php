@@ -656,6 +656,13 @@ class Database extends SurveyCommonAction
             $aOldAttributes = $oSurvey->attributes;
             // Save plugin settings : actually leave it before saving core : we are sure core settings is saved in LS way.
             $pluginSettings = App()->request->getPost('plugin', array());
+            /* No need to unset since js is activated, do it by security in case user deactivate JS before save settings (or have a JS error)*/
+            $aUpdate = (array) App()->request->getPost('update', null);
+            foreach($aUpdate as $name => $value) {
+                if(empty($value)) {
+                    unset($pluginSettings[$name]);
+                }
+            }
             foreach ($pluginSettings as $plugin => $settings) {
                 $settingsEvent = new PluginEvent('newSurveySettings');
                 $settingsEvent->set('settings', $settings);

@@ -542,8 +542,56 @@ class SettingsWidget extends CWidget
     {
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : '';
-        $htmlOptions = $this->htmlOptions($metaData, $form, array('autocomplete'=>'off','size'=>50));
-        return CHtml::passwordField($name, $value, $htmlOptions);
+        $htmlOptions = $this->htmlOptions(
+            $metaData,
+            $form,
+            array(
+                'autocomplete'=>'new-password', // Don't offer saved password https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion#the_autocomplete_attribute_and_login_fields
+                'size'=>50,
+                'placeholder' => gT("Empty string")
+            ));
+        if (empty($metaData['secure'])) { // Old settings comaptibility, need to set secure ate true
+            return CHtml::passwordField($name, $value, $htmlOptions);
+        }
+        $value = str_repeat(" ",mb_strlen($value)); // Leave an information about size … random length is maybe best ?
+        if(empty($htmlOptions['placeholder'])) {
+            $htmlOptions['placeholder'] = gT("Empty string");
+        }
+        $passwordInputId = \CHtml::getIdByName($name);
+        $checkboxHtmlOptions = array(
+            'value' => 1,
+            'uncheckValue' => 0,
+            'data-related-password' => \CHtml::getIdByName($name),
+            'id' => "update_" . $passwordInputId,
+        );
+        if(!empty($htmlOptions['disabled'])) {
+            $checkboxHtmlOptions['disabled'] = true;
+        }
+        /* HTML content */
+        $out = Chtml::tag("div", array('class' => 'form-group'));
+        $out .= Chtml::tag("div", array('class' => 'input-group'));
+        $out .= Chtml::tag(
+            "label",
+            array('class' => 'input-group-addon'),
+            CHtml::checkBox('update[' . $name . ']', false, $checkboxHtmlOptions) . " ". gT("Update password")
+        );
+        $out .= CHtml::passwordField($name, $value, $htmlOptions);
+        $out .= Chtml::closeTag('div');
+        $out .= Chtml::closeTag('div');
+        /* script */
+        $script = "$(function() {\n"
+                . "\t$('#" . $passwordInputId ."').prop('disabled', true);\n"
+                . "});\n"
+                . "$(document).on('change','#update_" . $passwordInputId . "', function() {\n"
+                . "\tif($(this).is(':checked')) {\n"
+                . "\t\t$('#' + $(this).data('related-password')).prop('disabled', false);\n"
+                . "\t\t$('#' + $(this).data('related-password')).val('');\n"
+                . "\t} else {\n"
+                . "\t\t$('#' + $(this).data('related-password')).prop('disabled', true);\n"
+                . "\t}\n"
+                . "});\n";
+        App()->getClientScript()->registerScript("renderPassword" . $passwordInputId, $script, CClientScript::POS_END);
+        return $out;
     }
 
     public function renderLink($name, array $metaData, $form = null)

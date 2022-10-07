@@ -328,8 +328,13 @@ class PluginManagerController extends SurveyCommonAction
             }
             $aSettings = $oPluginObject->getPluginSettings(false);
             $aSave     = array();
+            $aUpdate = (array) App()->request->getPost('update', null);
             foreach (array_keys($aSettings) as $name) {
-                $aSave[$name] = App()->request->getPost($name, null);
+                if(!isset($aUpdate[$name]) || $aUpdate[$name]) {
+                    $aSave[$name] = App()->request->getPost($name, null);
+                } else {
+                    // Do not send to update array
+                }
             }
             $oPluginObject->saveSettings($aSave);
             Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
