@@ -66,7 +66,7 @@
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
         <!-- images -->
         <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
-        <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">themes/survey/vanilla/files/logo.png</brandlogofile>
+        <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">./files/logo.png</brandlogofile>
         <!-- fonts -->
         <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
             <dropdownoptions>
@@ -103,7 +103,7 @@
         <!-- Asset manager will copy the whole theme directory to tmp. So it's possible to refer any file in the files directory in CSS via relative path (e.g: '../files/foo.jpg')   -->
         <filesdirectory>files</filesdirectory>
 
-        <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
+        <!-- Here, you can publish packages set as third party extensions in application/config/vendor or  application/config/package -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
             <add>pjax</add>
@@ -336,8 +336,8 @@
                 <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
                 <showsurveypolicynotice>2</showsurveypolicynotice>
-                <datasecurity_notice_label type="data" twig="on"><![CDATA[ <a href='#data-security-modal-' data-toggle='collapse'> {{ gT('Show Policy') }} </a>  ]]></datasecurity_notice_label>
-                <datasecurity_notice type="data" twig="on"><![CDATA[ {{ gT("Your Privacy policy text is shown here.") }} ]]></datasecurity_notice>
+                <datasecurity_notice_label type="data" twig="on"><![CDATA[ <a href='#data-security-modal-' data-toggle='collapse'> {{ gT('Show privacy policy') }} </a>  ]]></datasecurity_notice_label>
+                <datasecurity_notice type="data" twig="on"><![CDATA[ {{ gT("Your privacy policy text is shown here.") }} ]]></datasecurity_notice>
               </survey>
               <group type="core">
                 <name type="data" twig="on"><![CDATA[ {{ gT("Group 1: The first lot of questions") }} ]]></name>

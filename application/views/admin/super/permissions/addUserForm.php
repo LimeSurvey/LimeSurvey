@@ -7,7 +7,11 @@
         <?php echo CHtml::dropDownList(
             'uid',
             '',
-            CHtml::listData($oAddUserList,'uid','users_name'),
+            CHtml::listData(
+                $oAddUserList,
+                'uid',
+                'DisplayName'
+            ),
             array(
                 'empty' => gT("Please choose..."),
                 'class'=> 'form-control',

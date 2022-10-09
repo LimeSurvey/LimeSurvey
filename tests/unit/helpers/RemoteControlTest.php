@@ -383,7 +383,7 @@ class RemoteControlTest extends TestBaseClass
         );
         $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
 
-        $groupFileName = BASEPATH . '../tests/data/file_upload/limesurvey_group_472.lsg';
+        $groupFileName = ROOT . '/tests/data/file_upload/limesurvey_group_472.lsg';
         $groupData = base64_encode(file_get_contents($groupFileName));
 
         $result = $handler->import_group(
@@ -537,6 +537,59 @@ class RemoteControlTest extends TestBaseClass
     }
 
     /**
+     * Test the get_fieldmap API call
+     */
+    public function testGetFieldmap()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+        $dbo = \Yii::app()->getDb();
+
+        // Make sure the Authdb is in database (might not be the case if no browser login attempt has been made).
+        $plugin = \Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+        if (!$plugin) {
+            $plugin = new \Plugin();
+            $plugin->name = 'Authdb';
+            $plugin->active = 1;
+            $plugin->save();
+        } else {
+            $plugin->active = 1;
+            $plugin->save();
+        }
+        App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
+        // Clear login attempts.
+        $query = sprintf('DELETE FROM {{failed_login_attempts}}');
+        $dbo->createCommand($query)->execute();
+
+        $filename = self::$surveysFolder . '/limesurvey_survey_remote_api_get_fieldmap.lss';
+        self::importSurvey($filename);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+        $group = $survey->groups[0];
+        $question = $group->questions[0];
+        $sgq = self::$surveyId . "X" . $group->gid . "X" . $question->qid;
+
+        // Check base language fieldmap
+        $result = $handler->get_fieldmap($sessionKey, self::$surveyId);
+        $this->assertEquals('Example question', $result[$sgq]['question']);
+
+        $result = $handler->get_fieldmap($sessionKey, self::$surveyId, 'es');
+        $this->assertEquals('Pregunta de ejemplo', $result[$sgq]['question']);
+    }
+  
+    /*
      * Test the get_uploaded_files API call using response ID.
      */
     public function testGetUploadedFilesByResponseId()
@@ -597,27 +650,6 @@ class RemoteControlTest extends TestBaseClass
      */
     private function prepareTestWithUploadedFile($surveyFile, $fileName, $uploadedFileName)
     {
-        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
-        \Yii::import('application.helpers.viewHelper', true);
-        \Yii::import('application.libraries.BigData', true);
-        $dbo = \Yii::app()->getDb();
-
-        // Make sure the Authdb is in database (might not be the case if no browser login attempt has been made).
-        $plugin = \Plugin::model()->findByAttributes(array('name'=>'Authdb'));
-        if (!$plugin) {
-            $plugin = new \Plugin();
-            $plugin->name = 'Authdb';
-            $plugin->active = 1;
-            $plugin->save();
-        } else {
-            $plugin->active = 1;
-            $plugin->save();
-        }
-        App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
-        // Clear login attempts.
-        $query = sprintf('DELETE FROM {{failed_login_attempts}}');
-        $dbo->createCommand($query)->execute();
-
         // Import survey
         $filename = self::$surveysFolder . '/' . $surveyFile;
         self::importSurvey($filename);
@@ -634,6 +666,6 @@ class RemoteControlTest extends TestBaseClass
         $this->assertTrue(file_exists($file));
         $targetFile = $surveyUploadsDir . $uploadedFileName;
         copy($file, $targetFile);
-        $this->assertTrue(file_exists($targetFile));
-    }
+        $this->assertTrue(file_exists($targetFile));    
+    }  
 }

@@ -65,7 +65,8 @@ class Labels extends SurveyCommonAction
             $zip = new PclZip($zipfilename);
 
             if (!is_writeable($basedestdir)) {
-                $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                Yii::app()->setFlashMessage(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), 'error');
+                $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
 
             if (!is_dir($destdir)) {
@@ -359,7 +360,7 @@ class Labels extends SurveyCommonAction
         }
         if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             if (LabelSet::model()->deleteLabelSet($lid)) {
-                Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."), 'success');
+                Yii::app()->setFlashMessage(gT("Label set successfully deleted."), 'success');
                 $lid = 0;
             }
         }
@@ -388,7 +389,7 @@ class Labels extends SurveyCommonAction
         $oLabelSet->label_name = $label_name;
         $oLabelSet->languages = implode(' ', $languageids);
         if ($oLabelSet->save()) {
-            Yii::app()->setFlashMessage(gT("Label set sucessfully created."), 'success');
+            Yii::app()->setFlashMessage(gT("Label set successfully created."), 'success');
             $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $oLabelSet->lid));
         } else {
             Yii::app()->setFlashMessage(gT("Label could not be created."), 'error');
@@ -571,7 +572,7 @@ class Labels extends SurveyCommonAction
                 $label->lid = $lid;
                 $label->code = $codes[$i];
                 $label->sortorder = $i;
-                $label->assessment_value = isset($assessmentValues[$i]) ? $assessmentValues[$i] : 0;
+                $label->assessment_value = $assessmentValues[$i] ?? 0;
                 if (!$label->save()) {
                     throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
                 }
@@ -647,11 +648,9 @@ class Labels extends SurveyCommonAction
         foreach ($aLabelSet['labels'] as $i => $aLabel) {
             $oLabel = new Label();
             $oLabel->lid = $oLabelSet->lid;
-            $oLabel->code = isset($aLabel['code'])
-                ? $aLabel['code']
-                : $aLabel['title'];
+            $oLabel->code = $aLabel['code'] ?? $aLabel['title'];
             $oLabel->sortorder = $i;
-            $oLabel->assessment_value = isset($aLabel['assessment_value']) ? $aLabel['assessment_value'] : 0;
+            $oLabel->assessment_value = $aLabel['assessment_value'] ?? 0;
             $partResult = $oLabel->save();
             $aDebug['saveLabel_' . $i] = $partResult;
             $result = $result && $partResult;
@@ -659,9 +658,7 @@ class Labels extends SurveyCommonAction
                 $oLabelL10n = new LabelL10n();
                 $oLabelL10n->label_id = $oLabel->id;
                 $oLabelL10n->language = $language;
-                $oLabelL10n->title = isset($aLabel[$language]['question'])
-                    ? $aLabel[$language]['question']
-                    : $aLabel[$language]['answer'];
+                $oLabelL10n->title = $aLabel[$language]['question'] ?? $aLabel[$language]['answer'];
 
                 $lngResult = $oLabelL10n->save();
                 $aDebug['saveLabel_' . $i . '_' . $language] = $lngResult;

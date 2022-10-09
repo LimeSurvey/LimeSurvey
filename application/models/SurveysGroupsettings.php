@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{surveys_groupsettings}}".
  *
- * The followings are the available columns in table '{{surveys_groupsettings}}':
+ * The following are the available columns in table '{{surveys_groupsettings}}':
  * @property integer $gsid
  * @property integer $owner_id
  * @property string $admin
@@ -349,18 +349,7 @@ class SurveysGroupsettings extends LSActiveRecord
         // set instance options only if option needs to be inherited
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)) {
             foreach ($instance->optionAttributes as $key => $attribute) {
-                if (
-                    (empty($instance->oOptions->{$attribute}))
-                    || (
-                        !empty($instance->oOptions->{$attribute})
-                        && (
-                            $instance->oOptions->{$attribute} === 'inherit'
-                            || $instance->oOptions->{$attribute} === 'I'
-                            // NB: Do NOT use === here, it won't work with Postgresql.
-                            || $instance->oOptions->{$attribute} == '-1'
-                        )
-                    )
-                ) {
+                if ($instance->shouldInherit($attribute)) {
                     $instance->oOptions->{$attribute} = $model->$attribute;
                     $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);
                 }
@@ -470,5 +459,41 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->admin = substr(App()->getConfig('siteadminname'), 0, 50);
         $this->adminemail = substr(App()->getConfig('siteadminemail'), 0, 254);
         $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
+    }
+
+    /**
+     * Returns true if the attribute should be inherited according to it's value.
+     * @param string $attribute
+     * @return bool
+     */
+    private function shouldInherit($attribute)
+    {
+        // If the attribute is not defined
+        if (!property_exists($this->oOptions, $attribute)) {
+            return true;
+        }
+
+        // The attribute should be inherited if its value is 'inherit', 'I' or '-1'.
+        if (
+            !empty($this->oOptions->{$attribute})
+            && (
+                $this->oOptions->{$attribute} === 'inherit'
+                || $this->oOptions->{$attribute} === 'I'
+                // NB: Do NOT use === here, it won't work with Postgresql.
+                || $this->oOptions->{$attribute} == '-1'
+            )
+        ) {
+            return true;
+        }
+
+        // Since survey settings inheritance have been introduced, empty
+        // attributes have always been inherited. But for some attributes,
+        // an empty value is actually a valid attribute.
+        $attributesAllowedToBeEmpty = ['emailnotificationto', 'emailresponseto'];
+        if (empty($this->oOptions->{$attribute}) && !in_array($attribute, $attributesAllowedToBeEmpty)) {
+            return true;
+        }
+
+        return false;
     }
 }

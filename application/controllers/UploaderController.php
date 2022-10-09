@@ -32,7 +32,7 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = isset(Yii::app()->session['survey_' . $surveyid]['s_lang']) ? Yii::app()->session['survey_' . $surveyid]['s_lang'] : "";
+        $sLanguage = Yii::app()->session['survey_' . $surveyid]['s_lang'] ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -285,7 +285,7 @@ class UploaderController extends SurveyController
             /* We get there : an unknow error happen … maybe a move_uploaded_file error (with debug=0) */
             $return = array(
                 "success" => false,
-                "msg" => gT("An unknown error occured")
+                "msg" => gT("An unknown error occurred")
             );
             /* Add information for for user forcedSuperAdmin right */
             if (Permission::isForcedSuperAdmin(Permission::model()->getUserId())) {

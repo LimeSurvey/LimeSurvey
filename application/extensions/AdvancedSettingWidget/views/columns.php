@@ -7,7 +7,9 @@
     <input
         type="number"
         class="form-control" 
-        name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+        name="<?= $inputBaseName ?>"
+        id="<?= CHtml::getIdByName($inputBaseName); ?>"
+        <?= ($this->setting['help']) ? 'aria-describedby="help-' . CHtml::getIdByName($inputBaseName) . '"' : "" ?>
         value="<?= CHtml::encode($this->setting['value']); ?>"
         max="12"
         min="1"

@@ -266,6 +266,12 @@ table.ls-answers input[type="radio"] {
 .dir-rtl .radio-item label.ls-label-xs-visibility>*,
 .dir-rtl .checkbox-item label.ls-label-xs-visibility>* {
     left: -10000px;
+}
+
+/* Align privacy policy checkbox to top */
+#datasecurity_accepted {
+    vertical-align: top;
+}
 
 /*
 Max width before this PARTICULAR table gets nasty

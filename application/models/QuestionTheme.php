@@ -5,7 +5,7 @@ use LimeSurvey\Helpers\questionHelper;
 /**
  * This is the model class for table "{{question_themes}}".
  *
- * The followings are the available columns in table '{{question_themes}}':
+ * The following are the available columns in table '{{question_themes}}':
  *
  * @property integer $id
  * @property string  $name
@@ -389,6 +389,9 @@ class QuestionTheme extends LSActiveRecord
 
         // read all metadata from the provided $pathToXmlFolder
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
+        if (!isset($questionMetaData['questionType'])) {
+            throw new Exception('Missing attribute questionType in meta data');
+        }
 
         $aQuestionThemes = QuestionTheme::model()->findAll(
             '(question_type = :question_type AND extends = :extends)',
@@ -415,6 +418,7 @@ class QuestionTheme extends LSActiveRecord
         // set settings as json
         $questionMetaData['settings'] = json_encode([
             'subquestions'     => $questionMetaData['subquestions'] ?? 0,
+            'other'            => $questionMetaData['other'] ?? false,
             'answerscales'     => $questionMetaData['answerscales'] ?? 0,
             'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'] ?? 0,
             'assessable'       => $questionMetaData['assessable'] ?? 0,
@@ -529,7 +533,7 @@ class QuestionTheme extends LSActiveRecord
         }
 
         // todo optimize function for very big surveys, eventually in yii 2 or 3 with batch processing / if this is breaking in Yii 1 use CDbDataReader $query = new CDbDataReader($command), $query->read()
-        $aQuestions = Question::model()->findAll(
+        $aQuestions = Question::model()->count(
             'type = :type AND question_theme_name = :theme AND parent_qid = :parent_qid',
             [
                 ':type'       => $oQuestionTheme->question_type,
@@ -658,7 +662,11 @@ class QuestionTheme extends LSActiveRecord
         $baseQuestionsModified = [];
         foreach ($baseQuestions as $baseQuestion) {
             //TODO: should be moved into DB column (question_theme_settings table)
-            $sQuestionConfigFile = file_get_contents($baseQuestion->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = @file_get_contents($baseQuestion->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            if (!$sQuestionConfigFile) {
+                /* Not readable file : don't break */
+                continue;
+            }
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionEngineData = json_decode(json_encode($oQuestionConfig->engine), true);
             $showAsQuestionType = $questionEngineData['show_as_question_type'];
@@ -902,7 +910,7 @@ class QuestionTheme extends LSActiveRecord
         if (!is_file($sPathToCoreConfigFile)) {
             return $aSuccess = [
                 'message' => sprintf(
-                    gT("Question theme could not be converted to LimeSurvey 4 standard. Reason: No matching core theme with the name %s could be found"),
+                    gT("Question theme could not be converted to the latest LimeSurvey version. Reason: No matching core theme with the name %s could be found"),
                     $sThemeDirectoryName
                 ),
                 'success' => false
@@ -934,7 +942,7 @@ class QuestionTheme extends LSActiveRecord
         $oThemeConfig->saveXML($sQuestionConfigFilePath);
 
         return $aSuccess = [
-            'message' => gT('Question Theme has been sucessfully converted to LimeSurvey 4'),
+            'message' => gT('Question theme has been successfully converted to the latest LimeSurvey version.'),
             'success' => true
         ];
     }

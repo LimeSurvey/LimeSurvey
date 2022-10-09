@@ -98,6 +98,13 @@ class Answer extends LSActiveRecord
         );
     }
 
+    public function defaultScope()
+    {
+        return array(
+            'order' => 'sortorder, code'
+        );
+    }
+
     /**
      * @param integer $qid
      * @return CDbDataReader

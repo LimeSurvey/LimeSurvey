@@ -6,6 +6,9 @@
  * @var $oQuestionSelector              PreviewModalWidget
  */
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('personalsettings');
+
 $aQuestionTypeGroups = [];
 
 if (App()->session['questionselectormode'] !== 'default') {
@@ -216,13 +219,13 @@ echo $oQuestionSelector->getModal();
                                                         'buttonWidth' => '100%',
                                                         'htmlOptions' => [
                                                             'id'    => 'lang',
-                                                            'style' => "widht:100%;"
+                                                            'style' => "width:100%;"
                                                         ]
                                                     ],
                                                     'value'          => $sSavedLanguage,
                                                     'htmlOptions'    => [
                                                         'class'      => "form-control",
-                                                        'style'      => "widht:100%;",
+                                                        'style'      => "width:100%;",
                                                         'data-width' => '100%'
                                                     ]
                                                 ]

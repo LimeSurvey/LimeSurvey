@@ -56,8 +56,7 @@ class DataEntry extends SurveyCommonAction
 {
     /**
      * Dataentry Constructor
-     * @param Controller $controller Given Controller
-     * @param int        $id         Given ID
+     * @inherit
      */
     public function __construct($controller, $id)
     {
@@ -168,8 +167,8 @@ class DataEntry extends SurveyCommonAction
             $aData['class'] = "message-box-error";
         }
 
-        $aData['aResult']['errors'] = (isset($aResult['errors'])) ? $aResult['errors'] : false;
-        $aData['aResult']['warnings'] = (isset($aResult['warnings'])) ? $aResult['warnings'] : false;
+        $aData['aResult']['errors'] = $aResult['errors'] ?? false;
+        $aData['aResult']['warnings'] = $aResult['warnings'] ?? false;
 
         $this->renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
     }
@@ -178,7 +177,7 @@ class DataEntry extends SurveyCommonAction
      * Move uploaded files Method.
      *
      * @param array $aData Given Data
-     * @return void
+     * @return void|string
      */
     private function moveUploadedFile($aData)
     {
@@ -208,7 +207,7 @@ class DataEntry extends SurveyCommonAction
 
     /**
      * Show upload form Method.
-     * @param string $aEncodings Given Encoding
+     * @param string[] $aEncodings Given Encoding
      * @param int    $surveyid   Given Survey ID
      * @param array  $aData      Given Data
      * @return void
@@ -339,12 +338,13 @@ class DataEntry extends SurveyCommonAction
             }
             $imported = 0;
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
+            /* @var boolean preserveIDs */
+            $preserveIDs = boolval(App()->getRequest()->getPost('preserveIDs'));
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
                 $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
-
-                if (isset($_POST['preserveIDs']) && $_POST['preserveIDs'] == 1) {
+                if ($preserveIDs) {
                     $targetResponse->id = $sourceResponse->id;
                 }
 
@@ -372,7 +372,13 @@ class DataEntry extends SurveyCommonAction
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
 
                 $imported++;
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$iSurveyId", true);
+                }
                 $targetResponse->save();
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$iSurveyId", false);
+                }
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
                 unset($targetResponse);
             }
@@ -490,847 +496,858 @@ class DataEntry extends SurveyCommonAction
         $oSurvey = Survey::model()->findByPk($surveyid);
         $id = (int) $id;
         $aViewUrls = array();
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
-            $sDataEntryLanguage = $oSurvey->language;
-            $aData = [];
-            $aData['display']['menu_bars']['browse'] = gT("Data entry");
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        if (!$oSurvey->hasResponsesTable) {
+            /* Same than ResponsesController->getData */
+            App()->setFlashMessage(gT("This survey has not been activated. There are no results to browse."), 'warning');
+            $this->getController()->redirect(["surveyAdministration/view", 'surveyid' => $surveyid]);
+            App()->end();
+        }
+        $idresult = Response::model($surveyid)->findByPk($id);
+        if (empty($idresult)) {
+            throw new CHttpException(404, gT("Invalid response id."));
+        }
+        $sDataEntryLanguage = $oSurvey->language;
+        $aData = [];
+        $aData['display']['menu_bars']['browse'] = gT("Data entry");
 
-            Yii::app()->loadHelper('database');
+        Yii::app()->loadHelper('database');
 
-            // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-            // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answer if exist)
-            $fnames = [];
-            $fnames['completed'] = array('fieldname' => "completed", 'question' => gT("Completed"), 'type' => 'completed');
+        // Perform a case insensitive natural sort on group name then question title of a multidimensional array
+        // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answer if exist)
+        $fnames = [];
+        $fnames['completed'] = array('fieldname' => "completed", 'question' => gT("Completed"), 'type' => 'completed');
 
-            $fnames = array_merge($fnames, createFieldMap($oSurvey, 'full', false, false, $sDataEntryLanguage));
-            // Fix private if disallowed to view token
-            if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')) {
-                unset($fnames['token']);
-            }
-            $nfncount = count($fnames) - 1;
+        $fnames = array_merge($fnames, createFieldMap($oSurvey, 'full', false, false, $sDataEntryLanguage));
+        // Fix private if disallowed to view token
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')) {
+            unset($fnames['token']);
+        }
+        $nfncount = count($fnames) - 1;
 
-            //SHOW INDIVIDUAL RECORD
-            $results = array();
-            if ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
-                $idresult = Response::model($surveyid)->findByPk($id);
-                $idresult->decrypt();
-                $results[] = $idresult->attributes;
-            } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
-                if (isset($_GET['public']) && $_GET['public'] == "true") {
-                    $password = hash('sha256', Yii::app()->request->getParam('accesscode'));
-                } else {
-                    $password = Yii::app()->request->getParam('accesscode');
-                }
-
-                $svresult = SavedControl::model()->findAllByAttributes(
-                    array(
-                    'sid'         => $surveyid,
-                    'identifier'  => Yii::app()->request->getParam('identifier'),
-                    'access_code' => $password)
-                );
-
-                $saver = array();
-                foreach ($svresult as $svrow) {
-                    $svrow->decrypt();
-                    $saver['email'] = $svrow['email'];
-                    $saver['scid'] = $svrow['scid'];
-                    $saver['ip'] = $svrow['ip'];
-                }
-
-                $svresult = SavedControl::model()->findAllByAttributes(array('scid' => $saver['scid']));
-                $responses = [];
-                foreach ($svresult as $svrow) {
-                    $svrow->decrypt();
-                    $responses[$svrow['fieldname']] = $svrow['value'];
-                }
-
-                $fieldmap = createFieldMap($oSurvey, 'full', false, false, $oSurvey->language);
-                $results1 = array();
-                foreach ($fieldmap as $fm) {
-                    if (isset($responses[$fm['fieldname']])) {
-                        $results1[$fm['fieldname']] = $responses[$fm['fieldname']];
-                    } else {
-                        $results1[$fm['fieldname']] = "";
-                    }
-                }
-
-                $results1['id'] = "";
-                $results1['datestamp'] = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
-                $results1['ipaddr'] = $saver['ip'];
-                $results[] = $results1;
+        //SHOW INDIVIDUAL RECORD
+        $results = array();
+        if ($subaction == "edit") {
+            // $idresult is response
+            $idresult->decrypt();
+            $results[] = $idresult->attributes;
+        } elseif ($subaction == "editsaved") {
+            if (isset($_GET['public']) && $_GET['public'] == "true") {
+                $password = hash('sha256', Yii::app()->request->getParam('accesscode'));
+            } else {
+                $password = Yii::app()->request->getParam('accesscode');
             }
 
-            $aData = array(
-                'id' => $id,
-                'surveyid' => $surveyid,
-                'subaction' => $subaction,
-                'part' => 'header'
+            $svresult = SavedControl::model()->findAllByAttributes(
+                array(
+                'sid'         => $surveyid,
+                'identifier'  => Yii::app()->request->getParam('identifier'),
+                'access_code' => $password)
             );
 
-            $aViewUrls[] = 'dataentry_header_view';
-            $aViewUrls[] = 'edit';
+            $saver = array();
+            foreach ($svresult as $svrow) {
+                $svrow->decrypt();
+                $saver['email'] = $svrow['email'];
+                $saver['scid'] = $svrow['scid'];
+                $saver['ip'] = $svrow['ip'];
+            }
 
-            $highlight = false;
-            unset($fnames['lastpage']);
+            $svresult = SavedControl::model()->findAllByAttributes(array('scid' => $saver['scid']));
+            $responses = [];
+            foreach ($svresult as $svrow) {
+                $svrow->decrypt();
+                $responses[$svrow['fieldname']] = $svrow['value'];
+            }
 
-            // unset timings
-            foreach ($fnames as $fname) {
-                if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time") {
-                    unset($fnames[$fname['fieldname']]);
-                    $nfncount--;
+            $fieldmap = createFieldMap($oSurvey, 'full', false, false, $oSurvey->language);
+            $results1 = array();
+            foreach ($fieldmap as $fm) {
+                if (isset($responses[$fm['fieldname']])) {
+                    $results1[$fm['fieldname']] = $responses[$fm['fieldname']];
+                } else {
+                    $results1[$fm['fieldname']] = "";
                 }
             }
-            $aDataentryoutput = '';
-            foreach ($results as $idrow) {
-                $fname = reset($fnames);
-                do {
-                    $question = $fname['question'];
-                    $aDataentryoutput .= "\t<tr";
-                    if ($highlight) {
-                        $aDataentryoutput .= " class='odd'";
-                    } else {
-                        $aDataentryoutput .= " class='even'";
-                    }
 
-                    $highlight = !$highlight;
-                    $aDataentryoutput .= ">\n"
-                    . "<td>"
-                    . "\n";
-                    $aDataentryoutput .= stripJavaScript($question);
-                    $aDataentryoutput .= "</td>\n"
-                    . "<td>\n";
-                    //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
-                    $qidattributes = [];
-                    if (isset($fname['qid']) && isset($fname['type'])) {
+            $results1['id'] = "";
+            $results1['datestamp'] = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+            $results1['ipaddr'] = $saver['ip'];
+            $results[] = $results1;
+        }
+
+        $aData = array(
+            'id' => $id,
+            'surveyid' => $surveyid,
+            'subaction' => $subaction,
+            'part' => 'header'
+        );
+
+        $aViewUrls[] = 'dataentry_header_view';
+        $aViewUrls[] = 'edit';
+
+        $highlight = false;
+        unset($fnames['lastpage']);
+
+        // unset timings
+        foreach ($fnames as $fname) {
+            if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time") {
+                unset($fnames[$fname['fieldname']]);
+                $nfncount--;
+            }
+        }
+        $aDataentryoutput = '';
+        foreach ($results as $idrow) {
+            $fname = reset($fnames);
+            do {
+                $question = $fname['question'];
+                $aDataentryoutput .= "\t<tr";
+                if ($highlight) {
+                    $aDataentryoutput .= " class='odd'";
+                } else {
+                    $aDataentryoutput .= " class='even'";
+                }
+
+                $highlight = !$highlight;
+                $aDataentryoutput .= ">\n"
+                . "<td>"
+                . "\n";
+                $aDataentryoutput .= stripJavaScript($question);
+                $aDataentryoutput .= "</td>\n"
+                . "<td>\n";
+                //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
+                $qidattributes = [];
+                if (isset($fname['qid']) && isset($fname['type'])) {
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                }
+                switch ($fname['type']) {
+                    case "completed":
+                        $selected = (empty($idrow['submitdate'])) ? 'N' : 'Y';
+                        $select_options = array(
+                            'N' => gT('No', 'unescaped'),
+                            'Y' => gT('Yes', 'unescaped')
+                        );
+
+                        $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options, array('class' => 'form-control'));
+
+                        break;
+                    case Question::QT_X_TEXT_DISPLAY: //Boilerplate question
+                        $aDataentryoutput .= "";
+                        break;
+                    case Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                        $aDataentryoutput .= $fname['subquestion'] . '&nbsp;';
+                        $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                        break;
+                    case Question::QT_K_MULTIPLE_NUMERICAL:
+                        $aDataentryoutput .= $fname['subquestion'] . '&nbsp;';
+                        /* Fix DB DECIMAL type */
+                        $value = $idrow[$fname['fieldname']];
+                        if (strpos($value, ".")) {
+                            $value = rtrim(rtrim($value, "0"), ".");
+                        }
+                        $aDataentryoutput .= CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
+                        break;
+                    case "id":
+                        $aDataentryoutput .= CHtml::tag('span', array('style' => 'font-weight: bold;'), '&nbsp;' . $idrow[$fname['fieldname']]);
+                        break;
+                    case "seed":
+                        $aDataentryoutput .= CHtml::tag('span', array(), '&nbsp;' . $idrow[$fname['fieldname']]);
+                        break;
+                    case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
+                        for ($i = 1; $i <= 5; $i++) {
+                            $checked = false;
+                            if ($idrow[$fname['fieldname']] == $i) {
+                                $checked = true;
+                            }
+                            $aDataentryoutput .= '<span class="five-point">';
+                            $aDataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class' => '', 'value' => $i, 'id' => '5-point-choice-' . $i));
+                            $aDataentryoutput .= '<label for="5-point-choice-' . $i . '">' . $i . '</label>';
+                            $aDataentryoutput .= '</span>';
+                        }
+                        break;
+                    case Question::QT_D_DATE: //DATE
+                        $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid);
+                        $datetimeobj = null;
+                        $thisdate = '';
+                        if ($idrow[$fname['fieldname']] != '') {
+                            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']]);
+                            if ($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
+                                $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']]);
+                            }
+                        }
+
+                        if (canShowDatePicker($dateformatdetails)) {
+                            if ($datetimeobj) {
+                                $thisdate = $datetimeobj->format($dateformatdetails['phpdate']);
+                            }
+                            $goodchars = str_replace(array("m", "d", "y", "H", "M"), "", $dateformatdetails['dateformat']);
+                            $goodchars = "0123456789" . $goodchars[0];
+                            $aDataentryoutput .= CHtml::textField(
+                                $fname['fieldname'],
+                                $thisdate,
+                                array(
+                                'class' => 'popupdate',
+                                'size' => '12',
+                                'onkeypress' => 'return window.LS.goodchars(event,\'' . $goodchars . '\')'
+                                )
+                            );
+                            $aDataentryoutput .= CHtml::hiddenField(
+                                'dateformat' . $fname['fieldname'],
+                                $dateformatdetails['jsdate'],
+                                array('id' => "dateformat{$fname['fieldname']}")
+                            );
+                        } else {
+                            if ($datetimeobj) {
+                                $thisdate = $datetimeobj->format("Y-m-d\TH:i");
+                            }
+                            $aDataentryoutput .= CHtml::dateTimeLocalField($fname['fieldname'], $thisdate);
+                        }
+                        break;
+                    case Question::QT_G_GENDER: //GENDER drop-down list
+                        $select_options = array(
+                        '' => gT("Please choose") . '...',
+                        'F' => gT("Female"),
+                        'M' => gT("Male")
+                        );
+                        $aDataentryoutput .= CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
+                        break;
+                    case Question::QT_L_LIST: //LIST drop-down
+                    case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List (Radio)
                         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
-                    }
-                    switch ($fname['type']) {
-                        case "completed":
-                            $selected = (empty($idrow['submitdate'])) ? 'N' : 'Y';
-                            $select_options = array(
-                                'N' => gT('No', 'unescaped'),
-                                'Y' => gT('Yes', 'unescaped')
-                            );
+                        if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {
+                            $optCategorySeparator = $qidattributes['category_separator'];
+                        } else {
+                            unset($optCategorySeparator);
+                        }
 
-                            $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options, array('class' => 'form-control'));
+                        if (substr($fname['fieldname'], -5) == "other") {
+                            $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                            . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
+                        } else {
+                            $lresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $fname['qid'], 'language' => $sDataEntryLanguage)));
+                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                            . "<option value=''";
+                            if ($idrow[$fname['fieldname']] == "") {
+                                $aDataentryoutput .= " selected='selected'";
+                            }
+                            $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
 
-                            break;
-                        case Question::QT_X_TEXT_DISPLAY: //Boilerplate question
-                            $aDataentryoutput .= "";
-                            break;
-                        case Question::QT_Q_MULTIPLE_SHORT_TEXT:
-                            $aDataentryoutput .= $fname['subquestion'] . '&nbsp;';
-                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
-                            break;
-                        case Question::QT_K_MULTIPLE_NUMERICAL:
-                            $aDataentryoutput .= $fname['subquestion'] . '&nbsp;';
-                            /* Fix DB DECIMAL type */
-                            $value = $idrow[$fname['fieldname']];
-                            if (strpos($value, ".")) {
-                                $value = rtrim(rtrim($value, "0"), ".");
-                            }
-                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
-                            break;
-                        case "id":
-                            $aDataentryoutput .= CHtml::tag('span', array('style' => 'font-weight: bold;'), '&nbsp;' . $idrow[$fname['fieldname']]);
-                            break;
-                        case "seed":
-                            $aDataentryoutput .= CHtml::tag('span', array(), '&nbsp;' . $idrow[$fname['fieldname']]);
-                            break;
-                        case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
-                            for ($i = 1; $i <= 5; $i++) {
-                                $checked = false;
-                                if ($idrow[$fname['fieldname']] == $i) {
-                                    $checked = true;
-                                }
-                                $aDataentryoutput .= '<span class="five-point">';
-                                $aDataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class' => '', 'value' => $i, 'id' => '5-point-choice-' . $i));
-                                $aDataentryoutput .= '<label for="5-point-choice-' . $i . '">' . $i . '</label>';
-                                $aDataentryoutput .= '</span>';
-                            }
-                            break;
-                        case Question::QT_D_DATE: //DATE
-                            $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid);
-                            $datetimeobj = null;
-                            $thisdate = '';
-                            if ($idrow[$fname['fieldname']] != '') {
-                                $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']]);
-                                if ($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
-                                    $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']]);
-                                }
-                            }
-
-                            if (canShowDatePicker($dateformatdetails)) {
-                                if ($datetimeobj) {
-                                    $thisdate = $datetimeobj->format($dateformatdetails['phpdate']);
-                                }
-                                $goodchars = str_replace(array("m", "d", "y", "H", "M"), "", $dateformatdetails['dateformat']);
-                                $goodchars = "0123456789" . $goodchars[0];
-                                $aDataentryoutput .= CHtml::textField(
-                                    $fname['fieldname'],
-                                    $thisdate,
-                                    array(
-                                    'class' => 'popupdate',
-                                    'size' => '12',
-                                    'onkeypress' => 'return window.LS.goodchars(event,\'' . $goodchars . '\')'
-                                    )
-                                );
-                                $aDataentryoutput .= CHtml::hiddenField(
-                                    'dateformat' . $fname['fieldname'],
-                                    $dateformatdetails['jsdate'],
-                                    array('id' => "dateformat{$fname['fieldname']}")
-                                );
-                            } else {
-                                if ($datetimeobj) {
-                                    $thisdate = $datetimeobj->format("Y-m-d\TH:i");
-                                }
-                                $aDataentryoutput .= CHtml::dateTimeLocalField($fname['fieldname'], $thisdate);
-                            }
-                            break;
-                        case Question::QT_G_GENDER: //GENDER drop-down list
-                            $select_options = array(
-                            '' => gT("Please choose") . '...',
-                            'F' => gT("Female"),
-                            'M' => gT("Male")
-                            );
-                            $aDataentryoutput .= CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
-                            break;
-                        case Question::QT_L_LIST: //LIST drop-down
-                        case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List (Radio)
-                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
-                            if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {
-                                $optCategorySeparator = $qidattributes['category_separator'];
-                            } else {
-                                unset($optCategorySeparator);
-                            }
-
-                            if (substr($fname['fieldname'], -5) == "other") {
-                                $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
-                                . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
-                            } else {
-                                $lresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $fname['qid'], 'language' => $sDataEntryLanguage)));
-                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
-                                . "<option value=''";
-                                if ($idrow[$fname['fieldname']] == "") {
-                                    $aDataentryoutput .= " selected='selected'";
-                                }
-                                $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
-
-                                if (!isset($optCategorySeparator)) {
-                                    foreach ($lresult as $llrow) {
-                                        $aDataentryoutput .= "<option value='{$llrow['code']}'";
-                                        if ($idrow[$fname['fieldname']] == $llrow['code']) {
-                                            $aDataentryoutput .= " selected='selected'";
-                                        }
-                                        $aDataentryoutput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
+                            if (!isset($optCategorySeparator)) {
+                                foreach ($lresult as $llrow) {
+                                    $aDataentryoutput .= "<option value='{$llrow['code']}'";
+                                    if ($idrow[$fname['fieldname']] == $llrow['code']) {
+                                        $aDataentryoutput .= " selected='selected'";
                                     }
-                                } else {
-                                    $defaultopts = array();
-                                    $optgroups = array();
-                                    foreach ($lresult as $llrow) {
-                                        list ($categorytext, $answertext) = explode($optCategorySeparator, $llrow->answerl10ns[$sDataEntryLanguage]->answer);
-                                        if ($categorytext == '') {
-                                            $defaultopts[] = array('code' => $llrow['code'], 'answer' => $answertext);
-                                        } else {
-                                            $optgroups[$categorytext][] = array('code' => $llrow['code'], 'answer' => $answertext);
-                                        }
+                                    $aDataentryoutput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
+                                }
+                            } else {
+                                $defaultopts = array();
+                                $optgroups = array();
+                                foreach ($lresult as $llrow) {
+                                    list ($categorytext, $answertext) = explode($optCategorySeparator, $llrow->answerl10ns[$sDataEntryLanguage]->answer);
+                                    if ($categorytext == '') {
+                                        $defaultopts[] = array('code' => $llrow['code'], 'answer' => $answertext);
+                                    } else {
+                                        $optgroups[$categorytext][] = array('code' => $llrow['code'], 'answer' => $answertext);
                                     }
+                                }
 
-                                    foreach ($optgroups as $categoryname => $optionlistarray) {
-                                        $aDataentryoutput .= "<optgroup class=\"dropdowncategory\" label=\"" . $categoryname . "\">\n";
-                                        foreach ($optionlistarray as $optionarray) {
-                                            $aDataentryoutput .= "\t<option value='{$optionarray['code']}'";
-                                            if ($idrow[$fname['fieldname']] == $optionarray['code']) {
-                                                $aDataentryoutput .= " selected='selected'";
-                                            }
-                                            $aDataentryoutput .= ">{$optionarray['answer']}</option>\n";
-                                        }
-                                        $aDataentryoutput .= "</optgroup>\n";
-                                    }
-                                    foreach ($defaultopts as $optionarray) {
-                                        $aDataentryoutput .= "<option value='{$optionarray['code']}'";
+                                foreach ($optgroups as $categoryname => $optionlistarray) {
+                                    $aDataentryoutput .= "<optgroup class=\"dropdowncategory\" label=\"" . $categoryname . "\">\n";
+                                    foreach ($optionlistarray as $optionarray) {
+                                        $aDataentryoutput .= "\t<option value='{$optionarray['code']}'";
                                         if ($idrow[$fname['fieldname']] == $optionarray['code']) {
                                             $aDataentryoutput .= " selected='selected'";
                                         }
                                         $aDataentryoutput .= ">{$optionarray['answer']}</option>\n";
                                     }
+                                    $aDataentryoutput .= "</optgroup>\n";
                                 }
-                                $oresult = Question::model()->findByPk($fname['qid']);
-                                if ($oresult->other == "Y") {
-                                    $aDataentryoutput .= "<option value='-oth-'";
-                                    if ($idrow[$fname['fieldname']] == "-oth-") {
+                                foreach ($defaultopts as $optionarray) {
+                                    $aDataentryoutput .= "<option value='{$optionarray['code']}'";
+                                    if ($idrow[$fname['fieldname']] == $optionarray['code']) {
                                         $aDataentryoutput .= " selected='selected'";
                                     }
-                                    $aDataentryoutput .= ">" . gT("Other") . "</option>\n";
+                                    $aDataentryoutput .= ">{$optionarray['answer']}</option>\n";
                                 }
-                                $aDataentryoutput .= "\t</select>\n";
                             }
-                            break;
-                        case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
-                            $lresult = Answer::model()->findAll("qid={$fname['qid']}");
-                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
-                            . "<option value=''";
-                            if ($idrow[$fname['fieldname']] == "") {
-                                $aDataentryoutput .= " selected='selected'";
-                            }
-                            $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
-
-                            foreach ($lresult as $llrow) {
-                                $aDataentryoutput .= "<option value='{$llrow['code']}'";
-                                if ($idrow[$fname['fieldname']] == $llrow['code']) {
+                            $oresult = Question::model()->findByPk($fname['qid']);
+                            if ($oresult->other == "Y") {
+                                $aDataentryoutput .= "<option value='-oth-'";
+                                if ($idrow[$fname['fieldname']] == "-oth-") {
                                     $aDataentryoutput .= " selected='selected'";
                                 }
-                                $aDataentryoutput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
+                                $aDataentryoutput .= ">" . gT("Other") . "</option>\n";
+                            }
+                            $aDataentryoutput .= "\t</select>\n";
+                        }
+                        break;
+                    case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+                        $lresult = Answer::model()->findAll("qid={$fname['qid']}");
+                        $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                        . "<option value=''";
+                        if ($idrow[$fname['fieldname']] == "") {
+                            $aDataentryoutput .= " selected='selected'";
+                        }
+                        $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
+
+                        foreach ($lresult as $llrow) {
+                            $aDataentryoutput .= "<option value='{$llrow['code']}'";
+                            if ($idrow[$fname['fieldname']] == $llrow['code']) {
+                                $aDataentryoutput .= " selected='selected'";
+                            }
+                            $aDataentryoutput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
+                        }
+                        $fname = next($fnames);
+                        $aDataentryoutput .= "\t</select>\n"
+                        . "\t<br />\n"
+                        . CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 45,'rows' => 5));
+                        break;
+                    case Question::QT_R_RANKING: // Ranking TYPE QUESTION
+                        $thisqid = $fname['qid'];
+                        $currentvalues = array();
+                        $myfname = $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid'];
+                        $aDataentryoutput .= '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
+                        while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
+                            //Let's get all the existing values into an array
+                            if ($idrow[$fname['fieldname']]) {
+                                $currentvalues[] = $idrow[$fname['fieldname']];
                             }
                             $fname = next($fnames);
-                            $aDataentryoutput .= "\t</select>\n"
-                            . "\t<br />\n"
-                            . CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 45,'rows' => 5));
-                            break;
-                        case Question::QT_R_RANKING: // Ranking TYPE QUESTION
-                            $thisqid = $fname['qid'];
-                            $currentvalues = array();
-                            $myfname = $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid'];
-                            $aDataentryoutput .= '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
-                            while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
-                                //Let's get all the existing values into an array
-                                if ($idrow[$fname['fieldname']]) {
-                                    $currentvalues[] = $idrow[$fname['fieldname']];
-                                }
-                                $fname = next($fnames);
-                            }
-                            $ansresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $thisqid, 'language' => $sDataEntryLanguage)));
-                            $anscount = count($ansresult);
-                            $answers = array();
-                            foreach ($ansresult as $ansrow) {
-                                $answers[] = $ansrow;
-                            }
-                            for ($i = 1; $i <= $anscount; $i++) {
-                                $aDataentryoutput .= "\n<li class=\"select-item\">";
-                                $aDataentryoutput .= "<label for=\"answer{$myfname}{$i}\">";
-                                if ($i == 1) {
-                                    $aDataentryoutput .= gT('First choice');
-                                } else {
-                                    $aDataentryoutput .= gT('Next choice');
-                                }
-
-                                $aDataentryoutput .= "</label>";
-                                $aDataentryoutput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\" class='form-control'>\n";
-                                (!isset($currentvalues[$i - 1])) ? $selected = " selected=\"selected\"" : $selected = "";
-                                $aDataentryoutput .= "\t<option value=\"\" $selected>" . gT('None') . "</option>\n";
-                                foreach ($ansresult as $ansrow) {
-                                    (isset($currentvalues[$i - 1]) && $currentvalues[$i - 1] == $ansrow['code']) ? $selected = " selected=\"selected\"" : $selected = "";
-                                    $aDataentryoutput .= "\t<option value=\"" . $ansrow['code'] . "\" $selected>" . flattenText($ansrow->answerl10ns[$sDataEntryLanguage]->answer) . "</option>\n";
-                                }
-                                $aDataentryoutput .= "</select\n";
-                                $aDataentryoutput .= "</li>";
-                            }
-                            $aDataentryoutput .= '</ul>';
-                            $aDataentryoutput .= "<div style='display:none' id='ranking-{$thisqid}-maxans'>{$anscount}</div>"
-                                . "<div style='display:none' id='ranking-{$thisqid}-minans'>0</div>"
-                                . "<div style='display:none' id='ranking-{$thisqid}-name'>javatbd{$myfname}</div>";
-                            $aDataentryoutput .= "<div style=\"display:none\">";
-                            foreach ($ansresult as $ansrow) {
-                                $aDataentryoutput .= "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerl10ns[$sDataEntryLanguage]->answer}</div>";
-                            }
-                            $aDataentryoutput .= "</div>";
-                            $aDataentryoutput .= '</div>';
-                            App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
-                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
-                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
-
-                            $aDataentryoutput .= "<script type='text/javascript'>\n"
-                                .  "  <!--\n"
-                                . "var aRankingTranslations = {
-                                         choicetitle: '" . gT("Your Choices", 'js') . "',
-                                         ranktitle: '" . gT("Your Ranking", 'js') . "'
-                                        };\n"
-                                . "function checkconditions(){};"
-                                . "$(function() {"
-                                . " doDragDropRank({$thisqid},0,true,true);\n"
-                                . "});\n"
-                                . " -->\n"
-                                . "</script>\n";
-
-                            unset($answers);
-                            $fname = prev($fnames);
-                            break;
-
-                        case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-                            $thisqid = $fname['qid'];
-                            while ($fname['qid'] == $thisqid) {
-                                if (substr($fname['fieldname'], -5) == "other") {
-                                    $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
-                                    . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
-                                } else {
-                                    $aDataentryoutput .= "<div class='checkbox'>\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' id='{$fname['fieldname']}' value='Y'";
-                                    if ($idrow[$fname['fieldname']] == "Y") {
-                                        $aDataentryoutput .= " checked";
-                                    }
-                                    $aDataentryoutput .= " /><label for='{$fname['fieldname']}'>{$fname['subquestion']}</label></div>\n";
-                                }
-
-                                $fname = next($fnames);
-                            }
-                            $fname = prev($fnames);
-
-                            break;
-
-                        case Question::QT_I_LANGUAGE: //Language Switch
-                            $slangs = $oSurvey->allLanguages;
-                            $baselang = $oSurvey->language;
-
-                            $aDataentryoutput .= "<select name='{$fname['fieldname']}' class='form-control'>\n";
-                            $aDataentryoutput .= "<option value=''";
-                            if ($idrow[$fname['fieldname']] == "") {
-                                $aDataentryoutput .= " selected='selected'";
-                            }
-                            $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
-
-                            foreach ($slangs as $lang) {
-                                $aDataentryoutput .= "<option value='{$lang}'";
-                                if ($lang == $idrow[$fname['fieldname']]) {
-                                    $aDataentryoutput .= " selected='selected'";
-                                }
-                                $aDataentryoutput .= ">" . getLanguageNameFromCode($lang, false) . "</option>\n";
-                            }
-                            $aDataentryoutput .= "</select>";
-                            break;
-
-                        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                            $aDataentryoutput .= "<table class='table'>\n";
-                            while (isset($fname) && $fname['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                                $thefieldname = $fname['fieldname'];
-                                if (substr($thefieldname, -7) == "comment") {
-                                    $aDataentryoutput .= "<td>";
-                                    $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('size' => 50));
-                                    $aDataentryoutput .= "</td>\n"
-                                    . "\t</tr>\n";
-                                } elseif (substr($fname['fieldname'], -5) == "other") {
-                                    $aDataentryoutput .= "\t<tr>\n"
-                                    . "<td>\n"
-                                    . CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('size' => 30))
-                                    . "</td>\n"
-                                    . "<td>\n";
-                                    $fname = next($fnames);
-                                    $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('size' => 50))
-                                    . "</td>\n"
-                                    . "\t</tr>\n";
-                                } else {
-                                    $aDataentryoutput .= "\t<tr>\n"
-                                    . "<td><div class='checkbox'><input type='checkbox' class='checkboxbtn' name=\"{$fname['fieldname']}\" id=\"{$fname['fieldname']}\" value='Y'";
-                                    if ($idrow[$fname['fieldname']] == "Y") {
-                                        $aDataentryoutput .= " checked";
-                                    }
-                                    $aDataentryoutput .= " /><label for=\"{$fname['fieldname']}\">{$fname['subquestion']}</label></div></td>\n";
-                                }
-                                $fname = next($fnames);
-                            }
-                            $aDataentryoutput .= "</table>\n";
-                            $fname = prev($fnames);
-                            break;
-                        case Question::QT_VERTICAL_FILE_UPLOAD: //FILE UPLOAD
-                            $aDataentryoutput .= "<table class='table'>\n";
-                            if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0)) {
-                                //file metadata
-                                $metadata = json_decode($idrow[$fname['fieldname']], true);
-                                $qAttributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
-                                for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
-                                    if ($qAttributes['show_title']) {
-                                        $aDataentryoutput .= '<tr><td>' . gT("Title") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_title_' . $i . '" name="title"    size=50 value="' . htmlspecialchars($metadata[$i]["title"]) . '" /></td></tr>';
-                                    }
-                                    if ($qAttributes['show_comment']) {
-                                        $aDataentryoutput .= '<tr><td >' . gT("Comment") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_comment_' . $i . '" name="comment"  size=50 value="' . htmlspecialchars($metadata[$i]["comment"]) . '" /></td></tr>';
-                                    }
-
-                                    $aDataentryoutput .= '<tr><td>' . gT("File name") . '</td><td><input   class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_name_' . $i . '" name="name" size=50 value="' . htmlspecialchars(rawurldecode($metadata[$i]["name"])) . '" /></td></tr>'
-                                    . '<tr><td></td><td><input type="hidden" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_size_' . $i . '" name="size" size=50 value="' . htmlspecialchars($metadata[$i]["size"]) . '" /></td></tr>'
-                                    . '<tr><td></td><td><input type="hidden" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_ext_' . $i . '" name="ext" size=50 value="' . htmlspecialchars($metadata[$i]["ext"]) . '" /></td></tr>'
-                                    . '<tr><td></td><td><input type="hidden"  class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_filename_' . $i . '" name="filename" size=50 value="' . htmlspecialchars(rawurldecode($metadata[$i]["filename"])) . '" /></td></tr>';
-                                }
-                                $aDataentryoutput .= '<tr><td></td><td><input type="hidden" id="' . $fname['fieldname'] . '" name="' . $fname['fieldname'] . '" size=50 value="' . htmlspecialchars($idrow[$fname['fieldname']]) . '" /></td></tr>';
-                                $aDataentryoutput .= '</table>';
-                                $aDataentryoutput .= '<script type="text/javascript">
-                                $(function() {
-                                $(".' . $fname['fieldname'] . '").keyup(function() {
-                                var filecount = $("#' . $fname['fieldname'] . '_filecount").val();
-                                var jsonstr = "[";
-                                var i;
-                                for (i = 0; i < filecount; i++)
-                                {
-                                if (i != 0)
-                                jsonstr += ",";
-                                jsonstr += \'{"title":"\'+$("#' . $fname['fieldname'] . '_title_"+i).val()+\'",\';
-                                jsonstr += \'"comment":"\'+$("#' . $fname['fieldname'] . '_comment_"+i).val()+\'",\';
-                                jsonstr += \'"size":"\'+$("#' . $fname['fieldname'] . '_size_"+i).val()+\'",\';
-                                jsonstr += \'"ext":"\'+$("#' . $fname['fieldname'] . '_ext_"+i).val()+\'",\';
-                                jsonstr += \'"filename":"\'+$("#' . $fname['fieldname'] . '_filename_"+i).val()+\'",\';
-                                jsonstr += \'"name":"\'+encodeURIComponent($("#' . $fname['fieldname'] . '_name_"+i).val())+\'"}\';
-                                }
-                                jsonstr += "]";
-                                $("#' . $fname['fieldname'] . '").val(jsonstr);
-
-                                });
-                                });
-                                </script>';
+                        }
+                        $ansresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $thisqid, 'language' => $sDataEntryLanguage)));
+                        $anscount = count($ansresult);
+                        $answers = array();
+                        foreach ($ansresult as $ansrow) {
+                            $answers[] = $ansrow;
+                        }
+                        for ($i = 1; $i <= $anscount; $i++) {
+                            $aDataentryoutput .= "\n<li class=\"select-item\">";
+                            $aDataentryoutput .= "<label for=\"answer{$myfname}{$i}\">";
+                            if ($i == 1) {
+                                $aDataentryoutput .= gT('First choice');
                             } else {
-                                //file count
-                                $aDataentryoutput .= '<input readonly id="' . $fname['fieldname'] . '" name="' . $fname['fieldname'] . '" value ="' . htmlspecialchars($idrow[$fname['fieldname']]) . '" /></td></table>';
+                                $aDataentryoutput .= gT('Next choice');
                             }
-                            break;
-                        case Question::QT_N_NUMERICAL: //NUMERICAL TEXT
-                            /* Fix DB DECIMAL type */
-                            $value = $idrow[$fname['fieldname']];
-                            if (strpos($value, ".")) {
-                                $value = rtrim(rtrim($value, "0"), ".");
+
+                            $aDataentryoutput .= "</label>";
+                            $aDataentryoutput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\" class='form-control'>\n";
+                            (!isset($currentvalues[$i - 1])) ? $selected = " selected=\"selected\"" : $selected = "";
+                            $aDataentryoutput .= "\t<option value=\"\" $selected>" . gT('None') . "</option>\n";
+                            foreach ($ansresult as $ansrow) {
+                                (isset($currentvalues[$i - 1]) && $currentvalues[$i - 1] == $ansrow['code']) ? $selected = " selected=\"selected\"" : $selected = "";
+                                $aDataentryoutput .= "\t<option value=\"" . $ansrow['code'] . "\" $selected>" . flattenText($ansrow->answerl10ns[$sDataEntryLanguage]->answer) . "</option>\n";
                             }
-                            /* no number fix with return window.LS.goodchars … */
-                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
-                            break;
-                        case Question::QT_S_SHORT_FREE_TEXT: //Short free text
-                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
-                            break;
-                        case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-                            $aDataentryoutput .= CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 45,'rows' => 5));
-                            break;
-                        case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
-                            $aDataentryoutput .= CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 70,'rows' => 50));
-                            break;
-                        case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
-                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
-                            . "<option value=''";
-                            if ($idrow[$fname['fieldname']] == "") {
-                                $aDataentryoutput .= " selected='selected'";
-                            }
-                            $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n"
-                            . "<option value='Y'";
-                            if ($idrow[$fname['fieldname']] == "Y") {
-                                $aDataentryoutput .= " selected='selected'";
-                            }
-                            $aDataentryoutput .= ">" . gT("Yes") . "</option>\n"
-                            . "<option value='N'";
-                            if ($idrow[$fname['fieldname']] == "N") {
-                                $aDataentryoutput .= " selected='selected'";
-                            }
-                            $aDataentryoutput .= ">" . gT("No") . "</option>\n"
-                            . "\t</select>\n";
-                            break;
-                        case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
-                            $aDataentryoutput .= "<table class='table'>\n";
-                            $thisqid = $fname['qid'];
-                            while ($fname['qid'] == $thisqid) {
-                                $aDataentryoutput .= "\t<tr>\n"
-                                . "<td align='right'>{$fname['subquestion']}</td>\n"
-                                . "<td>\n";
-                                for ($j = 1; $j <= 5; $j++) {
-                                    $aDataentryoutput .= '<span class="five-point">';
-                                    $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' id='5-point-radio-{$fname['fieldname']}' value='$j'";
-                                    if ($idrow[$fname['fieldname']] == $j) {
-                                        $aDataentryoutput .= " checked";
-                                    }
-                                    $aDataentryoutput .= " /><label for='5-point-radio-{$fname['fieldname']}'>$j</label>&nbsp;\n";
-                                    $aDataentryoutput .= '</span>';
-                                }
-                                $aDataentryoutput .= "</td>\n"
-                                . "\t</tr>\n";
-                                $fname = next($fnames);
-                            }
-                            $aDataentryoutput .= "</table>\n";
-                            $fname = prev($fnames);
-                            break;
-                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
-                            $aDataentryoutput .= "<table class='table'>\n";
-                            $thisqid = $fname['qid'];
-                            while ($fname['qid'] == $thisqid) {
-                                $aDataentryoutput .= "\t<tr>\n"
-                                . "<td align='right'>{$fname['subquestion']}</td>\n"
-                                . "<td>\n";
-                                for ($j = 1; $j <= 10; $j++) {
-                                    $aDataentryoutput .= '<span class="ten-point">';
-                                    $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' id='ten-point-{$fname['fieldname']}-$j' value='$j'";
-                                    if ($idrow[$fname['fieldname']] == $j) {
-                                        $aDataentryoutput .= " checked";
-                                    }
-                                    $aDataentryoutput .= " /><label for='ten-point-{$fname['fieldname']}-$j'>$j</label>&nbsp;\n";
-                                    $aDataentryoutput .= '</span>';
-                                }
-                                $aDataentryoutput .= "</td>\n"
-                                . "\t</tr>\n";
-                                $fname = next($fnames);
-                            }
-                            $fname = prev($fnames);
-                            $aDataentryoutput .= "</table>\n";
-                            break;
-                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
-                            $aDataentryoutput .= "<table class='table'>\n";
-                            $thisqid = $fname['qid'];
-                            while ($fname['qid'] == $thisqid) {
-                                $aDataentryoutput .= "\t<tr>\n"
-                                . "<td align='right'>{$fname['subquestion']}</td>\n"
-                                . "<td>\n"
-                                . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='Y'";
+                            $aDataentryoutput .= "</select\n";
+                            $aDataentryoutput .= "</li>";
+                        }
+                        $aDataentryoutput .= '</ul>';
+                        $aDataentryoutput .= "<div style='display:none' id='ranking-{$thisqid}-maxans'>{$anscount}</div>"
+                            . "<div style='display:none' id='ranking-{$thisqid}-minans'>0</div>"
+                            . "<div style='display:none' id='ranking-{$thisqid}-name'>javatbd{$myfname}</div>";
+                        $aDataentryoutput .= "<div style=\"display:none\">";
+                        foreach ($ansresult as $ansrow) {
+                            $aDataentryoutput .= "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerl10ns[$sDataEntryLanguage]->answer}</div>";
+                        }
+                        $aDataentryoutput .= "</div>";
+                        $aDataentryoutput .= '</div>';
+                        App()->getClientScript()->registerPackage('jquery-actual');
+                        App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
+                        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
+
+                        $aDataentryoutput .= "<script type='text/javascript'>\n"
+                            .  "  <!--\n"
+                            . "var aRankingTranslations = {
+                                     choicetitle: '" . gT("Your Choices", 'js') . "',
+                                     ranktitle: '" . gT("Your Ranking", 'js') . "'
+                                    };\n"
+                            . "function checkconditions(){};"
+                            . "$(function() {"
+                            . " doDragDropRank({$thisqid},0,true,true);\n"
+                            . "});\n"
+                            . " -->\n"
+                            . "</script>\n";
+
+                        unset($answers);
+                        $fname = prev($fnames);
+                        break;
+
+                    case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                        $thisqid = $fname['qid'];
+                        while ($fname['qid'] == $thisqid) {
+                            if (substr($fname['fieldname'], -5) == "other") {
+                                $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                                . htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
+                            } else {
+                                $aDataentryoutput .= "<div class='checkbox'>\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' id='{$fname['fieldname']}' value='Y'";
                                 if ($idrow[$fname['fieldname']] == "Y") {
                                     $aDataentryoutput .= " checked";
                                 }
-                                $aDataentryoutput .= " />" . gT("Yes") . "&nbsp;\n"
-                                . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='U'";
-                                if ($idrow[$fname['fieldname']] == "U") {
-                                    $aDataentryoutput .= " checked";
-                                }
-                                $aDataentryoutput .= " />" . gT("Uncertain") . "&nbsp;\n"
-                                . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='N'";
-                                if ($idrow[$fname['fieldname']] == "N") {
-                                    $aDataentryoutput .= " checked";
-                                }
-                                $aDataentryoutput .= " />" . gT("No") . "&nbsp;\n"
-                                . "</td>\n"
-                                . "\t</tr>\n";
-                                $fname = next($fnames);
+                                $aDataentryoutput .= " /><label for='{$fname['fieldname']}'>{$fname['subquestion']}</label></div>\n";
                             }
-                            $fname = prev($fnames);
-                            $aDataentryoutput .= "</table>\n";
-                            break;
-                        case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
-                            $aDataentryoutput .= "<table class='table'>\n";
-                            $thisqid = $fname['qid'];
-                            while ($fname['qid'] == $thisqid) {
+
+                            $fname = next($fnames);
+                        }
+                        $fname = prev($fnames);
+
+                        break;
+
+                    case Question::QT_I_LANGUAGE: //Language Switch
+                        $slangs = $oSurvey->allLanguages;
+                        $baselang = $oSurvey->language;
+
+                        $aDataentryoutput .= "<select name='{$fname['fieldname']}' class='form-control'>\n";
+                        $aDataentryoutput .= "<option value=''";
+                        if ($idrow[$fname['fieldname']] == "") {
+                            $aDataentryoutput .= " selected='selected'";
+                        }
+                        $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
+
+                        foreach ($slangs as $lang) {
+                            $aDataentryoutput .= "<option value='{$lang}'";
+                            if ($lang == $idrow[$fname['fieldname']]) {
+                                $aDataentryoutput .= " selected='selected'";
+                            }
+                            $aDataentryoutput .= ">" . getLanguageNameFromCode($lang, false) . "</option>\n";
+                        }
+                        $aDataentryoutput .= "</select>";
+                        break;
+
+                    case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                        $aDataentryoutput .= "<table class='table'>\n";
+                        while (isset($fname) && $fname['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+                            $thefieldname = $fname['fieldname'];
+                            if (substr($thefieldname, -7) == "comment") {
+                                $aDataentryoutput .= "<td>";
+                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('size' => 50));
+                                $aDataentryoutput .= "</td>\n"
+                                . "\t</tr>\n";
+                            } elseif (substr($fname['fieldname'], -5) == "other") {
                                 $aDataentryoutput .= "\t<tr>\n"
-                                . "<td align='right'>{$fname['subquestion']}</td>\n"
                                 . "<td>\n"
-                                . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='I'";
-                                if ($idrow[$fname['fieldname']] == "I") {
-                                    $aDataentryoutput .= " checked";
-                                }
-                                $aDataentryoutput .= " />Increase&nbsp;\n"
-                                . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='S'";
-                                if ($idrow[$fname['fieldname']] == "I") {
-                                    $aDataentryoutput .= " checked";
-                                }
-                                $aDataentryoutput .= " />Same&nbsp;\n"
-                                . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='D'";
-                                if ($idrow[$fname['fieldname']] == "D") {
-                                    $aDataentryoutput .= " checked";
-                                }
-                                $aDataentryoutput .= " />Decrease&nbsp;\n"
+                                . CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('size' => 30))
+                                . "</td>\n"
+                                . "<td>\n";
+                                $fname = next($fnames);
+                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('size' => 50))
                                 . "</td>\n"
                                 . "\t</tr>\n";
-                                $fname = next($fnames);
-                            }
-                            $fname = prev($fnames);
-                            $aDataentryoutput .= "</table>\n";
-                            break;
-                        case Question::QT_F_ARRAY: // Array
-                        case Question::QT_H_ARRAY_COLUMN:
-                        case Question::QT_1_ARRAY_DUAL:
-                            $aDataentryoutput .= "<table class='table'>\n";
-                            $thisqid = $fname['qid'];
-                            while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
+                            } else {
                                 $aDataentryoutput .= "\t<tr>\n"
-                                . "<td>{$fname['subquestion']}";
-                                if (isset($fname['scale'])) {
-                                    $aDataentryoutput .= " (" . $fname['scale'] . ')';
-                                }
-                                $aDataentryoutput .= "</td>\n";
-                                $scale_id = 0;
-                                if (isset($fname['scale_id'])) {
-                                    $scale_id = $fname['scale_id'];
-                                }
-                                $fresult = Answer::model()->findAll("qid='{$fname['qid']}' and scale_id={$scale_id}");
-                                $aDataentryoutput .= "<td>\n";
-                                foreach ($fresult as $frow) {
-                                    $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' value='{$frow['code']}'";
-                                    if ($idrow[$fname['fieldname']] == $frow['code']) {
-                                        $aDataentryoutput .= " checked";
-                                    }
-                                    $aDataentryoutput .= " />" . $frow->answerl10ns[$sDataEntryLanguage]->answer . "&nbsp;\n";
-                                }
-                                //Add 'No Answer'
-                                $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' value=''";
-                                if ($idrow[$fname['fieldname']] == '') {
+                                . "<td><div class='checkbox'><input type='checkbox' class='checkboxbtn' name=\"{$fname['fieldname']}\" id=\"{$fname['fieldname']}\" value='Y'";
+                                if ($idrow[$fname['fieldname']] == "Y") {
                                     $aDataentryoutput .= " checked";
                                 }
-                                $aDataentryoutput .= " />" . gT("No answer") . "&nbsp;\n";
-
-                                $aDataentryoutput .= "</td>\n"
-                                . "\t</tr>\n";
-                                $fname = next($fnames);
+                                $aDataentryoutput .= " /><label for=\"{$fname['fieldname']}\">{$fname['subquestion']}</label></div></td>\n";
                             }
-                            $fname = prev($fnames);
-                            $aDataentryoutput .= "</table>\n";
-                            break;
-                        case Question::QT_COLON_ARRAY_NUMBERS: // Array (Numbers)
-                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                            $fname = next($fnames);
+                        }
+                        $aDataentryoutput .= "</table>\n";
+                        $fname = prev($fnames);
+                        break;
+                    case Question::QT_VERTICAL_FILE_UPLOAD: //FILE UPLOAD
+                        $aDataentryoutput .= "<table class='table'>\n";
+                        if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0)) {
+                            //file metadata
+                            $metadata = json_decode($idrow[$fname['fieldname']], true);
+                            $qAttributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                            for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
+                                if ($qAttributes['show_title']) {
+                                    $aDataentryoutput .= '<tr><td>' . gT("Title") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_title_' . $i . '" name="title"    size=50 value="' . htmlspecialchars($metadata[$i]["title"]) . '" /></td></tr>';
+                                }
+                                if ($qAttributes['show_comment']) {
+                                    $aDataentryoutput .= '<tr><td >' . gT("Comment") . '</td><td><input type="text" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_comment_' . $i . '" name="comment"  size=50 value="' . htmlspecialchars($metadata[$i]["comment"]) . '" /></td></tr>';
+                                }
+
+                                $aDataentryoutput .= '<tr><td>' . gT("File name") . '</td><td><input   class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_name_' . $i . '" name="name" size=50 value="' . htmlspecialchars(rawurldecode($metadata[$i]["name"])) . '" /></td></tr>'
+                                . '<tr><td></td><td><input type="hidden" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_size_' . $i . '" name="size" size=50 value="' . htmlspecialchars($metadata[$i]["size"]) . '" /></td></tr>'
+                                . '<tr><td></td><td><input type="hidden" class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_ext_' . $i . '" name="ext" size=50 value="' . htmlspecialchars($metadata[$i]["ext"]) . '" /></td></tr>'
+                                . '<tr><td></td><td><input type="hidden"  class="' . $fname['fieldname'] . '" id="' . $fname['fieldname'] . '_filename_' . $i . '" name="filename" size=50 value="' . htmlspecialchars(rawurldecode($metadata[$i]["filename"])) . '" /></td></tr>';
+                            }
+                            $aDataentryoutput .= '<tr><td></td><td><input type="hidden" id="' . $fname['fieldname'] . '" name="' . $fname['fieldname'] . '" size=50 value="' . htmlspecialchars($idrow[$fname['fieldname']]) . '" /></td></tr>';
+                            $aDataentryoutput .= '</table>';
+                            $aDataentryoutput .= '<script type="text/javascript">
+                            $(function() {
+                            $(".' . $fname['fieldname'] . '").keyup(function() {
+                            var filecount = $("#' . $fname['fieldname'] . '_filecount").val();
+                            var jsonstr = "[";
+                            var i;
+                            for (i = 0; i < filecount; i++)
+                            {
+                            if (i != 0)
+                            jsonstr += ",";
+                            jsonstr += \'{"title":"\'+$("#' . $fname['fieldname'] . '_title_"+i).val()+\'",\';
+                            jsonstr += \'"comment":"\'+$("#' . $fname['fieldname'] . '_comment_"+i).val()+\'",\';
+                            jsonstr += \'"size":"\'+$("#' . $fname['fieldname'] . '_size_"+i).val()+\'",\';
+                            jsonstr += \'"ext":"\'+$("#' . $fname['fieldname'] . '_ext_"+i).val()+\'",\';
+                            jsonstr += \'"filename":"\'+$("#' . $fname['fieldname'] . '_filename_"+i).val()+\'",\';
+                            jsonstr += \'"name":"\'+encodeURIComponent($("#' . $fname['fieldname'] . '_name_"+i).val())+\'"}\';
+                            }
+                            jsonstr += "]";
+                            $("#' . $fname['fieldname'] . '").val(jsonstr);
+
+                            });
+                            });
+                            </script>';
+                        } else {
+                            //file count
+                            $aDataentryoutput .= '<input readonly id="' . $fname['fieldname'] . '" name="' . $fname['fieldname'] . '" value ="' . htmlspecialchars($idrow[$fname['fieldname']]) . '" /></td></table>';
+                        }
+                        break;
+                    case Question::QT_N_NUMERICAL: //NUMERICAL TEXT
+                        /* Fix DB DECIMAL type */
+                        $value = $idrow[$fname['fieldname']];
+                        if (strpos($value, ".")) {
+                            $value = rtrim(rtrim($value, "0"), ".");
+                        }
+                        /* no number fix with return window.LS.goodchars … */
+                        $aDataentryoutput .= CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
+                        break;
+                    case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                        $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                        break;
+                    case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
+                        $aDataentryoutput .= CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 45,'rows' => 5));
+                        break;
+                    case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
+                        $aDataentryoutput .= CHtml::textArea($fname['fieldname'], $idrow[$fname['fieldname']], array('cols' => 70,'rows' => 50));
+                        break;
+                    case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
+                        $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                        . "<option value=''";
+                        if ($idrow[$fname['fieldname']] == "") {
+                            $aDataentryoutput .= " selected='selected'";
+                        }
+                        $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n"
+                        . "<option value='Y'";
+                        if ($idrow[$fname['fieldname']] == "Y") {
+                            $aDataentryoutput .= " selected='selected'";
+                        }
+                        $aDataentryoutput .= ">" . gT("Yes") . "</option>\n"
+                        . "<option value='N'";
+                        if ($idrow[$fname['fieldname']] == "N") {
+                            $aDataentryoutput .= " selected='selected'";
+                        }
+                        $aDataentryoutput .= ">" . gT("No") . "</option>\n"
+                        . "\t</select>\n";
+                        break;
+                    case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                        $aDataentryoutput .= "<table class='table'>\n";
+                        $thisqid = $fname['qid'];
+                        while ($fname['qid'] == $thisqid) {
+                            $aDataentryoutput .= "\t<tr>\n"
+                            . "<td align='right'>{$fname['subquestion']}</td>\n"
+                            . "<td>\n";
+                            for ($j = 1; $j <= 5; $j++) {
+                                $aDataentryoutput .= '<span class="five-point">';
+                                $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' id='5-point-radio-{$fname['fieldname']}' value='$j'";
+                                if ($idrow[$fname['fieldname']] == $j) {
+                                    $aDataentryoutput .= " checked";
+                                }
+                                $aDataentryoutput .= " /><label for='5-point-radio-{$fname['fieldname']}'>$j</label>&nbsp;\n";
+                                $aDataentryoutput .= '</span>';
+                            }
+                            $aDataentryoutput .= "</td>\n"
+                            . "\t</tr>\n";
+                            $fname = next($fnames);
+                        }
+                        $aDataentryoutput .= "</table>\n";
+                        $fname = prev($fnames);
+                        break;
+                    case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                        $aDataentryoutput .= "<table class='table'>\n";
+                        $thisqid = $fname['qid'];
+                        while ($fname['qid'] == $thisqid) {
+                            $aDataentryoutput .= "\t<tr>\n"
+                            . "<td align='right'>{$fname['subquestion']}</td>\n"
+                            . "<td>\n";
+                            for ($j = 1; $j <= 10; $j++) {
+                                $aDataentryoutput .= '<span class="ten-point">';
+                                $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' id='ten-point-{$fname['fieldname']}-$j' value='$j'";
+                                if ($idrow[$fname['fieldname']] == $j) {
+                                    $aDataentryoutput .= " checked";
+                                }
+                                $aDataentryoutput .= " /><label for='ten-point-{$fname['fieldname']}-$j'>$j</label>&nbsp;\n";
+                                $aDataentryoutput .= '</span>';
+                            }
+                            $aDataentryoutput .= "</td>\n"
+                            . "\t</tr>\n";
+                            $fname = next($fnames);
+                        }
+                        $fname = prev($fnames);
+                        $aDataentryoutput .= "</table>\n";
+                        break;
+                    case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                        $aDataentryoutput .= "<table class='table'>\n";
+                        $thisqid = $fname['qid'];
+                        while ($fname['qid'] == $thisqid) {
+                            $aDataentryoutput .= "\t<tr>\n"
+                            . "<td align='right'>{$fname['subquestion']}</td>\n"
+                            . "<td>\n"
+                            . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='Y'";
+                            if ($idrow[$fname['fieldname']] == "Y") {
+                                $aDataentryoutput .= " checked";
+                            }
+                            $aDataentryoutput .= " />" . gT("Yes") . "&nbsp;\n"
+                            . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='U'";
+                            if ($idrow[$fname['fieldname']] == "U") {
+                                $aDataentryoutput .= " checked";
+                            }
+                            $aDataentryoutput .= " />" . gT("Uncertain") . "&nbsp;\n"
+                            . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='N'";
+                            if ($idrow[$fname['fieldname']] == "N") {
+                                $aDataentryoutput .= " checked";
+                            }
+                            $aDataentryoutput .= " />" . gT("No") . "&nbsp;\n"
+                            . "</td>\n"
+                            . "\t</tr>\n";
+                            $fname = next($fnames);
+                        }
+                        $fname = prev($fnames);
+                        $aDataentryoutput .= "</table>\n";
+                        break;
+                    case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                        $aDataentryoutput .= "<table class='table'>\n";
+                        $thisqid = $fname['qid'];
+                        while ($fname['qid'] == $thisqid) {
+                            $aDataentryoutput .= "\t<tr>\n"
+                            . "<td align='right'>{$fname['subquestion']}</td>\n"
+                            . "<td>\n"
+                            . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='I'";
+                            if ($idrow[$fname['fieldname']] == "I") {
+                                $aDataentryoutput .= " checked";
+                            }
+                            $aDataentryoutput .= " />Increase&nbsp;\n"
+                            . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='S'";
+                            if ($idrow[$fname['fieldname']] == "I") {
+                                $aDataentryoutput .= " checked";
+                            }
+                            $aDataentryoutput .= " />Same&nbsp;\n"
+                            . "\t<input type='radio' class='' name='{$fname['fieldname']}' value='D'";
+                            if ($idrow[$fname['fieldname']] == "D") {
+                                $aDataentryoutput .= " checked";
+                            }
+                            $aDataentryoutput .= " />Decrease&nbsp;\n"
+                            . "</td>\n"
+                            . "\t</tr>\n";
+                            $fname = next($fnames);
+                        }
+                        $fname = prev($fnames);
+                        $aDataentryoutput .= "</table>\n";
+                        break;
+                    case Question::QT_F_ARRAY: // Array
+                    case Question::QT_H_ARRAY_COLUMN:
+                    case Question::QT_1_ARRAY_DUAL:
+                        $aDataentryoutput .= "<table class='table'>\n";
+                        $thisqid = $fname['qid'];
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
+                            $aDataentryoutput .= "\t<tr>\n"
+                            . "<td>{$fname['subquestion']}";
+                            if (isset($fname['scale'])) {
+                                $aDataentryoutput .= " (" . $fname['scale'] . ')';
+                            }
+                            $aDataentryoutput .= "</td>\n";
+                            $scale_id = 0;
+                            if (isset($fname['scale_id'])) {
+                                $scale_id = $fname['scale_id'];
+                            }
+                            $fresult = Answer::model()->findAll("qid='{$fname['qid']}' and scale_id={$scale_id}");
+                            $aDataentryoutput .= "<td>\n";
+                            foreach ($fresult as $frow) {
+                                $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' value='{$frow['code']}'";
+                                if ($idrow[$fname['fieldname']] == $frow['code']) {
+                                    $aDataentryoutput .= " checked";
+                                }
+                                $aDataentryoutput .= " />" . $frow->answerl10ns[$sDataEntryLanguage]->answer . "&nbsp;\n";
+                            }
+                            //Add 'No Answer'
+                            $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' value=''";
+                            if ($idrow[$fname['fieldname']] == '') {
+                                $aDataentryoutput .= " checked";
+                            }
+                            $aDataentryoutput .= " />" . gT("No answer") . "&nbsp;\n";
+
+                            $aDataentryoutput .= "</td>\n"
+                            . "\t</tr>\n";
+                            $fname = next($fnames);
+                        }
+                        $fname = prev($fnames);
+                        $aDataentryoutput .= "</table>\n";
+                        break;
+                    case Question::QT_COLON_ARRAY_NUMBERS: // Array (Numbers)
+                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                        $minvalue = 1;
+                        $maxvalue = 10;
+                        if (trim($qidattributes['multiflexible_max']) != '' && trim($qidattributes['multiflexible_min']) == '') {
+                            $maxvalue = $qidattributes['multiflexible_max'];
                             $minvalue = 1;
-                            $maxvalue = 10;
-                            if (trim($qidattributes['multiflexible_max']) != '' && trim($qidattributes['multiflexible_min']) == '') {
-                                $maxvalue = $qidattributes['multiflexible_max'];
-                                $minvalue = 1;
-                            }
-                            if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) == '') {
+                        }
+                        if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) == '') {
+                            $minvalue = $qidattributes['multiflexible_min'];
+                            $maxvalue = $qidattributes['multiflexible_min'] + 10;
+                        }
+                        if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) != '') {
+                            if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
                                 $minvalue = $qidattributes['multiflexible_min'];
-                                $maxvalue = $qidattributes['multiflexible_min'] + 10;
+                                $maxvalue = $qidattributes['multiflexible_max'];
                             }
-                            if (trim($qidattributes['multiflexible_min']) != '' && trim($qidattributes['multiflexible_max']) != '') {
-                                if ($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']) {
-                                    $minvalue = $qidattributes['multiflexible_min'];
-                                    $maxvalue = $qidattributes['multiflexible_max'];
-                                }
-                            }
+                        }
 
-                            if (trim($qidattributes['multiflexible_step']) != '') {
-                                $stepvalue = $qidattributes['multiflexible_step'];
+                        if (trim($qidattributes['multiflexible_step']) != '') {
+                            $stepvalue = $qidattributes['multiflexible_step'];
+                        } else {
+                            $stepvalue = 1;
+                        }
+                        if ($qidattributes['multiflexible_checkbox'] != 0) {
+                            $minvalue = 0;
+                            $maxvalue = 1;
+                            $stepvalue = 1;
+                        }
+                        $aDataentryoutput .= "<table class='table'>\n";
+                        $thisqid = $fname['qid'];
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
+                            $aDataentryoutput .= "\t<tr>\n"
+                            . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
+                            $aDataentryoutput .= "<td>\n";
+                            if ($qidattributes['input_boxes'] != 0) {
+                                $aDataentryoutput .= CHtml::numberField($fname['fieldname'], $idrow[$fname['fieldname']], array('step' => 'any'));
                             } else {
-                                $stepvalue = 1;
-                            }
-                            if ($qidattributes['multiflexible_checkbox'] != 0) {
-                                $minvalue = 0;
-                                $maxvalue = 1;
-                                $stepvalue = 1;
-                            }
-                            $aDataentryoutput .= "<table class='table'>\n";
-                            $thisqid = $fname['qid'];
-                            while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
-                                $aDataentryoutput .= "\t<tr>\n"
-                                . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
-                                $aDataentryoutput .= "<td>\n";
-                                if ($qidattributes['input_boxes'] != 0) {
-                                    $aDataentryoutput .= CHtml::numberField($fname['fieldname'], $idrow[$fname['fieldname']], array('step' => 'any'));
-                                } else {
-                                    $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n";
-                                    $aDataentryoutput .= "<option value=''>...</option>\n";
-                                    for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue) {
-                                        $aDataentryoutput .= "<option value='$ii'";
-                                        if ($idrow[$fname['fieldname']] == $ii) {
-                                            $aDataentryoutput .= " selected";
-                                        }
-                                        $aDataentryoutput .= ">$ii</option>\n";
+                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n";
+                                $aDataentryoutput .= "<option value=''>...</option>\n";
+                                for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue) {
+                                    $aDataentryoutput .= "<option value='$ii'";
+                                    if ($idrow[$fname['fieldname']] == $ii) {
+                                        $aDataentryoutput .= " selected";
                                     }
+                                    $aDataentryoutput .= ">$ii</option>\n";
                                 }
+                            }
 
-                                $aDataentryoutput .= "</td>\n"
-                                . "\t</tr>\n";
-                                $fname = next($fnames);
+                            $aDataentryoutput .= "</td>\n"
+                            . "\t</tr>\n";
+                            $fname = next($fnames);
+                        }
+                        $fname = prev($fnames);
+                        $aDataentryoutput .= "</table>\n";
+                        break;
+                    case Question::QT_SEMICOLON_ARRAY_TEXT: // Array
+                        $aDataentryoutput .= "<table class='table'>\n";
+                        $thisqid = $fname['qid'];
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
+                            $aDataentryoutput .= "\t<tr>\n"
+                            . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
+                            $aDataentryoutput .= "<td>\n";
+                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                              $aDataentryoutput .= "</td>\n"
+                            . "\t</tr>\n";
+                            $fname = next($fnames);
+                        }
+                        $fname = prev($fnames);
+                        $aDataentryoutput .= "</table>\n";
+                        break;
+                    case "token":
+                        if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
+                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                        } else {
+                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('disabled' => 'disabled'));
+                        }
+                        break;
+                    case "submitdate":
+                    case "startdate":
+                    case "datestamp":
+                        $thisdate = "";
+                        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+                        if ($idrow[$fname['fieldname']] != '') {
+                            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']]);
+                            if ($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
+                                $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']]);
                             }
-                            $fname = prev($fnames);
-                            $aDataentryoutput .= "</table>\n";
-                            break;
-                        case Question::QT_SEMICOLON_ARRAY_TEXT: // Array
-                            $aDataentryoutput .= "<table class='table'>\n";
-                            $thisqid = $fname['qid'];
-                            while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
-                                $aDataentryoutput .= "\t<tr>\n"
-                                . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
-                                $aDataentryoutput .= "<td>\n";
-                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
-                                  $aDataentryoutput .= "</td>\n"
-                                . "\t</tr>\n";
-                                $fname = next($fnames);
+                            if ($datetimeobj) {
+                                $thisdate = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i");
                             }
-                            $fname = prev($fnames);
-                            $aDataentryoutput .= "</table>\n";
-                            break;
-                        case "token":
-                            if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
-                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
-                            } else {
-                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('disabled' => 'disabled'));
-                            }
-                            break;
-                        case "submitdate":
-                        case "startdate":
-                        case "datestamp":
-                            $thisdate = "";
-                            $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                            if ($idrow[$fname['fieldname']] != '') {
-                                $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']]);
-                                if ($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
-                                    $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']]);
-                                }
-                                if ($datetimeobj) {
-                                    $thisdate = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i");
-                                }
-                            }
-                            $aDataentryoutput .= App()->getController()->widget(
-                                'yiiwheels.widgets.datetimepicker.WhDateTimePicker',
-                                array(
-                                    'name' => $fname['fieldname'],
-                                    'id' => $fname['fieldname'],
-                                    'value' => $thisdate,
-                                    'htmlOptions' => array(
-                                        'required' => in_array($fname['fieldname'], array("startdate")),
-                                    ),
-                                    'pluginOptions' => array(
-                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                        'allowInputToggle' => true,
-                                        'showClear' => true,
-                                        'tooltips' => array(
-                                            'clear' => gT('Clear selection'),
-                                            'prevMonth' => gT('Previous month'),
-                                            'nextMonth' => gT('Next month'),
-                                            'selectYear' => gT('Select year'),
-                                            'prevYear' => gT('Previous year'),
-                                            'nextYear' => gT('Next year'),
-                                            'selectDecade' => gT('Select decade'),
-                                            'prevDecade' => gT('Previous decade'),
-                                            'nextDecade' => gT('Next decade'),
-                                            'prevCentury' => gT('Previous century'),
-                                            'nextCentury' => gT('Next century'),
-                                            'selectTime' => gT('Select time')
-                                        ),
-                                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
-                                    )
+                        }
+                        $aDataentryoutput .= App()->getController()->widget(
+                            'yiiwheels.widgets.datetimepicker.WhDateTimePicker',
+                            array(
+                                'name' => $fname['fieldname'],
+                                'id' => $fname['fieldname'],
+                                'value' => $thisdate,
+                                'htmlOptions' => array(
+                                    'required' => in_array($fname['fieldname'], array("startdate")),
                                 ),
-                                true
-                            );
-                            break;
-                        case "startlanguage":
-                            $slangs = $oSurvey->allLanguages;
-                            foreach ($slangs as $lang) {
-                                $LanguageList[$lang] = getLanguageNameFromCode($lang, false);
-                            }
-                            $aDataentryoutput .= CHtml::dropDownList($fname['fieldname'], $idrow[$fname['fieldname']], $LanguageList, array('class' => 'form-control'));
-                            break;
-                        default:
-                            $aDataentryoutput .= CHtml::textField(
-                                $fname['fieldname'],
-                                $idrow[$fname['fieldname']],
-                                array('class' => 'form-control')
-                            );
-                            break;
-                    }
+                                'pluginOptions' => array(
+                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                    'allowInputToggle' => true,
+                                    'showClear' => true,
+                                    'tooltips' => array(
+                                        'clear' => gT('Clear selection'),
+                                        'prevMonth' => gT('Previous month'),
+                                        'nextMonth' => gT('Next month'),
+                                        'selectYear' => gT('Select year'),
+                                        'prevYear' => gT('Previous year'),
+                                        'nextYear' => gT('Next year'),
+                                        'selectDecade' => gT('Select decade'),
+                                        'prevDecade' => gT('Previous decade'),
+                                        'nextDecade' => gT('Next decade'),
+                                        'prevCentury' => gT('Previous century'),
+                                        'nextCentury' => gT('Next century'),
+                                        'selectTime' => gT('Select time')
+                                    ),
+                                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
+                                )
+                            ),
+                            true
+                        );
+                        break;
+                    case "startlanguage":
+                        $slangs = $oSurvey->allLanguages;
+                        foreach ($slangs as $lang) {
+                            $LanguageList[$lang] = getLanguageNameFromCode($lang, false);
+                        }
+                        $aDataentryoutput .= CHtml::dropDownList($fname['fieldname'], $idrow[$fname['fieldname']], $LanguageList, array('class' => 'form-control'));
+                        break;
+                    default:
+                        $aDataentryoutput .= CHtml::textField(
+                            $fname['fieldname'],
+                            $idrow[$fname['fieldname']],
+                            array('class' => 'form-control')
+                        );
+                        break;
+                }
 
-                    $aDataentryoutput .= "        </td>
-                    </tr>\n";
-                } while ($fname = next($fnames));
-            }
-            $aDataentryoutput .= "</table>\n"
-            . "<p>\n";
-
-            $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
-
-            if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
-                // if you are not survey owner or super admin you cannot modify responses
-                $aDataentryoutput .= "<p><input type='button' value='" . gT("Save") . "' disabled='disabled'/></p>\n";
-            } elseif ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
-                $aData['part'] = 'edit';
-                $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, true);
-            } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
-                $aData['part'] = 'editsaved';
-                $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, true);
-            }
-
-            $aDataentryoutput .= "</form>\n";
-
-            $aViewUrls['output'] = $aDataentryoutput;
-            $aData['sidemenu']['state'] = false;
-
-            $aData['topBar']['name'] = 'baseTopbar_view';
-            $aData['topBar']['showSaveButton']  = true;
-            $aData['topBar']['showCloseButton'] = true;
-
-            $this->renderWrappedTemplate('dataentry', $aViewUrls, $aData);
+                $aDataentryoutput .= "        </td>
+                </tr>\n";
+            } while ($fname = next($fnames));
         }
+        $aDataentryoutput .= "</table>\n"
+        . "<p>\n";
+
+        $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
+
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
+            // if you are not survey owner or super admin you cannot modify responses
+            $aDataentryoutput .= "<p><input type='button' value='" . gT("Save") . "' disabled='disabled'/></p>\n";
+        } elseif ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
+            $aData['part'] = 'edit';
+            $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, true);
+        } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
+            $aData['part'] = 'editsaved';
+            $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, true);
+        }
+
+        $aDataentryoutput .= "</form>\n";
+
+        $aViewUrls['output'] = $aDataentryoutput;
+        $aData['sidemenu']['state'] = false;
+
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['showSaveButton']  = true;
+        $aData['topBar']['showCloseButton'] = true;
+
+        $this->renderWrappedTemplate('dataentry', $aViewUrls, $aData);
     }
 
     /**
@@ -1403,8 +1420,8 @@ class DataEntry extends SurveyCommonAction
             throw new CHttpException(404, gT("Invalid survey ID"));
         }
         $id = (int)Yii::app()->request->getPost('id');
-        $oReponse = Response::model($surveyid)->findByPk($id);
-        if (empty($oReponse)) {
+        $oResponse = Response::model($surveyid)->findByPk($id);
+        if (empty($oResponse)) {
             throw new CHttpException(404, gT("Invalid ID"));
         }
         $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
@@ -1433,7 +1450,7 @@ class DataEntry extends SurveyCommonAction
                     break;
                 case Question::QT_D_DATE:
                     if (empty($thisvalue)) {
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                         break;
                     }
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
@@ -1444,55 +1461,55 @@ class DataEntry extends SurveyCommonAction
                         $datetimeobj = DateTime::createFromFormat('Y-m-d\TH:i', $thisvalue);
                     }
                     if ($datetimeobj) {
-                        $oReponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
+                        $oResponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities($thisvalue), $fieldname), 'warning');
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                     }
                     break;
                 case Question::QT_N_NUMERICAL:
                 case Question::QT_K_MULTIPLE_NUMERICAL:
                     if ($thisvalue === "") {
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                         break;
                     }
                     if (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", $thisvalue)) {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %s"), $fieldname), 'warning');
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                         break;
                     }
-                    $oReponse->$fieldname = $thisvalue;
+                    $oResponse->$fieldname = $thisvalue;
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD:
                     if (strpos($irow['fieldname'], '_filecount')) {
                         if (empty($thisvalue)) {
-                            $oReponse->$fieldname = null;
+                            $oResponse->$fieldname = null;
                             break;
                         }
-                        $oReponse->$fieldname = $thisvalue;
+                        $oResponse->$fieldname = $thisvalue;
                         break;
                     }
-                    $oReponse->$fieldname = $thisvalue;
+                    $oResponse->$fieldname = $thisvalue;
                     break;
                 case Question::QT_COLON_ARRAY_NUMBERS:
                     if (!empty($thisvalue) && strval($thisvalue) != strval(floatval($thisvalue))) {
                         // mysql not need, unsure about mssql
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %s"), $fieldname), 'warning');
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                         break;
                     }
-                    $oReponse->$fieldname = $thisvalue;
+                    $oResponse->$fieldname = $thisvalue;
                     break;
                 case 'submitdate':
                     if (Yii::app()->request->getPost('completed') == "N") {
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                         break;
                     }
                     if (empty($thisvalue)) {
                         if (Survey::model()->findByPk($surveyid)->isDateStamp) {
-                            $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                            $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                         } else {
-                            $oReponse->$fieldname = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                            $oResponse->$fieldname = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                         }
                         break;
                     }
@@ -1501,29 +1518,29 @@ class DataEntry extends SurveyCommonAction
                 case 'startdate':
                 case 'datestamp':
                     if (empty($thisvalue)) {
-                        $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                        $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                         break;
                     }
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                     $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'] . " H:i", $thisvalue);
                     if ($datetimeobj) {
-                        $oReponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
+                        $oResponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities($thisvalue), $fieldname), 'warning');
                         /* We get here : we need a valid value : NOT NULL in db or completed != "N" */
-                        $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                        $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                     }
                     break;
                 default:
-                    $oReponse->$fieldname = $thisvalue;
+                    $oResponse->$fieldname = $thisvalue;
             }
         }
         $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
         $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
         $beforeDataEntryUpdate->set('iResponseID', $id);
         App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
-        if (!$oReponse->encryptSave()) {
-            Yii::app()->setFlashMessage(CHtml::errorSummary($oReponse), 'error');
+        if (!$oResponse->encryptSave()) {
+            Yii::app()->setFlashMessage(CHtml::errorSummary($oResponse), 'error');
         } else {
             Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."), $id));
         }
@@ -1764,12 +1781,12 @@ class DataEntry extends SurveyCommonAction
                     $arSaveControl->email = $saver['email'];
                     $arSaveControl->ip = !empty($aUserData['ip_address']) ? $aUserData['ip_address'] : "";
                     $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
-                    $arSaveControl->saved_thisstep = 0;
+                    $arSaveControl->saved_thisstep = '0';
                     $arSaveControl->status = 'S';
                     $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
                     $arSaveControl->save();
                     if ($arSaveControl->save()) {
-                        $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
+                        $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."));
                         $tokens_table = "{{tokens_$surveyid}}";
                         if (tableExists($tokens_table)) {
                             $tokendata = array(
@@ -1781,10 +1798,10 @@ class DataEntry extends SurveyCommonAction
                             "sent" => date("Y-m-d H:i:s"),
                             "completed" => "N");
 
-                            $aToken = new Token($surveyid);
+                            $aToken = new TokenDynamic($surveyid);
                             $aToken->setAttributes($tokendata, false);
                             $aToken->encryptSave(true);
-                            $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
+                            $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created, too."));
                         }
                         if ($saver['email']) {
                             //Send email
@@ -1794,16 +1811,15 @@ class DataEntry extends SurveyCommonAction
                                 $mailer->setSurvey($surveyid);
                                 $mailer->emailType = 'savesurveydetails';
                                 $mailer->Subject = gT("Saved Survey Details");
-                                $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
+                                $message = gT("Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off.");
                                 $message .= "\n\n" . $thissurvey['name'] . "\n\n";
                                 $message .= gT("Name") . ": " . $saver['identifier'] . "\n";
-                                $message .= gT("Password") . ": " . $saver['password'] . "\n\n";
                                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):") . "\n";
-                                $aParams = array('lang' => $saver['language'], 'loadname' => $saver['identifier'], 'loadpass' => $saver['password']);
+                                $aParams = array('lang' => $saver['language'], 'loadname' => $saver['identifier']);
                                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$arSaveControl->scid}/", $aParams);
                                 $mailer->Body = $message;
                                 if ($mailer->sendMessage()) {
-                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'successtitle text-success'), gT("An email has been sent with details about your saved survey"));
+                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'successtitle text-success'), gT("An email has been sent with details about your saved survey. Please make sure to remember your password."));
                                 } else {
                                     $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'errortitle text-danger'), sprintf(gT("Unable to send email about your saved survey (Error: %s)."), $mailer->getError()));
                                 }
@@ -1938,7 +1954,7 @@ class DataEntry extends SurveyCommonAction
     {
         $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
-        $lang = isset($_GET['lang']) ? $_GET['lang'] : null;
+        $lang = $_GET['lang'] ?? null;
         if (isset($lang)) {
             $lang = sanitize_languagecode($lang);
         }
@@ -1981,12 +1997,12 @@ class DataEntry extends SurveyCommonAction
             Yii::app()->loadHelper('database');
 
             // SURVEY NAME AND DESCRIPTION TO GO HERE
-            $aGroups = QuestionGroup::model()->findAllByAttributes(['sid' => $surveyid]);
+            $aGroups = $survey->groups;
             $aDataentryoutput = '';
             foreach ($aGroups as $arGroup) {
                 LimeExpressionManager::StartProcessingGroup($arGroup->gid, ($thissurvey['anonymized'] != "N"), $surveyid);
 
-                $aQuestions = Question::model()->findAllByAttributes(['sid' => $surveyid, 'parent_qid' => 0, 'gid' => $arGroup['gid']]);
+                $aQuestions = $arGroup->questions;
                 $aDataentryoutput .= "\t<tr class='info'>\n"
                 . "<!-- Inside controller dataentry.php -->"
                 . "<td colspan='3'><h4>" . flattenText($arGroup->questiongroupl10ns[$sDataEntryLanguage]->group_name, true) . "</h4></td>\n"
@@ -2136,7 +2152,6 @@ class DataEntry extends SurveyCommonAction
                             App()->getClientScript()->registerPackage('jquery-actual');
                             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
-                            unset($answers);
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)
                             if (trim($qidattributes['display_columns']) != '') {
@@ -2198,13 +2213,13 @@ class DataEntry extends SurveyCommonAction
 
                             $cdata['lresult'] = $arQuestion->findAllByAttributes(['parent_qid' => $arQuestion['qid'], 'scale_id' => 1]);
                             if (empty($cdata['lresult'])) {
-                                $eMessage = "Couldn't get labels, Type \":\"<br />$lquery<br />";
+                                $eMessage = "Couldn't get labels";
                                 Yii::app()->setFlashMessage($eMessage);
                                 $this->getController()->redirect($this->getController()->createUrl("/admin/"));
                             }
                             $cdata['mearesult'] = $arQuestion->findAllByAttributes(['parent_qid' => $arQuestion['qid'], 'scale_id' => 0]);
                             if (empty($cdata['mearesult'])) {
-                                $eMessage = "Couldn't get answers, Type \":\"<br />$meaquery<br />";
+                                $eMessage = "Couldn't get answers";
                                 Yii::app()->setFlashMessage($eMessage);
                                 $this->getController()->redirect($this->getController()->createUrl("/admin/"));
                             }
@@ -2303,7 +2318,7 @@ class DataEntry extends SurveyCommonAction
      * @param string       $sAction     Current action, the folder to fetch views from
      * @param string|array $aViewUrls   View url(s)
      * @param array        $aData       Data to be passed on. Optional.
-     * @param bool         $sRenderFile Boolean value if file will be rendered.
+     * @param bool|string  $sRenderFile Boolean value if file will be rendered.
      * @return void
      */
     protected function renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array(), $sRenderFile = false)

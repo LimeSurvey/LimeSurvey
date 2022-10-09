@@ -101,7 +101,7 @@ var TemplateCoreClass = function () {
 
         },
         /**
-         * Hide/show question if all sub-questions is hidden
+         * Hide/show question if all subquestions is hidden
          * @see core/package/limesurvey/survey.js:triggerEmRelevanceSubQuestion
          * @see https://bugs.limesurvey.org/view.php?id=10055 (partial)
          * Must be before ready (event happen before ready)
