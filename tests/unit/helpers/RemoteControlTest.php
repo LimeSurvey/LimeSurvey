@@ -666,6 +666,6 @@ class RemoteControlTest extends TestBaseClass
         $this->assertTrue(file_exists($file));
         $targetFile = $surveyUploadsDir . $uploadedFileName;
         copy($file, $targetFile);
-        $this->assertTrue(file_exists($targetFile));    
-    }  
+        $this->assertTrue(file_exists($targetFile));
+    }
 }
