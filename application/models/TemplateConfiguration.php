@@ -770,7 +770,7 @@ class TemplateConfiguration extends TemplateConfig
             ])
             . '\'
             data-text="' . gT('Please type in the new theme name above.') . '"
-            data-button-no="' . gt('Cancel') . '" 
+            data-button-no="' . gt('Cancel') . '"
             data-button-yes="' . gt('Extend') . '"
             title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
             class="btn btn-primary btn-block selector--ConfirmModal">
@@ -783,9 +783,9 @@ class TemplateConfiguration extends TemplateConfig
             href="' . $sUninstallUrl . '"
             data-post=\'{ "templatename": "' . $this->template_name . '" }\'
             data-text="' . gT('This will reset all the specific configurations of this theme.') . '<br>' . gT('Do you want to continue?') . '"
-            data-button-no="' . gt('Cancel') . '" 
+            data-button-no="' . gt('Cancel') . '"
             data-button-yes="' . gt('Uninstall') . '"
-            data-button-type="btn-danger" 
+            data-button-type="btn-danger"
             title="' . gT('Uninstall this theme') . '"
             class="btn btn-danger btn-block selector--ConfirmModal">
                 <span class="fa fa-trash"></span>
@@ -797,9 +797,9 @@ class TemplateConfiguration extends TemplateConfig
                 href="' . $sResetUrl . '"
                 data-post=\'{ "templatename": "' . $this->template_name . '" }\'
                 data-text="' . gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?') . '"
-                data-button-no="' . gt('Cancel') . '"  
+                data-button-no="' . gt('Cancel') . '"
                 data-button-yes="' . gt('Reset') . '"
-                data-button-type="btn-warning" 
+                data-button-type="btn-warning"
                 title="' . gT('Reset this theme') . '"
                 class="btn btn-warning btn-block selector--ConfirmModal">
                     <span class="fa fa-refresh"></span>

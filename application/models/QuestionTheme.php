@@ -727,7 +727,7 @@ class QuestionTheme extends LSActiveRecord
             'visible'       => 'Y',
             'xml_path'      => $questionMetaData['xml_path'],
             'image_path'    => $questionMetaData['image_path'] ?? '',
-            'title'         => $questionMetaData['title'],
+            'title'         => $questionMetaData['title'] ?? '',
             'creation_date' => date('Y-m-d H:i:s', strtotime($questionMetaData['creationDate'])),
             'author'        => $questionMetaData['author'] ?? '',
             'author_email'  => $questionMetaData['authorEmail'] ?? '',
@@ -891,12 +891,12 @@ class QuestionTheme extends LSActiveRecord
         };
 
         // set compatibility version
-        if (count($oThemeConfig->compatibility->version) > 1) {
+        if ($oThemeConfig->compatibility->version && count($oThemeConfig->compatibility->version) > 1) {
             $length = count($oThemeConfig->compatibility->version);
             $compatibility = $oThemeConfig->addChild('compatibility');
             $compatibility->addChild('version');
             $oThemeConfig->compatibility->version[$length] = '5.0';
-        } elseif (count($oThemeConfig->compatibility->version) === 1) {
+        } elseif ($oThemeConfig->compatibility->version && count($oThemeConfig->compatibility->version) === 1) {
             $oThemeConfig->compatibility->version = '5.0';
         } else {
             $compatibility = $oThemeConfig->addChild('compatibility');
