@@ -207,11 +207,12 @@ class QuestionPropertiesGet implements CommandInterface
                     $aResult['answeroptions'] = 'No available answer options';
                 }
             } elseif ($sPropertyName == 'defaultvalue') {
-                $aResult['defaultvalue'] = DefaultValue::model()->with('defaultvaluel10ns')
+                $model = DefaultValue::model()->with('defaultvaluel10ns')
                 ->find(
                     'qid = :qid AND defaultvaluel10ns.language = :language',
                     array(':qid' => $iQuestionID, ':language' => $sLanguage)
-                )->defaultvalue;
+                );
+                $aResult['defaultvalue'] = $model ? $model->defaultvalue : '';
             } else {
                 $aResult[$sPropertyName] = $oQuestion->$sPropertyName;
             }
