@@ -134,9 +134,10 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_urldescription', 'LSYii_Validators'),
             array('surveyls_urldescription', 'length', 'min' => 0, 'max' => 255),
             array('surveyls_alias', 'length', 'min' => 0, 'max' => 100),
-            array('surveyls_alias', 'match', 'allowEmpty' => true, 'pattern' => '/^[a-zA-Z][\w\d\-]*$/'), // Match alphanumeric strings, including "-". Cannot be completely numeric.
+            array('surveyls_alias', 'match', 'allowEmpty' => true, 'pattern' => '/^[a-zA-Z][\w\d\-]*$/u'), // Match alphanumeric strings, including "-". Cannot be completely numeric.
             array('surveyls_alias', 'checkAliasUniqueness'),
             array('surveyls_alias', 'LSYii_ShortUrlValidator'),
+            array('surveyls_alias', 'LSYii_Validators'), // The regex rule shouldn't allow any XSS, but we add LSYii_Validators to be sure.
 
             array('surveyls_dateformat', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '12', 'allowEmpty' => true),
             array('surveyls_numberformat', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
