@@ -588,7 +588,7 @@ class SettingsWidget extends CWidget
                 . "\t\t$('#' + $(this).data('related-password')).val('');\n"
                 . "\t}\n"
                 . "});\n";
-        //~ App()->getClientScript()->registerScript("renderPassword" . $passwordInputId, $script, CClientScript::POS_END);
+        App()->getClientScript()->registerScript("renderPassword" . $passwordInputId, $script, CClientScript::POS_END);
         return $out;
     }
 
