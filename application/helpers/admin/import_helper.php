@@ -1285,6 +1285,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if ($newSurvey->sid) {
             $iNewSID = $results['newsid'] = $newSurvey->sid;
             $results['surveys']++;
+            if (!empty($iDesiredSurveyId) && $iNewSID != $iDesiredSurveyId) {
+                $results['importwarnings'][] = gT("The desired survey ID was invalid and could not be assigned to the new survey.");
+            }
         } else {
             $results['error'] = CHtml::errorSummary($newSurvey, gT("Unable to import survey."));
             return $results;
