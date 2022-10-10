@@ -549,8 +549,10 @@ class SettingsWidget extends CWidget
                 'autocomplete' => 'new-password', // Don't offer saved password https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion#the_autocomplete_attribute_and_login_fields
                 'size' => 50,
                 'placeholder' => gT("Empty string")
-            ));
-        if (!empty($metaData['show'])) { // Option to show password in HTML for specific plugin
+            )
+        );
+        /* Option to hide password in HTML are an option to be sure of API compatibility, no way to broke plugin */
+        if (empty($metaData['usekeepit'])) {
             return CHtml::passwordField($name, $value, $htmlOptions);
         }
         $value = str_repeat(" ",mb_strlen($value)); // Leave an information about size … random length is maybe best ?
