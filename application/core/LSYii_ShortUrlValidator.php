@@ -38,7 +38,8 @@ class LSYii_ShortUrlValidator extends CValidator
             return;
         }
         if (
-            $this->matchesExistingRoute($object->$attribute)
+            $this->matchesReservedPath($object->$attribute)
+            || $this->matchesExistingRoute($object->$attribute)
             || $this->matchesExistingController($object->$attribute)
         ) {
             $this->addError($object, $attribute, gT('Survey Alias matches an existing route.'));
@@ -131,4 +132,21 @@ class LSYii_ShortUrlValidator extends CValidator
             }
         }
     }
+
+    /**
+     * Checks whether a specified alias matches any of the reserved words/paths.
+     * @param string $alias
+     * @return boolean
+     */
+    protected function matchesReservedPath($alias)
+    {
+        $reserved = [
+            'assets',
+            'plugins',
+            'tmp',
+            'upload'
+        ];
+        return in_array($alias, $reserved);
+    }
+
 }
