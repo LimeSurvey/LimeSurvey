@@ -324,7 +324,7 @@ class Update extends DynamicSurveyCommonAction
                     $aData = $updateModel->getFileStatus($changedFiles->files);
                     App()->session['update_changed_files'] = json_decode(json_encode($changedFiles->files), true);
 
-                    $aData['html_from_server'] = (isset($changedFiles->html)) ? $changedFiles->html : '';
+                    $aData['html_from_server'] = $changedFiles->html ?? '';
                     $aData['destinationBuild'] = $tobuild;
                     $aData['updateinfo'] = $changedFiles->files;
                     $aData['access_token'] = $access_token;

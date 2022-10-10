@@ -1222,7 +1222,7 @@ class Question extends LSActiveRecord
 
     public function getRenderererObject($aFieldArray, $type = null)
     {
-        $type = $type === null ? $this->type : $type;
+        $type = $type ?? $this->type;
         LoadQuestionTypes::load($type);
         switch ($type) {
             case Question::QT_X_TEXT_DISPLAY:
@@ -1322,7 +1322,7 @@ class Question extends LSActiveRecord
 
     public function getDataSetObject($type = null)
     {
-        $type = $type === null ? $this->type : $type;
+        $type = $type ?? $this->type;
         LoadQuestionTypes::load($type);
 
         switch ($type) {

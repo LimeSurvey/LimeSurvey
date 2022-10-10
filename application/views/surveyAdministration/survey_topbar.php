@@ -161,7 +161,7 @@ if ($hasSurveyTranslatePermission) {
     if ($hasAdditionalLanguages) {
         // Quick-translation
         $buttons['quick_translation'] = [
-            'url' => $this->createUrl("admin/translate/sa/index/surveyid/{$sid}"),
+            'url' => $this->createUrl("quicktranslation/index/surveyid/{$sid}"),
             'icon' => 'fa fa-language',
             'name' => gT('Quick-translation'),
             'id' => 'quick_translation_button',

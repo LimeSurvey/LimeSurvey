@@ -1794,15 +1794,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data) {
-              $('#question-title-warning').text(data);
+          const message = data.message;
+          if (message !== null) {
+              $('#question-title-warning').text(message);
               $('#question-title-warning').removeClass('hidden');
           } else {
               // Continue
           }
         },
         error: (data) => {
-          alert('Internal error in checkQuestionCodeUniqueness: ' + data);
+          alert('Internal error in checkQuestionValidateTitle: ' + JSON.stringify(data));
           throw 'abort';
         }
       });
@@ -1955,8 +1956,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data) {
-              $('#question-title-warning').text(data);
+          const message = data.message;
+          if (message !== null) {
+              $('#question-title-warning').text(message);
               $('#question-title-warning').removeClass('hidden');
           } else {
             // TODO: Check other things too.

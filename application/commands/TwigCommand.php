@@ -106,7 +106,7 @@ class TwigCommand extends CConsoleCommand
         $this->aLogs["action"] = "actionGenerateQuestionsCache $sQuestionDir";
 
       // Generate cache for question theme
-        $sQuestionDir = ($sQuestionDir === null) ? dirname(__FILE__) . '/../views/survey/questions/answer' : $sQuestionDir;
+        $sQuestionDir = $sQuestionDir ?? dirname(__FILE__) . '/../views/survey/questions/answer';
         $oQuestionDir = new DirectoryIterator($sQuestionDir);
 
         foreach ($oQuestionDir as $fileinfo) {
@@ -154,7 +154,7 @@ class TwigCommand extends CConsoleCommand
         $this->aLogs["action"] = "actionGenerateAdminCache $sAdminDir";
 
       // Generate cache for admin area
-        $sAdminDir = ($sAdminDir === null) ? dirname(__FILE__) . '/../views/admin' : $sAdminDir;
+        $sAdminDir = $sAdminDir ?? dirname(__FILE__) . '/../views/admin';
         $oAdminDirectory = new RecursiveDirectoryIterator($sAdminDir);
         $oAdminIterator = new RecursiveIteratorIterator($oAdminDirectory);
         $oAdminRegex = new RegexIterator($oAdminIterator, '/^.+\.twig$/i', RecursiveRegexIterator::GET_MATCH);
