@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - sonarqube_fixes
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
