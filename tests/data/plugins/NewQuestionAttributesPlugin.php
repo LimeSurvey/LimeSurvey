@@ -4,6 +4,8 @@ class NewQuestionAttributesPlugin extends PluginBase
 {
     protected static $description = 'Dummy plugin for testing newQuestionAttributes event';
     protected static $name = 'NewQuestionAttributesPlugin';
+    protected $storage = 'DbStorage';
+    protected $encryptedSettings = [];
 
     public function init()
     {
@@ -47,5 +49,20 @@ class NewQuestionAttributesPlugin extends PluginBase
             ],
         ];
         $event->append('questionAttributes', $questionAttributes);
+    }
+
+    public function setSetting($name, $value)
+    {
+        return $this->set($name, $value);
+    }
+
+    public function getSetting($name)
+    {
+        return $this->get($name);
+    }
+
+    public function setEncriptedSettings($encryptedSettings)
+    {
+        $this->encryptedSettings = $encryptedSettings;
     }
 }
