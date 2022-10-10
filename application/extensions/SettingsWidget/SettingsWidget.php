@@ -550,7 +550,7 @@ class SettingsWidget extends CWidget
                 'size' => 50,
                 'placeholder' => gT("Empty string")
             ));
-        if (empty($metaData['secure'])) { // Old settings comaptibility, need to set secure ate true
+        if (!empty($metaData['show'])) { // Option to show password in HTML for specific plugin
             return CHtml::passwordField($name, $value, $htmlOptions);
         }
         $value = str_repeat(" ",mb_strlen($value)); // Leave an information about size … random length is maybe best ?
@@ -560,23 +560,21 @@ class SettingsWidget extends CWidget
         $passwordInputId = \CHtml::getIdByName($name);
         $checkboxHtmlOptions = array(
             'value' => 1,
-            'uncheckValue' => 0,
             'data-related-password' => \CHtml::getIdByName($name),
             'id' => "update_" . $passwordInputId,
         );
         if(!empty($htmlOptions['disabled'])) {
             $checkboxHtmlOptions['disabled'] = true;
         }
+        $checboxName = $name . "[keepit]";
         /* HTML content */
-        $out = Chtml::tag("div", array('class' => 'form-group'));
-        $out .= Chtml::tag("div", array('class' => 'input-group'));
+        $out = Chtml::tag("div", array('class' => 'input-group'));
+        $out .= CHtml::passwordField($name, $value, $htmlOptions);
         $out .= Chtml::tag(
             "label",
             array('class' => 'input-group-addon'),
-            CHtml::checkBox('update[' . $name . ']', false, $checkboxHtmlOptions) . " ". gT("Update password")
+            CHtml::checkBox($checboxName, true, $checkboxHtmlOptions) . " ". gT("Keep previous password")
         );
-        $out .= CHtml::passwordField($name, $value, $htmlOptions);
-        $out .= Chtml::closeTag('div');
         $out .= Chtml::closeTag('div');
         /* script */
         $script = "$(function() {\n"
@@ -584,13 +582,13 @@ class SettingsWidget extends CWidget
                 . "});\n"
                 . "$(document).on('change','#update_" . $passwordInputId . "', function() {\n"
                 . "\tif($(this).is(':checked')) {\n"
+                . "\t\t$('#' + $(this).data('related-password')).prop('disabled', true);\n"
+                . "\t} else {\n"
                 . "\t\t$('#' + $(this).data('related-password')).prop('disabled', false);\n"
                 . "\t\t$('#' + $(this).data('related-password')).val('');\n"
-                . "\t} else {\n"
-                . "\t\t$('#' + $(this).data('related-password')).prop('disabled', true);\n"
                 . "\t}\n"
                 . "});\n";
-        App()->getClientScript()->registerScript("renderPassword" . $passwordInputId, $script, CClientScript::POS_END);
+        //~ App()->getClientScript()->registerScript("renderPassword" . $passwordInputId, $script, CClientScript::POS_END);
         return $out;
     }
 

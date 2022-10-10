@@ -131,7 +131,7 @@ abstract class PluginBase implements iPlugin
      * @param mixed $default The default value to use when not was set
      * @return boolean
      */
-    protected function get($key = null, $model = null, $id = null, $default = null)
+    public function get($key = null, $model = null, $id = null, $default = null)
     {
         return $this->getStore()->get($this, $key, $model, $id, $default);
     }
