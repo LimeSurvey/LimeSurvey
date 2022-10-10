@@ -7,14 +7,14 @@ use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
-use LimeSurvey\Api\Command\Mixin\Auth\AuthSurveyPermission;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
 
 
 class SurveyPropertiesGet implements CommandInterface
 {
     use AuthSession;
-    use AuthSurveyPermission;
+    use AuthPermission;
     use CommandResponse;
 
     /**

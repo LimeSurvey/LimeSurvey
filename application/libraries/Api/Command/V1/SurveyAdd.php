@@ -12,13 +12,13 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
-use LimeSurvey\Api\Command\Mixin\Auth\AuthSurveyPermission;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
 
 class SurveyAdd implements CommandInterface
 {
     use AuthSession;
-    use AuthSurveyPermission;
+    use AuthPermission;
     use CommandResponse;
 
     /**

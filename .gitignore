@@ -183,3 +183,5 @@ package-lock.json
 docker-compose.yml
 docker/
 /geckodriver-v0.23.0-linux64.tar.gz
+
+/docs/swagger
