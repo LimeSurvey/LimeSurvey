@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\tests\api;
+namespace ls\tests\unit\api;
 
 use ls\tests\TestBaseClass;
 use LimeSurvey\Api\ApiSession;
