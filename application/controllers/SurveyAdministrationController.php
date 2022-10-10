@@ -1288,7 +1288,7 @@ class SurveyAdministrationController extends LSBaseController
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->renderJsonOnError('file', $debug);
 
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = (int) Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
