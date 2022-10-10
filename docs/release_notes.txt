@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.31 (build 221005) to 3.28.32 (build 221011) October 10, 2022
+-Fixed issue: HTML tags are not allowed for admins in participant attributes (#2626) (Denis Chenu)
+-Fixed issue #18141: Changing display mode from extended to compact in survey responses windows causes freeze (#2499) (Gabriel Jenik)
+-Fixed issue #18134: Present subquestions/answer options in random order has no clue about current state (#2563) (Gabriel Jenik)
+-Fixed issue #17950: is_int(false) returns true (#2431) (Denis Chenu)
+-Fixed issue #17173: Publication and access setting 'listed publicly' not displayed correctly (#2544) (Gabriel Jenik)
+-Fixed issue #17117: 'Send invitations' button does nothing after failed send invitations (#2571) (Gabriel Jenik)
+-Fixed issue #15195: Expiration date can be set before start date (#2551) (Gabriel Jenik)
+-Fixed issue #14386: Pagination legend incorrect for Survey Groups (#2535) (Gabriel Jenik)
+#Updated translation: Uighur by walkingdead
+
+
 Changes from 3.28.30 (build 220927) to 3.28.31 (build 221005) October 4, 2022
 #Updated translation: Uighur by walkingdead
 #Updated translation: Thai by tomzt
