@@ -8,10 +8,25 @@ use LimeSurvey\Api\ApiSession;
 
 trait AuthSession
 {
+    private $apiSession = null;
+
+    public function setApiSession(ApiSession $apiSession)
+    {
+        $this->apiSession = $apiSession;
+    }
+
+    protected function getApiSession(): ApiSession
+    {
+        if (!$this->apiSession) {
+            $this->apiSession = new ApiSession();
+        }
+
+        return $this->apiSession;
+    }
+
     protected function checkKey($sSessionKey)
     {
-        $apiSession = new ApiSession();
-        if ($apiSession->checkKey($sSessionKey)) {
+        if ($this->getApiSession()->checkKey($sSessionKey)) {
             return true;
         } else {
             return new Response(

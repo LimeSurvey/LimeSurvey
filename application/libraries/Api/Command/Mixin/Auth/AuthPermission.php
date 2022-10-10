@@ -8,11 +8,26 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 
 trait AuthPermission
 {
+    private $permissionModel = null;
+
+    public function setPermissionModel(Permission $permissionModel)
+    {
+        $this->permissionModel = $permissionModel;
+    }
+
+    protected function getPermissionModel(): Permission
+    {
+        if (!$this->permissionModel) {
+            $this->permissionModel = Permission::model();
+        }
+
+        return $this->permissionModel;
+    }
+
     protected function hasGlobalPermission($sPermission, $sCRUD, $iUserID = null)
     {
         $result =
-            Permission::model()
-            ->hasGlobalPermission(
+            $this->getPermissionModel()->hasGlobalPermission(
                 $sPermission,
                 $sCRUD,
                 $iUserID
@@ -31,8 +46,7 @@ trait AuthPermission
     protected function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID = null)
     {
         $result =
-            Permission::model()
-            ->hasSurveyPermission(
+            $this->getPermissionModel()->hasSurveyPermission(
                 $iSurveyID,
                 $sPermission,
                 $sCRUD,
