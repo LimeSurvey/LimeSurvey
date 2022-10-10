@@ -1,4 +1,4 @@
-<phpunit bootstrap="tests/bootstrap.php" 
+<phpunit bootstrap="tests/bootstrap.php"
          stderr="true"
          colors="true" >
     <testsuites>
@@ -17,6 +17,7 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">application/models/services</directory>
+            <directory suffix=".php">application/libraries/Api</directory>
         </whitelist>
     </filter>
 
