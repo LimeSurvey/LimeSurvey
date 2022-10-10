@@ -6,11 +6,12 @@ use CDbCriteria;
 use Session;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Response\Response;
-use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
+use LimeSurvey\Api\Command\Mixin\CommandResponse;
 
 class SessionKeyRelease implements CommandInterface
 {
+    use CommandResponse;
+
     /**
      * Run session key release command.
      *
@@ -28,6 +29,6 @@ class SessionKeyRelease implements CommandInterface
         $criteria = new CDbCriteria();
         $criteria->condition = 'expire < ' . time();
         Session::model()->deleteAll($criteria);
-        return new Response('OK', new StatusSuccess());
+        return $this->responseSuccess('OK');
     }
 }

@@ -2,17 +2,19 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use Permission;
 use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Response\Response;
-use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthGlobalPermission;
+use LimeSurvey\Api\Command\Mixin\CommandResponse;
 
 class SiteSettingsGet implements CommandInterface
 {
+    use AuthSession;
+    use AuthGlobalPermission;
+    use CommandResponse;
+
     /**
      * Run site settings get command.
      *
@@ -25,30 +27,29 @@ class SiteSettingsGet implements CommandInterface
         $sessionKey = (string) $request->getData('sessionKey');
         $settingName = (string) $request->getData('settingName');
 
-        $apiSession = new ApiSession();
-        if ($apiSession->checkKey($sessionKey)) {
-            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                if (Yii::app()->getConfig($settingName) !== false) {
-                    return new Response(
-                        Yii::app()->getConfig($settingName),
-                        new StatusSuccess()
-                    );
-                } else {
-                    return new Response(
-                        array('status' => 'Invalid setting'),
-                        new StatusErrorBadRequest()
-                    );
-                }
-            } else {
-                return new Response(
-                    array('status' => 'Invalid setting'),
-                    new StatusErrorBadRequest()
-                );
-            }
+        if (
+            ($response = $this->checkKey($sessionKey)) !== true
+        ) {
+            return $response;
+        }
+
+        if (
+            ($response = $this->hasGlobalPermission(
+                'superadmin',
+                'read'
+            )
+            ) !== true
+        ) {
+            return $response;
+        }
+
+        if (Yii::app()->getConfig($settingName) !== false) {
+            return $this->responseSuccess(
+                Yii::app()->getConfig($settingName)
+            );
         } else {
-            return new Response(
-                array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorBadRequest()
+            return $this->responseErrorBadRequest(
+                array('status' => 'Invalid setting')
             );
         }
     }

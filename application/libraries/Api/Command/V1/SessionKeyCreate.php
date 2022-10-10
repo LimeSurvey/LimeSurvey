@@ -6,13 +6,13 @@ use Session;
 use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Response\Response;
-use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Command\Mixin\CommandResponse;
 
 class SessionKeyCreate implements CommandInterface
 {
+    use CommandResponse;
+
     /**
      * Run session key create command.
      *
@@ -37,20 +37,15 @@ class SessionKeyCreate implements CommandInterface
             $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
             $session->data = $username;
             $session->save();
-            return new Response(
-                $sSessionKey,
-                new StatusSuccess()
-            );
+            return $this->responseSuccess($sSessionKey);
         }
         if (is_string($loginResult)) {
-            return new Response(
-                array('status' => $loginResult),
-                new StatusSuccess()
+            return $this->responseSuccess(
+                array('status' => $loginResult)
             );
         }
-        return new Response(
-            array('status' => 'Invalid user name or password'),
-            new StatusErrorUnauthorised()
+        return $this->responseErrorUnauthorised(
+            array('status' => 'Invalid user name or password')
         );
     }
 }

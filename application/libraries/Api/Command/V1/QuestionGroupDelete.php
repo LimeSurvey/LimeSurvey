@@ -2,21 +2,20 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use Permission;
 use QuestionGroup;
 use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Response\Response;
-use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
-use LimeSurvey\Api\Command\Response\Status\StatusError;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthSurveyPermission;
+use LimeSurvey\Api\Command\Mixin\CommandResponse;
 
 class QuestionGroupDelete implements CommandInterface
 {
+    use AuthSession;
+    use AuthSurveyPermission;
+    use CommandResponse;
+
     /**
      * Run group delete command.
      *
@@ -29,82 +28,71 @@ class QuestionGroupDelete implements CommandInterface
         $sSessionKey = (string) $request->getData('sessionKey');
         $iGroupID = (int) $request->getData('groupID');
 
-        $apiSession = new ApiSession();
-        if ($apiSession->checkKey($sSessionKey)) {
-            $oGroup = QuestionGroup::model()
-                ->findByAttributes(array('gid' => $iGroupID));
-            if (!isset($oGroup)) {
-                return new Response(
-                    array('status' => 'Error:Invalid group ID'),
-                    new StatusErrorNotFound()
-                );
-            }
-            $iSurveyID = $oGroup->sid;
+        if (
+            ($response = $this->checkKey($sSessionKey)) !== true
+        ) {
+            return $response;
+        }
 
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (!isset($oSurvey)) {
-                return new Response(
-                    array('status' => 'Error: Invalid survey ID'),
-                    new StatusErrorNotFound()
-                );
-            }
+        $oGroup = QuestionGroup::model()
+            ->findByAttributes(array('gid' => $iGroupID));
+        if (!isset($oGroup)) {
+            return $this->responseErrorNotFound(
+                array('status' => 'Error:Invalid group ID')
+            );
+        }
+        $iSurveyID = $oGroup->sid;
 
-            if (
-                Permission::model()
-                ->hasSurveyPermission(
-                    $iSurveyID,
-                    'surveycontent',
-                    'delete'
-                )
-            ) {
-                if ($oSurvey->isActive) {
-                    return new Response(
-                        array('status' => 'Error:Survey is active and not editable'),
-                        new StatusError()
-                    );
-                }
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (!isset($oSurvey)) {
+            return $this->responseErrorBadRequest(
+                array('status' => 'Error: Invalid survey ID')
+            );
+        }
 
-                $dependantOn = getGroupDepsForConditions(
-                    $oGroup->sid,
-                    "all",
-                    $iGroupID,
-                    "by-targgid"
-                );
-                if (isset($dependantOn)) {
-                    return new Response(
-                        array('status' => 'Group with dependencies - deletion not allowed'),
-                        new StatusError()
-                    );
-                }
+        if (
+            ($response = $this->hasSurveyPermission(
+                $iSurveyID,
+                'surveycontent',
+                'delete'
+            )
+            ) !== true
+        ) {
+            return $response;
+        }
 
-                $iGroupsDeleted = QuestionGroup::deleteWithDependency(
-                    $iGroupID,
-                    $iSurveyID
-                );
+        if ($oSurvey->isActive) {
+            return $this->responseError(
+                array('status' => 'Error:Survey is active and not editable')
+            );
+        }
 
-                if ($iGroupsDeleted === 1) {
-                    QuestionGroup::model()
-                        ->updateGroupOrder($iSurveyID);
-                    return new Response(
-                        (int) $iGroupID,
-                        new StatusSuccess()
-                    );
-                } else {
-                    return new Response(
-                        array('status' => 'Group deletion failed'),
-                        new StatusError()
-                    );
-                }
-            } else {
-                return new Response(
-                    array('status' => 'No permission'),
-                    new StatusErrorUnauthorised()
-                );
-            }
+        $dependantOn = getGroupDepsForConditions(
+            $oGroup->sid,
+            "all",
+            $iGroupID,
+            "by-targgid"
+        );
+        if (isset($dependantOn)) {
+            return $this->responseError(
+                array('status' => 'Group with dependencies - deletion not allowed')
+            );
+        }
+
+        $iGroupsDeleted = QuestionGroup::deleteWithDependency(
+            $iGroupID,
+            $iSurveyID
+        );
+
+        if ($iGroupsDeleted === 1) {
+            QuestionGroup::model()
+                ->updateGroupOrder($iSurveyID);
+            return $this->responseSuccess(
+                (int) $iGroupID
+            );
         } else {
-            return new Response(
-                array('status' => ApiSession::INVALID_SESSION_KEY),
-                new StatusErrorUnauthorised()
+            return $this->responseError(
+                array('status' => 'Group deletion failed')
             );
         }
     }

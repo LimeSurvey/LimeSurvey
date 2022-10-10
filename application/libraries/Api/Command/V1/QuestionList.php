@@ -8,16 +8,17 @@ use Survey;
 use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Response\Response;
-use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
-use LimeSurvey\Api\Command\Response\Status\StatusError;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
+use LimeSurvey\Api\Command\Mixin\Auth\AuthSurveyPermission;
+use LimeSurvey\Api\Command\Mixin\CommandResponse;
 
 class QuestionList implements CommandInterface
 {
+    use AuthSession;
+    use AuthSurveyPermission;
+    use CommandResponse;
+
     /**
      * Run survey question list command.
      *
@@ -32,101 +33,89 @@ class QuestionList implements CommandInterface
         $iGroupID = $request->getData('groupID');
         $sLanguage = $request->getData('language');
 
-        $apiSession = new ApiSession();
-        if ($apiSession->checkKey($sSessionKey)) {
-            Yii::app()->loadHelper("surveytranslator");
-            $iSurveyID = (int) $iSurveyID;
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (
+            ($response = $this->checkKey($sSessionKey)) !== true
+        ) {
+            return $response;
+        }
 
-            if (empty($oSurvey)) {
-                return new Response(
-                    ['status' => 'Error: Invalid survey ID'],
-                    new StatusErrorNotFound()
-                );
-            }
+        Yii::app()->loadHelper("surveytranslator");
+        $iSurveyID = (int) $iSurveyID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
-            if (
-                Permission::model()
-                ->hasSurveyPermission(
-                    $iSurveyID,
-                    'survey',
-                    'read'
-                )
-            ) {
-                if (is_null($sLanguage)) {
-                    $sLanguage = $oSurvey->language;
-                }
-
-                if (
-                    !array_key_exists(
-                        $sLanguage,
-                        getLanguageDataRestricted()
-                    ) || !in_array($sLanguage, $oSurvey->allLanguages)
-                ) {
-                    return new Response(
-                        ['status' => 'Error: Invalid language'],
-                        new StatusErrorBadRequest()
-                    );
-                }
-
-                if ($iGroupID != null) {
-                    $iGroupID = (int) $iGroupID;
-                    $oGroup = QuestionGroup::model()
-                        ->findByPk($iGroupID);
-
-                    if (empty($oGroup)) {
-                        return new Response(
-                            ['status' => 'Error: group not found'],
-                            new StatusErrorNotFound()
-                        );
-                    }
-
-                    if ($oGroup->sid != $oSurvey->sid) {
-                        return new Response(
-                            ['status' => 'Error: Mismatch in surveyid and groupid'],
-                            new StatusErrorNotFound()
-                        );
-                    } else {
-                        $aQuestionList = $oGroup->allQuestions;
-                    }
-                } else {
-                    $aQuestionList = $oSurvey->allQuestions;
-                }
-
-                if (count($aQuestionList) == 0) {
-                    return new Response(
-                        ['status' => 'No questions found'],
-                        new StatusSuccess()
-                    );
-                }
-
-                foreach ($aQuestionList as $oQuestion) {
-                    $L10ns = $oQuestion->questionl10ns[$sLanguage];
-                    $aData[] = array_merge(
-                        [
-                            'id' => $oQuestion->primaryKey,
-                            'question' => $L10ns->question,
-                            'help' => $L10ns->help,
-                            'language' => $sLanguage,
-                        ],
-                        $oQuestion->attributes
-                    );
-                }
-                return new Response(
-                    $aData,
-                    new StatusSuccess()
-                );
-            } else {
-                return new Response(
-                    ['status' => 'No permission'],
-                    new StatusErrorUnauthorised()
-                );
-            }
-        } else {
-            return new Response(
-                ['status' => ApiSession::INVALID_SESSION_KEY],
-                new StatusErrorUnauthorised()
+        if (empty($oSurvey)) {
+            return $this->responseErrorNotFound(
+                ['status' => 'Error: Invalid survey ID'],
+                new StatusErrorNotFound()
             );
         }
+
+        if (
+            ($response = $this->hasSurveyPermission(
+                $iSurveyID,
+                'survey',
+                'read'
+            )
+            ) !== true
+        ) {
+            return $response;
+        }
+
+        if (is_null($sLanguage)) {
+            $sLanguage = $oSurvey->language;
+        }
+
+        if (
+            !array_key_exists(
+                $sLanguage,
+                getLanguageDataRestricted()
+            ) || !in_array($sLanguage, $oSurvey->allLanguages)
+        ) {
+            return $this->responseErrorBadRequest(
+                ['status' => 'Error: Invalid language']
+            );
+        }
+
+        if ($iGroupID != null) {
+            $iGroupID = (int) $iGroupID;
+            $oGroup = QuestionGroup::model()
+                ->findByPk($iGroupID);
+
+            if (empty($oGroup)) {
+                return $this->responseErrorNotFound(
+                    ['status' => 'Error: group not found']
+                );
+            }
+
+            if ($oGroup->sid != $oSurvey->sid) {
+                return $this->responseErrorNotFound(
+                    ['status' => 'Error: Mismatch in surveyid and groupid']
+                );
+            } else {
+                $aQuestionList = $oGroup->allQuestions;
+            }
+        } else {
+            $aQuestionList = $oSurvey->allQuestions;
+        }
+
+        if (count($aQuestionList) == 0) {
+            return $this->responseSuccess(
+                ['status' => 'No questions found']
+            );
+        }
+
+        foreach ($aQuestionList as $oQuestion) {
+            $L10ns = $oQuestion->questionl10ns[$sLanguage];
+            $aData[] = array_merge(
+                [
+                    'id' => $oQuestion->primaryKey,
+                    'question' => $L10ns->question,
+                    'help' => $L10ns->help,
+                    'language' => $sLanguage,
+                ],
+                $oQuestion->attributes
+            );
+        }
+        return $this->responseSuccess($aData);
     }
 }
