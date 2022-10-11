@@ -3804,7 +3804,7 @@ class statistics_helper
 
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {
-            $surveyid = returnGlobal('sid');
+            $surveyid = (int) returnGlobal('sid');
         }
 
         // Set language for questions and answers to base language of this survey
@@ -3916,9 +3916,6 @@ class statistics_helper
         /**
          * Start generating
          */
-
-
-
         $selects = buildSelects($allfields, $surveyid, $language);
 
         //count number of answers
