@@ -2449,6 +2449,12 @@ class userstatistics_helper
      */
     public function generate_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
+        if (!isset($surveyid)) {
+            $surveyid = (int) returnGlobal('sid');
+        } else {
+            $surveyid = (int) $surveyid;
+        }
+
         $survey = Survey::model()->findByPk($surveyid);
 
         $aStatisticsData = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
@@ -2474,11 +2480,6 @@ class userstatistics_helper
         /**
          * get/set Survey Details
          */
-
-        //no survey ID? -> come and get one
-        if (!isset($surveyid)) {
-            $surveyid = returnGlobal('sid');
-        }
 
         // Set language for questions and answers to base language of this survey
         $language = $sLanguageCode;
