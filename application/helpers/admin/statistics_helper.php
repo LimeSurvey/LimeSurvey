@@ -1174,8 +1174,6 @@ class statistics_helper
                     $subquestionText = $atext;
                     break;
 
-
-
                     // Array of 10 point choices
                     //same as above just with 10 items
                 case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
@@ -1335,7 +1333,9 @@ class statistics_helper
 
 
                 case Question::QT_1_ARRAY_DUAL:
-                    $sSubquestionQuery = "SELECT  question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid  WHERE q.parent_qid='$qiqid' AND q.title='$qanswer' AND l.language='{$language}' ORDER BY q.question_order";
+                    $qiqid = (int) $qiqid;
+                    $qanswerquoted = Yii::app()->db->quoteValue($qanswer);
+                    $sSubquestionQuery = "SELECT  question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid  WHERE q.parent_qid='$qiqid' AND q.title='$qanswerquoted' AND l.language='{$language}' ORDER BY q.question_order";
 
                     $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
                     $sSubquestion = flattenText($questionDesc['question']);
