@@ -638,8 +638,8 @@ class Themes extends SurveyCommonAction
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
                 $sNewName = sanitize_dirname(returnGlobal('newname'));
-                $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
-                $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . returnGlobal('copydir');
+                $sNewDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName);
+                $sOldDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . returnGlobal('copydir'));
 
                 if (Template::isStandardTemplate(returnGlobal('newname'))) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
