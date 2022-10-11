@@ -37,7 +37,7 @@
 
     <div class="col-md-3">
         <div class="thumbnail" style="padding: 1em;">
-            <img style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/cloud-logo.svg" alt="LimeSurvey Cloud Logo">
+            <img class="rounded mx-auto d-block m-3" style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/cloud-logo.svg" alt="LimeSurvey Cloud Logo">
             <div class="caption">
                 <h3><?= gT("LimeSurvey Cloud"); ?></h3>
                 <p>
@@ -49,7 +49,7 @@
                         <li><?= gT("Technical support"); ?></li>
                     </ul>
                 </p>
-                <p class="text-center">
+                <p class="text-center d-grid gap-2">
                     <a href="https://www.limesurvey.org/pricing/" class="btn btn-primary btn-block" role="button" target="_blank">
                         <?= gT("Try now"); ?>
                     </a>
