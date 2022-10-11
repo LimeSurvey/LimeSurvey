@@ -1285,7 +1285,9 @@ class Export extends SurveyCommonAction
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
 
-            $lang = Yii::app()->request->getPost('save_language');
+            $lang = sanitize_filename(
+                Yii::app()->request->getPost('save_language')
+            );
 
             // Setting the selected language for printout
             App()->setLanguage($lang);
