@@ -230,12 +230,11 @@ class BigFile
         if (!isset($type)) {
             $type = $this->defaultEcho;
         }
+        // TODO: No other types supported, ever?
         if ($type !== 'base64') {
             throw new Exception('Unsupported echo type');
         }
-        if (method_exists($this, "echo_{$type}")) {
-            call_user_func(array($this, "echo_{$type}"));
-        }
+        $this->echo_base64();
         if ($this->deleteAfterUse) {
             unlink($this->fileName);
         }
