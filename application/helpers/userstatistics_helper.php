@@ -2837,6 +2837,7 @@ class userstatistics_helper
      */
     protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros)
     {
+        $surveyid = (int) $surveyid;
         static $sid = null;
         static $recordCount = 0;
         static $field = null;
