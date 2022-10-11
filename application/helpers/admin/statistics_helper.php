@@ -3572,6 +3572,7 @@ class statistics_helper
 
         // Set language for questions and answers to base language of this survey
         $language = $sLanguageCode;
+        $surveyid = (int) $surveyid;
 
         if ($q2show == 'all') {
             $summarySql = " SELECT gid, parent_qid, qid, type "
