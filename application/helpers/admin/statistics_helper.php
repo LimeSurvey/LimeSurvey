@@ -3776,6 +3776,7 @@ class statistics_helper
      */
     public function generate_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $outputTarget = 'I', $sLanguageCode = null, $browse = true)
     {
+        $surveyid = (int) $surveyid;
         $survey = Survey::model()->findByPk($surveyid);
         $aStatisticsData = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
