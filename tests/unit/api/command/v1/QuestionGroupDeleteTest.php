@@ -13,12 +13,15 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
 /**
- * Tests for the API command v1 QuestionGroupDelete.
+ * @testdox API command v1 QuestionGroupDelete
  */
 class QuestionGroupDeleteTest extends TestBaseClass
 {
     use AssertResponse;
 
+    /**
+     * @testdox Returns invalid session response (error unauthorised) if session key is not valid.
+     */
     public function testQuestionGroupDeleteInvalidSession()
     {
         $request = new Request(array(
@@ -30,6 +33,9 @@ class QuestionGroupDeleteTest extends TestBaseClass
         $this->assertResponseInvalidSession($response);
     }
 
+    /**
+     * @testdox Returns error not-found if group id is not valid.
+     */
     public function testQuestionGroupDeleteInvalidGroupId()
     {
         $request = new Request(array(
@@ -54,8 +60,10 @@ class QuestionGroupDeleteTest extends TestBaseClass
         );
     }
 
-
-    public function testQuestionGroupDeleteUnauthorised()
+    /**
+     * @testdox Returns invalid session response (error unauthorised) users does not have permission.
+     */
+    public function testQuestionGroupAddNoPermission()
     {
         $request = new Request(array(
             'sessionKey' => 'mocked',

@@ -8,12 +8,15 @@ use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesGet;
 use LimeSurvey\Api\Command\Request\Request;
 
 /**
- * Tests for the API command v1 QuestionGroupList.
+ * @testdox API command v1 QuestionGroupList.
  */
 class QuestionGroupPropertiesGetTest extends TestBaseClass
 {
     use AssertResponse;
 
+    /**
+     * @testdox Returns invalid session response (error unauthorised) if session key is not valid.
+     */
     public function testQuestionGroupPropertiesGetInvalidSession()
     {
         $request = new Request(array(

@@ -6,10 +6,13 @@ use ls\tests\TestBaseClass;
 use LimeSurvey\Api\ApiSession;
 
 /**
- * Tests for the API Session.
+ * @testdox API Session
  */
 class ApiSessionTest extends TestBaseClass
 {
+    /**
+     * @testdox Returns boolean true if logic successful.
+     */
     public function testDoLogin()
     {
         $username = getenv('ADMINUSERNAME');

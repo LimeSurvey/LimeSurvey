@@ -8,12 +8,15 @@ use LimeSurvey\Api\Command\V1\QuestionDelete;
 use LimeSurvey\Api\Command\Request\Request;
 
 /**
- * Tests for the API command v1 QuestionDelete.
+ * @testdox API command v1 QuestionDelete.
  */
 class QuestionDeleteTest extends TestBaseClass
 {
     use AssertResponse;
 
+    /**
+     * @testdox Returns invalid session response (error unauthorised) if session key is not valid.
+     */
     public function testQuestionGroupAddInvalidSession()
     {
         $request = new Request(array(
