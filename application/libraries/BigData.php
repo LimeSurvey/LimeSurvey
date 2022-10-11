@@ -230,6 +230,9 @@ class BigFile
         if (!isset($type)) {
             $type = $this->defaultEcho;
         }
+        if ($type !== 'base64') {
+            throw new Exception('Unsupported echo type');
+        }
         if (method_exists($this, "echo_{$type}")) {
             call_user_func(array($this, "echo_{$type}"));
         }
