@@ -8315,7 +8315,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $where .= " and a.qid = q.qid and q.sid = " . $surveyid;
         }
         if (!is_null($lang)) {
-            $lang = sanitize_alphanumeric($lang);
+            $lang = sanitize_languagecode($lang);
             $where .= " and l.language={$db->quoteValue($lang)}";
         }
 

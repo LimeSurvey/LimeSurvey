@@ -582,7 +582,7 @@ class statistics_helper
      */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true)
     {
-        $language = sanitize_alphanumeric($language);
+        $language = sanitize_languagecode($language);
         $surveyid = (int) $surveyid;
 
         //Set up required variables
