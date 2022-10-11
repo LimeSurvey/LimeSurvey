@@ -1069,12 +1069,12 @@ class ConditionsAction extends SurveyCommonAction
     {
         extract($args);
 
-        $copyconditionsfrom = returnGlobal('copyconditionsfrom');
+        $copyconditionsfrom = returnGlobal('copyconditionsfrom'); 
         $copyconditionsto = returnGlobal('copyconditionsto');
         if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) {
-            //Get the conditions we are going to copy
+            //Get the conditions we are going to copy and quote them properly
             foreach ($copyconditionsfrom as &$entry) {
-                $entry = Yii::app()->db->quoteValue($entry);
+                $entry = Yii::app()->db->quoteValue($entry); 
             }
             $query = "SELECT * FROM {{conditions}}\n"
                 . "WHERE cid in (";
@@ -1085,11 +1085,11 @@ class ConditionsAction extends SurveyCommonAction
 
             foreach ($result->readAll() as $row) {
                 $proformaconditions[] = array(
-                    "scenario"        =>    $row['scenario'],
-                    "cqid"            =>    $row['cqid'],
+                    "scenario"      =>    $row['scenario'],
+                    "cqid"          =>    $row['cqid'],
                     "cfieldname"    =>    $row['cfieldname'],
                     "method"        =>    $row['method'],
-                    "value"            =>    $row['value']
+                    "value"         =>    $row['value']
                 );
             } // while
 
@@ -1100,7 +1100,7 @@ class ConditionsAction extends SurveyCommonAction
 
                     //First lets make sure there isn't already an exact replica of this condition
                     $conditions_data = array(
-                        'qid'        => $newqid,
+                        'qid'        => (int) $newqid,
                         'scenario'   => $pfc['scenario'],
                         'cqid'       => $pfc['cqid'],
                         'cfieldname' => $pfc['cfieldname'],
