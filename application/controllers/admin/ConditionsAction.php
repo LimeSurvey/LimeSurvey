@@ -1069,12 +1069,12 @@ class ConditionsAction extends SurveyCommonAction
     {
         extract($args);
 
-        $copyconditionsfrom = returnGlobal('copyconditionsfrom'); 
+        $copyconditionsfrom = returnGlobal('copyconditionsfrom');
         $copyconditionsto = returnGlobal('copyconditionsto');
         if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) {
             //Get the conditions we are going to copy and quote them properly
             foreach ($copyconditionsfrom as &$entry) {
-                $entry = Yii::app()->db->quoteValue($entry); 
+                $entry = Yii::app()->db->quoteValue($entry);
             }
             $query = "SELECT * FROM {{conditions}}\n"
                 . "WHERE cid in (";
