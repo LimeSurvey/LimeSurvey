@@ -3,11 +3,13 @@
 namespace ls\tests\unit\api\command\v1;
 
 use Eloquent\Phony\Phpunit\Phony;
+use Permission;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
 /**
@@ -46,6 +48,40 @@ class QuestionGroupDeleteTest extends TestBaseClass
 
         $response = $command->run($request);
 
-        $this->assertResponseStatus($response, new StatusErrorNotFound);
+        $this->assertResponseStatus(
+            $response,
+            new StatusErrorNotFound
+        );
+    }
+
+
+    public function testQuestionGroupDeleteUnauthorised()
+    {
+        $request = new Request(array(
+            'sessionKey' => 'mocked',
+            'groupID' => '1'
+        ));
+
+        $mockApiSessionHandle = Phony::mock(ApiSession::class);
+        $mockApiSessionHandle
+            ->checkKey
+            ->returns(true);
+        $mockApiSession = $mockApiSessionHandle->get();
+
+        $mockModelPermissionHandle = Phony::mock(Permission::class);
+        $mockModelPermissionHandle->hasSurveyPermission
+            ->returns(false);
+        $mockModelPermission = $mockModelPermissionHandle->get();
+
+        $command = new QuestionGroupDelete();
+        $command->setApiSession($mockApiSession);
+        $command->setPermissionModel($mockModelPermission);
+
+        $response = $command->run($request);
+
+        $this->assertResponseStatus(
+            $response,
+            new StatusErrorUnauthorised
+        );
     }
 }

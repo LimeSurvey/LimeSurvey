@@ -8,6 +8,7 @@ use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionGroupAdd;
 use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
 /**
@@ -52,7 +53,7 @@ class QuestionGroupAddTest extends TestBaseClass
         $mockApiSessionHandle = Phony::mock(ApiSession::class);
         $mockApiSessionHandle
             ->checkKey
-            ->returns(false);
+            ->returns(true);
         $mockApiSession = $mockApiSessionHandle->get();
 
         $mockModelPermissionHandle = Phony::mock(Permission::class);
@@ -66,6 +67,9 @@ class QuestionGroupAddTest extends TestBaseClass
 
         $response = $command->run($request);
 
-        $this->assertResponseInvalidSession($response);
+        $this->assertResponseStatus(
+            $response,
+            new StatusErrorUnauthorised
+        );
     }
 }
