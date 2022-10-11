@@ -576,12 +576,12 @@ class remotecontrol_handle
         switch ($docType) {
             case 'pdf':
                 $sTempFile = $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage);
-                $sResult = file_get_contents($sTempFile);
+                $sResult = file_get_contents(sanitize_filename($sTempFile));
                 unlink($sTempFile);
                 break;
             case 'xls':
                 $sTempFile = $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, '0', $docType, 'F', $sLanguage);
-                $sResult = file_get_contents($sTempFile);
+                $sResult = file_get_contents(sanitize_filename($sTempFile));
                 unlink($sTempFile);
                 break;
             case 'html':
