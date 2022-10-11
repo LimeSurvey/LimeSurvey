@@ -3611,8 +3611,9 @@ class statistics_helper
                 }
 
                 if ($field['type'] == Question::QT_F_ARRAY || $field['type'] == "Question::QT_H_ARRAY_COLUMN") {
+                    $db = Yii::app()->db;
                     //Get answers. We always use the answer code because the label might be too long elsewise
-                    $query = "SELECT code, answer FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='" . $field['qid'] . "' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, l.answer";
+                    $query = "SELECT code, answer FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid={$db->quoteValue($field['qid'])} AND a.scale_id=0 AND l.language={$db->quoteValue($language)} ORDER BY a.sortorder, l.answer";
                     $result = Yii::app()->db->createCommand($query)->query();
 
                     //check all the answers
