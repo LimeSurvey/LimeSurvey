@@ -1705,6 +1705,7 @@ class ParticipantsAction extends SurveyCommonAction
 
         $request = Yii::app()->request;
         $attributeIds = json_decode($request->getPost('sItems'));
+        $attributeIds = array_map('sanitize_int', $attributeIds);
 
         $deletedAttributes = 0;
 
