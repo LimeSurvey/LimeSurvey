@@ -3,7 +3,7 @@
 namespace ls\tests\unit\api\command\v1;
 
 use ls\tests\TestBaseClass;
-use ls\tests\unit\api\command\mixin\AssertInvalidSession;
+use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\SurveyDelete;
 use LimeSurvey\Api\Command\Request\Request;
 
@@ -12,7 +12,7 @@ use LimeSurvey\Api\Command\Request\Request;
  */
 class SurveyDeleteTest extends TestBaseClass
 {
-    use AssertInvalidSession;
+    use AssertResponse;
 
     public function testSurveyDeleteTestInvalidSession()
     {
@@ -22,6 +22,6 @@ class SurveyDeleteTest extends TestBaseClass
         ));
         $response = (new SurveyDelete)->run($request);
 
-        $this->assertInvalidSession($response);
+        $this->assertResponseInvalidSession($response);
     }
 }

@@ -5,7 +5,7 @@ namespace ls\tests\unit\api\command\v1;
 use Eloquent\Phony\Phpunit\Phony;
 use Permission;
 use ls\tests\TestBaseClass;
-use ls\tests\unit\api\command\mixin\AssertInvalidSession;
+use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionGroupAdd;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\ApiSession;
@@ -15,7 +15,7 @@ use LimeSurvey\Api\ApiSession;
  */
 class QuestionGroupAddTest extends TestBaseClass
 {
-    use AssertInvalidSession;
+    use AssertResponse;
 
     public function testQuestionGroupAddInvalidSession()
     {
@@ -37,13 +37,13 @@ class QuestionGroupAddTest extends TestBaseClass
 
         $response = $command->run($request);
 
-        $this->assertInvalidSession($response);
+        $this->assertResponseInvalidSession($response);
     }
 
     public function testQuestionGroupAddUnauthorised()
     {
         $request = new Request(array(
-            'sessionKey' => 'not-a-valid-session-id',
+            'sessionKey' => 'mocked',
             'surveyID' => 'surveyID',
             'groupTitle' => 'groupTitle',
             'groupDescription' => 'groupDescription',
@@ -66,6 +66,6 @@ class QuestionGroupAddTest extends TestBaseClass
 
         $response = $command->run($request);
 
-        $this->assertInvalidSession($response);
+        $this->assertResponseInvalidSession($response);
     }
 }

@@ -3,7 +3,7 @@
 namespace ls\tests\unit\api\command\v1;
 
 use ls\tests\TestBaseClass;
-use ls\tests\unit\api\command\mixin\AssertInvalidSession;
+use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionGroupList;
 use LimeSurvey\Api\Command\Request\Request;
 
@@ -12,7 +12,7 @@ use LimeSurvey\Api\Command\Request\Request;
  */
 class QuestionGroupListTest extends TestBaseClass
 {
-    use AssertInvalidSession;
+    use AssertResponse;
 
     public function testQuestionGroupListInvalidSession()
     {
@@ -23,6 +23,6 @@ class QuestionGroupListTest extends TestBaseClass
         ));
         $response = (new QuestionGroupList)->run($request);
 
-        $this->assertInvalidSession($response);
+        $this->assertResponseInvalidSession($response);
     }
 }
