@@ -3550,6 +3550,11 @@ class statistics_helper
      */
     public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
+        if (!isset($surveyid)) {
+            $surveyid = (int) returnGlobal('sid');
+        } else {
+            $surveyid = (int) $surveyid;
+        }
 
         $aStatisticsData = array();
         $survey = Survey::model()->findByPk($surveyid);
@@ -3563,11 +3568,6 @@ class statistics_helper
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode)) {
             $sLanguageCode = $survey->language;
-        }
-
-        //no survey ID? -> come and get one
-        if (!isset($surveyid)) {
-            $surveyid = returnGlobal('sid');
         }
 
         // Set language for questions and answers to base language of this survey
