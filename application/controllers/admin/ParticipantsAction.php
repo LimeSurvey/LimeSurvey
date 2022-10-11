@@ -1950,8 +1950,8 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function delAttributeValues()
     {
-        $iAttributeId = Yii::app()->request->getQuery('aid');
-        $iValueId = Yii::app()->request->getQuery('vid');
+        $iAttributeId = (int) Yii::app()->request->getQuery('aid');
+        $iValueId = (int) Yii::app()->request->getQuery('vid');
         ParticipantAttributeName::model()->delAttributeValues($iAttributeId, $iValueId);
         Yii::app()->getController()->redirect(array('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
     }
