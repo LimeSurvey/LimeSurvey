@@ -1,0 +1,34 @@
+@import "lime-admin-colors";
+@import "statistics";
+
+$aubergine  : #25003E;
+$zucchini   : #003E24;
+$grape      : #8146F6;
+$lime_green : #7FF409;
+$orange     : #FFBA68;
+$litschi    : #FF9AA2;
+$banana     : #FFE872;
+$apple      : #B2FF8E;
+$blueberry  : #A3C8FF;
+$error      : #FF515F;
+$warning    : #FFE046;
+$success    : #4DD753;
+$action     : #4200FF;
+$focus      : #3BFFB7;
+
+$white      : #fff;
+$black      : #000;
+$black75    : rgba(0, 0, 0, 0.75);
+
+$g-900      : #1E1E1E;
+$g-800      : #333641;
+$g-700      : #5E6372;
+$g-600      : #7C8191;
+$g-400      : #C2C5D1;
+$g-300      : #DDDEE8;
+$g-200      : #EEEFF7;
+$g-100      : #F9F9FB;
+
+// this is an example, if you work on the buttons you can remove it
+@import "buttons/buttons.scss";
+
