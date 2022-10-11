@@ -1463,7 +1463,15 @@ class ParticipantsAction extends SurveyCommonAction
                         $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                     }
                     if (!empty($aUpdateData) && $aUpdateData['value'] !== null) {
-                        $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='" . $attributeId . "' AND participant_id = '" . $attribute->participant_id . "'");
+                        $oDB->createCommand()->update(
+                            '{{participant_attribute}}',
+                            $aUpdateData,
+                            'attribute_id=:attribute_id AND participant_id=:participant_id',
+                            array(
+                                'attribute_id' => $attributeId,
+                                'participant_id' => $attribute->participant_id
+                            )
+                        );
                     }
                 }
             }
