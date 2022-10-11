@@ -1285,7 +1285,9 @@ class Export extends SurveyCommonAction
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
 
-            $lang = sanitize_filename(
+            $lang = mb_ereg_replace(
+                "[^a-zA-Z0-9]",
+                "",
                 Yii::app()->request->getPost('save_language')
             );
 
