@@ -1686,7 +1686,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function deleteSingleAttribute()
     {
-        $attribute_id = Yii::app()->request->getPost('attribute_id');
+        $attribute_id = (int) Yii::app()->request->getPost('attribute_id');
         ParticipantAttributeName::model()->delAttribute($attribute_id);
         $this->ajaxHelper::outputSuccess(gT("Attribute successfully deleted"));
     }
