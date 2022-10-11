@@ -2487,7 +2487,7 @@ class ParticipantsAction extends SurveyCommonAction
         $overwriteman = Yii::app()->request->getPost('overwriteman', false);
         $createautomap = Yii::app()->request->getPost('createautomap');
 
-        $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
+        $response = Participant::model()->copyToCentral((int) Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
 
         echo "<p>";
         printf(gT("%s participants have been copied to the central participants table"), "<span class='badge alert-success'>" . $response['success'] . "</span>&nbsp;");
