@@ -181,6 +181,6 @@ abstract class AuthPluginBase extends PluginBase
      */
     public static function getAuthMethodName()
     {
-        return static::$name;
+        return self::getName();
     }
 }
