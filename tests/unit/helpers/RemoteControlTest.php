@@ -666,7 +666,6 @@ class RemoteControlTest extends TestBaseClass
         // Retrieve uploaded files
         $token = '123456';
         $responseId = 4;
-        var_dump('aaa');
         $result = $handler->get_uploaded_files($sessionKey, self::$surveyId, $token, $responseId);
         $this->assertArrayHasKey($uploadedFileName, $result, '$result = ' . json_encode($result));
 
