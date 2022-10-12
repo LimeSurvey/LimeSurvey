@@ -1476,6 +1476,8 @@ class userstatistics_helper
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
+        $surveyid = (int) $surveyid;
+        $sLanguage = sanitize_languagecode($sLanguage);
 
         /* Set up required variables */
         $TotalCompleted = 0; //Count of actually completed answers
