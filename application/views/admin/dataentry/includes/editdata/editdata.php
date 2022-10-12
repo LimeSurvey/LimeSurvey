@@ -44,8 +44,8 @@
 			</td>
 	    </tr>
    	</table>
-    <input type='hidden' name='save_password' value='<?php echo stripslashes(returnGlobal('accesscode')); ?>' />
-    <input type='hidden' name='save_confirmpassword' value='<?php echo stripslashes(returnGlobal('accesscode')); ?>' />
+    <input type='hidden' name='save_password' value='<?php echo returnGlobal('accesscode'); ?>' />
+    <input type='hidden' name='save_confirmpassword' value='<?php echo returnGlobal('accesscode'); ?>' />
     <input type='hidden' name='save_email' value='<?php echo $saver['email']; ?>' />
     <input type='hidden' name='save_scid' value='<?php echo $saver['scid']; ?>' />
     <input type='hidden' name='redo' value='yes' />
