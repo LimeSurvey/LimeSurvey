@@ -2561,7 +2561,7 @@ class userstatistics_helper
         if (!isset($surveyid)) {
             $surveyid = (int) returnGlobal('sid');
         } else {
-            $surveyid = $surveyid;
+            $surveyid = (int) $surveyid;
         }
 
         $survey = Survey::model()->findByPk($surveyid);
@@ -2641,9 +2641,9 @@ class userstatistics_helper
         } else {
             // This gets all the 'to be shown questions' from the POST and puts these into an array
             if (!is_array($q2show)) {
-                            $summary = returnGlobal('summary');
+                $summary = returnGlobal('summary');
             } else {
-                            $summary = $q2show;
+                $summary = $q2show;
             }
 
             //print_r($_POST);
