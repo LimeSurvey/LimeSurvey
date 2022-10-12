@@ -59,6 +59,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aSurveys = json_decode(Yii::app()->request->getPost('sItems'));
         $aResults = array();
         foreach ($aSurveys as $iSurveyID) {
+            $iSurveyID = (int) $iSurveyID;
             $oSurvey                        = Survey::model()->findByPk($iSurveyID);
             $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {

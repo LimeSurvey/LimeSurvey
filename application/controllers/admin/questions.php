@@ -1399,8 +1399,8 @@ class questions extends Survey_Common_Action
 
         foreach ($aQidsAndLang as $sQidAndLang) {
             $aQidAndLang = explode(',', $sQidAndLang);
-            $iQid        = $aQidAndLang[0];
-            $sLanguage   = $aQidAndLang[1];
+            $iQid        = sanitize_int($aQidAndLang[0]);
+            $sLanguage   = sanitize_languagecode($aQidAndLang[1]);
 
             $oQuestion   = Question::model()->find('qid=:qid and language=:language', array(":qid"=>$iQid, ":language"=>$sLanguage));
 
