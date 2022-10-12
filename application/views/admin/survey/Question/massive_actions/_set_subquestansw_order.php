@@ -2,7 +2,7 @@
 /**
  * Set subquestion/answer order
  */
-$surveyid = App()->request->getParam('surveyid', 0);
+$surveyid = (int) App()->request->getParam('surveyid', 0);
 ?>
 <form class="custom-modal-datas form-horizontal" data-trigger-validation="true">
     <div  class="form-group" id="CssClass">

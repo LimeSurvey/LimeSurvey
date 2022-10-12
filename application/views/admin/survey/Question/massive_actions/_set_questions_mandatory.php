@@ -2,7 +2,7 @@
 /**
  * Set question group and position modal body (parsed to massive action widget)
  */
-$surveyid = App()->request->getParam('surveyid', 0);
+$surveyid = (int) App()->request->getParam('surveyid', 0);
 ?>
 <form class="custom-modal-datas form-horizontal">
     <div id='MandatorySelection' class="form-group">
