@@ -579,7 +579,7 @@ class statistics_helper
      */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true)
     {
-        $language = sanitize_languagecode($language);
+        $language  = sanitize_languagecode($language);
         $surveyid = (int) $surveyid;
 
         //Set up required variables
@@ -717,7 +717,8 @@ class statistics_helper
             $qqid = (int) $qqid;
 
             //get answers
-            $query = "SELECT code, answer FROM {{answers}} WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+            $db = Yii::app()->db;
+            $query = "SELECT code, answer FROM {{answers}} WHERE qid={$db->quoteValue($qqid)} AND scale_id=0 AND language={$db->quoteValue($language)} ORDER BY sortorder, answer";
             $result = Yii::app()->db->createCommand($query)->query();
 
             //loop through answers
