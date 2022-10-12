@@ -106,7 +106,7 @@ class UploaderController extends SurveyController
             //var_dump($sFileDir.$sFilename);
             // Return some json to do a beautiful text
             if (@unlink($sFileDir . $sFileNameFiltered)) {
-                echo sprintf(gT('File %s deleted'), CHtml::encode($sOriginalFileName);
+                echo sprintf(gT('File %s deleted'), CHtml::encode($sOriginalFileName));
             } else {
                 echo gT('Oops, There was an error deleting the file');
             }
