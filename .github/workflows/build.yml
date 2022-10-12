@@ -3,9 +3,9 @@ on:
   push:
     branches:
       - master
-	- develop
-	- 3.x-LTS
-	- sonarcubefixes3
+      - develop
+      - 3.x-LTS
+      - sonarcubefixes3
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
