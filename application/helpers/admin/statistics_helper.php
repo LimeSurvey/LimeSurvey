@@ -711,6 +711,7 @@ class statistics_helper
                 $qtype = $nrow[1];
                 $qquestion = flattenText($nrow[2])."[".gT("Ranking")." ".substr($rt, strpos($rt, "-") - ($lengthofnumeral), $lengthofnumeral)."]";
             }
+            $qqid = (int) $qqid;
 
             //get answers
             $query = "SELECT code, answer FROM {{answers}} WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
