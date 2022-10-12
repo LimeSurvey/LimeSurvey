@@ -698,14 +698,14 @@ function longestString($new_string, $longest_length)
 */
 function getGroupList($gid, $surveyid)
 {
-
     $groupselecter = "";
     $gid = sanitize_int($gid);
     $surveyid = sanitize_int($surveyid);
     if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
+    $s_lang = sanitize_languagecode(Survey::model()->findByPk($surveyid)->language);
 
-    $gidquery = "SELECT gid, group_name FROM ".Yii::app()->db->quoteTableName('{{groups}}')." WHERE sid='{$surveyid}' AND  language='{$s_lang}' ORDER BY group_order";
+    $db = Yii::app()->db;
+    $gidquery = "SELECT gid, group_name FROM ".Yii::app()->db->quoteTableName('{{groups}}')." WHERE sid='{$surveyid}' AND  language={$db->quoteValue($s_lang)} ORDER BY group_order";
     $gidresult = Yii::app()->db->createCommand($gidquery)->query(); //Checked
     foreach ($gidresult->readAll() as $gv) {
         $groupselecter .= "<option";
