@@ -646,6 +646,36 @@ class RemoteControlTest extends TestBaseClass
     }
 
     /**
+     * Test the get_uploaded_files API call using tokens
+     */
+    public function testGetUploadedFilesByResponseIdAndToken()
+    {
+        $uploadedFileName = 'fu_xtdezsfty3v5vcm'; // Taken from the LSA
+        $this->prepareTestWithUploadedFile('survey_archive_getFileUploadTestClosed.lsa', 'dalahorse.jpg', $uploadedFileName);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password);
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        // Retrieve uploaded files
+        $token = '123456';
+        $responseId = 4;
+        var_dump('aaa');
+        $result = $handler->get_uploaded_files($sessionKey, self::$surveyId, $token, $responseId);
+        $this->assertArrayHasKey($uploadedFileName, $result, '$result = ' . json_encode($result));
+
+        // Cleanup
+        self::$testSurvey->delete();
+        self::$testSurvey = null;
+    }
+
+    /**
      * Prepare the data for get_uploaded_files tests
      */
     private function prepareTestWithUploadedFile($surveyFile, $fileName, $uploadedFileName)

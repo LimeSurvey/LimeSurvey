@@ -3301,12 +3301,16 @@ class remotecontrol_handle
             return ['status' => 'Invalid arguments: both Token and Reponse ID are empty'];
         }
         $criteria = new CDbCriteria();
+        $params = [];
         if (!empty($responseId)) {
-            $criteria->addCondition('id', $responseId);
+            $criteria->addCondition('id = :id');
+            $params[':id'] = $responseId;
         }
         if (!empty($sToken)) {
-            $criteria->addCondition('token', $sToken);
+            $criteria->addCondition('token = :token');
+            $params[':token'] = $sToken;
         }
+        $criteria->params = $params;
         $oResponses = Response::model($iSurveyID)->findAll($criteria);
         if (empty($oResponses)) {
             return ['status' => 'Could not find response for given token or response id'];
