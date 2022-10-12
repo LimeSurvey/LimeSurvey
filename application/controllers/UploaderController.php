@@ -52,23 +52,23 @@ class UploaderController extends SurveyController
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
         }
-        if ($sFileGetContent) {
-            if (substr($sFileGetContent, 0, 6) == 'futmp_') {
+        if ($sFileGetContentFiltered) {
+            if (substr($sFileGetContentFiltered, 0, 6) == 'futmp_') {
                 $sFileDir = $tempdir.'/upload/';
-            } elseif (substr($sFileGetContent, 0, 3) == 'fu_') {
+            } elseif (substr($sFileGetContentFiltered, 0, 3) == 'fu_') {
                 // Need to validate $_SESSION['srid'], and this file is from this srid !
                 $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
             } else {
                 throw new CHttpException(400); // See for debug > 1
             }
-            if (is_file($sFileDir.$sFileGetContent)) {
+            if (is_file($sFileDir.$sFileGetContentFiltered)) {
                 // Validate file before else 500 error by getMimeType
-                $mimeType = LSFileHelper::getMimeType($sFileDir.$sFileGetContent, null, false);
+                $mimeType = LSFileHelper::getMimeType($sFileDir.$sFileGetContentFiltered, null, false);
                 if (is_null($mimeType)) {
                     $mimeType = "application/octet-stream"; // Can not really get content if not image
                 }
                 header('Content-Type: '.$mimeType);
-                readfile($sFileDir.$sFileGetContent);
+                readfile($sFileDir.$sFileGetContentFiltered);
                 Yii::app()->end();
             } else {
                 Yii::app()->end();
