@@ -700,9 +700,11 @@ class statistics_helper
             //getting the needed IDs somehow
             $lengthofnumeral = substr($rt, strpos($rt, "-") + 1, 1);
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-") - ($lengthofnumeral + 1)), 3);
+            $qqid = (int) $qqid;
+            $db = Yii::app()->db;
 
             //get question data
-            $nquery = "SELECT title, type, question FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+            $nquery = "SELECT title, type, question FROM {{questions}} WHERE parent_qid=0 AND qid={$db->quoteValue($qqid)} AND language={$db->quoteValue($language)}";
             $nresult = Yii::app()->db->createCommand($nquery)->query();
 
             //loop through question data
