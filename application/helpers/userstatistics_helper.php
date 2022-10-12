@@ -753,8 +753,7 @@ class userstatistics_helper
                     $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
                 }
 
-
-                $query = "SELECT " . $fieldname . " as json FROM {{survey_$surveyid}}";
+                $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{survey_$surveyid}}";
                 $result = Yii::app()->db->createCommand($query)->query();
 
                 $responsecount = 0;
