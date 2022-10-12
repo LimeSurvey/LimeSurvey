@@ -42,10 +42,10 @@
                         <div class="">
                             <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" />
                         </div>
-                        <div class="">
-                          <p class="form-control-static">
+                        <div class="help-block">
                             <span class='annotation text-info'><?php echo  gT("Optional"); ?> </span>
-                          </p>
+                            -
+                            <?= gT("If ID is taken, a random one will be assigned."); ?> </span>
                         </div>
                     </div>
                     <div class="form-group">
