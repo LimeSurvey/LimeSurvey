@@ -106,7 +106,7 @@ class UploaderController extends SurveyController
             //var_dump($sFileDir.$sFilename);
             // Return some json to do a beautiful text
             if (@unlink($sFileDir . $sFileNameFiltered)) {
-                echo sprintf(gT('File %s deleted'), $sOriginalFileName);
+                echo sprintf(gT('File %s deleted'), CHtml::encode($sOriginalFileName);
             } else {
                 echo gT('Oops, There was an error deleting the file');
             }
@@ -344,7 +344,7 @@ class UploaderController extends SurveyController
         $body = '</head><body class="uploader">
             <div class="model-container clearfix">
                 <div id="notice" class="text-center"></div>
-                <input type="hidden" id="ia"                value="'.$fn.'" />
+                <input type="hidden" id="ia"                value="' . CHtml::encode($fn) . '" />
                 <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
                 <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$maxfiles.'" />
                 <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$maxfilesize.'" />
