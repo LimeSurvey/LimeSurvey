@@ -294,7 +294,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function importsurveyresources()
     {
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = (int) Yii::app()->request->getPost('surveyid');
 
         if (!empty($iSurveyID)) {
 
@@ -2397,7 +2397,7 @@ class SurveyAdmin extends Survey_Common_Action
         // there is no Survey ID to check for permissions, so the error could be misleading.
         LSUploadHelper::checkUploadedFileSizeAndRenderJson('file', $debug);
 
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID =  (int) Yii::app()->request->getPost('surveyid');
         $success = false;
         if(!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             return Yii::app()->getController()->renderPartial(
