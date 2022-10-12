@@ -71,7 +71,7 @@ class EncryptedSettingTest extends TestBaseClass
         ];
     }
 
-    public function testSetSetting()
+    public function testGetAndSetSetting()
     {
         foreach (self::$settings as $key => $value) {
             self::$plugin->setSetting($key, $value);
@@ -83,18 +83,13 @@ class EncryptedSettingTest extends TestBaseClass
             
             $this->assertNotEmpty($setting->id);
             $this->assertEquals($setting->value, json_encode($value) );
-        }
-    }
 
-    public function testGetSetting()
-    {
-        foreach (self::$settings as $key => $value) {
             $settingValue = self::$plugin->getSetting($key);
             $this->assertEquals($settingValue, json_decode(json_encode($value), true));
         }
     }
 
-    public function testSetSettingEncripted()
+    public function testGetAndSetSettingEncripted()
     {
         self::$plugin->setEncriptedSettings(array_keys(self::$settings));
         foreach (self::$settings as $key => $value) {
@@ -113,13 +108,7 @@ class EncryptedSettingTest extends TestBaseClass
                     json_encode(LSActiveRecord::encryptSingle(json_encode($value)))
                 );
             }
-        }
-    }
 
-    public function testGetSettingEncripted()
-    {
-        self::$plugin->setEncriptedSettings(array_keys(self::$settings));
-        foreach (self::$settings as $key => $value) {
             $settingValue = self::$plugin->getSetting($key);
             $this->assertEquals($settingValue, json_decode(json_encode($value), true) );
         }
