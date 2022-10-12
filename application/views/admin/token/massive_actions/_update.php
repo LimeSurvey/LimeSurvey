@@ -2,7 +2,7 @@
 /**
  * Edit multiple tokens
  */
- $iSurveyId = Yii::app()->request->getParam('surveyid');
+ $iSurveyId = (int) Yii::app()->request->getParam('surveyid');
  $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
  $aCoreTokenFields = array('validfrom', 'validuntil', 'firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft' );
  $oSurvey = Survey::model()->findByPk($iSurveyId);
