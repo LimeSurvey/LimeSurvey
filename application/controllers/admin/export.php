@@ -1189,7 +1189,7 @@ class export extends Survey_Common_Action
             }
 
 
-            $lang = Yii::app()->request->getPost('save_language');
+            $lang = sanitize_languagecode(Yii::app()->request->getPost('save_language'));
 
 
             // Setting the selected language for printout
