@@ -1179,7 +1179,7 @@ class statistics_helper
             //question string
             $qastring = $fielddata['question'];
             //question ID
-            $rqid = $qqid;
+            $rqid = (int) $qqid;
 
             //get question data
             $nquery = "SELECT title, type, question, qid, parent_qid, other FROM {{questions}} WHERE qid='{$rqid}' AND parent_qid=0 and language='{$language}'";
