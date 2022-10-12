@@ -3640,6 +3640,9 @@ class statistics_helper
      */
     public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
+        $surveyid = (int) $surveyid;
+        $sLanguageCode = sanitize_languagecode($sLanguageCode);
+
         $aStatisticsData = array();
         $survey = Survey::model()->findByPk($surveyid);
 
@@ -3683,7 +3686,8 @@ class statistics_helper
                 if ($field['type'] == "D") {$myField = "D".$myField; }
                 if ($field['type'] == "F" || $field['type'] == "H") {
                     //Get answers. We always use the answer code because the label might be too long elsewise
-                    $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+                    $db = Yii::app()->db;
+                    $query = "SELECT code, answer FROM {{answers}} WHERE qid={$db->quoteValue($field['qid'])} AND scale_id=0 AND language={$db->quoteValue($language)} ORDER BY sortorder, answer";
                     $result = Yii::app()->db->createCommand($query)->query();
 
                     //check all the answers
