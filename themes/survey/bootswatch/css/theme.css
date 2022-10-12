@@ -864,6 +864,7 @@ label {
     color: white;
 }
 
+
 .basic .btn-check .btn-primary:focus, .basic .btn-check:focus + .btn-primary {
     background-color: #337ab7;
     border: 1px solid #2e6da4;
@@ -1058,4 +1059,19 @@ label {
 .yeti .btn-check:focus:checked + .btn-primary, .yeti .btn-check .btn-primary:focus:checked {
     background-color: #007095;
     border-color: #00698c;
+}
+
+/*Adjustments for btn-outline-secondary*/
+.cerulean .btn-outline-secondary, .flatly .btn-outline-secondary, .journal .btn-outline-secondary,
+.lumen .btn-outline-secondary, .simplex .btn-outline-secondary, .united .btn-outline-secondary {
+    color: #495057;
+}
+
+.spacelab .btn-outline-secondary {
+    color: #777;
+}
+
+.yeti .btn-outline-secondary {
+    color: #222;
+    font-weight: 400;
 }

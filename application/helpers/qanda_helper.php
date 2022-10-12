@@ -1355,12 +1355,12 @@ function do_ranking($ia)
     if (trim($aQuestionAttributes['choice_title'][App()->language]) != '') {
         $choice_title = htmlspecialchars(trim($aQuestionAttributes['choice_title'][App()->language]), ENT_QUOTES);
     } else {
-        $choice_title = gT("Your Choices", 'html');
+        $choice_title = gT("Available items", 'html');
     }
     if (trim($aQuestionAttributes['rank_title'][App()->language]) != '') {
         $rank_title = htmlspecialchars(trim($aQuestionAttributes['rank_title'][App()->language]), ENT_QUOTES);
     } else {
-        $rank_title = gT("Your Ranking", 'html');
+        $rank_title = gT("Your ranking", 'html');
     }
     $aDisplayAnswers = [];
     foreach ($aAnswers as $aAnswer) {

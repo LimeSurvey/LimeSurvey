@@ -337,7 +337,8 @@ class QuickTranslation
             case 'group':
             case 'group_desc':
                 return QuestionGroup::model()
-                    ->with('questiongroupl10ns', ['condition' => 'language = ' . $baselang])
+                    ->with('questiongroupl10ns', ['condition' => 'language =:baselang ',
+                        'params' => [':baselang' => $baselang]])
                     ->findAllByAttributes(['sid' => $this->survey->sid], ['order' => 't.gid']);
             case 'question':
             case 'question_help':
@@ -352,7 +353,8 @@ class QuickTranslation
     public function getQuestionTranslations($baselang)
     {
         return Question::model()
-            ->with('questionl10ns', ['condition' => 'language = ' . $baselang])
+            ->with('questionl10ns', ['condition' => 'language =:baselang ',
+                'params' => [':baselang' => $baselang]])
             ->with('parent', 'group')
             ->findAllByAttributes(
                 ['sid' => $this->survey->sid, 'parent_qid' => 0],
@@ -363,9 +365,12 @@ class QuickTranslation
     public function getSubquestionTranslations($baselang)
     {
         return Question::model()
-            ->with('questionl10ns', array('condition' => 'language = ' . $baselang))
-            ->with('parent', array('condition' => 'language = ' . $baselang))
-            ->with('group', array('condition' => 'language = ' . $baselang))
+            ->with('questionl10ns', array('condition' => 'language =:baselang ',
+                'params' => [':baselang' => $baselang]))
+            ->with('parent', array('condition' => 'language =:baselang ',
+                'params' => [':baselang' => $baselang]))
+            ->with('group', array('condition' => 'language =:baselang ',
+                'params' => [':baselang' => $baselang]))
             ->findAllByAttributes(
                 ['sid' => $this->survey->sid],
                 [
@@ -378,7 +383,9 @@ class QuickTranslation
     public function getAnswerTranslations($baselang)
     {
         return Answer::model()
-            ->with('answerl10ns', array('condition' => 'language = ' . $baselang))
+            ->with('answerl10ns', [
+                'condition' => 'language =:baselang ',
+                'params' => [':baselang' => $baselang]])
             ->with('question')
             ->with('group')
             ->findAllByAttributes(

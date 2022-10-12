@@ -165,7 +165,7 @@ class UserAction extends SurveyCommonAction
         $aData['fullpagebar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin"));
 
         // Green Bar Page Title
-        $aData['pageTitle'] = gT('My Account');
+        $aData['pageTitle'] = gT('Account');
 
         //Get data for personal menues
         $oSurveymenu = Surveymenu::model();
@@ -196,6 +196,22 @@ class UserAction extends SurveyCommonAction
         } else {
             $this->renderWrappedTemplate('user', 'personalsettings', $aData);
         }
+    }
+
+     /**
+     * Toggle Setting
+     * @param int $surveyid
+     */
+    public function togglesetting($surveyid = 0)
+    {
+        $setting  = Yii::app()->request->getPost('setting');
+        $newValue = Yii::app()->request->getPost('newValue');
+
+        $result = SettingsUser::setUserSetting($setting, $newValue);
+
+        $this->renderJSON([
+            "result" => SettingsUser::getUserSettingValue($setting)
+        ]);
     }
 
     /**
