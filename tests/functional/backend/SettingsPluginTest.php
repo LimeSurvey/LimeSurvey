@@ -7,7 +7,7 @@ use LSActiveRecord;
 /**
  * @group api
  */
-class EncryptedSettingTest extends TestBaseClass
+class SettingsPluginTest extends TestBaseClass
 {
 
     protected static $plugin;
@@ -23,11 +23,11 @@ class EncryptedSettingTest extends TestBaseClass
     {
         parent::setUpBeforeClass();
 
-        require_once __DIR__."/../../data/plugins/NewQuestionAttributesPlugin.php";
-        $plugin = \Plugin::model()->findByAttributes(array('name'=>'NewQuestionAttributesPlugin'));
+        require_once __DIR__."/../../data/plugins/SettingsPlugin.php";
+        $plugin = \Plugin::model()->findByAttributes(array('name'=>'SettingsPlugin'));
         if (!$plugin) {
             $plugin = new \Plugin();
-            $plugin->name = 'NewQuestionAttributesPlugin';
+            $plugin->name = 'SettingsPlugin';
             $plugin->active = 1;
             $plugin->save();
         } else {
@@ -35,7 +35,7 @@ class EncryptedSettingTest extends TestBaseClass
             $plugin->save();
         }
 
-        self::$plugin = App()->getPluginManager()->loadPlugin('NewQuestionAttributesPlugin', $plugin->id);
+        self::$plugin = App()->getPluginManager()->loadPlugin('SettingsPlugin', $plugin->id);
 
         $obj = new \stdClass();
         $obj->customProperty = 'abc';
