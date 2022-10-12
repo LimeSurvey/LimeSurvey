@@ -883,7 +883,7 @@ class Themes extends SurveyCommonAction
                         $oEditedTemplate->extendsFile($relativePathEditfile);
                     }
 
-                    $savefilename = sanitize_filename($oEditedTemplate->extendsFile($relativePathEditfile));
+                    $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile, $relativePathEditfile);
 
                     if (is_writable($savefilename)) {
                         if (!$handle = fopen($savefilename, 'w')) {
