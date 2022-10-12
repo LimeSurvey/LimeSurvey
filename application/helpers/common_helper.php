@@ -700,8 +700,10 @@ function getGroupList($gid, $surveyid)
 {
     $groupselecter = "";
     $gid = sanitize_int($gid);
+    if (!$surveyid) {
+        $surveyid = returnGlobal('sid', true);
+    }
     $surveyid = sanitize_int($surveyid);
-    if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
     $s_lang = sanitize_languagecode(Survey::model()->findByPk($surveyid)->language);
 
     $db = Yii::app()->db;
