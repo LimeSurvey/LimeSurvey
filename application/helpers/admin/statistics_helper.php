@@ -2193,6 +2193,9 @@ class statistics_helper
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
+        $sLanguage = sanitize_languagecode($sLanguage);
+        $surveyid = (int) $surveyid;
+
         /* Set up required variables */
         $TotalCompleted     = 0; //Count of actually completed answers
         $statisticsoutput   = "";
