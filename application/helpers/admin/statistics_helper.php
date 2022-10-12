@@ -3640,7 +3640,13 @@ class statistics_helper
      */
     public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
-        $surveyid = (int) $surveyid;
+        //no survey ID? -> come and get one
+        if (!isset($surveyid)) {
+            $surveyid = (int) returnGlobal('sid');
+        } else {
+            $surveyid = (int) $surveyid;
+        }
+
         $sLanguageCode = sanitize_languagecode($sLanguageCode);
 
         $aStatisticsData = array();
@@ -3656,9 +3662,6 @@ class statistics_helper
         if (is_null($sLanguageCode)) {
             $sLanguageCode = $survey->language;
         }
-
-        //no survey ID? -> come and get one
-        if (!isset($surveyid)) {$surveyid = returnGlobal('sid'); }
 
         // Set language for questions and answers to base language of this survey
         $language = $sLanguageCode;
