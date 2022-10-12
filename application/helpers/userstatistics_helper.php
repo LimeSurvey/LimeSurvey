@@ -1283,13 +1283,16 @@ class userstatistics_helper
                         }
                         break;
                     case Question::QT_1_ARRAY_DUAL:    // Array (dual scale)
-                        $sSubquestionQuery = "SELECT  question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid  WHERE q.parent_qid='$qiqid' AND q.title='$qanswer' AND l.language='{$language}' ORDER BY q.question_order";
+                        $qiqid = (int) $qiqid;
+                        $qanswerquoted = Yii::app()->db->quoteValue($qanswer);
+                        $sSubquestionQuery = "SELECT  question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid  WHERE q.parent_qid='$qiqid' AND q.title={$qanswerquoted} AND l.language='{$language}' ORDER BY q.question_order";
 
                         $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
                         $sSubquestion = flattenText($questionDesc['question']);
 
                         //get question attributes
                         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($qqid);
+                        $qqid = (int) $qqid;
 
                         //check last character -> label 1
                         if (substr($rt, -1, 1) == 0) {
