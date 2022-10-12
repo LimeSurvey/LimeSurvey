@@ -697,12 +697,16 @@ class responses extends Survey_Common_Action
             if (!empty($aResponseId)) {
                 // Now, zip all the files in the filelist
                 if (count($aResponseId) == 1) {
-                                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
+                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
                 } else {
-                                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
+                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
                 }
 
-                $this->_zipFiles($iSurveyId, $aResponseId, $zipfilename);
+                $this->_zipFiles(
+                    $iSurveyId,
+                    $aResponseId,
+                    sanitize_filename($zipfilename, false, false, false)
+                );
             } else {
                 // No response : redirect to browse with a alert
                 Yii::app()->setFlashMessage(gT("The requested files do not exist on the server."), 'error');
