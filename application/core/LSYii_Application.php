@@ -535,8 +535,10 @@ class LSYii_Application extends CWebApplication
      */
     private function createControllerFromShortUrl($route)
     {
-        // We can only determine Survey aliases if the column exists (we can't asume it does, because db update runs from the controller).
-        if ($this->getDb()->getSchema()->getTable('{{surveys_languagesettings}}')->getColumn('surveyls_alias')) {
+        // When updating from versions that didn't support short urls, this code runs before the update process,
+        // so we cannot asume the field exists. We try to retrieve the Survey Language Settings and, if it fails,
+        // just don't do anything.
+        try {
             $alias = explode("/", $route)[0];
             $criteria = new CDbCriteria();
             $criteria->addCondition('surveyls_alias = :alias');
@@ -544,14 +546,17 @@ class LSYii_Application extends CWebApplication
             $criteria->index = 'surveyls_language';
 
             $languageSettings = SurveyLanguageSetting::model()->find($criteria);
-            if (!empty($languageSettings)) {
-                // If no language is specified in the request, add a GET param based on the survey's language for this alias
-                $language = $this->request->getParam('lang');
-                if (empty($language)) {
-                    $_GET['lang'] = $languageSettings->surveyls_language;
-                }
-                return parent::createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
+        } catch (CDbException $ex) {
+            // It's probably just because the field doesn't exist, so don't do anything.
+        }
+
+        if (!empty($languageSettings)) {
+            // If no language is specified in the request, add a GET param based on the survey's language for this alias
+            $language = $this->request->getParam('lang');
+            if (empty($language)) {
+                $_GET['lang'] = $languageSettings->surveyls_language;
             }
+            return parent::createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
         }
 
         return null;
