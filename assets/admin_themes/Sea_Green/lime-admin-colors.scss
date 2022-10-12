@@ -1031,26 +1031,26 @@ fieldset[disabled] {
             border: 1px solid $brown-20;
         }
     }
-    .btn-danger {
-        background-color: $red-90;
-        border: 1px solid $danger-border;
-        &:hover {
-            background-color: $red-90;
-            border: 1px solid $danger-border;
-        }
-        &:focus {
-            background-color: $red-90;
-            border: 1px solid $danger-border;
-        }
-        &:active {
-            background-color: $red-90;
-            border: 1px solid $danger-border;
-        }
-        &.active {
-            background-color: $red-90;
-            border: 1px solid $danger-border;
-        }
-    }
+    //.btn-danger {
+    //    background-color: $red-90;
+    //    border: 1px solid $danger-border;
+    //    &:hover {
+    //        background-color: $red-90;
+    //        border: 1px solid $danger-border;
+    //    }
+    //    &:focus {
+    //        background-color: $red-90;
+    //        border: 1px solid $danger-border;
+    //    }
+    //    &:active {
+    //        background-color: $red-90;
+    //        border: 1px solid $danger-border;
+    //    }
+    //    &.active {
+    //        background-color: $red-90;
+    //        border: 1px solid $danger-border;
+    //    }
+    //}
     .btn-link {
         &:hover {
             color: $gray-15;
@@ -1389,67 +1389,67 @@ fieldset[disabled] {
         border: 1px solid $brown-20;
     }
 }
-.btn-danger {
-    color: $white;
-    background-color: $red-90;
-    border: 1px solid $danger-border;
-    &:hover {
-        @extend %extend_6;
-    }
-    &:focus {
-        @extend %extend_6;
-    }
-    &:active {
-        @extend %extend_6;
-    }
-    &.active {
-        @extend %extend_6;
-    }
-    &.disabled {
-        background-color: $red-90;
-        border: 1px solid $danger-border;
-        &:hover {
-            background-color: $red-90;
-            border: 1px solid $danger-border;
-        }
-        &:focus {
-            background-color: $red-90;
-            border: 1px solid $danger-border;
-        }
-        &:active {
-            background-color: $red-90;
-            border: 1px solid $danger-border;
-        }
-        &.active {
-            background-color: $red-90;
-            border: 1px solid $danger-border;
-        }
-    }
-    .badge {
-        color: $red-90;
-        background-color: $white;
-    }
-}
-.btn-danger[disabled] {
-    background-color: $red-90;
-    border: 1px solid $danger-border;
-    &:hover {
-        background-color: $red-90;
-        border: 1px solid $danger-border;
-    }
-    &:focus {
-        background-color: $red-90;
-        border: 1px solid $danger-border;
-    }
-    &:active {
-        background-color: $red-90;
-        border: 1px solid $danger-border;
-    }
-    &.active {
-        background-color: $red-90;
-        border: 1px solid $danger-border;
-    }
-}
+//.btn-danger {
+//    color: $white;
+//    background-color: $red-90;
+//    border: 1px solid $danger-border;
+//    &:hover {
+//        @extend %extend_6;
+//    }
+//    &:focus {
+//        @extend %extend_6;
+//    }
+//    &:active {
+//        @extend %extend_6;
+//    }
+//    &.active {
+//        @extend %extend_6;
+//    }
+//    &.disabled {
+//        background-color: $red-90;
+//        border: 1px solid $danger-border;
+//        &:hover {
+//            background-color: $red-90;
+//            border: 1px solid $danger-border;
+//        }
+//        &:focus {
+//            background-color: $red-90;
+//            border: 1px solid $danger-border;
+//        }
+//        &:active {
+//            background-color: $red-90;
+//            border: 1px solid $danger-border;
+//        }
+//        &.active {
+//            background-color: $red-90;
+//            border: 1px solid $danger-border;
+//        }
+//    }
+//    .badge {
+//        color: $red-90;
+//        background-color: $white;
+//    }
+//}
+//.btn-danger[disabled] {
+//    background-color: $red-90;
+//    border: 1px solid $danger-border;
+//    &:hover {
+//        background-color: $red-90;
+//        border: 1px solid $danger-border;
+//    }
+//    &:focus {
+//        background-color: $red-90;
+//        border: 1px solid $danger-border;
+//    }
+//    &:active {
+//        background-color: $red-90;
+//        border: 1px solid $danger-border;
+//    }
+//    &.active {
+//        background-color: $red-90;
+//        border: 1px solid $danger-border;
+//    }
+//}
 .btn-link {
     color: $primary;
     &:hover {
@@ -2693,9 +2693,9 @@ table.cke_editor {
     &.btn-warning {
         @extend %extend_5;
     }
-    &.btn-danger {
-        @extend %extend_6;
-    }
+    //&.btn-danger {
+    //    @extend %extend_6;
+    //}
 }
 .btn-group.open .dropdown-toggle {
     box-shadow: inset 0 3px 5px $black_opac_125;

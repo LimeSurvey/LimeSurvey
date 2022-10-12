@@ -1,1 +1,76 @@
-// this is an example, if you work on the buttons you can remove it
+// Figma
+
+  // filled
+.btn-primary {
+  background-color: $action;
+  //border-radius: 4px;
+}
+
+.btn-success {
+  background-color: $success;
+}
+
+.btn-danger {
+  background-color: $error;
+}
+
+  // out
+.btn-outline-secondary {
+
+}
+
+
+// Custom from adminbasics:
+
+.surveybar .btn, .surveybar button {
+  margin-bottom: 5px;
+}
+
+.btn.float-end {
+  margin-left: 5px;
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1366px) {
+  #add_user_btn {
+    margin-top: 1.5em;
+  }
+}
+
+.side-menu #search .card-body .navbar-form .btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 15px 18px;
+}
+
+.btn-success:hover,
+.btn-danger:hover,
+.btn-warning:hover,
+.btn-info:hover {
+  color: #fff;
+}
+
+.btnaddanswer:hover,
+.btndelanswer:hover {
+  cursor: pointer;
+}
+
+.modal-footer .btn {
+  margin-bottom: 0;
+}
+
+.btn.readonly,
+.btn.readonly:hover {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: 1px solid #cccccc;
+}
+
+body.onStatistics .btn {
+  display: none;
+}
