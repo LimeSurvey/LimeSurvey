@@ -1,24 +1,468 @@
-// Figma
-
-  // filled
-.btn-primary {
-  background-color: $action;
-  //border-radius: 4px;
+%default_hover {
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 }
 
-.btn-success {
-  background-color: $success;
+%default_focus {
+  box-shadow: 8px 8px 0px $focus;
 }
 
-.btn-danger {
-  background-color: $error;
-}
+// Für hover und focus der success, danger,etx btns:
+//box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), .5);
 
-  // out
+// from lime-admin-colors.scss
+// Buttons
 .btn-outline-secondary {
-
+  color: $g-900;
+  background-color: $white;
+  border: 2px solid $g-900;
+  border-radius: 4px;
+  &:hover {
+    @extend %default_hover;
+    background-color: $white;
+    color: $g-900;
+  }
+  &:focus {
+    @extend %default_focus;
+    background-color: $white;
+    color: $g-900;
+  }
+  &:active {
+    @extend %default_focus;
+    background-color: $white;
+    color: $g-900;
+  }
+  &.active {
+    @extend %default_focus;
+    background-color: $white;
+    color: $g-900;
+  }
+  &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
+    @extend %default_focus;
+    background-color: $white;
+    color: $g-900;
+  }
+  &.disabled {
+    background-color: $white;
+    border: 2px solid $g-600;
+    &:hover {
+      background-color: $white;
+      border: 2px solid $g-600;
+    }
+    &:focus {
+      background-color: $white;
+      border: 2px solid $g-600;
+    }
+    &:active {
+      background-color: $white;
+      border: 2px solid $g-600;
+    }
+    &.active {
+      background-color: $white;
+      border: 2px solid $g-600;
+    }
+  }
+  //.badge {
+  //  color: $white;
+  //  background-color: $g-600;
+  //}
+}
+.btn-outline-secondary[disabled] {
+  background-color: $white;
+  border: 2px solid $g-600;
+  &:hover {
+    background-color: $white;
+    border: 2px solid $g-600;
+  }
+  &:focus {
+    background-color: $white;
+    border: 2px solid $g-600;
+  }
+  &:active {
+    background-color: $white;
+    border: 2px solid $g-600;
+  }
+  &.active {
+    background-color: $white;
+    border: 2px solid $g-600;
+  }
+}
+//.btn-check{
+//  &:active+.btn-outline-secondary,
+//  &:checked+.btn-outline-secondary,
+//  &.active {
+//    background-color: $primary-bg-success;
+//    border-color: $gray-11;
+//    color: $primary-hover_2
+//  }
+//}
+.btn-primary, .btn-info {
+  color: $white;
+  background-color: $action;
+  border: 1px solid $action;
+  border-radius: 4px;
+  &:hover {
+    @extend %default_hover;
+    background-color: $action;
+  }
+  &:focus {
+    @extend %default_hover;
+    background-color: $action;
+  }
+  &:active {
+    @extend %default_hover;
+    background-color: $action;
+  }
+  &.active {
+    @extend %default_hover;
+    background-color: $action;
+  }
+  &.disabled {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+    &:hover {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+    &:focus {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+    &:active {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+    &.active {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+  }
+  //.badge {
+  //  color: $primary;
+  //  background-color: $white;
+  //}
+}
+.btn-primary[disabled], .btn-info[disabled] {
+  background-color: $g-400;
+  border: 1px solid $g-400;
+  &:hover {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+  &:focus {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+  &:active {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+  &.active {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+}
+.btn-success {
+  color: $g-900;
+  background-color: $success;
+  border: 1px solid $success;
+  border-radius: 4px;
+  &:hover {
+    color: $g-900;
+    background-color: $success;
+    border: 1px solid $success;
+    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+  }
+  &:focus {
+    color: $g-900;
+    background-color: $success;
+    border: 1px solid $success;
+    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+  }
+  &:active {
+    color: $g-900;
+    background-color: $success;
+    border: 1px solid $success;
+    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+  }
+  &.active {
+    color: $g-900;
+    background-color: $success;
+    border: 1px solid $success;
+    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+  }
+  &.disabled {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+    &:hover {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+    &:focus {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+    &:active {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+    &.active {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+  }
+  //.badge {
+  //  color: $primary;
+  //  background-color: $white;
+  //}
+}
+.btn-success[disabled] {
+  background-color: $g-400;
+  border: 1px solid $g-400;
+  &:hover {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+  &:focus {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+  &:active {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+  &.active {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+}
+// I gave btn-info same behavior as btn-primary:
+//.btn-info {
+//  color: $white;
+//  background-color: $primary-bg_info_hover;
+//  border: 1px solid $primary-border_info_hover;
+//  &:hover {
+//    @extend %extend_4;
+//  }
+//  &:focus {
+//    @extend %extend_4;
+//  }
+//  &:active {
+//    @extend %extend_4;
+//  }
+//  &.active {
+//    @extend %extend_4;
+//  }
+//  &.disabled {
+//    background-color: $primary-bg_info_hover;
+//    border: 1px solid $primary-border_info_hover;
+//    &:hover {
+//      background-color: $primary-bg_info_hover;
+//      border: 1px solid $primary-border_info_hover;
+//    }
+//    &:focus {
+//      background-color: $primary-bg_info_hover;
+//      border: 1px solid $primary-border_info_hover;
+//    }
+//    &:active {
+//      background-color: $primary-bg_info_hover;
+//      border: 1px solid $primary-border_info_hover;
+//    }
+//    &.active {
+//      background-color: $primary-bg_info_hover;
+//      border: 1px solid $primary-border_info_hover;
+//    }
+//  }
+//  .badge {
+//    color: $primary-bg_info_hover;
+//    background-color: $white;
+//  }
+//}
+//.btn-info[disabled] {
+//  background-color: $primary-bg_info_hover;
+//  border: 1px solid $primary-border_info_hover;
+//  &:hover {
+//    background-color: $primary-bg_info_hover;
+//    border: 1px solid $primary-border_info_hover;
+//  }
+//  &:focus {
+//    background-color: $primary-bg_info_hover;
+//    border: 1px solid $primary-border_info_hover;
+//  }
+//  &:active {
+//    background-color: $primary-bg_info_hover;
+//    border: 1px solid $primary-border_info_hover;
+//  }
+//  &.active {
+//    background-color: $primary-bg_info_hover;
+//    border: 1px solid $primary-border_info_hover;
+//  }
+//}
+.btn-warning {
+  color: $g-900;
+  background-color: $warning;
+  border: 1px solid $warning;
+  &:hover {
+    color: $g-900;
+    background-color: $warning;
+    border: 1px solid $warning;
+    box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
+  }
+  &:focus {
+    color: $g-900;
+    background-color: $warning;
+    border: 1px solid $warning;
+    box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
+  }
+  &:active {
+    color: $g-900;
+    background-color: $warning;
+    border: 1px solid $warning;
+    box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
+  }
+  &.active {
+    color: $g-900;
+    background-color: $warning;
+    border: 1px solid $warning;
+    box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
+  }
+  &.disabled {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+    &:hover {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+    &:focus {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+    &:active {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+    &.active {
+      background-color: $g-400;
+      border: 1px solid $g-400;
+    }
+  }
+  //.badge {
+  //  color: $brown-10;
+  //  background-color: $white;
+  //}
+}
+.btn-warning[disabled] {
+  background-color: $g-400;
+  border: 1px solid $g-400;
+  &:hover {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+  &:focus {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+  &:active {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+  &.active {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+  }
+}
+.btn-danger {
+    color: $g-900;
+    background-color: $error;
+    border: 1px solid $error;
+  border-radius: 4px;
+    &:hover {
+      color: $g-900;
+      background-color: $error;
+      border: 1px solid $error;
+      box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
+    }
+    &:focus {
+      color: $g-900;
+      background-color: $error;
+      border: 1px solid $error;
+      box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
+    }
+    &:active {
+      color: $g-900;
+      background-color: $error;
+      border: 1px solid $error;
+      box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
+    }
+    &.active {
+      color: $g-900;
+      background-color: $error;
+      border: 1px solid $error;
+      box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
+    }
+    &.disabled {
+        background-color: $g-400;
+        border: 1px solid $g-400;
+        &:hover {
+            background-color: $g-400;
+            border: 1px solid $g-400;
+        }
+        &:focus {
+            background-color: $g-400;
+            border: 1px solid $g-400;
+        }
+        &:active {
+            background-color: $g-400;
+            border: 1px solid $g-400;
+        }
+        &.active {
+            background-color: $g-400;
+            border: 1px solid $g-400;
+        }
+    }
+    //.badge {
+    //    color: $red-90;
+    //    background-color: $white;
+    //}
+}
+.btn-danger[disabled] {
+    background-color: $g-400;
+    border: 1px solid $g-400;
+    &:hover {
+        background-color: $g-400;
+        border: 1px solid $g-400;
+    }
+    &:focus {
+        background-color: $g-400;
+        border: 1px solid $g-400;
+    }
+    &:active {
+        background-color: $g-400;
+        border: 1px solid $g-400;
+    }
+    &.active {
+        background-color: $g-400;
+        border: 1px solid $g-400;
+    }
 }
 
+// btn-link should be outsourced to links.scss or whatever it will be called
+.btn-link {
+  color: $action;
+  &:hover {
+    color: $action;
+  }
+  &:focus {
+    color: $action;
+  }
+}
+.btn-link[disabled] {
+  &:hover {
+    color: $g-400;
+  }
+  &:focus {
+    color: $g-400;
+  }
+}
 
 // Custom from adminbasics:
 
@@ -43,13 +487,6 @@
   border: 0;
   border-radius: 0;
   padding: 15px 18px;
-}
-
-.btn-success:hover,
-.btn-danger:hover,
-.btn-warning:hover,
-.btn-info:hover {
-  color: #fff;
 }
 
 .btnaddanswer:hover,
