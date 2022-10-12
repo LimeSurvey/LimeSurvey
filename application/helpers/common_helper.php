@@ -1032,13 +1032,12 @@ function returnGlobal($stringname, $bRestrictToString = false)
         }
     }
     $bUrlParamIsArray = is_array($urlParam); // Needed to array map or if $bRestrictToString
-    if (!is_null($urlParam) && $stringname != '' && (!$bUrlParamIsArray || !$bRestrictToString)) {
-        if ($stringname == 'sid' || $stringname == "gid" || $stringname == "oldqid" ||
-        $stringname == "qid" || $stringname == "tid" ||
-        $stringname == "lid" || $stringname == "ugid" ||
-        $stringname == "thisstep" || $stringname == "scenario" ||
-        $stringname == "cqid" || $stringname == "cid" ||
-        $stringname == "qaid" || $stringname == "scid") {
+
+    if (is_null($urlParam) || $stringname == '' || ($bUrlParamIsArray && $bRestrictToString)) {
+        return null;
+    }
+
+    if (in_array($stringname, ['sid', 'gid', 'oldqid', 'qid', 'tid', 'lid', 'ugid','thisstep', 'scenario', 'cqid', 'cid', 'qaid', 'scid'])) {
             if ($bUrlParamIsArray) {
                 return array_map("sanitize_int", $urlParam);
             } else {
@@ -1068,9 +1067,6 @@ function returnGlobal($stringname, $bRestrictToString = false)
             }
         }
         return $urlParam;
-    } else {
-        return null;
-    }
 }
 
 
