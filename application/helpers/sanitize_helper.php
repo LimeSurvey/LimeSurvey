@@ -181,10 +181,14 @@ function beautify_filename($filename)
  *     $force_lowercase - Force the string to lowercase?
  *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
  */
-
 function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = false)
 {
-    $string = str_replace(".", "", $string);
+    // normalise path slashes
+    $string = str_replace('\\', '/', $string);
+    // remove traversal
+    $string = str_replace(array('/..', '../', '/.', './'), '/', $string);
+    // remove empty path segments
+    $string = str_replace('//', '/', $string);
     return sanitize_filename($string, $force_lowercase, $alphanumeric, false);
 }
 
