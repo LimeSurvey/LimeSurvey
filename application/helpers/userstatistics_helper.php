@@ -699,7 +699,7 @@ class userstatistics_helper
             }
 
             //get answers
-            $query = "SELECT code, answer FROM {{answers}} WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+            $query = "SELECT code, answer FROM {{answers}} WHERE qid=".$db->quoteValue($qqid)." AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
             $result = Yii::app()->db->createCommand($query)->query();
 
             //loop through answers
