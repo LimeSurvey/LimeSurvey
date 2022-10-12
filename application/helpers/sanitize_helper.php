@@ -134,7 +134,7 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
     $ext = pathinfo($filename, PATHINFO_EXTENSION);
     $filename = mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)).($ext ? '.'.$ext : '');
     $filename = ($alphanumeric) ? preg_replace("/[^a-zA-Z0-9]/", "", $filename) : $filename;
-    
+
     if ($force_lowercase) {
         $filename=mb_strtolower($filename, 'UTF-8');
     }
@@ -498,4 +498,15 @@ function check_ip_address($ip)
 {
     // Leave the wrapper in case we need to enhance the checks later
     return filter_var($ip, FILTER_VALIDATE_IP);
+}
+
+/**
+ * Remove all chars from $value that are not alphanumeric or dash or underscore
+ *
+ * @param string $value
+ * @return string
+ */
+function sanitize_alphanumeric($value)
+{
+    return preg_replace("[^a-zA-Z0-9\-\_]", "", $value);
 }
