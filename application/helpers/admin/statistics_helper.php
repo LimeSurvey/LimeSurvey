@@ -578,6 +578,9 @@ class statistics_helper
      */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true)
     {
+        $language = sanitize_languagecode($language);
+        $surveyid = (int) $surveyid;
+
         //Set up required variables
         $survey = Survey::model()->findByPk($surveyid);
         $alist = array();
