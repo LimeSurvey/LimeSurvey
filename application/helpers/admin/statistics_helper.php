@@ -373,8 +373,9 @@ function buildSelects($allfields, $surveyid, $language)
                     //put together some SQL here
                     $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
 
+                    $db = Yii::app()->db;
                     foreach ($_POST[$pv] as $condition) {
-                        $thisquestion .= "'$condition', ";
+                        $thisquestion .= "{$db->quoteValue($condition)}, ";
                     }
 
                     $thisquestion = substr($thisquestion, 0, -2)
