@@ -442,6 +442,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('autorename'=>false))
 {
+    $newgid = (int) $newgid;
+    $iNewSID = (int) $iNewSID;
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
