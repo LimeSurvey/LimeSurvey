@@ -1191,7 +1191,7 @@ class statistics_helper
                 $qtitle = flattenText($nrow[0]);
                 $qtype = $nrow[1];
                 $qquestion = flattenText($nrow[2]);
-                $qiqid = $nrow[3];
+                $qiqid = (int) $nrow[3];
                 $qother = $nrow[5];
             }
 
@@ -1201,7 +1201,8 @@ class statistics_helper
                 case "A":
 
                     //get data
-                    $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
+                    $db = Yii::app()->db;
+                    $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title={$db->quoteValue($qanswer)} AND language={$db->quoteValue($language)} ORDER BY question_order";
                     $qresult = Yii::app()->db->createCommand($qquery)->query();
 
                     //loop through results
