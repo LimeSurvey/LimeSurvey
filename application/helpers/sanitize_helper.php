@@ -299,7 +299,7 @@ function sanitize_int($integer, $min = '', $max = '')
     if ($int == '') {
         return null;
     }
-    return $int;
+    return (int) $int;
 }
 
 // sanitize a username
