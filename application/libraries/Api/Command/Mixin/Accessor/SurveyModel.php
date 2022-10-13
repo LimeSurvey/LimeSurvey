@@ -19,7 +19,7 @@ trait SurveyModel
     public function getSurveyModel($id): ?Survey
     {
         if (!$this->survey) {
-            Survey::model()->findByPk($id);
+            $this->survey = Survey::model()->findByPk($id);
         }
 
         return $this->survey;

@@ -68,6 +68,7 @@ class QuestionGroupList implements CommandInterface
             $sLanguage = $oSurvey->language;
         }
 
+        $aData = array();
         foreach ($oGroupList as $oGroup) {
             $L10ns = $oGroup->questiongroupl10ns[$sLanguage];
             $tmp = array('id' => $oGroup->primaryKey) + $oGroup->attributes;
