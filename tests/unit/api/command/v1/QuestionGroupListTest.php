@@ -174,7 +174,7 @@ class QuestionGroupListTest extends TestBaseClass
             ->returns(true);
         $mockModelPermission = $mockModelPermissionHandle->get();
 
-        $questionGroup = new QuestionGroup;
+        $questionGroup = new QuestionGroup();
         $questionGroup->setAttributes(array(
             'id' => '1',
             'gid' => '1',

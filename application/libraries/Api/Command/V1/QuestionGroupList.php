@@ -69,10 +69,12 @@ class QuestionGroupList implements CommandInterface
 
         $aData = array();
         foreach ($oGroupList as $oGroup) {
-            $L10ns = $oGroup->questiongroupl10ns[$sLanguage];
             $tmp = array('id' => $oGroup->primaryKey) + $oGroup->attributes;
-            $tmp['group_name'] = $L10ns['group_name'];
-            $tmp['description'] = $L10ns['description'];
+            $L10ns = $oGroup->questiongroupl10ns[$sLanguage] ?? null;
+            if ($L10ns) {
+                $tmp['group_name'] = $L10ns['group_name'];
+                $tmp['description'] = $L10ns['description'];
+            }
             $tmp['language'] = $sLanguage;
             $aData[] = $tmp;
         }
