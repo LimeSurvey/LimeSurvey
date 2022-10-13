@@ -885,7 +885,7 @@ class Themes extends SurveyCommonAction
 
                     $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile, $relativePathEditfile);
 
-                    if (is_writable($savefilename) && Yii::app()->is_file($savefilename)) {
+                    if (is_writable($savefilename)) {
                         if (!$handle = fopen($savefilename, 'w')) {
                             Yii::app()->user->setFlash('error', gT('Could not open file ') . $savefilename);
                             $this->getController()->redirect(array("admin/themes/sa/upload"));
