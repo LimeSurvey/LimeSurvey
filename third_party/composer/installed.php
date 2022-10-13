@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'd459f75b595702dd4e5cd5deb2afbe785e6f0f06',
+    'reference' => '614875c938806ae55cee91581a29a1178330ed9d',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'd459f75b595702dd4e5cd5deb2afbe785e6f0f06',
+      'reference' => '614875c938806ae55cee91581a29a1178330ed9d',
     ),
     'paragonie/constant_time_encoding' => 
     array (
@@ -40,12 +40,12 @@
     ),
     'paragonie/sodium_compat' => 
     array (
-      'pretty_version' => 'v1.18.0',
-      'version' => '1.18.0.0',
+      'pretty_version' => 'v1.19.0',
+      'version' => '1.19.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '906e0b925895d3a5941eda25f371fbafb3cbc22f',
+      'reference' => 'cb15e403ecbe6a6cc515f855c310eb6b1872a933',
     ),
     'phpseclib/bcmath_compat' => 
     array (
@@ -119,7 +119,7 @@
       array (
         0 => '1.1.x-dev',
       ),
-      'reference' => '89ff97cd81bcec982c4f8b1325a8cdc10a14b2f6',
+      'reference' => '8b9619b65df0544436ba0b69db73d2f93dc46dca',
     ),
   ),
 );
