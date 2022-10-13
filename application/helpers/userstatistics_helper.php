@@ -377,10 +377,11 @@ function buildSelects($allfields, $surveyid, $language)
                     $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
                     $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp"
             ) {
-//pull out just the fieldnames
+                //pull out just the fieldnames
                 //put together some SQL here
                 $thisquestion = Yii::app()->db->quoteColumnName($pv) . " IN (";
 
+                $db = Yii::app()->db;
                 foreach ($_POST[$pv] as $condition) {
                     $thisquestion .= "{$db->quoteValue($condition)}, ";
                 }
