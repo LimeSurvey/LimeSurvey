@@ -208,7 +208,6 @@ class QuestionGroupListTest extends TestBaseClass
 
         $responseData = $response->getData();
 
-
         $this->assertEquals(array(
             'id' => '1',
             'gid' => '1',

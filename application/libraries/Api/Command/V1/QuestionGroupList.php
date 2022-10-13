@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use QuestionGroup;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
@@ -77,6 +76,7 @@ class QuestionGroupList implements CommandInterface
             $tmp['language'] = $sLanguage;
             $aData[] = $tmp;
         }
+
         return $this->responseSuccess(
             $aData
         );
