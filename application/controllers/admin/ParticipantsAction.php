@@ -1454,7 +1454,10 @@ class ParticipantsAction extends SurveyCommonAction
                 }
             } else {
                 // custom participant attributes
-                $oAttributes = ParticipantAttribute::model()->findAll("attribute_id=:attribute_id", array("attribute_id" => $attributeId));
+                $oAttributes = ParticipantAttribute::model()->findAll(
+                    'attribute_id = :attribute_id',
+                    array(':attribute_id' => $attributeId)
+                );
                 foreach ($oAttributes as $attribute) {
                     $aUpdateData = array();
                     if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
@@ -1466,10 +1469,10 @@ class ParticipantsAction extends SurveyCommonAction
                         $oDB->createCommand()->update(
                             '{{participant_attribute}}',
                             $aUpdateData,
-                            'attribute_id=:attribute_id AND participant_id=:participant_id',
+                            'attribute_id = :attribute_id AND participant_id = :participant_id',
                             array(
-                                'attribute_id' => $attributeId,
-                                'participant_id' => $attribute->participant_id
+                                ':attribute_id' => $attributeId,
+                                ':participant_id' => $attribute->participant_id
                             )
                         );
                     }
@@ -1618,10 +1621,10 @@ class ParticipantsAction extends SurveyCommonAction
                     $oDB->createCommand()->update(
                         '{{participant_attribute}}',
                         $aUpdateData,
-                        "attribute_id=:attribute_id AND participant_id=:participant_id",
+                        "attribute_id = :attribute_id AND participant_id = :participant_id",
                         array(
-                            'attribute_id' => $iAttributeId,
-                            'participant_id' => $attribute->participant_id
+                            ':attribute_id' => $iAttributeId,
+                            ':participant_id' => $attribute->participant_id
                         )
                     );
                 }
