@@ -1,16 +1,28 @@
 <!-- test/execute survey -->
-<?php if (count($surveyLanguages) > 1): ?>
-    <div class="btn-group">
-        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <?php if($oSurvey->active=='N'):?>
-                <span class="fa fa-eye" ></span>
-                <?php eT('Preview survey');?>
-            <?php else: ?>
-                <span class="fa fa-play" ></span>
-                <?php eT('Run survey');?>
-            <?php endif;?>
-            <span class="caret"></span>
-        </button>
+<?php
+$notActive = $oSurvey->active=='N';
+?>
+
+    <div class="d-inline-flex">
+        <?php
+        $this->widget('ext.ButtonWidget.ButtonWidget', [
+            'name' => $notActive ? 'ls-preview-button' : 'ls-run-button',
+            'id' => $notActive ? 'ls-preview-button' : 'ls-run-button',
+            'text' => $notActive ? gT('Preview survey') : gT('Run survey'),
+            'icon' => $notActive ? 'fa fa-eye' : 'fa fa-play',
+            'menu' => count($surveyLanguages) > 1,
+            'link' => Yii::App()->createUrl(
+                "survey/index",
+                array('sid' => $surveyid, 'newtest' => "Y", 'lang' => $oSurvey->language)
+            ),
+            'htmlOptions' => [
+                'class' => 'btn btn-secondary btntooltip',
+                'role' => 'button',
+                'accesskey' => 'd',
+                'target' => '_blank',
+            ],
+        ]); ?>
+        <?php if (count($surveyLanguages) > 1): ?>
         <ul class="dropdown-menu" style="min-width : 252px;">
             <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
                 <li>
@@ -20,29 +32,29 @@
                 </li>
             <?php endforeach; ?>
         </ul>
+        <?php endif; ?>
     </div>
-<?php else: ?>
-    <a class="btn btn-outline-secondary btntooltip" href="<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank' role="button">
-        <?php if($oSurvey->active=='N'):?>
-            <span class="fa fa-eye" ></span>
-            <?php eT('Preview survey');?>
-        <?php else: ?>
-            <span class="fa fa-play" ></span>
-            <?php eT('Run survey');?>
-        <?php endif;?>
-    </a>
-<?php endif;?>
 
 <?php if($hasSurveyContentUpdatePermission): ?>
-    <?php if (count($surveyLanguages) > 1): ?>
-        <!-- Preview group multilanguage -->
-        <div class="btn-group">
-            <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="fa fa-eye" ></span>
-                <?php eT("Preview question group"); ?> <span class="caret"></span>
-            </button>
+    <!-- Preview group -->
+    <div class="d-inline-flex">
+    <?php
+    $this->widget('ext.ButtonWidget.ButtonWidget', [
+        'name' => 'ls-group-preview-button',
+        'id' => 'ls-group-preview-button',
+        'text' => gT('Preview question group'),
+        'icon' => 'fa fa-eye',
+        'menu' => count($surveyLanguages) > 1,
+        'link' => Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"),
+        'htmlOptions' => [
+            'class' => 'btn btn-secondary btntooltip',
+            'role' => 'button',
+            'target' => '_blank',
+        ],
+    ]); ?>
+    <?php if (count($surveyLanguages) > 1) : ?>
             <ul class="dropdown-menu" style="min-width : 252px;">
-                <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
+                <?php foreach ($surveyLanguages as $languageCode => $languageName) : ?>
                     <li>
                         <a class="dropdown-item" target="_blank" href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $languageCode); ?>" >
                             <?php echo $languageName; ?>
@@ -50,14 +62,8 @@
                     </li>
                 <?php endforeach; ?>
             </ul>
-        </div>
-    <?php else: ?>
-        <!-- Preview group single language -->
-        <a type="button" class="btn btn-outline-secondary"
-           href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
-           target="_blank">
-            <span class="fa fa-eye"></span>
-            <?php eT("Preview question group"); ?>
-        </a>
+
     <?php endif; ?>
+    </div>
 <?php endif; ?>
+
