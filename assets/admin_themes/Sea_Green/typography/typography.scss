@@ -1,112 +1,37 @@
-$font-sizes: (
-  100: (
-    100px,
-    130px,
-  ),
-  86: (
-    86px,
-    112px,
-  ),
-  74: (
-    74px,
-    96px,
-  ),
-  62: (
-    62px,
-    80px,
-  ),
-  56: (
-    56px,
-    68px,
-  ),
-  48: (
-    48px,
-    68px,
-  ),
-  40: (
-    40px,
-    52px,
-  ),
-  32: (
-    32px,
-    40px,
-  ),
-  28: (
-    28px,
-    36px,
-  ),
-  24: (
-    24px,
-    32px,
-  ),
-  20: (
-    20px,
-    26px,
-  ),
-  18: (
-    18px,
-    24px,
-  ),
-  16: (
-    16px,
-    24px,
-  ),
-  14: (
-    14px,
-    20px,
-  ),
-  12: (
-    12px,
-    16px,
-  ),
-);
-
-$reg-weight: 400;
-$semi-weight: 600;
-$light-weight: 300;
-
-@mixin font-size($fs-map, $fs-font-weight, $fs-font-family) {
-  @each $size, $fs-font-size in $fs-map {
-    &-#{$size} {
-      @if $fs-font-family == "sans" {
-        font-family: "IBM Plex Sans";
-      } @else if $fs-font-family == "serif" {
-        font-family: "IBM Plex Serif";
-      }
-
-      @if $fs-font-weight == "regular" {
-        font-weight: $reg-weight;
-      } @else if $fs-font-weight == "semi" {
-        font-weight: $semi-weight;
-      } @else {
-        font-weight: $light-weight;
-      }
-
-      @if type-of($fs-font-size) == "list" {
-        font-size: nth($fs-font-size, 1);
-        @if (length($fs-font-size) > 1) {
-          line-height: nth($fs-font-size, 2);
-        }
-      }
-    }
-  }
+body {
+  font-family: "IBMPlexSans";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
 }
 
-.sans-reg {
-  @include font-size($font-sizes, "regular", "sans");
+h1,
+.h1 {
+  font-family: "IBMPlexSans";
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
 }
-.sans-semi {
-  @include font-size($font-sizes, "semi", "sans");
+
+h2,
+.h2 {
+  font-family: "IBMPlexSans";
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
 }
-.sans-light {
-  @include font-size($font-sizes, "light", "sans");
+
+h3,
+.h3 {
+  font-family: "IBMPlexSans";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
 }
-.serif-reg {
-  @include font-size($font-sizes, "regular", "serif");
-}
-.serif-semi {
-  @include font-size($font-sizes, "semi", "serif");
-}
-.serif-light {
-  @include font-size($font-sizes, "light", "serif");
+
+label {
+  font-family: "IBMPlexSans";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
 }

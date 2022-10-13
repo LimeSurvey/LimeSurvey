@@ -2738,3 +2738,41 @@ tr.info, tr.danger {
 .question-filter-container label {
   font-weight: normal;
 }
+
+body {
+  font-family: "IBMPlexSans";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+h1,
+.h1 {
+  font-family: "IBMPlexSans";
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+h2,
+.h2 {
+  font-family: "IBMPlexSans";
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+h3,
+.h3 {
+  font-family: "IBMPlexSans";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+label {
+  font-family: "IBMPlexSans";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}

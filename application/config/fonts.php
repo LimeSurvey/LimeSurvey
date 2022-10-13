@@ -19,6 +19,16 @@ if (isset($_GET['isAjax'])) {
 }
 $coreFonts = array(
     
+    'font-ibm-sans' => array(
+        'title' => 'IBM Sans',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/ibm-plex-sans',
+        'basePath' => 'fonts.ibm-plex-sans',
+        'css' => array(
+            'ibm-sans.css',
+        ),
+    ),
+
     'fontawesome' => array(
         'title' => 'Font Awesome',
         'type' => 'core',
