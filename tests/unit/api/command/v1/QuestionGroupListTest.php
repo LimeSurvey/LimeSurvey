@@ -3,13 +3,16 @@
 namespace ls\tests\unit\api\command\v1;
 
 use Eloquent\Phony\Phpunit\Phony;
+use Survey;
 use Permission;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionGroupList;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\ApiSession;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 
 /**
  * @testdox API command v1 QuestionGroupList
@@ -79,6 +82,11 @@ class QuestionGroupListTest extends TestBaseClass
             ->returns(true);
         $mockApiSession = $mockApiSessionHandle->get();
 
+        $mockSurveyModelHandle = Phony::mock(Survey::class);
+        $mockSurveyModelHandle->hasSurveyPermission
+            ->returns(true);
+        $mockSurveyModel = $mockSurveyModelHandle->get();
+
         $mockModelPermissionHandle = Phony::mock(Permission::class);
         $mockModelPermissionHandle->hasSurveyPermission
             ->returns(false);
@@ -86,13 +94,55 @@ class QuestionGroupListTest extends TestBaseClass
 
         $command = new QuestionGroupList;
         $command->setApiSession($mockApiSession);
+        $command->setSurveyModel($mockSurveyModel);
         $command->setPermissionModel($mockModelPermission);
 
         $response = $command->run($request);
 
         $this->assertResponseStatus(
             $response,
-            new StatusErrorNotFound
+            new StatusErrorUnauthorised
+        );
+    }
+
+    /**
+     * @testdox Returns success with status if there are no groups for survey id.
+     */
+    public function testQuestionGroupNoGroupsForSurveyId()
+    {
+        $request = new Request(array(
+            'sessionKey' => 'not-a-valid-session-id',
+            'surveyID' => 'surveyID',
+            'language' => 'language'
+        ));
+
+        $mockApiSessionHandle = Phony::mock(ApiSession::class);
+        $mockApiSessionHandle
+            ->checkKey
+            ->returns(true);
+        $mockApiSession = $mockApiSessionHandle->get();
+
+        $mockSurveyModelHandle = Phony::mock(Survey::class);
+        $mockSurveyModelHandle->hasSurveyPermission
+            ->returns(true);
+        $mockSurveyModel = $mockSurveyModelHandle->get();
+
+        $mockModelPermissionHandle = Phony::mock(Permission::class);
+        $mockModelPermissionHandle->hasSurveyPermission
+            ->returns(true);
+        $mockModelPermission = $mockModelPermissionHandle->get();
+
+        $command = new QuestionGroupList;
+        $command->setApiSession($mockApiSession);
+        $command->setSurveyModel($mockSurveyModel);
+        $command->setPermissionModel($mockModelPermission);
+        $command->setQuestionGroupModelCollectionWithLn10sBySid([]);
+
+        $response = $command->run($request);
+
+        $this->assertResponseStatus(
+            $response,
+            new StatusSuccess
         );
     }
 }
