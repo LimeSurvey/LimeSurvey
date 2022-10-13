@@ -480,7 +480,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // Try to connect
         $ldapconn = $this->createConnection();
-        if (!is_resource($ldapconn)) {
+        if ($ldapconn === false) {
             $this->setAuthFailure($ldapconn['errorCode'], gT($ldapconn['errorMessage']));
             return;
         }
