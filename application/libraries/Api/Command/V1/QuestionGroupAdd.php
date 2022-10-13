@@ -10,44 +10,14 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
 
 class QuestionGroupAdd implements CommandInterface
 {
     use AuthSession;
     use AuthPermission;
     use CommandResponse;
-
-    private $survey = null;
-
-    /**
-     * Get Survey
-     *
-     * Used as a proxy for providing a mock record during testing.
-     *
-     * @param int $id
-     * @return Survey
-     */
-    public function getSurvey($id): ?Survey
-    {
-        if (!$this->survey) {
-            Survey::model()->findByPk($id);
-        }
-
-        return $this->survey;
-    }
-
-    /**
-     * Set Survey
-     *
-     * Used to set mock record during testing.
-     *
-     * @param int $id
-     * @return void
-     */
-    public function setSurvey(Survey $survey)
-    {
-        $this->survey = $survey;
-    }
+    use SurveyModel;
 
     /**
      * Run group add command.
@@ -80,7 +50,7 @@ class QuestionGroupAdd implements CommandInterface
             return $response;
         }
 
-        $oSurvey = $this->getSurvey($iSurveyID);
+        $oSurvey = $this->getSurveyModel($iSurveyID);
         if (!isset($oSurvey)) {
             return $this->responseErrorBadRequest(
                 array('status' => 'Error: Invalid survey ID')

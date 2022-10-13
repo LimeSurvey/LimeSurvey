@@ -91,8 +91,8 @@ class QuestionGroupDeleteTest extends TestBaseClass
         $mockModelPermission = $mockModelPermissionHandle->get();
 
         $command = new QuestionGroupDelete();
-        $command->setGroup($mockModelGroup);
-        $command->setSurvey($mockModelSurvey);
+        $command->setQuestionGroupModel($mockModelGroup);
+        $command->setSurveyModel($mockModelSurvey);
         $command->setApiSession($mockApiSession);
         $command->setPermissionModel($mockModelPermission);
 

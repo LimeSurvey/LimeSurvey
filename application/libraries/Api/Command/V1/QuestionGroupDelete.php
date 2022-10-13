@@ -9,77 +9,16 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\Mixin\Accessor\QuestionGroupModel;
+use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
 
 class QuestionGroupDelete implements CommandInterface
 {
     use AuthSession;
     use AuthPermission;
     use CommandResponse;
-
-    private $group = null;
-    private $survey = null;
-
-    /**
-     * Get Group
-     *
-     * Used as a proxy for providing a mock record during testing.
-     *
-     * @param int $id
-     * @return QuestionGroup
-     */
-    public function getGroup($id): ?QuestionGroup
-    {
-        if (!$this->group) {
-            $this->group =
-                QuestionGroup::model()
-                    ->findByAttributes(array('gid' => $id));
-        }
-
-        return $this->group;
-    }
-
-    /**
-     * Set Group
-     *
-     * Used to set mock record during testing.
-     *
-     * @param int $id
-     * @return void
-     */
-    public function setGroup(QuestionGroup $group)
-    {
-        $this->group = $group;
-    }
-
-    /**
-     * Get Survey
-     *
-     * Used as a proxy for providing a mock record during testing.
-     *
-     * @param int $id
-     * @return Survey
-     */
-    public function getSurvey($id): ?Survey
-    {
-        if (!$this->survey) {
-            Survey::model()->findByPk($id);
-        }
-
-        return $this->survey;
-    }
-
-    /**
-     * Set Survey
-     *
-     * Used to set mock record during testing.
-     *
-     * @param int $id
-     * @return void
-     */
-    public function setSurvey(Survey $survey)
-    {
-        $this->survey = $survey;
-    }
+    use QuestionGroupModel;
+    use SurveyModel;
 
     /**
      * Run group delete command.
@@ -99,7 +38,7 @@ class QuestionGroupDelete implements CommandInterface
             return $response;
         }
 
-        $oGroup = $this->getGroup($iGroupID);
+        $oGroup = $this->getQuestionGroupModel($iGroupID);
         if (!isset($oGroup)) {
             return $this->responseErrorNotFound(
                 array('status' => 'Error:Invalid group ID')
@@ -107,7 +46,7 @@ class QuestionGroupDelete implements CommandInterface
         }
         $iSurveyID = $oGroup->sid;
 
-        $oSurvey = $this->getSurvey($iSurveyID);
+        $oSurvey = $this->getSurveyModel($iSurveyID);
         if (!isset($oSurvey)) {
             return $this->responseErrorBadRequest(
                 array('status' => 'Error: Invalid survey ID')
