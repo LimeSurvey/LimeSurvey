@@ -4,7 +4,6 @@ namespace LimeSurvey\Api\Command\V1;
 
 use QuestionGroup;
 use QuestionGroupL10n;
-use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
