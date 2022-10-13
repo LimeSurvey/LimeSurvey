@@ -83,8 +83,8 @@ class ParticipantAttribute extends LSActiveRecord
             ->where(
                 "participant_id = :participant_id AND attribute_id = :attribute_id",
                 array(
-                    'participant_id' => $data['participant_id'],
-                    'attribute_id' => $data['participant_id']
+                    ':participant_id' => $data['participant_id'],
+                    ':attribute_id' => $data['participant_id']
                 )
             )
             ->from('{{participant_attribute}}')
@@ -96,8 +96,8 @@ class ParticipantAttribute extends LSActiveRecord
                     $data,
                     "participant_id = :participant_id AND attribute_id = :attribute_id",
                     array(
-                        'participant_id' => $data['participant_id'],
-                        'attribute_id' => $data['attribute_id']
+                        ':participant_id' => $data['participant_id'],
+                        ':attribute_id' => $data['attribute_id']
                     )
                 );
         } else {
