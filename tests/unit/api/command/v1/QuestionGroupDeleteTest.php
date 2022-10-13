@@ -2,8 +2,10 @@
 
 namespace ls\tests\unit\api\command\v1;
 
-use Eloquent\Phony\Phpunit\Phony;
 use Permission;
+use QuestionGroup;
+use Survey;
+use Eloquent\Phony\Phpunit\Phony;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
@@ -63,7 +65,8 @@ class QuestionGroupDeleteTest extends TestBaseClass
     /**
      * @testdox Returns invalid session response (error unauthorised) users does not have permission.
      */
-    public function testQuestionGroupAddNoPermission()
+
+    public function testQuestionGroupDeleteNoPermission()
     {
         $request = new Request(array(
             'sessionKey' => 'mocked',
@@ -76,12 +79,20 @@ class QuestionGroupDeleteTest extends TestBaseClass
             ->returns(true);
         $mockApiSession = $mockApiSessionHandle->get();
 
+        $mockModelGroupHandle = Phony::mock(QuestionGroup::class);
+        $mockModelGroup = $mockModelGroupHandle->get();
+
+        $mockModelSurveyHandle = Phony::mock(Survey::class);
+        $mockModelSurvey = $mockModelSurveyHandle->get();
+
         $mockModelPermissionHandle = Phony::mock(Permission::class);
         $mockModelPermissionHandle->hasSurveyPermission
             ->returns(false);
         $mockModelPermission = $mockModelPermissionHandle->get();
 
         $command = new QuestionGroupDelete();
+        $command->setGroup($mockModelGroup);
+        $command->setSurvey($mockModelSurvey);
         $command->setApiSession($mockApiSession);
         $command->setPermissionModel($mockModelPermission);
 
