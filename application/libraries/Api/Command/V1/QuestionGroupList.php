@@ -3,18 +3,19 @@
 namespace LimeSurvey\Api\Command\V1;
 
 use QuestionGroup;
-use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
 
 class QuestionGroupList implements CommandInterface
 {
     use AuthSession;
     use AuthPermission;
     use CommandResponse;
+    use SurveyModel;
 
     /**
      * Run group list command.
@@ -35,8 +36,7 @@ class QuestionGroupList implements CommandInterface
             return $response;
         }
 
-        $iSurveyID = (int) $iSurveyID;
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $oSurvey = $this->getSurveyModel($iSurveyID);
         if (!isset($oSurvey)) {
             return $this->responseErrorNotFound(
                 array('status' => 'Error: Invalid survey ID')
