@@ -45,7 +45,7 @@
                         <div class="help-block">
                             <span class='annotation text-info'><?php echo  gT("Optional"); ?> </span>
                             -
-                            <?= gT("If ID is taken, a random one will be assigned."); ?> </span>
+                            <?= gT("If the new survey ID is already used, a random one will be assigned."); ?> </span>
                         </div>
                     </div>
                     <div class="form-group">
