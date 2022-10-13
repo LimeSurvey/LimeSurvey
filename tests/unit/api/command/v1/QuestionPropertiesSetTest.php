@@ -8,7 +8,7 @@ use LimeSurvey\Api\Command\V1\QuestionPropertiesSet;
 use LimeSurvey\Api\Command\Request\Request;
 
 /**
- * @testdox API command v1 QuestionPropertiesGet.
+ * @testdox API command v1 QuestionPropertiesSet.
  */
 class QuestionPropertiesSetTest extends TestBaseClass
 {
