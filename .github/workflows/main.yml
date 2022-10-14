@@ -99,8 +99,8 @@ jobs:
 
       - name: Load custom console and start the Application
         run: |
-          php application/commands/console.php install admin password TravisLS no@email.com verbose
           cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
 
           # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
           # TODO: Disable, a lines was added to config file and some tests started to fail.
