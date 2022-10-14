@@ -8,7 +8,7 @@ use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
 use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
-use LimeSurvey\Api\Command\Mixin\Accessor\QuestionGroupModelCollectionWithLn10sBySid;
+use LimeSurvey\Api\Command\Mixin\Accessor\QuestionGroupModelCollectionWithL10nsBySid;
 
 class QuestionGroupList implements CommandInterface
 {
@@ -16,7 +16,7 @@ class QuestionGroupList implements CommandInterface
     use AuthPermission;
     use CommandResponse;
     use SurveyModel;
-    use QuestionGroupModelCollectionWithLn10sBySid;
+    use QuestionGroupModelCollectionWithL10nsBySid;
 
     /**
      * Run group list command.
@@ -55,7 +55,7 @@ class QuestionGroupList implements CommandInterface
             return $response;
         }
 
-        $oGroupList = $this->getQuestionGroupModelCollectionWithLn10sBySid($iSurveyID);
+        $oGroupList = $this->getQuestionGroupModelCollectionWithL10nsBySid($iSurveyID);
         if (count($oGroupList) == 0) {
             // In future version on the API this should simply return an empty array
             return $this->responseSuccess(

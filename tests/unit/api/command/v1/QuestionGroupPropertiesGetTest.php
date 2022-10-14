@@ -93,7 +93,7 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
 
         $command = new QuestionGroupPropertiesGet;
         $command->setApiSession($mockApiSession);
-        $command->setQuestionGroupModelWithLn10sById($mockQuestionGroupModel);
+        $command->setQuestionGroupModelWithL10nsById($mockQuestionGroupModel);
         $command->setPermissionModel($mockModelPermission);
 
         $response = $command->run($request);

@@ -137,7 +137,7 @@ class QuestionGroupListTest extends TestBaseClass
         $command->setApiSession($mockApiSession);
         $command->setSurveyModel($mockSurveyModel);
         $command->setPermissionModel($mockModelPermission);
-        $command->setQuestionGroupModelCollectionWithLn10sBySid([]);
+        $command->setQuestionGroupModelCollectionWithL10nsBySid([]);
 
         $response = $command->run($request);
 
@@ -195,7 +195,7 @@ class QuestionGroupListTest extends TestBaseClass
         $command->setApiSession($mockApiSession);
         $command->setSurveyModel($mockSurveyModel);
         $command->setPermissionModel($mockModelPermission);
-        $command->setQuestionGroupModelCollectionWithLn10sBySid([
+        $command->setQuestionGroupModelCollectionWithL10nsBySid([
             $questionGroup
         ]);
 

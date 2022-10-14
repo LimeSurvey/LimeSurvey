@@ -4,27 +4,27 @@ namespace LimeSurvey\Api\Command\Mixin\Accessor;
 
 use QuestionGroup;
 
-trait QuestionGroupModelWithLn10sById
+trait QuestionGroupModelWithL10nsById
 {
-    private $questionGroupWithLn10sById = null;
+    private $questionGroupWithL10nsById = null;
 
     /**
-     * Get question group with ln10s by id
+     * Get question group with L10ns by id
      *
      * Used as a proxy for providing a mock record during testing.
      *
      * @param int $id
      * @return Array
      */
-    public function getQuestionGroupModelWithLn10sById($id)
+    public function getQuestionGroupModelWithL10nsById($id)
     {
-        if (!$this->questionGroupWithLn10sById) {
-            $this->questionGroupWithLn10sById = QuestionGroup::model()
+        if (!$this->questionGroupWithL10nsById) {
+            $this->questionGroupWithL10nsById = QuestionGroup::model()
                 ->with('questiongroupl10ns')
                 ->findByAttributes(array('gid' => $id));
         }
 
-        return $this->questionGroupWithLn10sById;
+        return $this->questionGroupWithL10nsById;
     }
 
     /**
@@ -35,8 +35,8 @@ trait QuestionGroupModelWithLn10sById
      * @param int $id
      * @return void
      */
-    public function setQuestionGroupModelWithLn10sById($collection)
+    public function setQuestionGroupModelWithL10nsById($collection)
     {
-        $this->questionGroupWithLn10sById = $collection;
+        $this->questionGroupWithL10nsById = $collection;
     }
 }
