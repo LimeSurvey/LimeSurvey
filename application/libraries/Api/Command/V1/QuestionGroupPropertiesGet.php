@@ -10,6 +10,7 @@ use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
 use LimeSurvey\Api\Command\Mixin\Accessor\QuestionGroupModelWithL10nsById;
+use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
 
 class QuestionGroupPropertiesGet implements CommandInterface
 {
@@ -17,6 +18,7 @@ class QuestionGroupPropertiesGet implements CommandInterface
     use AuthPermission;
     use CommandResponse;
     use QuestionGroupModelWithL10nsById;
+    use SurveyModel;
 
     /**
      * Run group properties get command.
@@ -58,7 +60,8 @@ class QuestionGroupPropertiesGet implements CommandInterface
 
         $iSurveyID = $oGroup->sid;
         if (is_null($sLanguage)) {
-            $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            $survey = $this->getSurveyModel($iSurveyID);
+            $sLanguage = $survey->language;
         }
 
         if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {

@@ -9,6 +9,7 @@ use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionGroupPropertiesGet;
 use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
@@ -72,7 +73,7 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
     {
         $request = new Request(array(
             'sessionKey' => 'mock',
-            'groupID' => 'no-found',
+            'groupID' => 'mock',
             'groupSettings' => 'groupSettings',
             'language' => 'language'
         ));
@@ -101,6 +102,45 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
         $this->assertResponseStatus(
             $response,
             new StatusErrorUnauthorised
+        );
+    }
+
+    /**
+     * @testdox Returns invalid session response (error unauthorised) users does not have permission.
+     */
+    public function testQuestionGroupPropertiesGetInvalidLanguage()
+    {
+        $request = new Request(array(
+            'sessionKey' => 'mock',
+            'groupID' => 'mock',
+            'groupSettings' => 'groupSettings',
+            'language' => 'invalid-language'
+        ));
+
+        $mockApiSessionHandle = Phony::mock(ApiSession::class);
+        $mockApiSessionHandle
+            ->checkKey
+            ->returns(true);
+        $mockApiSession = $mockApiSessionHandle->get();
+
+        $mockQuestionGroupModelHandle = Phony::mock(QuestionGroup::class);
+        $mockQuestionGroupModel = $mockQuestionGroupModelHandle->get();
+
+        $mockModelPermissionHandle = Phony::mock(Permission::class);
+        $mockModelPermissionHandle->hasSurveyPermission
+            ->returns(true);
+        $mockModelPermission = $mockModelPermissionHandle->get();
+
+        $command = new QuestionGroupPropertiesGet;
+        $command->setApiSession($mockApiSession);
+        $command->setQuestionGroupModelWithL10nsById($mockQuestionGroupModel);
+        $command->setPermissionModel($mockModelPermission);
+
+        $response = $command->run($request);
+
+        $this->assertResponseStatus(
+            $response,
+            new StatusErrorBadRequest
         );
     }
 }

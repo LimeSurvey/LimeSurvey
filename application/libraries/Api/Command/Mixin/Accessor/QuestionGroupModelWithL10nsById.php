@@ -14,7 +14,7 @@ trait QuestionGroupModelWithL10nsById
      * Used as a proxy for providing a mock record during testing.
      *
      * @param int $id
-     * @return Array
+     * @return QuestionGroup
      */
     public function getQuestionGroupModelWithL10nsById($id)
     {
