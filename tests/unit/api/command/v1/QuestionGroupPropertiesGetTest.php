@@ -41,7 +41,7 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
     /**
      * @testdox Returns error not-found if group id is not valid.
      */
-    public function testQuestionGroupPropertiesGetInvalidSurveyId()
+    public function testQuestionGroupPropertiesGetInvalidGroupId()
     {
         $request = new Request(array(
             'sessionKey' => 'mock',

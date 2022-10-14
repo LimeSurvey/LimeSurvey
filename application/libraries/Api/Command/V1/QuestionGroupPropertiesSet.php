@@ -11,12 +11,16 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\Mixin\Accessor\QuestionGroupModelWithL10nsById;
+use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
 
 class QuestionGroupPropertiesSet implements CommandInterface
 {
     use AuthSession;
     use AuthPermission;
     use CommandResponse;
+    use QuestionGroupModelWithL10nsById;
+    use SurveyModel;
 
     /**
      * Run group properties get command.
@@ -37,10 +41,7 @@ class QuestionGroupPropertiesSet implements CommandInterface
             return $response;
         }
 
-        $iGroupID = (int) $iGroupID;
-        $oGroup = QuestionGroup::model()
-            ->with('questiongroupl10ns')
-            ->findByAttributes(array('gid' => $iGroupID));
+        $oGroup = $this->getQuestionGroupModelWithL10nsById($iGroupID);
         if (is_null($oGroup)) {
             return $this->responseErrorNotFound(
                 array('status' => 'Error: Invalid group ID')
