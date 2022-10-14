@@ -95,7 +95,8 @@ jobs:
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
-          mysql -h 127.0.0.1 -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS limesurvey;"
+          mysql -h 127.0.0.1 -uroot -proot -e "CREATE DATABASE IF NOT EXISTS limesurvey;"
 
       - name: Load custom console and start the Application
         run: |
