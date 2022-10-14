@@ -1355,12 +1355,12 @@ function do_ranking($ia)
     if (trim($aQuestionAttributes['choice_title'][App()->language]) != '') {
         $choice_title = htmlspecialchars(trim($aQuestionAttributes['choice_title'][App()->language]), ENT_QUOTES);
     } else {
-        $choice_title = gT("Your Choices", 'html');
+        $choice_title = gT("Available items", 'html');
     }
     if (trim($aQuestionAttributes['rank_title'][App()->language]) != '') {
         $rank_title = htmlspecialchars(trim($aQuestionAttributes['rank_title'][App()->language]), ENT_QUOTES);
     } else {
-        $rank_title = gT("Your Ranking", 'html');
+        $rank_title = gT("Your ranking", 'html');
     }
     $aDisplayAnswers = [];
     foreach ($aAnswers as $aAnswer) {
@@ -3059,7 +3059,7 @@ function do_array_5point($ia)
             ), true);
     }
 
-    foreach ($aSubquestions as $ansrow) {
+    foreach ($aSubquestions as $j => $ansrow) {
         $myfname = $ia[1] . $ansrow['title'];
         $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
         if (strpos($answertext, '|') !== false) {
@@ -3120,6 +3120,7 @@ function do_array_5point($ia)
 
         $sRows .= doRender('/survey/questions/answer/arrays/5point/rows/answer_row', array(
             'answer_tds'    => $answer_tds,
+            'odd'           => ($j % 2),
             'myfname'       => $myfname,
             'answertext'    => $answertext,
             'answerwidth'   => $answerwidth,
@@ -4239,7 +4240,8 @@ function do_array_multiflexi($ia)
         $caption            .= gT("Please enter only numbers.");
     } else {
         $layout = "dropdown";
-        $answertypeclass     = " dropdown-item";
+        $answertypeclass     = " ls-dropdown-item";
+        
         $coreClass          .= " dropdown-array";
         $coreRowClass .= " dropdown-list";
         $caption            .= gT("Please select an answer for each combination.");
