@@ -89,7 +89,7 @@ class SendSubmitNotificationsCommand
         }
 
         // set email language
-        $emailLanguage = null;
+        $emailLanguage = App()->getLanguage();
         if (isset($_SESSION['survey_' . $surveyid]['s_lang'])) {
             $emailLanguage = $_SESSION['survey_' . $surveyid]['s_lang'];
         }
@@ -130,7 +130,7 @@ class SendSubmitNotificationsCommand
 
         // admin_notification (Basic admin notification)
         if (count($aEmailNotificationTo) > 0) {
-            $warnings = $this->processBasicAdminNotification($surveyid, $aEmailNotificationTo, $emails);
+            $warnings = $this->processBasicAdminNotification($surveyid, $aEmailNotificationTo, $emails, $emailLanguage, $responseId);
             if ($warnings) {
                 echo $warnings;
             }
@@ -138,7 +138,7 @@ class SendSubmitNotificationsCommand
 
         // admin_notification (Detailed admin notification)
         if (count($aEmailResponseTo) > 0) {
-            $warnings = $this->processDetailedAdminNotification($surveyid, $aReplacementVars, $aEmailResponseTo, $emails);
+            $warnings = $this->processDetailedAdminNotification($surveyid, $aReplacementVars, $aEmailResponseTo, $emails, $emailLanguage);
             if ($warnings) {
                 echo $warnings;
             }
@@ -150,7 +150,7 @@ class SendSubmitNotificationsCommand
     /**
      * Saves a failed email whenever processing and sensing an email fails or overwrites a found entry with updated values
      *
-     * @param int|null $id Id of failed email
+     * @param ?int $id Id of failed email
      * @param string $recipient
      * @param int $surveyId
      * @param int $responseId
@@ -188,10 +188,10 @@ class SendSubmitNotificationsCommand
     }
 
     /**
-     * @param int $id The id of the failed email
+     * @param ?int $id The id of the failed email
      * @return bool
      */
-    public function failedEmailSuccess($id)
+    public function failedEmailSuccess($id = -1)
     {
         $model = new FailedEmail();
         $failedEmail = $model->findByPk($id);
@@ -206,7 +206,7 @@ class SendSubmitNotificationsCommand
     /**
      * @return string HTML warnings
      */
-    public function processBasicAdminNotification(int $surveyid, array $aEmailNotificationTo, array $emails)
+    public function processBasicAdminNotification(int $surveyid, array $aEmailNotificationTo, array $emails, string $emailLanguage, ?int $responseId)
     {
         $this->mailer = $this->mailer::getInstance();
         $this->mailer->setTypeWithRaw('admin_notification', $emailLanguage);
@@ -250,7 +250,7 @@ class SendSubmitNotificationsCommand
     /**
      * @return string
      */
-    public function processDetailedAdminNotification(int $surveyid, array $aReplacementVars, array $aEmailResponseTo, array $emails): string
+    public function processDetailedAdminNotification(int $surveyid, array $aReplacementVars, array $aEmailResponseTo, array $emails, string $emailLanguage): string
     {
         // There was no token used so let's remove the token field from insertarray
         if (isset($_SESSION['survey_' . $surveyid]['insertarray'][0])) {
