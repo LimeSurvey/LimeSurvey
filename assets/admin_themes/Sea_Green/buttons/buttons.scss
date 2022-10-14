@@ -17,6 +17,7 @@
   &:hover {
     @extend %default_hover;
     background-color: $white;
+    border-color: $g-900;
     color: $g-900;
   }
 
@@ -109,34 +110,40 @@
   &:hover {
     @extend %default_hover;
     background-color: $g-600;
+    border-color: $g-600;
     color: $white;
   }
 
   &:focus {
     @extend %default_hover;
     background-color: $g-600;
+    border-color: $g-600;
     color: $white;
   }
 
   &:active {
     @extend %default_hover;
     background-color: $g-600;
+    border-color: $g-600;
     color: $white;
   }
 
   &.active {
     @extend %default_hover;
     background-color: $g-600;
+    border-color: $g-600;
     color: $white;
   }
 
   &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
     @extend %default_focus;
     background-color: $g-600;
+    border-color: $g-600;
     color: $white;
   }
 
   &.disabled {
+    color: $g-900;
     background-color: $g-400;
     border: 2px solid $g-400;
 
@@ -160,7 +167,6 @@
       border: 2px solid $g-400;
     }
   }
-
   //.badge {
   //  color: $white;
   //  background-color: $g-600;
@@ -168,6 +174,7 @@
 }
 
 .btn-secondary[disabled] {
+  color: $g-900;
   background-color: $g-400;
   border: 2px solid $g-400;
 
@@ -693,23 +700,41 @@ body.onStatistics .btn {
 .btn-primary .menu-button-divider, .btn-info .menu-button-divider {
   border-left: 1px solid $white;
 }
+.btn-primary[disabled] .menu-button-divider {
+  border-left: 1px solid $g-600;
+}
 
 .btn-outline-secondary .menu-button-divider {
   border-left: 1px solid $g-900;
+}
+.btn-outline-secondary[disabled] .menu-button-divider {
+  border-left: 1px solid $g-600;
 }
 
 .btn-secondary .menu-button-divider {
   border-left: 1px solid $white;
 }
+.btn-secondary[disabled] .menu-button-divider {
+  border-left: 1px solid $g-600;
+}
 
 .btn-success .menu-button-divider {
   border-left: 1px solid $g-900;
+}
+.btn-success[disabled] .menu-button-divider {
+  border-left: 1px solid $g-600;
 }
 
 .btn-warning .menu-button-divider {
   border-left: 1px solid $g-900;
 }
+.btn-warning[disabled] .menu-button-divider {
+  border-left: 1px solid $g-600;
+}
 
 .btn-danger .menu-button-divider {
   border-left: 1px solid $g-900;
+}
+.btn-danger[disabled] .menu-button-divider {
+  border-left: 1px solid $g-600;
 }

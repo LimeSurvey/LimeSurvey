@@ -2279,6 +2279,7 @@ tr.info, tr.danger {
 }
 .btn-outline-secondary:hover {
   background-color: #fff;
+  border-color: #1E1E1E;
   color: #1E1E1E;
 }
 .btn-outline-secondary:focus {
@@ -2347,25 +2348,31 @@ tr.info, tr.danger {
 }
 .btn-secondary:hover {
   background-color: #7C8191;
+  border-color: #7C8191;
   color: #fff;
 }
 .btn-secondary:focus {
   background-color: #7C8191;
+  border-color: #7C8191;
   color: #fff;
 }
 .btn-secondary:active {
   background-color: #7C8191;
+  border-color: #7C8191;
   color: #fff;
 }
 .btn-secondary.active {
   background-color: #7C8191;
+  border-color: #7C8191;
   color: #fff;
 }
 .btn-secondary.dropdown-toggle.show, .btn-secondary.dropdown-toggle.show:focus {
   background-color: #7C8191;
+  border-color: #7C8191;
   color: #fff;
 }
 .btn-secondary.disabled {
+  color: #1E1E1E;
   background-color: #C2C5D1;
   border: 2px solid #C2C5D1;
 }
@@ -2387,6 +2394,7 @@ tr.info, tr.danger {
 }
 
 .btn-secondary[disabled] {
+  color: #1E1E1E;
   background-color: #C2C5D1;
   border: 2px solid #C2C5D1;
 }
@@ -2752,22 +2760,46 @@ body.onStatistics .btn {
   border-left: 1px solid #fff;
 }
 
+.btn-primary[disabled] .menu-button-divider {
+  border-left: 1px solid #7C8191;
+}
+
 .btn-outline-secondary .menu-button-divider {
   border-left: 1px solid #1E1E1E;
+}
+
+.btn-outline-secondary[disabled] .menu-button-divider {
+  border-left: 1px solid #7C8191;
 }
 
 .btn-secondary .menu-button-divider {
   border-left: 1px solid #fff;
 }
 
+.btn-secondary[disabled] .menu-button-divider {
+  border-left: 1px solid #7C8191;
+}
+
 .btn-success .menu-button-divider {
   border-left: 1px solid #1E1E1E;
+}
+
+.btn-success[disabled] .menu-button-divider {
+  border-left: 1px solid #7C8191;
 }
 
 .btn-warning .menu-button-divider {
   border-left: 1px solid #1E1E1E;
 }
 
+.btn-warning[disabled] .menu-button-divider {
+  border-left: 1px solid #7C8191;
+}
+
 .btn-danger .menu-button-divider {
   border-left: 1px solid #1E1E1E;
+}
+
+.btn-danger[disabled] .menu-button-divider {
+  border-left: 1px solid #7C8191;
 }
