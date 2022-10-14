@@ -18,7 +18,7 @@ jobs:
         mysql:
             image: mysql:5.7
             env:
-                MYSQL_ROOT_PASSWORD: password
+                MYSQL_ROOT_PASSWORD: root
             ports:
             - 3306
     strategy:
@@ -95,6 +95,7 @@ jobs:
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -h 127.0.0.1 -uroot -proot -e "Show  variables like '%innodb_default%';"
 
       - name: Load custom console and start the Application
         run: |
