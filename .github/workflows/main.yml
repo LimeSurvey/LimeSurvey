@@ -48,6 +48,9 @@ jobs:
           # Install LimeSurvey.
           php -m  # Spit out all loaded PHP modules
           mysql --version
+          mysql --host localhost --port 3306 -uroot -proot -e "SELECT @@VERSION"
+          mysql --host 127.0.0.1 --port 3306 -uroot -proot -e "SELECT @@VERSION"
+
           touch enabletests
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
@@ -85,6 +88,7 @@ jobs:
           # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
 
           sudo service mysql status
+          mysql --version
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
