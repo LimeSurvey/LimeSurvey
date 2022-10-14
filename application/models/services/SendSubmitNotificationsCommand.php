@@ -9,6 +9,12 @@ use CHtml;
 use CException;
 use FailedEmail;
 use InvalidArgumentException;
+use Survey;
+use Yii;
+use viewHelper;
+use SurveyDynamic;
+use QuestionAttribute;
+use QuestionGroup;
 
 /**
  * Refactor of old sendSubmitNotifications function, to enable injection of dependencies.
@@ -59,16 +65,16 @@ class SendSubmitNotificationsCommand
     /**
      * Send a submit notification to the email address specified in the notifications tab in the survey settings
      *
-     * @param int $surveyid survey ID of currently used survey
+     * @param int $surveyId survey ID of currently used survey
      * @param array $emails Emailnotifications that should be sent ['responseTo' => [['failedEmailId' => 'failedEmailId1', 'responseid' => 'responseid1', 'recipient' => 'recipient1', 'language' => 'language1'], [...]], 'notificationTo' => [[..., ..., ...][...]]]
      * @return array
      * @throws \PHPMailer\PHPMailer\Exception
      * @throws CException
      */
-    public function run(int $surveyid, array $emails = [])
+    public function run(int $surveyId, array $emails = [])
     {
         //LimeMailer instance
-        $this->mailer->setSurvey($surveyid);
+        $this->mailer->setSurvey($surveyId);
         $this->mailer->aUrlsPlaceholders = ['VIEWRESPONSE','EDITRESPONSE','STATISTICS'];
 
         //emails to be sent and return values
@@ -77,22 +83,22 @@ class SendSubmitNotificationsCommand
 
         //replacementVars for LEM
         $aReplacementVars = [];
-        $aReplacementVars['STATISTICSURL'] = App()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
+        $aReplacementVars['STATISTICSURL'] = App()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyId}");
         $aReplacementVars['ANSWERTABLE'] = '';
 
-        if (!isset($_SESSION['survey_' . $surveyid]['srid'])) {
+        if (!isset($_SESSION['survey_' . $surveyId]['srid'])) {
             $responseId = null; /* Maybe just return ? */
         } else {
             //replacementVars for LEM requiring a response id
-            $responseId = $_SESSION['survey_' . $surveyid]['srid'];
-            $aReplacementVars['EDITRESPONSEURL'] = App()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$responseId}");
-            $aReplacementVars['VIEWRESPONSEURL'] = App()->getController()->createAbsoluteUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $responseId]);
+            $responseId = $_SESSION['survey_' . $surveyId]['srid'];
+            $aReplacementVars['EDITRESPONSEURL'] = App()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyId}/id/{$responseId}");
+            $aReplacementVars['VIEWRESPONSEURL'] = App()->getController()->createAbsoluteUrl("responses/view/", ['surveyId' => $surveyId, 'id' => $responseId]);
         }
 
         // set email language
         $emailLanguage = App()->getLanguage();
-        if (isset($_SESSION['survey_' . $surveyid]['s_lang'])) {
-            $emailLanguage = $_SESSION['survey_' . $surveyid]['s_lang'];
+        if (isset($_SESSION['survey_' . $surveyId]['s_lang'])) {
+            $emailLanguage = $_SESSION['survey_' . $surveyId]['s_lang'];
         }
 
         // create array of recipients for emailnotifications
@@ -131,7 +137,7 @@ class SendSubmitNotificationsCommand
 
         // admin_notification (Basic admin notification)
         if (count($aEmailNotificationTo) > 0) {
-            $warnings = $this->processBasicAdminNotification($surveyid, $aEmailNotificationTo, $emails, $emailLanguage, $responseId);
+            $warnings = $this->processBasicAdminNotification($surveyId, $aEmailNotificationTo, $emails, $emailLanguage, $responseId);
             if ($warnings) {
                 echo $warnings;
             }
@@ -139,7 +145,7 @@ class SendSubmitNotificationsCommand
 
         // admin_notification (Detailed admin notification)
         if (count($aEmailResponseTo) > 0) {
-            $warnings = $this->processDetailedAdminNotification($surveyid, $aReplacementVars, $aEmailResponseTo, $emails, $emailLanguage, $responseId);
+            $warnings = $this->processDetailedAdminNotification($surveyId, $aReplacementVars, $aEmailResponseTo, $emails, $emailLanguage, $responseId);
             if ($warnings) {
                 echo $warnings;
             }
@@ -207,7 +213,7 @@ class SendSubmitNotificationsCommand
     /**
      * @return string HTML warnings
      */
-    public function processBasicAdminNotification(int $surveyid, array $aEmailNotificationTo, array $emails, string $emailLanguage, ?int $responseId)
+    public function processBasicAdminNotification(int $surveyId, array $aEmailNotificationTo, array $emails, string $emailLanguage, ?int $responseId)
     {
         $this->mailer = $this->mailer::getInstance();
         $this->mailer->setTypeWithRaw('admin_notification', $emailLanguage);
@@ -231,11 +237,10 @@ class SendSubmitNotificationsCommand
             if ($responseId === null) {
                 throw new InvalidArgumentException("responseId can never be null");
             }
-
             if (!$mailerSuccess) {
                 $this->result['failedEmailCount']++;
-                $this->saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage); 
-                if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
+                $this->saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyId, $responseId, 'admin_notification', $emailLanguage); 
+                if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     $htmlWarnings .= CHtml::tag(
                         "div",
@@ -255,12 +260,12 @@ class SendSubmitNotificationsCommand
     /**
      * @return string
      */
-    public function processDetailedAdminNotification(int $surveyid, array $aReplacementVars, array $aEmailResponseTo, array $emails, string $emailLanguage, ?int $responseId): string
+    public function processDetailedAdminNotification(int $surveyId, array $aReplacementVars, array $aEmailResponseTo, array $emails, string $emailLanguage, ?int $responseId): string
     {
         // There was no token used so let's remove the token field from insertarray
-        if (isset($_SESSION['survey_' . $surveyid]['insertarray'][0])) {
-            if (!isset($_SESSION['survey_' . $surveyid]['token']) && $_SESSION['survey_' . $surveyid]['insertarray'][0] === 'token') {
-                unset($_SESSION['survey_' . $surveyid]['insertarray'][0]);
+        if (isset($_SESSION['survey_' . $surveyId]['insertarray'][0])) {
+            if (!isset($_SESSION['survey_' . $surveyId]['token']) && $_SESSION['survey_' . $surveyId]['insertarray'][0] === 'token') {
+                unset($_SESSION['survey_' . $surveyId]['insertarray'][0]);
             }
         }
         $this->mailer = $this->mailer::getInstance();
@@ -273,7 +278,7 @@ class SendSubmitNotificationsCommand
                 $responseId = $sRecipient['responseId'];
                 $responseRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
-                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $this->isHtml);
+                $aReplacementVars['ANSWERTABLE'] = $this->getResponseTableReplacement($surveyId, $responseId, $emailLanguage);
                 LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $this->mailer->setTypeWithRaw('admin_responses', $emailLanguage);
                 $this->mailer->setTo($responseRecipient);
@@ -281,7 +286,7 @@ class SendSubmitNotificationsCommand
             } else {
                 $failedNotificationId = null;
                 $responseRecipient = $sRecipient;
-                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $this->isHtml);
+                $aReplacementVars['ANSWERTABLE'] = $this->getResponseTableReplacement($surveyId, $responseId, $emailLanguage);
                 LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $this->mailer->setTo($responseRecipient);
                 $mailerSuccess = $this->mailer->SendMessage();
@@ -291,8 +296,8 @@ class SendSubmitNotificationsCommand
             }
             if (!$mailerSuccess) {
                 $this->result['failedEmailCount']++;
-                $this->saveFailedEmail($failedNotificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage);
-                if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
+                $this->saveFailedEmail($failedNotificationId, $responseRecipient, $surveyId, $responseId, 'admin_responses', $emailLanguage);
+                if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     $htmlWarnings = CHtml::tag(
                         "div",
@@ -306,5 +311,130 @@ class SendSubmitNotificationsCommand
             }
         }
         return $htmlWarnings;
+    }
+
+    /**
+     * Create ANSWERTABLE replacement field content
+     *
+     * @param int $surveyId
+     * @param ?int $responseId
+     * @param string $emailLanguage
+     * @return string
+     * @throws CException
+     */
+    public function getResponseTableReplacement($surveyId, ?int $responseId, $emailLanguage): string
+    {
+        $aFullResponseTable = $this->getFullResponseTable($surveyId, $responseId, $emailLanguage);
+        $ResultTableHTML = "<table class='printouttable' >\n";
+        $ResultTableText = "\n\n";
+        Yii::import('application.helpers.viewHelper');
+        foreach ($aFullResponseTable as $sFieldname => $fname) {
+            if (substr($sFieldname, 0, 4) === 'gid_') {
+                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
+                $ResultTableText .= "\n{$fname[0]}\n\n";
+            } elseif (substr($sFieldname, 0, 4) === 'qid_') {
+                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
+                $ResultTableText .= "\n{$fname[0]}\n";
+            } else {
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>" . viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}", true, 0) . "</td><td class='printanswersanswertext'>" . CHtml::encode($fname[2]) . "</td></tr>\n";
+                $ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
+            }
+        }
+        $ResultTableHTML .= "</table>\n";
+        $ResultTableText .= "\n\n";
+
+        if ($this->isHtml) {
+            return $ResultTableHTML;
+        }
+        return $ResultTableText;
+    }
+
+    /**
+     * Creates an array with details on a particular response for display purposes
+     * Used in Print answers, Detailed response view and Detailed admin notification email
+     *
+     * @param int $surveyId
+     * @param ?int $responseId
+     * @param string $languageCode
+     * @param boolean $honorConditions Apply conditions
+     * @return array
+     */
+    public function getFullResponseTable($surveyId, ?int $responseId, $languageCode, $honorConditions = true)
+    {
+        $survey = Survey::model()->findByPk($surveyId);
+        if ($survey === null) {
+            throw new InvalidArgumentException("Found no survey with id " . $surveyId);
+        }
+
+        $aFieldMap = \createFieldMap($survey, 'full', false, false, $languageCode);
+
+        //Get response data
+        $idrow = SurveyDynamic::model($surveyId)->findByAttributes(array('id' => $responseId));
+        if ($idrow === null) {
+            throw new InvalidArgumentException("Found no idrow for id " . $responseId);
+        }
+
+        // Create array of non-null values - those are the relevant ones
+        $aRelevantFields = array();
+
+        foreach ($aFieldMap as $sKey => $fname) {
+            if (LimeExpressionManager::QuestionIsRelevant($fname['qid']) || $honorConditions === false) {
+                $aRelevantFields[$sKey] = $fname;
+            }
+        }
+
+        $aResultTable = array();
+        $oldgid = 0;
+        $oldqid = 0;
+        foreach ($aRelevantFields as $sKey => $fname) {
+            if (!empty($fname['qid'])) {
+                $attributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
+                if (getQuestionAttributeValue($attributes, 'hidden') == 1) {
+                    continue;
+                }
+            }
+            $question = $fname['question'];
+            $subquestion = '';
+            if (isset($fname['gid']) && !empty($fname['gid'])) {
+                //Check to see if gid is the same as before. if not show group name
+                if ($oldgid !== $fname['gid']) {
+                    $oldgid = $fname['gid'];
+                    if (LimeExpressionManager::GroupIsRelevant($fname['gid']) || $honorConditions === false) {
+                        $aResultTable['gid_' . $fname['gid']] = array($fname['group_name'], QuestionGroup::model()->getGroupDescription($fname['gid'], $languageCode));
+                    }
+                }
+            }
+            if (!empty($fname['qid'])) {
+                if ($oldqid !== $fname['qid']) {
+                    $oldqid = $fname['qid'];
+                    if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) {
+                        $aResultTable['qid_' . $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid']] = array($fname['question'], '', '');
+                    } else {
+                        $answer = getExtendedAnswer($surveyId, $fname['fieldname'], $idrow[$fname['fieldname']], $languageCode);
+                        $aResultTable[$fname['fieldname']] = array($question, '', $answer);
+                        continue;
+                    }
+                }
+            } else {
+                $answer = getExtendedAnswer($surveyId, $fname['fieldname'], $idrow[$fname['fieldname']], $languageCode);
+                $aResultTable[$fname['fieldname']] = array($question, '', $answer);
+                continue;
+            }
+            if (isset($fname['subquestion'])) {
+                $subquestion = "[{$fname['subquestion']}]";
+            }
+
+            if (isset($fname['subquestion1'])) {
+                $subquestion = "[{$fname['subquestion1']}]";
+            }
+
+            if (isset($fname['subquestion2'])) {
+                $subquestion .= "[{$fname['subquestion2']}]";
+            }
+
+            $answer = getExtendedAnswer($surveyId, $fname['fieldname'], $idrow[$fname['fieldname']], $languageCode);
+            $aResultTable[$fname['fieldname']] = array($question, $subquestion, $answer);
+        }
+        return $aResultTable;
     }
 }
