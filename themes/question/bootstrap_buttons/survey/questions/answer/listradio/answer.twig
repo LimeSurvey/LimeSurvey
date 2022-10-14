@@ -24,7 +24,7 @@
     </div>
     {# Must add it only of other is set ! #}
     <div class="row row-cols-lg-auto g-1 align-items-center mb-3 ls-js-hidden answer-item" id="div{{ name }}other">
-        <label for="answer{{ name }}othertext" class="col-form-label fw-bold" id="label-id-{{ name }}">{{ othertext }}</label>
+        <label for="answer{{ name }}othertext" class="col-form-label" id="label-id-{{ name }}">{{ othertext }}</label>
         <div class="col-12">
             <input
             type="text"
@@ -35,5 +35,6 @@
         </div>
     </div>
 </div>
+<script>doBootstrapRadioOther();</script>
 
 <!-- end of answer -->

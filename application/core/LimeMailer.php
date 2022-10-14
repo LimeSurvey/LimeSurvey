@@ -860,7 +860,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 }
             }
         }
-        $aReplacements = array_merge($this->aReplacements, $aReplacements);
+        $aReplacements = array_merge($aReplacements, $this->aReplacements);
         return LimeExpressionManager::ProcessString($string, null, $aReplacements, 3, 1, false, false, true);
     }
 

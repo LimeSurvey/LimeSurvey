@@ -215,7 +215,7 @@ class UpdateForm extends CFormModel
      * @param int $destinationBuild
      * @return mixed|stdClass
      */
-    public function getChangelog($destinationBuild)
+    public function getChangeLog($destinationBuild)
     {
         $getters = '/index.php?r=updates/changelog&frombuild=' . $this->build . '&tobuild=' . $destinationBuild;
         $content = $this->performRequest($getters);
@@ -396,19 +396,6 @@ class UpdateForm extends CFormModel
         fclose($handle);
         Yii::app()->setConfig("buildnumber", $destinationBuild);
         return;
-    }
-
-    /**
-     * Destroy the global settings stored in the settings (they should not be used anymore...)
-     */
-    public function destroyGlobalSettings()
-    {
-        SettingGlobal::setSetting('updateavailable', '0');
-        SettingGlobal::setSetting('updatebuild', '');
-        SettingGlobal::setSetting('updateversions', '');
-        Yii::app()->session['security_update'] = null;
-        Yii::app()->session['update_result'] = null;
-        Yii::app()->session['next_update_check'] = null;
     }
 
     /**

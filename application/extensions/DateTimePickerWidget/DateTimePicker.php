@@ -81,6 +81,7 @@ class DateTimePicker extends CInputWidget
         $this->name = $name;
 
         $this->htmlOptions['id'] = $this->getValue('id', $this->htmlOptions, $this->getEscapedId());
+        $this->htmlOptions['autocomplete'] = 'off';
         foreach ($this->pluginOptions as $key => $pluginOption) {
             if (is_array($pluginOption)) {
                 continue;

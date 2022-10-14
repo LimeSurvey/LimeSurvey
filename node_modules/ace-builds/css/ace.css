@@ -1,3 +1,38 @@
+/*./src/ace0*/
+.ace_editor>.ace_sb-v div, .ace_editor>.ace_sb-h div{
+position: absolute;
+background: rgba(128, 128, 128, 0.6);
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+border: 1px solid #bbb;
+border-radius: 2px;
+z-index: 8;
+}
+.ace_editor>.ace_sb-v, .ace_editor>.ace_sb-h {
+position: absolute;
+z-index: 6;
+background: none;  overflow: hidden!important;
+}
+.ace_editor>.ace_sb-v {
+z-index: 6;
+right: 0;
+top: 0;
+width: 12px;
+}.ace_editor>.ace_sb-v div {
+z-index: 8;
+right: 0;
+width: 100%;
+}.ace_editor>.ace_sb-h {
+bottom: 0;
+left: 0;
+height: 12px;
+}.ace_editor>.ace_sb-h div {
+bottom: 0;
+height: 100%;
+}.ace_editor>.ace_sb_grabbed {
+z-index: 8;
+background: #000;
+}
 /*ace_editor.css*/
 /*
 styles = []

@@ -425,7 +425,8 @@ return array(
             'build/tempus-dominus.min.css',
         ),
         'js' => array(
-            'build/popper-tempus.min.js'
+            'build/popper-tempus.min.js',
+            'datepickerInit.js'
         ),
         'depends' => array(
             'moment'
