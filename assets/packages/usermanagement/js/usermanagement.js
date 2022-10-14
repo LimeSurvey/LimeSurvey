@@ -273,9 +273,7 @@ var UserManagement = function () {
 
     var wireDatePicker = function () {
         const expires = document.getElementById('expires');
-        const dateFormat = $('#expires').data('format');
-        const locale = $('#expires').data('locale');
-        initDatePicker(expires, 'expires', locale, dateFormat);
+        initDatePicker(expires);
     }
 
     var applyModalHtml = function (html) {

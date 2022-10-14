@@ -28,7 +28,7 @@ Tokens = {
          });
 
          // Generate the date time picker
-         initDatePicker($elDate, $elDate.name, $elDate.dataset.locale, $elDate.dataset.dateformat);
+         initDatePicker($elDate);
 
          console.ls.log('$elSwitch', $elSwitch);
          // When user switch
@@ -36,8 +36,9 @@ Tokens = {
              console.ls.log('$elSwitch', event, state);
              if ($elSwitch.querySelector('input').checked) {
                  // Show date
+
                  $elDateContainer.classList.remove('d-none');
-                 $elHiddenInput.value = $elDate.value = moment().format($elDate.dataset.dateformat);
+                 $elHiddenInput.value = $elDate.value = moment().format($elDate.dataset.format);
              } else {
                  // Hide date, set hidden input to "N"
                  $elDateContainer.classList.add('d-none');
@@ -547,13 +548,13 @@ function reinstallParticipantsFilterDatePicker() {
         dateFormatDetails = JSON.parse(dateFormatDetails.value);
         var dateFormat = dateFormatDetails.jsdate + ' HH:mm';
         if (validfromElement) {
-            initDatePicker(validfromElement, 'TokenDynamic_validfrom', locale.value, dateFormat);
+            initDatePicker(validfromElement, locale.value, dateFormat);
             validfromElement.addEventListener("hide.td", function () {
                 reloadTokenGrid();
             });
         }
         if (validuntilElement) {
-            initDatePicker(validuntilElement, 'TokenDynamic_validuntil', locale.value, dateFormat);
+            initDatePicker(validuntilElement, locale.value, dateFormat);
             validuntilElement.addEventListener("hide.td", function () {
                 reloadTokenGrid();
             });
