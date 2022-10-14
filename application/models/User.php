@@ -183,9 +183,10 @@ class User extends LSActiveRecord
      * @param string $new_full_name
      * @param string $new_email
      * @param int $parent_user
+     * @param string|null $expires
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -196,6 +197,7 @@ class User extends LSActiveRecord
         $oUser->email = $new_email;
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->expires = $expires;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -555,13 +557,7 @@ class User extends LSActiveRecord
             $buttonArray[] = $userDetail;
         }
         // Check if user is editable
-        if (
-            $this->uid == Yii::app()->user->getId()                             //One can edit onesself of course
-            || (
-                Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to edit users given
-                && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned by admin
-            )
-        ) {
+        if ($this->canEdit(Yii::app()->session['loginID'])) {
             $buttonArray[] = $editUserButton;
         }
 
@@ -904,5 +900,19 @@ class User extends LSActiveRecord
             '_deleteGroupUserButton',
             ['userGroupId' => $userGroupId, 'userGroup' => $userGroup, 'currentUserId' => $currentUserId]
         );
+    }
+    
+    /**
+     * Returns true if logged in user with id $loginId can edit this user
+     *
+     * @param int $loginId
+     * @return bool
+     */
+    public function canEdit($loginId)
+    {
+        return
+            Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || $this->uid == $loginId
+            || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
     }
 }

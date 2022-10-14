@@ -10,6 +10,7 @@
     <projectFiles>
         <file name="application/models/FailedEmail.php" />
         <file name="application/controllers/FailedEmailController.php" />
+        <file name="application/models/services/SurveyPermissions.php" />
         <directory name="application/libraries/FormExtension" />
         <ignoreFiles>
             <directory name="vendor" />

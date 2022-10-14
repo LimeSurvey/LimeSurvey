@@ -223,7 +223,7 @@ $(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item
     }
 });
 /* select/dropdown item */
-$(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
+$(document).on("change",".select-item select:not([onchange]),.ls-dropdown-item select:not([onchange]), select.list-question-select:not([onchange])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
 });
 /* radio/button item */
@@ -237,6 +237,14 @@ $(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :c
 /* hidden item */
 $(document).on("updated",".answer-item :hidden, .upload-item :hidden",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'equation', 'updated')
+});
+/* new multiple choice bootstrap buttons */
+$(document).on("change","input:checkbox.button-item.btn-check",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
+});
+/* new singlechoice radio bootstrap buttons */
+$(document).on("change","input:radio.button-item.btn-check",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /**
  * For number

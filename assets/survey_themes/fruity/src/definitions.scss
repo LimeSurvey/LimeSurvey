@@ -1232,6 +1232,34 @@ body {
             color: $color_gunsmoke_approx;
         }
     }
+    .btn-check {
+        &:checked + .btn-primary {
+            @extend %extend_2;
+            box-shadow: none;
+        }
+        &:active + .btn-primary {
+            @extend %extend_2;
+            box-shadow: none;
+        }
+        .btn-primary:active {
+            @extend %extend_2;
+            box-shadow: none;
+        }
+        .btn-primary.active {
+            @extend %extend_2;
+            box-shadow: none;
+        }
+        &:focus + .btn-primary, .btn-primary:focus {
+            color:            $white;
+            background-color: $base-color;
+            border:           1px solid $base-color;
+            box-shadow: none;
+        }
+        &:focus:checked + .btn-primary, .btn-primary:focus:checked {
+            @extend %extend_2;
+            box-shadow: none;
+        }
+    }
     .dropdown-menu {
         background-color: $white;
         border:           1px solid $color_celeste_approx;
@@ -2101,6 +2129,10 @@ body {
     .btn-group.open .dropdown-toggle {
         box-shadow: inset 0 3px 5px $black_125;
     }
+    .btn-outline-secondary.dropdown-toggle.show {
+        @extend %extend_1;
+    }
+
     .nav-pills > {
         li.active > a:focus {
             color:            $white;
