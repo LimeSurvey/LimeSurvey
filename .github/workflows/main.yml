@@ -13,14 +13,7 @@ on:
 
 jobs:
   CI-pipeline:
-    runs-on: ubuntu-22.04    # ubuntu runner hosted by Github
-    services:
-        mysql:
-            image: mysql:5.7
-            env:
-                MYSQL_ROOT_PASSWORD: root
-            ports:
-            - 3306
+    runs-on: ubuntu-20.04    # ubuntu runner hosted by Github
     strategy:
       matrix:
         # Specify what versions of php you want to test
