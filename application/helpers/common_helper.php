@@ -2050,26 +2050,6 @@ function buildLabelSetCheckSumArray()
 }
 
 
-/**
-*
-* Returns the questionAttribtue value set or '' if not set
-* @author: lemeur
-* @param $questionAttributeArray
-* @param string $attributeName
-* @param $language string Optional: The language if the particualr attributes is localizable
-* @return string
-*/
-function getQuestionAttributeValue($questionAttributeArray, $attributeName, $language = '')
-{
-    if ($language == '' && isset($questionAttributeArray[$attributeName])) {
-        return $questionAttributeArray[$attributeName];
-    } elseif ($language != '' && isset($questionAttributeArray[$attributeName][$language])) {
-        return $questionAttributeArray[$attributeName][$language];
-    } else {
-        return '';
-    }
-}
-
 function questionTitleSort($a, $b)
 {
     $result = strnatcasecmp($a['title'], $b['title']);

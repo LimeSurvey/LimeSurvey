@@ -239,7 +239,7 @@ class SendSubmitNotificationsCommand
             }
             if (!$mailerSuccess) {
                 $this->result['failedEmailCount']++;
-                $this->saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyId, $responseId, 'admin_notification', $emailLanguage); 
+                $this->saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyId, $responseId, 'admin_notification', $emailLanguage);
                 if (empty($emails) && $this->debug && Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
                     $htmlWarnings .= CHtml::tag(
@@ -388,8 +388,9 @@ class SendSubmitNotificationsCommand
         $oldqid = 0;
         foreach ($aRelevantFields as $sKey => $fname) {
             if (!empty($fname['qid'])) {
+                // TODO: Correct behaviour if $attributes is false?
                 $attributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
-                if (getQuestionAttributeValue($attributes, 'hidden') == 1) {
+                if ($attributes !== false && $this->getQuestionAttributeValue($attributes, 'hidden') == 1) {
                     continue;
                 }
             }
@@ -436,5 +437,25 @@ class SendSubmitNotificationsCommand
             $aResultTable[$fname['fieldname']] = array($question, $subquestion, $answer);
         }
         return $aResultTable;
+    }
+
+    /**
+     * Returns the questionAttribtue value set or '' if not set
+     *
+     * @author: lemeur
+     * @param array $questionAttributeArray
+     * @param string $attributeName
+     * @param ?string $language Optional: The language if the particualr attributes is localizable
+     * @return string
+     */
+    public function getQuestionAttributeValue(array $questionAttributeArray, string $attributeName, ?string $language = '')
+    {
+        if ($language == '' && isset($questionAttributeArray[$attributeName])) {
+            return $questionAttributeArray[$attributeName];
+        } elseif ($language != '' && isset($questionAttributeArray[$attributeName][$language])) {
+            return $questionAttributeArray[$attributeName][$language];
+        } else {
+            return '';
+        }
     }
 }
