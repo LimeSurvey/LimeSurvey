@@ -68,7 +68,7 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
     }
 
     /**
-     * @testdox Returns invalid session response (error unauthorised) users does not have permission.
+     * @testdox Returns invalid session response (error unauthorised) user does not have permission.
      */
     public function testQuestionGroupPropertiesGetNoPermission()
     {

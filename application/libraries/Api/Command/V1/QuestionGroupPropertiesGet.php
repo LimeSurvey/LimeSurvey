@@ -87,6 +87,7 @@ class QuestionGroupPropertiesGet implements CommandInterface
             );
         }
 
+        $aResult = array();
         foreach ($aGroupSettings as $sGroupSetting) {
             if (isset($oGroup->$sGroupSetting)) {
                 $aResult[$sGroupSetting] = $oGroup->$sGroupSetting;

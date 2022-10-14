@@ -12,12 +12,14 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
 
 class QuestionList implements CommandInterface
 {
     use AuthSession;
     use AuthPermission;
     use CommandResponse;
+    use SurveyModel;
 
     /**
      * Run survey question list command.
@@ -40,9 +42,8 @@ class QuestionList implements CommandInterface
         }
 
         Yii::app()->loadHelper("surveytranslator");
-        $iSurveyID = (int) $iSurveyID;
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
+        $oSurvey = $this->getSurveyModel($iSurveyID);
         if (empty($oSurvey)) {
             return $this->responseErrorNotFound(
                 ['status' => 'Error: Invalid survey ID'],
