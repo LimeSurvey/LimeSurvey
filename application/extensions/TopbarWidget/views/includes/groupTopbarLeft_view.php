@@ -13,15 +13,11 @@
             'id' => 'ls-tools-button',
             'text' => gT('Tools'),
             'menu' => true,
+            'menuContent' => '<ul class="dropdown-menu">' . $toolsDropdownItems . '</ul>',
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
             ],
         ]); ?>
-
-        <!-- dropdown -->
-        <ul class="dropdown-menu">
-            <?= $toolsDropdownItems ?>
-        </ul>
     </div>
 <?php endif; ?>
 
@@ -29,5 +25,12 @@
 /**
  * Include the Survey Preview and Group Preview buttons
  */
-$this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
+$this->render(
+    'includes/previewOrRunButton_view',
+    [
+        'survey' => $oSurvey,
+        'surveyLanguages' => $surveyLanguages,
+    ]
+);
+$this->render('includes/previewGroupButton_view', get_defined_vars());
 ?>

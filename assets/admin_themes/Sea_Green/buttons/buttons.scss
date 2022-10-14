@@ -211,7 +211,7 @@
 .btn-primary, .btn-info {
   color: $white;
   background-color: $action;
-  border: 1px solid $action;
+  border: 2px solid $action;
   border-radius: 4px;
 
   &:hover {
@@ -236,26 +236,26 @@
 
   &.disabled {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
 
     &:hover {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &:focus {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &:active {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &.active {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
   }
 
@@ -267,85 +267,85 @@
 
 .btn-primary[disabled], .btn-info[disabled] {
   background-color: $g-400;
-  border: 1px solid $g-400;
+  border: 2px solid $g-400;
 
   &:hover {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &:focus {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &:active {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &.active {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 }
 
 .btn-success {
   color: $g-900;
   background-color: $success;
-  border: 1px solid $success;
+  border: 2px solid $success;
   border-radius: 4px;
 
   &:hover {
     color: $g-900;
     background-color: $success;
-    border: 1px solid $success;
+    border: 2px solid $success;
     box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
   }
 
   &:focus {
     color: $g-900;
     background-color: $success;
-    border: 1px solid $success;
+    border: 2px solid $success;
     box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
   }
 
   &:active {
     color: $g-900;
     background-color: $success;
-    border: 1px solid $success;
+    border: 2px solid $success;
     box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
   }
 
   &.active {
     color: $g-900;
     background-color: $success;
-    border: 1px solid $success;
+    border: 2px solid $success;
     box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
   }
 
   &.disabled {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
 
     &:hover {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &:focus {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &:active {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &.active {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
   }
 
@@ -357,26 +357,26 @@
 
 .btn-success[disabled] {
   background-color: $g-400;
-  border: 1px solid $g-400;
+  border: 2px solid $g-400;
 
   &:hover {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &:focus {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &:active {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &.active {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 }
 
@@ -384,7 +384,7 @@
 //.btn-info {
 //  color: $white;
 //  background-color: $primary-bg_info_hover;
-//  border: 1px solid $primary-border_info_hover;
+//  border: 2px solid $primary-border_info_hover;
 //  &:hover {
 //    @extend %extend_4;
 //  }
@@ -399,22 +399,22 @@
 //  }
 //  &.disabled {
 //    background-color: $primary-bg_info_hover;
-//    border: 1px solid $primary-border_info_hover;
+//    border: 2px solid $primary-border_info_hover;
 //    &:hover {
 //      background-color: $primary-bg_info_hover;
-//      border: 1px solid $primary-border_info_hover;
+//      border: 2px solid $primary-border_info_hover;
 //    }
 //    &:focus {
 //      background-color: $primary-bg_info_hover;
-//      border: 1px solid $primary-border_info_hover;
+//      border: 2px solid $primary-border_info_hover;
 //    }
 //    &:active {
 //      background-color: $primary-bg_info_hover;
-//      border: 1px solid $primary-border_info_hover;
+//      border: 2px solid $primary-border_info_hover;
 //    }
 //    &.active {
 //      background-color: $primary-bg_info_hover;
-//      border: 1px solid $primary-border_info_hover;
+//      border: 2px solid $primary-border_info_hover;
 //    }
 //  }
 //  .badge {
@@ -424,79 +424,79 @@
 //}
 //.btn-info[disabled] {
 //  background-color: $primary-bg_info_hover;
-//  border: 1px solid $primary-border_info_hover;
+//  border: 2px solid $primary-border_info_hover;
 //  &:hover {
 //    background-color: $primary-bg_info_hover;
-//    border: 1px solid $primary-border_info_hover;
+//    border: 2px solid $primary-border_info_hover;
 //  }
 //  &:focus {
 //    background-color: $primary-bg_info_hover;
-//    border: 1px solid $primary-border_info_hover;
+//    border: 2px solid $primary-border_info_hover;
 //  }
 //  &:active {
 //    background-color: $primary-bg_info_hover;
-//    border: 1px solid $primary-border_info_hover;
+//    border: 2px solid $primary-border_info_hover;
 //  }
 //  &.active {
 //    background-color: $primary-bg_info_hover;
-//    border: 1px solid $primary-border_info_hover;
+//    border: 2px solid $primary-border_info_hover;
 //  }
 //}
 .btn-warning {
   color: $g-900;
   background-color: $warning;
-  border: 1px solid $warning;
+  border: 2px solid $warning;
 
   &:hover {
     color: $g-900;
     background-color: $warning;
-    border: 1px solid $warning;
+    border: 2px solid $warning;
     box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &:focus {
     color: $g-900;
     background-color: $warning;
-    border: 1px solid $warning;
+    border: 2px solid $warning;
     box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &:active {
     color: $g-900;
     background-color: $warning;
-    border: 1px solid $warning;
+    border: 2px solid $warning;
     box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &.active {
     color: $g-900;
     background-color: $warning;
-    border: 1px solid $warning;
+    border: 2px solid $warning;
     box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &.disabled {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
 
     &:hover {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &:focus {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &:active {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &.active {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
   }
 
@@ -508,85 +508,85 @@
 
 .btn-warning[disabled] {
   background-color: $g-400;
-  border: 1px solid $g-400;
+  border: 2px solid $g-400;
 
   &:hover {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &:focus {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &:active {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &.active {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 }
 
 .btn-danger {
   color: $g-900;
   background-color: $error;
-  border: 1px solid $error;
+  border: 2px solid $error;
   border-radius: 4px;
 
   &:hover {
     color: $g-900;
     background-color: $error;
-    border: 1px solid $error;
+    border: 2px solid $error;
     box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &:focus {
     color: $g-900;
     background-color: $error;
-    border: 1px solid $error;
+    border: 2px solid $error;
     box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &:active {
     color: $g-900;
     background-color: $error;
-    border: 1px solid $error;
+    border: 2px solid $error;
     box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &.active {
     color: $g-900;
     background-color: $error;
-    border: 1px solid $error;
+    border: 2px solid $error;
     box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &.disabled {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
 
     &:hover {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &:focus {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &:active {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
 
     &.active {
       background-color: $g-400;
-      border: 1px solid $g-400;
+      border: 2px solid $g-400;
     }
   }
 
@@ -598,26 +598,26 @@
 
 .btn-danger[disabled] {
   background-color: $g-400;
-  border: 1px solid $g-400;
+  border: 2px solid $g-400;
 
   &:hover {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &:focus {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &:active {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 
   &.active {
     background-color: $g-400;
-    border: 1px solid $g-400;
+    border: 2px solid $g-400;
   }
 }
 
@@ -685,7 +685,7 @@
   filter: alpha(opacity=65);
   -webkit-box-shadow: none;
   box-shadow: none;
-  border: 1px solid #cccccc;
+  border: 2px solid #cccccc;
 }
 
 body.onStatistics .btn {
@@ -698,43 +698,43 @@ body.onStatistics .btn {
 }
 
 .btn-primary .menu-button-divider, .btn-info .menu-button-divider {
-  border-left: 1px solid $white;
+  border-left: 2px solid $white;
 }
 .btn-primary[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
+  border-left: 2px solid $g-600;
 }
 
 .btn-outline-secondary .menu-button-divider {
-  border-left: 1px solid $g-900;
+  border-left: 2px solid $g-900;
 }
 .btn-outline-secondary[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
+  border-left: 2px solid $g-600;
 }
 
 .btn-secondary .menu-button-divider {
-  border-left: 1px solid $white;
+  border-left: 2px solid $white;
 }
 .btn-secondary[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
+  border-left: 2px solid $g-600;
 }
 
 .btn-success .menu-button-divider {
-  border-left: 1px solid $g-900;
+  border-left: 2px solid $g-900;
 }
 .btn-success[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
+  border-left: 2px solid $g-600;
 }
 
 .btn-warning .menu-button-divider {
-  border-left: 1px solid $g-900;
+  border-left: 2px solid $g-900;
 }
 .btn-warning[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
+  border-left: 2px solid $g-600;
 }
 
 .btn-danger .menu-button-divider {
-  border-left: 1px solid $g-900;
+  border-left: 2px solid $g-900;
 }
 .btn-danger[disabled] .menu-button-divider {
-  border-left: 1px solid $g-600;
+  border-left: 2px solid $g-600;
 }

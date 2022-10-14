@@ -23,6 +23,9 @@ class ButtonWidget extends CInputWidget
     /** @var string link where the button points to, if link is empty an <button> element is created else an <a> element */
     public $link = '';
 
+    /** @var string string that should contain valid html list for bootstrap dropdown button. Only used when not empty and $menu is true */
+    public $menuContent = '';
+
     /** @var array html options */
     public $htmlOptions = [];
 
@@ -51,6 +54,7 @@ class ButtonWidget extends CInputWidget
             'iconPosition' => $this->iconPosition,
             'menu' => $this->menu,
             'menuIcon' => $this->menuIcon,
+            'menuContent' => $this->menuContent,
             'link' => $this->link,
             'htmlOptions' => $this->htmlOptions
         ]);

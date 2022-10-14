@@ -232,6 +232,7 @@ class TopbarConfiguration
             'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
+            'surveyLanguages' => self::getSurveyLanguagesArray($oSurvey),
         );
     }
 
@@ -348,11 +349,6 @@ class TopbarConfiguration
         $hasSurveyContentCreatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create');
         $hasSurveyContentDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
 
-        $languages = [];
-        foreach ($survey->allLanguages as $language) {
-            $languages[$language] = getLanguageNameFromCode($language, false);
-        }
-
         return array(
             'oSurvey' => $survey,
             'hasSurveyContentUpdatePermission' => $hasSurveyContentUpdatePermission,
@@ -360,7 +356,7 @@ class TopbarConfiguration
             'hasSurveyContentExportPermission' => $hasSurveyContentExportPermission,
             'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission,
             'hasSurveyContentDeletePermission' => $hasSurveyContentDeletePermission,
-            'surveyLanguages' => $languages,
+            'surveyLanguages' => self::getSurveyLanguagesArray($survey),
         );
     }
 
@@ -425,5 +421,20 @@ class TopbarConfiguration
     public function shouldHide()
     {
         return $this->hide;
+    }
+
+    /**
+     * returns array of language codes by language name for all languages of the given survey
+     * @param Survey $survey
+     * @return array
+     */
+    private static function getSurveyLanguagesArray(Survey $survey)
+    {
+        $languages = [];
+        foreach ($survey->allLanguages as $language) {
+            $languages[$language] = getLanguageNameFromCode($language, false);
+        }
+
+        return $languages;
     }
 }
