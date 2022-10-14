@@ -8,6 +8,7 @@ use Permission;
 use CHtml;
 use CException;
 use FailedEmail;
+use InvalidArgumentException;
 
 /**
  * Refactor of old sendSubmitNotifications function, to enable injection of dependencies.
@@ -138,7 +139,7 @@ class SendSubmitNotificationsCommand
 
         // admin_notification (Detailed admin notification)
         if (count($aEmailResponseTo) > 0) {
-            $warnings = $this->processDetailedAdminNotification($surveyid, $aReplacementVars, $aEmailResponseTo, $emails, $emailLanguage);
+            $warnings = $this->processDetailedAdminNotification($surveyid, $aReplacementVars, $aEmailResponseTo, $emails, $emailLanguage, $responseId);
             if ($warnings) {
                 echo $warnings;
             }
@@ -227,6 +228,10 @@ class SendSubmitNotificationsCommand
                 $this->mailer->setTo($notificationRecipient);
                 $mailerSuccess = $this->mailer->SendMessage();
             }
+            if ($responseId === null) {
+                throw new InvalidArgumentException("responseId can never be null");
+            }
+
             if (!$mailerSuccess) {
                 $this->result['failedEmailCount']++;
                 $this->saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage); 
@@ -250,7 +255,7 @@ class SendSubmitNotificationsCommand
     /**
      * @return string
      */
-    public function processDetailedAdminNotification(int $surveyid, array $aReplacementVars, array $aEmailResponseTo, array $emails, string $emailLanguage): string
+    public function processDetailedAdminNotification(int $surveyid, array $aReplacementVars, array $aEmailResponseTo, array $emails, string $emailLanguage, ?int $responseId): string
     {
         // There was no token used so let's remove the token field from insertarray
         if (isset($_SESSION['survey_' . $surveyid]['insertarray'][0])) {
@@ -280,6 +285,9 @@ class SendSubmitNotificationsCommand
                 LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $this->mailer->setTo($responseRecipient);
                 $mailerSuccess = $this->mailer->SendMessage();
+            }
+            if ($responseId === null) {
+                throw new InvalidArgumentException("responseId can never be null");
             }
             if (!$mailerSuccess) {
                 $this->result['failedEmailCount']++;
