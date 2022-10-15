@@ -5,6 +5,7 @@ namespace ls\tests\unit\api\command\v1;
 use Eloquent\Phony\Phpunit\Phony;
 use Permission;
 use Survey;
+use QuestionGroup;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionList;
@@ -36,6 +37,11 @@ class QuestionListTest extends TestBaseClass
         $response = (new QuestionList())->run($request);
 
         $this->assertResponseInvalidSession($response);
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Invalid session key'
+        );
     }
 
     /**
@@ -65,12 +71,17 @@ class QuestionListTest extends TestBaseClass
             $response,
             new StatusErrorNotFound()
         );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Error: Invalid survey ID'
+        );
     }
 
     /**
      * @testdox Returns invalid session response (error unauthorised) user does not have permission.
      */
-    public function testQuestionGroupPropertiesGetNoPermission()
+    public function testQuestionListNoPermission()
     {
         $request = new Request(array(
             'sessionKey' => 'mock',
@@ -104,13 +115,18 @@ class QuestionListTest extends TestBaseClass
             $response,
             new StatusErrorUnauthorised()
         );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'No permission'
+        );
     }
 
 
     /**
      * @testdox Returns error bad request if language is not valid.
      */
-    public function testQuestionGroupPropertiesGetInvalidLanguage()
+    public function testQuestionListInvalidLanguage()
     {
         $request = new Request(array(
             'sessionKey' => 'mock',
@@ -154,7 +170,7 @@ class QuestionListTest extends TestBaseClass
     /**
      * @testdox Returns error bad request if group is not valid.
      */
-    public function testQuestionGroupPropertiesGetInvalidGroup()
+    public function testQuestionListInvalidGroup()
     {
         $request = new Request(array(
             'sessionKey' => 'mock',
@@ -192,6 +208,57 @@ class QuestionListTest extends TestBaseClass
             new StatusErrorNotFound()
         );
 
-        $this->assertResponseDataStatus($response,'Error: group not found');
+        $this->assertResponseDataStatus(
+            $response,
+            'Error: group not found'
+        );
+    }
+
+    /**
+     * @testdox Returns error success if no questions found.
+     */
+    public function testQuestionListNoQuestionsFound()
+    {
+        $request = new Request(array(
+            'sessionKey' => 'mock',
+            'surveyID' => 'mock',
+            'groupID' => 'invalid-group-id',
+            'language' => 'en'
+        ));
+
+        $mockApiSessionHandle = Phony::mock(ApiSession::class);
+        $mockApiSessionHandle
+            ->checkKey
+            ->returns(true);
+        $mockApiSession = $mockApiSessionHandle->get();
+
+        $mockSurveyModel = new Survey();
+        $mockSurveyModel->setAttributes(
+            array('allLanguages' => array('en')),
+            false
+        );
+
+        $mockModelPermissionHandle = Phony::mock(Permission::class);
+        $mockModelPermissionHandle->hasSurveyPermission
+            ->returns(true);
+        $mockModelPermission = $mockModelPermissionHandle->get();
+
+        $command = new QuestionList();
+        $command->setApiSession($mockApiSession);
+        $command->setPermissionModel($mockModelPermission);
+        $command->setSurveyModel($mockSurveyModel);
+        $command->setQuestionGroupModel(new QuestionGroup);
+
+        $response = $command->run($request);
+
+        $this->assertResponseStatus(
+            $response,
+            new StatusSuccess()
+        );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'No questions found'
+        );
     }
 }
