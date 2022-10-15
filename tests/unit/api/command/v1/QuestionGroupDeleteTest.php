@@ -60,12 +60,16 @@ class QuestionGroupDeleteTest extends TestBaseClass
             $response,
             new StatusErrorNotFound
         );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Error:Invalid group ID'
+        );
     }
 
     /**
      * @testdox Returns invalid session response (error unauthorised) users does not have permission.
      */
-
     public function testQuestionGroupDeleteNoPermission()
     {
         $request = new Request(array(
@@ -100,7 +104,12 @@ class QuestionGroupDeleteTest extends TestBaseClass
 
         $this->assertResponseStatus(
             $response,
-            new StatusErrorUnauthorised
+            new StatusErrorUnauthorised()
+        );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'No permission'
         );
     }
 }

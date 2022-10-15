@@ -55,14 +55,19 @@ class QuestionGroupListTest extends TestBaseClass
             ->returns(true);
         $mockApiSession = $mockApiSessionHandle->get();
 
-        $command = new QuestionGroupList;
+        $command = new QuestionGroupList();
         $command->setApiSession($mockApiSession);
 
         $response = $command->run($request);
 
         $this->assertResponseStatus(
             $response,
-            new StatusErrorNotFound
+            new StatusErrorNotFound()
+        );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Error: Invalid survey ID'
         );
     }
 
@@ -93,7 +98,7 @@ class QuestionGroupListTest extends TestBaseClass
             ->returns(false);
         $mockModelPermission = $mockModelPermissionHandle->get();
 
-        $command = new QuestionGroupList;
+        $command = new QuestionGroupList();
         $command->setApiSession($mockApiSession);
         $command->setSurveyModel($mockSurveyModel);
         $command->setPermissionModel($mockModelPermission);
@@ -102,7 +107,7 @@ class QuestionGroupListTest extends TestBaseClass
 
         $this->assertResponseStatus(
             $response,
-            new StatusErrorUnauthorised
+            new StatusErrorUnauthorised()
         );
     }
 
@@ -133,7 +138,7 @@ class QuestionGroupListTest extends TestBaseClass
             ->returns(true);
         $mockModelPermission = $mockModelPermissionHandle->get();
 
-        $command = new QuestionGroupList;
+        $command = new QuestionGroupList();
         $command->setApiSession($mockApiSession);
         $command->setSurveyModel($mockSurveyModel);
         $command->setPermissionModel($mockModelPermission);
@@ -143,7 +148,7 @@ class QuestionGroupListTest extends TestBaseClass
 
         $this->assertResponseStatus(
             $response,
-            new StatusSuccess
+            new StatusSuccess()
         );
     }
 
@@ -191,7 +196,7 @@ class QuestionGroupListTest extends TestBaseClass
             )
         );
 
-        $command = new QuestionGroupList;
+        $command = new QuestionGroupList();
         $command->setApiSession($mockApiSession);
         $command->setSurveyModel($mockSurveyModel);
         $command->setPermissionModel($mockModelPermission);
@@ -203,7 +208,7 @@ class QuestionGroupListTest extends TestBaseClass
 
         $this->assertResponseStatus(
             $response,
-            new StatusSuccess
+            new StatusSuccess()
         );
 
         $responseData = $response->getData();

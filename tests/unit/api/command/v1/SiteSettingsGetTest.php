@@ -23,7 +23,7 @@ class SiteSettingsGetTest extends TestBaseClass
             'sessionKey' => 'not-a-valid-session-id',
             'settingName' => 'settingName'
         ));
-        $response = (new QuestionList)->run($request);
+        $response = (new QuestionList())->run($request);
 
         $this->assertResponseInvalidSession($response);
     }

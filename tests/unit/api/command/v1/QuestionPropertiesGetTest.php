@@ -25,7 +25,7 @@ class QuestionPropertiesGetTest extends TestBaseClass
             'questionSettings' => 'questionSettings',
             'language' => 'language'
         ));
-        $response = (new QuestionPropertiesGet)->run($request);
+        $response = (new QuestionPropertiesGet())->run($request);
 
         $this->assertResponseInvalidSession($response);
     }

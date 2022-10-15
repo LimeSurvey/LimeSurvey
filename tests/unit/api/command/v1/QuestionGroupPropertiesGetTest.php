@@ -36,6 +36,11 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
         $response = (new QuestionGroupPropertiesGet())->run($request);
 
         $this->assertResponseInvalidSession($response);
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Invalid session key'
+        );
     }
 
     /**
@@ -64,6 +69,11 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
         $this->assertResponseStatus(
             $response,
             new StatusErrorNotFound()
+        );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Error: Invalid group ID'
         );
     }
 
@@ -104,6 +114,11 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             $response,
             new StatusErrorUnauthorised()
         );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'No permission'
+        );
     }
 
     /**
@@ -143,6 +158,11 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             $response,
             new StatusErrorBadRequest()
         );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Error: Invalid language'
+        );
     }
 
     /**
@@ -181,6 +201,11 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
         $this->assertResponseStatus(
             $response,
             new StatusErrorBadRequest()
+        );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'No valid Data'
         );
     }
 

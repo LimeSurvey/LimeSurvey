@@ -23,7 +23,7 @@ class QuestionDeleteTest extends TestBaseClass
             'sessionKey' => 'not-a-valid-session-id',
             'questionID' => 'questionID'
         ));
-        $response = (new QuestionDelete)->run($request);
+        $response = (new QuestionDelete())->run($request);
 
         $this->assertResponseInvalidSession($response);
     }

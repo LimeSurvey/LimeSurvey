@@ -77,7 +77,7 @@ class QuestionGroupAddTest extends TestBaseClass
 
         $this->assertResponseStatus(
             $response,
-            new StatusErrorUnauthorised
+            new StatusErrorUnauthorised()
         );
     }
 
@@ -113,6 +113,11 @@ class QuestionGroupAddTest extends TestBaseClass
         $this->assertResponseStatus(
             $response,
             new StatusErrorBadRequest
+        );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Error: Invalid survey ID'
         );
     }
 
@@ -152,6 +157,11 @@ class QuestionGroupAddTest extends TestBaseClass
         $this->assertResponseStatus(
             $response,
             new StatusErrorBadRequest
+        );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Error: Survey is active and not editable'
         );
     }
 }

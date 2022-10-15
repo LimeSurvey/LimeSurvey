@@ -32,7 +32,7 @@ class QuestionGroupPropertiesSetTest extends TestBaseClass
             'groupID' => 'groupID',
             'groupSettings' => 'groupData'
         ));
-        $response = (new QuestionGroupPropertiesSet)->run($request);
+        $response = (new QuestionGroupPropertiesSet())->run($request);
 
         $this->assertResponseInvalidSession($response);
     }
@@ -63,6 +63,11 @@ class QuestionGroupPropertiesSetTest extends TestBaseClass
         $this->assertResponseStatus(
             $response,
             new StatusErrorNotFound()
+        );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Error: Invalid group ID'
         );
     }
 
@@ -102,6 +107,11 @@ class QuestionGroupPropertiesSetTest extends TestBaseClass
         $this->assertResponseStatus(
             $response,
             new StatusErrorUnauthorised()
+        );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'No permission'
         );
     }
 }

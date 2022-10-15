@@ -23,7 +23,7 @@ class SurveyDeleteTest extends TestBaseClass
             'sessionKey' => 'not-a-valid-session-id',
             'surveyID' => 'surveyID'
         ));
-        $response = (new SurveyDelete)->run($request);
+        $response = (new SurveyDelete())->run($request);
 
         $this->assertResponseInvalidSession($response);
     }

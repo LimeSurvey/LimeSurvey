@@ -32,7 +32,7 @@ trait AssertResponse
     {
         $this->assertResponseStatus(
             $response,
-            new StatusErrorUnauthorised
+            new StatusErrorUnauthorised()
         );
 
         $this->assertResponseDataStatus(

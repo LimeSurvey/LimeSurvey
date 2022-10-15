@@ -24,7 +24,7 @@ class SurveyPropertiesGetTest extends TestBaseClass
             'surveyID' => 'surveyID',
             'surveySettings' => array()
         ));
-        $response = (new SurveyPropertiesGet)->run($request);
+        $response = (new SurveyPropertiesGet())->run($request);
 
         $this->assertResponseInvalidSession($response);
     }

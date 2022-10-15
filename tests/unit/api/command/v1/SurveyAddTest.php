@@ -26,7 +26,7 @@ class SurveyAddTest extends TestBaseClass
             'surveyLanguage' => 'surveyLanguage',
             'format' => 'format'
         ));
-        $response = (new SurveyAdd)->run($request);
+        $response = (new SurveyAdd())->run($request);
 
         $this->assertResponseInvalidSession($response);
     }
