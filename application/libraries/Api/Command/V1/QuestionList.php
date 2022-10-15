@@ -2,9 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use Permission;
-use QuestionGroup;
-use Survey;
 use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
@@ -13,6 +10,7 @@ use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
 use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
+use LimeSurvey\Api\Command\Mixin\Accessor\QuestionGroupModel;
 
 class QuestionList implements CommandInterface
 {
@@ -20,6 +18,7 @@ class QuestionList implements CommandInterface
     use AuthPermission;
     use CommandResponse;
     use SurveyModel;
+    use QuestionGroupModel;
 
     /**
      * Run survey question list command.
@@ -70,7 +69,7 @@ class QuestionList implements CommandInterface
             !array_key_exists(
                 $sLanguage,
                 getLanguageDataRestricted()
-            ) || !in_array($sLanguage, $oSurvey->allLanguages)
+            ) || !in_array($sLanguage, $oSurvey->allLanguages ?? array())
         ) {
             return $this->responseErrorBadRequest(
                 ['status' => 'Error: Invalid language']
@@ -79,8 +78,7 @@ class QuestionList implements CommandInterface
 
         if ($iGroupID != null) {
             $iGroupID = (int) $iGroupID;
-            $oGroup = QuestionGroup::model()
-                ->findByPk($iGroupID);
+            $oGroup = $this->getQuestionGroupModel($iGroupID);
 
             if (empty($oGroup)) {
                 return $this->responseErrorNotFound(
@@ -117,6 +115,7 @@ class QuestionList implements CommandInterface
                 $oQuestion->attributes
             );
         }
+
         return $this->responseSuccess($aData);
     }
 }

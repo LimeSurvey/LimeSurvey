@@ -74,7 +74,7 @@ class QuestionListTest extends TestBaseClass
     {
         $request = new Request(array(
             'sessionKey' => 'mock',
-            'surveyID' => 'surveyID',
+            'surveyID' => 'mock',
             'groupID' => 'groupID',
             'language' => 'language'
         ));
@@ -104,5 +104,94 @@ class QuestionListTest extends TestBaseClass
             $response,
             new StatusErrorUnauthorised()
         );
+    }
+
+
+    /**
+     * @testdox Returns error bad request if language is not valid.
+     */
+    public function testQuestionGroupPropertiesGetInvalidLanguage()
+    {
+        $request = new Request(array(
+            'sessionKey' => 'mock',
+            'surveyID' => 'mock',
+            'groupID' => 'groupID',
+            'language' => 'invalid-language'
+        ));
+
+        $mockApiSessionHandle = Phony::mock(ApiSession::class);
+        $mockApiSessionHandle
+            ->checkKey
+            ->returns(true);
+        $mockApiSession = $mockApiSessionHandle->get();
+
+        $mockSurveyModelHandle = Phony::mock(Survey::class);
+        $mockSurveyModel = $mockSurveyModelHandle->get();
+
+        $mockModelPermissionHandle = Phony::mock(Permission::class);
+        $mockModelPermissionHandle->hasSurveyPermission
+            ->returns(true);
+        $mockModelPermission = $mockModelPermissionHandle->get();
+
+        $command = new QuestionList();
+        $command->setApiSession($mockApiSession);
+        $command->setPermissionModel($mockModelPermission);
+        $command->setSurveyModel($mockSurveyModel);
+
+        $response = $command->run($request);
+
+        $this->assertResponseStatus(
+            $response,
+            new StatusErrorBadRequest()
+        );
+
+        $this->assertResponseDataStatus(
+            $response,
+            'Error: Invalid language'
+        );
+    }
+
+    /**
+     * @testdox Returns error bad request if group is not valid.
+     */
+    public function testQuestionGroupPropertiesGetInvalidGroup()
+    {
+        $request = new Request(array(
+            'sessionKey' => 'mock',
+            'surveyID' => 'mock',
+            'groupID' => 'invalid-group-id',
+            'language' => 'en'
+        ));
+
+        $mockApiSessionHandle = Phony::mock(ApiSession::class);
+        $mockApiSessionHandle
+            ->checkKey
+            ->returns(true);
+        $mockApiSession = $mockApiSessionHandle->get();
+
+        $mockSurveyModel = new Survey();
+        $mockSurveyModel->setAttributes(
+            array('allLanguages' => array('en')),
+            false
+        );
+
+        $mockModelPermissionHandle = Phony::mock(Permission::class);
+        $mockModelPermissionHandle->hasSurveyPermission
+            ->returns(true);
+        $mockModelPermission = $mockModelPermissionHandle->get();
+
+        $command = new QuestionList();
+        $command->setApiSession($mockApiSession);
+        $command->setPermissionModel($mockModelPermission);
+        $command->setSurveyModel($mockSurveyModel);
+
+        $response = $command->run($request);
+
+        $this->assertResponseStatus(
+            $response,
+            new StatusErrorNotFound()
+        );
+
+        $this->assertResponseDataStatus($response,'Error: group not found');
     }
 }

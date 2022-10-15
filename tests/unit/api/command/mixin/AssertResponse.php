@@ -15,16 +15,16 @@ trait AssertResponse
     protected function assertResponseStatus(Response $response, StatusAbstract $status)
     {
         $this->assertEquals(
-            $response->getStatus()->getCode(),
-            $status->getCode()
+            $status->getCode(),
+            $response->getStatus()->getCode()
         );
     }
 
     protected function assertResponseDataStatus(Response $response, $status)
     {
         $this->assertEquals(
-            $response->getData(),
-            array('status' => $status)
+            array('status' => $status),
+            $response->getData()
         );
     }
 
