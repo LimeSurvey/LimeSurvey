@@ -2707,49 +2707,36 @@ tr.info, tr.danger {
   color: #C2C5D1;
 }
 
-.surveybar .btn, .surveybar button {
-  margin-bottom: 5px;
+.btn-sm {
+  height: 24px;
+  padding: 4px 8px;
+  font-size: 12px;
+  line-height: 1.33;
+  border-radius: 3px;
 }
 
-.btn.float-end {
-  margin-right: 5px;
+.btn {
+  height: 36px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.42;
+  border-radius: 4px;
 }
 
-@media screen and (min-width: 1280px) and (max-width: 1366px) {
-  #add_user_btn {
-    margin-top: 1.5em;
-  }
-}
-.side-menu #search .card-body .navbar-form .btn {
-  position: absolute;
-  left: 0;
-  top: 0;
-  border: 0;
-  border-radius: 0;
-  padding: 15px 18px;
+.btn-lg {
+  height: 44px;
+  padding: 12px;
+  font-size: 14px;
+  line-height: 1.42;
+  border-radius: 4px;
 }
 
-.btnaddanswer:hover,
-.btndelanswer:hover {
-  cursor: pointer;
-}
-
-.modal-footer .btn {
-  margin-bottom: 0;
-}
-
-.btn.readonly,
-.btn.readonly:hover {
-  cursor: not-allowed;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border: 2px solid #cccccc;
-}
-
-body.onStatistics .btn {
-  display: none;
+.btn-xl {
+  height: 52px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.42;
+  border-radius: 4px;
 }
 
 .menu-button-divider {
@@ -2802,4 +2789,61 @@ body.onStatistics .btn {
 
 .btn-danger[disabled] .menu-button-divider {
   border-right: 2px solid #7C8191;
+}
+
+.surveybar .btn, .surveybar button {
+  margin-bottom: 5px;
+}
+
+.btn.float-end {
+  margin-right: 5px;
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1366px) {
+  #add_user_btn {
+    margin-top: 1.5em;
+  }
+}
+.side-menu #search .card-body .navbar-form .btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 15px 18px;
+}
+
+.btnaddanswer:hover,
+.btndelanswer:hover {
+  cursor: pointer;
+}
+
+.modal-footer .btn {
+  margin-bottom: 0;
+}
+
+.btn.readonly,
+.btn.readonly:hover {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: 2px solid #cccccc;
+}
+
+body.onStatistics .btn {
+  display: none;
+}
+
+/*
+ * btn-xs was removed from Bootstrap 4.
+ * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
+ */
+.btn-group-xs > .btn, .btn-xs {
+  height: auto;
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
 }
