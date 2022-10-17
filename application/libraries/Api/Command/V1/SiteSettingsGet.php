@@ -8,12 +8,14 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\Mixin\Accessor\App;
 
 class SiteSettingsGet implements CommandInterface
 {
     use AuthSession;
     use AuthPermission;
     use CommandResponse;
+    use App;
 
     /**
      * Run site settings get command.
@@ -43,9 +45,10 @@ class SiteSettingsGet implements CommandInterface
             return $response;
         }
 
-        if (Yii::app()->getConfig($settingName) !== false) {
+        $this->getApp();
+        if ($this->getApp()->getConfig($settingName) !== false) {
             return $this->responseSuccess(
-                Yii::app()->getConfig($settingName)
+                $this->getApp()->getConfig($settingName)
             );
         } else {
             return $this->responseErrorBadRequest(

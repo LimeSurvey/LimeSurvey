@@ -11,6 +11,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 
 /**
  * @testdox API command v1 SiteSettingsGet.
@@ -106,6 +107,54 @@ class SiteSettingsGetTest extends TestBaseClass
         $this->assertResponseDataStatus(
             $response,
             'Invalid setting'
+        );
+    }
+
+    /**
+     * @testdox Returns success with setting value.
+     */
+    public function testSiteSettingsGetSuccessWithValue()
+    {
+        $request = new Request(array(
+            'sessionKey' => 'mock',
+            'settingName' => 'invalid-setting-name'
+        ));
+
+        $mockApiSessionHandle = Phony::mock(ApiSession::class);
+        $mockApiSessionHandle
+            ->checkKey
+            ->returns(true);
+        $mockApiSession = $mockApiSessionHandle->get();
+
+        $mockModelPermissionHandle = Phony::mock(Permission::class);
+        $mockModelPermissionHandle->hasGlobalPermission
+            ->returns(true);
+        $mockModelPermission = $mockModelPermissionHandle->get();
+
+        $mockAppBuilder = Phony::mockBuilder();
+        $mockAppBuilder->addMethod(
+            'getConfig',
+            function ($settingName) {
+                return true;
+            }
+        );
+        $mockApp = $mockAppBuilder->partial();
+
+        $command = new SiteSettingsGet();
+        $command->setApiSession($mockApiSession);
+        $command->setPermissionModel($mockModelPermission);
+        $command->setApp($mockApp);
+
+        $response = $command->run($request);
+
+        $this->assertResponseStatus(
+            $response,
+            new StatusSuccess()
+        );
+
+        $this->assertEquals(
+            true,
+            $response->getData()
         );
     }
 }
