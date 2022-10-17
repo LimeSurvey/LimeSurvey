@@ -12,13 +12,19 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Models\Services\QuestionAttributeHelper;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
+use LimeSurvey\Api\Command\Mixin\Accessor\QuestionModel;
+use LimeSurvey\Api\Command\Mixin\Accessor\QuestionModelWithL10nsByIdAndLanguage;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
+
 
 class QuestionPropertiesGet implements CommandInterface
 {
     use AuthSession;
     use AuthPermission;
     use CommandResponse;
+    use QuestionModel;
+    use QuestionModelWithL10nsByIdAndLanguage;
+
 
     /**
      * Run survey question properties get command.
@@ -41,7 +47,8 @@ class QuestionPropertiesGet implements CommandInterface
         }
 
         Yii::app()->loadHelper("surveytranslator");
-        $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
+
+        $oQuestion = $this->getQuestionModel($iQuestionID);
         if (!isset($oQuestion)) {
             return $this->responseErrorNotFound(
                 array('status' => 'Error: Invalid questionid')
@@ -71,10 +78,9 @@ class QuestionPropertiesGet implements CommandInterface
             );
         }
 
-        $oQuestion = Question::model()->with('questionl10ns')
-        ->find(
-            't.qid = :qid and questionl10ns.language = :language',
-            array(':qid' => $iQuestionID, ':language' => $sLanguage)
+        $oQuestion = $this->getQuestionModelCollectionWithL10nsByIdAndLanguage(
+            $iQuestionID,
+            $sLanguage
         );
         if (!isset($oQuestion)) {
             return $this->responseErrorBadRequest(
@@ -99,7 +105,7 @@ class QuestionPropertiesGet implements CommandInterface
         }
 
         if (empty($aQuestionSettings)) {
-            return $this->responseSuccess(
+            return $this->responseErrorBadRequest(
                 array('status' => 'No valid Data')
             );
         }

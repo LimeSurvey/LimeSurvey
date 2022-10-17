@@ -30,7 +30,7 @@ trait SurveyModel
      *
      * Used to set mock record during testing.
      *
-     * @param int $id
+     * @param Survey $survey
      * @return void
      */
     public function setSurveyModel(Survey $survey)

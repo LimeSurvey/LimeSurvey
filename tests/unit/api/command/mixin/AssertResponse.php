@@ -15,8 +15,8 @@ trait AssertResponse
     protected function assertResponseStatus(Response $response, StatusAbstract $status)
     {
         $this->assertEquals(
-            $status->getCode(),
-            $response->getStatus()->getCode()
+            $response->getStatus()->getCode(),
+            $status->getCode()
         );
     }
 
