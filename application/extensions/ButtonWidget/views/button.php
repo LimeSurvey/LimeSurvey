@@ -16,7 +16,7 @@ $iconLeft = $icon && $iconPosition != 'right' ? '<i class="' .  $icon . '" ></i>
 $iconRight = $icon && $iconPosition == 'right' ? ' <i class="' .  $icon . '" ></i>' : '';
 $menuIconHtml = $displayMenuIcon ? '<span class="menu-button-divider"></span><i class="' . $menuIcon . '" ></i>' : '';
 ?>
-<?php if ($link == '' || $menu) : ?>
+<?php if ($link == '' || $menu || array_key_exists('disabled', $htmlOptions)) : ?>
     <?php if ($menuContent != '') : ?>
         <div class="dropdown">
     <?php endif; ?>
