@@ -10,6 +10,7 @@ use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
+use LimeSurvey\Api\Command\Mixin\Accessor\QuestionModel;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
 
 class QuestionPropertiesSet implements CommandInterface
@@ -17,6 +18,7 @@ class QuestionPropertiesSet implements CommandInterface
     use AuthSession;
     use AuthPermission;
     use CommandResponse;
+    use QuestionModel;
 
     /**
      * Run survey question properties set command.
@@ -39,8 +41,8 @@ class QuestionPropertiesSet implements CommandInterface
         }
 
         Yii::app()->loadHelper("surveytranslator");
-        $iQuestionID = (int) $iQuestionID;
-        $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
+
+        $oQuestion = $this->getQuestionModel($iQuestionID);
         if (is_null($oQuestion)) {
             return $this->responseErrorNotFound(
                 array('status' => 'Error: Invalid group ID')
@@ -70,13 +72,6 @@ class QuestionPropertiesSet implements CommandInterface
             );
         }
 
-        $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
-        if (!isset($oQuestion)) {
-            return $this->responseErrorBadRequest(
-                array('status' => 'Error: Invalid questionid')
-            );
-        }
-
         // Remove fields that may not be modified
         unset($aQuestionData['qid']);
         unset($aQuestionData['gid']);
@@ -90,7 +85,7 @@ class QuestionPropertiesSet implements CommandInterface
         $aQuestionAttributes = $oQuestion->getAttributes();
 
         if (empty($aQuestionData)) {
-            return $this->responseSuccess(
+            return $this->responseErrorBadRequest(
                 array('status' => 'No valid Data')
             );
         }

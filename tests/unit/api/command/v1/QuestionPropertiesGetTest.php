@@ -9,7 +9,6 @@ use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionPropertiesGet;
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
@@ -196,7 +195,7 @@ class QuestionPropertiesGetTest extends TestBaseClass
 
         $this->assertResponseStatus(
             $response,
-            new StatusErrorBadRequest
+            new StatusErrorBadRequest()
         );
 
         $this->assertResponseDataStatus(

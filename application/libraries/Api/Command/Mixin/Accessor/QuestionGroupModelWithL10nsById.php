@@ -32,11 +32,11 @@ trait QuestionGroupModelWithL10nsById
      *
      * Used to set mock record during testing.
      *
-     * @param int $id
+     * @param QuestionGroup $questionGroup
      * @return void
      */
-    public function setQuestionGroupModelWithL10nsById($collection)
+    public function setQuestionGroupModelWithL10nsById($questionGroup)
     {
-        $this->questionGroupWithL10nsById = $collection;
+        $this->questionGroupWithL10nsById = $questionGroup;
     }
 }
