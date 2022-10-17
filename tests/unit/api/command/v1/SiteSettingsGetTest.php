@@ -8,10 +8,10 @@ use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\SiteSettingsGet;
 use LimeSurvey\Api\Command\Request\Request;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
-use LimeSurvey\Api\ApiSession;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
+use LimeSurvey\Api\ApiSession;
 
 /**
  * @testdox API command v1 SiteSettingsGet.

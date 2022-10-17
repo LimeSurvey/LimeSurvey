@@ -43,9 +43,15 @@ class SurveyDelete implements CommandInterface
             return $response;
         }
 
-        Survey::model()->deleteSurvey($iSurveyID, true);
+        $this->deleteSurvey($iSurveyID);
+
         return $this->responseSuccess(
             array('status' => 'OK')
         );
+    }
+
+    protected function deleteSurvey($iSurveyID)
+    {
+        return Survey::model()->deleteSurvey($iSurveyID, true);
     }
 }
