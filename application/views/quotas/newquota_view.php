@@ -1,5 +1,4 @@
 <?php
-/* @var string $lang */
 /* @var Quota $oQuota */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings */
 
@@ -13,7 +12,7 @@ echo viewHelper::getViewTestTag('addQuota');
             <h3>
                 <?php eT("New quota");?>
             </h3>
-            <?php $this->renderPartial('/admin/quotas/_form',
+            <?php $this->renderPartial('/quotas/_form',
                 array(
                     'oQuota'=>$oQuota,
                     'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,

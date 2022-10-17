@@ -118,39 +118,18 @@ class QuotasController extends LSBaseController
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
 
-        $oQuota = new Quota();
-        $oQuota->sid = $oSurvey->primaryKey;
-
-        if (isset($_POST['Quota'])) {
-            $oQuota->attributes = $_POST['Quota'];
-            if ($oQuota->save()) {
-                foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes) {
-                    $oQuotaLanguageSetting = new QuotaLanguageSetting();
-                    $oQuotaLanguageSetting->attributes = $settingAttributes;
-                    $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
-                    $oQuotaLanguageSetting->quotals_language = $language;
-
-                    //Clean XSS - Automatically provided by CI
-                    $oQuotaLanguageSetting->quotals_message = html_entity_decode($oQuotaLanguageSetting->quotals_message, ENT_QUOTES, "UTF-8");
-                    // Fix bug with FCKEditor saving strange BR types
-                    $oQuotaLanguageSetting->quotals_message = fixCKeditorText($oQuotaLanguageSetting->quotals_message);
-                    $oQuotaLanguageSetting->save(false);
-
-                    if (!$oQuotaLanguageSetting->validate()) {
-                        $oQuota->addErrors($oQuotaLanguageSetting->getErrors());
-                    }
-                }
-                if (!$oQuota->getErrors()) {
-                    Yii::app()->user->setFlash('success', gT("New quota saved"));
-                    //self::redirectToIndex($surveyid);
-                    $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
-                } else {
-                    // if any of the parts fail to save we delete the quota and and try again
-                    $oQuota->delete();
-                }
+        if(isset($_POST['Quota'])) {
+            $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
+            if ($quotaService->saveNewQuota($_POST['Quota'])) {
+                Yii::app()->user->setFlash('success', gT("New quota saved"));
+                $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
+            } else {
+                Yii::app()->user->setFlash('error', gT("Quota could not be saved."));
             }
         }
 
+        $oQuota = new Quota();
+        $oQuota->sid = $oSurvey->primaryKey;
         // create QuotaLanguageSettings
         foreach ($oSurvey->getAllLanguages() as $language) {
             $oQuotaLanguageSetting = new QuotaLanguageSetting();
@@ -173,7 +152,45 @@ class QuotasController extends LSBaseController
     }
 
 
-    public function actionEditQuota(){
+    public function actionEditQuota($surveyid){
+        $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if (!(Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'update'))) {
+            Yii::app()->user->setFlash('error', gT("Access denied."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
 
+        $quotaId = sanitize_int(Yii::app()->request->getQuery('quota_id'));
+
+        /* @var Quota $oQuota */
+        $oQuota = Quota::model()->findByPk($quotaId);
+
+        if (isset($_POST['Quota'])) {
+            $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
+            if ($quotaService->editQuota($oQuota, $_POST['Quota'])) {
+                Yii::app()->user->setFlash('success', gT("Quota saved"));
+                $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
+            }else{
+                Yii::app()->user->setFlash('error', gT("Quota or quota languages could not be updated."));
+            }
+        }
+
+        $aQuotaLanguageSettings = [];
+        foreach ($oQuota->languagesettings as $languagesetting) {
+            /* url is decoded before usage @see https://github.com/LimeSurvey/LimeSurvey/blob/8d8420a4efcf8e71c4fccbb6708648ace263ca80/application/views/admin/survey/editLocalSettings_view.php#L60 */
+            $languagesetting['quotals_url'] = htmlspecialchars_decode($languagesetting['quotals_url']);
+            $aQuotaLanguageSettings[$languagesetting->quotals_language] = $languagesetting;
+        }
+
+        $aData['surveyid'] = $surveyid;
+        $aData['sidemenu']['state'] = false;
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
+        $aData['topBar']['showSaveButton'] = true;
+
+        $this->aData = $aData;
+        $this->render('editquota_view', [
+            'oQuota' => $oQuota,
+            'aQuotaLanguageSettings' => $aQuotaLanguageSettings
+        ]);
     }
 }

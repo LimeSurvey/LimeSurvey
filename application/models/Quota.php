@@ -221,8 +221,7 @@ class Quota extends LSActiveRecord
 
         //edit
         if (Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'update')) {
-            $url = App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $this->survey->sid, array(
-                'sid' => $this->sid,
+            $url = App()->createUrl("quotas/editQuota/surveyid/" . $this->survey->sid, array(
                 'quota_id' => $this->primaryKey,
             ));
             $buttons .= '<a href="' . $url . '" class="btn btn-outline-secondary" data-bs-toggle="tooltip" title="' . gT("Edit") . '">

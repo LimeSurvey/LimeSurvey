@@ -81,7 +81,7 @@ class Quotas
     /**
      * Get Quota Answers
      *
-     * todo: rewrite this function, use switch instead of if-elseif...(done!) and create OOPs for questiontypes
+     * todo: rewrite this function, use switch instead of if-elseif...(done!) and create OOPs for questiontypes (?)
      * @param integer $iQuestionId
      * @param integer $iQuotaId
      * @return array
@@ -185,17 +185,22 @@ class Quotas
         return  $aAnswerList;
     }
 
-
-    public function saveNewQuota($Quotaparams){
+    /**
+     * Saves the new quota and it's language settings.
+     *
+     * @param $quotaParams array the quota attributes
+     * @return bool true if all could be saved, false otherwise
+     * @throws \CDbException
+     */
+    public function saveNewQuota(array $quotaParams): bool
+    {
         $oQuota = new \Quota();
         $oQuota->sid = $this->survey->sid;
-
-        $oQuota->attributes = $_POST['Quota'];
-
+        $oQuota->attributes = $quotaParams;
         $savingOk = $oQuota->save();
         if ($savingOk) {
             foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes) {
-                $oQuotaLanguageSetting = new QuotaLanguageSetting();
+                $oQuotaLanguageSetting = new \QuotaLanguageSetting();
                 $oQuotaLanguageSetting->attributes = $settingAttributes;
                 $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
                 $oQuotaLanguageSetting->quotals_language = $language;
@@ -204,21 +209,52 @@ class Quotas
                 $oQuotaLanguageSetting->quotals_message = html_entity_decode($oQuotaLanguageSetting->quotals_message, ENT_QUOTES, "UTF-8");
                 // Fix bug with FCKEditor saving strange BR types
                 $oQuotaLanguageSetting->quotals_message = fixCKeditorText($oQuotaLanguageSetting->quotals_message);
-                $oQuotaLanguageSetting->save(false);
 
+                //todo must be counted and quota must be returned for error output for user
+                $oQuotaLanguageSetting->save(false);
                 if (!$oQuotaLanguageSetting->validate()) {
                     $oQuota->addErrors($oQuotaLanguageSetting->getErrors());
                 }
+                $savingOk = $oQuotaLanguageSetting->save();
+                if (!$savingOk) {
+                    break;
+                }
             }
-            if (!$oQuota->getErrors()) {
-                Yii::app()->user->setFlash('success', gT("New quota saved"));
-                //self::redirectToIndex($surveyid);
-                $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
-            } else {
-                //todo also delete already created QuotaLanguageSettings
-
-                // if any of the parts fail to save we delete the quota and try again
+            //delete quota and language settings for this qouta if errors
+            if (!$savingOk){
+                //delete quotalanguagesettings if any for this qouta
+                foreach ($oQuota->languagesettings  as $languageSetting){
+                    $languageSetting->delete();
+                }
+                // if any of the parts fail to save we delete the quota
                 $oQuota->delete();
+            }
+        }
+
+        return $savingOk;
+    }
+
+    /**
+     *
+     * @param \Quota $oQuota
+     * @param array $quotaParams
+     * @return bool|mixed
+     */
+    public function editQuota($oQuota, array $quotaParams){
+
+        $oQuota->attributes = $quotaParams;
+        $savingOk = $oQuota->save();
+        if ($savingOk) {
+            foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes) {
+                $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
+                $oQuotaLanguageSetting->attributes = $settingAttributes;
+
+                //Clean XSS - Automatically provided by CI
+                $oQuotaLanguageSetting->quotals_message = html_entity_decode($oQuotaLanguageSetting->quotals_message, ENT_QUOTES, "UTF-8");
+                // Fix bug with FCKEditor saving strange BR types
+                $oQuotaLanguageSetting->quotals_message = fixCKeditorText($oQuotaLanguageSetting->quotals_message);
+
+                $savingOk = $savingOk && $oQuotaLanguageSetting->save();
             }
         }
 

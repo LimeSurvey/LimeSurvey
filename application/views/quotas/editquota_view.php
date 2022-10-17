@@ -1,5 +1,4 @@
 <?php
-/* @var $this AdminController */
 /* @var Quota $oQuota */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings */
 ?>
@@ -10,7 +9,7 @@
             <h3>
                 <?php eT("Edit quota");?>
             </h3>
-            <?php $this->renderPartial('/admin/quotas/_form',
+            <?php $this->renderPartial('/quotas/_form',
                 array(
                     'oQuota'=>$oQuota,
                     'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
