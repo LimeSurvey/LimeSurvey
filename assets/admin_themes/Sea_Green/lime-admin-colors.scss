@@ -2309,37 +2309,7 @@ fieldset[disabled] {
 .modal-footer {
     border-top: 1px solid $gray-06;
 }
-// Tooltip
-.tooltip-inner {
-    color: $white;
-    background-color: $black;
-}
-.tooltip {
-    &.top .tooltip-arrow {
-        border-top-color: $black;
-    }
-    &.top-left .tooltip-arrow {
-        border-top-color: $black;
-    }
-    &.top-right .tooltip-arrow {
-        border-top-color: $black;
-    }
-    &.right .tooltip-arrow {
-        border-right-color: $black;
-    }
-    &.left .tooltip-arrow {
-        border-left-color: $black;
-    }
-    &.bottom .tooltip-arrow {
-        border-bottom-color: $black;
-    }
-    &.bottom-left .tooltip-arrow {
-        border-bottom-color: $black;
-    }
-    &.bottom-right .tooltip-arrow {
-        border-bottom-color: $black;
-    }
-}
+
 // Popover
 .popover {
     background-color: $white;

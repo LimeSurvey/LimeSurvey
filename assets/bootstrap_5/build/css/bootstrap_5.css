@@ -2611,11 +2611,11 @@ textarea.form-control-lg {
   z-index: 5;
   display: none;
   max-width: 100%;
-  padding: 0.5rem 1.2rem;
+  padding: 0.25rem 0.5rem;
   margin-top: 0.1rem;
   font-size: 0.875rem;
   color: #fff;
-  background-color: #198754;
+  background-color: rgba(25, 135, 84, 0.9);
   border-radius: 0.25rem;
 }
 
@@ -2700,11 +2700,11 @@ textarea.form-control-lg {
   z-index: 5;
   display: none;
   max-width: 100%;
-  padding: 0.5rem 1.2rem;
+  padding: 0.25rem 0.5rem;
   margin-top: 0.1rem;
   font-size: 0.875rem;
   color: #fff;
-  background-color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.9);
   border-radius: 0.25rem;
 }
 
@@ -5618,12 +5618,12 @@ textarea.form-control-lg {
   opacity: 0;
 }
 .tooltip.show {
-  opacity: 1;
+  opacity: 0.9;
 }
 .tooltip .tooltip-arrow {
   position: absolute;
   display: block;
-  width: 1rem;
+  width: 0.8rem;
   height: 0.4rem;
 }
 .tooltip .tooltip-arrow::before {
@@ -5641,8 +5641,8 @@ textarea.form-control-lg {
 }
 .bs-tooltip-top .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before {
   top: -1px;
-  border-width: 0.4rem 0.5rem 0;
-  border-top-color: #404040 !important;
+  border-width: 0.4rem 0.4rem 0;
+  border-top-color: #000;
 }
 
 .bs-tooltip-end, .bs-tooltip-auto[data-popper-placement^=right] {
@@ -5651,12 +5651,12 @@ textarea.form-control-lg {
 .bs-tooltip-end .tooltip-arrow, .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow {
   left: 0;
   width: 0.4rem;
-  height: 1rem;
+  height: 0.8rem;
 }
 .bs-tooltip-end .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow::before {
   right: -1px;
-  border-width: 0.5rem 0.4rem 0.5rem 0;
-  border-right-color: #404040 !important;
+  border-width: 0.4rem 0.4rem 0.4rem 0;
+  border-right-color: #000;
 }
 
 .bs-tooltip-bottom, .bs-tooltip-auto[data-popper-placement^=bottom] {
@@ -5667,8 +5667,8 @@ textarea.form-control-lg {
 }
 .bs-tooltip-bottom .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow::before {
   bottom: -1px;
-  border-width: 0 0.5rem 0.4rem;
-  border-bottom-color: #404040 !important;
+  border-width: 0 0.4rem 0.4rem;
+  border-bottom-color: #000;
 }
 
 .bs-tooltip-start, .bs-tooltip-auto[data-popper-placement^=left] {
@@ -5677,20 +5677,20 @@ textarea.form-control-lg {
 .bs-tooltip-start .tooltip-arrow, .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow {
   right: 0;
   width: 0.4rem;
-  height: 1rem;
+  height: 0.8rem;
 }
 .bs-tooltip-start .tooltip-arrow::before, .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow::before {
   left: -1px;
-  border-width: 0.5rem 0 0.5rem 0.4rem;
-  border-left-color: #404040 !important;
+  border-width: 0.4rem 0 0.4rem 0.4rem;
+  border-left-color: #000;
 }
 
 .tooltip-inner {
   max-width: 200px;
-  padding: 0.5rem 1.2rem;
-  color: #c9c9c9;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
   text-align: center;
-  background-color: #404040 !important;
+  background-color: #000;
   border-radius: 0.25rem;
 }
 

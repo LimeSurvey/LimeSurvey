@@ -1879,36 +1879,6 @@ fieldset[disabled] .btn-link:focus {
   border-top: 1px solid #e6e6e6;
 }
 
-.tooltip-inner {
-  color: #fff;
-  background-color: #000;
-}
-
-.tooltip.top .tooltip-arrow {
-  border-top-color: #000;
-}
-.tooltip.top-left .tooltip-arrow {
-  border-top-color: #000;
-}
-.tooltip.top-right .tooltip-arrow {
-  border-top-color: #000;
-}
-.tooltip.right .tooltip-arrow {
-  border-left-color: #000;
-}
-.tooltip.left .tooltip-arrow {
-  border-right-color: #000;
-}
-.tooltip.bottom .tooltip-arrow {
-  border-bottom-color: #000;
-}
-.tooltip.bottom-left .tooltip-arrow {
-  border-bottom-color: #000;
-}
-.tooltip.bottom-right .tooltip-arrow {
-  border-bottom-color: #000;
-}
-
 .popover {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -2777,9 +2747,37 @@ label {
   line-height: 20px;
 }
 
-.tooltip {
+.tooltip-inner {
   font-family: "IBMPlexSans";
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
+  color: #fff;
+  background-color: #000;
+  padding: 0.5rem 1.5rem;
+}
+
+.tooltip.top .tooltip-arrow {
+  border-top-color: #000;
+}
+.tooltip.top-left .tooltip-arrow {
+  border-top-color: #000;
+}
+.tooltip.top-right .tooltip-arrow {
+  border-top-color: #000;
+}
+.tooltip.right .tooltip-arrow {
+  border-left-color: #000;
+}
+.tooltip.left .tooltip-arrow {
+  border-right-color: #000;
+}
+.tooltip.bottom .tooltip-arrow {
+  border-bottom-color: #000;
+}
+.tooltip.bottom-left .tooltip-arrow {
+  border-bottom-color: #000;
+}
+.tooltip.bottom-right .tooltip-arrow {
+  border-bottom-color: #000;
 }
