@@ -4,34 +4,42 @@
  */
 ?>
 <!-- survey activation -->
-<?php if (!$oSurvey->isActive): ?>
+<?php if (!$oSurvey->isActive) : ?>
     <!-- activate -->
-    <?php if ($canactivate): ?>
-        <a id='ls-activate-survey' class="btn btn-success"
-           href="<?php echo App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]); ?>"
-           role="button">
-            <?php eT("Activate this survey"); ?>
-        </a>
-        <!-- can't activate -->
-    <?php else: ?>
+    <?php
+    $htmlOptions = [
+        'class' => 'btn btn-primary btntooltip',
+        'role' => 'button',
+    ];
+    ?>
+    <?php if (!$canactivate) : ?>
         <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom"
-              title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
-            <button id='ls-activate-survey' type="button" class="btn btn-success btntooltip" disabled="disabled">
-                <?php eT("Activate this survey"); ?>
-            </button>
+        title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+        <?php $htmlOptions['disabled'] = 'disabled'; ?>
+    <?php endif; ?>
+        <?php
+        $this->widget('ext.ButtonWidget.ButtonWidget', [
+            'name' => '',
+            'id' => 'ls-activate-survey',
+            'text' => gT('Activate survey'),
+            'icon' => 'fa fa-check',
+            'link' => App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
+            'htmlOptions' => $htmlOptions,
+        ]); ?>
+    <?php if (!$canactivate) : ?>
         </span>
     <?php endif; ?>
 <?php else : ?>
 
     <!-- activate expired survey -->
-    <?php if ($expired):
+    <?php if ($expired) :
         // TODO: ToolTip for expired survey
-    elseif ($notstarted):
+    elseif ($notstarted) :
         // TODO: ToolTip for not started survey
     endif; ?>
 
     <!-- Stop survey -->
-    <?php if ($canactivate): ?>
+    <?php if ($canactivate) : ?>
         <a class="btn btn-danger btntooltip"
            href="<?php echo App()->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]); ?>">
             <i class="fa fa-stop-circle"></i>
@@ -52,7 +60,7 @@
             ]); ?>
 <?php endif; ?>
 
-<?php if ($showToolsMenu): ?>
+<?php if ($showToolsMenu) : ?>
     <?php $toolsDropDownItems = $this->render('includes/surveyToolsDropdownItems', get_defined_vars(), true); ?>
     <!-- Tools  -->
     <div class="d-inline-flex ">
@@ -71,13 +79,13 @@
     </div>
 <?php endif; ?>
 
-<?php if (!empty($beforeSurveyBarRender)): ?>
+<?php if (!empty($beforeSurveyBarRender)) : ?>
 <!--@TODO adjust to new theme-->
-    <?php foreach ($beforeSurveyBarRender as $menu): ?>
+    <?php foreach ($beforeSurveyBarRender as $menu) : ?>
         <div class='btn-group'>
-            <?php if ($menu->isDropDown()): ?>
+            <?php if ($menu->isDropDown()) : ?>
                 <button class="dropdown-toggle btn btn-outline-secondary" data-bs-toggle="dropdown" href="#">
-                    <?php if ($menu->getIconClass()): ?>
+                    <?php if ($menu->getIconClass()) : ?>
                         <span class="<?php echo $menu->getIconClass(); ?>"></span>&nbsp;
                     <?php endif; ?>
                     <?php echo $menu->getLabel(); ?>
@@ -85,16 +93,16 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <?php foreach ($menu->getMenuItems() as $menuItem): ?>
-                        <?php if ($menuItem->isDivider()): ?>
+                    <?php foreach ($menu->getMenuItems() as $menuItem) : ?>
+                        <?php if ($menuItem->isDivider()) : ?>
                             <li class="dropdown-divider"></li>
-                        <?php elseif ($menuItem->isSmallText()): ?>
+                        <?php elseif ($menuItem->isSmallText()) : ?>
                             <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
                         <?php else: ?>
                             <li>
                                 <a class="dropdown-item" href="<?php echo $menuItem->getHref(); ?>">
                                     <!-- Spit out icon if present -->
-                                    <?php if ($menuItem->getIconClass() != ''): ?>
+                                    <?php if ($menuItem->getIconClass() != '') : ?>
                                         <span class="<?php echo $menuItem->getIconClass(); ?>">&nbsp;</span>
                                     <?php endif; ?>
                                     <?php echo $menuItem->getLabel(); ?>
@@ -105,7 +113,7 @@
                 </ul>
             <?php else : ?>
                 <a class='btn btn-outline-secondary' href="<?php echo $menu->getHref(); ?>">
-                    <?php if ($menu->getIconClass()): ?>
+                    <?php if ($menu->getIconClass()) : ?>
                         <span class="<?php echo $menu->getIconClass(); ?>"></span>&nbsp;
                     <?php endif; ?>
                     <?php echo $menu->getLabel(); ?>
@@ -116,7 +124,7 @@
 <?php endif; ?>
 
 <!-- Export -->
-<?php if (Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export')): ?>
+<?php if (Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export')) : ?>
     <?php App()->getController()->renderPartial(
         '/admin/survey/surveybar_displayexport',
         [
