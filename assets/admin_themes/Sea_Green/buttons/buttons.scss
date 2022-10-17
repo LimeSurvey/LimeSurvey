@@ -644,6 +644,87 @@
   }
 }
 
+// new admin theme customization
+//Sizing
+.btn-sm {
+  height: 24px;
+  padding: 4px 8px;
+  font-size: 12px;
+  line-height: 1.33;
+  border-radius: 3px;
+}
+
+.btn {
+  height: 36px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.42;
+  border-radius: 4px;
+}
+
+.btn-lg {
+  height: 44px;
+  padding: 12px;
+  font-size: 14px;
+  line-height: 1.42;
+  border-radius: 4px;
+}
+
+.btn-xl {
+  height: 52px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.42;
+  border-radius: 4px;
+}
+
+//Dropdown divider
+.menu-button-divider {
+  margin: 0 8px;
+}
+
+.btn-primary .menu-button-divider, .btn-info .menu-button-divider {
+  border-left: 2px solid $white;
+}
+.btn-primary[disabled] .menu-button-divider {
+  border-left: 2px solid $g-600;
+}
+
+.btn-outline-secondary .menu-button-divider {
+  border-left: 2px solid $g-900;
+}
+.btn-outline-secondary[disabled] .menu-button-divider {
+  border-left: 2px solid $g-600;
+}
+
+.btn-secondary .menu-button-divider {
+  border-left: 2px solid $white;
+}
+.btn-secondary[disabled] .menu-button-divider {
+  border-left: 2px solid $g-600;
+}
+
+.btn-success .menu-button-divider {
+  border-left: 2px solid $g-900;
+}
+.btn-success[disabled] .menu-button-divider {
+  border-left: 2px solid $g-600;
+}
+
+.btn-warning .menu-button-divider {
+  border-left: 2px solid $g-900;
+}
+.btn-warning[disabled] .menu-button-divider {
+  border-left: 2px solid $g-600;
+}
+
+.btn-danger .menu-button-divider {
+  border-left: 2px solid $g-900;
+}
+.btn-danger[disabled] .menu-button-divider {
+  border-left: 2px solid $g-600;
+}
+
 // Custom from adminbasics:
 
 .surveybar .btn, .surveybar button {
@@ -692,49 +773,14 @@ body.onStatistics .btn {
   display: none;
 }
 
-// new admin theme customization
-.menu-button-divider {
-  margin: 0 8px;
-}
-
-.btn-primary .menu-button-divider, .btn-info .menu-button-divider {
-  border-left: 2px solid $white;
-}
-.btn-primary[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
-}
-
-.btn-outline-secondary .menu-button-divider {
-  border-left: 2px solid $g-900;
-}
-.btn-outline-secondary[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
-}
-
-.btn-secondary .menu-button-divider {
-  border-left: 2px solid $white;
-}
-.btn-secondary[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
-}
-
-.btn-success .menu-button-divider {
-  border-left: 2px solid $g-900;
-}
-.btn-success[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
-}
-
-.btn-warning .menu-button-divider {
-  border-left: 2px solid $g-900;
-}
-.btn-warning[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
-}
-
-.btn-danger .menu-button-divider {
-  border-left: 2px solid $g-900;
-}
-.btn-danger[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
+/*
+ * btn-xs was removed from Bootstrap 4.
+ * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
+ */
+.btn-group-xs > .btn, .btn-xs {
+  height: auto;
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
 }
