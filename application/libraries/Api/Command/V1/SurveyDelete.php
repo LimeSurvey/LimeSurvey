@@ -50,6 +50,14 @@ class SurveyDelete implements CommandInterface
         );
     }
 
+    /**
+     * Delete Survey
+     *
+     * Implement as a protected method to allow mocking in unit tests.
+     *
+     * @param int $iSurveyID
+     * @return void
+     */
     protected function deleteSurvey($iSurveyID)
     {
         return Survey::model()->deleteSurvey($iSurveyID, true);
