@@ -8,6 +8,7 @@ use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
+use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
 
 
@@ -15,6 +16,7 @@ class SurveyPropertiesGet implements CommandInterface
 {
     use AuthSession;
     use AuthPermission;
+    use SurveyModel;
     use CommandResponse;
 
     /**
@@ -38,8 +40,7 @@ class SurveyPropertiesGet implements CommandInterface
             return $response;
         }
 
-        $iSurveyID = (int) $iSurveyID;
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $oSurvey = $this->getSurveyModel($iSurveyID);
         if (!isset($oSurvey)) {
             return $this->responseErrorNotFound(
                 array('status' => 'Error: Invalid survey ID')
