@@ -116,12 +116,106 @@
   display: none;
 }
 
+#selectable .ui-selecting {
+  background: #8CCE00;
+}
+
+#selectable .ui-selected {
+  background: #C1DD7F;
+  color: #000000;
+}
+
+#selectable {
+  list-style-type: none;
+  margin: 2px;
+  padding: 0;
+  width: 90%;
+}
+
+#selectable li {
+  padding: 1em;
+  font-size: 1em;
+  height: 9px;
+  text-align: center;
+  margin: 4px;
+}
+
+.ui-icon.exporticon {
+  background-image: url("images/export.gif");
+}
+
+#feedback {
+  font-size: 1.4em;
+}
+
+#selectableadd .ui-selecting {
+  background: #0066CC;
+}
+
+#selectableadd .ui-selected {
+  background: #0066CC;
+  color: white;
+}
+
+#selectableadd {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 90%;
+  text-align: center;
+}
+
+#selectableadd li {
+  margin: 3px;
+  padding: 0.4em;
+  font-size: 1 em;
+  height: 18px;
+  text-align: center;
+}
+
+.popupgroup {
+  border: 1px solid #DAE5F4;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 8px;
+}
+
+.translate > table {
+  table-layout: fixed;
+}
+
+.translate td._from_ > .question-text-from {
+  width: 100%;
+  overflow: auto;
+  word-wrap: break-word;
+}
+
+#cpdbatt {
+  min-height: 100px;
+}
+
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+.responses-column-filter-modal-checkbox-buttons {
+  text-align: left;
+  padding-bottom: 15px;
+}
+
 /**
- * Lime Admin Common CSS File
- *
- * This file contain all the common css definitions for the different admin theme.
- * It should not contain color definition (grey, blacks, and white are acceptable)
- */
+* Lime Admin Common CSS File
+*
+* This file contain all the common css definitions for the different admin theme.
+* It should not contain color definition (grey, blacks, and white are acceptable)
+*/
 #ls-loading {
   width: 100%;
   height: 100%;
@@ -4469,207 +4563,6 @@ html[dir=rtl] th {
   overflow-x: visible;
 }
 
-#selectable .ui-selecting {
-  background: #8CCE00;
-}
-
-#selectable .ui-selected {
-  background: #C1DD7F;
-  color: #000000;
-}
-
-#selectable {
-  list-style-type: none;
-  margin: 2px;
-  padding: 0;
-  width: 90%;
-}
-
-#selectable li {
-  padding: 1em;
-  font-size: 1em;
-  height: 9px;
-  text-align: center;
-  margin: 4px;
-}
-
-.ui-icon.exporticon {
-  background-image: url("images/export.gif");
-}
-
-#feedback {
-  font-size: 1.4em;
-}
-
-#selectableadd .ui-selecting {
-  background: #0066CC;
-}
-
-#selectableadd .ui-selected {
-  background: #0066CC;
-  color: white;
-}
-
-#selectableadd {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 90%;
-  text-align: center;
-}
-
-#selectableadd li {
-  margin: 3px;
-  padding: 0.4em;
-  font-size: 1 em;
-  height: 18px;
-  text-align: center;
-}
-
-.popupgroup {
-  border: 1px solid #DAE5F4;
-  padding: 10px;
-  border-radius: 3px;
-  margin: 8px;
-}
-
-.draggable-container {
-  min-height: 300px;
-}
-
-#newcreated,
-#tokenattribute,
-#csvattribute,
-#centralattribute {
-  margin-left: 0.75%;
-  margin-right: 0.75%;
-  margin-bottom: 20px;
-}
-
-#tokenattribute {
-  margin-left: 1.5%;
-}
-
-#centralattribute {
-  margin-right: 1.5%;
-}
-
-#centralattribute .centralatt {
-  padding-bottom: 15px;
-}
-
-#newcreated .attribute-item input {
-  display: block;
-  margin: 2px auto;
-  width: 80%;
-}
-
-#centralattribute div.centralatt div.token-attribute {
-  margin-top: -5px;
-  min-height: 20px;
-}
-
-#newcreated,
-#tokenattribute {
-  height: 100%;
-}
-
-.heading {
-  height: auto;
-  padding-top: 7px;
-  font-weight: bold;
-}
-
-div.mappable-attribute-wrapper {
-  width: 80%;
-  margin: 6px auto;
-  padding: 6px;
-}
-
-div.attribute-item, .already-mapped-attribute {
-  width: 80%;
-  margin: 6px auto;
-  padding: 4px;
-  text-align: center;
-}
-
-#centralattribute .explanation {
-  width: 90%;
-  margin: 0 auto;
-  text-align: left;
-}
-
-#centralattribute .explanation-row {
-  display: table-row;
-}
-
-#centralattribute .explanation input,
-#centralattribute .explanation label {
-  display: table-cell;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#centralattribute .explanation label {
-  padding-left: 8px;
-}
-
-.attribute-item.draggable {
-  cursor: move;
-}
-
-div.mappable-attribute-wrapper.target-hover {
-  padding-bottom: 27px;
-}
-
-div.mappable-attribute-wrapper.paired.target-hover {
-  padding-bottom: 4px;
-}
-
-div.mappable-attribute-wrapper.paired.ui-state-disabled {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-
-.draggable-container .attribute-column .ui-draggable-dragging {
-  z-index: 100;
-}
-
-/* Existing attribute column in CSV CPDB import */
-.centralatt {
-  min-height: 100px;
-}
-
-#cpdbatt {
-  min-height: 100px;
-}
-
-.translate > table {
-  table-layout: fixed;
-}
-
-.translate td._from_ > .question-text-from {
-  width: 100%;
-  overflow: auto;
-  word-wrap: break-word;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: left;
-  padding-bottom: 15px;
-}
-
 .grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {
   white-space: nowrap;
   text-align: initial;
@@ -4798,4 +4691,111 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   margin: 0;
   border: none;
   display: inline-block;
+}
+
+.draggable-container {
+  min-height: 300px;
+}
+
+#newcreated,
+#tokenattribute,
+#csvattribute,
+#centralattribute {
+  margin-left: 0.75%;
+  margin-right: 0.75%;
+  margin-bottom: 20px;
+}
+
+#tokenattribute {
+  margin-left: 1.5%;
+}
+
+#centralattribute {
+  margin-right: 1.5%;
+}
+
+#centralattribute .centralatt {
+  padding-bottom: 15px;
+}
+
+#newcreated .attribute-item input {
+  display: block;
+  margin: 2px auto;
+  width: 80%;
+}
+
+#centralattribute div.centralatt div.token-attribute {
+  margin-top: -5px;
+  min-height: 20px;
+}
+
+#newcreated,
+#tokenattribute {
+  height: 100%;
+}
+
+.heading {
+  height: auto;
+  padding-top: 7px;
+  font-weight: bold;
+}
+
+div.mappable-attribute-wrapper {
+  width: 80%;
+  margin: 6px auto;
+  padding: 6px;
+}
+
+div.attribute-item, .already-mapped-attribute {
+  width: 80%;
+  margin: 6px auto;
+  padding: 4px;
+  text-align: center;
+}
+
+#centralattribute .explanation {
+  width: 90%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+#centralattribute .explanation-row {
+  display: table-row;
+}
+
+#centralattribute .explanation input,
+#centralattribute .explanation label {
+  display: table-cell;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#centralattribute .explanation label {
+  padding-left: 8px;
+}
+
+.attribute-item.draggable {
+  cursor: move;
+}
+
+div.mappable-attribute-wrapper.target-hover {
+  padding-bottom: 27px;
+}
+
+div.mappable-attribute-wrapper.paired.target-hover {
+  padding-bottom: 4px;
+}
+
+div.mappable-attribute-wrapper.paired.ui-state-disabled {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.draggable-container .attribute-column .ui-draggable-dragging {
+  z-index: 100;
+}
+
+/* Existing attribute column in CSV CPDB import */
+.centralatt {
+  min-height: 100px;
 }
