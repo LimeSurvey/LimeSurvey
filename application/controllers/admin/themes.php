@@ -172,13 +172,13 @@ class themes extends Survey_Common_Action
      */
     public function upload()
     {
-        // Code for backward compatiblity with custom themes that are expecting to upload images to upload subaction. 
+        // Code for backward compatiblity with custom themes that are expecting to upload images to upload subaction.
         // That happens as their options.twig are outdated.
         // Now that the upload subaction doesn't handle all uploads, weneed to dispatch to the proper.
         $action = returnGlobal('action');
         if ($action == 'templateuploadimagefile') {
             return $this->templateuploadimagefile();
-        } 
+        }
         if ($action == 'templateupload') {
             return $this->templateupload();
         }
@@ -200,7 +200,7 @@ class themes extends Survey_Common_Action
 
     /**
      * Responsible to import a template image file.
-     * 
+     *
      * Called from Theme Options
      *
      * @access public
@@ -218,7 +218,7 @@ class themes extends Survey_Common_Action
             $uploadresult = "";
             $success = false;
             $debug = [];
-            
+
             $oTemplateConfiguration = Template::getInstance($sTemplateName);
 
             $debug[] = $sTemplateName;
@@ -237,7 +237,7 @@ class themes extends Survey_Common_Action
 
             // Check file size and render JSON on error
             LSUploadHelper::checkUploadedFileSizeAndRenderJson('file', $debug);
-            
+
             $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
             if ($checkImageContent['check'] === false) {
                 $message = $checkImageContent['check'] === false ? $checkImageContent['uploadresult'] : null;
@@ -283,7 +283,7 @@ class themes extends Survey_Common_Action
 
     /**
      * Responsible to import a template archive.
-     * 
+     *
      * Called from theme list and editor
      *
      * @access public
@@ -298,7 +298,7 @@ class themes extends Survey_Common_Action
             $uploadresult = "";
             $success = false;
             $debug = [];
-            
+
             Yii::app()->loadLibrary('admin.pclzip');
 
             // Redirect back if demo mode is set.
@@ -380,7 +380,7 @@ class themes extends Survey_Common_Action
 
     /**
      * Responsible to import a file into a template.
-     * 
+     *
      * Called from Theme Editor
      *
      * @access public
@@ -418,7 +418,7 @@ class themes extends Survey_Common_Action
 
             $fullfilepath = $dirfilepath.$filename;
             $status       = 'error';
-            
+
             if (Yii::app()->getConfig('demoMode')) {
                 $uploadresult = gT("Demo mode: Uploading template files is disabled.");
                 Yii::app()->setFlashMessage($uploadresult, $status);
@@ -556,7 +556,7 @@ class themes extends Survey_Common_Action
             if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
                 $sNewName = sanitize_dirname(returnGlobal('newname'));
                 $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir')."/".$sNewName;
-                $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir')."/".returnGlobal('copydir');
+                $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . sanitize_dirname(returnGlobal('copydir'));
 
                 if (isStandardTemplate(returnGlobal('newname'))) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName)." ".gT("This name is reserved for standard template."));
@@ -774,8 +774,10 @@ class themes extends Survey_Common_Action
 
             $action               = returnGlobal('action');
             $editfile             = returnGlobal('editfile');
-            $relativePathEditfile = returnGlobal('relativePathEditfile');
-            $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
+            $relativePathEditfile = sanitize_dirname(returnGlobal('relativePathEditfile'));
+            $sTemplateName        = Template::templateNameFilter(
+                sanitize_filename(App()->request->getPost('templatename'), false, false, false)
+            );
             $screenname           = returnGlobal('screenname');
             $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, null, null, true)->prepareTemplateRendering($sTemplateName);
 

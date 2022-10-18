@@ -95,7 +95,7 @@ class RegisterController extends LSYii_Controller
         } else {
             $iSurveyId = App()->request->getPost('sid');
         }
-
+        $iSurveyId = (int) $iSurveyId;
         $oSurvey = Survey::model()->find("sid=:sid", array(':sid'=>$iSurveyId));
         /* Throw 404 if needed */
         $sLanguage = Yii::app()->request->getParam('lang', Yii::app()->getConfig('defaultlang'));

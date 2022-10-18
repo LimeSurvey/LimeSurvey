@@ -698,14 +698,16 @@ function longestString($new_string, $longest_length)
 */
 function getGroupList($gid, $surveyid)
 {
-
     $groupselecter = "";
     $gid = sanitize_int($gid);
+    if (!$surveyid) {
+        $surveyid = returnGlobal('sid', true);
+    }
     $surveyid = sanitize_int($surveyid);
-    if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
+    $s_lang = sanitize_languagecode(Survey::model()->findByPk($surveyid)->language);
 
-    $gidquery = "SELECT gid, group_name FROM ".Yii::app()->db->quoteTableName('{{groups}}')." WHERE sid='{$surveyid}' AND  language='{$s_lang}' ORDER BY group_order";
+    $db = Yii::app()->db;
+    $gidquery = "SELECT gid, group_name FROM ".Yii::app()->db->quoteTableName('{{groups}}')." WHERE sid='{$surveyid}' AND  language={$db->quoteValue($s_lang)} ORDER BY group_order";
     $gidresult = Yii::app()->db->createCommand($gidquery)->query(); //Checked
     foreach ($gidresult->readAll() as $gv) {
         $groupselecter .= "<option";
@@ -1032,13 +1034,12 @@ function returnGlobal($stringname, $bRestrictToString = false)
         }
     }
     $bUrlParamIsArray = is_array($urlParam); // Needed to array map or if $bRestrictToString
-    if (!is_null($urlParam) && $stringname != '' && (!$bUrlParamIsArray || !$bRestrictToString)) {
-        if ($stringname == 'sid' || $stringname == "gid" || $stringname == "oldqid" ||
-        $stringname == "qid" || $stringname == "tid" ||
-        $stringname == "lid" || $stringname == "ugid" ||
-        $stringname == "thisstep" || $stringname == "scenario" ||
-        $stringname == "cqid" || $stringname == "cid" ||
-        $stringname == "qaid" || $stringname == "scid") {
+
+    if (is_null($urlParam) || $stringname == '' || ($bUrlParamIsArray && $bRestrictToString)) {
+        return null;
+    }
+
+    if (in_array($stringname, ['sid', 'gid', 'oldqid', 'qid', 'tid', 'lid', 'ugid','thisstep', 'scenario', 'cqid', 'cid', 'qaid', 'scid'])) {
             if ($bUrlParamIsArray) {
                 return array_map("sanitize_int", $urlParam);
             } else {
@@ -1068,9 +1069,6 @@ function returnGlobal($stringname, $bRestrictToString = false)
             }
         }
         return $urlParam;
-    } else {
-        return null;
-    }
 }
 
 

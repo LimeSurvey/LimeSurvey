@@ -51,7 +51,7 @@ class labels extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
-        $lid = returnGlobal('lid');
+        $lid = (int) returnGlobal('lid');
         if (!empty($lid)) {
             if (Yii::app()->getConfig('demoMode')) {
                             $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));

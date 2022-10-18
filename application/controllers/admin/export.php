@@ -363,7 +363,7 @@ class export extends Survey_Common_Action
             // Default to 2 (16 and up)
             Yii::app()->session['spssversion'] = 2;
         }
-        $spssver = Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']);
+        $spssver = (int) Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']);
         Yii::app()->session['spssversion'] = $spssver;
 
         $length_varlabel = '231'; // Set the max text length of Variable Labels
@@ -1189,7 +1189,7 @@ class export extends Survey_Common_Action
             }
 
 
-            $lang = Yii::app()->request->getPost('save_language');
+            $lang = sanitize_languagecode(Yii::app()->request->getPost('save_language'));
 
 
             // Setting the selected language for printout

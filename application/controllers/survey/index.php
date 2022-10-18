@@ -32,7 +32,7 @@ class index extends CAction
 
         $this->_loadRequiredHelpersAndLibraries();
         $param       = $this->_getParameters(func_get_args(), $_POST);
-        $surveyid    = $param['sid'];
+        $surveyid    = (int) $param['sid'];
         $thisstep    = $param['thisstep'];
         $move        = getMove();
 

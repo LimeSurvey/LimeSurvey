@@ -1,5 +1,5 @@
 <?php
-$surveyid = App()->request->getParam('surveyid');
+$surveyid = (int) App()->request->getParam('surveyid');
 $filterableColumns = isset($filterableColumns) ? $filterableColumns : null;
 ?>
 

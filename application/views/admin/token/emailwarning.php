@@ -12,22 +12,22 @@
         <span>&nbsp;&nbsp;&nbsp;</span><button id="cancelAutomaticSubmission" class="btn btn-danger"><?php eT("Cancel automatic sending"); ?></button>
         <input type='hidden' name='ok' value="absolutely" />
         <input type='hidden' name='action' value="tokens" />
-        <input type='hidden' name='bypassbademails' value="<?php echo Yii::app()->request->getPost('bypassbademails'); ?>" />
+        <input type='hidden' name='bypassbademails' value="<?php echo CHtml::encode(Yii::app()->request->getPost('bypassbademails')); ?>" />
         <?php
         //Include values for constraints minreminderdelay and maxremindercount if they exist
         if (!$bEmail)
         {
             if (intval(Yii::app()->request->getPost('minreminderdelay')) != 0)
             { ?>
-                    <input type='hidden' name='minreminderdelay' value="<?php echo Yii::app()->request->getPost('minreminderdelay'); ?>" />
+                    <input type='hidden' name='minreminderdelay' value="<?php echo intval(Yii::app()->request->getPost('minreminderdelay')); ?>" />
                     <?php }
             if (intval(Yii::app()->request->getPost('maxremindercount')) != 0)
             { ?>
-                    <input type='hidden' name='maxremindercount' value="<?php echo Yii::app()->request->getPost('maxremindercount'); ?>" />
+                    <input type='hidden' name='maxremindercount' value="<?php echo intval(Yii::app()->request->getPost('maxremindercount')); ?>" />
                     <?php }
             if (Yii::app()->request->getPost('bypassdatecontrol')=='1')
             { ?>
-                        <input type='hidden' name='bypassdatecontrol' value="<?php echo Yii::app()->request->getPost('bypassdatecontrol'); ?>" />
+                        <input type='hidden' name='bypassdatecontrol' value="<?php echo intval(Yii::app()->request->getPost('bypassdatecontrol')); ?>" />
                         <?php }
         }
         ?>
