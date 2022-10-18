@@ -30,8 +30,8 @@ class Index extends CAction
 
         $this->loadRequiredHelpersAndLibraries();
         $param       = $this->getParameters(func_get_args(), $_POST);
-        $surveyid    = $param['sid'];
-        $thisstep    = $param['thisstep'];
+        $surveyid    = (int) $param['sid'];
+        $thisstep    = (int) $param['thisstep'];
         $move        = getMove();
 
         /* Newtest must be done bedore all other action */
