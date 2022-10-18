@@ -14,7 +14,6 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
 
-
 /**
  * @testdox API command v1 QuestionPropertiesGet.
  */
