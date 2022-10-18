@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.32 (build 221011) to 3.28.33 (build 221020) October 18, 2022
+-Fixed issue: [security] Various major & minor security issues discovered by automated security tools (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 3.28.31 (build 221005) to 3.28.32 (build 221011) October 10, 2022
 -Fixed issue: HTML tags are not allowed for admins in participant attributes (#2626) (Denis Chenu)
 -Fixed issue #18141: Changing display mode from extended to compact in survey responses windows causes freeze (#2499) (Gabriel Jenik)
