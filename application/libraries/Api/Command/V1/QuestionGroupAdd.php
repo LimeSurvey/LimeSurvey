@@ -22,7 +22,7 @@ class QuestionGroupAdd implements CommandInterface
      * Run group add command.
      *
      * @access public
-     * @param \LimeSurvey\Api\Command\Request\Request $request
+     * @param \LimeSurvey\Api\Command\Request\Request|Eloquent\Phony\Mock\Mock $request
      * @return \LimeSurvey\Api\Command\Response\Response
      */
     public function run(Request $request)
