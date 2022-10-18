@@ -196,9 +196,9 @@ class QuotasController extends LSBaseController
         ]);
     }
 
-    public function actionDeleteQuota($surveyid)
+    public function actionDeleteQuota()
     {
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int(Yii::app()->request->getPost('surveyid'));
         if (!(Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'delete'))) {
             Yii::app()->user->setFlash('error', gT("Access denied."));
             $this->redirect(Yii::app()->request->urlReferrer);

@@ -229,12 +229,11 @@ class Quota extends LSActiveRecord
                         </a>';
         }
         if (Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'delete')) {
-            $url = App()->createUrl("quotas/deleteQuota/surveyid/" . $this->sid, array(
-                'quota_id' => $this->primaryKey,
-            ));
+            $url = App()->createUrl("quotas/deleteQuota/") ;
             $buttons .= '<span data-bs-toggle="tooltip" title="' . gT("Delete") . '">
         <a
                 data-post-url="' . $url . '"
+                data-post-datas='. json_encode(['surveyid' => $this->sid, 'quota_id' => $this->primaryKey])  . '
                 class="btn btn-outline-secondary"
                 data-bs-toggle="modal"
                 data-bs-target="#confirmation-modal"
