@@ -2009,7 +2009,7 @@ return $s->hasTokensTable; });
             return true;
         }
         if ($this->expires < $this->startdate) {
-            $this->addError('expires', gT("Expiration date can't be lower than the start date", 'unescaped'));
+            $this->addError('expires', gT("Expiration date can't be earlier than the start date", 'unescaped'));
         }
     }
 }
