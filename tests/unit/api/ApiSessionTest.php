@@ -11,7 +11,7 @@ use LimeSurvey\Api\ApiSession;
 class ApiSessionTest extends TestBaseClass
 {
     /**
-     * @testdox doLogin() Returns boolean true if logic successful.
+     * @testdox doLogin() Returns boolean true if login successful.
      */
     public function testDoLogin()
     {
