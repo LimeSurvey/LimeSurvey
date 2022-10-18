@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.6 (build 221018) to 5.4.7 (build 221019) October 18, 2022
+-Fixed issue: [security] Various major & minor security issues discovered by automated security tools (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
 Changes from 5.4.5 (build 221010) to 5.4.6 (build 221018) October 18, 2022
 -Fixed issue #18413: Cannot authenticate with LDAP when using PHP 8.1 (Dennis1993)
 -Fixed issue #18410: LDAP authentication option labelled as PluginBase (#2662) (Gabriel Jenik)
