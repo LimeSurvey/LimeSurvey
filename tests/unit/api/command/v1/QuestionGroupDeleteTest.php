@@ -30,7 +30,7 @@ class QuestionGroupDeleteTest extends TestBaseClass
             'sessionKey' => 'not-a-valid-session-id',
             'groupID' => 'groupID'
         ));
-        $response = (new QuestionGroupDelete)->run($request);
+        $response = (new QuestionGroupDelete())->run($request);
 
         $this->assertResponseInvalidSession($response);
     }
@@ -58,7 +58,7 @@ class QuestionGroupDeleteTest extends TestBaseClass
 
         $this->assertResponseStatus(
             $response,
-            new StatusErrorNotFound
+            new StatusErrorNotFound()
         );
 
         $this->assertResponseDataStatus(

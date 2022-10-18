@@ -247,7 +247,7 @@ class QuestionListTest extends TestBaseClass
         $command->setApiSession($mockApiSession);
         $command->setPermissionModel($mockModelPermission);
         $command->setSurveyModel($mockSurveyModel);
-        $command->setQuestionGroupModel(new QuestionGroup);
+        $command->setQuestionGroupModel(new QuestionGroup());
 
         $response = $command->run($request);
 

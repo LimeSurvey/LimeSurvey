@@ -112,7 +112,7 @@ class QuestionGroupAddTest extends TestBaseClass
 
         $this->assertResponseStatus(
             $response,
-            new StatusErrorBadRequest
+            new StatusErrorBadRequest()
         );
 
         $this->assertResponseDataStatus(
@@ -150,13 +150,13 @@ class QuestionGroupAddTest extends TestBaseClass
         $command = new QuestionGroupAdd();
         $command->setApiSession($mockApiSession);
         $command->setPermissionModel($mockModelPermission);
-        $command->setSurveyModel( $survey);
+        $command->setSurveyModel($survey);
 
         $response = $command->run($request);
 
         $this->assertResponseStatus(
             $response,
-            new StatusErrorBadRequest
+            new StatusErrorBadRequest()
         );
 
         $this->assertResponseDataStatus(

@@ -25,7 +25,7 @@ class ApiSessionTest extends TestBaseClass
             $password = 'password';
         }
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         $result = $apiSession->doLogin(
             $username,
             $password
@@ -39,7 +39,7 @@ class ApiSessionTest extends TestBaseClass
      */
     public function testCheckKeySessionNotFound()
     {
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         $result = $apiSession->checkKey('invalid-key');
         $this->assertFalse($result);
     }
@@ -54,7 +54,7 @@ class ApiSessionTest extends TestBaseClass
             $username = 'admin';
         }
 
-        $apiSession = new ApiSession;
+        $apiSession = new ApiSession();
         $result = $apiSession->jumpStartSession($username);
         $this->assertTrue($result);
     }

@@ -32,7 +32,7 @@ class QuestionGroupListTest extends TestBaseClass
             'surveyID' => 'surveyID',
             'language' => 'language'
         ));
-        $command = new QuestionGroupList;
+        $command = new QuestionGroupList();
         $response = $command->run($request);
 
         $this->assertResponseInvalidSession($response);
