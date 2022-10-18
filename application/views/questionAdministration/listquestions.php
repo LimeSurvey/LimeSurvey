@@ -16,10 +16,10 @@ $baseLanguage = $oSurvey->language;
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3 class="ls-flex ls-flex-row">
         <?php if (App()->request->getParam('group_name') != ''): ?>
-            <div class="ls-flex-item text-start"><?php eT('Questions in group: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></div>
+            <div class="ls-flex-item text-start"><?php eT('Questions in group: '); ?> <em><?php echo \CHtml::encode(App()->request->getParam('group_name')); ?></em></div>
         <?php else: ?>
             <div class="ls-flex-item text-start"><?php eT('Questions in this survey'); ?></div>
-        <?php endif; ?>
+        <?php endif;?>
     </h3>
 
 
