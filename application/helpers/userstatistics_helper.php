@@ -2594,6 +2594,7 @@ class userstatistics_helper
 
         // Set language for questions and answers to base language of this survey
         $language = $sLanguageCode;
+        $db = Yii::app()->db;
 
         if ($q2show == 'all') {
             $summarySql = " SELECT gid, parent_qid, qid, type "
