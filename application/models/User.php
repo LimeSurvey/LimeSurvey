@@ -183,9 +183,10 @@ class User extends LSActiveRecord
      * @param string $new_full_name
      * @param string $new_email
      * @param int $parent_user
+     * @param string|null $expires
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -196,6 +197,7 @@ class User extends LSActiveRecord
         $oUser->email = $new_email;
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->expires = $expires;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {

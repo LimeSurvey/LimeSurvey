@@ -97,14 +97,14 @@ function reinstallResponsesFilterDatePicker() {
         var dateFormatDetails = JSON.parse(input.value);
 
         if (startdateElement) {
-            initDatePicker(startdateElement, 'SurveyDynamic_startdate', locale.value, dateFormatDetails.jsdate);
+            initDatePicker(startdateElement, locale.value, dateFormatDetails.jsdate);
             startdateElement.addEventListener("hide.td", function () {
                 reloadGrid();
             });
         }
 
         if (datestampElement) {
-            initDatePicker(datestampElement, 'SurveyDynamic_datestamp', locale.value, dateFormatDetails.jsdate);
+            initDatePicker(datestampElement, locale.value, dateFormatDetails.jsdate);
             datestampElement.addEventListener("hide.td", function () {
                 reloadGrid();
             });

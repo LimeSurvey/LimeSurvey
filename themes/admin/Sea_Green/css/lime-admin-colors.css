@@ -2640,11 +2640,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   .navbar-toggle {
     background-color: #fafafa;
   }
-
   .side-menu {
     border-bottom: 1px solid #e3e3e3;
   }
-
   .side-menu-container > .navbar-nav {
     border-right: 1px solid #e3e3e3;
     background-color: #f8f8f8;

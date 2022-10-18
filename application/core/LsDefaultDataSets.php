@@ -279,7 +279,7 @@ class LsDefaultDataSets
                 'lock',
                 'fontawesome',
                 '',
-                'admin/surveypermission/sa/view/',
+                'surveyPermissions/index',
                 '',
                 '',
                 '',

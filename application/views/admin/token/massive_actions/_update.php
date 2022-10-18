@@ -100,7 +100,7 @@
                                                 value="<?php echo date($dateformatdetails['phpdate']); ?>"
                                                 name="completed-date"
                                                 data-locale="<?php echo $locale ?>"
-                                                data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                             >
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                         </div>
@@ -221,7 +221,7 @@
                                             value="<?php echo date($dateformatdetails['phpdate']); ?>"
                                             name="sent-date"
                                             data-locale="<?php echo $locale ?>"
-                                            data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                            data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                         >
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
@@ -281,7 +281,7 @@
                                             value="<?php echo date($dateformatdetails['phpdate']); ?>"
                                             name="remind-date"
                                             data-locale="<?php echo $locale ?>"
-                                            data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                            data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                         >
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
@@ -337,7 +337,7 @@
                                 type="text"
                                 value="lskeep"
                                 name="validfrom_date"
-                                data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                 data-locale="<?php echo $locale ?>"
                                 disabled
                             >
@@ -363,7 +363,7 @@
                                 type="text"
                                 value="lskeep"
                                 name="validuntil_date"
-                                data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                 data-locale="<?php echo $locale ?>"
                                 disabled
                             >
