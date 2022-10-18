@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.33 (build 221020) to 3.28.34 (build 221021) October 18, 2022
+-Fixed issue: Missing files (Carsten Schmitz)
+
+
 Changes from 3.28.32 (build 221011) to 3.28.33 (build 221020) October 18, 2022
 -Fixed issue: [security] Various major & minor security issues discovered by automated security tools (Carsten Schmitz)
 #Updated translation: Polish by elissa
