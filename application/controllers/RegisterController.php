@@ -93,6 +93,7 @@ class RegisterController extends LSYii_Controller
         } else {
             $iSurveyId = Yii::app()->request->getPost('sid');
         }
+        $iSurveyId = (int) $iSurveyId;
 
         $oSurvey = Survey::model()->find("sid=:sid", array(':sid' => $iSurveyId));
         /* Throw 404 if needed */
