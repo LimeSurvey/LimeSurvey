@@ -2900,7 +2900,6 @@ function do_gender($ia)
     $naChecked              = '';
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $displayType            = (int) $aQuestionAttributes['display_type'];
-    $coreClass              = "ls-answers answers-list radio-list";
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
         if ($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') {
@@ -2921,10 +2920,8 @@ function do_gender($ia)
     );
 
     if ($displayType === 0) {
-        $itemDatas['coreClass'] = "{$coreClass} gender-button";
         $answer = doRender('/survey/questions/answer/gender/buttons/answer', $itemDatas, true);
     } else {
-        $itemDatas['coreClass'] = "{$coreClass} radio-list gender-radio-list";
         $answer = doRender('/survey/questions/answer/gender/radio/answer', $itemDatas, true);
     }
 
