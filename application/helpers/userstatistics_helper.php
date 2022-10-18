@@ -2579,7 +2579,7 @@ class userstatistics_helper
         if (is_null($sLanguageCode)) {
             $sLanguageCode = $survey->language;
         }
-        $sLanguage = sanitize_languagecode($sLanguage);
+        $sLanguageCode = sanitize_languagecode($sLanguageCode);
 
         Yii::app()->setLanguage($sLanguageCode);
 
