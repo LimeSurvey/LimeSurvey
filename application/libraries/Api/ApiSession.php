@@ -46,7 +46,13 @@ class ApiSession
      */
     public function jumpStartSession($username)
     {
-        $aUserData = \User::model()->findByAttributes(array('users_name' => (string) $username))->attributes;
+        $oUser = \User::model()->findByAttributes(array('users_name' => (string) $username));
+
+        if (!$oUser) {
+            return false;
+        }
+
+        $aUserData = $oUser->attributes;
 
         $session = array(
             'loginID' => intval($aUserData['uid']),

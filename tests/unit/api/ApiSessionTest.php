@@ -11,7 +11,7 @@ use LimeSurvey\Api\ApiSession;
 class ApiSessionTest extends TestBaseClass
 {
     /**
-     * @testdox Returns boolean true if logic successful.
+     * @testdox doLogin() Returns boolean true if logic successful.
      */
     public function testDoLogin()
     {
@@ -31,6 +31,31 @@ class ApiSessionTest extends TestBaseClass
             $password
         );
 
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @testdox checkKey() returns false on valid key.
+     */
+    public function testCheckKeySessionNotFound()
+    {
+        $apiSession = new ApiSession;
+        $result = $apiSession->checkKey('invalid-key');
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @testdox jumpStartSession() init session from key.
+     */
+    public function testJumpStartSessionInitSessionFromKey()
+    {
+        $username = getenv('ADMINUSERNAME');
+        if (!$username) {
+            $username = 'admin';
+        }
+
+        $apiSession = new ApiSession;
+        $result = $apiSession->jumpStartSession($username);
         $this->assertTrue($result);
     }
 }
