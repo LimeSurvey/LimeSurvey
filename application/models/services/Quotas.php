@@ -189,16 +189,15 @@ class Quotas
      * Saves the new quota and it's language settings.
      *
      * @param $quotaParams array the quota attributes
-     * @return bool true if all could be saved, false otherwise
+     * @return \Quota the new quota with added QuotaLanguageSettings, or Quota with errors
      * @throws \CDbException
      */
-    public function saveNewQuota(array $quotaParams): bool
+    public function saveNewQuota(array $quotaParams): \Quota
     {
         $oQuota = new \Quota();
         $oQuota->sid = $this->survey->sid;
         $oQuota->attributes = $quotaParams;
-        $savingOk = $oQuota->save();
-        if ($savingOk) {
+        if ($oQuota->save()) {
             foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes) {
                 $oQuotaLanguageSetting = new \QuotaLanguageSetting();
                 $oQuotaLanguageSetting->attributes = $settingAttributes;
@@ -210,28 +209,22 @@ class Quotas
                 // Fix bug with FCKEditor saving strange BR types
                 $oQuotaLanguageSetting->quotals_message = fixCKeditorText($oQuotaLanguageSetting->quotals_message);
 
-                //todo must be counted and quota must be returned for error output for user
                 $oQuotaLanguageSetting->save(false);
                 if (!$oQuotaLanguageSetting->validate()) {
                     $oQuota->addErrors($oQuotaLanguageSetting->getErrors());
                 }
-                $savingOk = $oQuotaLanguageSetting->save();
-                if (!$savingOk) {
-                    break;
-                }
             }
             //delete quota and language settings for this qouta if errors
-            if (!$savingOk){
+            if ($oQuota->getErrors()){
                 //delete quotalanguagesettings if any for this qouta
                 foreach ($oQuota->languagesettings  as $languageSetting){
                     $languageSetting->delete();
                 }
-                // if any of the parts fail to save we delete the quota
                 $oQuota->delete();
             }
         }
 
-        return $savingOk;
+        return $oQuota;
     }
 
     /**
@@ -243,8 +236,7 @@ class Quotas
     public function editQuota($oQuota, array $quotaParams){
 
         $oQuota->attributes = $quotaParams;
-        $savingOk = $oQuota->save();
-        if ($savingOk) {
+        if ($oQuota->save()) {
             foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes) {
                 $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
                 $oQuotaLanguageSetting->attributes = $settingAttributes;
@@ -254,10 +246,32 @@ class Quotas
                 // Fix bug with FCKEditor saving strange BR types
                 $oQuotaLanguageSetting->quotals_message = fixCKeditorText($oQuotaLanguageSetting->quotals_message);
 
-                $savingOk = $savingOk && $oQuotaLanguageSetting->save();
+                if (!$oQuotaLanguageSetting->save()) {
+                    $oQuota->addErrors($oQuotaLanguageSetting->getErrors());
+                }
             }
         }
 
-        return $savingOk;
+        return $oQuota;
+    }
+
+    /**
+     * @param \Quota $oQuota
+     * @param $language
+     * @return \QuotaLanguageSetting
+     */
+    public function newQuotaLanguageSetting(\Quota $oQuota, $language){
+        $oQuotaLanguageSetting = new \QuotaLanguageSetting();
+        $oQuotaLanguageSetting->quotals_name = $oQuota->name;
+        $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
+        $oQuotaLanguageSetting->quotals_language = $language;
+        $oQuotaLanguageSetting->quotals_url = $this->survey->languagesettings[$language]->surveyls_url;
+        $siteLanguage = \Yii::app()->language;
+        // Switch language temporarily to get the default text in right language
+        \Yii::app()->language = $language;
+        $oQuotaLanguageSetting->quotals_message = gT("Sorry your responses have exceeded a quota on this survey.");
+        \Yii::app()->language = $siteLanguage;
+
+        return $oQuotaLanguageSetting;
     }
 }

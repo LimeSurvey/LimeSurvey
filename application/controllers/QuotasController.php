@@ -2,6 +2,18 @@
 
 class QuotasController extends LSBaseController
 {
+
+    /**
+     * @return string[] action filters
+     */
+    public function filters()
+    {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+            'postOnly + deleteQuota', // we only allow deletion via POST request
+        );
+    }
+
     /**
      * Here we have to use the correct layout (NOT main.php)
      *
@@ -118,30 +130,20 @@ class QuotasController extends LSBaseController
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
 
+        $oQuota = new Quota();
+        $oQuota->sid = $oSurvey->primaryKey;
+        $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
         if(isset($_POST['Quota'])) {
-            $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
-            if ($quotaService->saveNewQuota($_POST['Quota'])) {
+            $oQuota = $quotaService->saveNewQuota($_POST['Quota']);
+            if (!$oQuota->getErrors()) {
                 Yii::app()->user->setFlash('success', gT("New quota saved"));
                 $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
-            } else {
-                Yii::app()->user->setFlash('error', gT("Quota could not be saved."));
             }
         }
 
-        $oQuota = new Quota();
-        $oQuota->sid = $oSurvey->primaryKey;
         // create QuotaLanguageSettings
         foreach ($oSurvey->getAllLanguages() as $language) {
-            $oQuotaLanguageSetting = new QuotaLanguageSetting();
-            $oQuotaLanguageSetting->quotals_name = $oQuota->name;
-            $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
-            $oQuotaLanguageSetting->quotals_language = $language;
-            $oQuotaLanguageSetting->quotals_url = $oSurvey->languagesettings[$language]->surveyls_url;
-            $siteLanguage = Yii::app()->language;
-            // Switch language temporarily to get the default text in right language
-            Yii::app()->language = $language;
-            $oQuotaLanguageSetting->quotals_message = gT("Sorry your responses have exceeded a quota on this survey.");
-            Yii::app()->language = $siteLanguage;
+            $oQuotaLanguageSetting = $quotaService->newQuotaLanguageSetting($oQuota, $language);
             $aQuotaLanguageSettings[$language] = $oQuotaLanguageSetting;
         }
         $this->aData = $aData;
@@ -192,5 +194,23 @@ class QuotasController extends LSBaseController
             'oQuota' => $oQuota,
             'aQuotaLanguageSettings' => $aQuotaLanguageSettings
         ]);
+    }
+
+    public function actionDeleteQuota($surveyid)
+    {
+        $surveyid = sanitize_int($surveyid);
+        if (!(Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'delete'))) {
+            Yii::app()->user->setFlash('error', gT("Access denied."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        $quotaId = Yii::app()->request->getPost('quota_id');
+        Quota::model()->deleteByPk($quotaId);
+        QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $quotaId));
+        QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $quotaId));
+
+        Yii::app()->user->setFlash('success', sprintf(gT("Quota with ID %s was deleted"), $quotaId));
+
+        $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
     }
 }

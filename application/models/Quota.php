@@ -229,8 +229,7 @@ class Quota extends LSActiveRecord
                         </a>';
         }
         if (Permission::model()->hasSurveyPermission($this->sid, 'quotas', 'delete')) {
-            $url = App()->createUrl("admin/quotas/sa/delquota/surveyid/" . $this->sid, array(
-                'sid' => $this->sid,
+            $url = App()->createUrl("quotas/deleteQuota/surveyid/" . $this->sid, array(
                 'quota_id' => $this->primaryKey,
             ));
             $buttons .= '<span data-bs-toggle="tooltip" title="' . gT("Delete") . '">
