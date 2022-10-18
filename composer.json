@@ -100,7 +100,7 @@
 			"./vendor/bin/phpmd application/libraries/ExtensionInstaller/ text tests/rulesets/phpmd_ruleset.xml",
 			"./vendor/bin/phpmd application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php text tests/rulesets/phpmd_ruleset_strict.xml",
-			"./vendor/bin/psalm",
+			"./vendor/bin/psalm # Psalm only works when run again an app configured with components.urlManager.urlFormat='get'",
 			"./vendor/bin/psalm -c psalm-strict.xml"
 		]
 	}
