@@ -41,11 +41,11 @@ class SessionKeyCreate implements CommandInterface
         }
         if (is_string($loginResult)) {
             return $this->responseSuccess(
-                array('status' => $loginResult)
+                ['status' => $loginResult]
             );
         }
         return $this->responseErrorUnauthorised(
-            array('status' => 'Invalid user name or password')
+            ['status' => 'Invalid user name or password']
         );
     }
 }

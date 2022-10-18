@@ -69,7 +69,7 @@ class QuestionList implements CommandInterface
             !array_key_exists(
                 $sLanguage,
                 getLanguageDataRestricted()
-            ) || !in_array($sLanguage, $oSurvey->allLanguages ?? array())
+            ) || !in_array($sLanguage, $oSurvey->allLanguages ?? [])
         ) {
             return $this->responseErrorBadRequest(
                 ['status' => 'Error: Invalid language']

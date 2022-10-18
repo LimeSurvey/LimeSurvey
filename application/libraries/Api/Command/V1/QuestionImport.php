@@ -51,7 +51,7 @@ class QuestionImport implements CommandInterface
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey)) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error: Invalid survey ID')
+                ['status' => 'Error: Invalid survey ID']
             );
         }
 
@@ -68,7 +68,7 @@ class QuestionImport implements CommandInterface
 
         if ($oSurvey->isActive) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error:Survey is Active and not editable')
+                ['status' => 'Error:Survey is Active and not editable']
             );
         }
 
@@ -76,20 +76,20 @@ class QuestionImport implements CommandInterface
             ->findByAttributes(array('gid' => $iGroupID));
         if (!isset($oGroup)) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error: Invalid group ID')
+                ['status' => 'Error: Invalid group ID']
             );
         }
 
         $sGroupSurveyID = $oGroup['sid'];
         if ($sGroupSurveyID != $iSurveyID) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error: Missmatch in surveyid and groupid')
+                ['status' => 'Error: Missmatch in surveyid and groupid']
             );
         }
 
         if (!strtolower($sImportDataType) == 'lsq') {
             return $this->responseErrorBadRequest(
-                array('status' => 'Invalid extension')
+                ['status' => 'Invalid extension']
             );
         }
         libxml_use_internal_errors(true);
@@ -112,7 +112,7 @@ class QuestionImport implements CommandInterface
                     // Put back entity loader to its original state, to avoid contagion to other applications on the server
                 }
                 return $this->responseErrorBadRequest(
-                    array('status' => 'Error: Invalid LimeSurvey question structure XML ')
+                    ['status' => 'Error: Invalid LimeSurvey question structure XML ']
                 );
             }
             /**
@@ -129,7 +129,7 @@ class QuestionImport implements CommandInterface
                 // contagion to other applications on the server
             }
             return $this->responseErrorBadRequest(
-                array('status' => 'Really Invalid extension')
+                ['status' => 'Really Invalid extension']
             ); //just for symmetry!
         }
 
@@ -145,7 +145,7 @@ class QuestionImport implements CommandInterface
                 // to avoid contagion to other applications on the server
             }
             return $this->responseError(
-                array('status' => 'Error: ' . $aImportResults['fatalerror'])
+                ['status' => 'Error: ' . $aImportResults['fatalerror']]
             );
         } else {
             fixLanguageConsistency($iSurveyID);
@@ -166,7 +166,7 @@ class QuestionImport implements CommandInterface
             if ($sNewQuestionHelp != '') {
                 $oQuestion->setAttribute('help', $sNewQuestionHelp);
             }
-            if (in_array($sMandatory, array('Y', 'S', 'N'))) {
+            if (in_array($sMandatory, ['Y', 'S', 'N'])) {
                 $oQuestion->setAttribute('mandatory', $sMandatory);
             } else {
                 $oQuestion->setAttribute('mandatory', 'N');

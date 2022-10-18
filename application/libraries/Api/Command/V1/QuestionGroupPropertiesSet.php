@@ -44,7 +44,7 @@ class QuestionGroupPropertiesSet implements CommandInterface
         $oGroup = $this->getQuestionGroupModelWithL10nsById($iGroupID);
         if (is_null($oGroup)) {
             return $this->responseErrorNotFound(
-                array('status' => 'Error: Invalid group ID')
+                ['status' => 'Error: Invalid group ID']
             );
         }
 
@@ -59,7 +59,7 @@ class QuestionGroupPropertiesSet implements CommandInterface
             return $response;
         }
 
-        $aResult = array();
+        $aResult = [];
         // Remove fields that may not be modified
         unset($aGroupData['sid']);
         unset($aGroupData['gid']);
@@ -67,13 +67,13 @@ class QuestionGroupPropertiesSet implements CommandInterface
         // Backwards compatibility for L10n data
         if (!empty($aGroupData['language'])) {
             $language = $aGroupData['language'];
-            $aGroupData['questiongroupl10ns'][$language] = array(
+            $aGroupData['questiongroupl10ns'][$language] = [
                 'language' => $language,
                 'group_name' => !empty($aGroupData['group_name'])
                 ? $aGroupData['group_name'] : '',
                 'description' => !empty($aGroupData['description'])
                 ? $aGroupData['description'] : '',
-            );
+            ];
         }
 
         // Process L10n data
@@ -117,7 +117,7 @@ class QuestionGroupPropertiesSet implements CommandInterface
                         // save the change to database - one by one to allow for validation to work
                         $bSaveResult = $oQuestionGroupL10n->save();
                         if (!is_array($aResult['questiongroupl10ns'][$language])) {
-                            $aResult['questiongroupl10ns'][$language] = array();
+                            $aResult['questiongroupl10ns'][$language] = [];
                         }
                         $aResult['questiongroupl10ns'][$language][$sFieldName] = $bSaveResult;
                         //unset failed values
@@ -144,7 +144,7 @@ class QuestionGroupPropertiesSet implements CommandInterface
         if (empty($aGroupData)) {
             if (empty($aResult)) {
                 return $this->responseSuccess(
-                    array('status' => 'No valid Data')
+                    ['status' => 'No valid Data']
                 );
             } else {
                 return $this->responseSuccess($aResult);

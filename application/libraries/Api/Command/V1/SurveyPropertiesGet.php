@@ -30,7 +30,7 @@ class SurveyPropertiesGet implements CommandInterface
     {
         $sSessionKey = (string) $request->getData('sessionKey');
         $iSurveyID = (int) $request->getData('surveyID');
-        $aSurveySettings = $request->getData('surveySettings', array());
+        $aSurveySettings = $request->getData('surveySettings', []);
 
         Yii::app()->loadHelper('surveytranslator');
 
@@ -43,7 +43,7 @@ class SurveyPropertiesGet implements CommandInterface
         $oSurvey = $this->getSurveyModel($iSurveyID);
         if (!isset($oSurvey)) {
             return $this->responseErrorNotFound(
-                array('status' => 'Error: Invalid survey ID')
+                ['status' => 'Error: Invalid survey ID']
             );
         }
 
@@ -71,11 +71,11 @@ class SurveyPropertiesGet implements CommandInterface
 
         if (empty($aSurveySettings)) {
             return $this->responseErrorBadRequest(
-                array('status' => 'No valid Data')
+                ['status' => 'No valid Data']
             );
         }
 
-        $aResult = array();
+        $aResult = [];
         foreach ($aSurveySettings as $sPropertyName) {
             $aResult[$sPropertyName] = $oSurvey->$sPropertyName;
         }

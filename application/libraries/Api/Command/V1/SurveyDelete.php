@@ -46,7 +46,7 @@ class SurveyDelete implements CommandInterface
         $this->deleteSurvey($iSurveyID);
 
         return $this->responseSuccess(
-            array('status' => 'OK')
+            ['status' => 'OK']
         );
     }
 

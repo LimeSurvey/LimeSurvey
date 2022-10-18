@@ -40,7 +40,7 @@ class QuestionGroupList implements CommandInterface
         $oSurvey = $this->getSurveyModel($iSurveyID);
         if (!isset($oSurvey)) {
             return $this->responseErrorNotFound(
-                array('status' => 'Error: Invalid survey ID')
+                ['status' => 'Error: Invalid survey ID']
             );
         }
 
@@ -59,7 +59,7 @@ class QuestionGroupList implements CommandInterface
         if (count($oGroupList) == 0) {
             // In future version on the API this should simply return an empty array
             return $this->responseSuccess(
-                array('status' => 'No groups found')
+                ['status' => 'No groups found']
             );
         }
 
@@ -67,9 +67,9 @@ class QuestionGroupList implements CommandInterface
             $sLanguage = $oSurvey->language;
         }
 
-        $aData = array();
+        $aData = [];
         foreach ($oGroupList as $oGroup) {
-            $tmp = array('id' => $oGroup->primaryKey) + $oGroup->attributes;
+            $tmp = ['id' => $oGroup->primaryKey] + $oGroup->attributes;
             $L10ns = $oGroup->questiongroupl10ns[$sLanguage] ?? null;
             if ($L10ns) {
                 $tmp['group_name'] = $L10ns['group_name'];

@@ -42,7 +42,7 @@ class QuestionGroupPropertiesGet implements CommandInterface
         $oGroup = $this->getQuestionGroupModelWithL10nsById($iGroupID);
         if (!isset($oGroup)) {
             return $this->responseErrorNotFound(
-                array('status' => 'Error: Invalid group ID')
+                ['status' => 'Error: Invalid group ID']
             );
         }
 
@@ -65,7 +65,7 @@ class QuestionGroupPropertiesGet implements CommandInterface
 
         if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error: Invalid language')
+                ['status' => 'Error: Invalid language']
             );
         }
 
@@ -83,11 +83,11 @@ class QuestionGroupPropertiesGet implements CommandInterface
 
         if (empty($aGroupSettings)) {
             return $this->responseErrorBadRequest(
-                array('status' => 'No valid Data')
+                ['status' => 'No valid Data']
             );
         }
 
-        $aResult = array();
+        $aResult = [];
         foreach ($aGroupSettings as $sGroupSetting) {
             if (isset($oGroup->$sGroupSetting)) {
                 $aResult[$sGroupSetting] = $oGroup->$sGroupSetting;

@@ -59,20 +59,20 @@ class SurveyAdd implements CommandInterface
             $sSurveyTitle == ''
             || $sSurveyLanguage == ''
             || !array_key_exists($sSurveyLanguage, getLanguageDataRestricted())
-            || !in_array($sformat, array('A', 'G', 'S'))
+            || !in_array($sformat, ['A', 'G', 'S'])
         ) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Faulty parameters')
+                ['status' => 'Faulty parameters']
             );
         }
 
-        $aInsertData = array(
+        $aInsertData = [
             'template' => App()->getConfig('defaulttheme'),
             'owner_id' => Yii::app()->session['loginID'],
             'active' => 'N',
             'language' => $sSurveyLanguage,
             'format' => $sformat
-        );
+        ];
 
         if (!is_null($iSurveyID)) {
             $aInsertData['wishSID'] = $iSurveyID;
@@ -83,18 +83,18 @@ class SurveyAdd implements CommandInterface
             if (!$newSurvey->sid) {
                 // status are a string, another way to send errors ?
                 return new Response(
-                    array('status' => 'Creation Failed')
+                    ['status' => 'Creation Failed']
                 );
             }
             $iNewSurveyid = $newSurvey->sid;
 
             $sTitle = html_entity_decode($sSurveyTitle, ENT_QUOTES, "UTF-8");
 
-            $aInsertData = array(
+            $aInsertData = [
                 'surveyls_survey_id' => $iNewSurveyid,
                 'surveyls_title' => $sTitle,
                 'surveyls_language' => $sSurveyLanguage,
-            );
+            ];
 
             $langsettings = new SurveyLanguageSetting();
             $langsettings->insertNewSurvey($aInsertData);

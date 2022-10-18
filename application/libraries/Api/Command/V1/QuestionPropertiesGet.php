@@ -51,7 +51,7 @@ class QuestionPropertiesGet implements CommandInterface
         $oQuestion = $this->getQuestionModel($iQuestionID);
         if (!isset($oQuestion)) {
             return $this->responseErrorNotFound(
-                array('status' => 'Error: Invalid questionid')
+                ['status' => 'Error: Invalid questionid']
             );
         }
 
@@ -74,7 +74,7 @@ class QuestionPropertiesGet implements CommandInterface
 
         if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error: Invalid language')
+                ['status' => 'Error: Invalid language']
             );
         }
 
@@ -84,7 +84,7 @@ class QuestionPropertiesGet implements CommandInterface
         );
         if (!isset($oQuestion)) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error: Invalid questionid')
+                ['status' => 'Error: Invalid questionid']
             );
         }
 
@@ -106,22 +106,22 @@ class QuestionPropertiesGet implements CommandInterface
 
         if (empty($aQuestionSettings)) {
             return $this->responseErrorBadRequest(
-                array('status' => 'No valid Data')
+                ['status' => 'No valid Data']
             );
         }
 
-        $aResult = array();
+        $aResult = [];
         foreach ($aQuestionSettings as $sPropertyName) {
             if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions') {
                 $oSubQuestions = Question::model()->with('questionl10ns')
                 ->findAll(
                     't.parent_qid = :parent_qid and questionl10ns.language = :language',
-                    array(':parent_qid' => $iQuestionID, ':language' => $sLanguage),
-                    array('order' => 'title')
+                    [':parent_qid' => $iQuestionID, ':language' => $sLanguage],
+                    ['order' => 'title']
                 );
 
                 if (count($oSubQuestions) > 0) {
-                    $aData = array();
+                    $aData = [];
                     foreach ($oSubQuestions as $oSubQuestion) {
                         if ($sPropertyName == 'available_answers') {
                             $aData[$oSubQuestion['title']] = array_key_exists(
@@ -176,11 +176,11 @@ class QuestionPropertiesGet implements CommandInterface
                 $oAttributes = Answer::model()->with('answerl10ns')
                 ->findAll(
                     't.qid = :qid and answerl10ns.language = :language',
-                    array(':qid' => $iQuestionID, ':language' => $sLanguage),
-                    array('order' => 'sortorder')
+                    [':qid' => $iQuestionID, ':language' => $sLanguage],
+                    ['order' => 'sortorder']
                 );
                 if (count($oAttributes) > 0) {
-                    $aData = array();
+                    $aData = [];
                     foreach ($oAttributes as $oAttribute) {
                         $aData[$oAttribute['code']]['answer'] = array_key_exists(
                             $sLanguage,
@@ -196,11 +196,11 @@ class QuestionPropertiesGet implements CommandInterface
                 }
             } elseif ($sPropertyName == 'answeroptions_multiscale') {
                 $oAttributes = Answer::model()->findAllByAttributes(
-                    array('qid' => $iQuestionID, 'language' => $sLanguage),
-                    array('order' => 'sortorder')
+                    ['qid' => $iQuestionID, 'language' => $sLanguage],
+                    ['order' => 'sortorder']
                 );
                 if (count($oAttributes) > 0) {
-                    $aData = array();
+                    $aData = [];
                     foreach ($oAttributes as $oAttribute) {
                         $aData[$oAttribute['scale_id']][$oAttribute['code']]['code'] = $oAttribute['code'];
                         $aData[$oAttribute['scale_id']][$oAttribute['code']]['answer'] = $oAttribute['answer'];
@@ -216,7 +216,7 @@ class QuestionPropertiesGet implements CommandInterface
                 $model = DefaultValue::model()->with('defaultvaluel10ns')
                 ->find(
                     'qid = :qid AND defaultvaluel10ns.language = :language',
-                    array(':qid' => $iQuestionID, ':language' => $sLanguage)
+                    [':qid' => $iQuestionID, ':language' => $sLanguage]
                 );
                 $aResult['defaultvalue'] = $model ? $model->defaultvalue : '';
             } else {

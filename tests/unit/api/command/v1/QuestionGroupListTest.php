@@ -6,6 +6,7 @@ use Eloquent\Phony\Phpunit\Phony;
 use Survey;
 use QuestionGroup;
 use Permission;
+use QuestionGroupL10n;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionGroupList;
@@ -189,12 +190,14 @@ class QuestionGroupListTest extends TestBaseClass
             'grelevance' => '1',
             'language' => 'en'
         ), false);
-        $questionGroup->questiongroupl10ns = array(
-            'en' => array(
-                'group_name' => 'Question group 1',
-                'description' => ''
-            )
-        );
+
+        $questionGroupL10n = new QuestionGroupL10n();
+        $questionGroupL10n->setAttributes(array(
+            'group_name' => 'Question group 1',
+            'description' => ''
+        ), false);
+
+        $questionGroup->questiongroupl10ns = array('en' => $questionGroupL10n);
 
         $command = new QuestionGroupList();
         $command->setApiSession($mockApiSession);

@@ -41,7 +41,7 @@ class QuestionDelete implements CommandInterface
         $oQuestion = Question::model()->findByPk($iQuestionID);
         if (!isset($oQuestion)) {
             return $this->responseErrorNotFound(
-                array('status' => 'Error: Invalid question ID')
+                ['status' => 'Error: Invalid question ID']
             );
         }
 
@@ -62,14 +62,14 @@ class QuestionDelete implements CommandInterface
 
         if ($oSurvey->isActive) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Survey is active and not editable')
+                ['status' => 'Survey is active and not editable']
             );
         }
 
-        $oCondition = Condition::model()->findAllByAttributes(array('cqid' => $iQuestionID));
+        $oCondition = Condition::model()->findAllByAttributes(['cqid' => $iQuestionID]);
         if (count($oCondition) > 0) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Cannot delete Question. Others rely on this question')
+                ['status' => 'Cannot delete Question. Others rely on this question']
             );
         }
 

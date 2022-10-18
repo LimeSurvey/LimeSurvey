@@ -45,7 +45,7 @@ class QuestionPropertiesSet implements CommandInterface
         $oQuestion = $this->getQuestionModel($iQuestionID);
         if (is_null($oQuestion)) {
             return $this->responseErrorNotFound(
-                array('status' => 'Error: Invalid group ID')
+                ['status' => 'Error: Invalid group ID']
             );
         }
 
@@ -68,7 +68,7 @@ class QuestionPropertiesSet implements CommandInterface
 
         if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error: Invalid language')
+                ['status' => 'Error: Invalid language']
             );
         }
 
@@ -86,7 +86,7 @@ class QuestionPropertiesSet implements CommandInterface
 
         if (empty($aQuestionData)) {
             return $this->responseErrorBadRequest(
-                array('status' => 'No valid Data')
+                ['status' => 'No valid Data']
             );
         }
 

@@ -40,7 +40,7 @@ class QuestionGroupDelete implements CommandInterface
         $oGroup = $this->getQuestionGroupModel($iGroupID);
         if (!isset($oGroup)) {
             return $this->responseErrorNotFound(
-                array('status' => 'Error:Invalid group ID')
+                ['status' => 'Error:Invalid group ID']
             );
         }
         $iSurveyID = $oGroup->sid;
@@ -48,7 +48,7 @@ class QuestionGroupDelete implements CommandInterface
         $oSurvey = $this->getSurveyModel($iSurveyID);
         if (!isset($oSurvey)) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error: Invalid survey ID')
+                ['status' => 'Error: Invalid survey ID']
             );
         }
 
@@ -65,7 +65,7 @@ class QuestionGroupDelete implements CommandInterface
 
         if ($oSurvey->isActive) {
             return $this->responseError(
-                array('status' => 'Error:Survey is active and not editable')
+                ['status' => 'Error:Survey is active and not editable']
             );
         }
 
@@ -77,7 +77,7 @@ class QuestionGroupDelete implements CommandInterface
         );
         if (isset($dependantOn)) {
             return $this->responseError(
-                array('status' => 'Group with dependencies - deletion not allowed')
+                ['status' => 'Group with dependencies - deletion not allowed']
             );
         }
 
@@ -94,7 +94,7 @@ class QuestionGroupDelete implements CommandInterface
             );
         } else {
             return $this->responseError(
-                array('status' => 'Group deletion failed')
+                ['status' => 'Group deletion failed']
             );
         }
     }

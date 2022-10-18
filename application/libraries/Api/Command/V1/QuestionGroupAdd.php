@@ -52,13 +52,13 @@ class QuestionGroupAdd implements CommandInterface
         $oSurvey = $this->getSurveyModel($iSurveyID);
         if (!isset($oSurvey)) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error: Invalid survey ID')
+                ['status' => 'Error: Invalid survey ID']
             );
         }
 
         if ($oSurvey->isActive) {
             return $this->responseErrorBadRequest(
-                array('status' => 'Error: Survey is active and not editable')
+                ['status' => 'Error: Survey is active and not editable']
             );
         }
 
@@ -67,7 +67,7 @@ class QuestionGroupAdd implements CommandInterface
         $oGroup->group_order = getMaxGroupOrder($iSurveyID);
         if (!$oGroup->save()) {
             return $this->responseError(
-                array('status' => 'Creation Failed')
+                ['status' => 'Creation Failed']
             );
         }
 
@@ -81,7 +81,7 @@ class QuestionGroupAdd implements CommandInterface
             return $this->responseSuccess((int) $oGroup->gid);
         } else {
             return $this->responseError(
-                array('status' => 'Creation Failed')
+                ['status' => 'Creation Failed']
             );
         }
     }

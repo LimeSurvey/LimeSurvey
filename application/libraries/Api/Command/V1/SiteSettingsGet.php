@@ -51,7 +51,7 @@ class SiteSettingsGet implements CommandInterface
             );
         } else {
             return $this->responseErrorBadRequest(
-                array('status' => 'Invalid setting')
+                ['status' => 'Invalid setting']
             );
         }
     }
