@@ -205,7 +205,7 @@ class TwigCommand extends CConsoleCommand
                  * TODO for LS5:
                  *  - load the default data from the XML
                  *
-                 * NOTE 1: as long as this is not done, it's highly probable that some twig files will never be reached.
+                 * NOTE 1: as long as this is not done, it's highly probable that some twig files will never be reached (Ex: Conditionally included twig files).
                  */
                 $twigFile = $themePath . DIRECTORY_SEPARATOR . "answer.twig";
                 $questionData = []; // See todo
