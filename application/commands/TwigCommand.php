@@ -124,7 +124,7 @@ class TwigCommand extends CConsoleCommand
                *  - get the Question XML rather than answer.twig
                *  - load the default data from the XML
                *
-               * NOTE 1: as long as this is not done, it's highly probable that some twig files will never be reached.
+               * NOTE 1: as long as this is not done, it's highly probable that some twig files will never be reached (Ex: Conditionally included twig files).
                *
                * NOTE 2: It should be possible to parse the XML to get the different values for the attributes, and then to generate a cache file for each attribue possible value.
                *         Doing this could allow to test easily the rendering for all question type, with all question attribute variations.
