@@ -1583,11 +1583,6 @@ fieldset[disabled] .btn-link:focus {
   background-color: #7b2824;
 }
 
-.badge {
-  color: #fff;
-  background-color: #858585;
-}
-
 .jumbotron {
   background-color: transparent;
   text-align: center;
@@ -2758,4 +2753,10 @@ label {
   padding: 0.5rem 1.2rem;
   text-align: center;
   background-color: #1E1E1E;
+}
+
+.badge {
+  padding: 4px 8px;
+  color: #fff;
+  background-color: #858585;
 }
