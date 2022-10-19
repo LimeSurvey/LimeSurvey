@@ -29,38 +29,16 @@ $g-300      : #DDDEE8;
 $g-200      : #EEEFF7;
 $g-100      : #F9F9FB;
 
-// START font-variables
-$font-size-root: 14px;
-$font-weight-root: 400;
-$line-height-root: 20px;
-// END font-variables
 
 // START spacer
 $spacer: 1rem;
-$spacers: (
-    0: 0,
-    1: $spacer * .25,
-    2: $spacer * .5,
-    3: $spacer,
-    4: $spacer * 1.5,
-    5: $spacer * 3,
-    6: $spacer * 4.5,
-    7: $spacer * 6,
-);
-// END spacer
-// $tooltip-font-size:                 $font-size-sm;
-$zindex-tooltip:                    1080;
-$tooltip-max-width:                 200px;
-$tooltip-color:                     $white;
+
 $tooltip-bg:                        $g-900;
 // $tooltip-border-radius:             $border-radius;
 $tooltip-opacity:                   1;
 $tooltip-padding-y:                 $spacer * .5;
 $tooltip-padding-x:                 $spacer * 1.2;
-$tooltip-margin:                    0;
 
-$tooltip-arrow-width:               .8rem;
-$tooltip-arrow-height:              .4rem;
 $tooltip-arrow-color:               $tooltip-bg;
 // $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
 // this is an example, if you work on the buttons you can remove it
