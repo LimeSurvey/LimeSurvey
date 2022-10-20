@@ -73,7 +73,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'value'       => function ($oQuota) use ($oSurvey, $aQuotaItems) {
                                     /** @var Quota $oQuota */
                                     $out = '<p>' . $this->renderPartial(
-                                        '/admin/quotas/viewquotas_quota_members',
+                                        '/quotas/viewquotas_quota_members',
                                         array(
                                                 'oSurvey'     => $oSurvey,
                                                 'oQuota'      => $oQuota,
@@ -105,7 +105,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             <?php endif; ?>
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) :?>
                     <div class="float-end">
-                        <?php echo CHtml::beginForm(array("admin/quotas/sa/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
+                        <?php echo CHtml::beginForm(array("quotas/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
                         <?php echo CHtml::hiddenField('sid', $oSurvey->getPrimaryKey());?>
                         <?php echo CHtml::hiddenField('action', 'quotas');?>
                         <?php echo CHtml::hiddenField('subaction', 'new_quota');?>

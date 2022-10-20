@@ -29,7 +29,10 @@ class QuotasController extends LSBaseController
         return parent::beforeRender($view);
     }
 
-
+    /**
+     * @param $surveyid
+     * @return void
+     */
     public function actionIndex($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
@@ -153,7 +156,10 @@ class QuotasController extends LSBaseController
         ]);
     }
 
-
+    /**
+     * @param $surveyid
+     * @return void
+     */
     public function actionEditQuota($surveyid){
         $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);
@@ -196,6 +202,9 @@ class QuotasController extends LSBaseController
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function actionDeleteQuota()
     {
         $surveyid = sanitize_int(Yii::app()->request->getPost('surveyid'));
@@ -212,5 +221,131 @@ class QuotasController extends LSBaseController
         Yii::app()->user->setFlash('success', sprintf(gT("Quota with ID %s was deleted"), $quotaId));
 
         $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
+    }
+
+
+    /**
+     * @param int $surveyid
+     * @param string $sSubAction
+     * @return void
+     */
+    public function actionNewAnswer(int $surveyid)
+    {
+        $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $aData['surveyid'] = $surveyid;
+
+        $sSubAction = Yii::app()->request->getParam('sSubaction');
+        if($sSubAction === null){
+            $sSubAction = 'newanswer';
+        }
+
+        if (!(Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'update'))) {
+            Yii::app()->user->setFlash('error', gT("Access denied."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+        $renderView = array();
+        $quotaId = Yii::app()->request->getParam('quota_id');
+        $quota = Quota::model()->findByPk($quotaId);
+        $aData['oQuota'] = $quota;
+
+        if (($sSubAction == "newanswer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) &&
+            Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')) {
+            $result = $oSurvey->quotableQuestions;
+            if (empty($result)) {
+                $renderView = 'newanswererror_view';
+            } else {
+                $renderView = 'newanswer_view';
+            }
+        }
+
+        $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
+        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) &&
+            Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')) {
+            $questionId = sanitize_int(Yii::app()->request->getPost('quota_qid'));
+            $oQuestion = Question::model()
+                ->with('questionl10ns', array('language' => $oSurvey->language))
+                ->findByPk(array('qid' => $questionId));
+
+            $aQuestionAnswers = $quotaService->getQuotaAnswers(
+                $questionId,
+                sanitize_int(Yii::app()->request->getPost('quota_id'))
+            );
+
+            $isAllAnswersSelected = $quotaService->allAnswersSelected($oQuestion, $aQuestionAnswers);
+
+            $aData['isAllAnswersSelected'] = $isAllAnswersSelected;
+            reset($aQuestionAnswers);
+            $aData['oQuestion'] = $oQuestion;
+            $aData['question_answers'] = $aQuestionAnswers;
+            //$aData['x'] = $cntQuestionAnswer;  not needed in any view till now
+            $renderView = 'newanswertwo_view';
+        }
+
+        $aData['sBaseLang'] = $oSurvey->language;
+        $aData['sidemenu']['state'] = false;
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
+       // $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/' . $surveyid; // Close button
+       // $aData['surveybar']['closebutton']['forbidden'][] = 'newanswer';
+
+        $this->aData = $aData;
+        $this->render($renderView, $aData);
+    }
+
+    /**
+     * @return void
+     */
+    public function actionInsertQuotaAnswer($surveyid)
+    {
+        $surveyid = sanitize_int($surveyid);
+        if (!(Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'update'))) {
+            Yii::app()->user->setFlash('error', gT("Access denied."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        $oQuotaMembers = new QuotaMember('create'); // Trigger the 'create' rules
+        $oQuotaMembers->sid = $surveyid;
+        $oQuotaMembers->qid = Yii::app()->request->getPost('quota_qid');
+        $oQuotaMembers->quota_id = Yii::app()->request->getPost('quota_id');
+        $oQuotaMembers->code = Yii::app()->request->getPost('quota_anscode');
+        if ($oQuotaMembers->save()) {
+            if (!empty($_POST['createanother'])) {
+                $this->redirect($this->createUrl(
+                    'quotas/newAnswer',
+                    ['surveyid' => $surveyid, 'sSubAction' => 'newanswer', 'quota_id' => Yii::app()->request->getPost('quota_id')]));
+            } else {
+                $this->redirect($this->createUrl('/quotas/index', ['surveyid' => $surveyid]));
+            }
+        } else {
+            // Save was not successful, redirect back
+            $_POST['action'] = "quotas"; //todo why
+            $_POST['subaction'] = "newanswer"; //todo why
+            //$sSubAction = "new_answer_two";
+            //self::newanswer($surveyid, $sSubAction);
+            //todo: TEST it!!!
+            $this->redirect($this->createUrl(
+                'quotas/newAnswer',
+                ['surveyid' => $surveyid, 'sSubAction' => 'newanswer', 'quota_id' => Yii::app()->request->getPost('quota_id')]));
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function actionDeleteAnswer($surveyid)
+    {
+        $surveyid = sanitize_int($surveyid);
+        if (!(Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'update'))) {
+            Yii::app()->user->setFlash('error', gT("Access denied."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        QuotaMember::model()->deleteAllByAttributes(array(
+            'id' => Yii::app()->request->getPost('quota_member_id'),
+            'qid' => Yii::app()->request->getPost('quota_qid'),
+            'code' => Yii::app()->request->getPost('quota_anscode'),
+        ));
+
+        $this->redirect($this->createUrl('/quotas/index', ['surveyid' => $surveyid]));
     }
 }

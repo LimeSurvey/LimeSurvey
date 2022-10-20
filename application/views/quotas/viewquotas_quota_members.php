@@ -1,5 +1,4 @@
 <?php
-/* @var $this AdminController */
 /* @var Survey $oSurvey */
 /* @var Quota $oQuota */
 /* @var CActiveDataProvider $oDataProvider Containing Quota item objects*/
@@ -33,7 +32,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
                 <th><?php eT('Question');?></th>
                 <th><?php eT('Answer');?></th>
                 <th class="text-end">
-                    <?php echo CHtml::beginForm(array("admin/quotas/sa/newanswer/surveyid/{$oSurvey->getPrimaryKey()}"), 'post');?>
+                    <?php echo CHtml::beginForm(array("quotas/newAnswer/surveyid/{$oSurvey->getPrimaryKey()}"), 'post');?>
                     <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey(), ['id'=> 'addForm_sid' ]);?>
                     <?php echo CHtml::hiddenField('action','quotas', ['id'=> 'addForm_action' ]);?>
                     <?php echo CHtml::hiddenField('quota_id',$oQuota->getPrimaryKey(), ['id'=> 'addForm_quota_id' ]);?>
@@ -49,7 +48,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
         <tbody>
             <?php if (!empty($aQuotaItems) && isset($aQuotaItems[$oQuota->id]) && !empty($aQuotaItems[$oQuota->id])){ ?>
                 <?php foreach($aQuotaItems[$oQuota->id] as $aQuotaItem){
-                    $this->renderPartial('/admin/quotas/viewquotas_quota_members_item',array(
+                    $this->renderPartial('viewquotas_quota_members_item', array(
                         'oQuotaMember'=>$aQuotaItem['oQuotaMember'],
                         'data'=>$aQuotaItem,
                         'sBaseLang'=>$oSurvey->language)

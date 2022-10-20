@@ -8,7 +8,7 @@
 
 <?php $form = $this->beginWidget('CActiveForm', array('id'=>'edit-quota-ls',)); ?>
 <?php echo $form->errorSummary($aQuotaLanguageSettings); ?>
-<?php $this->renderPartial('/admin/quotas/_form_langsettings',
+<?php $this->renderPartial('_form_langsettings',
     array(
         'form'=>$form,
         'oQuota'=>$oQuota,

@@ -58,11 +58,12 @@
             'modalType'   => 'cancel-apply',
             'keepopen'    => 'yes',
             'sModalTitle'   => gT('Change settings'),
-            'htmlModalBody' => $this->renderPartial('/admin/quotas/viewquotas_massive_langsettings_form',
+            'htmlModalBody' => $this->renderPartial('viewquotas_massive_langsettings_form',
                 array(
                     'oQuota'=>$oQuota,
                     'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
-                    ),true),
+                    ), true
+            ),
         ),
 
         // Separator

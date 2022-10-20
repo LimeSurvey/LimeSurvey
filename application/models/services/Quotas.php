@@ -79,7 +79,7 @@ class Quotas
     }
 
     /**
-     * Get Quota Answers
+     * Returns an answerlist for a specific question type and marks already used answers as such.
      *
      * todo: rewrite this function, use switch instead of if-elseif...(done!) and create OOPs for questiontypes (?)
      * @param integer $iQuestionId
@@ -260,7 +260,8 @@ class Quotas
      * @param $language
      * @return \QuotaLanguageSetting
      */
-    public function newQuotaLanguageSetting(\Quota $oQuota, $language){
+    public function newQuotaLanguageSetting(\Quota $oQuota, $language)
+    {
         $oQuotaLanguageSetting = new \QuotaLanguageSetting();
         $oQuotaLanguageSetting->quotals_name = $oQuota->name;
         $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
@@ -273,5 +274,25 @@ class Quotas
         \Yii::app()->language = $siteLanguage;
 
         return $oQuotaLanguageSetting;
+    }
+
+    /**
+     * Checks if all possible answers are already selected.
+     *
+     * @param \Question $oQuestion
+     * @param array $aQuestionAnswers  array list with possible question answers
+     *                                  and already used answers (see getQuotaAnswer)
+     * @return bool true if all possible answers are alreday selected, false otherwise
+     */
+    public function allAnswersSelected(\Question $oQuestion, array $aQuestionAnswers)
+    {
+        $cntQuestionAnswer = 0;
+        foreach ($aQuestionAnswers as $aQACheck) {
+            if (isset($aQACheck['rowexists'])) {
+                $cntQuestionAnswer++;
+            }
+        }
+
+        return ($oQuestion->type != "*" && count($aQuestionAnswers) == $cntQuestionAnswer);
     }
 }

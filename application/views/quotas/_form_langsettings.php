@@ -26,7 +26,7 @@
                                 'id' => 'edittxtele' . $language,
                                 'class' => 'tab-pane fade' . " " . ($language == $oQuota->survey->language ? 'show active ' : ''),
                             ),
-                            $this->renderPartial('/admin/quotas/_form_langsetting',
+                            $this->renderPartial('_form_langsetting',
                                 array(
                                     'form' => $form,
                                     'oQuota' => $oQuota,

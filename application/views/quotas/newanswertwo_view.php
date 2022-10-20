@@ -1,8 +1,7 @@
 <?php
-/* @var $this AdminController */
+/* @var bool  $isAllAnswersSelected*/
 /* @var Quota $oQuota */
 /* @var Question $oQuestion */
-$isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == $x);
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
@@ -13,30 +12,38 @@ $isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == 
             </h3>
             <div class="jumbotron message-box">
                 <div class='row'>
-            <?php if ($isAllAnswersSelected): ?>
+            <?php if ($isAllAnswersSelected){ ?>
                     <h2><?php eT("All answers are already selected in this quota.");?></h2>
                     <p>
-                        <input class="btn btn-lg btn-success" type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/{$oQuota->sid}");?>', '_top')" value="<?php eT("Continue");?>"/>
+                        <input class="btn btn-lg btn-success" type="submit" onclick="window.open('<?php echo $this->createUrl("quotas/index/surveyid/{$oQuota->sid}");?>', '_top')" value="<?php eT("Continue");?>"/>
                     </p>
-            <?php else:?>
-                <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$oQuota->sid}"), 'post', array('#'=>'quota_'.sanitize_int($_POST['quota_id']), 'class' => '')); ?>
-                <?php if ($oQuestion->type == '*'): ?>
-                    <?php $this->renderPartial('/admin/quotas/_newanswer_equation',['oQuota'=>$oQuota,'oQuestion'=>$oQuestion]);?>
-                <?php else:?>
+            <?php } else {
+                echo CHtml::form(
+                    array("quotas/insertQuotaAnswer/surveyid/{$oQuota->sid}"),
+                    'post',
+                    array('#'=>'quota_'.sanitize_int($_POST['quota_id']), 'class' => ''));
+                if ($oQuestion->type == '*') {
+                    $this->renderPartial(
+                        '/admin/quotas/_newanswer_equation',
+                        ['oQuota'=>$oQuota,'oQuestion'=>$oQuestion]
+                    );
+                } else { ?>
                         <h2><?php echo sprintf(gT("New answer for quota '%s'"), CHtml::encode($oQuota->name));?></h2>
                         <p class="lead"><?php eT("Select answer:");?></p>
                         <div class='mb-3'>
                             <div class='col-md-5 offset-md-4'>
                                 <select class='form-select' name="quota_anscode" size="15">
                                     <?php
-                                        foreach ($question_answers as $key=>$value) {
-                                            if (!isset($value['rowexists'])) echo '<option value="'.$key.'">'.strip_tags(substr($value['Display'],0,40)).'</option>';
+                                        foreach ($question_answers as $key => $value) {
+                                            if (!isset($value['rowexists'])) {
+                                                echo '<option value="' . $key . '">' . strip_tags(substr($value['Display'], 0, 40)) . '</option>';
+                                            }
                                         }
                                     ?>
                                 </select>
                             </div>
                         </div>
-                <?php endif;?>
+                <?php }?>
 
                     <div class='mb-3'>
                         <div class='col-md-5 offset-md-4'>
@@ -56,7 +63,7 @@ $isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == 
                         <?php CHtml::endForm()?>
                     </div>
 
-            <?php endif;?>
+            <?php }?>
                 </div>
             </div>
         </div>

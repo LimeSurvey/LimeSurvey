@@ -74,7 +74,7 @@
 
             </div>
             <div class="col-xl-8">
-                <?php $this->renderPartial('/admin/quotas/_form_langsettings',
+                <?php $this->renderPartial('_form_langsettings',
                     array(
                         'form'=>$form,
                         'oQuota'=>$oQuota,
