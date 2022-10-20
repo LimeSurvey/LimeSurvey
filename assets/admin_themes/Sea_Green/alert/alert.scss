@@ -1,46 +1,33 @@
-// Alerts
-.alert-success {
-  background-color: $white;
-  border: 1px solid $primary-active;
-  color: $primary;
+$alert-status: (
+  success: $success,
+  warning: $warning,
+  danger: $error,
+);
+
+@mixin alert-variant($color, $status) {
+  border: 1.33px solid $g-900;
+  color: $g-900;
+
+  @if ($status== "outlined") {
+    background-color: $white;
+    border-left: 8px solid $color;
+  } @else {
+    background-color: $color;
+  }
+
   hr {
-      border-top-color: $primary-bg_hover_success;
+    border-top-color: $color;
   }
   .alert-link {
-      color: $primary-hover;
+    color: $grape;
   }
 }
-.alert-info {
-  background-color: $white;
-  //border: 1px solid $primary-bg_hover;
-  //color: $primary-bg_hover;
-  border: 1px solid $alert-info;
-  color: $alert-info;
-  hr {
-      border-top-color: $primary-bg_info_hover_3;
+
+@each $state, $value in $alert-status {
+  .alert-#{$state} {
+    @include alert-variant($value, "filled");
   }
-  .alert-link {
-      color: $primary-bg_info_hover_4;
-  }
-}
-.alert-warning {
-  background-color: $white;
-  border: 1px solid $brown-10;
-  color: $brown-10;
-  hr {
-      border-top-color: $brown-light-40;
-  }
-  .alert-link {
-      color: $orange-20;
-  }
-}
-.alert-danger {
-  border: 1px solid $red-50;
-  color: $red-50;
-  hr {
-      border-top-color: $danger-hr;
-  }
-  .alert-link {
-      color: $danger-light;
+  .alert-#{$state}-outlined {
+    @include alert-variant($value, "outlined");
   }
 }
