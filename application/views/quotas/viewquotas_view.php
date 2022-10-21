@@ -135,7 +135,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             <?php endif; ?>
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) :?>
                     <div class="float-end">
-                        <?php echo CHtml::beginForm(array("admin/quotas/sa/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
+                        <?php echo CHtml::beginForm(array("quotas/addNewQuota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
                         <?php echo CHtml::hiddenField('sid', $oSurvey->getPrimaryKey());?>
                         <?php echo CHtml::hiddenField('action', 'quotas');?>
                         <?php echo CHtml::hiddenField('subaction', 'new_quota');?>

@@ -291,8 +291,6 @@ class QuotasController extends LSBaseController
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
             " (" . gT("ID") . ":" . $surveyid . ")";
-       // $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/' . $surveyid; // Close button
-       // $aData['surveybar']['closebutton']['forbidden'][] = 'newanswer';
 
         $this->aData = $aData;
         $this->render($renderView, $aData);
@@ -329,7 +327,6 @@ class QuotasController extends LSBaseController
             }
         } else {
             // Save was not successful, redirect back
-            //todo: TEST it!!!
             $this->redirect($this->createUrl(
                 'quotas/newAnswer',
                 [
