@@ -16,7 +16,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'activate',
-            'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/activate'),
+            'url'         => App()->createUrl('/quotas/massiveAction/action/activate'),
             'iconClasses' => 'fa fa-play text-success',
             'text'        =>  gT("Activate"),
             'grid-reload' => 'yes',
@@ -32,7 +32,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'deactivate',
-            'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/deactivate'),
+            'url'         => App()->createUrl('/quotas/massiveAction/action/deactivate'),
             'iconClasses' => 'fa fa-pause text-warning',
             'text'        =>  gT("Deactivate"),
             'grid-reload' => 'yes',
@@ -48,7 +48,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'changeLanguageSettings',
-            'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/changeLanguageSettings'),
+            'url'         => App()->createUrl('/quotas/massiveAction/action/changeLanguageSettings'),
             'iconClasses' => 'fa fa-external-link text-success',
             'text'        =>  gT("Change texts"),
             'grid-reload' => 'yes',
@@ -58,11 +58,13 @@
             'modalType'   => 'cancel-apply',
             'keepopen'    => 'yes',
             'sModalTitle'   => gT('Change settings'),
-            'htmlModalBody' => $this->renderPartial('viewquotas_massive_langsettings_form',
+            'htmlModalBody' => $this->renderPartial(
+                'viewquotas_massive_langsettings_form',
                 array(
                     'oQuota'=>$oQuota,
                     'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
-                    ), true
+                    ),
+                true
             ),
         ),
 
@@ -76,7 +78,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'delete',
-            'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/delete'),
+            'url'         => App()->createUrl('/quotas/massiveAction/action/delete'),
             'iconClasses' => 'fa fa-trash text-danger',
             'text'        =>  gT("Delete"),
             'grid-reload' => 'yes',

@@ -71,7 +71,8 @@ class QuotasController extends LSBaseController
         $aData['topBar']['name'] = 'surveyTopbar_view';
         $aData['topBar']['leftSideView'] = 'quotasTopbarLeft_view';
 
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
+            " (" . gT("ID") . ":" . $surveyid . ")";
         $aData['subaction'] = gT("Survey quotas");
         $aData['sidemenu']['state'] = false;
         $this->aData = $aData;
@@ -103,7 +104,8 @@ class QuotasController extends LSBaseController
         if (!empty($oSurvey->quotas)) {
             foreach ($oSurvey->quotas as $oQuota) {
                 $completed = $oQuota->completeCount;
-                echo $oQuota->name . "," . $oQuota->qlimit . "," . $completed . "," . ($oQuota->qlimit - $completed) . "\r\n";
+                echo $oQuota->name . "," . $oQuota->qlimit . "," .
+                    $completed . "," . ($oQuota->qlimit - $completed) . "\r\n";
             }
         }
         App()->end();
@@ -115,8 +117,8 @@ class QuotasController extends LSBaseController
      * @return void
      * @throws CDbException
      */
-    public function actionAddNewQuota($surveyid){
-
+    public function actionAddNewQuota($surveyid)
+    {
         $surveyid = sanitize_int($surveyid);
         if (!(Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create'))) {
             Yii::app()->user->setFlash('error', gT("Access denied."));
@@ -124,19 +126,20 @@ class QuotasController extends LSBaseController
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $oSurvey->sid;
-        $aData['thissurvey'] = getSurveyInfo($surveyid); //todo do we need this here? why?
+        $aData['thissurvey'] = getSurveyInfo($surveyid);
         $aData['langs'] = $oSurvey->allLanguages;
         $aData['baselang'] = $oSurvey->language;
 
         $aData['sidemenu']['state'] = false;
         $aData['topBar']['showSaveButton'] = true;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
+            " (" . gT("ID") . ":" . $surveyid . ")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
 
         $oQuota = new Quota();
         $oQuota->sid = $oSurvey->primaryKey;
         $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
-        if(isset($_POST['Quota'])) {
+        if (isset($_POST['Quota'])) {
             $oQuota = $quotaService->saveNewQuota($_POST['Quota']);
             if (!$oQuota->getErrors()) {
                 Yii::app()->user->setFlash('success', gT("New quota saved"));
@@ -160,7 +163,8 @@ class QuotasController extends LSBaseController
      * @param $surveyid
      * @return void
      */
-    public function actionEditQuota($surveyid){
+    public function actionEditQuota($surveyid)
+    {
         $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (!(Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'update'))) {
@@ -178,7 +182,7 @@ class QuotasController extends LSBaseController
             if ($quotaService->editQuota($oQuota, $_POST['Quota'])) {
                 Yii::app()->user->setFlash('success', gT("Quota saved"));
                 $this->redirect($this->createUrl("quotas/index/surveyid/$surveyid"));
-            }else{
+            } else {
                 Yii::app()->user->setFlash('error', gT("Quota or quota languages could not be updated."));
             }
         }
@@ -192,7 +196,8 @@ class QuotasController extends LSBaseController
 
         $aData['surveyid'] = $surveyid;
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
+            " (" . gT("ID") . ":" . $surveyid . ")";
         $aData['topBar']['showSaveButton'] = true;
 
         $this->aData = $aData;
@@ -236,7 +241,7 @@ class QuotasController extends LSBaseController
         $aData['surveyid'] = $surveyid;
 
         $sSubAction = Yii::app()->request->getParam('sSubaction');
-        if($sSubAction === null){
+        if ($sSubAction === null) {
             $sSubAction = 'newanswer';
         }
 
@@ -284,7 +289,8 @@ class QuotasController extends LSBaseController
 
         $aData['sBaseLang'] = $oSurvey->language;
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title .
+            " (" . gT("ID") . ":" . $surveyid . ")";
        // $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/' . $surveyid; // Close button
        // $aData['surveybar']['closebutton']['forbidden'][] = 'newanswer';
 
@@ -312,20 +318,26 @@ class QuotasController extends LSBaseController
             if (!empty($_POST['createanother'])) {
                 $this->redirect($this->createUrl(
                     'quotas/newAnswer',
-                    ['surveyid' => $surveyid, 'sSubAction' => 'newanswer', 'quota_id' => Yii::app()->request->getPost('quota_id')]));
+                    [
+                        'surveyid' => $surveyid,
+                        'sSubAction' => 'newanswer',
+                        'quota_id' => Yii::app()->request->getPost('quota_id')
+                    ]
+                ));
             } else {
                 $this->redirect($this->createUrl('/quotas/index', ['surveyid' => $surveyid]));
             }
         } else {
             // Save was not successful, redirect back
-            $_POST['action'] = "quotas"; //todo why
-            $_POST['subaction'] = "newanswer"; //todo why
-            //$sSubAction = "new_answer_two";
-            //self::newanswer($surveyid, $sSubAction);
             //todo: TEST it!!!
             $this->redirect($this->createUrl(
                 'quotas/newAnswer',
-                ['surveyid' => $surveyid, 'sSubAction' => 'newanswer', 'quota_id' => Yii::app()->request->getPost('quota_id')]));
+                [
+                    'surveyid' => $surveyid,
+                    'sSubAction' => 'newanswer',
+                    'quota_id' => Yii::app()->request->getPost('quota_id')
+                ]
+            ));
         }
     }
 
@@ -335,7 +347,7 @@ class QuotasController extends LSBaseController
     public function actionDeleteAnswer($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
-        if (!(Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'update'))) {
+        if (!(Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'delete'))) {
             Yii::app()->user->setFlash('error', gT("Access denied."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -347,5 +359,65 @@ class QuotasController extends LSBaseController
         ));
 
         $this->redirect($this->createUrl('/quotas/index', ['surveyid' => $surveyid]));
+    }
+
+    public function actionMassiveAction()
+    {
+        $action = Yii::app()->request->getQuery('action');
+        $allowedActions = array('activate', 'deactivate', 'delete', 'changeLanguageSettings');
+        if (isset($_POST) && in_array($action, $allowedActions)) {
+            $sItems = Yii::app()->request->getPost('sItems');
+            $aQuotaIds = json_decode($sItems);
+            $errors = array();
+            foreach ($aQuotaIds as $iQuotaId) {
+                /** @var Quota $oQuota */
+                $oQuota = Quota::model()->findByPk($iQuotaId);
+                if (in_array($action, array('activate', 'deactivate'))) {
+                    if (!(Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update'))) {
+                        Yii::app()->user->setFlash('error', gT("Access denied."));
+                        $this->redirect(Yii::app()->request->urlReferrer);
+                    }
+                    $oQuota->active = ($action == 'activate' ? 1 : 0);
+                    $oQuota->save();
+                } elseif ($action == 'delete') {
+                    if (!(Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'delete'))) {
+                        Yii::app()->user->setFlash('error', gT("Access denied."));
+                        $this->redirect(Yii::app()->request->urlReferrer);
+                    }
+                    $oQuota->delete();
+                    QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $iQuotaId));
+                    QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $iQuotaId));
+                } elseif ($action == 'changeLanguageSettings' && !empty($_POST['QuotaLanguageSetting'])) {
+                    if (!(Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update'))) {
+                        Yii::app()->user->setFlash('error', gT("Access denied."));
+                        $this->redirect(Yii::app()->request->urlReferrer);
+                    }
+                    $oQuotaLanguageSettings = $oQuota->languagesettings;
+                    foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes) {
+                        $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
+                        $oQuotaLanguageSetting->attributes = $aQuotaLanguageSettingAttributes;
+                        if (!$oQuotaLanguageSetting->save()) {
+                            // save errors
+                            $oQuotaLanguageSettings[$language] = $oQuotaLanguageSetting;
+                            $errors[] = $oQuotaLanguageSetting->errors;
+                        }
+                    }
+                    // render form again to display errorSummary
+                    if (!empty($errors)) {
+                        $this->getController()->renderPartial(
+                            '/admin/quotas/viewquotas_massive_langsettings_form',
+                            array(
+                                'oQuota' => $oQuota,
+                                'aQuotaLanguageSettings' => $oQuotaLanguageSettings,
+                            )
+                        );
+                        return;
+                    }
+                }
+            }
+            if (empty($errors)) {
+                eT("OK!");
+            }
+        }
     }
 }
