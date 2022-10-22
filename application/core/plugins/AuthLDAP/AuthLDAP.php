@@ -230,8 +230,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if (!is_resource($ldapconn)) {
             $oEvent->set('errorCode', self::ERROR_LDAP_CONNECTION);
             $oEvent->set('errorMessageTitle', '');
-            $oEvent->set('errorMessageBody', $ldapconn['errorMessage']);
-            return null;
+            $oEvent->set('errorMessageBody', gT(ldap_error($ldapconn)));
+	   return null;
         }
 
         // Search email address and full name
@@ -358,7 +358,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             // starting TLS secure layer
             if (!ldap_start_tls($ldapconn)) {
                 ldap_unbind($ldapconn); // Could not properly connect, unbind everything.
-                return array("errorCode" => 100, 'errorMessage' => ldap_error($ldapconn));
+                return array("errorCode" => 100, 'errorMessage' => gT(ldap_error($ldapconn)));
             }
         }
         return $ldapconn;
@@ -376,7 +376,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     {
         $this->getEvent()->getContent($this)
         ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', '', array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))))
-        ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', '', array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))));
+        ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', '', array('size' => 240, 'maxlength' => 240, 'class'=> "form-control"))));
     }
 
     /**
@@ -479,8 +479,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         /* Get the conexion, createConnection return an error in array, never return false */
         $ldapconn = $this->createConnection();
-        if (isset($ldapconn['errorCode'])) {
-            $this->setAuthFailure($ldapconn['errorCode'], gT($ldapconn['errorMessage']));
+        if (!$ldapconn) {
+            $this->setAuthFailure(100, gT(ldap_error($ldapconn)));
             return;
         }
 
@@ -499,7 +499,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 $ldapbindsearch = @ldap_bind($ldapconn, $binddn, $bindpwd);
             }
             if (!$ldapbindsearch) {
-                $this->setAuthFailure(100, ldap_error($ldapconn));
+                $this->setAuthFailure(100, gT(ldap_error($ldapconn)));
                 ldap_close($ldapconn); // all done? close connection
                 return;
             }
@@ -550,7 +550,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // verify user binding
         if (!$ldapbind) {
-            $this->setAuthFailure(100, ldap_error($ldapconn));
+            $this->setAuthFailure(100, gT(ldap_error($ldapconn)));
             ldap_close($ldapconn); // all done? close connection
             return;
         }
