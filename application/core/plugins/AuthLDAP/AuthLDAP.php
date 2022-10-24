@@ -227,7 +227,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // Try to connect
         $ldapconn = $this->createConnection();
-        if (isset($ldapconn['errorCode'])) {
+        if (is_array($ldapconn)) {
             $oEvent->set('errorCode', self::ERROR_LDAP_CONNECTION);
             $oEvent->set('errorMessageTitle', '');
             $oEvent->set('errorMessageBody', $ldapconn['errorMessage']);
@@ -479,7 +479,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         /* Get the conexion, createConnection return an error in array, never return false */
         $ldapconn = $this->createConnection();
-        if (isset($ldapconn['errorCode'])) {
+        if (is_array($ldapconn)) {
             $this->setAuthFailure($ldapconn['errorCode'], gT($ldapconn['errorMessage']));
             return;
         }
