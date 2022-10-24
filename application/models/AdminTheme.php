@@ -148,6 +148,7 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('jqueryui'); // Added for nestedSortable to work (question organizer)
             App()->getClientScript()->registerPackage('js-cookie'); // js-cookie
             App()->getClientScript()->registerPackage('fontawesome'); // fontawesome
+            App()->getClientScript()->registerPackage('font-ibm-sans'); // font-ibm-sans
 //            App()->getClientScript()->registerPackage('bootstrap-switch');
             App()->getClientScript()->registerPackage('select2-bootstrap');
             App()->getClientScript()->registerPackage('tempus-dominus');
