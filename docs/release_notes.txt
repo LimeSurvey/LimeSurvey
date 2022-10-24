@@ -34,6 +34,74 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.6 (build 221018) to 5.4.7 (build 221019) October 18, 2022
+-Fixed issue: [security] Various major & minor security issues discovered by automated security tools (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
+Changes from 5.4.5 (build 221010) to 5.4.6 (build 221018) October 18, 2022
+-Fixed issue #18413: Cannot authenticate with LDAP when using PHP 8.1 (Dennis1993)
+-Fixed issue #18410: LDAP authentication option labelled as PluginBase (#2662) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by marcelovincenzi, samarta
+#Updated translation: Portuguese (Brazil) by holch, josesiqueira, samarta, tamiel
+#Updated translation: Mongolian by amidral
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Chinese (Taiwan) (Traditional) by CTFang, TuTu_chen, Yeeeeeet
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.4.4 (build 221004) to 5.4.5 (build 221010) October 10, 2022
+-Fixed issue: Add bootstrap tooltip to MenuButton view (Tim Willig)
+-Fixed issue #18373: Saving statistics exports to excel fails (#2634) (Gabriel Jenik)
+-Fixed issue #18323: When copying a question with sub-questions, the sub-questions are not copied (#2644) (Gabriel Jenik)
+-Fixed issue #18307: A comment string starting with a '<' is not saved using Multiple choice with comments (#2608) (Gabriel Jenik)
+-Fixed issue #18172: MSSQL issue when import from old responses DB (#2460) (Denis Chenu)
+-Fixed issue #17950: is_int(false) returns true (#2642) (Denis Chenu)
+-Fixed issue #17825: Strings “LimeSurvey internal database” not available for translation in GlotPress (#2637) (Gabriel Jenik)
+-Fixed issue #17654: Spurious error "Incorrect username …" in webserver Auth (#2448) (Denis Chenu)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Brazil) by samarta
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by vkm2020
+#Updated translation: German (Informal) by bewi, c_schmitz, richterd
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.4.3 (build 220926) to 5.4.4 (build 221004) October 4, 2022
+-Fixed issue: Wording "Generate tokens" is confusing (#2589) (Arjun Srivastava)
+-Fixed issue: ComfortUpdate having a problem with bigger updates (Carsten Schmitz)
+-Fixed issue #18384: Update fails on Postgres (Olle Haerstedt)
+-Fixed issue #18380: Lock/unlock question organizer broken (Carsten Schmitz)
+-Fixed issue #18353: Unable to upload an xml file (#2613) (Denis Chenu)
+-Fixed issue #18330: SurveySetting type date doesnt show datepicker (#2632) (Denis Chenu)
+-Fixed issue #18287: Question List: Filtering doesn't work on type description (#2597) (Gabriel Jenik)
+-Fixed issue #17874: Upgrading from 3.x to 5.x shows confusing message (Carsten Schmitz)
+-Fixed issue #18347: Unable to check extension of this file type image/svg. (Denis Chenu)
+#Updated translation: Thai by tomzt
+#Updated translation: Slovak by jelen1
+#Updated translation: Russian by vipgroup
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.4.2 (build 220921) to 5.4.3 (build 220926) September 26, 2022
 -Fixed issue: Typo in table name can cause error with faulty deployment (Olle Haerstedt)
 -Fixed issue #18369: ComfortUpdate from 3.x to 5.4.x shows an error at the end (Carsten Schmitz)
