@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.7 (build 221019) to 5.4.8 (build 221024) October 24, 2022
+-Fixed issue: Cannot edit file in theme editor (Carsten Schmitz)
+-Fixed issue #18413: Cannot authenticate with LDAP when using PHP 8.1 (Denis Chenu)
+-Fixed issue #18403: Debug output when loading demo site (#2649) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by duestin, FangZhijian, xiongrui, zengqing, zhanginshanghai, Zoctan
+
+
 Changes from 5.4.6 (build 221018) to 5.4.7 (build 221019) October 18, 2022
 -Fixed issue: [security] Various major & minor security issues discovered by automated security tools (Carsten Schmitz)
 #Updated translation: Polish by elissa

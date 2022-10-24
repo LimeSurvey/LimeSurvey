@@ -875,7 +875,7 @@ class Themes extends SurveyCommonAction
                         in_array($relativePathEditfile, $jsfiles) === false
                     ) {
                         Yii::app()->user->setFlash('error', gT('Invalid theme name'));
-                        $this->getController()->redirect(array("admin/themes/sa/upload"));
+                         $this->getController()->redirect(array("admin/themes/sa/upload"));
                     }
 
                     //$savefilename = $oEditedTemplate
