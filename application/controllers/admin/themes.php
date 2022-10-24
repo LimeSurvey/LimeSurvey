@@ -774,7 +774,7 @@ class themes extends Survey_Common_Action
 
             $action               = returnGlobal('action');
             $editfile             = returnGlobal('editfile');
-            $relativePathEditfile = sanitize_dirname(returnGlobal('relativePathEditfile'));
+            $relativePathEditfile = returnGlobal('relativePathEditfile');
             $sTemplateName        = Template::templateNameFilter(
                 sanitize_filename(App()->request->getPost('templatename'), false, false, false)
             );
