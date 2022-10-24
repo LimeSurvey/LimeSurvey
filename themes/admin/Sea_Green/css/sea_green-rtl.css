@@ -2709,7 +2709,6 @@ tr.info, tr.danger {
 
 .btn-sm {
   height: 24px;
-  padding: 4px 8px;
   font-size: 12px;
   line-height: 1.33;
   border-radius: 3px;
@@ -2717,7 +2716,6 @@ tr.info, tr.danger {
 
 .btn {
   height: 36px;
-  padding: 8px 12px;
   font-size: 14px;
   line-height: 1.42;
   border-radius: 4px;
@@ -2725,7 +2723,6 @@ tr.info, tr.danger {
 
 .btn-lg {
   height: 44px;
-  padding: 12px;
   font-size: 14px;
   line-height: 1.42;
   border-radius: 4px;
@@ -2733,7 +2730,6 @@ tr.info, tr.danger {
 
 .btn-xl {
   height: 52px;
-  padding: 12px 16px;
   font-size: 14px;
   line-height: 1.42;
   border-radius: 4px;
