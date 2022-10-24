@@ -2710,28 +2710,29 @@ tr.info, tr.danger {
 .btn-sm {
   height: 24px;
   font-size: 12px;
-  line-height: 1.33;
+  line-height: 16px;
   border-radius: 3px;
 }
 
 .btn {
   height: 36px;
   font-size: 14px;
-  line-height: 1.42;
+  line-height: 20px;
   border-radius: 4px;
+  font-weight: 500;
 }
 
 .btn-lg {
   height: 44px;
   font-size: 14px;
-  line-height: 1.42;
+  line-height: 20px;
   border-radius: 4px;
 }
 
 .btn-xl {
   height: 52px;
   font-size: 14px;
-  line-height: 1.42;
+  line-height: 20px;
   border-radius: 4px;
 }
 
@@ -2740,51 +2741,51 @@ tr.info, tr.danger {
 }
 
 .btn-primary .menu-button-divider, .btn-info .menu-button-divider {
-  border-left: 2px solid #fff;
+  border-left: 1px solid #fff;
 }
 
 .btn-primary[disabled] .menu-button-divider {
-  border-left: 2px solid #7C8191;
+  border-left: 1px solid #7C8191;
 }
 
 .btn-outline-secondary .menu-button-divider {
-  border-left: 2px solid #1E1E1E;
+  border-left: 1px solid #1E1E1E;
 }
 
 .btn-outline-secondary[disabled] .menu-button-divider {
-  border-left: 2px solid #7C8191;
+  border-left: 1px solid #7C8191;
 }
 
 .btn-secondary .menu-button-divider {
-  border-left: 2px solid #fff;
+  border-left: 1px solid #fff;
 }
 
 .btn-secondary[disabled] .menu-button-divider {
-  border-left: 2px solid #7C8191;
+  border-left: 1px solid #7C8191;
 }
 
 .btn-success .menu-button-divider {
-  border-left: 2px solid #1E1E1E;
+  border-left: 1px solid #1E1E1E;
 }
 
 .btn-success[disabled] .menu-button-divider {
-  border-left: 2px solid #7C8191;
+  border-left: 1px solid #7C8191;
 }
 
 .btn-warning .menu-button-divider {
-  border-left: 2px solid #1E1E1E;
+  border-left: 1px solid #1E1E1E;
 }
 
 .btn-warning[disabled] .menu-button-divider {
-  border-left: 2px solid #7C8191;
+  border-left: 1px solid #7C8191;
 }
 
 .btn-danger .menu-button-divider {
-  border-left: 2px solid #1E1E1E;
+  border-left: 1px solid #1E1E1E;
 }
 
 .btn-danger[disabled] .menu-button-divider {
-  border-left: 2px solid #7C8191;
+  border-left: 1px solid #7C8191;
 }
 
 .surveybar .btn, .surveybar button {
