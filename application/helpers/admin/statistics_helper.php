@@ -405,7 +405,6 @@ function buildSelects($allfields, $surveyid, $language)
                     // only add condition if answer has been chosen
                     if (in_array($arow['title'], $_POST[$pv])) {
                         $fieldname = substr($pv, 1, strlen($pv)) . $arow['title'];
-                        $condition =
                         $mselects[] = Yii::app()->db->quoteColumnName($fieldname) . " = " . Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $fieldname, 'Y'));
                     }
                 }
