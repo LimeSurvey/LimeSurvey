@@ -650,7 +650,7 @@
   height: 24px;
   //padding: 4px 8px;
   font-size: 12px;
-  line-height: 1.33;
+  line-height: $line-height-16;
   border-radius: 3px;
 }
 
@@ -658,15 +658,16 @@
   height: 36px;
   //padding: 8px 12px;
   font-size: 14px;
-  line-height: 1.42;
+  line-height: $line-height-20;
   border-radius: 4px;
+  font-weight: $btn-font-weight;
 }
 
 .btn-lg {
   height: 44px;
   //padding: 12px;
   font-size: 14px;
-  line-height: 1.42;
+  line-height: $line-height-20;
   border-radius: 4px;
 }
 
@@ -674,7 +675,7 @@
   height: 52px;
   //padding: 12px 16px;
   font-size: 14px;
-  line-height: 1.42;
+  line-height: $line-height-20;
   border-radius: 4px;
 }
 
@@ -684,45 +685,45 @@
 }
 
 .btn-primary .menu-button-divider, .btn-info .menu-button-divider {
-  border-left: 2px solid $white;
+  border-left: 1px solid $white;
 }
 .btn-primary[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
+  border-left: 1px solid $g-600;
 }
 
 .btn-outline-secondary .menu-button-divider {
-  border-left: 2px solid $g-900;
+  border-left: 1px solid $g-900;
 }
 .btn-outline-secondary[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
+  border-left: 1px solid $g-600;
 }
 
 .btn-secondary .menu-button-divider {
-  border-left: 2px solid $white;
+  border-left: 1px solid $white;
 }
 .btn-secondary[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
+  border-left: 1px solid $g-600;
 }
 
 .btn-success .menu-button-divider {
-  border-left: 2px solid $g-900;
+  border-left: 1px solid $g-900;
 }
 .btn-success[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
+  border-left: 1px solid $g-600;
 }
 
 .btn-warning .menu-button-divider {
-  border-left: 2px solid $g-900;
+  border-left: 1px solid $g-900;
 }
 .btn-warning[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
+  border-left: 1px solid $g-600;
 }
 
 .btn-danger .menu-button-divider {
-  border-left: 2px solid $g-900;
+  border-left: 1px solid $g-900;
 }
 .btn-danger[disabled] .menu-button-divider {
-  border-left: 2px solid $g-600;
+  border-left: 1px solid $g-600;
 }
 
 // Custom from adminbasics:
