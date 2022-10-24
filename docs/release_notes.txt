@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.34 (build 221021) to 3.28.35 (build 221025) October 24, 2022
+-Fixed issue: Cannot edit file in theme editor (Carsten Schmitz)
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 3.28.33 (build 221020) to 3.28.34 (build 221021) October 18, 2022
 -Fixed issue: Missing files (Carsten Schmitz)
 
