@@ -1,5 +1,4 @@
 <?php
-/* @var $this AdminController */
 /* @var Survey $oSurvey */
 /* @var Quota $oQuota The last Quota as base for Massive edits */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings The last Quota LanguageSettings */
@@ -16,7 +15,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'activate',
-            'url'         => App()->createUrl('/quotas/massiveAction/action/activate'),
+            'url'         => App()->createUrl('/quotas/massiveAction/action/activate', ['surveyid' => $oSurvey->sid]),
             'iconClasses' => 'fa fa-play text-success',
             'text'        =>  gT("Activate"),
             'grid-reload' => 'yes',
@@ -32,7 +31,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'deactivate',
-            'url'         => App()->createUrl('/quotas/massiveAction/action/deactivate'),
+            'url'         => App()->createUrl('/quotas/massiveAction/action/deactivate', ['surveyid' => $oSurvey->sid]),
             'iconClasses' => 'fa fa-pause text-warning',
             'text'        =>  gT("Deactivate"),
             'grid-reload' => 'yes',
@@ -48,7 +47,10 @@
             // li element
             'type'        => 'action',
             'action'      => 'changeLanguageSettings',
-            'url'         => App()->createUrl('/quotas/massiveAction/action/changeLanguageSettings'),
+            'url'         => App()->createUrl(
+                '/quotas/massiveAction/action/changeLanguageSettings',
+                ['surveyid' => $oSurvey->sid]
+            ),
             'iconClasses' => 'fa fa-external-link text-success',
             'text'        =>  gT("Change texts"),
             'grid-reload' => 'yes',

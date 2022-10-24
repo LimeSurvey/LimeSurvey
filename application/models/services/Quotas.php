@@ -295,4 +295,63 @@ class Quotas
 
         return ($oQuestion->type != "*" && count($aQuestionAnswers) == $cntQuestionAnswer);
     }
+
+    /**
+     *
+     *
+     * @param array $aQuotaIds array with quota ids
+     * @param string $action  the
+     * @return void
+     */
+    public function multipleItemsAction($aQuotaIds, $action)
+    {
+        $allowedActions = array('activate', 'deactivate', 'delete', 'changeLanguageSettings');
+        foreach ($aQuotaIds as $iQuotaId) {
+            /** @var \Quota $oQuota */
+            $oQuota = \Quota::model()->findByPk($iQuotaId);
+            if (in_array($action, array('activate', 'deactivate'))) {
+                if (!(\Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update'))) {
+                    \Yii::app()->user->setFlash('error', gT("Access denied."));
+                    $this->redirect(\Yii::app()->request->urlReferrer);
+                }
+                $oQuota->active = ($action == 'activate' ? 1 : 0);
+                $oQuota->save();
+            } elseif ($action == 'delete') {
+                if (!(\Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'delete'))) {
+                    \Yii::app()->user->setFlash('error', gT("Access denied."));
+                    $this->redirect(\Yii::app()->request->urlReferrer);
+                }
+                $oQuota->delete();
+                \QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $iQuotaId));
+                \QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $iQuotaId));
+            } elseif ($action == 'changeLanguageSettings' && !empty($_POST['QuotaLanguageSetting'])) {
+                if (!(\Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update'))) {
+                    \Yii::app()->user->setFlash('error', gT("Access denied."));
+                    $this->redirect(\Yii::app()->request->urlReferrer);
+                }
+                $oQuotaLanguageSettings = $oQuota->languagesettings;
+                foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes) {
+                    $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
+                    $oQuotaLanguageSetting->attributes = $aQuotaLanguageSettingAttributes;
+                    if (!$oQuotaLanguageSetting->save()) {
+                        // save errors
+                        $oQuotaLanguageSettings[$language] = $oQuotaLanguageSetting;
+                        $errors[] = $oQuotaLanguageSetting->errors;
+                    }
+                }
+                // render form again to display errorSummary
+                if (!empty($errors)) {
+                    $this->getController()->renderPartial(
+                        '/admin/quotas/viewquotas_massive_langsettings_form',
+                        array(
+                            'oQuota' => $oQuota,
+                            'aQuotaLanguageSettings' => $oQuotaLanguageSettings,
+                        )
+                    );
+                    return;
+                }
+            }
+        }
+    }
+
 }

@@ -362,7 +362,9 @@ class QuotasController extends LSBaseController
     {
         $action = Yii::app()->request->getQuery('action');
         $allowedActions = array('activate', 'deactivate', 'delete', 'changeLanguageSettings');
+        $sItems = Yii::app()->request->getPost('sItems');
         if (isset($_POST) && in_array($action, $allowedActions)) {
+            $allowedActions = array('activate', 'deactivate', 'delete', 'changeLanguageSettings');
             $sItems = Yii::app()->request->getPost('sItems');
             $aQuotaIds = json_decode($sItems);
             $errors = array();
