@@ -80,7 +80,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'delete',
-            'url'         => App()->createUrl('/quotas/massiveAction/action/delete'),
+            'url'         => App()->createUrl('/quotas/massiveAction/action/delete', ['surveyid' => $oSurvey->sid]),
             'iconClasses' => 'fa fa-trash text-danger',
             'text'        =>  gT("Delete"),
             'grid-reload' => 'yes',

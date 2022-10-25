@@ -358,6 +358,9 @@ class QuotasController extends LSBaseController
         $this->redirect($this->createUrl('/quotas/index', ['surveyid' => $surveyid]));
     }
 
+    /**
+     *
+     */
     public function actionMassiveAction($action, $surveyid)
     {
         $surveyid = sanitize_int($surveyid);
@@ -365,7 +368,6 @@ class QuotasController extends LSBaseController
         $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
 
         if ($quotaService->checkActionPermissions($action)) {
-            //do the action here
             $sItems = Yii::app()->request->getPost('sItems');
             $aQuotaIds = json_decode($sItems);
             if (isset($_POST['QuotaLanguageSetting'])) {
@@ -378,68 +380,9 @@ class QuotasController extends LSBaseController
             } else {
                 $quotaService->multipleItemsAction($aQuotaIds, $action);
             }
-
-
         } else {
             Yii::app()->user->setFlash('error', gT("Access denied."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
-
-
-  /*      if (isset($_POST) && in_array($action, $allowedActions)) {
-            $allowedActions = array('activate', 'deactivate', 'delete', 'changeLanguageSettings');
-            $sItems = Yii::app()->request->getPost('sItems');
-            $aQuotaIds = json_decode($sItems);
-            $errors = array();
-            foreach ($aQuotaIds as $iQuotaId) {
-                /** @var Quota $oQuota
-                $oQuota = Quota::model()->findByPk($iQuotaId);
-                if (in_array($action, array('activate', 'deactivate'))) {
-                    if (!(Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update'))) {
-                        Yii::app()->user->setFlash('error', gT("Access denied."));
-                        $this->redirect(Yii::app()->request->urlReferrer);
-                    }
-                    $oQuota->active = ($action == 'activate' ? 1 : 0);
-                    $oQuota->save();
-                } elseif ($action == 'delete') {
-                    if (!(Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'delete'))) {
-                        Yii::app()->user->setFlash('error', gT("Access denied."));
-                        $this->redirect(Yii::app()->request->urlReferrer);
-                    }
-                    $oQuota->delete();
-                    QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $iQuotaId));
-                    QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $iQuotaId));
-                } elseif ($action == 'changeLanguageSettings' && !empty($_POST['QuotaLanguageSetting'])) {
-                    if (!(Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update'))) {
-                        Yii::app()->user->setFlash('error', gT("Access denied."));
-                        $this->redirect(Yii::app()->request->urlReferrer);
-                    }
-                    $oQuotaLanguageSettings = $oQuota->languagesettings;
-                    foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes) {
-                        $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
-                        $oQuotaLanguageSetting->attributes = $aQuotaLanguageSettingAttributes;
-                        if (!$oQuotaLanguageSetting->save()) {
-                            // save errors
-                            $oQuotaLanguageSettings[$language] = $oQuotaLanguageSetting;
-                            $errors[] = $oQuotaLanguageSetting->errors;
-                        }
-                    }
-                    // render form again to display errorSummary
-                    if (!empty($errors)) {
-                        $this->getController()->renderPartial(
-                            '/admin/quotas/viewquotas_massive_langsettings_form',
-                            array(
-                                'oQuota' => $oQuota,
-                                'aQuotaLanguageSettings' => $oQuotaLanguageSettings,
-                            )
-                        );
-                        return;
-                    }
-                }
-            }
-            if (empty($errors)) {
-                eT("OK!");
-            }
-        } */
     }
 }
