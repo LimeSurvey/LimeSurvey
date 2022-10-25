@@ -475,7 +475,7 @@ class LsDefaultDataSets
                 'tasks',
                 'fontawesome',
                 '',
-                'admin/quotas/sa/index/',
+                'quotas/index/',
                 '',
                 '',
                 '',
