@@ -2703,19 +2703,20 @@ tr.info, tr.danger {
   color: #C2C5D1;
 }
 
-.btn-sm {
-  height: 24px;
-  font-size: 12px;
-  line-height: 16px;
-  border-radius: 3px;
-}
-
 .btn {
   height: 36px;
   font-size: 14px;
   line-height: 20px;
   border-radius: 4px;
   font-weight: 500;
+}
+
+.btn-sm {
+  height: 24px;
+  padding: 0.375rem 0.75rem;
+  font-size: 12px;
+  line-height: 16px;
+  border-radius: 3px;
 }
 
 .btn-lg {
@@ -2877,4 +2878,20 @@ body.onStatistics .btn {
 .btn-group .btn input[type=radio]:before,
 .btn-group .btn input[type=checkbox]:before {
   display: none;
+}
+
+.btn-group .btn-check:active + .btn-outline-secondary, .btn-group .btn-check:checked + .btn-outline-secondary, .btn-group .btn-outline-secondary.active, .btn-group .btn-outline-secondary.dropdown-toggle.show, .btn-group .btn-outline-secondary:active {
+  background-color: #3BFFB7;
+  border-color: #1E1E1E;
+  color: #1E1E1E;
+}
+.btn-group .btn-check:active + .btn-outline-secondary:focus,
+.btn-group .btn-check:checked + .btn-outline-secondary:focus,
+.btn-group .btn-outline-secondary.active:focus,
+.btn-group .btn-outline-secondary.dropdown-toggle.show:focus,
+.btn-group .btn-outline-secondary:active:focus,
+.btn-group .btn-outline-secondary:active,
+.btn-group .btn-check:focus + .btn-outline-secondary,
+.btn-group .btn-outline-secondary:hover {
+  box-shadow: none;
 }
