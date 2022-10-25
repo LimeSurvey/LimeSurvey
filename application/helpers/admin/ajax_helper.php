@@ -99,7 +99,7 @@ class AjaxHelper
     private static function echoString($str)
     {
         header('Content-Type: application/json');
-        echo CHtml::encode($str);
+        echo $str;
         \Yii::app()->end();
     }
 }
