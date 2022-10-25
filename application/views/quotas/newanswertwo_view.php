@@ -24,7 +24,7 @@
                     array('#'=>'quota_'.sanitize_int($_POST['quota_id']), 'class' => ''));
                 if ($oQuestion->type == '*') {
                     $this->renderPartial(
-                        '/admin/quotas/_newanswer_equation',
+                        '_newanswer_equation',
                         ['oQuota'=>$oQuota,'oQuestion'=>$oQuestion]
                     );
                 } else { ?>

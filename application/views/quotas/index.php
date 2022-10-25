@@ -38,6 +38,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                         'dataProvider'  => $oDataProvider,
                         'id'            => 'quota-grid',
                         'ajaxUpdate'    => 'quota-grid',
+                        'afterAjaxUpdate' => 'bindListItemclick',
                         'emptyText'     => gT('No quotas'),
                         'massiveActionTemplate' => $massiveAction,
                         'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(

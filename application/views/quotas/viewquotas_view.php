@@ -36,7 +36,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             if ($oDataProvider->itemCount > 0) {
                 if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) {
                     $massiveAction =  $this->renderPartial(
-                        '/admin/quotas/viewquotas_massive_selector',
+                        'viewquotas_massive_selector',
                         array(
                            'oSurvey' => $oSurvey,
                            'oQuota' => $oQuota,
@@ -83,7 +83,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'value'             => function ($oQuota) use ($oSurvey, $aEditUrls, $aDeleteUrls, $aQuotaItems) {
                                     /** @var Quota $oQuota */
                                     return $this->renderPartial(
-                                        '/admin/quotas/viewquotas_quota_actions',
+                                        'viewquotas_quota_actions',
                                         array(
                                             'oSurvey'     => $oSurvey,
                                             'oQuota'      => $oQuota,
@@ -103,7 +103,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'value'       => function ($oQuota) use ($oSurvey, $aQuotaItems) {
                                     /** @var Quota $oQuota */
                                     $out = '<p>' . $this->renderPartial(
-                                        '/admin/quotas/viewquotas_quota_members',
+                                        'viewquotas_quota_members',
                                         array(
                                                 'oSurvey'     => $oSurvey,
                                                 'oQuota'      => $oQuota,
