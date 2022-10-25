@@ -754,7 +754,7 @@ class Labels extends SurveyCommonAction
      */
     public function getLabelRowForAllLanguages($lid, $newId, $code, $assessmentValue = 0, $title = '')
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'read')) {
             throw new CHttpException(403, gT("No permission"));
         }
         $labelSet = LabelSet::model()->findByPk($lid);
