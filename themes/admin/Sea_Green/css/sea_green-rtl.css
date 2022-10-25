@@ -2703,6 +2703,43 @@ tr.info, tr.danger {
   color: #C2C5D1;
 }
 
+.row-button-margin-bottom {
+  margin-bottom: -5px;
+}
+
+.row-button-margin-bottom .btn {
+  margin-bottom: 5px;
+}
+
+.icon-btn-row {
+  display: flex;
+}
+.icon-btn-row .btn.btn-lg {
+  width: 44px;
+  padding-right: 0;
+  padding-left: 0;
+}
+.icon-btn-row .btn {
+  width: 36px;
+  padding-right: 0;
+  padding-left: 0;
+}
+.icon-btn-row .btn.btn-sm {
+  width: 24px;
+  padding: 1px 0;
+}
+.icon-btn-row .btn.btn-xs {
+  width: 22px;
+  padding-right: 0;
+  padding-left: 0;
+}
+.icon-btn-row :not(:first-child).btn, .icon-btn-row :not(:first-child) .btn {
+  margin-right: 5px;
+}
+.icon-btn-row :not(:first-child).btn.btn-xs, .icon-btn-row :not(:first-child) .btn.btn-xs {
+  margin-right: 3px;
+}
+
 .btn {
   height: 36px;
   font-size: 14px;
