@@ -358,18 +358,41 @@ class QuotasController extends LSBaseController
         $this->redirect($this->createUrl('/quotas/index', ['surveyid' => $surveyid]));
     }
 
-    public function actionMassiveAction()
+    public function actionMassiveAction($action, $surveyid)
     {
-        $action = Yii::app()->request->getQuery('action');
-        $allowedActions = array('activate', 'deactivate', 'delete', 'changeLanguageSettings');
-        $sItems = Yii::app()->request->getPost('sItems');
-        if (isset($_POST) && in_array($action, $allowedActions)) {
+        $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
+
+        if ($quotaService->checkActionPermissions($action)) {
+            //do the action here
+            $sItems = Yii::app()->request->getPost('sItems');
+            $aQuotaIds = json_decode($sItems);
+            if (isset($_POST['QuotaLanguageSetting'])) {
+                $errors = $quotaService->multipleItemsAction($aQuotaIds, $action, $_POST['QuotaLanguageSetting']);
+                if (empty($errors)) {
+                    eT("OK!");
+                } else {
+                    eT("Error!");
+                }
+            } else {
+                $quotaService->multipleItemsAction($aQuotaIds, $action);
+            }
+
+
+        } else {
+            Yii::app()->user->setFlash('error', gT("Access denied."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+
+  /*      if (isset($_POST) && in_array($action, $allowedActions)) {
             $allowedActions = array('activate', 'deactivate', 'delete', 'changeLanguageSettings');
             $sItems = Yii::app()->request->getPost('sItems');
             $aQuotaIds = json_decode($sItems);
             $errors = array();
             foreach ($aQuotaIds as $iQuotaId) {
-                /** @var Quota $oQuota */
+                /** @var Quota $oQuota
                 $oQuota = Quota::model()->findByPk($iQuotaId);
                 if (in_array($action, array('activate', 'deactivate'))) {
                     if (!(Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update'))) {
@@ -417,6 +440,6 @@ class QuotasController extends LSBaseController
             if (empty($errors)) {
                 eT("OK!");
             }
-        }
+        } */
     }
 }

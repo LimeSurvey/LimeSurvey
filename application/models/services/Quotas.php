@@ -233,7 +233,8 @@ class Quotas
      * @param array $quotaParams
      * @return bool|mixed
      */
-    public function editQuota($oQuota, array $quotaParams){
+    public function editQuota($oQuota, array $quotaParams)
+    {
 
         $oQuota->attributes = $quotaParams;
         if ($oQuota->save()) {
@@ -298,60 +299,76 @@ class Quotas
 
     /**
      *
-     *
-     * @param array $aQuotaIds array with quota ids
-     * @param string $action  the
-     * @return void
+     * @param $aQuotaIds
+     * @param $action
+     * @param $languageSettings
+     * @return null | array errors or null if no errors
+     * @throws \CDbException
      */
-    public function multipleItemsAction($aQuotaIds, $action)
+    public function multipleItemsAction($aQuotaIds, $action, $languageSettings=[])
     {
-        $allowedActions = array('activate', 'deactivate', 'delete', 'changeLanguageSettings');
+        $errors = null;
         foreach ($aQuotaIds as $iQuotaId) {
             /** @var \Quota $oQuota */
             $oQuota = \Quota::model()->findByPk($iQuotaId);
-            if (in_array($action, array('activate', 'deactivate'))) {
-                if (!(\Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update'))) {
-                    \Yii::app()->user->setFlash('error', gT("Access denied."));
-                    $this->redirect(\Yii::app()->request->urlReferrer);
-                }
+            switch ($action) {
+                case 'activate':
+                case 'deactivate':
                 $oQuota->active = ($action == 'activate' ? 1 : 0);
                 $oQuota->save();
-            } elseif ($action == 'delete') {
-                if (!(\Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'delete'))) {
-                    \Yii::app()->user->setFlash('error', gT("Access denied."));
-                    $this->redirect(\Yii::app()->request->urlReferrer);
-                }
-                $oQuota->delete();
-                \QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $iQuotaId));
-                \QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $iQuotaId));
-            } elseif ($action == 'changeLanguageSettings' && !empty($_POST['QuotaLanguageSetting'])) {
-                if (!(\Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'update'))) {
-                    \Yii::app()->user->setFlash('error', gT("Access denied."));
-                    $this->redirect(\Yii::app()->request->urlReferrer);
-                }
-                $oQuotaLanguageSettings = $oQuota->languagesettings;
-                foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes) {
-                    $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
-                    $oQuotaLanguageSetting->attributes = $aQuotaLanguageSettingAttributes;
-                    if (!$oQuotaLanguageSetting->save()) {
-                        // save errors
-                        $oQuotaLanguageSettings[$language] = $oQuotaLanguageSetting;
-                        $errors[] = $oQuotaLanguageSetting->errors;
+                    break;
+                case 'delete':
+                    $oQuota->delete();
+                    \QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $iQuotaId));
+                    \QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $iQuotaId));
+                    break;
+                case  'changeLanguageSettings':
+                    if (!empty($languageSettings)) {
+                        $oQuotaLanguageSettings = $oQuota->languagesettings;
+                        foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes) {
+                            $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
+                            $oQuotaLanguageSetting->attributes = $aQuotaLanguageSettingAttributes;
+                            if (!$oQuotaLanguageSetting->save()) {
+                                // save errors
+                                $oQuotaLanguageSettings[$language] = $oQuotaLanguageSetting;
+                                $errors[] = $oQuotaLanguageSetting->errors;
+                            }
+                        }
                     }
-                }
-                // render form again to display errorSummary
-                if (!empty($errors)) {
-                    $this->getController()->renderPartial(
-                        '/admin/quotas/viewquotas_massive_langsettings_form',
-                        array(
-                            'oQuota' => $oQuota,
-                            'aQuotaLanguageSettings' => $oQuotaLanguageSettings,
-                        )
-                    );
-                    return;
-                }
+                    break;
+                default:
+                    $errors [] = 'No valid action';
             }
         }
+
+        return $errors;
+    }
+
+    /**
+     * Checks for a specific action if current user has the permission for it.
+     *
+     * @param $action
+     * @return bool true if user has permission for action, false otherwise
+     */
+    public function checkActionPermissions($action)
+    {
+        switch ($action) {
+            case 'activate':
+            case 'deactivate':
+            case 'changeLanguageSettings':
+                $permissionOk = \Permission::model()->hasSurveyPermission($this->survey->sid, 'quotas', 'update');
+                break;
+            case 'delete':
+                $permissionOk = \Permission::model()->hasSurveyPermission(
+                    $this->survey->sid,
+                    'quotas',
+                    'delete'
+                );
+                break;
+            default:
+                $permissionOk = false;
+        }
+        return $permissionOk;
     }
 
 }
