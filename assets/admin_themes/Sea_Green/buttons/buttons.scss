@@ -644,16 +644,50 @@
   }
 }
 
-// new admin theme customization
-//Sizing
-.btn-sm {
-  height: 24px;
-  //padding: 4px 8px;
-  font-size: 12px;
-  line-height: $line-height-16;
-  border-radius: 3px;
+// from 000-lime-admin-common.scss
+
+.row-button-margin-bottom {
+  margin-bottom: -5px;
 }
 
+.row-button-margin-bottom .btn {
+  margin-bottom: 5px;
+}
+
+.icon-btn-row {
+  display: flex;
+
+  .btn.btn-lg {
+    width: 46px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .btn {
+    width: 34px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .btn.btn-sm {
+    width: 30px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .btn.btn-xs {
+    width: 22px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  :not(:first-child).btn, :not(:first-child) .btn {
+    margin-left: 5px;
+  }
+  :not(:first-child).btn.btn-xs, :not(:first-child) .btn.btn-xs {
+    margin-left: 3px;
+  }
+}
+
+// new admin theme customization
+//Sizing
 .btn {
   height: 36px;
   //padding: 8px 12px;
@@ -661,6 +695,14 @@
   line-height: $line-height-20;
   border-radius: 4px;
   font-weight: $btn-font-weight;
+}
+
+.btn-sm {
+  height: 24px;
+  padding: 0.375rem 0.75rem;
+  font-size: 12px;
+  line-height: $line-height-16;
+  border-radius: 3px;
 }
 
 .btn-lg {
