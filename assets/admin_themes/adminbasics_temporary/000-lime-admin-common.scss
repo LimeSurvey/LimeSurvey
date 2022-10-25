@@ -6,12 +6,6 @@
  */
 
 // import variables and functions
-@import "../../../vendor/twbs/bootstrap/scss/functions";
-@import "../../bootstrap_5/scss/variables.scss";
-@import "../../../vendor/twbs/bootstrap/scss/variables";
-@import "../../../vendor/twbs/bootstrap/scss/mixins";
-@import "../../../vendor/twbs/bootstrap/scss/root";
-@import "../../bootstrap_5/scss/customizations";
 
 #ls-loading {
     width: 100%;
@@ -686,7 +680,7 @@ html {
   text-align: center;
   padding: 0px;
   height: 75%;
-  width: 100%;    
+  width: 100%;
 }
 
 .welcome .card-body img {
