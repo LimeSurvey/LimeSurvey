@@ -2770,6 +2770,10 @@ tr.info, tr.danger {
   border-radius: 4px;
 }
 
+.btn-xs {
+  min-height: auto;
+}
+
 .menu-button-divider {
   margin: 0 8px;
 }
