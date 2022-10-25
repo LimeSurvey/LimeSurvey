@@ -688,7 +688,7 @@
 // new admin theme customization
 //Sizing
 .btn {
-  height: $btn-height;
+  min-height: $btn-height;
   //padding: 8px 12px;
   font-size: $btn-font-size;
   line-height: $line-height-20;
@@ -697,7 +697,7 @@
 }
 
 .btn-sm {
-  height: $btn-height-sm;
+  min-height: $btn-height-sm;
   padding: 0.375rem 0.75rem;
   font-size: $btn-font-size-sm;
   line-height: $line-height-16;
@@ -705,7 +705,7 @@
 }
 
 .btn-lg {
-  height: $btn-height-lg;
+  min-height: $btn-height-lg;
   //padding: 12px;
   font-size: $btn-font-size;
   line-height: $line-height-20;
@@ -713,7 +713,7 @@
 }
 
 .btn-xl {
-  height: $btn-height-xl;
+  min-height: $btn-height-xl;
   //padding: 12px 16px;
   font-size: $btn-font-size;
   line-height: $line-height-20;
