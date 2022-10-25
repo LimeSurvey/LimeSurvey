@@ -43,3 +43,23 @@
     }
   }
 }
+
+.btn-group {
+  .btn-check:active+.btn-outline-secondary, .btn-check:checked+.btn-outline-secondary, .btn-outline-secondary.active, .btn-outline-secondary.dropdown-toggle.show, .btn-outline-secondary:active {
+    background-color: $focus;
+    border-color: $g-900;
+    color: $g-900;
+  }
+
+  .btn-check:active+.btn-outline-secondary:focus,
+  .btn-check:checked+.btn-outline-secondary:focus,
+  .btn-outline-secondary.active:focus,
+  .btn-outline-secondary.dropdown-toggle.show:focus,
+  .btn-outline-secondary:active:focus,
+  .btn-outline-secondary:active,
+  .btn-check:focus+.btn-outline-secondary,
+  .btn-outline-secondary:hover
+  {
+    box-shadow: none;
+  }
+}
