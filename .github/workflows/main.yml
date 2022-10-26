@@ -32,6 +32,11 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
 
+      # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
+      - name: Start the MySQL service
+        run: |
+          sudo systemctl start mysql.service
+
       - name: Initilize and check all dependencies
         run: |
           # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
@@ -43,7 +48,6 @@ jobs:
           # Install LimeSurvey.
           php -m  # Spit out all loaded PHP modules
           mysql --version
-
           touch enabletests
           # NB: PHPUnit 6.5.* is installed with composer.
           composer install -vvv
@@ -53,7 +57,7 @@ jobs:
         run: |
           # Set up the Apache and PHP
           sudo apt-get update > /dev/null
-          # sudo apt install php libapache2-mod-php7.2 -y
+          sudo apt install php libapache2-mod-php7.2 -y
 
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
@@ -81,17 +85,14 @@ jobs:
           # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
 
           sudo service mysql status
-          mysql --version
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
-          mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS limesurvey;"
-          mysql -h 127.0.0.1 -uroot -proot -e "CREATE DATABASE IF NOT EXISTS limesurvey;"
 
       - name: Load custom console and start the Application
         run: |
-          cp application/config/config-sample-mysql.php application/config/config.php
           php application/commands/console.php install admin password TravisLS no@email.com verbose
+          cp application/config/config-sample-mysql.php application/config/config.php
 
           # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
           # TODO: Disable, a lines was added to config file and some tests started to fail.
