@@ -61,9 +61,9 @@ class AdminTheme extends CFormModel
      */
     public function setAdminTheme()
     {
-        $sAdminThemeName           = getGlobalSetting('admintheme'); // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
-        $sStandardTemplateRootDir  = Yii::app()->getConfig("styledir"); // Path for the standard Admin Themes
-        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme'; // Path for the user Admin Themes
+        $sAdminThemeName           = App()->getConfig('admintheme'); // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
+        $sStandardTemplateRootDir  = App()->getConfig("styledir"); // Path for the standard Admin Themes
+        $sUserTemplateDir          = App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme'; // Path for the user Admin Themes
 
         // Check if the required theme is a standard one
         if ($this->isStandardAdminTheme($sAdminThemeName)) {
