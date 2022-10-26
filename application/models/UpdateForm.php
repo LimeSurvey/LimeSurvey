@@ -981,7 +981,7 @@ class UpdateForm extends CFormModel
     {
         if ((extension_loaded("curl"))) {
             if (isset($_REQUEST['access_token'])) {
-                $getters .= "&access_token=" . url_encode($_REQUEST['access_token']);
+                $getters .= "&access_token=" . urlencode($_REQUEST['access_token']);
             }
 
             $ch = curl_init($this->_getProtocol().Yii::app()->getConfig("comfort_update_server_url").$getters);
