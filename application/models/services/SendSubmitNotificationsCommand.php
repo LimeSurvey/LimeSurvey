@@ -19,6 +19,8 @@ use QuestionGroup;
 /**
  * Refactor of old sendSubmitNotifications function, to enable injection of dependencies.
  * Command object pattern, have one function called run() or similar.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class SendSubmitNotificationsCommand
 {
@@ -344,7 +346,18 @@ class SendSubmitNotificationsCommand
             }
         }
 
-        $aResultTable = array();
+        return $this->loopRelevantFieldRow($aRelevantFields, $languageCode, $idrow, $surveyId, $honorConditions);
+    }
+
+    /**
+     * @param array $aRelevantFields
+     * @param string $languageCode
+     * @param SurveyDynamic $idrow
+     * @param bool $honorConditions
+     */
+    public function loopRelevantFieldRow(array $aRelevantFields, string $languageCode, SurveyDynamic $idrow, int $surveyId, bool $honorConditions): array
+    {
+        $aResultTable = [];
         $oldgid = 0;
         $oldqid = 0;
         foreach ($aRelevantFields as $sKey => $fname) {
