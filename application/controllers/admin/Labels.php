@@ -789,7 +789,7 @@ class Labels extends SurveyCommonAction
         $aData = array(
             'language' => $language,
             'first' => $first,
-            'sortOrder' => $newId,
+            'rowId' => $newId,
             'code' => $code,
             'assessmentValue' => $assessmentValue,
             'title' => $title,

@@ -39,7 +39,7 @@ $codeids = '';
                             [
                                 'language' => $lslanguage,
                                 'first' => $first,
-                                'sortOrder' => $row['sortorder'],
+                                'rowId' => $row['sortorder'],
                                 'code' => $row['code'],
                                 'assessmentValue' => $row['assessment_value'],
                                 'title' => array_key_exists($lslanguage, $row->labell10ns) ? $row->labell10ns[$lslanguage]->title : '',

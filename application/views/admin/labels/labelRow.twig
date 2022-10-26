@@ -4,14 +4,14 @@
  *
  * @var bool $first
  * @var string $language
- * @var string $sortOrder
+ * @var string $rowId
  * @var string $code
  * @var int $assessmentValue
  * @var string $title
  * @var bool $hasLabelSetUpdatePermission
  */
 #}
-<tr class="labelDatas" style='white-space: nowrap;' id='row_{{ language }}_{{ sortOrder }}'>
+<tr class="labelDatas" style='white-space: nowrap;' id='row_{{ language }}_{{ rowId }}'>
     {% if not first %}
         <td>{{ code }}</td>
         <td>{{ assessmentValue }}</td>
@@ -22,16 +22,16 @@
 
         <td>
             <input type='hidden' class='hiddencode' value='{{ code }}'/>
-            <input type='text' class='codeval  form-control  ' id='code_{{ sortOrder }}' name='code_{{ sortOrder }}' maxlength='20' size='20' value='{{ code }}'/>
+            <input type='text' class='codeval  form-control  ' id='code_{{ rowId }}' name='code_{{ rowId }}' maxlength='20' size='20' value='{{ code }}'/>
         </td>
 
         <td>
-            <input type="number" class='assessmentval  form-control  ' id='assessmentvalue_{{ sortOrder }}' style='text-align: right;' name='assessmentvalue_{{ sortOrder }}' maxlength='5' size='6' value='{{ assessmentValue }}'/>
+            <input type="number" class='assessmentval  form-control  ' id='assessmentvalue_{{ rowId }}' style='text-align: right;' name='assessmentvalue_{{ rowId }}' maxlength='5' size='6' value='{{ assessmentValue }}'/>
         </td>
     {% endif %}
 
     <td>
-        <input type='text' class=" form-control  " name='title_{{ language }}_{{ sortOrder }}' id='title_{{ language }}_{{ sortOrder }}' maxlength='3000' size='80' value="{{ title }}" />
+        <input type='text' class=" form-control  " name='title_{{ language }}_{{ rowId }}' id='title_{{ language }}_{{ rowId }}' maxlength='3000' size='80' value="{{ title }}" />
     </td>
     <td>
         <div class="icon-btn-row">
@@ -39,7 +39,7 @@
                 <a
                     href='#'
                     class="btn btn-default btn-sm htmleditor--openmodal"
-                    data-target-field-id="title_{{ language }}_{{ sortOrder }}"
+                    data-target-field-id="title_{{ language }}_{{ rowId }}"
                     data-toggle="tooltip"
                     title="{{ gT("Open editor") }}">
                     <i class="fa fa-edit"></i>
