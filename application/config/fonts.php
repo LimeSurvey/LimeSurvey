@@ -101,6 +101,15 @@ $coreFonts = array(
         ),
     ),
 
+    'font-opensans' => array(
+        'title' => 'Open Sans',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'opensans.css',
+        ),
+    ),
 );
 
 // get user fonts configuration from /upload/fonts directory
