@@ -1822,18 +1822,6 @@ fieldset[disabled] {
     }
 }
 
-// Breadcrumbs
-.breadcrumb {
-    background-color: $gray-04;
-    > {
-        .active {
-            color: $gray-15;
-        }
-        li + li:before {
-            color: $gray-09;
-        }
-    }
-}
 // Pagination
 .pagination {
     font-size: 1.2em;
@@ -2596,11 +2584,6 @@ output {
     }
 }
 
-// Surveymanagerbar
-.surveymanagerbar {
-    background-color: $primary-hover_2;
-    color: $white;
-}
 // Surveybar
 .surveybar {
     border-bottom: 1px solid $gray-07;
@@ -3059,42 +3042,6 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
     }
     100% {
         background: radial-gradient(circle at center, adjust-color($primary, $alpha: 0.5) 0px, adjust-color($primary, $alpha: 0.5) 8px, $white 9px, $white 100%);
-    }
-}
-
-// Breadcrumbs
-.ls-ba {
-    .list-group {
-        > .list-group-item {
-            .list-group {
-                .list-group-item {
-                    &:last-of-type {
-                        border-bottom: 1px solid $primary-2;
-                    }
-                }
-            }
-        }
-    }
-    .breadcrumb > li + li:before {
-        color: $white;
-    }
-}
-ol.breadcrumb.title-bar-breadcrumb {
-    background: transparent;
-    color: $white;
-    a {
-        color: $white;
-        &.animate::after {
-            background: $white;
-            transition: width .3s;
-        }
-    }
-    li {
-        background: transparent;
-        color: $white;
-        &.active {
-            color: $white;
-        }
     }
 }
 
