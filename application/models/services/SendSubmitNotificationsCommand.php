@@ -81,27 +81,11 @@ class SendSubmitNotificationsCommand
         $aEmailNotificationTo = $emails['admin_notification'] ?? [];
         $aEmailResponseTo = $emails['admin_responses'] ?? [];
 
-        //replacementVars for LEM
-        $aReplacementVars = [];
-        $aReplacementVars['STATISTICSURL'] = App()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyId}");
-        $aReplacementVars['ANSWERTABLE'] = '';
+        $responseId = $this->getResponseId($surveyId);
+        $aReplacementVars = $this->getReplacementVars($surveyId, $responseId);
+        $emailLanguage = $this->getLanguage($surveyId);
 
-        if (!isset($_SESSION['survey_' . $surveyId]['srid'])) {
-            $responseId = null; /* Maybe just return ? */
-        } else {
-            //replacementVars for LEM requiring a response id
-            $responseId = $_SESSION['survey_' . $surveyId]['srid'];
-            $aReplacementVars['EDITRESPONSEURL'] = App()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyId}/id/{$responseId}");
-            $aReplacementVars['VIEWRESPONSEURL'] = App()->getController()->createAbsoluteUrl("responses/view/", ['surveyId' => $surveyId, 'id' => $responseId]);
-        }
-
-        // set email language
-        $emailLanguage = App()->getLanguage();
-        if (isset($_SESSION['survey_' . $surveyId]['s_lang'])) {
-            $emailLanguage = $_SESSION['survey_' . $surveyId]['s_lang'];
-        }
-
-        // create array of recipients for emailnotifications
+        // Create array of recipients for emailnotifications
         if (!empty($this->thissurvey['emailnotificationto']) && empty($emails)) {
             $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailnotificationto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
             foreach ($aRecipient as $sRecipient) {
@@ -111,7 +95,7 @@ class SendSubmitNotificationsCommand
                 }
             }
         }
-        // // create array of recipients for emailresponses
+        // Create array of recipients for emailresponses
         if (!empty($this->thissurvey['emailresponseto']) && empty($emails)) {
             $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailresponseto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
             foreach ($aRecipient as $sRecipient) {
@@ -457,5 +441,51 @@ class SendSubmitNotificationsCommand
         } else {
             return '';
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage(int $surveyId): string
+    {
+        $emailLanguage = App()->getLanguage();
+        if (isset($_SESSION['survey_' . $surveyId]['s_lang'])) {
+            $emailLanguage = $_SESSION['survey_' . $surveyId]['s_lang'];
+        }
+        return $emailLanguage;
+    }
+
+    /**
+     * Get replacement vars for EM
+     */
+    public function getReplacementVars(int $surveyId, ?int $responseId): array
+    {
+        $aReplacementVars = [];
+        $aReplacementVars['STATISTICSURL'] = App()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyId}");
+        $aReplacementVars['ANSWERTABLE'] = '';
+
+        if (!isset($_SESSION['survey_' . $surveyId]['srid'])) {
+            // Do nothing
+        } elseif ($responseId !== null) {
+            // ReplacementVars for LEM requiring a response id
+            $aReplacementVars['EDITRESPONSEURL'] = App()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyId}/id/{$responseId}");
+            $aReplacementVars['VIEWRESPONSEURL'] = App()->getController()->createAbsoluteUrl("responses/view/", ['surveyId' => $surveyId, 'id' => $responseId]);
+        }
+        return $aReplacementVars;
+    }
+
+    /**
+     * @todo What to do if null?
+     * @return ?int
+     */
+    public function getResponseId(int $surveyId): ?int
+    {
+        if (!isset($_SESSION['survey_' . $surveyId]['srid'])) {
+            $responseId = null; /* Maybe just return ? */
+        } else {
+            // ReplacementVars for LEM requiring a response id
+            $responseId = $_SESSION['survey_' . $surveyId]['srid'];
+        }
+        return $responseId;
     }
 }
