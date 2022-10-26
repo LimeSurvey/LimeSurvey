@@ -3,12 +3,13 @@
 namespace LimeSurvey\Models\Services;
 
 use Throwable;
+use RuntimeException;
 
 /**
  * Session provides session data management and the related configurations.
  *
  * @see https://github.com/yiisoft/session
- * @todo Move to composer when LimeSurvey no longer support PHP 7.2
+ * @todo Install via composer when LimeSurvey no longer support PHP 7.2
  */
 final class Session
 {
@@ -30,14 +31,9 @@ final class Session
 
     /**
      * @param array $options Session options. See {@link https://www.php.net/manual/en/session.configuration.php}.
-     * @param SessionHandlerInterface|null $handler Session handler. If not specified, default PHP handler is used.
      */
-    public function __construct(array $options = [], SessionHandlerInterface $handler = null)
+    public function __construct(array $options = [])
     {
-        if ($handler !== null) {
-            session_set_save_handler($handler, true);
-        }
-
         // We set cookies using SessionMiddleware.
         $options['use_cookies'] = 0;
 
@@ -70,13 +66,13 @@ final class Session
             try {
                 session_write_close();
             } catch (Throwable $e) {
-                throw new SessionException('Unable to close session.', (int) $e->getCode(), $e);
+                throw new RuntimeException('Unable to close session.', (int) $e->getCode(), $e);
             }
         }
     }
 
     /**
-     * @throw SessionException When start session is failed.
+     * @throw RuntimeException When start session is failed.
      */
     public function open(): void
     {
@@ -92,7 +88,7 @@ final class Session
             session_start($this->options);
             $this->sessionId = session_id();
         } catch (Throwable $e) {
-            throw new SessionException('Failed to start session.', (int)$e->getCode(), $e);
+            throw new RuntimeException('Failed to start session.', (int)$e->getCode(), $e);
         }
     }
 
@@ -114,7 +110,7 @@ final class Session
                     $this->sessionId = session_id();
                 }
             } catch (Throwable $e) {
-                throw new SessionException('Failed to regenerate ID.', (int)$e->getCode(), $e);
+                throw new RuntimeException('Failed to regenerate ID.', (int)$e->getCode(), $e);
             }
         }
     }
