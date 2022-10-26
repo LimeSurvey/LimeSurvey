@@ -85,11 +85,11 @@ class SendSubmitNotificationsCommand
         $this->mailer->setSurvey($surveyId);
         $this->mailer->aUrlsPlaceholders = ['VIEWRESPONSE','EDITRESPONSE','STATISTICS'];
 
-        $responseId       = $this->getResponseId($surveyId);
-        $replacementVars  = $this->getReplacementVars($surveyId, $responseId);
-        $emailLanguage    = $this->getLanguage($surveyId);
+        $responseId          = $this->getResponseId($surveyId);
+        $replacementVars     = $this->getReplacementVars($surveyId, $responseId);
+        $emailLanguage       = $this->getLanguage($surveyId);
         $emailNotificationTo = $this->getEmailNotificationTo($emails);
-        $emailResponseTo = $this->getEmailResponseTo($emails);
+        $emailResponseTo     = $this->getEmailResponseTo($emails);
 
         if (count($emailNotificationTo) || count($emailResponseTo)) {
             /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
