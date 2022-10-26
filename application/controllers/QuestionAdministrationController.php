@@ -1080,8 +1080,8 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionImport()
     {
-        $iSurveyID = App()->request->getPost('sid', 0);
-        $gid = App()->request->getPost('gid', 0);
+        $iSurveyID = (int) App()->request->getPost('sid', 0);
+        $gid = (int) App()->request->getPost('gid', 0);
 
         $jumptoquestion = (bool)App()->request->getPost('jumptoquestion', 1);
 
