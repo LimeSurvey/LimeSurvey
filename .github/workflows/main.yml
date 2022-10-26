@@ -32,11 +32,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
 
-      # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
-      - name: Start the MySQL service
-        run: |
-          sudo systemctl start mysql.service
-
       - name: Initilize and check all dependencies
         run: |
           # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
