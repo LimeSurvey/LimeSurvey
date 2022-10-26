@@ -115,6 +115,9 @@ const globalWindowMethods = {
     },
     /**
      * Validates that an end date is not lower than a start date
+     * @param {Object} startDatePicker Start datepicker object
+     * @param {Object} endDatePicker End datepicker object
+     * @param {?function} errorCallback Optional function to call in case of error
      */
     validateEndDateHigherThanStart: (startDatePicker, endDatePicker, errorCallback) => {
         if (!startDatePicker || !startDatePicker.date()) {
