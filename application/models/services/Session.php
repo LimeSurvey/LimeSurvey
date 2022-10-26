@@ -22,8 +22,11 @@ final class Session
         'cookie_samesite' => 'Lax',
     ];
 
-    private ?string $sessionId = null;
-    private array $options;
+    /** @var ?string */
+    private $sessionId = null;
+
+    /** @var array */
+    private $options;
 
     /**
      * @param array $options Session options. See {@link https://www.php.net/manual/en/session.configuration.php}.
