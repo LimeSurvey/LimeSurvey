@@ -232,8 +232,9 @@ class SendSubmitNotificationsCommand
     public function processDetailedAdminNotification(int $surveyId, array $replacementVars, array $emailResponseTo, array $emails, string $emailLanguage, ?int $responseId): string
     {
         // There was no token used so let's remove the token field from insertarray
-        if (isset($_SESSION['survey_' . $surveyId]['insertarray'][0])) {
-            if (!isset($_SESSION['survey_' . $surveyId]['token']) && $_SESSION['survey_' . $surveyId]['insertarray'][0] === 'token') {
+        $surveyData = $this->session->get('survey_' . $surveyId, []);
+        if (isset($surveyData['insertarray'][0])) {
+            if (!isset($surveyData['token']) && $surveyData['insertarray'][0] === 'token') {
                 unset($_SESSION['survey_' . $surveyId]['insertarray'][0]);
             }
         }
@@ -444,8 +445,7 @@ class SendSubmitNotificationsCommand
      */
     public function getLanguage(int $surveyId): string
     {
-        $key = 'survey_' . $surveyId;
-        $surveyData = $this->session->get($key, []);
+        $surveyData = $this->session->get('survey_' . $surveyId, []);
         $lang = $surveyData['s_lang'] ?? null;
         return $lang ?? App()->getLanguage();
     }
@@ -459,7 +459,8 @@ class SendSubmitNotificationsCommand
         $replacementVars['STATISTICSURL'] = App()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyId}");
         $replacementVars['ANSWERTABLE'] = '';
 
-        if (!isset($_SESSION['survey_' . $surveyId]['srid'])) {
+        $surveyData = $this->session->get('survey_' . $surveyId, null);
+        if (!isset($surveyData['srid'])) {
             // Do nothing
         } elseif ($responseId !== null) {
             // ReplacementVars for LEM requiring a response id
@@ -475,11 +476,12 @@ class SendSubmitNotificationsCommand
      */
     public function getResponseId(int $surveyId): ?int
     {
-        if (!isset($_SESSION['survey_' . $surveyId]['srid'])) {
+        $surveyData = $this->session->get('survey_' . $surveyId, null);
+        if (!isset($surveyData['srid'])) {
             $responseId = null; /* Maybe just return ? */
         } else {
             // ReplacementVars for LEM requiring a response id
-            $responseId = $_SESSION['survey_' . $surveyId]['srid'];
+            $responseId = $surveyData['srid'];
         }
         return $responseId;
     }
