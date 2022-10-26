@@ -34,7 +34,8 @@ class Quotas
      *
      * @return array
      */
-    public function getQuotaStructure(){
+    public function getQuotaStructure()
+    {
         $totalquotas = 0;
         $totalcompleted = 0;
         if (!empty($this->survey->quotas)) {
@@ -81,7 +82,6 @@ class Quotas
     /**
      * Returns an answerlist for a specific question type and marks already used answers as such.
      *
-     * todo: rewrite this function, use switch instead of if-elseif...(done!) and create OOPs for questiontypes (?)
      * @param integer $iQuestionId
      * @param integer $iQuotaId
      * @return array
@@ -97,7 +97,7 @@ class Quotas
             ->findByPk(array('qid' => $iQuestionId));
         $aQuestionType = $aQuestion['type'];
         $aAnswerList = [];
-        switch ($aQuestionType){
+        switch ($aQuestionType) {
             case \Question::QT_M_MULTIPLE_CHOICE:
                 $aResults = \Question::model()
                     ->with('questionl10ns', array('language' => $sBaseLang))
@@ -215,7 +215,7 @@ class Quotas
                 }
             }
             //delete quota and language settings for this qouta if errors
-            if ($oQuota->getErrors()){
+            if ($oQuota->getErrors()) {
                 //delete quotalanguagesettings if any for this qouta
                 foreach ($oQuota->languagesettings  as $languageSetting){
                     $languageSetting->delete();
@@ -235,7 +235,6 @@ class Quotas
      */
     public function editQuota($oQuota, array $quotaParams)
     {
-
         $oQuota->attributes = $quotaParams;
         if ($oQuota->save()) {
             foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes) {
@@ -257,6 +256,8 @@ class Quotas
     }
 
     /**
+     * Retunr
+     *
      * @param \Quota $oQuota
      * @param $language
      * @return \QuotaLanguageSetting
