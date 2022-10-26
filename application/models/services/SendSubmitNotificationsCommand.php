@@ -43,15 +43,21 @@ class SendSubmitNotificationsCommand
     ];
 
     /**
+     * @var Session
+     */
+    private $session;
+
+    /**
      * Inject dependencies so they can be mocked.
      *
      * @param array $thissurvey
      * @param LimeMailer $limeMailer Like \LimeMailer::getInstance(\LimeMailer::ResetComplete);
      */
-    public function __construct(array $thissurvey, LimeMailer $limeMailer)
+    public function __construct(array $thissurvey, LimeMailer $limeMailer, Session $session)
     {
         $this->thissurvey = $thissurvey;
         $this->mailer = $limeMailer;
+        $this->session = $session;
         $this->isHtml = $this->thissurvey['htmlemail'] === 'Y';
     }
 
@@ -438,11 +444,10 @@ class SendSubmitNotificationsCommand
      */
     public function getLanguage(int $surveyId): string
     {
-        $emailLanguage = App()->getLanguage();
-        if (isset($_SESSION['survey_' . $surveyId]['s_lang'])) {
-            $emailLanguage = $_SESSION['survey_' . $surveyId]['s_lang'];
-        }
-        return $emailLanguage;
+        $key = 'survey_' . $surveyId;
+        $surveyData = $this->session->get($key, []);
+        $lang = $surveyData['s_lang'] ?? null;
+        return $lang ?? App()->getLanguage();
     }
 
     /**

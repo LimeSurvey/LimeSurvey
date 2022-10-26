@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\SendSubmitNotificationsCommand;
+use LimeSurvey\Models\Services\Session;
 
 /**
  * @psalm-suppress InvalidScalarArgument
@@ -106,7 +107,7 @@ class FailedEmailController extends LSBaseController
                     ];
                 }
                 $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
-                $command = new SendSubmitNotificationsCommand($thissurvey, $mailer);
+                $command = new SendSubmitNotificationsCommand($thissurvey, $mailer, new Session());
                 $result = $command->run($surveyId, $emailsByType);
                 if (!$preserveResend) {
                     // only delete FailedEmail entries that have succeeded
