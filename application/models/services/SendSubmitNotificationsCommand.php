@@ -77,36 +77,13 @@ class SendSubmitNotificationsCommand
         $this->mailer->setSurvey($surveyId);
         $this->mailer->aUrlsPlaceholders = ['VIEWRESPONSE','EDITRESPONSE','STATISTICS'];
 
-        //emails to be sent and return values
-        $aEmailNotificationTo = $emails['admin_notification'] ?? [];
-        $aEmailResponseTo = $emails['admin_responses'] ?? [];
+        $responseId       = $this->getResponseId($surveyId);
+        $replacementVars  = $this->getReplacementVars($surveyId, $responseId);
+        $emailLanguage    = $this->getLanguage($surveyId);
+        $emailNotificationTo = $this->getEmailNotificationTo($emails);
+        $emailResponseTo = $this->getEmailResponseTo($emails);
 
-        $responseId = $this->getResponseId($surveyId);
-        $aReplacementVars = $this->getReplacementVars($surveyId, $responseId);
-        $emailLanguage = $this->getLanguage($surveyId);
-
-        // Create array of recipients for emailnotifications
-        if (!empty($this->thissurvey['emailnotificationto']) && empty($emails)) {
-            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailnotificationto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
-            foreach ($aRecipient as $sRecipient) {
-                $sRecipient = trim($sRecipient);
-                if ($this->mailer::validateAddress($sRecipient)) {
-                    $aEmailNotificationTo[] = $sRecipient;
-                }
-            }
-        }
-        // Create array of recipients for emailresponses
-        if (!empty($this->thissurvey['emailresponseto']) && empty($emails)) {
-            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailresponseto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
-            foreach ($aRecipient as $sRecipient) {
-                $sRecipient = trim($sRecipient);
-                if ($this->mailer::validateAddress($sRecipient)) {
-                    $aEmailResponseTo[] = $sRecipient;
-                }
-            }
-        }
-
-        if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {
+        if (count($emailNotificationTo) || count($emailResponseTo)) {
             /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
             $reData = ['thissurvey' => $this->thissurvey];
             templatereplace(
@@ -117,19 +94,19 @@ class SendSubmitNotificationsCommand
         }
 
         // update replacement fields before we handle email sending
-        LimeExpressionManager::updateReplacementFields($aReplacementVars);
+        LimeExpressionManager::updateReplacementFields($replacementVars);
 
         // admin_notification (Basic admin notification)
-        if (count($aEmailNotificationTo) > 0) {
-            $warnings = $this->processBasicAdminNotification($surveyId, $aEmailNotificationTo, $emails, $emailLanguage, $responseId);
+        if (count($emailNotificationTo) > 0) {
+            $warnings = $this->processBasicAdminNotification($surveyId, $emailNotificationTo, $emails, $emailLanguage, $responseId);
             if ($warnings) {
                 echo $warnings;
             }
         }
 
         // admin_notification (Detailed admin notification)
-        if (count($aEmailResponseTo) > 0) {
-            $warnings = $this->processDetailedAdminNotification($surveyId, $aReplacementVars, $aEmailResponseTo, $emails, $emailLanguage, $responseId);
+        if (count($emailResponseTo) > 0) {
+            $warnings = $this->processDetailedAdminNotification($surveyId, $replacementVars, $emailResponseTo, $emails, $emailLanguage, $responseId);
             if ($warnings) {
                 echo $warnings;
             }
@@ -197,12 +174,12 @@ class SendSubmitNotificationsCommand
     /**
      * @return string HTML warnings
      */
-    public function processBasicAdminNotification(int $surveyId, array $aEmailNotificationTo, array $emails, string $emailLanguage, ?int $responseId)
+    public function processBasicAdminNotification(int $surveyId, array $emailNotificationTo, array $emails, string $emailLanguage, ?int $responseId)
     {
         $this->mailer = $this->mailer::getInstance();
         $this->mailer->setTypeWithRaw('admin_notification', $emailLanguage);
         $htmlWarnings = '';
-        foreach ($aEmailNotificationTo as $sRecipient) {
+        foreach ($emailNotificationTo as $sRecipient) {
             /** set mailer params for @see FailedEmailController::actionResend() */
             if (!empty($emails)) {
                 $failedNotificationId = $sRecipient['id'];
@@ -244,7 +221,7 @@ class SendSubmitNotificationsCommand
     /**
      * @return string
      */
-    public function processDetailedAdminNotification(int $surveyId, array $aReplacementVars, array $aEmailResponseTo, array $emails, string $emailLanguage, ?int $responseId): string
+    public function processDetailedAdminNotification(int $surveyId, array $replacementVars, array $emailResponseTo, array $emails, string $emailLanguage, ?int $responseId): string
     {
         // There was no token used so let's remove the token field from insertarray
         if (isset($_SESSION['survey_' . $surveyId]['insertarray'][0])) {
@@ -255,23 +232,23 @@ class SendSubmitNotificationsCommand
         $this->mailer = $this->mailer::getInstance();
         $this->mailer->setTypeWithRaw('admin_responses', $emailLanguage);
         $htmlWarnings = '';
-        foreach ($aEmailResponseTo as $sRecipient) {
+        foreach ($emailResponseTo as $sRecipient) {
             /** set mailer params for @see FailedEmailController::actionResend() */
             if (!empty($emails)) {
                 $failedNotificationId = $sRecipient['id'];
                 $responseId = $sRecipient['responseId'];
                 $responseRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
-                $aReplacementVars['ANSWERTABLE'] = $this->getResponseTableReplacement($surveyId, $responseId, $emailLanguage);
-                LimeExpressionManager::updateReplacementFields($aReplacementVars);
+                $replacementVars['ANSWERTABLE'] = $this->getResponseTableReplacement($surveyId, $responseId, $emailLanguage);
+                LimeExpressionManager::updateReplacementFields($replacementVars);
                 $this->mailer->setTypeWithRaw('admin_responses', $emailLanguage);
                 $this->mailer->setTo($responseRecipient);
                 $mailerSuccess = $this->mailer->resend(json_decode($sRecipient['resendVars'], true));
             } else {
                 $failedNotificationId = null;
                 $responseRecipient = $sRecipient;
-                $aReplacementVars['ANSWERTABLE'] = $this->getResponseTableReplacement($surveyId, $responseId, $emailLanguage);
-                LimeExpressionManager::updateReplacementFields($aReplacementVars);
+                $replacementVars['ANSWERTABLE'] = $this->getResponseTableReplacement($surveyId, $responseId, $emailLanguage);
+                LimeExpressionManager::updateReplacementFields($replacementVars);
                 $this->mailer->setTo($responseRecipient);
                 $mailerSuccess = $this->mailer->SendMessage();
             }
@@ -460,18 +437,18 @@ class SendSubmitNotificationsCommand
      */
     public function getReplacementVars(int $surveyId, ?int $responseId): array
     {
-        $aReplacementVars = [];
-        $aReplacementVars['STATISTICSURL'] = App()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyId}");
-        $aReplacementVars['ANSWERTABLE'] = '';
+        $replacementVars = [];
+        $replacementVars['STATISTICSURL'] = App()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyId}");
+        $replacementVars['ANSWERTABLE'] = '';
 
         if (!isset($_SESSION['survey_' . $surveyId]['srid'])) {
             // Do nothing
         } elseif ($responseId !== null) {
             // ReplacementVars for LEM requiring a response id
-            $aReplacementVars['EDITRESPONSEURL'] = App()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyId}/id/{$responseId}");
-            $aReplacementVars['VIEWRESPONSEURL'] = App()->getController()->createAbsoluteUrl("responses/view/", ['surveyId' => $surveyId, 'id' => $responseId]);
+            $replacementVars['EDITRESPONSEURL'] = App()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyId}/id/{$responseId}");
+            $replacementVars['VIEWRESPONSEURL'] = App()->getController()->createAbsoluteUrl("responses/view/", ['surveyId' => $surveyId, 'id' => $responseId]);
         }
-        return $aReplacementVars;
+        return $replacementVars;
     }
 
     /**
@@ -487,5 +464,47 @@ class SendSubmitNotificationsCommand
             $responseId = $_SESSION['survey_' . $surveyId]['srid'];
         }
         return $responseId;
+    }
+
+    /**
+     * Create array of recipients for emailnotifications
+     *
+     * @param array $emails
+     * @return array
+     */
+    public function getEmailNotificationTo(array $emails): array
+    {
+        $emailNotificationTo = $emails['admin_notification'] ?? [];
+        if (!empty($this->thissurvey['emailnotificationto']) && empty($emails)) {
+            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailnotificationto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
+            foreach ($aRecipient as $sRecipient) {
+                $sRecipient = trim($sRecipient);
+                if ($this->mailer::validateAddress($sRecipient)) {
+                    $emailNotificationTo[] = $sRecipient;
+                }
+            }
+        }
+        return $emailNotificationTo;
+    }
+
+    /**
+     * Emails to be sent and return values
+     *
+     * @param array $emails
+     * @return array
+     */
+    public function getEmailResponseTo(array $emails): array
+    {
+        $emailResponseTo = $emails['admin_responses'] ?? [];
+        if (!empty($this->thissurvey['emailresponseto']) && empty($emails)) {
+            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailresponseto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
+            foreach ($aRecipient as $sRecipient) {
+                $sRecipient = trim($sRecipient);
+                if ($this->mailer::validateAddress($sRecipient)) {
+                    $emailResponseTo[] = $sRecipient;
+                }
+            }
+        }
+        return $emailResponseTo;
     }
 }
