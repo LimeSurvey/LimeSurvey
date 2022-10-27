@@ -55,6 +55,10 @@ class SendSubmitNotificationsCommand
      */
     public function __construct(array $thissurvey, LimeMailer $limeMailer, SessionInterface $session)
     {
+        if (!isset($thissurvey['htmlemail'])) {
+            throw new InvalidArgumentException('Missing htmlemail in survey info');
+        }
+
         $this->thissurvey = $thissurvey;
         $this->mailer = $limeMailer;
         $this->session = $session;
