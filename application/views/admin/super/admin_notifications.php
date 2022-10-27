@@ -3,7 +3,7 @@
     <li id='notification-li' class='dropdown nav-item'>
         <a aria-expanded='false' class="nav-link"
             href='#'>
-            <span class='fa fa-bell text-muted'></span>
+            <span class='ri-notification-2-fill text-muted'></span>
 	    <span class='visually-hidden'>Notifications</span>
         </a>
     </li>
@@ -11,8 +11,8 @@
 <li id='notification-li' class='dropdown nav-item' onclick='LS.updateNotificationWidget("<?php echo $updateUrl; ?>");' >
         <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
-            <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
-
+            <!-- <span id='notification-bell' class='ri-notification-2-fill <?php echo $bellColor; ?>'></span> -->
+            <i id='notification-bell' class="ri-notification-2-fill  <?php echo $bellColor; ?>"></i>
             <?php if ($nrOfNewNotifications): ?>
                 <span class='badge rounded-pill'><?php echo $nrOfNewNotifications; ?></span>
             <?php endif; ?>
@@ -29,7 +29,7 @@
     <li id='notification-li' class='dropdown nav-item' onclick='LS.styleNotificationMenu();'>
         <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
-            <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
+            <span id='notification-bell' class='ri-notification-2-fill <?php echo $bellColor; ?>'></span>
 
             <?php if ($nrOfNewNotifications): ?>
                 <span class='badge rounded-pill'><?php echo $nrOfNewNotifications; ?></span>
@@ -71,7 +71,7 @@
 
             <li id='notification-clear-all'>
                 <a href='#'  class="dropdown-item" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()'>
-                    <span class='fa fa-trash text-danger'></span>&nbsp;
+                    <span class='ri-delete-bin-fill text-danger'></span>&nbsp;
                     <?php eT('Delete all notifications'); ?>
                 </a>
             </li>

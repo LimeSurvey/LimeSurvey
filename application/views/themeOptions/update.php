@@ -21,13 +21,13 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
                     <!-- Back -->
                     <a class="btn btn-outline-secondary" href="<?php echo $sUrl; ?>">
-                        <span class="fa fa-backward"></span>
+                        <span class="ri-rewind-fill"></span>
                         <?php eT('Back'); ?>
                     </a>
 
                     <!-- Save -->
                     <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form">
-                        <span class="fa fa-floppy-o"></span>
+                        <span class="ri-save-3-fill"></span>
                         <?php eT('Save'); ?>
                     </a>
                 </div>

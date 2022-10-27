@@ -35,4 +35,33 @@ $this->render('includes/previewGroupButton_view', get_defined_vars());
 $this->render('includes/previewQuestionButton_view', get_defined_vars());
 ?>
 
+<<<<<<< HEAD
 
+=======
+<?php if($hasSurveyContentUpdatePermission): ?>
+    <?php if (count($surveyLanguages) > 1): ?>
+        <!-- Preview question multilanguage -->
+        <div class="btn-group">
+            <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="ri-eye-fill"></span>
+                <?php eT("Preview question"); ?> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" style="min-width : 252px;">
+                <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
+                    <li>
+                        <a target="_blank" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/{$languageCode}"); ?>" >
+                            <?php echo $languageName; ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php else:?>
+        <!-- Preview question single language -->
+        <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"); ?>" target="_blank">
+            <span class="ri-eye-fill"></span>
+            <?php eT("Preview question");?>
+        </a>
+    <?php endif; ?>
+<?php endif; ?>
+>>>>>>> 0a80e32386 (replace admin theme icons with remix icon)

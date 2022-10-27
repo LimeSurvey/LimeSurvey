@@ -9,7 +9,7 @@
         <div class='row'>
             <div class='col-md-8'>
                 <p class='alert alert-info'>
-                    <span class='fa fa-info-circle'></span>&nbsp;
+                    <span class='ri-information-fill'></span>&nbsp;
                     <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?>
                     <?php eT("After you are done, please click the 'Save' button to save your changes.");?>
                 </p>

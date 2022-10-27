@@ -22,7 +22,7 @@
     <!-- Export -->
     <li>
         <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/{$qid}");?>">
-            <span class="icon-export"></span>
+            <span class="ri-upload-fill"></span>
             <?php eT("Export"); ?>
         </a>
     </li>
@@ -32,7 +32,7 @@
     <!-- Copy -->
     <li>
         <a class="dropdown-item" id="copy_button" href='<?php echo Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/{$oQuestion->sid}/questionGroupId/{$oQuestion->gid}/questionId/{$oQuestion->qid}");?>'>
-            <span class="icon-copy icon"></span>
+            <span class="ri-file-copy-line icon"></span>
             <?php eT("Copy"); ?>
         </a>
     </li>
@@ -76,14 +76,14 @@
                 data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid, "redirectTo" => "groupoverview"])); ?>})'
                 data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "js"); ?>"
             >
-                <span class="fa fa-trash text-danger"></span>
+                <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete question"); ?>
             </a>
         </li>
     <?php else : ?>
         <li class="disabled">
             <a class="btntooltip dropdown-item" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
-                <span class="fa fa-trash text-danger"></span>
+                <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete question"); ?>
             </a>
         </li>

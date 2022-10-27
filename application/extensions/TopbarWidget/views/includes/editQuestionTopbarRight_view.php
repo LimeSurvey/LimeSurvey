@@ -21,12 +21,12 @@
 <?php if(!empty($showCloseButton)): ?>
     <?php if (!empty($oQuestion->qid)): ?>
         <a class="btn btn-outline-secondary" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
-            <span class="fa fa-close"></span>
+            <span class="ri-close-fill"></span>
             <?php eT("Close");?>
         </a>
     <?php else: ?>
         <a class="btn btn-outline-secondary" href="<?= $closeUrl ?>" role="button">
-            <span class="fa fa-close"></span>
+            <span class="ri-close-fill"></span>
             <?php eT("Close");?>
         </a>
     <?php endif; ?>
@@ -42,7 +42,7 @@
         type="button"
         onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'overview');"
     >
-        <i class="fa fa-check-square"></i>
+        <i class="ri-checkbox-fill"></i>
         <?php eT("Save and close");?>
     </button>
 <?php endif; ?>
@@ -58,7 +58,7 @@
         <?php endif; ?>
         onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
     >
-        <i class="fa fa-check"></i>
+        <i class="ri-check-fill"></i>
         <?php eT("Save");?>
     </button>
 <?php endif; ?>

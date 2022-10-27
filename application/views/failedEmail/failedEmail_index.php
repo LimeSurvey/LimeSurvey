@@ -10,7 +10,7 @@
         <h3><?php eT("Failed email notifications"); ?></h3>
         <p class="alert alert-info alert-dismissible">
             <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-            <span class="fa fa-info-circle"></span>
+            <span class="ri-information-fill"></span>
             <?php eT("Please note that failed email notifications will be automatically deleted after 30 days."); ?>
         </p>
         <!-- Grid -->

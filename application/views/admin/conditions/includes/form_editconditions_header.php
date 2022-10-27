@@ -34,7 +34,7 @@
                             </span>
                             &nbsp;
                             <button class='btn btn-outline-secondary' onclick="scenarioaddbtnOnClickAction(); return false;" >
-                                <span class='icon-add'></span>&nbsp;<?php eT('Add scenario'); ?>
+                                <span class='ri-add-circle-fill'></span>&nbsp;<?php eT('Add scenario'); ?>
                             </button>
                         </div>
                     <?php endif;?>

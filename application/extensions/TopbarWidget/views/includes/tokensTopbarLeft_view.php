@@ -2,7 +2,7 @@
 <?php if ($hasTokensReadPermission): ?>
     <div class="d-inline-flex">
         <a class="btn btn-outline-secondary pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
-            <span class="fa fa-list-alt"></span>
+            <span class="ri-list-unordered "></span>
             <?php eT("Display participants"); ?>
         </a>
     </div>
@@ -19,7 +19,7 @@
             'name' => 'ls-create-token-button',
             'id' => 'ls-create-token-button',
             'text' => gT('Create...'),
-            'icon' => 'icon-add',
+            'icon' => 'ri-add-circle-fill',
             'isDropDown' => true,
             'dropDownContent' => $createDropdownItems,
             'htmlOptions' => [
@@ -76,7 +76,7 @@
     <div class="d-inline-flex">
         <!-- View participants of this survey in CPDB -->
         <a class="btn btn-outline-secondary" href="#" role="button" onclick="window.LS.sendPost('<?php echo Yii::App()->createUrl("/admin/participants/sa/displayParticipants"); ?>',false,{'searchcondition': 'surveyid||equal|| <?php echo $oSurvey->sid ?>'});">
-            <i class="fa fa-users"></i>
+            <i class="ri-group-fill"></i>
             <?php eT("View in CPDB"); ?>
         </a>
     </div>

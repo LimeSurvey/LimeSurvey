@@ -579,7 +579,7 @@ class TokenDynamic extends LSActiveRecord
                 $fieldDate = convertToGlobalSettingFormat($field);
                 $field     = '<span class="text-success">' . $fieldDate . '</span>';
             } else {
-                $field     = '<span class="text-success fa fa-check"></span>';
+                $field     = '<span class="text-success ri-check-fill"></span>';
             }
         } elseif ($field != '') {
             $field = '<i class="fa fa-minus text-warning"></i>';
@@ -787,7 +787,7 @@ class TokenDynamic extends LSActiveRecord
         /* viewresponse button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y");
         $gridButtons['viewresponse'] = array(
-            'label' => '<span class="visually-hidden">' . gT("View response details") . '</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("View response details") . '</span><span class="ri-list-unordered" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("responses/viewbytoken",array("surveyId"=>' . self::$sid . ',"token"=>$data->token));',
             'options' => array(
@@ -798,7 +798,7 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseView . ' && $data->getHasResponses($data->token)',
         );
         $gridButtons['spacerviewresponse'] = array(
-            'label' => '<span class="fa fa-list-alt text-muted" aria-hidden="true"></span>',
+            'label' => '<span class="ri-list-unordered text-muted" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
@@ -812,7 +812,7 @@ class TokenDynamic extends LSActiveRecord
         /* previewsurvey button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create'));
         $gridButtons['previewsurvey'] = array(
-            'label' => '<span class="visually-hidden">' . gT("Preview the survey with this participant") . '</span><span class="fa fa-eye" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Preview the survey with this participant") . '</span><span class="ri-eye-fill" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
@@ -836,7 +836,7 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseView . ' && $data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );
         $gridButtons['previewsurveyspacer'] = array(
-            'label' => '<span class="fa fa-eye  text-muted" aria-hidden="true"></span>',
+            'label' => '<span class="ri-eye-fill  text-muted" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
@@ -886,7 +886,7 @@ class TokenDynamic extends LSActiveRecord
         );
         /* edit button button */
         $gridButtons['edit'] = array(
-            'label' => '<span class="visually-hidden">' . gT('Edit this survey participant') . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT('Edit this survey participant') . '</span><span class="ri-pencil-fill" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/edit",array("iSurveyId"=>' . self::$sid . ',"iTokenId"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
@@ -900,7 +900,7 @@ class TokenDynamic extends LSActiveRecord
         );
         /* delete button */
         $gridButtons['deletetoken'] = array(
-            'label' => '<span class="visually-hidden">' . gT('Delete survey participant') . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT('Delete survey participant') . '</span><span class="ri-delete-bin-fill text-danger" aria-hidden="true"></span>',
             'imageUrl' => false,
             //'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
             'options' => array(

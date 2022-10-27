@@ -26,7 +26,7 @@ if (!empty($aTutorials) && Permission::model()->hasGlobalPermission('surveys', '
                 <a href="<?=App()->createUrl('admin/tutorials/sa/view')?>">
                     <span class="fa fa-rocket" ></span>
                     <?php eT('See all Tutorials');?>
-                    <i class="fa fa-search float-end"></i>
+                    <i class="ri-search-line float-end"></i>
                 </a>
             </li>
             <li>

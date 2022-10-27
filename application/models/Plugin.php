@@ -205,7 +205,7 @@ class Plugin extends LSActiveRecord
                         'pluginId' => $this->id
                     ]
                 );
-                $output .= "<a href='" . $reloadUrl . "' data-bs-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-outline-secondary btn-sm btntooltip'><span class='fa fa-refresh'></span></a>";
+                $output .= "<a href='" . $reloadUrl . "' data-bs-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-outline-secondary btn-sm btntooltip'><span class='ri-refresh-line'></span></a>";
             } elseif ($this->active == 0) {
                 $output .= $this->getActivateButton();
             } else {

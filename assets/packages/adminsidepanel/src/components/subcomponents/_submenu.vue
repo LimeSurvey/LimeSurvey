@@ -97,7 +97,7 @@ export default {
                 <div class="ls-space padding all-0 me-auto">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
                     <span v-html="menuItem.menu_title"></span>
-                    <i class="fa fa-external-link" v-if="menuItem.link_external == true">&nbsp;</i>
+                    <i class=" ri-external-link-fill" v-if="menuItem.link_external == true">&nbsp;</i>
                 </div>
                 <div class="text-center ls-space padding right-15 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
                     <i

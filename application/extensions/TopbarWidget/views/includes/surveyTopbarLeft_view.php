@@ -42,7 +42,7 @@
     <?php if ($canactivate) : ?>
         <a class="btn btn-danger btntooltip"
            href="<?php echo App()->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]); ?>">
-            <i class="fa fa-stop-circle"></i>
+            <i class="ri-stop-circle-fill"></i>
             <?php eT("Stop this survey"); ?>
         </a>
     <?php endif; ?>

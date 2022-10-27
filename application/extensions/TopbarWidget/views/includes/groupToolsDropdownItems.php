@@ -12,7 +12,7 @@
     <!-- Export -->
     <li>
         <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>">
-            <span class="icon-export"></span>
+            <span class="ri-upload-fill"></span>
             <?php eT("Export"); ?>
         </a>
     </li>
@@ -40,7 +40,7 @@
                     ); ?> })'
                     data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>"
                 >
-                    <span class="fa fa-trash text-danger"></span>
+                    <span class="ri-delete-bin-fill text-danger"></span>
                     <?php eT("Delete group"); ?>
                 </a>
             </li>
@@ -48,7 +48,7 @@
             <?php // there is at least one question having a condition on its content ?>
             <li class="disabled">
                 <a class="btntooltip dropdown-item" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>" >
-                    <span class="fa fa-trash text-danger"></span>
+                    <span class="ri-delete-bin-fill text-danger"></span>
                     <?php eT("Delete group"); ?>
                 </a>
             </li>
@@ -57,7 +57,7 @@
         <!-- Activated -->
         <li class="disabled">
             <a class="btntooltip dropdown-item" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("It is not possible to add/delete groups if the survey is active."); ?>" >
-                <span class="fa fa-trash text-danger"></span>
+                <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete group"); ?>
             </a>
         </li>

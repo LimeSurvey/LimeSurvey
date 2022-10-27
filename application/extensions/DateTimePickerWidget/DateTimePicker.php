@@ -341,8 +341,8 @@ class DateTimePicker extends CInputWidget
                    previous: 'fa fa-caret-left',
                    next: 'fa fa-caret-right',
                    today: 'fa fa-today text-success',
-                   clear: 'fa fa-trash text-success',
-                   close: 'fa fa-close text-success',
+                   clear: 'ri-delete-bin-fill text-success',
+                   close: 'ri-close-fill text-success',
                 },";
     }
 

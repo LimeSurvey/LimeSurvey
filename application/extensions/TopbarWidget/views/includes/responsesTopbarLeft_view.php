@@ -2,7 +2,7 @@
 <?php if ($hasResponsesReadPermission): ?>
     <a class="btn btn-outline-secondary pjax"
        href='<?php echo Yii::App()->createUrl("responses/index/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-        <span class="fa fa-list-alt"></span>
+        <span class="ri-list-unordered "></span>
         <?php eT("Summary"); ?>
     </a>
 <?php endif; ?>
@@ -11,7 +11,7 @@
     <!-- Display Responses -->
     <a class="btn btn-outline-secondary pjax"
        href='<?php echo Yii::App()->createUrl("responses/browse/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-        <span class="fa fa-list"></span>
+        <span class="ri-list-check"></span>
         <?php eT("Display responses"); ?>
     </a>
 <?php endif; ?>
@@ -124,7 +124,7 @@
         title="<?php eT('Batch deletion') ?>"
         class="btn btn-outline-secondary selector--ConfirmModal">
 
-        <span class="fa fa-trash text-danger"></span>
+        <span class="ri-delete-bin-fill text-danger"></span>
         <?php eT("Batch deletion"); ?>
     </a>
 <?php endif; ?>

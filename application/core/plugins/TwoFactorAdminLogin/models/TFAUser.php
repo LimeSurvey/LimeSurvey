@@ -69,7 +69,7 @@ class TFAUser extends User
             . 'data-uid="' . $this->uid . '" '
             . 'data-errortext="' . gT('An error has happened, and the key could not be deleted.') . '" '
             . '>'
-            . '<i class="fa fa-trash text-danger"></i>'
+            . '<i class="ri-delete-bin-fill text-danger"></i>'
             . '</button>';
         $buttons .= "</div>";
         return $buttons;

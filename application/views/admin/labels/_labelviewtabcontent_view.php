@@ -77,7 +77,7 @@ $codeids = '';
                                     <?php if ($first) : ?>
                                         <button class="btn btn-outline-secondary btn-sm btnaddanswer" data-bs-toggle="tooltip"
                                                 title="<?php eT("Add label"); ?>">
-                                            <i class="icon-add text-success"></i>
+                                            <i class="ri-add-circle-fill text-success"></i>
                                         </button> <?php // eT("Insert a new label after this one") ?>
                                         <button class="btn btn-outline-secondary btn-sm btndelanswer" data-bs-toggle="tooltip"
                                                 title="<?php eT("Delete label"); ?>">

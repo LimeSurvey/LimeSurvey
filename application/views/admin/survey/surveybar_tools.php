@@ -18,7 +18,7 @@
 
     <!-- Main button dropdown -->
     <button id="ls-tools-button" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="icon-tools" ></span>
+        <span class="ri-tools-fill" ></span>
          <?php eT('Tools'); ?><span class="caret"></span>
     </button>
 
@@ -29,7 +29,7 @@
               <!-- Delete survey -->
               <li>
                   <a href="<?php echo $this->createUrl("surveyAdministration/delete/surveyid/{$oSurvey->sid}"); ?>">
-                    <span class="fa fa-trash text-danger" ></span>
+                    <span class="ri-delete-bin-fill text-danger" ></span>
                     <?php eT("Delete survey"); ?>
                   </a>
               </li>

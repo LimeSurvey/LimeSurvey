@@ -179,7 +179,7 @@ class ParticipantShare extends LSActiveRecord
             data-btntext='" . gt('Unshare') . "'
             data-message='" . gT('Do you really want to unshare this participant?') . "' 
             data-onclick='(function() { LS.CPDB.deleteSingleParticipantShare(\"" . $url . "\"); })'>"
-                . "<i class='fa fa-trash text-danger'></i>"
+                . "<i class='ri-delete-bin-fill text-danger'></i>"
                 . "</a></span>";
         }
         $buttons .= "</div>";

@@ -1130,7 +1130,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         // If the survey is not active, no date test is needed
         if ($this->active == 'N') {
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><span class="fa fa-stop text-warning"></span><span class="visually-hidden">' . gT('Inactive') . '"</span></a>';
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><span class="ri-stop-fill text-warning"></span><span class="visually-hidden">' . gT('Inactive') . '"</span></a>';
         } elseif ($this->expires != '' || $this->startdate != '') {
             // If it's active, then we check if not expired
             // Time adjust
@@ -1502,9 +1502,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             if ($this->active != 'Y') {
                 $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid));
                 if ($groupCount > 0) {
-                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddquestion . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new question') . '"><span class="icon-add" ></span><span class="visually-hidden">' . gT('Add new question') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddquestion . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new question') . '"><span class="ri-add-circle-fill" ></span><span class="visually-hidden">' . gT('Add new question') . '</span></a>';
                 } else {
-                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddGroup . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new group') . '"><span class="icon-add" ></span><span class="visually-hidden">' . gT('Add new group') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddGroup . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new group') . '"><span class="ri-add-circle-fill" ></span><span class="visually-hidden">' . gT('Add new group') . '</span></a>';
                 }
             }
         }
@@ -1513,7 +1513,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sStatUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Statistics') . '"><span class="fa fa-bar-chart" ></span><span class="visually-hidden">' . gT('Statistics') . '</span></a>';
         }
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
-            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="visually-hidden">' . gT('General settings & texts') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="ri-settings-5-fill" ></span><span class="visually-hidden">' . gT('General settings & texts') . '</span></a>';
         }
 
         $button .= "</div>";
@@ -2182,7 +2182,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Survey"),
                 'description' => gT("Permission on survey (delete). Read permission is used to give access to this group."),
-                'img' => ' fa fa-list', /** Unused, global use icon-list */
+                'img' => ' ri-list-check', /** Unused, global use icon-list */
             ),
             'surveyactivation' => array(
                 'create' => false,
@@ -2197,7 +2197,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'surveycontent' => array(
                 'title' => gT("Survey content"),
                 'description' => gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),
-                'img' => ' fa fa-file-text-o',
+                'img' => ' ri-file-text-line',
             ),
             'surveylocale' => array(
                 'create' => false,
@@ -2213,7 +2213,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Survey security"),
                 'description' => gT("Permission to modify survey security settings"),
-                'img' => ' fa fa-shield',
+                'img' => ' ri-shield-check-fill',
             ),
             'surveysettings' => array(
                 'create' => false,
@@ -2222,7 +2222,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Survey settings"),
                 'description' => gT("Permission to view/update the survey settings including survey participants table creation"),
-                'img' => ' fa fa-gears',
+                'img' => ' ri-settings-5-fill',
             ),
             'tokens' => array(
                 'title' => gT("Participants"), 'description' => gT("Permission to create/update/delete/import/export participants"),
