@@ -498,17 +498,17 @@ class SendSubmitNotificationsCommand
      */
     public function getEmailNotificationTo(array $emails): array
     {
-        $emailNotificationTo = $emails['admin_notification'] ?? [];
+        $result = $emails['admin_notification'] ?? [];
         if (!empty($this->thissurvey['emailnotificationto']) && empty($emails)) {
             $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailnotificationto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
             foreach ($aRecipient as $sRecipient) {
                 $sRecipient = trim($sRecipient);
                 if ($this->mailer::validateAddress($sRecipient)) {
-                    $emailNotificationTo[] = $sRecipient;
+                    $result[] = $sRecipient;
                 }
             }
         }
-        return $emailNotificationTo;
+        return $result;
     }
 
     /**
@@ -519,16 +519,16 @@ class SendSubmitNotificationsCommand
      */
     public function getEmailResponseTo(array $emails): array
     {
-        $emailResponseTo = $emails['admin_responses'] ?? [];
+        $result = $emails['admin_responses'] ?? [];
         if (!empty($this->thissurvey['emailresponseto']) && empty($emails)) {
             $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailresponseto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
             foreach ($aRecipient as $sRecipient) {
                 $sRecipient = trim($sRecipient);
                 if ($this->mailer::validateAddress($sRecipient)) {
-                    $emailResponseTo[] = $sRecipient;
+                    $result[] = $sRecipient;
                 }
             }
         }
-        return $emailResponseTo;
+        return $result;
     }
 }

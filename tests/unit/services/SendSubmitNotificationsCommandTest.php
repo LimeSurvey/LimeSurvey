@@ -61,6 +61,50 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $this->assertEquals(['moo@moo.moo', 'foo@foo.foo'], $result);
     }
 
+    public function testGetEmailNotificationToEmpty()
+    {
+        $mailer = $this
+            ->getMockBuilder(LimeMailer::class)
+            ->getMock();
+        $session = $this->getMockSession();
+        $surveyinfo = [
+            'htmlemail' => false
+        ];
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $result = $ssnc->getEmailNotificationTo([]);
+        $this->assertEquals([], $result);
+    }
+
+    public function testGetEmailNotificationToOneEmail()
+    {
+        $mailer = new LimeMailer();
+        $session = $this->getMockSession();
+        $surveyinfo = [
+            'htmlemail'       => false,
+            'emailnotificationto' => 'moo@moo.moo',
+            'adminemail'      => '',
+        ];
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $emails = [];
+        $result = $ssnc->getEmailNotificationTo($emails);
+        $this->assertEquals(['moo@moo.moo'], $result);
+    }
+
+    public function testGetEmailNotificationToTwoEmail()
+    {
+        $mailer = new LimeMailer();
+        $session = $this->getMockSession();
+        $surveyinfo = [
+            'htmlemail'       => false,
+            'emailnotificationto' => 'moo@moo.moo;foo@foo.foo',
+            'adminemail'      => '',
+        ];
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $emails = [];
+        $result = $ssnc->getEmailNotificationTo($emails);
+        $this->assertEquals(['moo@moo.moo', 'foo@foo.foo'], $result);
+    }
+
     private function getMockSession()
     {
         return new class implements SessionInterface {
