@@ -11,7 +11,7 @@ use RuntimeException;
  * @see https://github.com/yiisoft/session
  * @todo Install via composer when LimeSurvey no longer support PHP 7.2
  */
-final class Session
+final class Session implements SessionInterface
 {
     const DEFAULT_OPTIONS = [
         'cookie_secure' => 1,

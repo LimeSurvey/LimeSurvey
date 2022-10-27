@@ -43,7 +43,7 @@ class SendSubmitNotificationsCommand
     ];
 
     /**
-     * @var Session
+     * @var SessionInterface
      */
     private $session;
 
@@ -53,7 +53,7 @@ class SendSubmitNotificationsCommand
      * @param array $thissurvey
      * @param LimeMailer $limeMailer Like \LimeMailer::getInstance(\LimeMailer::ResetComplete);
      */
-    public function __construct(array $thissurvey, LimeMailer $limeMailer, Session $session)
+    public function __construct(array $thissurvey, LimeMailer $limeMailer, SessionInterface $session)
     {
         $this->thissurvey = $thissurvey;
         $this->mailer = $limeMailer;
