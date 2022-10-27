@@ -219,9 +219,15 @@ if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tests/tmp/')), -4) !=
     die('tests/tmp folder not set to 777');
 }
 
-Yii::$enableIncludePath = false;
-Yii::createApplication('LSYii_Application', $config);
-
+// Dummy version of LSYii_Application
+class LSYii_Application_dummy extends LSYii_Application
+{
+    public function initlanguage()
+    {
+        // This function writes to session in LSYii_Application, which causes errors.
+    }
+}
+$app = Yii::createApplication('LSYii_Application_dummy', $config);
 
 // TODO: Edit composer.json to add autoloading with proper namespaces.
 require_once __DIR__ . '/LimeSurveyWebDriver.php';
