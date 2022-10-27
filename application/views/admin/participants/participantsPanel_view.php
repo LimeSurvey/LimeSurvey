@@ -69,7 +69,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary" 
                    href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" 
                    role="button">
-                        <span class="fa fa-list text-success"></span>
+                        <span class="ri-list-check text-success"></span>
                         <?php eT("Display CPDB participants"); ?>
                     </a>
                 <?php elseif (
@@ -80,7 +80,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary" 
                    href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" 
                    role="button">
-                        <span class="fa fa-list text-success"></span>
+                        <span class="ri-list-check text-success"></span>
                         <?php eT("Display my CPDB participants"); ?>
                     </a>
                 <?php endif; ?>
@@ -89,7 +89,7 @@ App()->getClientScript()->registerScriptFile(
             <a class="btn btn-outline-secondary" 
                href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" 
                role="button">
-                    <span class="fa fa-list-alt text-success"></span>
+                    <span class="ri-list-unordered text-success"></span>
                     <?php eT("Summary"); ?>
                 </a>
 
@@ -109,7 +109,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary" 
                    href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" 
                    role="button">
-                        <span class="icon-global text-success"></span>
+                        <span class="ri-list-settings-line text-success"></span>
                         <?php eT("Blacklist settings"); ?>
                     </a>
 
@@ -148,7 +148,7 @@ App()->getClientScript()->registerScriptFile(
                 <?php if (isset($ownsAddParticipantsButton) && ($ownsAddParticipantsButton)) : ?>
                 <button class="btn btn-outline-secondary" 
                         id="addParticipantToCPP">
-                        <i class="fa fa-plus-circle text-success"></i>&nbsp;
+                        <i class="ri-add-circle-fill text-success"></i>&nbsp;
                         <?php eT("Add participant"); ?>
                     </button>
                 <?php endif; ?>
@@ -160,7 +160,7 @@ App()->getClientScript()->registerScriptFile(
                 <?php if (isset($ownsAddAttributeButton) && ($ownsAddAttributeButton)) : ?>
                 <button class="btn btn-outline-secondary" 
                         id="addParticipantAttributeName">
-                        <i class="fa fa-plus-circle text-success"></i>
+                        <i class="ri-add-circle-fill text-success"></i>
                         &nbsp;
                         <?php eT("Add new attribute"); ?>
                     </button>
@@ -170,7 +170,7 @@ App()->getClientScript()->registerScriptFile(
             <a class="btn btn-outline-secondary" 
                href="<?php echo $this->createUrl('admin/index'); ?>" 
                role="button">
-                    <span class="fa fa-backward"></span>
+                    <span class="ri-rewind-fill"></span>
                     &nbsp;
                     <?php eT('Back'); ?>
                 </a>

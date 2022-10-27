@@ -16,7 +16,7 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 'de
         'type'        => 'action',
         'action'      => 'delete',
         'url'         =>  App()->createUrl("responses/delete/", ['surveyId' => $_GET['surveyId']]),
-        'iconClasses' => 'fa fa-trash text-danger',
+        'iconClasses' => 'ri-delete-bin-fill text-danger',
         'text'        =>  gT('Delete'),
         'grid-reload' => 'yes',
 
@@ -74,7 +74,7 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 're
         'type'            => 'action',
         'action'          => 'export',
         'url'             =>  App()->createUrl('admin/export/sa/exportresults/surveyId/'.$_GET['surveyId']),
-        'iconClasses'     => 'fa fa-upload',
+        'iconClasses'     => 'ri-upload-fill',
         'text'            =>  gT('Export'),
 
         'aLinkSpecificDatas'  => [

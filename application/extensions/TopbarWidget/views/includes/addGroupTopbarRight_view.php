@@ -7,12 +7,12 @@
 
 <!-- Save -->
 <button id="save-button" class="btn btn-success float-end" type="button">
-    <i class="fa fa-check"></i>
+    <i class="ri-check-fill"></i>
     <?php eT('Save'); ?>
 </button>
 <!-- Back Button -->
 <a class="btn btn-outline-secondary" href="<?php echo $backUrl ?>">
-    <span class="fa fa-backward"></span>
+    <span class="ri-rewind-fill"></span>
     &nbsp;&nbsp;
     <?php eT('Back') ?>
 </a>

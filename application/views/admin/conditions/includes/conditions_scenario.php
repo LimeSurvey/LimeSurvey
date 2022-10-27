@@ -54,7 +54,7 @@
                                 data-onclick='(function() { document.getElementById("deletescenario<?php echo $scenarionr["scenario"]; ?>").submit(); })'
                                 onclick='return false;'
                             >
-                                <span class="fa fa-trash text-danger"></span>
+                                <span class="ri-delete-bin-fill text-danger"></span>
                             </button>
                         </span>
                         <button
@@ -64,7 +64,7 @@
                             id='editscenariobtn<?php echo $scenarionr['scenario']; ?>'
                             onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').toggle('slow'); return false"
                         >
-                            <span class="fa fa-pencil"></span>
+                            <span class="ri-pencil-fill"></span>
                         </button>
 
                         <button
@@ -73,7 +73,7 @@
                             title='<?php eT('Add condition to this scenario'); ?>'
                             onclick='addConditionToScenario("<?php echo $addConditionToScenarioURL; ?>"); return false'
                         >
-                            <span class='fa fa-plus-circle'></span>
+                            <span class='ri-add-circle-fill'></span>
                         </button>
 
 

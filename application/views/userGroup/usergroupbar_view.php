@@ -20,7 +20,7 @@ App()->getClientScript()->registerScriptFile(
                     <a class="btn btn-outline-secondary"
                        href="<?php echo $this->createUrl("userGroup/addGroup"); ?>"
                        title="<?php eT('Add a new user group'); ?>">
-                        <span class="icon-add text-success"></span>
+                        <span class="ri-add-circle-fill text-success"></span>
                         <?php eT("Add user group"); ?>
                     </a>
                 <?php endif; ?>
@@ -37,7 +37,7 @@ App()->getClientScript()->registerScriptFile(
                 <?php if (isset($usergroupbar['edit']) && (Yii::app()->session['loginID'] == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin',
                             'read'))) : ?>
                     <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("userGroup/edit/ugid/" . $userGroup->ugid); ?>">
-                        <span class="fa fa-pencil text-success"></span>
+                        <span class="ri-pencil-fill text-success"></span>
                         <?php eT("Edit current user group"); ?>
                     </a>
                 <?php endif; ?>
@@ -49,7 +49,7 @@ App()->getClientScript()->registerScriptFile(
                        href='#'
                        onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?",
                            "js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl('userGroup/deleteGroup?ugid=' . $userGroup->ugid)); ?>}'>
-                        <span class="fa fa-trash"></span>
+                        <span class="ri-delete-bin-fill"></span>
                         <?php eT("Delete current user group"); ?>
                     </a>
                 <?php endif; ?>
@@ -62,7 +62,7 @@ App()->getClientScript()->registerScriptFile(
             <?php if (isset($usergroupbar['closebutton']['url'])) : ?>
                 <a class="btn btn-danger"
                    href="<?php echo $usergroupbar['closebutton']['url']; ?>">
-                    <span class="fa fa-close"></span>
+                    <span class="ri-close-fill"></span>
                     <?php eT("Close"); ?>
                 </a>
             <?php endif; ?>
@@ -72,7 +72,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary"
                    style="margin-left:5px;"
                    href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>">
-                    <span class="fa fa-backward"></span>
+                    <span class="ri-rewind-fill"></span>
                         &nbsp;&nbsp;
                         <?php echo $usergroupbar['returnbutton']['text']; ?>
                 </a>
@@ -87,7 +87,7 @@ App()->getClientScript()->registerScriptFile(
                     form="<?php echo $usergroupbar['resetbutton']['form'] ?>"
                     id="reset-form-button"
                     		value="Reset">
-                        <span class="fa fa-refresh"></span>
+                        <span class="ri-refresh-line"></span>
                         <?php echo $usergroupbar['resetbutton']['text']; ?>
                     </button>
                 <?php endif; ?>

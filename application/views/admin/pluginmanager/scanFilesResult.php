@@ -45,7 +45,7 @@
                        data-post-url='<?= $scannedPlugin['deleteUrl'] ?>' 
                        data-message='<?php eT('Are you sure you want to delete this plugin from the file system?'); ?>' 
                        type='submit'>
-                        <i class='fa fa-trash text-danger'></i>&nbsp;
+                        <i class='ri-delete-bin-fill text-danger'></i>&nbsp;
                         <span data-bs-toggle='tooltip' 
                               title='<?php eT('Delete this plugin from the file system'); ?>'>Delete files</span>
                         </a>

@@ -21,13 +21,13 @@
     <a class="btn btn-outline-secondary"
        href="<?php echo Yii::app()->createUrl("admin/statistics/sa/index/", array('surveyid' => $surveyid)) ?>"
        id="clear-button">
-        <span class="fa fa-refresh text-success"></span>
+        <span class="ri-refresh-line text-success"></span>
         <?php eT("Clear"); ?>
     </a>
 <?php endif; ?>
 
 <a class="btn btn-danger"
    href="<?php echo Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $surveyid]); ?>">
-    <span class="fa fa-close"></span>
+    <span class="ri-close-fill"></span>
     <?php eT("Close"); ?>
 </a>

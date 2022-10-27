@@ -49,7 +49,7 @@
             'type'        => 'action',
             'action'      => 'changeLanguageSettings',
             'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/changeLanguageSettings'),
-            'iconClasses' => 'fa fa-external-link text-success',
+            'iconClasses' => ' ri-external-link-fill text-success',
             'text'        =>  gT("Change texts"),
             'grid-reload' => 'yes',
 
@@ -76,7 +76,7 @@
             'type'        => 'action',
             'action'      => 'delete',
             'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/delete'),
-            'iconClasses' => 'fa fa-trash text-danger',
+            'iconClasses' => 'ri-delete-bin-fill text-danger',
             'text'        =>  gT("Delete"),
             'grid-reload' => 'yes',
 

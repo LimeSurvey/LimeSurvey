@@ -1,8 +1,8 @@
 
 var defineActions = function (dataArray) {
     var iconRow = $('<div class="icon-btn-row"></div>');
-    var buttonEdit = $('<button><i class="fa fa-pencil"></i></button>');
-    var buttonDelete = $('<button><i class="fa fa-trash text-danger"></i></button>');
+    var buttonEdit = $('<button><i class="ri-pencil-fill"></i></button>');
+    var buttonDelete = $('<button><i class="ri-delete-bin-fill text-danger"></i></button>');
     var container = $('<div><div class="icon-btn-row"></div></div>');
     buttonEdit
         .addClass('btn btn-sm btn-outline-secondary surveysettings_edit_intparameter')

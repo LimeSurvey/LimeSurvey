@@ -23,7 +23,7 @@
                 data-toggle="collapse"
                 href="#help-<?= CHtml::getIdByName($inputBaseName); ?>"
             ><i
-                class="fa fa-question-circle text-info"
+                class="ri-question-fill text-info"
                 data-bs-toggle="tooltip"
                 title="<?= CHtml::encode(strip_tags($this->setting['help'])) ?>"
             > </i><span class="visually-hidden"><?= gT("Show help"); ?></span> </a>

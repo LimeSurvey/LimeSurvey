@@ -328,12 +328,12 @@ class UserGroup extends LSActiveRecord
         // Edit user group
         if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
             $url = Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-outline-secondary btn-sm green-border" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Edit user group') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
+            $button .= ' <a class="btn btn-outline-secondary btn-sm green-border" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Edit user group') . '" href="' . $url . '" role="button"><span class="ri-pencil-fill" ></span></a>';
         }
 
         // View users
         $url = Yii::app()->createUrl("userGroup/viewGroup/ugid/$this->ugid");
-        $button .= '<a class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('View users') . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
+        $button .= '<a class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('View users') . '" href="' . $url . '" role="button"><span class="ri-list-unordered" ></span></a>';
 
         // Mail to user group
         // Which permission should be checked for this button to be available?
@@ -342,7 +342,7 @@ class UserGroup extends LSActiveRecord
 
         // Delete user group
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $button .= '<button class="btn btn-outline-secondary btn-sm red-border action__delete-group" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Delete user group') . '" href="#delete-modal" data-toggle="modal" data-ugid="' . $this->ugid . '" role="button"><span class="fa fa-trash text-danger"></span></button>';
+            $button .= '<button class="btn btn-outline-secondary btn-sm red-border action__delete-group" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Delete user group') . '" href="#delete-modal" data-toggle="modal" data-ugid="' . $this->ugid . '" role="button"><span class="ri-delete-bin-fill text-danger"></span></button>';
         }
         $button .= "</div>";
         return $button;

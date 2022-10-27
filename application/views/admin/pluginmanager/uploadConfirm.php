@@ -58,7 +58,7 @@
         <div class="mb-3 col-12">
             <label class="col-2 form-label"><?php eT("Compatible"); ?></label>
             <?php if ($config->isCompatible()) : ?>
-                <span class="fa fa-check text-success"></span>
+                <span class="ri-check-fill text-success"></span>
             <?php else : ?>
                 <span class="fa fa-times text-warning"></span>
             <?php endif; ?>

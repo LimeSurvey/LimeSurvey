@@ -8,7 +8,7 @@
 
         <!-- Main button dropdown -->
         <button role="button" id="ls-question-group-tools-button" type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="icon-tools" ></span>
+            <span class="ri-tools-fill" ></span>
             <?php eT('Tools'); ?>&nbsp;<span class="caret"></span>
         </button>
 

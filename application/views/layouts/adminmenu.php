@@ -61,14 +61,15 @@
                 <!-- create survey -->
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <span class="icon-add"></span>
+                        <i class="ri-add-circle-fill"></i>
                         <?php eT("Create survey"); ?>
                     </a>
                 </li>
                 <!-- Surveys menus -->
                 <li class="dropdown-split-left nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>" class="nav-link">
-                        <span class="fa fa-list"></span>
+                        <!-- <span class="ri-list-check"></span> -->
+                        <i class="ri-list-check"></i>
                         <?php eT("Surveys"); ?>
                     </a>
                 </li>
@@ -97,7 +98,8 @@
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"><span class="icon-user"></span> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                    <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-end" role="menu">
                         <li>
                             <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">

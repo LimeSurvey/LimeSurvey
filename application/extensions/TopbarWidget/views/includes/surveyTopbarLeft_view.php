@@ -34,7 +34,7 @@
     <?php if ($canactivate): ?>
         <a class="btn btn-danger btntooltip"
            href="<?php echo App()->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]); ?>">
-            <i class="fa fa-stop-circle"></i>
+            <i class="ri-stop-circle-fill"></i>
             <?php eT("Stop this survey"); ?>
         </a>
     <?php endif; ?>
@@ -48,7 +48,7 @@
             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                 <?php if ($oSurvey->active == 'N'): ?>
-                    <span class="fa fa-eye"></span>
+                    <span class="ri-eye-fill"></span>
                     <?php eT('Preview survey'); ?>
                 <?php else: ?>
                     <span class="fa fa-play"></span>
@@ -74,13 +74,13 @@
            href="<?php echo App()->createUrl("survey/index", array('sid' => $oSurvey->sid, 'newtest' => "Y", 'lang' => $oSurvey->language)); ?>"
            role="button" accesskey='d' target='_blank'>
             <?php if ($oSurvey->active == 'N'): ?>
-                <span class="fa fa-eye"></span>
+                <span class="ri-eye-fill"></span>
                 <?php eT('Preview survey'); ?>
             <?php else: ?>
                 <span class="fa fa-play"></span>
                 <?php eT('Run survey'); ?>
             <?php endif; ?>
-            <i class="icon fa fa-external-link"></i>
+            <i class="icon  ri-external-link-fill"></i>
         </a>
     <?php endif; ?>
 <?php endif; ?>
@@ -92,7 +92,7 @@
         <!-- Main button dropdown -->
         <button id="ls-tools-button" type="button" class="btn btn-outline-secondary dropdown-toggle"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="icon-tools"></span>
+            <span class="ri-tools-fill"></span>
             <?php eT('Tools'); ?>&nbsp;<span class="caret"></span>
         </button>
 
@@ -104,7 +104,7 @@
                 <li>
                     <a class="dropdown-item"
                        href="<?php echo App()->createUrl("surveyAdministration/delete/", ['iSurveyID' => $sid]); ?>">
-                        <span class="fa fa-trash text-danger"></span>
+                        <span class="ri-delete-bin-fill text-danger"></span>
                         <?php eT("Delete survey"); ?>
                     </a>
                 </li>

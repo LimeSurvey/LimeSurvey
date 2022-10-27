@@ -642,7 +642,7 @@ class TemplateManifest extends TemplateConfiguration
             id='template_editor_link_" . $this->sTemplateName . "'
             href='" . $sEditorUrl . "'
             class='btn btn-outline-secondary btn-block'>
-                <span class='icon-templates'></span>
+                <span class='ri-brush-fill'></span>
                 " . gT('Theme editor') . "
             </a>";
 
@@ -673,7 +673,7 @@ class TemplateManifest extends TemplateConfiguration
               data-button-type="btn-danger"
               title="' . gT('Delete') . '"
               class="btn btn-danger btn-block selector--ConfirmModal">
-                  <span class="fa fa-trash "></span>
+                  <span class="ri-delete-bin-fill "></span>
                   ' . gT('Delete') . '
                   </a>';
         }

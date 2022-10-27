@@ -12,7 +12,7 @@
     <!-- Export -->
     <li>
         <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>">
-            <span class="icon-export"></span>
+            <span class="ri-upload-fill"></span>
             <?php eT("Export"); ?>
         </a>
     </li>

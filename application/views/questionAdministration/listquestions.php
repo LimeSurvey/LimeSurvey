@@ -100,7 +100,7 @@ $baseLanguage = $oSurvey->language;
                                 'questionAdministration/listquestions',
                                 ['surveyid' => $oSurvey->primaryKey]
                             ); ?>" class="btn btn-warning">
-                                <span class="fa fa-refresh"></span>
+                                <span class="ri-refresh-line"></span>
                                 <?php
                                 eT('Reset'); ?>
                             </a>

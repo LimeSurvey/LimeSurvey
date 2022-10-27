@@ -1,7 +1,7 @@
 <!-- Display tokens -->
 <?php if ($hasTokensReadPermission): ?>
     <a class="btn btn-outline-secondary pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="fa fa-list-alt text-success"></span>
+        <span class="ri-list-unordered text-success"></span>
         <?php eT("Display participants"); ?>
     </a>
 <?php endif; ?>
@@ -11,7 +11,7 @@
     <!-- Create tokens -->
     <div class="btn-group">
     <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="icon-add text-success"></span>
+        <span class="ri-add-circle-fill text-success"></span>
         <?php eT("Create...");?> <span class="caret"></span>
     </button>
 
@@ -20,7 +20,7 @@
     <?php if ($hasTokensCreatePermission): ?>
     <li>
         <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/addnew/surveyid/$oSurvey->sid"); ?>" >
-            <span class="icon-add"></span>
+            <i class="ri-add-circle-fill"></i>
             <?php eT("Add participant"); ?>
         </a>
     </li>
@@ -28,7 +28,7 @@
     <!-- Create dummy tokens -->
     <li>
         <a class="pjax dropdown-item"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/adddummies/surveyid/$oSurvey->sid"); ?>" >
-            <span class="fa fa-plus-square"></span>
+            <span class="ri-add-box-fill"></span>
             <?php eT("Create dummy participants"); ?>
         </a>
     </li>
@@ -164,7 +164,7 @@
 
     <!-- View participants of this survey in CPDB -->
     <a class="btn btn-outline-secondary" href="#" role="button" onclick="window.LS.sendPost('<?php echo Yii::App()->createUrl("/admin/participants/sa/displayParticipants"); ?>',false,{'searchcondition': 'surveyid||equal|| <?php echo $oSurvey->sid ?>'});">
-        <i class="fa fa-users text-success"></i>
+        <i class="ri-group-fill text-success"></i>
         <?php eT("View in CPDB"); ?>
     </a>
 <?php endif; ?>

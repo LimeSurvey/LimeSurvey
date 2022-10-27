@@ -61,7 +61,7 @@
     <div id="ParticipantAttributeNamesDropdownEdit" class="row ex-form-group mb-3" style="display: none;">
         <div class="row">
             <div class="col-2">
-                <button class="btn btn-outline-secondary btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="fa fa-plus-circle text-success"></i></button>
+                <button class="btn btn-outline-secondary btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i class="ri-add-circle-fill text-success"></i></button>
             </div>
             <h4 class="col-8 col-offset-2"><?php eT("Dropdown fields") ?></h4>
         </div>
@@ -77,7 +77,7 @@
                     echo "</div>";
                     echo '<div class="col-1">
                             <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
-                                <i class="fa fa-trash text-danger"></i>
+                                <i class="ri-delete-bin-fill text-danger"></i>
                             </button>
                         </div>
                     </div>';
@@ -89,7 +89,7 @@
                 </div>
                 <div class="col-1">
                     <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
-                        <i class="fa fa-trash text-danger"></i>
+                        <i class="ri-delete-bin-fill text-danger"></i>
                     </button>
                 </div>
             </div>
@@ -107,7 +107,7 @@
             </div>
             <div class="col-1">
                 <button class="btn btn-outline-secondary ex-form-group mb-3" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
-                    <i class="fa fa-plus-circle text-success"></i>
+                    <i class="ri-add-circle-fill text-success"></i>
                 </button>
             </div>
         </div>
@@ -124,7 +124,7 @@
                             </div>
                             <div class="col-1">
                                 <button class="btn btn-outline-secondary ex-form-group mb-3 action_delLanguageField">
-                                    <i class="fa fa-trash text-danger"></i>
+                                    <i class="ri-delete-bin-fill text-danger"></i>
                                 </button>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                             </div>
                             <div class="col-1">
                                 <button class="btn btn-outline-secondary ex-form-group mb-3 action_delLanguageField">
-                                    <i class="fa fa-trash text-danger"></i>
+                                    <i class="ri-delete-bin-fill text-danger"></i>
                                 </button>
                             </div>
                         </div>
@@ -163,7 +163,7 @@
                     </div>
                     <div class="col-1">
                         <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
-                            <i class="fa fa-trash text-danger"></i>
+                            <i class="ri-delete-bin-fill text-danger"></i>
                         </button>
                     </div>
                 </div>

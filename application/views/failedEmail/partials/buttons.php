@@ -16,7 +16,7 @@
             class="btn btn-default btn-sm failedemail-action-modal-open"
             data-href="<?= App()->createUrl('/failedEmail/modalcontent', ['id' => $id]) ?>"
             data-contentFile="email_content">
-        <i class="fa fa-search"></i>
+        <i class="ri-search-line"></i>
     </button>
     <button data-toggle="tooltip" title="<?= gT("Error message") ?>"
             class="btn btn-default btn-sm failedemail-action-modal-open"
@@ -29,6 +29,6 @@
             data-href="<?= App()->createUrl('/failedEmail/modalcontent', ['id' => $id]) ?>"
             data-contentFile="delete_form"
             <?= !$permissions['delete'] ? "disabled='disabled'" : "" ?>>
-        <i class="fa fa-trash text-danger"></i>
+        <i class="ri-delete-bin-fill text-danger"></i>
     </button>
 </div>

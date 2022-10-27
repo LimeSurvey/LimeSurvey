@@ -1,7 +1,7 @@
 <?php if (!empty($closeBtnUrl)) : ?>
 <!-- Close -->
 <a class="btn btn-danger" href="<?php echo $closeBtnUrl; ?>">
-    <span class="fa fa-close"></span>
+    <span class="ri-close-fill"></span>
     <?php eT("Close");?>
 </a>
 <?php endif; ?>
@@ -9,19 +9,19 @@
 <!-- White Close button -->
 <?php if (!empty($showWhiteCloseButton)) : ?>
     <a class="btn btn-outline-secondary" href="<?php echo $closeUrl ?>">
-        <span class="fa fa-close"></span>
+        <span class="ri-close-fill"></span>
         <?php eT("Close"); ?>
     </a>
 <?php endif; ?>
 
 <!-- Save and close -->
 <a id="save-and-close-button" class="btn btn-outline-secondary">
-    <i class="fa fa-check-square"></i>
+    <i class="ri-checkbox-fill"></i>
     <?php eT("Save and close");?>
 </a>
 
 <!-- Save -->
 <a id="save-button" class="btn btn-success" role="button">
-    <i class="fa fa-check"></i>
+    <i class="ri-check-fill"></i>
     <?php eT("Save");?>
 </a>

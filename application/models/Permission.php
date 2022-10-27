@@ -802,19 +802,19 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Users"),
                 'description' => gT("Permission to create, view, update and delete users"),
-                'img' => ' fa fa-shield',
+                'img' => ' ri-shield-check-fill',
             ),
             'usergroups' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("User groups"),
                 'description' => gT("Permission to create, view, update and delete user groups"),
-                'img' => ' fa fa-users',
+                'img' => ' ri-group-fill',
             ),
             'templates' => array(
                 'title' => gT("Themes"),
                 'description' => gT("Permission to create, view, update, delete, export and import themes"),
-                'img' => ' fa fa-paint-brush',
+                'img' => ' ri-brush-fill',
             ),
             'labelsets' => array(
                 'title' => gT("Label sets"),

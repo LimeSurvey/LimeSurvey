@@ -21,7 +21,7 @@
                     'type'        => 'action',
                     'action'      => 'delete',
                     'url'         => App()->createUrl('/surveyAdministration/deleteMultiple/'),
-                    'iconClasses' => 'fa fa-trash text-danger',
+                    'iconClasses' => 'ri-delete-bin-fill text-danger',
                     'text'        =>  gT('Delete'),
                     'grid-reload' => 'yes',
 
@@ -48,7 +48,7 @@
                     'type'        => 'action',
                     'action'      => 'updateTheme',
                     'url'         =>  App()->createUrl('/surveyAdministration/changeMultipleTheme/'),
-                    'iconClasses' => 'icon-templates',
+                    'iconClasses' => 'ri-brush-fill',
                     'text'        =>  gT("Survey theme"),
                     'grid-reload' => 'no',
                     // modal
@@ -67,7 +67,7 @@
                     'type'        => 'action',
                     'action'      => 'updateSurveygroup',
                     'url'         =>  App()->createUrl('/surveyAdministration/changeMultipleSurveyGroup/'),
-                    'iconClasses' => 'fa fa-group',
+                    'iconClasses' => 'ri-group-fill',
                     'text'        =>  gT("Survey group"),
                     'grid-reload' => 'yes',
                     // modal
@@ -101,7 +101,7 @@
                     'type'        => 'action',
                     'action'      => 'export',
                     'url'         => App()->createUrl('/admin/export/sa/exportMultipleArchiveSurveys/'),
-                    'iconClasses' => 'icon-export',
+                    'iconClasses' => 'ri-upload-fill',
                     'text'        =>  gT("Survey archive (*.lsa)"),
 
                     // modal
@@ -121,7 +121,7 @@
                     'type'        => 'action',
                     'action'      => 'export',
                     'url'         =>  App()->createUrl('/admin/export/sa/exportMultipleStructureSurveys/'),
-                    'iconClasses' => 'icon-export',
+                    'iconClasses' => 'ri-upload-fill',
                     'text'        =>  gT("Survey structure (*.lss)"),
 
                     // modal
@@ -140,7 +140,7 @@
                     'type'        => 'action',
                     'action'      => 'export',
                     'url'         =>  App()->createUrl('/admin/export/sa/exportMultiplePrintableSurveys/'),
-                    'iconClasses' => 'icon-export',
+                    'iconClasses' => 'ri-upload-fill',
                     'text'        =>  gT("Printable survey (*.html)"),
                     // modal
                     'actionType'  => 'modal',
@@ -157,7 +157,7 @@
                     'type'        => 'action',
                     'action'      => 'expire',
                     'url'         =>  App()->createUrl('/surveyAdministration/expireMultipleSurveys/'),
-                    'iconClasses' => 'icon-expired',
+                    'iconClasses' => 'ri-skip-forward-fill',
                     'text'        =>  gT("Set expiry date"),
                     'grid-reload' => 'yes',
                     // modal

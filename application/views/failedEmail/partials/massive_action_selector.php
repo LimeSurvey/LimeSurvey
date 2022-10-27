@@ -9,7 +9,7 @@ $buttons[] = [
     'type'          => 'action',
     'action'        => 'delete',
     'url'           => App()->createUrl("failedEmail/delete/", ['surveyId' => $surveyId]),
-    'iconClasses'   => 'fa fa-trash text-danger',
+    'iconClasses'   => 'ri-delete-bin-fill text-danger',
     'text'          => gT('Delete'),
     'grid-reload'   => 'yes',
     'disabled'      => !$permissions['delete'],

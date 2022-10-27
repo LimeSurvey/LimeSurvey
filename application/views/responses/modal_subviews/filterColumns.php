@@ -25,12 +25,12 @@
                 <div class="modal-body">
                     <div class="responses-column-filter-modal-checkbox-buttons">
                         <button role="button" type="button" id="responses-column-filter-modal-selectall" class="btn btn-outline-secondary">
-                            <span class="fa fa-check"></span>
+                            <span class="ri-check-fill"></span>
                             &nbsp;
                             <?php eT("Select all"); ?>
                         </button>
                         <button role="button" type="button" id="responses-column-filter-modal-clear" class="btn btn-outline-secondary">
-                            <span class="fa fa-trash text-danger"></span>
+                            <span class="ri-delete-bin-fill text-danger"></span>
                             &nbsp;
                             <?php eT("Clear selection"); ?>
                         </button>

@@ -4,7 +4,7 @@
 /** @var string $descp */
 /** @var boolean $sessionWritable */
 
-$iconOk = "<span class='fa fa-check text-success'></span>";
+$iconOk = "<span class='ri-check-fill text-success'></span>";
 $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
 
 ?>
@@ -61,22 +61,22 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
                 </tr>
                 <tr>
                        <td><?php eT("PHP mbstring library"); ?></td>
-                       <td><span class='fa fa-check text-success'></span></td>
+                       <td><span class='ri-check-fill text-success'></span></td>
                        <td><?= $model->isPhpMbStringPresent ? $iconOk : $iconFail ?></td>
                 </tr>
                 <tr>
                        <td><?php eT("PHP fileinfo library"); ?></td>
-                       <td><span class='fa fa-check text-success'></span></td>
+                       <td><span class='ri-check-fill text-success'></span></td>
                        <td><?= $model->isPhpFileInfoPresent ? $iconOk : $iconFail ?></td>
                 </tr>
                 <tr>
                        <td><?php eT("PHP zlib library");?></td>
-                       <td><span class='fa fa-check text-success'></span></td>
+                       <td><span class='ri-check-fill text-success'></span></td>
                        <td><?= $model->isPhpZlibPresent ? $iconOk : $iconFail ?></td>
                 </tr>
                 <tr>
                        <td><?php eT("PHP/PECL JSON library"); ?></td>
-                       <td><span class='fa fa-check text-success'></span></td>
+                       <td><span class='ri-check-fill text-success'></span></td>
                        <td><?= $model->isPhpJsonPresent ? $iconOk : $iconFail ?></td>
                 </tr>
                 <tr>
@@ -96,7 +96,7 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
                 </tr>
                 <tr>
                        <td><?php eT("Session writable"); ?></td>
-                       <td><span class='fa fa-check text-success'></span></td>
+                       <td><span class='ri-check-fill text-success'></span></td>
                        <td>
                            <?= $sessionWritable ? $iconOk : $iconFail.'<br/>session.save_path: ' . session_save_path(); ?>
                        </td>
@@ -116,7 +116,7 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
         <tbody>
         <tr>
                <td><?php eT("PHP GD library"); ?></td>
-               <td><span class='fa fa-check text-success'></span></td>
+               <td><span class='ri-check-fill text-success'></span></td>
                <td>
                     <?php if ($model->isPhpGdPresent): ?>
                         <?= $model->phpGdHasJpegSupport ? $iconOk : $iconFail . '<br/>' . gT("The GD extension found doesn't support JPEG") ?>
@@ -127,23 +127,23 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
         </tr>
         <tr>
                <td><?php eT("PHP LDAP library"); ?></td>
-               <td><span class='fa fa-check text-success'></span></td>
+               <td><span class='ri-check-fill text-success'></span></td>
                <td><?= $model->isPhpLdapPresent ? $iconOk : $iconFail ?></td>
         </tr>
         <tr>
                <td><?php eT("PHP zip library"); ?></td>
-               <td><span class='fa fa-check text-success'></span></td>
+               <td><span class='ri-check-fill text-success'></span></td>
                <td><?= $model->isPhpZipPresent ? $iconOk : $iconFail ?></td>
         </tr>
         <tr>
                <td><?php eT("PHP imap library"); ?></td>
-               <td><span class='fa fa-check text-success'></span></td>
+               <td><span class='ri-check-fill text-success'></span></td>
                <td><?= $model->isPhpImapPresent ? $iconOk : $iconFail ?></td>
         </tr>
         <tr>
                 
                <td><?php eT("PHP Sodium library [data encryption]"); ?></td>
-               <td><span class='fa fa-check text-success' alt="Check"></span></td>
+               <td><span class='ri-check-fill text-success' alt="Check"></span></td>
                <td><?= $model->isSodiumPresent ? $iconOk : $iconFail ?></td>
         </tr>
         </tbody>

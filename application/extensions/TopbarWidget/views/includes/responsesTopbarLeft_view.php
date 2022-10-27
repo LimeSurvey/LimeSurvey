@@ -2,7 +2,7 @@
 <?php if ($hasResponsesReadPermission): ?>
     <a class="btn btn-outline-secondary pjax"
        href='<?php echo Yii::App()->createUrl("responses/index/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-        <span class="fa fa-list-alt text-success"></span>
+        <span class="ri-list-unordered text-success"></span>
         <?php eT("Summary"); ?>
     </a>
 <?php endif; ?>
@@ -11,7 +11,7 @@
     <!-- Display Responses -->
     <a class="btn btn-outline-secondary pjax"
        href='<?php echo Yii::App()->createUrl("responses/browse/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-        <span class="fa fa-list text-success"></span>
+        <span class="ri-list-check text-success"></span>
         <?php eT("Display responses"); ?>
     </a>
 <?php endif; ?>
@@ -50,7 +50,7 @@
     <div class="btn-group">
         <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-            <span class="icon-export text-success"></span>
+            <span class="ri-upload-fill text-success"></span>
             <?php eT("Export"); ?> <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
@@ -89,7 +89,7 @@
     <div class="btn-group">
         <button type="button" role="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-            <span class="icon-import text-success"></span>
+            <span class="ri-upload-fill text-success"></span>
             <?php eT("Import"); ?> <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
@@ -153,7 +153,7 @@
         title="<?php eT('Batch deletion') ?>"
         class="btn btn-outline-secondary selector--ConfirmModal">
 
-        <span class="fa fa-trash text-danger"></span>
+        <span class="ri-delete-bin-fill text-danger"></span>
         <?php eT("Batch deletion"); ?>
     </a>
 <?php endif; ?>

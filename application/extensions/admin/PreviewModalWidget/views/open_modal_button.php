@@ -14,7 +14,9 @@
         ?>
         >
         <?php if ($this->iconPosition === 'front') : ?>
-            <i class="fa fa-folder-open"></i>&nbsp;&nbsp;
+            <!-- <i class="fa fa-folder-open"></i>&nbsp;&nbsp; -->
+            <i class="ri-folder-line"></i>&nbsp;&nbsp;
+
         <?php endif; ?>
         <span class="buttontext" id="selector__<?=$this->widgetsJsName?>--buttonText">
             <?= $this->currentSelected ?>
@@ -26,7 +28,8 @@
         </span>
         <?php if ($this->iconPosition === 'back') : ?>
             &nbsp;&nbsp;&nbsp;
-            <i class="fa fa-folder-open"></i>           
+            <!-- <i class="fa fa-folder-open"></i>  -->
+            <i class="ri-folder-line"></i>           
         <?php endif; ?>
     </button>
 </div>

@@ -43,7 +43,7 @@
                                     <div class=""><?php eT("Add new question to group");?></div>
                                 </div>
                                 <div class="card-body">
-                                    <span class="icon-add text-success"  style="font-size: 3em;"></span>
+                                    <span class="ri-add-circle-fill text-success"  style="font-size: 3em;"></span>
                                     <p class='btn-link'>
                                             <?php eT("Add new question to group");?>
                                     </p>

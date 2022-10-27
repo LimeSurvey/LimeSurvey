@@ -20,7 +20,7 @@ if ($hasResponsesReadPermission) {
     $buttons['summary'] = [
         'class' => 'btn-outline-secondary pjax',
         'url'   => $this->createUrl("responses/index/", ['surveyId' => $survey->sid]),
-        'icon'  => 'fa fa-list-alt',
+        'icon'  => 'ri-list-unordered',
         'iconclass' => 'text-success',
         'name' => gT('Summary'),
     ];
@@ -30,7 +30,7 @@ if ($hasResponsesReadPermission) {
     $buttons['display_responses'] = [
         'name' => gT('Display responses'),
         'class' => 'btn btn-outline-secondary pjax',
-        'icon' => 'fa fa-list-alt',
+        'icon' => 'ri-list-unordered',
         'iconclass' => 'text-success',
         'url' => $this->createUrl("responses/browse/", ['surveyId' => $survey->sid]),
     ];
@@ -44,7 +44,7 @@ if ($hasResponsesCreatePermission) {
         'name' => gT('Data entry'),
         'class' => 'btn btn-outline-secondary pjax',
         'url' => $this->createUrl("admin/dataentry/sa/view/surveyid/$survey->sid"),
-        'icon' => 'fa fa-list-alt',
+        'icon' => 'ri-list-unordered',
         'iconclass' => 'text-success',
     ];
     array_push($topBar['alignment']['left']['buttons'], $buttons['data_entry']);
@@ -102,7 +102,7 @@ if ($hasResponsesExportPermission) {
             'datatoggle' => 'dropdown',
             'ariahaspopup' => true,
             'ariaexpanded' => false,
-            'icon' => 'icon-export text-success',
+            'icon' => 'ri-upload-fill text-success',
             'iconclass' => 'caret',
             'id' => 'export-button',
             'class' => 'dropdown-toggle',
@@ -136,7 +136,7 @@ if ($hasResponsesCreatePermission) {
             'ariahaspopup' => true,
             'ariaexpanded' => false,
             'class' => 'btn-outline-secondary',
-            'icon' => 'icon-import text-success',
+            'icon' => 'ri-upload-fill text-success',
             'iconclass' => 'caret'
         ],
         'dropdown' => [
@@ -181,7 +181,7 @@ if ($hasResponsesDeletePermission) {
         ],
         'title' => gT('Batch deletion'),
         'class' => 'btn-outline-secondary selector--ConfirmModal',
-        'icon'  => 'fa fa-trash text-danger',
+        'icon'  => 'ri-delete-bin-fill text-danger',
 
     ];
     array_push($topBar['alignment']['left']['buttons'], $buttons['batch_deletion']);
