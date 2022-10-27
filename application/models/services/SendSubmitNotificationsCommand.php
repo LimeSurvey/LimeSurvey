@@ -498,17 +498,7 @@ class SendSubmitNotificationsCommand
      */
     public function getEmailNotificationTo(array $emails): array
     {
-        $result = $emails['admin_notification'] ?? [];
-        if (!empty($this->thissurvey['emailnotificationto']) && empty($emails)) {
-            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailnotificationto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
-            foreach ($aRecipient as $sRecipient) {
-                $sRecipient = trim($sRecipient);
-                if ($this->mailer::validateAddress($sRecipient)) {
-                    $result[] = $sRecipient;
-                }
-            }
-        }
-        return $result;
+        return $this->getEmailMisc($emails, ['admin' => 'admin_notification', 'to' => 'emailnotificationto']);
     }
 
     /**
@@ -519,9 +509,22 @@ class SendSubmitNotificationsCommand
      */
     public function getEmailResponseTo(array $emails): array
     {
-        $result = $emails['admin_responses'] ?? [];
-        if (!empty($this->thissurvey['emailresponseto']) && empty($emails)) {
-            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey['emailresponseto'], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
+        return $this->getEmailMisc($emails, ['admin' => 'admin_responses', 'to' => 'emailresponseto']);
+    }
+
+    /**
+     * Helper function to remove code duplication
+     * Used by getEmailNotificationTo and getEmailResponseTo
+     *
+     * @param array $emails
+     * @param array{admin: string, to: string} $keys
+     * @return array
+     */
+    private function getEmailMisc($emails, array $keys)
+    {
+        $result = $emails[$keys['admin']] ?? [];
+        if (!empty($this->thissurvey[$keys['to']]) && empty($emails)) {
+            $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($this->thissurvey[$keys['to']], array('ADMINEMAIL' => $this->thissurvey['adminemail']), 3, true));
             foreach ($aRecipient as $sRecipient) {
                 $sRecipient = trim($sRecipient);
                 if ($this->mailer::validateAddress($sRecipient)) {
