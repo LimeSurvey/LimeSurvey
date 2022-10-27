@@ -105,6 +105,17 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $this->assertEquals(['moo@moo.moo', 'foo@foo.foo'], $result);
     }
 
+    public function testGetResponseId()
+    {
+        $mailer = new LimeMailer();
+        $session = $this->getMockSession();
+        $surveyinfo = [
+            'htmlemail'       => false,
+        ];
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $result = $ssnc->getResponseId();
+    }
+
     private function getMockSession()
     {
         return new class implements SessionInterface {
