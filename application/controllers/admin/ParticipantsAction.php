@@ -1454,7 +1454,10 @@ class ParticipantsAction extends SurveyCommonAction
                 }
             } else {
                 // custom participant attributes
-                $oAttributes = ParticipantAttribute::model()->findAll("attribute_id=:attribute_id", array("attribute_id" => $attributeId));
+                $oAttributes = ParticipantAttribute::model()->findAll(
+                    'attribute_id = :attribute_id',
+                    array(':attribute_id' => $attributeId)
+                );
                 foreach ($oAttributes as $attribute) {
                     $aUpdateData = array();
                     if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
@@ -1463,7 +1466,15 @@ class ParticipantsAction extends SurveyCommonAction
                         $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                     }
                     if (!empty($aUpdateData) && $aUpdateData['value'] !== null) {
-                        $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='" . $attributeId . "' AND participant_id = '" . $attribute->participant_id . "'");
+                        $oDB->createCommand()->update(
+                            '{{participant_attribute}}',
+                            $aUpdateData,
+                            'attribute_id = :attribute_id AND participant_id = :participant_id',
+                            array(
+                                ':attribute_id' => $attributeId,
+                                ':participant_id' => $attribute->participant_id
+                            )
+                        );
                     }
                 }
             }
@@ -1607,7 +1618,15 @@ class ParticipantsAction extends SurveyCommonAction
                     $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                 }
                 if (!empty($aUpdateData)) {
-                    $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='" . $iAttributeId . "' AND participant_id = '" . $attribute->participant_id . "'");
+                    $oDB->createCommand()->update(
+                        '{{participant_attribute}}',
+                        $aUpdateData,
+                        "attribute_id = :attribute_id AND participant_id = :participant_id",
+                        array(
+                            ':attribute_id' => $iAttributeId,
+                            ':participant_id' => $attribute->participant_id
+                        )
+                    );
                 }
             }
 
@@ -1670,7 +1689,7 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function deleteSingleAttribute()
     {
-        $attribute_id = Yii::app()->request->getPost('attribute_id');
+        $attribute_id = (int) Yii::app()->request->getPost('attribute_id');
         ParticipantAttributeName::model()->delAttribute($attribute_id);
         $this->ajaxHelper::outputSuccess(gT("Attribute successfully deleted"));
     }
@@ -1689,6 +1708,7 @@ class ParticipantsAction extends SurveyCommonAction
 
         $request = Yii::app()->request;
         $attributeIds = json_decode($request->getPost('sItems'));
+        $attributeIds = array_map('sanitize_int', $attributeIds);
 
         $deletedAttributes = 0;
 
@@ -1933,8 +1953,8 @@ class ParticipantsAction extends SurveyCommonAction
      */
     public function delAttributeValues()
     {
-        $iAttributeId = Yii::app()->request->getQuery('aid');
-        $iValueId = Yii::app()->request->getQuery('vid');
+        $iAttributeId = (int) Yii::app()->request->getQuery('aid');
+        $iValueId = (int) Yii::app()->request->getQuery('vid');
         ParticipantAttributeName::model()->delAttributeValues($iAttributeId, $iValueId);
         Yii::app()->getController()->redirect(array('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
     }
@@ -2471,7 +2491,7 @@ class ParticipantsAction extends SurveyCommonAction
         $overwriteman = Yii::app()->request->getPost('overwriteman', false);
         $createautomap = Yii::app()->request->getPost('createautomap');
 
-        $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
+        $response = Participant::model()->copyToCentral((int) Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
 
         echo "<p>";
         printf(gT("%s participants have been copied to the central participants table"), "<span class='badge alert-success'>" . $response['success'] . "</span>&nbsp;");
@@ -2502,7 +2522,7 @@ class ParticipantsAction extends SurveyCommonAction
         $participantIdsString = Yii::app()->request->getPost('participant_id'); // TODO: This is a comma separated string of ids
         $participantIds = explode(",", $participantIdsString);
 
-        $surveyId = Yii::app()->request->getPost('surveyid');
+        $surveyId = (int)Yii::app()->request->getPost('surveyid');
 
         /**
          * mapped can take values like

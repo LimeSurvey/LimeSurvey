@@ -8309,11 +8309,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     public function getAnswerSetsForEM($surveyid = null, $lang = null)
     {
         $where = ' 1=1';
+        $db = Yii::app()->db;
         if (!is_null($surveyid)) {
+            $surveyid = (int) $surveyid;
             $where .= " and a.qid = q.qid and q.sid = " . $surveyid;
         }
         if (!is_null($lang)) {
-            $where .= " and l.language='" . $lang . "'";
+            $lang = sanitize_languagecode($lang);
+            $where .= " and l.language={$db->quoteValue($lang)}";
         }
 
         $sQuery = "SELECT a.qid, a.code, l.answer, a.scale_id, a.assessment_value"

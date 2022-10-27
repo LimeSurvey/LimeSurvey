@@ -20,8 +20,6 @@ use Composer\Semver\VersionParser;
 
 
 
-
-
 class InstalledVersions
 {
 private static $installed = array (
@@ -32,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'd459f75b595702dd4e5cd5deb2afbe785e6f0f06',
+    'reference' => 'bfef00a9a0e734b1222cb613e2e9c36ca2aa1119',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -44,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'd459f75b595702dd4e5cd5deb2afbe785e6f0f06',
+      'reference' => 'bfef00a9a0e734b1222cb613e2e9c36ca2aa1119',
     ),
     'paragonie/constant_time_encoding' => 
     array (
@@ -66,12 +64,12 @@ private static $installed = array (
     ),
     'paragonie/sodium_compat' => 
     array (
-      'pretty_version' => 'v1.18.0',
-      'version' => '1.18.0.0',
+      'pretty_version' => 'v1.19.0',
+      'version' => '1.19.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '906e0b925895d3a5941eda25f371fbafb3cbc22f',
+      'reference' => 'cb15e403ecbe6a6cc515f855c310eb6b1872a933',
     ),
     'phpseclib/bcmath_compat' => 
     array (
@@ -139,13 +137,12 @@ private static $installed = array (
     ),
     'yiisoft/yii' => 
     array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
+      'pretty_version' => '1.1.26',
+      'version' => '1.1.26.0',
       'aliases' => 
       array (
-        0 => '1.1.x-dev',
       ),
-      'reference' => '89ff97cd81bcec982c4f8b1325a8cdc10a14b2f6',
+      'reference' => 'bda32f68713d4501d3fe9571e09e4b2fa06c53b7',
     ),
   ),
 );
@@ -164,6 +161,7 @@ $packages = array();
 foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
+
 
 if (1 === \count($packages)) {
 return $packages[0];
@@ -356,7 +354,6 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
-
 
 
 
