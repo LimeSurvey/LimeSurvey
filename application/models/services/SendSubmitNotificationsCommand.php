@@ -495,6 +495,14 @@ class SendSubmitNotificationsCommand
     }
 
     /**
+     * Wrapper, since getExtendedAnswer is used in other places and we want to mock it.
+     */
+    public function getExtendedAnswer(string $fieldname, string $idrowFieldname, string $languageCode): string
+    {
+        return getExtendedAnswer($this->surveyId, $fieldname, $idrowFieldname, $languageCode);
+    }
+
+    /**
      * Create array of recipients for emailnotifications
      *
      * @param array $emails
@@ -537,13 +545,5 @@ class SendSubmitNotificationsCommand
             }
         }
         return $result;
-    }
-
-    /**
-     * Wrapper, since getExtendedAnswer is used in other places and we want to mock it.
-     */
-    private function getExtendedAnswer(string $fieldname, string $idrowFieldname, string $languageCode): string
-    {
-        return getExtendedAnswer($this->surveyId, $fieldname, $idrowFieldname, $languageCode);
     }
 }

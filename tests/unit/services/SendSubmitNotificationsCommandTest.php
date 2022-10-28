@@ -317,14 +317,14 @@ class SendSubmitNotificationsCommandTest extends TestCase
             'sid' => 0
         ];
 
-        /*
         $ssnc = $this
             ->getMockBuilder(SendSubmitNotificationsCommand::class)
             ->setConstructorArgs([$surveyinfo, $mailer, $session])
+            ->onlyMethods([])
             ->getMock($surveyinfo, $mailer, $session);
-         */
+        //$ssnc->method('getExtendedAnswer')->willReturn(123);
 
-        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        //$ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         
         $sd = $this->getMockBuilder(SurveyDynamic::class)
             ->disableOriginalConstructor()
