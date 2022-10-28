@@ -7,6 +7,7 @@ use LimeExpressionManager;
 use Permission;
 use CHtml;
 use CException;
+use CController;
 use FailedEmail;
 use InvalidArgumentException;
 use Survey;
@@ -96,7 +97,7 @@ class SendSubmitNotificationsCommand
         $this->mailer->aUrlsPlaceholders = ['VIEWRESPONSE','EDITRESPONSE','STATISTICS'];
 
         $responseId          = $this->getResponseId();
-        $replacementVars     = $this->getReplacementVars($responseId);
+        $replacementVars     = $this->getReplacementVars($responseId, App()->getController());
         $emailLanguage       = $this->getLanguage();
         $emailNotificationTo = $this->getEmailNotificationTo($emails);
         $emailResponseTo     = $this->getEmailResponseTo($emails);
@@ -459,20 +460,19 @@ class SendSubmitNotificationsCommand
 
     /**
      * Get replacement vars for EM
+     *
+     * @return array<string, string>
      */
-    public function getReplacementVars(?int $responseId): array
+    public function getReplacementVars(?int $responseId, CController $controller): array
     {
         $replacementVars = [];
-        $replacementVars['STATISTICSURL'] = App()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$this->surveyId}");
+        $replacementVars['STATISTICSURL'] = $controller->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$this->surveyId}");
         $replacementVars['ANSWERTABLE'] = '';
 
-        $surveyData = $this->session->get('survey_' . $this->surveyId, null);
-        if (!isset($surveyData['srid'])) {
-            // Do nothing
-        } elseif ($responseId !== null) {
+        if ($responseId !== null) {
             // ReplacementVars for LEM requiring a response id
-            $replacementVars['EDITRESPONSEURL'] = App()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$this->surveyId}/id/{$responseId}");
-            $replacementVars['VIEWRESPONSEURL'] = App()->getController()->createAbsoluteUrl("responses/view/", ['surveyId' => $this->surveyId, 'id' => $responseId]);
+            $replacementVars['EDITRESPONSEURL'] = $controller->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$this->surveyId}/id/{$responseId}");
+            $replacementVars['VIEWRESPONSEURL'] = $controller->createAbsoluteUrl("responses/view/", ['surveyId' => $this->surveyId, 'id' => $responseId]);
         }
         return $replacementVars;
     }

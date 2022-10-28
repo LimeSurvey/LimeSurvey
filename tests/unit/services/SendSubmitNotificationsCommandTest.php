@@ -7,6 +7,7 @@ use LimeSurvey\Models\Services\SendSubmitNotificationsCommand;
 use LimeSurvey\Models\Services\SessionInterface;
 use LimeMailer;
 use Yii;
+use UserManagementController;
 
 // Needed because Session is final class and can't be mocked
 class DummySession implements SessionInterface {
@@ -43,7 +44,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $mailer = $this
             ->getMockBuilder(LimeMailer::class)
             ->getMock();
-        $session = $this->getMockSession();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail' => false,
             'sid' => 0
@@ -56,7 +57,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
     public function testGetEmailResponseToOneEmail()
     {
         $mailer = new LimeMailer();
-        $session = $this->getMockSession();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail'       => false,
             'emailresponseto' => 'moo@moo.moo',
@@ -72,7 +73,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
     public function testGetEmailResponseToTwoEmail()
     {
         $mailer = new LimeMailer();
-        $session = $this->getMockSession();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail'       => false,
             'emailresponseto' => 'moo@moo.moo;foo@foo.foo',
@@ -90,7 +91,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $mailer = $this
             ->getMockBuilder(LimeMailer::class)
             ->getMock();
-        $session = $this->getMockSession();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail' => false,
             'sid' => 0
@@ -103,7 +104,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
     public function testGetEmailNotificationToOneEmail()
     {
         $mailer = new LimeMailer();
-        $session = $this->getMockSession();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail'       => false,
             'emailnotificationto' => 'moo@moo.moo',
@@ -119,7 +120,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
     public function testGetEmailNotificationToTwoEmail()
     {
         $mailer = new LimeMailer();
-        $session = $this->getMockSession();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail'       => false,
             'emailnotificationto' => 'moo@moo.moo;foo@foo.foo',
@@ -135,7 +136,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
     public function testGetResponseIdNull()
     {
         $mailer = new LimeMailer();
-        $session = $this->getMockSession();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail'       => false,
             'sid' => 0
@@ -161,26 +162,57 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $this->assertEquals(1, $result);
     }
 
-    private function getMockSession()
+    public function testGetReplacementVarsNoResponseId()
     {
-        return new class implements SessionInterface {
-            public function get(string $key, $default = null) {}
-            public function set(string $key, $value): void {}
-            public function close(): void {}
-            public function open(): void {}
-            public function isActive(): bool {}
-            public function getId(): ?string {}
-            public function setId(string $sessionId): void {}
-            public function regenerateId(): void {}
-            public function discard(): void {}
-            public function getName(): string {}
-            public function all(): array {}
-            public function remove(string $key): void {}
-            public function has(string $key): bool {}
-            public function pull(string $key, $default = null) {}
-            public function clear(): void {}
-            public function destroy(): void {}
-            public function getCookieParameters(): array {}
-        };
+        $mailer = new LimeMailer();
+        $session = $this->getMockBuilder(DummySession::class)
+            ->getMock();
+        $surveyinfo = [
+            'htmlemail' => false,
+            'sid'       => 0
+        ];
+        $controller = $this->getMockBuilder(UserManagementController::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createAbsoluteUrl'])
+            ->getMock();
+        $controller->method('createAbsoluteUrl')->willReturn('absolute/dummy/url');
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $result = $ssnc->getReplacementVars(null, $controller);
+        $this->assertEquals(
+            [
+                'STATISTICSURL' => 'absolute/dummy/url',
+                'ANSWERTABLE'   => ''
+            ],
+            $result
+        );
+    }
+
+    public function testGetReplacementVarsResponseId()
+    {
+        $mailer = new LimeMailer();
+        $session = $this->getMockBuilder(DummySession::class)
+            ->getMock();
+        $surveyinfo = [
+            'htmlemail' => false,
+            'sid'       => 0
+        ];
+        $controller = $this->getMockBuilder(UserManagementController::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createAbsoluteUrl'])
+            ->getMock();
+        // TODO: createAbsoluteUrl depends on global request object, so must mock it?
+        $controller->method('createAbsoluteUrl')->willReturn('absolute/dummy/url');
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $result = $ssnc->getReplacementVars(1, $controller);
+        $this->assertEquals(
+            [
+                'STATISTICSURL' => 'absolute/dummy/url',
+                'ANSWERTABLE'   => '',
+                'EDITRESPONSEURL' => 'absolute/dummy/url',
+                'VIEWRESPONSEURL' => 'absolute/dummy/url'
+
+            ],
+            $result
+        );
     }
 }
