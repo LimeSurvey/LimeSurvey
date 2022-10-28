@@ -1,0 +1,21 @@
+{#
+/**
+ * Default Value for text question types
+ *
+ * @var Question $question
+ * @var string $lang
+ * @var array<mixed> $defaultValues
+ * @var bool $hasUpdatePermission
+ */
+#}
+<div class="form-group col-sm-12">
+    <label class="control-label" for='defaultvalues[{{ lang }}]'>
+        {{ gT("Default value:") }}
+    </label>
+    <textarea {{ hasUpdatePermission ? '' : 'disabled="disabled" readonly="readonly"' }}
+        cols='50'
+        name='defaultvalues[{{ lang }}]'
+        id='defaultvalues[{{ lang }}]'
+        class='form-control'
+    >{{ defaultValues[lang][question.type][0] }}</textarea>
+</div>

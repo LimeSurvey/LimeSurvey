@@ -223,7 +223,7 @@ class PluginManagerController extends SurveyCommonAction
             }
 
             // Load the plugin:
-            App()->getPluginManager()->loadPlugin($oPlugin->name, $pluginId, false);
+            App()->getPluginManager()->loadPlugin($oPlugin->name, $pluginId);
             $result = App()->getPluginManager()->dispatchEvent(
                 new PluginEvent('beforeActivate', $this),
                 $oPlugin->name
@@ -440,7 +440,7 @@ class PluginManagerController extends SurveyCommonAction
         $this->checkUpdatePermission();
 
         $request = Yii::app()->request;
-        $pluginName = $request->getPost('pluginName');
+        $pluginName = sanitize_alphanumeric($request->getPost('pluginName'));
 
         $pluginManager = App()->getPluginManager();
         $pluginInfo = $pluginManager->getPluginInfo($pluginName);

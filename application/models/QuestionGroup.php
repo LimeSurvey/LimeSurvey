@@ -25,7 +25,7 @@
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions
- * @property QuestionL10n[] $questionGroupL10ns
+ * @property QuestionGroupL10n[] $questiongroupl10ns
  */
 class QuestionGroup extends LSActiveRecord
 {

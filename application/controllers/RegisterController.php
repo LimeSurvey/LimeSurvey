@@ -93,6 +93,7 @@ class RegisterController extends LSYii_Controller
         } else {
             $iSurveyId = Yii::app()->request->getPost('sid');
         }
+        $iSurveyId = (int) $iSurveyId;
 
         $oSurvey = Survey::model()->find("sid=:sid", array(':sid' => $iSurveyId));
         /* Throw 404 if needed */
@@ -299,7 +300,7 @@ class RegisterController extends LSYii_Controller
         }
         $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
         $this->sMessage = $this->renderPartial('/survey/system/message', array('aMessage' => $aMessage), true);
-        // Allways return true : if we come here, we allways trye to send an email
+        // Always return true : if we come here, we always trye to send an email
         return true;
     }
 

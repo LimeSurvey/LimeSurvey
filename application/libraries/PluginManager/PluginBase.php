@@ -176,7 +176,7 @@ abstract class PluginBase implements iPlugin
         $settings = $this->settings;
         foreach ($settings as $name => &$setting) {
             if ($getValues) {
-                $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null);
+                $setting['current'] = $this->get($name, null, null, $setting['default'] ?? null);
             }
             if ($setting['type'] == 'logo') {
                 $setting['path'] = $this->publish($setting['path']);
@@ -530,13 +530,18 @@ abstract class PluginBase implements iPlugin
 
     /**
      * Saves the new version from config into database
-     * @return boolean
+     * @return void
      */
     protected function saveNewVersion()
     {
-        $pluginModel = \Plugin::model()->findByPk($this->id);
-        $pluginModel->version = (string) $this->config->metadata->version;
-        return $pluginModel->update();
+        \Yii::app()->db->createCommand()->update(
+            '{{plugins}}',
+            ['version' => (string)$this->config->metadata->version],
+            'id=:id',
+            [
+                ':id' => $this->id
+            ]
+        );
     }
 
     /**
@@ -546,7 +551,7 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerScript($relativePathToScript, $parentPlugin = null)
     {
-        $parentPlugin = $parentPlugin === null ? get_class($this) : $parentPlugin;
+        $parentPlugin = $parentPlugin ?? get_class($this);
 
         $scriptToRegister = null;
         if (file_exists(\Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToScript)) {
@@ -572,7 +577,7 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerCss($relativePathToCss, $parentPlugin = null)
     {
-        $parentPlugin = $parentPlugin === null ? get_class($this) : $parentPlugin;
+        $parentPlugin = $parentPlugin ?? get_class($this);
 
         $cssToRegister = null;
         if (file_exists(\Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {

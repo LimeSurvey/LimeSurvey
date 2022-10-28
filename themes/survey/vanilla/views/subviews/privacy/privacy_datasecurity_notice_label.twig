@@ -6,9 +6,9 @@
 {% if(aSurveyInfo.showsurveypolicynotice == 2) %}
     {% set STARTPOLICYLINK = "<a href='#data-security-modal-" ~ aSurveyInfo.sid ~ "' data-toggle='collapse'>" %}
     {% set ENDPOLICYLINK = "</a>" %}
-{% endif %}
-{% if( strpos( " " ~ dataSecurityNoticeLabel, '{STARTPOLICYLINK}') == false and strpos( " " ~ dataSecurityNoticeLabel, '{ENDPOLICYLINK}') == false) %}
-    {% set dataSecurityNoticeLabel = dataSecurityNoticeLabel ~ "<br/> {STARTPOLICYLINK}" ~ gT("Show policy") ~ "{ENDPOLICYLINK}" %}
+    {% if( strpos( " " ~ dataSecurityNoticeLabel, '{STARTPOLICYLINK}') == false and strpos( " " ~ dataSecurityNoticeLabel, '{ENDPOLICYLINK}') == false) %}
+        {% set dataSecurityNoticeLabel = dataSecurityNoticeLabel ~ "<br/> {STARTPOLICYLINK}" ~ gT("Show policy") ~ "{ENDPOLICYLINK}" %}
+    {% endif %}
 {% endif %}
 {% set haveENDPOLICYLINK = strpos( " " ~ dataSecurityNoticeLabel, '{ENDPOLICYLINK}') %}
 {% set dataSecurityNoticeLabel = str_replace('{STARTPOLICYLINK}', STARTPOLICYLINK, dataSecurityNoticeLabel) %}

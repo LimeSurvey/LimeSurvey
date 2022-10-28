@@ -41,7 +41,7 @@ $internalConfig = array(
         'modules' => realpath(__DIR__ . '/../../modules'),
 
         // Third party path
-        'third_party' => realpath(__DIR__ . '/../../third_party'),
+        'vendor' => realpath(__DIR__ . '/../../vendor'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
@@ -98,8 +98,8 @@ $internalConfig = array(
         'bootstrap.widgets.*',
         'bootstrap.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
-        'third_party.Twig.*',
-        'third_party.sodium.*',
+        'vendor.Twig.*',
+        'vendor.sodium.*',
         'ext.captchaExtended.CaptchaExtendedAction',
         'ext.captchaExtended.CaptchaExtendedValidator',
         'questiontypes.*'
@@ -122,7 +122,7 @@ $internalConfig = array(
         ],
         'clientScript' => array(
             'packages' => array_merge(
-                require('third_party.php'),
+                require('vendor.php'),
                 require('packages.php'),
                 require('questiontypes.php'),
                 require('fonts.php')
@@ -221,12 +221,12 @@ $internalConfig = array(
             'class' => 'application.core.LimeMailer',
         ),
         'ETwigViewRenderer' => array(
-            'class' => 'third_party.yiiext.twig-renderer.ETwigViewRenderer',
-            'twigPathAlias' => 'third_party.twig.twig.lib.Twig'
+            'class' => 'vendor.yiiext.twig-renderer.ETwigViewRenderer',
+            'twigPathAlias' => 'vendor.twig.twig.lib.Twig'
         ),
         'twigRenderer' => array(
             'class' => 'application.core.LSETwigViewRenderer',
-            'twigPathAlias' => 'third_party.twig.twig.lib.Twig',
+            'twigPathAlias' => 'vendor.twig.twig.lib.Twig',
 
             // All parameters below are optional, change them to your needs
             'fileExtension' => '.twig',
@@ -273,6 +273,7 @@ $internalConfig = array(
                 'getConfig'               => 'LS_Twig_Extension::getConfig',
                 'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',/* Not in 3.X */
                 'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',/* Not in 3.X */
+                'getYesNoDefaultValueWidget' => 'LS_Twig_Extension::getYesNoDefaultValueWidget',/* Not in 3.X */
                 'checkPermission'         => 'LS_Twig_Extension::checkPermission',/* Not in 3.X */
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
@@ -391,6 +392,7 @@ $internalConfig = array(
                     'getConfig',
                     'getExpressionManagerOutput',
                     'getTextDisplayWidget',
+                    'getYesNoDefaultValueWidget',
                     'getLanguageNameFromCode',
                     'getAllQuestionClasses',
                     'checkPermission',
@@ -440,6 +442,9 @@ $internalConfig = array(
         'versionFetcherServiceLocator' => array(
             'class' => '\LimeSurvey\ExtensionInstaller\VersionFetcherServiceLocator',
         ),
+        'formExtensionService' => [
+            'class' => '\LimeSurvey\Libraries\FormExtension\FormExtensionService',
+        ]
     )
 );
 
@@ -452,7 +457,7 @@ $result = CMap::mergeArray($internalConfig, $userConfig);
  */
 $result['defaultController'] = ($result['defaultController'] == 'survey') ? $internalConfig['defaultController'] : $result['defaultController'];
 /**
- * Allways add needed routes at end
+ * Always add needed routes at end
  */
 $result['components']['urlManager']['rules']['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 

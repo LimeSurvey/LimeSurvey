@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{map_tutorial_users}}".
  *
- * The followings are the available columns in table '{{map_tutorial_users}}':
+ * The following are the available columns in table '{{map_tutorial_users}}':
  * @property integer $tid
  * @property integer $uid
  * @property integer $taken

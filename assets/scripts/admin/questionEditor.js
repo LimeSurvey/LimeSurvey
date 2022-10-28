@@ -1429,9 +1429,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
        * @return {void}
        */
       success(successMessage) {
-        LS.LsGlobalNotifier.create(
+        LS.LsGlobalNotifier.createFlash(
           successMessage,
-          'well-lg bg-success text-center'
+          'alert-success fade in'
         );
       },
       /**
@@ -1440,9 +1440,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
        */
       error(data) {
         if (data.responseJSON) {
-          LS.LsGlobalNotifier.create(
+          LS.LsGlobalNotifier.createFlash(
             data.responseJSON.message,
-            'well-lg bg-danger text-center'
+            'alert-danger fade in'
           );
         } else {
           alert('Internal eror from Ajax call');
@@ -1561,7 +1561,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     return duplicateCodes.length == 0;
   }
-
+  
   /**
    * Return a function that can be used to check code uniqueness.
    * Used by subquestions and answer options.
@@ -1580,9 +1580,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
       // Check uniqueness.
       if (!checkSubquestionCodeUnique(table, msg)) {
-        LS.LsGlobalNotifier.create(
+        LS.LsGlobalNotifier.createFlash(
           msg,
-          'well-lg bg-danger text-center'
+          'alert-danger fade in'
         );
         hasError = true;
       }
@@ -1594,10 +1594,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const code = that.value;
         if (code.length > 20) {
           $(that.parentElement).addClass('has-error');
-          LS.LsGlobalNotifier.create(
+          LS.LsGlobalNotifier.createFlash(
             // TODO: Translation
             'Subquestion code is too long. Maximal number of characters is: 20.',
-            'well-lg bg-danger text-center'
+            'alert-danger fade in'
           );
           hasError = true;
         }
@@ -1696,12 +1696,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
         $('#extra-options-container').replaceWith(extraOptionsHtml);
         makeAnswersTableSortable();
+        bindExtraOptionsEvents();
         $('.question-option-help').hide();
         $('#ls-loading').hide();
 
         $('.lang-hide').hide();
         const languages = languageJson.langs.split(';');
-        $('.lang-' + languages[0]).show();
+        $('.lang-switch-button[data-lang="' + languages[0] + '"]').trigger('click');
 
         // TODO: Duplication.
         $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
@@ -1782,10 +1783,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @param {number} qid Question id (0 when creating new question)
      * @return {void}
      */
-    checkQuestionCodeUniqueness: function(code, qid) {
-      $('#question-code-unique-warning').addClass('hidden');
+    checkQuestionValidateTitle: function(code, qid) {
+      $('#question-title-warning').text("");
+      $('#question-title-warning').addClass('hidden');
       $.ajax({
-        url: languageJson.checkQuestionCodeIsUniqueURL,
+        url: languageJson.checkQuestionValidateTitleURL,
         method: 'GET',
         data: {
           sid,
@@ -1793,12 +1795,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data !== 'true') {
-            $('#question-code-unique-warning').removeClass('hidden');
+          const message = data.message;
+          if (message !== null) {
+              $('#question-title-warning').text(message);
+              $('#question-title-warning').removeClass('hidden');
+          } else {
+              // Continue
           }
         },
         error: (data) => {
-          alert('Internal error in checkQuestionCodeUniqueness: ' + data);
+          alert('Internal error in checkQuestionValidateTitle: ' + JSON.stringify(data));
           throw 'abort';
         }
       });
@@ -1838,6 +1844,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
           return false;
         }
       }
+
+      // Synchronize default answers with subquestions/answer options before saving
+      synchronizeDefaultAnswers();
 
       const updateQuestionSummary = () => {
         const form = document.getElementById('edit-question-form');
@@ -1914,15 +1923,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             if (textStatus === 'success') {
               // Show confirm message.
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createFlash(
                 json.message,
-                'well-lg bg-primary text-center'
+                'alert-success fade in'
               );
             } else {
               // Show error message.
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createFlash(
                 json.message,
-                'well-lg bg-danger text-center'
+                'alert-danger fade in'
               );
             }
             updateQuestionSummary();
@@ -1930,9 +1939,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
           error: (data) => {
             $('#ls-loading').hide();
             if (data.responseJSON) {
-              LS.LsGlobalNotifier.create(
+              LS.LsGlobalNotifier.createFlash(
                 data.responseJSON.message,
-                'well-lg bg-danger text-center'
+                'alert-danger fade in'
               );
             } else {
               alert('Internal error from saveFormWithAjax: no data.responseJSON found');
@@ -1943,7 +1952,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       };
 
       $.ajax({
-        url: languageJson.checkQuestionCodeIsUniqueURL,
+        url: languageJson.checkQuestionValidateTitleURL,
         method: 'GET',
         data: {
           sid,
@@ -1951,7 +1960,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           code
         },
         success: (data) => {
-          if (data === 'true') {
+          const message = data.message;
+          if (message !== null) {
+              $('#question-title-warning').text(message);
+              $('#question-title-warning').removeClass('hidden');
+          } else {
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
@@ -1968,12 +1981,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 button.click();
               }
             }
-          } else {
-            $('#question-code-unique-warning').removeClass('hidden');
           }
         },
         error: (response) => {
-          alert('Internal error in checkIfSaveIsValid: ' + response);
+          alert('Internal error in checkQuestionValidateTitle: ' + response);
           throw 'abort';
         }
       });
@@ -1993,11 +2004,110 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
+  $("#questionCode").on('blur', function() {
+    let qid = 0;
+    if ($(this).data('qid')) {
+      qid = $(this).data('qid');
+    }
+    LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
+  });
+  /**
+   * Keep the "Default Answers" tab in sync with "Answer Options" and "Subquestions".
+   */
+  function synchronizeDefaultAnswers() {
+    const tabpane = $("#defaultanswers");
+    if (tabpane.length == 0) {
+      return;
+    }
+
+    const languages = languageJson.langs.split(';');
+
+    const subquestionScales = tabpane.data('subquestions');
+    const answerScales = tabpane.data('answerscales');
+
+    if (answerScales == 1 && subquestionScales == 0) {
+      _.forEach(languages, (curLanguage, x) => {
+        const defaultAnswerInput = $(`#defaultvalues\\[${curLanguage}\\]\\[0\\]`);
+        // Get the currently selected default option
+        const currentDefault = defaultAnswerInput.val();
+        // Clear current options, except the 'empty' one
+        defaultAnswerInput.find('option:not([value=""])').remove();
+
+        var currentDefaultMissing = true;
+        // Loop through all the answer options table rows
+        const rows = $(`#answeroptions_${curLanguage}_0 tbody tr`);
+        rows.each(function () {
+          var code = '';
+          if ($(this).find('.code-title input.code').length) {
+            code = $(this).find('.code-title input.code').val();
+          } else {
+            code = $(this).find('.code-title').text().trim();
+          }
+          const text = $(this).find('.answeroption-text input.answer').val();
+          $('<option></option>').attr('value', code).text(text).appendTo(defaultAnswerInput);
+          if (code == currentDefault) {
+            currentDefaultMissing = false;
+            defaultAnswerInput.val(code);
+          }
+        });
+        if (currentDefaultMissing) {
+          defaultAnswerInput.val("");
+        }
+      });
+    } else if (answerScales == 0 && subquestionScales == 1) {
+      _.forEach(languages, (curLanguage, x) => {
+        const languageTab = tabpane.find(`.lang-${curLanguage}`);
+        const template = languageTab.find('.defaultvalues-template');
+        const defaultAnswerRowsContainer = languageTab.find('.default-answer-rows');
+        // Get the currently selected default options before clearing the rows
+        var currentDefaults = {};
+        defaultAnswerRowsContainer.find(`[id^="defaultvalues\\[${curLanguage}\\]"`).each(function () {
+          currentDefaults[$(this).attr('id')] = $(this).val();
+        });
+        // Clear current default answer rows
+        defaultAnswerRowsContainer.html("");
+        // Loop through all the subquestions table rows
+        const rows = $(`#subquestions_${curLanguage}_0 tbody tr`);
+        rows.each(function () {
+          var code = '';
+          if ($(this).find('.code-title input.code').length) {
+            code = $(this).find('.code-title input.code').val();
+          } else {
+            code = $(this).find('.code-title').text().trim();
+          }
+          const text = $(this).find('.subquestion-text input.answer').val();
+          const newRowId = `defaultvalues[${curLanguage}][${code}][0]`;
+          const templateId = `defaultvalues\\[${curLanguage}\\]\\[\\{\\{title_placeholder\\}\\}\\]\\[0\\]`;
+          const newDefaultAnswerRow = template.clone();
+          newDefaultAnswerRow.find('#' + templateId).removeAttr('disabled').attr('id', newRowId).attr('name', newRowId).val(currentDefaults[newRowId] ?? '');
+          const label = newDefaultAnswerRow.find(`label[for="${templateId}"]`);
+          label.attr('for', newRowId);
+          label.html(label.html().replace("{{title_placeholder}}", code).replace("{{text_placeholder}}", text));
+          newDefaultAnswerRow.removeClass('defaultvalues-template').show().appendTo(defaultAnswerRowsContainer);
+        });
+      });
+    }
+  }
+
+  function bindExtraOptionsEvents() {
+    $('[data-toggle="tab"][href="#defaultanswers"]').off('show.bs.tab').on('show.bs.tab', function(e) { 
+      synchronizeDefaultAnswers();
+    });
+  }
+
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {
       return;
     }
     $('#general-setting-help-relevance').show();
+  }
+
+  function showSameScriptForAllLanguagesWarning() {
+    if ($('#same_script').is(":checked")) {
+      $('.same-script-alert').removeClass("hidden");
+    } else {
+      $('.same-script-alert').addClass("hidden");
+    }
   }
 
   // Below, things run on pjax:scriptcomplete.
@@ -2074,6 +2184,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const languages = languageJson.langs.split(';');
     $('.lang-' + languages[0]).show();
 
+    // Show 'Use for all languages' warning
+    $('#same_script').on('change', showSameScriptForAllLanguagesWarning);
+    showSameScriptForAllLanguagesWarning();
+
     // Land on summary page if qid != 0 (not new question).
     // TODO: Fix
 
@@ -2111,4 +2225,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     
     $('#relevance').on('keyup', showConditionsWarning);
+
+    bindExtraOptionsEvents();
 });

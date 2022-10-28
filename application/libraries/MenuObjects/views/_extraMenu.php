@@ -55,13 +55,20 @@ foreach ($extraMenus as $menu): ?>
                                          href="<?= $menuButton->getHref(); ?>"
                                          class="<?= $menuButton->getButtonClass() ?>"
                                          title="<?= $menuButton->getTooltip() ?>"
+                                         data-toggle="tooltip"
+                                         data-placement="bottom"
                                          onclick="<?= $menuButton->getOnClick() ?>"
                                          target="<?= $target ?>">
                         <?= $menuButton->getLabel(); ?></a>
                 </p>
             <?php
             else: ?>
-                <a href="<?= $menu->getHref(); ?>"><?= $menu->getLabel(); ?></a>
+                <a href="<?= $menu->getHref(); ?>">
+                    <?php if ($menu->getIconClass()): ?>
+                        <i class="<?= $menu->getIconClass(); ?>"></i>
+                    <?php endif; ?>
+                    <?= $menu->getLabel(); ?>
+                </a>
             <?php
             endif; ?>
         </li>

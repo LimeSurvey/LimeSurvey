@@ -1,0 +1,85 @@
+{#
+/**
+ * Default Values panels
+ *
+ * @var int $subquestions
+ * @var int $answerScales
+ * @var array<mixed> $answers Like [0 => Answer[]] or [0 => Answer[], 1 => Answer[]]
+ * @var Question $question
+ * @var string[] $allLanguages
+ * @var string $language
+ * @var array<mixed> $defaultValues
+ * @var bool $hasUpdatePermission
+ *
+ * Supported combinations of answerscales and subquestions:
+ *   - Case 1: answerscales = 1 and subquestions = 0
+ *   - Case 2: answerscales = 0 and subquestions = 1
+ *   - Case 3: answerscales = 0 and subquestions = 0
+ *
+ * See QuestionAdministrationController::updateQuestionDefaultValues() for details.
+ */
+#}
+{% set first=true %}
+
+<!-- Loop all language, and then hide all but the current selected one with JS. -->
+{% for lang in allLanguages %}
+    <div class="lang-hide lang-{{ lang }}">
+        {% if question.type in ['L', 'O', '!'] %}
+            {% include 'defaultValues/singleAnswerScale.twig' with {
+                'question': question,
+                'lang': lang,
+                'defaultvalues': defaultValues
+            } %}
+        {% elseif question.type in ['K', 'M', 'P', 'Q'] %}
+            {% include 'defaultValues/singleSubquestion.twig' with {
+                'question': question,
+                'lang': lang,
+                'defaultvalues': defaultValues
+            } %}
+        {% elseif question.type == 'Y' %}
+            {% include 'defaultValues/yesNo.twig' with {
+                'question': question,
+                'lang': lang,
+                'defaultvalues': defaultValues
+            } %}
+        {% elseif question.type == '5' %}
+            {% include 'defaultValues/fixedOptions.twig' with {
+                'question': question,
+                'lang': lang,
+                'defaultvalues': defaultValues,
+                'options': {
+                    '1': '1',
+                    '2': '2',
+                    '3': '3',
+                    '4': '4',
+                    '5': '5',
+                },
+            } %}
+        {# TODO: Properly handle the date format
+        {% elseif question.type == 'D' %}
+            {% include 'defaultValues/date.twig' with {
+                'question': question,
+                'lang': lang,
+                'defaultvalues': defaultValues
+            } %}
+        #}
+        {% elseif question.type in ['S', 'T', 'U', 'N', 'D'] %}
+            {% include 'defaultValues/text.twig' with {
+                'question': question,
+                'lang': lang,
+                'defaultvalues': defaultValues,
+                'hasUpdatePermission': hasUpdatePermission
+            } %}
+        {% endif %}
+
+        {% if first and allLanguages|length > 1 %}
+            <div class="form-group col-sm-12">
+                <label class="control-label" for='samedefault'>
+                    {{ gT('Use same default value across languages:') }}
+                </label>
+                <input type='checkbox' name='samedefault' id='samedefault' {{ question['same_default'] ? 'checked="checked"' : '' }} />
+            </div>
+        {% endif %}
+    </div>
+    {% set first=false %}
+{% endfor %}

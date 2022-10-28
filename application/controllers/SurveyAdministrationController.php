@@ -508,7 +508,7 @@ class SurveyAdministrationController extends LSBaseController
                 $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
-                Yii::app()->setFlashMessage(gT("Your new survey was created. 
+                Yii::app()->setFlashMessage(gT("Your new survey was created.
                 We also created a first question group and an example question for you."), 'info');
                 $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
                     $iNewSurveyid,
@@ -566,7 +566,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionImportsurveyresources()
     {
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = sanitize_int(Yii::app()->request->getPost('surveyid'));
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
@@ -575,7 +575,7 @@ class SurveyAdministrationController extends LSBaseController
         if (!empty($iSurveyID)) {
             if (Yii::app()->getConfig('demoMode')) {
                 Yii::app()->user->setFlash('error', gT("Demo mode only: Uploading files is disabled in this system."));
-                $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
+                $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
             }
 
             // Create temporary directory
@@ -595,7 +595,7 @@ class SurveyAdministrationController extends LSBaseController
                     gT("Incorrect permissions in your %s folder."),
                     $basedestdir
                 ));
-                $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
+                $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
             }
 
 
@@ -612,7 +612,7 @@ class SurveyAdministrationController extends LSBaseController
                         'error',
                         gT("This file is not a valid ZIP file archive. Import failed. ") . $zip->errorInfo(true)
                     );
-                    $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
+                    $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'generalsettings'));
                 }
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
@@ -895,7 +895,7 @@ class SurveyAdministrationController extends LSBaseController
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
-                $curGroup['group_name'] = $group->questiongroupl10ns[$baselang]->group_name;
+                $curGroup['group_name'] = viewHelper::flatEllipsizeText($group->questiongroupl10ns[$baselang]->group_name, true, 150);
                 $curGroup['link'] = $this->createUrl(
                     "questionGroupsAdministration/view",
                     ['surveyid' => $surveyid, 'gid' => $group->gid]
@@ -916,16 +916,13 @@ class SurveyAdministrationController extends LSBaseController
                             "questionAdministration/view",
                             ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid' => $question->qid]
                         );
-                        $curQuestion['editLink'] = $this->createUrl(
-                            "questionAdministration/view",
-                            ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid' => $question->qid]
-                        );
                         $curQuestion['hidden'] = isset($question->questionattributes['hidden']) &&
                             !empty($question->questionattributes['hidden']->value);
                         $questionText = isset($question->questionl10ns[$baselang])
                             ? $question->questionl10ns[$baselang]->question
                             : '';
-                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true);
+                        // We have to limit the question text length here, otherwise the whole question is loaded into the navigation tree
+                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true, 150);
                         $curGroup['questions'][] = $curQuestion;
                     }
                 }
@@ -1203,7 +1200,7 @@ class SurveyAdministrationController extends LSBaseController
         $changes = Yii::app()->request->getPost('changes', []);
         $aSuccess = [];
 
-        $oSurvey->showsurveypolicynotice = isset($changes['showsurveypolicynotice']) ? $changes['showsurveypolicynotice'] : 0;
+        $oSurvey->showsurveypolicynotice = $changes['showsurveypolicynotice'] ?? 0;
         $aSuccess[] = $oSurvey->save();
         foreach ($oSurvey->allLanguages as $sLanguage) {
             $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk([
@@ -1217,9 +1214,9 @@ class SurveyAdministrationController extends LSBaseController
                 $oSurveyLanguageSetting->surveyls_language = $sLanguage;
             }
 
-            $oSurveyLanguageSetting->surveyls_policy_notice = isset($changes['datasecmessage'][$sLanguage]) ? $changes['datasecmessage'][$sLanguage] : '';
-            $oSurveyLanguageSetting->surveyls_policy_error = isset($changes['datasecerror'][$sLanguage]) ? $changes['datasecerror'][$sLanguage] : '';
-            $oSurveyLanguageSetting->surveyls_policy_notice_label = isset($changes['dataseclabel'][$sLanguage]) ? $changes['dataseclabel'][$sLanguage] : '';
+            $oSurveyLanguageSetting->surveyls_policy_notice = $changes['datasecmessage'][$sLanguage] ?? '';
+            $oSurveyLanguageSetting->surveyls_policy_error = $changes['datasecerror'][$sLanguage] ?? '';
+            $oSurveyLanguageSetting->surveyls_policy_notice_label = $changes['dataseclabel'][$sLanguage] ?? '';
             $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
             unset($oSurveyLanguageSetting);
         }
@@ -1252,8 +1249,9 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return void
      */
-    public function actionApplythemeoptions(int $iSurveyID = 0)
+    public function actionApplythemeoptions(int $surveyid = 0)
     {
+        $iSurveyID = $surveyid;
         if ((int)$iSurveyID > 0 && Yii::app()->request->isPostRequest) {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             $sTemplateName = $oSurvey->template;
@@ -1290,7 +1288,7 @@ class SurveyAdministrationController extends LSBaseController
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->renderJsonOnError('file', $debug);
 
-        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $iSurveyID = (int) Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
@@ -1922,7 +1920,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
@@ -2226,7 +2224,7 @@ class SurveyAdministrationController extends LSBaseController
             // Make the link point to the first group/question if available
             if (!empty($aGrouplist)) {
                 $oFirstGroup = $aGrouplist[0];
-                $oFirstQuestion = Question::model()->findByAttributes(
+                $oFirstQuestion = Question::model()->primary()->findByAttributes(
                     ['gid' => $oFirstGroup->gid],
                     ['order' => 'question_order ASC']
                 );
@@ -2985,7 +2983,7 @@ class SurveyAdministrationController extends LSBaseController
             "window.TextEditData = {
                 connectorBaseUrl: '" . Yii::app()->getController()->createUrl('surveyAdministration/') . "',
                 isNewSurvey: " . ($survey->getIsNewRecord() ? "true" : "false") . ",
-                sid: $survey->sid, 
+                sid: $survey->sid,
                 i10N: {
                     'Survey title' : '" . gT('Survey title') . "',
                     'Date format' : '" . gT('Date format') . "',
