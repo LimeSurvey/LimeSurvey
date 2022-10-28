@@ -29,6 +29,23 @@ $g-300      : #DDDEE8;
 $g-200      : #EEEFF7;
 $g-100      : #F9F9FB;
 
+
+$IBM-font-family: "IBMPlexSans";
+
+$font-size-base: 1rem; // Assumes the browser default, typically `16px`
+$font-size-sm: $font-size-base * 0.875;
+$font-size-lg: $font-size-base * 1.25;
+
+
+$font-weight-normal: 400;
+$font-weight-500: 500;
+$font-weight-600: 600;
+
+
+$line-height-20: 20px;
+$line-height-24: 24px;
+$line-height-26: 26px;
+
 // this is an example, if you work on the buttons you can remove it
 @import "buttons/buttons.scss";
 @import "typography/typography.scss"

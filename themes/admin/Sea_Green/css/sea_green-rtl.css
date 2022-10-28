@@ -2742,7 +2742,7 @@ tr.info, tr.danger {
 body {
   font-family: "IBMPlexSans";
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 24px;
 }
 
@@ -2750,7 +2750,7 @@ h1,
 .h1 {
   font-family: "IBMPlexSans";
   font-weight: 600;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 26px;
 }
 
@@ -2758,7 +2758,7 @@ h2,
 .h2 {
   font-family: "IBMPlexSans";
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1.25rem;
   line-height: 20px;
 }
 
@@ -2766,13 +2766,13 @@ h3,
 .h3 {
   font-family: "IBMPlexSans";
   font-weight: 500;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 20px;
 }
 
 label {
   font-family: "IBMPlexSans";
   font-weight: 500;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 20px;
 }
