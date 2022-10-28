@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use LimeSurvey\Models\Services\SendSubmitNotificationsCommand;
 use LimeSurvey\Models\Services\SessionInterface;
 use LimeMailer;
+use SurveyDynamic;
 use Yii;
 use UserManagementController;
 
@@ -30,6 +31,9 @@ class DummySession implements SessionInterface {
     public function getCookieParameters(): array {}
 }
 
+/**
+ * config.php: 'errorHandler' => ['class' => new class { public function init() {} public function handle($event) {var_dump($event->message . $event->line . $event->file);} }]
+ */
 class SendSubmitNotificationsCommandTest extends TestCase
 {
     public static function setupBeforeClass(): void
@@ -47,7 +51,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail' => false,
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $result = $ssnc->getEmailResponseTo([]);
@@ -62,7 +66,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
             'htmlemail'       => false,
             'emailresponseto' => 'moo@moo.moo',
             'adminemail'      => '',
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $emails = [];
@@ -78,7 +82,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
             'htmlemail'       => false,
             'emailresponseto' => 'moo@moo.moo;foo@foo.foo',
             'adminemail'      => '',
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $emails = [];
@@ -94,7 +98,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail' => false,
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $result = $ssnc->getEmailNotificationTo([]);
@@ -109,7 +113,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
             'htmlemail'       => false,
             'emailnotificationto' => 'moo@moo.moo',
             'adminemail'      => '',
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $emails = [];
@@ -125,7 +129,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
             'htmlemail'       => false,
             'emailnotificationto' => 'moo@moo.moo;foo@foo.foo',
             'adminemail'      => '',
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $emails = [];
@@ -139,7 +143,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail'       => false,
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $result = $ssnc->getResponseId();
@@ -155,7 +159,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $session->method('get')->willReturn(['srid' => 1]);
         $surveyinfo = [
             'htmlemail'       => false,
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $result = $ssnc->getResponseId();
@@ -169,7 +173,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
             ->getMock();
         $surveyinfo = [
             'htmlemail' => false,
-            'sid'       => 0
+            'sid'       => 1
         ];
         $controller = $this->getMockBuilder(UserManagementController::class)
             ->disableOriginalConstructor()
@@ -194,7 +198,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
             ->getMock();
         $surveyinfo = [
             'htmlemail' => false,
-            'sid'       => 0
+            'sid'       => 1
         ];
         $controller = $this->getMockBuilder(UserManagementController::class)
             ->disableOriginalConstructor()
@@ -224,7 +228,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail' => false,
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $result = $ssnc->getLanguage(App());
@@ -241,7 +245,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $session->method('get')->willReturn(['s_lang' => 'de']);
         $surveyinfo = [
             'htmlemail' => false,
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $result = $ssnc->getLanguage(App());
@@ -255,7 +259,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail' => false,
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $result = $ssnc->getQuestionAttributeValue([], '');
@@ -268,7 +272,7 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail' => false,
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $result = $ssnc->getQuestionAttributeValue(['moo' => 10], 'moo');
@@ -281,10 +285,69 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $session = $this->getMockBuilder(DummySession::class)->getMock();
         $surveyinfo = [
             'htmlemail' => false,
-            'sid' => 0
+            'sid' => 1
         ];
         $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
         $result = $ssnc->getQuestionAttributeValue(['moo' => ['de' => 8]], 'moo', 'de');
         $this->assertEquals(8, $result);
+    }
+
+    public function testLoopRelevantFieldsEmpty()
+    {
+        $mailer  = $this->getMockBuilder(LimeMailer::class)->getMock();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
+        $surveyinfo = [
+            'htmlemail' => false,
+            'sid' => 1
+        ];
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $sd = $this->getMockBuilder(SurveyDynamic::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $result = $ssnc->loopRelevantFields([], '', $sd, true);
+        $this->assertEquals([], $result);
+    }
+
+    public function testLoopRelevantFields()
+    {
+        $mailer  = $this->getMockBuilder(LimeMailer::class)->getMock();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
+        $surveyinfo = [
+            'htmlemail' => false,
+            'sid' => 0
+        ];
+
+        /*
+        $ssnc = $this
+            ->getMockBuilder(SendSubmitNotificationsCommand::class)
+            ->setConstructorArgs([$surveyinfo, $mailer, $session])
+            ->getMock($surveyinfo, $mailer, $session);
+         */
+
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        
+        $sd = $this->getMockBuilder(SurveyDynamic::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['offsetGet'])
+            ->getMock();
+        $sd->method('offsetGet')->willReturn('survey dynamic fieldname');
+
+        $relevantFields = [
+            [
+                'qid'        => 1,
+                'gid'        => 1,
+                'group_name' => '',
+                'fieldname'  => 'fieldname001',
+                'question'   => 'question text'
+            ]
+        ];
+        $result = $ssnc->loopRelevantFields($relevantFields, '', $sd, true);
+        $this->assertEquals(
+            [
+                'gid_1' => ['', null],
+                'fieldname001' => ['question text', '', 'survey dynamic fieldname']
+            ],
+            $result
+        );
     }
 }

@@ -362,7 +362,7 @@ class SendSubmitNotificationsCommand
             }
         }
 
-        return $this->loopRelevantFieldRow($aRelevantFields, $languageCode, $idrow, $honorConditions);
+        return $this->loopRelevantFields($aRelevantFields, $languageCode, $idrow, $honorConditions);
     }
 
     /**
@@ -371,12 +371,12 @@ class SendSubmitNotificationsCommand
      * @param SurveyDynamic $idrow
      * @param bool $honorConditions
      */
-    public function loopRelevantFieldRow(array $aRelevantFields, string $languageCode, SurveyDynamic $idrow, bool $honorConditions): array
+    public function loopRelevantFields(array $aRelevantFields, string $languageCode, SurveyDynamic $idrow, bool $honorConditions): array
     {
         $aResultTable = [];
         $oldgid = 0;
         $oldqid = 0;
-        foreach ($aRelevantFields as $sKey => $fname) {
+        foreach ($aRelevantFields as $fname) {
             if (!empty($fname['qid'])) {
                 // TODO: Correct behaviour if $attributes is false?
                 $attributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
@@ -401,13 +401,13 @@ class SendSubmitNotificationsCommand
                     if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) {
                         $aResultTable['qid_' . $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid']] = array($fname['question'], '', '');
                     } else {
-                        $answer = getExtendedAnswer($this->surveyId, $fname['fieldname'], $idrow[$fname['fieldname']], $languageCode);
+                        $answer = $this->getExtendedAnswer($fname['fieldname'], $idrow[$fname['fieldname']], $languageCode);
                         $aResultTable[$fname['fieldname']] = array($question, '', $answer);
                         continue;
                     }
                 }
             } else {
-                $answer = getExtendedAnswer($this->surveyId, $fname['fieldname'], $idrow[$fname['fieldname']], $languageCode);
+                $answer = $this->getExtendedAnswer($fname['fieldname'], $idrow[$fname['fieldname']], $languageCode);
                 $aResultTable[$fname['fieldname']] = array($question, '', $answer);
                 continue;
             }
@@ -423,7 +423,7 @@ class SendSubmitNotificationsCommand
                 $subquestion .= "[{$fname['subquestion2']}]";
             }
 
-            $answer = getExtendedAnswer($this->surveyId, $fname['fieldname'], $idrow[$fname['fieldname']], $languageCode);
+            $answer = $this->getExtendedAnswer($fname['fieldname'], $idrow[$fname['fieldname']], $languageCode);
             $aResultTable[$fname['fieldname']] = array($question, $subquestion, $answer);
         }
         return $aResultTable;
@@ -537,5 +537,13 @@ class SendSubmitNotificationsCommand
             }
         }
         return $result;
+    }
+
+    /**
+     * Wrapper, since getExtendedAnswer is used in other places and we want to mock it.
+     */
+    private function getExtendedAnswer(string $fieldname, string $idrowFieldname, string $languageCode): string
+    {
+        return getExtendedAnswer($this->surveyId, $fieldname, $idrowFieldname, $languageCode);
     }
 }
