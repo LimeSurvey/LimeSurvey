@@ -108,7 +108,7 @@ class FailedEmailController extends LSBaseController
                 }
                 $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
                 $command = new SendSubmitNotificationsCommand($thissurvey, $mailer, new Session());
-                $result = $command->run($surveyId, $emailsByType);
+                $result = $command->run($emailsByType);
                 if (!$preserveResend) {
                     // only delete FailedEmail entries that have succeeded
                     $criteria->addCondition('status = :status');
