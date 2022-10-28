@@ -13,6 +13,8 @@
  *
  */
 
+use LimeSurvey\Models\Services\Session;
+
 class SurveyRuntimeHelper
 {
     /**
@@ -1258,7 +1260,9 @@ class SurveyRuntimeHelper
             }
             //Send notifications
             if ($surveyActive) {
-                sendSubmitNotifications($this->iSurveyid);
+                $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
+                $command = new SendSubmitNotificationsCommand($this->thissurvey, $mailer, new Session());
+                $command->run();
             }
             // Link to Print Answer Preview  **********
             $this->aSurveyInfo['aCompleted']['aPrintAnswers']['show'] = false;
