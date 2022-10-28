@@ -5,6 +5,7 @@ namespace LimeSurvey\Models\Services;
 use LimeMailer;
 use LimeExpressionManager;
 use Permission;
+use CApplication;
 use CHtml;
 use CException;
 use CController;
@@ -98,7 +99,7 @@ class SendSubmitNotificationsCommand
 
         $responseId          = $this->getResponseId();
         $replacementVars     = $this->getReplacementVars($responseId, App()->getController());
-        $emailLanguage       = $this->getLanguage();
+        $emailLanguage       = $this->getLanguage(App());
         $emailNotificationTo = $this->getEmailNotificationTo($emails);
         $emailResponseTo     = $this->getEmailResponseTo($emails);
 
@@ -451,11 +452,11 @@ class SendSubmitNotificationsCommand
     /**
      * @return string
      */
-    public function getLanguage(): string
+    public function getLanguage(CApplication $app): string
     {
         $surveyData = $this->session->get('survey_' . $this->surveyId, []);
         $lang = $surveyData['s_lang'] ?? null;
-        return $lang ?? App()->getLanguage();
+        return $lang ?? $app->getLanguage();
     }
 
     /**

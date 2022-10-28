@@ -215,4 +215,34 @@ class SendSubmitNotificationsCommandTest extends TestCase
             $result
         );
     }
+
+    public function testGetLanguageDefault()
+    {
+        $mailer  = $this->getMockBuilder(LimeMailer::class)->getMock();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
+        $surveyinfo = [
+            'htmlemail' => false,
+            'sid' => 0
+        ];
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $result = $ssnc->getLanguage(App());
+        $this->assertEquals('en_us', $result);
+    }
+
+    public function testGetLanguageSession()
+    {
+        $mailer  = $this->getMockBuilder(LimeMailer::class)->getMock();
+        $session = $this
+            ->getMockBuilder(DummySession::class)
+            ->setMethods(['get'])
+            ->getMock();
+        $session->method('get')->willReturn(['s_lang' => 'de']);
+        $surveyinfo = [
+            'htmlemail' => false,
+            'sid' => 0
+        ];
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $result = $ssnc->getLanguage(App());
+        $this->assertEquals('de', $result);
+    }
 }
