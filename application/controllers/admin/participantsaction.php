@@ -675,7 +675,7 @@ $url .= "_view"; });
 
         // Abort if not found (internal error)
         if (empty($participant)) {
-            ls\ajax\AjaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
+            ls\ajax\AjaxHelper::outputError(sprintf('Found no participant with id %s', strip_tags($aData['participant_id'])));
         }
 
         if (!$participant->userHasPermissionToEdit()) {
