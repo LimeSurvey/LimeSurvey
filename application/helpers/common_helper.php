@@ -974,12 +974,14 @@ function sendCacheHeaders()
 }
 
 /**
-* @param integer $iSurveyID The Survey ID
-* @param string $sFieldCode Field code of the particular field
-* @param string $sValue The stored response value
-* @param string $sLanguage Initialized limesurvey_lang object for the resulting response data
-* @return string
-*/
+ * Extend terse database values to human readable strings, like Y => Yes, or M => Male etc
+ *
+ * @param integer $iSurveyID The Survey ID
+ * @param string $sFieldCode Field code of the particular field
+ * @param string $sValue The stored response value
+ * @param string $sLanguage Initialized limesurvey_lang object for the resulting response data
+ * @return string
+ */
 function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 {
 
