@@ -245,4 +245,43 @@ class SendSubmitNotificationsCommandTest extends TestCase
         $result = $ssnc->getLanguage(App());
         $this->assertEquals('de', $result);
     }
+
+    public function testGetQuestionAttributeValueEmpty()
+    {
+        $mailer  = $this->getMockBuilder(LimeMailer::class)->getMock();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
+        $surveyinfo = [
+            'htmlemail' => false,
+            'sid' => 0
+        ];
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $result = $ssnc->getQuestionAttributeValue([], '');
+        $this->assertEquals('', $result);
+    }
+
+    public function testGetQuestionAttributeValueSimple()
+    {
+        $mailer  = $this->getMockBuilder(LimeMailer::class)->getMock();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
+        $surveyinfo = [
+            'htmlemail' => false,
+            'sid' => 0
+        ];
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $result = $ssnc->getQuestionAttributeValue(['moo' => 10], 'moo');
+        $this->assertEquals(10, $result);
+    }
+
+    public function testGetQuestionAttributeValueLang()
+    {
+        $mailer  = $this->getMockBuilder(LimeMailer::class)->getMock();
+        $session = $this->getMockBuilder(DummySession::class)->getMock();
+        $surveyinfo = [
+            'htmlemail' => false,
+            'sid' => 0
+        ];
+        $ssnc = new SendSubmitNotificationsCommand($surveyinfo, $mailer, $session);
+        $result = $ssnc->getQuestionAttributeValue(['moo' => ['de' => 8]], 'moo', 'de');
+        $this->assertEquals(8, $result);
+    }
 }
