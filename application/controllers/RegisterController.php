@@ -343,7 +343,6 @@ class RegisterController extends LSYii_Controller
             $oToken->email = $aFieldValue['sEmail'];
             $oToken->emailstatus = 'OK';
             $oToken->language = $sLanguage;
-            $aFieldValue['aAttribute'] = $aFieldValue['aAttribute'];
             $oToken->setAttributes($aFieldValue['aAttribute']);
             if ($aSurveyInfo['startdate']) {
                 $oToken->validfrom = $aSurveyInfo['startdate'];
