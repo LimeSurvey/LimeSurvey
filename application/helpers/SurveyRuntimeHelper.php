@@ -13,6 +13,7 @@
  *
  */
 
+use LimeSurvey\Models\Services\SendSubmitNotificationsCommand;
 use LimeSurvey\Models\Services\Session;
 
 class SurveyRuntimeHelper
