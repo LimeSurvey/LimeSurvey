@@ -32,7 +32,6 @@
   box-sizing: content-box; }
 
 .selector--animated_row .sa-icon.sa-error {
-  border-color: #EF2138;
   border-color: #EF2138; }
 
 .selector--animated_row .sa-icon.sa-error::before, .selector--animated_row .sa-icon.sa-error::after {

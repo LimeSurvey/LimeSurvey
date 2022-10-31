@@ -5,8 +5,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Crypt
- * @package   EC
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2019 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -25,13 +23,17 @@ class Curve448 extends Montgomery
         // 2^448 - 2^224 - 1
         $this->setModulo(new BigInteger(
             'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE' .
-            'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF', 16));
+            'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+            16
+        ));
         $this->a24 = $this->factory->newInteger(new BigInteger('39081'));
         $this->p = [$this->factory->newInteger(new BigInteger(5))];
         // 2^446 - 0x8335dc163bb124b65129c96fde933d8d723a70aadc873d6d54a7bb0d
         $this->setOrder(new BigInteger(
             '3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF' .
-            '7CCA23E9C44EDB49AED63690216CC2728DC58F552378C292AB5844F3', 16));
+            '7CCA23E9C44EDB49AED63690216CC2728DC58F552378C292AB5844F3',
+            16
+        ));
 
         /*
         $this->setCoefficients(
@@ -62,7 +64,7 @@ class Curve448 extends Montgomery
         $d = $d->toBytes();
         $d[0] = $d[0] & "\xFC";
         $d = strrev($d);
-        $d|= "\x80";
+        $d |= "\x80";
         $d = new BigInteger($d, 256);
 
         return parent::multiplyPoint($p, $d);

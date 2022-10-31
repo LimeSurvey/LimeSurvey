@@ -5,8 +5,6 @@
  *
  * PHP version 5
  *
- * @category  File
- * @package   ASN1
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2016 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -22,14 +20,12 @@ use phpseclib3\File\ASN1;
  *
  * mapping is from <http://www.mozilla.org/projects/security/pki/nss/tech-notes/tn3.html>
  *
- * @package ASN1
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class netscape_cert_type
 {
     const MAP = [
-        'type'    => ASN1::TYPE_BIT_STRING,
+        'type' => ASN1::TYPE_BIT_STRING,
         'mapping' => [
             'SSLClient',
             'SSLServer',

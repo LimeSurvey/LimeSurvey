@@ -7,8 +7,6 @@
  *
  * PHP version 5
  *
- * @category  File
- * @package   ASN1
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2016 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -22,9 +20,7 @@ use phpseclib3\File\ASN1;
 /**
  * DHParameter
  *
- * @package ASN1
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class DHParameter
 {
@@ -32,7 +28,7 @@ abstract class DHParameter
         'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
             'prime' => ['type' => ASN1::TYPE_INTEGER],
-            'base' =>  ['type' => ASN1::TYPE_INTEGER],
+            'base' => ['type' => ASN1::TYPE_INTEGER],
             'privateValueLength' => [
                 'type' => ASN1::TYPE_INTEGER,
                 'optional' => true

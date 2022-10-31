@@ -36,7 +36,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $this->useDropdownLayout = true;
             $this->sCoreClass .= " dropdown-array";
             $this->answertypeclass .= " dropdown";
-            $this->doDualScaleFunction = "doDualScaleDropDown"; // javascript funtion to lauch at end of answers
+            $this->doDualScaleFunction = "doDualScaleDropDown"; // javascript function to lauch at end of answers
         } else {
             $this->useDropdownLayout = false;
             $this->sCoreClass .= " radio-array";
@@ -93,7 +93,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
     public function getPositioningAndSizing(&$aData)
     {
-        // Find if we have rigth and center text
+        // Find if we have right and center text
         /* All of this part seem broken actually : we don't send it to view and don't explode it */
         $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=" . $this->oQuestion->qid . " and scale_id=0 AND question like '%|%'";
         $rigthCount  = Yii::app()->db->createCommand($sQuery)->queryScalar();
@@ -294,11 +294,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
                 if ($aData['shownoanswer']) {
                     // No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
-                    if (!empty($this->getFromSurveySession($myfname0)) || $this->getFromSurveySession($myfname0) == "") {
+                    if (empty($this->getFromSurveySession($myfname0))) {
                         //$answer .= CHECKED;
-                        $aData['myfname0_notset'] = CHECKED;
+                        $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {
-                        $aData['myfname0_notset'] = "";
+                        $aData['aSubQuestions'][$i]['myfname0_notset'] = "";
                     }
                 }
 
@@ -317,18 +317,18 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $aData['answertextright'] = $answertextright;
             if ($aData['shownoanswer']) {
                 if (count($aData['labelans1']) > 0) {
-                    if (!empty($this->getFromSurveySession($myfname1)) || $this->getFromSurveySession($myfname1) == "") {
+                    if (empty($this->getFromSurveySession($myfname1))) {
                         #$answer .= CHECKED;
-                        $aData['myfname1_notset'] = CHECKED;
+                        $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
                     } else {
-                        $aData['myfname1_notset'] = "";
+                        $aData['aSubQuestions'][$i]['myfname1_notset'] = "";
                     }
                 } else {
-                    if (!empty($this->getFromSurveySession($myfname0)) || $this->getFromSurveySession($myfname0) == "") {
+                    if (empty($this->getFromSurveySession($myfname0))) {
                         $answer .= CHECKED;
-                        $aData['myfname0_notset'] = CHECKED;
+                        $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {
-                        $aData['myfname0_notset'] = '';
+                        $aData['aSubQuestions'][$i]['myfname0_notset'] = '';
                     }
                 }
             }

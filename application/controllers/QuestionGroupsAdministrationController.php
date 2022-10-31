@@ -367,8 +367,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $baselang = $survey->language;
         $model    = new QuestionGroup('search');
 
-        if (isset($_GET['QuestionGroup'])) {
-            $model->attributes = $_GET['QuestionGroup'];
+        if (isset($_GET['QuestionGroup']['group_name'])) {
+            $model->group_name = $_GET['QuestionGroup']['group_name'];
         }
 
         if (isset($_GET['pageSize'])) {
@@ -585,7 +585,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
-        if (!empty($survey->groups)) {
+        // Make sure we have the latest groups data
+        $survey->refresh();
+        $landOnSideMenuTab = Yii::app()->request->getPost('landOnSideMenuTab');
+        if ($landOnSideMenuTab == 'structure' && !empty($survey->groups)) {
             $this->redirect(
                 Yii::app()->createUrl(
                     'questionGroupsAdministration/view/',

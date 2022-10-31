@@ -28,8 +28,8 @@ return array(
         'basePath' => 'third_party.jquery',
         'position' =>CClientScript::POS_HEAD,
         'js' => array(
-            'jquery-3.5.1'.$minVersion.'.js',
-            'jquery-migrate-3.3.2'.$minVersion.'.js',
+            'jquery-3.6.1'.$minVersion.'.js',
+            'jquery-migrate-3.4.0'.$minVersion.'.js',
         )
     ),
 
@@ -346,6 +346,7 @@ return array(
 
     'jspdf' => array(
         'basePath' => 'third_party.jspdf',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jspdf.min.js',
             'createpdf_worker.js'
@@ -394,6 +395,7 @@ return array(
     ),
     'jszip' => array(
         'basePath' => 'third_party.jszip',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jszip.js',
             'fileSaver.js',

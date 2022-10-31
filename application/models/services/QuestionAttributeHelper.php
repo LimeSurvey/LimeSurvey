@@ -277,4 +277,27 @@ class QuestionAttributeHelper
         uasort($attributesCopy, [$this, 'categorySort']);
         return $attributesCopy;
     }
+
+    /**
+     * Returns the user's default values for the specified question type
+     * @param string $questionType
+     * @return array<string,mixed>
+     */
+    public function getUserDefaultsForQuestionType($questionType)
+    {
+        $defaultValues = [];
+        $userDefaultQuestionAttributes = \SettingsUser::getUserSettingValue('question_default_values_' . $questionType);
+        if ($userDefaultQuestionAttributes !== null) {
+            $defaultValuesByCategory = json_decode($userDefaultQuestionAttributes, true);
+            foreach ($defaultValuesByCategory as $attributes) {
+                foreach ($attributes as $attribute => $value) {
+                    if (!is_array($value)) {
+                        $value = ['' => $value];
+                    }
+                    $defaultValues[$attribute] = $value;
+                }
+            }
+        }
+        return $defaultValues;
+    }
 }

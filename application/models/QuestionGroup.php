@@ -25,7 +25,7 @@
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions
- * @property QuestionL10n[] $questionGroupL10ns
+ * @property QuestionGroupL10n[] $questionGroupL10ns
  */
 class QuestionGroup extends LSActiveRecord
 {
@@ -474,5 +474,16 @@ class QuestionGroup extends LSActiveRecord
         EmCacheHelper::set($cacheKey, $result);
 
         return $result;
+    }
+
+    /**
+     * Returns all group questions (including subquestions)
+     * @return Question[]
+     */
+    public function getAllQuestions()
+    {
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAllByAttributes(['gid' => $this->gid]);
+        return $questions;
     }
 }

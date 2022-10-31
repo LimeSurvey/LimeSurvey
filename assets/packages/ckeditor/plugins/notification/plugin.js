@@ -236,7 +236,7 @@
 			var show = true;
 
 			if ( this.editor.fire( 'notificationUpdate', { notification: this, options: options } ) === false ) {
-				// The idea of cancelable event is to let user create his own way of displaying notification, so if
+				// The idea of cancelable event is to let user create their own way of displaying notification, so if
 				// `notificationUpdate` event will be canceled there will be no interaction with notification area, but on
 				// the other hand the logic should work anyway so object will be updated (including `element` property).
 				// Note: we can safely update the element's attributes below, because this element is created inside

@@ -179,7 +179,7 @@ function modlabelsetanswers($lid)
         if (count($aErrors)) {
             Yii::app()->session['flashmessage'] = gT("Not all labels were updated successfully.");
         } else {
-            Yii::app()->session['flashmessage'] = gT("Labels sucessfully updated");
+            Yii::app()->session['flashmessage'] = gT("Labels successfully updated");
         }
     } else {
         Yii::app()->setFlashMessage(gT("Can't update labels because you are using duplicated codes"), 'error');

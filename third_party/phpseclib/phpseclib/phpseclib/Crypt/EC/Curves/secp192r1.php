@@ -7,8 +7,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Crypt
- * @package   EC
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -36,7 +34,7 @@ class secp192r1 extends Prime
            now, if PHP supported unsigned integers things might be different. no bit-shifting
            would be required for the PHP engine and it'd be a lot faster. but as is, BigInteger
            uses base-2**31 or base-2**26 depending on whether or not the system is has a 32-bit
-           or a 64-bit OS.           
+           or a 64-bit OS.
         */
         /*
         $m_length = $this->getLengthInBytes();

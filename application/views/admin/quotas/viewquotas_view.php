@@ -27,7 +27,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             <?php if( isset($sShowError) ):?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong><?php eT("Quota could not be added!", 'js'); ?></strong><br/> <?php eT("It is missing a quota message for the following languages:", 'js'); ?><br/><?php echo $sShowError; ?>
+                    <strong><?php eT("Quota could not be added!", 'js'); ?></strong><br/> <?php eT("Missing a quota message for the following languages:", 'js'); ?><br/><?php echo $sShowError; ?>
                 </div>
             <?php endif; ?>
 

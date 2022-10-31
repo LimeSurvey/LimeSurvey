@@ -1,7 +1,7 @@
 <?php
 /**
  * $aErrors string[]
- * $class : extraclass (optionnal ? )(@see ??: http://twig.sensiolabs.org/doc/templates.html#other-operators)
+ * $class : extraclass (optional ? )(@see ??: http://twig.sensiolabs.org/doc/templates.html#other-operators)
  */
 ?>
 <?php if(count($aErrors) > 1) : ?>

@@ -1728,7 +1728,7 @@ function upgradeTemplateTables304($oDB)
         'api_version'            => '3.0',
         'view_folder'            => 'views',
         'files_folder'           => 'files',
-        'description'            => "<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta's Material design theme for Bootstrap 3</small>",
+        'description'            => "<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differing from Default.<br><small>uses FezVrasta's Material design theme for Bootstrap 3</small>",
         'owner_id'               => '1',
         'extends_template_name' => 'default',
     ));

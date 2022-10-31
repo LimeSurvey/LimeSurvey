@@ -661,7 +661,7 @@ function getUserList($outputformat = 'fullinfoarray')
     if (!empty(Yii::app()->session['loginID'])) {
         $myuid = sanitize_int(Yii::app()->session['loginID']);
     }
-    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
+    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
     if (
         !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
@@ -696,7 +696,7 @@ function getUserList($outputformat = 'fullinfoarray')
     $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
 
     if (count($uresult) == 0 && !empty($myuid)) {
-//user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
+//user is not in a group and usercontrolSameGroupPolicy is activated - at least show their own userinfo
         $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=" . $myuid;
         $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
     }
@@ -894,48 +894,42 @@ function returnGlobal($stringname, $bRestrictToString = false)
         }
     }
     $bUrlParamIsArray = is_array($urlParam); // Needed to array map or if $bRestrictToString
-    if (!is_null($urlParam) && $stringname != '' && (!$bUrlParamIsArray || !$bRestrictToString)) {
-        if (
-            $stringname == 'sid' || $stringname == "gid" || $stringname == "oldqid" ||
-            $stringname == "qid" || $stringname == "tid" ||
-            $stringname == "lid" || $stringname == "ugid" ||
-            $stringname == "thisstep" || $stringname == "scenario" ||
-            $stringname == "cqid" || $stringname == "cid" ||
-            $stringname == "qaid" || $stringname == "scid"
-        ) {
-            if ($bUrlParamIsArray) {
-                return array_map("sanitize_int", $urlParam);
-            } else {
-                return sanitize_int($urlParam);
-            }
-        } elseif ($stringname == "lang" || $stringname == "adminlang") {
-            if ($bUrlParamIsArray) {
-                return array_map("sanitize_languagecode", $urlParam);
-            } else {
-                return sanitize_languagecode($urlParam);
-            }
-        } elseif (
-            $stringname == "htmleditormode" ||
-            $stringname == "subaction" ||
-            $stringname == "questionselectormode" ||
-            $stringname == "templateeditormode"
-        ) {
-            if ($bUrlParamIsArray) {
-                return array_map("sanitize_paranoid_string", $urlParam);
-            } else {
-                return sanitize_paranoid_string($urlParam);
-            }
-        } elseif ($stringname == "cquestions") {
-            if ($bUrlParamIsArray) {
-                return array_map("sanitize_cquestions", $urlParam);
-            } else {
-                return sanitize_cquestions($urlParam);
-            }
-        }
-        return $urlParam;
-    } else {
+
+    if (is_null($urlParam) || $stringname == '' || ($bUrlParamIsArray && $bRestrictToString)) {
         return null;
     }
+
+    if (in_array($stringname, ['sid', 'gid', 'oldqid', 'qid', 'tid', 'lid', 'ugid','thisstep', 'scenario', 'cqid', 'cid', 'qaid', 'scid'])) {
+        if ($bUrlParamIsArray) {
+            return array_map("sanitize_int", $urlParam);
+        } else {
+            return sanitize_int($urlParam);
+        }
+    } elseif ($stringname == "lang" || $stringname == "adminlang") {
+        if ($bUrlParamIsArray) {
+            return array_map("sanitize_languagecode", $urlParam);
+        } else {
+            return sanitize_languagecode($urlParam);
+        }
+    } elseif (
+        $stringname == "htmleditormode" ||
+        $stringname == "subaction" ||
+        $stringname == "questionselectormode" ||
+        $stringname == "templateeditormode"
+    ) {
+        if ($bUrlParamIsArray) {
+            return array_map("sanitize_paranoid_string", $urlParam);
+        } else {
+            return sanitize_paranoid_string($urlParam);
+        }
+    } elseif ($stringname == "cquestions") {
+        if ($bUrlParamIsArray) {
+            return array_map("sanitize_cquestions", $urlParam);
+        } else {
+            return sanitize_cquestions($urlParam);
+        }
+    }
+    return $urlParam;
 }
 
 
@@ -2183,13 +2177,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         }
     }
     $mail->Subject = $subject;
-
-    $sent = $mail->Send();
-    $maildebug = $mail->ErrorInfo;
-    if (Yii::app()->getConfig("emailsmtpdebug") > 0 && $mail->getDebug()) {
-        $maildebug .= '<br><strong>' . gT('SMTP debug output:') . '</strong>' . $mail->getDebug('html');
-    }
-    return $sent;
+    return $mail->Send();
 }
 
 
@@ -2480,6 +2468,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'B' ||
                 $captchamode == 'D' ||
+                $captchamode == 'F' ||
+                $captchamode == 'G' ||
+                $captchamode == 'I' ||
+                $captchamode == 'M' ||
+                $captchamode == 'U' ||
                 $captchamode == 'R'
             ) {
                 return true;
@@ -2490,6 +2483,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'B' ||
                 $captchamode == 'C' ||
+                $captchamode == 'F' ||
+                $captchamode == 'H' ||
+                $captchamode == 'K' ||
+                $captchamode == 'O' ||
+                $captchamode == 'T' ||
                 $captchamode == 'X'
             ) {
                 return true;
@@ -2500,6 +2498,11 @@ function isCaptchaEnabled($screen, $captchamode = '')
                 $captchamode == 'A' ||
                 $captchamode == 'C' ||
                 $captchamode == 'D' ||
+                $captchamode == 'G' ||
+                $captchamode == 'H' ||
+                $captchamode == 'J' ||
+                $captchamode == 'L' ||
+                $captchamode == 'P' ||
                 $captchamode == 'S'
             ) {
                 return true;
@@ -2838,12 +2841,11 @@ function getParticipantAttributes($iSurveyID)
 */
 function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 {
-
-
-    $aBasicTokenFields = array('firstname' => array(
-        'description' => gT('First name'),
-        'mandatory' => 'N',
-        'showregister' => 'Y'
+    $aBasicTokenFields = array(
+        'firstname' => array(
+            'description' => gT('First name'),
+            'mandatory' => 'N',
+            'showregister' => 'Y'
         ),
         'lastname' => array(
             'description' => gT('Last name'),
@@ -2863,32 +2865,37 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
         'token' => array(
             'description' => gT('Access code'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'language' => array(
             'description' => gT('Language code'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'sent' => array(
             'description' => gT('Invitation sent date'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'remindersent' => array(
             'description' => gT('Last reminder sent date'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'remindercount' => array(
             'description' => gT('Total numbers of sent reminders'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
         ),
         'usesleft' => array(
             'description' => gT('Uses left'),
             'mandatory' => 'N',
-            'showregister' => 'Y'
+            'showregister' => 'N'
+        ),
+        'completed' => array(
+            'description' => gT('Completed'),
+            'mandatory' => 'N',
+            'showregister' => 'N'
         ),
     );
 
@@ -3415,7 +3422,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'question' and 'help' INSERTANS tags in questions
-    $sql = "SELECT q.qid, language, question, help from {{questions}} q
+    $sql = "SELECT l.id, question, help from {{questions}} q
     join {{question_l10ns}} l on q.qid=l.qid
     WHERE sid=" . $newsid . " AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
     $result = Yii::app()->db->createCommand($sql)->query();
@@ -3423,8 +3430,6 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     foreach ($aResultData as $qentry) {
         $question = $qentry['question'];
         $help = $qentry['help'];
-        $qid = $qentry['qid'];
-        $language = $qentry['language'];
 
         foreach ($fieldnames as $sOldFieldname => $sNewFieldname) {
             $pattern = $sOldFieldname;
@@ -3444,12 +3449,7 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
             'help' => $help
             );
 
-            $where = array(
-            'qid' => $qid,
-            'language' => $language
-            );
-
-            QuestionL10n::model()->updateByPk($where, $data);
+            QuestionL10n::model()->updateByPk($qentry['id'], $data);
         } // Enf if modified
     } // end while qentry
 
@@ -3810,9 +3810,9 @@ function getLastInsertID($sTableName)
 /**
 * getGroupDepsForConditions() get Dependencies between groups caused by conditions
 * @param string $sid - the currently selected survey
-* @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
-* @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
-* @param string $indexby - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
+* @param string $depgid - (optional) get only the dependencies applying to the group with gid depgid
+* @param string $targgid - (optional) get only the dependencies for groups dependents on group targgid
+* @param string $indexby - (optional) "by-depgid" for result indexed with $res[$depgid][$targgid]
 *                   "by-targgid" for result indexed with $res[$targgid][$depgid]
 * @return array - returns an array describing the conditions or NULL if no dependecy is found
 *
@@ -3934,10 +3934,10 @@ function getGroupDepsForConditions($sid, $depgid = "all", $targgid = "all", $ind
 /**
 * getQuestDepsForConditions() get Dependencies between groups caused by conditions
 * @param string $sid - the currently selected survey
-* @param string $gid - (optionnal) only search dependecies inside the Group Id $gid
-* @param string $depqid - (optionnal) get only the dependencies applying to the question with qid depqid
-* @param string $targqid - (optionnal) get only the dependencies for questions dependents on question Id targqid
-* @param string $indexby - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
+* @param string $gid - (optional) only search dependecies inside the Group Id $gid
+* @param string $depqid - (optional) get only the dependencies applying to the question with qid depqid
+* @param string $targqid - (optional) get only the dependencies for questions dependents on question Id targqid
+* @param string $indexby - (optional) "by-depqid" for result indexed with $res[$depqid][$targqid]
 *                   "by-targqid" for result indexed with $res[$targqid][$depqid]
 * @return array - returns an array describing the conditions or NULL if no dependecy is found
 *
@@ -4030,7 +4030,7 @@ function dbQuoteAll($value)
 * checkMoveQuestionConstraintsForConditions()
 * @param string $sid - the currently selected survey
 * @param string $qid - qid of the question you want to check possible moves
-* @param string $newgid - (optionnal) get only constraints when trying to move to this particular GroupId
+* @param string $newgid - (optional) get only constraints when trying to move to this particular GroupId
 *                                     otherwise, get all moves constraints for this question
 *
 * @return array - returns an array describing the conditions
@@ -4135,18 +4135,31 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 }
 
 /**
+* Determines whether the list of user groups will need filtering before viewing.
+* @returns bool
+*/
+function shouldFilterUserGroupList()
+{
+    $bUserControlSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy', true);
+    $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
+    return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
+}
+
+/**
 * Get a list of all user groups
+* All user group or filtered according to usercontrolSameGroupPolicy
 * @returns array
 */
 function getUserGroupList()
 {
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-        $sQuery .= "AND uid = " . Yii::app()->session['loginID'];
+    if (shouldFilterUserGroupList()) {
+        $userid = intval(App()->session['loginID']);
+        $sQuery .= "AND (b.uid = {$userid})";
     }
     $sQuery .= " ORDER BY name";
 
-    $sresult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
+    $sresult = App()->db->createCommand($sQuery)->query(); //Checked
     if (!$sresult) {
         return "Database Error";
     }
@@ -4419,27 +4432,22 @@ function getSurveyUserGroupList($outputformat, $surveyid)
     $surveyid = sanitize_int($surveyid);
 
     $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
-    FROM {{user_groups}} AS a
-    LEFT JOIN (
-    SELECT b.ugid
-    FROM {{user_in_groups}} AS b
-    LEFT JOIN (SELECT * FROM {{permissions}}
-    WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
-    ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
+        FROM {{user_groups}} AS a
+        LEFT JOIN (
+        SELECT b.ugid
+        FROM {{user_in_groups}} AS b
+        LEFT JOIN (SELECT * FROM {{permissions}}
+        WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
+        ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query(); //Checked
     $aResult = $surveyidresult->readAll();
 
-    $authorizedGroupsList = [];
-    if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
-        $authorizedGroupsList = getUserGroupList();
-    }
-
+    $authorizedGroupsList = getUserGroupList();
     $svexist = false;
     $surveyselecter = "";
     $simpleugidarray = [];
     foreach ($aResult as $sv) {
         if (
-            Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
             in_array($sv['ugid'], $authorizedGroupsList)
         ) {
             $surveyselecter .= "<option";
@@ -4630,7 +4638,7 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
  * This function tries to returns the 'real' IP address under all configurations
  * Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
  *
- * @return	string	Client's IP Address
+ * @return  string  Client's IP Address
  */
 function getIPAddress()
 {
@@ -4642,12 +4650,12 @@ function getIPAddress()
         //Check IP Address passed from proxy
         $vComma = strpos($_SERVER['HTTP_X_FORWARDED_FOR'], ',');
         if (false === $vComma && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
-            // Single forward 
+            // Single forward
             $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
-		// Multitple forward
-		// see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
-		// TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
+        // Multitple forward
+        // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+        // TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
             $aForwarded = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
             if (false !== filter_var($aForwarded[0], FILTER_VALIDATE_IP)) {
                 $sIPAddress = $aForwarded[0];

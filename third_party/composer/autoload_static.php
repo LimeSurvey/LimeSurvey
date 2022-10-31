@@ -127,6 +127,8 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Yii' => __DIR__ . '/..' . '/yiisoft/yii/framework/yii.php',
+        'YiiBase' => __DIR__ . '/..' . '/yiisoft/yii/framework/YiiBase.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

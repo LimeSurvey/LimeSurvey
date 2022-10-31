@@ -1,7 +1,7 @@
 <?php
 /**
-* This modal display a form to upload ressources
-* It's called from the accordion "Ressources"
+* This modal display a form to upload resources
+* It's called from the accordion "Resources"
 * It has been move from inside the settings because form nesting is not valid in HTML, and can create problems.
 */
 ?>

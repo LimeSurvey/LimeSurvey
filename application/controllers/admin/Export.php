@@ -387,7 +387,7 @@ class Export extends SurveyCommonAction
             // Default to 2 (16 and up)
             Yii::app()->session['spssversion'] = 2;
         }
-        $spssver = Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']);
+        $spssver = CHtml::encode(Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']));
         Yii::app()->session['spssversion'] = $spssver;
 
         $length_varlabel = '231'; // Set the max text length of Variable Labels
@@ -665,7 +665,7 @@ class Export extends SurveyCommonAction
 
             $surveytable = "{{survey_$iSurveyId}}";
             // Control if fieldcode are unique
-            $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
+            $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
             foreach ($fieldnames as $field) {
                 $fielddata = arraySearchByKey($field, $fieldmap, "fieldname", 1);
                 $fieldcode[] = viewHelper::getFieldCode($fielddata, array("LEMcompat" => true));
@@ -686,43 +686,60 @@ class Export extends SurveyCommonAction
             $this->renderWrappedTemplate('export', 'vv_view', $aData);
         } elseif (isset($iSurveyId) && $iSurveyId) {
             //Export is happening
-            $extension = sanitize_paranoid_string(returnGlobal('extension'));
-            $vvVersion = (int) Yii::app()->request->getPost('vvversion');
-            $vvVersion = (in_array($vvVersion, array(1, 2))) ? $vvVersion : 2; // Only 2 version actually, default to 2
-            $fn = "vvexport_$iSurveyId." . $extension;
+            $extension = sanitize_paranoid_string(App()->request->getParam('extension'));
+            $vvVersion = intval(App()->request->getParam('vvVersion'));
+            if (!in_array($vvVersion, [1, 2])) {
+                $vvVersion = 2;
+            }
+            $questionSeparator = array('(', ')');
+            switch (App()->request->getParam('qseparator')) {
+                case 'newline':
+                    $questionSeparator = "\n";
+                    break;
+                case 'dash':
+                    $questionSeparator = " - ";
+                    break;
+                default:
+                    // Nothing to do
+            }
 
-            $this->addHeaders($fn, "text/comma-separated-values", 0);
+            $questionAbbreviated = intval(App()->request->getParam('abbreviatedtextto'));
+            $fileName = "vvexport_$iSurveyId." . $extension;
 
-            $s = "\t";
+            $this->addHeaders($fileName, "text/tab-separated-values", 0);
 
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
             $surveytable = "{{survey_$iSurveyId}}";
 
-            $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
+            $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
+
+            /* @var output */
+            $vvOutput = fopen('php://output', 'w+');
 
             //Create the human friendly first line
-            $firstline = "";
-            $secondline = "";
+            $firstline = [];
+            $secondline = [];
             foreach ($fieldnames as $field) {
                 $fielddata = arraySearchByKey($field, $fieldmap, "fieldname", 1);
-
                 if (count($fielddata) < 1) {
-                    $firstline .= $field;
+                    $firstline[] = $field;
                 } else {
-                    $firstline .= preg_replace('/\s+/', ' ', flattenText($fielddata['question'], false, true, 'UTF-8', true));
+                    if ($vvVersion >= 2) {
+                        $firstline[] = viewHelper::getFieldText($fielddata, array('separator' => $questionSeparator, 'abbreviated' => $questionAbbreviated,));
+                    } else {
+                        $firstline[] = preg_replace('/\s+/', ' ', flattenText($fielddata['question'], false, true, 'UTF-8', true));
+                    }
                 }
-                $firstline .= $s;
                 if ($vvVersion == 2) {
                     $fieldcode = viewHelper::getFieldCode($fielddata, array("LEMcompat" => true));
                     $fieldcode = ($fieldcode) ? $fieldcode : $field; // $fieldcode is empty for token if there are no survey participants table
                 } else {
                     $fieldcode = $field;
                 }
-                $secondline .= $fieldcode . $s;
+                $secondline[] = $fieldcode;
             }
-
-            $vvoutput = $firstline . "\n";
-            $vvoutput .= $secondline . "\n";
+            fputcsv($vvOutput, $firstline, "\t");
+            fputcsv($vvOutput, $secondline, "\t");
             $query = "SELECT * FROM " . Yii::app()->db->quoteTableName($surveytable);
 
             if (incompleteAnsFilterState() == "incomplete") {
@@ -732,9 +749,8 @@ class Export extends SurveyCommonAction
             }
             $result = Yii::app()->db->createCommand($query)->query();
 
-            echo $vvoutput;
-
             foreach ($result as $row) {
+                $responseLine = [];
                 $oResponse = Response::model($iSurveyId);
                 $oResponse->setAttributes($row, false);
                 $row = $oResponse->decrypt();
@@ -773,20 +789,20 @@ class Export extends SurveyCommonAction
                     $value = preg_replace('/^"/', '{quote}', $value);
                     // yay!  that nasty soab won't hurt us now!
                     if ($field == "submitdate" && !$value) {
-                        $value = "NULL";
+                        $value = '{question_not_shown}';
                     }
 
-                    $sun[] = $value;
+                    $responseLine[] = $value;
                 }
 
                 /* it is important here to stream output data, line by line
                  * in order to avoid huge memory consumption when exporting large
                  * quantities of answers */
-                echo implode($s, $sun) . "\n";
-
-                unset($sun);
+                fputcsv($vvOutput, $responseLine, "\t");
+                unset($responseLine);
             }
-            Yii::app()->end();
+            fclose($vvOutput);
+            App()->end();
         }
     }
 
@@ -941,64 +957,71 @@ class Export extends SurveyCommonAction
             if ($iSurveyID === false) {
                 continue;
             }
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
-                $archiveName                    = "";
-                $oSurvey                        = Survey::model()->findByPk($iSurveyID);
-                $aResults[$iSurveyID]['title']  = ellipsize($oSurvey->correct_relation_defaultlanguage->surveyls_title, 30);
-                $aResults[$iSurveyID]['result'] = false;
-
-                // Specific to each kind of export
-                switch ($sExportType) {
-                    // Export archives for active surveys
-                    case 'archive':
-                        if ($oSurvey->isActive) {
-                            $archiveName = $this->exportarchive($iSurveyID, false);
-
-                            if (is_file($archiveName)) {
-                                $aResults[$iSurveyID]['result'] = true;
-                                $aResults[$iSurveyID]['file']   = $archiveName;
-                                $bArchiveIsEmpty                = false;
-                                $archiveFile                    = $archiveName;
-                                $newArchiveFileFullName         = 'survey_archive_' . $iSurveyID . '.lsa';
-                                $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
-                                unlink($archiveFile);
-                            } else {
-                                $aResults[$iSurveyID]['error'] = gT("Unknown error");
-                            }
-                        } else {
-                            $aResults[$iSurveyID]['error'] = gT("Not active.");
-                        }
-                        break;
-                    // Export printable archives for all selected surveys
-                    case 'printable':
-                        $archiveName = $this->exportPrintableHtmls($iSurveyID, false);
-                        if (is_file($archiveName)) {
-                            $aResults[$iSurveyID]['result'] = true;
-                            $aResults[$iSurveyID]['file']   = $archiveName;
-                            $bArchiveIsEmpty                = false;
-                            $archiveFile                    = $archiveName;
-                            $newArchiveFileFullName         = 'survey_printables_' . $iSurveyID . '.zip';
-                            $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
-                            unlink($archiveFile);
-                        } else {
-                            $aResults[$iSurveyID]['error'] = gT("Unknown error");
-                        }
-                        break;
-
-                    // Export structure for survey
-                    default:
-                        $aResults[$iSurveyID]['result'] = true;
-                        $bArchiveIsEmpty                = false;
-
-                        $lssFileName = "limesurvey_survey_{$iSurveyID}.lss";
-                        $archiveFile = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
-                        file_put_contents($archiveFile, surveyGetXMLData($iSurveyID));
-                        $this->addToZip($zip, $archiveFile, $lssFileName);
-                        unlink($archiveFile);
-                        break;
-                }
-            } else {
+            $archiveName                    = "";
+            $oSurvey                        = Survey::model()->findByPk($iSurveyID);
+            $aResults[$iSurveyID]['title']  = ellipsize($oSurvey->correct_relation_defaultlanguage->surveyls_title, 30);
+            $aResults[$iSurveyID]['result'] = false;
+            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
                 $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
+                continue;
+            }
+
+            // Specific to each kind of export
+            switch ($sExportType) {
+                // Export archives for active surveys
+                case 'archive':
+                    if (
+                        ($oSurvey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
+                        || !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+                    ) {
+                        $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
+                        break;
+                    }
+                    if (!$oSurvey->isActive) {
+                        $aResults[$iSurveyID]['error'] = gT("Not active.");
+                        break;
+                    }
+                    $archiveName = $this->exportarchive($iSurveyID, false);
+
+                    if (is_file($archiveName)) {
+                        $aResults[$iSurveyID]['result'] = true;
+                        $aResults[$iSurveyID]['file']   = $archiveName;
+                        $bArchiveIsEmpty                = false;
+                        $archiveFile                    = $archiveName;
+                        $newArchiveFileFullName         = 'survey_archive_' . $iSurveyID . '.lsa';
+                        $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
+                        unlink($archiveFile);
+                    } else {
+                        $aResults[$iSurveyID]['error'] = gT("Unknown error");
+                    }
+                    break;
+                // Export printable archives for all selected surveys
+                case 'printable':
+                    $archiveName = $this->exportPrintableHtmls($iSurveyID, false);
+                    if (is_file($archiveName)) {
+                        $aResults[$iSurveyID]['result'] = true;
+                        $aResults[$iSurveyID]['file']   = $archiveName;
+                        $bArchiveIsEmpty                = false;
+                        $archiveFile                    = $archiveName;
+                        $newArchiveFileFullName         = 'survey_printables_' . $iSurveyID . '.zip';
+                        $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
+                        unlink($archiveFile);
+                    } else {
+                        $aResults[$iSurveyID]['error'] = gT("Unknown error");
+                    }
+                    break;
+
+                // Export structure for survey
+                default:
+                    $aResults[$iSurveyID]['result'] = true;
+                    $bArchiveIsEmpty                = false;
+
+                    $lssFileName = "limesurvey_survey_{$iSurveyID}.lss";
+                    $archiveFile = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+                    file_put_contents($archiveFile, surveyGetXMLData($iSurveyID));
+                    $this->addToZip($zip, $archiveFile, $lssFileName);
+                    unlink($archiveFile);
+                    break;
             }
         }
         return array('aResults' => $aResults, 'sZip' => $sZip, 'bArchiveIsEmpty' => $bArchiveIsEmpty);
@@ -1037,6 +1060,13 @@ class Export extends SurveyCommonAction
     private function exportarchive(int $iSurveyID, bool $bSendToBrowser = true)
     {
         $survey = Survey::model()->findByPk($iSurveyID);
+
+        if (
+            ($survey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
+            || !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
         $aSurveyInfo = getSurveyInfo($iSurveyID); // TODO: $aSurveyInfo is not used anymore. Remove it.
 
@@ -1255,7 +1285,9 @@ class Export extends SurveyCommonAction
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
 
-            $lang = Yii::app()->request->getPost('save_language');
+            $lang = sanitize_languagecode(
+                Yii::app()->request->getPost('save_language')
+            );
 
             // Setting the selected language for printout
             App()->setLanguage($lang);

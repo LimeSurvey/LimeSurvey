@@ -118,7 +118,7 @@ class viewHelper
             );
         $aOption = array_merge($aDefaultOption, $aOption);
 
-        $sQuestionText = ""; // Allways return a string
+        $sQuestionText = ""; // Always return a string
         if (isset($aField['fieldname'])) {
             $sQuestionText = self::flatEllipsizeText(isset($aField['answertabledefinition']) ? $aField['answertabledefinition'] : $aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']);
             // Did this question have sub question, maybe not needed, think only isset is OK
@@ -209,7 +209,7 @@ class viewHelper
      *
      * @param string $sString :the string
      * @param boolean $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
-     * @param integer $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
+     * @param integer $iAbbreviated : max string text (if true : always flat), 0 or false : don't abbreviated
      * @param string $sEllipsis if abbreviated : the char to put at end (or middle)
      * @param integer $fPosition if abbreviated position to split (in % : 0 to 1)
      *
