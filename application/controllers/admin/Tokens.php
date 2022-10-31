@@ -1462,14 +1462,16 @@ class Tokens extends SurveyCommonAction
                             $oToken->remindercount++;
                         }
                         $tokenSaveError = "";
-                        if (!$oToken->save( // Save only uncrypted value, no need to crypt/encryt
-                            true, // Validate but only the date part
-                            array(
-                                'sent',
-                                'remindersent',
-                                'remindercount'
+                        if (
+                            !$oToken->save( // Save only uncrypted value, no need to crypt/encryt
+                                true, // Validate but only the date part
+                                array(
+                                    'sent',
+                                    'remindersent',
+                                    'remindercount'
+                                )
                             )
-                        )) {
+                        ) {
                             // Add the error when try to save token
                             $tokenSaveError = CHtml::errorSummary(
                                 $oToken,
