@@ -43,7 +43,7 @@
 		"tiamo/spss": "^2.2",
         "yiiext/twig-renderer":"dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
-		"yiisoft/yii": "1.1.x-dev"
+		"yiisoft/yii": "^1.1.26"
 	},
     "config": {
         "vendor-dir": "third_party",
@@ -57,7 +57,7 @@
         "squizlabs/php_codesniffer": "^3.5",
         "phpmd/phpmd" : "^2.8",
         "phpunit/phpunit": "^8.0",
-        "vimeo/psalm": "^4.6",
+        "vimeo/psalm": "^4.29",
 		"misantron/dbunit": "^5.1",
 		"tebazil/yii1-db-seeder": "^0.0.0"
     },
