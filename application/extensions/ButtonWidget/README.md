@@ -82,7 +82,7 @@ $this->widget('ext.ButtonWidget.ButtonWidget', [
         'text' => 'Another dropdown button',
         'icon' => 'fa fa-eye',
         'isDropDown' => true,
-        'menuIcon' => 'fa fa-caret-down'
+        'dropDownIcon' => 'fa fa-caret-down'
         'menuContent' => '<ul class="dropdown-menu" aria-labelledby="example2">
             <li><a class="dropdown-item" href="#">Action</a></li>
             <li><a class="dropdown-item" href="#">Another action</a></li>
