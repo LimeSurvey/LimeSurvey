@@ -192,7 +192,7 @@ class UserManagementTest extends TestBaseClassWeb
             $this->fillInputById("User_Form_email", $email);
 
             // Fill in the expiration date.
-            $this->fillDateById('User_Form_expires', $expiration);
+            $this->fillDateById('expires', $expiration);
 
             // Enable "Set password now" to avoid mailing errors
             $setPasswordSwitch = self::$webDriver->findElement(
