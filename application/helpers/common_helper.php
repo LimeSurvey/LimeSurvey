@@ -914,48 +914,42 @@ function returnGlobal($stringname, $bRestrictToString = false)
         }
     }
     $bUrlParamIsArray = is_array($urlParam); // Needed to array map or if $bRestrictToString
-    if (!is_null($urlParam) && $stringname != '' && (!$bUrlParamIsArray || !$bRestrictToString)) {
-        if (
-            $stringname == 'sid' || $stringname == "gid" || $stringname == "oldqid" ||
-            $stringname == "qid" || $stringname == "tid" ||
-            $stringname == "lid" || $stringname == "ugid" ||
-            $stringname == "thisstep" || $stringname == "scenario" ||
-            $stringname == "cqid" || $stringname == "cid" ||
-            $stringname == "qaid" || $stringname == "scid"
-        ) {
-            if ($bUrlParamIsArray) {
-                return array_map("sanitize_int", $urlParam);
-            } else {
-                return sanitize_int($urlParam);
-            }
-        } elseif ($stringname == "lang" || $stringname == "adminlang") {
-            if ($bUrlParamIsArray) {
-                return array_map("sanitize_languagecode", $urlParam);
-            } else {
-                return sanitize_languagecode($urlParam);
-            }
-        } elseif (
-            $stringname == "htmleditormode" ||
-            $stringname == "subaction" ||
-            $stringname == "questionselectormode" ||
-            $stringname == "templateeditormode"
-        ) {
-            if ($bUrlParamIsArray) {
-                return array_map("sanitize_paranoid_string", $urlParam);
-            } else {
-                return sanitize_paranoid_string($urlParam);
-            }
-        } elseif ($stringname == "cquestions") {
-            if ($bUrlParamIsArray) {
-                return array_map("sanitize_cquestions", $urlParam);
-            } else {
-                return sanitize_cquestions($urlParam);
-            }
-        }
-        return $urlParam;
-    } else {
+
+    if (is_null($urlParam) || $stringname == '' || ($bUrlParamIsArray && $bRestrictToString)) {
         return null;
     }
+
+    if (in_array($stringname, ['sid', 'gid', 'oldqid', 'qid', 'tid', 'lid', 'ugid','thisstep', 'scenario', 'cqid', 'cid', 'qaid', 'scid'])) {
+        if ($bUrlParamIsArray) {
+            return array_map("sanitize_int", $urlParam);
+        } else {
+            return sanitize_int($urlParam);
+        }
+    } elseif ($stringname == "lang" || $stringname == "adminlang") {
+        if ($bUrlParamIsArray) {
+            return array_map("sanitize_languagecode", $urlParam);
+        } else {
+            return sanitize_languagecode($urlParam);
+        }
+    } elseif (
+        $stringname == "htmleditormode" ||
+        $stringname == "subaction" ||
+        $stringname == "questionselectormode" ||
+        $stringname == "templateeditormode"
+    ) {
+        if ($bUrlParamIsArray) {
+            return array_map("sanitize_paranoid_string", $urlParam);
+        } else {
+            return sanitize_paranoid_string($urlParam);
+        }
+    } elseif ($stringname == "cquestions") {
+        if ($bUrlParamIsArray) {
+            return array_map("sanitize_cquestions", $urlParam);
+        } else {
+            return sanitize_cquestions($urlParam);
+        }
+    }
+    return $urlParam;
 }
 
 
@@ -4558,7 +4552,7 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
  * This function tries to returns the 'real' IP address under all configurations
  * Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
  *
- * @return	string	Client's IP Address
+ * @return  string  Client's IP Address
  */
 function getIPAddress()
 {
@@ -4570,12 +4564,12 @@ function getIPAddress()
         //Check IP Address passed from proxy
         $vComma = strpos($_SERVER['HTTP_X_FORWARDED_FOR'], ',');
         if (false === $vComma && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
-            // Single forward 
+            // Single forward
             $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
-		// Multitple forward
-		// see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
-		// TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
+        // Multitple forward
+        // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+        // TODO: RFC7239 full implementation (https://datatracker.ietf.org/doc/html/rfc7239#section-5.2)
             $aForwarded = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
             if (false !== filter_var($aForwarded[0], FILTER_VALIDATE_IP)) {
                 $sIPAddress = $aForwarded[0];

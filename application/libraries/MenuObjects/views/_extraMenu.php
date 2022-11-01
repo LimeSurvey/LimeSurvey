@@ -55,6 +55,8 @@ foreach ($extraMenus as $menu): ?>
                                          href="<?= $menuButton->getHref(); ?>"
                                          class="<?= $menuButton->getButtonClass() ?>"
                                          title="<?= $menuButton->getTooltip() ?>"
+                                         data-toggle="tooltip"
+                                         data-placement="bottom"
                                          onclick="<?= $menuButton->getOnClick() ?>"
                                          target="<?= $target ?>">
                         <?= $menuButton->getLabel(); ?></a>

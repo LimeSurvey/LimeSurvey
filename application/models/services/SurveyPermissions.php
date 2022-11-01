@@ -9,10 +9,10 @@ namespace LimeSurvey\Models\Services;
  */
 class SurveyPermissions
 {
-    /* @var $survey \Survey */
+    /** @var \Survey */
     private $survey;
 
-    /* @var $usercontrolSameGroupPolicy boolean */
+    /** @var bool */
     private $userControlSameGroupPolicy;
 
     /**
@@ -50,7 +50,9 @@ class SurveyPermissions
     public function getUserPermissionCriteria()
     {
         $userList = getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
-        $currentUserId = \Yii::app()->user->getId(); //current logged in user
+        /** @var \LSYii_Application */
+        $app = \Yii::app();
+        $currentUserId = $app->user->getId(); //current logged in user
         $criteria = new \CDbCriteria();
         $criteria->select = 't.entity_id, t.uid, u.users_name AS username, u.full_name';
         $criteria->join = 'INNER JOIN {{users}} AS u ON t.uid = u.uid';
@@ -71,8 +73,8 @@ class SurveyPermissions
     /**
      * Get the permissions (crud + import,export) for a survey permission like 'assessements'
      *
-     * @param $userid int the userid
-     * @param $permission string the survey permission (e.g. 'assessments', 'responses')
+     * @param int $userid the userid
+     * @param string $permission the survey permission (e.g. 'assessments', 'responses')
      * @return \Permission|null
      */
     public function getUsersSurveyPermissionEntity($userid, $permission)
@@ -101,8 +103,7 @@ class SurveyPermissions
      * Adds a user to the survey permissions. This includes that the user gets the
      * permission 'read' for this survey.
      *
-     * @param $userid int the userid
-     *
+     * @param int $userid the userid
      * @return boolean true if user could be added, false otherwise
      */
     public function addUserToSurveyPermission($userid)
@@ -128,7 +129,7 @@ class SurveyPermissions
      * This includes that the users get the
      * permission 'read' for this survey.
      *
-     * @param $userGroupId int the user group id
+     * @param int $userGroupId the user group id
      * @return int amount of users from the given group added
      */
     public function addUserGroupToSurveyPermissions($userGroupId)
@@ -244,8 +245,8 @@ class SurveyPermissions
     /**
      * Saves (inserts ) the survey permissions for a specific user.
      *
-     * @param $userId int
-     * @param $permissions array
+     * @param int $userId
+     * @param array $permissions
      * @return bool true if all permissions could be saved, false otherwise
      */
     public function saveUserPermissions($userId, $permissions)
@@ -282,8 +283,8 @@ class SurveyPermissions
     /**
      * Saves (inserts) permissions for a user group.
      *
-     * @param $userGroupId int
-     * @param $permissions array
+     * @param int $userGroupId
+     * @param array $permissions
      * @return bool
      * @throws \Exception
      */
@@ -293,6 +294,7 @@ class SurveyPermissions
         $surveysGroups    = \SurveysGroups::model()->findByPk($this->survey->sid);
         if ($surveysGroups !== null) {
             $surveysGroupsOwnerID = $surveysGroups->getOwnerId();
+            /** @var \UserInGroup[] */
             $oUserInGroups = \UserInGroup::model()->findAll(
                 'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveygroupsOwnerId',
                 array(
@@ -302,6 +304,7 @@ class SurveyPermissions
                 )
             );
         } else {
+            /** @var \UserInGroup[] */
             $oUserInGroups = \UserInGroup::model()->findAll(
                 'ugid = :ugid AND uid <> :currentUserId',
                 array (
@@ -320,7 +323,7 @@ class SurveyPermissions
 
     /** Deletes all permissions for a user for this survey.
      *
-     * @param $userId
+     * @param int $userId
      * @return int number of deleted permissions, 0 means nothing has been deleted
      */
     public function deleteUserPermissions($userId)
@@ -335,14 +338,15 @@ class SurveyPermissions
     /**
      * Returns an array of user group names including 'usercontrolSameGroupPolicy' if set.
      *
-     * @param $userid
-     * @param $usercontrolSameGroupPolicy
+     * @param int $userid
+     * @param bool $usercontrolSameGroupPolicy
      * @return array names of user groups, or empty array
      */
     public function getUserGroupNames($userid, $usercontrolSameGroupPolicy)
     {
         $group_names = [];
         $authorizedGroupsList = getUserGroupList();
+        /** @var \UserInGroup[] */
         $userInGroups = \UserInGroup::model()->with('users')->findAll('users.uid = :uid', array(':uid' => $userid));
         foreach ($userInGroups as $userGroup) {
             /* @var $userGroup \UserInGroup */
@@ -358,9 +362,9 @@ class SurveyPermissions
      * Checks which permission entities (CRUD + import,export) a user has for the specific
      * permission (e.g. permissionName='assessment'). Returns an array with infos.
      *
-     * @param $userId    int the user id
-     * @param $permissioName     string permission name (e.g. 'assessments' or 'quotas')
-     * @param $basicPermissionDetails array array with basic information about a permission
+     * @param int $userId    the user id
+     * @param string $permissioName     permission name (e.g. 'assessments' or 'quotas')
+     * @param array $basicPermissionDetails array with basic information about a permission
      *                         (e.g. permission name, single permissions(CRUD) etc.)
      * @return array  structure is ['hasPermissions'] --> if user has at least one permission entity
      *                             ['allPermissions'] --> does the user has ALL possible permission entities

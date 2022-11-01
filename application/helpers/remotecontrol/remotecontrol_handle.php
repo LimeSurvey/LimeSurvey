@@ -497,12 +497,16 @@ class remotecontrol_handle
         $helper = new statistics_helper();
         switch ($docType) {
             case 'pdf':
-                $sTempFile = $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage);
+                $sTempFile = sanitize_filename(
+                    $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage)
+                );
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;
             case 'xls':
-                $sTempFile = $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, '0', $docType, 'F', $sLanguage);
+                $sTempFile = sanitize_filename(
+                    $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, '0', $docType, 'F', $sLanguage)
+                );
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;

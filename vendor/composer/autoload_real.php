@@ -28,6 +28,10 @@ class ComposerAutoloaderInitddb1a145e450f862353420acc5153e40
         self::$loader = $loader = new \Composer\Autoload\ClassLoader(\dirname(__DIR__));
         spl_autoload_unregister(array('ComposerAutoloaderInitddb1a145e450f862353420acc5153e40', 'loadClassLoader'));
 
+        $includePaths = require __DIR__ . '/include_paths.php';
+        $includePaths[] = get_include_path();
+        set_include_path(implode(PATH_SEPARATOR, $includePaths));
+
         require __DIR__ . '/autoload_static.php';
         call_user_func(\Composer\Autoload\ComposerStaticInitddb1a145e450f862353420acc5153e40::getInitializer($loader));
 

@@ -46,7 +46,7 @@
 		"tiamo/spss": "^2.2",
 		"yiiext/twig-renderer": "dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
-		"yiisoft/yii": "1.1.x-dev",
+		"yiisoft/yii": "^1.1.26",
 		"phpmailer/phpmailer": "^6.6",
 		"khaled.alshamaa/ar-php": "^6.3",
 		"tecnickcom/tcpdf": "^6.5",
