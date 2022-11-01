@@ -23,7 +23,7 @@
             'id' => 'ls-preview-question',
             'text' => gT('Preview question'),
             'icon' => 'fa fa-eye',
-            'menu' => count($surveyLanguages) > 1,
+            'isDropDown' => count($surveyLanguages) > 1,
             'menuContent' => $languagesDropDownItems,
             'link' => Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"),
             'htmlOptions' => [

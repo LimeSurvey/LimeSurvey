@@ -15,19 +15,25 @@ class ButtonWidget extends CInputWidget
     public $iconPosition = 'left';
 
     /** @var bool if button should behave as dropdown true or false */
-    public $menu = false;
+    public $isDropDown = false;
 
-    /** @var bool if the 'divider plus another icon' is displayed. true or false (true, if not set and 'menu' is true)  */
+    /** @var bool if the 'divider plus another icon' is displayed.
+     * true or false (true, if not set and 'isDropDown' is true)
+     */
     public $displayMenuIcon;
 
     /** @var string the icon displayed besides the divider, default is  */
     public $menuIcon = 'fa fa-ellipsis-h'; //@TODO switch to new icon when icons task is done
 
-    /** @var string link where the button points to, if link is empty an <button> element is created else an <a> element */
+    /** @var string link where the button points to, if link is empty
+     * an <button> element is created else an <a> element
+     */
     public $link = '';
 
-    /** @var string string that should contain valid html list for bootstrap dropdown button. Only used when not empty and $menu is true */
-    public $menuContent = '';
+    /** @var string string that should contain valid html list for bootstrap dropdown button.
+     * Only used when not empty and isDropDown is true
+     */
+    public $menuContent = ''; //todo rename this one to $dropDownContent
 
     /** @var array html options */
     public $htmlOptions = [];
@@ -55,7 +61,7 @@ class ButtonWidget extends CInputWidget
             'text' => $this->text,
             'icon' => $this->icon,
             'iconPosition' => $this->iconPosition,
-            'menu' => $this->menu,
+            'menu' => $this->isDropDown,
             'displayMenuIcon' => $this->displayMenuIcon,
             'menuIcon' => $this->menuIcon,
             'menuContent' => $this->menuContent,
@@ -75,7 +81,7 @@ class ButtonWidget extends CInputWidget
      */
     private function setDefaultOptions()
     {
-        if ($this->displayMenuIcon === null && $this->menu === true) {
+        if ($this->displayMenuIcon === null && $this->isDropDown === true) {
             $this->displayMenuIcon = true;
         } elseif ($this->displayMenuIcon !== true) {
             $this->displayMenuIcon = false;
@@ -83,7 +89,7 @@ class ButtonWidget extends CInputWidget
         if (!array_key_exists('class', $this->htmlOptions)) {
             $this->htmlOptions['class'] = 'btn btn-primary';
         }
-        if ($this->menu) {
+        if ($this->isDropDown) {
             $this->htmlOptions['data-bs-toggle'] = 'dropdown';
             $this->htmlOptions['aria-haspopup'] = 'true';
             $this->htmlOptions['aria-expanded'] = 'false';

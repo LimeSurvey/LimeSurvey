@@ -12,7 +12,7 @@
             'name' => 'ls-tools-button',
             'id' => 'ls-tools-button',
             'text' => gT('Tools'),
-            'menu' => true,
+            'isDropDown' => true,
             'menuContent' => '<ul class="dropdown-menu">' . $toolsDropdownItems . '</ul>',
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
