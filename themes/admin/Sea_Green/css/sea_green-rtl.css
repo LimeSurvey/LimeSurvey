@@ -43,12 +43,6 @@
   border: 1px solid #5d1f1b;
 }
 
-.nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a {
-  color: #636363;
-  background-color: #fff;
-  border: 1px solid #dadada;
-}
-
 .pagination > li > span {
   color: #328637;
   background-color: #fff;
@@ -1233,16 +1227,6 @@ fieldset[disabled] .btn-link:focus {
 .nav .open > a:focus {
   color: #fff;
   background-color: #0f3e12;
-}
-
-.nav-tabs {
-  border-bottom: 1px solid #dadada;
-}
-.nav-tabs > li > a:hover {
-  border: 1px solid #9cba9e #9cba9e #9cba9e;
-}
-.nav-tabs .nav-link {
-  color: #328637;
 }
 
 .navbar-collapse {
@@ -2758,4 +2742,28 @@ label {
   padding: 0.5rem 1.2rem;
   text-align: center;
   background-color: #1E1E1E;
+}
+
+.nav-tabs .nav-link {
+  background: #F9F9FB;
+  color: #1E1E1E;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 2px solid #C2C5D1;
+  border-top: 2px solid #fff;
+}
+.nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+  border-bottom: 2px solid #C2C5D1;
+  border-top: 2px solid #fff;
+}
+.nav-tabs .nav-link.disabled {
+  background-color: transparent;
+  border-color: transparent;
+}
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  color: #1E1E1E;
+  background-color: #fff;
+  border-top: 2px solid #4200FF;
+  border-bottom: 2px solid #fff;
 }

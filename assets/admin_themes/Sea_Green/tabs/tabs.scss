@@ -1,0 +1,49 @@
+.nav-tabs {
+  // border-bottom: $nav-tabs-border-width solid $nav-tabs-border-color;
+
+  .nav-link {
+    // margin-bottom: -$nav-tabs-border-width;
+    // background: none;
+    // border: $nav-tabs-border-width solid transparent;
+
+    // newly added
+    background: $g-100;
+    color: $nav-tabs-link-active-color;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 2px solid $g-400;
+    border-top: 2px solid $white;
+    &:hover,
+    &:focus {
+      // border-color: $nav-tabs-link-hover-border-color;
+      // Prevents active .nav-link tab overlapping focus outline of previous/next .nav-link
+      // isolation: isolate;
+
+      // newly added
+      border-bottom: 2px solid $g-400;
+      border-top: 2px solid $white;
+
+    }
+
+    &.disabled {
+      // color: $nav-link-disabled-color;
+      background-color: transparent;
+      border-color: transparent;
+    }
+  }
+
+  .nav-link.active,
+  .nav-item.show .nav-link {
+    color: $nav-tabs-link-active-color;
+    // background-color: $nav-tabs-link-active-bg;
+    // border-color: $nav-tabs-link-active-border-color;
+
+    // newly added
+    background-color: $white;
+    border-top: 2px solid $action;
+    border-bottom: 2px solid $white;
+
+  }
+
+
+}

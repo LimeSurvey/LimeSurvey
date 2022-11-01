@@ -1535,6 +1535,9 @@ fieldset[disabled] {
                 color: $white;
                 background-color: $primary-hover_2;
                 border-bottom: 1px solid $white;
+                // color: $white;
+                // background-color: $primary-hover_2;
+                // border-bottom: 1px solid $white;
             }
             &:focus {
                 //background-color: $primary-bg_hover;
@@ -1570,26 +1573,7 @@ fieldset[disabled] {
         }
     }
 }
-.nav-tabs {
-    border-bottom: 1px solid $gray-08;
-    > li {
-        > a:hover {
-            border: 1px solid $primary-bg_hover $primary-bg_hover $primary-bg_hover;
-        }
-        &.active > a {
-            @extend %extend_7;
-            &:hover {
-                @extend %extend_7;
-            }
-            &:focus {
-                @extend %extend_7;
-            }
-        }
-    }
-    .nav-link {
-        color: $primary;
-    }
-}
+
 // Navbar
 .navbar-collapse {
     box-shadow: inset 0 1px 0 $white_opac_10;

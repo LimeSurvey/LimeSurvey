@@ -63,7 +63,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
         <!-- Import -->
         <li class="nav-item" role="presentation">
             <a class="nav-link <?= $active === 'import' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title=" <span class='icon-import '></span>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
-            <span class="icon-import text-success"></span>&nbsp;
+            <span class="icon-import "></span>&nbsp;
                 <?php  eT("Import"); ?>
             </a>
         </li>
