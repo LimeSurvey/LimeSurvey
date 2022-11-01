@@ -20,7 +20,7 @@ class ButtonWidget extends CInputWidget
     /** @var bool if the 'divider plus another icon' is displayed.
      * true or false (true, if not set and 'isDropDown' is true)
      */
-    public $displayMenuIcon;
+    public $displayDropDownIcon;
 
     /** @var string the icon displayed besides the divider, default is  */
     public $dropDownIcon = 'fa fa-ellipsis-h'; //@TODO switch to new icon when icons task is done
@@ -61,10 +61,10 @@ class ButtonWidget extends CInputWidget
             'text' => $this->text,
             'icon' => $this->icon,
             'iconPosition' => $this->iconPosition,
-            'menu' => $this->isDropDown,
-            'displayMenuIcon' => $this->displayMenuIcon,
-            'menuIcon' => $this->dropDownIcon,
-            'menuContent' => $this->dropDownContent,
+            'isDropDown' => $this->isDropDown,
+            'displayDropDownIcon' => $this->displayDropDownIcon,
+            'dropDownIcon' => $this->dropDownIcon,
+            'dropDownContent' => $this->dropDownContent,
             'link' => $this->link,
             'htmlOptions' => $this->htmlOptions
         ]);
@@ -81,10 +81,10 @@ class ButtonWidget extends CInputWidget
      */
     private function setDefaultOptions()
     {
-        if ($this->displayMenuIcon === null && $this->isDropDown === true) {
-            $this->displayMenuIcon = true;
-        } elseif ($this->displayMenuIcon !== true) {
-            $this->displayMenuIcon = false;
+        if ($this->displayDropDownIcon === null && $this->isDropDown === true) {
+            $this->displayDropDownIcon = true;
+        } elseif ($this->displayDropDownIcon !== true) {
+            $this->displayDropDownIcon = false;
         }
         if (!array_key_exists('class', $this->htmlOptions)) {
             $this->htmlOptions['class'] = 'btn btn-primary';
@@ -93,7 +93,7 @@ class ButtonWidget extends CInputWidget
             $this->htmlOptions['data-bs-toggle'] = 'dropdown';
             $this->htmlOptions['aria-haspopup'] = 'true';
             $this->htmlOptions['aria-expanded'] = 'false';
-            if (!$this->displayMenuIcon) {
+            if (!$this->displayDropDownIcon) {
                 $this->htmlOptions['class'] .= ' dropdown-toggle';
             }
         }
