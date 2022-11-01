@@ -5,24 +5,24 @@
 /** @var string $text */
 /** @var string $icon */
 /** @var string $iconPosition */
-/** @var bool $menu */
-/** @var bool $displayMenuIcon */
-/** @var string $menuIcon */
-/** @var string $menuContent */
+/** @var bool $isDropDown */
+/** @var bool $displayDropDownIcon */
+/** @var string $dropDownIcon */
+/** @var string $dropDownContent */
 /** @var string $link */
 /** @var array $htmlOptions */
 
 $iconLeft = $icon && $iconPosition != 'right' ? '<i class="' .  $icon . '" ></i> ' : '';
 $iconRight = $icon && $iconPosition == 'right' ? ' <i class="' .  $icon . '" ></i>' : '';
-$menuIconHtml = $displayMenuIcon ? '<span class="menu-button-divider"></span><i class="' . $menuIcon . '" ></i>' : '';
+$dropDownIconHtml = $displayDropDownIcon ? '<span class="menu-button-divider"></span><i class="' . $dropDownIcon . '" ></i>' : '';
 ?>
-<?php if ($link == '' || $menu || array_key_exists('disabled', $htmlOptions)) : ?>
-    <?php if ($menuContent != '') : ?>
+<?php if ($link == '' || $isDropDown || array_key_exists('disabled', $htmlOptions)) : ?>
+    <?php if ($dropDownContent != '') : ?>
         <div class="dropdown">
     <?php endif; ?>
-        <?= CHtml::htmlButton($iconLeft . $text . $iconRight . $menuIconHtml, $htmlOptions) ?>
-    <?php if ($menuContent != '') : ?>
-            <?= $menuContent ?>
+        <?= CHtml::htmlButton($iconLeft . $text . $iconRight . $dropDownIconHtml, $htmlOptions) ?>
+    <?php if ($dropDownContent != '') : ?>
+            <?= $dropDownContent ?>
         </div>
     <?php endif; ?>
 <?php else : ?>

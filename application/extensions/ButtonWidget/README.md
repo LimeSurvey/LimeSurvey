@@ -24,17 +24,17 @@ being able to control icons and their position, and most important the look of t
 
     ***default***: 'left'
 
-- **menu**: *bool*
+- **isDropDown**: *bool*
 
     if button should behave as dropdown true or false
 
     ***default***: false
 
-- **displayMenuIcon**: *bool*
+- **displayDropDownIcon**: *bool*
 
     if the 'divider plus another icon' is displayed. true or false (true, if not set and 'menu' is true)
 
-- **menuIcon**: *string*
+- **dropDownIcon**: *string*
 
     the icon displayed besides the divider
 
@@ -46,7 +46,7 @@ being able to control icons and their position, and most important the look of t
 
     ***default***: empty string
 
-- **menuContent**: *string* 
+- **dropDownContent**: *string* 
 
     string that should contain a valid html list for bootstrap dropdown button. Only used when not empty and $menu is true
 

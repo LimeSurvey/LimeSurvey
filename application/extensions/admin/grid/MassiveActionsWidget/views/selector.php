@@ -19,7 +19,7 @@ $listOfActions = $this->render('listOfActions', get_defined_vars(), true);
     'icon' => '',
     'isDropDown' => true,
     'dropDownIcon' => 'fa fa-caret-down',
-    'menuContent' => $listOfActions,
+    'dropDownContent' => $listOfActions,
     'htmlOptions' => [
     'class' => 'btn btn-outline-secondary btntooltip',
     ],
