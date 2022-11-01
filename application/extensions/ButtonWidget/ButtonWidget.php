@@ -23,7 +23,7 @@ class ButtonWidget extends CInputWidget
     public $displayMenuIcon;
 
     /** @var string the icon displayed besides the divider, default is  */
-    public $menuIcon = 'fa fa-ellipsis-h'; //@TODO switch to new icon when icons task is done
+    public $dropDownIcon = 'fa fa-ellipsis-h'; //@TODO switch to new icon when icons task is done
 
     /** @var string link where the button points to, if link is empty
      * an <button> element is created else an <a> element
@@ -63,7 +63,7 @@ class ButtonWidget extends CInputWidget
             'iconPosition' => $this->iconPosition,
             'menu' => $this->isDropDown,
             'displayMenuIcon' => $this->displayMenuIcon,
-            'menuIcon' => $this->menuIcon,
+            'menuIcon' => $this->dropDownIcon,
             'menuContent' => $this->menuContent,
             'link' => $this->link,
             'htmlOptions' => $this->htmlOptions
