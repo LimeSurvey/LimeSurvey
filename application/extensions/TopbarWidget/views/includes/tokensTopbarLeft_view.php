@@ -20,7 +20,7 @@
             'id' => 'ls-create-token-button',
             'text' => gT('Create...'),
             'icon' => 'icon-add',
-            'menu' => true,
+            'isDropDown' => true,
             'menuContent' => $createDropdownItems,
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
@@ -58,7 +58,7 @@
             'id' => 'ls-inv-rem-button',
             'text' => gT('Invitations & reminders'),
             'icon' => 'icon-emailtemplates',
-            'menu' => true,
+            'isDropDown' => true,
             'menuContent' => $invRemDropDownItems,
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',

@@ -70,7 +70,7 @@
             'name' => 'ls-tools-button',
             'id' => 'ls-tools-button',
             'text' => gT('Tools'),
-            'menu' => true,
+            'isDropDown' => true,
             'menuContent' => $toolsDropDownItems,
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',

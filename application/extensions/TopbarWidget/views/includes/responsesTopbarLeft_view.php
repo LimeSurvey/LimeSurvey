@@ -55,7 +55,7 @@
         'id' => 'ls-tools-button',
         'text' => gT('Export'),
         'icon' => 'icon-export',
-        'menu' => true,
+        'isDropDown' => true,
         'menuContent' => $exportDropdownItems,
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
@@ -76,7 +76,7 @@
         'id' => 'ls-tools-button',
         'text' => gT('Import'),
         'icon' => 'icon-import',
-        'menu' => true,
+        'isDropDown' => true,
         'menuContent' => $importDropdownItems,
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
