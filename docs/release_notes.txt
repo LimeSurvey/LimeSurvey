@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.35 (build 221025) to 3.28.36 (build 221102) November 1, 2022
+-Fixed issue: Cannot add participant to CPDB (Carsten Schmitz)
+-Fixed issue #18430: Unable to use ComfortUpdate (Carsten Schmitz)
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+
+
 Changes from 3.28.34 (build 221021) to 3.28.35 (build 221025) October 24, 2022
 -Fixed issue: Cannot edit file in theme editor (Carsten Schmitz)
 #Updated translation: Czech by jelen1
