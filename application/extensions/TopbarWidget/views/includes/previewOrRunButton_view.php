@@ -36,7 +36,7 @@ if (count($surveyLanguages) > 1) {
         'text' => $notActive ? gT('Preview survey') : gT('Run survey'),
         'icon' => $notActive ? 'fa fa-eye' : 'fa fa-play',
         'isDropDown' => count($surveyLanguages) > 1,
-        'menuContent' => $languagesDropDownItems,
+        'dropDownContent' => $languagesDropDownItems,
         'link' => Yii::App()->createUrl(
             "survey/index",
             array('sid' => $survey->sid, 'newtest' => "Y", 'lang' => $survey->language)

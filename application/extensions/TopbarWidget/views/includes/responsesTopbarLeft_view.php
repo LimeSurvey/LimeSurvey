@@ -56,7 +56,7 @@
         'text' => gT('Export'),
         'icon' => 'icon-export',
         'isDropDown' => true,
-        'menuContent' => $exportDropdownItems,
+        'dropDownContent' => $exportDropdownItems,
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
         ],
@@ -77,7 +77,7 @@
         'text' => gT('Import'),
         'icon' => 'icon-import',
         'isDropDown' => true,
-        'menuContent' => $importDropdownItems,
+        'dropDownContent' => $importDropdownItems,
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
         ],

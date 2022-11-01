@@ -33,7 +33,7 @@ class ButtonWidget extends CInputWidget
     /** @var string string that should contain valid html list for bootstrap dropdown button.
      * Only used when not empty and isDropDown is true
      */
-    public $menuContent = ''; //todo rename this one to $dropDownContent
+    public $dropDownContent = '';
 
     /** @var array html options */
     public $htmlOptions = [];
@@ -64,7 +64,7 @@ class ButtonWidget extends CInputWidget
             'menu' => $this->isDropDown,
             'displayMenuIcon' => $this->displayMenuIcon,
             'menuIcon' => $this->dropDownIcon,
-            'menuContent' => $this->menuContent,
+            'menuContent' => $this->dropDownContent,
             'link' => $this->link,
             'htmlOptions' => $this->htmlOptions
         ]);
