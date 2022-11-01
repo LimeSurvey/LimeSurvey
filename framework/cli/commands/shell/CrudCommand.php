@@ -3,9 +3,9 @@
  * CrudCommand class file.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright 2008-2013 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 /**
@@ -116,7 +116,7 @@ EOD;
 			else
 			{
 				$last=substr($controllerID,$pos+1);
-				$last[0]=strtolower($last);
+				$last[0]=strtolower($last[0]);
 				$pos2=strpos($controllerID,'/');
 				$first=substr($controllerID,0,$pos2);
 				$middle=$pos===$pos2?'':substr($controllerID,$pos2+1,$pos-$pos2);
@@ -148,7 +148,7 @@ EOD;
 
 		$viewPath=$module->viewPath.DIRECTORY_SEPARATOR.str_replace('.',DIRECTORY_SEPARATOR,$controllerID);
 		$fixtureName=$this->pluralize($modelClass);
-		$fixtureName[0]=strtolower($fixtureName);
+		$fixtureName[0]=strtolower($fixtureName[0]);
 		$list=array(
 			basename($controllerFile)=>array(
 				'source'=>$templatePath.'/controller.php',

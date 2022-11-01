@@ -14,9 +14,9 @@
  * DO NOT modify this file manually.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright 2008-2013 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  * @version $Id: $
  * @since 1.0
  */
@@ -41,7 +41,7 @@ class YiiBase
 	private static $_logger;
 	public static function getVersion()
 	{
-		return '1.1.24-dev';
+		return '1.1.26';
 	}
 	public static function createWebApplication($config=null)
 	{
@@ -328,7 +328,7 @@ class YiiBase
 	}
 	public static function powered()
 	{
-		return Yii::t('yii','Powered by {yii}.', array('{yii}'=>'<a href="http://www.yiiframework.com/" rel="external">Yii Framework</a>'));
+		return Yii::t('yii','Powered by {yii}.', array('{yii}'=>'<a href="https://www.yiiframework.com/" rel="external">Yii Framework</a>'));
 	}
 	public static function t($category,$message,$params=array(),$source=null,$language=null)
 	{
@@ -1542,9 +1542,7 @@ abstract class CApplication extends CModule
 			restore_exception_handler();
 			$log="$message ($file:$line)\nStack trace:\n";
 			$trace=debug_backtrace();
-			// skip the first 3 stacks as they do not tell the error position
-			if(count($trace)>3)
-				$trace=array_slice($trace,3);
+			array_shift($trace);
 			foreach($trace as $i=>$t)
 			{
 				if(!isset($t['file']))
@@ -1612,9 +1610,9 @@ abstract class CApplication extends CModule
 			echo "<p>$message ($file:$line)</p>\n";
 			echo '<pre>';
 			$trace=debug_backtrace();
-			// skip the first 3 stacks as they do not tell the error position
-			if(count($trace)>3)
-				$trace=array_slice($trace,3);
+			// skip the first 2 stacks as they are always irrelevant
+			if(count($trace)>2)
+				$trace=array_slice($trace,2);
 			foreach($trace as $i=>$t)
 			{
 				if(!isset($t['file']))
@@ -1974,10 +1972,12 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 	{
 		$this->_r=$value;
 	}
+	#[ReturnTypeWillChange]
 	public function getIterator()
 	{
 		return new CMapIterator($this->_d);
 	}
+	#[ReturnTypeWillChange]
 	public function count()
 	{
 		return $this->getCount();
@@ -2102,18 +2102,22 @@ class CMap extends CComponent implements IteratorAggregate,ArrayAccess,Countable
 		}
 		return $res;
 	}
+	#[ReturnTypeWillChange]
 	public function offsetExists($offset)
 	{
 		return $this->contains($offset);
 	}
+	#[ReturnTypeWillChange]
 	public function offsetGet($offset)
 	{
 		return $this->itemAt($offset);
 	}
+	#[ReturnTypeWillChange]
 	public function offsetSet($offset,$item)
 	{
 		$this->add($offset,$item);
 	}
+	#[ReturnTypeWillChange]
 	public function offsetUnset($offset)
 	{
 		$this->remove($offset);
@@ -2408,7 +2412,7 @@ class CHttpRequest extends CApplicationComponent
 		if($this->_restParams===null)
 		{
 			$result=array();
-			if (strncmp($this->getContentType(), 'application/json', 16) === 0)
+			if (strncmp((string)$this->getContentType(), 'application/json', 16) === 0)
 				$result = CJSON::decode($this->getRawBody(), $this->jsonAsArray);
 			elseif(function_exists('mb_parse_str'))
 				mb_parse_str($this->getRawBody(), $result);
@@ -2533,7 +2537,7 @@ class CHttpRequest extends CApplicationComponent
 	{
 		$pathInfo = urldecode($pathInfo);
 		// is it UTF-8?
-		// http://w3.org/International/questions/qa-forms-utf-8.html
+		// https://w3.org/International/questions/qa-forms-utf-8.html
 		if(preg_match('%^(?:
 		   [\x09\x0A\x0D\x20-\x7E]            # ASCII
 		 | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
@@ -2724,7 +2728,8 @@ class CHttpRequest extends CApplicationComponent
 		$matches=array();
 		$accepts=array();
 		// get individual entries with their type, subtype, basetype and params
-		preg_match_all('/(?:\G\s?,\s?|^)(\w+|\*)\/(\w+|\*)(?:\+(\w+))?|(?<!^)\G(?:\s?;\s?(\w+)=([\w\.]+))/',$header,$matches);
+		if($header!==null)
+			preg_match_all('/(?:\G\s?,\s?|^)(\w+|\*)\/(\w+|\*)(?:\+(\w+))?|(?<!^)\G(?:\s?;\s?(\w+)=([\w\.]+))/',$header,$matches);
 		// the regexp should (in theory) always return an array of 6 arrays
 		if(count($matches)===6)
 		{
@@ -2890,7 +2895,7 @@ class CHttpRequest extends CApplicationComponent
 					$contentEnd=$range[1];
 			}
 			/* Check the range and make sure it's treated according to the specs.
-			 * http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+			 * https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
 			 */
 			// End bytes can not be larger than $end.
 			$contentEnd=($contentEnd > $fileSize) ? $fileSize-1 : $contentEnd;
@@ -3005,7 +3010,7 @@ class CHttpRequest extends CApplicationComponent
 				case 'DELETE':
 					$maskedUserToken=$this->getDelete($this->csrfTokenName);
 			}
-			if (!empty($maskedUserToken) && $cookies->contains($this->csrfTokenName))
+			if (!empty($maskedUserToken) && is_string($maskedUserToken) && $cookies->contains($this->csrfTokenName))
 			{
 				$securityManager=Yii::app()->getSecurityManager();
 				$maskedCookieToken=$cookies->itemAt($this->csrfTokenName)->value;
@@ -3314,7 +3319,7 @@ class CUrlManager extends CApplicationComponent
 			if (is_array($v))
 				$pairs[]=$this->createPathInfo($v,$equal,$ampersand, $k);
 			else
-				$pairs[]=urlencode($k).$equal.urlencode($v);
+				$pairs[]=urlencode($k).$equal.urlencode((string)$v);
 		}
 		return implode($ampersand,$pairs);
 	}
@@ -4828,6 +4833,7 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 		return true;
 	}
 	//------ The following methods enable CHttpSession to be CMap-like -----
+	#[ReturnTypeWillChange]
 	public function getIterator()
 	{
 		return new CHttpSessionIterator;
@@ -4836,6 +4842,7 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	{
 		return count($_SESSION);
 	}
+	#[ReturnTypeWillChange]
 	public function count()
 	{
 		return $this->getCount();
@@ -4880,18 +4887,22 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	{
 		return $_SESSION;
 	}
+	#[ReturnTypeWillChange]
 	public function offsetExists($offset)
 	{
 		return isset($_SESSION[$offset]);
 	}
+	#[ReturnTypeWillChange]
 	public function offsetGet($offset)
 	{
 		return isset($_SESSION[$offset]) ? $_SESSION[$offset] : null;
 	}
+	#[ReturnTypeWillChange]
 	public function offsetSet($offset,$item)
 	{
 		$_SESSION[$offset]=$item;
 	}
+	#[ReturnTypeWillChange]
 	public function offsetUnset($offset)
 	{
 		unset($_SESSION[$offset]);
@@ -4939,7 +4950,7 @@ class CHtml
 	private static $_modelNameConverter;
 	public static function encode($text)
 	{
-		return htmlspecialchars($text,ENT_QUOTES,Yii::app()->charset);
+		return htmlspecialchars((string)$text,ENT_QUOTES,Yii::app()->charset);
 	}
 	public static function decode($text)
 	{
@@ -5382,7 +5393,7 @@ class CHtml
 		$checkAll=true;
 		foreach($data as $value=>$labelTitle)
 		{
-			$checked=!is_array($select) && !strcmp($value,$select) || is_array($select) && in_array($value,$select);
+			$checked=!is_array($select) && !strcmp($value,(string)$select) || is_array($select) && in_array($value,$select);
 			$checkAll=$checkAll && $checked;
 			$htmlOptions['value']=$value;
 			$htmlOptions['id']=$baseID.'_'.$id++;
@@ -5457,7 +5468,7 @@ EOD;
 		$id=0;
 		foreach($data as $value=>$labelTitle)
 		{
-			$checked=!strcmp($value,$select);
+			$checked=!strcmp($value,(string)$select);
 			$htmlOptions['value']=$value;
 			$htmlOptions['id']=$baseID.'_'.$id++;
 			$option=self::radioButton($name,$checked,$htmlOptions);
@@ -6036,7 +6047,7 @@ EOD;
 			else
 			{
 				$attributes=array('value'=>(string)$key,'encode'=>!$raw);
-				if(!is_array($selection) && !strcmp($key,$selection) || is_array($selection) && in_array($key,$selection))
+				if(!is_array($selection) && !strcmp($key,(string)$selection) || is_array($selection) && in_array($key,$selection))
 					$attributes['selected']='selected';
 				if(isset($options[$key]))
 					$attributes=array_merge($attributes,$options[$key]);
@@ -6118,7 +6129,7 @@ EOD;
 	public static function resolveName($model,&$attribute)
 	{
 		$modelName=self::modelName($model);
-		if(($pos=strpos($attribute,'['))!==false)
+		if(($pos=strpos((string)$attribute,'['))!==false)
 		{
 			if($pos!==0)  // e.g. name[a][b]
 				return $modelName.'['.substr($attribute,0,$pos).']'.substr($attribute,$pos);
@@ -6880,10 +6891,12 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 	{
 		$this->_r=$value;
 	}
+	#[ReturnTypeWillChange]
 	public function getIterator()
 	{
 		return new CListIterator($this->_d);
 	}
+	#[ReturnTypeWillChange]
 	public function count()
 	{
 		return $this->getCount();
@@ -7004,14 +7017,17 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 		elseif($data!==null)
 			throw new CException(Yii::t('yii','List data must be an array or an object implementing Traversable.'));
 	}
+	#[ReturnTypeWillChange]
 	public function offsetExists($offset)
 	{
 		return ($offset>=0 && $offset<$this->_c);
 	}
+	#[ReturnTypeWillChange]
 	public function offsetGet($offset)
 	{
 		return $this->itemAt($offset);
 	}
+	#[ReturnTypeWillChange]
 	public function offsetSet($offset,$item)
 	{
 		if($offset===null || $offset===$this->_c)
@@ -7022,6 +7038,7 @@ class CList extends CComponent implements IteratorAggregate,ArrayAccess,Countabl
 			$this->insertAt($offset,$item);
 		}
 	}
+	#[ReturnTypeWillChange]
 	public function offsetUnset($offset)
 	{
 		$this->removeAt($offset);
@@ -7528,23 +7545,28 @@ abstract class CModel extends CComponent implements IteratorAggregate, ArrayAcce
 			unset($attributes[$name]);
 		return array_keys($attributes);
 	}
+	#[ReturnTypeWillChange]
 	public function getIterator()
 	{
 		$attributes=$this->getAttributes();
 		return new CMapIterator($attributes);
 	}
+	#[ReturnTypeWillChange]
 	public function offsetExists($offset)
 	{
 		return property_exists($this,$offset);
 	}
+	#[ReturnTypeWillChange]
 	public function offsetGet($offset)
 	{
 		return $this->$offset;
 	}
+	#[ReturnTypeWillChange]
 	public function offsetSet($offset,$item)
 	{
 		$this->$offset=$item;
 	}
+	#[ReturnTypeWillChange]
 	public function offsetUnset($offset)
 	{
 		unset($this->$offset);
@@ -8448,6 +8470,7 @@ abstract class CActiveRecord extends CModel
 		$model=new $class(null);
 		return $model;
 	}
+	#[ReturnTypeWillChange]
 	public function offsetExists($offset)
 	{
 		return $this->__isset($offset);
@@ -8827,6 +8850,8 @@ class CDbConnection extends CApplicationComponent
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		if($this->emulatePrepare!==null && constant('PDO::ATTR_EMULATE_PREPARES'))
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,$this->emulatePrepare);
+		if(PHP_VERSION_ID >= 80100 && strncasecmp($this->getDriverName(),'sqlite',6)===0)
+			$pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
 		if($this->charset!==null)
 		{
 			$driver=strtolower($pdo->getAttribute(PDO::ATTR_DRIVER_NAME));
@@ -10665,22 +10690,27 @@ class CListIterator implements Iterator
 		$this->_d=&$data;
 		$this->_i=0;
 	}
+	#[ReturnTypeWillChange]
 	public function rewind()
 	{
 		$this->_i=0;
 	}
+	#[ReturnTypeWillChange]
 	public function key()
 	{
 		return $this->_i;
 	}
+	#[ReturnTypeWillChange]
 	public function current()
 	{
 		return $this->_d[$this->_i];
 	}
+	#[ReturnTypeWillChange]
 	public function next()
 	{
 		$this->_i++;
 	}
+	#[ReturnTypeWillChange]
 	public function valid()
 	{
 		return $this->_i<count($this->_d);

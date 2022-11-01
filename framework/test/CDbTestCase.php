@@ -3,9 +3,9 @@
  * This file contains the CDbTestCase class.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright 2008-2013 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 Yii::import('system.test.CTestCase');
@@ -111,7 +111,7 @@ abstract class CDbTestCase extends CTestCase
 	 * If you override this method, make sure the parent implementation is invoked.
 	 * Otherwise, the database fixtures will not be managed properly.
 	 */
-	protected function setUp(): void
+	protected function setUp()
 	{
 		parent::setUp();
 		if(is_array($this->fixtures))

@@ -3,9 +3,9 @@
  * CController class file.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright 2008-2013 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 
@@ -918,7 +918,7 @@ class CController extends CBaseController
 	 * Note, the callback and its parameter values will be serialized and saved in cache.
 	 * Make sure they are serializable.
 	 *
-	 * @param callback $callback a PHP callback which returns the needed dynamic content.
+	 * @param callable $callback a PHP callback which returns the needed dynamic content.
 	 * When the callback is specified as a string, it will be first assumed to be a method of the current
 	 * controller class. If the method does not exist, it is assumed to be a global PHP function.
 	 * Note, the callback should return the dynamic content instead of echoing it.
@@ -934,7 +934,7 @@ class CController extends CBaseController
 
 	/**
 	 * This method is internally used.
-	 * @param callback $callback a PHP callback which returns the needed dynamic content.
+	 * @param callable $callback a PHP callback which returns the needed dynamic content.
 	 * @param array $params parameters passed to the PHP callback
 	 * @see renderDynamic
 	 */
@@ -1020,7 +1020,7 @@ class CController extends CBaseController
 	 * the first element must be a route to a controller action and the rest
 	 * are GET parameters in name-value pairs.
 	 * @param boolean $terminate whether to terminate the current application after calling this method. Defaults to true.
-	 * @param integer $statusCode the HTTP status code. Defaults to 302. See {@link http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}
+	 * @param integer $statusCode the HTTP status code. Defaults to 302. See {@link https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}
 	 * for details about HTTP status code.
 	 */
 	public function redirect($url,$terminate=true,$statusCode=302)
