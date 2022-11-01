@@ -29,9 +29,21 @@ $g-300      : #DDDEE8;
 $g-200      : #EEEFF7;
 $g-100      : #F9F9FB;
 
+$grid-gutter-width:           1.5rem !default;
 
 // START spacer
 $spacer: 1rem;
+$spacers: (
+        0: 0,
+        1: $spacer * .25,
+        2: $spacer * .5,
+        3: $spacer,
+        4: $spacer * 1.5,
+        5: $spacer * 3,
+        6: $spacer * 4.5,
+        7: $spacer * 6,
+);
+// END spacer
 
 $tooltip-bg:                        $g-900;
 // $tooltip-border-radius:             $border-radius;
@@ -45,3 +57,4 @@ $tooltip-arrow-color:               $tooltip-bg;
 @import "buttons/buttons.scss";
 @import "typography/typography.scss";
 @import "tooltip/tooltip.scss";
+@import "navigation/navigation.scss";

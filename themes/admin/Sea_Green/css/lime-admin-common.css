@@ -248,68 +248,10 @@ html {
   outline: none;
 }
 
-.navbar-brand {
-  font-weight: 400;
-}
-
-.navbar {
-  border-radius: 0 !important;
-}
-.navbar a {
-  font-weight: 400;
-}
-.navbar .dropdown-menu > li > a {
-  font-weight: 400;
-}
-.navbar .nav-icon-btn > a .label {
-  font-size: 10px;
-  padding: 0 3px;
-  line-height: 15px;
-  position: absolute;
-  display: block;
-  right: 5px;
-  top: 10px;
-}
-
 .lime-icon {
   display: inline-block;
   height: 1em;
   width: 1em;
-}
-
-.mega-dropdown {
-  position: static !important;
-}
-
-.mega-dropdown-menu {
-  padding: 20px 0;
-  width: 100%;
-}
-.mega-dropdown-menu .dropdown-header {
-  font-size: 18px;
-  padding: 5px 60px 5px 5px;
-  line-height: 30px;
-}
-.mega-dropdown-menu > li > ul {
-  padding: 0;
-  margin: 0;
-}
-.mega-dropdown-menu > li > ul > li {
-  list-style: none;
-}
-.mega-dropdown-menu > li > ul > li > a {
-  display: block;
-  padding: 3px 5px;
-}
-.mega-dropdown-menu > li ul > li > a:hover {
-  text-decoration: none;
-}
-.mega-dropdown-menu > li ul > li > a:focus {
-  text-decoration: none;
-}
-
-#mainmenu-dropdown {
-  z-index: 20002;
 }
 
 .footer {
@@ -501,6 +443,7 @@ html {
   #add_user_btn {
     margin-top: 1.5em;
   }
+
   #user-control-table .form-group label {
     min-width: 80px;
   }
@@ -908,6 +851,7 @@ div.panel.disabled a {
   .side-menu .brand-name-wrapper .navbar-brand {
     display: inline-block;
   }
+
   @-moz-keyframes slidein {
     0% {
       left: -300px;
@@ -1011,10 +955,12 @@ div.panel.disabled a {
     animation: bodyslideout 300ms forwards;
     transform-style: preserve-3d;
   }
+
   .body-slide-in {
     animation: bodyslidein 300ms forwards;
     transform-style: preserve-3d;
   }
+
   .navbar-toggle {
     border: 0;
     float: left;
@@ -1022,11 +968,13 @@ div.panel.disabled a {
     margin: 0;
     border-radius: 0;
   }
+
   .navbar-header {
     position: fixed;
     width: 100%;
     z-index: 3;
   }
+
   .side-menu-container > .navbar-nav {
     position: fixed;
     left: -300px;
@@ -1040,12 +988,14 @@ div.panel.disabled a {
     animation: slidein 300ms forwards;
     transform-style: preserve-3d;
   }
+
   #search .card-body .navbar-form {
     border-bottom: 0;
   }
   #search .card-body .navbar-form .form-group {
     margin: 0;
   }
+
   #dropdown .card-body .navbar-nav {
     margin: 0;
   }
@@ -1220,10 +1170,12 @@ fieldset[disabled] .checkbox label {
     margin-bottom: 0;
     vertical-align: middle;
   }
+
   .navbar-form .radio label,
 .navbar-form .checkbox label {
     padding-left: 0;
   }
+
   .navbar-form .radio input[type=radio],
 .navbar-form .checkbox input[type=checkbox] {
     position: relative;

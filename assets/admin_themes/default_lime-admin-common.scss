@@ -283,75 +283,12 @@ html {
     outline : none;
 }
 
-.navbar-brand {
-    font-weight : 400;
-}
-
-.navbar {
-    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-    border-radius : 0 !important;
-    a {
-        font-weight : 400;
-    }
-    .dropdown-menu > li > a {
-        font-weight : 400;
-
-    }
-    .nav-icon-btn > a .label {
-        font-size   : 10px;
-        padding     : 0 3px;
-        line-height : 15px;
-        position    : absolute;
-        display     : block;
-        right       : 5px;
-        top         : 10px;
-    }
-}
-
 .lime-icon {
     display : inline-block;
     height  : 1em;
     width   : 1em;
 }
 
-.mega-dropdown {
-    position : static !important;
-}
-
-.mega-dropdown-menu {
-    padding : 20px 0;
-    width   : 100%;
-    .dropdown-header {
-        font-size   : 18px;
-        padding     : 5px 60px 5px 5px;
-        line-height : 30px;
-    }
-    > li {
-        > ul {
-            padding : 0;
-            margin  : 0;
-            > li {
-                list-style : none;
-                > a {
-                    display : block;
-                    padding : 3px 5px;
-                }
-            }
-        }
-        ul > li > a {
-            &:hover {
-                text-decoration : none;
-            }
-            &:focus {
-                text-decoration : none;
-            }
-        }
-    }
-}
-
-#mainmenu-dropdown {
-    z-index : 20002;
-}
 
 .footer {
     z-index     : 100;
