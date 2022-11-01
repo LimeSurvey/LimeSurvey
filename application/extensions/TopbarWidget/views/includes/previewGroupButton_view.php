@@ -27,7 +27,7 @@
             'text' => gT('Preview question group'),
             'icon' => 'fa fa-eye',
             'isDropDown' => count($surveyLanguages) > 1,
-            'menuContent' => $languagesDropDownItems,
+            'dropDownContent' => $languagesDropDownItems,
             'link' => Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"),
             'htmlOptions' => [
                 'class' => 'btn btn-secondary btntooltip',

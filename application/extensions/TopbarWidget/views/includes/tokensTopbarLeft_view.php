@@ -21,7 +21,7 @@
             'text' => gT('Create...'),
             'icon' => 'icon-add',
             'isDropDown' => true,
-            'menuContent' => $createDropdownItems,
+            'dropDownContent' => $createDropdownItems,
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
             ],
@@ -59,7 +59,7 @@
             'text' => gT('Invitations & reminders'),
             'icon' => 'icon-emailtemplates',
             'isDropDown' => true,
-            'menuContent' => $invRemDropDownItems,
+            'dropDownContent' => $invRemDropDownItems,
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
             ],
