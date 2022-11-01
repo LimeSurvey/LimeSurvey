@@ -2258,25 +2258,6 @@ fieldset[disabled] {
         }
     }
 }
-// Wells
-.well {
-    background-color: $gray-04;
-    border: 1px solid $gray-07;
-    box-shadow: inset 0 1px 1px $black_opac_05;
-    min-height: 20px;
-    padding: 19px;
-    margin-bottom: 20px;
-    border-radius: 4px;
-    blockquote {
-        //border: 1px solid $gray-08;
-        border: 1px solid $black_opac_15;
-    }
-}
-
-.well-sm {
-    padding: 9px;
-    border-radius: 3px;
-}
 
 // Close
 .close {
