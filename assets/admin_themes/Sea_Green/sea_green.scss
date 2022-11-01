@@ -30,7 +30,26 @@ $g-200      : #EEEFF7;
 $g-100      : #F9F9FB;
 
 
-$IBM-font-family: "IBMPlexSans";
+$ibm-font-family:
+"IBMPlexSans",
+ // Cross-platform generic font family (default user interface font)
+ system-ui,
+ // Safari for macOS and iOS (San Francisco)
+ -apple-system,
+ // Windows
+ "Segoe UI",
+ // Android
+ Roboto,
+ // Basic web fallback
+ "Helvetica Neue", Arial,
+ // Linux
+ "Noto Sans",
+ "Liberation Sans",
+ // Sans serif fallback
+ sans-serif,
+ // Emoji fonts
+ "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
 
 $font-size-base: 1rem; // Assumes the browser default, typically `16px`
 $font-size-sm: $font-size-base * 0.875;
