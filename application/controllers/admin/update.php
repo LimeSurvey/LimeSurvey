@@ -1,7 +1,5 @@
 <?php
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -25,7 +23,7 @@ if (!defined('BASEPATH')) {
 /**
 *
 * This controller performs updates, it is highly ajax oriented
-* Methods are only called from JavaScript controller (wich is called from the global_setting view). comfortupdate.js is the first registered script.
+* Methods are only called from JavaScript controller (which is called from the global_setting view). comfortupdate.js is the first registered script.
 *
 *
 *
@@ -41,13 +39,13 @@ if (!defined('BASEPATH')) {
 *  Some steps must be 'checked again' after the user fixed some errors (such as file permissions).
 *  Those steps are/can be diplayed by the plugin displayComfortStep.js. They are called from buttons like :
 *
-*  <a class='button' href='<?php Yii::app()->createUrl('admin/globalsettings', array('update'=>'methodToCall', 'neededVariable'=>$value));?>'>
+*  <a class='button' href='<?php App()->createUrl('admin/globalsettings', array('update'=>'methodToCall', 'neededVariable'=>$value));?>'>
 *    <span class='ui-button-text'>button text</span>
 *  </a>
 *
 * so they will call an url such as : globalsettings?update=methodToCall&neededVariable=value.
 * So the globalsetting controller will render the view as usual, but : the _ajaxVariables view will parse those url datas to some hidden field.
-* The comfortupdate.js check the value of the hidden field update, and if the update's one contain a step, it call displayComfortStep.js wich will display the right step instead of the 'check update' buttons.
+* The comfortupdate.js check the value of the hidden field update, and if the update's one contain a step, it call displayComfortStep.js which will display the right step instead of the 'check update' buttons.
 *
 * Most steps are retrieving datas from the comfort update server thanks to the model UpdateForm's methods.
 * The server return an answer object, with a property 'result' to tell if the process was succesfull or if it failed. This object contains in general all the necessary datas for the views.
@@ -57,35 +55,73 @@ if (!defined('BASEPATH')) {
 * They are different types of possible errors :
 * - Warning message (like : modified files, etc.) : they don't stop the process, they are parsed to the step view, and the view manage how to display them. They can be generated from the ComfortUpdate server ($answer_from_server->result == TRUE ; and something like $answer_from_server->error == message or anything else that the step view manage ), or in the LimeSurvey update controller/model
 * - Error while processing a request on the server part : should never happen, but if something goes wrong in the server side (like generating an object from model), the server returns an error object ($answer_from_server->result == FALSE ; $answer_from_server->error == message )
-*   Those errors stop the process, and are display in _error view. Very usefull to debug. They are parsed directly to $this->_renderError
-* - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->_renderErrorString($error), wich generate the error object, and then render the error view
+*   Those errors stop the process, and are display in _error view. Very usefull to debug. They are parsed directly to $this->renderError
+* - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->renderErrorString($error), which generate the error object, and then render the error view
 *
 * @package       LimeSurvey
 * @subpackage    Backend
 */
-class update extends Survey_Common_Action
+
+// Backward compatibility function for updates to 5.3 from any previous version
+// Psalm does not like that the classes are in the same file
+if (class_exists('SurveyCommonAction')) {
+// phpcs:disable
+    class DynamicSurveyCommonAction extends SurveyCommonAction
+    {
+    }
+} else {
+    // try to include the old one
+    class DynamicSurveyCommonAction extends Survey_Common_Action
+    {
+    }
+}
+
+class Update extends DynamicSurveyCommonAction
 {
+// phpcs:enable
+    /**
+     * Backward compatibility function for updates to 5.3 from any previous version
+     * 
+     * @inheritDoc
+     */
+    protected function renderWrappedTemplate ($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    {
+        if (method_exists(get_parent_class($this), 'renderWrappedTemplate')) {
+            parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        } else {
+            parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        }
+    }
 
     /**
-     * First function to be called, when comming to admin/update
+     * First function to be called, when coming to admin/update
      *
      */
     public function index()
     {
-        if (Yii::app()->getConfig('demoMode')) {
-            Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');
-            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
+        if (!Permission::model()->hasGlobalPermission('superadmin')) {
+            App()->setFlashMessage(gT('You are not allowed to enter this page'), 'error');
+            $this->getController()->redirect(App()->getController()->createUrl("/admin"));
+        }
+
+        if (App()->getConfig('demoMode')) {
+            App()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');
+            $this->getController()->redirect(App()->getController()->createUrl("/admin"));
         }
         $buttons = 1;
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
-        $aData['fullpagebar']['update'] = true;
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'comfortupdate/comfortupdate.js');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'comfortupdate/buildComfortButtons.js');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'comfortupdate/displayComfortStep.js');
 
-        $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
+        // Green Bar (SurveyManagerBar Heading)
+        $aData['pageTitle'] = gT('ComfortUpdate');
+        $aData['fullpagebar']['update'] = true;
+
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');
+
+        $this->renderWrappedTemplate('update', '_updateContainer', $aData);
     }
 
     public function managekey()
@@ -101,17 +137,16 @@ class update extends Survey_Common_Action
             //$this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array('serverAnswer' => $serverAnswer),  false, false);
             if (!$updateKey) {
                 $aData['fullpagebar']['saveandclosebutton']['form'] = true;
-                $this->_renderWrappedTemplate('update/manage/', 'subscribe', $aData);
+                $this->renderWrappedTemplate('update/manage/', 'subscribe', $aData);
             } else {
                 $aData['updateKeyInfos'] = $updateModel->checkUpdateKeyonServer($updateKey);
-                $this->_renderWrappedTemplate('update/manage/', 'manage_key', $aData);
+                $this->renderWrappedTemplate('update/manage/', 'manage_key', $aData);
             }
         }
     }
 
-    public function manage_submitkey()
+    public function manageSubmitkey()
     {
-        $buttons = 1;
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
@@ -119,80 +154,75 @@ class update extends Survey_Common_Action
         $aData['updateKey'] = $updateKey = SettingGlobal::model()->findByPk('update_key');
 
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-            if (Yii::app()->request->getPost('keyid')) {
+            if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(Yii::app()->request->getPost('keyid'));
+                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
                 if ($check->result) {
                     // If the key is validated by server, we update the local database with this key
                     $updateKey = $updateModel->setUpdateKey($submittedUpdateKey);
-                    Yii::app()->session['flashmessage'] = gT("Your key has been updated and validated! You can now use ComfortUpdate.");
+                    App()->session['flashmessage'] = gT("Your key has been updated and validated! You can now use ComfortUpdate.");
                     // then, we render the what returned the server (views and key infos or error )
-                    App()->getController()->redirect(Yii::app()->getController()->createUrl('admin/update/sa/managekey'));
+                    App()->getController()->redirect(App()->getController()->createUrl('admin/update/sa/managekey'));
                 } else {
                     switch ($check->error) {
                         case 'out_of_updates':
-                            $title = "Your update key is out of update !";
-                            $message = "you should first renew this key before using it, or try to enter a new one !";
-                            $buttons = 1;
+                            $title = gT("Your update key has exceeded the maximum number of updates!");
+                            $message = gT("Please buy/enter a new one!");
                             break;
 
                         case 'expired':
-                            $title = "Your update key has expired!";
-                            $message = "you should first renew this key before using it, or try to enter a new one !";
-                            $buttons = 1;
+                            $title = gT("Your update key has expired!");
+                            $message = gT("Please buy/enter a new one!");
                             break;
 
                         case 'not_found':
-                            $title = "Unknown update key !";
-                            $message = "Your key is unknown by the update server.";
-                            $buttons = 3;
+                            $title = gT("Unknown update key!");
+                            $message = gT("Your key is unknown to the update server.");
                             break;
 
                         case 'key_null':
-                            $title = "key can't be null !";
+                            $title = gT("Key can't be empty!");
                             $message = "";
-                            $buttons = 3;
                             break;
                     }
 
-                    App()->setFlashMessage('<strong>'.gT($title).'</strong> '.gT($message), 'error');
-                    App()->getController()->redirect(Yii::app()->getController()->createUrl('admin/update/sa/managekey'));
+                    App()->setFlashMessage('<strong>' . gT($title) . '</strong> ' . gT($message), 'error');
+                    App()->getController()->redirect(App()->getController()->createUrl('admin/update/sa/managekey'));
                 }
-
             }
         }
     }
 
-    public function delete_key()
+    public function deleteKey()
     {
         $this->requirePostRequest();
 
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             SettingGlobal::model()->deleteByPk('update_key');
             App()->setFlashMessage('Your update key has been removed');
-            App()->getController()->redirect(Yii::app()->getController()->createUrl('admin/update/sa/managekey'));
+            App()->getController()->redirect(App()->getController()->createUrl('admin/update/sa/managekey'));
         }
     }
 
     /**
      * This function return the update buttons for stable branch
-     * @return html the button code
+     * @return string html the button code
      */
     public function getstablebutton()
     {
-        echo $this->_getButtons("1");
+        echo $this->getButtons("1");
     }
 
     /**
      * This function return the update buttons for all versions
-     * @return html the buttons code
+     * @return string the buttons code
      */
     public function getbothbuttons()
     {
-        echo $this->_getButtons("1");
+        echo $this->getButtons("1");
     }
 
     /**
@@ -213,13 +243,13 @@ class update extends Survey_Common_Action
                 $welcome['destinationBuild'] = $destinationBuild;
             $welcome = (object) $welcome;
 
-                return $this->_renderWelcome($welcome);
+                return $this->renderWelcome($welcome);
         }
     }
 
     /**
      * returns the "Checking basic requirements" step
-     * @return html the welcome message
+     * @return string the welcome message
      */
     public function checkLocalErrors()
     {
@@ -238,18 +268,17 @@ class update extends Survey_Common_Action
 
                 return $this->controller->renderPartial('update/updater/steps/_check_local_errors', $aData, false, false);
             }
-            return $this->_renderErrorString("unknown_destination_build");
+            return $this->renderErrorString("unknown_destination_build");
         }
     }
 
     /**
      * Display change log
-     * @return HTML
+     * @return string
      */
     public function changeLog()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-
             // We use request rather than post, because this step can be called by url by displayComfortStep.js
             if (isset($_REQUEST['destinationBuild'])) {
                 $destinationBuild = $_REQUEST['destinationBuild'];
@@ -266,64 +295,62 @@ class update extends Survey_Common_Action
                     $aData['destinationBuild'] = $destinationBuild;
                     $aData['access_token'] = $access_token;
                 } else {
-                    return $this->_renderError($changelog);
+                    return $this->renderError($changelog);
                 }
                 return $this->controller->renderPartial('update/updater/steps/_change_log', $aData, false, false);
             }
-            return $this->_renderErrorString("unknown_destination_build");
+            return $this->renderErrorString("unknown_destination_build");
         }
     }
 
     /**
      * diaplay the result of the changed files check
      *
-     * @return html  HTML
+     * @return string  HTML
      */
     public function fileSystem()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-
+            App()->session['update_changed_files'] = null;
             if (isset($_REQUEST['destinationBuild'])) {
                 $tobuild = $_REQUEST['destinationBuild'];
                 $access_token = $_REQUEST['access_token'];
-                $frombuild = Yii::app()->getConfig("buildnumber");
+                $frombuild = App()->getConfig("buildnumber");
 
                 $updateModel = new UpdateForm();
                 $changedFiles = $updateModel->getChangedFiles($tobuild);
 
                 if ($changedFiles->result) {
                     $aData = $updateModel->getFileStatus($changedFiles->files);
+                	App()->session['update_changed_files']=json_decode(json_encode($changedFiles->files),true);
 
                     $aData['html_from_server'] = (isset($changedFiles->html)) ? $changedFiles->html : '';
-                    $aData['datasupdateinfo'] = $this->_parseToView($changedFiles->files);
                     $aData['destinationBuild'] = $tobuild;
                     $aData['updateinfo'] = $changedFiles->files;
                     $aData['access_token'] = $access_token;
 
                     return $this->controller->renderPartial('update/updater/steps/_fileSystem', $aData, false, false);
                 }
-                return $this->_renderError($changedFiles);
+                return $this->renderError($changedFiles);
             }
-            return $this->_renderErrorString("unknown_destination_build");
+            return $this->renderErrorString("unknown_destination_build");
         }
     }
 
     /**
      * backup files
-     * @return html
+     * @return string
      */
     public function backup()
     {
-        if (Permission::model()->hasGlobalPermission('superadmin')) {
-            if (Yii::app()->request->getPost('destinationBuild')) {
-                $destinationBuild = Yii::app()->request->getPost('destinationBuild');
+    if (Permission::model()->hasGlobalPermission('superadmin')) {
+            if (App()->request->getPost('destinationBuild')) {
+                $destinationBuild = App()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
-
-                if (Yii::app()->request->getPost('datasupdateinfo')) {
-                    $updateinfos = (array) json_decode(base64_decode(Yii::app()->request->getPost('datasupdateinfo')), true);
-
-                    $updateModel = new UpdateForm();
-                    $backupInfos = $updateModel->backupFiles($updateinfos);
+                $updateModel = new UpdateForm();
+				$changedFiles = App()->session['update_changed_files'];
+                if ($changedFiles) {
+                	$backupInfos = $updateModel->backupFiles($changedFiles);
 
                     if ($backupInfos->result) {
                         $dbBackupInfos = $updateModel->backupDb($destinationBuild);
@@ -332,11 +359,9 @@ class update extends Survey_Common_Action
                         $aData['dbBackupInfos'] = $dbBackupInfos;
                         $aData['basefilename'] = $backupInfos->basefilename;
                         $aData['tempdir'] = $backupInfos->tempdir;
-                        $aData['datasupdateinfo'] = $this->_parseToView($updateinfos);
                         $aData['destinationBuild'] = $destinationBuild;
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
-
                     } else {
                         $error = $backup->error;
                     }
@@ -346,49 +371,48 @@ class update extends Survey_Common_Action
             } else {
                 $error = "unknown_destination_build";
             }
-            return $this->_renderErrorString($error);
+            return $this->renderErrorString($error);
         }
     }
 
     /**
      * Display step4
-     * @return html
+     * @return string
      */
-    function step4()
+    public function step4()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-            if (Yii::app()->request->getPost('destinationBuild')) {
-                $destinationBuild = Yii::app()->request->getPost('destinationBuild');
+            if (App()->request->getPost('destinationBuild')) {
+                $destinationBuild = App()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
 
-                if (Yii::app()->request->getPost('datasupdateinfo')) {
-                    $updateinfos = json_decode(base64_decode(Yii::app()->request->getPost('datasupdateinfo')), true);
-
+                $changedFiles = App()->session['update_changed_files'];
+                if ($changedFiles) {
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
-                    $updateModel = new UpdateForm();
-                    $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
 
+                    $updateModel = new UpdateForm();
+
+                    $remove = $updateModel->removeDeletedFiles((array)$changedFiles);
+                    if (!$remove->result) {
+                        return $this->_renderErrorString($remove->error);
+                    };
+                    $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
                     if ($file->result) {
                         $unzip = $updateModel->unzipUpdateFile();
                         if ($unzip->result) {
-                            $remove = $updateModel->removeDeletedFiles($updateinfos);
-                            if ($remove->result) {
-                                // Should never bug (version.php is checked before))
-                                $updateModel->updateVersion($destinationBuild);
-                                $updateModel->destroyGlobalSettings();
-                                $updateModel->removeTmpFile('update.zip');
-                                $updateModel->removeTmpFile('comfort_updater_cookie.txt');
+                            // Should never bug (version.php is checked before))
+                            $updateModel->updateVersion($destinationBuild);
+                            $updateModel->removeTmpFile('update.zip');
+                            $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
-                                Yii::app()->session['update_result'] = null;
-                                Yii::app()->session['security_update'] = null;
-                                $today = new DateTime("now");
-                                Yii::app()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
+                            App()->session['update_result'] = null;
+                            App()->session['security_update'] = null;
+            				App()->session['update_changed_files'] = null;
+                        
+                            $today = new DateTime("now");
+                            App()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
-                                // TODO : aData should contains information about each step
-                                return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild'=>$destinationBuild), false, false);
-                            } else {
-                                $error = $remove->error;
-                            }
+                            return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild' => $destinationBuild), false, false);
                         } else {
                             $error = $unzip->error;
                         }
@@ -401,7 +425,7 @@ class update extends Survey_Common_Action
             } else {
                 $error = "unknown_destination_build";
             }
-            return $this->_renderErrorString($error);
+            return $this->renderErrorString($error);
         }
     }
 
@@ -409,13 +433,13 @@ class update extends Survey_Common_Action
      * This function update the updater
      * It is called from the view _updater_update.
      * The view _updater_update is called by the ComfortUpdate server during the getWelcome step if the updater version is not the minimal required one.
-     * @return html the welcome message
+     * @return string the welcome message
      */
     public function updateUpdater()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-            if (Yii::app()->request->getPost('destinationBuild')) {
-                $destinationBuild = Yii::app()->request->getPost('destinationBuild');
+            if (App()->request->getPost('destinationBuild')) {
+                $destinationBuild = App()->request->getPost('destinationBuild');
                 $updateModel = new UpdateForm();
 
                 $localChecks = $updateModel->getLocalChecksForUpdater();
@@ -431,9 +455,9 @@ class update extends Survey_Common_Action
                             SettingGlobal::setSetting('updateavailable', '0');
                             SettingGlobal::setSetting('updatebuild', '');
                             SettingGlobal::setSetting('updaterversions', '');
-                            Yii::app()->session['update_result'] = null;
-                            Yii::app()->session['next_update_check'] = null;
-                            return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild'=>$destinationBuild), false, false);
+                            App()->session['update_result'] = null;
+                            App()->session['next_update_check'] = null;
+                            return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild' => $destinationBuild), false, false);
                         } else {
                             $error = $unzip->error;
                         }
@@ -441,17 +465,16 @@ class update extends Survey_Common_Action
                         $error = $file->error;
                     }
                 } else {
-                    return $this->controller->renderPartial('update/updater/welcome/_error_files_update_updater', array('localChecks'=>$localChecks), false, false);
+                    return $this->controller->renderPartial('update/updater/welcome/_error_files_update_updater', array('localChecks' => $localChecks), false, false);
                 }
-
             }
-            return $this->_renderErrorString($error);
+            return $this->renderErrorString($error);
         }
     }
 
     /**
      * This return the subscribe message
-     * @return html the welcome message
+     * @return string the welcome message
      */
     public function getnewkey()
     {
@@ -461,21 +484,21 @@ class update extends Survey_Common_Action
             // To force server to render the subscribe message, we call for the last 2.06+ release (which need at least a free key)
             $updateModel = new UpdateForm();
             $welcome = $updateModel->getWelcomeMessage(null, '160129'); //$updateKey
-            echo $this->_renderWelcome($welcome);
+            echo $this->renderWelcome($welcome);
         }
     }
 
     /**
      * This function create or update the LS update key
-     * @return html
+     * @return string
      */
     public function submitkey()
     {
 
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-            if (Yii::app()->request->getPost('keyid')) {
+            if (App()->request->getPost('keyid')) {
                 // We trim it, just in case user added a space...
-                $submittedUpdateKey = trim(Yii::app()->request->getPost('keyid'));
+                $submittedUpdateKey = trim(App()->request->getPost('keyid'));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
@@ -487,9 +510,9 @@ class update extends Survey_Common_Action
                     $check->view = "key_updated";
                 }
                 // then, we render the what returned the server (views and key infos or error )
-                echo $this->_renderWelcome($check);
+                echo $this->renderWelcome($check);
             } else {
-                return $this->_renderErrorString("key_null");
+                return $this->renderErrorString("key_null");
             }
         }
     }
@@ -501,7 +524,7 @@ class update extends Survey_Common_Action
      */
     public function db($continue = null)
     {
-        Yii::app()->loadHelper("update/update");
+        App()->loadHelper("update/update");
         if (isset($continue) && $continue == "yes") {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
             $aData['display']['header'] = false;
@@ -512,7 +535,7 @@ class update extends Survey_Common_Action
 
         $aData['updatedbaction'] = true;
 
-        $this->_renderWrappedTemplate('update', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('update', $aViewUrls, $aData);
     }
 
     /**
@@ -521,12 +544,12 @@ class update extends Survey_Common_Action
     public function step4b()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-            if (!isset(Yii::app()->session['installlstep4b'])) {
+            if (!isset(App()->session['installlstep4b'])) {
                 die();
             }
-            $aData = Yii::app()->session['installlstep4b'];
-            unset (Yii::app()->session['installlstep4b']);
-            $this->_renderWrappedTemplate('update/updater/steps', '_old_step4b', $aData);
+            $aData = App()->session['installlstep4b'];
+            unset(App()->session['installlstep4b']);
+            $this->renderWrappedTemplate('update/updater/steps', '_old_step4b', $aData);
         }
     }
 
@@ -536,14 +559,14 @@ class update extends Survey_Common_Action
      */
     public function notificationstate($state = '0')
     {
-        Yii::app()->session['notificationstate'] = $state;
+        App()->session['notificationstate'] = $state;
         return '1';
     }
     /**
      * this function render the update buttons
      * @param string $crosscheck
      */
-    private function _getButtons($crosscheck)
+    private function getButtons($crosscheck)
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             $updateModel = new UpdateForm();
@@ -564,7 +587,7 @@ class update extends Survey_Common_Action
      * This method render the welcome/subscribe/key_updated message
      * @param obj $serverAnswer the answer return by the server
      */
-    private function _renderWelcome($serverAnswer)
+    private function renderWelcome($serverAnswer)
     {
         if ($serverAnswer->result) {
             // Available views (in /admin/update/welcome/ )
@@ -574,23 +597,22 @@ class update extends Survey_Common_Action
                 if (isset($serverAnswer->key_infos->validuntil)) {
                     $sValidityDate = convertToGlobalSettingFormat($serverAnswer->key_infos->validuntil);
                 }
-                return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate'=>$sValidityDate), false, false);
+                return $this->controller->renderPartial('//admin/update/updater/welcome/_' . $serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate' => $sValidityDate), false, false);
             } else {
                 $serverAnswer->result = false;
                 $serverAnswer->error = "unknown_view";
             }
         }
-        echo $this->_renderError($serverAnswer);
-
+        echo $this->renderError($serverAnswer);
     }
 
 
     /**
      * This method renders the error view
      * @param object $errorObject
-     * @return html
+     * @return string
      */
-    private function _renderError($errorObject)
+    private function renderError($errorObject)
     {
         echo $this->controller->renderPartial('//admin/update/updater/_error', array('errorObject' => $errorObject), false, false);
     }
@@ -598,14 +620,14 @@ class update extends Survey_Common_Action
     /**
      * This method convert a string to an error object, and then render the error view
      * @param string $error the error message
-     * @return html
+     * @return string
      */
-    private function _renderErrorString($error)
+    private function renderErrorString($error)
     {
             $errorObject = new stdClass();
             $errorObject->result = false;
             $errorObject->error = $error;
-            return $this->_renderError($errorObject);
+            return $this->renderError($errorObject);
     }
 
     /**
@@ -614,10 +636,9 @@ class update extends Survey_Common_Action
      * @param array $updateinfos the udpadte infos array returned by the update server
      * @return $string
      */
-    private function _parseToView($updateinfos)
+    private function parseToView($updateinfos)
     {
         $data = json_encode($updateinfos);
         return base64_encode($data);
     }
-
 }
