@@ -86,14 +86,14 @@
 @font-face {
   font-family: 'IBMPlexSans';
   font-weight: 600;
-  font-style: normal;
+  font-style: italic;
   src: url('./IBMPlexSans-SemiBoldItalic.ttf');
 }
 
 @font-face {
   font-family: 'IBMPlexSans';
   font-weight: 700;
-  font-style: normal;
+  font-style: italic;
   src: url('./IBMPlexSans-BoldItalic.ttf');
 }
 
