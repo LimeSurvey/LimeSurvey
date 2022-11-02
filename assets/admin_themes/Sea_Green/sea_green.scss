@@ -43,5 +43,20 @@ $btn-height-xl: 52px;
 $btn-font-size: 14px;
 $btn-font-size-sm: 12px;
 
+// START spacer
+$spacer: 1rem;
+
+$tooltip-bg:                        $g-900;
+// $tooltip-border-radius:             $border-radius;
+$tooltip-opacity:                   1;
+$tooltip-padding-y:                 $spacer * .5;
+$tooltip-padding-x:                 $spacer * 1.2;
+
+$tooltip-arrow-color:               $tooltip-bg;
+// $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
+
 @import "buttons/buttons.scss";
 @import "buttons/btn-group.scss";
+@import "typography/typography.scss";
+@import "tooltip/tooltip.scss";
+@import "well/well.scss";
