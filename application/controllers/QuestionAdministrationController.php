@@ -3138,18 +3138,18 @@ class QuestionAdministrationController extends LSBaseController
          *  - answerscales
          *  - subquestions
          *  - hasdefaultvalues
-         * 
+         *
          * Currently, default values are only supported for the following combinations of answerscales and subquestions:
          *  - Case 1: answerscales = 1 and subquestions = 0
          *  - Case 2: answerscales = 0 and subquestions = 1
          *  - Case 3: answerscales = 0 and subquestions = 0
-         * 
+         *
          * The old code (for editing default values on a dedicated page) seemed inconsistent in the checks between the
          * view and the controller, but worked fine because 'hasdefaultvalues' is not set to 1 for any other combination.
-         * 
+         *
          * Since it's not clear how this should work for other combinations of 'answerscales' and 'subquestions', this
          * code (and the view) will be more explicit in the validations.
-         * 
+         *
          * So, if at some point support is added for Array (type 'F') questions (answerscales = 1 and subquestions = 1) and
          * Array Numbers (type ':') questions (subquestions = 2), among others, this code will need to be adjusted.
          */
@@ -3203,7 +3203,7 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * This is a convenience function to update/delete answer default values. If the given
      * $defaultvalue is empty then the entry is removed from table defaultvalues
-     * 
+     *
      * Copied from database::_updateDefaultValues().
      *
      * @param integer $surveyId
