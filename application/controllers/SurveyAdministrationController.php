@@ -3201,10 +3201,6 @@ class SurveyAdministrationController extends LSBaseController
 
         $aData['updateUrl'] = Yii::app()->createUrl('surveyAdministration/rendersidemenulink', ['surveyid' => $survey->sid, 'subaction' => 'panelintegration']);
 
-        /*if (isset($_GET['QuestionGroup'])) {
-            $model->attributes = $_GET['QuestionGroup'];
-        }*/
-
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
