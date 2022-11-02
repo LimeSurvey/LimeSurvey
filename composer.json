@@ -81,6 +81,8 @@
 		"openapi": "./vendor/bin/openapi ./application/controllers/rest/V1 -l -o ./docs/open-api/v1.json",
 		"phpunit": "./vendor/bin/phpunit --testdox --coverage-text",
 		"test": [
+            "./tests/bin/lint-tests",
+            "./tests/bin/lint-application",
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models",
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/controllers",
 			"./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller",
