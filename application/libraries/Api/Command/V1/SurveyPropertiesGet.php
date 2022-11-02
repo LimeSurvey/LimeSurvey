@@ -81,7 +81,7 @@ class SurveyPropertiesGet implements CommandInterface
         }
 
         return $this->responseSuccess(
-            $aResult,
+            $aResult
         );
     }
 }
