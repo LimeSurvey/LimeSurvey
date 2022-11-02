@@ -1244,15 +1244,6 @@ fieldset[disabled] .checkbox label {
   min-height: 30px;
 }
 
-[data-toggle=buttons] > .btn input[type=radio],
-[data-toggle=buttons] > .btn-group > .btn input[type=radio],
-[data-toggle=buttons] > .btn input[type=checkbox],
-[data-toggle=buttons] > .btn-group > .btn input[type=checkbox] {
-  position: absolute;
-  clip: rect(0, 0, 0, 0);
-  pointer-events: none;
-}
-
 .input-group-addon input[type=radio],
 .input-group-addon input[type=checkbox] {
   margin-top: 0;

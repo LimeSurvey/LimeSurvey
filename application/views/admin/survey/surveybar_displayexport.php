@@ -194,7 +194,7 @@
         ]
     ));
 ?>
-<div class="btn-group ">
+<div class="d-inline-flex">
     <?=$oExportSelector->getModal(); ?>
 
     <?=$oExportSelector->getButtonOrSelect(); ?>
