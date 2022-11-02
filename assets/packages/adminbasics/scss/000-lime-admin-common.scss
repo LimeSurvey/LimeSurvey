@@ -47,14 +47,6 @@
     background: #fff;
 }
 
-.row-button-margin-bottom {
-    margin-bottom: -5px;
-}
-
-.row-button-margin-bottom .btn {
-    margin-bottom: 5px;
-}
-
 .ui-datepicker {
     width: 17em;
     padding: .2em .2em 0;
@@ -342,14 +334,6 @@ html {
     box-shadow: 3px 3px 3px #35363f;
 }
 
-.surveybar .btn, .surveybar button {
-    margin-bottom: 5px;
-}
-
-.btn.float-end {
-    margin-left: 5px;
-}
-
 .list-surveys {
     margin-top: 10px;
 }
@@ -564,10 +548,6 @@ html {
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1366px) {
-    #add_user_btn {
-        margin-top: 1.5em;
-    }
-
     #user-control-table .form-group label {
         min-width: 80px;
     }
@@ -954,15 +934,6 @@ div.card.disabled a {
     height: 50px;
 }
 
-.side-menu #search .card-body .navbar-form .btn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    border: 0;
-    border-radius: 0;
-    padding: 15px 18px;
-}
-
 .side-menu #explorer-collapse .caret {
     float: none;
     margin-bottom: 9px;
@@ -1332,50 +1303,6 @@ div.card.disabled a {
 
 .container-fluid .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
     color: #fff;
-}
-
-.btn-success:hover,
-.btn-danger:hover,
-.btn-warning:hover,
-.btn-info:hover {
-    color: #fff;
-}
-
-.icon-btn-row {
-    display: flex;
-
-    .btn.btn-lg {
-        width: 46px;
-        padding-left: 0;
-        padding-right: 0;
-    }
-    .btn {
-        width: 34px;
-        padding-left: 0;
-        padding-right: 0;
-    }
-    .btn.btn-sm {
-        width: 30px;
-        padding-left: 0;
-        padding-right: 0;
-    }
-    .btn.btn-xs {
-        width: 22px;
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    :not(:first-child).btn, :not(:first-child) .btn {
-        margin-left: 5px;
-    }
-    :not(:first-child).btn.btn-xs, :not(:first-child) .btn.btn-xs {
-        margin-left: 3px;
-    }
-}
-
-// Button group
-.btn-group .btn-check {
-    position: absolute;
 }
 
 .radio,
@@ -2080,11 +2007,6 @@ html body .nav-tabs > li.active > a:focus {
     vertical-align: middle;
 }
 
-.btnaddanswer:hover,
-.btndelanswer:hover {
-    cursor: pointer;
-}
-
 .glyphicon-move:hover {
     cursor: pointer;
 }
@@ -2156,10 +2078,6 @@ html body .nav-tabs > li.active > a:focus {
 
 #available_languages {
     min-width: 200px;
-}
-
-.modal-footer .btn {
-    margin-bottom: 0;
 }
 
 #tokensidemenu {
@@ -2396,17 +2314,6 @@ a.explorer-group:focus {
 
 .explorer-group-title a.disabled {
     opacity: 0.5;
-}
-
-
-.btn.readonly,
-.btn.readonly:hover {
-    cursor: not-allowed;
-    opacity: 0.65;
-    filter: alpha(opacity=65);
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    border: 1px solid #cccccc;
 }
 
 #displayResponsesContainer .ui-jqgrid-bdiv,
@@ -2808,9 +2715,6 @@ table#responsedetail tr td {
     }
     /* Only for stat ? */
     .statisticsbrowsebutton {
-        display: none
-    }
-    body.onStatistics .btn {
         display: none
     }
     /* Chartjs and legend width */

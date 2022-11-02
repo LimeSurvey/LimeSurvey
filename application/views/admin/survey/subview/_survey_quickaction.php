@@ -106,7 +106,7 @@ $groups_count   = count($oSurvey->groups);
                                                 <div class="card-body-ico">
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block"
                                                    data-bs-toggle="tooltip">
-                                                    <span class="icon-add text-success" style="font-size: 3em;"></span>
+                                                    <span class="icon-add" style="font-size: 3em;"></span>
                                                     <span class="visually-hidden"><?php eT('Add new group'); ?></span>
                                                 </a>
                                             </div>
@@ -127,7 +127,7 @@ $groups_count   = count($oSurvey->groups);
                                             <div class="card-body-ico">
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block"
                                                    data-bs-toggle="tooltip">
-                                                    <span class="icon-add text-success" style="font-size: 3em;"></span>
+                                                    <span class="icon-add" style="font-size: 3em;"></span>
                                                     <span class="visually-hidden"><?php eT('Add new question'); ?></span>
                                                 </a>
                                             </div>
@@ -156,7 +156,7 @@ $groups_count   = count($oSurvey->groups);
                                         <div class="card-body">
                                             <div class="card-body-ico">
                                                 <a href="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/" . $oSurvey->sid); ?>">
-                                                    <span class="icon-add text-success" style="font-size: 3em;"></span>
+                                                    <span class="icon-add" style="font-size: 3em;"></span>
                                                     <span class="visually-hidden"><?php eT('Add new group'); ?></span>
                                                 </a>
                                             </div>
@@ -179,7 +179,7 @@ $groups_count   = count($oSurvey->groups);
                                                     <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You must first create a question group."); ?>"
                                                        style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                        title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
-                                                        <span class="icon-add text-success" style="font-size: 3em;"></span>
+                                                        <span class="icon-add" style="font-size: 3em;"></span>
                                                         <span class="visually-hidden"><?php eT("You must first create a question group."); ?></span>
                                                     </a>
                                                 </div>
@@ -207,7 +207,7 @@ $groups_count   = count($oSurvey->groups);
                                             <div class="card-body">
                                                 <div class="card-body-ico">
                                                     <a href="<?php echo $this->createUrl("questionAdministration/view/surveyid/" . $oSurvey->sid); ?>">
-                                                        <span class="icon-add text-success" style="font-size: 3em;"></span>
+                                                        <span class="icon-add" style="font-size: 3em;"></span>
                                                         <span class="visually-hidden"><?php eT('Add question'); ?></span>
                                                     </a>
                                                 </div>
@@ -234,7 +234,7 @@ $groups_count   = count($oSurvey->groups);
                                         <div class="card-body">
                                             <div class="card-body-ico">
                                                 <a href="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/" . $oSurvey->sid); ?>">
-                                                    <span class="icon-edit text-success" style="font-size: 3em;"></span>
+                                                    <span class="icon-edit" style="font-size: 3em;"></span>
                                                     <span class="visually-hidden"><?php eT('Edit text elements and general settings'); ?></span>
                                                 </a>
                                             </div>
@@ -253,7 +253,7 @@ $groups_count   = count($oSurvey->groups);
                                             <div class="card-body-ico">
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>"
                                                    style="display: inline-block" data-bs-toggle="tooltip">
-                                                    <span class="icon-edit text-success" style="font-size: 3em;"></span>
+                                                    <span class="icon-edit" style="font-size: 3em;"></span>
                                                     <span class="visually-hidden"><?php eT('Edit text elements and general settings'); ?></span>
                                                 </a>
                                             </div>
@@ -276,7 +276,7 @@ $groups_count   = count($oSurvey->groups);
                                         <div class="card-body">
                                             <div class="card-body-ico">
                                                 <a href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/" . $oSurvey->sid); ?>">
-                                                    <span class="fa fa-bar-chart text-success" style="font-size: 3em;"></span>
+                                                    <span class="fa fa-bar-chart" style="font-size: 3em;"></span>
                                                     <span class="visually-hidden"><?php eT("Statistics"); ?></span>
                                                 </a>
                                             </div>
@@ -299,7 +299,7 @@ $groups_count   = count($oSurvey->groups);
                                         <div class="card-body">
                                             <div class="card-body-ico">
                                                 <a href="#">
-                                                    <span class="fa fa-bar-chart text-success" style="font-size: 3em;"></span>
+                                                    <span class="fa fa-bar-chart" style="font-size: 3em;"></span>
                                                     <span class="visually-hidden"><?php eT("Responses & statistics"); ?></span>
                                                 </a>
                                             </div>
