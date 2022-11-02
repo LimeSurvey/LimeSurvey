@@ -104,6 +104,7 @@ function initDatePicker(element, locale, dateFormat) {
     locale = getValueFromConfigObject(options, 'locale', locale);
     let config = getConfig(options, locale,dateFormat);
     let constName = 'picker_' + element.id;
+
     pickers[constName] = new tempusDominus.TempusDominus(element, config);
     setDatePickerFormat(pickers[constName], dateFormat, element.value);
     attachCalendarIconToDatepicker(options);
@@ -180,7 +181,7 @@ function getValueFromConfigObject(object, searchedProperty, defaultValue) {
     let result = defaultValue;
     const booleanAttributes = ['allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside'];
     if (searchedProperty in object) {
-        if (searchedProperty in booleanAttributes) {
+        if (booleanAttributes.includes(searchedProperty)) {
             result = object[searchedProperty] === '1';
         } else {
             result = object[searchedProperty];
