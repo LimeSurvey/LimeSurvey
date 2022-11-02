@@ -74,7 +74,8 @@
 		"vimeo/psalm": "^4.6",
 		"misantron/dbunit": "^5.1",
 		"tebazil/yii1-db-seeder": "^0.0.0",
-		"eloquent/phony-phpunit": "^6.0"
+		"eloquent/phony-phpunit": "^6.0",
+		"mockery/mockery": "^1.3"
 	},
 	"scripts": {
 		"openapi": "./vendor/bin/openapi ./application/controllers/rest/V1 -l -o ./docs/open-api/v1.json",
