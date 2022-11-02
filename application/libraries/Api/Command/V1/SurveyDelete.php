@@ -56,7 +56,7 @@ class SurveyDelete implements CommandInterface
      * Implement as a protected method to allow mocking in unit tests.
      *
      * @param int $iSurveyID
-     * @return void
+     * @return bool
      */
     protected function deleteSurvey($iSurveyID)
     {

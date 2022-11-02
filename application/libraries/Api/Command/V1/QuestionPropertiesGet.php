@@ -16,7 +16,6 @@ use LimeSurvey\Api\Command\Mixin\Accessor\QuestionModel;
 use LimeSurvey\Api\Command\Mixin\Accessor\QuestionModelWithL10nsByIdAndLanguage;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
 
-
 class QuestionPropertiesGet implements CommandInterface
 {
     use AuthSession;

@@ -14,7 +14,7 @@ trait QuestionModelWithL10nsByIdAndLanguage
      * Used as a proxy for providing a mock record during testing.
      *
      * @param int $id
-     * @return Array
+     * @return Question
      */
     public function getQuestionModelCollectionWithL10nsByIdAndLanguage($id, $language)
     {

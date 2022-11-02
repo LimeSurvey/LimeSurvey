@@ -6,6 +6,7 @@ use QuestionGroup;
 use QuestionGroupL10n;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
+use \LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
@@ -21,9 +22,8 @@ class QuestionGroupAdd implements CommandInterface
     /**
      * Run group add command.
      *
-     * @access public
-     * @param \LimeSurvey\Api\Command\Request\Request|Eloquent\Phony\Mock\Mock $request
-     * @return \LimeSurvey\Api\Command\Response\Response
+     * @param Request
+     * @return Response
      */
     public function run(Request $request)
     {
