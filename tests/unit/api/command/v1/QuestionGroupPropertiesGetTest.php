@@ -2,7 +2,6 @@
 
 namespace ls\tests\unit\api\command\v1;
 
-use Eloquent\Phony\Phpunit\Phony;
 use Permission;
 use QuestionGroup;
 use ls\tests\TestBaseClass;
@@ -14,6 +13,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
+use Mockery;
 
 /**
  * @testdox API command v1 QuestionGroupPropertiesGet.
@@ -56,11 +56,11 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
         $command = new QuestionGroupPropertiesGet();
         $command->setApiSession($mockApiSession);
@@ -90,19 +90,19 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockQuestionGroupModelHandle = Phony::mock(QuestionGroup::class);
-        $mockQuestionGroupModel = $mockQuestionGroupModelHandle->get();
+        $mockQuestionGroupModel= $this->createStub(QuestionGroup::class);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(false);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'survey', 'read', null)
+            ->andReturns(false);
 
         $command = new QuestionGroupPropertiesGet();
         $command->setApiSession($mockApiSession);
@@ -134,19 +134,19 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             'language' => 'invalid-language'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockQuestionGroupModelHandle = Phony::mock(QuestionGroup::class);
-        $mockQuestionGroupModel = $mockQuestionGroupModelHandle->get();
+        $mockQuestionGroupModel= $this->createStub(QuestionGroup::class);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(true);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'survey', 'read', null)
+            ->andReturns(true);
 
         $command = new QuestionGroupPropertiesGet();
         $command->setApiSession($mockApiSession);
@@ -178,19 +178,19 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             'language' => 'en'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockQuestionGroupModelHandle = Phony::mock(QuestionGroup::class);
-        $mockQuestionGroupModel = $mockQuestionGroupModelHandle->get();
+        $mockQuestionGroupModel= $this->createStub(QuestionGroup::class);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(true);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'survey', 'read', null)
+            ->andReturns(true);
 
         $command = new QuestionGroupPropertiesGet();
         $command->setApiSession($mockApiSession);
@@ -222,19 +222,19 @@ class QuestionGroupPropertiesGetTest extends TestBaseClass
             'language' => 'en'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockQuestionGroupModelHandle = Phony::mock(QuestionGroup::class);
-        $mockQuestionGroupModel = $mockQuestionGroupModelHandle->get();
+        $mockQuestionGroupModel= $this->createStub(QuestionGroup::class);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(true);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'survey', 'read', null)
+            ->andReturns(true);
 
         $command = new QuestionGroupPropertiesGet();
         $command->setApiSession($mockApiSession);
