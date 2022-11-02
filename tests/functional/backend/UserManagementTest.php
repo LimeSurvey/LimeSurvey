@@ -402,7 +402,7 @@ class UserManagementTest extends TestBaseClassWeb
         $wrapperId = $input->findElement(WebDriverBy::xpath("parent::*"))->getAttribute('id');
         $clearButton = self::$webDriver->wait($timeout)->until(
             WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('#' . $wrapperId . ' .picker-switch a[data-action="clear"]')
+                WebDriverBy::cssSelector('.tempus-dominus-widget.show div[data-action="clear"]')
             )
         );
         $clearButton->click();
