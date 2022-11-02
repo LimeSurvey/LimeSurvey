@@ -15,6 +15,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
+use Mockery;
 
 /**
  * @testdox API command v1 QuestionGroupList
@@ -88,15 +89,17 @@ class QuestionGroupListTest extends TestBaseClass
             ->method('checkKey')
             ->willReturn(true);
 
-        $mockSurveyModelHandle = Phony::mock(Survey::class);
-        $mockSurveyModelHandle->hasSurveyPermission
-            ->returns(true);
-        $mockSurveyModel = $mockSurveyModelHandle->get();
+        $mockSurveyModel = Mockery::mock(Survey::class);
+        $mockSurveyModel
+            ->allows()
+            ->hasSurveyPermission()
+            ->andReturns(true);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(false);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission = Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'survey', 'read', null)
+            ->andReturns(false);
 
         $command = new QuestionGroupList();
         $command->setApiSession($mockApiSession);
