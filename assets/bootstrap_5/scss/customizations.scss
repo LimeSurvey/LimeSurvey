@@ -6,16 +6,6 @@ a {
     text-decoration: none;
 }
 
-/*
- * btn-xs was removed from Bootstrap 4.
- * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
- */
-.btn-group-xs > .btn, .btn-xs {
-    padding: 1px 5px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px;
-}
 
 .page-item {
     border-radius: 25px;
