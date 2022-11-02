@@ -8,12 +8,14 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermission;
 use LimeSurvey\Api\Command\Mixin\CommandResponse;
+use LimeSurvey\Api\Command\Mixin\Accessor\SurveyModel;
 
 class SurveyDelete implements CommandInterface
 {
     use AuthSession;
     use AuthPermission;
     use CommandResponse;
+    use SurveyModel;
 
     /**
      * Run survey delete command.

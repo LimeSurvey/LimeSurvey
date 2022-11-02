@@ -2,7 +2,6 @@
 
 namespace ls\tests\unit\api\command\v1;
 
-use Eloquent\Phony\Phpunit\Phony;
 use Permission;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
@@ -12,6 +11,8 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\ApiSession;
+use Survey;
+use Mockery;
 
 /**
  * @testdox API command v1 SurveyDelete.
@@ -44,23 +45,26 @@ class SurveyDeleteTest extends TestBaseClass
             'surveyID' => 'surveyID'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(false);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'survey', 'delete', null)
+            ->andReturns(false);
 
-        $mockCommandHandle = Phony::partialMock(SurveyDelete::class);
-        $mockCommand = $mockCommandHandle->get();
-        $mockCommand->setApiSession($mockApiSession);
-        $mockCommand->setPermissionModel($mockModelPermission);
+        $mockSurveyModel= $this->createStub(Survey::class);
 
-        $response = $mockCommand->run($request);
+        $command= new SurveyDelete();
+        $command->setApiSession($mockApiSession);
+        $command->setPermissionModel($mockModelPermission);
+        $command->setSurveyModel($mockSurveyModel);
+
+        $response = $command->run($request);
 
         $this->assertResponseStatus(
             $response,
@@ -83,27 +87,25 @@ class SurveyDeleteTest extends TestBaseClass
             'surveyID' => 'surveyID'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(true);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'survey', 'delete', null)
+            ->andReturns(true);
 
-        $mockCommandHandle = Phony::partialMock(SurveyDelete::class);
+        $mockSurveyModel= $this->createStub(Survey::class);
 
-        $mockCommandHandle->deleteSurvey
-            ->returns(true);
+        $command= new SurveyDelete();
+        $command->setApiSession($mockApiSession);
+        $command->setPermissionModel($mockModelPermission);
 
-        $mockCommand = $mockCommandHandle->get();
-        $mockCommand->setApiSession($mockApiSession);
-        $mockCommand->setPermissionModel($mockModelPermission);
-
-        $response = $mockCommand->run($request);
+        $response = $command->run($request);
 
         $this->assertResponseStatus(
             $response,
