@@ -984,16 +984,6 @@ fieldset[disabled] .form-control {
   color: #fff;
 }
 
-.breadcrumb {
-  background-color: #f5f5f5;
-}
-.breadcrumb > .active {
-  color: #858585;
-}
-.breadcrumb > li + li:before {
-  color: #cccccc;
-}
-
 .pagination {
   font-size: 1.2em;
 }
@@ -1637,11 +1627,6 @@ output {
   border: 1px solid #cccccc;
 }
 
-.surveymanagerbar {
-  background-color: #0f3e12;
-  color: #fff;
-}
-
 .surveybar {
   border-bottom: 1px solid #e3e3e3;
   box-shadow: 0 3px 3px rgba(99, 49, 48, 0.1);
@@ -2016,32 +2001,6 @@ input[type=text], input[type=password], .ui-autocomplete-input, textarea, .unedi
     background: radial-gradient(circle at center, #328637 0px, #328637 8px, #fff 9px, #fff 100%);
   }
 }
-.ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {
-  border-bottom: 1px solid #35363F;
-}
-.ls-ba .breadcrumb > li + li:before {
-  color: #fff;
-}
-
-ol.breadcrumb.title-bar-breadcrumb {
-  background: transparent;
-  color: #fff;
-}
-ol.breadcrumb.title-bar-breadcrumb a {
-  color: #fff;
-}
-ol.breadcrumb.title-bar-breadcrumb a.animate::after {
-  background: #fff;
-  transition: width 0.3s;
-}
-ol.breadcrumb.title-bar-breadcrumb li {
-  background: transparent;
-  color: #fff;
-}
-ol.breadcrumb.title-bar-breadcrumb li.active {
-  color: #fff;
-}
-
 #pjax-content .surveybar {
   box-shadow: -3px 3px 3px #35363f;
 }
@@ -2954,4 +2913,43 @@ label {
 .well-sm {
   padding: 9px;
   border-radius: 3px;
+}
+
+ol.breadcrumb.title-bar-breadcrumb {
+  background: transparent;
+  color: #1E1E1E;
+}
+ol.breadcrumb.title-bar-breadcrumb a {
+  color: #4200FF;
+}
+ol.breadcrumb.title-bar-breadcrumb li {
+  background: transparent;
+  color: #1E1E1E;
+}
+ol.breadcrumb.title-bar-breadcrumb li.active {
+  color: #1E1E1E;
+}
+
+.ls-ba li > div {
+  display: inline-block;
+}
+
+.surveymanagerbar {
+  background-color: transparent;
+  color: #1E1E1E;
+}
+
+.breadcrumb {
+  font-size: 14px;
+  line-height: 20px;
+  padding: 1rem 20px 0;
+}
+
+.breadcrumb-item + .breadcrumb-item:before {
+  color: #7C8191;
+  padding-left: 12px;
+}
+
+.breadcrumb-item + .breadcrumb-item {
+  padding-right: 12px;
 }

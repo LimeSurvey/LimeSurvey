@@ -90,8 +90,16 @@ $tooltip-padding-x:                 $spacer * 1.2;
 $tooltip-arrow-color:               $tooltip-bg;
 // $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
 
+// breadcrumb variables
+$breadcrumb-font-size:              14px;
+$breadcrumb-spacing:                12px;
+$breadcrumb-divider-color:          $g-600;
+$breadcrumb-active-color:           $g-900;
+$breadcrumb-link-color:             $action;
+
 @import "buttons/buttons.scss";
 @import "buttons/btn-group.scss";
 @import "typography/typography.scss";
 @import "tooltip/tooltip.scss";
 @import "well/well.scss";
+@import "breadcrumb/breadcrumb.scss";
