@@ -29,6 +29,19 @@ $g-300      : #DDDEE8;
 $g-200      : #EEEFF7;
 $g-100      : #F9F9FB;
 
+// Buttons
+$line-height-16: 16px;
+$line-height-20: 20px;
+
+$btn-font-weight: 500;
+
+$btn-height-sm: 24px;
+$btn-height: 36px;
+$btn-height-lg: 44px;
+$btn-height-xl: 52px;
+
+$btn-font-size: 14px;
+$btn-font-size-sm: 12px;
 
 // START spacer
 $spacer: 1rem;
@@ -44,7 +57,9 @@ $tooltip-arrow-color:               $tooltip-bg;
 // nav
 $nav-tabs-link-active-color:        $g-900;
 // this is an example, if you work on the buttons you can remove it
+
 @import "buttons/buttons.scss";
+@import "buttons/btn-group.scss";
 @import "typography/typography.scss";
 @import "tooltip/tooltip.scss";
 @import "tabs/tabs.scss";
