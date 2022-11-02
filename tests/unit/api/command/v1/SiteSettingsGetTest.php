@@ -2,7 +2,6 @@
 
 namespace ls\tests\unit\api\command\v1;
 
-use Eloquent\Phony\Phpunit\Phony;
 use Permission;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
@@ -12,6 +11,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\ApiSession;
+use Mockery;
 
 /**
  * @testdox API command v1 SiteSettingsGet.
@@ -44,16 +44,17 @@ class SiteSettingsGetTest extends TestBaseClass
             'settingName' => 'settingName'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasGlobalPermission
-            ->returns(false);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasGlobalPermission('superadmin', 'read', null)
+            ->andReturns(false);
 
         $command = new SiteSettingsGet();
         $command->setApiSession($mockApiSession);
@@ -82,16 +83,17 @@ class SiteSettingsGetTest extends TestBaseClass
             'settingName' => 'invalid-setting-name'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasGlobalPermission
-            ->returns(true);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasGlobalPermission('superadmin', 'read', null)
+            ->andReturns(true);
 
         $command = new SiteSettingsGet();
         $command->setApiSession($mockApiSession);
@@ -120,25 +122,23 @@ class SiteSettingsGetTest extends TestBaseClass
             'settingName' => 'invalid-setting-name'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasGlobalPermission
-            ->returns(true);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasGlobalPermission('superadmin', 'read', null)
+            ->andReturns(true);
 
-        $mockAppBuilder = Phony::mockBuilder();
-        $mockAppBuilder->addMethod(
-            'getConfig',
-            function ($settingName) {
-                return true;
-            }
-        );
-        $mockApp = $mockAppBuilder->partial();
+        $mockApp = Mockery::mock(LSYii_Application::class);
+        $mockApp
+            ->allows()
+            ->getConfig('invalid-setting-name')
+            ->andReturns(true);
 
         $command = new SiteSettingsGet();
         $command->setApiSession($mockApiSession);
