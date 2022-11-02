@@ -77,22 +77,18 @@ class QuestionGroupDeleteTest extends TestBaseClass
             'groupID' => '1'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= $this->getMockBuilder(ApiSession::class)
+            ->setMethods(['checkKey'])
+            ->getMock();
+        $mockApiSession->method('checkKey')->willReturn(true);
 
-        $mockModelGroupHandle = Phony::mock(QuestionGroup::class);
-        $mockModelGroup = $mockModelGroupHandle->get();
+        $mockModelGroup  = $this->createStub(QuestionGroup::class);
+        $mockModelSurvey = $this->createStub(Survey::class);
 
-        $mockModelSurveyHandle = Phony::mock(Survey::class);
-        $mockModelSurvey = $mockModelSurveyHandle->get();
-
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(false);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission = $this->createStub(Permission::class);
+        $mockModelPermission
+            ->method('hasSurveyPermission')
+            ->willReturn(false);
 
         $command = new QuestionGroupDelete();
         $command->setQuestionGroupModel($mockModelGroup);
