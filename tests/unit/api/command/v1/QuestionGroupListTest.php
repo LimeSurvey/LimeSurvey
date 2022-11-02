@@ -120,26 +120,28 @@ class QuestionGroupListTest extends TestBaseClass
     public function testQuestionGroupListNoGroupsForSurveyId()
     {
         $request = new Request(array(
-            'sessionKey' => 'not-a-valid-session-id',
+            'sessionKey' => 'invalid-id',
             'surveyID' => 'surveyID',
             'language' => 'language'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession = Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('invalid-id')
+            ->andReturns(true);
 
-        $mockSurveyModelHandle = Phony::mock(Survey::class);
-        $mockSurveyModelHandle->hasSurveyPermission
-            ->returns(true);
-        $mockSurveyModel = $mockSurveyModelHandle->get();
+        $mockSurveyModel = Mockery::mock(Survey::class);
+        $mockSurveyModel
+            ->allows()
+            ->hasSurveyPermission()
+            ->andReturns(true);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(true);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission = Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'survey', 'read', null)
+            ->andReturns(true);
 
         $command = new QuestionGroupList();
         $command->setApiSession($mockApiSession);
