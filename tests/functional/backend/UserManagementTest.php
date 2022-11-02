@@ -231,7 +231,8 @@ class UserManagementTest extends TestBaseClassWeb
             $save->click();
 
             // Wait for "Saved successfully" modal
-            $this->waitForModal('Saved successfully');
+            // @Todo: This modal was removed in BS5 epic
+//            $this->waitForModal('Saved successfully');
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
@@ -348,7 +349,8 @@ class UserManagementTest extends TestBaseClassWeb
             $save->click();
 
             // Wait for "Saved successfully" modal
-            $this->waitForModal('Saved successfully');
+            // @TODO this modal was removed in BS5 epic
+//            $this->waitForModal('Saved successfully');
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
@@ -399,7 +401,6 @@ class UserManagementTest extends TestBaseClassWeb
         );
         $input->click();
         // Give time for the datepicker to open and click again before clearing
-        $wrapperId = $input->findElement(WebDriverBy::xpath("parent::*"))->getAttribute('id');
         $clearButton = self::$webDriver->wait($timeout)->until(
             WebDriverExpectedCondition::elementToBeClickable(
                 WebDriverBy::cssSelector('.tempus-dominus-widget.show div[data-action="clear"]')
