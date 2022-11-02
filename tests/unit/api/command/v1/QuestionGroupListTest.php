@@ -83,11 +83,10 @@ class QuestionGroupListTest extends TestBaseClass
             'language' => 'language'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession = $this->createStub(ApiSession::class);
+        $mockApiSession
+            ->method('checkKey')
+            ->willReturn(true);
 
         $mockSurveyModelHandle = Phony::mock(Survey::class);
         $mockSurveyModelHandle->hasSurveyPermission
