@@ -2944,6 +2944,7 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .navbar .navbar-brand {
   font-weight: 400;
+  color: #fff;
 }
 .navbar .navbar-toggler {
   margin: 0.5rem;
