@@ -405,9 +405,12 @@ class UserManagementTest extends TestBaseClassWeb
                 WebDriverBy::cssSelector('.tempus-dominus-widget.show div[data-action="clear"]')
             )
         );
+        $otherInput = self::$webDriver->findElement(WebDriverBy::id('User_Form_full_name'));
         $clearButton->click();
         $input->click();
         $input->clear()->sendKeys($value);
+        // click on other input field to close the datepicker
+        $otherInput->click();
     }
 
     protected function waitForModal($title, $timeout = 10)
