@@ -2010,11 +2010,9 @@ input[type=text], input[type=password], .ui-autocomplete-input, textarea, .unedi
   .navbar-toggle {
     background-color: #fafafa;
   }
-
   .side-menu {
     border-bottom: 1px solid #e3e3e3;
   }
-
   .side-menu-container > .navbar-nav {
     border-left: 1px solid #e3e3e3;
     background-color: #f8f8f8;
@@ -2790,40 +2788,40 @@ body.onStatistics .btn {
 }
 
 body {
-  font-family: "IBMPlexSans";
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 24px;
 }
 
 h1,
 .h1 {
-  font-family: "IBMPlexSans";
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 26px;
 }
 
 h2,
 .h2 {
-  font-family: "IBMPlexSans";
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1.25rem;
   line-height: 20px;
 }
 
 h3,
 .h3 {
-  font-family: "IBMPlexSans";
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 500;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 20px;
 }
 
 label {
-  font-family: "IBMPlexSans";
+  font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 500;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 20px;
 }
 
