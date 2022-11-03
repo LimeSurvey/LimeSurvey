@@ -461,35 +461,12 @@ html {
     display: none;
 }
 
-.box {
-    border-radius: 3px;
-    padding: 10px 25px;
-    text-align: right;
-    display: block;
-    margin-top: 10px;
-}
-
 #info-header {
     font-size: 3em;
 }
 
 #info-footer {
     font-size: 2em;
-}
-
-.box-icon {
-    border-radius: 50%;
-    display: table;
-    height: 50px;
-    margin: 0 auto;
-    width: 50px;
-    margin-top: -31px;
-}
-
-.box-icon span {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
 }
 
 @keyframes fadein {
@@ -1916,16 +1893,6 @@ h3 .glyphicon-chevron-right {
     dd {
         margin: 0;
     }
-}
-
-#systemoverview .box__title {
-    font-size: 14px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-weight: 500;
-    line-height: 1.1;
-    color: inherit;
-    text-align: center;
 }
 
 /**
