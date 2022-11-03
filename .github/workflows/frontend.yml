@@ -13,7 +13,6 @@ on:
       - 'bug/**'
       - 'feature/**'
       - 'zoho/**'
-
 jobs:
   job_build_packages:
     runs-on: ubuntu-18.04 # ubuntu runner hosted by Github
