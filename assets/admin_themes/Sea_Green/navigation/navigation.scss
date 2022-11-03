@@ -91,13 +91,11 @@
   > li {
     > a {
       &:hover {
-        color: $white;
-        background-color: $g-900;
+        font-weight: 600;
         //border-bottom: 1px solid $white;
       }
       &:focus {
-        color: $white;
-        background-color: $g-900;
+        font-weight: 600;
         //border-bottom: 1px solid $white;
       }
     }
@@ -116,12 +114,10 @@
     background-color: $g-900;
     //border-bottom: 1px solid $white;
     &:hover {
-      color: $white;
-      background-color: $g-900;
+      font-weight: 600;
     }
     &:focus {
-      color: $white;
-      background-color: $g-900;
+      font-weight: 600;
     }
   }
 }

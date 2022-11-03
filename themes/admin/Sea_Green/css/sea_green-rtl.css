@@ -2969,12 +2969,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   background-color: #e6e6e6;
 }
 .nav > li > a:hover {
-  color: #fff;
-  background-color: #1E1E1E;
+  font-weight: 600;
 }
 .nav > li > a:focus {
-  color: #fff;
-  background-color: #1E1E1E;
+  font-weight: 600;
 }
 .nav > li.disabled > a {
   color: #858585;
@@ -2990,12 +2988,10 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   background-color: #1E1E1E;
 }
 .nav .open > a:hover {
-  color: #fff;
-  background-color: #1E1E1E;
+  font-weight: 600;
 }
 .nav .open > a:focus {
-  color: #fff;
-  background-color: #1E1E1E;
+  font-weight: 600;
 }
 
 @media screen and (min-width: 768px) {
