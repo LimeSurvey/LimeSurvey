@@ -492,9 +492,6 @@ abbr[data-original-title] {
 // Blockquotes
 blockquote {
     border-left: 5px solid $primary-bg_hover;
-    footer {
-        color: $gray-15;
-    }
     small {
         color: $gray-15;
     }
@@ -2059,12 +2056,6 @@ output {
             }
         }
     }
-}
-
-// Footer
-.footer {
-    background-color: $white;
-    border-top: solid 1px $gray-08;
 }
 
 // Boxes
