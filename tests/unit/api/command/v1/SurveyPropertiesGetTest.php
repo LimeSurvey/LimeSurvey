@@ -2,7 +2,6 @@
 
 namespace ls\tests\unit\api\command\v1;
 
-use Eloquent\Phony\Phpunit\Phony;
 use Permission;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
@@ -14,6 +13,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\ApiSession;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use Survey;
+use Mockery;
 
 /**
  * @testdox API command v1 SurveyPropertiesGetTest.
@@ -48,11 +48,11 @@ class SurveyPropertiesGetTest extends TestBaseClass
             'surveySettings' => array()
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
         $command = new SurveyPropertiesGet();
         $command->setApiSession($mockApiSession);
@@ -81,16 +81,17 @@ class SurveyPropertiesGetTest extends TestBaseClass
             'surveySettings' => array()
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(false);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'surveysettings', 'read', null)
+            ->andReturns(false);
 
         $command = new SurveyPropertiesGet();
         $command->setApiSession($mockApiSession);
@@ -121,16 +122,17 @@ class SurveyPropertiesGetTest extends TestBaseClass
             'surveySettings' => array('invalid')
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(true);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'surveysettings', 'read', null)
+            ->andReturns(true);
 
         $command = new SurveyPropertiesGet();
         $command->setApiSession($mockApiSession);
@@ -161,16 +163,17 @@ class SurveyPropertiesGetTest extends TestBaseClass
             'surveySettings' => array()
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mock')
+            ->andReturns(true);
 
-        $mockModelPermissionHandle = Phony::mock(Permission::class);
-        $mockModelPermissionHandle->hasSurveyPermission
-            ->returns(true);
-        $mockModelPermission = $mockModelPermissionHandle->get();
+        $mockModelPermission= Mockery::mock(Permission::class);
+        $mockModelPermission
+            ->allows()
+            ->hasSurveyPermission(0, 'surveysettings', 'read', null)
+            ->andReturns(true);
 
         $command = new SurveyPropertiesGet();
         $command->setApiSession($mockApiSession);
