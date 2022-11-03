@@ -130,7 +130,7 @@
                     </div>                    
                 </div>
                 <button role="button" class="btn btn-primary btn-block d-none" type="submit" name="submit">
-                    <i class="fa fa-download"></i>
+                    <i class="ri-download-fill"></i>
                     <?php eT('Export participants'); ?>
                 </button>
             </div>

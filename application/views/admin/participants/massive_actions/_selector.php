@@ -72,7 +72,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'type' => 'action',
                 'action' => 'share',
                 'url' => '',  // Not relevant
-                'iconClasses' => 'fa fa-share',
+                'iconClasses' => 'ri-share-forward-fill',
                 'text' => gT('Share'),
                 'grid-reload' => 'no',
 
@@ -83,7 +83,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'type' => 'action',
                 'action' => 'add-to-survey',
                 'url' => '',  // Not relevant
-                'iconClasses' => 'fa fa-user-plus',
+                'iconClasses' => 'ri-user-add-fill',
                 'text' => gT('Add participants to survey'),
                 'grid-reload' => 'no',
 

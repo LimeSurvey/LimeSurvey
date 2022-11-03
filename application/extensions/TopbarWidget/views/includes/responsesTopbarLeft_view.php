@@ -21,7 +21,7 @@
 <?php if ($hasResponsesCreatePermission): ?>
     <a class="btn btn-outline-secondary"
        href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/view/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="fa fa-keyboard-o text-success"></span>
+        <span class="ri-keyboard-box-line text-success"></span>
         <?php eT("Data entry"); ?>
     </a>
 <?php endif; ?>
@@ -30,7 +30,7 @@
     <!-- Get statistics from these responses -->
     <a class="btn btn-outline-secondary"
        href='<?php echo Yii::App()->createUrl("admin/statistics/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="fa fa-bar-chart text-success"></span>
+        <span class="ri-bar-chart-fill text-success"></span>
         <?php eT("Statistics"); ?>
     </a>
 
@@ -38,7 +38,7 @@
     <?php if ($isTimingEnabled == "Y"): ?>
         <a class="btn btn-outline-secondary"
            href='<?php echo Yii::App()->createUrl("responses/time/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-            <span class="fa fa-clock-o text-success"></span>
+            <span class="ri-time-line text-success"></span>
             <?php eT("Timing statistics"); ?>
         </a>
     <?php endif; ?>
@@ -132,7 +132,7 @@
         <a class="btn btn-outline-secondary"
                 href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/iteratesurvey/surveyid/$oSurvey->sid"); ?>'
                 role="button">
-            <span class="fa fa-repeat text-success"></span>
+            <span class="ri-repeat-fill text-success"></span>
             <?php eT("Iterate survey"); ?>
         </a>
     <?php endif; ?>

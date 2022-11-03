@@ -264,7 +264,7 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getCompleted()
     {
-        return ($this->submitdate != '') ? '<span class="text-success ri-check-fill"></span>' : '<span class="text-warning fa fa-times"></span>';
+        return ($this->submitdate != '') ? '<span class="text-success ri-check-fill"></span>' : '<span class="text-warning ri-close-fill"></span>';
     }
 
     /**
@@ -296,7 +296,7 @@ class SurveyDynamic extends LSActiveRecord
         target='_blank'
         data-bs-toggle='tooltip'
         title='" . gt("View response details as queXML PDF") . "'>
-            <i class='fa fa-file-o'></i>
+            <i class='ri-file-3-line'></i>
         </a>";
 
         /* edit button */
@@ -319,7 +319,7 @@ class SurveyDynamic extends LSActiveRecord
             target='_blank'
             data-bs-toggle='tooltip'
             title='" . gt("Download all files in this response as a zip file") . "'>
-                <i class='fa fa-download text-success'></i>
+                <i class='ri-download-fill text-success'></i>
             </a>";
         }
 
@@ -338,7 +338,7 @@ class SurveyDynamic extends LSActiveRecord
             data-bs-toggle='tooltip'
             class='btn btn-outline-secondary btn-sm btn-deletefiles'
             title='" . gt("Delete all files of this response") . "'>
-            <i class='fa fa-paperclip text-danger'></i>
+            <i class='ri-attachment-2 text-danger'></i>
             </button>
             </span>";
         }

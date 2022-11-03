@@ -51,7 +51,7 @@
                     <span class="ri-eye-fill"></span>
                     <?php eT('Preview survey'); ?>
                 <?php else: ?>
-                    <span class="fa fa-play"></span>
+                    <span class="ri-play-fill"></span>
                     <?php eT('Run survey'); ?>
                 <?php endif; ?>
                 <span class="caret"></span>
@@ -77,7 +77,7 @@
                 <span class="ri-eye-fill"></span>
                 <?php eT('Preview survey'); ?>
             <?php else: ?>
-                <span class="fa fa-play"></span>
+                <span class="ri-play-fill"></span>
                 <?php eT('Run survey'); ?>
             <?php endif; ?>
             <i class="icon  ri-external-link-fill"></i>
@@ -119,7 +119,7 @@
                     <li>
                         <a class="dropdown-item"
                            href="<?= App()->createUrl("quickTranslation/index/surveyid/{$oSurvey->sid}"); ?>">
-                            <span class="fa fa-language"></span>
+                            <span class="ri-global-line"></span>
                             <?php eT("Quick-translation"); ?>
                         </a>
                     </li>
@@ -131,7 +131,7 @@
                         <a class="dropdown-item" href="#" class="btntooltip disabled" data-bs-toggle="tooltip"
                            data-bs-placement="bottom"
                            title="<?php eT('Currently there are no additional languages configured for this survey.'); ?>">
-                            <span class="fa fa-language"></span>
+                            <span class="ri-global-line"></span>
                             <?php eT("Quick-translation"); ?>
                         </a>
                     </li>

@@ -2,7 +2,7 @@ $('#copysurveyform').submit(copysurvey);
 
 var defineActions = function (dataArray) {
     var buttonEdit = $('<button><i class="fa fa-edit"></i></button>');
-    var buttonDelete = $('<button><i class="fa fa-trash"></i></button>');
+    var buttonDelete = $('<button><i class="fri-delete-bin-fill"></i></button>');
     var container = $('<div></div>');
     buttonEdit
         .addClass('btn btn-xs btn-outline-secondary surveysettings_edit_intparameter')

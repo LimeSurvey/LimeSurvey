@@ -201,7 +201,7 @@ class Permissiontemplates extends CActiveRecord
                  title='" . gT('Export role') . "'
                 href='" . $exportRoleUrl . "'
                 role='button'>
-                    <i class='fa fa-download'></i>
+                    <i class='ri-download-fill'></i>
                 </a>";
 
         // Delete Role

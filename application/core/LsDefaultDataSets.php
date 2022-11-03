@@ -1080,7 +1080,7 @@ class LsDefaultDataSets
                 'template' => ""
                 . "<div class='popover tour lstutorial__template--mainContainer'>"
                 . "<div class='arrow'></div>"
-                . "<button class='float-end ls-space margin top-5 right-5 btn btn-warning btn-sm' type='button' data-role='end' data-bs-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='fa fa-close'></i></button>"
+                . "<button class='float-end ls-space margin top-5 right-5 btn btn-warning btn-sm' type='button' data-role='end' data-bs-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='ri-close-fill'></i></button>"
                 . "<h3 class='popover-title lstutorial__template--title'></h3>"
                     . "<div class='popover-content lstutorial__template--content'></div>"
                     . "<div class='popover-navigation lstutorial__template--navigation'>"
@@ -1514,7 +1514,7 @@ class LsDefaultDataSets
                 'teid' => 26,
                 'ordering' => 26,
                 'title' => gT('Add subquestion row'),
-                'content' => sprintf(gT('Click on the plus sign %s to add another subquestion to your question.'), '<i class="icon-add text-success"></i>')
+                'content' => sprintf(gT('Click on the plus sign %s to add another subquestion to your question.'), '<i class="ri-add-circle-fill text-success"></i>')
                 . "<p class='bg-warning alert'>" . gT('Please add at least two subquestions') . "</p>",
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer>tr:first-of-type .btnaddanswer',
@@ -1572,7 +1572,7 @@ class LsDefaultDataSets
                 'ordering' => 29,
                 'title' => gT('Edit answer options'),
                 'content' => gT("As you can see, editing answer options is quite similar to editing subquestions.") . '<br/>'
-                . gT('Remember the plus button') . '<i class="icon-add text-success"></i>?' . '<br/>'
+                . gT('Remember the plus button') . '<i class="ri-add-circle-fill text-success"></i>?' . '<br/>'
                 . '<p class="alert bg-warning">' . gT("Please add at least two answer options to proceed.") . '</p>',
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer',
@@ -1878,7 +1878,7 @@ class LsDefaultDataSets
             'gam'   => 'fa-gamepad',
             'nes'   => 'fa-gamepad',
             'rom'   => 'fa-gamepad',
-            'sav'   => 'fa-floppy-o',
+            'sav'   => 'ri-save-3-fill',
 
             // Images
             'bmp'   => 'fa-picture-o',
@@ -1929,7 +1929,7 @@ class LsDefaultDataSets
 
             // Other
             'bak'   => 'fa-floppy',
-            'msg'   => 'fa-envelope',
+            'msg'   => 'ri-mail-fill',
 
             // Blank
             'blank' => 'fa-file'

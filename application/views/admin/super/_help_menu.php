@@ -1,7 +1,6 @@
 
 <li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="helpDropdown" aria-expanded="false" role="button">
-        <!-- <span class="fa fa-question-circle" ></span> -->
         <i class="ri-question-fill"></i>
 
         <?php eT('Help');?>
@@ -11,7 +10,6 @@
         <li class="dropdown-divider"></li>
         <li>
             <a href="http://manual.limesurvey.org/" target="_blank" class="dropdown-item">
-                <!-- <span class="fa fa-question-circle" ></span> -->
                 <i class="ri-question-fill"></i>
 
                 <?php eT('LimeSurvey Manual');?>
@@ -21,7 +19,7 @@
         <li>
             <a href="https://forums.limesurvey.org" target="_blank" class="dropdown-item">
                 <span class="fa-stack halfed">
-                    <span class="fa fa-comment fa-stack-1x" ></span>
+                    <span class="ri-chat-3-fill fa-stack-1x" ></span>
                     <span class="ri-group-fill fa-inverse fa-stack-1x halfed" ></span>
                 </span>
                 <?php eT('LimeSurvey Forums');?>

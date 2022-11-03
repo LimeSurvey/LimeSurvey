@@ -419,17 +419,17 @@ class Surveymenu extends LSActiveRecord
             ),
             array(
                 'name' => 'parent_id',
-                'value' => '$data->parent_id ? $data->parent[\'title\']." (".$data->parent_id.")" : "<i class=\'fa fa-minus\'></i>"',
+                'value' => '$data->parent_id ? $data->parent[\'title\']." (".$data->parent_id.")" : "<i class=\'ri-subtract-fill\'></i>"',
                 'type' => 'raw'
             ),
             array(
                 'name' => 'survey_id',
-                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'fa fa-minus\'></i>"',
+                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'ri-subtract-fill\'></i>"',
                 'type' => 'raw'
             ),
             array(
                 'name' => 'user_id',
-                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'fa fa-minus\'></i>"',
+                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'ri-subtract-fill\'></i>"',
                 'type' => 'raw'
             ),
             // array(
@@ -528,12 +528,12 @@ class Surveymenu extends LSActiveRecord
             ),
             array(
                 'name' => 'parent_id',
-                'value' => '$data->parent_id ? $data->parent->title : "<i class=\'fa fa-minus\'></i>"',
+                'value' => '$data->parent_id ? $data->parent->title : "<i class=\'ri-subtract-fill\'></i>"',
                 'type' => 'raw'
             ),
             array(
                 'name' => 'survey_id',
-                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'fa fa-minus\'></i>"',
+                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'ri-subtract-fill\'></i>"',
                 'type' => 'raw'
             )
         );

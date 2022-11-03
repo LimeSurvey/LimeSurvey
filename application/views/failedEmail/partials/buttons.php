@@ -10,7 +10,7 @@
             data-href="<?= App()->createUrl('/failedEmail/modalcontent', ['id' => $id]) ?>"
             data-contentFile="resend_form"
             <?= !$permissions['update'] ? "disabled='disabled'" : "" ?>>
-        <i class="fa fa-envelope-square"></i>
+        <i class="ri-mail-line"></i>
     </button>
     <button data-toggle="tooltip" title="<?= gT("Email content") ?>"
             class="btn btn-default btn-sm failedemail-action-modal-open"

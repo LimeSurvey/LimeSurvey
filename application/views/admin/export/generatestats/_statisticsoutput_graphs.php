@@ -65,39 +65,39 @@
 
             <!-- Bar chart -->
             <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Bar-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="Bar" data-canva-id="chartjs-Bar-<?php echo $qqid; ?>" aria-label="Left Align">
-                <i class="fa fa-bar-chart"></i>
+                <i class="ri-bar-chart-fill"></i>
                     <?php eT('Bar chart'); ?>
             </button>
 
 
             <!-- Pie chart -->
             <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Pie-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="Pie" data-canva-id="chartjs-Pie-<?php echo $qqid; ?>" aria-label="Left Align">
-                <i class="fa fa-pie-chart"></i>
+                <i class="ri-pie-chart-fill"></i>
                 <?php eT('Pie chart'); ?>
             </button>
 
             <!-- Radar chart -->
             <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Radar-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="Radar" data-canva-id="chartjs-Radar-<?php echo $qqid; ?>" aria-label="Left Align">
-                <i class="fa fa-crosshairs"></i>
+                <i class="ri-focus-3-line"></i>
                     <?php eT('Radar chart'); ?>
             </button>
 
 
             <!-- Line chart -->
             <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Line-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="Line" data-canva-id="chartjs-Line-<?php echo $qqid; ?>" aria-label="Left Align">
-                <i class="fa fa-line-chart"></i>
+                <i class="ri-line-chart-fill"></i>
                 <?php eT('Line chart'); ?>
             </button>
 
             <!-- Polar chart -->
             <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-PolarArea-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="PolarArea" data-canva-id="chartjs-PolarArea-<?php echo $qqid; ?>" aria-label="Left Align">
-                <i class="fa fa-sun-o"></i>
+                <i class="ri-sun-line"></i>
                 <?php eT('Polar chart'); ?>
             </button>
 
             <!-- Doughnut chart -->
             <button type="button" data-qid="<?php echo $qqid; ?>" id="button-chartjs-Doughnut-<?php echo $qqid; ?>" class="btn btn-outline-secondary chart-type-control" data-type="Doughnut" data-canva-id="chartjs-Doughnut-<?php echo $qqid; ?>" aria-label="Left Align">
-                <i class="fa fa fa-circle-o"></i>
+                <i class="ri-checkbox-blank-circle-line"></i>
                 <?php eT('Doughnut chart'); ?>
             </button>
         </div>

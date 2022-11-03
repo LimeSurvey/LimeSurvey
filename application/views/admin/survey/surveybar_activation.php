@@ -36,7 +36,7 @@
     <?php if ($expired) : ?>
         <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="<?php eT('This survey is active but expired.'); ?><br><?php eT('Click to adjust.'); ?>">
             <button href='<?php echo $this->createUrl("surveyAdministration/rendersidemenulink/subaction/publication", ['surveyid' => $oSurvey->sid]); ?>'class="btn btn-success btntooltip" >
-                <span class="fa fa-ban">
+                <span class="ri-forbid-2-line">
                     &nbsp;
                 </span>
                 <?php eT("Expired"); ?>
@@ -45,7 +45,7 @@
     <?php elseif ($notstarted) : ?>
         <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>
             <button type="button" class="btn btn-success btntooltip" disabled="disabled" >
-                <span class="fa fa-clock-o">
+                <span class="ri-time-line">
                     &nbsp;
                 </span>
                 <?php eT("Activate this survey"); ?>

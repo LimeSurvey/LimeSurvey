@@ -14,7 +14,6 @@
         ?>
         >
         <?php if ($this->iconPosition === 'front') : ?>
-            <!-- <i class="fa fa-folder-open"></i>&nbsp;&nbsp; -->
             <i class="ri-folder-line"></i>&nbsp;&nbsp;
 
         <?php endif; ?>
@@ -28,7 +27,6 @@
         </span>
         <?php if ($this->iconPosition === 'back') : ?>
             &nbsp;&nbsp;&nbsp;
-            <!-- <i class="fa fa-folder-open"></i>  -->
             <i class="ri-folder-line"></i>           
         <?php endif; ?>
     </button>

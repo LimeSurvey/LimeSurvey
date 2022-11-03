@@ -592,9 +592,9 @@ class InstallerController extends CController
     public function chekHtmlImage($result)
     {
         if ($result) {
-            return "<span class='fa fa-check text-success' alt='right'></span>";
+            return "<span class='ri-check-fill text-success' alt='right'></span>";
         } else {
-            return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
+            return "<span class='ri-error-warning-fill text-danger' alt='wrong'></span>";
         }
     }
 

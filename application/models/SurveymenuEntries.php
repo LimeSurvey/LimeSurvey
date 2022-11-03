@@ -412,7 +412,7 @@ class SurveymenuEntries extends LSActiveRecord
             ),
             array(
                 'name' => 'user_id',
-                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'fa fa-minus\'></i>"',
+                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'ri-subtract-fill\'></i>"',
                 'type' => 'raw',
                 'filter' => $this->getUserOptions()
             )

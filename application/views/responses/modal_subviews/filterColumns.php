@@ -8,7 +8,7 @@
 
 <!-- Button trigger modal -->
 <button role="button" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#responses-column-filter-modal" id="responses-column-filter-button">
-    <span class="fa fa-columns"></span>
+    <span class="ri-layout-column-fill"></span>
 </button>
 
 <!-- Modal -->

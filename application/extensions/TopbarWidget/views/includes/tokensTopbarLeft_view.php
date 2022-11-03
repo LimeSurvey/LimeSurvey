@@ -109,7 +109,7 @@
             <!-- Send email invitation -->
             <li>
                 <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/emailtemplates/sa/index/surveyid/$oSurvey->sid"); ?>" >
-                    <span class="fa fa-envelope-o"></span>
+                    <span class="ri-mail-line"></span>
                     <?php eT("Edit email templates"); ?>
                 </a>
             </li>
@@ -149,7 +149,7 @@
             <!-- Bounce settings -->
             <li>
                 <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/bouncesettings/surveyid/$oSurvey->sid"); ?>" >
-                    <span class="icon-settings"></span>
+                    <span class="ri-settings-5-fill"></span>
                     <?php eT("Bounce settings"); ?>
                 </a>
             </li>
@@ -171,6 +171,6 @@
 
 <!-- Survey Quotas -->
 <a class="btn btn-outline-secondary" href='<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
-    <span class="fa fa-tasks"></span>
+    <span class="ri-bar-chart-horizontal-fill"></span>
     <?php eT("Survey quotas"); ?>
 </a>

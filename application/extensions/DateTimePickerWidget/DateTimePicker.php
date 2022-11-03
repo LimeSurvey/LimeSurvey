@@ -334,12 +334,12 @@ class DateTimePicker extends CInputWidget
     private function getCustomIconsString()
     {
         return "icons: {
-                   time: 'fa fa-clock-o text-success',
-                   date: 'fa fa-calendar text-success',
-                   up: 'fa fa-caret-up',
-                   down: 'fa fa-caret-down',
-                   previous: 'fa fa-caret-left',
-                   next: 'fa fa-caret-right',
+                   time: 'ri-time-line text-success',
+                   date: 'ri-calendar-2-fill text-success',
+                   up: 'ri-arrow-up-s-fill',
+                   down: 'ri-arrow-down-s-fill',
+                   previous: 'ri-arrow-left-s-fill',
+                   next: 'ri-arrow-right-s-fill',
                    today: 'fa fa-today text-success',
                    clear: 'ri-delete-bin-fill text-success',
                    close: 'ri-close-fill text-success',

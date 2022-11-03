@@ -38,7 +38,7 @@
                         data-bs-toggle='tooltip'
                             title='<?php eT('Scan files for available plugins'); ?>'
                         >
-                            <i class='fa fa-file '></i>
+                            <i class='ri-file-3-fill '></i>
                             <i class='ri-search-line '></i>&nbsp;
                             <?php eT('Scan files'); ?>
                         </a>

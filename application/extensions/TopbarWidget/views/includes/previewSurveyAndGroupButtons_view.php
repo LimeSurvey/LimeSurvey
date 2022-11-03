@@ -6,7 +6,7 @@
                 <span class="ri-eye-fill" ></span>
                 <?php eT('Preview survey');?>
             <?php else: ?>
-                <span class="fa fa-play" ></span>
+                <span class="ri-play-fill" ></span>
                 <?php eT('Run survey');?>
             <?php endif;?>
             <span class="caret"></span>
@@ -27,7 +27,7 @@
             <span class="ri-eye-fill" ></span>
             <?php eT('Preview survey');?>
         <?php else: ?>
-            <span class="fa fa-play" ></span>
+            <span class="ri-play-fill" ></span>
             <?php eT('Run survey');?>
         <?php endif;?>
     </a>

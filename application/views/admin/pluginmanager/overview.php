@@ -63,7 +63,7 @@
         <?php if ($plugin->isCompatible()): ?>
             <div class="col-md-4"><span class="ri-check-fill text-success"></span></div>
         <?php else: ?>
-            <div class="col-md-4"><span class="fa fa-times text-warning"></span></div>
+            <div class="col-md-4"><span class="ri-close-fill text-warning"></span></div>
         <?php endif; ?>
     </div>
 
@@ -77,7 +77,7 @@
                     <?= $plugin->getDeactivateButton() ?>
                 </div>
             <?php else: ?>
-                <div class="col-md-2"><span class="fa fa-times text-warning"></span></div>
+                <div class="col-md-2"><span class="ri-close-fill text-warning"></span></div>
                 <div class="col-md-2">
                     <?= $plugin->getActivateButton() ?>
                 </div>
