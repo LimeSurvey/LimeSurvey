@@ -5,7 +5,6 @@ namespace ls\tests\unit\api\command\v1;
 use Permission;
 use QuestionGroup;
 use Survey;
-use Eloquent\Phony\Phpunit\Phony;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
 use LimeSurvey\Api\Command\V1\QuestionGroupDelete;
@@ -13,6 +12,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\ApiSession;
+use Mockery;
 
 /**
  * @testdox API command v1 QuestionGroupDelete
@@ -45,11 +45,11 @@ class QuestionGroupDeleteTest extends TestBaseClass
             'groupID' => '99999999999999999999'
         ));
 
-        $mockApiSessionHandle = Phony::mock(ApiSession::class);
-        $mockApiSessionHandle
-            ->checkKey
-            ->returns(true);
-        $mockApiSession = $mockApiSessionHandle->get();
+        $mockApiSession= Mockery::mock(ApiSession::class);
+        $mockApiSession
+            ->allows()
+            ->checkKey('mocked')
+            ->andReturns(true);
 
         $command = new QuestionGroupDelete();
         $command->setApiSession($mockApiSession);
