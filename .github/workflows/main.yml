@@ -118,7 +118,7 @@ jobs:
       - name: Run unit tests
         env:
             XDEBUG_MODE: coverage
-        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit --filter Tamper
+        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
         run: php tests/bin/check_coverage.php cov.xml 37
