@@ -61,14 +61,12 @@
                 <!-- create survey -->
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <span class="icon-add"></span>
                         <?php eT("Create survey"); ?>
                     </a>
                 </li>
                 <!-- Surveys menus -->
                 <li class="dropdown-split-left nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>" class="nav-link">
-                        <span class="fa fa-list"></span>
                         <?php eT("Surveys"); ?>
                     </a>
                 </li>
@@ -97,7 +95,13 @@
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"><span class="icon-user"></span> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+<!--                         @TODO remove inline style and put it into corresponding SCSS file. This is here just for demo purpose -->
+                        <span class='badge rounded-pill' style="background-color: #3BFFB7; color: #25003E;">
+                            <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
+                        </span>
+                        <?= Yii::app()->session['user']; ?>
+                        <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-end" role="menu">
                         <li>
                             <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">

@@ -22,7 +22,6 @@
 ): ?>
     <li class="dropdown mega-dropdown nav-item">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-            <span class="fa fa-cogs"></span>
             <?php eT('Configuration'); ?>
             <span class="caret"></span>
         </a>
