@@ -110,6 +110,7 @@ class UserManagementTest extends TestBaseClass
 
     public function testUpdateAdminUserTamperproofed()
     {
+        $_SESSION = [];
         $oUserManagementController = new \UserManagementController('userManagement');
         $aChangeDataSet = $this->dataSet['change_admin_user'];
         $aChangeDataSet['uid'] = 1;
