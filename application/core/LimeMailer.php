@@ -821,6 +821,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $aTokenReplacements["SURVEYURL"] = App()->getController()
             ->createAbsoluteUrl("/survey/index", array("sid" => $this->surveyId, "token" => $token,"lang" => $language));
         $this->addUrlsPlaceholders("SURVEY");
+        $aTokenReplacements["SURVEYSHORTURL"] = Survey::model()->findByPk($this->surveyId)->getSurveyUrl($language, ["token" => $token]);
+        $this->addUrlsPlaceholders("SURVEYSHORT");
         return $aTokenReplacements;
     }
 
