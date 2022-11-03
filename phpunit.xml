@@ -4,6 +4,7 @@
     <testsuites>
         <testsuite name="unit">
             <directory>tests/unit</directory>
+            <exclude>tests/unit/api</exclude>
         </testsuite>
         <testsuite name="functional">
             <directory>tests/functional</directory>
