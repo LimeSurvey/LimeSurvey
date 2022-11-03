@@ -54,7 +54,7 @@
                     return $.ajax({
                         url: $(item).attr('href'),
                         beforeSend: function(){
-                            $(item).prop('disabled',true).append('<i class=\"fa fa-spinner fa-pulse\"></i>');
+                            $(item).prop('disabled',true).append('<i class=\"ri-loader-fill fa-pulse\"></i>');
                         },
                         complete: function(jqXHR, status){
                             if(status == 'success')

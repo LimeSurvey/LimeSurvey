@@ -17,7 +17,7 @@
             'type'        => 'action',
             'action'      => 'activate',
             'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/activate'),
-            'iconClasses' => 'fa fa-play text-success',
+            'iconClasses' => 'ri-play-fill text-success',
             'text'        =>  gT("Activate"),
             'grid-reload' => 'yes',
 
@@ -33,7 +33,7 @@
             'type'        => 'action',
             'action'      => 'deactivate',
             'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/deactivate'),
-            'iconClasses' => 'fa fa-pause text-warning',
+            'iconClasses' => 'ri-pause-fill text-warning',
             'text'        =>  gT("Deactivate"),
             'grid-reload' => 'yes',
 

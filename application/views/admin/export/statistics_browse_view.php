@@ -5,16 +5,16 @@
 <?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
     <div class='statisticscolumnid'>
         <?php
-        $iconClass=' fa fa-sort-desc ';
+        $iconClass=' ri-arrow-down-s-fill ';
         $disabled=true;
         if($sortby=="id") {
             $disabled = false;
             switch($sortmethod) {
                 case "asc":
-                    $iconClass="fa fa-sort-desc";
+                    $iconClass="ri-arrow-down-s-fill";
                     break;
                 case "desc":
-                    $image="fa fa-sort-asc";
+                    $image="ri-sort-asc";
                     break;
             }
         }
@@ -29,13 +29,13 @@
 <?php } ?>
 <div class='statisticscolumndata'>
     <?php
-    $iconClass=' fa fa-sort-desc ';
+    $iconClass=' ri-arrow-down-s-fill ';
     $disabled=true;
     if($sortby==$column) {
         $disabled = false;
         switch($sortmethod) {
             case "asc":
-                $iconClass="fa fa-sort-desc";
+                $iconClass="ri-arrow-down-s-fill";
                 break;
             case "desc":
                 $image="fa fa-sort-asc";

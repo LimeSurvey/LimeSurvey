@@ -30,7 +30,7 @@
             <!-- Responses & statistics -->
             <li>
                 <a class="pjax" href='<?php echo $this->createUrl("responses/index/", ['surveyId' => $oSurvey->sid]);?>' >
-                    <span class="icon-browse"></span>
+                    <span class="ri-window-fill"></span>
                     <?php eT("Responses & statistics"); ?>
                 </a>
             </li>
@@ -40,7 +40,7 @@
             <!-- Data entry screen -->
             <li>
                 <a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$oSurvey->sid"); ?>' >
-                    <span class="fa fa-keyboard-o"></span>
+                    <span class="ri-keyboard-box-line"></span>
                     <?php eT("Data entry screen"); ?>
                 </a>
             </li>

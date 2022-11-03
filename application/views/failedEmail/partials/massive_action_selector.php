@@ -28,7 +28,7 @@ $buttons[] = [
     'type'        => 'action',
     'action'      => 'resend',
     'url'         => App()->createUrl('failedEmail/resend/', ['surveyid' => $surveyId]),
-    'iconClasses' => 'fa fa-envelope',
+    'iconClasses' => 'ri-mail-fill',
     'text'        => gT('Resend emails'),
     'grid-reload' => 'yes',
     'disabled'    => !$permissions['update'],

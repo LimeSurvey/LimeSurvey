@@ -37,7 +37,7 @@
           data-bs-toggle="modal"
           data-bs-target="quotaValidation"
         >
-            <i class='fa fa-tasks'></i>
+            <i class='ri-bar-chart-horizontal-fill'></i>
         </a>
     </span>
 <?php } ?>

@@ -480,7 +480,7 @@ abstract class PluginBase implements iPlugin
                         'user_id' => \Yii::app()->user->id,
                         'title'   => gT('Plugin error'),
                         'message' =>
-                            '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                            '<span class="ri-error-warning-fill text-warning"></span>&nbsp;' .
                             gT('Could not activate plugin ' . $this->getName()) . '. ' .
                             gT('Reason:') . ' ' . $result->get('message'),
                         'importance' => \Notification::HIGH_IMPORTANCE
@@ -502,7 +502,7 @@ abstract class PluginBase implements iPlugin
             'user_id' => \Yii::app()->user->id,
             'title'   => gT('Plugin error'),
             'message' =>
-                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                '<span class="ri-error-warning-fill text-warning"></span>&nbsp;' .
                 gT('Could not read config file for plugin ' . $this->getName()) . '. ' .
                 gT('Config file is malformed or null.'),
             'importance' => \Notification::HIGH_IMPORTANCE

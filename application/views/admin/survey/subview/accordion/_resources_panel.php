@@ -52,7 +52,7 @@ var sAddParam = '';
                     <?php eT("Export resources as ZIP archive") ?>
                 </a>
                 <a class="btn btn-outline-secondary" href="" target='_blank' data-bs-toggle="modal" data-bs-target="#importRessourcesModal">
-                    <span class="fa fa-download"></span>
+                    <span class="ri-download-fill"></span>
                     <?php eT("Import resources ZIP archive"); ?>
                 </a>
             </div>

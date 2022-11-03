@@ -210,7 +210,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
             'isSmallText' => false,
             'label' => gT('General'),
             'href' => $this->api->createUrl('admin/pluginhelper/sa/fullpagewrapper/plugin/TwoFactorAdminLogin/method/userindex', []),
-            'iconClass' => 'fa fa-user-secret',
+            'iconClass' => 'ri-spy-fill',
         ];
 
         $aMenuItems[] = (new \LimeSurvey\Menu\MenuItem($aMenuItemUserOptions));

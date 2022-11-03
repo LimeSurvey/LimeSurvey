@@ -653,7 +653,7 @@ class TemplateManifest extends TemplateConfiguration
                 "<input type='hidden' name='templatename' value='" . $this->sTemplateName . "'>
                 <button id='template_options_link_" . $this->sTemplateName . "'
                 class='btn btn-outline-secondary btn-block'>
-                    <span class='fa fa-download text-warning'></span>
+                    <span class='ri-download-fill text-warning'></span>
                     " . gT('Install') . "
                 </button>
                 </form>";

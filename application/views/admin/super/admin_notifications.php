@@ -21,7 +21,7 @@
         </a>
         <ul class='dropdown-menu dropdown-menu-end' role='menu'>
             <li>
-                <a class="dropdown-item"><span class='fa fa-spinner fa-spin'></span><span class='visually-hidden'>Loading notifications</span></a>
+                <a class="dropdown-item"><span class='ri-loader-fill fa-spin'></span><span class='visually-hidden'>Loading notifications</span></a>
             </li>
         </ul>
     </li>
@@ -53,7 +53,7 @@
                                 href='#'
                             >
                                 <?php if ($not->status == 'new'): ?>
-                                    <span class='fa fa-circle text-<?php echo $not->display_class; ?>'></span>&nbsp;
+                                    <span class='ri-checkbox-blank-circle-fill text-<?php echo $not->display_class; ?>'></span>&nbsp;
                                     <strong><?php echo $not->title; ?></strong>
                                     <br />
                                     <span class='text-muted'><?php echo ellipsize($not->message, 50); ?></span>

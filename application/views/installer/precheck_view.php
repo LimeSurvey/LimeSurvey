@@ -5,7 +5,7 @@
 /** @var boolean $sessionWritable */
 
 $iconOk = "<span class='ri-check-fill text-success'></span>";
-$iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
+$iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
 
 ?>
 <div class="row">

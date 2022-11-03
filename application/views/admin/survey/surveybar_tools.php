@@ -43,7 +43,7 @@
                     <!-- Quick-translation -->
                     <li>
                         <a href="<?php echo $this->createUrl("quicktranslation/index/surveyid/{$oSurvey->sid}"); ?>">
-                        <span class="fa fa-language" ></span>
+                        <span class="ri-global-line" ></span>
                         <?php eT("Quick-translation"); ?>
                         </a>
                     </li>
@@ -53,7 +53,7 @@
                     <!-- Quick-translation disabled -->
                     <li>
                         <a href="#" onclick="alert('<?php eT("Currently there are no additional languages configured for this survey.", "js"); ?>');" >
-                          <span class="fa fa-language" ></span>
+                          <span class="ri-global-line" ></span>
                           <?php eT("Quick-translation"); ?>
                         </a>
                     </li>

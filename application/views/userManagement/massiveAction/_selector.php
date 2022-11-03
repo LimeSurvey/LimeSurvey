@@ -46,7 +46,7 @@ $aActionsArray = array(
             'type'              => 'action',
             'action'            => 'batchPermissions',
             'url'               => App()->createUrl('userManagement/batchPermissions'),
-            'iconClasses'       => 'fa fa-unlock',
+            'iconClasses'       => 'ri-lock-unlock-fill',
             'text'              => gT('Edit permissions'),
             'grid-reload'       => 'yes',
             //modal
@@ -90,7 +90,7 @@ if(Permission::model()->hasGlobalPermission('superadmin','read')) {
         'type'              => 'action',
         'action'            => 'batchaddrole',
         'url'               => App()->createUrl('userManagement/batchApplyRoles'),
-        'iconClasses'       => 'fa fa-address-card-o',
+        'iconClasses'       => 'ri-profile-line',
         'text'              => gT('Add role'),
         'grid-reload'       => 'yes',
         //modal

@@ -18,11 +18,11 @@
 </a>
 <!-- Save and add question -->
 <button role="button" class="btn btn-outline-secondary" id='save-and-new-question-button' type="button">
-    <span class="fa fa-plus"></span>
+    <span class="ri-add-line"></span>
     <?php eT('Save & add question'); ?>
 </button>
 <!-- Save and new group -->
 <button role="button" class="btn btn-outline-secondary" id='save-and-new-button' type="button">
-    <span class="fa fa-plus"></span>
+    <span class="ri-add-line"></span>
     <?php eT('Save & add group'); ?>
 </button>

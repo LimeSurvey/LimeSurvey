@@ -126,13 +126,13 @@ class Plugin extends LSActiveRecord
     {
         if ($this->load_error == 1) {
             return sprintf(
-                "<span data-bs-toggle='tooltip' title='%s' class='btntooltip fa fa-times text-warning'></span>",
+                "<span data-bs-toggle='tooltip' title='%s' class='btntooltip ri-close-fill text-warning'></span>",
                 gT('Plugin load error')
             );
         } elseif ($this->active == 1) {
-            return "<span class='fa fa-circle'></span>";
+            return "<span class='ri-checkbox-blank-circle-fill'></span>";
         } else {
-            return "<span class='fa fa-circle-thin'></span>";
+            return "<span class='ri-checkbox-blank-circle-line'></span>";
         }
     }
 
@@ -242,7 +242,7 @@ class Plugin extends LSActiveRecord
         $output .= "
                 <input type='hidden' name='pluginId' value='" . $this->id . "' />
                 <button data-bs-toggle='tooltip' title='" . gT('Activate plugin') . "' class='btntooltip btn btn-outline-secondary btn-sm'>
-                    <i class='fa fa-power-off'></i>
+                    <i class='ri-shut-down-line'></i>
                 </button>
             </form>
         ";
@@ -270,7 +270,7 @@ class Plugin extends LSActiveRecord
         $output .= "
                 <input type='hidden' name='pluginId' value='" . $this->id . "' />
                 <button data-bs-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to deactivate this plugin?') . "\");' title='" . gT('Deactivate plugin') . "' class='btntooltip btn btn-warning btn-sm'>
-                    <i class='fa fa-power-off'></i>
+                    <i class='ri-shut-down-line'></i>
                 </button>
             </form>
         ";
@@ -299,7 +299,7 @@ class Plugin extends LSActiveRecord
         $output .= "
                 <input type='hidden' name='pluginId' value='" . $this->id . "' />
                 <button data-bs-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-sm'>
-                    <i class='fa fa-times-circle'></i>
+                    <i class='ri-close-circle-fill'></i>
                 </button>
             </form>
         ";

@@ -28,7 +28,7 @@ App()->getClientScript()->registerScriptFile(
     var editValueParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/editValueParticipantPanel"); ?>";
 
     var translate_blacklisted = "<?php echo '<i class=\"fa fa-undo\"></i> ' . gT('Remove from blacklist?'); ?>";
-    var translate_notBlacklisted = "<?php echo '<i class=\"fa fa-ban\"></i> ' . gT('Add to blacklist?'); ?>";
+    var translate_notBlacklisted = "<?php echo '<i class=\"ri-forbid-2-line\"></i> ' . gT('Add to blacklist?'); ?>";
     var datepickerConfig =     <?php
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         echo json_encode(
@@ -117,7 +117,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary" 
                    href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" 
                    role="button">
-                        <span class="fa fa-tag text-success"></span>
+                        <span class="ri-price-tag-3-fill text-success"></span>
                         <?php eT("Attributes"); ?>
                     </a>
 
@@ -127,7 +127,7 @@ App()->getClientScript()->registerScriptFile(
             <a class="btn btn-outline-secondary" 
                href="<?php echo $this->createUrl("admin/participants/sa/sharePanel"); ?>" 
                role="button">
-                    <span class="fa fa-share text-success"></span>
+                    <span class="ri-share-forward-fill text-success"></span>
                     <?php eT("Share panel"); ?>
                 </a>
 

@@ -271,7 +271,7 @@ class QuestionGroup extends LSActiveRecord
         // Add question to this group
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("questionAdministration/create/surveyid/$this->sid/gid/$this->gid");
-            $buttons .= '<a class="btn btn-sm btn-outline-secondary list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-bs-toggle="tooltip"  data-bs-placement="top" title="' . gT('Add new question to group') . '" href="' . $url . '" role="button"><i class="fa fa-plus " ></i></a>';
+            $buttons .= '<a class="btn btn-sm btn-outline-secondary list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-bs-toggle="tooltip"  data-bs-placement="top" title="' . gT('Add new question to group') . '" href="' . $url . '" role="button"><i class="ri-add-line " ></i></a>';
         }
         // View summary
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {

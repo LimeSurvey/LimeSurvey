@@ -38,7 +38,7 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 'de
         'action'      => 'deleteAttachments',
         //'url'         =>  App()->createUrl("admin/responses", array("sa"=>"actionDeleteAttachments")),
         'url'         =>  App()->createUrl("responses/deleteAttachments/", ["surveyId" => $_GET['surveyId']]),
-        'iconClasses' => 'text-danger fa fa-paperclip',
+        'iconClasses' => 'text-danger ri-attachment-2',
         'text'        =>  gT('Delete attachments'),
         'grid-reload' => 'yes',
 
@@ -60,7 +60,7 @@ if (Permission::model()->hasSurveyPermission($_GET['surveyId'], 'responses', 're
         'type' => 'action',
         'action' => 'downloadZip',
         'url' => App()->createUrl('responses/downloadfiles/', ['surveyId' => $_GET['surveyId'], 'responseIds' => '']),
-        'iconClasses' => 'fa fa-download test',
+        'iconClasses' => 'ri-download-fill test',
         'text' => gT('Download files'),
         'grid-reload' => 'no',
 

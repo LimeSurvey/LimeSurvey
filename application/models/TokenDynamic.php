@@ -582,7 +582,7 @@ class TokenDynamic extends LSActiveRecord
                 $field     = '<span class="text-success ri-check-fill"></span>';
             }
         } elseif ($field != '') {
-            $field = '<i class="fa fa-minus text-warning"></i>';
+            $field = '<i class="ri-subtract-fill text-warning"></i>';
         }
         return $field;
     }
@@ -824,7 +824,7 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseView . ' && !$data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );
         $gridButtons['launchsurvey'] = array(
-            'label' => '<span class="visually-hidden">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-play" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Launch the survey with this participant") . '</span><span class="ri-play-fill" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
@@ -874,7 +874,7 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseView . ' && !empty($data->token) && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
         );
         $gridButtons['mailspacer'] = array(
-            'label' => '<span class="fa fa-envelope-o text-muted" aria-hidden="true"></span>',
+            'label' => '<span class="ri-mail-line text-muted" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => '#',
             'options' => array(

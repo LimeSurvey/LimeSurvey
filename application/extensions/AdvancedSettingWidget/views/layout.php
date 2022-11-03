@@ -12,7 +12,7 @@
         <!-- TODO: Object method $setting->isLocalized(). -->
         <?php if ($this->setting['i18n']): ?>
             <i
-                class="fa fa-globe"
+                class="ri-earth-fil"
                 data-bs-toggle="tooltip"
                 title="<?= gT("This setting is localized") ?>"
             ></i>

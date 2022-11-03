@@ -85,7 +85,7 @@
 <div class="d-inline-flex">
 <!-- Survey Quotas -->
     <a class="btn btn-outline-secondary" href='<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="fa fa-tasks"></span>
+        <span class="ri-bar-chart-horizontal-fill"></span>
         <?php eT("Survey quotas"); ?>
     </a>
 </div>

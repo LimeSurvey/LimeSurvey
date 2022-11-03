@@ -56,7 +56,7 @@ if ($hasStatisticsReadPermission) {
     $buttons['statistics'] = [
         'name' => gT('Statistics'),
         'url' => $this->createUrl("admin/statistics/sa/index/surveyid/$survey->sid"),
-        'icon' => 'fa fa-bar-chart',
+        'icon' => 'ri-bar-chart-fill',
         'class' => 'btn btn-outline-secondary pjax',
         'iconclass' => 'text-success',
     ];
@@ -71,7 +71,7 @@ if($isActive) {
             'name' => gT('Timing statistics'),
             'url'  => $this->createUrl("responses/time/", ['surveyId' => $survey->sid]),
             'class'=> 'btn btn-outline-secondary pjax',
-            'icon' => 'fa fa-clock-o',
+            'icon' => 'ri-time-line',
             'iconclass' => 'text-success',
         ];
         array_push($topBar['alignment']['left']['buttons'], $buttons['timing_statistics']);

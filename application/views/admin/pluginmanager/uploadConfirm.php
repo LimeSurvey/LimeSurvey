@@ -60,7 +60,7 @@
             <?php if ($config->isCompatible()) : ?>
                 <span class="ri-check-fill text-success"></span>
             <?php else : ?>
-                <span class="fa fa-times text-warning"></span>
+                <span class="ri-close-fill text-warning"></span>
             <?php endif; ?>
         </div>
 

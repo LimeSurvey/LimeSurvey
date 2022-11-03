@@ -36,7 +36,7 @@
             'type' => 'action',
             'action' => 'batchEdit',
             'url' => App()->createUrl('/admin/menus/sa/batchEdit/'),
-            'iconClasses' => 'fa fa-download',
+            'iconClasses' => 'ri-download-fill',
             'text' => gT('Batch edit'),
             'grid-reload' => 'yes',
             //modal

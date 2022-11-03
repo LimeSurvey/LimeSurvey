@@ -785,7 +785,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'title' => gT("Surveys"),
                 'description' => gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),
-                'img' => ' icon-list',
+                'img' => ' ri-list-unordered',
             ),
             'surveysgroups' => array(
                 'create' => true,
@@ -795,7 +795,7 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Survey groups"),
                 'description' => gT("Permission to create survey groups (for which all permissions are automatically given) and view, update and delete survey groups from other users."),
-                'img' => ' fa fa-indent',
+                'img' => ' ri-indent-increase',
             ),
             'users' => array(
                 'import' => false,
@@ -827,12 +827,12 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Settings & Plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
-                'img' => 'fa fa-globe',
+                'img' => 'ri-earth-fil',
             ),
             'participantpanel' => array(
                 'title' => gT("Central participant database"),
                 'description' => gT("Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
-                'img' => 'fa fa-user-circle-o',
+                'img' => 'ri-user-fill',
             ),
         );
         return $key == null ? $aPermissions : ($aPermissions[$key] ?? $key);
