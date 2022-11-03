@@ -2,27 +2,22 @@
 
 use LimeSurvey\Menu\MenuButton;
 
-class TopbarWidget2 extends CWidget
+class TopbarWidget extends CWidget
 {
     /**
-     * @var string path and name of the view that should be rendered
-     */
-    public $view = null;
-
-    /**
-     * @var null
+     * @var string this can be a simple text (string) or a breadcrumb
      */
     public $leftSide = null;
 
     /**
-     * @var MenuButton[] the menu buttons in the middle
+     * @var ButtonWidget[] the menu buttons in the middle
      */
     public $middle = null;
 
     /**
-     * @var MenuButton[] the menu buttons on the right side
+     * @var ButtonWidget[] the menu buttons on the right side
      */
-    public $left = null;
+    public $rightSide = null;
 
     /**
      * Initializes and renders the widget
@@ -30,10 +25,6 @@ class TopbarWidget2 extends CWidget
     public function init()
     {
         parent::init();
-
-        if (is_null($this->view)) {
-            return;
-        }
 
         // Render the topbar
         $this->renderTopbar();
@@ -44,6 +35,13 @@ class TopbarWidget2 extends CWidget
      */
     protected function renderTopbar()
     {
-        $this->render($this->view, $aTopbarData);
+        $this->render(
+            'topbar',
+            [
+                'leftSide' => $this->leftSide,
+                'middle' => $this->middle,
+                'rightSide' => $this->rightSide
+            ]
+        );
     }
 }

@@ -22,10 +22,12 @@ echo "<!-- BEGIN LAYOUT_MAIN -->";
 $layoutHelper->surveyManagerBar($aData);
 
 // White Bar with Action Buttons like (Back)
-$layoutHelper->fullpagebar($aData);
+$layoutHelper->fullpagebar($aData);   //this seems to be not in use anymore...
 
 // Generated through /admin/usergroup/usergroupbar_view
 $layoutHelper->renderMenuBar($aData);
+
+//echo $layoutHelper->renderTopbarTemplate($aData);
 
 $layoutHelper->updatenotification();
 

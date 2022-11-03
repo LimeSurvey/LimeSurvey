@@ -21,7 +21,7 @@ echo viewHelper::getViewTestTag('usersIndex');
     <?php App()->end(); ?>
 <?php endif; ?>
 
-<?php $this->renderPartial('partial/_menubar'); ?>
+<?php //$this->renderPartial('partial/_menubar'); ?>
 
 <div class="container-fluid">
     <?php

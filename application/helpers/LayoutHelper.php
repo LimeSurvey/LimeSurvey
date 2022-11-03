@@ -213,6 +213,22 @@ class LayoutHelper
         }
     }
 
+    public function renderTopbarTemplate($aData)
+    {
+        if (isset($aData['topbar'])) {
+            return Yii::app()->getController()->widget(
+                'ext.LimeTopbarWidget.TopbarWidget',
+                array(
+                    'leftSide' => $aData['topbar']['title'],
+                    'middle' => $aData['topbar']['middleButtons'], //array of ButtonWidget
+                    'rightSide' => $aData['topbar']['rightButtons'], //array of ButtonWidget
+                ),
+                true
+            );
+        }
+        return ''; //no topbar shown in this case
+    }
+
     /**
      * Renders the green bar.
      * @param array $aData
@@ -444,6 +460,8 @@ class LayoutHelper
 
     /**
      * New Topbar
+     * todo: this one is deprecated when new TopBarWidget is implemented and running
+     * todo: this topbnar was only used for surveradministration (but not for other pages like usermanagement)
      * @param array $aData
      * @return mixed
      */
