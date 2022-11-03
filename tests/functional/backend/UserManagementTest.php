@@ -113,9 +113,9 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" modal
-            // TODO: This modal is missing?
-            //$this->waitForModal('Saved successfully');
+            // Wait for "Saved successfully" alert
+            $alert = $this->waitForElementShim($web, '#notif-container .alert-success');
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
@@ -230,9 +230,9 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" modal
-            // @Todo: This modal was removed in BS5 epic
-//            $this->waitForModal('Saved successfully');
+            // Wait for "Saved successfully" alert
+            $alert = $this->waitForElementShim($web, '#notif-container .alert-success');
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
@@ -348,9 +348,9 @@ class UserManagementTest extends TestBaseClassWeb
             );
             $save->click();
 
-            // Wait for "Saved successfully" modal
-            // @TODO this modal was removed in BS5 epic
-//            $this->waitForModal('Saved successfully');
+            // Wait for "Saved successfully" alert
+            $alert = $this->waitForElementShim($web, '#notif-container .alert-success');
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($alert));
 
             // Make sure the user was saved in database.
             $users = \User::model()->findAllByAttributes(['users_name' => $username]);
