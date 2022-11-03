@@ -56,15 +56,7 @@ define('SELECTED', ' selected="selected"');
 */
 function setNoAnswerMode($thissurvey)
 {
-    if (App()->getConfig('shownoanswer') == 2) {
-        if ($thissurvey['shownoanswer'] == 'N') {
-            define('SHOW_NO_ANSWER', 0);
-        } else {
-            define('SHOW_NO_ANSWER', 1);
-        }
-    } elseif (App()->getConfig('shownoanswer') == 1) {
-        define('SHOW_NO_ANSWER', 1);
-    } elseif (App()->getConfig('shownoanswer') == 0) {
+    if ($thissurvey['shownoanswer'] == 'N') {
         define('SHOW_NO_ANSWER', 0);
     } else {
         define('SHOW_NO_ANSWER', 1);
