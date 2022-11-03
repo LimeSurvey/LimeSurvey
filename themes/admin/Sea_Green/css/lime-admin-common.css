@@ -443,6 +443,7 @@ html {
   #add_user_btn {
     margin-top: 1.5em;
   }
+
   #user-control-table .form-group label {
     min-width: 80px;
   }
@@ -850,6 +851,7 @@ div.panel.disabled a {
   .side-menu .brand-name-wrapper .navbar-brand {
     display: inline-block;
   }
+
   @-moz-keyframes slidein {
     0% {
       left: -300px;
@@ -953,10 +955,12 @@ div.panel.disabled a {
     animation: bodyslideout 300ms forwards;
     transform-style: preserve-3d;
   }
+
   .body-slide-in {
     animation: bodyslidein 300ms forwards;
     transform-style: preserve-3d;
   }
+
   .navbar-toggle {
     border: 0;
     float: left;
@@ -964,11 +968,13 @@ div.panel.disabled a {
     margin: 0;
     border-radius: 0;
   }
+
   .navbar-header {
     position: fixed;
     width: 100%;
     z-index: 3;
   }
+
   .side-menu-container > .navbar-nav {
     position: fixed;
     left: -300px;
@@ -982,12 +988,14 @@ div.panel.disabled a {
     animation: slidein 300ms forwards;
     transform-style: preserve-3d;
   }
+
   #search .card-body .navbar-form {
     border-bottom: 0;
   }
   #search .card-body .navbar-form .form-group {
     margin: 0;
   }
+
   #dropdown .card-body .navbar-nav {
     margin: 0;
   }
@@ -1162,10 +1170,12 @@ fieldset[disabled] .checkbox label {
     margin-bottom: 0;
     vertical-align: middle;
   }
+
   .navbar-form .radio label,
 .navbar-form .checkbox label {
     padding-left: 0;
   }
+
   .navbar-form .radio input[type=radio],
 .navbar-form .checkbox input[type=checkbox] {
     position: relative;
