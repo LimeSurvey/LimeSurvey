@@ -2098,9 +2098,6 @@ class SurveyAdministrationController extends LSBaseController
             } elseif ($action == 'copysurvey') {
                 $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
                 $aExcludes = array();
-
-                $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
-
                 if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1") {
                     $aExcludes['quotas'] = true;
                 }
@@ -2140,6 +2137,7 @@ class SurveyAdministrationController extends LSBaseController
                 } else {
                     Yii::app()->loadHelper('export');
                     $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+                    $sNewSurveyName = strlen(Yii::app()->request->getPost('copysurveyname'))==0?$sourceSurvey->currentLanguageSettings->surveyls_title:Yii::app()->request->getPost('copysurveyname'); // Get Past Survey Name
                 }
             }
 
