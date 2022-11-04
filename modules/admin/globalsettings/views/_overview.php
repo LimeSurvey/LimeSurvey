@@ -13,7 +13,7 @@
 ?>
 
 <?php if (YII_DEBUG) : ?>
-  <p class="alert alert-info "> this subview is rendered from global setting module. This message is shown only when debug mode is on </p>
+  <p class="alert alert-info "> this subview is rendered from global setting module. This message is shown only when debug mode is on</p>
 <?php endif;?>
 
 <br />
