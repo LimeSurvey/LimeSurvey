@@ -161,7 +161,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             $errors[] = gT('The password does require at least one uppercase character');
         }
         if ($needsNonAlphanumeric && ctype_alnum($password)) {
-            $errors[] = gT('The password does require at least one special character');
+            $errors[] = gT('The password does require at least one Alphanumeric character');
         }
         if ($minimumSize && strlen($password) < $minimumSize) {
             $errors[] = sprintf(gT('The password does not reach the minimum length of %s characters'), $minimumSize);
@@ -209,7 +209,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         return $settings;
     }
 
-    private function getRandomString($length = 8, $uppercase = false, $numeric = false, $nonAlpha = false)
+    private function getRandomString($length = 12, $uppercase = false, $numeric = false, $nonAlpha = false)
     {
         $chars = "abcdefghijklmnopqrstuvwxyz";
         
