@@ -1449,9 +1449,6 @@ class Survey extends LSActiveRecord
     public function getCountFullAnswers()
     {
         $sResponseTable = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1470,9 +1467,6 @@ class Survey extends LSActiveRecord
     public function getCountPartialAnswers()
     {
         $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1500,9 +1494,6 @@ class Survey extends LSActiveRecord
     public function getCountTotalAnswers()
     {
         $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1557,6 +1548,10 @@ class Survey extends LSActiveRecord
      */
     public function search()
     {
+        // Flush cache to get proper counts for partial/complete/total responses
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();
