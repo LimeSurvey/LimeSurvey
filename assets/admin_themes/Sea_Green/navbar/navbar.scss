@@ -60,6 +60,10 @@
     font-weight: 400;
     color: $white;
   }
+  #nav-logo {
+    height: 48px;
+    width: auto;
+  }
   .navbar-toggler {
     margin: map-get($spacers, 2);
   }
