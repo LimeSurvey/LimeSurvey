@@ -34,7 +34,7 @@
    class="btn btn-outline-secondary <?php if (!$previous) {
        echo 'disabled';
    } ?>">
-    <span class="icon-databack text-success" title='<?php eT("Show previous..."); ?>'></span>
+    <span class="ri-arrow-left-circle-fill text-success" title='<?php eT("Show previous..."); ?>'></span>
     <?php eT("Show previous..."); ?>
 </a>
 <a href='<?php echo Yii::App()->createUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $next]); ?>'
@@ -42,7 +42,7 @@
    class="btn btn-outline-secondary <?php if (!$next) {
        echo 'disabled';
    } ?>">
-    <span class="icon-dataforward text-success" title='<?php eT("Show next..."); ?>'></span>
+    <span class="ri-arrow-right-circle-fill text-success" title='<?php eT("Show next..."); ?>'></span>
     <?php eT("Show next..."); ?>
 </a>
 <a class="btn btn-danger" href="<?php echo $closeUrl; ?>">

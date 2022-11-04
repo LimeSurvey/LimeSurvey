@@ -21,11 +21,7 @@
 <?php if ($hasResponsesCreatePermission): ?>
     <a class="btn btn-outline-secondary"
        href='<?php echo Yii::App()->createUrl("admin/dataentry/sa/view/surveyid/$oSurvey->sid"); ?>' role="button">
-<<<<<<< HEAD
-        <span class="fa fa-keyboard-o"></span>
-=======
-        <span class="ri-keyboard-box-line text-success"></span>
->>>>>>> 753740f15c (replace all fontawesome icons with remix)
+        <span class="ri-keyboard-box-line"></span>
         <?php eT("Data entry"); ?>
     </a>
 <?php endif; ?>
@@ -34,11 +30,7 @@
     <!-- Get statistics from these responses -->
     <a class="btn btn-outline-secondary"
        href='<?php echo Yii::App()->createUrl("admin/statistics/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
-<<<<<<< HEAD
-        <span class="fa fa-bar-chart"></span>
-=======
-        <span class="ri-bar-chart-fill text-success"></span>
->>>>>>> 753740f15c (replace all fontawesome icons with remix)
+        <span class="ri-bar-chart-fill"></span>
         <?php eT("Statistics"); ?>
     </a>
 
@@ -46,11 +38,7 @@
     <?php if ($isTimingEnabled == "Y"): ?>
         <a class="btn btn-outline-secondary"
            href='<?php echo Yii::App()->createUrl("responses/time/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
-<<<<<<< HEAD
-            <span class="fa fa-clock-o"></span>
-=======
-            <span class="ri-time-line text-success"></span>
->>>>>>> 753740f15c (replace all fontawesome icons with remix)
+            <span class="ri-time-line"></span>
             <?php eT("Timing statistics"); ?>
         </a>
     <?php endif; ?>
@@ -103,7 +91,7 @@
 <?php if ($hasResponsesReadPermission): ?>
     <a class="btn btn-outline-secondary"
             href='<?php echo Yii::App()->createUrl("admin/saved/sa/view/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="icon-saved"></span>
+        <span class="ri-save-line"></span>
         <?php eT("View Saved but not submitted Responses"); ?>
     </a>
 <?php endif; ?>

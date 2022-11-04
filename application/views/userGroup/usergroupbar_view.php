@@ -28,7 +28,7 @@ App()->getClientScript()->registerScriptFile(
                 <!-- Mail to all Members -->
                 <?php if (isset($usergroupbar['edit'])) : ?>
                     <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroup->ugid); ?>">
-                        <span class="icon-invite text-success"></span>
+                        <span class="ri-mail-send-fill text-success"></span>
                         <?php eT("Mail to all Members"); ?>
                     </a>
                 <?php endif; ?>

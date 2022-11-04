@@ -30,7 +30,7 @@
                 data-onclick='(function() { document.getElementById("toplevelsubaction").value="renumberscenarios"; document.getElementById("deleteallconditions").submit();})'
                 onclick='return false;'
             >
-                <span class="icon-renumber"></span>
+                <span class="ri-list-ordered"></span>
                 &nbsp;
                 <?php eT("Renumber scenarios");?>
             </button>

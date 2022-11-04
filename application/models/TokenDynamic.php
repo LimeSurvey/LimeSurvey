@@ -851,7 +851,7 @@ class TokenDynamic extends LSActiveRecord
         $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
         /* mailing mail button */
         $gridButtons['mail'] = array(
-            'label' => '<span class="visually-hidden">' . gT("Send email invitation") . '</span><span class="icon-invite" aria-hidden="true"></span>',// fa-enveloppe-o
+            'label' => '<span class="visually-hidden">' . gT("Send email invitation") . '</span><span class="ri-mail-send-fill" aria-hidden="true"></span>',// fa-enveloppe-o
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid,));',
             'options' => array(
@@ -863,7 +863,7 @@ class TokenDynamic extends LSActiveRecord
         );
         /* mailing remind button */
         $gridButtons['remind'] = array(
-            'label' => '<span class="visually-hidden">' . gT("Send email reminder") . '</span><span class="icon-remind" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Send email reminder") . '</span><span class="ri-mail-volume-fill" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email/action/remind",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid));',
             'options' => array(
@@ -920,7 +920,7 @@ class TokenDynamic extends LSActiveRecord
         /* CPDB link */
         $baseVisible = intval(Permission::model()->hasGlobalPermission('participantpanel', 'read') && self::model(self::$sid)->count("participant_id is not null"));
         $gridButtons['viewparticipant'] = array(
-            'label' => '<span class="visually-hidden">' . gT('View this participant in the central participants database') . '</span><span class="icon-cpdb" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT('View this participant in the central participants database') . '</span><span class="ri-shield-user-line" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("#" => json_encode(["searchcondition"=>"participant_id||equal||".$data->participant_id],JSON_FORCE_OBJECT)))',
             'options' => array(
@@ -932,7 +932,7 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseVisible . ' && $data->participant_id',
         );
         $gridButtons['viewparticipantspacer'] = array(
-            'label' => '<span class="icon-cpdb text-muted" aria-hidden="true"></span>',
+            'label' => '<span class="ri-shield-user-line text-muted" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => '#',
             'options' => array(

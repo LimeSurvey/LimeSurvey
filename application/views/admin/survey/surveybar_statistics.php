@@ -14,12 +14,12 @@
     <!-- main  dropdown header -->
     <?php if ($oSurvey->isActive):?>
         <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="icon-responses"></span>
+            <span class="ri-exchange-funds-fill"></span>
             <?php eT("Responses"); ?><span class="caret"></span>
         </button>
     <?php else:?>
         <button type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is not active - no responses are available."); ?>" class="readonly btn btn-outline-secondary">
-            <span class="icon-responses"></span>
+            <span class="ri-exchange-funds-fill"></span>
             <?php eT("Responses"); ?><span class="caret"></span>
         </button>
     <?php endif; ?>
@@ -49,7 +49,7 @@
             <!-- Partial (saved) responses -->
             <li>
                 <a href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$oSurvey->sid"); ?>' >
-                    <span class="icon-saved"></span>
+                    <span class="ri-save-line"></span>
                     <?php eT("Partial (saved) responses"); ?>
                 </a>
             </li>

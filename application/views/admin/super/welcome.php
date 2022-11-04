@@ -61,7 +61,7 @@ echo viewHelper::getViewTestTag('index');
                                                            "<i class='ri-add-circle-fill text-success'></i>"); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
-                                    <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<i class='icon-do text-success'></i>"); ?></li>
+                                    <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<i class='ri-settings-5-fill text-success'></i>"); ?></li>
                                 </ol>
                             </div>
                             <div>

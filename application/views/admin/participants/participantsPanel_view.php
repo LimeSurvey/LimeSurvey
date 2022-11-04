@@ -99,7 +99,7 @@ App()->getClientScript()->registerScriptFile(
                 <a class="btn btn-outline-secondary" 
                    href="<?php echo $this->createUrl("admin/participants/sa/importCSV"); ?>" 
                    role="button">
-                        <span class="icon-importcsv text-success"></span>
+                        <span class="ri-upload-fill text-success"></span>
                         <?php eT("Import"); ?>
                     </a>
                 <?php endif; ?>

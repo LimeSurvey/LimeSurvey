@@ -77,7 +77,7 @@
                     'action'          => 'invite',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/'.$surveyid),
-                    'iconClasses'     => 'icon-invite text-success',
+                    'iconClasses'     => 'ri-mail-send-fill text-success',
                     'text'            =>  gT('Send email invitations'),
 
                     'aLinkSpecificDatas'  => array(
@@ -95,7 +95,7 @@
                     'action'          => 'remind',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$surveyid),
-                    'iconClasses'     => 'icon-remind text-success',
+                    'iconClasses'     => 'ri-mail-volume-fill text-success',
                     'text'            =>  gT('Send email reminder'),
 
                     'aLinkSpecificDatas'  => array(

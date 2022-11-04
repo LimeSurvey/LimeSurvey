@@ -57,7 +57,7 @@
             'name' => 'ls-inv-rem-button',
             'id' => 'ls-inv-rem-button',
             'text' => gT('Invitations & reminders'),
-            'icon' => 'icon-emailtemplates',
+            'icon' => 'ri-mail-settings-line',
             'isDropDown' => true,
             'dropDownContent' => $invRemDropDownItems,
             'htmlOptions' => [

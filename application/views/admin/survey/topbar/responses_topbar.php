@@ -154,7 +154,7 @@ if ($hasResponsesReadPermission) {
         'class' => 'btn-outline-secondary',
         'name'  => gT('View Saved but not submitted Responses'),
         'url'   => $this->createUrl("admin/saved/sa/view/surveyid/$survey->sid"),
-        'icon'  => 'icon-saved text-success',
+        'icon'  => 'ri-save-line text-success',
     ];
 
     array_push($topBar['alignment']['left']['buttons'], $buttons['view_saved_but_not_submitted_responses']);
