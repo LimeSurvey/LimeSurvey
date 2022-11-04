@@ -2125,7 +2125,7 @@ class SurveyAdministrationController extends LSBaseController
                 if (!$iSurveyID) {
                     $aData['sErrorMessage'] = gT("No survey ID has been provided. Cannot copy survey");
                     $aData['bFailed'] = true;
-                } elseif (!Survey::model()->findByPk($iSurveyID)) {
+                } elseif (!$sourceSurvey = Survey::model()->findByPk($iSurveyID)) {
                     $aData['sErrorMessage'] = gT("Invalid survey ID");
                     $aData['bFailed'] = true;
                 } elseif (
