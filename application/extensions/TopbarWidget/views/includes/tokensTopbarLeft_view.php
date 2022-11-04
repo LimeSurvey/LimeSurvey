@@ -1,7 +1,7 @@
 <!-- Display tokens -->
 <?php if ($hasTokensReadPermission): ?>
     <a class="btn btn-outline-secondary pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="ri-list-unordered text-success"></span>
+        <span class="ri-list-unordered"></span>
         <?php eT("Display participants"); ?>
     </a>
 <?php endif; ?>
@@ -11,7 +11,7 @@
     <!-- Create tokens -->
     <div class="btn-group">
     <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="ri-add-circle-fill text-success"></span>
+        <span class="ri-add-circle-fill"></span>
         <?php eT("Create...");?> <span class="caret"></span>
     </button>
 
@@ -64,113 +64,62 @@
 <?php endif; ?>
 <!-- Manage additional attribute fields -->
 <?php if ($hasTokensUpdatePermission || $hasSurveySettingsUpdatePermission): ?>
-    <a class="btn btn-outline-secondary pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="icon-token_manage text-success"></span>
-        <?php eT("Manage attributes"); ?>
-    </a>
+    <div class="d-inline-flex">
+        <a class="btn btn-outline-secondary pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$oSurvey->sid"); ?>' role="button">
+            <span class="icon-token_manage"></span>
+            <?php eT("Manage attributes"); ?>
+        </a>
+    </div>
 <?php endif; ?>
 
 <!-- Export tokens to CSV file -->
 <?php if ($hasTokensExportPermission): ?>
-    <a class="btn btn-outline-secondary pjax" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/exportdialog/surveyid/$oSurvey->sid"); ?>" role="button">
-        <span class="icon-exportcsv"></span>
-        <?php eT("Export"); ?>
-    </a>
+    <div class="d-inline-flex">
+        <a class="btn btn-outline-secondary pjax" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/exportdialog/surveyid/$oSurvey->sid"); ?>" role="button">
+            <span class="icon-exportcsv"></span>
+            <?php eT("Export"); ?>
+        </a>
+    </div>
 <?php endif; ?>
 
 <!-- EMAILS -->
 <?php if ($hasTokensUpdatePermission):?>
-    <div class="btn-group">
-        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="ri-mail-settings-line text-success"></span>
-            <?php eT("Invitations & reminders");?> <span class="caret"></span>
-        </button>
-
-        <ul class="dropdown-menu">
-            <?php if ($hasTokensUpdatePermission): ?>
-
-            <!-- Send email invitation -->
-            <li>
-                <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/email/surveyid/$oSurvey->sid"); ?>" >
-                    <span class="ri-mail-send-fill"></span>
-                    <?php eT("Send email invitation"); ?>
-                </a>
-            </li>
-
-            <!-- Send email reminder -->
-            <li>
-                <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/email/action/remind/surveyid/$oSurvey->sid"); ?>" >
-                    <span class="ri-mail-volume-fill"></span>
-                    <?php eT("Send email reminder"); ?>
-                </a>
-            </li>
-
-            <!-- Edit email template -->
-            <!-- Send email invitation -->
-            <li>
-                <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/emailtemplates/sa/index/surveyid/$oSurvey->sid"); ?>" >
-                    <span class="ri-mail-line"></span>
-                    <?php eT("Edit email templates"); ?>
-                </a>
-            </li>
-            <?php endif; ?>
-
-            <li role="separator" class="dropdown-divider"></li>
-
-            <!-- Bounce processing -->
-            <?php if ($hasTokensUpdatePermission):?>
-                <?php if($oSurvey->bounceprocessing != 'N' ||  ($oSurvey->bounceprocessing == 'G' && App()->getConfig('bounceaccounttype') != 'off')):?>
-                    <?php if (function_exists('imap_open')):?>
-                        <li>
-                            <a class="dropdown-item" href="#" id="startbounceprocessing" data-url="<?php echo Yii::App()->createUrl("admin/tokens/sa/bounceprocessing/surveyid/$oSurvey->sid"); ?>" >
-                                <span class="ui-bounceprocessing"></span>
-                                <?php eT("Start bounce processing"); ?>
-                            </a>
-                        </li>
-                    <?php else: ?>
-                        <?php $eMessage = gT("The imap PHP library is not installed or not activated. Please contact your system administrator."); ?>
-                    <?php endif;?>
-                <?php else: ?>
-                    <?php $eMessage = gT("Bounce processing is deactivated either application-wide or for this survey in particular."); ?>
-                <?php endif;?>
-            <?php else:?>
-                <?php $eMessage = gT("We are sorry but you don't have permissions to do this."); ?>
-            <?php endif;?>
-
-            <?php if (isset($eMessage)):?>
-                <li class="disabled">
-                    <a  class="dropdown-item" href="#" class="disabled" data-bs-toggle="tooltip" data-bs-placement="bottom" title='<?php echo $eMessage; ?>'>
-                        <span class="ui-bounceprocessing"></span>
-                        <?php eT("Start bounce processing"); ?>
-                    </a>
-                </li>
-            <?php endif;?>
-
-            <!-- Bounce settings -->
-            <li>
-                <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/bouncesettings/surveyid/$oSurvey->sid"); ?>" >
-                    <span class="ri-settings-5-fill"></span>
-                    <?php eT("Bounce settings"); ?>
-                </a>
-            </li>
-        </ul>
+<?php $invRemDropDownItems = $this->render('includes/tokensInvRemDropdownItems', get_defined_vars(), true); ?>
+    <div class="d-inline-flex">
+        <?php
+        $this->widget('ext.ButtonWidget.ButtonWidget', [
+            'name' => 'ls-inv-rem-button',
+            'id' => 'ls-inv-rem-button',
+            'text' => gT('Invitations & reminders'),
+            'remix' => 'ri-mail-settings-line',
+            'isDropDown' => true,
+            'dropDownContent' => $invRemDropDownItems,
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+            ],
+        ]); ?>
     </div>
 
-    <!-- Generate tokens -->
-    <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/tokenify/surveyid/$oSurvey->sid"); ?>" role="button">
-        <span class="ri-settings-5-fill text-success"></span>
-        <?php eT("Generate tokens"); ?>
-    </a>
-
-    <!-- View participants of this survey in CPDB -->
-    <a class="btn btn-outline-secondary" href="#" role="button" onclick="window.LS.sendPost('<?php echo Yii::App()->createUrl("/admin/participants/sa/displayParticipants"); ?>',false,{'searchcondition': 'surveyid||equal|| <?php echo $oSurvey->sid ?>'});">
-        <i class="ri-group-fill text-success"></i>
-        <?php eT("View in CPDB"); ?>
-    </a>
+    <div class="d-inline-flex">
+        <!-- Generate tokens -->
+        <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/tokenify/surveyid/$oSurvey->sid"); ?>" role="button">
+            <span class="icon-do"></span>
+            <?php eT("Generate tokens"); ?>
+        </a>
+    </div>
+    <div class="d-inline-flex">
+        <!-- View participants of this survey in CPDB -->
+        <a class="btn btn-outline-secondary" href="#" role="button" onclick="window.LS.sendPost('<?php echo Yii::App()->createUrl("/admin/participants/sa/displayParticipants"); ?>',false,{'searchcondition': 'surveyid||equal|| <?php echo $oSurvey->sid ?>'});">
+            <i class="fa fa-users"></i>
+            <?php eT("View in CPDB"); ?>
+        </a>
+    </div>
 <?php endif; ?>
 
+<div class="d-inline-flex">
 <!-- Survey Quotas -->
-<a class="btn btn-outline-secondary" href='<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
-    <span class="ri-bar-chart-horizontal-fill"></span>
-    <?php eT("Survey quotas"); ?>
-</a>
+    <a class="btn btn-outline-secondary" href='<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
+        <span class="ri-bar-chart-horizontal-fill"></span>
+        <?php eT("Survey quotas"); ?>
+    </a>
+</div>

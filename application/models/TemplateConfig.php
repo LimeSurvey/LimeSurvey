@@ -253,11 +253,6 @@ class TemplateConfig extends CActiveRecord
                 $packages[] = 'bootstrap';
             }
 
-            // Rtl version of bootstrap
-            if ($dir == "rtl") {
-                $packages[] = 'bootstrap-rtl';
-            }
-
             // Remove unwanted bootstrap stuff
             foreach ($this->getFrameworkAssetsToReplace('css', true) as $toReplace) {
                 App()->clientScript->removeFileFromPackage('bootstrap', 'css', $toReplace);

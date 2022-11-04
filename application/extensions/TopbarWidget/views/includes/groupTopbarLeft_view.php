@@ -3,19 +3,21 @@
     $toolsDropdownItems = $this->render('includes/groupToolsDropdownItems', get_defined_vars(), true);
 ?>
 <?php if (!empty(trim($toolsDropdownItems))): ?>
-    <!-- Tools  -->
-    <div class="btn-group ">
+    <!-- Tools  groupTopbarLeft-->
+    <div class="d-inline-flex">
 
         <!-- Main button dropdown -->
-        <button role="button" id="ls-question-group-tools-button" type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="ri-tools-fill" ></span>
-            <?php eT('Tools'); ?>&nbsp;<span class="caret"></span>
-        </button>
-
-        <!-- dropdown -->
-        <ul class="dropdown-menu">
-            <?= $toolsDropdownItems ?>
-        </ul>
+        <?php
+        $this->widget('ext.ButtonWidget.ButtonWidget', [
+            'name' => 'ls-tools-button',
+            'id' => 'ls-tools-button',
+            'text' => gT('Tools'),
+            'isDropDown' => true,
+            'dropDownContent' => '<ul class="dropdown-menu">' . $toolsDropdownItems . '</ul>',
+            'htmlOptions' => [
+                'class' => 'btn btn-outline-secondary',
+            ],
+        ]); ?>
     </div>
 <?php endif; ?>
 
@@ -23,5 +25,12 @@
 /**
  * Include the Survey Preview and Group Preview buttons
  */
-$this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
+$this->render(
+    'includes/previewOrRunButton_view',
+    [
+        'survey' => $oSurvey,
+        'surveyLanguages' => $surveyLanguages,
+    ]
+);
+$this->render('includes/previewGroupButton_view', get_defined_vars());
 ?>

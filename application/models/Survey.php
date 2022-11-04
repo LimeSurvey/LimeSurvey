@@ -1150,7 +1150,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sStart = convertToGlobalSettingFormat($sStart);
 
             // Icon generaton (for CGridView)
-            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><span class="ri-play-fill text-success"></span><span class="visually-hidden">' . sprintf(gT('End: %s'), $sStop) . '</span></a>';
+            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><span class="ri-play-fill"></span><span class="visually-hidden">' . sprintf(gT('End: %s'), $sStop) . '</span></a>';
             $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><span class="ri-skip-forward-fill text-warning"></span><span class="visually-hidden">' . sprintf(gT('Expired: %s'), $sStop) . '</span></a>';
             $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><span class="ri-time-line text-warning"></span><span class="visually-hidden">' . sprintf(gT('Start: %s'), $sStart) . '</span></a>';
 
@@ -1163,7 +1163,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         } else {
             // If it's active, and doesn't have expire date, it's running
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Active') . '"><span class="ri-play-fill text-success"></span><span class="visually-hidden">' . gT('Active') . '"</span></a>';
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Active') . '"><span class="ri-play-fill"></span><span class="visually-hidden">' . gT('Active') . '"</span></a>';
             //$running = '<div class="survey-state"><span class="ri-play-fill text-success"></span></div>';
         }
 
@@ -1502,15 +1502,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
             if ($this->active != 'Y') {
                 $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid));
                 if ($groupCount > 0) {
-                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddquestion . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new question') . '"><span class="ri-add-circle-fill text-success" ></span><span class="visually-hidden">' . gT('Add new question') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddquestion . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new question') . '"><span class="ri-add-circle-fill " ></span><span class="visually-hidden">' . gT('Add new question') . '</span></a>';
                 } else {
-                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddGroup . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new group') . '"><span class="ri-add-circle-fill text-success" ></span><span class="visually-hidden">' . gT('Add new group') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddGroup . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new group') . '"><span class="ri-add-circle-fill " ></span><span class="visually-hidden">' . gT('Add new group') . '</span></a>';
                 }
             }
         }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active == 'Y') {
-            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sStatUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Statistics') . '"><span class="ri-bar-chart-fill text-success" ></span><span class="visually-hidden">' . gT('Statistics') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sStatUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Statistics') . '"><span class="ri-bar-chart-fill" ></span><span class="visually-hidden">' . gT('Statistics') . '</span></a>';
         }
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
             $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="ri-settings-5-fill" ></span><span class="visually-hidden">' . gT('General settings & texts') . '</span></a>';

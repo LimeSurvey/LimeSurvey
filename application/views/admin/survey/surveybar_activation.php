@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @TODO check if this still used
  * Subview of surveybar_view.
  * @param $oSurvey
  * @param $canactivate

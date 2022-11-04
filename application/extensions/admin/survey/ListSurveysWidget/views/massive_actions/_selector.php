@@ -12,7 +12,7 @@
             'pk'          => 'sid',
             'gridid'      => 'survey-grid',
             'dropupId'    => 'surveyListActions',
-            'dropUpText'  => gT('Selected survey(s)...'),
+            'dropUpText'  => gT('Edit selected surveys'),
 
             'aActions'    => array(
                 // Delete

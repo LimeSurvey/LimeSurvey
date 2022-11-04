@@ -119,16 +119,6 @@ return array(
         )
     ),
 
-    'bootstrap-rtl'=>array( /* Adding boostrap rtl package */
-        'devBaseUrl'  => 'assets/bootstrap_5/',
-        'basePath' => 'bootstrap',
-        'css'=> array(
-            'build/css/bootstrap_5-rtl.min.css',
-        ),
-        'js'=>array(
-            'build/js/bootstrap_5.min.js',
-        ),
-    ),
     'ckeditor' => array(
         'devBaseUrl'  => 'assets/packages/ckeditor',
         'basePath' => 'core.ckeditor',
@@ -287,26 +277,6 @@ return array(
         'basePath' => 'core.panelboxes',
         'css' => array(
             'build/panelboxes'.$minVersion.'.css',
-        )
-    ),
-    'adminbasicsrtl' => array(
-        'devBaseUrl' => 'assets/packages/adminbasics/',
-        'basePath' => 'core.adminbasics',
-        'css' => array(
-            'build/adminbasics.rtl'.$minVersion.'.css'
-        ),
-        'depends' => array(
-            'adminbasics'
-        )
-    ),
-    'adminbasicsltr' => array(
-        'devBaseUrl' => 'assets/packages/adminbasics/',
-        'basePath' => 'core.adminbasics',
-        'css' => array(
-            'build/adminbasics'.$minVersion.'.css'
-        ),
-        'depends' => array(
-            'adminbasics'
         )
     ),
 
