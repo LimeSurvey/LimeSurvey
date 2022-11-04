@@ -202,13 +202,6 @@
   border-bottom: 1px solid #dadada;
   margin-bottom: 10px;
 }
-.ls-ba .breadcrumb > li + li:before {
-  float: none;
-  padding: 0 5px;
-  color: #ccc;
-  content: /*!rtl:"\f060"*/ "\F061";
-  font: normal normal normal 18px/1 FontAwesome;
-}
 .ls-ba .pager li > a, .ls-ba .pager li > span {
   border-radius: 4px;
   margin: 1px;
@@ -291,55 +284,6 @@
 
 footer.footer {
   position: static;
-}
-
-ol.breadcrumb.title-bar-breadcrumb {
-  margin-bottom: 0px;
-  padding: 8px 15px;
-}
-ol.breadcrumb.title-bar-breadcrumb > :first-child a.animate::after {
-  margin-left: 0px;
-}
-ol.breadcrumb.title-bar-breadcrumb a {
-  text-decoration: none;
-  line-height: 24px;
-  font-size: 18px;
-}
-ol.breadcrumb.title-bar-breadcrumb a.animate::after {
-  text-align: right;
-  content: "";
-  display: block;
-  width: 0;
-  height: 2px;
-}
-ol.breadcrumb.title-bar-breadcrumb a.animate:hover::after {
-  width: 100%;
-}
-ol.breadcrumb.title-bar-breadcrumb a.animate.home-icon:hover::after {
-  margin-left: 0;
-  width: 100% !important;
-}
-ol.breadcrumb.title-bar-breadcrumb li {
-  line-height: 24px;
-  font-size: 18px;
-}
-ol.breadcrumb.title-bar-breadcrumb li.active {
-  font-style: italic;
-}
-ol.breadcrumb.title-bar-breadcrumb li > div {
-  display: inline-block;
-}
-ol.breadcrumb.title-bar-breadcrumb .menu-label {
-  width: 100%;
-  display: block;
-  font-size: 85%;
-  font-style: normal;
-}
-
-.breadcrumb-title {
-  line-height: 24px;
-  font-size: 18px;
-  padding: 8px 15px;
 }
 
 #pjax-file-load-container {

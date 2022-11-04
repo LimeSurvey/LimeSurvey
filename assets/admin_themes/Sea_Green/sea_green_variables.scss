@@ -1,0 +1,92 @@
+$aubergine  : #25003E;
+$zucchini   : #003E24;
+$grape      : #8146F6;
+$lime_green : #7FF409;
+$orange     : #FFBA68;
+$litschi    : #FF9AA2;
+$banana     : #FFE872;
+$apple      : #B2FF8E;
+$blueberry  : #A3C8FF;
+$error      : #FF515F;
+$warning    : #FFE046;
+$success    : #4DD753;
+$action     : #4200FF;
+$focus      : #3BFFB7;
+
+$white      : #fff;
+$black      : #000;
+$black75    : rgba(0, 0, 0, 0.75);
+
+$g-900      : #1E1E1E;
+$g-800      : #333641;
+$g-700      : #5E6372;
+$g-600      : #7C8191;
+$g-400      : #C2C5D1;
+$g-300      : #DDDEE8;
+$g-200      : #EEEFF7;
+$g-100      : #F9F9FB;
+
+// Buttons
+$line-height-16: 16px;
+$line-height-20: 20px;
+
+$btn-font-weight: 500;
+
+$btn-height-sm: 24px;
+$btn-height: 36px;
+$btn-height-lg: 44px;
+$btn-height-xl: 52px;
+
+$btn-font-size: 14px;
+$btn-font-size-sm: 12px;
+
+$ibm-font-family:
+"IBMPlexSans",
+ // Cross-platform generic font family (default user interface font)
+ system-ui,
+ // Safari for macOS and iOS (San Francisco)
+ -apple-system,
+ // Windows
+ "Segoe UI",
+ // Android
+ Roboto,
+ // Basic web fallback
+ "Helvetica Neue", Arial,
+ // Linux
+ "Noto Sans",
+ "Liberation Sans",
+ // Sans serif fallback
+ sans-serif,
+ // Emoji fonts
+ "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
+$font-size-base: 1rem; // Assumes the browser default, typically `16px`
+$font-size-sm: $font-size-base * 0.875;
+$font-size-lg: $font-size-base * 1.25;
+
+$font-weight-normal: 400;
+$font-weight-500: 500;
+$font-weight-600: 600;
+
+$line-height-20: 20px;
+$line-height-24: 24px;
+$line-height-26: 26px;
+
+// START spacer
+$spacer: 1rem;
+
+$tooltip-bg:                        $g-900;
+// $tooltip-border-radius:             $border-radius;
+$tooltip-opacity:                   1;
+$tooltip-padding-y:                 $spacer * .5;
+$tooltip-padding-x:                 $spacer * 1.2;
+
+$tooltip-arrow-color:               $tooltip-bg;
+// $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
+
+// breadcrumb variables
+$breadcrumb-font-size:              14px;
+$breadcrumb-spacing:                12px;
+$breadcrumb-divider-color:          $g-600;
+$breadcrumb-active-color:           $g-900;
+$breadcrumb-link-color:             $action;
