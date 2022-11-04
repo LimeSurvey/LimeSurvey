@@ -120,7 +120,7 @@
 <?php if ($hasResponsesReadPermission): ?>
     <a class="btn btn-outline-secondary"
             href='<?php echo Yii::App()->createUrl("admin/saved/sa/view/surveyid/$oSurvey->sid"); ?>' role="button">
-        <span class="icon-saved text-success"></span>
+        <span class="ri-save-line text-success"></span>
         <?php eT("View Saved but not submitted Responses"); ?>
     </a>
 <?php endif; ?>

@@ -2,7 +2,7 @@
     <!-- Conditions -->
     <li>
         <a class="dropdown-item" id="conditions_button" href="<?php echo Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
-            <span class="icon-conditions icon"></span>
+            <span class="ri-git-branch-fill icon"></span>
             <?php eT("Condition designer"); ?>
         </a>
     </li>
@@ -12,7 +12,7 @@
     <!-- Default Values -->
     <li>
         <a class="dropdown-item" id="default_value_button" href="<?php echo Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
-            <span class="icon-defaultanswers icon"></span>
+            <span class="ri-grid-line"></span>
             <?php eT("Edit default answers"); ?>
         </a>
     </li>
@@ -46,7 +46,7 @@
         <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
             <li>
                 <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/" . $languageCode); ?>" >
-                    <span class="icon-expressionmanagercheck"></span>
+                    <span class="ri-checkbox-fill"></span>
                     <?php echo $languageName; ?>
                 </a>
             </li>
@@ -55,7 +55,7 @@
         <!-- Check survey logic -->
         <li>
             <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}"); ?>">
-                <span class="icon-expressionmanagercheck"></span>
+                <span class="ri-checkbox-fill"></span>
                 <?php eT("Check logic"); ?>
             </a>
         </li>

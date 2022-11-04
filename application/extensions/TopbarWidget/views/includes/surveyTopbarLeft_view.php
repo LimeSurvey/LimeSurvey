@@ -144,7 +144,7 @@
                         <!-- condition -->
                         <a class="dropdown-item"
                            href="<?php echo App()->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$oSurvey->sid}"); ?>">
-                            <span class="icon-resetsurveylogic"></span>
+                            <span class="ri-survey-fill"></span>
                             <?php eT("Reset conditions"); ?>
                         </a>
                     </li>
@@ -154,7 +154,7 @@
                         <a class="dropdown-item" href="#" class="btntooltip disabled" data-bs-toggle="tooltip"
                            data-bs-placement="bottom"
                            title="<?php eT("Currently there are no conditions configured for this survey.", "js"); ?>">
-                            <span class="icon-resetsurveylogic"></span>
+                            <span class="ri-survey-fill"></span>
                             <?php eT("Reset conditions"); ?>
                         </a>
                     </li>
@@ -171,7 +171,7 @@
                     <li>
                         <a class="dropdown-item"
                            href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/"); ?>'>
-                            <span class="icon-expressionmanagercheck"></span>
+                            <span class="ri-checkbox-fill"></span>
                             <?php eT("Survey logic file"); ?>
                         </a>
                     </li>
@@ -188,7 +188,7 @@
                         <li>
                             <a class="dropdown-item"
                                href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
-                                <span class="icon-expressionmanagercheck"></span>
+                                <span class="ri-checkbox-fill"></span>
                                 <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                             </a>
                         </li>
@@ -208,7 +208,7 @@
                 <li>
                     <a class="dropdown-item"
                        href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/straight"); ?>">
-                        <span class="icon-resetsurveylogic"></span>
+                        <span class="ri-survey-fill"></span>
                         <?php eT("Straight"); ?>
                     </a>
                 </li>
@@ -217,7 +217,7 @@
                 <li>
                     <a class="dropdown-item"
                        href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/bygroup"); ?>">
-                        <span class="icon-resetsurveylogic"></span>
+                        <span class="ri-survey-fill"></span>
                         <?php eT("By question group"); ?>
                     </a>
                 </li>

@@ -586,8 +586,8 @@ class SettingsWidget extends CWidget
                 [
                     'type' => 'link',
                     'buttons' => array(
-                        ['icon' => 'icon-minus', 'htmlOptions' => ['class' => 'remove']],
-                        ['icon' => 'icon-plus', 'htmlOptions' => ['class' => 'add']]
+                        ['icon' => 'ri-subtract-fill', 'htmlOptions' => ['class' => 'remove']],
+                        ['icon' => 'ri-add-fill', 'htmlOptions' => ['class' => 'add']]
                     )
                 ],
                 true

@@ -147,7 +147,7 @@ class Permission extends LSActiveRecord
             'export' => false,
             'title' => gT("Superadministrator"),
             'description' => gT("Unlimited administration permissions"),
-            'img' => 'icon-superadmin',
+            'img' => 'ri-star-fill',
         );
         $aPermissions['auth_db'] = array(
             'create' => false,
@@ -819,7 +819,7 @@ class Permission extends LSActiveRecord
             'labelsets' => array(
                 'title' => gT("Label sets"),
                 'description' => gT("Permission to create, view, update, delete, export and import label sets/labels"),
-                'img' => ' icon-defaultanswers',
+                'img' => ' ri-grid-line',
             ),
             'settings' => array(
                 'create' => false,

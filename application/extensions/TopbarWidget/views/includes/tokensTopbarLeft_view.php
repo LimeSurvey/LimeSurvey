@@ -46,7 +46,7 @@
         <!-- from CSV file -->
         <li>
             <a class="pjax dropdown-item"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/import/surveyid/$oSurvey->sid") ?>" >
-                <span class="icon-importcsv"></span>
+                <span class="ri-upload-fill"></span>
                 <?php eT("CSV file"); ?>
             </a>
         </li>
@@ -82,7 +82,7 @@
 <?php if ($hasTokensUpdatePermission):?>
     <div class="btn-group">
         <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="icon-emailtemplates text-success"></span>
+            <span class="ri-mail-settings-line text-success"></span>
             <?php eT("Invitations & reminders");?> <span class="caret"></span>
         </button>
 
@@ -92,7 +92,7 @@
             <!-- Send email invitation -->
             <li>
                 <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/email/surveyid/$oSurvey->sid"); ?>" >
-                    <span class="icon-invite"></span>
+                    <span class="ri-mail-send-fill"></span>
                     <?php eT("Send email invitation"); ?>
                 </a>
             </li>
@@ -100,7 +100,7 @@
             <!-- Send email reminder -->
             <li>
                 <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/email/action/remind/surveyid/$oSurvey->sid"); ?>" >
-                    <span class="icon-remind"></span>
+                    <span class="ri-mail-volume-fill"></span>
                     <?php eT("Send email reminder"); ?>
                 </a>
             </li>
@@ -158,7 +158,7 @@
 
     <!-- Generate tokens -->
     <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/tokenify/surveyid/$oSurvey->sid"); ?>" role="button">
-        <span class="icon-do text-success"></span>
+        <span class="ri-settings-5-fill text-success"></span>
         <?php eT("Generate tokens"); ?>
     </a>
 

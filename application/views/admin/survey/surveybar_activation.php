@@ -78,7 +78,7 @@
             data-bs-toggle="dropdown" 
             aria-haspopup="true" 
             aria-expanded="false">
-            <span class="icon-do" ></span>
+            <span class="ri-settings-5-fill" ></span>
             <?php echo $icontext; ?> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" style="min-width : 252px;">
@@ -95,7 +95,7 @@
     <!-- uniq language -->
     <?php else: ?>
         <a class="btn btn-outline-secondary  btntooltip" href="<?php echo $this->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
-            <span class="icon-do" ></span>
+            <span class="ri-settings-5-fill" ></span>
             <?php echo $icontext; ?>
         </a>
     <?php endif; ?>
