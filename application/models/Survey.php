@@ -1499,7 +1499,19 @@ class Survey extends LSActiveRecord
      */
     public function getCountTotalAnswers()
     {
-        return ($this->countFullAnswers + $this->countPartialAnswers);
+        $table = $this->responsesTableName;
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
+        if ($this->active != 'Y') {
+            return 0;
+        } else {
+            $answers = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from($table)
+                ->queryScalar();
+            return $answers;
+        }
     }
 
     /**
