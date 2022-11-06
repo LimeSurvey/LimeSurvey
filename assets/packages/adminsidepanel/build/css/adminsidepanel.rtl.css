@@ -317,22 +317,6 @@ footer.footer {
   color: transparent;
 }
 
-.btn-group .btn input[type=radio],
-.btn-group .btn input[type=checkbox] {
-  outline: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-.btn-group .btn input[type=radio]:after,
-.btn-group .btn input[type=checkbox]:after {
-  display: none;
-}
-.btn-group .btn input[type=radio]:before,
-.btn-group .btn input[type=checkbox]:before {
-  display: none;
-}
-
 .blocker-loading {
   display: block;
   height: 96%;
