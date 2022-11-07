@@ -791,9 +791,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (empty($this->oToken)) { // Did need to check if sent to token ?
             return $aTokenReplacements;
         }
+        $survey = Survey::model()->findByPk($this->surveyId);
         $language = Yii::app()->getLanguage();
-        if (!in_array($language, Survey::model()->findByPk($this->surveyId)->getAllLanguages())) {
-            $language = Survey::model()->findByPk($this->surveyId)->language;
+        if (!in_array($language, $survey->getAllLanguages())) {
+            $language = $survey->language;
         }
         $token = $this->oToken->token;
         if (!empty($this->oToken->language)) {
@@ -818,11 +819,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
             ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         $this->addUrlsPlaceholders("GLOBALOPTINURL");
-        $aTokenReplacements["SURVEYURL"] = App()->getController()
-            ->createAbsoluteUrl("/survey/index", array("sid" => $this->surveyId, "token" => $token,"lang" => $language));
+        $aTokenReplacements["SURVEYURL"] = $survey->getSurveyUrl($language, ["token" => $token]);
         $this->addUrlsPlaceholders("SURVEY");
-        $aTokenReplacements["SURVEYSHORTURL"] = Survey::model()->findByPk($this->surveyId)->getSurveyUrl($language, ["token" => $token]);
-        $this->addUrlsPlaceholders("SURVEYSHORT");
+        $aTokenReplacements["SURVEYIDURL"] = $survey->getSurveyUrl($language, ["token" => $token], false);
+        $this->addUrlsPlaceholders("SURVEYID");
         return $aTokenReplacements;
     }
 

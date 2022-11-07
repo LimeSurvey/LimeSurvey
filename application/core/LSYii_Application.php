@@ -550,16 +550,16 @@ class LSYii_Application extends CWebApplication
             // It's probably just because the field doesn't exist, so don't do anything.
         }
 
-        if (!empty($languageSettings)) {
-            // If no language is specified in the request, add a GET param based on the survey's language for this alias
-            $language = $this->request->getParam('lang');
-            if (empty($language)) {
-                $_GET['lang'] = $languageSettings->surveyls_language;
-            }
-            return parent::createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
+        if (empty($languageSettings)) {
+            return null;
         }
 
-        return null;
+        // If no language is specified in the request, add a GET param based on the survey's language for this alias
+        $language = $this->request->getParam('lang');
+        if (empty($language)) {
+            $_GET['lang'] = $languageSettings->surveyls_language;
+        }
+        return parent::createController("survey/index/sid/" . $languageSettings->surveyls_survey_id);
     }
 
     /**

@@ -99,7 +99,7 @@ class LSYii_ShortUrlValidator extends CValidator
 
             if (is_file($classFile)) {
                 if (!class_exists($className, false)) {
-                    require($classFile);
+                    require_once($classFile);
                 }
                 if (class_exists($className, false) && is_subclass_of($className, 'CController')) {
                     $id[0] = strtolower($id[0]);
