@@ -1432,9 +1432,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getCountFullAnswers()
     {
         $sResponseTable = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1453,9 +1450,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getCountPartialAnswers()
     {
         $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1482,7 +1476,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getCountTotalAnswers()
     {
-        return ($this->countFullAnswers + $this->countPartialAnswers);
+        $table = $this->responsesTableName;
+        if ($this->active != 'Y') {
+            return 0;
+        } else {
+            $answers = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from($table)
+                ->queryScalar();
+            return $answers;
+        }
     }
 
     /**
@@ -1525,6 +1528,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function search()
     {
+        // Flush cache to get proper counts for partial/complete/total responses
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();
