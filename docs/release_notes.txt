@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.36 (build 221102) to 3.28.37 (build 221108) November 7, 2022
+-Fixed issue: ComfortUpdate is blocked by error/warning/notice when debug mode is active (Carsten Schmitz)
+-Fixed issue #17883: QueXML formatting cannot be changed (#2561) (Adam Zammit)
+-Fixed issue #15310: Display dropdown boxes - Date/Time question type not working correctly if minimum date < 1900 (#2628) (Gabriel Jenik)
+
+
 Changes from 3.28.35 (build 221025) to 3.28.36 (build 221102) November 1, 2022
 -Fixed issue: Cannot add participant to CPDB (Carsten Schmitz)
 -Fixed issue #18430: Unable to use ComfortUpdate (Carsten Schmitz)
