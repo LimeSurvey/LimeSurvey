@@ -198,7 +198,7 @@ class ExpressionValidate extends SurveyCommonAction
                 $aReplacement["OPTINURL"] = gT("URL for a respondent to opt-in to this survey");
                 $aReplacement["GLOBALOPTINURL"] = gT("URL for a respondent to opt-in to the central participant list for this site");
                 $aReplacement["SURVEYURL"] = gT("Survey URL");
-                $aReplacement['SURVEYIDURL'] = gT("Survey URL without alias");
+                $aReplacement['SURVEYIDURL'] = gT("Survey URL based on survey ID");
                 foreach ($aAttributes as $sAttribute => $aAttribute) {
                     $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Participant - Attribute: %s"), $aAttribute['description']);
                 }
