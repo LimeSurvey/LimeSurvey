@@ -522,7 +522,7 @@ class SurveyCommonAction extends CAction
     protected function titlebar($aData)
     {
         if (isset($aData['title_bar'])) {
-            $this->getController()->renderPartial("/admin/super/title_bar", $aData);
+            $this->getController()->renderPartial("/layouts/title_bar", $aData);
         }
     }
 
