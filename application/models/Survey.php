@@ -88,8 +88,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property Question[] $baseQuestions Survey questions NOT including subquestions
  * @property Question[] $quotableQuestions
  *
- * @property array $fullAnswers
- * @property array $partialAnswers
  * @property integer $countFullAnswers Full-answers count
  * @property integer $countPartialAnswers Full-answers count
  * @property integer $countTotalAnswers Total-answers count
@@ -1171,28 +1169,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @return array|null
-     */
-    public function getPartialAnswers()
-    {
-        $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
-        if (!Yii::app()->db->schema->getTable($table)) {
-            return null;
-        } else {
-            $answers = Yii::app()->db->createCommand()
-                ->select('*')
-                ->from($table)
-                ->where('submitdate IS NULL')
-                ->queryAll();
-
-            return $answers;
-        }
-    }
-
-    /**
      * @return bool
      */
     public function getIsActive()
@@ -1401,28 +1377,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return $this->languagesettings[App()->language]->surveyls_title;
         } else {
             return $this->languagesettings[$this->language]->surveyls_title;
-        }
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getFullAnswers()
-    {
-        $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
-        if (!Yii::app()->db->schema->getTable($table)) {
-            return null;
-        } else {
-            $answers = Yii::app()->db->createCommand()
-                ->select('*')
-                ->from($table)
-                ->where('submitdate IS NOT NULL')
-                ->queryAll();
-
-            return $answers;
         }
     }
 
