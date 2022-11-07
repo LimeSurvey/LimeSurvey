@@ -6,7 +6,7 @@
 class LayoutHelper
 {
     /**
-     * Header
+     * Header (html header)
      *
      * @param array $aData
      * @param bool $sendHTTPHeader
@@ -81,6 +81,13 @@ class LayoutHelper
     }
 
     /**
+     * This is the topbar for the whole application consiting of:
+     * -- Create survey (link)
+     * -- Surveys
+     * -- Help
+     * -- Configuration (collapse menu items e.g. 'Usermanagement', 'Dashboard')
+     * -- Notifications
+     * -- admin
      * _showadminmenu() function returns html text for the administration button bar
      *
      * @access public
@@ -196,6 +203,8 @@ class LayoutHelper
      * Renders specific button bar with buttons like (saveBtn, saveAndCloseBtn, closeBtn)
      * If rendered or not depends on aData['fullpagebar'] is set to true in a specific action
      *
+     * todo: can we remove this one after using new TopbarWidget?
+     *
      * @param array $aData
      */
     public function fullpagebar(array $aData)
@@ -215,13 +224,26 @@ class LayoutHelper
 
     public function renderTopbarTemplate($aData)
     {
+        $titleTextBreadcrumb = null;
+        $isBreadCrumb = isset($aData['title_bar']);
+
         if (isset($aData['topbar'])) {
+            $titleTextBreadcrumb = $aData['topbar']['title'];
+            $middle = $aData['topbar']['middleButtons'];
+            $rightSide = $aData['topbar']['rightButtons'];
+        } elseif ($isBreadCrumb) {
+            $titleTextBreadcrumb = Yii::app()->getController()->renderPartial("/layouts/title_bar", $aData, true);
+            $middle = null; //here we need the left buttons from old topbarwidget
+            $rightSide = null; //here we need the right buttons from old topbarwidget
+        }
+        if ($titleTextBreadcrumb !== null) {
             return Yii::app()->getController()->widget(
                 'ext.LimeTopbarWidget.TopbarWidget',
                 array(
-                    'leftSide' => $aData['topbar']['title'],
-                    'middle' => $aData['topbar']['middleButtons'], //array of ButtonWidget
-                    'rightSide' => $aData['topbar']['rightButtons'], //array of ButtonWidget
+                    'leftSide' => $titleTextBreadcrumb,
+                    'middle' => $middle, //array of ButtonWidget
+                    'rightSide' => $rightSide, //array of ButtonWidget
+                    'isBreadCrumb' => $isBreadCrumb
                 ),
                 true
             );
@@ -231,6 +253,8 @@ class LayoutHelper
 
     /**
      * Renders the green bar.
+     *
+     * @deprecated remove this one when new TopbarWidget is done
      * @param array $aData
      */
     public function surveyManagerBar(array $aData)
@@ -344,6 +368,8 @@ class LayoutHelper
 
     /**
      * Renders the titlebar of question editor page
+     *
+     * //todo remove this one when using the new TopbarWidget
      *
      * @param $aData
      */
@@ -475,7 +501,7 @@ class LayoutHelper
         $oTopbarConfig = TopbarConfiguration::createFromViewData($aData);
 
         return Yii::app()->getController()->widget(
-            'ext.TopbarWidget.TopbarWidget',
+            'ext.TopbarWidget.TopbarWidgetSurvey',
             array(
                 'config' => $oTopbarConfig,
                 'aData' => $aData,
@@ -486,8 +512,11 @@ class LayoutHelper
 
     /**
      * Vue Topbar
+     *
+     * @deprecated not used anymore
      * @param array $aData
      */
+    /*
     public function renderGeneraltopbar(array $aData)
     {
         $aData['topBar'] = $aData['topBar'] ?? [];
@@ -504,7 +533,7 @@ class LayoutHelper
         ); //$aData['topBar']['showSaveButton']['url']
 
         Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
-    }
+    } */
 
     /**
      * listquestion groups
@@ -513,12 +542,13 @@ class LayoutHelper
      *
      * @param array $aData
      */
+    /*
     public function renderListQuestionGroups(array $aData)
     {
         if (isset($aData['display']['menu_bars']['listquestiongroups'])) {
             Yii::app()->getController()->renderPartial("/questionGroupsAdministration/listquestiongroups", $aData);
         }
-    }
+    }*/
 
     /**
      *
@@ -526,6 +556,7 @@ class LayoutHelper
      * @deprecated rendered now directly in QuestionAdministration see action listquestions ...
      *
      */
+    /*
     public function renderListQuestions($aData)
     {
         if (isset($aData['display']['menu_bars']['listquestions'])) {
@@ -559,13 +590,15 @@ class LayoutHelper
 
             Yii::app()->getController()->renderPartial("/admin/survey/Question/listquestions", $aData);
         }
-    }
+    }*/
 
     /**
      * todo: document me...
      *
+     * @deprecated not used anymore
      * @param array $aData
      */
+    /*
     public function renderGeneralTopbarAdditions(array $aData)
     {
         $aData['topBar'] = $aData['topBar'] ?? [];
@@ -599,5 +632,5 @@ class LayoutHelper
             $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'survey';
         }
         Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_additions", $aData);
-    }
+    }*/
 }

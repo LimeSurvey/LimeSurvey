@@ -1,6 +1,6 @@
 <?php
 
-class TopbarWidget extends CWidget
+class TopbarWidgetSurvey extends CWidget
 {
     /** @var TopbarConfiguration Topbar configuration object */
     public $config = null;

@@ -10,6 +10,11 @@ class TopbarWidget extends CWidget
     public $leftSide = null;
 
     /**
+     * @var bool true if leftSide is a breadcrumb, defaults to false
+     */
+    public $isBreadCrumb = false;
+
+    /**
      * @var ButtonWidget[] the menu buttons in the middle
      */
     public $middle = null;
@@ -40,7 +45,8 @@ class TopbarWidget extends CWidget
             [
                 'leftSide' => $this->leftSide,
                 'middle' => $this->middle,
-                'rightSide' => $this->rightSide
+                'rightSide' => $this->rightSide,
+                'isBreadCrumb' => $this->isBreadCrumb
             ]
         );
     }
