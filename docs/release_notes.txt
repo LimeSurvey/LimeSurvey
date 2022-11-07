@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.9 (build 221101) to 5.4.10 (build 221107) November 7, 2022
+-Fixed issue #18451: Plugin uploading omit translation files (Bartosz Marganiec)
+-Fixed issue #18338: For participants, expiration date can be set before start date (#2679) (Gabriel Jenik)
+-Fixed issue #16187: No proper error message when copying survey and ID already exists (#2663) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 5.4.8 (build 221024) to 5.4.9 (build 221101) November 1, 2022
 -Fixed issue: No proper error message in ComfortUpdate shown when files could not be deleted (Carsten Schmitz)
 -Fixed issue: If a file/directory could not be deleted during ComfortUpdate the file/dirname would not be shown (Carsten Schmitz)
