@@ -12,7 +12,7 @@
  */
 
 $config['versionnumber'] = '5.4.10';
-$config['dbversionnumber'] = 491;
+$config['dbversionnumber'] = 492;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
 $config['templateapiversion']  = 3;
