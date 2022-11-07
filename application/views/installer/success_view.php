@@ -35,7 +35,7 @@
          */ ?>
 
         <div class="thumbnail" style="padding: 1em;">
-            <img style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/comfortupdate-logo.png" alt="ComfortUpdate Logo">
+            <img class="rounded mx-auto d-block m-3" style="width: 50%;" src="<?php echo Yii::app()->baseUrl; ?>/installer/images/comfortupdate-logo.png" alt="ComfortUpdate Logo">
             <div class="caption">
                 <h3><?= gT("ComfortUpdate"); ?></h3>
                 <p>
@@ -46,7 +46,7 @@
                         <li><?= gT("Legacy and LTS versions"); ?></li>
                     </ul>
                 </p>
-                <p class="text-center">
+                <p class="text-center d-grid gap-2">
                     <a href="https://community.limesurvey.org/comfort-update-extension/" class="btn btn-primary btn-block" role="button" target="_blank">
                         <?= gT("Free trial"); ?>
                     </a>
