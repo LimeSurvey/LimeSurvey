@@ -219,7 +219,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * To get a singleton : some part are not needed to do X times
      * @param integer $reset totally or partially the instance
-     * @return LimeMailer
+     * @return static
      */
     public static function getInstance($reset = self::ResetBase)
     {

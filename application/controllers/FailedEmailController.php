@@ -106,7 +106,7 @@ class FailedEmailController extends LSBaseController
                         'resendVars' => $failedEmail->resend_vars,
                     ];
                 }
-                $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
+                $mailer = \ResendLimeMailer::getInstance(\ResendLimeMailer::ResetComplete);
                 $command = new SendSubmitNotificationsCommand($thissurvey, $mailer, new Session());
                 $result = $command->run($emailsByType);
                 if (!$preserveResend) {

@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services;
 
 use LimeMailer;
+use ResendLimeMailer;
 use LimeExpressionManager;
 use Permission;
 use CApplication;
@@ -11,6 +12,7 @@ use CException;
 use CController;
 use FailedEmail;
 use InvalidArgumentException;
+use RuntimeException;
 use Survey;
 use Yii;
 use viewHelper;
@@ -32,7 +34,7 @@ class SendSubmitNotificationsCommand
     /** @var int */
     private $surveyId;
 
-    /** @var LimeMailer instance */
+    /** @var LimeMailer|ResendLimeMailer instance */
     private $mailer;
 
     /** @var bool */
@@ -56,9 +58,9 @@ class SendSubmitNotificationsCommand
      * Inject dependencies so they can be mocked.
      *
      * @param array $thissurvey
-     * @param LimeMailer $limeMailer Like \LimeMailer::getInstance(\LimeMailer::ResetComplete);
+     * @param LimeMailer|ResendLimeMailer $limeMailer Like \LimeMailer::getInstance(\LimeMailer::ResetComplete);
      */
-    public function __construct(array $thissurvey, LimeMailer $limeMailer, SessionInterface $session)
+    public function __construct(array $thissurvey, $limeMailer, SessionInterface $session)
     {
         if (!isset($thissurvey['htmlemail'])) {
             throw new InvalidArgumentException('Missing htmlemail in survey info');
@@ -93,7 +95,7 @@ class SendSubmitNotificationsCommand
      */
     public function run(array $emails = [])
     {
-        //LimeMailer instance
+        // LimeMailer instance
         $this->mailer->setSurvey($this->surveyId);
         $this->mailer->aUrlsPlaceholders = ['VIEWRESPONSE','EDITRESPONSE','STATISTICS'];
 
@@ -205,9 +207,16 @@ class SendSubmitNotificationsCommand
                 $responseId            = $sRecipient['responseId'];
                 $notificationRecipient = $sRecipient['recipient'];
                 $emailLanguage         = $sRecipient['language'];
+                $resendVars = json_decode($sRecipient['resendVars'], true);
+                if (!($this->mailer instanceof ResendLimeMailer)) {
+                    throw new RuntimeException('Must use the ResendLimeMailer at this point');
+                }
+                $this->mailer->setResendVars($resendVars);
                 $this->mailer->setTypeWithRaw('admin_notification', $emailLanguage);
                 $this->mailer->setTo($notificationRecipient);
-                $mailerSuccess = $this->mailer->resend(json_decode($sRecipient['resendVars'], true));
+                $this->mailer->Subject = $resendVars['Subject'];
+                $mailerSuccess = $this->mailer->SendMessage();
+                $this->mailer->setResendVars([]);
             } else {
                 $failedNotificationId  = null;
                 $notificationRecipient = $sRecipient;
@@ -256,14 +265,21 @@ class SendSubmitNotificationsCommand
             /** set mailer params for @see FailedEmailController::actionResend() */
             if (!empty($emails)) {
                 $failedNotificationId = $sRecipient['id'];
-                $responseId = $sRecipient['responseId'];
-                $responseRecipient = $sRecipient['recipient'];
-                $emailLanguage = $sRecipient['language'];
+                $responseId           = $sRecipient['responseId'];
+                $responseRecipient    = $sRecipient['recipient'];
+                $emailLanguage        = $sRecipient['language'];
                 $replacementVars['ANSWERTABLE'] = $this->getResponseTableReplacement($responseId, $emailLanguage);
                 LimeExpressionManager::updateReplacementFields($replacementVars);
+                $resendVars = json_decode($sRecipient['resendVars'], true);
+                if (!($this->mailer instanceof ResendLimeMailer)) {
+                    throw new RuntimeException('Must use the ResendLimeMailer at this point');
+                }
+                $this->mailer->setResendVars($resendVars);
                 $this->mailer->setTypeWithRaw('admin_responses', $emailLanguage);
                 $this->mailer->setTo($responseRecipient);
-                $mailerSuccess = $this->mailer->resend(json_decode($sRecipient['resendVars'], true));
+                $this->mailer->Subject = $resendVars['Subject'];
+                $mailerSuccess = $this->mailer->SendMessage();
+                $this->mailer->setResendVars([]);
             } else {
                 $failedNotificationId = null;
                 $responseRecipient = $sRecipient;
