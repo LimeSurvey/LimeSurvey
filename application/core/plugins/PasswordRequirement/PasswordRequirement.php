@@ -161,7 +161,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             $errors[] = gT('The password does require at least one uppercase character');
         }
         if ($needsNonAlphanumeric && ctype_alnum($password)) {
-            $errors[] = gT('The password does require at least one Alphanumeric character');
+            $errors[] = gT('The password does require at least one alphanumeric character');
         }
         if ($minimumSize && strlen($password) < $minimumSize) {
             $errors[] = sprintf(gT('The password does not reach the minimum length of %s characters'), $minimumSize);
