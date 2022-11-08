@@ -6,6 +6,7 @@ class Update_492 extends DatabaseUpdateBase
 {
     public function up()
     {
+        // Handle questions with random_order = 1
         $this->db->createCommand(
             "INSERT INTO {{question_attributes}} (qid, " . $this->db->quoteColumnName("attribute") . ", " . $this->db->quoteColumnName("value") . ")
              SELECT qa.qid, 'answer_order' " . $this->db->quoteColumnName("attribute") . ", 'random' " . $this->db->quoteColumnName("value") . "
@@ -14,6 +15,7 @@ class Update_492 extends DatabaseUpdateBase
              WHERE " . $this->db->quoteColumnName("attribute") . " = 'random_order' AND " . $this->db->quoteColumnName("value") . " = '1' AND q.type IN ('!', 'L', 'O', 'R')"
         )->execute();
 
+        // Handle questions with alphasort = 1 and random_order = 0
         $this->db->createCommand(
             "INSERT INTO {{question_attributes}} (qid, " . $this->db->quoteColumnName("attribute") . ", " . $this->db->quoteColumnName("value") . ")
              SELECT a.qid, 'answer_order' " . $this->db->quoteColumnName("attribute") . ", 'alphabetical' " . $this->db->quoteColumnName("value") . "
