@@ -380,8 +380,8 @@ class QuestionAttribute extends LSActiveRecord
             "readonly_when_active" => false,
             "expression" => null,
             "xssfilter" => true,
-            "min" => null,
-            "max" => null,
+            "min" => null, // Used for integer type
+            "max" => null, // Used for integer type
         );
     }
 
