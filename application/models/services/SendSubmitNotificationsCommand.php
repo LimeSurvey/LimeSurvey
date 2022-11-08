@@ -201,15 +201,15 @@ class SendSubmitNotificationsCommand
         foreach ($emailNotificationTo as $sRecipient) {
             /** set mailer params for @see FailedEmailController::actionResend() */
             if (!empty($emails)) {
-                $failedNotificationId = $sRecipient['id'];
-                $responseId = $sRecipient['responseId'];
+                $failedNotificationId  = $sRecipient['id'];
+                $responseId            = $sRecipient['responseId'];
                 $notificationRecipient = $sRecipient['recipient'];
-                $emailLanguage = $sRecipient['language'];
+                $emailLanguage         = $sRecipient['language'];
                 $this->mailer->setTypeWithRaw('admin_notification', $emailLanguage);
                 $this->mailer->setTo($notificationRecipient);
                 $mailerSuccess = $this->mailer->resend(json_decode($sRecipient['resendVars'], true));
             } else {
-                $failedNotificationId = null;
+                $failedNotificationId  = null;
                 $notificationRecipient = $sRecipient;
                 $this->mailer->setTo($notificationRecipient);
                 $mailerSuccess = $this->mailer->SendMessage();
@@ -510,7 +510,7 @@ class SendSubmitNotificationsCommand
      */
     public function getEmailNotificationTo(array $emails): array
     {
-        return $this->getEmailMisc($emails, ['admin' => 'admin_notification', 'to' => 'emailnotificationto']);
+        return $this->getEmailAux($emails, ['admin' => 'admin_notification', 'to' => 'emailnotificationto']);
     }
 
     /**
@@ -521,7 +521,7 @@ class SendSubmitNotificationsCommand
      */
     public function getEmailResponseTo(array $emails): array
     {
-        return $this->getEmailMisc($emails, ['admin' => 'admin_responses', 'to' => 'emailresponseto']);
+        return $this->getEmailAux($emails, ['admin' => 'admin_responses', 'to' => 'emailresponseto']);
     }
 
     /**
@@ -532,7 +532,7 @@ class SendSubmitNotificationsCommand
      * @param array{admin: string, to: string} $keys
      * @return array
      */
-    private function getEmailMisc($emails, array $keys)
+    private function getEmailAux($emails, array $keys)
     {
         $result = $emails[$keys['admin']] ?? [];
         if (!empty($this->thissurvey[$keys['to']]) && empty($emails)) {
