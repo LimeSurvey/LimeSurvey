@@ -13,7 +13,7 @@ use DateTime;
 class PasswordManagement
 {
     // NB: PHP 7.0 does not support class constant visibility
-    const MIN_PASSWORD_LENGTH = 12;
+    const MIN_PASSWORD_LENGTH = 8;
     const EMAIL_TYPE_REGISTRATION = 'registration';
     const EMAIL_TYPE_RESET_PW = 'resetPassword';
     const MIN_TIME_NEXT_FORGOT_PW_EMAIL = 5; //forgot pw email is send again, only after 5 min delay

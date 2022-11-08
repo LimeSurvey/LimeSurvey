@@ -106,7 +106,7 @@ class UserManagementController extends LSBaseController
                 $this->redirect(App()->request->urlReferrer);
             }
         }
-        $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
+        $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword(12);
         return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword]);
     }
 
