@@ -2138,10 +2138,10 @@ class SurveyAdministrationController extends LSBaseController
                     Yii::app()->loadHelper('export');
                     $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
                     if(empty(Yii::app()->request->getPost('copysurveyname'))){
-                        $sNewSurveyName =  $sourceSurvey->currentLanguageSettings->surveyls_title;
+                        $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
                     }
                     else{
-                        Yii::app()->request->getPost('copysurveyname');
+                        $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
                     }
                     
                 }
