@@ -37,6 +37,7 @@ class ResendLimeMailer extends LimeMailer
     protected function generateId()
     {
         if ($this->resendVars) {
+            return $this->resendVars['uniqueid'];
         } else {
             return $this->generateId();
         }
