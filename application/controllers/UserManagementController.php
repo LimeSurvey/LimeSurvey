@@ -68,26 +68,8 @@ class UserManagementController extends LSBaseController
 
         $aData['topbar']['title'] = gT('User management');
 
-        $addUserButton = $this->widget(
-            'ext.ButtonWidget.ButtonWidget',
-            [
-            'name' => 'ls-question-tools-button',
-            'id' => 'ls-question-tools-button',
-            'text' => gT('Add user'),
-            'icon' => 'fa fa-plus-circle',
-            'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary UserManagement--action--openmodal',
-                'data-bs-toggle' => 'modal',
-                'data-href' => $this->createUrl("userManagement/addEditUser")
-            ],
-                ],
-            true
-        );
-        $aData['topbar']['middleButtons'][] = $addUserButton;
-        $aData['topbar']['rightButtons'] = null;
-
-        // Green Bar (SurveyManagerBar) Page Title
-        //$aData['pageTitle'] = gT('User management');
+        $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rigthSideButtons', [], true);
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
