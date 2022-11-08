@@ -498,7 +498,7 @@ class Survey extends LSActiveRecord
             array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('expires', 'checkExpireAfterStart'),
+            //array('expires', 'checkExpireAfterStart'),
         );
     }
 
