@@ -209,7 +209,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         return $settings;
     }
 
-    private function getRandomString($length = 12, $uppercase = false, $numeric = false, $nonAlpha = false)
+    private function getRandomString($length = 8, $uppercase = false, $numeric = false, $nonAlpha = false)
     {
         $chars = "abcdefghijklmnopqrstuvwxyz";
         
