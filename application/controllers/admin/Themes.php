@@ -673,7 +673,6 @@ class Themes extends SurveyCommonAction
                     Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' could not be found."), $sOldName));
                 }
                 $this->getController()->redirect(array('themeOptions/index'));
-
             }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
