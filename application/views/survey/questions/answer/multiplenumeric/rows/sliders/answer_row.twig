@@ -35,8 +35,9 @@
         {{ processString(labelText) }}
     </label>
     <div class="col-12 col-md-{{ sInputContainerWidth }} container-fluid">
+        <div class="row row-cols-2 row-md-cols-3">
             {% if sliderleft is not empty %}
-                <div class='col-12 col-md-2 slider-left text-end'>{{ sliderleft }}</div>
+                <div class='col-6 col-md-2 slider-left text-end'>{{ sliderleft }}</div>
             {% endif %}
 
             <div class="slider-container slider-{{slider_orientation}} ls-input-group col-12 col-md-{{sliderWidth}}" id="answer{{myfname}}slid-container">
@@ -66,8 +67,9 @@
                 {% endif %}
             </div>
             {% if sliderright is not empty %}
-                <div class='col-12 col-md-2 slider-right text-start'>{{ sliderright }}</div>
+                <div class='col-6 col-md-2 slider-right text-start'>{{ sliderright }}</div>
             {% endif %}
+        </div>
     </div>
 </li>
 

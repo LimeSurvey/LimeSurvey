@@ -35,8 +35,8 @@ font-family: FontAwesome;
 .slider-list .slider-left,.slider-list .slider-right {text-align:center;}
 }
 @media (min-width: 769px) {
-.slider-list .slider-item .control-label{margin-top:2em}
-.slider-list .slider-left,.slider-list .slider-right {margin-top: 2em;}
+.slider-list .slider-item .control-label{margin-top:0.5em}
+.slider-list .slider-left,.slider-list .slider-right {margin-top: 0.5em;}
 }
 
  /* different line */
