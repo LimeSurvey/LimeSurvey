@@ -636,7 +636,6 @@ class Themes extends SurveyCommonAction
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => 'layout_global.twig', 'screenname' => 'welcome', 'templatename' => $sOldName));
-
         }
         $sNewName = sanitize_dirname(App()->getRequest()->getParam('newname'));
         $sOldName = sanitize_dirname(App()->getRequest()->getParam('copydir'));
