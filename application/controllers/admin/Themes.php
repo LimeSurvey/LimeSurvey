@@ -633,42 +633,47 @@ class Themes extends SurveyCommonAction
      */
     public function templaterename()
     {
-        $sOldName = sanitize_dirname(returnGlobal('copydir'));
-
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
-                $sNewName = sanitize_dirname(returnGlobal('newname'));
-                $sNewDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName);
-                $sOldDirectoryPath = sanitize_dirname(Yii::app()->getConfig('userthemerootdir') . "/" . returnGlobal('copydir'));
+            if (App()->getRequest()->getParam('action') == "templaterename") { // needed ? we are in templaterename function
+                $sNewName = sanitize_dirname(App()->getRequest()->getParam('newname'));
+                $sOldName = sanitize_dirname(App()->getRequest()->getParam('copydir'));
+                if (empty($sNewName)) {
+                    throw new CHttpException(400, gT("New name can not be empty, maybe you try to use invalid caracter."));
+                }
+                if (empty($sOldName)) {
+                    throw new CHttpException(400, gT("template name can not be empty, maybe you try to use invalid caracter."));
+                }
+                /* userthemerootdir get by config.php : if user have access to config.php on edition  : he can do anything on server */
+                $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
+                $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sOldName;
 
                 if (Template::isStandardTemplate(returnGlobal('newname'))) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
-
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
-                } elseif (file_exists($sNewDirectoryPath)) {
-                    Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
-
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
-                } elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
-                    Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
-
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
-                } else {
-                    $oTemplate = Template::model()->findByAttributes(array('name' => $sOldName));
-
-                    if (is_a($oTemplate, 'Template')) {
-                        $oTemplate->renameTo($sNewName);
-                        if (getGlobalSetting('defaulttheme') == $sOldName) {
-                            SettingGlobal::setSetting('defaulttheme', $sNewName);
-                        }
-
-                        $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => 'layout_global.twig', 'screenname' => 'welcome', 'templatename' => $sNewName));
-                    } else {
-                        Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' could not be found."), $sOldName));
-                    }
-
-                    $this->getController()->redirect(array('themeOptions/index'));
                 }
+                if (file_exists($sNewDirectoryPath)) {
+                    Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
+                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                }
+                if (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
+                    Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
+                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                }
+                /* We get there : template is renamed, check if is default */
+                $oTemplate = Template::model()->findByAttributes(array('name' => $sOldName));
+                if (is_a($oTemplate, 'Template')) {
+                    $oTemplate->renameTo($sNewName);
+                    if (getGlobalSetting('defaulttheme') == $sOldName) {
+                        SettingGlobal::setSetting('defaulttheme', $sNewName);
+                    }
+                    $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => 'layout_global.twig', 'screenname' => 'welcome', 'templatename' => $sNewName));
+                } else {
+                    /* We move a directory that are not a template : big error here … */
+                    /* Maybe need to check if $sOldName is a template before rename directory */
+                    Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' could not be found."), $sOldName));
+                }
+                $this->getController()->redirect(array('themeOptions/index'));
+
             }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
