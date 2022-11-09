@@ -2,6 +2,8 @@
 
 /**
  * Menu Bar show for full pages (without sidemenu, inside configuration menus)
+ *
+ * todo: this file can be removed after all pages got new TopbarWidget...
  */
 
 ?>
@@ -41,30 +43,7 @@
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <!-- List Surveys - Create a new Survey -->
-                <?php if (
-                    isset($fullpagebar['listSurveys']['buttons']['createSurvey']) &&
-                    Permission::model()->hasGlobalPermission('surveys', 'create')
-                ) : ?>
-                <a class="btn btn-primary tab-dependent-button" data-tab="#surveys"
-                   href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>">
-                        <span class="icon-add"></span>
-                    <?php eT("Create survey"); ?>
-                </a>
-            <?php endif; ?>
 
-                <!-- List Surveys - Create a new Survey group -->
-                <?php if (
-                    isset($fullpagebar['listSurveys']['buttons']['createSurveyGroup']) &&
-                    Permission::model()->hasGlobalPermission('surveysgroups', 'create')
-                ) : ?>
-                    <a class="btn btn-primary tab-dependent-button d-none"
-                       data-tab="#surveygroups"
-                       href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurveyGroup']['url']; ?>">
-                        <span class="icon-add"></span>
-                        <?php eT("Create survey group"); ?>
-                    </a>
-            <?php endif; ?>
 
                 <!-- Dashboard - Add a new Box -->
             <?php if (isset($fullpagebar['boxbuttons'])): ?>

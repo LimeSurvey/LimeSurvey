@@ -232,8 +232,8 @@ class LayoutHelper
         } elseif ($isBreadCrumb) {
             $titleTextBreadcrumb = Yii::app()->getController()->renderPartial("/layouts/title_bar", $aData, true);
         }
-        $middle = $aData['topbar']['middleButtons'];
-        $rightSide = $aData['topbar']['rightButtons'];
+        $middle = $aData['topbar']['middleButtons'] ?? '';
+        $rightSide = $aData['topbar']['rightButtons'] ?? '';
         if ($titleTextBreadcrumb !== null) {
             return Yii::app()->getController()->widget(
                 'ext.LimeTopbarWidget.TopbarWidget',
