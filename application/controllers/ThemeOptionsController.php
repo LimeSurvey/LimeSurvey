@@ -471,24 +471,18 @@ class ThemeOptionsController extends LSBaseController
         }
 
         $aData['oSurveyTheme'] = $oSurveyTheme;
-        $aData['canImport']  = $canImport;
-        $aData['importErrorMessage']  = $importErrorMessage;
         $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Themes');
-
-        // White Bar with Buttons
-        $aData['fullpagebar']['returnbutton'] = [
-            'url' => 'admin/index',
-            'text' => gT('Back'),
-        ];
-
-        // Upload and install button
-        $aData['fullpagebar']['themes']['canImport'] = true;
-        $aData['fullpagebar']['themes']['buttons']['uploadAndInstall']['modalSurvey'] = 'importSurveyModal';
-        $aData['fullpagebar']['themes']['buttons']['uploadAndInstall']['modalQuestion'] = 'importQuestionModal';
-        $aData['fullpagebar']['importErrorMessage'] = $importErrorMessage;
+        $aData['topbar']['title'] = gT('Themes');
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rigthSideButtons', [], true);
+        if (Permission::model()->hasGlobalPermission('templates', 'import')) {
+            //only show upload&install button if user has the permission ...
+            $aData['topbar']['middleButtons'] = $this->renderPartial(
+                'partial/topbarBtns/leftSideButtons',
+                ['canImport' => $canImport, 'importErrorMessage' => $importErrorMessage ],
+                true
+            );
+        }
         $this->aData = $aData;
 
         $this->render('index', $aData);

@@ -249,5 +249,8 @@ echo viewHelper::getViewTestTag('templateOptions');
         if (target === "#surveythemes") {
             $("#uploadandinstall").attr('data-bs-target', '#importSurveyModal');
         }
+        if(target === "#adminthemes") { //no upload$install for adminthemes
+            $("#uploadandinstall").attr('data-bs-target', '');
+        }
     });
 </script>

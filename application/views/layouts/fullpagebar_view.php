@@ -15,36 +15,6 @@
             <!-- Left actions -->
             <div class="col text-start">
 
-                <!-- Themes -->
-                <?php if (isset($fullpagebar['themes'])) : ?>
-                    <!-- Upload and Install -->
-                    <?php if (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && $fullpagebar['themes']['canImport']) : ?>
-                    <a id="uploadandinstall"
-                       class="btn btn-outline-secondary"
-                       href=""
-                       role="button"
-                       data-bs-toggle="modal"
-                       data-bs-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
-                    >
-                            <span class="icon-import"></span>
-                            <?php eT("Upload & install"); ?>
-                    </a>
-                    <?php elseif (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && !$fullpagebar['themes']['canImport'] && isset($fullpagebar['themes']['importErrorMessage'])) : ?>
-                        <!-- import disabled -->
-                    <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                          title="<?php echo $fullpagebar['themes']['importErrorMessage']['importErrorMessage']; ?>"
-                          style="display: inline-block">
-                    <button type="button" role="button" class="btn btn-outline-secondary btntooltip"
-                            disabled="disabled">
-                        <span class="icon-import"></span>
-                        <?php eT("Import"); ?>
-                    </button>
-                </span>
-                    <?php endif; ?>
-                <?php endif; ?>
-
-
-
                 <!-- Dashboard - Add a new Box -->
             <?php if (isset($fullpagebar['boxbuttons'])): ?>
                     <!-- Create Box Button -->
