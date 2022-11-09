@@ -99,7 +99,7 @@ App()->getClientScript()->registerScriptFile(
                    href="#"
                    id="save-form-button"
                    data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
-                    <i class="fa fa-save"></i>
+                    <i class="ri-save-line"></i>
                     <?php echo $usergroupbar['savebutton']['text']; ?>
                 </a>
             <?php endif; ?>

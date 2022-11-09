@@ -54,7 +54,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
 
     <!-- Create -->
     <li class="nav-item" role="presentation">
-        <a class="nav-link <?= $active === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='fa fa-save'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
+        <a class="nav-link <?= $active === 'create' ? 'active' : ''?>" role="tab" data-bs-toggle="tab" data-button-title="<i class='ri-save-line'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
             <!-- <i class="ri-add-circle-fill"></i> -->
             <i class="ri-add-circle-fill" ></i>&nbsp;
             
