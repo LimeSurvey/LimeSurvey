@@ -96,19 +96,19 @@
         </div>
     </div>
      <legend><?php eT("Languages") ?></legend>
-        <div class="row ex-form-group mb-3">
+        <div class="col-12 ex-form-group mb-3">
             <label class=" col-12 form-label" for="ParticipantAttributeName_addLanguage_language"><?php eT("Add language");?></label>
-            <div>
+            <div class="d-flex flex-row align-items-center flex-wrap">
                 <div class=" col-11">
                 <?php
                     echo TbHtml::dropDownList("ParticipantAttributeName_addLanguage_language", '', $languagesForDropdown,array('encode' => false, 'class' => 'form-select'));
                 ?>
                 </div>
-            </div>
-            <div class="col-1">
-                <button class="btn btn-outline-secondary ex-form-group mb-3" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
-                    <i class="fa fa-plus-circle text-success"></i>
-                </button>
+                <div class="col-1">
+                    <button class="btn btn-outline-secondary ex-form-group ms-2" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+                        <i class="fa fa-plus-circle text-success"></i>
+                    </button>
+                </div>
             </div>
         </div>
         <div id='languagesList' class="row">
@@ -118,16 +118,16 @@
                     echo 
                     '<div class="ex-form-group mb-3" data-lang="'.$languageKey .'">
                         <label class="col-12 form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
-                        <div>
-                            <div class=" col-11">
+                        <div class="d-flex flex-row align-items-center flex-wrap">
+                            <div class=" col-10">
                                 <input required class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="">
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-outline-secondary ex-form-group mb-3 action_delLanguageField">
+                                <button class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
                             </div>
-                        </div>
+                        </divclass>
                     </div>';
                 }
                 foreach($languagesOfAttribute as $languageKey => $languageOfAttribute)
@@ -135,12 +135,12 @@
                     echo 
                     '<div class="col-12 ex-form-group mb-3" data-lang="'.$languageKey.'">
                         <label class=" form-label" for="ParticipantAttributeNameLanguages_'.$languageKey.'">'.getLanguageNameFromCode($languageKey,false).'</label>
-                        <div>
+                        <div class="d-flex flex-row align-items-center flex-wrap">
                             <div class=" col-11">
                                 <input class="form-control" name="ParticipantAttributeNameLanguages['.$languageKey.']" id="ParticipantAttributeNameLanguages_'.$languageKey.'" type="text" value="'.$languageOfAttribute.'">
                             </div>
                             <div class="col-1">
-                                <button class="btn btn-outline-secondary ex-form-group mb-3 action_delLanguageField">
+                                <button class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
                             </div>
