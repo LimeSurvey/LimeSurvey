@@ -16,7 +16,7 @@ $layoutHelper->showHeaders($aData);
 //################################################## ADMIN MENU #####################################################
 $layoutHelper->showadminmenu($aData);
 
-echo "<!-- BEGIN LAYOUT_MAIN -->";
+echo "<!-- BEGIN LAYOUT MAIN (refactored controllers-->";
 
 // Green Bar with Page Header
 //$layoutHelper->surveyManagerBar($aData);
