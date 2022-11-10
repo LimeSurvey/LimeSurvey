@@ -1410,7 +1410,11 @@ class Tokens extends SurveyCommonAction
                     }
                     if (!in_array($mailLanguage, Survey::model()->findByPk($iSurveyId)->getAllLanguages())) {
                         $mailLanguage = $sBaseLanguage;
-                        $tokenoutput .= CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("Invalid language %s for token ID: %s."), $emrow['language'], $emrow['tid']));
+                        $tokenoutput .= CHtml::tag(
+                            "div",
+                            array('class' => 'text-warning'),
+                            sprintf(gT("Invalid language %s for token ID: %s."), $emrow['language'], $emrow['tid'])
+                        );
                     }
                     $mail = \LimeMailer::getInstance();
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'], $bIsInvitation)) {
