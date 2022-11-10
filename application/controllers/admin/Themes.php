@@ -633,10 +633,6 @@ class Themes extends SurveyCommonAction
      */
     public function templaterename()
     {
-        if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => 'layout_global.twig', 'screenname' => 'welcome', 'templatename' => $sOldName));
-        }
         $sNewName = sanitize_dirname(App()->getRequest()->getParam('newname'));
         $sOldName = sanitize_dirname(App()->getRequest()->getParam('copydir'));
         if (empty($sNewName)) {
@@ -657,6 +653,10 @@ class Themes extends SurveyCommonAction
                 400, // bad request
                 sprintf(gT("Template '%s' could not be found."), $sOldName)
             );
+        }
+        if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => 'layout_global.twig', 'screenname' => 'welcome', 'templatename' => $sOldName));
         }
         /* userthemerootdir get by config.php only */
         $sNewDirectoryPath = App()->getConfig('userthemerootdir') . "/" . $sNewName;
