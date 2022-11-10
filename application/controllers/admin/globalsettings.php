@@ -112,10 +112,8 @@ class GlobalSettings extends SurveyCommonAction
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
 
-        // Fullpage Bar
-        $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
-        $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
-        $data['fullpagebar']['white_closebutton']['url'] = Yii::app()->createUrl('admin/'); // Close button
+        $data['topbar']['title'] = gT('Update box');
+        $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial('/admin/globalsettings/partial/topbarBtns/rightSideButtons', [], true);
 
         // List of available encodings
         $data['aEncodings'] = aEncodingsArray();
@@ -133,9 +131,6 @@ class GlobalSettings extends SurveyCommonAction
         $data['thischaracterset'] = getGlobalSetting('characterset');
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
-
-        // Green Bar Title
-        $data['pageTitle'] = gT("Global settings");
 
         $this->renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }

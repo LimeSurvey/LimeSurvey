@@ -4,6 +4,8 @@
 /**
  * @var SurveyCommonAction $this
  * @var array $aData
+ *
+ * todo: remove this view when all controllers are refactored
  */
 
 //headers will be generated with the template file /admin/super/header.php
@@ -11,16 +13,20 @@ $this->showHeaders($aData);
 
 //The adminmenu bar will be generated from /admin/super/adminmenu.php
 $this->showadminmenu($aData);
+
+$layoutHelper = new LayoutHelper();
+
+echo $layoutHelper->renderTopbarTemplate($aData);
 // Generated through /admin/usergroup/usergroupbar_view
-$this->userGroupBar($aData);
+//$this->userGroupBar($aData);
 
 echo "<!-- BEGIN LAYOUT_MAIN -->";
 
 // Generated through /admin/super/surveymanagerbar.php
-$this->surveyManagerBar($aData);
+//$this->surveyManagerBar($aData);
 
 // Generated through /admin/super/fullpagebar_view
-$this->fullpagebar($aData);
+//$this->fullpagebar($aData);
 
 $this->updatenotification();
 $this->notifications();
