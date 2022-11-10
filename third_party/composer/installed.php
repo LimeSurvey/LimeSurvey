@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'bfef00a9a0e734b1222cb613e2e9c36ca2aa1119',
+    'reference' => '61108bf5b45c2bc8decc130240f44ad34e12fbf9',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'bfef00a9a0e734b1222cb613e2e9c36ca2aa1119',
+      'reference' => '61108bf5b45c2bc8decc130240f44ad34e12fbf9',
     ),
     'paragonie/constant_time_encoding' => 
     array (
@@ -58,30 +58,30 @@
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.16',
-      'version' => '3.0.16.0',
+      'pretty_version' => '3.0.17',
+      'version' => '3.0.17.0',
       'aliases' => 
       array (
       ),
-      'reference' => '7181378909ed8890be4db53d289faac5b77f8b05',
+      'reference' => 'dbc2307d5c69aeb22db136c52e91130d7f2ca761',
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.26.0',
-      'version' => '1.26.0.0',
+      'pretty_version' => 'v1.27.0',
+      'version' => '1.27.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4',
+      'reference' => '5bbc823adecdae860bb64756d639ecfec17b050a',
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.26.0',
-      'version' => '1.26.0.0',
+      'pretty_version' => 'v1.27.0',
+      'version' => '1.27.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
+      'reference' => '8ad114f6b39e2c98a8b0e3bd907732c207c2b534',
     ),
     'tiamo/spss' => 
     array (
@@ -94,12 +94,12 @@
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v1.44.2',
-      'version' => '1.44.2.0',
+      'pretty_version' => 'v1.44.7',
+      'version' => '1.44.7.0',
       'aliases' => 
       array (
       ),
-      'reference' => '138c493c5b8ee7cff3821f80b8896d371366b5fe',
+      'reference' => '0887422319889e442458e48e2f3d9add1a172ad5',
     ),
     'yiiext/twig-renderer' => 
     array (

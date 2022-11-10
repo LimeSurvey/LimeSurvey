@@ -1,3 +1,25 @@
+# 1.44.7 (2022-09-28)
+
+ * Fix a security issue on filesystem loader (possibility to load a template outside a configured directory)
+
+# 1.44.6 (2021-11-25)
+
+ * Last version for the 1.x series
+
+# 1.44.5 (2021-09-17)
+
+ * Improve compatibility with PHP 8.1
+ * Explicitly specify the encoding for mb_ord in JS escaper
+
+# 1.44.4 (2021-05-16)
+
+ * Revert "Throw a proper exception when a template name is an absolute path (as it has never been supported)"
+
+# 1.44.3 (2021-05-12)
+
+ * Fix PHP 8.1 compatibility
+ * Throw a proper exception when a template name is an absolute path (as it has never been supported)
+
 # 1.44.2 (2021-01-05)
 
  * Fix "odd" not working for negative numbers
