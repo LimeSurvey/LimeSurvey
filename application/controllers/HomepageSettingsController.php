@@ -63,7 +63,7 @@ class HomepageSettingsController extends LSBaseController
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
         $this->aData = $aData;
 
-        $this->aData = [
+    /*    $this->aData = [
             'fullpagebar' => [
                 'boxbuttons' => true,
                 'returnbutton' => [
@@ -72,7 +72,7 @@ class HomepageSettingsController extends LSBaseController
                 ],
             ],
             'pageTitle' => gT('Dashboard'),
-        ];
+        ]; */
 
         $this->render('index', [
             'dataProviderBox' => $dataProviderBox->model,
@@ -117,21 +117,11 @@ class HomepageSettingsController extends LSBaseController
             }
         }
 
-        $this->aData = [
-            'pageTitle' => gT('New box'),
-            'fullpagebar' => [
-                'savebutton' => [
-                    'form' => 'boxes-form',
-                ],
-                'saveandclosebutton' => [
-                    'form' => 'boxes-form'
-                ],
-                'white_closebutton' => [
-                    'url' => Yii::app()->createUrl('homepageSettings/index'),
-                ],
-            ],
-            'model' => $model,
-        ];
+        $aData['topbar']['title'] = gT('New box');
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns_create/rightSideButtons', [], true);
+
+        $aData['model'] = $model;
+        $this->aData = $aData;
 
         $this->render(
             'create',
@@ -174,22 +164,11 @@ class HomepageSettingsController extends LSBaseController
                 Yii::app()->user->setFlash('error', gT('Could not update box'));
             }
         }
-        $this->aData = [
-            'pageTitle' => gT('Update box ') . $model->title,
-            'fullpagebar' => [
-                'savebutton' => [
-                    'form' => 'boxes-form',
-                ],
-                'saveandclosebutton' => [
-                    'form' => 'boxes-form'
-                ],
-                'white_closebutton' => [
-                    'url' => Yii::app()->createUrl('homepageSettings/index'),
-                ],
-             ],
-            'model' => $model,
-        ];
+        $aData['topbar']['title'] = gT('Update box');
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns_create/rightSideButtons', [], true);
 
+        $aData['model'] = $model;
+        $this->aData = $aData;
         $this->render('update', $this->aData);
     }
 

@@ -28,3 +28,18 @@ $this->widget(
     ]
 );
 
+//this save button should only be visible when tab #boxsettings is active
+$this->widget(
+    'ext.ButtonWidget.ButtonWidget',
+    [
+        'name' => 'save_boxes_setting',
+        'id' => 'save_boxes_setting',
+        'text' => gT('Save'),
+        'icon' => 'fa fa-refresh',
+        'htmlOptions' => [
+            'class' => 'btn btn-success',
+            'data-url' => $this->createUrl('homepageSettings/updateBoxesSettings')
+        ],
+    ]
+);
+
