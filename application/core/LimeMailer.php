@@ -862,7 +862,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if ($this->resendVars) {
             return $this->resendVars['uniqueid'];
         } else {
-            return $this->generateId();
+            return parent::generateId();
         }
     }
 
