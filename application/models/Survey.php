@@ -396,14 +396,29 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 minute');
 
-        if (!isset($surveyId)) {
-            $this->expires = $dateTime;
-            if ($this->scenario == 'update') {
-                return $this->save();
-            }
-        } else {
-            self::model()->updateByPk($surveyId, array('expires' => $dateTime));
+        $model = $this;
+
+        // Set model based on surveyId, if given
+        // If so, set scenario as to be saved later
+        if (isset($surveyId)) {
+            $model = self::model()->findByPk($surveyId);
+            $model->setScenario('update');
         }
+
+        // Avoid setting expiration date before start date
+        // If there is a future start date set, set the expiration date to the same date
+        if (!empty($model->startdate) && $dateTime < $model->startdate) {
+            $dateTime = $model->startdate;
+        }
+
+        // Set expiration date
+        $model->expires = $dateTime;
+
+        // Save if scenario is update
+        if ($model->scenario == 'update') {
+            return $model->save();
+        }
+
         return null;
     }
 
