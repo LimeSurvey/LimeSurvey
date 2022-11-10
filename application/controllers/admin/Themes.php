@@ -658,7 +658,7 @@ class Themes extends SurveyCommonAction
                 sprintf(gT("Template '%s' could not be found."), $sOldName)
             );
         }
-        /* userthemerootdir get by config.php : if user have access to config.php on edition  : he can do anything on server */
+        /* userthemerootdir get by config.php only */
         $sNewDirectoryPath = App()->getConfig('userthemerootdir') . "/" . $sNewName;
         $sOldDirectoryPath = App()->getConfig('userthemerootdir') . "/" . $sOldName;
 
@@ -670,7 +670,7 @@ class Themes extends SurveyCommonAction
             Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
             $this->getController()->redirect(array("admin/themes/sa/upload"));
         }
-        if (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
+        if (!rename($sOldDirectoryPath, $sNewDirectoryPath)) {
             Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
             $this->getController()->redirect(array("admin/themes/sa/upload"));
         }
