@@ -152,7 +152,6 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('fontawesome'); // fontawesome
             App()->getClientScript()->registerPackage('font-ibm-sans'); // font-ibm-sans
 //            App()->getClientScript()->registerPackage('bootstrap-switch');
-            App()->getClientScript()->registerPackage('select2-bootstrap');
             App()->getClientScript()->registerPackage('tempus-dominus');
 //            App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
             App()->getClientScript()->registerPackage('font-roboto');
@@ -206,6 +205,8 @@ class AdminTheme extends CFormModel
             $this->registerAdminTheme($files, $aCssFiles);
             App()->getClientScript()->registerPackage('adminsidepanelltr');
         }
+        App()->getClientScript()->registerPackage('bootstrap-js');
+        App()->getClientScript()->registerPackage('select2-bootstrap');
         App()->clientScript->registerPackage('moment'); // register moment for correct dateTime calculation
     }
 
