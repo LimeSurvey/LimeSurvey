@@ -112,7 +112,7 @@ class GlobalSettings extends SurveyCommonAction
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
 
-        $data['topbar']['title'] = gT('Update box');
+        $data['topbar']['title'] = gT('Global settings');
         $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial('/admin/globalsettings/partial/topbarBtns/rightSideButtons', [], true);
 
         // List of available encodings
@@ -519,21 +519,12 @@ class GlobalSettings extends SurveyCommonAction
         ];
         $aData['partial'] = $sPartial;
 
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT('Global survey settings');
-
-        // White Top Bar
-        $aData['fullpagebar'] = [
-            'savebutton' => [
-                'form' => 'survey-settings-form',
-            ],
-            'saveandclosebutton' => [
-                'form' => 'survey-settings-form',
-            ],
-            'white_closebutton' => [
-                'url' => $this->getController()->createUrl('admin/index'),
-            ],
-        ];
+        $aData['topbar']['title'] = gT('Global survey settings');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/globalsettings/partial/topbarBtns_surveysettings/rightSideButtons',
+            [],
+            true
+        );
 
         $this->renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
