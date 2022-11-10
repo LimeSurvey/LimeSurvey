@@ -57,7 +57,6 @@ function reloadGrid() {
 }
 
 function onDocumentReadyListresponse() {
-    console.log('onDocumentReadyListresponse');
     $('#displaymode input').on('change.listresponse', function (event) {
         $('#change-display-mode-form').find('input[type=submit]').trigger('click');
     });
