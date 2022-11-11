@@ -1071,14 +1071,18 @@ class TokenDynamic extends LSActiveRecord
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if ($this->validfrom) {
             $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validfrom);
-            $s2 = $s->format('Y-m-d H:i');
-            $criteria->addCondition('validfrom <= \'' . $s2 . '\'');
+            if (is_object($s)) {
+                $s2 = $s->format('Y-m-d H:i');
+                $criteria->addCondition('validfrom <= \'' . $s2 . '\'');
+            }
         }
 
         if ($this->validuntil) {
             $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validuntil);
-            $s2 = $s->format('Y-m-d H:i');
-            $criteria->addCondition('validuntil >= \'' . $s2 . '\'');
+            if (is_object($s)) {
+                $s2 = $s->format('Y-m-d H:i');
+                $criteria->addCondition('validuntil >= \'' . $s2 . '\'');
+            }
         }
 
         foreach ($this->custom_attributes as $sColName => $oColumn) {
