@@ -13,38 +13,6 @@
 
             <!-- Left actions -->
             <div class="col text-start">
-                <!-- Plugin Manager -->
-                <?php if (isset($fullpagebar['pluginManager'])) : ?>
-                    <!-- Install Plugin Zip -->
-                    <?php if (!empty($fullpagebar['pluginManager']['buttons']['showUpload'])) : ?>
-                        <span data-bs-toggle="tooltip" title='<?php eT('Install plugin by ZIP archive'); ?>'>
-                            <a
-                                href=''
-                                class='btn btn-outline-secondary'
-                                data-bs-toggle='modal'
-                                data-bs-target='#installPluginZipModal'>
-                                <i class='icon-import'></i>&nbsp;
-                                <?php
-                                eT('Upload & install'); ?>
-                            </a>
-                        </span>
-                    <?php endif; ?>
-
-                    <!-- Scan Files -->
-                    <?php if (isset($fullpagebar['pluginManager']['buttons']['scanFiles'])) : ?>
-                        <a
-                            href='<?php echo $fullpagebar["pluginManager"]["buttons"]["scanFiles"]["url"]; ?>'
-                        class='btn btn-outline-secondary'
-                        data-bs-toggle='tooltip'
-                            title='<?php eT('Scan files for available plugins'); ?>'
-                        >
-                            <i class='fa fa-file '></i>
-                            <i class='fa fa-search '></i>&nbsp;
-                            <?php eT('Scan files'); ?>
-                        </a>
-                    <?php endif; ?>
-                <?php endif; ?>
-
                 <!-- Add new Menu -->
                 <?php if (isset($fullpagebar['menus'])): ?>
                     <?php if (isset($fullpagebar['menus']['buttons']['addMenu']) && $fullpagebar['menus']['buttons']['addMenu']): ?>
