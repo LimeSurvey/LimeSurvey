@@ -1,114 +1,65 @@
+// Custom Bootstrap 5 implementation for sea_green theme
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "node_modules/bootstrap/scss/functions.scss";
+
+// 2. Include any default variable overrides here
+@import "assets/bootstrap_5/scss/variables.scss";
+@import "sea_green_variables";
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/maps";
+@import "node_modules/bootstrap/scss/root";
+
+// 4. Include any optional Bootstrap CSS as needed
+@import "node_modules/bootstrap/scss/utilities";
+@import "node_modules/bootstrap/scss/reboot";
+@import "node_modules/bootstrap/scss/type";
+@import "node_modules/bootstrap/scss/images";
+@import "node_modules/bootstrap/scss/containers";
+@import "node_modules/bootstrap/scss/grid";
+@import "node_modules/bootstrap/scss/tables";
+@import "node_modules/bootstrap/scss/forms";
+@import "node_modules/bootstrap/scss/buttons";
+@import "node_modules/bootstrap/scss/transitions";
+@import "node_modules/bootstrap/scss/dropdown";
+@import "node_modules/bootstrap/scss/button-group";
+@import "node_modules/bootstrap/scss/nav";
+@import "node_modules/bootstrap/scss/navbar";
+@import "node_modules/bootstrap/scss/card";
+@import "node_modules/bootstrap/scss/accordion";
+@import "node_modules/bootstrap/scss/breadcrumb";
+@import "node_modules/bootstrap/scss/pagination";
+@import "node_modules/bootstrap/scss/badge";
+@import "node_modules/bootstrap/scss/alert";
+@import "node_modules/bootstrap/scss/progress";
+@import "node_modules/bootstrap/scss/list-group";
+@import "node_modules/bootstrap/scss/close";
+@import "node_modules/bootstrap/scss/toasts";
+@import "node_modules/bootstrap/scss/modal";
+@import "node_modules/bootstrap/scss/tooltip";
+@import "node_modules/bootstrap/scss/popover";
+@import "node_modules/bootstrap/scss/carousel";
+@import "node_modules/bootstrap/scss/spinners";
+@import "node_modules/bootstrap/scss/offcanvas";
+@import "node_modules/bootstrap/scss/placeholders";
+@import "node_modules/bootstrap/scss/helpers";
+
+
+// 5. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "node_modules/bootstrap/scss/utilities/api";
+
+// 6. Add additional custom code here
+@import "assets/bootstrap_5/scss/customizations";
+
+// old adminbasics definitions
+@import "assets/admin_themes/adminbasics_temporary/loadSass.scss";
+
+// old admin theme colors
 @import "lime-admin-colors";
 @import "statistics";
-
-$aubergine  : #25003E;
-$zucchini   : #003E24;
-$grape      : #8146F6;
-$lime_green : #7FF409;
-$orange     : #FFBA68;
-$litschi    : #FF9AA2;
-$banana     : #FFE872;
-$apple      : #B2FF8E;
-$blueberry  : #A3C8FF;
-$error      : #FF515F;
-$warning    : #FFE046;
-$success    : #4DD753;
-$action     : #4200FF;
-$focus      : #3BFFB7;
-
-$white      : #fff;
-$black      : #000;
-$black75    : rgba(0, 0, 0, 0.75);
-
-$g-900      : #1E1E1E;
-$g-800      : #333641;
-$g-700      : #5E6372;
-$g-600      : #7C8191;
-$g-400      : #C2C5D1;
-$g-300      : #DDDEE8;
-$g-200      : #EEEFF7;
-$g-100      : #F9F9FB;
-
-$grid-gutter-width:           1.5rem !default;
-
-// Buttons
-$line-height-16: 16px;
-$line-height-20: 20px;
-
-$btn-font-weight: 500;
-
-$btn-height-sm: 24px;
-$btn-height: 36px;
-$btn-height-lg: 44px;
-$btn-height-xl: 52px;
-
-$btn-font-size: 14px;
-$btn-font-size-sm: 12px;
-
-$ibm-font-family:
-"IBMPlexSans",
- // Cross-platform generic font family (default user interface font)
- system-ui,
- // Safari for macOS and iOS (San Francisco)
- -apple-system,
- // Windows
- "Segoe UI",
- // Android
- Roboto,
- // Basic web fallback
- "Helvetica Neue", Arial,
- // Linux
- "Noto Sans",
- "Liberation Sans",
- // Sans serif fallback
- sans-serif,
- // Emoji fonts
- "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
-
-
-$font-size-base: 1rem; // Assumes the browser default, typically `16px`
-$font-size-sm: $font-size-base * 0.875;
-$font-size-lg: $font-size-base * 1.25;
-
-
-$font-weight-normal: 400;
-$font-weight-500: 500;
-$font-weight-600: 600;
-
-
-$line-height-20: 20px;
-$line-height-24: 24px;
-$line-height-26: 26px;
-
-// START spacer
-$spacer: 1rem;
-$spacers: (
-        0: 0,
-        1: $spacer * .25,
-        2: $spacer * .5,
-        3: $spacer,
-        4: $spacer * 1.5,
-        5: $spacer * 3,
-        6: $spacer * 4.5,
-        7: $spacer * 6,
-);
-// END spacer
-
-$tooltip-bg:                        $g-900;
-// $tooltip-border-radius:             $border-radius;
-$tooltip-opacity:                   1;
-$tooltip-padding-y:                 $spacer * .5;
-$tooltip-padding-x:                 $spacer * 1.2;
-
-$tooltip-arrow-color:               $tooltip-bg;
-// $tooltip-arrow-color:               null; // Deprecated in Bootstrap 5.2.0 for CSS variables
-
-// breadcrumb variables
-$breadcrumb-font-size:              14px;
-$breadcrumb-spacing:                12px;
-$breadcrumb-divider-color:          $g-600;
-$breadcrumb-active-color:           $g-900;
-$breadcrumb-link-color:             $action;
 
 @import "buttons/buttons.scss";
 @import "buttons/btn-group.scss";
@@ -116,4 +67,4 @@ $breadcrumb-link-color:             $action;
 @import "tooltip/tooltip.scss";
 @import "well/well.scss";
 @import "breadcrumb/breadcrumb.scss";
-@import "navbar/navbar.scss";
+@import "footer/footer.scss";
