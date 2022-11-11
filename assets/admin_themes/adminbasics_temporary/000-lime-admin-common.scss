@@ -371,31 +371,8 @@ html {
     display: none;
 }
 
-.box {
-    border-radius: 3px;
-    padding: 10px 25px;
-    text-align: right;
-    display: block;
-    margin-top: 10px;
-}
-
 #info-header {
     font-size: 3em;
-}
-
-.box-icon {
-    border-radius: 50%;
-    display: table;
-    height: 50px;
-    margin: 0 auto;
-    width: 50px;
-    margin-top: -31px;
-}
-
-.box-icon span {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
 }
 
 @keyframes fadein {
