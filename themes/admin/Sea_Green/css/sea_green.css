@@ -16259,6 +16259,9 @@ abbr[data-original-title] {
 blockquote {
   border-left: 5px solid #9cba9e;
 }
+blockquote footer {
+  color: #858585;
+}
 blockquote small, blockquote .small {
   color: #858585;
 }
@@ -18906,10 +18909,6 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .breadcrumb-item + .breadcrumb-item {
   padding-left: 12px;
-}
-
-blockquote footer {
-  color: #858585;
 }
 
 .footer {
