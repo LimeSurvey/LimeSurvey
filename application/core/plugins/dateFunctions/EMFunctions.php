@@ -15,7 +15,7 @@ class EMFunctions
     /**
      * Formats a date according to the Survey's date format for the specified language
      * @param string $date : a date in "Y-m-d H:i:s" format. Example: VALIDFROM.
-     * @param string|null $language : the language used for localization. Defaults to current session language. If the language is not configured in the survey, the base language will be used. Example: TOKEN:LANGUAGE
+     * @param string|null $language : the language used for localization. Defaults to current session language. If the language is not configured in the survey, the survey base language will be used. When using in email templates, please use the token language as parameter as to set the expected language. Example: TOKEN:LANGUAGE
      * @return string
      */
     public static function localize_date($date, $language = null)
