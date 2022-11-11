@@ -985,53 +985,7 @@ fieldset[disabled] {
     background-color: $primary-bg_hover;
     border: 1px solid $gray-09;
 }
-// Navs
-.nav {
-    .nav-divider {
-        background-color: $gray-06;
-    }
-    > li {
-        > a {
-            &:hover {
-                //background-color: $primary-bg_hover;
-                color: $white;
-                background-color: $primary-hover_2;
-                border-bottom: 1px solid $white;
-            }
-            &:focus {
-                //background-color: $primary-bg_hover;
-                color: $white;
-                background-color: $primary-hover_2;
-                border-bottom: 1px solid $white;
-            }
-        }
-        &.disabled > a {
-            color: $gray-15;
-            &:hover {
-                color: $gray-15;
-            }
-            &:focus {
-                color: $gray-15;
-            }
-        }
-    }
-    .open > a {
-        //background-color: $primary-bg_hover;
-        color: $white;
-        background-color: $primary-hover_2;
-        border-bottom: 1px solid $white;
-        &:hover {
-            //background-color: $primary-bg_hover;
-            color: $white;
-            background-color: $primary-hover_2;
-        }
-        &:focus {
-            //background-color: $primary-bg_hover;
-            color: $white;
-            background-color: $primary-hover_2;
-        }
-    }
-}
+
 .nav-tabs {
     border-bottom: 1px solid $gray-08;
     > li {
@@ -1053,9 +1007,6 @@ fieldset[disabled] {
     }
 }
 // Navbar
-.navbar-collapse {
-    box-shadow: inset 0 1px 0 $white_opac_10;
-}
 .navbar-form {
     box-shadow: inset 0 1px 0 $white_opac_10, 0 1px 0 $white_opac_10;
 }
@@ -2032,33 +1983,6 @@ output {
     border-bottom: 1px solid $gray-07;
     box-shadow: 0 3px 3px $brown-opac-10;
     background-color: $white;
-}
-
-// Navbar
-.navbar {
-    background-color: $white;
-    box-shadow: 0 3px 3px $gray_approx_100_10;
-    border-radius: 0 !important;
-    .ls--selector--configuration-menu a {
-        border-bottom: 1px solid $white;
-    }
-    .nav-icon-btn.nav-icon-btn-danger .label {
-        background: $brown-10;
-    }
-}
-.mega-dropdown-menu {
-    .dropdown-header {
-        color: $primary-hover_2;
-    }
-    > li {
-        > ul {
-            > li {
-                > a {
-                    color: $primary-border_navbar_default;
-                }
-            }
-        }
-    }
 }
 
 // Boxes
