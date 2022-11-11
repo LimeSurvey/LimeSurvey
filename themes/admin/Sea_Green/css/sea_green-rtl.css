@@ -11929,31 +11929,8 @@ html {
   display: none;
 }
 
-.box {
-  border-radius: 3px;
-  padding: 10px 25px;
-  text-align: left;
-  display: block;
-  margin-top: 10px;
-}
-
 #info-header {
   font-size: 3em;
-}
-
-.box-icon {
-  border-radius: 50%;
-  display: table;
-  height: 50px;
-  margin: 0 auto;
-  width: 50px;
-  margin-top: -31px;
-}
-
-.box-icon span {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
 }
 
 @keyframes fadein {
@@ -17423,14 +17400,6 @@ output {
   background-color: #fff;
 }
 
-.box {
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-}
-
-.box-icon span {
-  color: #fff;
-}
-
 #info-header {
   color: #0f3e12;
 }
@@ -17893,11 +17862,6 @@ input[type=text], input[type=password], .ui-autocomplete-input, textarea, .unedi
 .questionContainer {
   background-color: #f5f5f5;
   padding: 1em;
-}
-
-#statisticsview .box {
-  text-align: right;
-  margin-bottom: 1em;
 }
 
 tr.success {
@@ -18761,4 +18725,50 @@ footer.footer {
 }
 #info-footer {
   font-size: 2em;
+}
+
+#statisticsview .box {
+  text-align: right;
+  margin-bottom: 1em;
+}
+
+.box {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.box-icon span {
+  color: #fff;
+}
+
+.box {
+  border-radius: 3px;
+  padding: 10px 25px;
+  text-align: left;
+  display: block;
+  margin-top: 10px;
+}
+
+.box-icon {
+  border-radius: 50%;
+  display: table;
+  height: 50px;
+  margin: 0 auto;
+  width: 50px;
+  margin-top: -31px;
+}
+
+.box-icon span {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#systemoverview .box__title {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+  text-align: center;
 }
