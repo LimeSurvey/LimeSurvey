@@ -50,7 +50,19 @@ class UserRoleController extends LSBaseController
         }
 
         // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT('User roles');
+       // $aData['pageTitle'] = gT('User roles');
+
+        $aData['topbar']['title'] = gT('User roles');
+        $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbarBtns/leftSideButtons',
+            [],
+            true
+        );
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            'partial/topbarBtns/rightSideButtons',
+            [],
+            true
+        );
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
