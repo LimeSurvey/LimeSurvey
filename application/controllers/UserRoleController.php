@@ -54,12 +54,12 @@ class UserRoleController extends LSBaseController
 
         $aData['topbar']['title'] = gT('User roles');
         $aData['topbar']['middleButtons'] = $this->renderPartial(
-            'partial/topbarBtns/leftSideButtons',
+            'partials/topbarBtns/leftSideButtons',
             [],
             true
         );
         $aData['topbar']['rightButtons'] = $this->renderPartial(
-            'partial/topbarBtns/rightSideButtons',
+            'partials/topbarBtns/rightSideButtons',
             [],
             true
         );
