@@ -4,7 +4,6 @@ namespace LimeSurvey\Models\Services;
 
 class Quotas
 {
-
     /** @var \Survey the survey */
     private $survey;
 
@@ -109,24 +108,24 @@ class Quotas
                     $aAnswerList[$oDbAnsList->title] = $tmparrayans;
                 }
                 break;
-            case  \Question::QT_G_GENDER:
+            case \Question::QT_G_GENDER:
                 $aAnswerList = array(
                     'M' => array('Title' => $aQuestion['title'], 'Display' => gT("Male"), 'code' => 'M'),
                     'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
                 break;
-            case  \Question::QT_L_LIST:
-            case  \Question::QT_O_LIST_WITH_COMMENT:
-            case  \Question::QT_EXCLAMATION_LIST_DROPDOWN:
-            $aAnsResults = \Answer::model()
+            case \Question::QT_L_LIST:
+            case \Question::QT_O_LIST_WITH_COMMENT:
+            case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                $aAnsResults = \Answer::model()
                 ->with('answerl10ns', array('language' => $sBaseLang))
                 ->findAllByAttributes(array('qid' => $iQuestionId));
 
-            foreach ($aAnsResults as $aDbAnsList) {
-                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'],
+                foreach ($aAnsResults as $aDbAnsList) {
+                    $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'],
                     'Display' => $aDbAnsList->answerl10ns[$sBaseLang]->answer,
                     'code' => $aDbAnsList['code']);
-            }
-            break;
+                }
+                break;
             case \Question::QT_A_ARRAY_5_POINT:
                 $aAnsResults = \Question::model()
                     ->with('questionl10ns', array('language' => $sBaseLang))
@@ -141,7 +140,7 @@ class Quotas
                     }
                 }
                 break;
-            case  \Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+            case \Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
                 $aAnsResults = \Question::model()
                     ->with('questionl10ns', array('language' => $sBaseLang))
                     ->findAllByAttributes(array('parent_qid' => $iQuestionId));
@@ -171,7 +170,7 @@ class Quotas
                 break;
         }
 
-        if (!empty($aAnswerList)){
+        if (!empty($aAnswerList)) {
             // Now we mark answers already used in this quota as such
             $aExistsingAnswers = \QuotaMember::model()->findAllByAttributes(array('sid' => $this->survey->sid,
                 'qid' => $iQuestionId, 'quota_id' => $iQuotaId));
@@ -217,7 +216,7 @@ class Quotas
             //delete quota and language settings for this qouta if errors
             if ($oQuota->getErrors()) {
                 //delete quotalanguagesettings if any for this qouta
-                foreach ($oQuota->languagesettings  as $languageSetting){
+                foreach ($oQuota->languagesettings as $languageSetting) {
                     $languageSetting->delete();
                 }
                 $oQuota->delete();
@@ -306,7 +305,7 @@ class Quotas
      * @return null | array errors or null if no errors
      * @throws \CDbException
      */
-    public function multipleItemsAction($aQuotaIds, $action, $languageSettings=[])
+    public function multipleItemsAction($aQuotaIds, $action, $languageSettings = [])
     {
         $errors = null;
         foreach ($aQuotaIds as $iQuotaId) {
@@ -315,15 +314,15 @@ class Quotas
             switch ($action) {
                 case 'activate':
                 case 'deactivate':
-                $oQuota->active = ($action == 'activate' ? 1 : 0);
-                $oQuota->save();
+                    $oQuota->active = ($action == 'activate' ? 1 : 0);
+                    $oQuota->save();
                     break;
                 case 'delete':
                     $oQuota->delete();
                     \QuotaLanguageSetting::model()->deleteAllByAttributes(array('quotals_quota_id' => $iQuotaId));
                     \QuotaMember::model()->deleteAllByAttributes(array('quota_id' => $iQuotaId));
                     break;
-                case  'changeLanguageSettings':
+                case 'changeLanguageSettings':
                     if (!empty($languageSettings)) {
                         $oQuotaLanguageSettings = $oQuota->languagesettings;
                         foreach ($_POST['QuotaLanguageSetting'] as $language => $aQuotaLanguageSettingAttributes) {
@@ -371,5 +370,4 @@ class Quotas
         }
         return $permissionOk;
     }
-
 }
