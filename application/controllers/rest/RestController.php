@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,37 +17,100 @@
  *
  */
 
+use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\Status\StatusAbstract;
 
 // phpcs:ignore
-abstract class LSYii_ControllerRest extends LSYii_Controller
+class RestController extends LSYii_Controller
 {
     /**
      * Run REST controller action.
      *
-     * @param string $actionID
+     * @param string $actionId
      * @return void
      */
-    public function run($actionID)
+    public function run($actionId = null)
     {
-        //die('LSYii_ControllerRest');
-        if ($actionID == null) {
-            $actionID = $this->defaultAction;
-        }
+        $apiConfig = include( __DIR__ . '/../../config/api.php');
+
+        //die(print_r('RestController: ' . print_r($apiConfig, true), true));
+
         $request = Yii::app()->request;
+        $apiVersion = $request->getParam('_api_version');
+        $entity = $request->getParam('_entity');
+        $id = $request->getParam('_id');
         $requestMethod = $request->getRequestType();
-        $actionID = $actionID . ucfirst(strtolower($requestMethod));
+
+        $endpoint = null;
+        foreach ($apiConfig['api'] as $config) {
+            if (
+                $config['version'] == $apiVersion
+                && $config['entity'] == $entity
+                && $config['method'] == $requestMethod
+                && (empty($config['byId']) || !empty($id))
+            ) {
+                $endpoint = $config;
+                break;
+            }
+        }
+
+        $command = new $endpoint['commandClass']();
+
+        //die(print_r('RestController: ' . print_r($endpoint, true), true));
+
+        $commandParams = [];
+
+        if (
+            $endpoint
+            && !empty($endpoint['byId'])
+            && !empty($id)
+        ) {
+            $idName = is_string($endpoint['byId'])
+                ? $endpoint['byId'] : 'id';
+            $commandParams[$idName] = $id;
+        }
+
+        if (
+            $endpoint
+            && !empty($endpoint['auth'])
+            && $endpoint['auth'] == 'session'
+        ) {
+            $commandParams['sessionKey'] = $this->getAuthToken();
+        }
+
+        if (
+            $endpoint
+            && is_array($endpoint['queryParams'])
+        ) {
+            foreach ($endpoint['queryParams'] as $paramName) {
+                $commandParams[$paramName] = $request->getParam($paramName, null);
+            }
+        }
+
+        if (
+            $endpoint
+            && is_array($endpoint['bodyParams'])
+        ) {
+            $input = $request->getRestParams();
+            foreach ($endpoint['bodyParams'] as $paramName) {
+                $commandParams[$paramName] = isset($input[$paramName])
+                    ? $input[$paramName] : null;
+            }
+        }
 
         try {
-            parent::run($actionID);
+            //die(print_r('RestController: ' . print_r($commandParams, true), true));
+            $commandRequest = new Request($commandParams);
+            $commandResponse = $command->run($commandRequest);
+            $this->renderCommandResponse($commandResponse);
         } catch (Exception $e) {
             $this->displayException($e);
         }
     }
 
     /**
-     * Return data to browser as JSON with the correct hHTTPttp response code.
+     * Return data to browser as JSON with the correct HTTP response code.
      *
      * @param Response $response
      * @return void

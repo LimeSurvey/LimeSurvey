@@ -14,13 +14,19 @@
  *
  */
 
-
-//Compatibility with classic modrewrite
-$route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>/token/<_token>"; //This one must be first
-$route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>";
-$route['<_sid:\d+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/token/<_token>";
-$route['<_sid:\d+>/*'] = "survey/index/sid/<_sid>";
-$route['<sid:\d+>'] = array('survey/index', 'matchValue' => true);
+// REST
+// - Resource index
+$route['rest/<_api_version:\w+>/<_entity:\w+>'] = array(
+    'rest/rest',
+    'verb' => 'GET, PUT, DELETE',
+    'matchValue' => true
+);
+// - Resource index with id
+$route['rest/<_api_version:\w+>/<_entity:\w+>/<_id:\w+>'] = array(
+    'rest/rest',
+    'verb' => 'GET, PUT, DELETE',
+    'matchValue' => true
+);
 
 //Admin Routes
 $route['admin/index'] = "admin";
@@ -43,20 +49,15 @@ $route['optin/participants/<surveyid:\d+>'] = array('optin/participants', 'match
 $route['statistics_user/<surveyid:\d+>'] = array('StatisticsUser/action', 'matchValue' => true);
 $route['statistics_user/action'] = 'StatisticsUser/action';
 
-// REST
-// - Resource index
-$route['rest/<_api_version:\w+>/<_controller:\w+>'] = array(
-    'rest/<_api_version>/<_controller>',
-    'verb' => 'GET, PUT, DELETE',
-    'matchValue' => true
-);
-// - Resource index with id
-$route['rest/<_api_version:\w+>/<_controller:\w+>/<id:\w+>'] = array(
-    'rest/<_api_version>/<_controller>',
-    'verb' => 'GET, PUT, DELETE',
-    'matchValue' => true
-);
+//Compatibility with classic modrewrite
+$route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>/token/<_token>"; //This one must be first
+$route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>";
+$route['<_sid:\d+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/token/<_token>";
+$route['<_sid:\d+>/*'] = "survey/index/sid/<_sid>";
+$route['<sid:\d+>'] = array('survey/index', 'matchValue' => true);
 
-$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
+//$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
+
+//die(print_r($route, true));
 
 return $route;
