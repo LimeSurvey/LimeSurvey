@@ -4,7 +4,7 @@
 /** @var ButtonWidget[] $rightSide */
 ?>
 
-<div class="menubar topbar" id="fullpagebar">
+<div class="topbar" >
     <div class="container-fluid">
         <div class="row">
             <!-- Title or breadcrumb -->
