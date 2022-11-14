@@ -2,6 +2,10 @@
 
 namespace LimeSurvey\Models\Services;
 
+/**
+ * @todo Possible remove this warning
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class Quotas
 {
     /** @var \Survey the survey */
@@ -81,9 +85,11 @@ class Quotas
     /**
      * Returns an answerlist for a specific question type and marks already used answers as such.
      *
+     * @todo Refactor and remove phpmd warning
      * @param integer $iQuestionId
      * @param integer $iQuotaId
      * @return array
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function getQuotaAnswers(int $iQuestionId, int $iQuotaId)
     {

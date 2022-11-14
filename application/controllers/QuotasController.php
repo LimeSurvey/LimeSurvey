@@ -2,7 +2,6 @@
 
 class QuotasController extends LSBaseController
 {
-
     /**
      * @return string[] action filters
      */
@@ -254,8 +253,10 @@ class QuotasController extends LSBaseController
         $quota = Quota::model()->findByPk($quotaId);
         $aData['oQuota'] = $quota;
 
-        if (($sSubAction == "newanswer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) &&
-            Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')) {
+        if (
+            ($sSubAction == "newanswer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) &&
+            Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')
+        ) {
             $result = $oSurvey->quotableQuestions;
             if (empty($result)) {
                 $renderView = 'newanswererror_view';
@@ -265,8 +266,10 @@ class QuotasController extends LSBaseController
         }
 
         $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
-        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) &&
-            Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')) {
+        if (
+            $sSubAction == "new_answer_two" && isset($_POST['quota_qid']) &&
+            Permission::model()->hasSurveyPermission($surveyid, 'quotas', 'create')
+        ) {
             $questionId = sanitize_int(Yii::app()->request->getPost('quota_qid'));
             $oQuestion = Question::model()
                 ->with('questionl10ns', array('language' => $oSurvey->language))
