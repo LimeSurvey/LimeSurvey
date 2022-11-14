@@ -394,14 +394,29 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 minute');
 
-        if (!isset($surveyId)) {
-            $this->expires = $dateTime;
-            if ($this->scenario == 'update') {
-                return $this->save();
-            }
-        } else {
-            self::model()->updateByPk($surveyId, array('expires' => $dateTime));
+        $model = $this;
+
+        // Set model based on surveyId, if given
+        // If so, set scenario as to be saved later
+        if (isset($surveyId)) {
+            $model = self::model()->findByPk($surveyId);
+            $model->setScenario('update');
         }
+
+        // Avoid setting expiration date before start date
+        // If there is a future start date set, set the expiration date to the same date
+        if (!empty($model->startdate) && $dateTime < $model->startdate) {
+            $dateTime = $model->startdate;
+        }
+
+        // Set expiration date
+        $model->expires = $dateTime;
+
+        // Save if scenario is update
+        if ($model->scenario == 'update') {
+            return $model->save();
+        }
+
         return null;
     }
 
@@ -1386,9 +1401,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getCountFullAnswers()
     {
         $sResponseTable = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1407,9 +1419,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getCountPartialAnswers()
     {
         $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1436,7 +1445,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getCountTotalAnswers()
     {
-        return ($this->countFullAnswers + $this->countPartialAnswers);
+        $table = $this->responsesTableName;
+        if ($this->active != 'Y') {
+            return 0;
+        } else {
+            $answers = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from($table)
+                ->queryScalar();
+            return $answers;
+        }
     }
 
     /**
@@ -1479,6 +1497,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function search()
     {
+        // Flush cache to get proper counts for partial/complete/total responses
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();
@@ -1820,6 +1842,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         Question::model()->deleteAll($criteria); // Must log count of deleted ?
     }
 
+    /**
+     * TODO: Not used anywhere. Deprecate it?
+     */
     public function getsSurveyUrl()
     {
         if ($this->sSurveyUrl == '') {
@@ -2236,6 +2261,74 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         );
         return $aSurveys;
+    }
+
+    /**
+     * Returns the survey URL with the specified params.
+     * If $preferShortUrl is true (default), and an alias is available, it returns the short
+     * version of the URL.
+     * @param string|null $language
+     * @param array<string,mixed> $params   Optional parameters to include in the URL.
+     * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
+     * @return string
+     */
+    public function getSurveyUrl($language = null, $params = [], $preferShortUrl = true)
+    {
+        if (empty($language)) {
+            $language = $this->language;
+        }
+        if ($preferShortUrl) {
+            $alias = $this->getAliasForLanguage($language);
+
+            if (!empty($alias)) {
+                // Check if there is other language with the same alias. If it does, we need to include the 'lang' parameter in the URL.
+                foreach ($this->languagesettings as $otherLang => $settings) {
+                    if ($otherLang == $language || empty($settings->surveyls_alias)) {
+                        continue;
+                    }
+                    if ($settings->surveyls_alias == $alias) {
+                        $params['lang'] = $language;
+                        break;
+                    }
+                }
+
+                // Create the URL according to the configured format
+                $urlManager = Yii::app()->getUrlManager();
+                $urlFormat = $urlManager->getUrlFormat();
+                if ($urlFormat == CUrlManager::GET_FORMAT) {
+                    $url = Yii::app()->getBaseUrl(true);
+                    $params = [$urlManager->routeVar => $alias] + $params;
+                } else {
+                    $url = Yii::app()->getBaseUrl(true) . '/' . $alias;
+                }
+                $query = $urlManager->createPathInfo($params, '=', '&');
+                if (!empty($query)) {
+                    $url .= "?" . $query;
+                }
+                return $url;
+            }
+        }
+
+        // If short url is not preferred or no alias is found, return a traditional URL
+        $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
+        $url = Yii::app()->createAbsoluteUrl('survey/index', $urlParams);
+        return $url;
+    }
+
+    /**
+     * Returns the survey alias for the specified language.
+     * @param string|null $language
+     * @return string|null
+     */
+    public function getAliasForLanguage($language = null)
+    {
+        if (!empty($language) && !empty($this->languagesettings[$language]->surveyls_alias)) {
+            return $this->languagesettings[$language]->surveyls_alias;
+        }
+        if (!empty($this->languagesettings[$this->language]->surveyls_alias)) {
+            return $this->languagesettings[$this->language]->surveyls_alias;
+        }
+        return null;
     }
 
     /**

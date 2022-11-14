@@ -42,6 +42,27 @@ echo viewHelper::getViewTestTag('surveyTexts');
         </div>
     </div>
     <hr class="col-12"/>
+            <div class="col-sm-6">
+                <!-- Survey alias -->
+                <div class="form-group">
+                    <label class=" control-label" for="alias_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>">
+                        <?php eT("Survey alias:"); ?>
+                    </label>
+                    <div class="">
+                        <?php echo CHtml::textField(
+                                "alias_{$aSurveyLanguageSettings['surveyls_language']}",
+                                $aSurveyLanguageSettings['surveyls_alias'],
+                                [
+                                    'class' => 'form-control',
+                                    'size' => "80",
+                                    'maxlength' => 100,
+                                    'id' => "alias_{$aSurveyLanguageSettings['surveyls_language']}",
+                                    //'pattern' => '[\w\d-]+'
+                                ]
+                            ); ?>
+                    </div>
+                </div>
+            </div>
 </div>
 <div class="row">
     <div class="col-12 col-xl-6">
