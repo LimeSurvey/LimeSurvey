@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.37 (build 221108) to 3.28.38 (build 221115) November 14, 2022
+-Fixed issue: Survey gets into a state where it seems to be active but isn't - to fix this run integrity check (Gabriel Jenik)
+#Updated translation: Portuguese (Brazil) by educaticteced, effgarces, filhocf, josesiqueira, mauriciofurtado
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.28.36 (build 221102) to 3.28.37 (build 221108) November 7, 2022
 -Fixed issue: ComfortUpdate is blocked by error/warning/notice when debug mode is active (Carsten Schmitz)
 -Fixed issue #17883: QueXML formatting cannot be changed (#2561) (Adam Zammit)
