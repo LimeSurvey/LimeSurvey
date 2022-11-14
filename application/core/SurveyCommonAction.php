@@ -1009,42 +1009,6 @@ class SurveyCommonAction extends CAction
     }
 
     /**
-     * Load menu bar of user group controller.
-     *
-     * REFACTORED (it's in UserGroupController and uses function from Layouthelper->renderMenuBar())
-     *
-     * @param array $aData
-     * @return void
-     */
-    public function userGroupBar(array $aData)
-    {
-        $ugid = $aData['ugid'] ?? 0;
-        if (!empty($aData['display']['menu_bars']['user_group'])) {
-            $data = $aData;
-            Yii::app()->loadHelper('database');
-
-            if (!empty($ugid)) {
-                $userGroup = UserGroup::model()->findByPk($ugid);
-                $uid = Yii::app()->session['loginID'];
-                if (($userGroup && ($userGroup->hasUser($uid)) || $userGroup->owner_id == $uid) || Permission::model()->hasGlobalPermission('superadmin')) {
-                    $data['userGroup'] = $userGroup;
-                } else {
-                    $data['userGroup'] = null;
-                }
-            }
-
-            $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
-
-            if (isset($aData['usergroupbar']['closebutton']['url'])) {
-                $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
-                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-
-            $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
-        }
-    }
-
-    /**
      *
      * @deprecated use ServiceClass FilterImportedResources instead ... (models/services/)
      *
