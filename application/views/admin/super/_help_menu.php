@@ -1,7 +1,6 @@
 
 <li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="helpDropdown" aria-expanded="false" role="button">
-        <span class="fa fa-question-circle" ></span>
         <?php eT('Help');?>
     </a>
     <ul class="dropdown-menu larger-dropdown" aria-labelledby="helpDropdown">
@@ -9,7 +8,6 @@
         <li class="dropdown-divider"></li>
         <li>
             <a href="http://manual.limesurvey.org/" target="_blank" class="dropdown-item">
-                <span class="fa fa-question-circle" ></span>
                 <?php eT('LimeSurvey Manual');?>
                 <i class="fa fa-external-link  float-end"></i>
             </a>

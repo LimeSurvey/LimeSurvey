@@ -1,30 +1,43 @@
-$aubergine  : #25003E;
-$zucchini   : #003E24;
-$grape      : #8146F6;
-$lime_green : #7FF409;
-$orange     : #FFBA68;
-$litschi    : #FF9AA2;
-$banana     : #FFE872;
-$apple      : #B2FF8E;
-$blueberry  : #A3C8FF;
-$error      : #FF515F;
-$warning    : #FFE046;
-$success    : #4DD753;
-$action     : #4200FF;
-$focus      : #3BFFB7;
+$aubergine    : #25003E; // background
+$zucchini     : #003E24; // background
+$focus        : #3BFFB7; // background
+$grape        : #8146F6; // background secondary
+$litschi      : #FF9AA2; // background secondary
+$blueberry    : #A3C8FF; // background passive
+$orange       : #FFBA68; // tertiary
+$banana       : #FFE872; // tertiary
+$apple        : #B2FF8E; // tertiary
+$success      : #4DD753; // success
+$warning      : #FFE046; // warning
+$error        : #FF515F; // danger/error
+$lime-green   : #7FF409; // links on dark
+$action       : #4200FF; // links on light
+$active-green : #14AE5C; // buttons & links
 
-$white      : #fff;
-$black      : #000;
-$black75    : rgba(0, 0, 0, 0.75);
+$white        : #fff;
+$black        : #000;
+$black75      : rgba(0, 0, 0, 0.75);
 
-$g-900      : #1E1E1E;
-$g-800      : #333641;
-$g-700      : #5E6372;
-$g-600      : #7C8191;
-$g-400      : #C2C5D1;
-$g-300      : #DDDEE8;
-$g-200      : #EEEFF7;
-$g-100      : #F9F9FB;
+$g-900        : #1E1E1E;
+$g-800        : #333641;
+$g-700        : #5E6372;
+$g-600        : #7C8191;
+$g-400        : #C2C5D1;
+$g-300        : #DDDEE8;
+$g-200        : #EEEFF7;
+$g-100        : #F9F9FB;
+
+$theme-colors: (
+    "primary":    $active-green,
+    "secondary":  $g-600,
+    "success":    $success,
+    "danger":     $error,
+    "warning":    $warning,
+    "info":       $grape,
+    "light":      $g-200,
+    "dark":       $g-900,
+    "cancel":     $g-600, // replace with secondary
+);
 
 // Buttons
 $line-height-16: 16px;
