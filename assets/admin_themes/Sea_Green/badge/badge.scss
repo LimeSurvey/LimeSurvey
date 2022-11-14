@@ -1,5 +1,9 @@
 .badge {
-  padding: $badge-padding-y $badge-padding-x;
+  padding: $badge-padding-y $badge-padding-x !important;
   color: $white;
   background-color: $gray-15;
+}
+
+.badge.rounded-pill {
+  padding: $badge-padding-y $badge-pill-padding-x !important;
 }
