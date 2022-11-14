@@ -1,37 +1,39 @@
 body {
-  font-family: "IBMPlexSans";
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-family: $ibm-font-family;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-base;
+  line-height: $line-height-24;
 }
 
 h1,
 .h1 {
-  font-family: "IBMPlexSans";
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 26px;
+  font-family: $ibm-font-family;
+  font-weight: $font-weight-600;
+  font-size: $font-size-lg;
+  line-height: $line-height-26;
 }
 
 h2,
 .h2 {
-  font-family: "IBMPlexSans";
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  font-family: $ibm-font-family;
+  font-weight: $font-weight-600;
+  font-size: $font-size-lg;
+  line-height: $line-height-20;
+
 }
 
 h3,
 .h3 {
-  font-family: "IBMPlexSans";
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
+  font-family: $ibm-font-family;
+  font-weight: $font-weight-500;
+  font-size: $font-size-sm;
+  line-height: $line-height-20;
 }
 
 label {
-  font-family: "IBMPlexSans";
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
+  font-family: $ibm-font-family;
+  font-weight: $font-weight-500;
+  font-size: $font-size-sm;
+  line-height: $line-height-20;
+
 }

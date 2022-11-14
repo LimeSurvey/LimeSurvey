@@ -129,14 +129,6 @@
             }
         }
     }
-    .breadcrumb>li+li:before {
-        float: none;
-        padding: 0 5px;
-        color: #ccc;
-        content: #{'/*!rtl:"\f060"*/'}"\f061";
-        font: normal normal normal 18px/1 FontAwesome;
-    }
-
     .pager li > a, .pager li > span {
         border-radius: 4px;
         margin: 1px;
@@ -234,63 +226,6 @@
     min-height: 400px;
 }
 
-footer.footer {
-    position: static;
-}
-
-ol.breadcrumb.title-bar-breadcrumb {
-    margin-bottom: 0px;
-    padding: 8px 15px;
-    > :first-child {
-        a {
-            &.animate::after {
-                margin-left: 0px;
-            }
-        }
-    }
-    a {
-        text-decoration: none;
-        line-height: 24px;
-        font-size: 18px;
-        &.animate::after {
-            text-align: right;
-            content: '';
-            display: block;
-            width: 0;
-            height: 2px;
-        }
-        &.animate:hover::after {
-            width: 100%;
-        }
-        &.animate.home-icon:hover::after {
-            margin-left: 0;
-            width: 100% !important;
-        }
-    }
-    li {
-        line-height: 24px;
-        font-size: 18px;
-        &.active {
-            font-style: italic
-        }
-        >div {
-            display: inline-block;
-        }
-    }
-    .menu-label {
-        width: 100%;
-        display: block;
-        font-size: 85%;
-        font-style: normal;
-    }
-}
-
-.breadcrumb-title {
-    line-height: 24px;
-    font-size: 18px;
-    padding: 8px 15px;
-}
-
 #pjax-file-load-container {
     height: 6px;
     position: fixed;
@@ -366,7 +301,6 @@ ol.breadcrumb.title-bar-breadcrumb {
         padding-right:10px;
     }
     #vue-apps-main-container,
-    footer.footer,
     .surveymanagerbar {
         margin-left:22px
     }
