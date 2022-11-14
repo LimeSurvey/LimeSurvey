@@ -47,7 +47,11 @@ class InstallerController extends CController
     {
         $this->checkInstallation();
         $this->sessioncontrol();
-        Yii::import('application.helpers.common_helper', true);
+        App()->loadHelper('common');
+        App()->loadHelper('surveytranslator');
+        AdminTheme::getInstance();
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
 
         switch ($action) {
             case 'welcome':
