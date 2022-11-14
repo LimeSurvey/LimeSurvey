@@ -19005,9 +19005,9 @@ footer.footer {
 }
 
 .topbar {
-  padding-top: 5px;
+  padding-top: 10px;
   padding-bottom: 5px;
-  margin: 15px auto 15px;
+  margin: 0 auto 15px;
   z-index: 1000;
-  background-color: #5E6372;
+  background-color: #7C8191;
 }
