@@ -14,20 +14,6 @@
  *
  */
 
-// REST
-// - Resource index
-$route['rest/<_api_version:\w+>/<_entity:\w+>'] = array(
-    'rest/rest',
-    'verb' => 'GET, PUT, DELETE',
-    'matchValue' => true
-);
-// - Resource index with id
-$route['rest/<_api_version:\w+>/<_entity:\w+>/<_id:\w+>'] = array(
-    'rest/rest',
-    'verb' => 'GET, PUT, DELETE',
-    'matchValue' => true
-);
-
 //Admin Routes
 $route['admin/index'] = "admin";
 $route['admin/<action:\w+>/sa/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
@@ -48,6 +34,20 @@ $route['optin/tokens/<surveyid:\d+>'] = array('optin/tokens', 'matchValue' => tr
 $route['optin/participants/<surveyid:\d+>'] = array('optin/participants', 'matchValue' => true);
 $route['statistics_user/<surveyid:\d+>'] = array('StatisticsUser/action', 'matchValue' => true);
 $route['statistics_user/action'] = 'StatisticsUser/action';
+
+// REST
+// - Resource index
+$route['rest/<_api_version:\w+>/<_entity:\w+>'] = array(
+    'rest',
+    'verb' => 'GET, PUT, DELETE',
+    'matchValue' => true
+);
+// - Resource index with id
+$route['rest/<_api_version:\w+>/<_entity:\w+>/<_id:\w+>'] = array(
+    'rest',
+    'verb' => 'GET, PUT, DELETE',
+    'matchValue' => true
+);
 
 //Compatibility with classic modrewrite
 $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>/token/<_token>"; //This one must be first

@@ -33,7 +33,7 @@ class RestController extends LSYii_Controller
     public function run($actionId = null)
     {
         try {
-            $config = include(__DIR__ . '/../../config/api.php');
+            $config = include(__DIR__ . '/../config/api.php');
             $request = Yii::app()->request;
 
             $endpoint = $this->getEndpoint(
