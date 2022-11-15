@@ -209,17 +209,16 @@ class Labels extends SurveyCommonAction
             $aViewUrls['editlabel_view'][] = $aData;
         }
 
-        // Label Bar
-        $aData['labelbar']['buttons']['delete'] = ($sa != "newlabelset") ? true : false;
-        // Save button
-        $aData['labelbar']['buttons']['edition'] = true;
-        // Return button
-        $aData['labelbar']['buttons']['return'] = true;
-        $aData['labelbar']['savebutton']['form'] = 'labelsetform';
-        $aData['labelbar']['savebutton']['text'] = gT("Save");
-
-        // Green SurveyManagerBar
-        $aData['pageTitle'] = $pageTitle;
+        if ($sa == "newlabelset" || $sa == "editlabelset") {
+            $aData['topbar']['title'] = $pageTitle;
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns_newimport/rightSideButtons',
+                [
+                    'hasPermissionExport' => Permission::model()->hasGlobalPermission('labelsets', 'export')
+                ],
+                true
+            );
+        }
 
         $this->renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
@@ -295,38 +294,44 @@ class Labels extends SurveyCommonAction
 
         $aData['model'] = $model;
 
-        if ($lid == 0) {
-            $aData['labelbar']['buttons']['view'] = true;
-        } else {
-            $aData['labelbar']['buttons']['delete'] = true;
-
-            // Save Button
-            $aData['labelbar']['savebutton']['form'] = 'mainform';
-            $aData['labelbar']['savebutton']['text'] = gT("Save");
-
-            // Save and Close Button
-            $aData['labelbar']['saveandclosebutton']['form'] = 'mainform';
-            $aData['labelbar']['saveandclosebutton']['text'] = gT('Save & close');
-
-            // White Close Button
-            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
-            ;
-            $aData['labelbar']['white_closebutton']['text'] = gT('Close');
-
-            $aData['labelbar']['buttons']['edition'] = true;
-
-            $aData['labelbar']['buttons']['edit'] = true;
-            if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-                unset($aData['labelbar']['buttons']['edition']);
-            }
-        }
-
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
 
-        // Green SurveyManagerBar Page Title
-        $aData['pageTitle'] = gT('Label sets list');
+        if ($lid == 0) {
+            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns/leftSideButtons',
+                [
+                    'hasPermissionCreate' => Permission::model()->hasGlobalPermission('labelsets', 'create')
+                        || Permission::model()->hasGlobalPermission('labelsets', 'import')
+                ],
+                true
+            );
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns/rightSideButtons',
+                [
+                    'hasPermissionExport' => Permission::model()->hasGlobalPermission('labelsets', 'export')
+                ],
+                true
+            );
+        } else {
+            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns_singlelabelset/leftSideButtons',
+                [
+                    'hasUpdatePermission' => Permission::model()->hasGlobalPermission('labelsets', 'update'),
+                    'hasDeletePermission' => Permission::model()->hasGlobalPermission('labelsets', 'delete'),
+                    'lid' => $lid
+                ],
+                true
+            );
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns_singlelabelset/rightSideButtons',
+                [],
+                true
+            );
+        }
 
         $this->renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
@@ -432,18 +437,12 @@ class Labels extends SurveyCommonAction
         if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
             $aData = [];
 
-            // Save Button
-            $aData['labelbar']['buttons']['edition'] = true;
-            $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
-
-            $aData['labelbar']['savebutton']['text'] = gT("Export");
-
-            // White Close Button
-            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
-            $aData['labelbar']['white_closebutton']['text'] = gT('Close');
-
-            // Green Page Title
-            $aData['pageTitle'] = gT('Export multiple label sets');
+            $aData['topbar']['title'] = gt('Export multiple label sets');
+            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+                '/admin/labels/partials/topbarBtns_export/rightSideButtons',
+                [],
+                true
+            );
 
             $this->renderWrappedTemplate('labels', 'exportmulti_view', $aData);
         }
@@ -729,8 +728,6 @@ class Labels extends SurveyCommonAction
                 $aData['lid'] = 0;
             }
             $aViewUrls = (array) $aViewUrls;
-
-            array_unshift($aViewUrls, 'labelsetsbar_view');
         }
 
         $aData['display']['menu_bars'] = false;
