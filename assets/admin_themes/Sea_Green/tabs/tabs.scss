@@ -7,11 +7,11 @@
     // border: $nav-tabs-border-width solid transparent;
 
     // newly added
-    background: $g-100;
+    // background: $g-100;
     color: $nav-tabs-link-active-color;
     border: 0;
     border-radius: 0;
-    border-bottom: 2px solid $g-400;
+    // border-bottom: 2px solid $g-400;
     border-top: 2px solid $white;
     &:hover,
     &:focus {
@@ -20,13 +20,17 @@
       // isolation: isolate;
 
       // newly added
-      border-bottom: 2px solid $g-400;
+      font-weight: 400 !important;
       border-top: 2px solid $white;
-
     }
 
-    &.disabled {
-      // color: $nav-link-disabled-color;
+    &:hover {
+      opacity: 0.8 !important;
+    }
+
+    &.disabled,
+    &:disabled {
+      color: $g-600;
       background-color: transparent;
       border-color: transparent;
     }
@@ -40,10 +44,10 @@
 
     // newly added
     background-color: $white;
-    border-top: 2px solid $action;
-    border-bottom: 2px solid $white;
-
+    border-top: 2px solid $active-green;
+    // border-bottom: 2px solid $active-green;
   }
 
+  // Disabled state lightens text
 
 }
