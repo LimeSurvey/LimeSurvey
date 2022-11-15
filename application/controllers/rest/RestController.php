@@ -32,18 +32,52 @@ class RestController extends LSYii_Controller
      */
     public function run($actionId = null)
     {
-        $apiConfig = include( __DIR__ . '/../../config/api.php');
+        try {
+            $config = include(__DIR__ . '/../../config/api.php');
+            $request = Yii::app()->request;
 
-        //die(print_r('RestController: ' . print_r($apiConfig, true), true));
+            $endpoint = $this->getEndpoint(
+                !empty($config) && !empty($config['api']) ? $config['api'] : [],
+                $request
+            );
+            if (!$endpoint) {
+                throw new Exception('Endpoint not configured');
+            }
 
-        $request = Yii::app()->request;
+            if (!class_exists($endpoint['commandClass'])) {
+                throw new Exception('Invalid command class');
+            }
+            $command = new $endpoint['commandClass']();
+            $commandParams = $this->getCommandParams($endpoint, $request);
+
+            //die(print_r('RestController: ' . print_r($commandParams, true), true));
+
+            $commandRequest = new Request($commandParams);
+            $commandResponse = $command->run($commandRequest);
+
+            $this->renderCommandResponse($commandResponse);
+        } catch (Exception $e) {
+            $this->displayException($e);
+        }
+    }
+
+    /**
+     * Get Endpoint
+     *
+     * @param array $apiConfig
+     * @param CHttpRequest $request
+     * @return array
+     */
+    protected function getEndpoint($apiConfig, $request)
+    {
+        $apiConfig = !empty($apiConfig) ? $apiConfig : [];
         $apiVersion = $request->getParam('_api_version');
         $entity = $request->getParam('_entity');
         $id = $request->getParam('_id');
         $requestMethod = $request->getRequestType();
 
         $endpoint = null;
-        foreach ($apiConfig['api'] as $config) {
+        foreach ($apiConfig as $config) {
             if (
                 $config['version'] == $apiVersion
                 && $config['entity'] == $entity
@@ -55,58 +89,121 @@ class RestController extends LSYii_Controller
             }
         }
 
-        $command = new $endpoint['commandClass']();
+        return $endpoint;
+    }
 
-        //die(print_r('RestController: ' . print_r($endpoint, true), true));
-
-        $commandParams = [];
-
-        if (
-            $endpoint
-            && !empty($endpoint['byId'])
-            && !empty($id)
-        ) {
-            $idName = is_string($endpoint['byId'])
-                ? $endpoint['byId'] : 'id';
-            $commandParams[$idName] = $id;
-        }
+    /**
+     * Get Command Params
+     *
+     * @param array $endpoint
+     * @param CHttpRequest $request
+     * @return array
+     */
+    public function getCommandParams($endpoint, $request)
+    {
+        $params = [];
 
         if (
             $endpoint
             && !empty($endpoint['auth'])
             && $endpoint['auth'] == 'session'
         ) {
-            $commandParams['sessionKey'] = $this->getAuthToken();
+            $params['sessionKey'] = $this->getAuthToken();
         }
 
+        $id = $request->getParam('_id');
+        if (
+            $endpoint
+            && !empty($endpoint['byId'])
+            && !empty($id)
+        ) {
+            $idName = is_string($endpoint['byId'])
+            ? $endpoint['byId'] : 'id';
+            $params[$idName] = $id;
+        }
+
+
+        $params = array_merge(
+            $this->getQueryParams($endpoint, $request),
+            $this->getBodyParams($endpoint, $request),
+            $params
+        );
+
+        return $params;
+    }
+
+    /**
+     * Get Query Params
+     *
+     * @param array $endpoint
+     * @param CHttpRequest $request
+     * @return void
+     */
+    protected function getQueryParams($endpoint, $request)
+    {
+        $result = [];
         if (
             $endpoint
             && is_array($endpoint['queryParams'])
         ) {
-            foreach ($endpoint['queryParams'] as $paramName) {
-                $commandParams[$paramName] = $request->getParam($paramName, null);
+            foreach ($endpoint['queryParams'] as $paramName => $options) {
+                if ($options == false) {
+                    continue; // turned off
+                }
+                $opts = $this->normaliseParamOptions($options);
+                $default = isset($opts['default']) ? $opts['default'] : null;
+                $result[$paramName] = $request->getParam($paramName, $default);
             }
         }
+        return $result;
+    }
 
+    /**
+     * Get Body Params
+     *
+     * @param array $endpoint
+     * @param CHttpRequest $request
+     * @return array
+     */
+    protected function getBodyParams($endpoint, $request)
+    {
+        $result = [];
         if (
             $endpoint
             && is_array($endpoint['bodyParams'])
         ) {
             $input = $request->getRestParams();
-            foreach ($endpoint['bodyParams'] as $paramName) {
-                $commandParams[$paramName] = isset($input[$paramName])
-                    ? $input[$paramName] : null;
+            foreach ($endpoint['bodyParams'] as $paramName => $options) {
+                if ($options == false) {
+                    continue; // turned off
+                }
+                $opts = $this->normaliseParamOptions($options);
+                $default = isset($opts['default']) ? $opts['default'] : null;
+                $result[$paramName] = isset($input[$paramName])
+                    ? $input[$paramName] : $default;
             }
         }
+        return $result;
+    }
 
-        try {
-            //die(print_r('RestController: ' . print_r($commandParams, true), true));
-            $commandRequest = new Request($commandParams);
-            $commandResponse = $command->run($commandRequest);
-            $this->renderCommandResponse($commandResponse);
-        } catch (Exception $e) {
-            $this->displayException($e);
-        }
+    /**
+     * Normalise param options
+     *
+     * Applies default values to param options.
+     *
+     * @param array $options
+     * @return array
+     */
+    protected function normaliseParamOptions($options)
+    {
+        $defaults = [
+            'required' => false,
+            'default' => null
+        ];
+
+        return is_array($options)
+            ? array_merge($defaults, $options)
+            : $defaults;
     }
 
     /**
