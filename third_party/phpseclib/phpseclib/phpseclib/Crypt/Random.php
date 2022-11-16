@@ -14,8 +14,6 @@
  * ?>
  * </code>
  *
- * @category  Crypt
- * @package   Random
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2007 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -27,9 +25,7 @@ namespace phpseclib3\Crypt;
 /**
  * Pure-PHP Random Number Generator
  *
- * @package Random
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class Random
 {
@@ -51,7 +47,7 @@ abstract class Random
         }
 
         try {
-            return \random_bytes($length);
+            return random_bytes($length);
         } catch (\Exception $e) {
             // random_compat will throw an Exception, which in PHP 5 does not implement Throwable
         } catch (\Throwable $e) {
@@ -101,7 +97,10 @@ abstract class Random
                  (isset($_POST) ? self::safe_serialize($_POST) : '') .
                  (isset($_GET) ? self::safe_serialize($_GET) : '') .
                  (isset($_COOKIE) ? self::safe_serialize($_COOKIE) : '') .
-                 self::safe_serialize($GLOBALS) .
+                 // as of PHP 8.1 $GLOBALS cann't be accessed by reference, which eliminates
+                 // the need for phpseclib_safe_serialize. see https://wiki.php.net/rfc/restrict_globals_usage
+                 // for more info
+                 (version_compare(PHP_VERSION, '8.1.0', '>=') ? serialize($GLOBALS) : self::safe_serialize($GLOBALS)) .
                  self::safe_serialize($_SESSION) .
                  self::safe_serialize($_OLD_SESSION);
             $v = $seed = $_SESSION['seed'] = sha1($v, true);
@@ -184,7 +183,7 @@ abstract class Random
             $i = $crypto->encrypt(microtime()); // strlen(microtime()) == 21
             $r = $crypto->encrypt($i ^ $v); // strlen($v) == 20
             $v = $crypto->encrypt($r ^ $i); // strlen($r) == 20
-            $result.= $r;
+            $result .= $r;
         }
 
         return substr($result, 0, $length);

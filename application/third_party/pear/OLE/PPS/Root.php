@@ -133,7 +133,7 @@ class OLE_PPS_Root extends OLE_PPS
         $this->_saveBigData($iSBDcnt, $aList);
         // Write PPS
         $this->_savePps($aList);
-        // Write Big Block Depot and BDList and Adding Header informations
+        // Write Big Block Depot and BDList and Adding Header information
         $this->_saveBbd($iSBDcnt, $iBBcnt, $iPPScnt);
         // Close File, send it to stdout if necessary
         if (($filename == '-') || ($filename == '')) {

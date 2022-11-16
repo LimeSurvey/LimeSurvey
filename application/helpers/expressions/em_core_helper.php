@@ -66,9 +66,9 @@ class ExpressionManager
     private $RDP_tokens; // the list of generated tokens
     private $RDP_count; // total number of $RDP_tokens
     private $RDP_pos; // position within the $token array while processing equation
-    /** @var array[] informations about current errors : array with string, $token (EM internal array). Resetted in RDP_Evaluate (and only in RDP_Evaluate) */
+    /** @var array[] information about current errors : array with string, $token (EM internal array). Reset in RDP_Evaluate (and only in RDP_Evaluate) */
     private $RDP_errs;
-    /** @var array[] informations about current warnings : array with string, $token (EM internal array) and optional link Resetted in RDP_Evaluate or manually */
+    /** @var array[] information about current warnings : array with string, $token (EM internal array) and optional link Reset in RDP_Evaluate or manually */
     private $RDP_warnings = array();
     private $RDP_onlyparse;
     private $RDP_stack; // stack of intermediate results
@@ -1997,7 +1997,7 @@ class ExpressionManager
                 if ($this->RDP_Evaluate($expr, false, $this->resetErrorsAndWarningsOnEachPart)) {
                     $resolvedPart = $this->GetResult();
                 } else {
-                    // show original and errors in-line only if user have the rigth to update survey content
+                    // show original and errors in-line only if user have the right to update survey content
                     if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
                         $resolvedPart = $this->GetPrettyPrintString();
                     } else {
@@ -2054,7 +2054,7 @@ class ExpressionManager
             switch ($token[2]) {
                 case 'SGQA':
                 case 'WORD':
-                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionnaly followed by dot and alnum
+                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionaly followed by dot and alnum
                     if (preg_match("/" . $splitter . "/", $token[0])) {
                         $setInCache = false;
                         $expandedVar .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $token[0]);
@@ -2564,7 +2564,11 @@ class ExpressionManager
      */
     public static function gT($string, $sEscapeMode = 'html')
     {
-        return gT($string, $sEscapeMode, Yii::app()->session['adminlang']);
+        return gT(
+            $string,
+            $sEscapeMode,
+            Yii::app()->session->get('adminlang', App()->getConfig("defaultlang"))
+        );
     }
 }
 
@@ -2941,7 +2945,8 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
 
 /**
  * Return true if the variable is an integer for LimeSurvey
- * Can not really use is_int due to SQL DECIMAL system. This function can surely be improved
+ * Allow usage of numeric answercode as int
+ * Can not use is_int due to SQL DECIMAL system.
  * @param string $arg
  * @return integer
  * @link http://php.net/is_int#82857
@@ -2949,10 +2954,14 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
 function exprmgr_int($arg)
 {
     if (strpos($arg, ".")) {
-        $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0")); // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+        // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+        $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0"));
     }
-    return (preg_match("/^-?[0-9]*$/", $arg)); // Allow 000 for value, @link https://bugs.limesurvey.org/view.php?id=9550 DECIMAL sql type.
+    // Allow 000 for value
+    // Disallow '' (and false) @link https://bugs.limesurvey.org/view.php?id=17950
+    return (preg_match("/^-?\d+$/", $arg));
 }
+
 /**
  * Join together $args[0-N] with ', '
  * @param array $args

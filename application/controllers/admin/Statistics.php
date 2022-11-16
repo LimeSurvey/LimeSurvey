@@ -757,6 +757,7 @@ class Statistics extends SurveyCommonAction
                 case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 case Question::QT_SEMICOLON_ARRAY_TEXT:
+                case Question::QT_X_TEXT_DISPLAY:
                     break;
 
 

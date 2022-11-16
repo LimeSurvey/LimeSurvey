@@ -91,7 +91,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
 
             <!-- Enable token-based response persistence -->
             <div class="form-group">
-                <label class=" control-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the survey participants table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."); ?>'>
+                <label class=" control-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the survey participants table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link), their previous answers will be reloaded."); ?>'>
                     <?php  eT("Enable participant-based response persistence:"); ?>
                 </label>
                 <div class="">
@@ -118,7 +118,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
 
             <!-- Allow multiple responses or update responses with one token -->
             <div class="form-group">
-                <label class=" control-label" for='alloweditaftercompletion' title='<?php  eT("If participant-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."); ?>'>
+                <label class=" control-label" for='alloweditaftercompletion' title='<?php  eT("If participant-based response persistence is enabled then a participant can update their responses after completion, otherwise a participant can add new responses without restriction."); ?>'>
                     <?php  eT("Allow multiple responses or update responses with one access code:"); ?>
                 </label>
                 <div class="">

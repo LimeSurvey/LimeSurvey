@@ -377,12 +377,13 @@ function buildSelects($allfields, $surveyid, $language)
                     $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
                     $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp"
             ) {
-//pull out just the fieldnames
+                //pull out just the fieldnames
                 //put together some SQL here
                 $thisquestion = Yii::app()->db->quoteColumnName($pv) . " IN (";
 
+                $db = Yii::app()->db;
                 foreach ($_POST[$pv] as $condition) {
-                    $thisquestion .= "'$condition', ";
+                    $thisquestion .= "{$db->quoteValue($condition)}, ";
                 }
 
                 $thisquestion = substr($thisquestion, 0, -2)
@@ -580,6 +581,9 @@ class userstatistics_helper
      */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true)
     {
+        $language = sanitize_languagecode($language);
+        $surveyid = (int) $surveyid;
+
         //Set up required variables
         $survey = Survey::model()->findByPk($surveyid);
         $alist = array();
@@ -750,8 +754,7 @@ class userstatistics_helper
                     $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
                 }
 
-
-                $query = "SELECT " . $fieldname . " as json FROM {{survey_$surveyid}}";
+                $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname) . " as json FROM {{survey_$surveyid}}";
                 $result = Yii::app()->db->createCommand($query)->query();
 
                 $responsecount = 0;
@@ -1281,13 +1284,16 @@ class userstatistics_helper
                         }
                         break;
                     case Question::QT_1_ARRAY_DUAL:    // Array (dual scale)
-                        $sSubquestionQuery = "SELECT  question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid  WHERE q.parent_qid='$qiqid' AND q.title='$qanswer' AND l.language='{$language}' ORDER BY q.question_order";
+                        $qiqid = (int) $qiqid;
+                        $qanswerquoted = Yii::app()->db->quoteValue($qanswer);
+                        $sSubquestionQuery = "SELECT  question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid  WHERE q.parent_qid='$qiqid' AND q.title={$qanswerquoted} AND l.language='{$language}' ORDER BY q.question_order";
 
                         $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
                         $sSubquestion = flattenText($questionDesc['question']);
 
                         //get question attributes
                         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($qqid);
+                        $qqid = (int) $qqid;
 
                         //check last character -> label 1
                         if (substr($rt, -1, 1) == 0) {
@@ -1944,7 +1950,7 @@ class userstatistics_helper
 
 
             /*
-            * there are 3 colums:
+            * there are 3 columns:
             *
             * 1 (50%) = answer (title and code in brackets)
             * 2 (25%) = count (absolute)
@@ -2449,6 +2455,12 @@ class userstatistics_helper
      */
     public function generate_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
+        if (!isset($surveyid)) {
+            $surveyid = (int) returnGlobal('sid');
+        } else {
+            $surveyid = (int) $surveyid;
+        }
+
         $survey = Survey::model()->findByPk($surveyid);
 
         $aStatisticsData = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
@@ -2474,11 +2486,6 @@ class userstatistics_helper
         /**
          * get/set Survey Details
          */
-
-        //no survey ID? -> come and get one
-        if (!isset($surveyid)) {
-            $surveyid = returnGlobal('sid');
-        }
 
         // Set language for questions and answers to base language of this survey
         $language = $sLanguageCode;
@@ -2521,8 +2528,9 @@ class userstatistics_helper
                     $myField = "D" . $myField;
                 }
                 if ($field['type'] == Question::QT_F_ARRAY || $field['type'] == Question::QT_H_ARRAY_COLUMN) {
+                    $db = Yii::app()->db;
                     //Get answers. We always use the answer code because the label might be too long elsewise
-                    $query = "SELECT code, answer FROM {{answers}} WHERE qid='" . $field['qid'] . "' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+                    $query = "SELECT code, answer FROM {{answers}} WHERE qid={$db->quoteValue($field['qid'])} AND scale_id=0 AND language={$db->quoteValue($language)} ORDER BY sortorder, answer";
                     $result = Yii::app()->db->createCommand($query)->query();
 
                     //check all the answers
@@ -2836,6 +2844,7 @@ class userstatistics_helper
      */
     protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros)
     {
+        $surveyid = (int) $surveyid;
         static $sid = null;
         static $recordCount = 0;
         static $field = null;

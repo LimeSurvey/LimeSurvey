@@ -69,6 +69,7 @@
                                 'subquestionl10n': subquestion.questionl10ns[lang],
                                 'language'  : lang,
                                 'oldCode'   : true,
+                                'supportsRelevance' : question.questionType.code != 'H',
                             } %}
 
                             {% set position = position + 1 %}

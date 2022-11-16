@@ -5,8 +5,6 @@
  *
  * PHP version 5
  *
- * @category  File
- * @package   ASN1
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2016 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -20,17 +18,15 @@ use phpseclib3\File\ASN1;
 /**
  * Extensions
  *
- * @package ASN1
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class Extensions
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
-        'min'      => 1,
+        'type' => ASN1::TYPE_SEQUENCE,
+        'min' => 1,
         // technically, it's MAX, but we'll assume anything < 0 is MAX
-        'max'      => -1,
+        'max' => -1,
         // if 'children' isn't an array then 'min' and 'max' must be defined
         'children' => Extension::MAP
     ];

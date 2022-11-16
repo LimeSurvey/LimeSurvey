@@ -72,8 +72,11 @@ $config['repeatheadings']            = '25'; // The number of answers to show be
 $config['minrepeatheadings']         = 3; // The minimum number of remaining answers that are required before repeating the headings in array (flexible) questions.
 $config['defaultlang']               = 'en'; // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 $config['timeadjust']                = 0; // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
-$config['allowexportalldb']          = 0; // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
-$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+
+$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouput in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+$config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 for no limit
+$config['allowexportalldb']          = 0; // Default 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported (use carefully)
+
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
@@ -106,7 +109,7 @@ $config['allowedfileuploads'] = [
 ];
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
-$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html';
+$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
@@ -184,7 +187,7 @@ $config['default_displayed_auth_method'] = 'Authdb';
 // unless a username mapping is used see auth_webserver_user_map below
 //
 // The user still needs to be defined in the limesurvey database in order to
-// login and get his permissions (unless auth_webserver_autocreate_user is set to true)
+// login and get their permissions (unless auth_webserver_autocreate_user is set to true)
 $config['auth_webserver'] = false;
 
 // auth_webserver_user_map
@@ -204,7 +207,7 @@ $config['auth_webserver_autocreate_user'] = false;
 
 // auth_webserver_autocreate_profile
 // This is an array describing the default profile to use for auto-created users
-// This profile will be the same for all users (unless you define the optionnal
+// This profile will be the same for all users (unless you define the optional
 // 'hook_get_auth_webserver_profile' function).
 //
 $config['auth_webserver_autocreate_profile'] = Array(
@@ -219,7 +222,7 @@ $config['auth_webserver_autocreate_permissions'] = Array(
 );
 
 // hook_get_auth_webserver_profile
-// The optionnal 'hook_get_auth_webserver_profile' function is for advanced user usage only.
+// The optional 'hook_get_auth_webserver_profile' function is for advanced user usage only.
 // It is used to customize the profile of the imported user
 // If set, the this function will overwrite the auth_webserver_autocreate_profile
 // defined above by its return value
@@ -291,8 +294,7 @@ $config['demoModePrefill'] = false;
 *
 * $column_style defines how columns are rendered for survey answers.
 * There are four possible options:
-*     'css'   using one of the various CSS only methods for creating
-columns (see theme style sheet for details).
+*     'css'   using one of the various CSS only methods for creating columns (see theme style sheet for details).
 *     'ul'    using multiple floated unordered lists. (DEFAULT)
 *     'table' using conventional tables based layout.
 *     NULL    blocks the use of columns
@@ -371,9 +373,9 @@ $config['maxforgottenpasswordemaildelay'] = 1500000;
 
 $config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 /**
-*  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific langage - this font are included in tcpdf core
+*  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific language - this font are included in tcpdf core
 *  Only used if $pdfdefaultfont is set to auto or set to a PDF core fonts
-*  Some langage are not tested : need translation for Yes,No and Gender : ckb, swh
+*  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile'] = array(
     'ar'=>'dejavusans', // 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
@@ -453,7 +455,7 @@ $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of re
 */
 $config['chartfontfile'] = 'auto';
 /**
-*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific langage - this font must reside in <limesurvey root folder>/fonts
+*  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific language - this font must reside in <limesurvey root folder>/fonts
 *  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
 */
 $config['alternatechartfontfile'] = array(
@@ -744,9 +746,9 @@ $config['overwritefiles'] = 'off';
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
 
-// (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
+// (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric characters; 0 : leave all characters
 $config['bFixNumAuto']             = 1;
-// (javascript) Send real value entered when using Numeric question type in ExpressionScript Engine : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
+// (javascript) Send real value entered when using Numeric question type in ExpressionScript Engine : 0 : {NUMERIC} with bad characters send '', 1 : {NUMERIC} send all characters entered
 $config['bNumRealValue'] = 0;
 
 // Home page default Settings
@@ -795,12 +797,15 @@ $config['force_xmlsettings_for_survey_rendering'] = false;
 /**
  * When this setting is true, plugins that are not in the white list (see 'pluginWhitelist') cannot be installed nor loaded. This may disable
  * already installed plugins.
- * Core plugins are not affected by this setting.
+ * Core plugins are implicitly whitelisted, but can be excluded using the black list.
  */
 $config['usePluginWhitelist'] = false;
 
 // List of plugin names allowed to be installed and loaded when 'usePluginWhitelist' is true. Core plugins are implicitly whitelisted.
 $config['pluginWhitelist'] = [];
+
+// List of core plugin names forbidden when 'usePluginWhitelist' is true.
+$config['corePluginBlacklist'] = [];
 
 // When this setting is true, the "Plugin Upload" feature is disabled.
 $config['disablePluginUpload'] = false;

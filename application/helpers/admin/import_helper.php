@@ -1277,7 +1277,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $aSurveyModelsColumns['wishSID'] = null; // Can not be imported
         $aBadData = array_diff_key($insertdata, $aSurveyModelsColumns);
         $insertdata = array_intersect_key($insertdata, $aSurveyModelsColumns);
-        // Fill a optionnal array of error
+        // Fill a optional array of error
         foreach ($aBadData as $key => $value) {
             $results['importwarnings'][] = sprintf(gT("This survey setting has not been imported: %s => %s"), $key, $value);
         }
@@ -1285,6 +1285,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if ($newSurvey->sid) {
             $iNewSID = $results['newsid'] = $newSurvey->sid;
             $results['surveys']++;
+            if (!empty($iDesiredSurveyId) && $iNewSID != $iDesiredSurveyId) {
+                $results['importwarnings'][] = gT("The desired survey ID was already in use, therefore a random one was assigned.");
+            }
         } else {
             $results['error'] = CHtml::errorSummary($newSurvey, gT("Unable to import survey."));
             return $results;
@@ -2313,13 +2316,14 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 }
 
 /**
-* This function imports a CSV file into the response table
-*
-* @param string $sFullFilePath
-* @param integer $iSurveyId
-* @param array $aOptions
-* Return array $result ("errors","warnings","success")
-*/
+ * This function imports a CSV file into the response table
+ * CSV file is deleted during process
+ *
+ * @param string $sFullFilePath
+ * @param integer $iSurveyId
+ * @param array $aOptions
+ * Return array $result ("errors","warnings","success")
+ */
 function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
 {
 
@@ -2439,7 +2443,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
 
     $iMaxId = 0; // If we set the id, keep the max
     // Some specific header (with options)
-    $iIdKey = array_search('id', $aCsvHeader); // the id is allways needed and used a lot
+    $iIdKey = array_search('id', $aCsvHeader); // the id is always needed and used a lot
     if (is_int($iIdKey)) {
         unset($aKeyForFieldNames['id']);
         /* Unset it if option is ignore */
@@ -2451,7 +2455,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     if (is_int($iSubmitdateKey)) {
         unset($aKeyForFieldNames['submitdate']);
     }
-    $iIdReponsesKey = (is_int($iIdKey)) ? $iIdKey : 0; // The key for reponses id: id column or first column if not exist
+    $iIdResponsesKey = (is_int($iIdKey)) ? $iIdKey : 0; // The key for responses id: id column or first column if not exist
 
     // Import each responses line here
     while ($aResponses = array_shift($aFileResponses)) {
@@ -2493,7 +2497,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             if (is_int($iIdKey)) {
                 // Rule for id: only if id exists in vvimport file
                 if (!$bExistingsId) {
-                    // If not exist : allways import it
+                    // If not exist : always import it
                     $oSurvey->id = $aResponses[$iIdKey];
                     $iMaxId = ($aResponses[$iIdKey] > $iMaxId) ? $aResponses[$iIdKey] : $iMaxId;
                 } elseif ($aOptions['sExistingId'] == 'replace' || $aOptions['sExistingId'] == 'replaceanswers') {
@@ -2545,14 +2549,14 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
 
                     $oTransaction->commit();
                     if ($bExistingsId && $aOptions['sExistingId'] != 'renumber') {
-                        $aResponsesUpdated[] = $aResponses[$iIdReponsesKey];
+                        $aResponsesUpdated[] = $aResponses[$iIdResponsesKey];
                     } else {
-                        $aResponsesInserted[] = $aResponses[$iIdReponsesKey];
+                        $aResponsesInserted[] = $aResponses[$iIdResponsesKey];
                     }
                 } else {
                     // Actually can not be, leave it if we have a $oSurvey->validate() in future release
                     $oTransaction->rollBack();
-                    $aResponsesError[] = $aResponses[$iIdReponsesKey];
+                    $aResponsesError[] = $aResponses[$iIdResponsesKey];
                 }
                 if (isset($bSwitched) && $bSwitched == true) {
                     switchMSSQLIdentityInsert('survey_' . $iSurveyId, false);
@@ -2560,7 +2564,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                 }
             } catch (Exception $oException) {
                 $oTransaction->rollBack();
-                $aResponsesError[] = $aResponses[$iIdReponsesKey];
+                $aResponsesError[] = $aResponses[$iIdResponsesKey];
                 // Show some error to user ?
                 $CSVImportResult['errors'][] = $oException->getMessage(); // Show it in view
                 tracevar($oException->getMessage());// Show it in console (if debug is set)
@@ -2848,6 +2852,7 @@ function TSVImportSurvey($sFullFilePath)
                 $question['encrypted'] = (isset($row['encrypted']) ? $row['encrypted'] : 'N');
                 $lastother = $question['other'] = (isset($row['other']) ? $row['other'] : 'N'); // Keep trace of other settings for sub question
                 $question['same_default'] = (isset($row['same_default']) ? $row['same_default'] : 0);
+                $question['same_script'] = (isset($row['same_script']) ? $row['same_script'] : 0);
                 $question['parent_qid'] = 0;
 
                 // For multi language survey : same name, add the gid to have same name on different gid. Bad for EM.
@@ -2892,6 +2897,7 @@ function TSVImportSurvey($sFullFilePath)
                         case 'mandatory':
                         case 'other':
                         case 'same_default':
+                        case 'same_script':
                         case 'default':
                             break;
                         default:
@@ -3330,7 +3336,9 @@ function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDR
 }
 
 /**
- * Read a csv file and return a tmp ressources to same file in utf8
+ * Read a csv file and return a tmp resources to same file in utf8
+ * CSV file is deleted during process
+ *
  * @param string $fullfilepath
  * @param string $encoding from
  * @return resource

@@ -18,8 +18,6 @@ class WipeCommand extends CConsoleCommand
     {
         if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0] = 'yes') {
             Yii::import('application.helpers.common_helper', true);
-            Yii::import('application.helpers.database_helper', true);
-
             $actquery = "truncate table {{assessments}}";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{answers}}";

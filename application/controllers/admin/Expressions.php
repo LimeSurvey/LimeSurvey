@@ -84,9 +84,7 @@ class Expressions extends SurveyCommonAction
     {
         $aData = array();
 
-        $sid = Yii::app()->request->getParam('sid', 0, 'integer');
-        $surveyid = Yii::app()->request->getParam('surveyid', $sid, 'integer');
-
+        $sid = (int) Yii::app()->request->getParam('sid', 0);
         $hasSurveyContentReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
         if (!$hasSurveyContentReadPermission) {
             $message['title'] = gT('Access denied!');

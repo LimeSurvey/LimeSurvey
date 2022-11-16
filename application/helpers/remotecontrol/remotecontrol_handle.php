@@ -575,12 +575,16 @@ class remotecontrol_handle
         $helper = new statistics_helper();
         switch ($docType) {
             case 'pdf':
-                $sTempFile = $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage);
+                $sTempFile = sanitize_filename(
+                    $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, $graph, $docType, 'F', $sLanguage)
+                );
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;
             case 'xls':
-                $sTempFile = $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, '0', $docType, 'F', $sLanguage);
+                $sTempFile = sanitize_filename(
+                    $helper->generate_statistics($iSurveyID, $aSummary, $aSummary, '0', $docType, 'F', $sLanguage)
+                );
                 $sResult = file_get_contents($sTempFile);
                 unlink($sTempFile);
                 break;
@@ -1411,9 +1415,9 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iQuestionID = (int) $iQuestionID;
-            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
+            $oQuestion = Question::model()->findByPk($iQuestionID);
             if (!isset($oQuestion)) {
-                            return array('status' => 'Error: Invalid question ID');
+                return array('status' => 'Error: Invalid question ID');
             }
 
             $iSurveyID = $oQuestion['sid'];
@@ -1424,44 +1428,25 @@ class remotecontrol_handle
                 if ($oSurvey->isActive) {
                     return array('status' => 'Survey is active and not editable');
                 }
-                $iGroupID = $oQuestion['gid'];
 
                 $oCondition = Condition::model()->findAllByAttributes(array('cqid' => $iQuestionID));
                 if (count($oCondition) > 0) {
-                                return array('status' => 'Cannot delete Question. Others rely on this question');
+                    return array('status' => 'Cannot delete Question. Others rely on this question');
                 }
 
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $iQuestionID);
 
                 try {
-                    Condition::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-                    QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-                    Answer::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-
-                    $sCriteria = new CDbCriteria();
-                    $sCriteria->addCondition('qid = :qid or parent_qid = :qid');
-                    $sCriteria->params[':qid'] = $iQuestionID;
-                    Question::model()->deleteAll($sCriteria);
-
-                    // delete defaultvalues and defaultvalueL10ns
-                    $oDefaultValues = DefaultValue::model()->findAll(array('qid' => $iQuestionID));
-                    foreach ($oDefaultValues as $defaultvalue) {
-                        DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
-                        DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
-                    }
-
-                    QuotaMember::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-                    Question::updateSortOrder($iGroupID, $iSurveyID);
-
+                    $oQuestion->delete();
                     return (int) $iQuestionID;
                 } catch (Exception $e) {
                     return array('status' => $e->getMessage());
                 }
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY);
         }
     }
 
@@ -1673,26 +1658,32 @@ class remotecontrol_handle
                             $aResult[$sPropertyName] = 'No available answers';
                         }
                     } elseif ($sPropertyName == 'attributes') {
-                        $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language' => null), array('order' => 'attribute'));
-                        if (count($oAttributes) > 0) {
-                            $aData = array();
-                            foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['attribute']] = $oAttribute['value'];
+                        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+                        $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, null, null, true);
+                        $data = [];
+                        foreach ($questionAttributes as $attributeName => $attributeData) {
+                            if (empty($attributeData['i18n'])) {
+                                $data[$attributeName] = $attributeData['value'];
                             }
-
-                            $aResult['attributes'] = $aData;
+                        }
+                        if (count($data) > 0) {
+                            ksort($data, SORT_NATURAL | SORT_FLAG_CASE);
+                            $aResult['attributes'] = $data;
                         } else {
                             $aResult['attributes'] = 'No available attributes';
                         }
                     } elseif ($sPropertyName == 'attributes_lang') {
-                        $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language' => $sLanguage), array('order' => 'attribute'));
-                        if (count($oAttributes) > 0) {
-                            $aData = array();
-                            foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['attribute']] = $oAttribute['value'];
+                        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+                        $questionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, $sLanguage, null, true);
+                        $data = [];
+                        foreach ($questionAttributes as $attributeName => $attributeData) {
+                            if (!empty($attributeData['i18n'])) {
+                                $data[$attributeName] = $attributeData[$sLanguage]['value'];
                             }
-
-                            $aResult['attributes_lang'] = $aData;
+                        }
+                        if (count($data) > 0) {
+                            ksort($data, SORT_NATURAL | SORT_FLAG_CASE);
+                            $aResult['attributes_lang'] = $data;
                         } else {
                             $aResult['attributes_lang'] = 'No available attributes';
                         }
@@ -2687,7 +2678,8 @@ class remotecontrol_handle
     /**
      * Invite participants in a survey (RPC function)
      *
-     * Returns array of results of sending
+     * Returns array of results of sending.
+     * The sending stops on the first error (ie. when a token is invalid).
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -2932,36 +2924,36 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to update response
      * @param array $aResponseData The actual response
-     * @return string|boolean TRUE(bool) on success. errormessage on error
+     * @return array|boolean TRUE(bool) on success. Array with error status on failure.
      */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return self::INVALID_SESSION_KEY;
+            return array('status' => self::INVALID_SESSION_KEY);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) {
-            return 'Error: Invalid survey ID';
+            return array('status' => 'Invalid survey ID');
         }
         if (!$oSurvey->isActive) {
-            return 'Error: Survey is not active.';
+            return array('status' => 'Survey is not active');
         }
 
         if (!$oSurvey->isAllowEditAfterCompletion) {
-            return 'Error: Survey does not allow edit after completion.';
+            return array('status' => 'Survey does not allow edit after completion');
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'update')) {
             if (!Yii::app()->db->schema->getTable($oSurvey->responsesTableName)) {
-                            return 'Error: No survey response table';
+                return array('status' => 'No survey response table');
             }
 
             if (
                 !isset($aResponseData['id'])
                 && !isset($aResponseData['token'])
             ) {
-                return 'Error: Missing response identifier (id|token).';
+                return array('status' => 'Missing response identifier (id|token)');
             }
 
             SurveyDynamic::sid($iSurveyID);
@@ -2974,16 +2966,16 @@ class remotecontrol_handle
             }
 
             if (empty($aResponses)) {
-                            return 'Error: No matching Response.';
+                return array('status' => 'No matching Response');
             }
             if (count($aResponses) > 1) {
-                            return 'Error: More then one matching response, updateing multiple responses at once is not supported.';
+                return array('status' => 'More then one matching response, updateing multiple responses at once is not supported');
             }
 
             $aBasicDestinationFields = $oSurveyDynamic->tableSchema->columnNames;
             $aInvalidFields = array_diff_key($aResponseData, array_flip($aBasicDestinationFields));
             if (count($aInvalidFields) > 0) {
-                            return 'Error: Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields));
+                return array('status' => 'Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields)));
             }
 
             unset($aResponseData['token']);
@@ -2997,10 +2989,10 @@ class remotecontrol_handle
             if ($bResult) {
                 return $bResult;
             } else {
-                return 'Unable to edit response';
+                return array('status' => 'Unable to edit response');
             }
         } else {
-            return 'No permission';
+            return array('status' => 'No permission');
         }
     }
 
@@ -3333,6 +3325,40 @@ class remotecontrol_handle
         return $uploaded_files;
     }
 
+    /**
+     * Get survey fieldmap (RPC function)
+     *
+     * Returns the requested survey's fieldmap in an array
+     *
+     * @access public
+     * @param string $sessionKey Auth credentials
+     * @param int $surveyId ID of the Survey
+     * @param string $language (optional) language of the survey to use (default from Survey)
+     * @return array
+     */
+    public function get_fieldmap($sessionKey, $surveyId, $language = null)
+    {
+        if (!$this->_checkSessionKey($sessionKey)) {
+            return ['status' => self::INVALID_SESSION_KEY];
+        }
+        $surveyId = (int) $surveyId;
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!isset($survey)) {
+            return ['status' => 'Error: Invalid survey ID'];
+        }
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'read')) {
+            return ['status' => 'No permission'];
+        }
+        if (empty($language) || !in_array($language, $survey->allLanguages)) {
+            $language = $survey->language;
+        }
+        // Get the fieldmap
+        $fieldmap = createFieldMap($survey, 'full', false, false, $language);
+        if (empty($fieldmap)) {
+            return ['status' => 'Can not obtain field map'];
+        }
+        return $fieldmap;
+    }
 
     /**
      * Login with username and password

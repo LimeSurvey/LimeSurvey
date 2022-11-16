@@ -5,8 +5,6 @@
  *
  * PHP version 5
  *
- * @category  File
- * @package   ASN1
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2016 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -20,17 +18,15 @@ use phpseclib3\File\ASN1;
 /**
  * BuiltInDomainDefinedAttribute
  *
- * @package ASN1
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class BuiltInDomainDefinedAttribute
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
-             'type'  => ['type' => ASN1::TYPE_PRINTABLE_STRING],
-             'value' => ['type' => ASN1::TYPE_PRINTABLE_STRING]
+            'type' => ['type' => ASN1::TYPE_PRINTABLE_STRING],
+            'value' => ['type' => ASN1::TYPE_PRINTABLE_STRING]
         ]
     ];
 }

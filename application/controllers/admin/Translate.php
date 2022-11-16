@@ -223,6 +223,7 @@ class Translate extends SurveyCommonAction
                     $aResultTo2 = !empty($type2) ? $oResultTo2->questionl10ns[$tolang]->getAttributes() : $aResultTo;
                 } elseif ($class == 'Answer') {
                     $aRowfrom = $oRowfrom->answerl10ns[$baselang]->getAttributes();
+                    $aRowfrom['question_title'] = $oRowfrom->question->title;
                     $aResultBase2 = !empty($type2) ? $oResultBase2->answerl10ns[$baselang]->getAttributes() : $aRowfrom;
                     $aResultTo = $oResultTo->answerl10ns[$tolang]->getAttributes();
                     $aResultTo2 = !empty($type2) ? $oResultTo2->answerl10ns[$tolang]->getAttributes() : $aResultTo;
@@ -243,9 +244,12 @@ class Translate extends SurveyCommonAction
                 $gid = ($amTypeOptions["gid"] == true) ? $gid = $aRowfrom['gid'] : null;
                 $qid = ($amTypeOptions["qid"] == true) ? $qid = $aRowfrom['qid'] : null;
 
-                $textform_length = strlen(trim($textfrom));
+                $textfrom_length = strlen(trim($textfrom));
+                $textfrom2_length = $associated ? strlen(trim($textfrom2)) : 0;
 
-                $all_fields_empty = !($textform_length > 0);
+                if ($textfrom_length > 0 || $textfrom2_length > 0) {
+                    $all_fields_empty = false;
+                }
 
                 $aData = array_merge($aData, array(
                                 'textfrom' => $this->cleanup($textfrom, array()),
@@ -883,12 +887,16 @@ class Translate extends SurveyCommonAction
     {
 
         $translateoutput = "<table class='table table-striped'>";
-            $translateoutput .= '<thead>';
-            $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
-            $translateoutput .= $threeRows ? '<th class="col-md-2 text-strong">' . gT('Question code / ID') . "</th>" : '';
-            $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $baselangdesc . "</th>";
-            $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $tolangdesc . "</th>";
-            $translateoutput .= '</thead>';
+        $translateoutput .= '<thead>';
+        $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer');
+        if ($type == 'answer') {
+            $translateoutput .= '<th class="col-md-2 text-strong">' . gT('QCode / Answer Code / ID') . "</th>";
+        } elseif ($threeRows) {
+            $translateoutput .= '<th class="col-md-2 text-strong">' . gT('Question code / ID') . "</th>";
+        }
+        $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $baselangdesc . "</th>";
+        $translateoutput .= '<th class="' . ($threeRows ? "col-sm-5 text-strong" : "col-sm-6") . '" >' . $tolangdesc . "</th>";
+        $translateoutput .= '</thead>';
 
         return $translateoutput;
     }
@@ -931,7 +939,7 @@ class Translate extends SurveyCommonAction
             // Display text in original language
             // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
         if ($type == 'answer') {
-            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['answer']) . " (" . $rowfrom['qid'] . ") </td>";
+            $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['question_title'] . " / " . $rowfrom['code']) . " (" . $rowfrom['aid'] . ") </td>";
         }
         if ($type == 'question_help' || $type == 'question') {
             $translateoutput .= "<td class='col-sm-2'>" . htmlspecialchars($rowfrom['title']) . " ({$rowfrom['qid']}) </td>";
@@ -1076,7 +1084,7 @@ class Translate extends SurveyCommonAction
 
     public function ajaxtranslategoogleapi()
     {
-        // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin rigth can post
+        // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin right can post
         /* No Permission check on survey, seems unneded (return a josn with current string posted */
         if (Yii::app()->request->isPostRequest) {
             echo self::translateGoogleApi();

@@ -5,8 +5,6 @@
  *
  * PHP version 5
  *
- * @category  File
- * @package   ASN1
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2016 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -26,21 +24,19 @@ use phpseclib3\File\ASN1;
  *
  * http://tools.ietf.org/html/rfc5280#section-4.2
  *
- * @package ASN1
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 abstract class Extension
 {
     const MAP = [
-        'type'     => ASN1::TYPE_SEQUENCE,
+        'type' => ASN1::TYPE_SEQUENCE,
         'children' => [
-            'extnId'   => ['type' => ASN1::TYPE_OBJECT_IDENTIFIER],
+            'extnId' => ['type' => ASN1::TYPE_OBJECT_IDENTIFIER],
             'critical' => [
-                              'type'     => ASN1::TYPE_BOOLEAN,
-                              'optional' => true,
-                              'default'  => false
-                          ],
+                'type' => ASN1::TYPE_BOOLEAN,
+                'optional' => true,
+                'default' => false
+            ],
             'extnValue' => ['type' => ASN1::TYPE_OCTET_STRING]
         ]
     ];

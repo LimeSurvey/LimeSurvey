@@ -21,7 +21,7 @@ class SurveyRuntimeHelper
      * hard to move piece of code to subfuntions.
      * Those private variables are just a step to make easier refactorisation
      * of this file, to have a global overview about what is set in this
-     * helper, and to move easely piece of code to new methods:
+     * helper, and to move easily piece of code to new methods:
      * The methods get/set the private variables, and defore calling
      * get_defined_vars, variables are created from those private variables.
      * It's just a first step. get_defined_vars should be removed, and most of
@@ -171,7 +171,7 @@ class SurveyRuntimeHelper
     private $completed; // The string containing the completed message
 
     // Boolean helpers
-    private $okToShowErrors; // true if we must show error in page : it's a submited ($_POST) page and show the same page again for some reason
+    private $okToShowErrors; // true if we must show error in page : it's a submitted ($_POST) page and show the same page again for some reason
 
     // Group
     private $gid;
@@ -687,7 +687,7 @@ class SurveyRuntimeHelper
 
 
     /**
-     * Retreive the survey format (mode?)
+     * Retrieve the survey format (mode?)
      * TODO: move to survey model
      *
      * @return string
@@ -709,7 +709,7 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * Retreive the radix
+     * Retrieve the radix
      * @return string
      */
     private function getRadix()
@@ -830,10 +830,17 @@ class SurveyRuntimeHelper
     /**
      * It checks if user used the browser navigation (prev, next, reload page etc)
      * and feed te backpopup variable if needed
-     *
      */
     private function checkIfUseBrowserNav()
     {
+        // Possibility to suppress the warning when Ajax is used to get survey content.
+        if (isset($_GET['ignorebrowsernavigationwarning'])
+            || isset($_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'])
+        ) {
+            $_SESSION[$this->LEMsessid]['ignorebrowsernavigationwarning'] = 1;
+            return;
+        }
+
         // retrieve datas from local variable
         if (isset($_SESSION[$this->LEMsessid]['LEMpostKey']) && App()->request->getPost('LEMpostKey', $_SESSION[$this->LEMsessid]['LEMpostKey']) != $_SESSION[$this->LEMsessid]['LEMpostKey']) {
             // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
@@ -1053,11 +1060,11 @@ class SurveyRuntimeHelper
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
             //Failsave to have a general standard value
             if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
-                $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey data policy.");
+                $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
             }
 
             if (empty($this->aSurveyInfo['datasecurity_error'])) {
-                $this->aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey data policy.");
+                $this->aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
             }
 
 
@@ -1482,7 +1489,7 @@ class SurveyRuntimeHelper
     {
         $sessionSurvey = Yii::app()->session["survey_{$this->iSurveyid}"];
         if (App()->request->getPost('confirm-clearall') != 'confirm') {
-            /* Save current reponse, and come back to survey if clearll is not confirmed */
+            /* Save current response, and come back to survey if clearll is not confirmed */
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true, false);
             /* Todo : add an error in HTML view … */
             //~ $aErrorHtmlMessage                             = array(gT("You need to confirm clear all action"));
@@ -1664,7 +1671,7 @@ class SurveyRuntimeHelper
         $aEnterTokenData['aEnterErrors']    = $aEnterErrors;
         $renderWay                          = getRenderWay($renderToken, $renderCaptcha);
 
-        /* This funtion end if an form need to be shown */
+        /* This function end if an form need to be shown */
         renderRenderWayForm($renderWay, $scenarios, $this->sTemplateViewPath, $aEnterTokenData, $this->iSurveyid, $this->aSurveyInfo);
     }
 
@@ -1841,7 +1848,7 @@ class SurveyRuntimeHelper
         return $data;
     }
     /**
-     * Retreive the question classes for a given question id
+     * Retrieve the question classes for a given question id
      *
      * @param  int      $iQid the question id
      * @return string   the classes

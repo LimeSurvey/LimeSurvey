@@ -13,8 +13,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Crypt
- * @package   EC
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -23,17 +21,14 @@
 
 namespace phpseclib3\Crypt\EC\BaseCurves;
 
-use phpseclib3\Common\Functions\Strings;
-use phpseclib3\Math\BinaryField;
 use phpseclib3\Math\BigInteger;
+use phpseclib3\Math\BinaryField;
 use phpseclib3\Math\BinaryField\Integer as BinaryInteger;
 
 /**
  * Curves over y^2 + x*y = x^3 + a*x^2 + b
  *
- * @package Binary
  * @author  Jim Wigginton <terrafrost@php.net>
- * @access  public
  */
 class Binary extends Base
 {

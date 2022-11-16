@@ -1,3 +1,5 @@
+[![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://supportukrainenow.org/)
+
 ![PHPMailer](https://raw.github.com/PHPMailer/PHPMailer/master/examples/images/phpmailer.png)
 
 # PHPMailer – A full-featured email creation and transfer class for PHP
@@ -8,6 +10,7 @@
 [![Total Downloads](https://poser.pugx.org/phpmailer/phpmailer/downloads)](https://packagist.org/packages/phpmailer/phpmailer)
 [![License](https://poser.pugx.org/phpmailer/phpmailer/license.svg)](https://packagist.org/packages/phpmailer/phpmailer)
 [![API Docs](https://github.com/phpmailer/phpmailer/workflows/Docs/badge.svg)](https://phpmailer.github.io/PHPMailer/)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/PHPMailer/PHPMailer/badge)](https://api.securityscorecards.dev/projects/github.com/PHPMailer/PHPMailer)
 
 ## Features
 - Probably the world's most popular code for sending email from PHP!
@@ -22,7 +25,7 @@
 - Protects against header injection attacks
 - Error messages in over 50 languages!
 - DKIM and S/MIME signing support
-- Compatible with PHP 5.5 and later, including PHP 8.0
+- Compatible with PHP 5.5 and later, including PHP 8.1
 - Namespaced to prevent name clashes
 - Much more!
 

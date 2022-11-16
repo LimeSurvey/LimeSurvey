@@ -88,11 +88,11 @@ class SurveyDynamic extends LSActiveRecord
             return array(
                 'survey'   => array(self::HAS_ONE, 'Survey', array(), 'condition' => ('sid = ' . self::$sid)),
                 'tokens'   => array(self::HAS_ONE, 'TokenDynamic', array('token' => 'token')),
-                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'))
+                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
             );
         } else {
             return array(
-                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'))
+                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
             );
         }
     }
@@ -388,7 +388,7 @@ class SurveyDynamic extends LSActiveRecord
         $oFieldMap = json_decode(base64_decode($base64jsonFieldMap));
         $value     = $this->$colName;
 
-        $sFullValue = strip_tags(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
+        $sFullValue = viewHelper::flatten(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
         if (strlen($sFullValue) > 50) {
             $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value);
             $sValue          = '<span data-toggle="tooltip" data-placement="left" title="' . quoteText($sFullValue) . '">' . $sElipsizedValue . '</span>';
@@ -775,7 +775,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Get an array to find question data responsively
      * This should be part of the question object.
-     * And in future developement this should be part of the specific question type object
+     * And in future development this should be part of the specific question type object
      *
      * @param Question $oQuestion
      * @param SurveyDynamic $oResponses

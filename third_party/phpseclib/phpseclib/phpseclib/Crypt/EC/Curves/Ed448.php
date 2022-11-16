@@ -5,8 +5,6 @@
  *
  * PHP version 5 and 7
  *
- * @category  Crypt
- * @package   EC
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2017 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
@@ -15,9 +13,9 @@
 namespace phpseclib3\Crypt\EC\Curves;
 
 use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards;
-use phpseclib3\Math\BigInteger;
 use phpseclib3\Crypt\Hash;
 use phpseclib3\Crypt\Random;
+use phpseclib3\Math\BigInteger;
 
 class Ed448 extends TwistedEdwards
 {
@@ -29,11 +27,13 @@ class Ed448 extends TwistedEdwards
         // 2^448 - 2^224 - 1
         $this->setModulo(new BigInteger(
             'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE' .
-            'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF', 16));
+            'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+            16
+        ));
         $this->setCoefficients(
             new BigInteger(1),
             // -39081
-            new BigInteger('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE' . 
+            new BigInteger('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE' .
                            'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6756', 16)
         );
         $this->setBasePoint(
@@ -44,7 +44,9 @@ class Ed448 extends TwistedEdwards
         );
         $this->setOrder(new BigInteger(
             '3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF' .
-            '7CCA23E9C44EDB49AED63690216CC2728DC58F552378C292AB5844F3', 16));
+            '7CCA23E9C44EDB49AED63690216CC2728DC58F552378C292AB5844F3',
+            16
+        ));
     }
 
     /**
@@ -95,7 +97,7 @@ class Ed448 extends TwistedEdwards
      * Used by the various key handlers
      *
      * @param string $str
-     * @return \phpseclib3\Math\PrimeField\Integer
+     * @return array
      */
     public function extractSecret($str)
     {
@@ -118,6 +120,11 @@ class Ed448 extends TwistedEdwards
         // 3.  Interpret the buffer as the little-endian integer, forming a
         //     secret scalar s.
         $dA = new BigInteger($h, 256);
+
+        return [
+            'dA' => $dA,
+            'secret' => $str
+        ];
 
         $dA->secret = $str;
         return $dA;
@@ -148,7 +155,7 @@ class Ed448 extends TwistedEdwards
      */
     public function createRandomMultiplier()
     {
-        return $this->extractSecret(Random::string(57));
+        return $this->extractSecret(Random::string(57))['dA'];
     }
 
     /**

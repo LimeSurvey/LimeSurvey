@@ -334,10 +334,9 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         } ?>
                     </ul>
                     <p>
-                        <input type='hidden' name='ok' value='Y' />
-                        <input type='submit' disabled="true" id='delete-checked-items-button' value='<?php eT("Delete checked items!"); ?>' class="btn btn-danger" />
+                        <button type='submit' name='ok' value='Y' class="btn btn-danger"><?php eT("Delete checked items!"); ?></button>
                         <br />
-                        <span class='hint warning'>
+                        <span class='hint text-warning'>
                             <?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?>
                         </span>
                     </p>
@@ -346,21 +345,3 @@ echo viewHelper::getViewTestTag('checkIntegrity');
         </div>
     </div>
 </div>
-
-<script>
-    /**
-     * If checkbox with to-be-deleted items is selected, 
-     * the 'delete' button will be enabled,
-     * otherwise its disabled.
-     * @param {HTMLElement} checkbox - HTML Element 
-     */
-    function toggleDisableState(checkbox) {
-        let isChecked = $(checkbox).is(':checked');
-        let deleteCheckedItemsButton = document.getElementById('delete-checked-items-button');
-        if (isChecked) {
-            deleteCheckedItemsButton.removeAttribute("disabled");
-        } else {
-            deleteCheckedItemsButton.setAttribute("disabled","disabled");
-        }
-    }
-</script>

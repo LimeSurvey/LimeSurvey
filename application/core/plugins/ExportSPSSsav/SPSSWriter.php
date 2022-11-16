@@ -328,7 +328,7 @@ class SPSSWriter extends Writer
 
                     $numberresponse = trim($response);
                     if ($this->customFieldmap['info']['surveyls_numberformat'] == 1) {
-                        // if settings: decimal seperator==','
+                        // if settings: decimal separator==','
                         $numberresponse = str_replace(',', '.', $response); // replace comma with dot so SPSS can use decimal variables
                     }
 

@@ -53,7 +53,7 @@ LS.CPDB = (function() {
 
 
         return $.ajax({
-            url: url, 
+            url: url,
             data: data,
             method: 'POST',
             success: firstSuccess,
@@ -129,13 +129,13 @@ LS.CPDB = (function() {
                             $(self).modal("hide");
                         });
                         $('#attributes')
-                            .multiselect({ 
-                                includeSelectAllOption:true, 
+                            .multiselect({
+                                includeSelectAllOption:true,
                                 selectAllValue: '0',
                                 selectAllText: sSelectAllText,
                                 nonSelectedText: sNonSelectedText,
                                 nSelectedText: sNSelectedText,
-                                maxHeight: 140 
+                                maxHeight: 140
                             });
                     });
                     /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
@@ -145,7 +145,7 @@ LS.CPDB = (function() {
     },
 
     // Basic settings and bindings that should take place in all three views
-    basics = function() { 
+    basics = function() {
         // Code for AJAX download
         jQuery.download = function(url, data, method){
             //url and data options required
@@ -181,11 +181,11 @@ LS.CPDB = (function() {
             var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                openModalParticipantPanel, 
+                openModalParticipantPanel,
                 data,
                 'action_save_modal_editParticipant',
-                'editPartcipantActiveForm', 
-                'list_central_participants' 
+                'editPartcipantActiveForm',
+                'list_central_participants'
             ).done(function(result) {
                 console.ls.log(result);
                 var val = $('#participantPanel_edit_modal .ls-bootstrap-switch').attr('checked');
@@ -198,11 +198,11 @@ LS.CPDB = (function() {
             var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                    openModalParticipantPanel, 
+                    openModalParticipantPanel,
                     data,
                     'action_save_modal_deleteParticipant',
-                    'deleteParticipantActiveForm', 
-                    'list_central_participants' 
+                    'deleteParticipantActiveForm',
+                    'list_central_participants'
                     );
         });
         $('#list_central_participants').on('click', '.action_participant_infoModal', function(e) {
@@ -213,11 +213,11 @@ LS.CPDB = (function() {
             };
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                    openModalParticipantPanel, 
+                    openModalParticipantPanel,
                     data,
                     'action_save_modal_deleteParticipant',
-                    'deleteParticipantActiveForm', 
-                    'list_central_participants' 
+                    'deleteParticipantActiveForm',
+                    'list_central_participants'
                     );
         });
         $('#list_central_participants').on('click', '.action_participant_shareParticipant', function(e) {
@@ -269,11 +269,11 @@ LS.CPDB = (function() {
             };
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
-                openModalParticipantPanel, 
+                openModalParticipantPanel,
                 data,
                 'action_save_modal_addToSurvey',
-                'addToSurveyActiveForm', 
-                'list_central_participants' 
+                'addToSurveyActiveForm',
+                'list_central_participants'
             ).done(function() {
                 $('.ls-bootstrap-switch').bootstrapSwitch();
             });
@@ -288,7 +288,7 @@ LS.CPDB = (function() {
         $('#action_toggleAllParticipantShare').on('click', function() {
             $('.selector_participantShareCheckbox').prop('checked', $('#action_toggleAllParticipantShare').prop('checked'));
         });
-        
+
         if(($('#pageSizeParticipantView').val() <= 100) || ($('#pageSizeAttributes').val() <= 100) || ($('#pageSizeShareParticipantView').val() <= 100) ){
             $('.action_changeBlacklistStatus').bootstrapSwitch();
         }
@@ -296,10 +296,10 @@ LS.CPDB = (function() {
         $('.action_changeBlacklistStatus').on('switchChange.bootstrapSwitch', function(event,state){
             var self = this;
             $.ajax({
-                url: editValueParticipantPanel, 
+                url: editValueParticipantPanel,
                 method: "POST",
                 data: {actionTarget: 'changeBlacklistStatus', 'participant_id': $(self).closest('tr').data('participant_id'), 'blacklist': state},
-                dataType: 'json', 
+                dataType: 'json',
                 success: function(resolve){
                     $(self).prop("checked", (resolve.newValue == "Y"));
                 }
@@ -321,10 +321,10 @@ LS.CPDB = (function() {
             e.preventDefault();
             var data = {modalTarget: 'editattribute'};
             runBaseModal(
-                openModalParticipantPanel, 
+                openModalParticipantPanel,
                 data,
                 'action_save_modal_editAttributeName',
-                'editAttributeNameActiveForm', 
+                'editAttributeNameActiveForm',
                 'list_attributes',
                 function(result) {
                     console.ls.log(result);
@@ -332,20 +332,20 @@ LS.CPDB = (function() {
                         window.LS.notifyFader(result.success, 'well-lg text-center bg-primary');
                     }
                 }
-            ); 
+            );
         });
         $('.action_attributeNames_editModal').on('click', function(e){
             e.preventDefault();
             var data = {modalTarget: 'editattribute','attribute_id' : $(this).closest('tr').data('attribute_id')};
             runBaseModal(
-                openModalParticipantPanel, 
+                openModalParticipantPanel,
                 data,
                 'action_save_modal_editAttributeName',
-                'editAttributeNameActiveForm', 
-                'list_attributes' 
-            ); 
+                'editAttributeNameActiveForm',
+                'list_attributes'
+            );
         });
-        
+
         $('#action_toggleAllAttributeNames').on('click', function(){
             $('.selector_attributeNamesCheckbox').prop('checked',$('#action_toggleAllAttributeNames').prop('checked'));
         });
@@ -354,10 +354,10 @@ LS.CPDB = (function() {
         $('.action_changeAttributeVisibility').on('switchChange.bootstrapSwitch', function(event,state){
             var self = this;
             $.ajax({
-                url: editValueParticipantPanel, 
+                url: editValueParticipantPanel,
                 method: "POST",
                 data: { actionTarget: 'changeAttributeVisibility', 'attribute_id': $(self).closest('tr').data('attribute_id'), 'visible': state},
-                dataType: 'json', 
+                dataType: 'json',
                 success: function(resolve){
                     $(self).prop("checked", (resolve.newValue == "Y"));
                 }
@@ -368,10 +368,10 @@ LS.CPDB = (function() {
         $('.action_changeAttributeEncrypted').on('switchChange.bootstrapSwitch', function(event,state){
             var self = this;
             $.ajax({
-                url: editValueParticipantPanel, 
+                url: editValueParticipantPanel,
                 method: "POST",
                 data: { actionTarget: 'changeAttributeEncrypted', 'attribute_id': $(self).closest('tr').data('attribute_id'), 'encrypted': state},
-                dataType: 'json', 
+                dataType: 'json',
                 success: function(resolve){
                     $(self).prop("checked", (resolve.newValue == "Y"));
                 }
@@ -397,10 +397,10 @@ LS.CPDB = (function() {
         $('.action_changeEditableStatus').on('switchChange.bootstrapSwitch', function(event, state){
             var self = this;
             $.ajax({
-                url: editValueParticipantPanel, 
+                url: editValueParticipantPanel,
                 method: "POST",
                 data: {actionTarget: 'changeSharedEditableStatus', 'participant_id': $(self).closest('tr').data('participant_id'), 'can_edit': state, 'share_uid': $(self).closest('tr').data('share_uid')},
-                dataType: 'json', 
+                dataType: 'json',
                 success: function(resolve){
                     $(self).prop("checked", resolve.newValue);
                 }

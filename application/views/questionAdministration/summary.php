@@ -166,7 +166,9 @@
                 <td>
                     <?php if ($question->mandatory == "Y") : ?>
                         <?php eT("Yes"); ?>
-                    <?php else:?>
+                    <?php elseif ($question->mandatory == "S") : ?>
+                        <?php eT("Soft"); ?>
+                    <?php else : ?>
                         <?php eT("No"); ?>
                     <?php endif;  ?>
                 </td>

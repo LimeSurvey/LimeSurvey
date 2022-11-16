@@ -17,7 +17,7 @@
  *
  * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
  *
- * The followings are the available columns in table '{{template_configuration}}':
+ * The following are the available columns in table '{{template_configuration}}':
  * @property integer $id Primary key
  * @property string $template_name
  * @property integer $sid Survey ID
@@ -414,7 +414,7 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyGroup(
                 $iSurveyGroupId,
                 $sTemplateName,
-                $abstractInstance
+                true
             );
         }
 
@@ -422,7 +422,7 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyId(
                 $iSurveyId,
                 $sTemplateName,
-                $abstractInstance
+                true
             );
         }
 

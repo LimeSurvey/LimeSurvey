@@ -126,7 +126,7 @@ $ldap_queries[$query_id]['lastname_attr'] = 'sn';
 $ldap_queries[$query_id]['email_attr'] = 'mail';
 
 
-// Optionnally give the user's attributes that provides the
+// optionally give the user's attributes that provides the
 // token, language, attr1 and attr2 piece of information
 // do not use capital letters in the attribute name
 // if unused, leave empty or comment the lines
@@ -155,7 +155,7 @@ $ldap_queries[$query_id]['groupmemberattr'] = 'member';
 // Define if the groupmemberattr contains users's DNs or NOT
 $ldap_queries[$query_id]['groupmemberisdn'] = true;
 
-// Optionnally you can complete the group query with an additionnal
+// optionally you can complete the group query with an additionnal
 // user filter that will be applied to the user's found by the group search
 // Comment the userbase, userfilter, and userscope lines
 // if you don't use this extra filter.
@@ -189,7 +189,7 @@ $ldap_queries[$query_id]['groupmemberisdn'] = false;
 $ldap_queries[$query_id]['useridattr'] = 'uid';
 // Give the base DN used to search the users based on the users' IDs
 $ldap_queries[$query_id]['userbase'] = 'ou=people,dc=mycompany,dc=org';
-// Optionnally give an additionnal filter to filter users
+// optionally give an additionnal filter to filter users
 $ldap_queries[$query_id]['userfilter'] = '(objectclass=*)';
 $ldap_queries[$query_id]['userscope'] = 'sub';
 

@@ -54,7 +54,7 @@ function triggerEmRelevanceGroup(){
         $(this).addClass("ls-irrelevant ls-hidden");
     });
 }
-/* On sub-question and answers-list */
+/* On subquestion and answers-list */
 function triggerEmRelevanceSubQuestion(){
     $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
@@ -305,7 +305,7 @@ function activateActionLink(){
 /**
  * function for replacing submit after confirm
  * @var string text : the text to be shown
- * @var string optionnal title
+ * @var string optional title
  * @var object[] submits : name.value to submit
  */
 function confirmSurveyDialog(text,title,submits){
