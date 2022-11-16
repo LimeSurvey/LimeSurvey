@@ -77,7 +77,9 @@
 		"mockery/mockery": "^1.3"
 	},
 	"scripts": {
-		"openapi": "./vendor/bin/openapi ./application/controllers/rest/V1 -l -o ./docs/open-api/v1.json",
+		"openapi": ["@composer run openapi-v1", "@composer run openapi-v2"],
+		"openapi-v1": "./vendor/bin/openapi ./application/config/rest/v1 -l -o ./docs/open-api/v1.json",
+		"openapi-v2": "./vendor/bin/openapi ./application/config/rest/v2 -l -o ./docs/open-api/v2.json",
 		"phpunit": "./vendor/bin/phpunit --testdox --coverage-text",
 		"test": [
             "./tests/bin/lint-tests",
