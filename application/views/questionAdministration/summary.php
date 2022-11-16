@@ -204,7 +204,7 @@
                 </td>
                 <td>
                     <?php
-                    LimeExpressionManager::ProcessString("{" . $question->relevance . "}", $question->qid);    // tests Relevance equation so can pretty-print it
+                    LimeExpressionManager::ProcessString("{" . trim($question->relevance) . "}", $question->qid);    // tests Relevance equation so can pretty-print it
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                     ?>
                 </td>
