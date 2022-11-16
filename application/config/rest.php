@@ -14,7 +14,7 @@
 
 $rest = array_merge(
     include __DIR__ . '/rest/v1.php',
-    []
+    [] // add additional versions here
 );
 
 return array('rest' => $rest);
