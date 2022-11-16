@@ -33,24 +33,24 @@ class RestController extends LSYii_Controller
     public function run($actionId = null)
     {
         try {
-            $config = include(__DIR__ . '/../config/api.php');
+            $config = include(__DIR__ . '/../config/rest.php');
             $request = Yii::app()->request;
 
             $endpoint = $this->getEndpoint(
-                !empty($config) && !empty($config['api']) ? $config['api'] : [],
+                !empty($config) && !empty($config['rest']) ? $config['rest'] : [],
                 $request
             );
             if (!$endpoint) {
                 throw new Exception('Endpoint not configured');
             }
-
+            if (!isset($endpoint['commandClass'])) {
+                throw new Exception('Command class not specified');
+            }
             if (!class_exists($endpoint['commandClass'])) {
                 throw new Exception('Invalid command class');
             }
             $command = new $endpoint['commandClass']();
             $commandParams = $this->getCommandParams($endpoint, $request);
-
-            //die(print_r('RestController: ' . print_r($commandParams, true), true));
 
             $commandRequest = new Request($commandParams);
             $commandResponse = $command->run($commandRequest);
@@ -65,10 +65,10 @@ class RestController extends LSYii_Controller
      * Get Endpoint
      *
      * @param array $apiConfig
-     * @param CHttpRequest $request
+     * @param LSHttpRequest $request
      * @return array
      */
-    protected function getEndpoint($apiConfig, $request)
+    protected function getEndpoint($apiConfig, LSHttpRequest $request)
     {
         $apiConfig = !empty($apiConfig) ? $apiConfig : [];
         $apiVersion = $request->getParam('_api_version');
@@ -77,15 +77,20 @@ class RestController extends LSYii_Controller
         $requestMethod = $request->getRequestType();
 
         $endpoint = null;
-        foreach ($apiConfig as $config) {
+        foreach ($apiConfig as $key => $config) {
+            [ $configApiVersion, $configEntity ] = explode('/', $key);
+
             if (
-                $config['version'] == $apiVersion
-                && $config['entity'] == $entity
-                && $config['method'] == $requestMethod
-                && (empty($config['byId']) || !empty($id))
+                $configApiVersion == $apiVersion
+                && $configEntity == $entity
+                && is_array($config[$requestMethod])
             ) {
-                $endpoint = $config;
-                break;
+                foreach ($config[$requestMethod] as $methodConfig) {
+                    if ((empty($methodConfig['byId']) || !empty($id))) {
+                        $endpoint = $methodConfig;
+                        break 2;
+                    }
+                }
             }
         }
 
@@ -96,10 +101,10 @@ class RestController extends LSYii_Controller
      * Get Command Params
      *
      * @param array $endpoint
-     * @param CHttpRequest $request
+     * @param LSHttpRequest $request
      * @return array
      */
-    public function getCommandParams($endpoint, $request)
+    public function getCommandParams($endpoint, LSHttpRequest $request)
     {
         $params = [];
 
@@ -124,7 +129,7 @@ class RestController extends LSYii_Controller
 
 
         $params = array_merge(
-            $this->getQueryParams($endpoint, $request),
+            $this->getparams($endpoint, $request),
             $this->getBodyParams($endpoint, $request),
             $params
         );
@@ -136,17 +141,17 @@ class RestController extends LSYii_Controller
      * Get Query Params
      *
      * @param array $endpoint
-     * @param CHttpRequest $request
+     * @param LSHttpRequest $request
      * @return void
      */
-    protected function getQueryParams($endpoint, $request)
+    protected function getparams($endpoint, LSHttpRequest $request)
     {
         $result = [];
         if (
             $endpoint
-            && is_array($endpoint['queryParams'])
+            && is_array($endpoint['params'])
         ) {
-            foreach ($endpoint['queryParams'] as $paramName => $options) {
+            foreach ($endpoint['params'] as $paramName => $options) {
                 if ($options == false) {
                     continue; // turned off
                 }
@@ -162,10 +167,10 @@ class RestController extends LSYii_Controller
      * Get Body Params
      *
      * @param array $endpoint
-     * @param CHttpRequest $request
+     * @param LSHttpRequest $request
      * @return array
      */
-    protected function getBodyParams($endpoint, $request)
+    protected function getBodyParams($endpoint, LSHttpRequest $request)
     {
         $result = [];
         if (
@@ -174,15 +179,15 @@ class RestController extends LSYii_Controller
         ) {
             $input = $request->getRestParams();
             foreach ($endpoint['bodyParams'] as $paramName => $options) {
-                if ($options == false) {
+                if ($options === false) {
                     continue; // turned off
                 }
                 $opts = $this->normaliseParamOptions($options);
-                $default = isset($opts['default']) ? $opts['default'] : null;
                 $result[$paramName] = isset($input[$paramName])
-                    ? $input[$paramName] : $default;
+                    ? $input[$paramName] : $opts['default'];
             }
         }
+
         return $result;
     }
 

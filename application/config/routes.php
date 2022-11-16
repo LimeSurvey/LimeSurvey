@@ -39,13 +39,13 @@ $route['statistics_user/action'] = 'StatisticsUser/action';
 // - Resource index
 $route['rest/<_api_version:\w+>/<_entity:\w+>'] = array(
     'rest',
-    'verb' => 'GET, PUT, DELETE',
+    'verb' => 'GET, PUT, PATCH, POST, DELETE',
     'matchValue' => true
 );
 // - Resource index with id
 $route['rest/<_api_version:\w+>/<_entity:\w+>/<_id:\w+>'] = array(
     'rest',
-    'verb' => 'GET, PUT, DELETE',
+    'verb' => 'GET, PUT, PATCH, POST, DELETE',
     'matchValue' => true
 );
 
