@@ -312,7 +312,7 @@ class LimesurveyApi
      */
     public function getResponseTable($surveyId)
     {
-        return App()->getDb()->tablePrefix . 'survey_' . $surveyId;
+        return App()->getDb()->tablePrefix . 'responses_' . $surveyId;
     }
 
     /**
@@ -323,8 +323,8 @@ class LimesurveyApi
     public function getOldResponseTables($surveyId)
     {
         $tables = array();
-        $base = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId;
-        $timingbase = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId . '_timings_';
+        $base = App()->getDb()->tablePrefix . 'old_responses_' . $surveyId;
+        $timingbase = App()->getDb()->tablePrefix . 'old_responses_' . $surveyId . '_timings_';
         foreach (App()->getDb()->getSchema()->getTableNames() as $table) {
             if (strpos($table, $base) === 0 && strpos($table, $timingbase) === false) {
                 $tables[] = $table;

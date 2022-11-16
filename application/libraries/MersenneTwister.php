@@ -25,7 +25,7 @@ function setSeed($surveyid)
         $seed = mt_rand();
         /* On activated (but not started) survey : set seed in startingValues */
         if (\Survey::model()->findByPk($surveyid)->getIsActive()) {
-            $table = \Yii::app()->db->schema->getTable('{{survey_' . $surveyid . '}}');
+            $table = \Yii::app()->db->schema->getTable('{{responses_' . $surveyid . '}}');
             if (isset($table->columns['seed'])) {
                 $_SESSION['survey_' . $surveyid]['startingValues']['seed'] = $seed;
             }

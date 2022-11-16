@@ -18,7 +18,7 @@ class RDataWriter extends CsvWriter
         parent::init($survey, $sLanguageCode, $oOptions);
 
         // Change filename
-        $this->csvFilename = 'survey_' . $survey->id . '_R_data_file.csv';
+        $this->csvFilename = 'responses_' . $survey->id . '_R_data_file.csv';
         // Skip the first line with headers
         $this->doHeaders = true;
 

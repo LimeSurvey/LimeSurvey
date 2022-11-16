@@ -444,7 +444,7 @@ class TokenDynamic extends LSActiveRecord
         }
         $command = Yii::app()->db->createCommand()
             ->select('COUNT(token)')
-            ->from('{{survey_' . intval(self::$sid) . '}}')
+            ->from('{{responses_' . intval(self::$sid) . '}}')
             ->where('token=:token')
             ->bindParam(':token', $sToken, PDO::PARAM_STR);
 

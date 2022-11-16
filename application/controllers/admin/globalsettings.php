@@ -440,7 +440,7 @@ class GlobalSettings extends SurveyCommonAction
                 $oldtokenlist[] = $table;
             } elseif (strpos($table, Yii::app()->db->tablePrefix . "tokens_") !== false) {
                 $tokenlist[] = $table;
-            } elseif (strpos($table, Yii::app()->db->tablePrefix . "old_survey_") !== false) {
+            } elseif (strpos($table, Yii::app()->db->tablePrefix . "old_responses_") !== false) {
                 $oldresultslist[] = $table;
             }
         }

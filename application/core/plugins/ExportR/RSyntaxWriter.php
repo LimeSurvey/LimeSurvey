@@ -33,7 +33,7 @@ class RSyntaxWriter extends Writer
             $this->handle = fopen($this->filename, 'w');
         }
 
-        $this->out('data <- read.csv("survey_' . $survey->id . '_R_data_file.csv", quote = "\'\"", na.strings=c("", "\"\""), stringsAsFactors=FALSE, fileEncoding="UTF-8-BOM")');
+        $this->out('data <- read.csv("responses_' . $survey->id . '_R_data_file.csv", quote = "\'\"", na.strings=c("", "\"\""), stringsAsFactors=FALSE, fileEncoding="UTF-8-BOM")');
         $this->out("");
         $this->out("");
 

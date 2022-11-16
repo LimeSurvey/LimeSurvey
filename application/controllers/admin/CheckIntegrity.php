@@ -643,14 +643,14 @@ class CheckIntegrity extends SurveyCommonAction
                     $sDate = (string) date('YmdHis') . rand(1, 1000);
                     // Check if it's really a survey_XXX table mantis #14938
                     if (empty($aTableName[2])) {
-                        $sOldTable = "survey_{$iSurveyID}";
-                        $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
+                        $sOldTable = "responses_{$iSurveyID}";
+                        $sNewTable = "old_responses_{$iSurveyID}_{$sDate}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $bDirectlyFixed = true;
                     }
                     if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
-                        $sOldTable = "survey_{$iSurveyID}_timings";
-                        $sNewTable = "old_survey_{$iSurveyID}_timings_{$sDate}";
+                        $sOldTable = "responses_{$iSurveyID}_timings";
+                        $sNewTable = "old_responses_{$iSurveyID}_timings_{$sDate}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $bDirectlyFixed = true;
                     }
@@ -909,10 +909,10 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     Check old survey tables                                        */
         /**********************************************************************/
-        //1: Get list of 'old_survey' tables and extract the survey id
+        //1: Get list of 'old_responses' tables and extract the survey id
         //2: Check if that survey id still exists
         //3: If it doesn't offer it for deletion
-        $sQuery = dbSelectTablesLike('{{old_survey}}%');
+        $sQuery = dbSelectTablesLike('{{old_responses}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
 
         $aOldSIDs = array();

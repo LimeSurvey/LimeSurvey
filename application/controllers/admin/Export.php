@@ -348,7 +348,7 @@ class Export extends SurveyCommonAction
         }
 
         if (Yii::app()->request->getPost('response_id')) {
-                    $sFilter = "{{survey_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
+                    $sFilter = "{{responses_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
         } elseif (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_' . $iSurveyID])) {
             $sFilter = Yii::app()->session['statistics_selects_' . $iSurveyID];
         } else {
@@ -663,7 +663,7 @@ class Export extends SurveyCommonAction
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
 
-            $surveytable = "{{survey_$iSurveyId}}";
+            $surveytable = "{{responses_$iSurveyId}}";
             // Control if fieldcode are unique
             $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
             foreach ($fieldnames as $field) {
@@ -709,7 +709,7 @@ class Export extends SurveyCommonAction
             $this->addHeaders($fileName, "text/tab-separated-values", 0);
 
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
-            $surveytable = "{{survey_$iSurveyId}}";
+            $surveytable = "{{responses_$iSurveyId}}";
 
             $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
 
@@ -1083,25 +1083,25 @@ class Export extends SurveyCommonAction
 
         file_put_contents($sLSSFileName, surveyGetXMLData($iSurveyID));
 
-        $this->addToZip($zip, $sLSSFileName, 'survey_' . $iSurveyID . '.lss');
+        $this->addToZip($zip, $sLSSFileName, 'responses_' . $iSurveyID . '.lss');
 
         unlink($sLSSFileName);
 
         if ($survey->isActive) {
-            getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
-            $this->addToZip($zip, $sLSRFileName, 'survey_' . $iSurveyID . '_responses.lsr');
+            getXMLDataSingleTable($iSurveyID, 'responses_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
+            $this->addToZip($zip, $sLSRFileName, 'responses_' . $iSurveyID . '_responses.lsr');
             unlink($sLSRFileName);
         }
 
         if ($survey->hasTokensTable) {
             getXMLDataSingleTable($iSurveyID, 'tokens_' . $iSurveyID, 'Tokens', 'tokens', $sLSTFileName);
-            $this->addToZip($zip, $sLSTFileName, 'survey_' . $iSurveyID . '_tokens.lst');
+            $this->addToZip($zip, $sLSTFileName, 'responses_' . $iSurveyID . '_tokens.lst');
             unlink($sLSTFileName);
         }
 
         if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
-            getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
-            $this->addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
+            getXMLDataSingleTable($iSurveyID, 'responses_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
+            $this->addToZip($zip, $sLSIFileName, 'responses_' . $iSurveyID . '_timings.lsi');
             unlink($sLSIFileName);
         }
 
@@ -1175,7 +1175,7 @@ class Export extends SurveyCommonAction
             }
 
             if (!(isset($noheader) && $noheader == true)) {
-                $fn = "survey_{$iSurveyID}_{$quexmllang}.xml";
+                $fn = "responses_{$iSurveyID}_{$quexmllang}.xml";
 
                 $this->addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
 

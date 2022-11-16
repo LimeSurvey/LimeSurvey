@@ -77,7 +77,7 @@ class LanguageChangerTest extends TestBaseClassWeb
             $web->next();
 
             $query = sprintf(
-                'SELECT * FROM {{survey_%d}}',
+                'SELECT * FROM {{responses_%d}}',
                 self::$surveyId
             );
             $db = \Yii::app()->getDb();
