@@ -786,21 +786,21 @@ class DataEntry extends SurveyCommonAction
                                 $aDataentryoutput .= ">" . gT("Other") . "</option>\n";
                             }
                                 $aDataentryoutput .= "\t</select>\n";
-                            }
-                            break;
-                        case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
-                            $lresult = Answer::model()->findAll("qid={$fname['qid']}");
-                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
-                            . "<option value=''";
-                            if ($idrow[$fname['fieldname']] == "") {
-                                $aDataentryoutput .= " selected='selected'";
-                            }
-                            $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
+                        }
+                        break;
+                    case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+                        $lresult = Answer::model()->findAll("qid={$fname['qid']}");
+                        $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
+                        . "<option value=''";
+                        if ($idrow[$fname['fieldname']] == "") {
+                            $aDataentryoutput .= " selected='selected'";
+                        }
+                        $aDataentryoutput .= ">" . gT("Please choose") . "..</option>\n";
 
-                            foreach ($lresult as $llrow) {
-                                $aDataentryoutput .= "<option value='{$llrow['code']}'";
-                                if ($idrow[$fname['fieldname']] == $llrow['code']) {
-                                    $aDataentryoutput .= " selected='selected'";
+                        foreach ($lresult as $llrow) {
+                            $aDataentryoutput .= "<option value='{$llrow['code']}'";
+                            if ($idrow[$fname['fieldname']] == $llrow['code']) {
+                                $aDataentryoutput .= " selected='selected'";
                             }
                             $aDataentryoutput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
                         }
