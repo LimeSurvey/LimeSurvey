@@ -248,8 +248,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 Yii::app()->db->createCommand()->dropTable("{{responses_" . $this->sid . "}}");
             }
             //delete the survey_$iSurveyID_timings table
-            if (tableExists("{{responses_" . $this->sid . "_timings}}")) {
-                Yii::app()->db->createCommand()->dropTable("{{responses_" . $this->sid . "_timings}}");
+            if (tableExists("{{timings_" . $this->sid . "}}")) {
+                Yii::app()->db->createCommand()->dropTable("{{timings_" . $this->sid . "}}");
             }
             //delete the tokens_$iSurveyID table
             if (tableExists("{{tokens_" . $this->sid . "}}")) {
@@ -758,7 +758,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getTimingsTableName()
     {
-        return "{{responses_" . $this->primaryKey . "_timings}}";
+        return "{{timings_" . $this->primaryKey . "}}";
     }
 
     /**

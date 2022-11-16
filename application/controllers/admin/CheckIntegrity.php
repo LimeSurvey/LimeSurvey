@@ -649,8 +649,8 @@ class CheckIntegrity extends SurveyCommonAction
                         $bDirectlyFixed = true;
                     }
                     if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
-                        $sOldTable = "responses_{$iSurveyID}_timings";
-                        $sNewTable = "old_responses_{$iSurveyID}_timings_{$sDate}";
+                        $sOldTable = "timings_{$iSurveyID}";
+                        $sNewTable = "old_timings_{$iSurveyID}_{$sDate}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $bDirectlyFixed = true;
                     }

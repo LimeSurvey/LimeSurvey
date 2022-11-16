@@ -112,12 +112,12 @@ class SurveyDao
             //$aSelectFields[]='{{responses_' . $survey->id . '}}.token';
         }
         if ($survey->info['savetimings'] == "Y") {
-            $oRecordSet->leftJoin("{{responses_" . $survey->id . "_timings}} survey_timings", "{{responses_" . $survey->id . "}}.id = survey_timings.id");
-            $aTimingFields = Yii::app()->db->schema->getTable("{{responses_" . $survey->id . "_timings}}")->getColumnNames();
+            $oRecordSet->leftJoin("{{timings_" . $survey->id ."}} timings", "{{responses_" . $survey->id . "}}.id = timings.id");
+            $aTimingFields = Yii::app()->db->schema->getTable("{{timings_" . $survey->id . "}}")->getColumnNames();
             foreach ($aTimingFields as &$sField) {
-                $sField = "survey_timings." . $sField;
+                $sField = "timings." . $sField;
             }
-            $aSelectFields = array_merge($aSelectFields, array_diff($aTimingFields, ['survey_timings.id']));
+            $aSelectFields = array_merge($aSelectFields, array_diff($aTimingFields, ['timings.id']));
             //$aSelectFields=array_diff($aSelectFields, array('{{responses_{$survey->id}}}.id'));
             //$aSelectFields[]='{{responses_' . $survey->id . '}}.id';
         }

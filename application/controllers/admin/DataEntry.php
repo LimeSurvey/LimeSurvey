@@ -388,8 +388,8 @@ class DataEntry extends SurveyCommonAction
             }
 
             Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-            $sOldTimingsTable = (string) substr(substr($sourceTable->tableName(), 0, (string) strrpos($sourceTable->tableName(), '_')) . '_timings' . (string) substr($sourceTable->tableName(), (string) strrpos($sourceTable->tableName(), '_')), strlen(Yii::app()->db->tablePrefix));
-            $sNewTimingsTable = "responses_{$surveyid}_timings";
+            $sOldTimingsTable = substr(str_replace('responses_', 'timings_', $sourceTable->tableName()), strlen(Yii::app()->db->tablePrefix));
+            $sNewTimingsTable = "timings_{$surveyid}";
 
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
                 // Import timings

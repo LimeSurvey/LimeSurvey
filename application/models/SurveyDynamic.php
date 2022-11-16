@@ -167,8 +167,8 @@ class SurveyDynamic extends LSActiveRecord
         }
         $alias = $this->getTableAlias();
 
-        $newCriteria->join = "LEFT JOIN " . self::$survey->tokensTableName . " survey_timings ON $alias.id = survey_timings.id";
-        $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the survey participants table
+        $newCriteria->join = "LEFT JOIN " . self::$survey->tokensTableName . " timings ON $alias.id = timings.id";
+        $newCriteria->select = 'timings.*'; // Otherwise we don't get records from the survey participants table
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;

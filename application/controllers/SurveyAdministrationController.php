@@ -1613,8 +1613,8 @@ class SurveyAdministrationController extends LSBaseController
 
                 $prow = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
                 if ($prow->savetimings == "Y") {
-                    $sOldTimingsTableName = Yii::app()->db->tablePrefix . "responses_{$iSurveyID}_timings";
-                    $sNewTimingsTableName = Yii::app()->db->tablePrefix . "old_responses_{$iSurveyID}_timings_{$date}";
+                    $sOldTimingsTableName = Yii::app()->db->tablePrefix . "timings_{$iSurveyID}";
+                    $sNewTimingsTableName = Yii::app()->db->tablePrefix . "old_timings_{$iSurveyID}_{$date}";
                     Yii::app()->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
                     $aData['sNewTimingsTableName'] = $sNewTimingsTableName;
                 }
@@ -1622,7 +1622,7 @@ class SurveyAdministrationController extends LSBaseController
                 $archivedTokenSettings = new ArchivedTableSettings();
                 $archivedTokenSettings->survey_id = $iSurveyID;
                 $archivedTokenSettings->user_id = $userID;
-                $archivedTokenSettings->tbl_name = "old_responses_{$iSurveyID}_timings_{$date}";
+                $archivedTokenSettings->tbl_name = "old_timings_{$iSurveyID}_{$date}";
                 $archivedTokenSettings->tbl_type = 'timings';
                 $archivedTokenSettings->created = $DBDate;
                 $archivedTokenSettings->properties = '';

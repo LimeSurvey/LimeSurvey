@@ -1142,7 +1142,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             // Step 4 - import the timings file - if exists
             Yii::app()->db->schema->refresh();
             foreach ($aFiles as $aFile) {
-                if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsi' && tableExists("responses_{$aImportResults['newsid']}_timings")) {
+                if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lsi' && tableExists("timings_{$aImportResults['newsid']}")) {
                     $aTimingsImportResults = XMLImportTimings(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
                     $aImportResults = array_merge($aTimingsImportResults, $aImportResults);
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
@@ -2638,7 +2638,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     if (!isset($xml->timings->rows)) {
         return $results;
     }
-    switchMSSQLIdentityInsert('responses_' . $iSurveyID . '_timings', true);
+    switchMSSQLIdentityInsert('timings_' . $iSurveyID, true);
     foreach ($xml->timings->rows->row as $row) {
         $insertdata = array();
 
@@ -2658,7 +2658,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 
         $results['responses']++;
     }
-    switchMSSQLIdentityInsert('responses_' . $iSurveyID . '_timings', false);
+    switchMSSQLIdentityInsert('timings_' . $iSurveyID, false);
     return $results;
 }
 

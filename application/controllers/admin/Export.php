@@ -1100,7 +1100,7 @@ class Export extends SurveyCommonAction
         }
 
         if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
-            getXMLDataSingleTable($iSurveyID, 'responses_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
+            getXMLDataSingleTable($iSurveyID, 'timings_' . $iSurveyID, 'Timings', 'timings', $sLSIFileName);
             $this->addToZip($zip, $sLSIFileName, 'responses_' . $iSurveyID . '_timings.lsi');
             unlink($sLSIFileName);
         }
