@@ -1,13 +1,13 @@
 <?php
 
-namespace LimeSurvey\Api\Command;
+namespace LimeSurvey\Api\Rest;
 
 use Exception;
 use LSHttpRequest;
 use Yii;
 use LimeSurvey\Api\Rest\RestEndpoint;
 
-class CommandFactory
+class EndpointFactory
 {
     /**
      * Create

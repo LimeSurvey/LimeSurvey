@@ -29,33 +29,13 @@ class RestEndpoint
     }
 
     /**
-     * Get Command Params
-     *
-     * @return array
-     */
-    public function getCommandParams()
-    {
-        return $this->commandParams;
-    }
-
-    /**
-     * Create Command
-     *
-     * @return CommandInterface
-     */
-    public function createCommand()
-    {
-        return new $this->config['commandClass']();
-    }
-
-    /**
      * Run Command
      *
      * @return Response
      */
     public function runCommand()
     {
-        $command = $this->createCommand();
+        $command = new $this->config['commandClass']();
         $request = new Request($this->commandParams);
         return $command->run($request);
     }

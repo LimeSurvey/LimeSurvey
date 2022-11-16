@@ -18,7 +18,7 @@ if (!defined('BASEPATH')) {
  */
 
 use LimeSurvey\Api\Command\Response\Response;
-use LimeSurvey\Api\Command\CommandFactory;
+use LimeSurvey\Api\Rest\EndpointFactory;
 use LimeSurvey\Api\Command\Response\Status\StatusAbstract;
 
 // phpcs:ignore
@@ -37,7 +37,7 @@ class RestController extends LSYii_Controller
 
             $request = Yii::app()->request;
 
-            $endpoint = (new CommandFactory())->create(
+            $endpoint = (new EndpointFactory())->create(
                 $request
             );
             $commandResponse = $endpoint->runCommand();
