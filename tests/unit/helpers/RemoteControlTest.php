@@ -696,5 +696,7 @@ class RemoteControlTest extends TestBaseClass
         $targetFile = $surveyUploadsDir . $uploadedFileName;
         copy($file, $targetFile);
         $this->assertTrue(file_exists($targetFile));
+        // Refresh metadata to make sure the latests fields are used
+        \Response::model($testSid)->refreshMetaData();
     }
 }
