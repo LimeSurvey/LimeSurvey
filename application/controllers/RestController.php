@@ -73,24 +73,31 @@ class RestController extends LSYii_Controller
         $apiConfig = !empty($apiConfig) ? $apiConfig : [];
         $apiVersion = $request->getParam('_api_version');
         $entity = $request->getParam('_entity');
-        $id = $request->getParam('_id');
+        $id = $request->getParam('_id', null);
         $requestMethod = $request->getRequestType();
 
         $endpoint = null;
         foreach ($apiConfig as $key => $config) {
-            [ $configApiVersion, $configEntity ] = explode('/', $key);
+            $keyParts = explode('/', $key);
+
+            $keyId = null;
+            if (count($keyParts) == 2) {
+                [ $keyApiVersion, $keyEntity ] = $keyParts;
+            } elseif (count($keyParts) == 3) {
+                [ $keyApiVersion, $keyEntity, $keyId ] = $keyParts;
+            }
+
+            $keyId = !empty($keyId) ? ltrim($keyId, '$') : false;
 
             if (
-                $configApiVersion == $apiVersion
-                && $configEntity == $entity
+                $keyApiVersion == $apiVersion
+                && $keyEntity == $entity
                 && is_array($config[$requestMethod])
+                && (false === $keyId || !empty($id))
             ) {
-                foreach ($config[$requestMethod] as $methodConfig) {
-                    if ((empty($methodConfig['byId']) || !empty($id))) {
-                        $endpoint = $methodConfig;
-                        break 2;
-                    }
-                }
+                $endpoint = $config[$requestMethod];
+                $endpoint['byId'] = $keyId;
+                break;
             }
         }
 
