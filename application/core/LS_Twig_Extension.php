@@ -194,6 +194,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function getAllQuestionClasses($iQid)
     {
+        die('todo2233');
 
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
         $sType           = $lemQuestionInfo['info']['type'];

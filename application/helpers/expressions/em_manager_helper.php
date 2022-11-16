@@ -1185,11 +1185,10 @@ class LimeExpressionManager
                                 //{
                                 foreach ($cascadedAF as $_caf) {
                                     $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
-                                    $fqid = explode('X', $sgq);
-                                    if (!isset($fqid[2])) {
+                                    if (substr($sgq, 0, 1) != 'Q') {
                                         continue;
                                     }
-                                    $fqid = $fqid[2];
+                                    $fqid = substr($sgq, 1);
                                     if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
                                         $rankables = [];
                                         foreach ($this->qans[$fqid] as $k => $v) {
@@ -1224,11 +1223,10 @@ class LimeExpressionManager
                                 }
                                 foreach ($cascadedAFE as $_cafe) {
                                     $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                    $fqid = explode('X', $sgq);
-                                    if (!isset($fqid[2])) {
+                                    if (substr($sgq, 0, 1) != 'Q') {
                                         continue;
                                     }
-                                    $fqid = $fqid[2];
+                                    $fqid = substr($sgq, 1);
                                     if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
                                         $rankables = [];
                                         foreach ($this->qans[$fqid] as $k => $v) {
@@ -3732,7 +3730,7 @@ class LimeExpressionManager
                         'qid'         => $questionNum,
                         'qseq'        => $questionSeq,
                         'gseq'        => $groupSeq,
-                        'sgqa'        => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                        'sgqa'        => 'Q' . $questionNum,
                         'mandatory'   => $mandatory,
                         'varName'     => $varName,
                         'type'        => $type,
@@ -3754,7 +3752,7 @@ class LimeExpressionManager
                                     $parts[1] = 'other';
                                 }
                                 $q2subqInfo[$questionNum]['subqs'][] = [
-                                    'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
+                                    'rowdivid' => 'Q' . $questionNum . $parts[1],
                                     'varName'  => $varName,
                                     'sqsuffix' => '_' . $parts[1],
                                 ];
@@ -3765,7 +3763,7 @@ class LimeExpressionManager
                         if (strlen($varName) > 8 && substr_compare($varName, '_comment', -8) === 0) {// The comment subquestion More speediest than regexp
                             $q2subqInfo[$questionNum]['subqs'][] = [
                                 'varName'      => $varName,
-                                'rowdivid'     => $surveyid . 'X' . $groupNum . 'X' . $questionNum . 'comment',// Not sure we need it
+                                'rowdivid'     => 'Q' . $questionNum . 'comment',// Not sure we need it
                                 'jsVarName'    => $jsVarName,
                                 'jsVarName_on' => $jsVarName_on,
                                 'sqsuffix'     => '_comment',
@@ -3774,7 +3772,7 @@ class LimeExpressionManager
                         {
                             $q2subqInfo[$questionNum]['subqs'][] = [
                                 'varName'      => $varName,
-                                'rowdivid'     => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                                'rowdivid'     => 'Q' . $questionNum,
                                 'jsVarName'    => $jsVarName,
                                 'jsVarName_on' => $jsVarName_on,
                             ];
@@ -3787,8 +3785,8 @@ class LimeExpressionManager
                     case Question::QT_U_HUGE_FREE_TEXT:
                         $q2subqInfo[$questionNum]['subqs'][] = [
                             'varName'      => $varName,
-                            'rowdivid'     => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                            'jsVarName'    => 'java' . $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                            'rowdivid'     => 'Q' . $questionNum,
+                            'jsVarName'    => 'java' . 'Q' . $questionNum,
                             'jsVarName_on' => $jsVarName_on,
                         ];
                         break;
@@ -3812,7 +3810,7 @@ class LimeExpressionManager
                     'qid'         => $questionNum,
                     'qseq'        => $questionSeq,
                     'gseq'        => $groupSeq,
-                    'sgqa'        => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                    'sgqa'        => 'Q' . $questionNum,
                     'mandatory'   => $mandatory,
                     'varName'     => $varName,
                     'type'        => $type,
@@ -3891,7 +3889,7 @@ class LimeExpressionManager
             $this->knownVars[$sgqa] = $varInfo_Code;
             $this->qcode2sgqa[$varName] = $sgqa;
             $this->jsVar2qid[$jsVarName] = $questionNum;
-            $this->qcode2sgq[$fielddata['title']] = $surveyid . 'X' . $groupNum . 'X' . $questionNum;
+            $this->qcode2sgq[$fielddata['title']] = 'Q' . $questionNum;
 
             // Create JavaScript arrays
             $this->alias2varName[$varName] = ['jsName' => $jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'"];
@@ -4488,7 +4486,7 @@ class LimeExpressionManager
                         continue;
                     }
                 }
-                $sgq = $LEM->sid . 'X' . $kv['gid'] . 'X' . $kv['qid'];
+                $sgq = 'Q' . $kv['qid'];
                 $ext = (string)substr($kv['sgqa'], strlen($sgq));
                 if ($sqpatt != '') {
                     if (!preg_match('/' . $sqpatt . '/', $ext)) {
