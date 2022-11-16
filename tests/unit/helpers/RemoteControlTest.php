@@ -679,7 +679,7 @@ class RemoteControlTest extends TestBaseClass
      */
     private function prepareTestWithUploadedFile($surveyFile, $fileName, $uploadedFileName)
     {
-        // Import survey
+        // Import the survey
         $filename = self::$surveysFolder . '/' . $surveyFile;
         self::importSurvey($filename);
 
