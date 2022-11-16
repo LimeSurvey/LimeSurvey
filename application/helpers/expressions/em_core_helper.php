@@ -2886,7 +2886,7 @@ function exprmgr_checkdate($month, $day, $year)
     ) {
         return false;
     }
-    return checkdate($month, $day, $year);
+    return checkdate(intval($month), intval($day), intval($year));
 }
 
 /**
