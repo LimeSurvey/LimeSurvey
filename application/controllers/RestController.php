@@ -33,11 +33,12 @@ class RestController extends LSYii_Controller
     public function run($actionId = null)
     {
         try {
-            $config = include(__DIR__ . '/../config/rest.php');
+            Yii::app()->loadConfig('rest');
+
             $request = Yii::app()->request;
 
             $endpoint = $this->getEndpoint(
-                !empty($config) && !empty($config['rest']) ? $config['rest'] : [],
+                Yii::app()->getConfig('rest'),
                 $request
             );
             if (!$endpoint) {
@@ -64,20 +65,20 @@ class RestController extends LSYii_Controller
     /**
      * Get Endpoint
      *
-     * @param array $apiConfig
+     * @param array $restConfig
      * @param LSHttpRequest $request
      * @return array
      */
-    protected function getEndpoint($apiConfig, LSHttpRequest $request)
+    protected function getEndpoint($restConfig, LSHttpRequest $request)
     {
-        $apiConfig = !empty($apiConfig) ? $apiConfig : [];
+        $restConfig = !empty($restConfig) ? $restConfig : [];
         $apiVersion = $request->getParam('_api_version');
         $entity = $request->getParam('_entity');
         $id = $request->getParam('_id', null);
         $requestMethod = $request->getRequestType();
 
         $endpoint = null;
-        foreach ($apiConfig as $key => $config) {
+        foreach ($restConfig as $key => $config) {
             $keyParts = explode('/', $key);
 
             $keyId = null;
