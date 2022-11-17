@@ -165,12 +165,12 @@
                 <?php endif; ?>
 
                 <!-- Relevance equation -->
-                <?php if (trim($qrrow['relevance']) != ''): ?>
+                <?php if (trim($qrrow['relevance']) != '') : ?>
                     <tr>
                         <td><?php eT("Relevance equation:"); ?></td>
                         <td>
                             <?php
-                            LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
+                            LimeExpressionManager::ProcessString("{" . trim($qrrow['relevance']) . "}", $qid);    // tests Relevance equation so can pretty-print it
                             echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             ?>
                         </td>
@@ -178,12 +178,12 @@
                 <?php endif; ?>
 
                 <!-- Group Relevance equation -->
-                <?php if (trim($oQuestion->groups->grelevance)!=''): ?>
+                <?php if (trim($oQuestion->groups->grelevance) != '') : ?>
                     <tr>
                         <td><?php eT("Group relevance:"); ?></td>
                         <td>
                             <?php
-                            LimeExpressionManager::ProcessString("{" . $oQuestion->groups->grelevance . "}", $qid);
+                            LimeExpressionManager::ProcessString("{" . trim($oQuestion->groups->grelevance) . "}", $qid);
                             echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             ?>
                         </td>
