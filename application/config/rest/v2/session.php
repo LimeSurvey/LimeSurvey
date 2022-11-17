@@ -65,6 +65,7 @@ $v1Namespace = '\LimeSurvey\Api\Command\V2\\';
  *          description="Success - session was deleted"
  *      )
  * )
+ *
  */
 $rest['v2/session'] = [
     'POST' => [

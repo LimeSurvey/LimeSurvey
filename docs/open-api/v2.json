@@ -1,3 +1,647 @@
 {
-    "openapi": "3.0.0"
+    "openapi": "3.0.0",
+    "info": {
+        "title": "LimeSurvey REST API",
+        "version": "2.0"
+    },
+    "paths": {
+        "/rest/v2/session": {
+            "post": {
+                "tags": [
+                    "Session"
+                ],
+                "summary": "Create session token",
+                "description": "Create session token",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "description": "Username",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Password",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success - returns session token",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid user name or password"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Session"
+                ],
+                "summary": "Delete session",
+                "description": "Delete session",
+                "responses": {
+                    "200": {
+                        "description": "Success - session was deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rest/v2/survey": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Get survey list",
+                "description": "Get survey list",
+                "parameters": [
+                    {
+                        "parameter": "page",
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page",
+                        "required": false,
+                        "allowReserved": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "parameter": "limit",
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Limit",
+                        "required": false,
+                        "allowReserved": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rest/v2/detail/{id}": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Get survey by id",
+                "description": "Get survey by id",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Patch survey by id",
+                "description": "Patch survey by id",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "question_detail": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "parent_qid": {
+                        "type": "string"
+                    },
+                    "sid": {
+                        "type": "string"
+                    },
+                    "gid": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "preg": {
+                        "type": "string"
+                    },
+                    "other": {
+                        "type": "string"
+                    },
+                    "mandatory": {
+                        "type": "string"
+                    },
+                    "encrypted": {
+                        "type": "string"
+                    },
+                    "question_order": {
+                        "type": "string"
+                    },
+                    "scale_id": {
+                        "type": "string"
+                    },
+                    "same_default": {
+                        "type": "string"
+                    },
+                    "relevance": {
+                        "type": "string"
+                    },
+                    "question_theme_name": {
+                        "type": "string"
+                    },
+                    "modulename": {
+                        "type": "string"
+                    },
+                    "same_script": {
+                        "type": "string"
+                    },
+                    "available_answers": {
+                        "type": "string"
+                    },
+                    "subquestions": {
+                        "type": "string"
+                    },
+                    "attributes": {
+                        "properties": {
+                            "cssclass": {
+                                "type": "string"
+                            },
+                            "display_rows": {
+                                "type": "string"
+                            },
+                            "em_validation_q": {
+                                "type": "string"
+                            },
+                            "hidden": {
+                                "type": "string"
+                            },
+                            "hide_tip": {
+                                "type": "string"
+                            },
+                            "input_size": {
+                                "type": "string"
+                            },
+                            "maximum_chars": {
+                                "type": "string"
+                            },
+                            "page_break": {
+                                "type": "string"
+                            },
+                            "random_group": {
+                                "type": "string"
+                            },
+                            "statistics_graphtype": {
+                                "type": "string"
+                            },
+                            "statistics_showgraph": {
+                                "type": "string"
+                            },
+                            "text_input_width": {
+                                "type": "string"
+                            },
+                            "time_limit": {
+                                "type": "string"
+                            },
+                            "time_limit_action": {
+                                "type": "string"
+                            },
+                            "time_limit_disable_next": {
+                                "type": "string"
+                            },
+                            "time_limit_disable_prev": {
+                                "type": "string"
+                            },
+                            "time_limit_message_delay": {
+                                "type": "string"
+                            },
+                            "time_limit_message_style": {
+                                "type": "string"
+                            },
+                            "time_limit_timer_style": {
+                                "type": "string"
+                            },
+                            "time_limit_warning": {
+                                "type": "string"
+                            },
+                            "time_limit_warning_2": {
+                                "type": "string"
+                            },
+                            "time_limit_warning_2_display_time": {
+                                "type": "string"
+                            },
+                            "time_limit_warning_2_style": {
+                                "type": "string"
+                            },
+                            "time_limit_warning_display_time": {
+                                "type": "string"
+                            },
+                            "time_limit_warning_style": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "attributes_lang": {
+                        "properties": {
+                            "em_validation_q_tip": {
+                                "type": "string"
+                            },
+                            "time_limit_countdown_message": {
+                                "type": "string"
+                            },
+                            "time_limit_message": {
+                                "type": "string"
+                            },
+                            "time_limit_warning_2_message": {
+                                "type": "string"
+                            },
+                            "time_limit_warning_message": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "answeroptions": {
+                        "type": "string"
+                    },
+                    "defaultvalue": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "qid": "1",
+                    "parent_qid": "0",
+                    "sid": "712896",
+                    "gid": "1",
+                    "type": "T",
+                    "title": "G01Q01",
+                    "preg": "",
+                    "other": "N",
+                    "mandatory": "N",
+                    "encrypted": "N",
+                    "question_order": "1",
+                    "scale_id": "0",
+                    "same_default": "0",
+                    "relevance": "1",
+                    "question_theme_name": "longfreetext",
+                    "modulename": null,
+                    "same_script": "0",
+                    "available_answers": "No available answers",
+                    "subquestions": "No available answers",
+                    "attributes": {
+                        "cssclass": "",
+                        "display_rows": "",
+                        "em_validation_q": "",
+                        "hidden": "0",
+                        "hide_tip": "0",
+                        "input_size": "",
+                        "maximum_chars": "",
+                        "page_break": "0",
+                        "random_group": "",
+                        "statistics_graphtype": "0",
+                        "statistics_showgraph": "1",
+                        "text_input_width": "",
+                        "time_limit": "",
+                        "time_limit_action": "1",
+                        "time_limit_disable_next": "0",
+                        "time_limit_disable_prev": "0",
+                        "time_limit_message_delay": "",
+                        "time_limit_message_style": "",
+                        "time_limit_timer_style": "",
+                        "time_limit_warning": "",
+                        "time_limit_warning_2": "",
+                        "time_limit_warning_2_display_time": "",
+                        "time_limit_warning_2_style": "",
+                        "time_limit_warning_display_time": "",
+                        "time_limit_warning_style": ""
+                    },
+                    "attributes_lang": {
+                        "em_validation_q_tip": "",
+                        "time_limit_countdown_message": "",
+                        "time_limit_message": "",
+                        "time_limit_warning_2_message": "",
+                        "time_limit_warning_message": ""
+                    },
+                    "answeroptions": "No available answer options",
+                    "defaultvalue": null
+                }
+            },
+            "question_list": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/question_list_item"
+                },
+                "example": [
+                    {
+                        "id": "1",
+                        "question": "Question 1",
+                        "help": "This is a question help text.",
+                        "language": "en",
+                        "qid": "1",
+                        "parent_qid": "0",
+                        "sid": "712896",
+                        "type": "T",
+                        "title": "G01Q01",
+                        "preg": "",
+                        "other": "N",
+                        "mandatory": "N",
+                        "encrypted": "N",
+                        "question_order": "1",
+                        "scale_id": "0",
+                        "same_default": "0",
+                        "question_theme_name": "longfreetext",
+                        "modulename": null,
+                        "gid": "1",
+                        "relevance": "1",
+                        "same_script": "0"
+                    }
+                ]
+            },
+            "question_list_item": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "question": {
+                        "type": "string"
+                    },
+                    "help": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "type": "string"
+                    },
+                    "qid": {
+                        "type": "string"
+                    },
+                    "parent_qid": {
+                        "type": "string"
+                    },
+                    "sid": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "preg": {
+                        "type": "string"
+                    },
+                    "other": {
+                        "type": "string"
+                    },
+                    "mandatory": {
+                        "type": "string"
+                    },
+                    "encrypted": {
+                        "type": "string"
+                    },
+                    "question_order": {
+                        "type": "string"
+                    },
+                    "scale_id": {
+                        "type": "string"
+                    },
+                    "same_default": {
+                        "type": "string"
+                    },
+                    "question_theme_name": {
+                        "type": "string"
+                    },
+                    "modulename": {
+                        "type": "string"
+                    },
+                    "gid": {
+                        "type": "string"
+                    },
+                    "relevance": {
+                        "type": "string"
+                    },
+                    "same_script": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "id": "1",
+                    "question": "Question 1",
+                    "help": "This is a question help text.",
+                    "language": "en",
+                    "qid": "1",
+                    "parent_qid": "0",
+                    "sid": "712896",
+                    "type": "T",
+                    "title": "G01Q01",
+                    "preg": "",
+                    "other": "N",
+                    "mandatory": "N",
+                    "encrypted": "N",
+                    "question_order": "1",
+                    "scale_id": "0",
+                    "same_default": "0",
+                    "question_theme_name": "longfreetext",
+                    "modulename": null,
+                    "gid": "1",
+                    "relevance": "1",
+                    "same_script": "0"
+                }
+            },
+            "question_group_detail": {
+                "properties": {
+                    "gid": {
+                        "type": "string"
+                    },
+                    "sid": {
+                        "type": "string"
+                    },
+                    "group_order": {
+                        "type": "string"
+                    },
+                    "randomization_group": {
+                        "type": "string"
+                    },
+                    "grelevance": {
+                        "type": "string"
+                    },
+                    "group_name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "gid": "1",
+                    "sid": "712896",
+                    "group_order": "0",
+                    "randomization_group": "",
+                    "grelevance": "",
+                    "group_name": "Question group 1",
+                    "description": "Description of group 1"
+                }
+            },
+            "question_group_list": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/question_group_list_item"
+                },
+                "example": [
+                    {
+                        "id": "1",
+                        "gid": "1",
+                        "sid": "712896",
+                        "group_order": "0",
+                        "randomization_group": "",
+                        "grelevance": "",
+                        "group_name": "Question group 1",
+                        "description": "",
+                        "language": "en"
+                    }
+                ]
+            },
+            "question_group_list_item": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "gid": {
+                        "type": "string"
+                    },
+                    "sid": {
+                        "type": "string"
+                    },
+                    "group_order": {
+                        "type": "string"
+                    },
+                    "randomization_group": {
+                        "type": "string"
+                    },
+                    "grelevance": {
+                        "type": "string"
+                    },
+                    "group_name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "id": "1",
+                    "gid": "1",
+                    "sid": "712896",
+                    "group_order": "0",
+                    "randomization_group": "",
+                    "grelevance": "",
+                    "group_name": "Question group 1",
+                    "description": "",
+                    "language": "en"
+                }
+            },
+            "response_status": {
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "status": "Error: Invalid question id"
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Bearer Auth",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    }
 }
