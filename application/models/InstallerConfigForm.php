@@ -190,7 +190,7 @@ class InstallerConfigForm extends CFormModel
     {
         return [
             'dbtype' => gT("The type of your database management system"),
-            'dblocation' => gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with complete socket path.') . ' ' . gT('If your database is using a custom port attach it using a colon. Example: db.host.com:5431'),
+            'dblocation' => gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with socket path.') . ' ' . gT('If your database is using a custom port attach it using a colon. Example: db.host.com:5431'),
             'dbname' => gT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation."),
             'dbuser' => gT('Your database server user name. In most cases "root" will work.'),
             'dbpwd' => gT("Your database server password."),
