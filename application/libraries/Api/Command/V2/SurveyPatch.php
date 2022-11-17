@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1;
+namespace LimeSurvey\Api\Command\V2;
 
 use Yii;
 use LimeSurvey\Api\Command\CommandInterface;
