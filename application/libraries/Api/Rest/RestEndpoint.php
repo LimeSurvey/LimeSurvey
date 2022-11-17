@@ -28,6 +28,18 @@ class RestEndpoint
         $this->commandParams = $commandParams;
     }
 
+    public function getCommand()
+    {
+        return new $this->config['commandClass']();
+    }
+
+    public function getResponseRenderer()
+    {
+        $class = 'LimeSurvey\Api\Rest\Renderer\RestRenderer'
+            . ucfirst($this->config['apiVersion']);
+        return new $class();
+    }
+
     /**
      * Run Command
      *
@@ -35,8 +47,7 @@ class RestEndpoint
      */
     public function runCommand()
     {
-        $command = new $this->config['commandClass']();
         $request = new Request($this->commandParams);
-        return $command->run($request);
+        return $this->getCommand()->run($request);
     }
 }

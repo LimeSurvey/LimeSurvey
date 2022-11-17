@@ -7,7 +7,7 @@ use LSHttpRequest;
 use Yii;
 use LimeSurvey\Api\Rest\RestEndpoint;
 
-class EndpointFactory
+class RestEndpointFactory
 {
     /**
      * Create
@@ -61,6 +61,7 @@ class EndpointFactory
 
                 $endpointConfig = $config[$requestMethod];
 
+                $endpointConfig['apiVersion'] = $apiVersion;
                 $endpointConfig['byId'] = $keyId;
                 break;
             }
