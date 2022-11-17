@@ -68,7 +68,7 @@ $rest['v2/survey'] = [
 
 /**
  * @OA\Get(
- *      path="/rest/v2/detail/{id}",
+ *      path="/rest/v2/survey-detail/{id}",
  *      security={{"bearerAuth":{}}},
  *      summary="Get survey by id",
  *      description="Get survey by id",
@@ -90,9 +90,19 @@ $rest['v2/survey'] = [
  *          description="Not found"
  *      )
  * )
- *
+ */
+$rest['v2/survey-detail/$surveyId'] = [
+    'GET' => [
+        'commandClass' => $v2Namespace . 'SurveyDetail',
+        'auth' => 'session',
+        'params' => [],
+        'bodyParams' => []
+    ]
+];
+
+/**
  * @OA\Patch(
- *      path="/rest/v2/detail/{id}",
+ *      path="/rest/v2/survey/{id}",
  *      security={{"bearerAuth":{}}},
  *      summary="Patch survey by id",
  *      description="Patch survey by id",
@@ -115,13 +125,7 @@ $rest['v2/survey'] = [
  *      )
  * )
  */
-$rest['v2/detail/$surveyId'] = [
-    'GET' => [
-        'commandClass' => $v2Namespace . 'SurveyDetail',
-        'auth' => 'session',
-        'params' => [],
-        'bodyParams' => []
-    ],
+$rest['v2/survey/$surveyId'] = [
     'PATCH' => [
         'commandClass' => $v2Namespace . 'SurveyPatch',
         'auth' => 'session',

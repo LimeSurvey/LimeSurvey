@@ -122,7 +122,7 @@
                 ]
             }
         },
-        "/rest/v2/detail/{id}": {
+        "/rest/v2/survey-detail/{id}": {
             "get": {
                 "tags": [
                     "Survey"
@@ -148,7 +148,9 @@
                         "bearerAuth": []
                     }
                 ]
-            },
+            }
+        },
+        "/rest/v2/survey/{id}": {
             "patch": {
                 "tags": [
                     "Survey"
