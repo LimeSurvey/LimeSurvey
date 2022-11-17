@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V1;
+namespace LimeSurvey\Api\Command\V2;
 
 use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
 use LimeSurvey\Api\Command\CommandInterface;
@@ -33,14 +33,20 @@ class SessionKeyCreate implements CommandInterface
         try {
             return $this->responseSuccess(
         $apiSession->doLogin(
-                    $username,
-                    $password,
-                    $plugin
+        $username,
+        $password,
+        $plugin
                 )
             );
         } catch (ExceptionInvalidUser $e) {
             return $this->responseErrorUnauthorised(
-                ['status' => 'Invalid user name or password']
+                [
+                    'error' => [
+                        'code' => 'INVALID_USER',
+                        'message' => 'Invalid user name or password',
+                        'data' => []
+                    ]
+                ]
             );
         }
     }

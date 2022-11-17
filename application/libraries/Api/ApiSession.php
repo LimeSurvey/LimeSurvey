@@ -2,6 +2,11 @@
 
 namespace LimeSurvey\Api;
 
+use LimeSurvey\Api\Command\V1\Exception\ExceptionInvalidUser;
+use CDbCriteria;
+use Session;
+use Yii;
+
 class ApiSession
 {
     const INVALID_SESSION_KEY = 'Invalid session key';
@@ -29,11 +34,20 @@ class ApiSession
         if (!$identity->authenticate()) {
             if ($identity->errorMessage) {
                 // don't return an empty string
-                return $identity->errorMessage;
+                return new ExceptionInvalidUser($identity->errorMessage);
             }
-            return false;
+            throw new ExceptionInvalidUser('Login failed');
         } else {
-            return true;
+            $this->jumpStartSession($sUsername);
+            $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
+            $session = new Session();
+            $session->id = $sSessionKey;
+            $session->expire = time() + (int) Yii::app()
+                ->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
+            $session->data = $sUsername;
+            $session->save();
+
+            return $sSessionKey;
         }
     }
 
@@ -93,5 +107,24 @@ class ApiSession
             $this->jumpStartSession($oResult->data);
             return true;
         }
+    }
+
+    /**
+     * Logout
+     *
+     * @access public
+     * @param string $sSessionKey
+     * @return bool
+     */
+    public function doLogout($sessionKey)
+    {
+        Session::model()
+            ->deleteAllByAttributes(array(
+                'id' => $sessionKey
+            ));
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'expire < ' . time();
+        Session::model()
+            ->deleteAll($criteria);
     }
 }
