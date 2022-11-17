@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Rest;
 
-use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 
@@ -28,6 +27,11 @@ class RestEndpoint
         $this->commandParams = $commandParams;
     }
 
+    /**
+     * Get Command
+     *
+     * @return LimeSurvey\Api\Command\CommandInterface
+     */
     public function getCommand()
     {
         return new $this->config['commandClass']();
@@ -47,7 +51,8 @@ class RestEndpoint
      */
     public function runCommand()
     {
-        $request = new Request($this->commandParams);
-        return $this->getCommand()->run($request);
+        return $this->getCommand()->run(
+            new Request($this->commandParams)
+        );
     }
 }
