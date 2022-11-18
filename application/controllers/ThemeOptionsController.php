@@ -471,6 +471,8 @@ class ThemeOptionsController extends LSBaseController
         }
 
         $aData['oSurveyTheme'] = $oSurveyTheme;
+        $aData['canImport']  = $canImport;
+        $aData['importErrorMessage']  = $importErrorMessage;
         $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
         $aData['topbar']['title'] = gT('Themes');
@@ -763,8 +765,19 @@ class ThemeOptionsController extends LSBaseController
 
         $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
 
-        // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = $pageTitle;
+        $aData['topbar']['title'] = $pageTitle;
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => false,
+                'isSaveBtn' => true,
+                'backUrl' => $this->createUrl("/themeOptions/index"),
+                'formIdSaveClose' => '',
+                'formIdSave' => 'template-options-form'
+            ],
+            true
+        );
 
         $this->aData = $aData;
         $this->render('update', $aData);

@@ -71,7 +71,9 @@ class UserGroupController extends LSBaseController
         $model = UserGroup::model();
         $aData['topbar']['title'] = gT('User group list');
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [], true);
+        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns/rightSideButtons', [
+            'addGroupSave' => false
+        ], true);
 
 
         if (isset($_GET['pageSize'])) {
@@ -303,10 +305,14 @@ class UserGroupController extends LSBaseController
             true
         );
         $aData['topbar']['rightButtons'] = $this->renderPartial(
-            'partial/topbarBtns/rightSideButtons',
+            '/layouts/partial_topbar/right_close_saveclose_save',
             [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => false,
+                'isSaveBtn' => true,
                 'backUrl' => Yii::app()->createUrl('userGroup/index'),
-                'addGroupSave' => true
+                'formIdSaveClose' => '',
+                'formIdSave' => 'usergroupform'
             ],
             true
         );

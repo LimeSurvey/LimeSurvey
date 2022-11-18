@@ -63,17 +63,6 @@ class HomepageSettingsController extends LSBaseController
         $aData['topbar']['middleButtons'] = $this->renderPartial('partial/topbarBtns/leftSideButtons', [], true);
         $this->aData = $aData;
 
-    /*    $this->aData = [
-            'fullpagebar' => [
-                'boxbuttons' => true,
-                'returnbutton' => [
-                    'url' => 'admin/index',
-                    'text' => gT('Back'),
-                ],
-            ],
-            'pageTitle' => gT('Dashboard'),
-        ]; */
-
         $this->render('index', [
             'dataProviderBox' => $dataProviderBox->model,
             'bShowLogo' => App()->getConfig('show_logo') == "show",
@@ -118,7 +107,18 @@ class HomepageSettingsController extends LSBaseController
         }
 
         $aData['topbar']['title'] = gT('New box');
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns_create/rightSideButtons', [], true);
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'isSaveBtn' => true,
+                'backUrl' => $this->createUrl("/homepageSettings/index"),
+                'formIdSaveClose' => 'boxes-form',
+                'formIdSave' => 'boxes-form'
+            ],
+            true
+        );
 
         $aData['model'] = $model;
         $this->aData = $aData;
@@ -165,7 +165,18 @@ class HomepageSettingsController extends LSBaseController
             }
         }
         $aData['topbar']['title'] = gT('Update box');
-        $aData['topbar']['rightButtons'] = $this->renderPartial('partial/topbarBtns_create/rightSideButtons', [], true);
+        $aData['topbar']['rightButtons'] = $this->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'isSaveBtn' => true,
+                'backUrl' => $this->createUrl("/homepageSettings/index"),
+                'formIdSaveClose' => 'boxes-form',
+                'formIdSave' => 'boxes-form'
+            ],
+            true
+        );
 
         $aData['model'] = $model;
         $this->aData = $aData;

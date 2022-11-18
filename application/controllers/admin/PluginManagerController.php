@@ -85,22 +85,6 @@ class PluginManagerController extends SurveyCommonAction
             ],
             true
         );
-        /*
-        $aData['pageTitle'] = gT('Plugins');
-        // White Bar
-        $aData['fullpagebar']['returnbutton']['url'] = 'index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
-
-        // Additional Buttons in white bar
-        $aData['fullpagebar']['pluginManager']['buttons'] = [
-            'installPluginZipModal' => [
-                'hasConfigDemoMode' => Yii::app()->getConfig('demoMode'),
-            ],
-            'scanFiles' => [
-                'url' => $scanFilesUrl,
-            ],
-            'showUpload' => !Yii::app()->getConfig('demoMode') && !Yii::app()->getConfig('disablePluginUpload'),
-        ];*/
 
         $this->renderWrappedTemplate('pluginmanager', 'index', $aData);
     }

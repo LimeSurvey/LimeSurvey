@@ -113,7 +113,18 @@ class GlobalSettings extends SurveyCommonAction
         }
 
         $data['topbar']['title'] = gT('Global settings');
-        $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial('/admin/globalsettings/partial/topbarBtns/rightSideButtons', [], true);
+        $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'isSaveBtn' => true,
+                'backUrl' => Yii::app()->createUrl('admin/index'),
+                'formIdSaveClose' => 'frmglobalsettings',
+                'formIdSave' => 'frmglobalsettings'
+            ],
+            true
+        );
 
         // List of available encodings
         $data['aEncodings'] = aEncodingsArray();
@@ -521,8 +532,15 @@ class GlobalSettings extends SurveyCommonAction
 
         $aData['topbar']['title'] = gT('Global survey settings');
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/admin/globalsettings/partial/topbarBtns_surveysettings/rightSideButtons',
-            [],
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'isSaveBtn' => true,
+                'backUrl' => Yii::app()->createUrl('admin/index'),
+                'formIdSaveClose' => 'frmglobalsettings',
+                'formIdSave' => 'frmglobalsettings'
+            ],
             true
         );
 

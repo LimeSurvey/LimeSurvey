@@ -21,7 +21,7 @@ if ($showUpload) {
     );
 }
 
-if ($scanFilesUrl !== null && count($scanFilesUrl) > 0) {
+if ($scanFilesUrl !== null) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [

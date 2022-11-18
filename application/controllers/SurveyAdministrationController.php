@@ -141,17 +141,21 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveyid'] = $iSurveyID;
         $aData['sid'] = $iSurveyID; //frontend need this to render topbar for the view
 
-        //NOTE this is set because ONLY this leads to render the view surveySummary_view, no need to use in anymore
-        // $aData['display']['surveysummary'] = true;
+        $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
+   /*     $aData['topbar']['middleButtons'] = $this->renderPartial(
+            'partial/topbar/surveyTopbarLeft_view',
+            $topbarData,
+            true
+        ); */
 
         // Last survey visited
         $userId = App()->user->getId();
         SettingGlobal::setSetting('last_survey_' . $userId, $iSurveyID);
 
-        $aData['surveybar']['buttons']['view'] = true;
-        $aData['surveybar']['returnbutton']['url'] = $this->createUrl("surveyAdministration/listsurveys");
-        $aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
-        $aData['sidemenu']["survey_menu"] = true;
+        //$aData['surveybar']['buttons']['view'] = true;
+        //$aData['surveybar']['returnbutton']['url'] = $this->createUrl("surveyAdministration/listsurveys");
+        //$aData['surveybar']['returnbutton']['text'] = gT('Return to survey list');
+        //$aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey
         // TODO: getGlobalSetting() DEPRECATED
@@ -181,14 +185,14 @@ class SurveyAdministrationController extends LSBaseController
         $user = User::model()->findByPk(App()->session['loginID']);
         $aData['owner'] = $user->attributes;
 
-        if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
-            $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
-        }
+      //  if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
+        //    $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
+       // }
 
         $this->surveysummary($aData);
 
         // Display 'Overview' in Green Bar
-        $aData['subaction'] = gT('Overview');
+     //   $aData['subaction'] = gT('Overview');
 
         $this->aData = $aData;
         $this->render('sidebody', [
