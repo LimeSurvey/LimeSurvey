@@ -1012,7 +1012,7 @@ class TemplateConfiguration extends TemplateConfig
             $fileList = Template::getOtherFiles($basePath);
             // Order File List alphabetically
             usort($fileList, function ($a, $b) {
-                return strcmp($a['name'], $b['name']);
+                return strcasecmp($a['name'], $b['name']);
             });
             // Keep only image files
             foreach ($fileList as $file) {
