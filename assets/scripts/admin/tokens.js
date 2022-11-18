@@ -310,7 +310,10 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             !LS.validateEndDateHigherThanStart(
                 $('#validfrom').data('DateTimePicker'),
                 $('#validuntil').data('DateTimePicker'),
-                () => {showError($('#edittoken').attr('data-expiration-validation-error'))}
+                () => {
+                    showError($('#edittoken').attr('data-expiration-validation-error'));
+                    $('#validuntil').trigger('invalid');
+                }
             )
         ) {
             event.preventDefault();
