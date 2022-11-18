@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V2;
 
-use Yii;
+use Survey;
 use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthSession;
@@ -34,9 +34,9 @@ class SurveyList implements CommandInterface
             return $response;
         }
 
+        $dataProvider = Survey::model()->search();
+        $data = $dataProvider->getData();
 
-        $list = [];
-
-        return $this->responseSuccess($list);
+        return $this->responseSuccess($data);
     }
 }
