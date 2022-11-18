@@ -59,8 +59,8 @@ $rest['v2/survey'] = [
         'commandClass' => $v2Namespace . 'SurveyList',
         'auth' => 'session',
         'params' => [
-            'page' => true,
-            'limit' => true
+            'pageSize' => true,
+            'page' => true
         ],
         'bodyParams' => []
     ]

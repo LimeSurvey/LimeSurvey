@@ -25,8 +25,8 @@ class SurveyList implements CommandInterface
     public function run(Request $request)
     {
         $sessionKey = (string) $request->getData('sessionKey');
+        $pageSize = (string) $request->getData('pageSize', 20);
         $page = (string) $request->getData('page', 1);
-        $limit = (string) $request->getData('limit', 20);
 
         if (
             ($response = $this->checkKey($sessionKey)) !== true
@@ -34,7 +34,10 @@ class SurveyList implements CommandInterface
             return $response;
         }
 
-        $dataProvider = Survey::model()->search();
+        $dataProvider = Survey::model()->search([
+            'pageSize' => $pageSize,
+            'currentPage' => $page + 1 // one based rather than zero based
+        ]);
         $data = $dataProvider->getData();
 
         return $this->responseSuccess($data);

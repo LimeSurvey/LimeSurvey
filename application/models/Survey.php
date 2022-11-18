@@ -1522,10 +1522,26 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * @return CActiveDataProvider
+     *
+     * @param array{pageSize?: int, currentPage?: int, groupId?: int} $params
      */
-    public function search()
+    public function search($params = null)
     {
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        [
+            'pageSize' => $pageSize,
+            'currentPage' => $currentPage,
+            'groupId' => $groupId
+        ] = [
+            'pageSize' =>
+                !empty($params['pageSize'])
+                ? $params['pageSize']
+                : Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
+            'currentPage' => isset($params['currentPage']) ? $params['currentPage'] : null,
+            'groupId' =>
+                !empty($params['groupId'])
+                ? $params['groupId']
+                : Yii::app()->request->getParam('id')
+        ];
 
         $sort = new CSort();
         $sort->attributes = array(
@@ -1586,7 +1602,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         // show only surveys belonging to selected survey group
         if (!empty(Yii::app()->request->getParam('id'))) {
-            $criteria->addCondition("t.gsid = " . sanitize_int(Yii::app()->request->getParam('id')), 'AND');
+            $criteria->addCondition("t.gsid = " . sanitize_int($groupId), 'AND');
         }
 
         // Active filter
@@ -1595,7 +1611,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $criteria->compare("t.active", $this->active, false);
             } else {
                 // Time adjust
-                $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+                $sNow = date(
+                    "Y-m-d H:i:s",
+                    strtotime(
+                        Yii::app()->getConfig('timeadjust'),
+                        strtotime(date("Y-m-d H:i:s"))
+                    )
+                );
 
                 if ($this->active == "E") {
                     $criteria->compare("t.active", 'Y');
@@ -1630,10 +1652,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dataProvider = new CActiveDataProvider('Survey', array(
             'sort' => $sort,
             'criteria' => $criteria,
-            'pagination' => array(
-                'pageSize' => $pageSize,
-            ),
+
         ));
+        $paginator = $dataProvider->getPagination();
+        if ($pageSize) {
+            $paginator->setPageSize($pageSize);
+        }
+        if (!is_null($currentPage)) {
+            $paginator->setCurrentPage($currentPage);
+        }
 
         $dataProvider->setTotalItemCount($this->count($criteria));
 
