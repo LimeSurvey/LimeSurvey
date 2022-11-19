@@ -26,11 +26,11 @@ $v2Namespace = '\LimeSurvey\Api\Command\V2\\';
  *          )
  *      ),
  *      @OA\Parameter(
- *          parameter="limit",
- *          name="limit",
+ *          parameter="pageSize",
+ *          name="pageSize",
  *          allowReserved=true,
  *          in="query",
- *          description="Limit",
+ *          description="pageSize",
  *          required=false,
  *          @OA\Schema(
  *              type="number"
@@ -125,6 +125,7 @@ $rest['v2/survey-detail/$surveyId'] = [
  *      )
  * )
  */
+/*
 $rest['v2/survey/$surveyId'] = [
     'PATCH' => [
         'commandClass' => $v2Namespace . 'SurveyPatch',
@@ -133,5 +134,6 @@ $rest['v2/survey/$surveyId'] = [
         'bodyParams' => []
     ]
 ];
+*/
 
 return $rest;

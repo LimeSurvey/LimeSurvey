@@ -14,6 +14,7 @@
  *
  */
 
+
 //Admin Routes
 $route['admin/index'] = "admin";
 $route['admin/<action:\w+>/sa/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
@@ -37,17 +38,18 @@ $route['statistics_user/action'] = 'StatisticsUser/action';
 
 // REST
 // - Resource index
-$route['rest/<_api_version:\w+>/<_entity:\w+>'] = array(
-    'rest',
-    'verb' => 'GET, PUT, PATCH, POST, DELETE',
-    'matchValue' => true
-);
 // - Resource index with id
-$route['rest/<_api_version:\w+>/<_entity:\w+>/<_id:\w+>'] = array(
+$route['rest/<_api_version:\w+>/<_entity>/<_id>'] = array(
     'rest',
     'verb' => 'GET, PUT, PATCH, POST, DELETE',
-    'matchValue' => true
+    'matchValue' => false
 );
+$route['rest/<_api_version:\w+>/<_entity>'] = array(
+    'rest',
+    'verb' => 'GET, PUT, PATCH, POST, DELETE',
+    'matchValue' => false
+);
+
 
 //Compatibility with classic modrewrite
 $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>/token/<_token>"; //This one must be first
@@ -59,5 +61,7 @@ $route['<sid:\d+>'] = array('survey/index', 'matchValue' => true);
 //$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 
 //die(print_r($route, true));
+
+
 
 return $route;

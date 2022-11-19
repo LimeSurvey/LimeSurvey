@@ -48,15 +48,18 @@ class RestEndpointFactory
                 [$keyApiVersion, $keyEntity] = $keyParts;
             } elseif ($keyPartsCount == 3) {
                 [$keyApiVersion, $keyEntity, $keyId] = $keyParts;
+
             }
 
-            $keyId = !empty($keyId) ? ltrim($keyId, '$') : false;
+            $keyId = !empty($keyId)
+                ? ltrim($keyId, '$')
+                : false;
 
             if (
                 $keyApiVersion == $apiVersion
                 && $keyEntity == $entity
                 && is_array($config[$requestMethod])
-                && (false === $keyId || !empty($id))
+                && (false === $keyId || !is_null($id))
             ) {
 
                 $endpointConfig = $config[$requestMethod];
