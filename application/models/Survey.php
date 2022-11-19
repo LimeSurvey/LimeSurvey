@@ -1533,12 +1533,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'groupId' => $groupId
         ] = [
             'pageSize' =>
-                !empty($params['pageSize'])
+                $params && !empty($params['pageSize'])
                 ? $params['pageSize']
                 : Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
-            'currentPage' => isset($params['currentPage']) ? $params['currentPage'] : null,
+            'currentPage' => $params && isset($params['currentPage']) ? $params['currentPage'] : null,
             'groupId' =>
-                !empty($params['groupId'])
+                $params && !empty($params['groupId'])
                 ? $params['groupId']
                 : Yii::app()->request->getParam('id')
         ];
