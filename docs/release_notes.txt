@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.38 (build 221115) to 3.28.39 (build 221122) November 21, 2022
+-Fixed issue: ComfortUpdate should use SSL by default (Carsten Schmitz)
+-Fixed issue #18488: Conditions are not properly highlighted if they have additional spaces (#2736) (Denis Chenu)
+-Fixed issue #15195: Expiration date can be set before start date (#2727) (Gabriel Jenik)
+#Updated translation: Valencian by vbraque
+#Updated translation: Hungarian by kkd
+
+
 Changes from 3.28.37 (build 221108) to 3.28.38 (build 221115) November 14, 2022
 -Fixed issue: Survey gets into a state where it seems to be active but isn't - to fix this run integrity check (Gabriel Jenik)
 #Updated translation: Portuguese (Brazil) by educaticteced, effgarces, filhocf, josesiqueira, mauriciofurtado
