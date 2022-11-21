@@ -17,5 +17,5 @@
 
 $config['updaterversion'] = 16;
 $config['comfort_update_server_url'] = 'comfortupdate.limesurvey.org/';
-$config['comfort_update_server_ssl'] = 0;
+$config['comfort_update_server_ssl'] = 1;
 return $config;

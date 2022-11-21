@@ -210,7 +210,7 @@ class LimeReplacementFieldsController extends LSBaseController
             }
 
             $shortquestion = $row['title'] . ": " . flattenText($question);
-            $cquestions[] = array($shortquestion, $row['qid'], $row['type'], $row['fieldname'], $row['previouspage']);
+            $cquestions[] = array($shortquestion, $row['qid'], $row['type'], $row['fieldname'], $row['previouspage'], $row['title']);
         }
         return $cquestions;
     }

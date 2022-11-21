@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.11 (build 221114) to 5.4.12 (build 221121) November 21, 2022
+-Fixed issue: Placeholder fields still inserting outdated INSERTANS: placeholder (Carsten Schmitz)
+-Fixed issue: ComfortUpdate should use SSL by default (Carsten Schmitz)
+-Fixed issue #18488: Conditions are not properly highlighted if they have additional spaces (#2733) (Denis Chenu)
+-Fixed issue #18422: Remove Google font usage (#2689) (Gabriel Jenik)
+#Updated translation: Valencian by joamuran, vbraque
+#Updated translation: Thai by tomzt
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+
+
 Changes from 5.4.10 (build 221107) to 5.4.11 (build 221114) November 14, 2022
 -Fixed issue: Survey gets into a state where it seems to be active but isn't - to fix this run integrity check (Carsten Schmitz)
 -Fixed issue: Start boxes having invalid links on small screens (Carsten Schmitz)
