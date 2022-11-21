@@ -35,17 +35,39 @@ class SurveyDetail implements CommandInterface
             return $response;
         }
 
-        $surveyModel = Survey::model()->findByPk($surveyId);
-        $survey = $surveyModel ? $surveyModel->attributes : [];
+        $surveyModel = Survey::model()
+            ->with(
+                'groups',
+                'groups.questiongroupl10ns',
+                'groups.questions',
+                'groups.questions.questionl10ns',
+                'groups.questions.answers',
+                //'groups.questions.subquestions'
+            )->findByPk($surveyId);
+
+        if (!$surveyModel) {
+            return null;
+        }
+
+        $survey = $surveyModel->attributes;
+        $survey['languages'] = $surveyModel->allLanguages;
+
+       // $this->populateQuestionGroups($survey);
+
+        return $this->responseSuccess([$survey, $surveyModel->groups]);
+    }
+
+    protected function populateQuestionGroups(&$survey)
+    {
         $questionGroups = $this->collectionToArray(QuestionGroup::model()
             ->findAllByAttributes(
-                array('sid' => $surveyId)
-            ));
-        $questions = $this->collectionToArray(Question::model()
-            ->findAllByAttributes(
-                array('sid' => $surveyId)
+                array('sid' => $survey['sid'])
             ));
 
+        $questions = $this->collectionToArray(Question::model()
+            ->findAllByAttributes(
+                array('sid' => $survey['sid'])
+            ));
 
         $survey['questionGroups'] = $questionGroups;
         if (!empty($survey['questionGroups'])) {
@@ -56,8 +78,6 @@ class SurveyDetail implements CommandInterface
                 );
             }
         }
-
-        return $this->responseSuccess($survey);
     }
 
     protected function getQuestions($questionGroupId, $questions)
