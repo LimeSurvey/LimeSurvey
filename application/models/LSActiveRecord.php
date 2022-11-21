@@ -378,7 +378,7 @@ class LSActiveRecord extends CActiveRecord
     public static function decryptSingle($value = ''): string
     {
         // if $value is provided, it would decrypt
-        if (!empty($value)) {
+        if (isset($value) && $value !== '') {
             // load sodium library
             $sodium = Yii::app()->sodium;
             return $sodium->decrypt($value);
@@ -399,7 +399,7 @@ class LSActiveRecord extends CActiveRecord
             $sodium = Yii::app()->sodiumOld;
         }
         // if $value is provided, it would decrypt
-        if ($value) {
+        if (isset($value) && $value !== '') {
             try {
                 return $sodium->decrypt($value);
             } catch (throwable $e) {
@@ -424,7 +424,7 @@ class LSActiveRecord extends CActiveRecord
     public static function encryptSingle($value = '')
     {
         // if $value is provided, it would decrypt
-        if (!empty($value)) {
+        if (isset($value) && $value !== "") {
             // load sodium library
             $sodium = Yii::app()->sodium;
             return $sodium->encrypt($value);
@@ -458,7 +458,6 @@ class LSActiveRecord extends CActiveRecord
 
         // encrypt attributes
         $this->decryptEncryptAttributes('encrypt');
-
         // call save() method  without validation, validation is already done ( if needed )
         return $this->save(false);
     }
