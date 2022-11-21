@@ -42,7 +42,7 @@ echo '<div '
 
 echo '<div id="pjax-content" class="col-12">';
 
-echo LayoutHelper::renderTopbar($aData);
+//echo LayoutHelper::renderTopbar($aData);
 
 echo '<div id="in_survey_common" '
     . 'class="container-fluid ls-flex-column col-12"'
