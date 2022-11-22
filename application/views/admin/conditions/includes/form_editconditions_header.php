@@ -152,7 +152,7 @@
                         </div>
                     </div>
 
-                    <div role='tabpanel' class='tab-pane active' id='CONST'>
+                    <div role='tabpanel' class='tab-pane' id='CONST'>
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>
@@ -161,7 +161,7 @@
                         </div>
                     </div>
 
-                    <div role='tabpanel' class='tab-pane active' id='PREVQUESTIONS'>
+                    <div role='tabpanel' class='tab-pane' id='PREVQUESTIONS'>
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>
@@ -183,7 +183,7 @@
                         </div>
                     </div>
 
-                    <div role='tabpanel' class='tab-pane active' id='TOKENATTRS'>
+                    <div role='tabpanel' class='tab-pane' id='TOKENATTRS'>
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>
@@ -198,7 +198,7 @@
                         </div>
                     </div>
 
-                    <div role='tabpanel' class='tab-pane active' id='REGEXP'>
+                    <div role='tabpanel' class='tab-pane' id='REGEXP'>
                         <div class='form-group answer-option'>
                             <div class=''></div>
                             <div class=''>
