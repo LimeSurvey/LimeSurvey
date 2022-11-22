@@ -142,7 +142,9 @@ class SurveyPermission extends SurveyCommonAction
 
                 $surveysecurity .= "</td>\n"
                 . "<td>\n" . \CHtml::encode($PermissionRow['full_name']) . "</td>\n";
-
+                
+                //Translation support 
+                $asPDetailKeys = Permission::model()->getPermissionGradeList();
                 //Now show the permissions
                 foreach ($aBaseSurveyPermissions as $sPKey => $aPDetails) {
                     unset($aPDetails['img']);
@@ -157,7 +159,7 @@ class SurveyPermission extends SurveyCommonAction
                             && Permission::model()->hasSurveyPermission($iSurveyID, $sPKey, $sPDetailKey, $PermissionRow['uid'])
                         ) {
                             $iCount++;
-                            $sTooltip .= $sPDetailKey . ", ";
+                            $sTooltip .= $asPDetailKeys[$sPDetailKey] . ", ";
                         }
                         if ($sPDetailValue) {
                             $iPermissionCount++;
