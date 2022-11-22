@@ -378,7 +378,7 @@ class LSActiveRecord extends CActiveRecord
     public static function decryptSingle($value = ''): string
     {
         // if $value is provided, it would decrypt
-        if (isset($value) && $value !== '') {
+        if (!empty($value)) {
             // load sodium library
             $sodium = Yii::app()->sodium;
             return $sodium->decrypt($value);

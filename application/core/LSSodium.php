@@ -135,7 +135,7 @@ class LSSodium
     public function decrypt($sEncryptedString, $bReturnFalseIfError = false): string
     {
         if ($this->bLibraryExists === true) {
-            if (isset($sEncryptedString) && $sEncryptedString !== ""  && $sEncryptedString !== 'null') {
+            if (!empty($sEncryptedString) && $sEncryptedString !== 'null') {
                 $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(base64_decode($sEncryptedString), $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey);
                 if ($plaintext === false) {
                     throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));
