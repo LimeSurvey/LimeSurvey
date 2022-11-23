@@ -546,7 +546,8 @@ class SettingsWidget extends CWidget
             $metaData,
             $form,
             array(
-                'autocomplete' => 'new-password', // Don't offer saved password https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion#the_autocomplete_attribute_and_login_fields
+                // see https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion#the_autocomplete_attribute_and_login_fields
+                'autocomplete' => 'new-password',
                 'size' => 50,
                 'placeholder' => gT("Empty string")
             )
@@ -555,8 +556,9 @@ class SettingsWidget extends CWidget
         if (empty($metaData['usekeepit'])) {
             return CHtml::passwordField($name, $value, $htmlOptions);
         }
-        $value = str_repeat(" ",mb_strlen($value)); // Leave an information about size … random length is maybe best ?
-        if(empty($htmlOptions['placeholder'])) {
+        // generate a string of same size than current password
+        $value = str_repeat(" ", mb_strlen($value));
+        if (empty($htmlOptions['placeholder'])) {
             $htmlOptions['placeholder'] = gT("Empty string");
         }
         $passwordInputId = \CHtml::getIdByName($name);
@@ -565,7 +567,7 @@ class SettingsWidget extends CWidget
             'data-related-password' => \CHtml::getIdByName($name),
             'id' => "update_" . $passwordInputId,
         );
-        if(!empty($htmlOptions['disabled'])) {
+        if (!empty($htmlOptions['disabled'])) {
             $checkboxHtmlOptions['disabled'] = true;
         }
         $checboxName = $name . "[keepit]";
