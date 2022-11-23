@@ -314,7 +314,10 @@ class DataEntry extends SurveyCommonAction
                 $tbl_name = substr($sourceSchema->name, strlen(Yii::app()->db->tablePrefix));
             }
             $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
-            $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
+            $archivedEncryptedAttributes = [];
+            if ($archivedTableSettings) {
+                $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
+            }
 
             $fieldMap = [];
             $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
