@@ -1060,8 +1060,8 @@ class Question extends LSActiveRecord
         $criteria->with = [
             'group' => ['alias' => 'g'],
             'questionl10ns' => ['alias' => 'ql10n', 'condition' => "language='" . $this->survey->language . "'"],
-            'question_theme' => ['alias' => 'qt', 'condition' => "extends=''"]
         ];
+        $criteria->join = "JOIN {{question_themes}} as qt ON t." . Yii::app()->db->quoteColumnName("type") . " = qt.question_type AND extends = ''";
 
         if (!empty($this->title)) {
             $criteria2 = new CDbCriteria();
