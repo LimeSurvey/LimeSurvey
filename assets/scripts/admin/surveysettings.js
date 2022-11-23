@@ -161,7 +161,10 @@ function validateSettingsForm($form) {
             return LS.validateEndDateHigherThanStart(
                 $('#startdate_datetimepicker').data('DateTimePicker'),
                 $('#expires_datetimepicker').data('DateTimePicker'),
-                () => {LS.LsGlobalNotifier.createFlash(expirationLowerThanStartError, 'alert-danger fade in')}
+                () => {
+                    LS.LsGlobalNotifier.createFlash(expirationLowerThanStartError, 'alert-danger fade in');
+                    $('#expires').trigger('invalid');
+                }
             );
         default:
             return true;

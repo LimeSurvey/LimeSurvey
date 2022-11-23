@@ -35,14 +35,40 @@ const SaveController = () => {
     },
     isSubmitting = () => formSubmitting,
     displayLoadingState = (el) => {
-        if($(el).data('form-id') == 'addnewsurvey') {
+        //if($(el).data('form-id') == 'addnewsurvey') {
             const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
-            $(el).prop('disabled', true).append(loadingSpinner);
-        }
+            $(el).append(loadingSpinner);
+            disableButton(el);
+        //}
     },
     stopDisplayLoadingState = () => {
+        $('.lsLoadingStateIndicator').each((i, item) => {
+            enableButton($(item).parent());
+            $(item).remove();
+        });
         LS.EventBus.$emit('loadingFinished');
-        // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
+    },
+    bindInvalidFormHandler = ($form) => {
+        var $submittableElements = $form.find('button, input, select, textarea');
+        $submittableElements.off('invalid.save').on('invalid.save', function() {
+            stopDisplayLoadingState();
+            $submittableElements.off('invalid.save');
+            formSubmitting = false;
+        });
+    },
+    disableButton = (el) => {
+        if ($(el).is('a')) {
+            $(el).addClass('disabled');
+        } else {
+            $(el).prop('disabled', true);
+        }
+    },
+    enableButton = (el) => {
+        if ($(el).is('a')) {
+            $(el).removeClass('disabled');
+        } else {
+            $(el).prop('disabled', false);
+        }
     },
     //###########PRIVATE
     checks = () => {
@@ -81,8 +107,10 @@ const SaveController = () => {
                     if ($form.data('isvuecomponent') == true) {
                         LS.EventBus.$emit('componentFormSubmit', button)
                     } else {
-                        $form.find('[type="submit"]:not(.ck)').first().trigger('click');
+                        // Attach handler to detect validation errors on the form and re-enable the button
+                        bindInvalidFormHandler($form);
                         displayLoadingState(this);
+                        $form.find('[type="submit"]:not(.ck)').first().trigger('click');
                     }
                 },
                 on: 'click'
@@ -145,6 +173,14 @@ const SaveController = () => {
                     ev.preventDefault();
                     const $form = getForm(this);
 
+                    // If the form has the 'data-trigger-validation' attribute set, trigger the standard form
+                    // validation and quit if it fails.
+                    if ($form.attr('data-trigger-validation')) {
+                        if (!$form[0].reportValidity()) {
+                            return;
+                        }
+                    }
+
                     closeAfterSaveInput.val("true");
                     $form.append(closeAfterSaveInput);
                     formSubmitting = true;
@@ -152,8 +188,10 @@ const SaveController = () => {
                     if ($form.data('isvuecomponent') == true) {
                         LS.EventBus.$emit('componentFormSubmit', button)
                     } else {
-                        $form.find('[type="submit"]').first().trigger('click');
+                        // Attach handler to detect validation errors on the form and re-enable the button
+                        bindInvalidFormHandler($form);
                         displayLoadingState(this);
+                        $form.find('[type="submit"]').first().trigger('click');
                     }
                 },
                 on: 'click'

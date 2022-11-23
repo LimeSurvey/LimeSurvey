@@ -31060,13 +31060,39 @@
       return formSubmitting;
     },
         displayLoadingState = function displayLoadingState(el) {
-      if ($(el).data('form-id') == 'addnewsurvey') {
-        var loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
-        $(el).prop('disabled', true).append(loadingSpinner);
-      }
+      //if($(el).data('form-id') == 'addnewsurvey') {
+      var loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
+      $(el).append(loadingSpinner);
+      disableButton(el); //}
     },
         stopDisplayLoadingState = function stopDisplayLoadingState() {
-      LS.EventBus.$emit('loadingFinished'); // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
+      $('.lsLoadingStateIndicator').each(function (i, item) {
+        enableButton($(item).parent());
+        $(item).remove();
+      });
+      LS.EventBus.$emit('loadingFinished');
+    },
+        bindInvalidFormHandler = function bindInvalidFormHandler($form) {
+      var $submittableElements = $form.find('button, input, select, textarea');
+      $submittableElements.off('invalid.save').on('invalid.save', function () {
+        stopDisplayLoadingState();
+        $submittableElements.off('invalid.save');
+        formSubmitting = false;
+      });
+    },
+        disableButton = function disableButton(el) {
+      if ($(el).is('a')) {
+        $(el).addClass('disabled');
+      } else {
+        $(el).prop('disabled', true);
+      }
+    },
+        enableButton = function enableButton(el) {
+      if ($(el).is('a')) {
+        $(el).removeClass('disabled');
+      } else {
+        $(el).prop('disabled', false);
+      }
     },
         //###########PRIVATE
     checks = function checks() {
@@ -31107,8 +31133,10 @@
             if ($form.data('isvuecomponent') == true) {
               LS.EventBus.$emit('componentFormSubmit', button);
             } else {
-              $form.find('[type="submit"]:not(.ck)').first().trigger('click');
+              // Attach handler to detect validation errors on the form and re-enable the button
+              bindInvalidFormHandler($form);
               displayLoadingState(this);
+              $form.find('[type="submit"]:not(.ck)').first().trigger('click');
             }
           },
           on: 'click'
@@ -31169,7 +31197,15 @@
           run: function run(ev) {
             var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
-            var $form = getForm(this);
+            var $form = getForm(this); // If the form has the 'data-trigger-validation' attribute set, trigger the standard form
+            // validation and quit if it fails.
+
+            if ($form.attr('data-trigger-validation')) {
+              if (!$form[0].reportValidity()) {
+                return;
+              }
+            }
+
             closeAfterSaveInput.val("true");
             $form.append(closeAfterSaveInput);
             formSubmitting = true;
@@ -31177,8 +31213,10 @@
             if ($form.data('isvuecomponent') == true) {
               LS.EventBus.$emit('componentFormSubmit', button);
             } else {
-              $form.find('[type="submit"]').first().trigger('click');
+              // Attach handler to detect validation errors on the form and re-enable the button
+              bindInvalidFormHandler($form);
               displayLoadingState(this);
+              $form.find('[type="submit"]').first().trigger('click');
             }
           },
           on: 'click'
