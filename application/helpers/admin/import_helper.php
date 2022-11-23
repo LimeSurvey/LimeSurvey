@@ -1217,10 +1217,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $insertdata = array();
 
         foreach ($row as $key => $value) {
-            // Set survey group id to default if not a copy
-            if ($key == 'gsid' & !$isCopying) {
-                $value = 1;
-            }
             if ($key == 'template') {
                 $sTemplateName = (string)$value;
             }
@@ -1272,6 +1268,24 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > 35) {
             $insertdata['tokenlength'] = 35;
         }
+
+        // Fix survey group when not copying
+        if (!$isCopying) {
+            // Set to 1 by default
+            $insertdata['gsid'] = 1;
+            // If the xml includes survey group details, try to find the group by name.
+            if (!empty($xml->surveys_groups->rows->row[0]->name)) {
+                $surveyGroupName = (string) $xml->surveys_groups->rows->row[0]->name;
+                $surveyGroup = SurveysGroups::model()->findByAttributes(["name" => $surveyGroupName]);
+                // If a survey group is found with the specified name, assign it to the survey.
+                if (!empty($surveyGroup)) {
+                    $insertdata['gsid'] = $surveyGroup->gsid;
+                } else {
+                    $results['importwarnings'][] = gT("The original survey group couldn't be found.");
+                }
+            }
+        }
+
         /* Remove unknow column */
         $aSurveyModelsColumns = Survey::model()->attributes;
         $aSurveyModelsColumns['wishSID'] = null; // Can not be imported
