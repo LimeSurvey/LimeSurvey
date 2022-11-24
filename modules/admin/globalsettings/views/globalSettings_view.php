@@ -15,8 +15,7 @@ LS.renderBootstrapSwitch();
 
 ?>
 <?php if (YII_DEBUG): ?>
-    <div class="container-fluid">
-        <p class="alert alert-info "> this view is rendered from globall setting module. This message is shown only when debug mode is on </p>
+  <p class="alert alert-info "> this view is rendered from global setting module. This message is shown only when debug mode is on </p>
     </div>
 <?php endif; ?>
 <script type="text/javascript">
