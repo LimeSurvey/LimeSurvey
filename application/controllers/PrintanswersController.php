@@ -143,6 +143,7 @@ class PrintanswersController extends LSYii_Controller
         if (empty($sExportType)) {
             Yii::app()->setLanguage($sLanguage);
             $aData['aSurveyInfo']['include_content'] = 'printanswers';
+            $aData['aSurveyInfo']['trackUrlPageName'] = 'printanswers';
             Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
 
         } else if ($sExportType == 'pdf') {
