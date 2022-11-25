@@ -176,7 +176,7 @@ echo viewHelper::getViewTestTag('index');
     <!-- Boxes for smartphones -->
     <div class="row d-sm-none d-md-none d-lg-none">
         <div class="card card-clickable card-primary" id="panel-7" data-url="<?php echo $this->createUrl("surveyAdministration/listSurveys") ?>" style="opacity: 1; top: 0px;">
-            <div class="card-header bg-primary">
+            <div class="card-header ">
                 <?php eT('List surveys');?>
             </div>
             <div class="card-body">
@@ -189,7 +189,7 @@ echo viewHelper::getViewTestTag('index');
         </div>
 
         <div class="card card-clickable card-primary" id="panel-8" data-url="<?php echo $this->createUrl("admin/globalsettings") ?>" style="opacity: 1; top: 0px;">
-            <div class="card-header bg-primary">
+            <div class="card-header ">
                 <?php eT('Edit global settings');?>
             </div>
             <div class="card-body">
