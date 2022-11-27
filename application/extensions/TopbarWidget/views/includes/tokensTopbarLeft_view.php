@@ -170,7 +170,7 @@
 <?php endif; ?>
 
 <!-- Survey Quotas -->
-<a class="btn btn-outline-secondary" href='<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
+<a class="btn btn-outline-secondary" href='<?php echo Yii::App()->createUrl("quotas/index/surveyid/$oSurvey->sid"); ?>' role="button">
     <span class="fa fa-tasks"></span>
     <?php eT("Survey quotas"); ?>
 </a>
