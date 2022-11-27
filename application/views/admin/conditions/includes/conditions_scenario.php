@@ -11,7 +11,7 @@
 
 <div class='card card-primary'>
 
-    <div class='card-header bg-primary'>
+    <div class='card-header '>
 
         <div class='row'>
             <div class='col-md-4'>

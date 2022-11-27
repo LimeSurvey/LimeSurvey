@@ -330,7 +330,7 @@ class ResponsesController extends LSBaseController
                     }
                 } else {
                     $answervalue = htmlspecialchars(
-                        strip_tags(
+                        viewHelper::flatten(
                             stripJavaScript(
                                 getExtendedAnswer(
                                     $surveyId,

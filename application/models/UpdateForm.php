@@ -913,10 +913,8 @@ class UpdateForm extends CFormModel
     private function getProtocol()
     {
         $server_ssl = Yii::app()->getConfig("comfort_update_server_ssl");
-        if ($server_ssl === 1) {
-            if (extension_loaded("openssl")) {
+        if ($server_ssl === 1 && extension_loaded("openssl")) {
                 return 'https://';
-            }
         }
         return 'http://';
     }
@@ -963,9 +961,8 @@ class UpdateForm extends CFormModel
     {
         if ((extension_loaded("curl"))) {
             if (isset($_REQUEST['access_token'])) {
-                $getters .= "&access_token=" . $_REQUEST['access_token'];
+                $getters .= "&access_token=" . urlencode($_REQUEST['access_token']);
             }
-
             $ch = curl_init($this->getProtocol() . Yii::app()->getConfig("comfort_update_server_url") . $getters);
 
             if ($this->proxy_host_name != '') {

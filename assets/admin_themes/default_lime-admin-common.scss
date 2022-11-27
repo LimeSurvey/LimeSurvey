@@ -467,7 +467,7 @@ html {
     position: relative;
     animation: slidefromtop 1s;
 }
-@media screen and(min-width: 1280px) and(max-width: 1440px) {
+@media screen and (min-width: 1280px) and (max-width: 1440px) {
     .welcome .card {
         min-height: 188px;
     }
@@ -475,7 +475,7 @@ html {
 #welcomeModal {
     z-index: 20000;
 }
-@media screen and(min-width: 1280px) and(max-width: 1366px) {
+@media screen and (min-width: 1280px) and (max-width: 1366px) {
     #add_user_btn {
         margin-top: 1.5em;
     }
@@ -492,7 +492,7 @@ html {
 #profile-img {
     min-height: 80px;
 }
-@media screen and(min-width: 1280px) and(max-width: 1680px) {
+@media screen and (min-width: 1280px) and (max-width: 1680px) {
     #profile-img {
         min-height: 0;
     }

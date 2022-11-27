@@ -303,7 +303,7 @@ function sanitize_int($integer, $min = '', $max = '')
     if ($int == '') {
         return null;
     }
-    return $int;
+    return (int) $int;
 }
 
 // sanitize a username
@@ -510,4 +510,15 @@ function check_ip_address($ip)
 {
     // Leave the wrapper in case we need to enhance the checks later
     return filter_var($ip, FILTER_VALIDATE_IP);
+}
+
+/**
+ * Remove all chars from $value that are not alphanumeric or dash or underscore
+ *
+ * @param string $value
+ * @return string
+ */
+function sanitize_alphanumeric($value)
+{
+    return preg_replace("[^a-zA-Z0-9\-\_]", "", $value);
 }
