@@ -1,38 +1,43 @@
 html {
-    font-size: $font-size-root;
+  font-size: $font-size-root;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 /*
  * btn-xs was removed from Bootstrap 4.
  * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
  */
-.btn-group-xs > .btn, .btn-xs {
-    padding: 1px 5px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px;
+.btn-group-xs > .btn,
+.btn-xs {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
 }
 
 .page-item {
-    border-radius: 25px;
-    margin-right: 2px;
-    margin-left: 2px;
+  border-radius: 25px;
+  margin-right: 2px;
+  margin-left: 2px;
 }
-
 
 // Disable border color between thead, tbody.
 .table > :not(:first-child) {
-    border-top: 0;
+  border-top: 0;
 }
 
 .text-underline-hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .text-underline-hover:hover {
-    text-decoration: underline;
+  text-decoration: underline;
+}
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 600px;
+  }
 }

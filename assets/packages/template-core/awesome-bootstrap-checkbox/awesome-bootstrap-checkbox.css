@@ -30,7 +30,7 @@
   transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
 }
 .form-horizontal .checkbox-item label::before{
-  top:7px;
+  top: 3px;
 }
 .checkbox-item label::after {
   display: inline-block;
@@ -48,7 +48,7 @@
   text-align: center;
 }
 .form-horizontal .checkbox-item label::after{
-  top:8px;
+  top: 4px;
 }
 .checkbox-item input[type="checkbox"] {
   opacity: 0;

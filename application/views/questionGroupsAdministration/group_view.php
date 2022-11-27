@@ -84,7 +84,7 @@
                     } else {
                         echo 'card-clickable';
                     } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create', array('surveyid' => $surveyid, 'gid' => $gid)); ?>">
-                        <div class="card-header bg-primary">
+                        <div class="card-header ">
                             <div class=""><?php eT("Add new question to group"); ?></div>
                         </div>
                         <div class="card-body">

@@ -29809,6 +29809,34 @@
         if (e.target != this) return;
         $('#accordion').find('.panel-collapse.collapse').not('#' + $(this).attr('id')).collapse('hide');
       });
+    },
+
+    /**
+     * Validates that an end date is not lower than a start date
+     * @param {Object} startDatePicker Start datepicker object
+     * @param {Object} endDatePicker End datepicker object
+     * @param {?function} errorCallback Optional function to call in case of error
+     */
+    validateEndDateHigherThanStart: function validateEndDateHigherThanStart(startDatePicker, endDatePicker, errorCallback) {
+      if (!startDatePicker || !startDatePicker.date()) {
+        return true;
+      }
+
+      if (!endDatePicker || !endDatePicker.date()) {
+        return true;
+      }
+
+      var difference = endDatePicker.date().diff(startDatePicker.date());
+
+      if (difference >= 0) {
+        return true;
+      }
+
+      if (typeof errorCallback === 'function') {
+        errorCallback();
+      }
+
+      return false;
     }
   };
   var globalStartUpMethods = {

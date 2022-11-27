@@ -1,6 +1,6 @@
 <!-- Format -->
 <div class="card" id="panel-export-format">
-  <div class="card-header bg-primary">
+  <div class="card-header ">
       <?php eT("Format");?>
   </div>
   <div class="card-body">

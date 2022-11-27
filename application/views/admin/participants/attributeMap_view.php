@@ -41,7 +41,7 @@
 <div class='row'>
     <div class='col-4'>
         <div id="centralattribute" class="card card-primary <?php echo $columnstyle ?> h-100">
-            <div class="card-header bg-primary"><?php eT("Unmapped participant attributes"); ?></div>
+            <div class="card-header "><?php eT("Unmapped participant attributes"); ?></div>
             <div class='card-body'>
                 <div id="cpdbatt">
                     <?php
@@ -58,7 +58,7 @@
     </div>
     <div class='col-4'>
         <div id="newcreated" class="card card-primary <?php echo $columnstyle ?>">
-            <div class="card-header bg-primary"><?php eT("Survey participant attributes to create"); ?></div>
+            <div class="card-header "><?php eT("Survey participant attributes to create"); ?></div>
             <div class='card-body' style="height:100%;">
                 <div class="newcreate" id="sortable" style ="height:100%;">
                 </div>
@@ -68,7 +68,7 @@
     <div class='col-4'>
         <div id='tokenattribute'>
             <div class='card card-primary mb-3'>
-                <div class="card-header bg-primary">
+                <div class="card-header ">
                     <?php eT("Existing survey participant attributes"); ?>
                 </div>
                 <div class='card-body'>
@@ -125,7 +125,7 @@
                     <?php endif; ?>
 
                     <?php if(!empty($alreadymappedattributename)): ?>
-                        <div class='card-header bg-primary'>
+                        <div class='card-header '>
                             <?php eT("Pre-mapped attributes") ?>
                         </div>
                         <div class='card-body'>
@@ -152,7 +152,7 @@
             </div>
 
             <div class='card card-primary'>
-                <div class='card-header bg-primary'><?php eT("Standard participant fields") ?></div>
+                <div class='card-header '><?php eT("Standard participant fields") ?></div>
                 <div class='card-body'>
                     <div class="standardfields">
                         <div class='tokenatt-container col-12'>

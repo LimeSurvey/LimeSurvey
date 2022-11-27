@@ -901,7 +901,7 @@ class User extends LSActiveRecord
             ['userGroupId' => $userGroupId, 'userGroup' => $userGroup, 'currentUserId' => $currentUserId]
         );
     }
-    
+
     /**
      * Returns true if logged in user with id $loginId can edit this user
      *

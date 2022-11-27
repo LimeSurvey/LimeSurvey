@@ -207,7 +207,7 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- email detail to  -->
             <div class="ex-form-group mb-3">
-            <?php $emailresponseto = $oSurvey->emailresponseto; ?>w
+            <?php $emailresponseto = $oSurvey->emailresponseto; ?>
                 <div class="row">
                     <div class="col-12 col-lg-8 content-right">
                         <label class=" form-label" for='emailresponseto'><?php eT("Send detailed admin notification email to:"); ?></label>
