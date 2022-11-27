@@ -155,6 +155,7 @@ class DateTimePicker extends CInputWidget
             // bug workaround allowInputToggle
             var id_$id = '$id';
             var input_$id = document.getElementById('$id');
+            input_$id.removeEventListener('click', picker_$id._toggleClickEvent);
             if(input_$id != null) {
                 if((id_$id.indexOf('answer') >= 0 && input_$id.value !== '') || id_$id.indexOf('answer') < 0) {
                         input_$id.onfocus = function () {

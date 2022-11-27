@@ -28,3 +28,9 @@ a {
 .table > :not(:first-child) {
     border-top: 0;
 }
+
+@media (min-width: 768px){
+    .modal-dialog {
+        width: 600px;
+    }
+}
