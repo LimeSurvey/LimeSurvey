@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.39 (build 221122) to 3.28.40 (build 221129) November 28, 2022
+-Fixed issue #18461: Survey groups at survey list screen should be listed alphabetically (#2723) (Gabriel Jenik)
+-Fixed issue #16187: Can't create custom survey ID (need proper error message) (#2725) (Gabriel Jenik)
+-Fixed issue #14310: Google Analytics functionality doesn't work (#2643) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+
+
 Changes from 3.28.38 (build 221115) to 3.28.39 (build 221122) November 21, 2022
 -Fixed issue: ComfortUpdate should use SSL by default (Carsten Schmitz)
 -Fixed issue #18488: Conditions are not properly highlighted if they have additional spaces (#2736) (Denis Chenu)
