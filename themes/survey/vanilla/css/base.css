@@ -33,3 +33,8 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+
+tbody, td, tfoot, th, thead, tr {
+    border: 1px solid;
+    border-color: inherit;
+}
