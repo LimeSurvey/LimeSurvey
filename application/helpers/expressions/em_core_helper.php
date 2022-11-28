@@ -41,7 +41,7 @@ class ExpressionManager
     );
     // These are the allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
     private $aRDP_regexpStaticAttribute = array(
-        'qid',
+        'gid',
         'grelevance',
         'gseq',
         'jsName',

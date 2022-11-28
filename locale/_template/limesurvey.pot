@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-11-21 09:50:15+00:00\n"
+"POT-Creation-Date: 2022-11-28 10:04:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -234,12 +234,12 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:1165
 #: application/controllers/admin/Tokens.php:1249
 #: application/controllers/admin/Tokens.php:1313
-#: application/controllers/admin/Tokens.php:1571
-#: application/controllers/admin/Tokens.php:1675
-#: application/controllers/admin/Tokens.php:1930
-#: application/controllers/admin/Tokens.php:2267
-#: application/controllers/admin/Tokens.php:2326
-#: application/controllers/admin/Tokens.php:2390
+#: application/controllers/admin/Tokens.php:1589
+#: application/controllers/admin/Tokens.php:1693
+#: application/controllers/admin/Tokens.php:1948
+#: application/controllers/admin/Tokens.php:2285
+#: application/controllers/admin/Tokens.php:2344
+#: application/controllers/admin/Tokens.php:2408
 #: application/controllers/admin/globalsettings.php:35
 #: application/controllers/admin/globalsettings.php:83
 msgid "You do not have permission to access this page."
@@ -290,14 +290,14 @@ msgstr ""
 #: application/controllers/admin/Tokens.php:825
 #: application/controllers/admin/Tokens.php:996
 #: application/controllers/admin/Tokens.php:1323
-#: application/controllers/admin/Tokens.php:1563
-#: application/controllers/admin/Tokens.php:1685
-#: application/controllers/admin/Tokens.php:1940
-#: application/controllers/admin/Tokens.php:2279
-#: application/controllers/admin/Tokens.php:2336
-#: application/controllers/admin/Tokens.php:2429
-#: application/controllers/admin/Tokens.php:2506
-#: application/controllers/admin/Tokens.php:2555
+#: application/controllers/admin/Tokens.php:1581
+#: application/controllers/admin/Tokens.php:1703
+#: application/controllers/admin/Tokens.php:1958
+#: application/controllers/admin/Tokens.php:2297
+#: application/controllers/admin/Tokens.php:2354
+#: application/controllers/admin/Tokens.php:2447
+#: application/controllers/admin/Tokens.php:2524
+#: application/controllers/admin/Tokens.php:2573
 #: application/controllers/admin/Translate.php:98
 #: application/controllers/admin/index.php:35
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
@@ -658,89 +658,89 @@ msgstr ""
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:233
-#: application/controllers/LimereplacementfieldsController.php:255
-#: application/controllers/LimereplacementfieldsController.php:276
-#: application/controllers/LimereplacementfieldsController.php:296
+#: application/controllers/LimereplacementfieldsController.php:237
+#: application/controllers/LimereplacementfieldsController.php:259
+#: application/controllers/LimereplacementfieldsController.php:280
+#: application/controllers/LimereplacementfieldsController.php:300
 msgid "First name of the participant"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:234
-#: application/controllers/LimereplacementfieldsController.php:256
-#: application/controllers/LimereplacementfieldsController.php:277
-#: application/controllers/LimereplacementfieldsController.php:297
+#: application/controllers/LimereplacementfieldsController.php:238
+#: application/controllers/LimereplacementfieldsController.php:260
+#: application/controllers/LimereplacementfieldsController.php:281
+#: application/controllers/LimereplacementfieldsController.php:301
 msgid "Last name of the participant"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:235
-#: application/controllers/LimereplacementfieldsController.php:257
+#: application/controllers/LimereplacementfieldsController.php:239
+#: application/controllers/LimereplacementfieldsController.php:261
 msgid "Email address of the participant"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:236
-#: application/controllers/LimereplacementfieldsController.php:264
-#: application/controllers/LimereplacementfieldsController.php:336
-#: application/controllers/LimereplacementfieldsController.php:355
-#: application/controllers/LimereplacementfieldsController.php:374
-#: application/controllers/LimereplacementfieldsController.php:404
-#: application/controllers/LimereplacementfieldsController.php:419
+#: application/controllers/LimereplacementfieldsController.php:240
+#: application/controllers/LimereplacementfieldsController.php:268
+#: application/controllers/LimereplacementfieldsController.php:340
+#: application/controllers/LimereplacementfieldsController.php:359
+#: application/controllers/LimereplacementfieldsController.php:378
+#: application/controllers/LimereplacementfieldsController.php:408
+#: application/controllers/LimereplacementfieldsController.php:423
 msgid "Survey expiration date"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:237
-#: application/controllers/LimereplacementfieldsController.php:265
-#: application/controllers/LimereplacementfieldsController.php:287
-#: application/controllers/LimereplacementfieldsController.php:307
+#: application/controllers/LimereplacementfieldsController.php:241
+#: application/controllers/LimereplacementfieldsController.php:269
+#: application/controllers/LimereplacementfieldsController.php:291
+#: application/controllers/LimereplacementfieldsController.php:311
 msgid "Name of the survey administrator"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:238
-#: application/controllers/LimereplacementfieldsController.php:266
-#: application/controllers/LimereplacementfieldsController.php:288
-#: application/controllers/LimereplacementfieldsController.php:308
+#: application/controllers/LimereplacementfieldsController.php:242
+#: application/controllers/LimereplacementfieldsController.php:270
+#: application/controllers/LimereplacementfieldsController.php:292
+#: application/controllers/LimereplacementfieldsController.php:312
 msgid "Email address of the survey administrator"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:261
-#: application/controllers/LimereplacementfieldsController.php:284
-#: application/controllers/LimereplacementfieldsController.php:304
-#: application/controllers/LimereplacementfieldsController.php:330
-#: application/controllers/LimereplacementfieldsController.php:349
-#: application/controllers/LimereplacementfieldsController.php:368
-#: application/controllers/LimereplacementfieldsController.php:401
-#: application/controllers/LimereplacementfieldsController.php:416
+#: application/controllers/LimereplacementfieldsController.php:265
+#: application/controllers/LimereplacementfieldsController.php:288
+#: application/controllers/LimereplacementfieldsController.php:308
+#: application/controllers/LimereplacementfieldsController.php:334
+#: application/controllers/LimereplacementfieldsController.php:353
+#: application/controllers/LimereplacementfieldsController.php:372
+#: application/controllers/LimereplacementfieldsController.php:405
+#: application/controllers/LimereplacementfieldsController.php:420
 #: application/controllers/admin/ExpressionValidate.php:184
 msgid "Participant attribute: %s"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:272
-#: application/controllers/LimereplacementfieldsController.php:291
+#: application/controllers/LimereplacementfieldsController.php:276
+#: application/controllers/LimereplacementfieldsController.php:295
 #: application/controllers/admin/ExpressionValidate.php:218
 msgid "View response URL"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:273
-#: application/controllers/LimereplacementfieldsController.php:292
+#: application/controllers/LimereplacementfieldsController.php:277
+#: application/controllers/LimereplacementfieldsController.php:296
 #: application/controllers/admin/ExpressionValidate.php:219
 msgid "Edit response URL"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:274
-#: application/controllers/LimereplacementfieldsController.php:293
+#: application/controllers/LimereplacementfieldsController.php:278
+#: application/controllers/LimereplacementfieldsController.php:297
 #: application/controllers/admin/ExpressionValidate.php:220
 msgid "Statistics URL"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:275
-#: application/controllers/LimereplacementfieldsController.php:295
+#: application/controllers/LimereplacementfieldsController.php:279
+#: application/controllers/LimereplacementfieldsController.php:299
 msgid "Access code for this participant"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:278
-#: application/controllers/LimereplacementfieldsController.php:298
-#: application/controllers/LimereplacementfieldsController.php:324
-#: application/controllers/LimereplacementfieldsController.php:343
-#: application/controllers/LimereplacementfieldsController.php:362
+#: application/controllers/LimereplacementfieldsController.php:282
+#: application/controllers/LimereplacementfieldsController.php:302
+#: application/controllers/LimereplacementfieldsController.php:328
+#: application/controllers/LimereplacementfieldsController.php:347
+#: application/controllers/LimereplacementfieldsController.php:366
 #: application/controllers/SurveyAdministrationController.php:273
 #: application/controllers/SurveyAdministrationController.php:2987
 #: application/controllers/admin/ExpressionValidate.php:173
@@ -750,13 +750,13 @@ msgstr ""
 msgid "Survey title"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:279
-#: application/controllers/LimereplacementfieldsController.php:299
-#: application/controllers/LimereplacementfieldsController.php:325
-#: application/controllers/LimereplacementfieldsController.php:344
-#: application/controllers/LimereplacementfieldsController.php:363
-#: application/controllers/LimereplacementfieldsController.php:395
-#: application/controllers/LimereplacementfieldsController.php:410
+#: application/controllers/LimereplacementfieldsController.php:283
+#: application/controllers/LimereplacementfieldsController.php:303
+#: application/controllers/LimereplacementfieldsController.php:329
+#: application/controllers/LimereplacementfieldsController.php:348
+#: application/controllers/LimereplacementfieldsController.php:367
+#: application/controllers/LimereplacementfieldsController.php:399
+#: application/controllers/LimereplacementfieldsController.php:414
 #: application/controllers/SurveyAdministrationController.php:273
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:53
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:12
@@ -766,117 +766,117 @@ msgstr ""
 msgid "Survey ID"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:280
-#: application/controllers/LimereplacementfieldsController.php:300
-#: application/controllers/LimereplacementfieldsController.php:326
-#: application/controllers/LimereplacementfieldsController.php:345
-#: application/controllers/LimereplacementfieldsController.php:364
+#: application/controllers/LimereplacementfieldsController.php:284
+#: application/controllers/LimereplacementfieldsController.php:304
+#: application/controllers/LimereplacementfieldsController.php:330
+#: application/controllers/LimereplacementfieldsController.php:349
+#: application/controllers/LimereplacementfieldsController.php:368
 #: application/controllers/admin/ExpressionValidate.php:174
 msgid "Survey description"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:294
+#: application/controllers/LimereplacementfieldsController.php:298
 #: application/controllers/admin/ExpressionValidate.php:221
 msgid "Answers in this response"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:316
-#: application/controllers/LimereplacementfieldsController.php:361
-#: application/controllers/LimereplacementfieldsController.php:394
-#: application/controllers/LimereplacementfieldsController.php:409
+#: application/controllers/LimereplacementfieldsController.php:320
+#: application/controllers/LimereplacementfieldsController.php:365
+#: application/controllers/LimereplacementfieldsController.php:398
+#: application/controllers/LimereplacementfieldsController.php:413
 #: application/controllers/admin/ExpressionValidate.php:178
 #: application/controllers/admin/ExpressionValidate.php:192
 #: application/controllers/admin/ExpressionValidate.php:206
 msgid "Participant - Email address"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:317
-#: application/controllers/LimereplacementfieldsController.php:358
+#: application/controllers/LimereplacementfieldsController.php:321
+#: application/controllers/LimereplacementfieldsController.php:362
 #: application/controllers/admin/ExpressionValidate.php:177
 #: application/controllers/admin/ExpressionValidate.php:181
 msgid "Participant - Access code"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:318
+#: application/controllers/LimereplacementfieldsController.php:322
 msgid "Participant - Opt-out URL"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:319
+#: application/controllers/LimereplacementfieldsController.php:323
 msgid "Participant - Central participant DB opt-out URL"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:320
+#: application/controllers/LimereplacementfieldsController.php:324
 msgid "Participant - Opt-in URL"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:321
+#: application/controllers/LimereplacementfieldsController.php:325
 msgid "Participant - Central participant DB opt-in URL"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:322
-#: application/controllers/LimereplacementfieldsController.php:341
-#: application/controllers/LimereplacementfieldsController.php:359
-#: application/controllers/LimereplacementfieldsController.php:392
-#: application/controllers/LimereplacementfieldsController.php:407
+#: application/controllers/LimereplacementfieldsController.php:326
+#: application/controllers/LimereplacementfieldsController.php:345
+#: application/controllers/LimereplacementfieldsController.php:363
+#: application/controllers/LimereplacementfieldsController.php:396
+#: application/controllers/LimereplacementfieldsController.php:411
 #: application/controllers/admin/ExpressionValidate.php:179
 #: application/controllers/admin/ExpressionValidate.php:193
 #: application/controllers/admin/ExpressionValidate.php:208
 msgid "Participant - First name"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:323
-#: application/controllers/LimereplacementfieldsController.php:342
-#: application/controllers/LimereplacementfieldsController.php:360
-#: application/controllers/LimereplacementfieldsController.php:393
-#: application/controllers/LimereplacementfieldsController.php:408
+#: application/controllers/LimereplacementfieldsController.php:327
+#: application/controllers/LimereplacementfieldsController.php:346
+#: application/controllers/LimereplacementfieldsController.php:364
+#: application/controllers/LimereplacementfieldsController.php:397
+#: application/controllers/LimereplacementfieldsController.php:412
 #: application/controllers/admin/ExpressionValidate.php:180
 #: application/controllers/admin/ExpressionValidate.php:194
 #: application/controllers/admin/ExpressionValidate.php:207
 msgid "Participant - Last name"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:333
-#: application/controllers/LimereplacementfieldsController.php:352
-#: application/controllers/LimereplacementfieldsController.php:371
+#: application/controllers/LimereplacementfieldsController.php:337
+#: application/controllers/LimereplacementfieldsController.php:356
+#: application/controllers/LimereplacementfieldsController.php:375
 msgid "Survey administrator - Name"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:334
-#: application/controllers/LimereplacementfieldsController.php:353
-#: application/controllers/LimereplacementfieldsController.php:372
+#: application/controllers/LimereplacementfieldsController.php:338
+#: application/controllers/LimereplacementfieldsController.php:357
+#: application/controllers/LimereplacementfieldsController.php:376
 msgid "Survey administrator - Email address"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:335
-#: application/controllers/LimereplacementfieldsController.php:354
-#: application/controllers/LimereplacementfieldsController.php:373
+#: application/controllers/LimereplacementfieldsController.php:339
+#: application/controllers/LimereplacementfieldsController.php:358
+#: application/controllers/LimereplacementfieldsController.php:377
 #: application/controllers/admin/ExpressionValidate.php:200
 #: application/controllers/admin/ExpressionValidate.php:209
 msgid "Survey URL"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:396
-#: application/controllers/LimereplacementfieldsController.php:411
+#: application/controllers/LimereplacementfieldsController.php:400
+#: application/controllers/LimereplacementfieldsController.php:415
 msgid "Question group ID"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:397
-#: application/controllers/LimereplacementfieldsController.php:412
+#: application/controllers/LimereplacementfieldsController.php:401
+#: application/controllers/LimereplacementfieldsController.php:416
 #: application/controllers/QuestionAdministrationController.php:1496
 #: application/models/Question.php:955
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:10
 msgid "Question ID"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:422
+#: application/controllers/LimereplacementfieldsController.php:426
 msgid "Overall assessment score"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:423
+#: application/controllers/LimereplacementfieldsController.php:427
 msgid "Assessment group score"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:447
+#: application/controllers/LimereplacementfieldsController.php:451
 #: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:211
 #: application/views/admin/dataentry/vvimport.php:28
 #: application/views/admin/export/exportresult_panels/_general.php:5
@@ -892,7 +892,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: application/controllers/LimereplacementfieldsController.php:454
+#: application/controllers/LimereplacementfieldsController.php:458
 #: application/controllers/admin/Translate.php:505
 #: application/views/admin/conditions/includes/form_editconditions_header.php:126
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:91
@@ -1558,7 +1558,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:164
 #: application/controllers/admin/DataEntry.php:525
 #: application/controllers/admin/Quotas.php:259
-#: application/controllers/admin/Tokens.php:1594
+#: application/controllers/admin/Tokens.php:1612
 #: application/helpers/common_helper.php:2896
 #: application/models/TemplateManifest.php:166 application/models/Token.php:102
 #: application/views/admin/quotas/viewquotas_view.php:81
@@ -2351,7 +2351,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:925
 #: application/controllers/admin/PrintableSurvey.php:939
 #: application/controllers/admin/Quotas.php:603
-#: application/controllers/admin/Tokens.php:2291
+#: application/controllers/admin/Tokens.php:2309
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:204
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:213
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
@@ -2507,7 +2507,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:923
 #: application/controllers/admin/PrintableSurvey.php:937
 #: application/controllers/admin/Quotas.php:602
-#: application/controllers/admin/Tokens.php:2289
+#: application/controllers/admin/Tokens.php:2307
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:173
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:182
 #: application/core/plugins/ExportSPSSsav/SPSSWriter.php:200
@@ -2929,7 +2929,7 @@ msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3190
 #: application/controllers/admin/Tokens.php:1134
-#: application/controllers/admin/Tokens.php:1543
+#: application/controllers/admin/Tokens.php:1561
 #: application/core/plugins/TwoFactorAdminLogin/views/_partial/create.php:31
 #: application/extensions/TopbarWidget/views/tokensTopbar_view.php:34
 #: application/extensions/admin/survey/LanguagesWidget/LanguagesWidget.php:22
@@ -4137,7 +4137,7 @@ msgid "No answer"
 msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:663
-#: application/controllers/admin/Tokens.php:1536
+#: application/controllers/admin/Tokens.php:1554
 #: application/helpers/SurveyRuntimeHelper.php:1162
 #: application/views/admin/dataentry/import.php:34
 #: application/views/admin/dataentry/vvimport_result.php:22
@@ -6001,7 +6001,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:752
 #: application/core/QuestionTypes/ListDropdown/RenderListDropdown.php:48
 #: application/core/QuestionTypes/ListRadio/RenderListRadio.php:50
-#: application/core/QuestionTypes/MultipleChoice/RenderMultipleChoice.php:150
+#: application/core/QuestionTypes/MultipleChoice/RenderMultipleChoice.php:66
 #: application/core/QuestionTypes/MultipleChoiceWithComments/RenderMultipleChoiceWithComments.php:197
 #: application/helpers/expressions/em_manager_helper.php:3094
 #: application/helpers/expressions/em_manager_helper.php:3104
@@ -6012,7 +6012,6 @@ msgstr ""
 #: application/helpers/qanda_helper.php:892
 #: application/helpers/qanda_helper.php:1406
 #: application/helpers/qanda_helper.php:1556
-#: tmp/runtime/twig_cache/f0/f0b341baf3dcc86fdad83f281819baac976d41fed559e8bdab51a4873142f10c.php:90
 msgid "Other:"
 msgstr ""
 
@@ -6243,8 +6242,8 @@ msgstr ""
 #: application/controllers/admin/SurveyPermission.php:385
 #: application/controllers/admin/SurveyPermission.php:534
 #: application/controllers/admin/SurveyPermission.php:650
-#: application/controllers/admin/Tokens.php:2572
-#: application/controllers/admin/Tokens.php:2630
+#: application/controllers/admin/Tokens.php:2590
+#: application/controllers/admin/Tokens.php:2648
 #: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:6
 #: application/views/admin/authentication/message.php:35
 #: application/views/admin/participants/attributeMapCSV_view.php:80
@@ -6751,57 +6750,61 @@ msgstr ""
 msgid "Participant attribute descriptions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1415
+#: application/controllers/admin/Tokens.php:1416
+msgid "Invalid language %s for token ID: %s."
+msgstr ""
+
+#: application/controllers/admin/Tokens.php:1424
 msgid "Invitation %s skipped, already sent."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1417
+#: application/controllers/admin/Tokens.php:1426
 msgid "Reminder %s skipped, already sent."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1435
+#: application/controllers/admin/Tokens.php:1444
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Access code is not yet valid."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1439
+#: application/controllers/admin/Tokens.php:1448
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Access code is not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1452
+#: application/controllers/admin/Tokens.php:1461
 msgid "Invitation sent to:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1455
+#: application/controllers/admin/Tokens.php:1464
 msgid "Reminder sent to:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1464
+#: application/controllers/admin/Tokens.php:1482
 msgid "An error occurred when saving the sent date for this participant (ID: %s)."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1486
+#: application/controllers/admin/Tokens.php:1504
 msgid "Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1514
+#: application/controllers/admin/Tokens.php:1532
 msgid "All emails were sent."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1516
+#: application/controllers/admin/Tokens.php:1534
 msgid "Not all emails were sent:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1518
+#: application/controllers/admin/Tokens.php:1536
 msgid "Some entries had a validity date set which was not yet valid or not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1521
+#: application/controllers/admin/Tokens.php:1539
 msgid "Some emails were not sent because the server did not accept the email(s) or some other error occurred."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1524
-#: application/controllers/admin/Tokens.php:2303
-#: application/controllers/admin/Tokens.php:2307
+#: application/controllers/admin/Tokens.php:1542
+#: application/controllers/admin/Tokens.php:2321
+#: application/controllers/admin/Tokens.php:2325
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:14
 #: application/views/admin/authentication/error.php:6
 #: application/views/admin/error_view.php:5
@@ -6809,60 +6812,60 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1537
+#: application/controllers/admin/Tokens.php:1555
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1538
+#: application/controllers/admin/Tokens.php:1556
 msgid "having a valid email address"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1539
+#: application/controllers/admin/Tokens.php:1557
 msgid "not having been sent an invitation already"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1540
+#: application/controllers/admin/Tokens.php:1558
 msgid "not having already completed the survey"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1541
+#: application/controllers/admin/Tokens.php:1559
 msgid "having an access code"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1542
+#: application/controllers/admin/Tokens.php:1560
 msgid "having at least one use left"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1587
+#: application/controllers/admin/Tokens.php:1605
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:6
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:55
 #: application/views/admin/token/exportdialog.php:132
 msgid "Export participants"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1594
+#: application/controllers/admin/Tokens.php:1612
 #: application/views/admin/token/exportdialog.php:16
 msgid "All participants"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1594
+#: application/controllers/admin/Tokens.php:1612
 #: application/views/admin/token/exportdialog.php:18
 msgid "Not completed"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1596
+#: application/controllers/admin/Tokens.php:1614
 #: application/views/admin/token/exportdialog.php:19
 msgid "Not started"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1597
+#: application/controllers/admin/Tokens.php:1615
 #: application/views/admin/token/exportdialog.php:20
 msgid "Started but not yet completed"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1601
-#: application/controllers/admin/Tokens.php:1617
-#: application/controllers/admin/Tokens.php:1626
+#: application/controllers/admin/Tokens.php:1619
+#: application/controllers/admin/Tokens.php:1635
+#: application/controllers/admin/Tokens.php:1644
 #: application/models/Assessment.php:143
 #: application/views/admin/token/exportdialog.php:35
 #: application/views/admin/token/exportdialog.php:53
@@ -6871,149 +6874,149 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1610
+#: application/controllers/admin/Tokens.php:1628
 #: application/views/admin/token/exportdialog.php:12
 msgid "Survey status:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1615
+#: application/controllers/admin/Tokens.php:1633
 #: application/views/admin/token/exportdialog.php:28
 msgid "Invitation status:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1618
+#: application/controllers/admin/Tokens.php:1636
 #: application/views/admin/token/exportdialog.php:36
 msgid "Invited"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1619
+#: application/controllers/admin/Tokens.php:1637
 #: application/views/admin/token/exportdialog.php:37
 msgid "Not invited"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1624
+#: application/controllers/admin/Tokens.php:1642
 #: application/views/admin/token/exportdialog.php:46
 msgid "Reminder status:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1627
+#: application/controllers/admin/Tokens.php:1645
 #: application/views/admin/token/exportdialog.php:54
 msgid "Reminder(s) sent"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1628
+#: application/controllers/admin/Tokens.php:1646
 #: application/views/admin/token/exportdialog.php:55
 msgid "No reminder(s) sent"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1633
+#: application/controllers/admin/Tokens.php:1651
 #: application/views/admin/token/exportdialog.php:64
 msgid "Filter by language:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1638
+#: application/controllers/admin/Tokens.php:1656
 #: application/views/admin/token/exportdialog.php:80
 msgid "Filter by email address:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1639
+#: application/controllers/admin/Tokens.php:1657
 #: application/views/admin/token/exportdialog.php:86
 msgid "Only export entries which contain this string in the email address."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1643
+#: application/controllers/admin/Tokens.php:1661
 #: application/views/admin/token/exportdialog.php:96
 msgid "Delete exported participants:"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1644
+#: application/controllers/admin/Tokens.php:1662
 #: application/views/admin/token/exportdialog.php:108
 msgid "Warning: Deleted participants entries cannot be recovered."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1648
+#: application/controllers/admin/Tokens.php:1666
 msgid "Quote equations"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1649
+#: application/controllers/admin/Tokens.php:1667
 msgid "Warning: Quotes all content that starts with an equal sign to prevent CSV injections"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1713
+#: application/controllers/admin/Tokens.php:1731
 msgid "Uploading LDAP Query"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1904
+#: application/controllers/admin/Tokens.php:1922
 msgid "Can't bind to the LDAP directory. Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1913
+#: application/controllers/admin/Tokens.php:1931
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1972
+#: application/controllers/admin/Tokens.php:1990
 msgid "Only CSV files are allowed."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:1974
+#: application/controllers/admin/Tokens.php:1992
 msgid "Upload file not found. Check your permissions and path (%s) for the upload directory"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2068
+#: application/controllers/admin/Tokens.php:2086
 msgid "Line %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2089
+#: application/controllers/admin/Tokens.php:2107
 msgid "Line %s : %s %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2110
-#: application/controllers/admin/Tokens.php:2125
-#: application/controllers/admin/Tokens.php:2927
+#: application/controllers/admin/Tokens.php:2128
+#: application/controllers/admin/Tokens.php:2143
+#: application/controllers/admin/Tokens.php:2945
 msgid "Line %s : %s %s (%s)"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2133
-#: application/controllers/admin/Tokens.php:2139
+#: application/controllers/admin/Tokens.php:2151
+#: application/controllers/admin/Tokens.php:2157
 msgid "Line %s : %s %s (%s) - token : %s"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2286
-#: application/controllers/admin/Tokens.php:2310
+#: application/controllers/admin/Tokens.php:2304
+#: application/controllers/admin/Tokens.php:2328
 msgid "Create access codes"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2287
+#: application/controllers/admin/Tokens.php:2305
 msgid "Clicking 'Yes' will generate access codes for all those in this participant list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2301
+#: application/controllers/admin/Tokens.php:2319
 msgid "Only {n} access code has been created.|Only {n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2302
+#: application/controllers/admin/Tokens.php:2320
 msgid "Need {n} access code.|Need {n} access codes."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2306
+#: application/controllers/admin/Tokens.php:2324
 msgid "{n} access code has been created.|{n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2421
+#: application/controllers/admin/Tokens.php:2439
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2539
+#: application/controllers/admin/Tokens.php:2557
 #: application/views/admin/token/tokenwarning.php:13
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2545
+#: application/controllers/admin/Tokens.php:2563
 msgid "Participant table already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2569
-#: application/controllers/admin/Tokens.php:2690
+#: application/controllers/admin/Tokens.php:2587
+#: application/controllers/admin/Tokens.php:2708
 #: application/core/LsDefaultDataSets.php:388
 #: application/core/LsDefaultDataSets.php:389
 #: application/views/admin/survey/breadcrumb.php:120
@@ -7022,27 +7025,27 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2570
+#: application/controllers/admin/Tokens.php:2588
 msgid "A participant table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2627
+#: application/controllers/admin/Tokens.php:2645
 msgid "Import old participant table"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2628
+#: application/controllers/admin/Tokens.php:2646
 msgid "A survey participants table has been created for this survey and the old participants were imported."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2647
+#: application/controllers/admin/Tokens.php:2665
 msgid "Import failed"
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2648
+#: application/controllers/admin/Tokens.php:2666
 msgid "There are no matching settings to start the restoration of the participant table."
 msgstr ""
 
-#: application/controllers/admin/Tokens.php:2922
+#: application/controllers/admin/Tokens.php:2940
 msgid "%s records with other errors"
 msgstr ""
 
@@ -16107,15 +16110,15 @@ msgstr ""
 msgid "You cannot uninstall the default template."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1150
+#: application/models/TemplateConfiguration.php:1153
 msgid "Error: Malformed JSON - field %s must be either a JSON array or the string \"inherit\". Found \"null\"."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1221
+#: application/models/TemplateConfiguration.php:1224
 msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1650
+#: application/models/TemplateConfiguration.php:1653
 msgid "No preview available"
 msgstr ""
 
