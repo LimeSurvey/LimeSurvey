@@ -16,7 +16,19 @@
 @media screen and (min-width: 768px) {
     .modal-dialog {
         width: unset;
+        max-width: initial;
     }
+}
+
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+    border-width: 0;
+    border-bottom: 1px solid;
+    border-color: inherit;
 }
 
 #ls-loading {
@@ -1429,6 +1441,7 @@ div.card.disabled a {
 
 .icon-btn-row {
     display: flex;
+    border-bottom-width: 0 !important;
 
     .btn.btn-lg {
         width: 46px;
@@ -1457,6 +1470,7 @@ div.card.disabled a {
     :not(:first-child).btn.btn-xs, :not(:first-child) .btn.btn-xs {
         margin-left: 3px;
     }
+
 }
 
 // Button group
