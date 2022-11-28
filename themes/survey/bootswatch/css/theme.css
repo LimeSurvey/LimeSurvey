@@ -1061,3 +1061,13 @@ label {
     background-color: #007095;
     border-color: #00698c;
 }
+
+.h1, .h2, .h3, h1, h2, h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.h4, .h5, .h6, h4, h5, h6 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
