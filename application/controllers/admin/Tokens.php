@@ -2391,7 +2391,6 @@ class Tokens extends SurveyCommonAction
         $aData['backupTableName'] = $newtableDisplay;
         $this->renderWrappedTemplate('token', 'afterDeleteParticipantsTable', $aData);
         LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
-
     }
 
     /**
