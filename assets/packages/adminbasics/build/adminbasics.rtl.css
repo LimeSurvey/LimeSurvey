@@ -1,74 +1,4 @@
 @charset "UTF-8";
-#selectable .ui-selecting {
-  background: #8CCE00;
-}
-
-#selectable .ui-selected {
-  background: #C1DD7F;
-  color: #000000;
-}
-
-#selectable {
-  list-style-type: none;
-  margin: 2px;
-  padding: 0;
-  width: 90%;
-}
-
-#selectable li {
-  padding: 1em;
-  font-size: 1em;
-  height: 9px;
-  text-align: center;
-  margin: 4px;
-}
-
-#feedback {
-  font-size: 1.4em;
-}
-
-#selectableadd .ui-selecting {
-  background: #0066CC;
-}
-
-#selectableadd .ui-selected {
-  background: #0066CC;
-  color: white;
-}
-
-#selectableadd {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 90%;
-  text-align: center;
-}
-
-#selectableadd li {
-  margin: 3px;
-  padding: 0.4em;
-  font-size: 1em;
-  height: 18px;
-  text-align: center;
-}
-
-.popupgroup {
-  border: 1px solid #DAE5F4;
-  padding: 10px;
-  border-radius: 3px;
-  margin: 8px;
-}
-
-.translate > table {
-  table-layout: fixed;
-}
-
-.translate td._from_ > .question-text-from {
-  width: 100%;
-  overflow: auto;
-  word-wrap: break-word;
-}
-
 #responses-column-filter-modal .checkbox label {
   vertical-align: text-bottom;
   white-space: nowrap;
@@ -85,7 +15,252 @@
   padding-bottom: 15px;
 }
 
-#cpdbatt {
+.grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {
+  white-space: nowrap;
+  text-align: initial;
+}
+.grid-view .table th > .sort-link .caret, .grid-view-ls .table th > .sort-link .caret {
+  left: -10px;
+}
+.grid-view .table .filters > td .filter-container, .grid-view-ls .table .filters > td .filter-container {
+  padding: 0;
+}
+
+.grid-view-ls .table td {
+  vertical-align: middle;
+}
+.grid-view-ls .table td input[type=checkbox]:after {
+  margin-top: -3px;
+  margin-left: -3px;
+}
+
+.grid-view-ls .table .button-column {
+  white-space: nowrap;
+  text-align: initial;
+  min-width: 50px;
+}
+
+.grid-view-ls .summary {
+  color: #999999;
+  font-size: 12px;
+  text-align: left;
+}
+
+.grid-view-ls.grid-view-loading {
+  background: url(../img/loader.gif) no-repeat 0% 10px;
+}
+
+.grid-view-ls.grid-view-loading .table {
+  opacity: 0.5;
+}
+
+.grid-view-ls.grid-view-loading .table th > .sort-link .caret {
+  display: none;
+}
+
+.dropdown-menu.larger-dropdown {
+  min-width: 240px;
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  right: 100%;
+  margin-top: -6px;
+  margin-right: -1px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
+}
+.dropdown-submenu:hover > a:after {
+  border-right-color: #555;
+}
+.dropdown-submenu.float-start {
+  float: none;
+}
+.dropdown-submenu.float-start > .dropdown-menu {
+  right: -100%;
+  margin-right: 10px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px 6px;
+  border-radius: 0 6px 6px 6px;
+}
+
+#vue-apps-main-container {
+  min-height: 75vh;
+}
+
+.fa-stack.halfed {
+  height: 1em;
+  width: 1em;
+  line-height: 1em;
+}
+
+.fa-stack-1x.halfed {
+  font-size: 0.5em;
+}
+
+.fa-1x.halfed {
+  font-size: 0.5em;
+}
+
+.contain-pulse {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: bottom;
+  height: 3em;
+}
+
+.square {
+  background: #0f3e12;
+  border-radius: 0.6em;
+  box-sizing: border-box;
+  height: 2em;
+  margin: 0.2em;
+  overflow: hidden;
+  padding: 0.5em;
+  width: 2em;
+}
+
+.animate-pulse .square:nth-of-type(1) {
+  animation: pulse ease-in-out 1.8s infinite 0.2s;
+}
+.animate-pulse .square:nth-of-type(2) {
+  animation: pulse ease-in-out 1.8s infinite 0.6s;
+}
+.animate-pulse .square:nth-of-type(3) {
+  animation: pulse ease-in-out 1.8s infinite 1s;
+}
+.animate-pulse .square:nth-of-type(4) {
+  animation: pulse ease-in-out 1.8s infinite 1.4s;
+}
+
+.simpleWrapper {
+  padding: 0;
+  margin: 0;
+  border: none;
+  display: inline-block;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered {
+  float: right;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+  padding: 0em 0.65em;
+}
+
+.select2-container--bootstrap-5 .select2-search {
+  width: auto !important;
+}
+
+.draggable-container {
+  min-height: 300px;
+}
+
+#newcreated,
+#tokenattribute,
+#csvattribute,
+#centralattribute {
+  margin-right: 0.75%;
+  margin-left: 0.75%;
+  margin-bottom: 20px;
+}
+
+#tokenattribute {
+  margin-right: 1.5%;
+}
+
+#centralattribute {
+  margin-left: 1.5%;
+}
+
+#centralattribute .centralatt {
+  padding-bottom: 15px;
+}
+
+#newcreated .attribute-item input {
+  display: block;
+  margin: 2px auto;
+  width: 80%;
+}
+
+#centralattribute div.centralatt div.token-attribute {
+  margin-top: -5px;
+  min-height: 20px;
+}
+
+#newcreated,
+#tokenattribute {
+  height: 100%;
+}
+
+.heading {
+  height: auto;
+  padding-top: 7px;
+  font-weight: bold;
+}
+
+div.mappable-attribute-wrapper {
+  width: 80%;
+  margin: 6px auto;
+  padding: 6px;
+}
+
+div.attribute-item, .already-mapped-attribute {
+  width: 80%;
+  margin: 6px auto;
+  padding: 4px;
+  text-align: center;
+}
+
+#centralattribute .explanation {
+  width: 90%;
+  margin: 0 auto;
+  text-align: right;
+}
+
+#centralattribute .explanation-row {
+  display: table-row;
+}
+
+#centralattribute .explanation input,
+#centralattribute .explanation label {
+  display: table-cell;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#centralattribute .explanation label {
+  padding-right: 8px;
+}
+
+.attribute-item.draggable {
+  cursor: move;
+}
+
+div.mappable-attribute-wrapper.target-hover {
+  padding-bottom: 27px;
+}
+
+div.mappable-attribute-wrapper.paired.target-hover {
+  padding-bottom: 4px;
+}
+
+div.mappable-attribute-wrapper.paired.ui-state-disabled {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.draggable-container .attribute-column .ui-draggable-dragging {
+  z-index: 100;
+}
+
+/* Existing attribute column in CSV CPDB import */
+.centralatt {
   min-height: 100px;
 }
 
@@ -206,119 +381,22 @@
   display: none;
 }
 
-.draggable-container {
-  min-height: 300px;
+.translate > table {
+  table-layout: fixed;
 }
 
-#newcreated,
-#tokenattribute,
-#csvattribute,
-#centralattribute {
-  margin-right: 0.75%;
-  margin-left: 0.75%;
-  margin-bottom: 20px;
-}
-
-#tokenattribute {
-  margin-right: 1.5%;
-}
-
-#centralattribute {
-  margin-left: 1.5%;
-}
-
-#centralattribute .centralatt {
-  padding-bottom: 15px;
-}
-
-#newcreated .attribute-item input {
-  display: block;
-  margin: 2px auto;
-  width: 80%;
-}
-
-#centralattribute div.centralatt div.token-attribute {
-  margin-top: -5px;
-  min-height: 20px;
-}
-
-#newcreated,
-#tokenattribute {
-  height: 100%;
-}
-
-.heading {
-  height: auto;
-  padding-top: 7px;
-  font-weight: bold;
-}
-
-div.mappable-attribute-wrapper {
-  width: 80%;
-  margin: 6px auto;
-  padding: 6px;
-}
-
-div.attribute-item, .already-mapped-attribute {
-  width: 80%;
-  margin: 6px auto;
-  padding: 4px;
-  text-align: center;
-}
-
-#centralattribute .explanation {
-  width: 90%;
-  margin: 0 auto;
-  text-align: right;
-}
-
-#centralattribute .explanation-row {
-  display: table-row;
-}
-
-#centralattribute .explanation input,
-#centralattribute .explanation label {
-  display: table-cell;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#centralattribute .explanation label {
-  padding-right: 8px;
-}
-
-.attribute-item.draggable {
-  cursor: move;
-}
-
-div.mappable-attribute-wrapper.target-hover {
-  padding-bottom: 27px;
-}
-
-div.mappable-attribute-wrapper.paired.target-hover {
-  padding-bottom: 4px;
-}
-
-div.mappable-attribute-wrapper.paired.ui-state-disabled {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-
-.draggable-container .attribute-column .ui-draggable-dragging {
-  z-index: 100;
-}
-
-/* Existing attribute column in CSV CPDB import */
-.centralatt {
-  min-height: 100px;
+.translate td._from_ > .question-text-from {
+  width: 100%;
+  overflow: auto;
+  word-wrap: break-word;
 }
 
 /**
- * Lime Admin Common CSS File
- *
- * This file contain all the common css definitions for the different admin theme.
- * It should not contain color definition (grey, blacks, and white are acceptable)
- */
+* Lime Admin Common CSS File
+*
+* This file contain all the common css definitions for the different admin theme.
+* It should not contain color definition (grey, blacks, and white are acceptable)
+*/
 /**
  * Custom variables for Bootstrap 5
  */
@@ -408,16 +486,6 @@ a {
   border-top: 0;
 }
 
-@media (min-width: 768px) {
-  .modal-dialog {
-    width: 600px;
-  }
-}
-@media screen and (min-width: 768px) {
-  .modal-dialog {
-    width: initial;
-  }
-}
 tbody,
 td,
 tfoot,
@@ -4593,144 +4661,66 @@ label {
   overflow-x: visible;
 }
 
-.grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {
-  white-space: nowrap;
-  text-align: initial;
+#selectable .ui-selecting {
+  background: #8CCE00;
 }
-.grid-view .table th > .sort-link .caret, .grid-view-ls .table th > .sort-link .caret {
-  left: -10px;
+
+#selectable .ui-selected {
+  background: #C1DD7F;
+  color: #000000;
 }
-.grid-view .table .filters > td .filter-container, .grid-view-ls .table .filters > td .filter-container {
+
+#selectable {
+  list-style-type: none;
+  margin: 2px;
   padding: 0;
+  width: 90%;
 }
 
-.grid-view-ls .table td {
-  vertical-align: middle;
-}
-.grid-view-ls .table td input[type=checkbox]:after {
-  margin-top: -3px;
-  margin-left: -3px;
-}
-
-.grid-view-ls .table .button-column {
-  white-space: nowrap;
-  text-align: initial;
-  min-width: 50px;
+#selectable li {
+  padding: 1em;
+  font-size: 1em;
+  height: 9px;
+  text-align: center;
+  margin: 4px;
 }
 
-.grid-view-ls .summary {
-  color: #999999;
-  font-size: 12px;
-  text-align: left;
+#feedback {
+  font-size: 1.4em;
 }
 
-.grid-view-ls.grid-view-loading {
-  background: url(../img/loader.gif) no-repeat 0% 10px;
+#selectableadd .ui-selecting {
+  background: #0066CC;
 }
 
-.grid-view-ls.grid-view-loading .table {
-  opacity: 0.5;
+#selectableadd .ui-selected {
+  background: #0066CC;
+  color: white;
 }
 
-.grid-view-ls.grid-view-loading .table th > .sort-link .caret {
-  display: none;
-}
-
-.dropdown-menu.larger-dropdown {
-  min-width: 240px;
-}
-
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu > .dropdown-menu {
-  top: 0;
-  right: 100%;
-  margin-top: -6px;
-  margin-right: -1px;
-  -webkit-border-radius: 6px 0 6px 6px;
-  -moz-border-radius: 6px 0 6px 6px;
-  border-radius: 6px 0 6px 6px;
-}
-.dropdown-submenu:hover > a:after {
-  border-right-color: #555;
-}
-.dropdown-submenu.float-start {
-  float: none;
-}
-.dropdown-submenu.float-start > .dropdown-menu {
-  right: -100%;
-  margin-right: 10px;
-  -webkit-border-radius: 0 6px 6px 6px;
-  -moz-border-radius: 0 6px 6px 6px;
-  border-radius: 0 6px 6px 6px;
-}
-
-#vue-apps-main-container {
-  min-height: 75vh;
-}
-
-.fa-stack.halfed {
-  height: 1em;
-  width: 1em;
-  line-height: 1em;
-}
-
-.fa-stack-1x.halfed {
-  font-size: 0.5em;
-}
-
-.fa-1x.halfed {
-  font-size: 0.5em;
-}
-
-.contain-pulse {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-content: bottom;
-  height: 3em;
-}
-
-.square {
-  background: #0f3e12;
-  border-radius: 0.6em;
-  box-sizing: border-box;
-  height: 2em;
-  margin: 0.2em;
-  overflow: hidden;
-  padding: 0.5em;
-  width: 2em;
-}
-
-.animate-pulse .square:nth-of-type(1) {
-  animation: pulse ease-in-out 1.8s infinite 0.2s;
-}
-.animate-pulse .square:nth-of-type(2) {
-  animation: pulse ease-in-out 1.8s infinite 0.6s;
-}
-.animate-pulse .square:nth-of-type(3) {
-  animation: pulse ease-in-out 1.8s infinite 1s;
-}
-.animate-pulse .square:nth-of-type(4) {
-  animation: pulse ease-in-out 1.8s infinite 1.4s;
-}
-
-.simpleWrapper {
-  padding: 0;
+#selectableadd {
+  list-style-type: none;
   margin: 0;
-  border: none;
-  display: inline-block;
+  padding: 0;
+  width: 90%;
+  text-align: center;
 }
 
-.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered {
-  float: right;
+#selectableadd li {
+  margin: 3px;
+  padding: 0.4em;
+  font-size: 1em;
+  height: 18px;
+  text-align: center;
 }
 
-.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
-  padding: 0em 0.65em;
+.popupgroup {
+  border: 1px solid #DAE5F4;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 8px;
 }
 
-.select2-container--bootstrap-5 .select2-search {
-  width: auto !important;
+#cpdbatt {
+  min-height: 100px;
 }

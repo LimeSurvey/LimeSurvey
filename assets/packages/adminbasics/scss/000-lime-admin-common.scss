@@ -13,12 +13,6 @@
 @import "../../../vendor/twbs/bootstrap/scss/root";
 @import "../../bootstrap_5/scss/customizations";
 
-@media screen and (min-width: 768px) {
-    .modal-dialog {
-        width: initial;
-    }
-}
-
 tbody,
 td,
 tfoot,
