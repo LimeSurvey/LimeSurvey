@@ -13,6 +13,17 @@
 @import "../../../vendor/twbs/bootstrap/scss/root";
 @import "../../bootstrap_5/scss/customizations";
 
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+    border-width: 0;
+    border-bottom: 1px solid;
+    border-color: inherit;
+}
+
 #ls-loading {
     width: 100%;
     height: 100%;
@@ -686,7 +697,7 @@ html {
   text-align: center;
   padding: 0px;
   height: 75%;
-  width: 100%;    
+  width: 100%;
 }
 
 .welcome .card-body img {
@@ -1423,6 +1434,7 @@ div.card.disabled a {
 
 .icon-btn-row {
     display: flex;
+    border-bottom-width: 0 !important;
 
     .btn.btn-lg {
         width: 46px;
@@ -1451,6 +1463,7 @@ div.card.disabled a {
     :not(:first-child).btn.btn-xs, :not(:first-child) .btn.btn-xs {
         margin-left: 3px;
     }
+
 }
 
 // Button group

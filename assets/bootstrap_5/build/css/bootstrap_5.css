@@ -10951,6 +10951,7 @@ a {
 
 .table > :not(:first-child) {
   border-top: 0;
+<<<<<<< HEAD
 }
 
 .text-underline-hover {
@@ -10965,4 +10966,6 @@ a {
   .modal-dialog {
     width: 600px;
   }
+=======
+>>>>>>> 11fb5ade10c6465d0c47eef2fc367e997d4826f9
 }

@@ -97,7 +97,7 @@ class FailedEmail extends LSActiveRecord
      */
     public function search(): CActiveDataProvider
     {
-        $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
+        $pageSize = App()->request->getParam('pageSize') ?? App()->user->getState('pageSize', App()->params['defaultPageSize']);
         $criteria = new CDbCriteria();
 
         $criteria->compare('id', $this->id);
