@@ -7,7 +7,7 @@
             return LS.validateEndDateHigherThanStart(
                 $('#startdate_datetimepicker').data('DateTimePicker'),
                 $('#expires_datetimepicker').data('DateTimePicker'),
-                expirationLowerThanStartError
+                () => { LS.LsGlobalNotifier.create(expirationLowerThanStartError, 'alert alert-danger'); }
             );
         default:
             return true;
