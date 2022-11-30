@@ -25,6 +25,9 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     /* @var boolean|integer alwaysavailable : set default, and set for old DB , usage of integer for DB compatibility */
     public $alwaysavailable = 0;
 
+    /* @var integer default SurvetGroup */
+    public const DEFAULTGROUP = 1;
+
     /**
      * @return string the associated database table name
      */
@@ -46,7 +49,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     protected function afterFind()
     {
         parent::afterFind();
-        if ($this->gsid == 1) {
+        if ($this->gsid == self::DEFAULTGROUP) {
             $this->alwaysavailable = 1;
         }
     }
@@ -314,7 +317,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             $button .= '<a class="btn btn-sm btn-default" href="' . $sSurveySettingsUrl . '" role="button" data-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
         }
         /* Can not delete group #1 + with survey (or move it to hasPermission function ?) */
-        if ($this->gsid != 1 && !$this->hasSurveys && $this->hasPermission('group', 'delete')) {
+        if ($this->gsid != self::DEFAULTGROUP && !$this->hasSurveys && $this->hasPermission('group', 'delete')) {
             $button .= '<span data-toggle="tooltip" title="' . gT('Delete survey group') . '"><a class="btn btn-sm btn-default" href="#" data-post-url="' . $sDeleteUrl . '" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="' . gT('Do you want to continue?') . '"><i class="fa fa-trash text-danger " aria-hidden="true"></i></a></span>';
         }
         $button .= "</div>";
@@ -323,22 +326,22 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get the group list for current user
+     * @gsid null|integer : allow to restrict to a specigf gif
      * @return array
      */
-    public static function getSurveyGroupsList()
+    public static function getSurveyGroupsList($gsid = null)
     {
         $aSurveyList = [];
         $criteria = new CDbCriteria();
+        $criteria->select = array('t.gsid', 'title');
+        if ($gsid) {
+            $criteria->compare('t.gsid', $gsid);
+        }
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
         $criteria->order = 'title ASC';
         $oSurveyGroups = self::model()->findAll($criteria);
-
-        foreach ($oSurveyGroups as $oSurveyGroup) {
-            $aSurveyList[$oSurveyGroup->gsid] = $oSurveyGroup->title;
-        }
-
-        return $aSurveyList;
+        return CHtml::listData($oSurveyGroups, 'gsid', 'title');
     }
 
     public function getNextOrderPosition()
@@ -414,7 +417,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
             $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
             /* default survey group is always avaliable */
-            $criteriaPerm->compare('t.gsid', '1', false, 'OR');
+            $criteriaPerm->compare('t.gsid', self::DEFAULTGROUP, false, 'OR');
             /* survey group set as avaiable */
             $criteriaPerm->compare('t.alwaysavailable', '1', false, 'OR'); // Is public
         }
