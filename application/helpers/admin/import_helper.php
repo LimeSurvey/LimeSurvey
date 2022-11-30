@@ -1276,12 +1276,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             // If the xml includes survey group details, try to find the group by name.
             if (!empty($xml->surveys_groups->rows->row[0]->name)) {
                 $surveyGroupName = (string) $xml->surveys_groups->rows->row[0]->name;
-                $surveyGroup = SurveysGroups::model()->findByAttributes(["name" => $surveyGroupName]);
+                $surveyGroupPermissionCriteria = SurveysGroups::getPermissionCriteria();
+                $surveyGroup = SurveysGroups::model()->findByAttributes(["name" => $surveyGroupName], $surveyGroupPermissionCriteria);
                 // If a survey group is found with the specified name, assign it to the survey.
                 if (!empty($surveyGroup)) {
                     $insertdata['gsid'] = $surveyGroup->gsid;
+                    $results['importwarnings'][] = sprintf(gT("The survey was assigned to the '%s' group."), $surveyGroup->title);
                 } else {
-                    $results['importwarnings'][] = gT("The original survey group couldn't be found.");
+                    $results['importwarnings'][] = gT("The original survey group couldn't be found. The survey was assigned to the default group.");
                 }
             }
         }
