@@ -867,8 +867,8 @@ class Database extends SurveyCommonAction
         $oSurvey->bounce_email = $request->getPost('bounce_email');
         $oSurvey->faxto = $request->getPost('faxto');
         $gsid = $request->getPost('gsid');
-        $SurveysInGroup = SurveysInGroup::model()->findByPK($gsid);
-        if (!$SurveysInGroup || !$SurveysInGroup->hasPermission('surveys', 'create')) {
+        $oSurveysInGroup = SurveysInGroup::model()->findByPK($gsid);
+        if (!$oSurveysInGroup || !$oSurveysInGroup->hasPermission('surveys', 'create')) {
             App()->setFlashMessage(gT("Invalid group id, survey group not updated."), 'warning');
             if (empty($oSurvey->gsid)) {
                 $oSurvey->gsid = SurveysInGroup::DEFAULTGROUP;

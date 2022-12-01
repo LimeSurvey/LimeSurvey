@@ -330,7 +330,6 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
      */
     public static function getSurveyGroupsList()
     {
-        $aSurveyList = [];
         $criteria = new CDbCriteria();
         $criteria->select = array('t.gsid', 'title');
         $criteriaPerm = self::getPermissionCriteria();
