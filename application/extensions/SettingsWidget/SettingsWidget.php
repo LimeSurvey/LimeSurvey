@@ -613,7 +613,12 @@ class SettingsWidget extends CWidget
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $value = isset($metaData['current']) ? $metaData['current'] : '';
         $inputName = $name;
-        /* get by plugin settings, set default to "Y-m-d H:i:s" ? */
+
+        /* Optionnal save format in setting option, if not set use default */
+        if (!isset($metaData['saveformat'])) {
+            $metaData['saveformat'] = "Y-m-d H:i";
+        }
+        /* Fix the value according to saveformat */
         if (!empty($metaData['saveformat'])) {
             $inputName = $name . '[datetime]';
             if (is_string($value) && $value !== "") {
