@@ -657,7 +657,8 @@ class Database extends SurveyCommonAction
             // Save plugin settings : actually leave it before saving core : we are sure core settings is saved in LS way.
             $pluginSettings = App()->request->getPost('plugin', array());
             foreach ($pluginSettings as $plugin => $settings) {
-                $oPlugin = App()->getPluginManager()->loadPlugin($plugin, null, false);// must be already loaded, do not force reload
+                // Call plugin to check and fix, do not force reload
+                $oPlugin = App()->getPluginManager()->loadPlugin($plugin, null, false);
                 if ($oPlugin) {
                     /* Fix settings for datetime **/
                     foreach ($settings as $setting => $value) {
