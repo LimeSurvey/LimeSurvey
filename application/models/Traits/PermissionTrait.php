@@ -32,6 +32,29 @@ trait PermissionTrait
     }
 
     /**
+     * get criteria from Permission
+     * @todo : create an event
+     * @param integer $userid
+     * @return CDbCriteria
+     */
+    public static function getPermissionCriteria(/** @scrutinizer ignore-unused */ $userid = null)
+    {
+        $criteriaPerm = new CDbCriteria();
+        return $criteriaPerm;
+    }
+
+    /**
+     * Scope for permission
+     * @param integer $userid
+     * @return self
+     */
+    public function withpermission($userid = null)
+    {
+        $this->getDbCriteria()->mergeWith(self::getPermissionCriteria($userid));
+        return $this;
+    }
+
+    /**
      * Get the permission of current model
      * @param string $sPermission Name of the permission
      * @param string $sCRUD The permission detail you want to check on: 'create','read','update','delete','import' or 'export'

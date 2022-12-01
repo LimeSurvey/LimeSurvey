@@ -391,25 +391,19 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Scope for permission
-     * @return $this
-     */
-    public function withpermission()
-    {
-        $this->getDbCriteria()->mergeWith(self::getPermissionCriteria());
-        return $this;
-    }
-
-    /**
      * get criteria from Permission
+     * @param integer $userid , default to current user
      * @return CDbCriteria
      */
-    protected static function getPermissionCriteria()
+    public static function getPermissionCriteria($userid = null)
     {
+        if (!$userid) {
+            $userid = Yii::app()->user->id;
+        }
         $criteriaPerm = new CDbCriteria();
         if (!Permission::model()->hasGlobalPermission("surveys", 'read') || !Permission::model()->hasGlobalPermission("surveysgroups", 'read')) {
             /* owner of surveygroup */
-            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
+            $criteriaPerm->compare('t.owner_id', $userid, false);
             /* Simple permission on SurveysGroup inside a group */
             $criteriaPerm->mergeWith(array(
                 'join' => "LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = t.gsid AND permissions.permission='group' AND permissions.entity='surveysgroups' AND permissions.uid='" . Yii::app()->user->id . "') ",
@@ -420,7 +414,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 'join' => "LEFT JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
                         LEFT JOIN {{permissions}} AS surveypermissions ON (surveypermissions.entity_id = surveys.sid AND surveypermissions.permission='survey' AND surveypermissions.entity='survey' AND surveypermissions.uid='" . Yii::app()->user->id . "') ",
             ));
-            $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
+            $criteriaPerm->compare('surveys.owner_id', $userid, false, 'OR');
             $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
             /* default survey group is always available */
             $criteriaPerm->compare('t.gsid', self::DEFAULTGROUP, false, 'OR');

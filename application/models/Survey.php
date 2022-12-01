@@ -1667,11 +1667,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * Get criteria from Permission
      * @param $userid for thius user id , if not set : get current one
-     * @todo : move to PermissionInterface
      * @todo : create an event
      * @return CDbCriteria
      */
-    protected static function getPermissionCriteria($userid = null)
+    public static function getPermissionCriteria($userid = null)
     {
         if (!$userid) {
             $userid = Yii::app()->user->id;
