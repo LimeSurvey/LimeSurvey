@@ -82,7 +82,7 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
             return false;
         }
         /* Create and import need only access to SurveysGroup */
-        if ($sCRUD == 'create' or $sCRUD == 'import') {
+        if ($sCRUD == 'create' || $sCRUD == 'import') {
             return true;
         }
         /* Finally : return specific one */
