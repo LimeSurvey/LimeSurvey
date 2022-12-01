@@ -612,10 +612,24 @@ class SettingsWidget extends CWidget
     {
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $value = isset($metaData['current']) ? $metaData['current'] : '';
-        $html = Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                'name' => $name,
-                'id' => \CHtml::getIdByName($name),
+        $inputName = $name;
+        /* get by plugin settings, set default to "Y-m-d H:i:s" ? */
+        if (!empty($metaData['saveformat'])) {
+            $inputName = $name . '[datetime]';
+            if (is_string($value) && $value !== "") {
+                $datetimeobj = new Date_Time_Converter($value, $metaData['saveformat']);
+                $value = $datetimeobj->convert($dateformatdetails['phpdate'] . "H:i");
+            } else {
+                $value = "";
+            }
+        }
+        $metaData['class'][] = 'form-control';
+        $htmlOptions = $this->htmlOptions($metaData, $form);
+        $out = Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                'name' => $inputName,
+                'id' => \CHtml::getIdByName($inputName),
                 'value' => $value,
+                'htmlOptions' => $htmlOptions,
                 'pluginOptions' => array(
                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' =>true,
@@ -638,7 +652,10 @@ class SettingsWidget extends CWidget
                 )
             ), true
         );
-        return $html;
+        if (!empty($metaData['saveformat'])) {
+            $out .= CHtml::hiddenField($name . '[datetimesaveformat]',$metaData['saveformat']);
+        }
+        return $out;
     }
 
     /* Return htmlOptions for an input od seting
