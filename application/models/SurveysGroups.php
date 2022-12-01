@@ -326,17 +326,13 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get the group list for current user
-     * @gsid null|integer : allow to restrict to a specigf gif
      * @return array
      */
-    public static function getSurveyGroupsList($gsid = null)
+    public static function getSurveyGroupsList()
     {
         $aSurveyList = [];
         $criteria = new CDbCriteria();
         $criteria->select = array('t.gsid', 'title');
-        if ($gsid) {
-            $criteria->compare('t.gsid', $gsid);
-        }
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
         $criteria->order = 'title ASC';
@@ -395,6 +391,16 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Scope for permission
+     * @return $this
+     */
+    public function withpermission()
+    {
+        $this->getDbCriteria()->mergeWith(self::getPermissionCriteria());
+        return $this;
+    }
+
+    /**
      * get criteria from Permission
      * @return CDbCriteria
      */
@@ -416,9 +422,9 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             ));
             $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
             $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
-            /* default survey group is always avaliable */
+            /* default survey group is always available */
             $criteriaPerm->compare('t.gsid', self::DEFAULTGROUP, false, 'OR');
-            /* survey group set as avaiable */
+            /* survey group set as available */
             $criteriaPerm->compare('t.alwaysavailable', '1', false, 'OR'); // Is public
         }
         return $criteriaPerm;

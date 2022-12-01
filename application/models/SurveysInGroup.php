@@ -83,7 +83,7 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
         }
         /* Create and import need access to SurveysGroup */
         if ($sCRUD == 'create' or $sCRUD == 'import') {
-            return !empty(SurveysGroups::getSurveyGroupsList($this->gsid));
+            return !empty(SurveysGroups::model()->withpermission()->findByPk($this->gsid));
         }
         /* Finally : return specific one */
         return Permission::model()->hasPermission($this->gsid, 'surveysingroup', $sPermission, $sCRUD, $iUserID);
