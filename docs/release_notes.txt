@@ -34,6 +34,28 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.12 (build 221121) to 5.4.13 (build 221128) November 28, 2022
+-Fixed issue: gid suffix was missing in aRDP_regexpStaticAttribute array (Tim Willig)
+-Fixed issue #18463: List of uploaded files should be sorted alphabetically (#2722) (Gabriel Jenik)
+-Fixed issue #18461: Survey groups at survey list screen should be listed alphabetically (#2724) (Gabriel Jenik)
+-Fixed issue #18424: Typo in debug message (#2705) (Gabriel Jenik)
+-Fixed issue #18395: Access to limereplacementfields didn't check read permission on survey (#2655) (Gabriel Jenik)
+-Fixed issue #17648: Email received by participant is empty (#2691) (Denis Chenu)
+#Updated translation: Portuguese (Brazil) by rafaelmaia
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by Mazi
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by b00z00, DenisChenu, Nickko, sim.eesp
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Chinese (Simplified) by hdaphq, humandynamic, xiongrui, zengqing, zhanginshanghai, Zoctan
+#Updated translation: Azerbaijani by Heyder
+
+
 Changes from 5.4.11 (build 221114) to 5.4.12 (build 221121) November 21, 2022
 -Fixed issue: Placeholder fields still inserting outdated INSERTANS: placeholder (Carsten Schmitz)
 -Fixed issue: ComfortUpdate should use SSL by default (Carsten Schmitz)
