@@ -4270,6 +4270,11 @@ label {
   overflow-x: visible;
 }
 
+.accordion-button:not(.collapsed) {
+  background-color: #fff;
+  color: #000;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;

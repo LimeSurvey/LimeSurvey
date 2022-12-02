@@ -4240,3 +4240,9 @@ label {
 #question-grid {
     overflow-x: visible;
 }
+
+// TODO: Should be set by scss variables for each admin theme.
+.accordion-button:not(.collapsed) {
+    background-color: #fff;
+    color: #000;
+}
