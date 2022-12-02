@@ -11,7 +11,7 @@
 Sodium Compat is a pure PHP polyfill for the Sodium cryptography library 
 (libsodium), a core extension in PHP 7.2.0+ and otherwise [available in PECL](https://pecl.php.net/package/libsodium).
 
-This library tentativeley supports PHP 5.2.4 - 8.x (latest), but officially
+This library tentatively supports PHP 5.2.4 - 8.x (latest), but officially
 only supports [non-EOL'd versions of PHP](https://secure.php.net/supported-versions.php).
 
 If you have the PHP extension installed, Sodium Compat will opportunistically
@@ -106,6 +106,28 @@ interested in [purchasing a support contract from Paragon Initiative Enterprises
 
 ## True Polyfill
 
+As per the [second vote on the libsodium RFC](https://wiki.php.net/rfc/libsodium#proposed_voting_choices),
+PHP 7.2 uses `sodium_*` instead of `\Sodium\*`.
+
+```php
+<?php
+require_once "/path/to/sodium_compat/autoload.php";
+
+$alice_kp = sodium_crypto_sign_keypair();
+$alice_sk = sodium_crypto_sign_secretkey($alice_kp);
+$alice_pk = sodium_crypto_sign_publickey($alice_kp);
+
+$message = 'This is a test message.';
+$signature = sodium_crypto_sign_detached($message, $alice_sk);
+if (sodium_crypto_sign_verify_detached($signature, $message, $alice_pk)) {
+    echo 'OK', PHP_EOL;
+} else {
+    throw new Exception('Invalid signature');
+}
+```
+
+## Polyfill For the Old PECL Extension API
+
 If you're using PHP 5.3.0 or newer and do not have the PECL extension installed,
 you can just use the [standard ext/sodium API features as-is](https://paragonie.com/book/pecl-libsodium)
 and the polyfill will work its magic.
@@ -162,39 +184,17 @@ polyfill without additional code changes.
 Since this doesn't require a namespace, this API *is* exposed on PHP 5.2.
 
 Since version 0.7.0, we have our own namespaced API (`ParagonIE\Sodium\*`) to allow brevity
-in software that uses PHP 5.3+. This is useful if you want to use our file cryptography 
+in software that uses PHP 5.3+. This is useful if you want to use our file cryptography
 features without writing `ParagonIE_Sodium_File` every time. This is not exposed on PHP < 5.3,
 so if your project supports PHP < 5.3, use the underscore method instead.
 
 To learn how to use Libsodium, read [*Using Libsodium in PHP Projects*](https://paragonie.com/book/pecl-libsodium).
 
-## PHP 7.2 Polyfill
-
-As per the [second vote on the libsodium RFC](https://wiki.php.net/rfc/libsodium#proposed_voting_choices),
-PHP 7.2 uses `sodium_*` instead of `\Sodium\*`.
-
-```php
-<?php
-require_once "/path/to/sodium_compat/autoload.php";
-
-$alice_kp = sodium_crypto_sign_keypair();
-$alice_sk = sodium_crypto_sign_secretkey($alice_kp);
-$alice_pk = sodium_crypto_sign_publickey($alice_kp);
-
-$message = 'This is a test message.';
-$signature = sodium_crypto_sign_detached($message, $alice_sk);
-if (sodium_crypto_sign_verify_detached($signature, $message, $alice_pk)) {
-    echo 'OK', PHP_EOL;
-} else {
-    throw new Exception('Invalid signature');
-}
-```
-
 ## Help, Sodium_Compat is Slow! How can I make it fast?
 
 There are three ways to make it fast:
 
-1. Use PHP 7.2.
+1. Use a newer version of PHP (at least 7.2).
 2. [Install the libsodium PHP extension from PECL](https://paragonie.com/book/pecl-libsodium/read/00-intro.md#installing-libsodium).
 3. Only if the previous two options are not available for you:
    1. Verify that [the processor you're using actually implements constant-time multiplication](https://bearssl.org/ctmul.html).
@@ -221,17 +221,23 @@ if (ParagonIE_Sodium_Compat::polyfill_is_fast()) {
 
 ### Help, my PHP only has 32-Bit Integers! It's super slow!
 
-Some features of sodium_compat are ***incredibly slow* with PHP 5 on Windows**
-(in particular: public-key cryptography (encryption and signatures) is
-affected), and there is nothing we can do about that, due to platform
-restrictions on integers.
+If the `PHP_INT_SIZE` constant equals `4` instead of `8` (PHP 5 on Windows,
+Linux on i386, etc.), you will run into **significant performance issues**.
 
-For acceptable performance, we highly recommend Windows users to version 1.0.6
-of the libsodium extension from PECL or, alternatively, simply upgrade to PHP 7
-and the slowdown will be greatly reduced.
+In particular: public-key cryptography (encryption and signatures)
+is affected. There is nothing we can do about that.
 
-This is also true of non-Windows 32-bit operating systems, or if somehow PHP
-was compiled where `PHP_INT_SIZE` equals `4` instead of `8` (i.e. Linux on i386).
+The root cause of these performance issues has to do with implementing cryptography
+algorithms in constant-time using 16-bit limbs (to avoid overflow) in pure PHP.
+
+To mitigate these performance issues, simply install PHP 7.2 or newer and enable
+the `sodium` extension.
+
+Affected users are encouraged to install the sodium extension (or libsodium from
+older version of PHP).
+
+Windows users on PHP 5 may be able to simply upgrade to PHP 7 and the slowdown
+will be greatly reduced.
 
 ## Documentation
 
@@ -285,8 +291,28 @@ insightful technical information you may find helpful.
     * `crypto_sign_ed25519_sk_to_curve25519()`
     * `crypto_sign_verify_detached()`
     * For advanced users only:
+        * `crypto_core_ristretto255_add()`
+        * `crypto_core_ristretto255_from_hash()`
+        * `crypto_core_ristretto255_is_valid_point()`
+        * `crypto_core_ristretto255_random()`
+        * `crypto_core_ristretto255_scalar_add()`
+        * `crypto_core_ristretto255_scalar_complement()`
+        * `crypto_core_ristretto255_scalar_invert()`
+        * `crypto_core_ristretto255_scalar_mul()`
+        * `crypto_core_ristretto255_scalar_negate()`
+        * `crypto_core_ristretto255_scalar_random()`
+        * `crypto_core_ristretto255_scalar_reduce()`
+        * `crypto_core_ristretto255_scalar_sub()`
+        * `crypto_core_ristretto255_sub()`
+        * `crypto_scalarmult_ristretto255_base()`
+        * `crypto_scalarmult_ristretto255()`
         * `crypto_stream()`
+        * `crypto_stream_keygen()`
         * `crypto_stream_xor()`
+        * `crypto_stream_xchacha20()`
+        * `crypto_stream_xchacha20_keygen()`
+        * `crypto_stream_xchacha20_xor()`
+        * `crypto_stream_xchacha20_xor_ic()`
     * Other utilities (e.g. `crypto_*_keypair()`)
         * `add()`
         * `base642bin()`

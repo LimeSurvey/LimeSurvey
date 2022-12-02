@@ -37,6 +37,10 @@ class LimeReplacementFieldsController extends LSBaseController
             throw new CHttpException(401);
         }
 
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'survey', 'read')) {
+            throw new CHttpException(403);
+        }
+
         if ($newType) {
             $newTypeResponse = $this->getNewTypeResponse($fieldtype, $surveyid, $gid, $qid);
 
@@ -210,7 +214,7 @@ class LimeReplacementFieldsController extends LSBaseController
             }
 
             $shortquestion = $row['title'] . ": " . flattenText($question);
-            $cquestions[] = array($shortquestion, $row['qid'], $row['type'], $row['fieldname'], $row['previouspage']);
+            $cquestions[] = array($shortquestion, $row['qid'], $row['type'], $row['fieldname'], $row['previouspage'], $row['title']);
         }
         return $cquestions;
     }
