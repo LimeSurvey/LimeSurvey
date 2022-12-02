@@ -37,7 +37,7 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
             <ul class="dropdown-menu" style="min-width : 252px;">
                 <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
                     <li>
-                        <a target="_blank" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/{$languageCode}"); ?>" >
+                        <a class="dropdown-item" target="_blank" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/{$languageCode}"); ?>" >
                             <?php echo $languageName; ?>
                         </a>
                     </li>
