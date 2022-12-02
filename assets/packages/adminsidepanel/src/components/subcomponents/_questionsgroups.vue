@@ -356,12 +356,10 @@ export default {
                                 v-for="question in orderQuestions(questiongroup.questions)"
                                 v-bind:key="question.qid"
                                 v-bind:class="questionItemClasses(question)"
-                                data-bs-toggle="tooltip"
                                 class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-start"
                                 :data-is-hidden="question.hidden"
                                 :data-questiontype="question.type"
                                 :data-has-condition="questionHasCondition(question)"
-                                :title="question.question_flat"
                                 @dragenter="dragoverQuestion($event, question, questiongroup)"
                             >
                                     <i
@@ -381,6 +379,8 @@ export default {
                                     @click.stop.prevent="openQuestion(question)"
                                 >
                                     <span
+                                        data-bs-toggle="tooltip"
+                                        :title="question.question_flat"
                                         class="question_text_ellipsize"
                                         :class="{'question-hidden' : question.hidden}"
                                         :style="{ width: itemWidth }"
