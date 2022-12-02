@@ -131,6 +131,7 @@ vendor/**/less/
 vendor/**/*.sh
 vendor/**/*.md
 vendor/**/gulpfile.js
+vendor
 yarn-error.log
 
 # Test stuff
