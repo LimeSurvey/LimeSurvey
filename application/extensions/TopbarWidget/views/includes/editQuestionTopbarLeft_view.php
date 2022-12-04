@@ -1,7 +1,7 @@
 <?php if ($oQuestion->qid !== 0): ?>
     <!-- test/execute survey -->
     <?php if (count($surveyLanguages) > 1): ?>
-        <div class="dropdown">
+        <div class="btn-group">
             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <?php if($oSurvey->active=='N'):?>
                     <span class="fa fa-eye" ></span>
@@ -38,10 +38,10 @@
         <?php if (count($surveyLanguages) > 1): ?>
 
             <!-- Preview group multilanguage -->
-            <div class="dropdown">
+            <div class="btn-group">
                 <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-eye"></span>
-                <?php eT("Preview question group"); ?> <span class="caret"></span>
+                    <?php eT("Preview question group"); ?> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" style="min-width : 252px;">
                     <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
@@ -65,10 +65,10 @@
         <?php if (count($surveyLanguages) > 1): ?>
 
         <!-- Preview question multilanguage -->
-        <div class="dropdown">
+        <div class="btn-group">
             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa fa-eye"></span>
-            <?php eT("Preview question"); ?> <span class="caret"></span>
+                <?php eT("Preview question"); ?> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" style="min-width : 252px;">
                 <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>

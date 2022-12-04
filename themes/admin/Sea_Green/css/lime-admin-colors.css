@@ -1478,6 +1478,7 @@ fieldset[disabled] .btn-link:focus {
 .pager li > a {
   background-color: #fff;
   border: 1px solid #dadada;
+  color: #636363;
 }
 .pager li > a:hover {
   background-color: #9cba9e;
@@ -1504,6 +1505,9 @@ fieldset[disabled] .btn-link:focus {
 .pager .disabled > span {
   color: #858585;
   background-color: #fff;
+}
+.pager .page-item.active .page-link {
+  background-color: #328637;
 }
 
 .label {
