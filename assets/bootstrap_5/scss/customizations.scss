@@ -29,6 +29,15 @@ a {
     border-top: 0;
 }
 
+.text-underline-hover {
+    text-decoration: none;
+}
+
+.text-underline-hover:hover {
+    text-decoration: underline;
+}
+
+
 @media (min-width: 768px){
     .modal-dialog {
         width: 600px;
