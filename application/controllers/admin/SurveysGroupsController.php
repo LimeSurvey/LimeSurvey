@@ -199,6 +199,19 @@ class SurveysGroupsController extends SurveyCommonAction
 
         $oTemplateOptions           = new TemplateConfiguration();
         $oTemplateOptions->scenario = 'surveygroup';
+        $filterForm = Yii::app()->request->getPost('TemplateConfiguration', false);
+        if ($filterForm) {
+            $oTemplateOptions->setAttributes($filterForm, false);
+            if (array_key_exists('template_description', $filterForm)) {
+                $oTemplateOptions->template_description = $filterForm['template_description'];
+            }
+            if (array_key_exists('template_type', $filterForm)) {
+                $oTemplateOptions->template_type = $filterForm['template_type'];
+            }
+            if (array_key_exists('template_extends', $filterForm)) {
+                $oTemplateOptions->template_extends = $filterForm['template_extends'];
+            }
+        }
         $aData['templateOptionsModel'] = $oTemplateOptions;
 
         // Page size

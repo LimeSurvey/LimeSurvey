@@ -7,12 +7,13 @@ $surveyid = App()->request->getParam('surveyid', 0);
 /** @var Question $model */
 
 ?>
-<form class="custom-modal-datas form-horizontal">
+<form class="custom-modal-datas form-horizontal" data-trigger-validation="true">
     <div  class="form-group" id="CssClass">
         <label class="col-sm-4 control-label"><?php eT("Random order:"); ?></label>
         <div class="col-sm-8">
-            <select class="form-control custom-data attributes-to-update" id="random_order" name="random_order">
-                <option value="0" selected="selected"><?php eT('Off');?></option>
+            <select class="form-control custom-data attributes-to-update" id="random_order" name="random_order" required>
+                <option value="" selected="selected"><?php eT('Please select an option');?></option>
+                <option value="0"><?php eT('Off');?></option>
                 <option value="1"><?php eT('Randomize on each page load');?></option>
             </select>
         </div>

@@ -105,9 +105,9 @@ class LsDefaultDataSets
                 null,
                 4,
                 'datasecurity',
-                gT('Data policy settings', 'unescaped'),
-                gT('Data policy settings', 'unescaped'),
-                gT('Edit data policy settings', 'unescaped'),
+                gT('Privacy policy settings', 'unescaped'),
+                gT('Privacy policy', 'unescaped'),
+                gT('Edit privacy policy settings', 'unescaped'),
                 'shield',
                 'fontawesome',
                 '',
@@ -440,6 +440,34 @@ class LsDefaultDataSets
                 2,
                 null,
                 6,
+                'failedemail',
+                gT('Failed email notifications', 'unescaped'),
+                gT('Failed email notifications', 'unescaped'),
+                gT('View and resend failed email notifications', 'unescaped'),
+                'envelope-square',
+                'fontawesome',
+                '',
+                'failedEmail/index/',
+                '',
+                '',
+                '',
+                '',
+                'surveylocale',
+                'read',
+                '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}',
+                '',
+                'en-GB',
+                1,
+                date('Y-m-d H:i:s'),
+                0,
+                date('Y-m-d H:i:s'),
+                0,
+                0
+            ],
+            [
+                2,
+                null,
+                7,
                 'quotas',
                 gT('Edit quotas', 'unescaped'),
                 gT('Quotas', 'unescaped'),
@@ -467,7 +495,7 @@ class LsDefaultDataSets
             [
                 2,
                 null,
-                7,
+                8,
                 'assessments',
                 gT('Edit assessments', 'unescaped')
                 ,gT('Assessments', 'unescaped'),
@@ -495,7 +523,7 @@ class LsDefaultDataSets
             [
                 2,
                 null,
-                8,
+                9,
                 'panelintegration',
                 gT('Edit survey panel integration', 'unescaped'),
                 gT('Panel integration', 'unescaped'),
@@ -523,7 +551,7 @@ class LsDefaultDataSets
             [
                 2,
                 null,
-                9,
+                10,
                 'responses',
                 gT('Responses', 'unescaped'),
                 gT('Responses', 'unescaped'),
@@ -551,7 +579,7 @@ class LsDefaultDataSets
             [
                 2,
                 null,
-                10,
+                11,
                 'statistics',
                 gT('Statistics', 'unescaped'),
                 gT('Statistics', 'unescaped'),
@@ -579,7 +607,7 @@ class LsDefaultDataSets
             [
                 2,
                 null,
-                11,
+                12,
                 'resources',
                 gT('Add/edit resources (files/images) for this survey', 'unescaped'),
                 gT('Resources', 'unescaped'),
@@ -607,7 +635,7 @@ class LsDefaultDataSets
             [
                 2,
                 null,
-                12,
+                13,
                 'plugins',
                 gT('Simple plugin settings', 'unescaped'),
                 gT('Simple plugins', 'unescaped'),
@@ -829,9 +857,9 @@ class LsDefaultDataSets
             'admin_notification_subject' => gT("Response submission for survey {SURVEYNAME}", $mode),
             'admin_notification' => gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}", $mode),
             'confirmation_subject' => gT("Confirmation of your participation in our survey"),
-            'confirmation' => gT("Dear {FIRSTNAME},\n\nthis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}", $mode),
+            'confirmation' => gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}", $mode),
             'invitation_subject' => gT("Invitation to participate in a survey", $mode),
-            'invitation' => gT("Dear {FIRSTNAME},\n\nyou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}", $mode) . "\n\n" . gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}", $mode) . "\n\n" . gT("If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:\n{OPTINURL}", $mode),
+            'invitation' => gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}", $mode) . "\n\n" . gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}", $mode) . "\n\n" . gT("If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:\n{OPTINURL}", $mode),
             'reminder_subject' => gT("Reminder to participate in a survey", $mode),
             'reminder' => gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}", $mode) . "\n\n" . gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}", $mode),
             'registration_subject' => gT("Survey registration confirmation", $mode),
@@ -2907,7 +2935,7 @@ class LsDefaultDataSets
         $template .= "<p>" . sprintf(gT("This is an automated email notification that a user has been created for you on the website %s."), "<strong>'{SITENAME}'</strong>") . "</p>";
         $template .= "<p></p><p>" . gT("You can use now the following credentials to log in:") . "</p>";
         $template .= "<p><strong>" . gT("Username") . "</strong>: {USERNAME}</p>";
-        //don't send password anymore, just send a link for the new admin to generate his own password
+        //don't send password anymore, just send a link for the new admin to generate their own password
         //$template .= "<p><strong>" . gt("Password") . "</strong>: {PASSWORD}</p>";
         $template .= '<p><a href="{LOGINURL}">' . gT("Click here to set your password") . '</a></p>';
         $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";

@@ -39,7 +39,6 @@ class SurveyPermission extends SurveyCommonAction
         $aViewUrls = array();
 
         $imageurl = Yii::app()->getConfig('adminimageurl');
-
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'read')) {
             $this->getController()->error('Access denied');
             return;
@@ -51,12 +50,12 @@ class SurveyPermission extends SurveyCommonAction
 
         $aBaseSurveyPermissions = Permission::model()->getSurveyBasePermissions();
         $userList = getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
+        $authorizedGroupsList = getUserGroupList(); // Limit the group list for the samegrouppolicy
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveypermissions.js');
         // FIXME this HTML stuff MUST BE IN VIEWS!!
         $surveysecurity = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
         $surveysecurity .= viewHelper::getViewTestTag('surveyPermissions');
-
         $surveysecurity .= "<h3>" . gT("Survey permissions") . "</h3>\n";
         $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
         $result2 = Permission::model()->getUserDetails($iSurveyID);
@@ -74,11 +73,6 @@ class SurveyPermission extends SurveyCommonAction
             $surveysecurity .= "</tr></thead>\n";
 
             // Foot first
-
-            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true) {
-                $authorizedGroupsList = getUserGroupList();
-            }
-
             $surveysecurity .= "<tbody>\n";
             $row = 0;
             foreach ($result2 as $PermissionRow) {
@@ -433,7 +427,7 @@ class SurveyPermission extends SurveyCommonAction
                 throw new CHttpException(403, gT("You can not set your own permission."));
             }
         } elseif ($action == "setusergroupsurveysecurity") {
-            if (!in_array($postusergroupid, getUserGroupList())) {
+            if (shouldFilterUserGroupList() && !in_array($postusergroupid, getUserGroupList())) {
                 throw new CHttpException(403, gT("You do not have permission to this user group."));
             }
             $postuserid = null;
@@ -584,9 +578,7 @@ class SurveyPermission extends SurveyCommonAction
             }
             $uids = [$postuserid => $postuserid];
         } elseif ($postusergroupid) {
-            $isInArray = in_array($postusergroupid, getUserGroupList());
-
-            if (!$isInArray) {
+            if (shouldFilterUserGroupList() && !in_array($postusergroupid, getUserGroupList())) {
                 throw new CHttpException(403, gT("You do not have permission to this user group."));
             }
 

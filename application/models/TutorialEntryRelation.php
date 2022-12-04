@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{tutorial_entry_groups}}".
  *
- * The followings are the available columns in table '{{tutorial_entry_groups}}':
+ * The following are the available columns in table '{{tutorial_entry_groups}}':
  * @property integer $teid
  * @property integer $tid
  * @property integer $uid

@@ -20,6 +20,8 @@ use Composer\Semver\VersionParser;
 
 
 
+
+
 class InstalledVersions
 {
 private static $installed = array (
@@ -30,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'a71b463ecacc8912444df68b68cea66ec8927415',
+    'reference' => '61108bf5b45c2bc8decc130240f44ad34e12fbf9',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -42,16 +44,16 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'a71b463ecacc8912444df68b68cea66ec8927415',
+      'reference' => '61108bf5b45c2bc8decc130240f44ad34e12fbf9',
     ),
     'paragonie/constant_time_encoding' => 
     array (
-      'pretty_version' => 'v2.5.0',
-      'version' => '2.5.0.0',
+      'pretty_version' => 'v2.6.3',
+      'version' => '2.6.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9229e15f2e6ba772f0c55dd6986c563b937170a8',
+      'reference' => '58c3f47f650c94ec05a151692652a868995d2938',
     ),
     'paragonie/random_compat' => 
     array (
@@ -64,12 +66,12 @@ private static $installed = array (
     ),
     'paragonie/sodium_compat' => 
     array (
-      'pretty_version' => 'v1.17.1',
-      'version' => '1.17.1.0',
+      'pretty_version' => 'v1.19.0',
+      'version' => '1.19.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ac994053faac18d386328c91c7900f930acadf1e',
+      'reference' => 'cb15e403ecbe6a6cc515f855c310eb6b1872a933',
     ),
     'phpseclib/bcmath_compat' => 
     array (
@@ -82,30 +84,30 @@ private static $installed = array (
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.14',
-      'version' => '3.0.14.0',
+      'pretty_version' => '3.0.17',
+      'version' => '3.0.17.0',
       'aliases' => 
       array (
       ),
-      'reference' => '2f0b7af658cbea265cbb4a791d6c29a6613f98ef',
+      'reference' => 'dbc2307d5c69aeb22db136c52e91130d7f2ca761',
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.26.0',
-      'version' => '1.26.0.0',
+      'pretty_version' => 'v1.27.0',
+      'version' => '1.27.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4',
+      'reference' => '5bbc823adecdae860bb64756d639ecfec17b050a',
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.26.0',
-      'version' => '1.26.0.0',
+      'pretty_version' => 'v1.27.0',
+      'version' => '1.27.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
+      'reference' => '8ad114f6b39e2c98a8b0e3bd907732c207c2b534',
     ),
     'tiamo/spss' => 
     array (
@@ -118,12 +120,12 @@ private static $installed = array (
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v1.44.2',
-      'version' => '1.44.2.0',
+      'pretty_version' => 'v1.44.7',
+      'version' => '1.44.7.0',
       'aliases' => 
       array (
       ),
-      'reference' => '138c493c5b8ee7cff3821f80b8896d371366b5fe',
+      'reference' => '0887422319889e442458e48e2f3d9add1a172ad5',
     ),
     'yiiext/twig-renderer' => 
     array (
@@ -134,6 +136,15 @@ private static $installed = array (
         0 => '9999999-dev',
       ),
       'reference' => '3cb9b60a0d579855c17d7830d5015b74705c9fdd',
+    ),
+    'yiisoft/yii' => 
+    array (
+      'pretty_version' => '1.1.26',
+      'version' => '1.1.26.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'bda32f68713d4501d3fe9571e09e4b2fa06c53b7',
     ),
   ),
 );
@@ -152,7 +163,6 @@ $packages = array();
 foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
-
 
 if (1 === \count($packages)) {
 return $packages[0];
@@ -345,6 +355,7 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
+
 
 
 

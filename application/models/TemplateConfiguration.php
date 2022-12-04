@@ -17,7 +17,7 @@
  *
  * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
  *
- * The followings are the available columns in table '{{template_configuration}}':
+ * The following are the available columns in table '{{template_configuration}}':
  * @property integer $id Primary key
  * @property string $template_name
  * @property integer $sid Survey ID
@@ -1010,7 +1010,10 @@ class TemplateConfiguration extends TemplateConfig
             }
             // Get full list of files
             $fileList = Template::getOtherFiles($basePath);
-
+            // Order File List alphabetically
+            usort($fileList, function ($a, $b) {
+                return strcasecmp($a['name'], $b['name']);
+            });
             // Keep only image files
             foreach ($fileList as $file) {
                 $imageInfo = $this->getImageInfo($basePath . $file['name'], $pathPrefix);

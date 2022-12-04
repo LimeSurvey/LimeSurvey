@@ -1,6 +1,6 @@
 <?php
 /**
- * Ressources panel tab
+ * Resources panel tab
  **/
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -8,7 +8,7 @@ echo viewHelper::getViewTestTag('surveyResources');
 
 
 App()->getClientScript()->registerScript(
-  "ressources-panel-variables", "
+  "resources-panel-variables", "
 var jsonUrl = '';
 var sAction = '';
 var sParameter = '';
@@ -21,12 +21,12 @@ var sAddParam = '';
 LSYii_ClientScript::POS_BEGIN
 );
 
-//The ressources panel is a little special thus the unorganized html
+//The resources panel is a little special thus the unorganized html
 // @TODO Fix rendering!
 ?>
 
 <div class="row">
-  <!-- ressources panel -->
+  <!-- resources panel -->
   <div id='resources' class="container-fluid">
     <div class="row">
       <!-- Export -->

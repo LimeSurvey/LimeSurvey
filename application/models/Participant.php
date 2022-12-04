@@ -18,7 +18,7 @@ use LimeSurvey\Exceptions\CPDBException;
 /**
  * This is the model class for table "{{participants}}".
  *
- * The followings are the available columns in table '{{participants}}':
+ * The following are the available columns in table '{{participants}}':
  * @property string $participant_id Primary Key
  * @property string $firstname
  * @property string $lastname
@@ -398,6 +398,7 @@ class Participant extends LSActiveRecord
             [
                 "name"   => 'owner.full_name',
                 "header" => gT("Owner"),
+                'value' => '$data->owner ? $data->owner->full_name : gT("(Deleted user)")',
                 "filter" => $this->getOwnersList($this->owner_uid)
             ],
             [
@@ -598,7 +599,7 @@ class Participant extends LSActiveRecord
         foreach ($owner_ids as $id) {
             /** @var User $oUser */
             $oUser = User::model()->findByPk($id['owner_uid']);
-            $ownerList[$id['owner_uid']] = $oUser->full_name;
+            $ownerList[$id['owner_uid']] = $oUser ? $oUser->full_name : gT("(Deleted user)");
         }
         return TbHtml::dropDownList('Participant[owner_uid]', $selected, $ownerList);
     }

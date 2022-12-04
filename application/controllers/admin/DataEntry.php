@@ -314,7 +314,10 @@ class DataEntry extends SurveyCommonAction
                 $tbl_name = substr($sourceSchema->name, strlen(Yii::app()->db->tablePrefix));
             }
             $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
-            $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
+            $archivedEncryptedAttributes = [];
+            if ($archivedTableSettings) {
+                $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
+            }
 
             $fieldMap = [];
             $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
@@ -339,12 +342,13 @@ class DataEntry extends SurveyCommonAction
             }
             $imported = 0;
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
+            /* @var boolean preserveIDs */
+            $preserveIDs = boolval(App()->getRequest()->getPost('preserveIDs'));
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
                 $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
-
-                if (isset($_POST['preserveIDs']) && $_POST['preserveIDs'] == 1) {
+                if ($preserveIDs) {
                     $targetResponse->id = $sourceResponse->id;
                 }
 
@@ -372,7 +376,13 @@ class DataEntry extends SurveyCommonAction
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
 
                 $imported++;
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$iSurveyId", true);
+                }
                 $targetResponse->save();
+                if ($preserveIDs) {
+                    switchMSSQLIdentityInsert("survey_$iSurveyId", false);
+                }
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
                 unset($targetResponse);
             }
@@ -1414,8 +1424,8 @@ class DataEntry extends SurveyCommonAction
             throw new CHttpException(404, gT("Invalid survey ID"));
         }
         $id = (int)Yii::app()->request->getPost('id');
-        $oReponse = Response::model($surveyid)->findByPk($id);
-        if (empty($oReponse)) {
+        $oResponse = Response::model($surveyid)->findByPk($id);
+        if (empty($oResponse)) {
             throw new CHttpException(404, gT("Invalid ID"));
         }
         $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
@@ -1444,7 +1454,7 @@ class DataEntry extends SurveyCommonAction
                     break;
                 case Question::QT_D_DATE:
                     if (empty($thisvalue)) {
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                         break;
                     }
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
@@ -1455,55 +1465,55 @@ class DataEntry extends SurveyCommonAction
                         $datetimeobj = DateTime::createFromFormat('Y-m-d\TH:i', $thisvalue);
                     }
                     if ($datetimeobj) {
-                        $oReponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
+                        $oResponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities($thisvalue), $fieldname), 'warning');
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                     }
                     break;
                 case Question::QT_N_NUMERICAL:
                 case Question::QT_K_MULTIPLE_NUMERICAL:
                     if ($thisvalue === "") {
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                         break;
                     }
                     if (!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/", $thisvalue)) {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %s"), $fieldname), 'warning');
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                         break;
                     }
-                    $oReponse->$fieldname = $thisvalue;
+                    $oResponse->$fieldname = $thisvalue;
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD:
                     if (strpos($irow['fieldname'], '_filecount')) {
                         if (empty($thisvalue)) {
-                            $oReponse->$fieldname = null;
+                            $oResponse->$fieldname = null;
                             break;
                         }
-                        $oReponse->$fieldname = $thisvalue;
+                        $oResponse->$fieldname = $thisvalue;
                         break;
                     }
-                    $oReponse->$fieldname = $thisvalue;
+                    $oResponse->$fieldname = $thisvalue;
                     break;
                 case Question::QT_COLON_ARRAY_NUMBERS:
                     if (!empty($thisvalue) && strval($thisvalue) != strval(floatval($thisvalue))) {
                         // mysql not need, unsure about mssql
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %s"), $fieldname), 'warning');
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                         break;
                     }
-                    $oReponse->$fieldname = $thisvalue;
+                    $oResponse->$fieldname = $thisvalue;
                     break;
                 case 'submitdate':
                     if (Yii::app()->request->getPost('completed') == "N") {
-                        $oReponse->$fieldname = null;
+                        $oResponse->$fieldname = null;
                         break;
                     }
                     if (empty($thisvalue)) {
                         if (Survey::model()->findByPk($surveyid)->isDateStamp) {
-                            $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                            $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                         } else {
-                            $oReponse->$fieldname = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                            $oResponse->$fieldname = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                         }
                         break;
                     }
@@ -1512,29 +1522,29 @@ class DataEntry extends SurveyCommonAction
                 case 'startdate':
                 case 'datestamp':
                     if (empty($thisvalue)) {
-                        $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                        $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                         break;
                     }
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                     $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'] . " H:i", $thisvalue);
                     if ($datetimeobj) {
-                        $oReponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
+                        $oResponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities($thisvalue), $fieldname), 'warning');
                         /* We get here : we need a valid value : NOT NULL in db or completed != "N" */
-                        $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                        $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                     }
                     break;
                 default:
-                    $oReponse->$fieldname = $thisvalue;
+                    $oResponse->$fieldname = $thisvalue;
             }
         }
         $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
         $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
         $beforeDataEntryUpdate->set('iResponseID', $id);
         App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
-        if (!$oReponse->encryptSave()) {
-            Yii::app()->setFlashMessage(CHtml::errorSummary($oReponse), 'error');
+        if (!$oResponse->encryptSave()) {
+            Yii::app()->setFlashMessage(CHtml::errorSummary($oResponse), 'error');
         } else {
             Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."), $id));
         }
@@ -1780,7 +1790,7 @@ class DataEntry extends SurveyCommonAction
                     $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
                     $arSaveControl->save();
                     if ($arSaveControl->save()) {
-                        $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
+                        $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."));
                         $tokens_table = "{{tokens_$surveyid}}";
                         if (tableExists($tokens_table)) {
                             $tokendata = array(
@@ -1795,7 +1805,7 @@ class DataEntry extends SurveyCommonAction
                             $aToken = new Token($surveyid);
                             $aToken->setAttributes($tokendata, false);
                             $aToken->encryptSave(true);
-                            $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
+                            $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created, too."));
                         }
                         if ($saver['email']) {
                             //Send email
@@ -1805,16 +1815,15 @@ class DataEntry extends SurveyCommonAction
                                 $mailer->setSurvey($surveyid);
                                 $mailer->emailType = 'savesurveydetails';
                                 $mailer->Subject = gT("Saved Survey Details");
-                                $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
+                                $message = gT("Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off.");
                                 $message .= "\n\n" . $thissurvey['name'] . "\n\n";
                                 $message .= gT("Name") . ": " . $saver['identifier'] . "\n";
-                                $message .= gT("Password") . ": " . $saver['password'] . "\n\n";
                                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):") . "\n";
-                                $aParams = array('lang' => $saver['language'], 'loadname' => $saver['identifier'], 'loadpass' => $saver['password']);
+                                $aParams = array('lang' => $saver['language'], 'loadname' => $saver['identifier']);
                                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$arSaveControl->scid}/", $aParams);
                                 $mailer->Body = $message;
                                 if ($mailer->sendMessage()) {
-                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'successtitle text-success'), gT("An email has been sent with details about your saved survey"));
+                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'successtitle text-success'), gT("An email has been sent with details about your saved survey. Please make sure to remember your password."));
                                 } else {
                                     $aDataentrymsgs[] = CHtml::tag('strong', array('class' => 'errortitle text-danger'), sprintf(gT("Unable to send email about your saved survey (Error: %s)."), $mailer->getError()));
                                 }
