@@ -1177,7 +1177,7 @@ class dataentry extends Survey_Common_Action
                                     $aDataentryoutput .= ">...</option>\n";
                                     for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue) {
                                         $aDataentryoutput .= "<option value='$ii'";
-                                        if ($idrow[$fname['fieldname']] != '' && $idrow[$fname['fieldname']] == $ii) {$aDataentryoutput .= " selected"; }
+                                        if ($idrow[$fname['fieldname']] === "$ii") {$aDataentryoutput .= " selected"; }
                                         $aDataentryoutput .= ">$ii</option>\n";
                                     }
                                 }
