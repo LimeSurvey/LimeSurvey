@@ -1173,7 +1173,7 @@ class dataentry extends Survey_Common_Action
                                 } else {
                                     $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n";
                                     $aDataentryoutput .= "<option value=''";
-                                    if ($idrow[$fname['fieldname']] == '') {$aDataentryoutput .= " selected"; }
+                                    if ($idrow[$fname['fieldname']] === "") {$aDataentryoutput .= " selected"; }
                                     $aDataentryoutput .= ">...</option>\n";
                                     for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue) {
                                         $aDataentryoutput .= "<option value='$ii'";
