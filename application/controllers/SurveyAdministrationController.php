@@ -185,6 +185,12 @@ class SurveyAdministrationController extends LSBaseController
             $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         }
 
+        $surveyUrls = [];
+        foreach ($survey->allLanguages as $language) {
+            $surveyUrls[$language] = $survey->getSurveyUrl($language);
+        }
+        $aData['surveyUrls'] = $surveyUrls;
+
         $this->surveysummary($aData);
 
         // Display 'Overview' in Green Bar

@@ -179,7 +179,7 @@ function showError(msg) {
  * Validates that mandatory additional attributes are filled
  */
 function validateAdditionalAttributes() {
-    const validationErrorMsg = $('#edittoken').attr('data-validation-error');
+    const validationErrorMsg = $('#edittoken').attr('data-additional-attributes-validation-error');
 
     let valid = true;
     $('.mandatory-attribute').each(function () {
@@ -307,15 +307,29 @@ $(document).on('ready pjax:scriptcomplete', function(){
 
     $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
         var eventParams = params || {};
+        // When saving from the Edit Participant modal, handle the event in submitEditToken().
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();
             return;
         }
+        // Validate additional (custom) participant attributes
         if (!validateAdditionalAttributes()) {
             event.preventDefault();
             return false;
         }
+        // Validate expiration date isn't lower than the "Valid from" date
+        if (
+            !LS.validateEndDateHigherThanStart(
+                $('#validfrom').data('DateTimePicker'),
+                $('#validuntil').data('DateTimePicker'),
+                () => {showError($('#edittoken').attr('data-expiration-validation-error'))}
+            )
+        ) {
+            event.preventDefault();
+            return false;
+        }
+
         if (!eventParams.confirm_empty_save && !validateNotEmptyTokenForm()) {
             return false;
         }
@@ -325,7 +339,13 @@ $(document).on('ready pjax:scriptcomplete', function(){
      * Save token
      */
     $("#save-edittoken").off('click.token-save').on('click.token-save', function() {
-        if (validateAdditionalAttributes()) {
+        const valid = validateAdditionalAttributes()
+            && LS.validateEndDateHigherThanStart(
+                $('#validfrom').data('DateTimePicker'),
+                $('#validuntil').data('DateTimePicker'),
+                () => {showError($('#edittoken').attr('data-expiration-validation-error'))}
+            );
+        if (valid) {
             submitEditToken();
         }
     });

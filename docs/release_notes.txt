@@ -34,6 +34,61 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.12 (build 221121) to 5.4.13 (build 221128) November 28, 2022
+-Fixed issue: gid suffix was missing in aRDP_regexpStaticAttribute array (Tim Willig)
+-Fixed issue #18463: List of uploaded files should be sorted alphabetically (#2722) (Gabriel Jenik)
+-Fixed issue #18461: Survey groups at survey list screen should be listed alphabetically (#2724) (Gabriel Jenik)
+-Fixed issue #18424: Typo in debug message (#2705) (Gabriel Jenik)
+-Fixed issue #18395: Access to limereplacementfields didn't check read permission on survey (#2655) (Gabriel Jenik)
+-Fixed issue #17648: Email received by participant is empty (#2691) (Denis Chenu)
+#Updated translation: Portuguese (Brazil) by rafaelmaia
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by Mazi
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by b00z00, DenisChenu, Nickko, sim.eesp
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Chinese (Simplified) by hdaphq, humandynamic, xiongrui, zengqing, zhanginshanghai, Zoctan
+#Updated translation: Azerbaijani by Heyder
+
+
+Changes from 5.4.11 (build 221114) to 5.4.12 (build 221121) November 21, 2022
+-Fixed issue: Placeholder fields still inserting outdated INSERTANS: placeholder (Carsten Schmitz)
+-Fixed issue: ComfortUpdate should use SSL by default (Carsten Schmitz)
+-Fixed issue #18488: Conditions are not properly highlighted if they have additional spaces (#2733) (Denis Chenu)
+-Fixed issue #18422: Remove Google font usage (#2689) (Gabriel Jenik)
+#Updated translation: Valencian by joamuran, vbraque
+#Updated translation: Thai by tomzt
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Hungarian by kkd
+
+
+Changes from 5.4.10 (build 221107) to 5.4.11 (build 221114) November 14, 2022
+-Fixed issue: Survey gets into a state where it seems to be active but isn't - to fix this run integrity check (Carsten Schmitz)
+-Fixed issue: Start boxes having invalid links on small screens (Carsten Schmitz)
+-Fixed issue: Division by zero on survey preview when no answer options exist (Carsten Schmitz)
+-Fixed issue #15195: Expiration date can be set before start date (#2714) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.4.9 (build 221101) to 5.4.10 (build 221107) November 7, 2022
+-Fixed issue #18451: Plugin uploading omit translation files (Bartosz Marganiec)
+-Fixed issue #18338: For participants, expiration date can be set before start date (#2679) (Gabriel Jenik)
+-Fixed issue #16187: No proper error message when copying survey and ID already exists (#2663) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 5.4.8 (build 221024) to 5.4.9 (build 221101) November 1, 2022
 -Fixed issue: No proper error message in ComfortUpdate shown when files could not be deleted (Carsten Schmitz)
 -Fixed issue: If a file/directory could not be deleted during ComfortUpdate the file/dirname would not be shown (Carsten Schmitz)

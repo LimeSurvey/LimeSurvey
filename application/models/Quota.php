@@ -233,7 +233,7 @@ class Quota extends LSActiveRecord
             $buttons .= '<span data-bs-toggle="tooltip" title="' . gT("Delete") . '">
         <a
                 data-post-url="' . $url . '"
-                data-post-datas='. json_encode(['surveyid' => $this->sid, 'quota_id' => $this->primaryKey])  . '
+                data-post-datas=' . json_encode(['surveyid' => $this->sid, 'quota_id' => $this->primaryKey])  . '
                 class="btn btn-outline-secondary"
                 data-bs-toggle="modal"
                 data-bs-target="#confirmation-modal"

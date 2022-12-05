@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-12 content-right">
             <?php
-            $this->widget('yiistrap_fork.widgets.TbGridView', array(
+            $this->widget('application.extensions.admin.grid.CLSGridView', array(
                     'id'           => 'saved-grid',
                     'ajaxUpdate'   => 'saved-grid',
                     'dataProvider' => $model->search(),

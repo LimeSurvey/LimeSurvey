@@ -37,7 +37,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 array(
                     'id' => 'edittoken',
                     'class' => '',
-                    'data-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them.")
+                    'data-additional-attributes-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them."),
+                    'data-expiration-validation-error' => gT('Participant expiration date can\'t be lower than the "Valid from" date'),
                 )
             ); ?>
             <!-- Tabs -->

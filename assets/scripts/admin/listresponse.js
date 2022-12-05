@@ -60,6 +60,10 @@ function onDocumentReadyListresponse() {
     $('#displaymode input').on('change.listresponse', function (event) {
         $('#change-display-mode-form').find('input[type=submit]').trigger('click');
     });
+
+    $(document).on("change", '#pageSize', function () {
+        $.fn.yiiGridView.update('responses-grid', {data: {pageSize: $(this).val()}});
+    });
 }
 
 $(window).bind("load", function () {

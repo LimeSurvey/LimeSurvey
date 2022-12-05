@@ -4,7 +4,7 @@
     {
         if($aExpression['expression']!='')
         {
-            echo CHtml::tag('div',array('class'=>"card-header bg-primary"),false);
+            echo CHtml::tag('div',array('class'=>"card-header "),false);
             echo CHtml::tag('h4',[],$aExpression['title']);
             echo CHtml::closeTag('div');
             echo CHtml::tag('div',array('class'=>"card-body"),false);

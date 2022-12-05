@@ -1342,7 +1342,7 @@ define("ace/mode/lua/luaparse",[], function(require, exports, module) {
     , onCreateScope: null
     , onDestroyScope: null
     , onLocalDeclaration: null
-    , luaVersion: '5.1'
+    , luaVersion: '5.3'
     , encodingMode: 'none'
   };
 

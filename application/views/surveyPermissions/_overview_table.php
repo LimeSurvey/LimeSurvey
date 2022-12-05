@@ -34,14 +34,14 @@
                                'surveyid' => $surveyid,
                                'action' => 'user',
                                'id' => $content->uid
-                           ]); ?>" data-toggle='tooltip' title="<?= gT("Edit permissions") ?>">
+                           ]); ?>" data-bs-toggle='tooltip' title="<?= gT("Edit permissions") ?>">
                             <span class='fa fa-pencil text-success'></span>
                         </a>
                     <?php } ?>
                     <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'delete')) {
                         $deleteUrl = App()->createUrl("surveyPermissions/deleteUserPermissions/");
                         $deleteConfirmMessage = gT("Are you sure you want to delete this entry?"); ?>
-                        <span data-toggle='tooltip' title=" <?= gT("Delete") ?> ">
+                        <span data-bs-toggle='tooltip' title=" <?= gT("Delete") ?> ">
                     <a
                         data-bs-target='#confirmation-modal'
                         data-bs-toggle='modal'
@@ -84,7 +84,7 @@
                         }
                         $titleOutput = implode(', ', $result['permissionCrudArray']);
                         $titleOutput = ucfirst($titleOutput);
-                        echo "<div data-toggle='tooltip' title='" . $titleOutput . "'" . $appendClass;
+                        echo "<div data-bs-toggle='tooltip' title='" . $titleOutput . "'" . $appendClass;
                     } else {
                         echo '<div>&#8211;</div>';
                     }

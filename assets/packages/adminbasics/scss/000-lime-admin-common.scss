@@ -686,7 +686,7 @@ html {
   text-align: center;
   padding: 0px;
   height: 75%;
-  width: 100%;    
+  width: 100%;
 }
 
 .welcome .card-body img {
@@ -1451,6 +1451,7 @@ div.card.disabled a {
     :not(:first-child).btn.btn-xs, :not(:first-child) .btn.btn-xs {
         margin-left: 3px;
     }
+
 }
 
 // Button group
@@ -4224,4 +4225,10 @@ label {
 /** List Questions Grid **/
 #question-grid {
     overflow-x: visible;
+}
+
+// TODO: Should be set by scss variables for each admin theme.
+.accordion-button:not(.collapsed) {
+    background-color: #fff;
+    color: #000;
 }
