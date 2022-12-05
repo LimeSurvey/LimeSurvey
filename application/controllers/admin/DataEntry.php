@@ -1221,7 +1221,7 @@ class DataEntry extends SurveyCommonAction
                             } else {
                                 $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n";
                                 $aDataentryoutput .= "<option value=''";
-                                if ($idrow[$fname['fieldname']] === null) {
+                                if ($idrow[$fname['fieldname']] === "") {
                                     $aDataentryoutput .= " selected";
                                 }
                                 $aDataentryoutput .= ">...</option>\n";
@@ -1500,10 +1500,6 @@ class DataEntry extends SurveyCommonAction
                     $oResponse->$fieldname = $thisvalue;
                     break;
                 case Question::QT_COLON_ARRAY_NUMBERS:
-                    if ($thisvalue === "") {
-                        $oResponse->$fieldname = null;
-                        break;
-                    }
                     if (!empty($thisvalue) && strval($thisvalue) != strval(floatval($thisvalue))) {
                         // mysql not need, unsure about mssql
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %s"), $fieldname), 'warning');
