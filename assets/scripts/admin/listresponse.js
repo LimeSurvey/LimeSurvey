@@ -3,20 +3,6 @@
 */
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
-// Namespace
-var LS = LS || {  onDocumentReady: {} };
-
- /**
- * Needed to calculate correct pager position at RTL language
- * @var {number}
- */
-var initialScrollValue = 0;
-
-/**
- * True if admin uses an RTL language
- * @var {boolean}
- */
-var useRtl = false;
 
 /**
  *
@@ -24,62 +10,7 @@ var useRtl = false;
  */
 var filterData = {};
 
-// Return public functions for this module
-LS.resp = {
-    /**
-     * Scroll the pager and the footer when scrolling horizontally
-     * @return
-     */
-    setListPagerPosition : function (pager) {
-        var $elListPager = $('#listPager');
 
-        if (useRtl) {
-            var scrollAmount = Math.abs($(pager).scrollLeft() - initialScrollValue);
-            $elListPager.css({
-                'position': 'relative',
-                'right': scrollAmount
-            });
-        } else {
-            $elListPager.css({
-                'position': 'relative',
-                'left': $(pager).scrollLeft()
-            });
-        }
-    },
-    /**
-     * Bind fixing pager position on scroll event
-     * @return
-     */
-    bindScrollWrapper: function () {
-        LS.resp.setListPagerPosition();
-        $('#bottom-scroller').scroll(function () {
-            LS.resp.setListPagerPosition(this);
-            $("#top-scroller").scrollLeft($("#bottom-scroller").scrollLeft());
-        });
-        $('#top-scroller').scroll(function () {
-            LS.resp.setListPagerPosition(this);
-            $("#bottom-scroller").scrollLeft($("#top-scroller").scrollLeft());
-        });
-
-        reinstallResponsesFilterDatePicker();
-        bindListItemclick();
-    },
-
-    /**
-     * Set value of module private variable initialScrollValue
-     * @param {number} val
-     */
-    setInitialScrollValue: function (val) {
-        initialScrollValue = val;
-    },
-
-    /**
-     * @param {boolean} val
-     */
-    setUseRtl: function (val) {
-        useRtl = val;
-    }
-};
 
 /**
  * reinits the datetimepickers and adds event listener
@@ -126,16 +57,6 @@ function reloadGrid() {
 }
 
 function onDocumentReadyListresponse() {
-    if ($('#bottom-scroller').length > 0)
-        $('#fake-content').width($('#bottom-scroller')[0].scrollWidth);
-
-    $('#top-scroller').height('18px');
-
-    LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
-    LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
-
-    LS.resp.bindScrollWrapper();
-
     $('#displaymode input').on('change.listresponse', function (event) {
         $('#change-display-mode-form').find('input[type=submit]').trigger('click');
     });
@@ -152,7 +73,7 @@ $(window).bind("load", function () {
 });
 
 $(document).off('pjax:scriptcomplete.listresponse').on('pjax:scriptcomplete.listresponse', onDocumentReadyListresponse);
-
+$(document).off('bindscroll.listresponse').on('bindscroll.listresponse', reinstallResponsesFilterDatePicker);
 
 function initColumnFilter() {
     // hide and submit Modal on click for pjax preventDefault submit
