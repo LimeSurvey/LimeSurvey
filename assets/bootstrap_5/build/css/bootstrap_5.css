@@ -10935,7 +10935,8 @@ a {
  * btn-xs was removed from Bootstrap 4.
  * @see https://stackoverflow.com/questions/33911049/btn-xs-no-longer-a-valid-option-in-bootstrap-4
  */
-.btn-group-xs > .btn, .btn-xs {
+.btn-group-xs > .btn,
+.btn-xs {
   padding: 1px 5px;
   font-size: 12px;
   line-height: 1.5;
@@ -10952,11 +10953,11 @@ a {
   border-top: 0;
 }
 
-.text-underline-hover {
+.ls-text-underline-hover {
   text-decoration: none;
 }
 
-.text-underline-hover:hover {
+.ls-text-underline-hover:hover {
   text-decoration: underline;
 }
 
