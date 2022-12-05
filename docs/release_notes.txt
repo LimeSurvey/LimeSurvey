@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.40 (build 221129) to 3.28.41 (build 221206) December 5, 2022
+-Fixed issue #17818: Copy a multiple choice question send a DB error (MSSQL) (#2593) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by arnaud21, DenisChenu, Xave
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+
+
 Changes from 3.28.39 (build 221122) to 3.28.40 (build 221129) November 28, 2022
 -Fixed issue #18461: Survey groups at survey list screen should be listed alphabetically (#2723) (Gabriel Jenik)
 -Fixed issue #16187: Can't create custom survey ID (need proper error message) (#2725) (Gabriel Jenik)
