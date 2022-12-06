@@ -184,7 +184,7 @@ class TemplateConfig extends CActiveRecord
                 TemplateConfiguration::uninstall($this->sTemplateName);
                 App()->setFlashMessage(
                     sprintf(
-                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey 
+                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey
                         version. Can't find file: $sFile "),
                         $this->sTemplateName
                     ),
@@ -251,11 +251,6 @@ class TemplateConfig extends CActiveRecord
             // Basic bootstrap package
             if ((string) $this->cssFramework->name == "bootstrap") {
                 $packages[] = 'bootstrap';
-            }
-
-            // Rtl version of bootstrap
-            if ($dir == "rtl") {
-                $packages[] = 'bootstrap-rtl';
             }
 
             // Remove unwanted bootstrap stuff

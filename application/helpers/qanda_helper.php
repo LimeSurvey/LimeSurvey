@@ -3896,7 +3896,7 @@ function do_array_texts($ia)
         $col_head    = '';
         switch ($aQuestionAttributes['show_totals']) {
             case 'R':
-                $totals_class   = $show_totals = 'row';
+                $totals_class   = $show_totals = 'rowTotals';
                 $row_total      = doRender('/survey/questions/answer/arrays/texts/rows/cells/td_total', array('empty' => false, 'inputsize' => $inputsize), true);
                 $col_head       = doRender('/survey/questions/answer/arrays/texts/rows/cells/thead', array('totalText' => gT('Total'), 'classes' => ''), true);
 
@@ -3968,7 +3968,7 @@ function do_array_texts($ia)
 
     if ($numrows = count($labelans)) {
         // There are no "No answer" column
-        if (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both') {
+        if (($show_grand == true && $show_totals == 'col') || $show_totals == 'rowTotals' || $show_totals == 'both') {
             ++$numrows;
         }
 
@@ -3996,7 +3996,7 @@ function do_array_texts($ia)
         $anscount   = count($aQuestionsY);
         $fn         = 1;
 
-        $showGrandTotal = (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both') ? true : false;
+        $showGrandTotal = (($show_grand == true && $show_totals == 'col') || $show_totals == 'rowTotals' || $show_totals == 'both') ? true : false;
 
         $sRows = '';
         $answertext = '';
