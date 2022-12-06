@@ -22,7 +22,8 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
 {% endif %}
 <!-- Bootstrap Navigation Bar -->
 <div id="survey-nav" class="navbar {{ navClass }} navbar-expand-md fixed-top border-bottom pt-0 pb-0">
-    <div class="container-fluid px-0">
+    <div class="container-fluid">
+     <a class="navbar-brand" href="#"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
                 aria-controls="small-screens-menus" aria-expanded="false">
 
@@ -38,7 +39,7 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
                 {{ aSurveyInfo.name }}
             </div>
         {% endif %}
-        <div id="navbar" class="collapse navbar-collapse navbar-nav-scroll fixed-top pt-2">
+        <div id="navbar" class="collapse navbar-collapse navbar-nav-scroll pt-2">
             <ul class="nav navbar-nav navbar-action-link navbar-right ms-auto">
                 {{ include('./subviews/navigation/save_links.twig') }}
                 {{ include('./subviews/navigation/clearall_links.twig') }}
