@@ -41,7 +41,12 @@ trait PermissionTrait
      */
     public static function getPermissionCriteria($userid = null)
     {
+        /* Remind to set $userid if is null to current : Yii::app()->user->id; */
         $criteriaPerm = new CDbCriteria();
+        /* New criteria to be added if user didn't have global read permission on this object */
+        /* UserId need to be used with (for example) $criteriaPerm->compare('t.owner_id', $userid, false); */
+        /* Adding object specific Permission with join with read_p = 1 on the minimal permission (set $this->getMinimalPermissionRead()) */
+        /* etc */
         return $criteriaPerm;
     }
 
