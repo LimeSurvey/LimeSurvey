@@ -32,23 +32,26 @@ trait PermissionTrait
     }
 
     /**
-     * get criteria from Permission
-     * @todo : create an event
+     * Get minimal access criteria : user can access to object
+     * Criteria used for list or grid
+     * Avoid usage of Permission on each object returned when there are a lot.
+     * @see self::withListRight for adding it at scope in find action.
      * @param integer $userid
      * @return CDbCriteria
      */
-    public static function getPermissionCriteria(/** @scrutinizer ignore-unused */ $userid = null)
+    public static function getPermissionCriteria($userid = null)
     {
         $criteriaPerm = new CDbCriteria();
         return $criteriaPerm;
     }
 
     /**
-     * Scope for permission
+     * Scope for minimal access : allowed to know the object exist
+     * This don't mean user are allowed to read all information or any other Permission
      * @param integer $userid
      * @return self
      */
-    public function withpermission($userid = null)
+    public function withListRight($userid = null)
     {
         $this->getDbCriteria()->mergeWith(self::getPermissionCriteria($userid));
         return $this;

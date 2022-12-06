@@ -23,11 +23,13 @@ interface PermissionInterface
      */
     public function getPrimaryKey();
     /**
+     * @param integer $userid the user id for the criteria
      * @return \CDbCriteria
      */
-    public static function getPermissionCriteria();
+    public static function getPermissionCriteria($userid = null);
     /**
+     * @param integer $userid the user id for the criteria
      * @return self
      */
-    public function withpermission();
+    public function withListRight($userid = null);
 }

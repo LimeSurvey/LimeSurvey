@@ -535,9 +535,6 @@ class Permission extends LSActiveRecord
         static $aPermissionStatic;
 
         /* Allow plugin to set own permission */
-        // TODO: plugin should not be able to override the permission system (security issue),
-        //      they should read permissions via the model
-        //      and they should add row in permission table  (entity = plugin, etc)
         $sEntityName = strtolower($sEntityName);
         $oEvent = new \LimeSurvey\PluginManager\PluginEvent('beforeHasPermission');
         $oEvent->set('iEntityID', $iEntityID);
