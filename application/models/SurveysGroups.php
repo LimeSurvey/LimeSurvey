@@ -395,7 +395,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
      * Returns the criteria for assesing user permission over the group.
      * @return CDbCriteria
      */
-    public static function getPermissionCriteria()
+    protected static function getPermissionCriteria()
     {
         $criteriaPerm = new CDbCriteria();
         if (!Permission::model()->hasGlobalPermission("surveys", 'read') || !Permission::model()->hasGlobalPermission("surveysgroups", 'read')) {

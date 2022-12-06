@@ -1276,12 +1276,16 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             // If the xml includes survey group details, try to find the group by name.
             if (!empty($xml->surveys_groups->rows->row[0]->name)) {
                 $surveyGroupName = (string) $xml->surveys_groups->rows->row[0]->name;
-                $surveyGroupPermissionCriteria = SurveysGroups::getPermissionCriteria();
-                $surveyGroup = SurveysGroups::model()->findByAttributes(["name" => $surveyGroupName], $surveyGroupPermissionCriteria);
-                // If a survey group is found with the specified name, assign it to the survey.
+                $surveyGroup = SurveysGroups::model()->findByAttributes(["name" => $surveyGroupName]);
                 if (!empty($surveyGroup)) {
-                    $insertdata['gsid'] = $surveyGroup->gsid;
-                    $results['importwarnings'][] = sprintf(gT("The survey was assigned to the '%s' group."), $surveyGroup->title);
+                    $surveysInGroup = SurveysInGroup::model()->findByPK($surveyGroup->gsid);
+                    if (!empty($surveysInGroup) && $surveysInGroup->hasPermission('surveys', 'import')) {
+                        // If a survey group is found with the specified name, and the user has import permission on it, assign it to the survey.
+                        $insertdata['gsid'] = $surveyGroup->gsid;
+                        $results['importwarnings'][] = sprintf(gT("The survey was assigned to the '%s' group."), $surveyGroup->title);
+                    } else {
+                        $results['importwarnings'][] = gT("The original survey group couldn't be found. The survey was assigned to the default group.");
+                    }
                 } else {
                     $results['importwarnings'][] = gT("The original survey group couldn't be found. The survey was assigned to the default group.");
                 }
