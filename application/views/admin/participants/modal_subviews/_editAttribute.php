@@ -127,7 +127,7 @@
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
                             </div>
-                        </divclass>
+                        </div>
                     </div>';
                 }
                 foreach($languagesOfAttribute as $languageKey => $languageOfAttribute)
