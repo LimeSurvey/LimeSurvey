@@ -2125,7 +2125,7 @@ class SurveyAdministrationController extends LSBaseController
                 if (!$iSurveyID) {
                     $aData['sErrorMessage'] = gT("No survey ID has been provided. Cannot copy survey");
                     $aData['bFailed'] = true;
-                } elseif (!$sourceSurvey = Survey::model()->findByPk($iSurveyID)) {
+                } elseif (!Survey::model()->findByPk($iSurveyID)) {
                     $aData['sErrorMessage'] = gT("Invalid survey ID");
                     $aData['bFailed'] = true;
                 } elseif (
@@ -2138,6 +2138,7 @@ class SurveyAdministrationController extends LSBaseController
                     Yii::app()->loadHelper('export');
                     $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
                     if (empty(Yii::app()->request->getPost('copysurveyname'))) {
+                        $sourceSurvey = Survey::model()->findByPk($iSurveyID);
                         $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
                     } else {
                         $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
