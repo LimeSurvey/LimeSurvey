@@ -41,16 +41,15 @@ class AjaxAlerts {
 
         let alertDefault = 'success';
         let currentAlertType = alertTypes.includes(alertType) ? alertType : alertDefault;
-        let openDivTag = '<div class="alert alert-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert">';
         let buttonDismiss = '<button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>';
-
-        const container = $(openDivTag + buttonDismiss + '</div>');
+        const container = $('<div class="alert alert-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert"></div>');
 
         if (options.useHtml) {
             container.html(message);
         } else {
             container.text(message);
         }
+        $(buttonDismiss).appendTo(container);
 
         container.css(options.styles);
         let timeoutRef = setTimeout(() => { container.alert('close') }, options.timeout);

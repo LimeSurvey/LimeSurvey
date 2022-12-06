@@ -29896,9 +29896,8 @@
         var alertTypes = ['success', 'primary', 'secondary', 'danger', 'warning', 'info', 'light', 'dark'];
         var alertDefault = 'success';
         var currentAlertType = alertTypes.includes(alertType) ? alertType : alertDefault;
-        var openDivTag = '<div class="alert alert-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert">';
         var buttonDismiss = '<button type="button" class="btn-close limebutton" data-bs-dismiss="alert" aria-label="Close"></button>';
-        var container = $(openDivTag + buttonDismiss + '</div>');
+        var container = $('<div class="alert alert-' + currentAlertType + ' ' + options.classes + ' alert-dismissible" role="alert"></div>');
 
         if (options.useHtml) {
           container.html(message);
@@ -29906,6 +29905,7 @@
           container.text(message);
         }
 
+        $(buttonDismiss).appendTo(container);
         container.css(options.styles);
         var timeoutRef = setTimeout(function () {
           container.alert('close');
