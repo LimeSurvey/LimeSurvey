@@ -976,11 +976,19 @@ class statistics_helper
                 }
 
                 //calculate statistical values
-                $standardDeviation = standardDeviation($rows);
-                $sum = array_sum($rows);
-                $average = $sum / count($rows);
-                $min = min($rows);
-                $max = max($rows);
+                if (!empty($rows)) {
+                    $standardDeviation = standardDeviation($rows);
+                    $sum = array_sum($rows);
+                    $average = $sum / count($rows);
+                    $min = min($rows);
+                    $max = max($rows);
+                } else {
+                    $standardDeviation = 0;
+                    $sum = 0;
+                    $average = 0;
+                    $min = 0;
+                    $max = 0;
+                }
 
                 //put translation of mean and calculated data into $showem array
                 $showem[] = [gT("Sum"), $sum];
