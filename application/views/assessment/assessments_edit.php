@@ -3,7 +3,7 @@
 * Assessments edit
 */
 ?>
-<div id="assesements-edit-add" class="modal fade" role="dialog">
+<div id="assesements-edit-add" class="modal fade" role="dialog" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <?php echo CHtml::form(["/assessment/insertUpdate/surveyid/$surveyid"], 'post', ['class' => 'form', 'id' => 'assessmentsform', 'name' => 'assessmentsform', 'role' => 'form']); ?>

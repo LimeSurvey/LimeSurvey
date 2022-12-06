@@ -16,7 +16,7 @@ class CLSGridView extends TbGridView
     {
         parent::init();
         Yii::app()->clientScript->registerScriptFile(
-            App()->getConfig('generalscripts') . 'admin/listresponse.js',
+            Yii::app()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
             LSYii_ClientScript::POS_BEGIN
         );
 

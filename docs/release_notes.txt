@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.13 (build 221128) to 5.4.14 (build 221205) December 5, 2022
+-Fixed issue #18337: Placeholders VALIDFROM and VALIDUNTIL at email templates do not use localized dates (#2591) (Gabriel Jenik)
+-Fixed issue #18250: Admin CSS hide logic file part (#2657) (Gabriel Jenik)
+-Fixed issue #17897: Build of statistics fails with DivisionByZero (#2704) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Arabic by c_schmitz, DeveloperChris, LucaAzzalini, malbariqi, MotasemHanani, Muhammad_Hosny, mviper28, samiubuntu, shidhani, yabdali, ysaad
+
+
 Changes from 5.4.12 (build 221121) to 5.4.13 (build 221128) November 28, 2022
 -Fixed issue: gid suffix was missing in aRDP_regexpStaticAttribute array (Tim Willig)
 -Fixed issue #18463: List of uploaded files should be sorted alphabetically (#2722) (Gabriel Jenik)

@@ -293,7 +293,8 @@ function add_label(event) {
 function del_label(event) {
     event.preventDefault();
     var sRowID = $(event.target).closest('tr').attr('id');
-
+    // tooltip remains after delete label after bootstrap 5 upgrade, so remove tooltip manually here until find better solution.
+    $('.tooltip').tooltip('dispose');
     var aRowInfo = sRowID.split('_');// first is row, second langage and last the row number
     $(".tab-pane").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
