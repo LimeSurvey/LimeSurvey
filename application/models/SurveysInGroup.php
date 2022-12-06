@@ -3,7 +3,8 @@
 /**
  * Class SurveysGroups
  * @inheritdoc
- * Used for Permission on survey inside group :
+ * This call is used only for Permission on survey inside group : extending SurveysGroup
+ * But with a different Permission system and interface
  *
  */
 class SurveysInGroup extends SurveysGroups implements PermissionInterface
