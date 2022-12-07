@@ -22,7 +22,7 @@
 ): ?>
     <li class="dropdown mega-dropdown nav-item">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-            <i class="ri-settings-5-fill"></i>
+            <!-- <i class="ri-settings-5-fill"></i> -->
             <?php eT('Configuration'); ?>
             <span class="caret"></span>
         </a>
