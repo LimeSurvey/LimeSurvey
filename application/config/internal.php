@@ -310,6 +310,7 @@ $internalConfig = array(
                 'lightencss'              => 'LS_Twig_Extension::lightencss',
                 'makeFlashMessage'        => 'makeFlashMessage',
                 'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
+                'getGoogleAnalyticsTrackingUrl' => 'LS_Twig_Extension::getGoogleAnalyticsTrackingUrl',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -431,6 +432,7 @@ $internalConfig = array(
                     'lightencss',
                     'getAllTokenAnswers',
                     'makeFlashMessage',
+                    'getGoogleAnalyticsTrackingUrl',
                 ),
             ),
         ),

@@ -471,6 +471,7 @@ class Index extends CAction
             $thissurvey['aLoadForm'] = $aLoadForm;
             //$oTemplate->registerAssets();
             $thissurvey['include_content'] = 'load';
+            $thissurvey['trackUrlPageName'] = 'load';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
         }
 
