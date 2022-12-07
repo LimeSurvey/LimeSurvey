@@ -43,25 +43,25 @@
   border: 1px solid #dadada;
 }
 
-.pagination > li > span {
+.pagination .page-item span {
   color: #328637;
   background-color: #fff;
   border: 1px solid #dadada;
 }
 
-.pagination > li > a:focus, .pagination > li > a:hover, .pagination > li > span:focus, .pagination > li > span:hover {
+.pagination .page-item span:focus, .pagination .page-item span:hover, .pagination .page-item .page-link:focus, .pagination .page-item .page-link:hover {
   color: #0f3e12;
   background-color: #9cba9e;
   border: 1px solid #dadada;
 }
 
-.pagination > .active > span:focus, .pagination > .active > span:hover, .pagination > .active > span, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > a {
+.pagination .page-item.active > span:focus, .pagination .page-item.active > span:hover, .pagination .page-item.active > span, .pagination .page-item.active > .page-link:focus, .pagination .page-item.active > .page-link:hover, .pagination .page-item.active > .page-link {
   color: #fff;
   background-color: #328637;
   border: 1px solid #328637;
 }
 
-.pagination > .disabled > a:focus, .pagination > .disabled > a:hover, .pagination > .disabled > a, .pagination > .disabled > span:focus, .pagination > .disabled > span:hover, .pagination > .disabled > span {
+.pagination .page-item .disabled > span:focus, .pagination .page-item .disabled > span:hover, .pagination .page-item .disabled > span, .pagination .page-item .disabled > .page-link:focus, .pagination .page-item .disabled > .page-link:hover, .pagination .page-item .disabled > .page-link {
   color: #858585;
   background-color: #fff;
   border: 1px solid #dadada;
@@ -1472,8 +1472,8 @@ fieldset[disabled] .btn-link:focus {
   color: #cccccc;
 }
 
-.pagination {
-  font-size: 1.2em;
+.pagination .page-item .page-link {
+  color: #35363F;
 }
 .pager li > a {
   background-color: #fff;
