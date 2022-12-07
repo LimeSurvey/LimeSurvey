@@ -41,6 +41,9 @@ trait PermissionTrait
      */
     public static function getPermissionCriteria($userid = null)
     {
+        if (empty($userid)) {
+            $userid = App()->user->id;
+        }
         /* Remind to set $userid if is null to current : Yii::app()->user->id; */
         $criteriaPerm = new CDbCriteria();
         /* New criteria to be added if user didn't have global read permission on this object */
@@ -73,7 +76,7 @@ trait PermissionTrait
     public function hasPermission(/** @scrutinizer ignore-unused */ $sPermission, $sCRUD = 'read', $iUserID = null)
     {
         if (empty($iUserID)) {
-            $iUserID = \Permission::model()->getUserId();
+            $iUserID = App()->user->id;
         }
         if (\Permission::model()->hasGlobalPermission('superadmin', $sCRUD, $iUserID)) {
             return true;
