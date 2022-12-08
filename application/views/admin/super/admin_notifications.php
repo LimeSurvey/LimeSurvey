@@ -9,12 +9,12 @@
     </li>
 <?php elseif($showLoader): ?>
 <li id='notification-li' class='dropdown nav-item' onclick='LS.updateNotificationWidget("<?php echo $updateUrl; ?>");' >
-        <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+        <a class='nav-link dropdown-toggle  d-flex align-items-center' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
 
             <?php if ($nrOfNewNotifications): ?>
-                <span class='badge rounded-pill bg-secondary'><?php echo $nrOfNewNotifications; ?></span>
+                <span class='ms-1 badge square-counter bg-secondary d-flex align-items-center justify-content-center'><?php echo $nrOfNewNotifications; ?></span>
             <?php endif; ?>
 
             <span class='caret'></span>
@@ -27,12 +27,12 @@
     </li>
 <?php else: ?>
     <li id='notification-li' class='dropdown nav-item' onclick='LS.styleNotificationMenu();'>
-        <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+        <a class='nav-link dropdown-toggle d-flex align-items-center' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
 
             <?php if ($nrOfNewNotifications): ?>
-                <span class='badge rounded-pill bg-secondary'><?php echo $nrOfNewNotifications; ?></span>
+                <span class='ms-1 badge square-counter bg-secondary  d-flex align-items-center justify-content-center'><?php echo $nrOfNewNotifications; ?></span>
             <?php endif; ?>
 
             <span class='caret'></span>

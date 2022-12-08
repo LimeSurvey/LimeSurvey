@@ -1,8 +1,11 @@
 .badge {
   padding: $badge-padding-y $badge-padding-x !important;
-  color: $white;
 }
 
 .badge.rounded-pill {
   padding: $badge-padding-y $badge-pill-padding-x !important;
+}
+
+.badge.square-counter {
+  padding: 2px 6px !important;
 }
