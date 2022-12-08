@@ -773,7 +773,7 @@ var Document = function (textOrLines) {
     this.setValue = function (text) {
         var len = this.getLength() - 1;
         this.remove(new Range(0, 0, len, this.getLine(len).length));
-        this.insert({ row: 0, column: 0 }, text);
+        this.insert({ row: 0, column: 0 }, text || "");
     };
     this.getValue = function () {
         return this.getAllLines().join(this.getNewLineCharacter());
@@ -1762,10 +1762,6 @@ define("ace/mode/php/php",[], function (require, exports, module) {
 						re: /^match\b/i
 					},
 					{
-						value: PHP.Constants.T_NAMESPACE,
-						re: /^namespace\b/i
-					},
-					{
 						value: PHP.Constants.T_NEW,
 						re: /^new\b/i
 					},
@@ -2070,15 +2066,19 @@ define("ace/mode/php/php",[], function (require, exports, module) {
 					},
 					{
 						value: PHP.Constants.T_NAME_FULLY_QUALIFIED,
-						re: /^\\App\\Namespace/
+						re: /^\\\w+(?:\\\w+)*/
 					},
 					{
 						value: PHP.Constants.T_NAME_QUALIFIED,
-						re: /^App\\Namespace/
+						re: /^\w+\\\w+(?:\\\w+)*/
 					},
 					{
 						value: PHP.Constants.T_NAME_RELATIVE,
-						re: /^namespace\\Namespace/
+						re: /^namespace\\\w+(?:\\\w+)*/
+					},
+					{
+						value: PHP.Constants.T_NAMESPACE,
+						re: /^namespace\b/i
 					},
 					{
 						value: PHP.Constants.T_ATTRIBUTE,

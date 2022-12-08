@@ -236,11 +236,11 @@ var StylusHighlightRules = function () {
             },
             {
                 token: "constant.numeric",
-                regex: "#[a-f0-9]{6}"
+                regex: "#[a-fA-F0-9]{6}"
             },
             {
                 token: "constant.numeric",
-                regex: "#[a-f0-9]{3}"
+                regex: "#[a-fA-F0-9]{3}"
             },
             {
                 token: ["punctuation.definition.entity.stylus", "entity.other.attribute-name.id.stylus"],
