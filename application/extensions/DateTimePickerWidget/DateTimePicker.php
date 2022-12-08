@@ -20,16 +20,6 @@ class DateTimePicker extends CInputWidget
     public $format = 'dd/MM/yyyy hh:mm:ss';
 
     /**
-     * @var string the icon to display when selecting times
-     */
-    public $iconTime = 'icon-time';
-
-    /**
-     * @var string the icon to display when selecting dates
-     */
-    public $iconDate = 'icon-calendar';
-
-    /**
      * @var string id for the parent div
      */
     public $mainId = '';
@@ -340,9 +330,9 @@ class DateTimePicker extends CInputWidget
                    down: 'ri-arrow-down-s-fill',
                    previous: 'ri-arrow-left-s-fill',
                    next: 'ri-arrow-right-s-fill',
-                   today: 'fa fa-today text-success',
-                   clear: 'ri-delete-bin-fill text-success',
-                   close: 'ri-close-fill text-success',
+                   today: 'ri-calendar-check-fill text-success',
+                   clear: 'ri-delete-bin-fill text-danger',
+                   close: 'ri-close-fill text-danger',
                 },";
     }
 
