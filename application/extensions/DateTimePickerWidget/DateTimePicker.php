@@ -340,9 +340,9 @@ class DateTimePicker extends CInputWidget
                    down: 'fa fa-caret-down',
                    previous: 'fa fa-caret-left',
                    next: 'fa fa-caret-right',
-                   today: 'fa fa-today text-success',
-                   clear: 'fa fa-trash text-success',
-                   close: 'fa fa-close text-success',
+                   today: 'fa fa-calendar-check-o text-success',
+                   clear: 'fa fa-trash text-danger',
+                   close: 'fa fa-close text-danger',
                 },";
     }
 

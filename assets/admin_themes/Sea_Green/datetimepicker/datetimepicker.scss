@@ -12,7 +12,7 @@
 
 .tempus-dominus-widget {
   list-style: none;
-  padding: 4px;
+  padding: 0px;
   width: 19rem;
   border-radius: 4px;
   display: none;
@@ -115,9 +115,10 @@
   .calendar-header {
     display: grid;
     grid-template-areas: 'a a a';
-    margin-bottom: 10px;
+    margin-bottom: 2px;
     font-weight: normal;
     border-bottom: 1px solid $g-400;
+    padding: 8px;
 
     & .next {
       text-align: right;
@@ -139,8 +140,10 @@
   .toolbar {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-rows: 40px;
+    grid-auto-rows: 32px;
     border-top: 1px solid $g-400;
+    margin-top: 2px;
+    padding: 10px;
 
     & div {
       border-radius: $td-border-radius;
@@ -154,8 +157,9 @@
   .date-container-days {
     display: grid;
     grid-template-areas: 'a a a a a a a';
-    grid-auto-rows: 40px;
+    grid-auto-rows: 32px;
     grid-auto-columns: calc(100% / 7);
+    padding: 8px 12px 8px 12px;
 
     & .dow {
       align-items: center;
@@ -164,8 +168,8 @@
     }
 
     & .cw {
-      width: 90%;
-      height: 90%;
+      width: 24px;
+      height: 24px;
       align-items: center;
       justify-content: center;
       display: flex;
@@ -196,8 +200,8 @@
     grid-auto-rows: calc(calc(19rem - 2 * 4px) / 7);
 
     & .no-highlight {
-      width: 90%;
-      height: 90%;
+      width: 24px;
+      height: 24px;
       align-items: center;
       justify-content: center;
       display: flex;
@@ -213,8 +217,8 @@
   .time-container-minute,
   .time-container-second {
     div:not(.no-highlight) {
-      width: 90%;
-      height: 90%;
+      width: 24px;
+      height: 24px;
       border-radius: $td-border-radius;
       align-items: center;
       justify-content: center;
@@ -383,7 +387,20 @@
 //  border-radius: 0.25rem;
 //}
 //
-//.tempus-dominus-widget .date-container-days .dow {
-//  color: black;
-//  font-weight: bold;
-//}
+.tempus-dominus-widget .date-container-days .dow {
+  color: $td-font-color;
+  font-weight: $font-weight-normal;
+}
+
+.tempus-dominus-widget .toolbar > div + div {
+  border-left: 2px solid $g-400;
+}
+
+.tempus-dominus-widget .toolbar i {
+  font-size: 20px;
+  padding:2px 0px;
+}
+
+.tempus-dominus-widget .calendar-header i {
+  font-size: 20px;
+}

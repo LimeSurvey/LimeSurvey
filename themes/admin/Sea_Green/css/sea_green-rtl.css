@@ -18979,7 +18979,7 @@ footer.footer {
 
 .tempus-dominus-widget {
   list-style: none;
-  padding: 4px;
+  padding: 0px;
   width: 19rem;
   border-radius: 4px;
   display: none;
@@ -19062,9 +19062,10 @@ footer.footer {
 .tempus-dominus-widget .calendar-header {
   display: grid;
   grid-template-areas: "a a a";
-  margin-bottom: 10px;
+  margin-bottom: 2px;
   font-weight: normal;
-  border-bottom: 2px solid #C2C5D1;
+  border-bottom: 1px solid #C2C5D1;
+  padding: 8px;
 }
 .tempus-dominus-widget .calendar-header .next {
   text-align: left;
@@ -19082,8 +19083,10 @@ footer.footer {
 .tempus-dominus-widget .toolbar {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-rows: 40px;
-  border-top: 2px solid #C2C5D1;
+  grid-auto-rows: 32px;
+  border-top: 1px solid #C2C5D1;
+  margin-top: 2px;
+  padding: 10px;
 }
 .tempus-dominus-widget .toolbar div {
   border-radius: 2px;
@@ -19095,8 +19098,9 @@ footer.footer {
 .tempus-dominus-widget .date-container-days {
   display: grid;
   grid-template-areas: "a a a a a a a";
-  grid-auto-rows: 40px;
+  grid-auto-rows: 32px;
   grid-auto-columns: 14.2857142857%;
+  padding: 8px 12px 8px 12px;
 }
 .tempus-dominus-widget .date-container-days .dow {
   align-items: center;
@@ -19104,8 +19108,8 @@ footer.footer {
   text-align: center;
 }
 .tempus-dominus-widget .date-container-days .cw {
-  width: 90%;
-  height: 90%;
+  width: 24px;
+  height: 24px;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -19132,8 +19136,8 @@ footer.footer {
   grid-auto-rows: calc((19rem - 8px) / 7);
 }
 .tempus-dominus-widget .time-container-clock .no-highlight {
-  width: 90%;
-  height: 90%;
+  width: 24px;
+  height: 24px;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -19146,8 +19150,8 @@ footer.footer {
 .tempus-dominus-widget .time-container-hour div:not(.no-highlight),
 .tempus-dominus-widget .time-container-minute div:not(.no-highlight),
 .tempus-dominus-widget .time-container-second div:not(.no-highlight) {
-  width: 90%;
-  height: 90%;
+  width: 24px;
+  height: 24px;
   border-radius: 2px;
   align-items: center;
   justify-content: center;
@@ -19362,4 +19366,22 @@ footer.footer {
   color: #fff;
   background-color: var(--bs-primary);
   border-color: var(--bs-primary);
+}
+
+.tempus-dominus-widget .date-container-days .dow {
+  color: #000;
+  font-weight: 400;
+}
+
+.tempus-dominus-widget .toolbar > div + div {
+  border-right: 2px solid #C2C5D1;
+}
+
+.tempus-dominus-widget .toolbar i {
+  font-size: 20px;
+  padding: 2px 0px;
+}
+
+.tempus-dominus-widget .calendar-header i {
+  font-size: 20px;
 }
