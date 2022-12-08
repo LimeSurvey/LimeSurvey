@@ -25,6 +25,7 @@
                     type="file"
                     accept='.lss,.lsa,.tsv,.txt'
                     onchange="$('#import-submit').attr('disabled', false).attr('data-toggle', false);"
+                    required
                 />
 </div>
             </div>
@@ -38,14 +39,11 @@
 
             <!-- Submit -->
             <div class='mb-3 col-4 text-center'>
-                <div class=''>
+                <div>
                     <input type='submit'
                            id="import-submit"
                            class="btn btn-primary col-6"
                            value='<?php eT("Import survey"); ?>'
-                           disabled="disabled"
-                           data-toggle="tooltip"
-                           data-title="<?= gT('Please choose a file'); ?>"
                     />
                 </div>
             </div>
