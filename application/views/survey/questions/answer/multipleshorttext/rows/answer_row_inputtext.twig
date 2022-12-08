@@ -20,7 +20,7 @@
 
 <!--answer_row_inputtext -->
 <li id="javatbd{{ myfname }}" class="row question-item answer-item text-item mb-3{% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }} >
-    <label class="col-form-label text-end col-12 col-md-{{ sLabelWidth }}{% if sLabelWidth == 0 %} d-none{% endif %}" for="answer{{ myfname }}">
+    <label class="control-label col-12 col-md-{{ sLabelWidth }}{% if sLabelWidth == 0 %} d-none{% endif %}" for="answer{{ myfname }}">
         {{ processString(question) }}
     </label>
     <div class="col-12 col-md-{{ sInputContainerWidth }}">
