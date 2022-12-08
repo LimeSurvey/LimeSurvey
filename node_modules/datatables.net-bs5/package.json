@@ -2,12 +2,14 @@
     "name": "datatables.net-bs5",
     "description": "DataTables for jQuery with styling for [Bootstrap5](https://getbootstrap.com/)",
     "main": "js/dataTables.bootstrap5.js",
+    "module": "js/dataTables.bootstrap5.mjs",
     "style": "css/dataTables.bootstrap5.css",
-    "types": "./types/dataTables.bootstrap5.d.ts",
-    "version": "1.12.1",
+    "types": "./types/types.d.ts",
+    "version": "1.13.1",
     "files": [
         "css/**/*.css",
         "js/**/*.js",
+        "js/**/*.mjs",
         "types/**/*.d.ts",
         "images/*"
     ],
@@ -21,7 +23,7 @@
         "sort"
     ],
     "dependencies": {
-        "datatables.net": ">=1.11.3",
+        "datatables.net": ">=1.12.1",
         "jquery": ">=1.7"
     },
     "moduleType": [
