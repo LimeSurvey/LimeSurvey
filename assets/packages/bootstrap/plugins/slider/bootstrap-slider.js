@@ -562,17 +562,17 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				/* Create tooltip elements */
 				var sliderTooltip = document.createElement("div");
 				sliderTooltip.className = "tooltip tooltip-main";
-				sliderTooltip.setAttribute('role', 'presentation');
+				sliderTooltip.setAttribute('role', 'tooltip');
 				createAndAppendTooltipSubElements(sliderTooltip);
 
 				var sliderTooltipMin = document.createElement("div");
 				sliderTooltipMin.className = "tooltip tooltip-min";
-				sliderTooltipMin.setAttribute('role', 'presentation');
+				sliderTooltipMin.setAttribute('role', 'tooltip');
 				createAndAppendTooltipSubElements(sliderTooltipMin);
 
 				var sliderTooltipMax = document.createElement("div");
 				sliderTooltipMax.className = "tooltip tooltip-max";
-				sliderTooltipMax.setAttribute('role', 'presentation');
+				sliderTooltipMax.setAttribute('role', 'tooltip');
 				createAndAppendTooltipSubElements(sliderTooltipMax);
 
 				/* Append components to sliderElem */
