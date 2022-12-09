@@ -78,6 +78,7 @@ $font-size-base: 1rem; // Assumes the browser default, typically `16px`
 $font-size-sm: $font-size-base * 0.875;
 $font-size-lg: $font-size-base * 1.25;
 
+$font-weight-300: 300;
 $font-weight-normal: 400;
 $font-weight-500: 500;
 $font-weight-600: 600;
@@ -116,9 +117,9 @@ $td-active-border-color: var(--bs-info) !default;
 $td-border-radius: 2px !default;
 $td-btn-hover-bg: $td-light !default;
 $td-disabled-color: #6c757d !default;
-$td-alternate-color: rgba(0, 0, 0, .38) !default;
+$td-alternate-color: $g-400 !default;
 $td-secondary-border-color: #ccc !default;
 $td-secondary-border-color-rgba: rgba(0, 0, 0, 0.2) !default;
 $td-primary-border-color: $td-light !default;
 $td-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
-$td-dow-color: rgba(0, 0, 0, .50);
+$td-dow-color: $td-font-color;

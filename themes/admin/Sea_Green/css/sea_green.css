@@ -7011,7 +7011,7 @@ textarea.form-control-lg {
   align-self: stretch;
 }
 
-.visually-hidden, .tempus-dominus-widget [data-action]::after,
+.visually-hidden,
 .visually-hidden-focusable:not(:focus):not(:focus-within) {
   position: absolute !important;
   width: 1px !important;
@@ -19004,124 +19004,33 @@ footer.footer {
   text-align: center;
 }
 
-.visually-hidden, .tempus-dominus-widget [data-action]::after {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
 .tempus-dominus-widget {
-  list-style: none;
   padding: 0px;
-  width: 19rem;
-  border-radius: 4px;
-  display: none;
-  z-index: 9999;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  width: 20rem;
   color: #000;
   background-color: #fff;
-}
-.tempus-dominus-widget.calendarWeeks {
-  width: 21rem;
-}
-.tempus-dominus-widget.calendarWeeks .date-container-days {
-  grid-auto-columns: 12.5%;
-  grid-template-areas: "a a a a a a a a";
-}
-.tempus-dominus-widget [data-action] {
-  cursor: pointer;
-}
-.tempus-dominus-widget [data-action]::after {
-  content: attr(title);
-}
-.tempus-dominus-widget [data-action].disabled, .tempus-dominus-widget [data-action].disabled:hover {
-  background: none;
-  cursor: not-allowed;
-}
-.tempus-dominus-widget .arrow {
-  display: none;
-}
-.tempus-dominus-widget.show {
-  display: block;
-}
-.tempus-dominus-widget .td-collapse:not(.show) {
-  display: none;
-}
-.tempus-dominus-widget .td-collapsing {
-  height: 0;
-  overflow: hidden;
-  transition: height 0.35s ease;
-}
-@media (min-width: 576px) {
-  .tempus-dominus-widget.timepicker-sbs {
-    width: 38em;
-  }
-}
-@media (min-width: 768px) {
-  .tempus-dominus-widget.timepicker-sbs {
-    width: 38em;
-  }
-}
-@media (min-width: 992px) {
-  .tempus-dominus-widget.timepicker-sbs {
-    width: 38em;
-  }
-}
-.tempus-dominus-widget.timepicker-sbs .td-row {
-  display: flex;
-}
-.tempus-dominus-widget.timepicker-sbs .td-row .td-half {
-  flex: 0 0 auto;
-  width: 50%;
-}
-.tempus-dominus-widget div[data-action]:active {
-  box-shadow: none;
 }
 .tempus-dominus-widget .timepicker-hour,
 .tempus-dominus-widget .timepicker-minute,
 .tempus-dominus-widget .timepicker-second {
-  width: 54px;
-  font-weight: bold;
   font-size: 1.2em;
-  margin: 0;
-}
-.tempus-dominus-widget button[data-action] {
-  padding: 6px;
-}
-.tempus-dominus-widget .toggleMeridiem {
-  text-align: center;
-  height: 38px;
 }
 .tempus-dominus-widget .calendar-header {
-  display: grid;
-  grid-template-areas: "a a a";
   margin-bottom: 2px;
   font-weight: normal;
   border-bottom: 1px solid #C2C5D1;
   padding: 8px;
 }
 .tempus-dominus-widget .calendar-header .next {
-  text-align: right;
-  padding-right: 10px;
   color: #C2C5D1;
 }
 .tempus-dominus-widget .calendar-header .previous {
-  text-align: left;
-  padding-left: 10px;
   color: #C2C5D1;
 }
-.tempus-dominus-widget .calendar-header .picker-switch {
-  text-align: center;
+.tempus-dominus-widget .calendar-header i {
+  font-size: 20px;
 }
 .tempus-dominus-widget .toolbar {
-  display: grid;
-  grid-auto-flow: column;
   grid-auto-rows: 32px;
   border-top: 1px solid #C2C5D1;
   margin-top: 2px;
@@ -19129,57 +19038,14 @@ footer.footer {
 }
 .tempus-dominus-widget .toolbar div {
   border-radius: 2px;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  display: flex;
 }
 .tempus-dominus-widget .date-container-days {
-  display: grid;
-  grid-template-areas: "a a a a a a a";
   grid-auto-rows: 32px;
-  grid-auto-columns: 14.2857142857%;
-  padding: 8px 12px 8px 12px;
-}
-.tempus-dominus-widget .date-container-days .dow {
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.tempus-dominus-widget .date-container-days .cw {
-  width: 24px;
-  height: 24px;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  font-size: 0.8em;
-  line-height: 20px;
-  cursor: default;
-}
-.tempus-dominus-widget .date-container-decades,
-.tempus-dominus-widget .date-container-years,
-.tempus-dominus-widget .date-container-months {
-  display: grid;
-  grid-template-areas: "a a a";
-  grid-auto-rows: calc((19rem - 8px) / 7);
-}
-.tempus-dominus-widget .time-container-hour,
-.tempus-dominus-widget .time-container-minute,
-.tempus-dominus-widget .time-container-second {
-  display: grid;
-  grid-template-areas: "a a a a";
-  grid-auto-rows: calc((19rem - 8px) / 7);
+  padding: 8px 12px;
 }
 .tempus-dominus-widget .time-container-clock {
-  display: grid;
-  grid-auto-rows: calc((19rem - 8px) / 7);
-}
-.tempus-dominus-widget .time-container-clock .no-highlight {
-  width: 24px;
-  height: 24px;
-  align-items: center;
-  justify-content: center;
-  display: flex;
+  grid-auto-rows: minmax(24px, auto);
+  padding: 0px 32px;
 }
 .tempus-dominus-widget .date-container-decades div:not(.no-highlight),
 .tempus-dominus-widget .date-container-years div:not(.no-highlight),
@@ -19189,109 +19055,13 @@ footer.footer {
 .tempus-dominus-widget .time-container-hour div:not(.no-highlight),
 .tempus-dominus-widget .time-container-minute div:not(.no-highlight),
 .tempus-dominus-widget .time-container-second div:not(.no-highlight) {
-  width: 24px;
   height: 24px;
   border-radius: 2px;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  display: flex;
-}
-.tempus-dominus-widget .date-container-decades div:not(.no-highlight).disabled, .tempus-dominus-widget .date-container-decades div:not(.no-highlight).disabled:hover,
-.tempus-dominus-widget .date-container-years div:not(.no-highlight).disabled,
-.tempus-dominus-widget .date-container-years div:not(.no-highlight).disabled:hover,
-.tempus-dominus-widget .date-container-months div:not(.no-highlight).disabled,
-.tempus-dominus-widget .date-container-months div:not(.no-highlight).disabled:hover,
-.tempus-dominus-widget .date-container-days div:not(.no-highlight).disabled,
-.tempus-dominus-widget .date-container-days div:not(.no-highlight).disabled:hover,
-.tempus-dominus-widget .time-container-clock div:not(.no-highlight).disabled,
-.tempus-dominus-widget .time-container-clock div:not(.no-highlight).disabled:hover,
-.tempus-dominus-widget .time-container-hour div:not(.no-highlight).disabled,
-.tempus-dominus-widget .time-container-hour div:not(.no-highlight).disabled:hover,
-.tempus-dominus-widget .time-container-minute div:not(.no-highlight).disabled,
-.tempus-dominus-widget .time-container-minute div:not(.no-highlight).disabled:hover,
-.tempus-dominus-widget .time-container-second div:not(.no-highlight).disabled,
-.tempus-dominus-widget .time-container-second div:not(.no-highlight).disabled:hover {
-  background: none;
-  cursor: not-allowed;
-}
-.tempus-dominus-widget .date-container-decades div:not(.no-highlight).today,
-.tempus-dominus-widget .date-container-years div:not(.no-highlight).today,
-.tempus-dominus-widget .date-container-months div:not(.no-highlight).today,
-.tempus-dominus-widget .date-container-days div:not(.no-highlight).today,
-.tempus-dominus-widget .time-container-clock div:not(.no-highlight).today,
-.tempus-dominus-widget .time-container-hour div:not(.no-highlight).today,
-.tempus-dominus-widget .time-container-minute div:not(.no-highlight).today,
-.tempus-dominus-widget .time-container-second div:not(.no-highlight).today {
-  position: relative;
-}
-.tempus-dominus-widget .date-container-decades div:not(.no-highlight).today:before,
-.tempus-dominus-widget .date-container-years div:not(.no-highlight).today:before,
-.tempus-dominus-widget .date-container-months div:not(.no-highlight).today:before,
-.tempus-dominus-widget .date-container-days div:not(.no-highlight).today:before,
-.tempus-dominus-widget .time-container-clock div:not(.no-highlight).today:before,
-.tempus-dominus-widget .time-container-hour div:not(.no-highlight).today:before,
-.tempus-dominus-widget .time-container-minute div:not(.no-highlight).today:before,
-.tempus-dominus-widget .time-container-second div:not(.no-highlight).today:before {
-  content: "";
-  display: inline-block;
-  border: solid transparent;
-  border-width: 0 0 7px 7px;
-  position: absolute;
-  bottom: 6px;
-  right: 6px;
+  border: 2px solid transparent;
 }
 .tempus-dominus-widget .time-container {
-  margin-bottom: 0.5rem;
-}
-.tempus-dominus-widget button {
-  display: inline-block;
-  font-weight: 400;
-  line-height: 1.5;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td.day,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td.hour,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td.minute,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td.second,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=incrementHours],
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=incrementMinutes],
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=incrementSeconds],
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=decrementHours],
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=decrementMinutes],
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=decrementSeconds],
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=showHours],
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=showMinutes],
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=showSeconds],
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=togglePeriod] {
-  pointer-events: none;
-  cursor: default;
-}
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td.day:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td.hour:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td.minute:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td.second:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=incrementHours]:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=incrementMinutes]:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=incrementSeconds]:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=decrementHours]:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=decrementMinutes]:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=decrementSeconds]:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=showHours]:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=showMinutes]:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=showSeconds]:hover,
-.tempus-dominus-widget.tempus-dominus-widget-readonly table td [data-action=togglePeriod]:hover {
-  background: none;
+  margin-top: 31px;
+  margin-bottom: 31px;
 }
 .tempus-dominus-widget [data-action].disabled, .tempus-dominus-widget [data-action].disabled:hover {
   color: #6c757d;
@@ -19299,11 +19069,19 @@ footer.footer {
 .tempus-dominus-widget .toolbar div:hover {
   background: #fff;
 }
+.tempus-dominus-widget .toolbar > div + div {
+  border-left: 2px solid #C2C5D1;
+}
+.tempus-dominus-widget .toolbar i {
+  font-size: 20px;
+  padding: 2px 0px;
+}
 .tempus-dominus-widget .date-container-days .dow {
-  color: rgba(0, 0, 0, 0.5);
+  color: #000;
+  font-weight: 400;
 }
 .tempus-dominus-widget .date-container-days .cw {
-  color: rgba(0, 0, 0, 0.38);
+  color: #C2C5D1;
 }
 .tempus-dominus-widget .date-container-decades div:not(.no-highlight):hover,
 .tempus-dominus-widget .date-container-years div:not(.no-highlight):hover,
@@ -19371,7 +19149,7 @@ footer.footer {
 .tempus-dominus-widget .time-container-minute div:not(.no-highlight).new,
 .tempus-dominus-widget .time-container-second div:not(.no-highlight).old,
 .tempus-dominus-widget .time-container-second div:not(.no-highlight).new {
-  color: rgba(0, 0, 0, 0.38);
+  color: #C2C5D1;
 }
 .tempus-dominus-widget .date-container-decades div:not(.no-highlight).disabled, .tempus-dominus-widget .date-container-decades div:not(.no-highlight).disabled:hover,
 .tempus-dominus-widget .date-container-years div:not(.no-highlight).disabled,
@@ -19400,27 +19178,25 @@ footer.footer {
 .tempus-dominus-widget .time-container-second div:not(.no-highlight).today:before {
   border-bottom-color: var(--bs-primary);
   border-top-color: rgba(0, 0, 0, 0.2);
+  bottom: 0px;
+  right: 0px;
 }
 .tempus-dominus-widget button {
   color: #fff;
   background-color: var(--bs-primary);
   border-color: var(--bs-primary);
 }
-
-.tempus-dominus-widget .date-container-days .dow {
-  color: #000;
-  font-weight: 400;
+.tempus-dominus-widget [data-time-component=hours],
+.tempus-dominus-widget .separator,
+.tempus-dominus-widget [data-time-component=minutes] {
+  height: 75px !important;
+  font-size: 62px;
+  font-weight: 300;
 }
-
-.tempus-dominus-widget .toolbar > div + div {
-  border-left: 2px solid #C2C5D1;
+.tempus-dominus-widget [data-action=incrementHours],
+.tempus-dominus-widget [data-action=incrementMinutes] {
+  align-self: end;
 }
-
-.tempus-dominus-widget .toolbar i {
-  font-size: 20px;
-  padding: 2px 0px;
-}
-
-.tempus-dominus-widget .calendar-header i {
-  font-size: 20px;
+.tempus-dominus-widget .date-container-days div:not(.no-highlight) {
+  width: 24px;
 }
