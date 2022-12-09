@@ -550,7 +550,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 
 				var createAndAppendTooltipSubElements = function createAndAppendTooltipSubElements(tooltipElem) {
 					var arrow = document.createElement("div");
-					arrow.className = "arrow";
+					arrow.className = "tooltip-arrow";
 
 					var inner = document.createElement("div");
 					inner.className = "tooltip-inner";
