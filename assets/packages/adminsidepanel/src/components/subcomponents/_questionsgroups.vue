@@ -293,7 +293,7 @@ export default {
                     @click="collapseAll"
                     :title="translate('collapseAll')"
                 >
-                    <i class="ri-link-unlink" />
+                    <i class="ri-link" />
                 </button>
             </div>
         </div>

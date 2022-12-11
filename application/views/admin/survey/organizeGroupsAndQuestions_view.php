@@ -15,8 +15,8 @@
                 </p>
             </div>
             <div class='col-md-4'>
-                <button id='organizer-collapse-all' class='btn btn-outline-secondary'><span class='fa fa-compress'></span>&nbsp;<?php eT("Collapse all"); ?></button>
-                <button id='organizer-expand-all' class='btn btn-outline-secondary'><span class='fa fa-expand'></span>&nbsp;<?php eT("Expand all"); ?></button>
+                <button id='organizer-collapse-all' class='btn btn-outline-secondary'><span class='ri-link '></span>&nbsp;<?php eT("Collapse all"); ?></button>
+                <button id='organizer-expand-all' class='btn btn-outline-secondary'><span class='ri-link-unlink'></span>&nbsp;<?php eT("Expand all"); ?></button>
             </div>
         </div>
 

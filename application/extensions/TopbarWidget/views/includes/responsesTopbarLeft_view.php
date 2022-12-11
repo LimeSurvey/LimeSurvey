@@ -54,7 +54,7 @@
         'name' => 'ls-tools-button',
         'id' => 'ls-tools-button',
         'text' => gT('Export'),
-        'icon' => 'icon-export',
+        'icon' => 'ri-download-fill',
         'isDropDown' => true,
         'dropDownContent' => $exportDropdownItems,
         'htmlOptions' => [
@@ -75,7 +75,7 @@
         'name' => 'ls-tools-button',
         'id' => 'ls-tools-button',
         'text' => gT('Import'),
-        'icon' => 'icon-import',
+        'icon' => 'ri-upload-fill',
         'isDropDown' => true,
         'dropDownContent' => $importDropdownItems,
         'htmlOptions' => [

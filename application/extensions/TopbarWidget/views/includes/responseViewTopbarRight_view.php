@@ -24,7 +24,7 @@
 
     <a class="btn btn-outline-secondary"
        href='<?php echo Yii::App()->createUrl("admin/export/sa/exportresults/surveyid/$surveyid/id/$id"); ?>'>
-        <span class="ri-upload-fill text-success downloadfile"></span>
+        <span class="ri-download-fill text-success downloadfile"></span>
         <?php eT("Export this response"); ?>
     </a>
 <?php endif; ?>

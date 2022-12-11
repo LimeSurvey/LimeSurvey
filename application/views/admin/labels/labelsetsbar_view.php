@@ -56,7 +56,7 @@ App()->getClientScript()->registerScriptFile(
                         <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>
                         <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid"); ?>"
                                role="button">
-                                <span class="ri-upload-fill text-success"></span>
+                                <span class="ri-download-fill text-success"></span>
                                 <?php eT("Export this label set"); ?>
                             </a>
                         <?php endif; ?>
@@ -93,7 +93,7 @@ App()->getClientScript()->registerScriptFile(
                            id="exportButton"
                            href="<?php echo $this->createUrl("admin/labels/sa/exportmulti"); ?>"
                            role="button">
-                            <span class="ri-upload-fill text-success"></span>
+                            <span class="ri-download-fill text-success"></span>
                             <?php eT("Export"); ?>
                         </a>
                     <?php endif; ?>
@@ -101,7 +101,7 @@ App()->getClientScript()->registerScriptFile(
                     <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>
                     <span title="<?php eT("No label sets available"); ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" style="display: inline-block">
                             <a class="btn btn-outline-secondary disabled" role="button">
-                                <span class="ri-upload-fill text-success"></span>
+                                <span class="ri-download-fill text-success"></span>
                                 <?php eT("Export multiple label sets"); ?>
                             </a>
                         </span>

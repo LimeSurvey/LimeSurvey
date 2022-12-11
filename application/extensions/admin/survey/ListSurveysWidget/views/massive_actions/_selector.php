@@ -101,7 +101,7 @@
                     'type'        => 'action',
                     'action'      => 'export',
                     'url'         => App()->createUrl('/admin/export/sa/exportMultipleArchiveSurveys/'),
-                    'iconClasses' => 'ri-upload-fill',
+                    'iconClasses' => 'ri-download-fill',
                     'text'        =>  gT("Survey archive (*.lsa)"),
 
                     // modal
@@ -121,7 +121,7 @@
                     'type'        => 'action',
                     'action'      => 'export',
                     'url'         =>  App()->createUrl('/admin/export/sa/exportMultipleStructureSurveys/'),
-                    'iconClasses' => 'ri-upload-fill',
+                    'iconClasses' => 'ri-download-fill',
                     'text'        =>  gT("Survey structure (*.lss)"),
 
                     // modal
@@ -140,7 +140,7 @@
                     'type'        => 'action',
                     'action'      => 'export',
                     'url'         =>  App()->createUrl('/admin/export/sa/exportMultiplePrintableSurveys/'),
-                    'iconClasses' => 'ri-upload-fill',
+                    'iconClasses' => 'ri-download-fill',
                     'text'        =>  gT("Printable survey (*.html)"),
                     // modal
                     'actionType'  => 'modal',

@@ -22,7 +22,7 @@
             'name' => '',
             'id' => 'ls-activate-survey',
             'text' => gT('Activate survey'),
-            'icon' => 'fa fa-check',
+            'icon' => 'ri-check-fill',
             'link' => App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
             'htmlOptions' => $htmlOptions,
         ]); ?>

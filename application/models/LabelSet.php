@@ -138,7 +138,7 @@ class LabelSet extends LSActiveRecord
         // Export labelset
         if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
             $url = Yii::app()->createUrl("admin/export/sa/dumplabel/lid/$this->lid");
-            $button .= ' <a class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Export label set') . '" href="' . $url . '" role="button"><span class="ri-upload-fill" ></span></a>';
+            $button .= ' <a class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="' . gT('Export label set') . '" href="' . $url . '" role="button"><span class="ri-download-fill" ></span></a>';
         }
 
         // Delete labelset
