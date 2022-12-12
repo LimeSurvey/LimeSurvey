@@ -97,6 +97,7 @@ function setDatePickerFormat(id, format, elemDate) {
  * @param dateFormat optional
  */
 function initDatePicker(element, locale, dateFormat) {
+    if (!element) return;
     let options = getOptionsFromElement(element);
     dateFormat = dateFormat !== undefined ? dateFormat : 'YYYY-MM-DD HH:mm';
     dateFormat = getValueFromConfigObject(options, 'format', dateFormat);

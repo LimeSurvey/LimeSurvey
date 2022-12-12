@@ -17,14 +17,15 @@ a {
     border-radius: 3px;
 }
 
-.page-item {
-    border-radius: 25px;
-    margin-right: 2px;
-    margin-left: 2px;
-}
-
-
 // Disable border color between thead, tbody.
 .table > :not(:first-child) {
     border-top: 0;
+}
+
+.ls-text-underline-hover {
+    text-decoration: none;
+}
+
+.ls-text-underline-hover:hover {
+    text-decoration: underline;
 }

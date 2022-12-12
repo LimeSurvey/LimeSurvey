@@ -1838,29 +1838,27 @@ fieldset[disabled] {
 }
 // Pagination
 .pagination {
-    font-size: 1.2em;
-    > {
-        li > {
-            span {
-                @extend %extend_8;
-                &:hover {
-                    @extend %extend_9;
-                }
-                &:focus {
-                    @extend %extend_9;
-                }
+    .page-item {
+        .page-link {
+            color: $primary-2;
+            &:hover {
+                @extend %extend_9;
             }
-            a {
-                &:hover {
-                    @extend %extend_9;
-                }
-                &:focus {
-                    @extend %extend_9;
-                }
+            &:focus {
+                @extend %extend_9;
             }
         }
-        .active > {
-            a {
+        span {
+            @extend %extend_8;
+            &:hover {
+                @extend %extend_9;
+            }
+            &:focus {
+                @extend %extend_9;
+            }
+        }
+        &.active > {
+            .page-link {
                 @extend %extend_10;
                 &:hover {
                     @extend %extend_10;
@@ -1880,7 +1878,7 @@ fieldset[disabled] {
             }
         }
         .disabled > {
-            span {
+            .page-link {
                 @extend %extend_11;
                 &:hover {
                     @extend %extend_11;
@@ -1889,7 +1887,7 @@ fieldset[disabled] {
                     @extend %extend_11;
                 }
             }
-            a {
+            span {
                 @extend %extend_11;
                 &:hover {
                     @extend %extend_11;

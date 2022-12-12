@@ -377,7 +377,7 @@ export default {
                                     </i>
                                 <a
                                     :href="question.link"
-                                    class="col-9 pjax question-question-list-item-link display-as-container"
+                                    class="col-9 pjax question-question-list-item-link display-as-container ls-text-underline-hover"
                                     @click.stop.prevent="openQuestion(question)"
                                 >
                                     <span

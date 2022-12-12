@@ -10919,12 +10919,14 @@ a {
   border-radius: 3px;
 }
 
-.page-item {
-  border-radius: 25px;
-  margin-left: 2px;
-  margin-right: 2px;
-}
-
 .table > :not(:first-child) {
   border-top: 0;
+}
+
+.ls-text-underline-hover {
+  text-decoration: none;
+}
+
+.ls-text-underline-hover:hover {
+  text-decoration: underline;
 }

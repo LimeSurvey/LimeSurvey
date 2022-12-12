@@ -4232,3 +4232,15 @@ label {
     background-color: #fff;
     color: #000;
 }
+
+// pagination
+.pagination {
+    font-size : 1.2em;
+    .page-item {
+        .page-link {
+            margin        : 1px;
+            padding       : 5px 14px;
+            border-radius : 4px;
+        }
+    }
+}
