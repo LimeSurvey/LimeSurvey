@@ -27,7 +27,7 @@
                     <div class="form-group">
                         <label for='copysurveyname' class=" control-label"><?php echo  eT("New survey title:"); ?> </label>
                         <div class="">
-                            <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' placeholder="Copy original survey title" value='' class="form-control" />
+                            <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' placeholder="<?php eT('Copy original survey title');?>" value='' class="form-control" />
                         </div>
                         <div class="">
                           <p class="form-control-static">
