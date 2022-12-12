@@ -86,14 +86,13 @@ jobs:
 
           sudo systemctl start mysql
           sudo service mysql status
-          mysql -uroot -proot -h localhost -e "Show  variables like '%large%';"
+          mysql -uroot -proot -h localhost -P 3306 -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
 
       - name: Load custom console and start the Application
         run: |
-          sudo /etc/init.d/mysql start
           php application/commands/console.php install admin password TravisLS no@email.com verbose
           cp application/config/config-sample-mysql.php application/config/config.php
 
