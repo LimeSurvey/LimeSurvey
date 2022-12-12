@@ -315,6 +315,7 @@ $internalConfig = array(
                 'jencode' => 'CJSON::encode',
                 't'     => 'gT',
                 'gT'    => 'gT',
+                'isAbsoluteUrl' => 'LS_Twig_Extension::isAbsoluteUrl',
             ),
 
             'sandboxConfig' => array(
@@ -344,6 +345,7 @@ $internalConfig = array(
                     'upper',
                     'strip_tags',
                     'number_format',
+                    'isAbsoluteUrl'
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox", "tag"),
