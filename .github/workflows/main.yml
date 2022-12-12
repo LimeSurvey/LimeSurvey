@@ -107,7 +107,7 @@ jobs:
       - name: Test the server
         run: |
           # Test server.
-          wget -qO- localhost
+          wget -O - localhost
 
         # Chromedriver setup.
         # Note: Keep getting timeout problems on Travis with chromedriver.
