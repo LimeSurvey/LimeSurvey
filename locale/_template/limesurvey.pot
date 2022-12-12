@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-12-05 09:31:37+00:00\n"
+"POT-Creation-Date: 2022-12-12 09:46:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -92,7 +92,7 @@ msgid "Back"
 msgstr ""
 
 #: application/controllers/AdminController.php:80
-#: application/controllers/admin/tokens.php:2395
+#: application/controllers/admin/tokens.php:2403
 #: application/views/admin/authentication/forgotpassword.php:52
 #: application/views/admin/dataentry/active_html_view.php:118
 #: application/views/admin/survey/copySurvey_view.php:15
@@ -457,9 +457,9 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1963
 #: application/controllers/admin/tokens.php:2300
 #: application/controllers/admin/tokens.php:2361
-#: application/controllers/admin/tokens.php:2453
-#: application/controllers/admin/tokens.php:2520
-#: application/controllers/admin/tokens.php:2560
+#: application/controllers/admin/tokens.php:2460
+#: application/controllers/admin/tokens.php:2527
+#: application/controllers/admin/tokens.php:2567
 #: application/controllers/admin/translate.php:98
 #: application/helpers/admin/statistics_helper.php:2438
 #: application/helpers/admin/statistics_helper.php:2448
@@ -1157,7 +1157,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1953
 #: application/controllers/admin/tokens.php:2288
 #: application/controllers/admin/tokens.php:2351
-#: application/controllers/admin/tokens.php:2412
+#: application/controllers/admin/tokens.php:2419
 #: application/controllers/admin/useraction.php:58
 #: application/controllers/admin/useraction.php:98
 #: application/controllers/admin/useraction.php:183
@@ -4465,7 +4465,7 @@ msgstr ""
 #: application/controllers/admin/surveyadmin.php:1945
 #: application/controllers/admin/tokens.php:1202
 #: application/controllers/admin/tokens.php:1578
-#: application/controllers/admin/tokens.php:2379
+#: application/controllers/admin/tokens.php:2384
 #: application/extensions/LimeScript/LimeScript.php:26
 #: application/helpers/SurveyRuntimeHelper.php:1327
 #: application/views/admin/conditions/deleteAllConditions.php:23
@@ -4667,8 +4667,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:400
 #: application/controllers/admin/surveypermission.php:583
 #: application/controllers/admin/surveypermission.php:681
-#: application/controllers/admin/tokens.php:2572
-#: application/controllers/admin/tokens.php:2613
+#: application/controllers/admin/tokens.php:2579
+#: application/controllers/admin/tokens.php:2620
 #: application/controllers/admin/useraction.php:807
 #: application/views/admin/authentication/message.php:35
 #: application/views/admin/participants/attributeMapCSV_view.php:80
@@ -5364,7 +5364,7 @@ msgstr ""
 
 #: application/controllers/admin/tokens.php:2134
 #: application/controllers/admin/tokens.php:2149
-#: application/controllers/admin/tokens.php:2869
+#: application/controllers/admin/tokens.php:2876
 msgid "Line %s : %s %s (%s)"
 msgstr ""
 
@@ -5399,45 +5399,45 @@ msgid "{n} token has been created.|{n} tokens have been created."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2373
-#: application/controllers/admin/tokens.php:2391
+#: application/controllers/admin/tokens.php:2399
 msgid "Delete survey participants table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2374
+#: application/controllers/admin/tokens.php:2379
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2374
+#: application/controllers/admin/tokens.php:2379
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2377
+#: application/controllers/admin/tokens.php:2382
 msgid "Delete table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2392
+#: application/controllers/admin/tokens.php:2400
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2392
+#: application/controllers/admin/tokens.php:2400
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2443
+#: application/controllers/admin/tokens.php:2450
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2544
+#: application/controllers/admin/tokens.php:2551
 #: application/views/admin/token/tokenwarning.php:13
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2550
+#: application/controllers/admin/tokens.php:2557
 msgid "Tokens already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2569
-#: application/controllers/admin/tokens.php:2649
+#: application/controllers/admin/tokens.php:2576
+#: application/controllers/admin/tokens.php:2656
 #: application/core/LsDefaultDataSets.php:27
 #: application/views/admin/survey/breadcrumb.php:103
 #: application/views/admin/survey/surveybar_view.php:84
@@ -5445,19 +5445,19 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2570
+#: application/controllers/admin/tokens.php:2577
 msgid "A participant table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2610
+#: application/controllers/admin/tokens.php:2617
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2611
+#: application/controllers/admin/tokens.php:2618
 msgid "A survey participants table has been created for this survey and the old tokens were imported."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2864
+#: application/controllers/admin/tokens.php:2871
 msgid "%s records with other errors"
 msgstr ""
 
