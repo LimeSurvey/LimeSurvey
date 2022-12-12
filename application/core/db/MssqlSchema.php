@@ -23,11 +23,11 @@ class MssqlSchema extends CMssqlSchema
          * Auto increment.
          */
         $this->columnTypes['autoincrement'] = 'integer NOT NULL IDENTITY (1,1)';
-        
+
         $this->columnTypes['longbinary'] = 'varbinary(max)';
     }
 
-    
+
     public function getColumnType($type)
     {
         $sResult = $type;
@@ -83,5 +83,16 @@ class MssqlSchema extends CMssqlSchema
             'PRIMARY KEY (%s)',
             implode(', ', $columns)
         );
+    }
+
+    /**
+    * @inheritdoc
+    * Replace by own to fix new MSSQL issue
+    * @see https://github.com/yiisoft/yii2/blob/364e907875fd57ee218085cca796ac5d1c3c8d51/framework/db/mssql/QueryBuilder.php#L73
+    * @see https://github.com/yiisoft/yii/issues/4491
+    */
+    protected function createCommandBuilder()
+    {
+        return new MssqlCommandBuilder($this);
     }
 }
