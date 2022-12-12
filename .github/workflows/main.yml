@@ -108,11 +108,11 @@ jobs:
         run: |
           # Test server.
           wget -O - localhost || true
-          tail -n 500 /var/log/apache2/error.log || true
-          tail -n 500 /var/log/nginx/error.log || true
-          tail -n 500 /var/log/php7.4-fpm.log || true
-          tail -n 500 /var/log/php7.2-fpm.log || true
-          tail -n 500 /var/log/php8.0-fpm.log || true
+          sudo tail -n 500 /var/log/apache2/error.log || true
+          sudo tail -n 500 /var/log/nginx/error.log || true
+          sudo tail -n 500 /var/log/php7.4-fpm.log || true
+          sudo tail -n 500 /var/log/php7.2-fpm.log || true
+          sudo tail -n 500 /var/log/php8.0-fpm.log || true
           php -r 'phpinfo();' | grep log
           php --info | grep error
           find /var/log
