@@ -106,6 +106,7 @@ jobs:
 
       - name: Test the server
         run: |
+          tail -f /var/log/apache2/error.log &
           # Test server.
           wget localhost
           cat index.html
