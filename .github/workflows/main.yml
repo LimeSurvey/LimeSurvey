@@ -106,7 +106,6 @@ jobs:
 
       - name: Test the server
         run: |
-          tail -f /var/log/apache2/error.log &
           # Test server.
           wget localhost
           cat index.html
@@ -117,9 +116,12 @@ jobs:
         # unzip chromedriver_linux64.zip
 
       - name: Run unit tests
+        if: always()
         env:
             XDEBUG_MODE: coverage
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
+        run: |
+          tail -f /var/log/apache2/error.log &
+          php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
         run: php tests/bin/check_coverage.php cov.xml 37
