@@ -75,7 +75,7 @@
                 </option>
                 <option>
                     <value>alphabetical</value>
-                    <text>Alphabetically</text>
+                    <text>Alphabetical</text>
                 </option>
             </options>
             <default>normal</default>
