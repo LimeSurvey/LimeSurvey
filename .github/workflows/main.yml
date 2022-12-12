@@ -104,11 +104,11 @@ jobs:
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
 
-      - name: Test the server
-        run: |
-          # Test server.
-          wget localhost
-          cat index.html
+          #- name: Test the server
+          #run: |
+          ## Test server.
+          #wget localhost
+          #cat index.html
 
         # Chromedriver setup.
         # Note: Keep getting timeout problems on Travis with chromedriver.
@@ -116,12 +116,9 @@ jobs:
         # unzip chromedriver_linux64.zip
 
       - name: Run unit tests
-        if: always()
         env:
             XDEBUG_MODE: coverage
-        run: |
-          tail -f /var/log/apache2/error.log &
-          php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
+        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
         run: php tests/bin/check_coverage.php cov.xml 37
