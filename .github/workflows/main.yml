@@ -84,6 +84,7 @@ jobs:
           # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
           # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
 
+          sudo systemctl start mysql
           sudo service mysql status
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
@@ -91,6 +92,7 @@ jobs:
 
       - name: Load custom console and start the Application
         run: |
+          sudo /etc/init.d/mysql start
           php application/commands/console.php install admin password TravisLS no@email.com verbose
           cp application/config/config-sample-mysql.php application/config/config.php
 
