@@ -112,9 +112,9 @@ class InstallCommand extends CConsoleCommand
             $this->output('Opening connection...');
             $this->connection->active = true;
         } catch (Exception $e) {
-            var_dump($this->connection->connectionString = $dbConnectArray['connectionString']);
-            var_dump($this->connection->username = $dbConnectArray['username']);
-            var_dump($this->connection->password = $dbConnectArray['password']);
+            var_dump($this->connection->connectionString);
+            var_dump($this->connection->username);
+            var_dump($this->connection->password);
             throw new CException("Invalid access data. Check your config.php db access data");
         }
 
