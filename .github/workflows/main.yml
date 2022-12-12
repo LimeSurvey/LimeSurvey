@@ -114,8 +114,9 @@ jobs:
           sudo tail -n 500 /var/log/php7.2-fpm.log || true
           sudo tail -n 500 /var/log/php8.0-fpm.log || true
           which php
-          php -r 'phpinfo();'
-          php --info
+          php --version
+          php -r 'phpinfo();' | grep log
+          php --info | grep log
           find /var/log
 
         # Chromedriver setup.
