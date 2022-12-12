@@ -107,7 +107,7 @@ jobs:
       - name: Test the server
         run: |
           # Test server.
-          wget localhost
+          wget https://localhost
           cat index.html
 
         # Chromedriver setup.
