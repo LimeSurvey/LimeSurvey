@@ -104,11 +104,10 @@ jobs:
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
 
-          #- name: Test the server
-          #run: |
-          ## Test server.
-          #wget localhost
-          #cat index.html
+      - name: Test the server
+        run: |
+          # Test server.
+          wget -qO- localhost
 
         # Chromedriver setup.
         # Note: Keep getting timeout problems on Travis with chromedriver.
