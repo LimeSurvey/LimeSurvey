@@ -87,6 +87,9 @@ jobs:
           sudo systemctl start mysql
           sudo service mysql status
           mysql -uroot -proot -h localhost -P 3306 -e "Show  variables like '%large%';"
+          mysql -uroot -proot -ppasword -e "SELECT 1;" || true
+          mysql -uroot -proot -proot -e "SELECT 1;" || true
+          mysql -uroot -proot -padmin -e "SELECT 1;" || true
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
