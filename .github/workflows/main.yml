@@ -109,6 +109,7 @@ jobs:
           # Test server.
           wget -O - localhost || true
           tail -n 500 /var/log/apache2/error.log
+          php -r 'phpinfo();' | grep log
 
         # Chromedriver setup.
         # Note: Keep getting timeout problems on Travis with chromedriver.
