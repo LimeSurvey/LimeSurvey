@@ -19047,6 +19047,9 @@ footer.footer {
   grid-auto-rows: minmax(24px, auto);
   padding: 0px 32px;
 }
+.tempus-dominus-widget .time-container-clock:has([data-time-component=seconds]) {
+  padding: 0px 6px;
+}
 .tempus-dominus-widget .date-container-decades div:not(.no-highlight),
 .tempus-dominus-widget .date-container-years div:not(.no-highlight),
 .tempus-dominus-widget .date-container-months div:not(.no-highlight),
@@ -19188,13 +19191,15 @@ footer.footer {
 }
 .tempus-dominus-widget [data-time-component=hours],
 .tempus-dominus-widget .separator,
-.tempus-dominus-widget [data-time-component=minutes] {
+.tempus-dominus-widget [data-time-component=minutes],
+.tempus-dominus-widget [data-time-component=seconds] {
   height: 75px !important;
   font-size: 62px;
   font-weight: 300;
 }
 .tempus-dominus-widget [data-action=incrementHours],
-.tempus-dominus-widget [data-action=incrementMinutes] {
+.tempus-dominus-widget [data-action=incrementMinutes],
+.tempus-dominus-widget [data-action=incrementSeconds] {
   align-self: end;
 }
 .tempus-dominus-widget .date-container-days div:not(.no-highlight) {
