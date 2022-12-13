@@ -152,6 +152,8 @@ class RestEndpointFactory
     /**
      * Get Body Params
      *
+     * Params from JSON body.
+     *
      * @param array $endpoint
      * @param LSHttpRequest $request
      * @return array
@@ -272,17 +274,6 @@ class RestEndpointFactory
                 }
             } elseif (isset($copy_server[$key])) {
                 $headers[$copy_server[$key]] = $value;
-            }
-        }
-
-        if (!isset($headers['Authorization'])) {
-            if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-                $headers['Authorization'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-            } elseif (isset($_SERVER['PHP_AUTH_USER'])) {
-                $basic_pass = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
-                $headers['Authorization'] = 'Basic ' . base64_encode($_SERVER['PHP_AUTH_USER'] . ':' . $basic_pass);
-            } elseif (isset($_SERVER['PHP_AUTH_DIGEST'])) {
-                $headers['Authorization'] = $_SERVER['PHP_AUTH_DIGEST'];
             }
         }
 
