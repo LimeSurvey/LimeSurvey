@@ -18729,8 +18729,8 @@ footer.footer {
 
 .navbar {
   color: #fff;
-  background-color: #25003E;
-  border-bottom: 4px solid #8146F6;
+  background-color: #333641;
+  border-bottom: none;
   border-radius: 0 !important;
 }
 .navbar .ls--selector--configuration-menu a {
@@ -18743,6 +18743,10 @@ footer.footer {
   color: #fff;
   font-weight: 500;
   font-size: 14px;
+}
+.navbar .badge {
+  background-color: #fff;
+  color: #333641;
 }
 
 .mega-dropdown-menu .dropdown-header {

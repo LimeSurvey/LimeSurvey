@@ -1,8 +1,8 @@
 // Navbar
 .navbar {
-  color: $white;
-  background-color: $aubergine;
-  border-bottom: 4px solid $grape;
+  color: $navbar-color;
+  background-color: $navbar-bg-color;
+  border-bottom: none;
   //box-shadow: 0 3px 3px $gray_approx_100_10;
   border-radius: 0 !important;
   .ls--selector--configuration-menu a {
@@ -12,9 +12,14 @@
     background: $brown-10;
   }
   .nav-link {
-    color: $white;
+    color: $navbar-color;
     font-weight: 500;
     font-size: 14px;
+  }
+
+  .badge {
+    background-color: $navbar-badges-bg-color;
+    color: $navbar-badges-color;
   }
 }
 .mega-dropdown-menu {

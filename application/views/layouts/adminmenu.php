@@ -96,8 +96,7 @@
 
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-<!--                         @TODO remove inline style and put it into corresponding SCSS file. This is here just for demo purpose -->
-                        <span class='badge rounded-pill' style="background-color: #3BFFB7; color: #25003E;">
+                        <span class='badge rounded-pill'>
                             <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
                         </span>
                         <?= Yii::app()->session['user']; ?>
