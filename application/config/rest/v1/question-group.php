@@ -8,115 +8,6 @@ $rest = [];
 $v1Namespace = '\LimeSurvey\Api\Command\V1\\';
 
 /**
- * @OA\Post(
- *      path="/rest/v1/questionGroup",
- *      security={{"bearerAuth":{}}},
- *      summary="Create question group",
- *      description="Create question group",
- *      tags={"Question Group"},
- *      @OA\RequestBody(
- *          @OA\JsonContent(
- *              required={
- *                  "surveyID",
- *                  "groupTitle",
- *                  "groupDescription"
- *              },
- *              @OA\Property(
- *                  property="surveyID",
- *                  type="string"
- *              ),
- *              @OA\Property(
- *                  property="groupTitle",
- *                  type="string"
- *              ),
- *              @OA\Property(
- *                  property="groupDescription",
- *                  type="string"
- *              ),
- *              example={
- *                  "surveyID": "1",
- *                  "groupTitle": "Test Group",
- *                  "groupDescription" : "This is a test group"
- *              }
- *          )
- *      ),
- *      @OA\Response(
- *          response="200",
- *          description="Success"
- *      )
- * )
- *
- * @OA\Get(
- *      path="/rest/v1/questionGroup",
- *      security={{"bearerAuth":{}}},
- *      summary="Get question group list",
- *      description="Get question group list",
- *      tags={"Question Group"},
- *      @OA\Parameter(
- *          parameter="surveyID",
- *          name="surveyID",
- *          required=true,
- *          in="query",
- *          description="Survey id",
- *          @OA\Schema(
- *              type="string"
- *          ),
- *      ),
- *      @OA\Parameter(
- *          parameter="language",
- *          name="language",
- *          in="query",
- *          description="Language",
- *          required=false,
- *          @OA\Schema(
- *              type="string"
- *          )
- *      ),
- *      @OA\Response(
- *          response="200",
- *          description="Success",
- *          @OA\JsonContent(
- *              ref="#/components/schemas/question_group_list"
- *          )
- *      ),
- *      @OA\Response(
- *          response="400",
- *          description="Bad request"
- *      ),
- *      @OA\Response(
- *          response="401",
- *          description="Unauthorized"
- *      ),
- *      @OA\Response(
- *          response="404",
- *          description="Not found"
- *      )
- * )
- *
- */
-$rest['v1/questionGroup'] = [
-    'POST' => [
-        'commandClass' => $v1Namespace . 'QuestionGroupAdd',
-        'auth' => 'session',
-        'params' => [],
-        'bodyParams' => [
-            'surveyID' => true,
-            'groupTitle' => true,
-            'groupDescription' => true
-        ]
-    ],
-    'GET' => [
-        'commandClass' => $v1Namespace . 'QuestionGroupList',
-        'auth' => 'session',
-        'params' => [
-            'groupSettings' => true,
-            'language' => true
-        ],
-        'bodyParams' => []
-    ]
-];
-
-/**
  * @OA\Get(
  *      path="/rest/v1/questionGroup/{id}",
  *      security={{"bearerAuth":{}}},
@@ -360,5 +251,116 @@ $rest['v1/questionGroup/$groupID'] = [
         'bodyParams' => []
     ]
 ];
+
+/**
+ * @OA\Post(
+ *      path="/rest/v1/questionGroup",
+ *      security={{"bearerAuth":{}}},
+ *      summary="Create question group",
+ *      description="Create question group",
+ *      tags={"Question Group"},
+ *      @OA\RequestBody(
+ *          @OA\JsonContent(
+ *              required={
+ *                  "surveyID",
+ *                  "groupTitle",
+ *                  "groupDescription"
+ *              },
+ *              @OA\Property(
+ *                  property="surveyID",
+ *                  type="string"
+ *              ),
+ *              @OA\Property(
+ *                  property="groupTitle",
+ *                  type="string"
+ *              ),
+ *              @OA\Property(
+ *                  property="groupDescription",
+ *                  type="string"
+ *              ),
+ *              example={
+ *                  "surveyID": "1",
+ *                  "groupTitle": "Test Group",
+ *                  "groupDescription" : "This is a test group"
+ *              }
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response="200",
+ *          description="Success"
+ *      )
+ * )
+ *
+ * @OA\Get(
+ *      path="/rest/v1/questionGroup",
+ *      security={{"bearerAuth":{}}},
+ *      summary="Get question group list",
+ *      description="Get question group list",
+ *      tags={"Question Group"},
+ *      @OA\Parameter(
+ *          parameter="surveyID",
+ *          name="surveyID",
+ *          required=true,
+ *          in="query",
+ *          description="Survey id",
+ *          @OA\Schema(
+ *              type="string"
+ *          ),
+ *      ),
+ *      @OA\Parameter(
+ *          parameter="language",
+ *          name="language",
+ *          in="query",
+ *          description="Language",
+ *          required=false,
+ *          @OA\Schema(
+ *              type="string"
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response="200",
+ *          description="Success",
+ *          @OA\JsonContent(
+ *              ref="#/components/schemas/question_group_list"
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response="400",
+ *          description="Bad request"
+ *      ),
+ *      @OA\Response(
+ *          response="401",
+ *          description="Unauthorized"
+ *      ),
+ *      @OA\Response(
+ *          response="404",
+ *          description="Not found"
+ *      )
+ * )
+ *
+ */
+$rest['v1/questionGroup'] = [
+    'POST' => [
+        'commandClass' => $v1Namespace . 'QuestionGroupAdd',
+        'auth' => 'session',
+        'params' => [],
+        'bodyParams' => [
+            'surveyID' => true,
+            'groupTitle' => true,
+            'groupDescription' => true
+        ]
+    ],
+    'GET' => [
+        'commandClass' => $v1Namespace . 'QuestionGroupList',
+        'auth' => 'session',
+        'params' => [
+            'surveyID' => true,
+            'language' => true
+        ],
+        'bodyParams' => []
+    ]
+];
+
+
 
 return $rest;

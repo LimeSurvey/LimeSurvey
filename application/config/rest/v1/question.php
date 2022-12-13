@@ -8,6 +8,199 @@ $rest = [];
 $v1Namespace = '\LimeSurvey\Api\Command\V1\\';
 
 /**
+ * @OA\Get(
+ *      path="/rest/v1/question/{id}",
+ *      security={{"bearerAuth":{}}},
+ *      summary="Get question by id",
+ *      description="Get question by id",
+ *      tags={"Question"},
+ *      @OA\Parameter(
+ *          description="Question id",
+ *          in="path",
+ *          name="id",
+ *          required=true,
+ *          @OA\Schema(type="string")
+ *      ),
+ *      @OA\Parameter(
+ *          parameter="language",
+ *          name="language",
+ *          in="query",
+ *          description="Language",
+ *          required=true,
+ *          @OA\Schema(
+ *              type="string"
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=200,
+ *          description="Success",
+ *          @OA\JsonContent(
+ *              ref="#/components/schemas/question_detail"
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response="400",
+ *          description="Bad request"
+ *      ),
+ *      @OA\Response(
+ *          response="401",
+ *          description="Unauthorized"
+ *      ),
+ *      @OA\Response(
+ *          response="404",
+ *          description="Not found"
+ *      )
+ * )
+ *
+ * @OA\Put(
+ *     path="/rest/v1/question/{id}",
+ *     security={{"bearerAuth":{}}},
+ *     summary="Update question by id",
+ *     description="Update question by id",
+ *     tags={"Question"},
+ *     @OA\Parameter(
+ *         description="Question id",
+ *         in="path",
+ *         name="id",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\RequestBody(
+ *         @OA\JsonContent(
+ *              required={
+ *                  "language",
+ *                  "questionData"
+ *              },
+ *              @OA\Property(
+ *                  property="language",
+ *                  type="string"
+ *              ),
+ *              @OA\Property(
+ *                  property="questionData",
+ *                  type="object",
+ *                  required={},
+ *                  @OA\Property(
+ *                      property="group_order",
+ *                      type="string"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="randomization_group",
+ *                      type="string"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="grelevance",
+ *                      type="string"
+ *                  )
+ *              ),
+ *              example={
+ *                  "language": "en",
+ *                  "questionData": {
+ *                      "group_order": "1",
+ *                      "randomization_group": "1",
+ *                      "grelevance": "1"
+ *                  }
+ *              }
+ *          )
+ *     ),
+ *     @OA\Response(
+ *          response="200",
+ *          description="Success",
+ *          @OA\JsonContent(
+ *              @OA\Schema(
+ *                  @OA\Property(
+ *                      property="group_order",
+ *                      type="bool"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="randomization_group",
+ *                      type="bool"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="grelevance",
+ *                      type="bool"
+ *                  ),
+ *                  example={
+ *                      "group_order": true,
+ *                      "randomization_group": true,
+ *                      "grelevance": true
+ *                  }
+ *              )
+ *          )
+ *     ),
+ *     @OA\Response(
+ *          response="400",
+ *          description="Bad request"
+ *     ),
+ *     @OA\Response(
+ *          response="401",
+ *          description="Unauthorized"
+ *     ),
+ *      @OA\Response(
+ *          response="404",
+ *          description="Not found"
+ *     )
+ * )
+ *
+ * @OA\Delete(
+ *      path="/rest/v1/question/{id}",
+ *      security={{"bearerAuth":{}}},
+ *      summary="Delete question by id",
+ *      description="Delete question by id",
+ *      tags={"Question"},
+ *      @OA\Parameter(
+ *          description="Question id",
+ *          in="path",
+ *          name="id",
+ *          required=true,
+ *          @OA\Schema(type="string"),
+ *      ),
+ *      @OA\Response(
+ *          response="200",
+ *          description="Success"
+ *      ),
+ *      @OA\Response(
+ *          response="400",
+ *          description="Bad request"
+ *      ),
+ *      @OA\Response(
+ *          response="401",
+ *          description="Unauthorized"
+ *      ),
+ *      @OA\Response(
+ *          response="404",
+ *          description="Not found"
+ *     )
+ * )
+ *
+ */
+$rest['v1/question/$questionID'] = [
+    'GET' => [
+        'commandClass' => $v1Namespace . 'QuestionPropertiesGet',
+        'auth' => 'session',
+        'params' => [
+            'questionSettings' => true,
+            'language' => true
+        ],
+        'bodyParams' => []
+    ],
+    'PUT' => [
+        'commandClass' => $v1Namespace . 'QuestionPropertiesSet',
+        'auth' => 'session',
+        'params' => [],
+        'bodyParams' => [
+            'language' => true,
+            'questionData' => true
+        ]
+    ],
+    'DELETE' => [
+        'commandClass' => $v1Namespace . 'QuestionDelete',
+        'auth' => 'session',
+        'params' => [],
+        'bodyParams' => []
+    ]
+];
+
+/**
  * @OA\Post(
  *      path="/rest/v1/question",
  *      security={{"bearerAuth":{}}},
@@ -177,205 +370,5 @@ $rest['v1/question'] = [
         'bodyParams' => []
     ]
 ];
-
-/**
- * @OA\Get(
- *      path="/rest/v1/question/{id}",
- *      security={{"bearerAuth":{}}},
- *      summary="Get question by id",
- *      description="Get question by id",
- *      tags={"Question"},
- *      @OA\Parameter(
- *          description="Question id",
- *          in="path",
- *          name="id",
- *          required=true,
- *          @OA\Schema(type="string")
- *      ),
- *      @OA\Parameter(
- *          parameter="language",
- *          name="language",
- *          in="query",
- *          description="Language",
- *          required=true,
- *          @OA\Schema(
- *              type="string"
- *          )
- *      ),
- *      @OA\Response(
- *          response=200,
- *          description="Success",
- *          @OA\JsonContent(
- *              ref="#/components/schemas/question_detail"
- *          )
- *      ),
- *      @OA\Response(
- *          response="400",
- *          description="Bad request"
- *      ),
- *      @OA\Response(
- *          response="401",
- *          description="Unauthorized"
- *      ),
- *      @OA\Response(
- *          response="404",
- *          description="Not found"
- *      )
- * )
- *
- * @OA\Put(
- *     path="/rest/v1/question/{id}",
- *     security={{"bearerAuth":{}}},
- *     summary="Update question by id",
- *     description="Update question by id",
- *     tags={"Question"},
- *     @OA\Parameter(
- *         description="Question id",
- *         in="path",
- *         name="id",
- *         required=true,
- *         @OA\Schema(type="string")
- *     ),
- *     @OA\RequestBody(
- *         @OA\JsonContent(
- *              required={
- *                  "language",
- *                  "questionData"
- *              },
- *              @OA\Property(
- *                  property="language",
- *                  type="string"
- *              ),
- *              @OA\Property(
- *                  property="questionData",
- *                  type="object",
- *                  required={},
- *                  @OA\Property(
- *                      property="group_order",
- *                      type="string"
- *                  ),
- *                  @OA\Property(
- *                      property="randomization_group",
- *                      type="string"
- *                  ),
- *                  @OA\Property(
- *                      property="grelevance",
- *                      type="string"
- *                  )
- *              ),
- *              example={
- *                  "language": "en",
- *                  "questionData": {
- *                      "group_order": "1",
- *                      "randomization_group": "1",
- *                      "grelevance": "1"
- *                  }
- *              }
- *          )
- *     ),
- *     @OA\Response(
- *          response="200",
- *          description="Success",
- *          @OA\JsonContent(
- *              @OA\Schema(
- *                  @OA\Property(
- *                      property="group_order",
- *                      type="bool"
- *                  ),
- *                  @OA\Property(
- *                      property="randomization_group",
- *                      type="bool"
- *                  ),
- *                  @OA\Property(
- *                      property="grelevance",
- *                      type="bool"
- *                  ),
- *                  example={
- *                      "group_order": true,
- *                      "randomization_group": true,
- *                      "grelevance": true
- *                  }
- *              )
- *          )
- *     ),
- *     @OA\Response(
- *          response="400",
- *          description="Bad request"
- *     ),
- *     @OA\Response(
- *          response="401",
- *          description="Unauthorized"
- *     ),
- *      @OA\Response(
- *          response="404",
- *          description="Not found"
- *     )
- * )
- *
- * @OA\Delete(
- *      path="/rest/v1/question/{id}",
- *      security={{"bearerAuth":{}}},
- *      summary="Delete question by id",
- *      description="Delete question by id",
- *      tags={"Question"},
- *      @OA\Parameter(
- *          description="Question id",
- *          in="path",
- *          name="id",
- *          required=true,
- *          @OA\Schema(type="string"),
- *      ),
- *      @OA\Response(
- *          response="200",
- *          description="Success"
- *      ),
- *      @OA\Response(
- *          response="400",
- *          description="Bad request"
- *      ),
- *      @OA\Response(
- *          response="401",
- *          description="Unauthorized"
- *      ),
- *      @OA\Response(
- *          response="404",
- *          description="Not found"
- *     )
- * )
- *
- */
-$rest['v1/question/$questionID'] = [
-    'GET' => [
-        [
-            'commandClass' => $v1Namespace . 'QuestionPropertiesGet',
-            'auth' => 'session',
-            'params' => [
-                'questionSettings' => true,
-                'language' => true
-            ],
-            'bodyParams' => []
-        ]
-    ],
-    'PUT' => [
-        [
-            'commandClass' => $v1Namespace . 'QuestionPropertiesSet',
-            'auth' => 'session',
-            'params' => [],
-            'bodyParams' => [
-                'language' => true,
-                'questionData' => true
-            ]
-        ]
-    ],
-    'DELETE' => [
-        [
-            'commandClass' => $v1Namespace . 'QuestionDelete',
-            'auth' => 'session',
-            'params' => [],
-            'bodyParams' => []
-        ]
-    ]
-];
-
 
 return $rest;
