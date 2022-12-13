@@ -974,10 +974,10 @@ class Question extends LSActiveRecord
                 'htmlOptions' => array('class' => ''),
             ),
             array(
-                'header' => gT('Question type'),
+                'header' => gT('Question type/theme'),
                 'name' => 'type',
                 'type' => 'raw',
-                'value' => '$data->typedesc',
+                'value' => '$data->question_theme->description',
                 'htmlOptions' => array('class' => ''),
             ),
 
@@ -1060,15 +1060,8 @@ class Question extends LSActiveRecord
         $criteria->with = [
             'group' => ['alias' => 'g'],
             'questionl10ns' => ['alias' => 'ql10n', 'condition' => "language='" . $this->survey->language . "'"],
+            'question_theme' => ['alias' => 'qt']
         ];
-
-        // The question theme table holds records for question_themes, which can be:
-        // - user created question_themes,
-        // - LS created core question_themes or
-        // - basic question_types (which can be thought as a basic question themes).
-        // As we want to filter by the description of the question type, we perform a join to the question_type record,
-        // not to the question_theme used.
-        $criteria->join = "JOIN {{question_themes}} as qt ON t." . Yii::app()->db->quoteColumnName("type") . " = qt.question_type AND extends = ''";
 
         if (!empty($this->title)) {
             $criteria2 = new CDbCriteria();
