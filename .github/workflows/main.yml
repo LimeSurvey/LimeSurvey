@@ -57,7 +57,7 @@ jobs:
         run: |
           # Set up the Apache and PHP
           sudo apt-get update > /dev/null
-          sudo apt install php libapache2-mod-php7.2 -y
+          sudo apt install php php-mysql php8.0-mysql php7.2-mysql libapache2-mod-php8.0 -y
 
           sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
@@ -109,17 +109,18 @@ jobs:
       - name: Test the server
         run: |
           # Test server.
-          wget -O - localhost || true
-          sudo tail -n 500 /var/log/apache2/error.log || true
-          sudo tail -n 500 /var/log/nginx/error.log || true
-          sudo tail -n 500 /var/log/php7.4-fpm.log || true
-          sudo tail -n 500 /var/log/php7.2-fpm.log || true
-          sudo tail -n 500 /var/log/php8.0-fpm.log || true
-          which php
-          php --version
-          php -r 'phpinfo();' | grep log
-          php --info | grep log
-          find /var/log
+          wget -O - localhost
+          #sudo tail -n 500 /var/log/apache2/error.log || true
+          #sudo tail -n 500 /var/log/nginx/error.log || true
+          #sudo tail -n 500 /var/log/php7.4-fpm.log || true
+          #sudo tail -n 500 /var/log/php7.2-fpm.log || true
+          #sudo tail -n 500 /var/log/php8.0-fpm.log || true
+          # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
+          #which php
+          #php --version
+          #php -r 'phpinfo();' | grep log
+          #php --info | grep log
+          #find /var/log
 
         # Chromedriver setup.
         # Note: Keep getting timeout problems on Travis with chromedriver.
