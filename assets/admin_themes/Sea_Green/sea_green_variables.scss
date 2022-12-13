@@ -21,7 +21,7 @@ $black75      : rgba(0, 0, 0, 0.75);
 $g-900        : #1E1E1E;
 $g-800        : #333641;
 $g-700        : #5E6372;
-$g-600        : #7C8191;
+$g-600        : #ACACAC;
 $g-400        : #C2C5D1;
 $g-300        : #DDDEE8;
 $g-200        : #EEEFF7;
@@ -40,8 +40,11 @@ $theme-colors: (
 );
 
 // Buttons
+$btn-success-bg-color: $active-green;
 $line-height-16: 16px;
 $line-height-20: 20px;
+$line-height-28: 28px;
+$line-height-38: 38px;
 
 $btn-font-weight: 500;
 

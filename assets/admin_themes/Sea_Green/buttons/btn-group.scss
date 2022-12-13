@@ -46,9 +46,9 @@
 
 .btn-group {
   .btn-check:active+.btn-outline-secondary, .btn-check:checked+.btn-outline-secondary, .btn-outline-secondary.active, .btn-outline-secondary.dropdown-toggle.show, .btn-outline-secondary:active {
-    background-color: $focus;
-    border-color: $g-900;
-    color: $g-900;
+    background-color: $g-800;
+    border-color: $black;
+    color: $white;
   }
 
   .btn-check:active+.btn-outline-secondary:focus,

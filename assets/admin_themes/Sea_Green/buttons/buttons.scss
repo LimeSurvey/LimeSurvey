@@ -1,9 +1,13 @@
+.btn:hover {
+  color: $white;
+}
+
 %default_hover {
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 }
 
 %default_focus {
-  box-shadow: 8px 8px 0px $focus;
+  box-shadow: 4px 4px 0px rgba(123, 97, 255, 0.4);;
 }
 
 // from lime-admin-colors.scss
@@ -11,7 +15,7 @@
 .btn-outline-secondary {
   color: $g-900;
   background-color: $white;
-  border: 2px solid $g-900;
+  border: 1px solid $g-900;
   border-radius: 4px;
 
   &:hover {
@@ -47,26 +51,26 @@
 
   &.disabled {
     background-color: $white;
-    border: 2px solid $g-600;
+    border: 1px solid $g-600;
 
     &:hover {
       background-color: $white;
-      border: 2px solid $g-600;
+      border: 1px solid $g-600;
     }
 
     &:focus {
       background-color: $white;
-      border: 2px solid $g-600;
+      border: 1px solid $g-600;
     }
 
     &:active {
       background-color: $white;
-      border: 2px solid $g-600;
+      border: 1px solid $g-600;
     }
 
     &.active {
       background-color: $white;
-      border: 2px solid $g-600;
+      border: 1px solid $g-600;
     }
   }
 
@@ -78,33 +82,33 @@
 
 .btn-outline-secondary[disabled] {
   background-color: $white;
-  border: 2px solid $g-600;
+  border: 1px solid $g-600;
 
   &:hover {
     background-color: $white;
-    border: 2px solid $g-600;
+    border: 1px solid $g-600;
   }
 
   &:focus {
     background-color: $white;
-    border: 2px solid $g-600;
+    border: 1px solid $g-600;
   }
 
   &:active {
     background-color: $white;
-    border: 2px solid $g-600;
+    border: 1px solid $g-600;
   }
 
   &.active {
     background-color: $white;
-    border: 2px solid $g-600;
+    border: 1px solid $g-600;
   }
 }
 
 .btn-secondary {
   color: $white;
   background-color: $g-600;
-  border: 2px solid $g-600;
+  border: 1px solid $g-600;
   border-radius: 4px;
 
   &:hover {
@@ -145,26 +149,26 @@
   &.disabled {
     color: $g-900;
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
 
     &:hover {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &:focus {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &:active {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &.active {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
   }
   //.badge {
@@ -176,26 +180,26 @@
 .btn-secondary[disabled] {
   color: $g-900;
   background-color: $g-400;
-  border: 2px solid $g-400;
+  border: 1px solid $g-400;
 
   &:hover {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &:focus {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &:active {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &.active {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 }
 
@@ -210,52 +214,52 @@
 //}
 .btn-primary, .btn-info {
   color: $white;
-  background-color: $action;
-  border: 2px solid $action;
+  background-color: $active-green;
+  border: 1px solid $active-green;
   border-radius: 4px;
 
   &:hover {
     @extend %default_hover;
-    background-color: $action;
+    background-color: $active-green;
   }
 
   &:focus {
     @extend %default_hover;
-    background-color: $action;
+    background-color: $active-green;
   }
 
   &:active {
     @extend %default_hover;
-    background-color: $action;
+    background-color: $active-green;
   }
 
   &.active {
     @extend %default_hover;
-    background-color: $action;
+    background-color: $active-green;
   }
 
   &.disabled {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
 
     &:hover {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &:focus {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &:active {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &.active {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
   }
 
@@ -267,85 +271,85 @@
 
 .btn-primary[disabled], .btn-info[disabled] {
   background-color: $g-400;
-  border: 2px solid $g-400;
+  border: 1px solid $g-400;
 
   &:hover {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &:focus {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &:active {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &.active {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 }
 
 .btn-success {
-  color: $g-900;
-  background-color: $success;
-  border: 2px solid $success;
+  color: $white;
+  background-color: $btn-success-bg-color;
+  border: 1px solid $btn-success-bg-color;
   border-radius: 4px;
 
   &:hover {
-    color: $g-900;
-    background-color: $success;
-    border: 2px solid $success;
-    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+    color: $white;
+    background-color: $btn-success-bg-color;
+    border: 1px solid $btn-success-bg-color;
+    box-shadow: 0 0 0 .25rem rgba(mix($btn-success-bg-color, $btn-success-bg-color, 15%), .5);
   }
 
   &:focus {
-    color: $g-900;
-    background-color: $success;
-    border: 2px solid $success;
-    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+    color: $white;
+    background-color: $btn-success-bg-color;
+    border: 1px solid $btn-success-bg-color;
+    box-shadow: 0 0 0 .25rem rgba(mix($btn-success-bg-color, $btn-success-bg-color, 15%), .5);
   }
 
   &:active {
-    color: $g-900;
-    background-color: $success;
-    border: 2px solid $success;
-    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+    color: $white;
+    background-color: $btn-success-bg-color;
+    border: 1px solid $btn-success-bg-color;
+    box-shadow: 0 0 0 .25rem rgba(mix($btn-success-bg-color, $btn-success-bg-color, 15%), .5);
   }
 
   &.active {
-    color: $g-900;
-    background-color: $success;
-    border: 2px solid $success;
-    box-shadow: 0 0 0 .25rem rgba(mix($success, $success, 15%), .5);
+    color: $white;
+    background-color: $btn-success-bg-color;
+    border: 1px solid $btn-success-bg-color;
+    box-shadow: 0 0 0 .25rem rgba(mix($btn-success-bg-color, $btn-success-bg-color, 15%), .5);
   }
 
   &.disabled {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
 
     &:hover {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &:focus {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &:active {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &.active {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
   }
 
@@ -357,26 +361,26 @@
 
 .btn-success[disabled] {
   background-color: $g-400;
-  border: 2px solid $g-400;
+  border: 1px solid $g-400;
 
   &:hover {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &:focus {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &:active {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &.active {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 }
 
@@ -384,7 +388,7 @@
 //.btn-info {
 //  color: $white;
 //  background-color: $primary-bg_info_hover;
-//  border: 2px solid $primary-border_info_hover;
+//  border: 1px solid $primary-border_info_hover;
 //  &:hover {
 //    @extend %extend_4;
 //  }
@@ -399,22 +403,22 @@
 //  }
 //  &.disabled {
 //    background-color: $primary-bg_info_hover;
-//    border: 2px solid $primary-border_info_hover;
+//    border: 1px solid $primary-border_info_hover;
 //    &:hover {
 //      background-color: $primary-bg_info_hover;
-//      border: 2px solid $primary-border_info_hover;
+//      border: 1px solid $primary-border_info_hover;
 //    }
 //    &:focus {
 //      background-color: $primary-bg_info_hover;
-//      border: 2px solid $primary-border_info_hover;
+//      border: 1px solid $primary-border_info_hover;
 //    }
 //    &:active {
 //      background-color: $primary-bg_info_hover;
-//      border: 2px solid $primary-border_info_hover;
+//      border: 1px solid $primary-border_info_hover;
 //    }
 //    &.active {
 //      background-color: $primary-bg_info_hover;
-//      border: 2px solid $primary-border_info_hover;
+//      border: 1px solid $primary-border_info_hover;
 //    }
 //  }
 //  .badge {
@@ -424,79 +428,79 @@
 //}
 //.btn-info[disabled] {
 //  background-color: $primary-bg_info_hover;
-//  border: 2px solid $primary-border_info_hover;
+//  border: 1px solid $primary-border_info_hover;
 //  &:hover {
 //    background-color: $primary-bg_info_hover;
-//    border: 2px solid $primary-border_info_hover;
+//    border: 1px solid $primary-border_info_hover;
 //  }
 //  &:focus {
 //    background-color: $primary-bg_info_hover;
-//    border: 2px solid $primary-border_info_hover;
+//    border: 1px solid $primary-border_info_hover;
 //  }
 //  &:active {
 //    background-color: $primary-bg_info_hover;
-//    border: 2px solid $primary-border_info_hover;
+//    border: 1px solid $primary-border_info_hover;
 //  }
 //  &.active {
 //    background-color: $primary-bg_info_hover;
-//    border: 2px solid $primary-border_info_hover;
+//    border: 1px solid $primary-border_info_hover;
 //  }
 //}
 .btn-warning {
-  color: $g-900;
+  color: $white;
   background-color: $warning;
-  border: 2px solid $warning;
+  border: 1px solid $warning;
 
   &:hover {
-    color: $g-900;
+    color: $white;
     background-color: $warning;
-    border: 2px solid $warning;
+    border: 1px solid $warning;
     box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &:focus {
-    color: $g-900;
+    color: $white;
     background-color: $warning;
-    border: 2px solid $warning;
+    border: 1px solid $warning;
     box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &:active {
-    color: $g-900;
+    color: $white;
     background-color: $warning;
-    border: 2px solid $warning;
+    border: 1px solid $warning;
     box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &.active {
-    color: $g-900;
+    color: $white;
     background-color: $warning;
-    border: 2px solid $warning;
+    border: 1px solid $warning;
     box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
   }
 
   &.disabled {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
 
     &:hover {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &:focus {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &:active {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &.active {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
   }
 
@@ -508,85 +512,85 @@
 
 .btn-warning[disabled] {
   background-color: $g-400;
-  border: 2px solid $g-400;
+  border: 1px solid $g-400;
 
   &:hover {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &:focus {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &:active {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &.active {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 }
 
 .btn-danger {
-  color: $g-900;
+  color: $white;
   background-color: $error;
-  border: 2px solid $error;
+  border: 1px solid $error;
   border-radius: 4px;
 
   &:hover {
-    color: $g-900;
+    color: $white;
     background-color: $error;
-    border: 2px solid $error;
+    border: 1px solid $error;
     box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &:focus {
-    color: $g-900;
+    color: $white;
     background-color: $error;
-    border: 2px solid $error;
+    border: 1px solid $error;
     box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &:active {
-    color: $g-900;
+    color: $white;
     background-color: $error;
-    border: 2px solid $error;
+    border: 1px solid $error;
     box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &.active {
-    color: $g-900;
+    color: $white;
     background-color: $error;
-    border: 2px solid $error;
+    border: 1px solid $error;
     box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
 
   &.disabled {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
 
     &:hover {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &:focus {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &:active {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
 
     &.active {
       background-color: $g-400;
-      border: 2px solid $g-400;
+      border: 1px solid $g-400;
     }
   }
 
@@ -598,39 +602,39 @@
 
 .btn-danger[disabled] {
   background-color: $g-400;
-  border: 2px solid $g-400;
+  border: 1px solid $g-400;
 
   &:hover {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &:focus {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &:active {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 
   &.active {
     background-color: $g-400;
-    border: 2px solid $g-400;
+    border: 1px solid $g-400;
   }
 }
 
 // btn-link should be outsourced to links.scss or whatever it will be called
 .btn-link {
-  color: $action;
+  color: $active-green;
 
   &:hover {
-    color: $action;
+    color: $active-green;
   }
 
   &:focus {
-    color: $action;
+    color: $active-green;
   }
 }
 
@@ -708,7 +712,7 @@
   min-height: $btn-height-lg;
   //padding: 12px;
   font-size: $btn-font-size;
-  line-height: $line-height-20;
+  line-height: $line-height-28;
   border-radius: 4px;
 }
 
@@ -716,7 +720,7 @@
   min-height: $btn-height-xl;
   //padding: 12px 16px;
   font-size: $btn-font-size;
-  line-height: $line-height-20;
+  line-height: $line-height-38;
   border-radius: 4px;
 }
 
@@ -812,7 +816,7 @@
   filter: alpha(opacity=65);
   -webkit-box-shadow: none;
   box-shadow: none;
-  border: 2px solid #cccccc;
+  border: 1px solid #cccccc;
 }
 
 body.onStatistics .btn {
@@ -825,4 +829,8 @@ body.onStatistics .btn {
   position       : absolute;
   clip           : rect(0, 0, 0, 0);
   pointer-events : none;
+}
+
+.btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
+  color: $white;
 }
