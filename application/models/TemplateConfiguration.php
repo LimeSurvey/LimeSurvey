@@ -472,8 +472,9 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Retrieves a list of models based on the current search/filter conditions.
      *
+     * @param integer $gsid Survey group, else get global
      * @return CActiveDataProvider
      * @throws Exception
      */
@@ -492,8 +493,8 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->addCondition('t.sid IS NULL');
         $criteria->addCondition('template.name IS NOT NULL');
 
-        // check if survey group id is present
         if ($gsid !== null) {
+            /* Group configuration */
             $criteria->compare('t.gsid', $gsid);
         } else {
             /* Global configuration */

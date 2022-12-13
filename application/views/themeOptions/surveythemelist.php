@@ -14,7 +14,7 @@
             true,
             false);
         $this->widget('bootstrap.widgets.TbGridView', array(
-            'dataProvider' => $oSurveyTheme->searchGrid($SurveysGroup->gsid),
+            'dataProvider' => $oSurveyTheme->searchGrid($SurveysGroup->gsid ?? null),
             'filter'       => $oSurveyTheme,
             'id'           => 'themeoptions-grid',
             'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
