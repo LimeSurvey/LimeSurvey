@@ -49,15 +49,6 @@ class CLSGridView extends TbGridView
      *
      * @return void
      */
-    public function renderContent()
-    {
-        // $scrollBars = '<div id="bottom-scroller" class="content-right scrolling-wrapper">';
-        // echo $scrollBars;
-
-        parent::renderContent();
-
-        // echo '</div>';
-    }
 
     /**
      * Creates column objects and initializes them.
