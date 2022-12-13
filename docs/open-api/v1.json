@@ -5,110 +5,6 @@
         "version": "1.0"
     },
     "paths": {
-        "/rest/v1/questionGroup": {
-            "get": {
-                "tags": [
-                    "Question Group"
-                ],
-                "summary": "Get question group list",
-                "description": "Get question group list",
-                "parameters": [
-                    {
-                        "parameter": "surveyID",
-                        "name": "surveyID",
-                        "in": "query",
-                        "description": "Survey id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "parameter": "language",
-                        "name": "language",
-                        "in": "query",
-                        "description": "Language",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/question_group_list"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Question Group"
-                ],
-                "summary": "Create question group",
-                "description": "Create question group",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "surveyID",
-                                    "groupTitle",
-                                    "groupDescription"
-                                ],
-                                "properties": {
-                                    "surveyID": {
-                                        "type": "string"
-                                    },
-                                    "groupTitle": {
-                                        "type": "string"
-                                    },
-                                    "groupDescription": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            },
-                            "example": {
-                                "surveyID": "1",
-                                "groupTitle": "Test Group",
-                                "groupDescription": "This is a test group"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/rest/v1/questionGroup/{id}": {
             "get": {
                 "tags": [
@@ -355,13 +251,13 @@
                 ]
             }
         },
-        "/rest/v1/question": {
+        "/rest/v1/questionGroup": {
             "get": {
                 "tags": [
-                    "Question"
+                    "Question Group"
                 ],
-                "summary": "Get question list",
-                "description": "Get question list",
+                "summary": "Get question group list",
+                "description": "Get question group list",
                 "parameters": [
                     {
                         "parameter": "surveyID",
@@ -374,34 +270,11 @@
                         }
                     },
                     {
-                        "parameter": "groupID",
-                        "name": "groupID",
-                        "in": "query",
-                        "description": "Group id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "parameter": "questionSettings",
-                        "name": "questionSettings",
-                        "in": "query",
-                        "description": "Question settings",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    {
                         "parameter": "language",
                         "name": "language",
                         "in": "query",
                         "description": "Language",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
@@ -413,7 +286,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/question_list"
+                                    "$ref": "#/components/schemas/question_group_list"
                                 }
                             }
                         }
@@ -436,40 +309,27 @@
             },
             "post": {
                 "tags": [
-                    "Question"
+                    "Question Group"
                 ],
-                "summary": "Create question",
-                "description": "Create question",
+                "summary": "Create question group",
+                "description": "Create question group",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
                                     "surveyID",
-                                    "groupID",
-                                    "newQuestionTitle",
-                                    "newQuestion"
+                                    "groupTitle",
+                                    "groupDescription"
                                 ],
                                 "properties": {
                                     "surveyID": {
                                         "type": "string"
                                     },
-                                    "groupID": {
+                                    "groupTitle": {
                                         "type": "string"
                                     },
-                                    "importData": {
-                                        "type": "string"
-                                    },
-                                    "importDataType": {
-                                        "type": "string"
-                                    },
-                                    "newQuestionTitle": {
-                                        "type": "string"
-                                    },
-                                    "newQuestion": {
-                                        "type": "string"
-                                    },
-                                    "newQuestionHelp": {
+                                    "groupDescription": {
                                         "type": "string"
                                     }
                                 },
@@ -477,35 +337,15 @@
                             },
                             "example": {
                                 "surveyID": "1",
-                                "groupID": "1",
-                                "newQuestionTitle": "In what country do you live?",
-                                "newQuestion": "In what country do you live?",
-                                "newQuestionHelp": "In what country do you live?"
+                                "groupTitle": "Test Group",
+                                "groupDescription": "This is a test group"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/response_status"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
+                        "description": "Success"
                     }
                 },
                 "security": [
@@ -682,6 +522,166 @@
                     },
                     "404": {
                         "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rest/v1/question": {
+            "get": {
+                "tags": [
+                    "Question"
+                ],
+                "summary": "Get question list",
+                "description": "Get question list",
+                "parameters": [
+                    {
+                        "parameter": "surveyID",
+                        "name": "surveyID",
+                        "in": "query",
+                        "description": "Survey id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "groupID",
+                        "name": "groupID",
+                        "in": "query",
+                        "description": "Group id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "parameter": "questionSettings",
+                        "name": "questionSettings",
+                        "in": "query",
+                        "description": "Question settings",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "parameter": "language",
+                        "name": "language",
+                        "in": "query",
+                        "description": "Language",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/question_list"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Question"
+                ],
+                "summary": "Create question",
+                "description": "Create question",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "surveyID",
+                                    "groupID",
+                                    "newQuestionTitle",
+                                    "newQuestion"
+                                ],
+                                "properties": {
+                                    "surveyID": {
+                                        "type": "string"
+                                    },
+                                    "groupID": {
+                                        "type": "string"
+                                    },
+                                    "importData": {
+                                        "type": "string"
+                                    },
+                                    "importDataType": {
+                                        "type": "string"
+                                    },
+                                    "newQuestionTitle": {
+                                        "type": "string"
+                                    },
+                                    "newQuestion": {
+                                        "type": "string"
+                                    },
+                                    "newQuestionHelp": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "surveyID": "1",
+                                "groupID": "1",
+                                "newQuestionTitle": "In what country do you live?",
+                                "newQuestion": "In what country do you live?",
+                                "newQuestionHelp": "In what country do you live?"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/response_status"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
                     }
                 },
                 "security": [

@@ -90,10 +90,10 @@
                         }
                     },
                     {
-                        "parameter": "limit",
-                        "name": "limit",
+                        "parameter": "pageSize",
+                        "name": "pageSize",
                         "in": "query",
-                        "description": "Limit",
+                        "description": "pageSize",
                         "required": false,
                         "allowReserved": true,
                         "schema": {
