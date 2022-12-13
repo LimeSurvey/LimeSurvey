@@ -375,8 +375,9 @@ export default {
                                     >
                                         &nbsp;
                                     </i>
+                                    <!-- :href=" 'http://'+ 'localhost:3000'" -->
+                                    <!-- :href="question.link" -->
                                 <a
-                                    :href="question.link"
                                     class="col-9 pjax question-question-list-item-link display-as-container ls-text-underline-hover"
                                     @click.stop.prevent="openQuestion(question)"
                                 >
