@@ -81,6 +81,7 @@
 		"openapi-v1": "./vendor/bin/openapi ./application/config/rest/v1 -l -o ./docs/open-api/v1.json",
 		"openapi-v2": "./vendor/bin/openapi ./application/config/rest/v2 -l -o ./docs/open-api/v2.json",
 		"phpunit": "./vendor/bin/phpunit --testdox --coverage-text",
+		"phpunit-api": "./vendor/bin/phpunit --testdox --coverage-text tests/unit/api/",
 		"test": [
             "./tests/bin/lint-tests",
             "./tests/bin/lint-application",
@@ -100,7 +101,7 @@
 			"./vendor/bin/phpmd application/models/ArchivedTableSettings.php text tests/rulesets/phpmd_ruleset.xml",
 			"./vendor/bin/phpmd application/libraries/PluginManager text tests/rulesets/phpmd_ruleset.xml",
 			"./vendor/bin/phpmd application/controllers/SurveyAdministrationController.php text tests/rulesets/phpmd_ruleset.xml",
-			"./vendor/bin/phpmd application/controllers/rest/ text tests/rulesets/phpmd_ruleset_strict.xml",
+			"./vendor/bin/phpmd application/controllers/RestController.php text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/libraries/ExtensionInstaller/ text tests/rulesets/phpmd_ruleset.xml",
 			"./vendor/bin/phpmd application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php text tests/rulesets/phpmd_ruleset_strict.xml",
 			"./vendor/bin/phpmd application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php text tests/rulesets/phpmd_ruleset_strict.xml",
