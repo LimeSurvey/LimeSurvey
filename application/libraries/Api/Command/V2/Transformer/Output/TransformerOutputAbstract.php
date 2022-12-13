@@ -21,9 +21,9 @@ abstract class TransformerOutputAbstract implements TransformerOutputInterface
 
     public function transformAll($array)
     {
-        return array_map( function($data){
+        return is_array($array) ? array_map( function ($data) {
             return $this->transform($data);
-        }, $array);
+        }, $array) : null;
     }
 
     protected function getDataMap()

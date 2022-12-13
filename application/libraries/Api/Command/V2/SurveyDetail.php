@@ -11,6 +11,7 @@ use LimeSurvey\Api\Command\Mixin\CommandResponse;
 use LimeSurvey\Api\Command\V2\Transformer\Output\TransformerOutputSurveyDetail;
 use LimeSurvey\Api\Command\V2\Transformer\Output\TransformerOutputQuestionGroup;
 use LimeSurvey\Api\Command\V2\Transformer\Output\TransformerOutputQuestion;
+use LimeSurvey\Api\Command\V2\Transformer\Output\TransformerOutputQuestionAttribute;
 
 class SurveyDetail implements CommandInterface
 {
@@ -43,6 +44,7 @@ class SurveyDetail implements CommandInterface
                 'groups.questions',
                 'groups.questions.questionl10ns',
                 'groups.questions.answers',
+                'groups.questions.questionattributes'
                 //'groups.questions.subquestions' // Integrity constraint violation: 1052 Column 'parent_qid' in where clause is ambiguous
             )->findByPk($surveyId);
 
@@ -63,16 +65,27 @@ class SurveyDetail implements CommandInterface
 
         $survey['languages'] = $surveyModel->allLanguages;
 
-        $transformerQuestionGroup = new TransformerOutputQuestionGroup();
-        $transformerQuestion = new TransformerOutputQuestion();
-
-        $survey['questionGroups'] = $transformerQuestionGroup->transformAll(
+        $survey['questionGroups'] = (
+            new TransformerOutputQuestionGroup()
+        )->transformAll(
             $surveyModel->groups
         );
-        foreach ($surveyModel->groups as $key => $questionGroup) {
-            $survey['questionGroups'][$key]['questions'] = $transformerQuestion->transformAll(
-                $questionGroup->questions
+
+        $transformerQuestion = new TransformerOutputQuestion();
+        $transformerQuestionAttribute = new TransformerOutputQuestionAttribute();
+        foreach ($surveyModel->groups as $groupKey => $questionGroupModel) {
+            $survey['questionGroups'][$groupKey]['questions'] = $transformerQuestion->transformAll(
+                $questionGroupModel->questions
             );
+
+            foreach ($questionGroupModel->questions as $questionKey => $questionModel) {
+                $question = &$survey['questionGroups'][$groupKey]['questions'][$questionKey];
+                $question['attributes'] = $transformerQuestionAttribute->transformAll(
+                    // questionattributes is returned as an associative array keyed on 'attribute'
+                    // - so we need to call array_values to get the array of QuestionAttribute models
+                    array_values($questionModel->questionattributes)
+                );
+            }
         }
 
         return $survey;
