@@ -6,6 +6,17 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
 {
+    public function __construct()
+    {
+        $this->setDataMap([
+            'gid' => true,
+            'sid' => true,
+            'group_order' => true,
+            'randomization_group' => true,
+            'grelevance' => true
+        ]);
+    }
+
     public function transformAll($array)
     {
         $array = parent::transformAll($array);
@@ -15,16 +26,5 @@ class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
         });
 
         return $array;
-    }
-
-    protected function getDataMap()
-    {
-        return [
-            'gid' => true,
-            'sid' => true,
-            'group_order' => true,
-            'randomization_group' => true,
-            'grelevance' => true
-        ];
     }
 }

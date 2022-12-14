@@ -6,9 +6,9 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
-    protected function getDataMap()
+    public function __construct()
     {
-        return [
+        $this->setDataMap([
             'sid' => true,
             'gsid' => true,
             'active' => true,
@@ -63,6 +63,6 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "googleanalyticsstyle" => true,
             "googleanalyticsapikey" => true,
             "showsurveypolicynotice" => true,
-        ];
+        ]);
     }
 }

@@ -6,20 +6,9 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 class TransformerOutputQuestion extends TransformerOutputActiveRecord
 {
-    public function transformAll($array)
+    public function __construct()
     {
-        $array = parent::transformAll($array);
-
-        usort($array,function($a, $b){
-            return ((int)$a['question_order']) > ((int)$b['question_order']);
-        });
-
-        return $array;
-    }
-
-    protected function getDataMap()
-    {
-        return [
+        $this->setDataMap([
             'qid' => true,
             'parent_qid' => true,
             'sid' => true,
@@ -37,6 +26,17 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             'gid' => true,
             'relevance' => true,
             'same_script' => true,
-        ];
+        ]);
+    }
+
+    public function transformAll($array)
+    {
+        $array = parent::transformAll($array);
+
+        usort($array,function($a, $b){
+            return ((int)$a['question_order']) > ((int)$b['question_order']);
+        });
+
+        return $array;
     }
 }

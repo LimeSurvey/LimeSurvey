@@ -6,13 +6,13 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 class TransformerOutputQuestionAttribute extends TransformerOutputActiveRecord
 {
-    protected function getDataMap()
+    public function __construct()
     {
-        return [
+        $this->setDataMap([
             'qaid' => true,
             'attribute' => true,
             'value' => true,
             'language' => true
-        ];
+        ]);
     }
 }

@@ -2,8 +2,16 @@
 
 namespace LimeSurvey\Api\Transformer\Output;
 
-abstract class TransformerOutput implements TransformerOutputInterface
+class TransformerOutput implements TransformerOutputInterface
 {
+    protected $dataMap = null;
+
+    /**
+     * Transform data
+     *
+     * @param mixed $data
+     * @return array
+     */
     public function transform($data)
     {
         $dataMap = $this->getDataMap();
@@ -19,15 +27,43 @@ abstract class TransformerOutput implements TransformerOutputInterface
         return $output;
     }
 
-    public function transformAll($array)
+    /**
+     * Transform array of data
+     *
+     * @param array $data
+     * @return array
+     */
+    public function transformAll(array $array)
     {
         return is_array($array) ? array_map( function ($data) {
             return $this->transform($data);
         }, $array) : null;
     }
 
-    protected function getDataMap()
+    /**
+     * Get data map
+     *
+     * @param array $dataMap
+     * @return array
+     */
+    public function getDataMap()
     {
-        return [];
+        return $this->dataMap ? $this->dataMap : [];
+    }
+
+    /**
+     * Set data map
+     *
+     * Data map is an associative array.
+     * Key is the key in the source data and value is either boolean true
+     * - to include the data as is or a a string field name to map the value
+     * - to in the output.
+     *
+     * @param array $dataMap
+     * @return void
+     */
+    public function setDataMap(array $dataMap)
+    {
+        $this->dataMap = $dataMap;
     }
 }

@@ -6,14 +6,14 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
 class TransformerOutputQuestionGroupL10ns extends TransformerOutputActiveRecord
 {
-    protected function getDataMap()
+    public function __construct()
     {
-        return [
+        $this->setDataMap([
             'id' => true,
             'gid' => true,
             'group_name' => true,
             'description' => true,
             'language' => true
-        ];
+        ]);
     }
 }
