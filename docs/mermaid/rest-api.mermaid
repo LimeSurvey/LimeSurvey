@@ -1,0 +1,81 @@
+classDiagram
+
+class RestController
+RestController --* RestEndpointFactory : composes
+RestController --* RestEndpoint : composes
+RestController : run() void
+
+class RestEndpointFactory
+RestEndpointFactory : create(YiiRequest) RestEndpoint
+
+class RestEndpoint
+RestEndpoint --* CommandInterface : composes
+RestEndpoint --* RestRendererInterface : composes
+RestEndpoint : getResponseRenderer() RestRendererInterface
+RestEndpoint : getCommand() CommandInterface
+RestEndpoint : runCommand() Response
+
+class CommandInterface
+<<interface>> CommandInterface
+CommandInterface --* TransformerOutputInterface : composes
+CommandInterface --* TransformerInputInterface : composes
+CommandInterface : run(Request) Response
+
+class V1CommandA
+CommandInterface <|-- V1CommandA : implements
+
+class V1CommandB
+CommandInterface <|-- V1CommandB : implements
+
+class V2CommandA
+CommandInterface <|-- V2CommandA : implements
+
+class V2CommandB
+CommandInterface <|-- V2CommandB : implements
+
+
+class RestRendererInterface
+<<interface>> RestRendererInterface
+RestRendererInterface : returnResponse(Response) void
+RestRendererInterface : returnException(Exception) void
+
+class RestRendererV1
+RestRendererInterface <|-- RestRendererV1 : implements
+RestRendererV1 : returnResponse(Response) void
+RestRendererV1 : returnException(Exception) void
+
+class RestRendererV2
+RestRendererInterface <|-- RestRendererV2 : implements
+RestRendererV2 : returnResponse(Response) void
+RestRendererV2 : returnException(Exception) void
+
+class TransformerOutputInterface
+<<interface>> TransformerOutputInterface
+TransformerOutputInterface : transform(array) array
+TransformerOutputInterface : transformAll(array) array
+
+class TransformerInputInterface
+<<interface>> TransformerInputInterface
+TransformerInputInterface : transform(array) array
+TransformerInputInterface : transformAll(array) array
+
+class TransformerInputA
+TransformerInputInterface <|-- TransformerInputA : implements
+
+class TransformerInputB
+TransformerInputInterface <|-- TransformerInputB : implements
+
+class TransformerOutputAbstract
+TransformerOutputInterface <|-- TransformerOutputAbstract : implements
+TransformerOutputAbstract : transform(array) array
+TransformerOutputAbstract : transformAll(array) array
+
+class TransformerOutputActiveRecordAbstract
+TransformerOutputAbstract --|> TransformerOutputActiveRecordAbstract
+
+class TransformerOutputA
+TransformerOutputActiveRecordAbstract --|> TransformerOutputA
+
+class TransformerOutputB
+TransformerOutputActiveRecordAbstract --|> TransformerOutputB
+
