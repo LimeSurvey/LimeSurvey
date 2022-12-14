@@ -367,8 +367,8 @@ class ThemeOptionsController extends LSBaseController
             if (empty($gsid)) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
-            $oSurveysInGroup = SurveysInGroup::model()->findByPk($gsid);
-            if (empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
+            $oSurveysGroups = SurveysGroups::model()->findByPk($gsid);
+            if (empty($oSurveysGroups) || !$oSurveysGroups->hasPermission('surveysettings', 'update')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
         }
@@ -623,8 +623,8 @@ class ThemeOptionsController extends LSBaseController
             if (empty($gsid)) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
-            $oSurveysInGroup = SurveysInGroup::model()->findByPk($gsid);
-            if (empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
+            $oSurveysGroups = SurveysGroups::model()->findByPk($gsid);
+            if (empty($oSurveysGroups) || !$oSurveysGroups->hasPermission('surveysettings', 'update')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
         }
