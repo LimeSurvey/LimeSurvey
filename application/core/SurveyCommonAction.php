@@ -479,7 +479,10 @@ class SurveyCommonAction extends CAction
             }
 
             // Count active survey
-            $aData['dataForConfigMenu']['activesurveyscount'] = $aData['activesurveyscount'] = Survey::model()->withListRight()->active()->count();
+            $aData['dataForConfigMenu']['activesurveyscount'] = $aData['activesurveyscount'] = Survey::model()
+                ->withListRight()
+                ->active()
+                ->count();
 
             // Count survey
             $aData['dataForConfigMenu']['surveyscount'] = Survey::model()->count();

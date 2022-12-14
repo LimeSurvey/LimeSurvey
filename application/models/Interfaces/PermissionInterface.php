@@ -36,7 +36,8 @@ interface PermissionInterface
     /**
      * Get the permission of current model
      * @param string $sPermission Name of the permission
-     * @param string $sCRUD The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param string $sCRUD The permission detail you want to check on:
+     *  available value : 'create','read','update','delete','import' or 'export'
      * @param integer $iUserID User ID - if not given the one of the current user is used
      * @return boolean
      */
