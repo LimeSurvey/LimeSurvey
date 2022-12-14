@@ -212,8 +212,10 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 	})($);
 
 	/*************************************************
- 			BOOTSTRAP-SLIDER SOURCE CODE
- 	**************************************************/
+ 
+ 		BOOTSTRAP-SLIDER SOURCE CODE
+ 
+ **************************************************/
 
 	(function ($) {
 		var autoRegisterNamespace = void 0;
@@ -323,8 +325,8 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 		};
 
 		/*************************************************
-  						CONSTRUCTOR
-  	**************************************************/
+  							CONSTRUCTOR
+  		**************************************************/
 		Slider = function Slider(element, options) {
 			createNewSlider.call(this, element, options);
 			return this;
@@ -358,8 +360,8 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 			}
 
 			/*************************************************
-   					Process Options
-   	**************************************************/
+   						Process Options
+   		**************************************************/
 			options = options ? options : {};
 			var optionTypes = Object.keys(this.defaultOptions);
 
@@ -411,11 +413,11 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
    */
 			if (this.options.orientation === "vertical" && (this.options.tooltip_position === "top" || this.options.tooltip_position === "bottom")) {
 				if (this.options.rtl) {
-					this.options.tooltip_position = "left";
+					this.options.tooltip_position = "start";
 				} else {
-					this.options.tooltip_position = "right";
+					this.options.tooltip_position = "end";
 				}
-			} else if (this.options.orientation === "horizontal" && (this.options.tooltip_position === "left" || this.options.tooltip_position === "right")) {
+			} else if (this.options.orientation === "horizontal" && (this.options.tooltip_position === "start" || this.options.tooltip_position === "end")) {
 
 				this.options.tooltip_position = "top";
 			}
@@ -432,8 +434,8 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 			}
 
 			/*************************************************
-   					Create Markup
-   	**************************************************/
+   						Create Markup
+   		**************************************************/
 
 			var origWidth = this.element.style.width;
 			var updateSlider = false;
@@ -604,8 +606,8 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 			}
 
 			/*************************************************
-   						Setup
-   	**************************************************/
+   							Setup
+   		**************************************************/
 			this.eventToCallbackMap = {};
 			this.sliderElem.id = this.options.id;
 
@@ -652,12 +654,12 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 
 				// Undo inline styles and classes on tooltips
 				[this.tooltip, this.tooltip_min, this.tooltip_max].forEach(function (tooltip) {
-					this._removeProperty(tooltip, 'bs-tooltip-left');
-					this._removeProperty(tooltip, 'bs-tooltip-right');
+					this._removeProperty(tooltip, 'bs-tooltip-start');
+					this._removeProperty(tooltip, 'bs-tooltip-end');
 					this._removeProperty(tooltip, 'bs-tooltip-top');
 
-					this._removeClass(tooltip, 'bs-tooltip-right');
-					this._removeClass(tooltip, 'bs-tooltip-left');
+					this._removeClass(tooltip, 'bs-tooltip-end');
+					this._removeClass(tooltip, 'bs-tooltip-start');
 					this._removeClass(tooltip, 'bs-tooltip-top');
 				}, this);
 			}
@@ -747,8 +749,8 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 			this.setValue(this._state.value);
 
 			/******************************************
-   				Bind Event Listeners
-   	******************************************/
+   					Bind Event Listeners
+   		******************************************/
 
 			// Bind keyboard handlers
 			this.handle1Keydown = this._keydown.bind(this, 0);
@@ -836,10 +838,10 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 		}
 
 		/*************************************************
-  				INSTANCE PROPERTIES/METHODS
-  	- Any methods bound to the prototype are considered
+  					INSTANCE PROPERTIES/METHODS
+  		- Any methods bound to the prototype are considered
   part of the plugin's `public` interface
-  	**************************************************/
+  		**************************************************/
 		Slider.prototype = {
 			_init: function _init() {}, // NOTE: Must exist to support bridget
 
@@ -1074,11 +1076,11 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 			},
 
 			/******************************+
-   				HELPERS
-   	- Any method that is not part of the public interface.
+   					HELPERS
+   		- Any method that is not part of the public interface.
    - Place it underneath this comment block and write its signature like so:
-   		_fnName : function() {...}
-   	********************************/
+   			_fnName : function() {...}
+   		********************************/
 			_removeTooltipListener: function _removeTooltipListener(event, handler) {
 				this.handle1.removeEventListener(event, handler, false);
 				this.handle2.removeEventListener(event, handler, false);
@@ -1990,12 +1992,12 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 						tooltipPos = this.options.tooltip_position;
 					} else {
 						if (this.options.rtl) {
-							tooltipPos = 'left';
+							tooltipPos = 'start';
 						} else {
-							tooltipPos = 'right';
+							tooltipPos = 'end';
 						}
 					}
-					var oppositeSide = tooltipPos === 'left' ? 'right' : 'left';
+					var oppositeSide = tooltipPos === 'start' ? 'end' : 'start';
 					tooltips.forEach(function (tooltip) {
 						this._addClass(tooltip, 'bs-tooltip-' + tooltipPos);
 						tooltip.style[oppositeSide] = '100%';
@@ -2036,8 +2038,8 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 		};
 
 		/*********************************
-  		Attach to global namespace
-  	*********************************/
+  			Attach to global namespace
+  		*********************************/
 		if ($ && $.fn) {
 			if (!$.fn.slider) {
 				$.bridget(NAMESPACE_MAIN, Slider);

@@ -108,6 +108,12 @@
   height: 210px;
   width: 20px;
 }
+.slider.slider-vertical .bs-tooltip-start {
+  right: 100%;
+}
+.slider.slider-vertical .bs-tooltip-end {
+  left: 100%;
+}
 .slider.slider-vertical .slider-track {
   width: 10px;
   height: 100%;
@@ -187,16 +193,12 @@
   white-space: nowrap;
   max-width: none;
 }
-.slider .bs-tooltip-top,
-.slider .bs-tooltip-bottom {
-  /*position: relative;*/
-}
 .slider .bs-tooltip-top .tooltip-inner,
 .slider .bs-tooltip-bottom .tooltip-inner {
   position: relative;
   left: -50%;
 }
-.slider.bs-tooltip-left .tooltip-inner, .slider.bs-tooltip-right .tooltip-inner {
+.slider.bs-tooltip-start .tooltip-inner, .slider.bs-tooltip-end .tooltip-inner {
   position: relative;
   top: -100%;
 }
@@ -213,10 +215,10 @@
 .slider .tooltip.bs-tooltip-bottom {
   margin-top: 2px;
 }
-.slider .tooltip.bs-tooltip-left, .slider .tooltip.bs-tooltip-right {
+.slider .tooltip.bs-tooltip-start, .slider .tooltip.bs-tooltip-end {
   margin-top: -14px;
 }
-.slider .tooltip.bs-tooltip-left .tooltip-arrow, .slider .tooltip.bs-tooltip-right .tooltip-arrow {
+.slider .tooltip.bs-tooltip-start .tooltip-arrow, .slider .tooltip.bs-tooltip-end .tooltip-arrow {
   position: absolute;
   top: 8px;
 }
