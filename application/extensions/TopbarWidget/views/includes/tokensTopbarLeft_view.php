@@ -32,7 +32,7 @@
 <?php if ($hasTokensUpdatePermission || $hasSurveySettingsUpdatePermission): ?>
     <div class="d-inline-flex">
         <a class="btn btn-outline-secondary pjax" href='<?php echo Yii::App()->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$oSurvey->sid"); ?>' role="button">
-            <span class="icon-token_manage"></span>
+            <span class="ri-server-fill"></span>
             <?php eT("Manage attributes"); ?>
         </a>
     </div>
@@ -42,7 +42,7 @@
 <?php if ($hasTokensExportPermission): ?>
     <div class="d-inline-flex">
         <a class="btn btn-outline-secondary pjax" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/exportdialog/surveyid/$oSurvey->sid"); ?>" role="button">
-            <span class="icon-exportcsv"></span>
+            <span class="ri-download-fill"></span>
             <?php eT("Export"); ?>
         </a>
     </div>
@@ -69,7 +69,7 @@
     <div class="d-inline-flex">
         <!-- Generate tokens -->
         <a class="btn btn-outline-secondary" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/tokenify/surveyid/$oSurvey->sid"); ?>" role="button">
-            <span class="icon-do"></span>
+            <span class="ri-settings-5-fill"></span>
             <?php eT("Generate tokens"); ?>
         </a>
     </div>
