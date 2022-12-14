@@ -478,7 +478,7 @@ class TemplateConfiguration extends TemplateConfig
      * @return CActiveDataProvider
      * @throws Exception
      */
-    public function searchGrid($gsid = null)
+    public function searchGrid(?int $gsid = null)
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
