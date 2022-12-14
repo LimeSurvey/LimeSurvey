@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Api\Command\V2\Transformer\Output;
+namespace LimeSurvey\Api\Transformer\Output;
 
 interface TransformerOutputInterface
 {

@@ -2,8 +2,21 @@
 
 namespace LimeSurvey\Api\Command\V2\Transformer\Output;
 
+use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecordAbstract;
+
 class TransformerOutputQuestion extends TransformerOutputActiveRecordAbstract
 {
+    public function transformAll($array)
+    {
+        $array = parent::transformAll($array);
+
+        usort($array,function($a, $b){
+            return ((int)$a['question_order']) > ((int)$b['question_order']);
+        });
+
+        return $array;
+    }
+
     protected function getDataMap()
     {
         return [
