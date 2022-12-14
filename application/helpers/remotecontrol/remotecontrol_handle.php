@@ -2203,7 +2203,7 @@ class remotecontrol_handle
                                 $value = $valueOrTuple[1];
                                 $oCriteria->compare($columnName, $operator . $value);
                             }
-                        } elseif (is_string($valueOrTuple)) {
+                        } elseif (is_string($valueOrTuple) || is_null($valueOrTuple)) {
                             if (array_key_exists($columnName, $aConditionFields)) {
                                 $aAttributeValues[$columnName] = $valueOrTuple;
                             }

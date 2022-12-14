@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.4.14 (build 221205) to 5.4.15 (build 221212) December 12, 2022
+-Fixed issue #14310: Google Analytics functionality doesn't work (#2762) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.4.13 (build 221128) to 5.4.14 (build 221205) December 5, 2022
 -Fixed issue #18337: Placeholders VALIDFROM and VALIDUNTIL at email templates do not use localized dates (#2591) (Gabriel Jenik)
 -Fixed issue #18250: Admin CSS hide logic file part (#2657) (Gabriel Jenik)

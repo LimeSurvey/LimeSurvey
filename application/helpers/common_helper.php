@@ -788,6 +788,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $thissurvey['email_register'] = $thissurvey['surveyls_email_register'];
             $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
             $thissurvey['attributecaptions'] = $result->attributeCaptions;
+            $thissurvey['googleanalyticsapikey'] = $oSurvey->getGoogleanalyticsapikey();
             if (!isset($thissurvey['adminname'])) {
                 $thissurvey['adminname'] = Yii::app()->getConfig('siteadminemail');
             }
@@ -805,6 +806,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             } else {
                 $thissurvey['owner_username'] = '';
             }
+            
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
