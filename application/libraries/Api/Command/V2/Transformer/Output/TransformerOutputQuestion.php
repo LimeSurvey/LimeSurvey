@@ -2,9 +2,9 @@
 
 namespace LimeSurvey\Api\Command\V2\Transformer\Output;
 
-use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecordAbstract;
+use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 
-class TransformerOutputQuestion extends TransformerOutputActiveRecordAbstract
+class TransformerOutputQuestion extends TransformerOutputActiveRecord
 {
     public function transformAll($array)
     {

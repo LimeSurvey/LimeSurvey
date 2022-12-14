@@ -4,7 +4,7 @@ namespace LimeSurvey\Api\Transformer\Output;
 
 use CActiveRecord;
 
-abstract class TransformerOutputActiveRecordAbstract extends TransformerOutputAbstract
+abstract class TransformerOutputActiveRecord extends TransformerOutput
 {
     public function transform($data)
     {

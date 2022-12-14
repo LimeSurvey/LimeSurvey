@@ -9,8 +9,9 @@ use Yii;
 
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\Status\StatusAbstract;
+use LimeSurvey\Api\Rest\Renderer\RestRendererInterface;
 
-class RestRendererV1
+class RestRendererV1 implements RestRendererInterface
 {
     public function returnResponse(Response $response)
     {

@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Api\Transformer\Output;
 
-abstract class TransformerOutputAbstract implements TransformerOutputInterface
+abstract class TransformerOutput implements TransformerOutputInterface
 {
     public function transform($data)
     {
