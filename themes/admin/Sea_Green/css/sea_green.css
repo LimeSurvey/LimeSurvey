@@ -19015,3 +19015,7 @@ footer.footer {
   color: inherit;
   text-align: center;
 }
+
+[class^=ri-], [class*=" ri-"] {
+  vertical-align: middle;
+}
