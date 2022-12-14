@@ -172,28 +172,32 @@ function isStandardTemplate($sTemplateName)
 */
 function getSurveyList($bReturnArray = false)
 {
-    static $cached = null;
+    static $static = null;
     $bCheckIntegrity = false;
     $timeadjust = getGlobalSetting('timeadjust');
     App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
     $surveynames = array();
 
-    if (is_null($cached)) {
+    if (is_null($static)) {
+        $criteria = new CDBCriteria();
+        $criteria->select = array(
+            'sid','owner_id','active','expires'
+        );
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
-            ->with('languagesettings')
-            ->findAll();
+            ->with('defaultlanguagetitle')
+            ->findAll($criteria);
         foreach ($surveyidresult as $result) {
-            $surveynames[] = array_merge($result->attributes, $result->languagesettings[$result->language]->attributes);
+            $surveynames[] = array_merge($result->attributes, $result->defaultlanguagetitle->attributes);
         }
 
         usort($surveynames, function($a, $b)
         {
-                return strcmp($a['surveyls_title'], $b['surveyls_title']);
+            return strcmp($a['surveyls_title'], $b['surveyls_title']);
         });
-        $cached = $surveynames;
+        $static = $surveynames;
     } else {
-        $surveynames = $cached;
+        $surveynames = $static;
     }
     $surveyselecter = "";
     if ($bReturnArray === true) {
@@ -203,7 +207,6 @@ function getSurveyList($bReturnArray = false)
     $inactivesurveys = '';
     $expiredsurveys = '';
     foreach ($surveynames as $sv) {
-
         $surveylstitle = flattenText($sv['surveyls_title']);
         if (strlen($surveylstitle) > 70) {
             $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle, ENT_QUOTES, 'UTF-8'), 0, 70, 'UTF-8'))."...";
@@ -347,7 +350,7 @@ function convertGETtoPOST($url)
             function ($v, $k) {
                 return $k.'='.$v;
             },
-            $getArray, 
+            $getArray,
             array_keys($getArray)
         ));
     }
@@ -971,11 +974,11 @@ function groupOrderThenQuestionOrder($a, $b)
 /**
  * Shifts the sortorder for questions, creating extra spaces at the start of the group
  * This is an alias for updateQuestionOrder()
- * 
+ *
  * @param integer $sid SID is not needed anymore, but is left here for backward compatibility
  * @param integer $gid
  * @param integer $shiftvalue
- * 
+ *
  * @return void
  */
 function shiftOrderQuestions($sid, $gid, $shiftvalue)
@@ -988,9 +991,9 @@ function shiftOrderQuestions($sid, $gid, $shiftvalue)
 
 /**
  * Rewrites the sortorder for groups
- * 
+ *
  * @param integer $surveyid
- * 
+ *
  * @return void
  */
 function fixSortOrderGroups($surveyid)
@@ -3261,13 +3264,13 @@ function SSLRedirect($enforceSSLMode)
 */
 function enforceSSLMode()
 {
-    $bForceSSL = ''; // off 
+    $bForceSSL = ''; // off
     $bSSLActive = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") ||
     (isset($_SERVER['HTTP_FORWARDED_PROTO']) && $_SERVER['HTTP_FORWARDED_PROTO'] == "https") ||
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == "https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true) {
         $bForceSSL = strtolower(getGlobalSetting('force_ssl'));
-    } 
+    }
     if ($bForceSSL == 'on' && !$bSSLActive) {
         SSLRedirect('s');
     }
@@ -3804,11 +3807,11 @@ function fixLanguageConsistency($sid, $availlangs = '')
     $result = Yii::app()->db->createCommand($query)->queryColumn();
     foreach ($result as $questionID) {
         // Get the question in base language
-        $oQuestion=Question::model()->findByAttributes(array('qid'=>$questionID,'language'=>$baselang)); 
+        $oQuestion=Question::model()->findByAttributes(array('qid'=>$questionID,'language'=>$baselang));
         // Update the scale ID according to language
-        Yii::app()->db->createCommand()->update('{{questions}}',array('scale_id'=>$oQuestion->scale_id),'qid='.$questionID);   
+        Yii::app()->db->createCommand()->update('{{questions}}',array('scale_id'=>$oQuestion->scale_id),'qid='.$questionID);
     }
-    
+
     $quests = array();
     $query = "SELECT * FROM {{questions}} WHERE sid='{$sid}' AND language='{$baselang}' ORDER BY question_order";
     $result = Yii::app()->db->createCommand($query)->query()->readAll();
@@ -4745,7 +4748,7 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
  * This function tries to returns the 'real' IP address under all configurations
  * Do not rely security-wise on the detected IP address as except for REMOTE_ADDR all fields could be manipulated by the web client
  *
- * @return	string	Client's IP Address
+ * @return  string  Client's IP Address
  */
 function getIPAddress()
 {
@@ -5084,14 +5087,14 @@ function isZipBomb($zip_filename)
     $totalSize = 0;
     $zip = new ZipArchive();
     if ($zip->open($zip_filename) === true) {
-        
+
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $fileStats = $zip->statIndex($i);
             $totalSize += $fileStats['size'];
         }
-           
+
         $zip->close();
-    }        
+    }
     return ( $totalSize >  Yii::app()->getConfig('maximum_unzipped_size'));
 }
 
@@ -5127,7 +5130,7 @@ function get_zip_originalsize($filename)
 /**
  * PHP7 has created a little nasty bomb with count throwing erroros on uncountables
  * This is to "fix" this problem
- * 
+ *
  * @param mixed $element
  * @return integer counted element
  * @author

@@ -156,12 +156,9 @@ class Survey extends LSActiveRecord
      */
     protected $findByPkCache = array();
 
-
-
     public $searched_value;
 
     public $showsurveypolicynotice = 0;
-
 
     private $sSurveyUrl;
 
@@ -172,38 +169,45 @@ class Survey extends LSActiveRecord
     public function init()
     {
         /** @inheritdoc */
-
-        // Set the default values
-        $this->htmlemail = 'Y';
-        $this->format = 'G';
-
-        // Default setting is to use the global Google Analytics key If one exists
-        $globalKey = App()->getConfig('googleanalyticsapikey');
-        if ($globalKey != "") {
-            $this->googleanalyticsapikey = "9999useGlobal9999";
-            $this->googleanalyticsapikeysetting = "G";
+        if ($this->scenario == 'search') {
+            $this->gsid = null;
+            return;
         }
-        /* default template */
-        $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
-        /* default language */
-        $validator = new LSYii_Validators;
-        $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
-        /* default user */
-        $this->owner_id = 1;
-        $this->admin = App()->getConfig('siteadminname');
-        $this->adminemail = App()->getConfig('siteadminemail');
-        if(!(Yii::app() instanceof CConsoleApplication)) {
-            $iUserid = Permission::getUserId();
-            if($iUserid) {
-                $this->owner_id = $iUserid;
-                $oUser = User::model()->findByPk($iUserid);
-                if($oUser) {
-                    $this->admin = $oUser->full_name;
-                    $this->adminemail = $oUser->email;
+        if($this->scenario == 'insert') {
+            // Set the default values
+            $this->htmlemail = 'Y';
+            $this->format = 'G';
+
+            // Default setting is to use the global Google Analytics key If one exists
+            $globalKey = App()->getConfig('googleanalyticsapikey');
+            if ($globalKey != "") {
+                $this->googleanalyticsapikey = "9999useGlobal9999";
+                $this->googleanalyticsapikeysetting = "G";
+            }
+            /* default template */
+            $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
+            /* default language */
+            $validator = new LSYii_Validators;
+            $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
+            /* default user */
+            $this->owner_id = 1;
+            $this->admin = App()->getConfig('siteadminname');
+            $this->adminemail = App()->getConfig('siteadminemail');
+            if(!(Yii::app() instanceof CConsoleApplication)) {
+                $iUserid = Permission::getUserId();
+                if($iUserid) {
+                    $this->owner_id = $iUserid;
+                    $oUser = User::model()->findByPk($iUserid);
+                    if($oUser) {
+                        $this->admin = $oUser->full_name;
+                        $this->adminemail = $oUser->email;
+                    }
                 }
             }
         }
+
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
+
     }
 
     /** @inheritdoc */
@@ -302,7 +306,7 @@ class Survey extends LSActiveRecord
         if (array_key_exists($this->sid, $this->findByPkCache)) {
             unset ($this->findByPkCache[$this->sid]);
         }
-                
+
         return true;
     }
 
@@ -413,6 +417,15 @@ class Survey extends LSActiveRecord
             'permissions'     => array(self::HAS_MANY, 'Permission', array('entity_id'=> 'sid')), //
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id')),
+            'defaultlanguagetitle' => array(
+                self::HAS_ONE,
+                'SurveyLanguageSetting',
+                array(
+                    'surveyls_survey_id' => 'sid',
+                    'surveyls_language' => 'language'
+                ),
+                'select' => array('surveyls_title','surveyls_language')
+            ),
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid')),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id',),
             'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'order'=>'groups.group_order ASC'),
