@@ -4,14 +4,15 @@ namespace LimeSurvey\Api\Command\V2\Transformer\Output;
 
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecordAbstract;
 
-class TransformerOutputQuestionAttribute extends TransformerOutputActiveRecordAbstract
+class TransformerOutputQuestionL10ns extends TransformerOutputActiveRecordAbstract
 {
     protected function getDataMap()
     {
         return [
-            'qaid' => true,
-            'attribute' => true,
-            'value' => true,
+            'id' => true,
+            'qid' => true,
+            'question' => true,
+            'script' => true,
             'language' => true
         ];
     }

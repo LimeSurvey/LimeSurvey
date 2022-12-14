@@ -22,7 +22,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecordAbstrac
         // - helps use to retain sort order when looping over models
         $groupLookup = $this->createCollectionLookup('gid', $survey['questionGroups']);
 
+        $transformerQuestionGroupL10ns = new TransformerOutputQuestionGroupL10ns();
         $transformerQuestion = new TransformerOutputQuestion();
+        $transformerQuestionL10ns = new TransformerOutputQuestionL10ns;
         $transformerQuestionAttribute = new TransformerOutputQuestionAttribute();
         $transformerAnswer = new TransformerOutputAnswer();
 
@@ -31,6 +33,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecordAbstrac
             // - so we use the lookup to get a reference to the required entity without needing to
             // - know its position in the output array
             $group = &$groupLookup[$questionGroupModel->gid];
+
+            $group['l10ns'] = (new $transformerQuestionGroupL10ns)->transformAll(
+                $questionGroupModel->questiongroupl10ns
+            );
 
             // transformAll() can apply required entity sort so we must retain the sort order going forward
             // - We use a lookup array later to access entities without needing to know their position in the collection
@@ -46,6 +52,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecordAbstrac
                 // - know its position in the output array
                 $question = &$questionLookup[$questionModel->qid];
 
+                $question['l10ns'] = $transformerQuestionL10ns->transformAll(
+                    $questionModel->questionl10ns
+                );
+
                 $question['attributes'] = $transformerQuestionAttribute->transformAll(
                     $questionModel->questionattributes
                 );
@@ -53,8 +63,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecordAbstrac
                 $question['answers'] = $transformerAnswer->transformAll(
                     $questionModel->answers
                 );
-
-                // $answerLookup = $this->createCollectionLookup('aid', $group['answers']);
             }
         }
 
@@ -62,9 +70,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecordAbstrac
     }
 
     /**
-     * Creation collection lookup
+     * Create collection lookup
      *
-     * Returns an array of entity references keyed on the specified key.
+     * Returns an array of entity references indexed by the specified key.
      *
      * @param string $key
      * @param array $entityArray
