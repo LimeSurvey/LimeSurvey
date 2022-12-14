@@ -63,7 +63,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
             <?php /* Small loading animation to give the scripts time to parse and render the correct values */ ?>
             <div class="" style="display:none;height:100%;width:100%;position:absolute;left:0;top:0;background:rgb(255,255,255);background:rgba(235,235,235,0.8);z-index:2000;">
                 <div style="position:absolute; left:49%;top:35%;" class="text-center">
-                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                    <i class="ri-loader-fill fa-pulse fa-3x fa-fw"></i>
                 </div>
             </div>
             <?php /* If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template */
@@ -146,7 +146,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                                     <input type="text" name="' . $attributeKey . '" data-inheritvalue="' . $sParentOption . '" value="inherit" class="selector_option_value_field selector__color-picker form-control simple_edit_options_' . $attributeKey . '" id="' . $attributeKey . '" />';
                     if ($bInherit && isset($sParentOption)) {
                         echo '<div class="input-group-addon">
-                                            <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
+                                            <button class="btn btn-outline-secondary btn-xs selector__reset-colorfield-to-inherit"><i class="ri-refresh-line"></i></button>
                                         </div>';
                     }
                     echo '</div>';
@@ -225,7 +225,7 @@ foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
                                     <span id="fileselector_frontend">
                                         <label class="btn btn-outline-secondary col-xs-8" for="upload_image_frontend">
                                             <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
-                                            <i class="fa fa-upload ls-space margin right-10"></i>
+                                            <i class="ri-upload-fill ls-space margin right-10"></i>
                                             <?php eT("Upload"); ?>
                                         </label>
                                     </span>

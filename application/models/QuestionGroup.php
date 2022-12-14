@@ -266,18 +266,18 @@ class QuestionGroup extends LSActiveRecord
         // Edit
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("questionGroupsAdministration/view/surveyid/$this->sid/gid/$this->gid");
-            $buttons .= '  <a class="btn btn-sm btn-outline-secondary  list-btn" href="' . $url . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit group') . '"><i class="fa fa-pencil " ></i></a>';
+            $buttons .= '  <a class="btn btn-sm btn-outline-secondary  list-btn" href="' . $url . '" role="button" data-bs-toggle="tooltip" title="' . gT('Edit group') . '"><i class="ri-pencil-fill " ></i></a>';
         }
         // Add question to this group
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("questionAdministration/create/surveyid/$this->sid/gid/$this->gid");
-            $buttons .= '<a class="btn btn-sm btn-outline-secondary list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-bs-toggle="tooltip"  data-bs-placement="top" title="' . gT('Add new question to group') . '" href="' . $url . '" role="button"><i class="fa fa-plus " ></i></a>';
+            $buttons .= '<a class="btn btn-sm btn-outline-secondary list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-bs-toggle="tooltip"  data-bs-placement="top" title="' . gT('Add new question to group') . '" href="' . $url . '" role="button"><i class="ri-add-line " ></i></a>';
         }
         // View summary
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
             $url = Yii::app()->createUrl("/questionGroupsAdministration/view/surveyid/");
             $url .= '/' . $this->sid . '/gid/' . $this->gid;
-            $buttons .= '  <a class="btn btn-sm btn-outline-secondary  list-btn" href="' . $url . '" role="button" data-bs-toggle="tooltip" title="' . gT('Group summary') . '"><i class="fa fa-list-alt " ></i></a>';
+            $buttons .= '  <a class="btn btn-sm btn-outline-secondary  list-btn" href="' . $url . '" role="button" data-bs-toggle="tooltip" title="' . gT('Group summary') . '"><i class="ri-list-unordered " ></i></a>';
         }
 
         // Delete
@@ -290,7 +290,7 @@ class QuestionGroup extends LSActiveRecord
                 . ' role="button"'
                 . ' data-bs-toggle="popover"'
                 . ' title="' . gT("Cannot delete this group because it's the only group in the survey.", "js") . '">'
-                    . '<i class="fa fa-trash text-muted "></i>'
+                    . '<i class="ri-delete-bin-fill text-muted "></i>'
                     . '<span class="visually-hidden">' . gT('Deleting question group not possible') . '</span>'
                 . '</button>'
                 . '</span>';
@@ -303,7 +303,7 @@ class QuestionGroup extends LSActiveRecord
                     . ' data-bs-toggle="modal"'
                     . ' data-message="' . gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js") . '"'
                     . '>'
-                        . '<i class="fa fa-trash text-danger "></i>'
+                        . '<i class="ri-delete-bin-fill text-danger "></i>'
                         . '<span class="visually-hidden">' . gT('Delete question group') . '</span>'
                     . '</button>'
                     . '</span>';
@@ -314,7 +314,7 @@ class QuestionGroup extends LSActiveRecord
                     . ' role="button"'
                     . ' data-bs-toggle="popover"'
                     . ' title="' . gT("Impossible to delete this group because there is at least one question having a condition on its content", "js") . '">'
-                        . '<i class="fa fa-trash text-muted "></i>'
+                        . '<i class="ri-delete-bin-fill text-muted "></i>'
                         . '<span class="visually-hidden">' . gT('Deleting question group not possible') . '</span>'
                     . '</button>'
                     . '</span>';

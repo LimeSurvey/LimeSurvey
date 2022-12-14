@@ -17,7 +17,7 @@
 
         <p class="alert alert-info alert-dismissible">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <span class="fa fa-info-circle"></span>
+            <span class="ri-information-fill"></span>
             <?php eT("You can use operators in the search filters (eg: >, <, >=, <=, = )");?>
         </p>
 

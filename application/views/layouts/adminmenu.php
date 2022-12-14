@@ -8,13 +8,13 @@
 ?>
 
 <!-- admin menu bar -->
-<nav class="navbar navbar-light navbar-expand-md border border-white">
+<nav class="navbar navbar-expand-md">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus" aria-controls="small-screens-menus" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <?php echo $sitename; ?>
+            <img id="nav-logo" alt="logo" src="/themes/admin/Sea_Green/images/logo.png" class="d-inline-block">
         </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
@@ -61,14 +61,14 @@
                 <!-- create survey -->
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
-                        <span class="icon-add"></span>
+                        <!-- <i class="ri-add-circle-fill"></i> -->
                         <?php eT("Create survey"); ?>
                     </a>
                 </li>
                 <!-- Surveys menus -->
                 <li class="dropdown-split-left nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>" class="nav-link">
-                        <span class="fa fa-list"></span>
+                        <!-- <i class="ri-list-check"></i> -->
                         <?php eT("Surveys"); ?>
                     </a>
                 </li>
@@ -97,7 +97,14 @@
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"><span class="icon-user"></span> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                    <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
+<!--                         @TODO remove inline style and put it into corresponding SCSS file. This is here just for demo purpose -->
+                        <span class='badge rounded-pill' style="background-color: #3BFFB7; color: #25003E;">
+                            <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>
+                        </span>
+                        <?= Yii::app()->session['user']; ?>
+                        <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-end" role="menu">
                         <li>
                             <a class="dropdown-item" href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">

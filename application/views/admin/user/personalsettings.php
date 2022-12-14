@@ -140,11 +140,11 @@ echo $oQuestionSelector->getModal();
                             <div class="row">
                                 <div class="col-lg-6">
                                     <button type="button" class="btn btn-outline-secondary btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
-                                        <i class="fa fa-lock"></i>
+                                        <i class="ri-lock-fill"></i>
                                         <?= gT("Change password") ?>
                                     </button>
                                     <button type="button" class="btn btn-outline-secondary btn-warning " id="selector__showChangeEmail" style="color: white; outline: none;">
-                                        <i class="fa fa-lock"></i>
+                                        <i class="ri-lock-fill"></i>
                                         <?= gT("Change email address") ?>
                                     </button>
                                     <br/>

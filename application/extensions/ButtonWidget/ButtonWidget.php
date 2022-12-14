@@ -23,7 +23,7 @@ class ButtonWidget extends CInputWidget
     public $displayDropDownIcon;
 
     /** @var string the icon displayed besides the divider, default is  */
-    public $dropDownIcon = 'fa fa-ellipsis-h'; //@TODO switch to new icon when icons task is done
+    public $dropDownIcon = 'ri-more-fill';
 
     /** @var string link where the button points to, if link is empty
      * an <button> element is created else an <a> element

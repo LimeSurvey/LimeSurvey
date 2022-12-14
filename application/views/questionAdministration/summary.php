@@ -131,7 +131,7 @@
                     <span class='statusentryhighlight'>
                         <?php eT("Warning"); ?>:
                         <?php eT("You need to add subquestions to this question"); ?>
-                        <span class="icon-defaultanswers text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
+                        <span class="ri-grid-line text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
                     </span>
                 </td>
             </tr>

@@ -9,7 +9,7 @@
 </a>
 
 <a role="button" class="btn btn-outline-secondary pjax <?php if(isset($currentMode) && $currentMode == 'copyconditionsform'){echo 'active';}?>" href="<?php echo Yii::App()->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
-    <span class="icon-copy"></span>
+    <span class="ri-file-copy-line"></span>
     <?php eT("Copy conditions");?>
 </a>
 
@@ -22,7 +22,7 @@
         class='btn btn-outline-secondary'
         data-bs-toggle='modal'
         data-bs-target='#quick-add-condition-modal'>
-            <span class="fa fa-plus-circle"></span>
+            <span class="ri-add-circle-fill"></span>
             &nbsp;
             <?php eT('Quick-add conditions'); ?>
     </button>

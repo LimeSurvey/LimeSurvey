@@ -80,7 +80,7 @@ return array(
         ],
         'depends' => [
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         ]
     ],
     /* For public template extended functionnality (based on default template) */
@@ -260,7 +260,7 @@ return array(
             'build/lstutorial.css'
         ),
         'depends' => array(
-            'bootstrap',
+//            'bootstrap',
             'adminbasics',
         )
     ),

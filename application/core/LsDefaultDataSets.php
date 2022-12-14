@@ -24,8 +24,8 @@ class LsDefaultDataSets
                 gT('Survey overview', 'unescaped'),
                 gT('Overview', 'unescaped'),
                 gT('Open the general survey overview', 'unescaped'),
-                'list',
-                'fontawesome',
+                'ri-list-unordered',
+                'remix',
                 '',
                 'surveyAdministration/view',
                 '',
@@ -52,8 +52,8 @@ class LsDefaultDataSets
                 gT('General survey settings', 'unescaped'),
                 gT('General settings', 'unescaped'),
                 gT('Open general survey settings', 'unescaped'),
-                'gears',
-                'fontawesome',
+                'ri-settings-5-fill',
+                'remix',
                 '',
                 '',
                 'updatesurveylocalesettings_generalsettings',
@@ -80,8 +80,8 @@ class LsDefaultDataSets
                 gT('Survey text elements', 'unescaped'),
                 gT('Text elements', 'unescaped'),
                 gT('Survey text elements', 'unescaped'),
-                'file-text-o',
-                'fontawesome',
+                'ri-file-text-line',
+                'remix',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -108,8 +108,8 @@ class LsDefaultDataSets
                 gT('Privacy policy settings', 'unescaped'),
                 gT('Privacy policy', 'unescaped'),
                 gT('Edit privacy policy settings', 'unescaped'),
-                'shield',
-                'fontawesome',
+                "ri-shield-check-fill",
+                'remix',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -136,8 +136,8 @@ class LsDefaultDataSets
                 gT('Theme options', 'unescaped'),
                 gT('Theme options', 'unescaped'),
                 gT('Edit theme options for this survey', 'unescaped'),
-                'paint-brush',
-                'fontawesome',
+                "ri-brush-fill",
+                'remix',
                 '',
                 'themeOptions/updateSurvey',
                 '',
@@ -164,8 +164,8 @@ class LsDefaultDataSets
                 gT('Presentation & navigation settings', 'unescaped'),
                 gT('Presentation', 'unescaped'),
                 gT('Edit presentation and navigation settings', 'unescaped'),
-                'eye-slash',
-                'fontawesome',
+                "ri-eye-off-fill",
+                'remix',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -192,8 +192,8 @@ class LsDefaultDataSets
                 gT('Survey participant settings', 'unescaped'),
                 gT('Participant settings', 'unescaped'),
                 gT('Set additional options for survey participants', 'unescaped'),
-                'users',
-                'fontawesome',
+                "ri-group-fill",
+                'remix',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -220,8 +220,8 @@ class LsDefaultDataSets
                 gT('Notification and data management settings', 'unescaped'),
                 gT('Notifications & data', 'unescaped'),
                 gT('Edit settings for notification and data management', 'unescaped'),
-                'feed',
-                'fontawesome',
+                "ri-rss-fill",
+                'remix',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -248,8 +248,8 @@ class LsDefaultDataSets
                 gT('Publication & access control settings', 'unescaped'),
                 gT('Publication & access', 'unescaped'),
                 gT('Edit settings for publication and access control', 'unescaped'),
-                'key',
-                'fontawesome',
+                "ri-key-2-fill",
+                'remix',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -276,8 +276,8 @@ class LsDefaultDataSets
                 gT('Edit survey permissions', 'unescaped'),
                 gT('Survey permissions', 'unescaped'),
                 gT('Edit permissions for this survey', 'unescaped'),
-                'lock',
-                'fontawesome',
+                "ri-lock-fill",
+                'remix',
                 '',
                 'admin/surveypermission/sa/view/',
                 '',
@@ -304,8 +304,8 @@ class LsDefaultDataSets
                 gT('Question list', 'unescaped'),
                 gT('Question list', 'unescaped'),
                 gT('List questions', 'unescaped'),
-                'list',
-                'fontawesome',
+                'ri-list-unordered',
+                'remix',
                 '',
                 'questionAdministration/listQuestions',
                 '',
@@ -332,8 +332,8 @@ class LsDefaultDataSets
                 gT('Group list', 'unescaped'),
                 gT('Group list', 'unescaped'),
                 gT('List question groups', 'unescaped'),
-                'th-list',
-                'fontawesome',
+                'ri-list-check',
+                'remix',
                 '',
                 'questionGroupsAdministration/listquestiongroups',
                 '',
@@ -360,8 +360,8 @@ class LsDefaultDataSets
                 gT('Reorder questions & groups', 'unescaped'),
                 gT('Reorder questions & groups', 'unescaped'),
                 gT('Reorder questions & groups', 'unescaped'),
-                'icon-organize',
-                'iconclass',
+                'ri-shape-fill',
+                'remix',
                 '',
                 'surveyAdministration/organize/',
                 '',
@@ -388,8 +388,8 @@ class LsDefaultDataSets
                 gT('Survey participants', 'unescaped'),
                 gT('Survey participants', 'unescaped'),
                 gT('Go to survey participant and token settings', 'unescaped'),
-                'user',
-                'fontawesome',
+                'ri-user-fill',
+                'remix',
                 '',
                 'admin/tokens/sa/index/',
                 '',
@@ -416,8 +416,8 @@ class LsDefaultDataSets
                 gT('Email templates', 'unescaped'),
                 gT('Email templates', 'unescaped'),
                 gT('Edit the templates for invitation, reminder and registration emails', 'unescaped'),
-                'envelope-square',
-                'fontawesome',
+                'ri-mail-line',
+                'remix',
                 '',
                 'admin/emailtemplates/sa/index/',
                 '',
@@ -444,8 +444,8 @@ class LsDefaultDataSets
                 gT('Failed email notifications', 'unescaped'),
                 gT('Failed email notifications', 'unescaped'),
                 gT('View and resend failed email notifications', 'unescaped'),
-                'envelope-square',
-                'fontawesome',
+                'ri-mail-close-line',
+                'remix',
                 '',
                 'failedEmail/index/',
                 '',
@@ -472,8 +472,8 @@ class LsDefaultDataSets
                 gT('Edit quotas', 'unescaped'),
                 gT('Quotas', 'unescaped'),
                 gT('Edit quotas for this survey.', 'unescaped'),
-                'tasks',
-                'fontawesome',
+                'ri-bar-chart-horizontal-fill',
+                'remix',
                 '',
                 'admin/quotas/sa/index/',
                 '',
@@ -500,8 +500,8 @@ class LsDefaultDataSets
                 gT('Edit assessments', 'unescaped')
                 ,gT('Assessments', 'unescaped'),
                 gT('Edit and look at the assessements for this survey.', 'unescaped'),
-                'comment-o',
-                'fontawesome',
+                'ri-chat-1-line',
+                'remix',
                 '',
                 'assessment/index',
                 '',
@@ -528,8 +528,8 @@ class LsDefaultDataSets
                 gT('Edit survey panel integration', 'unescaped'),
                 gT('Panel integration', 'unescaped'),
                 gT('Define panel integrations for your survey', 'unescaped'),
-                'link',
-                'fontawesome',
+                'ri-links-fill',
+                'remix',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -556,8 +556,8 @@ class LsDefaultDataSets
                 gT('Responses', 'unescaped'),
                 gT('Responses', 'unescaped'),
                 gT('Responses', 'unescaped'),
-                'icon-browse',
-                'iconclass',
+                'ri-window-fill',
+                'remix',
                 '',
                 'responses/browse/',
                 '',
@@ -584,8 +584,8 @@ class LsDefaultDataSets
                 gT('Statistics', 'unescaped'),
                 gT('Statistics', 'unescaped'),
                 gT('Statistics', 'unescaped'),
-                'bar-chart',
-                'fontawesome',
+                'ri-chat-3-line',
+                'remix',
                 '',
                 'admin/statistics/sa/index/',
                 '',
@@ -612,8 +612,8 @@ class LsDefaultDataSets
                 gT('Add/edit resources (files/images) for this survey', 'unescaped'),
                 gT('Resources', 'unescaped'),
                 gT('Add/edit resources (files/images) for this survey', 'unescaped'),
-                'file',
-                'fontawesome',
+                'ri-file-3-fill',
+                'remix',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -640,8 +640,8 @@ class LsDefaultDataSets
                 gT('Simple plugin settings', 'unescaped'),
                 gT('Simple plugins', 'unescaped'),
                 gT('Edit simple plugin settings', 'unescaped'),
-                'plug',
-                'fontawesome',
+                "ri-plug-fill",
+                'remix',
                 '',
                 '',
                 'updatesurveylocalesettings',
@@ -668,8 +668,8 @@ class LsDefaultDataSets
                 gT('Activate survey', 'unescaped'),
                 gT('Activate survey', 'unescaped'),
                 gT('Activate survey', 'unescaped'),
-                'play',
-                'fontawesome',
+                "ri-play-fill",
+                'remix',
                 '',
                 'surveyAdministration/activate',
                 '',
@@ -696,8 +696,8 @@ class LsDefaultDataSets
                 gT('Stop survey', 'unescaped'),
                 gT('Stop survey', 'unescaped'),
                 gT('Stop this survey', 'unescaped'),
-                'stop',
-                'fontawesome',
+                "ri-stop-fill",
+                'remix',
                 '',
                 'surveyAdministration/deactivate',
                 '',
@@ -724,8 +724,8 @@ class LsDefaultDataSets
                 gT('Go to survey', 'unescaped'),
                 gT('Go to survey', 'unescaped'),
                 gT('Go to survey', 'unescaped'),
-                'cog',
-                'fontawesome',
+                "ri-settings-5-fill",
+                'remix',
                 '',
                 'survey/index/',
                 '',
@@ -752,8 +752,8 @@ class LsDefaultDataSets
                 gT('Survey logic file', 'unescaped'),
                 gT('Survey logic file', 'unescaped'),
                 gT('Survey logic file', 'unescaped'),
-                'sitemap',
-                'fontawesome',
+                'ri-git-branch-fill',
+                'remix',
                 '',
                 'admin/expressions/sa/survey_logic_file/',
                 '',
@@ -780,8 +780,8 @@ class LsDefaultDataSets
                 gT('Central participant database', 'unescaped'),
                 gT('Central participant database', 'unescaped'),
                 gT('Central participant database', 'unescaped'),
-                'users',
-                'fontawesome',
+                'ri-group-fill',
+                'remix',
                 '',
                 'admin/participants/sa/displayParticipants',
                 '',
@@ -905,12 +905,12 @@ class LsDefaultDataSets
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
         $returnArray = [];
-        $returnArray[] = ['position' => 1, 'url' => 'surveyAdministration/newSurvey', 'title' => gT('Create survey'), 'ico' => 'icon-add', 'desc' => gT('Create a new survey'), 'page' => 'welcome', 'usergroup' => '-2'];
-        $returnArray[] = ['position' => 2, 'url' => 'surveyAdministration/listsurveys', 'title' => gT('List surveys'), 'ico' => 'icon-list', 'desc' => gT('List available surveys'), 'page' => 'welcome', 'usergroup' => '-1'];
-        $returnArray[] = ['position' => 3, 'url' => 'admin/globalsettings', 'title' => gT('Global settings'), 'ico' => 'icon-settings', 'desc' => gT('Edit global settings'), 'page' => 'welcome', 'usergroup' => '-2'];
-        $returnArray[] = ['position' => 4, 'url' => 'admin/update', 'title' => gT('ComfortUpdate'), 'ico' => 'icon-shield', 'desc' => gT('Stay safe and up to date'), 'page' => 'welcome', 'usergroup' => '-2'];
-        $returnArray[] = ['position' => 5, 'url' => 'https://account.limesurvey.org/limestore', 'title' => 'LimeStore', 'ico' => 'fa fa-cart-plus', 'desc' => gT('LimeSurvey extension marketplace'), 'page' => 'welcome', 'usergroup' => '-2'];
-        $returnArray[] = ['position' => 6, 'url' => 'themeOptions', 'title' => gT('Themes'), 'ico' => 'icon-templates', 'desc' => gT('Themes'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 1, 'url' => 'surveyAdministration/newSurvey', 'title' => gT('Create survey'), 'ico' => 'ri-add-circle-fill', 'desc' => gT('Create a new survey'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 2, 'url' => 'surveyAdministration/listsurveys', 'title' => gT('List surveys'), 'ico' => 'ri-list-unordered', 'desc' => gT('List available surveys'), 'page' => 'welcome', 'usergroup' => '-1'];
+        $returnArray[] = ['position' => 3, 'url' => 'admin/globalsettings', 'title' => gT('Global settings'), 'ico' => 'ri-settings-5-fill', 'desc' => gT('Edit global settings'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 4, 'url' => 'admin/update', 'title' => gT('ComfortUpdate'), 'ico' => 'ri-shield-check-fill', 'desc' => gT('Stay safe and up to date'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 5, 'url' => 'https://account.limesurvey.org/limestore', 'title' => 'LimeStore', 'ico' => 'ri-shopping-cart-fill', 'desc' => gT('LimeSurvey extension marketplace'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 6, 'url' => 'themeOptions', 'title' => gT('Themes'), 'ico' => 'ri-brush-fill', 'desc' => gT('Themes'), 'page' => 'welcome', 'usergroup' => '-2'];
 
         App()->setLanguage($sOldLanguage);
         return $returnArray;
@@ -1080,7 +1080,7 @@ class LsDefaultDataSets
                 'template' => ""
                 . "<div class='popover tour lstutorial__template--mainContainer'>"
                 . "<div class='arrow'></div>"
-                . "<button class='float-end ls-space margin top-5 right-5 btn btn-warning btn-sm' type='button' data-role='end' data-bs-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='fa fa-close'></i></button>"
+                . "<button class='float-end ls-space margin top-5 right-5 btn btn-warning btn-sm' type='button' data-role='end' data-bs-toggle='tooltip' title='" . gT('End tour', 'js') . "'><i class='ri-close-fill'></i></button>"
                 . "<h3 class='popover-title lstutorial__template--title'></h3>"
                     . "<div class='popover-content lstutorial__template--content'></div>"
                     . "<div class='popover-navigation lstutorial__template--navigation'>"
@@ -1514,7 +1514,7 @@ class LsDefaultDataSets
                 'teid' => 26,
                 'ordering' => 26,
                 'title' => gT('Add subquestion row'),
-                'content' => sprintf(gT('Click on the plus sign %s to add another subquestion to your question.'), '<i class="icon-add text-success"></i>')
+                'content' => sprintf(gT('Click on the plus sign %s to add another subquestion to your question.'), '<i class="ri-add-circle-fill text-success"></i>')
                 . "<p class='bg-warning alert'>" . gT('Please add at least two subquestions') . "</p>",
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer>tr:first-of-type .btnaddanswer',
@@ -1572,7 +1572,7 @@ class LsDefaultDataSets
                 'ordering' => 29,
                 'title' => gT('Edit answer options'),
                 'content' => gT("As you can see, editing answer options is quite similar to editing subquestions.") . '<br/>'
-                . gT('Remember the plus button') . '<i class="icon-add text-success"></i>?' . '<br/>'
+                . gT('Remember the plus button') . '<i class="ri-add-circle-fill text-success"></i>?' . '<br/>'
                 . '<p class="alert bg-warning">' . gT("Please add at least two answer options to proceed.") . '</p>',
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer',
@@ -1878,7 +1878,7 @@ class LsDefaultDataSets
             'gam'   => 'fa-gamepad',
             'nes'   => 'fa-gamepad',
             'rom'   => 'fa-gamepad',
-            'sav'   => 'fa-floppy-o',
+            'sav'   => 'ri-save-3-fill',
 
             // Images
             'bmp'   => 'fa-picture-o',
@@ -1929,7 +1929,7 @@ class LsDefaultDataSets
 
             // Other
             'bak'   => 'fa-floppy',
-            'msg'   => 'fa-envelope',
+            'msg'   => 'ri-mail-fill',
 
             // Blank
             'blank' => 'fa-file'

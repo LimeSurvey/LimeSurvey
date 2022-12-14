@@ -13,7 +13,7 @@
                 class='btn btn-warning float-end condition-header-button'
                 onclick='return false;'
             >
-                <span class="fa fa-trash"></span>
+                <span class="ri-delete-bin-fill"></span>
                 &nbsp;
                 <?php eT('Delete all conditions'); ?>
             </button>
@@ -30,7 +30,7 @@
                 data-onclick='(function() { document.getElementById("toplevelsubaction").value="renumberscenarios"; document.getElementById("deleteallconditions").submit();})'
                 onclick='return false;'
             >
-                <span class="icon-renumber"></span>
+                <span class="ri-list-ordered"></span>
                 &nbsp;
                 <?php eT("Renumber scenarios");?>
             </button>

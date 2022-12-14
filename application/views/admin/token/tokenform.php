@@ -141,7 +141,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                                name="completed-date"
                                                                data-locale="<?php echo $locale ?>"
                                                                data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                        <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
+                                                        <span class="input-group-addon datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -321,7 +321,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        name="sent-date"
                                                        data-locale="<?php echo $locale ?>"
                                                        data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
+                                                <span class="input-group-addon datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
                                     </div>
@@ -373,7 +373,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        name="remind-date"
                                                        data-locale="<?php echo $locale ?>"
                                                        data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
-                                                <span class="input-group-addon datepicker-icon"><span class="fa fa-calendar"></span></span>
+                                                <span class="input-group-addon datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
                                     </div>
@@ -428,7 +428,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo isset($validfrom) ? $validfrom : '' ?>" name="validfrom"
                                            data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                            data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
-                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                    <span class="input-group-addon"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
                             </div>
@@ -444,7 +444,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : '' ?>" name="validuntil"
                                            data-dateformat="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
                                            data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
-                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+                                    <span class="input-group-addon"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
                             </div>

@@ -739,7 +739,7 @@ class TemplateConfiguration extends TemplateConfig
             id='template_editor_link_" . $this->template_name . "'
             href='" . $sEditorUrl . "'
             class='btn btn-outline-secondary'>
-                <span class='icon-templates'></span>
+                <span class='ri-brush-fill'></span>
                 " . gT('Theme editor') . "
             </a>";
 
@@ -749,7 +749,7 @@ class TemplateConfiguration extends TemplateConfig
                 id='template_options_link_" . $this->template_name . "'
                 href='" . $sOptionUrl . "'
                 class='btn btn-outline-secondary'>
-                    <span class='fa fa-tachometer'></span>
+                    <span class='ri-dashboard-3-fill'></span>
                     " . gT('Theme options') . "
                 </a>";
         }
@@ -773,7 +773,7 @@ class TemplateConfiguration extends TemplateConfig
             data-button-yes="' . gt('Extend') . '"
             title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
             role="button" class="btn btn-primary selector--ConfirmModal">
-                <i class="fa fa-copy"></i>
+                <i class="ri-file-copy-line"></i>
                 ' . gT('Extend') . '
             </a>';
 
@@ -787,7 +787,7 @@ class TemplateConfiguration extends TemplateConfig
             data-button-type="btn-danger" 
             title="' . gT('Uninstall this theme') . '"
             class="btn btn-danger selector--ConfirmModal">
-                <span class="fa fa-trash"></span>
+                <span class="ri-delete-bin-fill"></span>
                 ' . gT('Uninstall') . '
             </a>';
 
@@ -801,7 +801,7 @@ class TemplateConfiguration extends TemplateConfig
                 data-button-type="btn-warning" 
                 title="' . gT('Reset this theme') . '"
                 class="btn btn-warning selector--ConfirmModal">
-                    <span class="fa fa-refresh"></span>
+                    <span class="ri-refresh-line"></span>
                     ' . gT('Reset') . '
             </a>';
 
@@ -821,7 +821,7 @@ class TemplateConfiguration extends TemplateConfig
                         data-bs-placement="top"
                         title="' . gT('You cannot uninstall the default template.') . '"
                     >
-                        <span class="fa fa-trash"></span>
+                        <span class="ri-delete-bin-fill"></span>
                         ' . gT('Uninstall') . '
                     </a>
                 ';

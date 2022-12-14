@@ -2,7 +2,7 @@
     <!-- Conditions -->
     <li>
         <a class="dropdown-item" id="conditions_button" href="<?php echo Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
-            <span class="icon-conditions icon"></span>
+            <span class="ri-git-branch-fill icon"></span>
             <?php eT("Condition designer"); ?>
         </a>
     </li>
@@ -12,7 +12,7 @@
     <!-- Default Values -->
     <li>
         <a class="dropdown-item" id="default_value_button" href="<?php echo Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
-            <span class="icon-defaultanswers icon"></span>
+            <span class="ri-grid-line"></span>
             <?php eT("Edit default answers"); ?>
         </a>
     </li>
@@ -22,7 +22,7 @@
     <!-- Export -->
     <li>
         <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/{$qid}");?>">
-            <span class="icon-export"></span>
+            <span class="ri-download-fill"></span>
             <?php eT("Export"); ?>
         </a>
     </li>
@@ -32,7 +32,7 @@
     <!-- Copy -->
     <li>
         <a class="dropdown-item" id="copy_button" href='<?php echo Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/{$oQuestion->sid}/questionGroupId/{$oQuestion->gid}/questionId/{$oQuestion->qid}");?>'>
-            <span class="icon-copy icon"></span>
+            <span class="ri-file-copy-line icon"></span>
             <?php eT("Copy"); ?>
         </a>
     </li>
@@ -46,7 +46,7 @@
         <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
             <li>
                 <a class="dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/" . $languageCode); ?>" >
-                    <span class="icon-expressionmanagercheck"></span>
+                    <span class="ri-checkbox-fill"></span>
                     <?php echo $languageName; ?>
                 </a>
             </li>
@@ -55,7 +55,7 @@
         <!-- Check survey logic -->
         <li>
             <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}"); ?>">
-                <span class="icon-expressionmanagercheck"></span>
+                <span class="ri-checkbox-fill"></span>
                 <?php eT("Check logic"); ?>
             </a>
         </li>
@@ -76,14 +76,14 @@
                 data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid, "redirectTo" => "groupoverview"])); ?>})'
                 data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "js"); ?>"
             >
-                <span class="fa fa-trash text-danger"></span>
+                <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete question"); ?>
             </a>
         </li>
     <?php else : ?>
         <li class="disabled">
             <a class="btntooltip dropdown-item" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
-                <span class="fa fa-trash text-danger"></span>
+                <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete question"); ?>
             </a>
         </li>

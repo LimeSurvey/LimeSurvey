@@ -38,17 +38,51 @@ return array(
     // This package replace the Yiistrap register() function
     // Then instead of using the composer dependency system for themes
     // We can use the package dependency system (easier for now)
-    'bootstrap' => [
+    'bootstrap' => array(
+        'devBaseUrl' => 'assets/bootstrap_5/build',
+        'basePath' => 'bootstrap.build',
+        'css' => array(
+            'css/bootstrap_5.min.css',
+        ),
+        'js' => array(
+            'js/bootstrap_5.min.js',
+        ),
+    ),
+    'bootstrap-rtl' => array(
+        'devBaseUrl' => 'assets/bootstrap_5/',
+        'basePath' => 'bootstrap.build',
+        'css' => array(
+            'css/bootstrap_5-rtl.min.css',
+        ),
+        'js' => array(
+            'js/bootstrap_5.min.js',
+        ),
+    ),
+    'bootstrap-css' => [
+        'devBaseUrl' => 'assets/bootstrap_5/build',
+        'basePath'   => 'bootstrap.build',
+        'css'         => [
+            'css/bootstrap_5.min.css',
+        ]
+    ],
+    'bootstrap-js' => [
         'devBaseUrl' => 'assets/bootstrap_5/build',
         'basePath'   => 'bootstrap.build',
         'js'         => [
             'js/bootstrap_5.min.js',
         ]
     ],
+    'bootstrap-css-rtl' => [
+        'devBaseUrl' => 'assets/bootstrap_5/build',
+        'basePath'   => 'bootstrap.build',
+        'css'         => [
+            'css/bootstrap_5-rtl.min.css',
+        ]
+    ],
 
-    // Bootstrap admin
-    // must be different for theme editor not to colide with theme files replacement
-    'bootstrap-admin' => array(
+    // Bootstrap for theme editor,
+    // must be different for theme editor not to collide with theme files replacement
+    'bootstrap-themeeditor' => array(
         'devBaseUrl' => 'assets/bootstrap_5/',
         'basePath' => 'bootstrap',
         'css' => array(
@@ -72,7 +106,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         )
     ),
 
@@ -89,7 +123,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         )
     ),
 
@@ -105,7 +139,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         )
     ),
 
@@ -132,7 +166,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap',
+//            'bootstrap',
             'moment'
         )
     ),
@@ -149,7 +183,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap',
+//            'bootstrap',
             'moment'
         )
     ),
@@ -291,7 +325,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap'
+//            'bootstrap'
         )
     ),
 

@@ -35779,7 +35779,7 @@
   var EventBus$1 = window.EventBus;
 
   //Define LS Namespace
-  window.LS = window.LS || {}; //import css/scss to be seperately compiled
+  window.LS = window.LS || {}; //import lodash
 
   var AdminCore = function AdminCore() {
     //Singelton Pattern -> the AdminCore functions can only be nound once.

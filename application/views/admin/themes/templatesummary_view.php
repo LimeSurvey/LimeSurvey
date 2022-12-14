@@ -49,7 +49,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                             if ($buttonType === "savebutton"): ?>
                                 <button type='submit' class='btn btn-primary' id='button-save-changes'
                                         value='' <?= (!is_template_editable($templatename) ? "disabled='disabled' alt='" . gT("Changes cannot be saved to a standard theme.") . "'" : "") ?> >
-                                    <i class="fa fa-check"></i>
+                                    <i class="ri-check-fill"></i>
                                     <?= gT('Save'); ?>
                                 </button>
                             <?php else: ?>
@@ -242,7 +242,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                     <div class="col-4">
                                         <button type='submit'
                                                 class='btn btn-outline-secondary text-nowrap' <?= (!is_template_editable($templatename) ? "disabled='disabled'" : '') ?>>
-                                            <i class="icon-import"></i>
+                                            <i class="ri-upload-fill"></i>
                                             <?= gT("Upload"); ?>
                                         </button>
                                     </div>

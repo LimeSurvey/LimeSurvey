@@ -101,7 +101,7 @@
 
                     <!-- the button launching the update -->
                     <button type="submit" class="btn btn-outline-secondary ajax_button launch_update">
-                        <span style="height : 1em; margin-right : 0.5em;" class="icon-shield text-success"></span>
+                        <span style="height : 1em; margin-right : 0.5em;" class="ri-shield-check-fill text-success"></span>
                         <?php eT("Use ComfortUpdate");?>
                     </button>
 

@@ -226,10 +226,6 @@
     min-height: 400px;
 }
 
-footer.footer {
-    position: static;
-}
-
 #pjax-file-load-container {
     height: 6px;
     position: fixed;
@@ -305,7 +301,6 @@ footer.footer {
         padding-right:10px;
     }
     #vue-apps-main-container,
-    footer.footer,
     .surveymanagerbar {
         margin-left:22px
     }

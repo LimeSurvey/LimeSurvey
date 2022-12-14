@@ -3,7 +3,7 @@
     <?php if ($hasTokensCreatePermission): ?>
         <li>
             <a class="pjax dropdown-item" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/addnew/surveyid/$oSurvey->sid"); ?>" >
-                <span class="icon-add"></span>
+                <span class="ri-add-circle-fill"></span>
                 <?php eT("Add participant"); ?>
             </a>
         </li>
@@ -11,7 +11,7 @@
         <!-- Create dummy tokens -->
         <li>
             <a class="pjax dropdown-item"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/adddummies/surveyid/$oSurvey->sid"); ?>" >
-                <span class="fa fa-plus-square"></span>
+                <span class="ri-add-box-fill"></span>
                 <?php eT("Create dummy participants"); ?>
             </a>
         </li>
@@ -29,7 +29,7 @@
         <!-- from CSV file -->
         <li>
             <a class="pjax dropdown-item"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/import/surveyid/$oSurvey->sid") ?>" >
-                <span class="icon-importcsv"></span>
+                <span class="ri-upload-fill"></span>
                 <?php eT("CSV file"); ?>
             </a>
         </li>
@@ -37,7 +37,7 @@
         <!-- from LDAP query -->
         <li>
             <a class="pjax dropdown-item"  href="<?php echo Yii::App()->createUrl("admin/tokens/sa/importldap/surveyid/$oSurvey->sid") ?>" >
-                <span class="icon-importldap"></span>
+                <span class="ri-upload-fill"></span>
                 <?php eT("LDAP query"); ?>
             </a>
         </li>

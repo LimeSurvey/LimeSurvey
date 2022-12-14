@@ -6,7 +6,7 @@
 ?>
 <div class="container-fluid">
     <div class="col-12 list-surveys" id="comfortUpdateGeneralWrap">
-        <h3><span id="comfortUpdateIcon" class="icon-shield text-success"></span><?php eT("Subscribe to ComfortUpdate!"); ?></h3>
+        <h3><span id="comfortUpdateIcon" class="ri-shield-check-fill text-success"></span><?php eT("Subscribe to ComfortUpdate!"); ?></h3>
 
         <div class="container">
             <br/>

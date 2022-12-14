@@ -579,10 +579,10 @@ class TokenDynamic extends LSActiveRecord
                 $fieldDate = convertToGlobalSettingFormat($field);
                 $field     = '<span class="text-success">' . $fieldDate . '</span>';
             } else {
-                $field     = '<span class="text-success fa fa-check"></span>';
+                $field     = '<span class="text-success ri-check-fill"></span>';
             }
         } elseif ($field != '') {
-            $field = '<i class="fa fa-minus text-warning"></i>';
+            $field = '<i class="ri-subtract-fill text-warning"></i>';
         }
         return $field;
     }
@@ -787,7 +787,7 @@ class TokenDynamic extends LSActiveRecord
         /* viewresponse button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y");
         $gridButtons['viewresponse'] = array(
-            'label' => '<span class="visually-hidden">' . gT("View response details") . '</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("View response details") . '</span><span class="ri-list-unordered" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("responses/viewbytoken",array("surveyId"=>' . self::$sid . ',"token"=>$data->token));',
             'options' => array(
@@ -798,7 +798,7 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseView . ' && $data->getHasResponses($data->token)',
         );
         $gridButtons['spacerviewresponse'] = array(
-            'label' => '<span class="fa fa-list-alt text-muted" aria-hidden="true"></span>',
+            'label' => '<span class="ri-list-unordered text-muted" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
@@ -812,7 +812,7 @@ class TokenDynamic extends LSActiveRecord
         /* previewsurvey button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create'));
         $gridButtons['previewsurvey'] = array(
-            'label' => '<span class="visually-hidden">' . gT("Preview the survey with this participant") . '</span><span class="fa fa-eye" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Preview the survey with this participant") . '</span><span class="ri-eye-fill" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
@@ -824,7 +824,7 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseView . ' && !$data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );
         $gridButtons['launchsurvey'] = array(
-            'label' => '<span class="visually-hidden">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-play" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Launch the survey with this participant") . '</span><span class="ri-play-fill" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
@@ -836,7 +836,7 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseView . ' && $data->survey->isActive && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );
         $gridButtons['previewsurveyspacer'] = array(
-            'label' => '<span class="fa fa-eye  text-muted" aria-hidden="true"></span>',
+            'label' => '<span class="ri-eye-fill  text-muted" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
@@ -851,7 +851,7 @@ class TokenDynamic extends LSActiveRecord
         $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
         /* mailing mail button */
         $gridButtons['mail'] = array(
-            'label' => '<span class="visually-hidden">' . gT("Send email invitation") . '</span><span class="icon-invite" aria-hidden="true"></span>',// fa-enveloppe-o
+            'label' => '<span class="visually-hidden">' . gT("Send email invitation") . '</span><span class="ri-mail-send-fill" aria-hidden="true"></span>',// fa-enveloppe-o
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid,));',
             'options' => array(
@@ -863,7 +863,7 @@ class TokenDynamic extends LSActiveRecord
         );
         /* mailing remind button */
         $gridButtons['remind'] = array(
-            'label' => '<span class="visually-hidden">' . gT("Send email reminder") . '</span><span class="icon-remind" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT("Send email reminder") . '</span><span class="ri-mail-volume-fill" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email/action/remind",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid));',
             'options' => array(
@@ -874,7 +874,7 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseView . ' && !empty($data->token) && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
         );
         $gridButtons['mailspacer'] = array(
-            'label' => '<span class="fa fa-envelope-o text-muted" aria-hidden="true"></span>',
+            'label' => '<span class="ri-mail-line text-muted" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
@@ -886,7 +886,7 @@ class TokenDynamic extends LSActiveRecord
         );
         /* edit button button */
         $gridButtons['edit'] = array(
-            'label' => '<span class="visually-hidden">' . gT('Edit this survey participant') . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT('Edit this survey participant') . '</span><span class="ri-pencil-fill" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/edit",array("iSurveyId"=>' . self::$sid . ',"iTokenId"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
@@ -900,7 +900,7 @@ class TokenDynamic extends LSActiveRecord
         );
         /* delete button */
         $gridButtons['deletetoken'] = array(
-            'label' => '<span class="visually-hidden">' . gT('Delete survey participant') . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT('Delete survey participant') . '</span><span class="ri-delete-bin-fill text-danger" aria-hidden="true"></span>',
             'imageUrl' => false,
             //'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
@@ -920,7 +920,7 @@ class TokenDynamic extends LSActiveRecord
         /* CPDB link */
         $baseVisible = intval(Permission::model()->hasGlobalPermission('participantpanel', 'read') && self::model(self::$sid)->count("participant_id is not null"));
         $gridButtons['viewparticipant'] = array(
-            'label' => '<span class="visually-hidden">' . gT('View this participant in the central participants database') . '</span><span class="icon-cpdb" aria-hidden="true"></span>',
+            'label' => '<span class="visually-hidden">' . gT('View this participant in the central participants database') . '</span><span class="ri-shield-user-line" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("#" => json_encode(["searchcondition"=>"participant_id||equal||".$data->participant_id],JSON_FORCE_OBJECT)))',
             'options' => array(
@@ -932,7 +932,7 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseVisible . ' && $data->participant_id',
         );
         $gridButtons['viewparticipantspacer'] = array(
-            'label' => '<span class="icon-cpdb text-muted" aria-hidden="true"></span>',
+            'label' => '<span class="ri-shield-user-line text-muted" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
