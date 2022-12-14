@@ -24,6 +24,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecordAbstrac
 
         $transformerQuestion = new TransformerOutputQuestion();
         $transformerQuestionAttribute = new TransformerOutputQuestionAttribute();
+        $transformerAnswer = new TransformerOutputAnswer();
+
         foreach ($surveyModel->groups as $questionGroupModel) {
             // order of groups from the model relation may be different than from the transformed data
             // - so we use the lookup to get a reference to the required entity without needing to
@@ -49,6 +51,12 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecordAbstrac
                     // - so we need to call array_values to get the array of QuestionAttribute models
                     array_values($questionModel->questionattributes)
                 );
+
+                $question['answers'] = $transformerAnswer->transformAll(
+                    $questionModel->answers
+                );
+
+                // $answerLookup = $this->createCollectionLookup('aid', $group['answers']);
             }
         }
 
