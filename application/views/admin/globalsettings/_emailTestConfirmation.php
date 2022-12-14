@@ -10,7 +10,7 @@
 </div>
 <div class="modal-footer">
     <button role="button" class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail"));?>">
-        <span class='fa fa-check'></span>
+        <span class='ri-check-fill'></span>
         &nbsp;<?php eT("Send email"); ?>
     </button>
         <?php eT("Close"); ?>

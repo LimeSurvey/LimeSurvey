@@ -58,10 +58,10 @@ echo viewHelper::getViewTestTag('index');
                             <div>
                                 <ol>
                                     <li><?php echo sprintf(gT('Create a new survey by clicking on the %s icon.'),
-                                                           "<i class='icon-add text-success'></i>"); ?></li>
+                                                           "<i class='ri-add-circle-fill text-success'></i>"); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
-                                    <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<i class='icon-do text-success'></i>"); ?></li>
+                                    <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<i class='ri-settings-5-fill text-success'></i>"); ?></li>
                                 </ol>
                             </div>
                             <div>
@@ -178,7 +178,7 @@ echo viewHelper::getViewTestTag('index');
             </div>
             <div class="card-body">
                 <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'>
-                    <span class="icon-list" style="font-size: 4em"></span>
+                    <span class="ri-list-unordered" style="font-size: 4em"></span>
             <span class="visually-hidden"><?php eT('List surveys');?></span>
                 </a><br><br>
                 <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'><?php eT('List surveys');?></a>
@@ -191,7 +191,7 @@ echo viewHelper::getViewTestTag('index');
             </div>
             <div class="card-body">
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>
-                    <span class="icon-settings" style="font-size: 4em"></span>
+                    <span class="ri-settings-5-fill" style="font-size: 4em"></span>
                     <span class="visually-hidden"><?php eT('Edit global settings');?></span>
                 </a><br><br>
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'><?php eT('Edit global settings');?></a>

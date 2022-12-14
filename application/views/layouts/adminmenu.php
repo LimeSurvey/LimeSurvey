@@ -61,12 +61,14 @@
                 <!-- create survey -->
                 <li class="nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" class="nav-link">
+                        <!-- <i class="ri-add-circle-fill"></i> -->
                         <?php eT("Create survey"); ?>
                     </a>
                 </li>
                 <!-- Surveys menus -->
                 <li class="dropdown-split-left nav-item">
                     <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>" class="nav-link">
+                        <!-- <i class="ri-list-check"></i> -->
                         <?php eT("Surveys"); ?>
                     </a>
                 </li>
@@ -96,6 +98,7 @@
 
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                    <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
 <!--                         @TODO remove inline style and put it into corresponding SCSS file. This is here just for demo purpose -->
                         <span class='badge rounded-pill' style="background-color: #3BFFB7; color: #25003E;">
                             <?= strtoupper(substr(Yii::app()->session['user'], 0, 1)) ?>

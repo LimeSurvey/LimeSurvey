@@ -642,7 +642,7 @@ class TemplateManifest extends TemplateConfiguration
             id='template_editor_link_" . $this->sTemplateName . "'
             href='" . $sEditorUrl . "'
             class='btn btn-outline-secondary btn-block'>
-                <span class='icon-templates'></span>
+                <span class='ri-brush-fill'></span>
                 " . gT('Theme editor') . "
             </a>";
 
@@ -653,7 +653,7 @@ class TemplateManifest extends TemplateConfiguration
                 "<input type='hidden' name='templatename' value='" . $this->sTemplateName . "'>
                 <button id='template_options_link_" . $this->sTemplateName . "'
                 class='btn btn-outline-secondary btn-block'>
-                    <span class='fa fa-download text-warning'></span>
+                    <span class='ri-download-fill text-warning'></span>
                     " . gT('Install') . "
                 </button>
                 </form>";
@@ -673,7 +673,7 @@ class TemplateManifest extends TemplateConfiguration
               data-button-type="btn-danger"
               title="' . gT('Delete') . '"
               class="btn btn-danger btn-block selector--ConfirmModal">
-                  <span class="fa fa-trash "></span>
+                  <span class="ri-delete-bin-fill "></span>
                   ' . gT('Delete') . '
                   </a>';
         }

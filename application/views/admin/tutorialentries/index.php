@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('tutorialentries');
             <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
                 <a class="btn btn-danger float-end ls-space margin right-10 col-xs-6 col-sm-3 col-md-2"
                    href="#restoremodal" data-bs-toggle="modal">
-                    <i class="fa fa-refresh"></i>&nbsp;
+                    <i class="ri-refresh-line"></i>&nbsp;
                     <?php eT('Reset'); ?>
                 </a>
             <?php endif; ?>

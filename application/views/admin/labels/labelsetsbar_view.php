@@ -31,7 +31,7 @@ App()->getClientScript()->registerScriptFile(
                     <?php if (Permission::model()->hasGlobalPermission('labelsets', 'create') || Permission::model()->hasGlobalPermission('labelsets', 'import')) : ?>
                         <!-- Create or Import -->
                     <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset"); ?>" role="button">
-                            <span class="icon-add text-success"></span>
+                            <span class="ri-add-circle-fill text-success"></span>
                             <?php eT("Create or import new label set(s)"); ?>
                         </a>
                     <?php endif; ?>
@@ -46,7 +46,7 @@ App()->getClientScript()->registerScriptFile(
                         <!-- Edit label set -->
                         <?php if (Permission::model()->hasGlobalPermission('labelsets', 'update')) : ?>
                         <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/" . $lid); ?>" role="button">
-                                <span class="fa fa-pencil  text-success"></span>
+                                <span class="ri-pencil-fill  text-success"></span>
                                 <?php eT("Edit label set"); ?>
                             </a>
                         <?php endif; ?>
@@ -56,7 +56,7 @@ App()->getClientScript()->registerScriptFile(
                         <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>
                         <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid"); ?>"
                                role="button">
-                                <span class="icon-export text-success"></span>
+                                <span class="ri-download-fill text-success"></span>
                                 <?php eT("Export this label set"); ?>
                             </a>
                         <?php endif; ?>
@@ -74,7 +74,7 @@ App()->getClientScript()->registerScriptFile(
                                     data-btntext="<?= gt('Delete') ?>"
                                     data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete/", ["lid" => $lid])); ?> })'
                                     data-message="<?php eT("Do you really want to delete this label set?", "js"); ?>">
-                                <span class="fa fa-trash text-danger"></span>
+                                <span class="ri-delete-bin-fill text-danger"></span>
                                 <?php eT("Delete label set"); ?>
                             </button>
                         <?php endif; ?>
@@ -93,7 +93,7 @@ App()->getClientScript()->registerScriptFile(
                            id="exportButton"
                            href="<?php echo $this->createUrl("admin/labels/sa/exportmulti"); ?>"
                            role="button">
-                            <span class="icon-export text-success"></span>
+                            <span class="ri-download-fill text-success"></span>
                             <?php eT("Export"); ?>
                         </a>
                     <?php endif; ?>
@@ -101,7 +101,7 @@ App()->getClientScript()->registerScriptFile(
                     <?php if (Permission::model()->hasGlobalPermission('labelsets', 'export')) : ?>
                     <span title="<?php eT("No label sets available"); ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" style="display: inline-block">
                             <a class="btn btn-outline-secondary disabled" role="button">
-                                <span class="icon-export text-success"></span>
+                                <span class="ri-download-fill text-success"></span>
                                 <?php eT("Export multiple label sets"); ?>
                             </a>
                         </span>
@@ -111,7 +111,7 @@ App()->getClientScript()->registerScriptFile(
                 <!-- return to admin panel -->
                 <?php if (isset($labelbar['buttons']['return'])) : ?>
                 <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
-                        <span class="fa fa-backward"></span>
+                        <span class="ri-rewind-fill"></span>
                         &nbsp;&nbsp;
                         <?php eT('Back'); ?>
                     </a>
@@ -120,7 +120,7 @@ App()->getClientScript()->registerScriptFile(
                 <!-- Close -->
                 <?php if (isset($labelbar['closebutton']['url'])) : ?>
                     <a class="btn btn-danger" href="<?php echo $labelbar['closebutton']['url']; ?>" role="button">
-                        <span class="fa fa-close"></span>
+                        <span class="ri-close-fill"></span>
                         <?php eT("Close"); ?>
                     </a>
                 <?php endif; ?>
@@ -128,7 +128,7 @@ App()->getClientScript()->registerScriptFile(
                 <!-- White Close button -->
                 <?php if (isset($labelbar['white_closebutton']['url'])) : ?>
                 <a class="btn btn-outline-secondary" href="<?php echo $labelbar['white_closebutton']['url']; ?>" role="button">
-                        <span class="fa fa-close"></span>
+                        <span class="ri-close-fill"></span>
                         <?php eT("Close"); ?>
                     </a>
                 <?php endif; ?>
@@ -154,7 +154,7 @@ App()->getClientScript()->registerScriptFile(
                        id="save-form-button"
                        data-form-id="<?php echo $labelbar['savebutton']['form']; ?>"
                     >
-                        <span class="fa fa-check"></span>
+                        <span class="ri-check-fill"></span>
                         <?php echo $labelbar['savebutton']['text']; ?>
                     </a>
                 <?php endif; ?>

@@ -17,7 +17,7 @@ App()->getClientScript()->registerScriptFile(
                     	data-bs-toggle="modal" 
                     	title="<?php eT('Add a new survey administrator'); ?>"
                         class="btn btn-outline-secondary UserManagement--action--openmodal">
-                            <i class="fa fa-plus-circle text-success"></i> <?php eT("Add user"); ?>
+                            <i class="ri-add-circle-fill text-success"></i> <?php eT("Add user"); ?>
                         </button>
 
                         <!-- Add Dummy User -->
@@ -26,17 +26,17 @@ App()->getClientScript()->registerScriptFile(
                     	data-bs-toggle="modal" 
                     	title="<?php eT('Add a new survey administrator with random values'); ?>"
                      	class="btn btn-outline-secondary UserManagement--action--openmodal">
-                            <i class="fa fa-plus-square text-success"></i> <?= gT('Add dummy user') ?>
+                            <i class="ri-add-box-fill text-success"></i> <?= gT('Add dummy user') ?>
                         </button>
 
                         <!-- Import CSV -->
                     <button data-href="<?= $this->createUrl("userManagement/renderUserImport", ["importFormat" => "csv"]) ?>" data-bs-toggle="modal" title="<?php eT('Import survey administrators from CSV'); ?>" class="btn btn-outline-secondary UserManagement--action--openmodal">
-                            <span class="icon-import text-success"></span> <?php eT("Import (CSV)"); ?>
+                            <span class="ri-upload-fill text-success"></span> <?php eT("Import (CSV)"); ?>
                         </button>
 
                         <!-- Import JSON -->
                     <button data-href="<?= App()->createUrl("userManagement/renderUserImport", ["importFormat" => "json"]) ?>" data-bs-toggle="modal" title="<?php eT('Import survey administrators from Json'); ?>" class="btn btn-outline-secondary UserManagement--action--openmodal">
-                            <span class="icon-import text-success"></span> <?php eT("Import (JSON)"); ?>
+                            <span class="ri-upload-fill text-success"></span> <?php eT("Import (JSON)"); ?>
                         </button>
 
                         <?php
@@ -45,7 +45,7 @@ App()->getClientScript()->registerScriptFile(
                         <div class="btn-group">
                             <!-- Export -->
                         <button class="btn btn-outline-secondary" type="button" data-bs-toggle="dropdown" title="<?php eT('Export survey administrators'); ?>">
-                                <i class="fa fa-upload text-success"></i> <?php eT("Export"); ?>
+                                <i class="ri-download-fill text-success"></i> <?php eT("Export"); ?>
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
@@ -63,7 +63,7 @@ App()->getClientScript()->registerScriptFile(
                     <a 	class="btn btn-outline-secondary" 
                     	href="<?php echo $this->createUrl('userManagement/index'); ?>" 
                     	role="button">
-                        <span class="fa fa-backward"></span>
+                        <span class="ri-rewind-fill"></span>
                         &nbsp;
                         <?php eT('Return to main view'); ?>
                     </a>
@@ -74,7 +74,7 @@ App()->getClientScript()->registerScriptFile(
             <div class="col-lg-3 text-end">
                 <?php if (!isset($inImportView)): ?>
                     <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
-                        <span class="fa fa-backward"></span>
+                        <span class="ri-rewind-fill"></span>
                         &nbsp;
                         <?php eT('Back'); ?>
                     </a>

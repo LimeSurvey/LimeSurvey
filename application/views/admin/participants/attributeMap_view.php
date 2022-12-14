@@ -81,7 +81,7 @@
                                             <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
                                                 <div class='card-body'>
                                                     <?php echo CHtml::encode($name); ?>
-                                                    <span class='fa fa-arrows-h tokenatt-arrow'></span>
+                                                    <span class='ri-arrow-left-right-fill tokenatt-arrow'></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,7 +160,7 @@
                                 <div class='card ui-state-disabled token-attribute' id='t_token'>
                                     <div class='card-body'>
                                         <?php eT("Participant") ?>
-                                        <span class='fa fa-arrows-h tokenatt-arrow'></span>
+                                        <span class='ri-arrow-left-right-fill tokenatt-arrow'></span>
                                     </div>
                                 </div>
                             </div>

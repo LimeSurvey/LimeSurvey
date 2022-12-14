@@ -13,7 +13,7 @@
 
         <!-- Save -->
         <button class="btn btn-success" href="#" type="button" id="save-button">
-            <span class="fa fa-floppy-o"></span>
+            <span class="ri-save-3-fill"></span>
             <?php if (isset($surveybar['savebutton']['text']))
             {
                 echo $surveybar['savebutton']['text'];
@@ -32,12 +32,12 @@
             ?>
 
             <button class="btn btn-success" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" type="button">
-                <span class="fa fa-floppy-o"></span>
+                <span class="ri-save-3-fill"></span>
                 <?php eT("Save & add new question"); ?>
             </button>
 
             <button class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
-                <span class="fa fa-floppy-o"></span>
+                <span class="ri-save-3-fill"></span>
                 <?php eT("Save & add new group"); ?>
             </button>
         <?php endif; ?>
@@ -55,7 +55,7 @@
             ?>
 
             <button class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" type="button">
-                <span class="fa fa-floppy-o"></span>
+                <span class="ri-save-3-fill"></span>
                 <?php eT("Save and new"); ?>
             </button>
         <?php endif; ?>

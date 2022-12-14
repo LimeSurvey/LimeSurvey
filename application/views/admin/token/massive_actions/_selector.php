@@ -22,7 +22,7 @@
                     'action'      => 'edit',
                     'disabled'     => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'         => App()->createUrl('/admin/tokens/sa/editMultiple/'),
-                    'iconClasses' => 'fa fa-pencil text-success',
+                    'iconClasses' => 'ri-pencil-fill text-success',
                     'text'        => gT('Batch-edit participants'),
                     'grid-reload' => 'yes',
                     // modal
@@ -40,7 +40,7 @@
                     'action'      => 'delete',
                     'disabled'     => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'delete'),
                     'url'         =>  App()->createUrl('/admin/tokens/sa/deleteMultiple/'),
-                    'iconClasses' => 'fa fa-trash text-danger',
+                    'iconClasses' => 'ri-delete-bin-fill text-danger',
                     'text'        =>  gT('Delete'),
                     'grid-reload' => 'yes',
 
@@ -77,7 +77,7 @@
                     'action'          => 'invite',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/'.$surveyid),
-                    'iconClasses'     => 'icon-invite text-success',
+                    'iconClasses'     => 'ri-mail-send-fill text-success',
                     'text'            =>  gT('Send email invitations'),
 
                     'aLinkSpecificDatas'  => array(
@@ -95,7 +95,7 @@
                     'action'          => 'remind',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$surveyid),
-                    'iconClasses'     => 'icon-remind text-success',
+                    'iconClasses'     => 'ri-mail-volume-fill text-success',
                     'text'            =>  gT('Send email reminder'),
 
                     'aLinkSpecificDatas'  => array(

@@ -29,6 +29,17 @@ $coreFonts = array(
         ),
     ),
 
+    'remix' => array(
+        'title' => 'Remix Icon',
+        'type' => 'core',
+        //'basePath' => 'vendor.bootstrap', // Need fix vendor alias
+        'devBaseUrl' => 'assets/fonts/font-src/remix',
+        'basePath' => 'fonts.font-src.remix',
+        'css'=> array(
+            'remixicon.css',
+        ),
+    ),
+
     'fontawesome' => array(
         'title' => 'Font Awesome',
         'type' => 'core',

@@ -41,7 +41,7 @@
                         <span id="fileselector">
                             <label class="btn btn-outline-secondary col-8" for="upload_image">
                                 <input class="d-none" id="upload_image" name="upload_image" type="file">
-                                <i class="fa fa-upload ls-space margin right-10"></i><?php eT("Upload"); ?>
+                                <i class="ri-upload-fill ls-space margin right-10"></i><?php eT("Upload"); ?>
                             </label>
                         </span>
 
