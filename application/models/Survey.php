@@ -534,7 +534,6 @@ class Survey extends LSActiveRecord
 
     /**
      * afterFindSurvey to fix and/or add some survey attribute
-     * - Fix template name to be sure template exist
      */
     public function afterFindSurvey()
     {
@@ -547,7 +546,6 @@ class Survey extends LSActiveRecord
                 $this->setAttribute($attribute,$event->get($attribute));
             }
         }
-        $this->template = Template::templateNameFilter($this->template);
     }
 
 
@@ -1027,6 +1025,7 @@ class Survey extends LSActiveRecord
 
     /**
      * @inheritdoc . But use a static var because can be used a lot of time.
+     * - Fix template name to be sure template exist
      */
     public function findByPk($pk, $condition = '', $params = array())
     {
@@ -1036,12 +1035,19 @@ class Survey extends LSActiveRecord
             } else {
                 $result = parent::findByPk($pk, $condition, $params);
                 if (!is_null($result)) {
+                    /* Fix template (directory deleted) */
+                    $result->template = Template::templateNameFilter($result->template);
                     $this->findByPkCache[$pk] = $result;
                 }
                 return $result;
             }
         }
-        return parent::findByPk($pk, $condition, $params);
+        $model = parent::findByPk($pk, $condition, $params);
+        if (!is_null($model)) {
+            /* Fix template (directory deleted) */
+            $model->template = Template::templateNameFilter($model->template);
+        }
+        return $model;
     }
 
     /**
