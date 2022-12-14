@@ -5920,15 +5920,17 @@ textarea.form-control-lg {
 .carousel-item-prev {
   display: block;
 }
+
 .carousel-item-next:not(.carousel-item-start),
 .active.carousel-item-end {
-  transform: translateX(100%);
+  transform: translateX(-100%);
 }
 
 .carousel-item-prev:not(.carousel-item-end),
 .active.carousel-item-start {
-  transform: translateX(-100%);
+  transform: translateX(100%);
 }
+
 .carousel-fade .carousel-item {
   opacity: 0;
   transition-property: opacity;
@@ -18625,19 +18627,23 @@ label {
   color: #1E1E1E;
   border: 0;
   border-radius: 0;
-  border-top: 2px solid #fff;
+  border-top: 2px solid #F9F9FB;
+  border-bottom: 2px solid #C2C5D1;
+  background-color: #F9F9FB;
 }
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
   font-weight: 400 !important;
-  border-top: 2px solid #fff;
+  border-top: 2px solid #F9F9FB;
 }
-.nav-tabs .nav-link:hover {
-  opacity: 0.8 !important;
+.nav-tabs .nav-link:hover:not(.active) {
+  border-bottom: 2px solid rgba(123, 97, 255, 0.4);
+  border-top: 2px solid #F9F9FB;
+  box-shadow: inset 0 0 0 1px rgba(123, 97, 255, 0.4);
 }
 .nav-tabs .nav-link.disabled, .nav-tabs .nav-link:disabled {
-  color: #7C8191;
-  background-color: transparent;
-  border-color: transparent;
+  color: #ACACAC;
+  border-bottom: 2px solid #C2C5D1;
+  background-color: #F9F9FB;
 }
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {

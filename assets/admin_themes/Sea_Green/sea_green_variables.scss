@@ -17,15 +17,17 @@ $active-green : #14AE5C; // buttons & links
 $white        : #fff;
 $black        : #000;
 $black75      : rgba(0, 0, 0, 0.75);
-
+$grape75      : rgba(123, 97, 255, 0.4);
 $g-900        : #1E1E1E;
 $g-800        : #333641;
 $g-700        : #5E6372;
 $g-600        : #7C8191;
+$g-500        : #ACACAC;
 $g-400        : #C2C5D1;
 $g-300        : #DDDEE8;
 $g-200        : #EEEFF7;
 $g-100        : #F9F9FB;
+
 
 $theme-colors: (
     "primary":    $active-green,
