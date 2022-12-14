@@ -315,7 +315,7 @@ $internalConfig = array(
                 'jencode' => 'CJSON::encode',
                 't'     => 'gT',
                 'gT'    => 'gT',
-                'isAbsoluteUrl' => 'LS_Twig_Extension::isAbsoluteUrl',
+                'isAbsoluteUrl' => 'check_absolute_url',
             ),
 
             'sandboxConfig' => array(

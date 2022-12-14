@@ -3,15 +3,16 @@
 namespace ls\tests;
 
 /**
- * Test LS_Twig_Extension functions.
+ * Test check_absolute_url function.
  */
-class LSTwigExtensionTest extends TestBaseClass
+class CheckAbsoluteUrlTest extends TestBaseClass
 {
     /**
-     * Test isAbsoluteUrl function.
+     * Test check_absolute_url function.
      */
-    public function testIsAbsoluteUrlFunction()
+    public function testCheckAbsoluteUrlFunction()
     {
+        \Yii::import('application.helpers.sanitize_helper', true);
         $validCases = [
             'http://127.0.0.1/limesurvey/image.png',
             'http://localhost/limesurvey/image.png',
@@ -28,7 +29,7 @@ class LSTwigExtensionTest extends TestBaseClass
             '/limesurvey/उदाहरण.png',
         ];
         foreach ($validCases as $validCase) {
-            $result = \LS_Twig_Extension::isAbsoluteUrl($validCase);
+            $result = check_absolute_url($validCase);
             $this->assertTrue($result);
         }
 
@@ -38,7 +39,7 @@ class LSTwigExtensionTest extends TestBaseClass
             'relative/url',
         ];
         foreach ($invalidCases as $invalidCase) {
-            $result = \LS_Twig_Extension::isAbsoluteUrl($invalidCase);
+            $result = check_absolute_url($invalidCase);
             $this->assertNotTrue($result);
         }
     }
