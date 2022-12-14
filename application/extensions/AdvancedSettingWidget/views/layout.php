@@ -12,7 +12,7 @@
         <!-- TODO: Object method $setting->isLocalized(). -->
         <?php if ($this->setting['i18n']): ?>
             <i
-                class="fa fa-globe"
+                class="ri-earth-fil"
                 data-bs-toggle="tooltip"
                 title="<?= gT("This setting is localized") ?>"
             ></i>
@@ -23,7 +23,7 @@
                 data-toggle="collapse"
                 href="#help-<?= CHtml::getIdByName($inputBaseName); ?>"
             ><i
-                class="fa fa-question-circle text-info"
+                class="ri-question-fill text-info"
                 data-bs-toggle="tooltip"
                 title="<?= CHtml::encode(strip_tags($this->setting['help'])) ?>"
             > </i><span class="visually-hidden"><?= gT("Show help"); ?></span> </a>

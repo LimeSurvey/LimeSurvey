@@ -5,7 +5,7 @@
         <li>
             <a class="dropdown-item"
                href="<?php echo App()->createUrl("surveyAdministration/delete/", ['iSurveyID' => $sid]); ?>">
-                <span class="fa fa-trash text-danger"></span>
+                <span class="ri-delete-bin-fill text-danger"></span>
                 <?php eT("Delete survey"); ?>
             </a>
         </li>
@@ -20,7 +20,7 @@
             <li>
                 <a class="dropdown-item"
                    href="<?= App()->createUrl("quickTranslation/index/surveyid/{$oSurvey->sid}"); ?>">
-                    <span class="fa fa-language"></span>
+                    <span class="ri-global-line"></span>
                     <?php eT("Quick-translation"); ?>
                 </a>
             </li>
@@ -32,7 +32,7 @@
                 <a class="dropdown-item" href="#" class="btntooltip disabled" data-bs-toggle="tooltip"
                    data-bs-placement="bottom"
                    title="<?php eT('Currently there are no additional languages configured for this survey.'); ?>">
-                    <span class="fa fa-language"></span>
+                    <span class="ri-global-line"></span>
                     <?php eT("Quick-translation"); ?>
                 </a>
             </li>
@@ -45,7 +45,7 @@
                 <!-- condition -->
                 <a class="dropdown-item"
                    href="<?php echo App()->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$oSurvey->sid}"); ?>">
-                    <span class="icon-resetsurveylogic"></span>
+                    <span class="ri-survey-fill"></span>
                     <?php eT("Reset conditions"); ?>
                 </a>
             </li>
@@ -55,7 +55,7 @@
                 <a class="dropdown-item" href="#" class="btntooltip disabled" data-bs-toggle="tooltip"
                    data-bs-placement="bottom"
                    title="<?php eT("Currently there are no conditions configured for this survey.", "js"); ?>">
-                    <span class="icon-resetsurveylogic"></span>
+                    <span class="ri-survey-fill"></span>
                     <?php eT("Reset conditions"); ?>
                 </a>
             </li>
@@ -72,7 +72,7 @@
             <li>
                 <a class="dropdown-item"
                    href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/"); ?>'>
-                    <span class="icon-expressionmanagercheck"></span>
+                    <span class="ri-checkbox-fill"></span>
                     <?php eT("Survey logic file"); ?>
                 </a>
             </li>
@@ -89,7 +89,7 @@
                 <li>
                     <a class="dropdown-item"
                        href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
-                        <span class="icon-expressionmanagercheck"></span>
+                        <span class="ri-checkbox-fill"></span>
                         <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                     </a>
                 </li>
@@ -109,7 +109,7 @@
         <li>
             <a class="dropdown-item"
                href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/straight"); ?>">
-                <span class="icon-resetsurveylogic"></span>
+                <span class="ri-survey-fill"></span>
                 <?php eT("Straight"); ?>
             </a>
         </li>
@@ -118,7 +118,7 @@
         <li>
             <a class="dropdown-item"
                href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/bygroup"); ?>">
-                <span class="icon-resetsurveylogic"></span>
+                <span class="ri-survey-fill"></span>
                 <?php eT("By question group"); ?>
             </a>
         </li>

@@ -1130,7 +1130,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         // If the survey is not active, no date test is needed
         if ($this->active == 'N') {
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><span class="fa fa-stop text-warning"></span><span class="visually-hidden">' . gT('Inactive') . '"</span></a>';
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><span class="ri-stop-fill text-warning"></span><span class="visually-hidden">' . gT('Inactive') . '"</span></a>';
         } elseif ($this->expires != '' || $this->startdate != '') {
             // If it's active, then we check if not expired
             // Time adjust
@@ -1150,9 +1150,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sStart = convertToGlobalSettingFormat($sStart);
 
             // Icon generaton (for CGridView)
-            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><span class="fa  fa-play"></span><span class="visually-hidden">' . sprintf(gT('End: %s'), $sStop) . '</span></a>';
-            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><span class="fa fa fa-step-forward text-warning"></span><span class="visually-hidden">' . sprintf(gT('Expired: %s'), $sStop) . '</span></a>';
-            $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><span class="fa  fa-clock-o text-warning"></span><span class="visually-hidden">' . sprintf(gT('Start: %s'), $sStart) . '</span></a>';
+            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><span class="ri-play-fill text-success"></span><span class="visually-hidden">' . sprintf(gT('End: %s'), $sStop) . '</span></a>';
+            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><span class="ri-skip-forward-fill text-warning"></span><span class="visually-hidden">' . sprintf(gT('Expired: %s'), $sStop) . '</span></a>';
+            $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><span class="ri-time-line text-warning"></span><span class="visually-hidden">' . sprintf(gT('Start: %s'), $sStart) . '</span></a>';
 
             // Icon parsing
             if ($bExpired || $bWillRun) {
@@ -1163,7 +1163,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         } else {
             // If it's active, and doesn't have expire date, it's running
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Active') . '"><span class="fa fa-play"></span><span class="visually-hidden">' . gT('Active') . '"</span></a>';
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Active') . '"><span class="ri-play-fill"></span><span class="visually-hidden">' . gT('Active') . '"</span></a>';
             //$running = '<div class="survey-state"><span class="fa fa-play"></span></div>';
         }
 
@@ -1502,18 +1502,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
             if ($this->active != 'Y') {
                 $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid));
                 if ($groupCount > 0) {
-                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddquestion . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new question') . '"><span class="icon-add" ></span><span class="visually-hidden">' . gT('Add new question') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddquestion . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new question') . '"><span class="ri-add-circle-fill" ></span><span class="visually-hidden">' . gT('Add new question') . '</span></a>';
                 } else {
-                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddGroup . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new group') . '"><span class="icon-add" ></span><span class="visually-hidden">' . gT('Add new group') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sAddGroup . '" role="button" data-bs-toggle="tooltip" title="' . gT('Add new group') . '"><span class="ri-add-circle-fill" ></span><span class="visually-hidden">' . gT('Add new group') . '</span></a>';
                 }
             }
         }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active == 'Y') {
-            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sStatUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Statistics') . '"><span class="fa fa-bar-chart" ></span><span class="visually-hidden">' . gT('Statistics') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sStatUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('Statistics') . '"><span class="ri-bar-chart-fill" ></span><span class="visually-hidden">' . gT('Statistics') . '</span></a>';
         }
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
-            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="visually-hidden">' . gT('General settings & texts') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-outline-secondary" href="' . $sEditUrl . '" role="button" data-bs-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="ri-settings-5-fill" ></span><span class="visually-hidden">' . gT('General settings & texts') . '</span></a>';
         }
 
         $button .= "</div>";
@@ -2150,19 +2150,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Assessments"),
                 'description' => gT("Permission to create/view/update/delete assessments rules for a survey"),
-                'img' => ' fa fa-comment',
+                'img' => ' ri-chat-3-fill',
             ),
             'quotas' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("Quotas"),
                 'description' => gT("Permission to create/view/update/delete quota rules for a survey"),
-                'img' => ' fa fa-tasks',
+                'img' => 'ri-bar-chart-horizontal-fill',
             ),
             'responses' => array(
                 'title' => gT("Responses"),
                 'description' => gT("Permission to create(data entry)/view/update/delete/import/export responses"),
-                'img' => ' icon-browse',
+                'img' => ' ri-window-fill',
             ),
             'statistics' => array(
                 'create' => false,
@@ -2172,7 +2172,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Statistics"),
                 'description' => gT("Permission to view statistics"),
-                'img' => ' fa fa-bar-chart',
+                'img' => ' ri-bar-chart-fill',
             ),
             'survey' => array(
                 'create' => false,
@@ -2182,7 +2182,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Survey"),
                 'description' => gT("Permission on survey (delete). Read permission is used to give access to this group."),
-                'img' => ' fa fa-list', /** Unused, global use icon-list */
+                'img' => ' ri-list-check', /** Unused, global use icon-list */
             ),
             'surveyactivation' => array(
                 'create' => false,
@@ -2192,12 +2192,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Survey activation"),
                 'description' => gT("Permission to activate/deactivate a survey"),
-                'img' => ' fa fa-play',
+                'img' => ' ri-play-fill',
             ),
             'surveycontent' => array(
                 'title' => gT("Survey content"),
                 'description' => gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),
-                'img' => ' fa fa-file-text-o',
+                'img' => ' ri-file-text-line',
             ),
             'surveylocale' => array(
                 'create' => false,
@@ -2213,7 +2213,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Survey security"),
                 'description' => gT("Permission to modify survey security settings"),
-                'img' => ' fa fa-shield',
+                'img' => ' ri-shield-check-fill',
             ),
             'surveysettings' => array(
                 'create' => false,
@@ -2222,7 +2222,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Survey settings"),
                 'description' => gT("Permission to view/update the survey settings including survey participants table creation"),
-                'img' => ' fa fa-gears',
+                'img' => ' ri-settings-5-fill',
             ),
             'tokens' => array(
                 'title' => gT("Participants"), 'description' => gT("Permission to create/update/delete/import/export participants"),
@@ -2235,7 +2235,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'export' => false,
                 'title' => gT("Quick translation"),
                 'description' => gT("Permission to view & update the translations using the quick-translation feature"),
-                'img' => ' fa fa-language',
+                'img' => ' ri-global-line',
             ),
         );
 

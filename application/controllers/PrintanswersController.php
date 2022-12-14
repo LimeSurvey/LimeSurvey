@@ -164,12 +164,12 @@ class PrintanswersController extends LSYii_Controller
             //filter all scripts
             $html = preg_replace("/<script>[^<]*<\/script>/", '', $html);
             //replace fontawesome icons
-            $html = preg_replace('/(<i class="fa fa-check-square-o"><\/i>|<i class="fa fa-close"><\/i>)/', '[X]', $html);
-            $html = preg_replace('/<i class="fa fa-minus-square-o">\<\/i>/', '[-]', $html);
-            $html = preg_replace('/<i class="fa fa-square-o"><\/i>/', '[ ]', $html);
-            $html = preg_replace('/<i class="fa fa-plus"><\/i>/', '+', $html);
-            $html = preg_replace('/<i class="fa fa-circle"><\/i>/', '|', $html);
-            $html = preg_replace('/<i class="fa fa-minus"><\/i>/', '-', $html);
+            $html = preg_replace('/(<i class="ri-checkbox-line"><\/i>|<i class="ri-close-fill"><\/i>)/', '[X]', $html);
+            $html = preg_replace('/<i class="ri-checkbox-indeterminate-line">\<\/i>/', '[-]', $html);
+            $html = preg_replace('/<i class="ri-checkbox-blank-line"><\/i>/', '[ ]', $html);
+            $html = preg_replace('/<i class="ri-add-line"><\/i>/', '+', $html);
+            $html = preg_replace('/<i class="ri-checkbox-blank-circle-fill"><\/i>/', '|', $html);
+            $html = preg_replace('/<i class="ri-subtract-fill"><\/i>/', '-', $html);
 
             $oPDF->writeHTML($html, true, false, true, false, '');
 

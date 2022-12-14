@@ -27,7 +27,7 @@
 <!-- Send invitations buttons -->
 <?php if (!empty($showSendInvitationButton)) : ?>
     <a class="btn btn-success float-end" href="#" id="send-invitation-button">
-        <span class="icon-invite"></span>
+        <span class="ri-mail-send-fill"></span>
         <?php eT("Send invitations"); ?>
     </a>
 <?php endif; ?>
@@ -35,7 +35,7 @@
 <!-- Send reminder buttons -->
 <?php if (!empty($showSendReminderButton)) : ?>
     <a class="btn btn-success float-end" href="#" id="send-reminders-button">
-        <span class="icon-invite"></span>
+        <span class="ri-mail-send-fill"></span>
         <?php eT("Send reminders"); ?>
     </a>
 <?php endif; ?>

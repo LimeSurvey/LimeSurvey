@@ -68,7 +68,7 @@ App()->getClientScript()->registerScriptFile(
                            id="button-export"
                            href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>"
                            role="button">
-                            <span class="icon-export text-success"></span>
+                            <span class="ri-upload-fill text-success"></span>
                             <?php eT("Export"); ?>
                         </a>
                     <?php endif; ?>
@@ -81,7 +81,7 @@ App()->getClientScript()->registerScriptFile(
                                href="#"
                                role="button"
                                onclick="javascript: copyprompt('<?php eT("Please enter the name for the new theme:"); ?>', '<?php echo gT("extends_") . "$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
-                                <span class="icon-copy text-success"></span>
+                                <span class="ri-file-copy-line text-success"></span>
                                 <?php eT("Extend"); ?>
                             </a>
                         <?php else : ?>
@@ -89,7 +89,7 @@ App()->getClientScript()->registerScriptFile(
                                   title="<?php eT("The theme upload directory doesn't exist or is not writable."); ?>" style="display: inline-block"
                                   data-bs-toggle="tooltip" data-bs-placement="bottom">
                             <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                                <span class="icon-copy text-success"></span>
+                                <span class="ri-file-copy-line text-success"></span>
                                 <?php eT("Copy"); ?>
                             </button>
                         </span>
@@ -111,7 +111,7 @@ App()->getClientScript()->registerScriptFile(
                         <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"
                               style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>">
                         <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                            <span class="icon-import text-muted"></span>
+                            <span class="ri-upload-fill text-muted"></span>
                                 <?php eT("Import"); ?>
                         </button>
                     </span>
@@ -122,7 +122,7 @@ App()->getClientScript()->registerScriptFile(
                         <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"
                               style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>">
                     <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                        <span class="icon-export text-muted"></span>
+                        <span class="ri-upload-fill text-muted"></span>
                         <?php eT("Export"); ?>
                     </button>
                 </span>
@@ -133,7 +133,7 @@ App()->getClientScript()->registerScriptFile(
                         <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>"
                               style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo $sMessage; ?>">
                     <button type="button" class="btn btn-outline-secondary btntooltip" disabled="disabled">
-                        <span class="icon-copy text-muted"></span>
+                        <span class="ri-file-copy-line text-muted"></span>
                         <?php eT("Copy"); ?>
                     </button>
                 </span>
@@ -149,7 +149,7 @@ App()->getClientScript()->registerScriptFile(
                            href="#"
                            role="button"
                            onclick="javascript: copyprompt('<?php eT("Rename this theme to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
-                            <span class="fa fa-pencil  text-success"></span>
+                            <span class="ri-pencil-fill  text-success"></span>
                             <?php eT("Rename"); ?>
                         </a>
                     <?php endif; ?>
@@ -165,7 +165,7 @@ App()->getClientScript()->registerScriptFile(
                             data-button-type="btn-danger"
                             title="<?php eT('Delete'); ?>"
                             class="btn btn-danger selector--ConfirmModal">
-                            <span class="fa fa-trash"></span>
+                            <span class="ri-delete-bin-fill"></span>
                             <?php eT('Delete'); ?>
                         </a>
                     <?php endif; ?>
@@ -212,7 +212,7 @@ App()->getClientScript()->registerScriptFile(
                 <?php if (isset($fullpagebar['savebutton']['form'])) : ?>
                     <a class="btn btn-success" href="#" role="button" id="save-form-button"
                        data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                        <span class="fa fa-floppy-o"></span>
+                        <span class="ri-save-3-fill"></span>
                         <?php eT("Save"); ?>
                     </a>
                 <?php endif; ?>
@@ -220,7 +220,7 @@ App()->getClientScript()->registerScriptFile(
                 <!-- Close -->
                 <?php if (isset($fullpagebar['closebutton']['url'])) : ?>
                     <a class="btn btn-danger text-nowrap" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
-                        <span class="fa fa-close"></span>
+                        <span class="ri-close-fill"></span>
                         <?php eT("Close"); ?>
                     </a>
                 <?php endif; ?>
@@ -228,7 +228,7 @@ App()->getClientScript()->registerScriptFile(
                 <!-- Return to Theme List -->
                 <?php if (isset($templateEditorBar['buttons']['returnbutton'])) : ?>
                     <a class="btn btn-outline-secondary text-nowrap" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
-                        <span class="fa fa-backward"></span>
+                        <span class="ri-rewind-fill"></span>
                         &nbsp;&nbsp;
                         <?php eT("Back"); ?>
                     </a>

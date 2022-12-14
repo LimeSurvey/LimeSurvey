@@ -10,13 +10,13 @@
             role="button" 
             class="btn btn-primary modal-next">
             Next 
-            <i class="icon-arrow-right icon-white"></i>
+            <i class="ri-arrow-right-fill icon-white"></i>
         </button>
 
         <button 
             class="btn btn-info modal-prev"
             type="button">
-            <i class="icon-arrow-left icon-white"></i>
+            <i class="ri-arrow-left-fill icon-white"></i>
              Previous
         </button>
 

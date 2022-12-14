@@ -98,7 +98,7 @@ class UpdateCheck extends PluginBase
                 new Menu(
                     [
                         'href'      => $this->getCheckUrl(),
-                        'iconClass' => 'fa fa-refresh',
+                        'iconClass' => 'ri-refresh-line',
                         'label'     => gT('Find updates'),
                         'tooltip'   => gT('Check all extensions for available updates.'),
                         'onClick'   => <<<JS

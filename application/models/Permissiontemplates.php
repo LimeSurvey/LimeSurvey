@@ -168,7 +168,7 @@ class Permissiontemplates extends CActiveRecord
                 data-bs-toggle='tooltip'
                 data-bs-placement='top'
                 title='" . gT('View role details') . "'
-                data-href='" . $detailUrl . "'><i class='fa fa-search'></i></button>";
+                data-href='" . $detailUrl . "'><i class='ri-search-line'></i></button>";
 
         // Edit Permission
         $editPermissionButton = ""
@@ -179,7 +179,7 @@ class Permissiontemplates extends CActiveRecord
                 title='" . gT('Edit permission') . "'
                 data-href='" . $setPermissionsUrl . "'
                 data-modalsize='modal-lg'>
-                    <i class='fa fa-lock'></i>
+                    <i class='ri-lock-fill'></i>
                 </button>";
 
         // Edit Role
@@ -190,7 +190,7 @@ class Permissiontemplates extends CActiveRecord
                 data-bs-placement='top'
                 title='" . gT('Edit role') . "'
                 data-href='" . $editUrl . "'>
-                    <i class='fa fa-pencil'></i>
+                    <i class='ri-pencil-fill'></i>
                 </button>";
 
         // Export Role
@@ -201,7 +201,7 @@ class Permissiontemplates extends CActiveRecord
                  title='" . gT('Export role') . "'
                 href='" . $exportRoleUrl . "'
                 role='button'>
-                    <i class='fa fa-download'></i>
+                    <i class='ri-download-fill'></i>
                 </a>";
 
         // Delete Role
@@ -220,7 +220,7 @@ class Permissiontemplates extends CActiveRecord
                 data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")'
                 data-btntext='" . gt('Delete') . "' 
                 data-message='" . gT('Do you want to delete this role?') . "'>
-                    <i class='fa fa-trash text-danger'></i>
+                    <i class='ri-delete-bin-fill text-danger'></i>
               </button>"
             . '</span>';
 

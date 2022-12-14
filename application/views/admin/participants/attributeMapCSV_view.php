@@ -9,7 +9,7 @@
             <div class="card-header bg-primary">
                 <?php eT("CSV field names "); ?>
                 <div class='float-end'>
-                    <span id='move-all' class='btn fa fa-arrow-right no-padding' data-bs-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>'></span>
+                    <span id='move-all' class='btn ri-arrow-right-fill no-padding' data-bs-toggle='tooltip' data-title='<?php eT('Move all fields to create column'); ?>'></span>
                 </div>
             </div>
             <div class='card-body'>

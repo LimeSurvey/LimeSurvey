@@ -10,7 +10,7 @@
 ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','update')) { ?>
     <a href="<?php echo $editUrl; ?>" class="btn btn-outline-secondary" data-bs-toggle='tooltip' title='<?php eT("Edit"); ?>'>
-        <span class='fa fa-pencil'></span>
+        <span class='ri-pencil-fill'></span>
     </a>
 <?php } ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','delete')) { ?>
@@ -24,7 +24,7 @@
                 data-btntext="<?= gt('Delete')?>"
                 data-message="<?php eT("Are you sure you want to delete the selected quotas?","js"); ?>"
         >
-            <span class='fa fa-trash text-danger'></span>
+            <span class='ri-delete-bin-fill text-danger'></span>
         </a>
     </span>
 <?php } ?>
@@ -37,7 +37,7 @@
           data-bs-toggle="modal"
           data-bs-target="quotaValidation"
         >
-            <i class='fa fa-tasks'></i>
+            <i class='ri-bar-chart-horizontal-fill'></i>
         </a>
     </span>
 <?php } ?>
