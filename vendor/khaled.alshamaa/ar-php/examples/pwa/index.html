@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar">
+    <head>
+        <title>العرٮىه ٮلا ٮٯاط</title>
+        <meta name="description" content="هل ٮعلم اں الٮٯاط ٮم احٮراعها للعحم ولىس للعرٮ">
+
+        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+        <link rel="stylesheet" href="css/style.css" />
+
+        <link rel="manifest" href="manifest.json" />
+        
+        <!-- ios support -->
+        <link rel="apple-touch-icon" href="images/ar-php_72.png" />
+        <link rel="apple-touch-icon" href="images/ar-php_96.png" />
+        <link rel="apple-touch-icon" href="images/ar-php_128.png" />
+        <link rel="apple-touch-icon" href="images/ar-php_144.png" />
+        <link rel="apple-touch-icon" href="images/ar-php_152.png" />
+        <link rel="apple-touch-icon" href="images/ar-php_192.png" />
+        <link rel="apple-touch-icon" href="images/ar-php_384.png" />
+        <link rel="apple-touch-icon" href="images/ar-php_512.png" />
+        
+        <meta name="apple-mobile-web-app-status-bar" content="#77bb00" />
+        <meta name="theme-color" content="#77bb00" />
+
+    </head>
+    <body>
+        <div class="Paragraph" dir="rtl">
+            <img src="images/ar-php_128.png" class ="Logo">
+            <h2>الكتابة بدون نقط</h2>
+            
+            <h3>الفكرة:</h3>
+            <p align="justify">
+                هل ٮعلم اں الٮٯاط ٮم احٮراعها للعحم ولىس للعرٮ، حٮى اں العرٮ ٯدىما كاٮوا لا ىسٮحدموں الٮٯاط 
+                واٮٮ كدللـﹳ ىمكٮلـﹳ اں ٮٯرا مٯاطع كامله ٮدوں ٮٯاط كما كاں ىڡعل الاسلاڡ، 
+                وكاٮوا ىڡهموں الكلماٮ مں سىاٯ الحمله واٮسط مٮال على دللـﹳ اٮلـﹳ ٮٯرا هدا المٯطع مں دوں مساكل
+            </p>
+            
+            <h3>التجربة:</h3>
+            <p>
+                <form onsubmit="return getNoDots();">
+                    أدخل نص معين (تغريدة على سبيل المثال):
+                    <textarea id="comment" type="text" dir="rtl" rows="3" placeholder="النقاط تم إختراعها للعجم وليس للعرب"  style="width: 100%;" /></textarea>
+                    <br /><input type="submit" value="تحويل!" />
+                    <input id="copy" type="button" value="نسخ" onclick="copyToClipboard()" />
+                    <input id="new" type="button" value="عبارة جديدة" onclick="newString()" />
+                </form>
+            </p>
+
+            <center>
+                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="هل ٮعلم اں الٮٯاط ٮم احٮراعها للعحم ولىس للعرٮ، ىمكٮلـﹳ اسٮحدام هده الصڡحه لٮحرٮه دللـﹳ ٮٮڡسلـﹳ!&#010;" data-via="arphp" data-hashtags="" data-related="arphp" data-show-count="true">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </center>
+        </div>
+        
+        <footer>
+            <small>
+                هذا العمل حر مفتوح المصدر متاح بموجب الإصدار الثاني من
+                <a href="https://ojuba.org/waqf-2.0:رخصة_وقف_العامة" target="_blank">رخصة وقف العامة</a>
+                ويمكنك الحصول على شيفرته المصدرية كاملة من 
+                <a href="pwa.zip">هنا</a><br />
+                <a href="https://github.com/khaled-alshamaa/ar-php">Ar-PHP</a>, 
+                an open-source library for website developers to process Arabic content
+                <br />Copyright © 2021 Khaled Al-Sham'aa
+                <br /><a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Far-php.org%2Fpwa%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
+            </small>
+        </footer>
+    
+        <script src="js/app.js"></script>
+
+        <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+
+        <script type="text/javascript">
+            var pageTracker = _gat._getTracker("UA-1268287-2");
+            pageTracker._initData();
+            pageTracker._trackPageview();
+        </script>
+    </body>
+</html>

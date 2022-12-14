@@ -108,7 +108,7 @@
 
                     <!-- Quick-translation -->
                     <li>
-                        <a href="<?php echo App()->createUrl("admin/translate/sa/index/surveyid/{$oSurvey->sid}"); ?>">
+                        <a href="<?php echo App()->createUrl("quickTranslation/index/surveyid/{$oSurvey->sid}"); ?>">
                         <span class="fa fa-language" ></span>
                         <?php eT("Quick-translation"); ?>
                         </a>
@@ -276,8 +276,9 @@
     <?php App()->getController()->renderPartial(
         '/admin/survey/surveybar_displayexport',
         [
-            'respstatsread' => $hasResponsesStatisticsReadPermission,
-            'surveyexport'  => Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export'),
+            'hasResponsesExportPermission' => $hasResponsesExportPermission,
+            'hasTokensExportPermission' => $hasSurveyTokensExportPermission,
+            'hasSurveyExportPermission' => $hasSurveyExportPermission,
             'oSurvey'       => $oSurvey,
             'onelanguage'   => (count($oSurvey->allLanguages) == 1)
         ]

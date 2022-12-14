@@ -83,19 +83,19 @@ switch ($errorObject->error) {
 
     case 'server_error_creating_zip_update':
         $title = gT('Server error!');
-        $message = gT('An error occured while creating your update package file.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occurred while creating your update package file.') . ' ' . gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;
 
     case 'server_error_getting_checksums':
         $title = gT('Server error!');
-        $message = gT('An error occured while getting checksums.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occurred while getting checksums.') . ' ' . gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;
 
     case 'cant_get_changeset':
         $title = gT('Server error!');
-        $message = gT('An error occured while getting the changeset.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occurred while getting the changeset.') . ' ' . gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;
 
@@ -107,7 +107,7 @@ switch ($errorObject->error) {
 
     case 'zip_error':
         $title = gT('Error while creating zip file');
-        $message = gT("An error occured while creating a backup of your files. Check your local system (permission, available space, etc.)");
+        $message = gT("An error occurred while creating a backup of your files. Check your local system (permission, available space, etc.)");
         break;
 
 

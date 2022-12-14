@@ -9,7 +9,7 @@
  * as this file.
  *
  */
-$system_path = "framework";
+$system_path = "vendor/yiisoft/yii/framework";
 
 /*
  *---------------------------------------------------------------
@@ -166,13 +166,13 @@ if (isset($aSettings['config']['debug'])) {
         error_reporting(0);
     }
 } else {
-    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user don't remove his 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
+    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user doesn't remove their 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
 }
 
 if (version_compare(PHP_VERSION, '5.3.3', '<')) {
     die('This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />');
 }
-require_once __DIR__ . '/third_party/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 /*
 * --------------------------------------------------------------------

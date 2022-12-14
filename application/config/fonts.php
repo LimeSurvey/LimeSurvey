@@ -10,10 +10,10 @@
  * To enjoy this feature, add to your package definition a 'devBaseUrl' with the relative url to your package
  *
  */
-$debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+$debug = $userConfig['config']['debug'] ?? 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
 $minVersion = ($debug > 0) ? "" : ".min";
-/* needed ? @see third_party.php */
+/* needed ? @see vendor.php */
 if (isset($_GET['isAjax'])) {
     return array();
 }
@@ -22,7 +22,7 @@ $coreFonts = array(
     'fontawesome' => array(
         'title' => 'Font Awesome',
         'type' => 'core',
-        //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
+        //'basePath' => 'vendor.bootstrap', // Need fix vendor alias
         'devBaseUrl' => 'assets/fonts/font-src/fontawesome/',
         'basePath' => 'fonts.font-src.fontawesome',
         'css'=> array(
@@ -101,6 +101,35 @@ $coreFonts = array(
         ),
     ),
 
+    'font-opensans' => array(
+        'title' => 'Open Sans',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'opensans.css',
+        ),
+    ),
+
+    'font-raleway' => array(
+        'title' => 'Raleway',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'raleway.css',
+        ),
+    ),
+
+    'font-source-sans-pro' => array(
+        'title' => 'Source Sans Pro',
+        'type' => 'core',
+        'devBaseUrl' => 'assets/fonts/',
+        'basePath' => 'fonts',
+        'css' => array(
+            'source-sans-pro.css',
+        ),
+    ),
 );
 
 // get user fonts configuration from /upload/fonts directory

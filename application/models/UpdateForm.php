@@ -26,7 +26,7 @@ class UpdateForm extends CFormModel
     /** @var string $build The build id */
     public $build;
 
-    /** @var  string $view The view to display : used only for welcome type views to let the server choose wich view will be displayed */
+    /** @var  string $view The view to display : used only for welcome type views to let the server choose which view will be displayed */
     public $view;
 
     // Proxy infos
@@ -215,7 +215,7 @@ class UpdateForm extends CFormModel
      * @param int $destinationBuild
      * @return mixed|stdClass
      */
-    public function getChangelog($destinationBuild)
+    public function getChangeLog($destinationBuild)
     {
         $getters = '/index.php?r=updates/changelog&frombuild=' . $this->build . '&tobuild=' . $destinationBuild;
         $content = $this->performRequest($getters);
@@ -399,19 +399,6 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * Destroy the global settings stored in the settings (they should not be used anymore...)
-     */
-    public function destroyGlobalSettings()
-    {
-        SettingGlobal::setSetting('updateavailable', '0');
-        SettingGlobal::setSetting('updatebuild', '');
-        SettingGlobal::setSetting('updateversions', '');
-        Yii::app()->session['security_update'] = null;
-        Yii::app()->session['update_result'] = null;
-        Yii::app()->session['next_update_check'] = null;
-    }
-
-    /**
      * This function provide status information about files presents on the system that will be afected by the update : do they exist ? are they writable ? modified ?
      *
      * @param array $updateinfo Array of updated files
@@ -513,8 +500,8 @@ class UpdateForm extends CFormModel
             $dbChecks = $this->getDbChecks($destinationBuild);
 
             // Test if user defined by himself a max size for dbBackup
-            if (Yii::app()->getConfig("maxdbsizeforbackup")) {
-                $dbChecks->dbSize = Yii::app()->getConfig("maxdbsizeforbackup");
+            if (Yii::app()->getConfig("maxdbsizeforbackup") && Yii::app()->getConfig("maxdbsizeforbackup") > 0) {
+                 $dbChecks->dbSize = Yii::app()->getConfig("maxdbsizeforbackup");
             }
 
             if ($dbChecks->result) {
@@ -926,10 +913,8 @@ class UpdateForm extends CFormModel
     private function getProtocol()
     {
         $server_ssl = Yii::app()->getConfig("comfort_update_server_ssl");
-        if ($server_ssl === 1) {
-            if (extension_loaded("openssl")) {
+        if ($server_ssl === 1 && extension_loaded("openssl")) {
                 return 'https://';
-            }
         }
         return 'http://';
     }
@@ -976,9 +961,8 @@ class UpdateForm extends CFormModel
     {
         if ((extension_loaded("curl"))) {
             if (isset($_REQUEST['access_token'])) {
-                $getters .= "&access_token=" . $_REQUEST['access_token'];
+                $getters .= "&access_token=" . urlencode($_REQUEST['access_token']);
             }
-
             $ch = curl_init($this->getProtocol() . Yii::app()->getConfig("comfort_update_server_url") . $getters);
 
             if ($this->proxy_host_name != '') {

@@ -88,6 +88,7 @@ class CreateQuestionTest extends TestBaseClassWeb
                  "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
             );
             $input->clear()->sendKeys($questionCode);
+            $input->click();
             $web->findById('relevance')->click();
             sleep(1);
             $checkValidateText = trim($web->findById('question-title-warning')->getText());

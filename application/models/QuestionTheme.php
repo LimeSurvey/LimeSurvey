@@ -5,7 +5,7 @@ use LimeSurvey\Helpers\questionHelper;
 /**
  * This is the model class for table "{{question_themes}}".
  *
- * The followings are the available columns in table '{{question_themes}}':
+ * The following are the available columns in table '{{question_themes}}':
  *
  * @property integer $id
  * @property string  $name
@@ -389,6 +389,9 @@ class QuestionTheme extends LSActiveRecord
 
         // read all metadata from the provided $pathToXmlFolder
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
+        if (!isset($questionMetaData['questionType'])) {
+            throw new Exception('Missing attribute questionType in meta data');
+        }
 
         $aQuestionThemes = QuestionTheme::model()->findAll(
             '(question_type = :question_type AND extends = :extends)',
@@ -415,6 +418,7 @@ class QuestionTheme extends LSActiveRecord
         // set settings as json
         $questionMetaData['settings'] = json_encode([
             'subquestions'     => $questionMetaData['subquestions'] ?? 0,
+            'other'            => $questionMetaData['other'] ?? false,
             'answerscales'     => $questionMetaData['answerscales'] ?? 0,
             'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'] ?? 0,
             'assessable'       => $questionMetaData['assessable'] ?? 0,
@@ -906,7 +910,7 @@ class QuestionTheme extends LSActiveRecord
         if (!is_file($sPathToCoreConfigFile)) {
             return $aSuccess = [
                 'message' => sprintf(
-                    gT("Question theme could not be converted to LimeSurvey 4 standard. Reason: No matching core theme with the name %s could be found"),
+                    gT("Question theme could not be converted to the latest LimeSurvey version. Reason: No matching core theme with the name %s could be found"),
                     $sThemeDirectoryName
                 ),
                 'success' => false
@@ -938,7 +942,7 @@ class QuestionTheme extends LSActiveRecord
         $oThemeConfig->saveXML($sQuestionConfigFilePath);
 
         return $aSuccess = [
-            'message' => gT('Question Theme has been sucessfully converted to LimeSurvey 4'),
+            'message' => gT('Question theme has been successfully converted to the latest LimeSurvey version.'),
             'success' => true
         ];
     }

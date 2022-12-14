@@ -88,11 +88,11 @@ class SurveyDynamic extends LSActiveRecord
             return array(
                 'survey'   => array(self::HAS_ONE, 'Survey', array(), 'condition' => ('sid = ' . self::$sid)),
                 'tokens'   => array(self::HAS_ONE, 'TokenDynamic', array('token' => 'token')),
-                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'))
+                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
             );
         } else {
             return array(
-                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'))
+                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'), 'condition' => ('sid = ' . self::$sid))
             );
         }
     }
@@ -388,7 +388,7 @@ class SurveyDynamic extends LSActiveRecord
         $oFieldMap = json_decode(base64_decode($base64jsonFieldMap));
         $value     = $this->$colName;
 
-        $sFullValue = strip_tags(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
+        $sFullValue = viewHelper::flatten(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
         if (strlen($sFullValue) > 50) {
             $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value);
             $sValue          = '<span data-toggle="tooltip" data-placement="left" title="' . quoteText($sFullValue) . '">' . $sElipsizedValue . '</span>';
@@ -775,7 +775,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Get an array to find question data responsively
      * This should be part of the question object.
-     * And in future developement this should be part of the specific question type object
+     * And in future development this should be part of the specific question type object
      *
      * @param Question $oQuestion
      * @param SurveyDynamic $oResponses
@@ -886,7 +886,7 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge(self::$survey->attributes, $oQuestion->survey->languagesettings[$sLanguage]->attributes));
         }
 
-        $aQuestionAttributes['answervalue'] = isset($oResponses[$fieldname]) ? $oResponses[$fieldname] : null;
+        $aQuestionAttributes['answervalue'] = $oResponses[$fieldname] ?? null;
         $aQuestionAttributes['answercode'] = $aQuestionAttributes['answervalue']; // Must keep original code for -oth- and maybe other
         if (
             (in_array($oQuestion->type, ["!", "L", "O", "F", "H"]))
@@ -912,7 +912,7 @@ class SurveyDynamic extends LSActiveRecord
                 );
             } elseif ($oQuestion->other == 'Y') {
                 $aQuestionAttributes['answervalue'] = !empty($attributes['other_replace_text'][$sLanguage]) ? $attributes['other_replace_text'][$sLanguage] : gT("Other");
-                $aQuestionAttributes['answeroption']['answer'] = isset($oResponses[$fieldname . 'other']) ? $oResponses[$fieldname . 'other'] : null;
+                $aQuestionAttributes['answeroption']['answer'] = $oResponses[$fieldname . 'other'] ?? null;
             }
         }
 
@@ -937,12 +937,12 @@ class SurveyDynamic extends LSActiveRecord
             }
 
             $tempFieldname = $fieldname . '#0';
-            $sAnswerCode = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            $sAnswerCode = $oResponses[$tempFieldname] ?? null;
             $sAnswerText = isset($aAnswerText[0][$oResponses[$tempFieldname]]) ? $aAnswerText[0][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][0] = $sAnswerText;
 
             $tempFieldname = $fieldname . '#1';
-            $sAnswerCode = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            $sAnswerCode = $oResponses[$tempFieldname] ?? null;
             $sAnswerText = isset($aAnswerText[1][$oResponses[$tempFieldname]]) ? $aAnswerText[1][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][1] = $sAnswerText;
         }
@@ -987,9 +987,9 @@ class SurveyDynamic extends LSActiveRecord
             ));
             foreach ($oScaleXSubquestions as $oScaleSubquestion) {
                 $tempFieldname = $fieldname . '_' . $oScaleSubquestion->title;
-                $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+                $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = $oResponses[$tempFieldname] ?? null;
                 /* Isue with language, need #15907 fixed */
-                $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = isset($oScaleSubquestion->questionl10ns[$sLanguage]->question) ? $oScaleSubquestion->questionl10ns[$sLanguage]->question : null;
+                $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = $oScaleSubquestion->questionl10ns[$sLanguage]->question ?? null;
             }
         }
 

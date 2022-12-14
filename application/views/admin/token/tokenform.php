@@ -35,7 +35,8 @@ foreach ($tokendata as $Key => $Value) {
     <?php echo CHtml::form(array("admin/tokens/sa/{$token_subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array(
         'id' => 'edittoken',
         'class' => '',
-        'data-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them.")
+        'data-additional-attributes-validation-error' => gT("Some mandatory additional attributes were left blank. Please review them."),
+        'data-expiration-validation-error' => gT('Participant expiration date can\'t be lower than the "Valid from" date'),
     )); ?>
       <!-- Tabs -->
       <?php if( count($attrfieldnames) > 0 ):?>
@@ -137,9 +138,9 @@ foreach ($tokendata as $Key => $Value) {
 
                     <?php if ($oSurvey->anonymized != 'Y'):?>
                         <div class="">
-                            <div id="sent-date-container" class="date-container"  <?php if (!$bCompletedValue):?>style="display: none;"<?php endif; ?>>
+                            <div id="completed-date-container" class="date-container"  <?php if (!$bCompletedValue):?>style="display: none;"<?php endif; ?>>
                             <div id="completed-date_datetimepicker" class="input-group date">
-                                <input class="YesNoDatePicker form-control" id="completed-date" type="text" value="<?php echo isset($completed) ? $completed : ''?>" name="completed-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                <input class="YesNoDatePicker form-control" id="completed-date" type="text" value="<?php echo $completed ?? ''?>" name="completed-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                             </div>
                             </div>
@@ -182,7 +183,7 @@ foreach ($tokendata as $Key => $Value) {
                 <?php eT("Access code:"); ?>
                 </label>
                 <div class="">
-                <?=TbHtml::textField('token',(isset($token) ? $token : ""), [
+                <?=TbHtml::textField('token',($token ?? ""), [
                     'class' => 'form-control',
                     'size' => '20',
                     'maxlength' => $iTokenLength
@@ -298,7 +299,7 @@ foreach ($tokendata as $Key => $Value) {
                     <div id="sent-date-container" data-parent="#sent-switch" class="selector__date-container_hidden date-container" <?php if (!$bSwitchValue){ echo "style='display:none;'"; }?> >
                         <!-- Sent Date -->
                         <div id="sent-date_datetimepicker" class="input-group date">
-                        <input class="YesNoDatePicker form-control" id="sent-date" type="text" value="<?php echo isset($sent) ? $sent : ''?>" name="sent-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                        <input class="YesNoDatePicker form-control" id="sent-date" type="text" value="<?php echo $sent ?? ''?>" name="sent-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                         <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                         </div>
                     </div>
@@ -352,7 +353,7 @@ foreach ($tokendata as $Key => $Value) {
                 </div>
                 <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent) && $remindersent!='N') {echo $remindersent; } else {echo "N"; }?>" />
             </div>
-                
+
             <!-- Reminder count, Uses left -->
             <div class="form-group">
                 <!-- Reminder count -->
@@ -398,7 +399,7 @@ foreach ($tokendata as $Key => $Value) {
                 <?php eT("Valid from"); ?>:</label>
             <div class=" has-feedback">
                 <div id="validfrom_datetimepicker" class="input-group date">
-                <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo isset($validfrom) ? $validfrom : ''?>" name="validfrom" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo $validfrom ?? ''?>" name="validfrom" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                 </div>
             </div>
@@ -411,7 +412,7 @@ foreach ($tokendata as $Key => $Value) {
             </label>
             <div class=" has-feedback">
                 <div id="validuntil_datetimepicker" class="input-group date">
-                <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : ''?>" name="validuntil" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo $validuntil ?? ''?>" name="validuntil" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                 </div>
             </div>

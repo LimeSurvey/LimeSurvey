@@ -114,6 +114,7 @@ class User extends LSActiveRecord
             array('templateeditormode', 'default', 'value' => 'default'),
             array('templateeditormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('dateformat', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+            array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
 
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
@@ -141,6 +142,7 @@ class User extends LSActiveRecord
             'created' => gT('Created at'),
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
+            'expires' => gT("Expiry date/time:"),
         ];
     }
 
@@ -181,9 +183,10 @@ class User extends LSActiveRecord
      * @param string $new_full_name
      * @param string $new_email
      * @param int $parent_user
+     * @param string|null $expires
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -194,6 +197,7 @@ class User extends LSActiveRecord
         $oUser->email = $new_email;
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->expires = $expires;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -472,11 +476,7 @@ class User extends LSActiveRecord
                 </button>";
         } else {
             if (
-                Permission::model()->hasGlobalPermission('superadmin', 'read')
-                || $this->uid == Yii::app()->session['loginID']
-                || (Permission::model()->hasGlobalPermission('users', 'update')
-                    && $this->parent_id == Yii::app()->session['loginID']
-                )
+                $this->canEdit(Yii::app()->session['loginID'])
             ) {
                 $editUser = "<button data-toggle='tooltip' data-url='" . $editUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='modifyuser' title='" . gT("Edit this user") . "' type='submit' class='btn btn-default btn-sm green-border action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
             }
@@ -622,7 +622,7 @@ class User extends LSActiveRecord
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            //Prevent users to modify original superadmin. Original superadmin can change his password on his account setting!
+            //Prevent users from modifying the original superadmin. Original superadmin can change the password on their account setting!
             if ($this->uid == 1) {
                 $editUserButton = "";
             }
@@ -657,13 +657,7 @@ class User extends LSActiveRecord
             $buttonArray[] = $userDetail;
         }
         // Check if user is editable
-        if (
-            $this->uid == Yii::app()->user->getId()                             //One can edit onesself of course
-            || (
-                Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to edit users given
-                && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned by admin
-            )
-        ) {
+        if ($this->canEdit(Yii::app()->session['loginID'])) {
             $buttonArray[] = $editUserButton;
         }
 
@@ -939,6 +933,25 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Returns true if the user has expired.
+     *
+     * @return boolean
+     */
+    public function isExpired()
+    {
+        $expired = false;
+        if (!empty($this->expires)) {
+            // Time adjust
+            $now = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $expirationTime = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires)));
+
+            // Time comparison
+            $expired = new DateTime($expirationTime) < new DateTime($now);
+        }
+        return $expired;
+    }
+
+    /**
      * Get the decription to be used in list
      * @return $string
      */
@@ -948,5 +961,19 @@ class User extends LSActiveRecord
             return $this->users_name;
         }
         return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
+    }
+
+    /**
+     * Returns true if logged in user with id $loginId can edit this user
+     *
+     * @param int $loginId
+     * @return bool
+     */
+    public function canEdit($loginId)
+    {
+        return
+            Permission::model()->hasGlobalPermission('superadmin', 'read')
+            || $this->uid == $loginId
+            || (Permission::model()->hasGlobalPermission('users', 'update') && $this->parent_id == $loginId);
     }
 }

@@ -128,7 +128,7 @@ class LimeExpressionManager
 
     /**
      * variables temporarily set for substitution purposes
-     * temporarily mean for this page, until resetted. Not for next page
+     * temporarily mean for this page, until reset. Not for next page
      *
      * These are typically the LimeReplacement Fields passed in via templatereplace()
      * Each has the following structure:  array(
@@ -162,9 +162,18 @@ class LimeExpressionManager
     private $pageRelevanceInfo;
 
     /**
-     *
-     * @var array
-     */
+    * @var array|null $pageTailorInfo
+    * Array of array of information about HTML id to update with javascript function
+    * [[
+    *   'questionNum' : question number
+    *   'num' : internal number of javascript function
+    *   'id' : id of HTML element
+    *   'raw' : Raw Expression
+    *   'result' :
+    *   'vars' : var used in javascript function
+    *   'js' : final javascript function
+    * ]]
+    */
     private $pageTailorInfo;
     /**
      * internally set to true (1) for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
@@ -3390,9 +3399,9 @@ class LimeExpressionManager
             }
 
             $questionNum = $fielddata['qid'];
-            $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
-            $SQrelevance = (isset($fielddata['SQrelevance'])) ? $fielddata['SQrelevance'] : 1;
-            $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
+            $relevance = (isset($fielddata['relevance'])) ? trim($fielddata['relevance']) : 1;
+            $SQrelevance = (isset($fielddata['SQrelevance'])) ? trim($fielddata['SQrelevance']) : 1;
+            $grelevance = (isset($fielddata['grelevance'])) ? trim($fielddata['grelevance']) : 1;
             $hidden = (isset($qattr[$questionNum]['hidden'])) ? ($qattr[$questionNum]['hidden'] == '1') : false;
             $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
             $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : null; // a perl regular exrpession validation function
@@ -3901,7 +3910,7 @@ class LimeExpressionManager
                 //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
                 //                . "','readWrite':'" . $readWrite
                 //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
-                . "','default':'" . (is_null($defaultValue) ? '' : str_replace("'", "\'", $defaultValue))
+                . "','default':'" . (is_null($defaultValue) ? '' : json_encode($defaultValue)) // Don't found usage in em_javascript, used in expression ?
                 . "','rowdivid':'" . (is_null($rowdivid) ? '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $groupSeq
@@ -3952,7 +3961,6 @@ class LimeExpressionManager
         } else {
             // Read list of available tokens from the tokens table so that preview and error checking works correctly
             $attrs = array_keys(getTokenFieldsAndNames($surveyid));
-
             $blankVal = [
                 'code'      => '',
                 'type'      => '',
@@ -3960,11 +3968,9 @@ class LimeExpressionManager
                 'jsName'    => '',
                 'readWrite' => 'N',
             ];
-            // DON'T set $this->knownVars['TOKEN'] = $blankVal; becuase optout/optin can need it, then don't replace this from templatereplace
+            // DON'T set $this->knownVars['TOKEN'] = $blankVal; because optout/optin can need it, then don't replace this from templatereplace
             foreach ($attrs as $key) {
-                if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/', $key)) {
-                    $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
-                }
+                $this->knownVars['TOKEN:' . strtoupper($key)] = $blankVal;
             }
         }
 
@@ -4246,7 +4252,6 @@ class LimeExpressionManager
             $questionSeq = isset($this->questionId2questionSeq[$questionNum]) ? $this->questionId2questionSeq[$questionNum] : -1;
             $groupSeq = isset($this->questionId2groupSeq[$questionNum]) ? $this->questionId2groupSeq[$questionNum] : -1;
         }
-
         $stringToParse = htmlspecialchars_decode($eqn, ENT_QUOTES);
         $result = $this->em->ProcessBooleanExpression($stringToParse, $groupSeq, $questionSeq);
         $hasErrors = $this->em->HasErrors();
@@ -6567,7 +6572,7 @@ class LimeExpressionManager
                 $LEM->updatedValues[$sq] = null;
             }
         }
-        // Regardless of whether relevant or hidden, allways set a $_SESSION for quanda_helper, use default value if exist
+        // Regardless of whether relevant or hidden, always set a $_SESSION for quanda_helper, use default value if exist
         // Set this after testing relevance for default value hidden by relevance
         $allSQs = explode('|', $LEM->qid2code[$qid]);
         foreach ($allSQs as $sgqa) {
@@ -6854,7 +6859,7 @@ class LimeExpressionManager
             $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
             Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
             Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
@@ -6866,7 +6871,7 @@ class LimeExpressionManager
             $LEM =& LimeExpressionManager::singleton();
             $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
             $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN, ['id' => 'lemscripts']);
 
             Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
             Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
@@ -6892,6 +6897,7 @@ class LimeExpressionManager
 
         $jsParts = [];
         $inputParts = [];
+        /* string[] all needed variable for LEMalias2varName and LEMvarNameAttr */
         $allJsVarsUsed = [];
         $rowdividList = [];   // list of subquestions needing relevance entries
         /* All function for expression manager */
@@ -6909,7 +6915,7 @@ class LimeExpressionManager
         );
 
         if (!$bReturnArray) {
-            $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+            $jsParts[] = "\n<script type='text/javascript' id='lemscripts'>\n<!--\n";
         }
 
         $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
@@ -6953,24 +6959,25 @@ class LimeExpressionManager
                     }
                 }
             }
-            $pageRelevanceInfo[] = array(
-                'qid' => 0,
-                'gseq' => $LEM->currentGroupSeq,
-                'eqn' => '',
-                'result' => true,
-                'numJsVars' => 0,
-                'relevancejs' => '',
-                'relevanceVars' => '',
-                'jsResultVar' => '',
-                'type' => '',
-                'hidden' => false,
-                'hasErrors' => false,
-            );
+        }
+
+        /**
+         * @var array[] the javascript and related variable,
+         * reconstruct from $LEM->pageTailorInfoto get questionId as key
+         **/
+        $pageTailorInfo = array();
+        if (is_array($LEM->pageTailorInfo)) {
+            foreach ($LEM->pageTailorInfo as $tailors) {
+                if (is_array($tailors)) {
+                    foreach ($tailors as $tailor) {
+                        $pageTailorInfo[$tailor['questionNum']][] = $tailor;
+                    }
+                }
+            }
         }
         $valEqns = [];
         $relEqns = [];
         $relChangeVars = [];
-
         $dynamicQinG = []; // array of questions, per group, that might affect group-level visibility in all-in-one mode
         $GalwaysRelevant = []; // checks whether a group is always relevant (e.g. has at least one question that is always shown)
         if (is_array($pageRelevanceInfo)) {
@@ -6986,17 +6993,13 @@ class LimeExpressionManager
                 $valParts = [];    // validation
                 $relJsVarsUsed = [];   // vars used in relevance and tailoring
                 $valJsVarsUsed = [];   // vars used in validations
-                foreach ($LEM->pageTailorInfo as $tailor) {
-                    if (is_array($tailor)) {
-                        foreach ($tailor as $sub) {
-                            if ($sub['questionNum'] == $arg['qid']) {
-                                $tailorParts[] = $sub['js'];
-                                $vars = explode('|', $sub['vars']);
-                                if (is_array($vars)) {
-                                    $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
-                                    $relJsVarsUsed = array_merge($relJsVarsUsed, $vars);
-                                }
-                            }
+                if (!empty($pageTailorInfo[$arg['qid']])) {
+                    foreach ($pageTailorInfo[$arg['qid']] as $tailor) {
+                        $tailorParts[] = $tailor['js'];
+                        $vars = array_filter(explode('|', $tailor['vars']));
+                        if (!empty($vars)) {
+                            $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
+                            $relJsVarsUsed = array_merge($relJsVarsUsed, $vars);
                         }
                     }
                 }
@@ -7038,7 +7041,7 @@ class LimeExpressionManager
                 // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
-                if ($arg['qid'] && ($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
+                if (($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0)) && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0) {
                     // Only show constitutively true relevances if there is tailoring that should be done.
                     // After we can assign var with EM and change again relevance : then doing it second time (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
@@ -7313,10 +7316,8 @@ class LimeExpressionManager
                     // Launch updated event after update value to allow equation update propagation
                     $relParts[] = "  $('#" . substr($jsResultVar, 1, -1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('updated');\n";
                 }
-                if ($arg['qid']) {
-                    $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
-                    $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
-                }
+                $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
+                $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
 
                 $relParts[] = "}\n";
                 if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars'] == 0))) {
@@ -7331,10 +7332,10 @@ class LimeExpressionManager
                     $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
-                } elseif ($arg['qid']) {
-                    // Second time : now if relevance is true: Group is allways visible (see bug #08315).
+                } else {
+                    // Second time : now if relevance is true: Group is always visible (see bug #08315).
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
-                    if ($arg['qid'] && !($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
+                    if (!($arg['hidden'] && $arg['type'] == Question::QT_ASTERISK_EQUATION)) { // Equation question type don't update visibility of group if hidden ( child of bug #08315).
                         $GalwaysRelevant[$arg['gseq']] = true;
                     }
                 }
@@ -7518,8 +7519,32 @@ class LimeExpressionManager
                 }
             }
         }
-
+        /* Tailoring out of question scope */
+        if (!empty($pageTailorInfo[0])) {
+            $jsParts[] = "LEMrel0(sgqa);\n";
+        }
         $jsParts[] = "\n}\n";
+        /* ailoring out of question scope for global action */
+        if (!empty($pageTailorInfo[0])) {
+            $tailorParts = [];
+            $tailorJsVarsUsed = [];
+            foreach ($pageTailorInfo[0] as $tailor) {
+                $tailorParts[] = $tailor['js'];
+                $vars = array_filter(explode('|', $tailor['vars']));
+                if (!empty($vars)) {
+                    $tailorJsVarsUsed = array_unique(array_merge($tailorJsVarsUsed, $vars));
+                }
+            }
+            $allJsVarsUsed = array_merge($allJsVarsUsed, $tailorJsVarsUsed);
+            $globalJS = "function LEMrel0(sgqa){\n";
+            $globalJS .= "  var UsesVars = ' " . implode(' ', $tailorJsVarsUsed) . " ';\n";
+            $globalJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+            $globalJS .= "    return;\n";
+            $globalJS .= "  }\n";
+            $globalJS .= implode("", $tailorParts);
+            $globalJS .= "}\n";
+            $relEqns[] = $globalJS;
+        }
 
         $jsParts[] = implode("\n", $relEqns);
         $jsParts[] = implode("\n", $valEqns);
@@ -8283,11 +8308,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     public function getAnswerSetsForEM($surveyid = null, $lang = null)
     {
         $where = ' 1=1';
+        $db = Yii::app()->db;
         if (!is_null($surveyid)) {
+            $surveyid = (int) $surveyid;
             $where .= " and a.qid = q.qid and q.sid = " . $surveyid;
         }
         if (!is_null($lang)) {
-            $where .= " and l.language='" . $lang . "'";
+            $lang = sanitize_languagecode($lang);
+            $where .= " and l.language={$db->quoteValue($lang)}";
         }
 
         $sQuery = "SELECT a.qid, a.code, l.answer, a.scale_id, a.assessment_value"
@@ -8933,7 +8961,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         ];
 
         $varNamesUsed = []; // keeps track of whether variables have been declared
-        /* tempVars are resetted when ProcessString call with replacement, review it in 4.0 that have specific functions for this.*/
+        /* tempVars are reset when ProcessString call with replacement, review it in 4.0 that have specific functions for this.*/
         $standardsReplacementFields = getStandardsReplacementFields(
             [
                 'sid' => $sid,
@@ -9024,7 +9052,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
             if ($aSurveyInfo['surveyls_policy_error'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
@@ -9035,7 +9063,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
             if ($aSurveyInfo['surveyls_policy_notice_label'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
@@ -9046,7 +9074,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errClass = 'danger';
                     $haveErrors = true;
                 }
-                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Privacy policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
             }
         }
 
@@ -9647,7 +9675,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * @param string $type : question type
      * @param string $value : the value
      * @param string $sgq : the sgqa
-     * @param array $qinfo : an array with information from question with mandatory ['qid'=>$qid] , optionnal (but must be 'other'=>$other)
+     * @param array $qinfo : an array with information from question with mandatory ['qid'=>$qid] , optional (but must be 'other'=>$other)
      * @param boolean $set : update the invalid string or not. Used for #14649 (invalid default value)
      * @throw Exception
      *

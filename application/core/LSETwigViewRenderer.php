@@ -33,6 +33,24 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     private $_twig;
 
     /**
+     * @var array Custom LS Users Extensions
+     * Example: array('HelloWorld_Twig_Extension')
+     */
+    public $user_extensions = [];
+
+    /**
+     * @inheritdoc
+     */
+    function init()
+    {
+        parent::init();
+        // Adding user custom extensions
+        if (!empty($this->user_extensions)) {
+            $this->addUserExtensions($this->user_extensions);
+        }
+    }
+
+    /**
      * Main method to render a survey.
      * @param string $sLayout the name of the layout to render
      * @param array $aData the datas needed to fill the layout
@@ -655,7 +673,7 @@ window.addEventListener('message', function(event) {
                 $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
             }
         }
-        // We retreive the definition of the core class and attributes
+        // We retrieve the definition of the core class and attributes
         // (in the future, should be template dependant done via XML file)
         $aData["aSurveyInfo"] = array_merge($aData["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 
@@ -749,11 +767,11 @@ window.addEventListener('message', function(event) {
         foreach ($extensions as $extName) {
             if ($extName == "Twig_Extension_Sandbox") {
                 // Process to load the sandBox
-                $tags       = isset($this->sandboxConfig['tags']) ? $this->sandboxConfig['tags'] : array();
-                $filters    = isset($this->sandboxConfig['filters']) ? $this->sandboxConfig['filters'] : array();
-                $methods    = isset($this->sandboxConfig['methods']) ? $this->sandboxConfig['methods'] : array();
-                $properties = isset($this->sandboxConfig['properties']) ? $this->sandboxConfig['properties'] : array();
-                $functions  = isset($this->sandboxConfig['functions']) ? $this->sandboxConfig['functions'] : array();
+                $tags       = $this->sandboxConfig['tags'] ?? array();
+                $filters    = $this->sandboxConfig['filters'] ?? array();
+                $methods    = $this->sandboxConfig['methods'] ?? array();
+                $properties = $this->sandboxConfig['properties'] ?? array();
+                $functions  = $this->sandboxConfig['functions'] ?? array();
                 $policy     = new Twig_Sandbox_SecurityPolicy($tags, $filters, $methods, $properties, $functions);
                 $sandbox    = new Twig_Extension_Sandbox($policy, true);
 
@@ -811,5 +829,18 @@ window.addEventListener('message', function(event) {
     public function getLoader()
     {
         return $this->_twig->getLoader();
+    }
+
+    /**
+     * Adds custom user extensions
+     * @param array $extensions @see self::$user_extensions
+     */
+    public function addUserExtensions($extensions)
+    {
+        foreach ($extensions as $extName) {
+            Yii::setPathOfAlias('extName_' . $extName, Yii::app()->getConfig('usertwigextensionrootdir') . '/' . $extName . '/');
+            Yii::import("extName_" . $extName . ".*");
+            $this->_twig->addExtension(new $extName());
+        }
     }
 }

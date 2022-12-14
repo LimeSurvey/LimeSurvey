@@ -67,7 +67,7 @@ class TemplateConfig extends CActiveRecord
     protected $apiVersion;
 
     /**
-     * @var int? $iSurveyId The current Survey Id. It can be void. It's use only to retreive
+     * @var int? $iSurveyId The current Survey Id. It can be void. It's use only to retrieve
      * the current template of a given survey
      */
     protected $iSurveyId = '';
@@ -116,7 +116,7 @@ class TemplateConfig extends CActiveRecord
     /**
      * Remove the css/js files defined in theme config, from any package (even the core ones)
      * The file should have the exact same name as in the package
-     * (see: application/config/packages.php and application/config/third_party.php)
+     * (see: application/config/packages.php and application/config/vendor.php)
      * eg: to remove awesome-bootstrap-checkbox.css, in the theme config
      * file add <remove>awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</remove>
      */
@@ -214,7 +214,7 @@ class TemplateConfig extends CActiveRecord
         $sFile = trim($sFile, '.');
         $sFile = trim($sFile, '/');
 
-        // Retreive the correct template for this file (can be a mother template)
+        // Retrieve the correct template for this file (can be a mother template)
         $oTemplate = $this->getTemplateForFile($sFile, $oTemplate, false);
 
         if ($oTemplate instanceof TemplateConfiguration) {

@@ -303,7 +303,7 @@ function sanitize_int($integer, $min = '', $max = '')
     if ($int == '') {
         return null;
     }
-    return $int;
+    return (int) $int;
 }
 
 // sanitize a username
@@ -549,4 +549,15 @@ function check_absolute_url($string)
     $~ixu';
 
     return preg_match($pattern, $string) == 1;
+}
+
+/**
+ * Remove all chars from $value that are not alphanumeric or dash or underscore
+ *
+ * @param string $value
+ * @return string
+ */
+function sanitize_alphanumeric($value)
+{
+    return preg_replace("[^a-zA-Z0-9\-\_]", "", $value);
 }

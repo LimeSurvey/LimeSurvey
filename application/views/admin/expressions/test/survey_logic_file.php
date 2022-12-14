@@ -3,8 +3,8 @@
  * Important functionailites are set in core now, this is just to render the output
  */
 
- $gid = isset($gid) ? $gid : NULL;
- $qid = isset($qid) ? $qid : NULL;
+ $gid = $gid ?? NULL;
+ $qid = $qid ?? NULL;
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyLogicFile');
@@ -33,3 +33,26 @@ echo viewHelper::getViewTestTag('surveyLogicFile');
         </div>
     </div>
 </div>
+
+<style>
+    /**
+     * This whole style block is a workaround for https://bugs.limesurvey.org/view.php?id=18250
+     */
+    .main-content-container {
+        overflow-x: visible;
+    }
+    .table-responsive {
+        overflow-x: visible;
+    }
+
+    #vue-sidebar-container {
+        display: none;
+    }
+    #pjax-content {
+        max-width: 100%!important;
+    }
+    #vue-apps-main-container > .col-11 {
+        width: 100%;
+        max-width: 100%;
+    }
+</style>

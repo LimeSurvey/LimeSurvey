@@ -23,7 +23,7 @@
 /**
 *
 * This controller performs updates, it is highly ajax oriented
-* Methods are only called from JavaScript controller (wich is called from the global_setting view). comfortupdate.js is the first registered script.
+* Methods are only called from JavaScript controller (which is called from the global_setting view). comfortupdate.js is the first registered script.
 *
 *
 *
@@ -45,7 +45,7 @@
 *
 * so they will call an url such as : globalsettings?update=methodToCall&neededVariable=value.
 * So the globalsetting controller will render the view as usual, but : the _ajaxVariables view will parse those url datas to some hidden field.
-* The comfortupdate.js check the value of the hidden field update, and if the update's one contain a step, it call displayComfortStep.js wich will display the right step instead of the 'check update' buttons.
+* The comfortupdate.js check the value of the hidden field update, and if the update's one contain a step, it call displayComfortStep.js which will display the right step instead of the 'check update' buttons.
 *
 * Most steps are retrieving datas from the comfort update server thanks to the model UpdateForm's methods.
 * The server return an answer object, with a property 'result' to tell if the process was succesfull or if it failed. This object contains in general all the necessary datas for the views.
@@ -56,7 +56,7 @@
 * - Warning message (like : modified files, etc.) : they don't stop the process, they are parsed to the step view, and the view manage how to display them. They can be generated from the ComfortUpdate server ($answer_from_server->result == TRUE ; and something like $answer_from_server->error == message or anything else that the step view manage ), or in the LimeSurvey update controller/model
 * - Error while processing a request on the server part : should never happen, but if something goes wrong in the server side (like generating an object from model), the server returns an error object ($answer_from_server->result == FALSE ; $answer_from_server->error == message )
 *   Those errors stop the process, and are display in _error view. Very usefull to debug. They are parsed directly to $this->renderError
-* - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->renderErrorString($error), wich generate the error object, and then render the error view
+* - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->renderErrorString($error), which generate the error object, and then render the error view
 *
 * @package       LimeSurvey
 * @subpackage    Backend
@@ -311,6 +311,7 @@ class Update extends DynamicSurveyCommonAction
     public function fileSystem()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
+            App()->session['update_changed_files'] = null;
             if (isset($_REQUEST['destinationBuild'])) {
                 $tobuild = $_REQUEST['destinationBuild'];
                 $access_token = $_REQUEST['access_token'];
@@ -321,9 +322,9 @@ class Update extends DynamicSurveyCommonAction
 
                 if ($changedFiles->result) {
                     $aData = $updateModel->getFileStatus($changedFiles->files);
+                    App()->session['update_changed_files'] = json_decode(json_encode($changedFiles->files), true);
 
-                    $aData['html_from_server'] = (isset($changedFiles->html)) ? $changedFiles->html : '';
-                    $aData['datasupdateinfo'] = $this->parseToView($changedFiles->files);
+                    $aData['html_from_server'] = $changedFiles->html ?? '';
                     $aData['destinationBuild'] = $tobuild;
                     $aData['updateinfo'] = $changedFiles->files;
                     $aData['access_token'] = $access_token;
@@ -346,12 +347,10 @@ class Update extends DynamicSurveyCommonAction
             if (App()->request->getPost('destinationBuild')) {
                 $destinationBuild = App()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
-
-                if (App()->request->getPost('datasupdateinfo')) {
-                    $updateinfos = (array) json_decode(base64_decode(App()->request->getPost('datasupdateinfo')), true);
-
-                    $updateModel = new UpdateForm();
-                    $backupInfos = $updateModel->backupFiles($updateinfos);
+                $updateModel = new UpdateForm();
+                $changedFiles = App()->session['update_changed_files'];
+                if ($changedFiles) {
+                    $backupInfos = $updateModel->backupFiles($changedFiles);
 
                     if ($backupInfos->result) {
                         $dbBackupInfos = $updateModel->backupDb($destinationBuild);
@@ -360,7 +359,6 @@ class Update extends DynamicSurveyCommonAction
                         $aData['dbBackupInfos'] = $dbBackupInfos;
                         $aData['basefilename'] = $backupInfos->basefilename;
                         $aData['tempdir'] = $backupInfos->tempdir;
-                        $aData['datasupdateinfo'] = $this->parseToView($updateinfos);
                         $aData['destinationBuild'] = $destinationBuild;
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
@@ -388,16 +386,15 @@ class Update extends DynamicSurveyCommonAction
                 $destinationBuild = App()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
 
-                if (App()->request->getPost('datasupdateinfo')) {
-                    $updateinfos = json_decode(base64_decode(App()->request->getPost('datasupdateinfo')), true);
-
+                $changedFiles = App()->session['update_changed_files'];
+                if ($changedFiles) {
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
 
                     $updateModel = new UpdateForm();
 
-                    $remove = $updateModel->removeDeletedFiles($updateinfos);
+                    $remove = $updateModel->removeDeletedFiles((array)$changedFiles);
                     if (!$remove->result) {
-                        return $this->renderErrorString($remove->error);
+                        return $this->renderErrorString($remove->error, $remove->message);
                     };
                     $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
                     if ($file->result) {
@@ -405,12 +402,13 @@ class Update extends DynamicSurveyCommonAction
                         if ($unzip->result) {
                             // Should never bug (version.php is checked before))
                             $updateModel->updateVersion($destinationBuild);
-                            $updateModel->destroyGlobalSettings();
                             $updateModel->removeTmpFile('update.zip');
                             $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
                             App()->session['update_result'] = null;
                             App()->session['security_update'] = null;
+                            App()->session['update_changed_files'] = null;
+
                             $today = new DateTime("now");
                             App()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
@@ -624,11 +622,12 @@ class Update extends DynamicSurveyCommonAction
      * @param string $error the error message
      * @return string
      */
-    private function renderErrorString($error)
+    private function renderErrorString($error, $message = null)
     {
             $errorObject = new stdClass();
             $errorObject->result = false;
             $errorObject->error = $error;
+            $errorObject->message = $message;
             return $this->renderError($errorObject);
     }
 
