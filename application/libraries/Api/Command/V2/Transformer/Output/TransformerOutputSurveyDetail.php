@@ -6,63 +6,72 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecordAbstract;
 
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecordAbstract
 {
-    protected function getDataMap()
+    public function transform($surveyModel)
     {
-        return [
-            'sid' => true,
-            'gsid' => true,
-            'active' => true,
-            'language'  => true,
-            'expires' => true,
-            'startdate' => true,
-            'anonymized' => true,
-            'savetimings' => true,
-            'additional_languages' => true,
-            'datestamp' => true,
-            "usecookie" => true,
-            "allowregister" => true,
-            "allowsave" => true,
-            "autonumber_start" => true,
-            "autoredirect" => true,
-            "allowprev" => true,
-            "printanswers" => true,
-            "ipaddr" => true,
-            "ipanonymize" => true,
-            "refurl" => true,
-            "datecreated" => true,
-            "publicstatistics" => true,
-            "publicgraphs" => true,
-            "listpublic" => true,
-            "sendconfirmation" => true,
-            "tokenanswerspersistence" => true,
-            "assessments" => true,
-            "usecaptcha" => true,
-            "usetokens" => true,
-            "bounce_email" => true,
-            "attributedescriptions" => true,
-            "emailresponseto" => true,
-            "emailnotificationto" => true,
-            "tokenlength" => true,
-            "showxquestions" => true,
-            "showgroupinfo" => true,
-            "shownoanswer" => true,
-            "showqnumcode" => true,
-            "bouncetime" => true,
-            "bounceprocessing" => true,
-            "bounceaccounttype" => true,
-            "bounceaccounthost" => true,
-            "bounceaccountpass" => true,
-            "bounceaccountencryption" => true,
-            "bounceaccountuser" => true,
-            "showwelcome" => true,
-            "showprogress" => true,
-            "questionindex" => true,
-            "navigationdelay" => true,
-            "nokeyboard" => true,
-            "alloweditaftercompletion" => true,
-            "googleanalyticsstyle" => true,
-            "googleanalyticsapikey" => true,
-            "showsurveypolicynotice" => true,
-        ];
+        $survey = (new TransformerOutputSurvey())->transform($surveyModel);
+
+        $survey['languages'] = $surveyModel->allLanguages;
+
+        // transformAll() can apply required entity sort so we must retain the sort order going forward
+        // - We use a lookup array later to access entities without needing to know their position in the collection
+        $survey['questionGroups'] = (new TransformerOutputQuestionGroup())->transformAll(
+            $surveyModel->groups
+        );
+
+        // An array of groups indexed by gid for easy look up
+        // - helps use to retain sort order when looping over models
+        $groupLookup = $this->createCollectionLookup('gid', $survey['questionGroups']);
+
+        $transformerQuestion = new TransformerOutputQuestion();
+        $transformerQuestionAttribute = new TransformerOutputQuestionAttribute();
+        foreach ($surveyModel->groups as $questionGroupModel) {
+            // order of groups from the model relation may be different than from the transformed data
+            // - so we use the lookup to get a reference to the required entity without needing to
+            // - know its position in the output array
+            $group = &$groupLookup[$questionGroupModel->gid];
+
+            // transformAll() can apply required entity sort so we must retain the sort order going forward
+            // - We use a lookup array later to access entities without needing to know their position in the collection
+            $group['questions'] = $transformerQuestion->transformAll(
+                $questionGroupModel->questions
+            );
+
+            $questionLookup = $this->createCollectionLookup('qid', $group['questions']);
+
+            foreach ($questionGroupModel->questions as $questionModel) {
+                // questions from the model relation may be different than from the transformed data
+                // - so we use the lookup to get a reference to the required entity without needing to
+                // - know its position in the output array
+                $question = &$questionLookup[$questionModel->qid];
+
+                $question['attributes'] = $transformerQuestionAttribute->transformAll(
+                    // questionattributes is returned as an associative array keyed on 'attribute'
+                    // - so we need to call array_values to get the array of QuestionAttribute models
+                    array_values($questionModel->questionattributes)
+                );
+            }
+        }
+
+        return $survey;
+    }
+
+    /**
+     * Creation collection lookup
+     *
+     * Returns an array of entity references keyed on the specified key.
+     *
+     * @param string $key
+     * @param array $entityArray
+     * @return &array Entity reference
+     */
+    private function createCollectionLookup($key, &$entityArray)
+    {
+        $output = [];
+        foreach ($entityArray as &$entity) {
+            if (is_array($entity) && isset($entity[$key])) {
+                $output[$entity[$key]] = &$entity;
+            }
+        }
+        return $output;
     }
 }
