@@ -609,6 +609,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * permission scope for this model
      * Actually only test if user have minimal access to survey (read)
+     * @deprecated by usage of self::withListRight directly
      * @see issue https://bugs.limesurvey.org/view.php?id=16799
      * @access public
      * @param int $loginID
@@ -617,9 +618,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function permission($loginID)
     {
         $loginID = (int) $loginID;
-        $criteria = $this->getDBCriteria();
-        $criteriaPerm = self::getPermissionCriteria($loginID);
-        $criteria->mergeWith($criteriaPerm, 'AND');
+        $this->withListRight($loginID);
         return $this;
     }
 

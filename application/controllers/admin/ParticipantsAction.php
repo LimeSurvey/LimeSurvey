@@ -308,10 +308,7 @@ class ParticipantsAction extends SurveyCommonAction
         //Get list of surveys.
         //Should be all surveys owned by user (or all surveys for super admin)
         $surveys = Survey::model();
-        //!!! Is this even possible to execute?
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            $surveys->permission(Yii::app()->user->getId());
-        }
+        $surveys->withListRight();
 
         /** @var Survey[] $aSurveyNames */
         $aSurveyNames = $surveys->model()->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();

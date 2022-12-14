@@ -2181,7 +2181,7 @@ class remotecontrol_handle
                 $aAttributeValues = array();
                 if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
-                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].                    
+                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
                     foreach ($aConditions as $columnName => $valueOrTuple) {
                         if (is_array($valueOrTuple)) {
                             /** @var string[] List of operators allowed in query. */
@@ -2402,7 +2402,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey)) {
             $oSurvey = new Survey();
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && ($sUsername == null)) {
-                $oSurvey->permission(Yii::app()->user->getId());
+                $oSurvey->withListRight(Yii::app()->user->getId());
             } elseif ($sUsername != null) {
                 $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
                 if (!isset($aUserData)) {
@@ -2410,7 +2410,7 @@ class remotecontrol_handle
                 } else {
                                     $sUid = $aUserData->attributes['uid'];
                 }
-                $oSurvey->permission($sUid);
+                $oSurvey->withListRight($sUid);
             }
 
             $aUserSurveys = $oSurvey->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();
