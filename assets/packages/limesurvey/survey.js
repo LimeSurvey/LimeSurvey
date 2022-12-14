@@ -61,7 +61,7 @@ function triggerEmRelevanceSubQuestion(){
         data = $.extend({style:'hidden'}, data);
         $(this).removeClass("ls-irrelevant ls-"+data.style);
         if(data.style=='disabled'){
-            $(event.target).find('input').each(function(itrt, item ){
+            $(event.target).find('input:not(.total)').each(function(itrt, item ){
                 $(item).prop("disabled", false );
             });
         }
