@@ -47,9 +47,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecordAbstrac
                 $question = &$questionLookup[$questionModel->qid];
 
                 $question['attributes'] = $transformerQuestionAttribute->transformAll(
-                    // questionattributes is returned as an associative array keyed on 'attribute'
-                    // - so we need to call array_values to get the array of QuestionAttribute models
-                    array_values($questionModel->questionattributes)
+                    $questionModel->questionattributes
                 );
 
                 $question['answers'] = $transformerAnswer->transformAll(
