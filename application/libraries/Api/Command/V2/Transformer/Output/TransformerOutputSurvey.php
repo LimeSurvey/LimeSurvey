@@ -8,15 +8,19 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
 {
     public function __construct()
     {
+        $toBool = function($value) {
+            return $value === 'Y';
+        };
+
         $this->setDataMap([
-            'sid' => true,
-            'gsid' => true,
-            'active' => true,
+            'sid' => ['type' => 'int'],
+            'gsid' => ['type' => 'int'],
+            'active' => ['type' => $toBool],
             'language'  => true,
             'expires' => true,
             'startdate' => true,
-            'anonymized' => true,
-            'savetimings' => true,
+            'anonymized' => ['type' => $toBool],
+            'savetimings' => ['type' => $toBool],
             'additional_languages' => true,
             'datestamp' => true,
             "usecookie" => true,

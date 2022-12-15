@@ -12,6 +12,7 @@ class Transformer implements TransformerInterface
      * Transforms data from one format to another.
      *
      * Default functionality is to map input data to output data using a data map.
+     * Data map config also allows specifiction of type cast or callable formatter.
      *
      * @param mixed $data
      * @return array
@@ -21,14 +22,69 @@ class Transformer implements TransformerInterface
         $dataMap = $this->getDataMap();
 
         $output = [];
-        foreach ($dataMap as $dbField => $apiField) {
-            if ($apiField === true) {
-                $apiField = $dbField;
+        foreach ($dataMap as $key => $config) {
+            if (!isset($data[$key])) {
+                continue;
             }
-            $output[$apiField] = $data[$dbField];
+
+            $config = $this->normaliseConfig($config, $key);
+
+            $output[$config['key']] = $this->cast(
+                $data[$key],
+                $config['type']
+            );
         }
 
         return $output;
+    }
+
+    /**
+     * Normalise config
+     *
+     * @param bool|string|array $config
+     * @param string|int $inputKey
+     * @return array
+     */
+    private function normaliseConfig($config, $inputKey)
+    {
+        $key = null;
+        $type = null;
+        if ($config === true) {
+            // map to same key name
+            $key = $inputKey;
+        } elseif (is_string($config) || is_int($config)) {
+            // map to new key name
+            $key = $config;
+        } elseif (is_array($config)) {
+            $key = isset($config['key']) ? $config['key'] : $inputKey;
+            $type = isset($config['type']) ? $config['type'] : null;
+        }
+
+        return [
+            'key' => $key,
+            'type' => $type
+        ];
+    }
+
+    /**
+     *  Cast Value
+     *
+     * @param mixed $value
+     * @param mixed $type
+     * @return mixed
+     */
+    private function cast($value, $type)
+    {
+        if (!is_null($type)) {
+            if (is_string($type)) {
+                settype($value, $type);
+            }
+            if (is_callable($type)) {
+                $value = $type($value);
+            }
+        }
+
+        return $value;
     }
 
     /**
