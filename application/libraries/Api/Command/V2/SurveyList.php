@@ -43,6 +43,6 @@ class SurveyList implements CommandInterface
         $data = (new TransformerOutputSurvey)
             ->transformAll($dataProvider->getData());
 
-        return $this->responseSuccess($data);
+        return $this->responseSuccess(['surveys' => $data]);
     }
 }
