@@ -23,16 +23,28 @@ class Transformer implements TransformerInterface
 
         $output = [];
         foreach ($dataMap as $key => $config) {
-            if (!isset($data[$key]) || $config === false) {
+            if (!array_key_exists($key, $data) || $config === false) {
                 continue;
             }
 
             $config = $this->normaliseConfig($config, $key);
 
-            $output[$config['key']] = $this->cast(
+            $value = $this->cast(
                 $data[$key],
-                $config['type']
+                $config
             );
+
+            if (
+                !is_bool($value)
+                && !is_numeric($value)
+                && empty($value)
+            ) {
+                $value = $config['default'];
+            }
+
+            $this->validate($key, $value, $config);
+
+            $output[$config['key']] = $value;
         }
 
         return $output;
@@ -49,6 +61,9 @@ class Transformer implements TransformerInterface
     {
         $key = null;
         $type = null;
+        $null = true;
+        $empty = true;
+
         if ($config === true) {
             // map to same key name
             $key = $inputKey;
@@ -58,11 +73,17 @@ class Transformer implements TransformerInterface
         } elseif (is_array($config)) {
             $key = isset($config['key']) ? $config['key'] : $inputKey;
             $type = isset($config['type']) ? $config['type'] : null;
+            $default = isset($config['default']) ? (bool) $config['default'] : null;
+            $null = isset($config['null']) ? (bool) $config['null'] : true;
+            $empty = isset($config['empty']) ? (bool) $config['empty'] : true;
         }
 
         return [
             'key' => $key,
-            'type' => $type
+            'type' => $type,
+            'default' => $default,
+            'null' => $null,
+            'empty' => $empty
         ];
     }
 
@@ -70,11 +91,12 @@ class Transformer implements TransformerInterface
      *  Cast Value
      *
      * @param mixed $value
-     * @param mixed $type
+     * @param array $config
      * @return mixed
      */
-    private function cast($value, $type)
+    private function cast($value, $config)
     {
+        $type = $config['type'];
         if (!is_null($type)) {
             if (is_string($type)) {
                 settype($value, $type);
@@ -85,6 +107,26 @@ class Transformer implements TransformerInterface
         }
 
         return $value;
+    }
+
+    /**
+     *  Validate Value
+     *
+     *  @param string $key
+     * @param mixed $value
+     * @param array $config
+     * @throws \Exception
+     * @return void
+     */
+    private function validate($key, $value, $config)
+    {
+        if ($value === null && $config['null'] === false) {
+            throw new \Exception($key . ' cannot be null');
+        }
+
+        if (empty($value) && $config['empty'] === false) {
+            throw new \Exception($key . ' cannot be empty');
+        }
     }
 
     /**
