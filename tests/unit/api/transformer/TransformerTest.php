@@ -33,6 +33,26 @@ class TransformerOutputTest extends TestBaseClass
     }
 
     /**
+     * @testdox transform() Transformed data excludes fields with config false.
+     */
+    public function testTransformedDataExcludesFieldsWithFalseConfig()
+    {
+        $transformer = new Transformer;
+        $transformer->setDataMap([
+            'first_name' => false,
+            'last_name' => true,
+            'age' => false
+        ]);
+        $transformedData = $transformer->transform([
+            'first_name' => 'Kevin',
+            'last_name' => 'Foster',
+            'age' => 40
+        ]);
+
+        $this->assertEquals(['last_name' => 'Foster'], $transformedData);
+    }
+
+    /**
      * @testdox transform() Maps to specified output fields.
      */
     public function testMapsToSpecifiedOutputFields()

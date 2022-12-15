@@ -12,6 +12,10 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             return strtolower($value) === 'y';
         };
 
+        $dateTimeUtcJson = function ($value) {
+            return date_format(date_create($value), 'Y-m-d\TH:i:s.000\Z');
+        };
+
         $this->setDataMap([
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
@@ -21,7 +25,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             'startdate' => true,
             'anonymized' => ['type' => $ynToBool],
             'savetimings' => ['type' => $ynToBool],
-            'additional_languages' => true,
+            'additional_languages' => false,
             'datestamp' => ['type' => $ynToBool],
             "usecookie" => ['type' => $ynToBool],
             "allowregister" => ['type' => $ynToBool],
@@ -33,7 +37,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "ipaddr" => ['type' => $ynToBool],
             "ipanonymize" => ['type' => $ynToBool],
             "refurl" => ['type' => $ynToBool],
-            "datecreated" => true,
+            "datecreated" => ['type' => $dateTimeUtcJson],
             "publicstatistics" => ['type' => $ynToBool],
             "publicgraphs" => ['type' => $ynToBool],
             "listpublic" => ['type' => $ynToBool],
@@ -46,12 +50,12 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "attributedescriptions" => true,
             "emailresponseto" => true,
             "emailnotificationto" => true,
-            "tokenlength" => true,
+            "tokenlength" =>  ['type' => 'int'],
             "showxquestions" => ['type' => $ynToBool],
             "showgroupinfo" => true,
             "shownoanswer" => ['type' => $ynToBool],
             "showqnumcode" => true,
-            "bouncetime" => true,
+            "bouncetime" =>  ['type' => 'int'],
             "bounceprocessing" => ['type' => $ynToBool],
             "bounceaccounttype" => true,
             "bounceaccounthost" => true,
@@ -60,13 +64,13 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             "bounceaccountuser" => true,
             "showwelcome" => ['type' => $ynToBool],
             "showprogress" => ['type' => $ynToBool],
-            "questionindex" => true,
-            "navigationdelay" => true,
+            "questionindex" =>  ['type' => 'int'],
+            "navigationdelay" =>  ['type' => 'int'],
             "nokeyboard" => ['type' => $ynToBool],
             "alloweditaftercompletion" => ['type' => $ynToBool],
-            "googleanalyticsstyle" => true,
+            "googleanalyticsstyle" =>  ['type' => 'int'],
             "googleanalyticsapikey" => true,
-            "showsurveypolicynotice" => true,
+            "showsurveypolicynotice" =>  ['type' => 'int'],
         ]);
     }
 }

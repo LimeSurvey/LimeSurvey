@@ -9,8 +9,8 @@ class TransformerOutputQuestionL10ns extends TransformerOutputActiveRecord
     public function __construct()
     {
         $this->setDataMap([
-            'id' => true,
-            'qid' => true,
+            'id' => ['type' => 'int'],
+            'qid' => ['type' => 'int'],
             'question' => true,
             'script' => true,
             'language' => true

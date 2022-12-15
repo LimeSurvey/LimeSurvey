@@ -9,8 +9,8 @@ class TransformerOutputQuestionAttribute extends TransformerOutputActiveRecord
     public function __construct()
     {
         $this->setDataMap([
-            'qaid' => true,
-            'attribute' => true,
+            'qaid' => ['type' => 'int'],
+            'attribute' => ['type' => 'int'],
             'value' => true,
             'language' => true
         ]);

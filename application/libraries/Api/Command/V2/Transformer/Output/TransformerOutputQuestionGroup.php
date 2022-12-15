@@ -9,9 +9,9 @@ class TransformerOutputQuestionGroup extends TransformerOutputActiveRecord
     public function __construct()
     {
         $this->setDataMap([
-            'gid' => true,
-            'sid' => true,
-            'group_order' => true,
+            'gid' => ['type' => 'int'],
+            'sid' => ['type' => 'int'],
+            'group_order' => ['type' => 'int'],
             'randomization_group' => true,
             'grelevance' => true
         ]);

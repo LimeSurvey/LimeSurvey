@@ -8,24 +8,28 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
 {
     public function __construct()
     {
+        $ynToBool = function ($value) {
+            return strtolower($value) === 'y';
+        };
+
         $this->setDataMap([
-            'qid' => true,
-            'parent_qid' => true,
-            'sid' => true,
+            'qid' => ['type' => 'int'],
+            'parent_qid' => ['type' => 'int'],
+            'sid' => ['type' => 'int'],
             'type' => true,
             'title' => true,
             'preg' => true,
-            'other' => true,
-            'mandatory' => true,
-            'encrypted' => true,
-            'question_order' => true,
-            'scale_id' => true,
-            'same_default' => true,
+            'other' => ['type' => $ynToBool],
+            'mandatory' => ['type' => $ynToBool],
+            'encrypted' => ['type' => $ynToBool],
+            'question_order' => ['type' => 'int'],
+            'scale_id' => ['type' => 'int'],
+            'same_default' => ['type' => $ynToBool],
             'question_theme_name' => true,
             'modulename' => true,
-            'gid' => true,
+            'gid' => ['type' => 'int'],
             'relevance' => true,
-            'same_script' => true,
+            'same_script' => ['type' => $ynToBool],
         ]);
     }
 

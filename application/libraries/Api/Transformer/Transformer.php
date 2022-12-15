@@ -23,7 +23,7 @@ class Transformer implements TransformerInterface
 
         $output = [];
         foreach ($dataMap as $key => $config) {
-            if (!isset($data[$key])) {
+            if (!isset($data[$key]) || $config === false) {
                 continue;
             }
 
