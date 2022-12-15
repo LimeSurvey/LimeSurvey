@@ -10,8 +10,37 @@
   box-shadow: 4px 4px 0px rgba(123, 97, 255, 0.4);;
 }
 
-// from lime-admin-colors.scss
-// Buttons
+%default_disabled {
+  color: $g-600;
+  background-color: $g-400;
+  border: 1px solid $g-400;
+  box-shadow: none;
+}
+
+.btn {
+  &.disabled, &[disabled] {
+    @extend %default_disabled;
+
+    &:hover {
+      @extend %default_disabled;
+    }
+
+    &:focus {
+      @extend %default_disabled;
+    }
+
+    &:active {
+      @extend %default_disabled;
+    }
+
+    &.active {
+      @extend %default_disabled;
+    }
+  }
+}
+
+ //from lime-admin-colors.scss
+ //Buttons
 .btn-outline-secondary {
   color: $g-900;
   background-color: $white;
@@ -35,23 +64,26 @@
     @extend %default_focus;
     background-color: $white;
     color: $g-900;
+    border-color: $g-900;
   }
 
   &.active {
     @extend %default_focus;
     background-color: $white;
     color: $g-900;
+    border-color: $g-900;
   }
 
-  &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
+  &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
     @extend %default_focus;
     background-color: $white;
     color: $g-900;
   }
 
-  &.disabled {
+  &.disabled, &[disabled] {
     background-color: $white;
     border: 1px solid $g-600;
+    color: $g-600;
 
     &:hover {
       background-color: $white;
@@ -73,39 +105,9 @@
       border: 1px solid $g-600;
     }
   }
-
-  //.badge {
-  //  color: $white;
-  //  background-color: $g-600;
-  //}
 }
 
-.btn-outline-secondary[disabled] {
-  background-color: $white;
-  border: 1px solid $g-600;
-
-  &:hover {
-    background-color: $white;
-    border: 1px solid $g-600;
-  }
-
-  &:focus {
-    background-color: $white;
-    border: 1px solid $g-600;
-  }
-
-  &:active {
-    background-color: $white;
-    border: 1px solid $g-600;
-  }
-
-  &.active {
-    background-color: $white;
-    border: 1px solid $g-600;
-  }
-}
-
-.btn-secondary {
+.btn-secondary, .btn-cancel {
   color: $white;
   background-color: $g-600;
   border: 1px solid $g-600;
@@ -145,73 +147,8 @@
     border-color: $g-600;
     color: $white;
   }
-
-  &.disabled {
-    color: $g-900;
-    background-color: $g-400;
-    border: 1px solid $g-400;
-
-    &:hover {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &:focus {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &:active {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &.active {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-  }
-  //.badge {
-  //  color: $white;
-  //  background-color: $g-600;
-  //}
 }
 
-.btn-secondary[disabled] {
-  color: $g-900;
-  background-color: $g-400;
-  border: 1px solid $g-400;
-
-  &:hover {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &:focus {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &:active {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &.active {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-}
-
-//.btn-check{
-//  &:active+.btn-outline-secondary,
-//  &:checked+.btn-outline-secondary,
-//  &.active {
-//    background-color: $primary-bg-success;
-//    border-color: $gray-11;
-//    color: $primary-hover_2
-//  }
-//}
 .btn-primary, .btn-info {
   color: $white;
   background-color: $active-green;
@@ -226,71 +163,19 @@
   &:focus {
     @extend %default_hover;
     background-color: $active-green;
+    color: $white;
   }
 
   &:active {
     @extend %default_hover;
     background-color: $active-green;
+    color: $white;
   }
 
   &.active {
     @extend %default_hover;
     background-color: $active-green;
-  }
-
-  &.disabled {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-
-    &:hover {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &:focus {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &:active {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &.active {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-  }
-
-  //.badge {
-  //  color: $primary;
-  //  background-color: $white;
-  //}
-}
-
-.btn-primary[disabled], .btn-info[disabled] {
-  background-color: $g-400;
-  border: 1px solid $g-400;
-
-  &:hover {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &:focus {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &:active {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &.active {
-    background-color: $g-400;
-    border: 1px solid $g-400;
+    color: $white;
   }
 }
 
@@ -327,125 +212,8 @@
     border: 1px solid $btn-success-bg-color;
     box-shadow: 0 0 0 .25rem rgba(mix($btn-success-bg-color, $btn-success-bg-color, 15%), .5);
   }
-
-  &.disabled {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-
-    &:hover {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &:focus {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &:active {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &.active {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-  }
-
-  //.badge {
-  //  color: $primary;
-  //  background-color: $white;
-  //}
 }
 
-.btn-success[disabled] {
-  background-color: $g-400;
-  border: 1px solid $g-400;
-
-  &:hover {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &:focus {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &:active {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &.active {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-}
-
-// I gave btn-info same behavior as btn-primary:
-//.btn-info {
-//  color: $white;
-//  background-color: $primary-bg_info_hover;
-//  border: 1px solid $primary-border_info_hover;
-//  &:hover {
-//    @extend %extend_4;
-//  }
-//  &:focus {
-//    @extend %extend_4;
-//  }
-//  &:active {
-//    @extend %extend_4;
-//  }
-//  &.active {
-//    @extend %extend_4;
-//  }
-//  &.disabled {
-//    background-color: $primary-bg_info_hover;
-//    border: 1px solid $primary-border_info_hover;
-//    &:hover {
-//      background-color: $primary-bg_info_hover;
-//      border: 1px solid $primary-border_info_hover;
-//    }
-//    &:focus {
-//      background-color: $primary-bg_info_hover;
-//      border: 1px solid $primary-border_info_hover;
-//    }
-//    &:active {
-//      background-color: $primary-bg_info_hover;
-//      border: 1px solid $primary-border_info_hover;
-//    }
-//    &.active {
-//      background-color: $primary-bg_info_hover;
-//      border: 1px solid $primary-border_info_hover;
-//    }
-//  }
-//  .badge {
-//    color: $primary-bg_info_hover;
-//    background-color: $white;
-//  }
-//}
-//.btn-info[disabled] {
-//  background-color: $primary-bg_info_hover;
-//  border: 1px solid $primary-border_info_hover;
-//  &:hover {
-//    background-color: $primary-bg_info_hover;
-//    border: 1px solid $primary-border_info_hover;
-//  }
-//  &:focus {
-//    background-color: $primary-bg_info_hover;
-//    border: 1px solid $primary-border_info_hover;
-//  }
-//  &:active {
-//    background-color: $primary-bg_info_hover;
-//    border: 1px solid $primary-border_info_hover;
-//  }
-//  &.active {
-//    background-color: $primary-bg_info_hover;
-//    border: 1px solid $primary-border_info_hover;
-//  }
-//}
 .btn-warning {
   color: $white;
   background-color: $warning;
@@ -477,61 +245,6 @@
     background-color: $warning;
     border: 1px solid $warning;
     box-shadow: 0 0 0 .25rem rgba(mix($warning, $warning, 15%), .5);
-  }
-
-  &.disabled {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-
-    &:hover {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &:focus {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &:active {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &.active {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-  }
-
-  //.badge {
-  //  color: $brown-10;
-  //  background-color: $white;
-  //}
-}
-
-.btn-warning[disabled] {
-  background-color: $g-400;
-  border: 1px solid $g-400;
-
-  &:hover {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &:focus {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &:active {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &.active {
-    background-color: $g-400;
-    border: 1px solid $g-400;
   }
 }
 
@@ -568,61 +281,6 @@
     border: 1px solid $error;
     box-shadow: 0 0 0 .25rem rgba(mix($error, $error, 15%), .5);
   }
-
-  &.disabled {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-
-    &:hover {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &:focus {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &:active {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-
-    &.active {
-      background-color: $g-400;
-      border: 1px solid $g-400;
-    }
-  }
-
-  //.badge {
-  //    color: $red-90;
-  //    background-color: $white;
-  //}
-}
-
-.btn-danger[disabled] {
-  background-color: $g-400;
-  border: 1px solid $g-400;
-
-  &:hover {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &:focus {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &:active {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
-
-  &.active {
-    background-color: $g-400;
-    border: 1px solid $g-400;
-  }
 }
 
 // btn-link should be outsourced to links.scss or whatever it will be called
@@ -638,18 +296,7 @@
   }
 }
 
-.btn-link[disabled] {
-  &:hover {
-    color: $g-400;
-  }
-
-  &:focus {
-    color: $g-400;
-  }
-}
-
 // from 000-lime-admin-common.scss
-
 .row-button-margin-bottom {
   margin-bottom: -5px;
 }
@@ -743,7 +390,7 @@
 .btn-outline-secondary .menu-button-divider {
   border-left: 1px solid $g-900;
 }
-.btn-outline-secondary[disabled] .menu-button-divider {
+.btn-outline-secondary[disabled] .menu-button-divider, .btn-outline-secondary.disabled .menu-button-divider {
   border-left: 1px solid $g-600;
 }
 
@@ -776,7 +423,6 @@
 }
 
 // Custom from adminbasics:
-
 .surveybar .btn, .surveybar button {
   margin-bottom: 5px;
 }
@@ -831,6 +477,3 @@ body.onStatistics .btn {
   pointer-events : none;
 }
 
-.btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
-  color: $white;
-}
