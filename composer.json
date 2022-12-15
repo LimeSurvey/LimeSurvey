@@ -74,9 +74,11 @@
 		"vimeo/psalm": "^4.6",
 		"misantron/dbunit": "^5.1",
 		"tebazil/yii1-db-seeder": "^0.0.0",
-		"mockery/mockery": "^1.3"
+		"mockery/mockery": "^1.3",
+		"goldspecdigital/oooas": "^2.10"
 	},
 	"scripts": {
+		"openapi-gen": "php ./open-api-gen.php",
 		"openapi": ["@composer run openapi-v1", "@composer run openapi-v2"],
 		"openapi-v1": "./vendor/bin/openapi ./application/config/rest/v1 -l -o ./docs/open-api/v1.json",
 		"openapi-v2": "./vendor/bin/openapi ./application/config/rest/v2 -l -o ./docs/open-api/v2.json",
