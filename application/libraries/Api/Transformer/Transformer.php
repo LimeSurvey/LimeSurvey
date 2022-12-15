@@ -12,7 +12,7 @@ class Transformer implements TransformerInterface
      * Transforms data from one format to another.
      *
      * Default functionality is to map input data to output data using a data map.
-     * Data map config also allows specifiction of type cast or callable formatter.
+     * Data map config also allows specification of type cast or callable formatter.
      *
      * @param mixed $data
      * @return array
