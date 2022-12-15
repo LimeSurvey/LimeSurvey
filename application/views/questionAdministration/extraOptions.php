@@ -90,7 +90,6 @@
                         data-subquestions="<?= $question->questionType->subquestions ?>"
                         data-answerscales="<?= $question->questionType->answerscales ?>"
                         id="defaultanswers">
-                        <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
                             '/application/views/questionAdministration/defaultValues.twig',
                             [
