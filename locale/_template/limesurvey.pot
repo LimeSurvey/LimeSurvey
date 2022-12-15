@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2022-12-12 09:46:12+00:00\n"
+"POT-Creation-Date: 2022-12-15 15:44:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -646,7 +646,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:226
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:60
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selected_survey.php:12
-#: application/helpers/qanda_helper.php:2305
+#: application/helpers/qanda_helper.php:2306
 #: application/models/Notification.php:166
 #: application/models/Surveymenu.php:189
 #: application/models/SurveymenuEntries.php:186
@@ -665,7 +665,7 @@ msgstr ""
 #: application/helpers/common_helper.php:1683
 #: application/helpers/common_helper.php:1890
 #: application/helpers/export_helper.php:1227
-#: application/helpers/qanda_helper.php:2306
+#: application/helpers/qanda_helper.php:2307
 #: application/views/admin/dataentry/content_view.php:226
 msgid "Comment"
 msgstr ""
@@ -710,7 +710,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:135
 #: application/controllers/admin/surveypermission.php:477
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
-#: application/helpers/qanda_helper.php:2308
+#: application/helpers/qanda_helper.php:2309
 #: application/models/Assessment.php:100 application/models/Permission.php:759
 #: application/models/Question.php:863 application/models/SavedControl.php:131
 #: application/models/TemplateManifest.php:687
@@ -742,7 +742,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:323
 #: application/controllers/admin/assessments.php:276
-#: application/helpers/qanda_helper.php:2309
+#: application/helpers/qanda_helper.php:2310
 #: application/models/Assessment.php:93 application/models/SavedControl.php:108
 #: application/models/SavedControl.php:119
 #: application/views/admin/quotas/viewquotas_quota_actions.php:12
@@ -1667,15 +1667,15 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1362
 #: application/helpers/qanda_helper.php:1696
 #: application/helpers/qanda_helper.php:1754
-#: application/helpers/qanda_helper.php:3607
-#: application/helpers/qanda_helper.php:3661
-#: application/helpers/qanda_helper.php:3768
-#: application/helpers/qanda_helper.php:3808
-#: application/helpers/qanda_helper.php:4146
-#: application/helpers/qanda_helper.php:4198
-#: application/helpers/qanda_helper.php:4339
-#: application/helpers/qanda_helper.php:5082
+#: application/helpers/qanda_helper.php:3608
+#: application/helpers/qanda_helper.php:3662
+#: application/helpers/qanda_helper.php:3769
+#: application/helpers/qanda_helper.php:3809
+#: application/helpers/qanda_helper.php:4147
+#: application/helpers/qanda_helper.php:4199
+#: application/helpers/qanda_helper.php:4340
 #: application/helpers/qanda_helper.php:5083
+#: application/helpers/qanda_helper.php:5084
 #: application/helpers/userstatistics_helper.php:646
 #: application/helpers/userstatistics_helper.php:683
 #: application/helpers/userstatistics_helper.php:1457
@@ -1899,12 +1899,12 @@ msgstr ""
 #: application/views/admin/token/massive_actions/_update.php:213
 #: application/views/admin/token/massive_actions/_update.php:259
 #: application/views/admin/token/massive_actions/_update.php:269
-#: application/views/admin/token/tokenform.php:115
-#: application/views/admin/token/tokenform.php:133
-#: application/views/admin/token/tokenform.php:275
-#: application/views/admin/token/tokenform.php:292
-#: application/views/admin/token/tokenform.php:328
-#: application/views/admin/token/tokenform.php:338
+#: application/views/admin/token/tokenform.php:116
+#: application/views/admin/token/tokenform.php:134
+#: application/views/admin/token/tokenform.php:276
+#: application/views/admin/token/tokenform.php:293
+#: application/views/admin/token/tokenform.php:329
+#: application/views/admin/token/tokenform.php:339
 #: application/views/admin/usergroup/usergroups_view.php:142
 #: application/views/survey/frontpage/clearallForm/form.php:11
 msgid "Yes"
@@ -2055,12 +2055,12 @@ msgstr ""
 #: application/views/admin/token/massive_actions/_update.php:214
 #: application/views/admin/token/massive_actions/_update.php:260
 #: application/views/admin/token/massive_actions/_update.php:270
-#: application/views/admin/token/tokenform.php:116
-#: application/views/admin/token/tokenform.php:134
-#: application/views/admin/token/tokenform.php:276
-#: application/views/admin/token/tokenform.php:293
-#: application/views/admin/token/tokenform.php:329
-#: application/views/admin/token/tokenform.php:339
+#: application/views/admin/token/tokenform.php:117
+#: application/views/admin/token/tokenform.php:135
+#: application/views/admin/token/tokenform.php:277
+#: application/views/admin/token/tokenform.php:294
+#: application/views/admin/token/tokenform.php:330
+#: application/views/admin/token/tokenform.php:340
 #: application/views/survey/frontpage/clearallForm/form.php:14
 msgid "No"
 msgstr ""
@@ -2196,7 +2196,7 @@ msgstr ""
 #: application/helpers/export_helper.php:1132
 #: application/helpers/export_helper.php:1265
 #: application/helpers/export_helper.php:1282
-#: application/helpers/qanda_helper.php:2230
+#: application/helpers/qanda_helper.php:2231
 #: application/helpers/questionHelper.php:696
 #: application/helpers/questionHelper.php:707
 #: application/helpers/questionHelper.php:723
@@ -2537,7 +2537,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:942
 #: application/controllers/admin/responses.php:233
-#: application/helpers/qanda_helper.php:2307
+#: application/helpers/qanda_helper.php:2308
 #: application/views/admin/emailtemplates/email_language_template_tab.php:81
 msgid "File name"
 msgstr ""
@@ -3256,7 +3256,7 @@ msgid "Edit label set"
 msgstr ""
 
 #: application/controllers/admin/labels.php:314
-#: application/helpers/qanda_helper.php:2394
+#: application/helpers/qanda_helper.php:2395
 #: application/views/admin/labels/_labelviewtabcontent_view.php:86
 #: application/views/admin/themes/templatesummary_view.php:112
 #: tmp/runtime/twig_cache/70/704bf3d5ec5a941eadba716e1d3d208df83d6d588e33b51aeb02adef93241819.php:606
@@ -3716,8 +3716,8 @@ msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:663
 #: application/controllers/admin/printablesurvey.php:664
-#: application/helpers/qanda_helper.php:2197
-#: application/helpers/qanda_helper.php:2238
+#: application/helpers/qanda_helper.php:2198
+#: application/helpers/qanda_helper.php:2239
 msgid "Make a comment on your choice here:"
 msgstr ""
 
@@ -3743,7 +3743,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1198
 #: application/helpers/qanda_helper.php:1426
 #: application/helpers/qanda_helper.php:1942
-#: application/helpers/qanda_helper.php:2092
+#: application/helpers/qanda_helper.php:2093
 msgid "Other:"
 msgstr ""
 
@@ -5509,7 +5509,7 @@ msgstr ""
 #: application/helpers/common_helper.php:4592
 #: application/helpers/qanda_helper.php:1257
 #: application/helpers/qanda_helper.php:1858
-#: application/helpers/qanda_helper.php:4322
+#: application/helpers/qanda_helper.php:4323
 #: application/views/admin/dataentry/content_view.php:153
 #: application/views/admin/dataentry/content_view.php:165
 #: tmp/runtime/twig_cache/3a/3a1bebdae9ad6341c759bc95f0e2ad090b3c07e685351923825ba57dd00b85e1.php:81
@@ -7766,10 +7766,10 @@ msgid "Full"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:121
-#: application/helpers/qanda_helper.php:4449
-#: application/helpers/qanda_helper.php:4463
-#: application/helpers/qanda_helper.php:4477
+#: application/helpers/qanda_helper.php:4450
+#: application/helpers/qanda_helper.php:4464
 #: application/helpers/qanda_helper.php:4478
+#: application/helpers/qanda_helper.php:4479
 #: application/models/Assessment.php:133
 #: application/views/admin/assessments/assessments_edit.php:24
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:55
@@ -10068,22 +10068,22 @@ msgstr ""
 msgid "Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2303
+#: application/helpers/qanda_helper.php:2304
 msgid "Upload your files"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2304
+#: application/helpers/qanda_helper.php:2305
 #: application/views/admin/survey/activateSurvey_view.php:36
 #: tmp/runtime/twig_cache/d8/d8f10d63c4f3da8b54cfba0fef215182c6621f20abe8a7acbd261192ee0caab8.php:508
 #: tmp/runtime/twig_cache/f2/f2f2b9cb1310eceef61ab87451a1886024f063ebcdc60f122825352917550a36.php:371
 msgid "Return to survey"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2388
+#: application/helpers/qanda_helper.php:2389
 msgid "Upload file|Upload files"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2391
+#: application/helpers/qanda_helper.php:2392
 #: application/views/admin/participants/importCSV_view.php:89
 #: application/views/admin/themeoptions/update.php:151
 #: application/views/admin/themes/templatesummary_view.php:158
@@ -10092,77 +10092,77 @@ msgstr ""
 msgid "Upload"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2877
+#: application/helpers/qanda_helper.php:2878
 msgid "Please click and drag the slider handles to enter your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3136
+#: application/helpers/qanda_helper.php:3137
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3200
+#: application/helpers/qanda_helper.php:3201
 msgid "Click to set the location or drag and drop the pin. You may may also enter coordinates"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4057
+#: application/helpers/qanda_helper.php:4058
 msgid "A table with a subquestion on each row. You have to select your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4061
+#: application/helpers/qanda_helper.php:4062
 msgid "A table with a subquestion on each row. The answer options are contained in the table header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4115
+#: application/helpers/qanda_helper.php:4116
 msgid "After the answer options a cell does give some information."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4388
+#: application/helpers/qanda_helper.php:4389
 msgid "A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4442
+#: application/helpers/qanda_helper.php:4443
 msgid "Each answer may only be a number."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4452
-#: application/helpers/qanda_helper.php:4467
+#: application/helpers/qanda_helper.php:4453
+#: application/helpers/qanda_helper.php:4468
 msgid "Grand total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4457
+#: application/helpers/qanda_helper.php:4458
 msgid "The last row shows the total for the column."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4470
+#: application/helpers/qanda_helper.php:4471
 msgid "The last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4486
+#: application/helpers/qanda_helper.php:4487
 msgid "The last row shows the total for the column and the last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4714
+#: application/helpers/qanda_helper.php:4715
 msgid "A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4773
+#: application/helpers/qanda_helper.php:4774
 msgid "Please check the matching combinations."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4784
+#: application/helpers/qanda_helper.php:4785
 msgid "Please enter only numbers."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4790
+#: application/helpers/qanda_helper.php:4791
 msgid "Please select an answer for each combination."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5171
+#: application/helpers/qanda_helper.php:5172
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5175
-#: application/helpers/qanda_helper.php:5555
+#: application/helpers/qanda_helper.php:5176
+#: application/helpers/qanda_helper.php:5556
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
@@ -13447,7 +13447,7 @@ msgstr ""
 #: application/models/Token.php:90 application/models/TokenDynamic.php:755
 #: application/views/admin/token/dummytokenform.php:91
 #: application/views/admin/token/massive_actions/_update.php:334
-#: application/views/admin/token/tokenform.php:399
+#: application/views/admin/token/tokenform.php:400
 msgid "Valid from"
 msgstr ""
 
@@ -13461,13 +13461,13 @@ msgstr ""
 
 #: application/models/TokenDynamic.php:713
 #: application/views/admin/token/massive_actions/_update.php:189
-#: application/views/admin/token/tokenform.php:241
+#: application/views/admin/token/tokenform.php:242
 msgid "Invitation sent?"
 msgstr ""
 
 #: application/models/TokenDynamic.php:722
 #: application/views/admin/token/massive_actions/_update.php:247
-#: application/views/admin/token/tokenform.php:314
+#: application/views/admin/token/tokenform.php:315
 msgid "Reminder sent?"
 msgstr ""
 
@@ -13477,7 +13477,7 @@ msgstr ""
 
 #: application/models/TokenDynamic.php:739
 #: application/views/admin/token/massive_actions/_update.php:53
-#: application/views/admin/token/tokenform.php:92
+#: application/views/admin/token/tokenform.php:93
 msgid "Completed?"
 msgstr ""
 
@@ -14174,7 +14174,7 @@ msgstr ""
 
 #: application/views/admin/dataentry/active_html_view.php:69
 #: application/views/admin/token/massive_actions/_update.php:160
-#: application/views/admin/token/tokenform.php:210
+#: application/views/admin/token/tokenform.php:211
 #: application/views/admin/user/editusers.php:114
 #: application/views/admin/user/personalsettings.php:42
 msgid "Email:"
@@ -14321,7 +14321,7 @@ msgstr ""
 #: application/views/admin/globalSettings_view.php:24
 #: application/views/admin/survey/Question/massive_actions/_selector.php:27
 #: application/views/admin/token/massive_actions/_update.php:22
-#: application/views/admin/token/tokenform.php:48
+#: application/views/admin/token/tokenform.php:49
 msgid "General"
 msgstr ""
 
@@ -14695,7 +14695,7 @@ msgstr ""
 #: application/views/admin/export/spss_view.php:45
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:49
 #: application/views/admin/token/massive_actions/_update.php:146
-#: application/views/admin/token/tokenform.php:198
+#: application/views/admin/token/tokenform.php:199
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:15
 #: tmp/runtime/twig_cache/77/770ff87f0da13e5efb4809793d454a813166b2e332e5b06fa5e2ad8f01ffb306.php:84
 #: tmp/runtime/twig_cache/a9/a9dfb7a189d97fcc1b371c64b69dfbc50bf7a290159bf1a5f80c63c5f861b489.php:90
@@ -16348,7 +16348,7 @@ msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:28
 #: application/views/admin/token/massive_actions/_update.php:120
-#: application/views/admin/token/tokenform.php:158
+#: application/views/admin/token/tokenform.php:159
 #: application/views/survey/frontpage/registerForm/form.php:4
 #: tmp/runtime/twig_cache/2f/2f213733428de3d46896fcbaf701e2b0159533a37fd23982e8a4e0702a6fe0ac.php:98
 msgid "First name:"
@@ -16356,7 +16356,7 @@ msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:34
 #: application/views/admin/token/massive_actions/_update.php:133
-#: application/views/admin/token/tokenform.php:169
+#: application/views/admin/token/tokenform.php:170
 #: application/views/survey/frontpage/registerForm/form.php:11
 #: tmp/runtime/twig_cache/2f/2f213733428de3d46896fcbaf701e2b0159533a37fd23982e8a4e0702a6fe0ac.php:121
 msgid "Last name:"
@@ -20096,7 +20096,7 @@ msgid "Add another participant"
 msgstr ""
 
 #: application/views/admin/token/addtokenpost.php:30
-#: application/views/admin/token/tokenform.php:457
+#: application/views/admin/token/tokenform.php:458
 msgid "Add token entry"
 msgstr ""
 
@@ -20227,7 +20227,7 @@ msgid "Create dummy participants"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:18
-#: application/views/admin/token/tokenform.php:76
+#: application/views/admin/token/tokenform.php:77
 msgid "Auto"
 msgstr ""
 
@@ -20247,7 +20247,7 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:72
 #: application/views/admin/token/massive_actions/_update.php:320
-#: application/views/admin/token/tokenform.php:373
+#: application/views/admin/token/tokenform.php:374
 msgid "Uses left:"
 msgstr ""
 
@@ -20265,7 +20265,7 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:121
 #: application/views/admin/token/massive_actions/_update.php:360
-#: application/views/admin/token/tokenform.php:411
+#: application/views/admin/token/tokenform.php:412
 msgid "Until:"
 msgstr ""
 
@@ -20457,17 +20457,17 @@ msgid "Add participants to central database"
 msgstr ""
 
 #: application/views/admin/token/massive_actions/_update.php:29
-#: application/views/admin/token/tokenform.php:55
+#: application/views/admin/token/tokenform.php:56
 msgid "Additional attributes"
 msgstr ""
 
 #: application/views/admin/token/massive_actions/_update.php:175
-#: application/views/admin/token/tokenform.php:225
+#: application/views/admin/token/tokenform.php:226
 msgid "Email status:"
 msgstr ""
 
 #: application/views/admin/token/massive_actions/_update.php:306
-#: application/views/admin/token/tokenform.php:362
+#: application/views/admin/token/tokenform.php:363
 msgid "Reminder count:"
 msgstr ""
 
@@ -20560,17 +20560,21 @@ msgstr ""
 msgid "Some mandatory additional attributes were left blank. Please review them."
 msgstr ""
 
-#: application/views/admin/token/tokenform.php:183
+#: application/views/admin/token/tokenform.php:40
+msgid "Participant expiration date can't be lower than the \"Valid from\" date"
+msgstr ""
+
+#: application/views/admin/token/tokenform.php:184
 #: application/views/survey/frontpage/tokenForm/form.php:9
 #: tmp/runtime/twig_cache/e6/e662477119548dbb512bc730fd62ecab6042545078d8c2b6b1b3f07cfe9d21e8.php:129
 msgid "Token:"
 msgstr ""
 
-#: application/views/admin/token/tokenform.php:192
+#: application/views/admin/token/tokenform.php:193
 msgid "You can leave this blank, and automatically generate tokens using 'Generate Tokens'"
 msgstr ""
 
-#: application/views/admin/token/tokenform.php:452
+#: application/views/admin/token/tokenform.php:453
 msgid "Update token entry"
 msgstr ""
 
