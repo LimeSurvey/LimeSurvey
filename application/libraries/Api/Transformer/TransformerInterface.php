@@ -1,8 +1,8 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Output;
+namespace LimeSurvey\Api\Transformer;
 
-interface TransformerOutputInterface
+interface TransformerInterface
 {
     public function transform($data);
     public function transformAll(array $array);

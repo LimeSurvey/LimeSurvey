@@ -3,7 +3,7 @@
 namespace ls\tests\unit\api;
 
 use ls\tests\TestBaseClass;
-use LimeSurvey\Api\Transformer\Output\TransformerOutput;
+use LimeSurvey\Api\Transformer\Transformer;
 
 
 /**
@@ -12,11 +12,11 @@ use LimeSurvey\Api\Transformer\Output\TransformerOutput;
 class TransformerOutputTest extends TestBaseClass
 {
     /**
-     * @testdox transform() Return data only includes mapped fields.
+     * @testdox transform() Transformed data only includes fields specified in map.
      */
-    public function testReturnDataIncludesOnlyMappedFields()
+    public function testTrasnformedDataIncludesOnlyFieldsSpecifiedInMap()
     {
-        $transformer = new TransformerOutput;
+        $transformer = new Transformer;
         $transformer->setDataMap([
             'first_name' => true,
             'age' => true
@@ -34,11 +34,11 @@ class TransformerOutputTest extends TestBaseClass
     }
 
     /**
-     * @testdox transform() Return mapped fields to new name.
+     * @testdox transform() Maps to specified output fields.
      */
-    public function testReturnDataMappedFieldsToNewName()
+    public function testMapsToSpecifiedOutputFields()
     {
-        $transformer = new TransformerOutput;
+        $transformer = new Transformer;
         $transformer->setDataMap([
             'first_name' => 'given_name',
             'age' => 'years_of_existence'

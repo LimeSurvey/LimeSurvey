@@ -1,13 +1,17 @@
 <?php
 
-namespace LimeSurvey\Api\Transformer\Output;
+namespace LimeSurvey\Api\Transformer;
 
-class TransformerOutput implements TransformerOutputInterface
+class Transformer implements TransformerInterface
 {
     protected $dataMap = null;
 
     /**
      * Transform data
+     *
+     * Transforms data from one format to another.
+     *
+     * Default functionality is to map input data to output data using a data map.
      *
      * @param mixed $data
      * @return array
