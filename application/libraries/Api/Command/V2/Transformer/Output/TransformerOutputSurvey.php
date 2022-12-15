@@ -11,15 +11,15 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
     public function __construct()
     {
         $typeYnToBool = 'LimeSurvey\Api\Transformer\TypeFormat::ynToBool';
-        $typeDateTimeToUtcJson = 'LimeSurvey\Api\Transformer\TypeFormat::dateTimeUtcToJson';
+        $typeDateTimeToUtcJson = 'LimeSurvey\Api\Transformer\TypeFormat::dateTimeToJson';
 
         $this->setDataMap([
             'sid' => ['type' => 'int'],
             'gsid' => ['type' => 'int'],
             'active' => ['type' => $typeYnToBool],
             'language'  => true,
-            'expires' => true,
-            'startdate' => true,
+            'expires' => ['type' => $typeDateTimeToUtcJson],
+            'startdate' => ['type' => $typeDateTimeToUtcJson],
             'anonymized' => ['type' => $typeYnToBool],
             'savetimings' => ['type' => $typeYnToBool],
             'additional_languages' => false,

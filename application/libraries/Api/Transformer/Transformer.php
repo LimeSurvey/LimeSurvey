@@ -36,11 +36,7 @@ class Transformer implements TransformerInterface
 
             // Null value reverts to default value
             // - the default value itself defaults to null
-            if (
-                !is_bool($value)
-                && !is_numeric($value)
-                && is_null($value)
-            ) {
+            if (is_null($value)) {
                 $value = $config['default'];
             }
 

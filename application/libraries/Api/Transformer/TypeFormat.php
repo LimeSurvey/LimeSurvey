@@ -7,6 +7,10 @@ class TypeFormat
     /**
      * Cast Y/N to boolean
      *
+     * Converts 'Y' or 'y' to boolean true.
+     * Converts 'N' or 'n' to boolean false.
+     * Any other value will produce null.
+     *
      * @param mixed $value
      * @return boolean|null
      */
@@ -26,23 +30,27 @@ class TypeFormat
     /**
      * Cast UTC datetime string to JSON datetime string
      *
+     * @see https://www.w3.org/TR/NOTE-datetime
      * @param string $value
+     * @param string $timezone
      * @return string|null
      */
-    public static function dateTimeUtcToJson($value)
+    public static function dateTimeToJson($value, $timezone = 'UTC')
     {
         if ($value === null || $value === "") {
             return null;
         }
         $dateTime = date_create(
             $value,
-            timezone_open('UTC')
+            timezone_open($timezone)
         );
         if (!$dateTime) {
             return null;
         }
-        return date_format(
-            $dateTime,
+        $dateTime->setTimezone(
+            timezone_open('UTC')
+        );
+        return $dateTime->format(
             'Y-m-d\TH:i:s.000\Z'
         );
     }
