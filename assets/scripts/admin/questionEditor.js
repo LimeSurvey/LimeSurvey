@@ -1696,7 +1696,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
         $('#extra-options-container').replaceWith(extraOptionsHtml);
         makeAnswersTableSortable();
-        bindExtraOptionsEvents();
         $('.question-option-help').hide();
         $('#ls-loading').hide();
 
@@ -1844,9 +1843,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
           return false;
         }
       }
-
-      // Synchronize default answers with subquestions/answer options before saving
-      synchronizeDefaultAnswers();
 
       const updateQuestionSummary = () => {
         const form = document.getElementById('edit-question-form');
@@ -2011,89 +2007,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
     LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
   });
-  /**
-   * Keep the "Default Answers" tab in sync with "Answer Options" and "Subquestions".
-   */
-  function synchronizeDefaultAnswers() {
-    const tabpane = $("#defaultanswers");
-    if (tabpane.length == 0) {
-      return;
-    }
-
-    const languages = languageJson.langs.split(';');
-
-    const subquestionScales = tabpane.data('subquestions');
-    const answerScales = tabpane.data('answerscales');
-
-    if (answerScales == 1 && subquestionScales == 0) {
-      _.forEach(languages, (curLanguage, x) => {
-        const defaultAnswerInput = $(`#defaultvalues\\[${curLanguage}\\]\\[0\\]`);
-        // Get the currently selected default option
-        const currentDefault = defaultAnswerInput.val();
-        // Clear current options, except the 'empty' one
-        defaultAnswerInput.find('option:not([value=""])').remove();
-
-        var currentDefaultMissing = true;
-        // Loop through all the answer options table rows
-        const rows = $(`#answeroptions_${curLanguage}_0 tbody tr`);
-        rows.each(function () {
-          var code = '';
-          if ($(this).find('.code-title input.code').length) {
-            code = $(this).find('.code-title input.code').val();
-          } else {
-            code = $(this).find('.code-title').text().trim();
-          }
-          const text = $(this).find('.answeroption-text input.answer').val();
-          $('<option></option>').attr('value', code).text(text).appendTo(defaultAnswerInput);
-          if (code == currentDefault) {
-            currentDefaultMissing = false;
-            defaultAnswerInput.val(code);
-          }
-        });
-        if (currentDefaultMissing) {
-          defaultAnswerInput.val("");
-        }
-      });
-    } else if (answerScales == 0 && subquestionScales == 1) {
-      _.forEach(languages, (curLanguage, x) => {
-        const languageTab = tabpane.find(`.lang-${curLanguage}`);
-        const template = languageTab.find('.defaultvalues-template');
-        const defaultAnswerRowsContainer = languageTab.find('.default-answer-rows');
-        // Get the currently selected default options before clearing the rows
-        var currentDefaults = {};
-        defaultAnswerRowsContainer.find(`[id^="defaultvalues\\[${curLanguage}\\]"`).each(function () {
-          currentDefaults[$(this).attr('id')] = $(this).val();
-        });
-        // Clear current default answer rows
-        defaultAnswerRowsContainer.html("");
-        // Loop through all the subquestions table rows
-        const rows = $(`#subquestions_${curLanguage}_0 tbody tr`);
-        rows.each(function () {
-          var code = '';
-          if ($(this).find('.code-title input.code').length) {
-            code = $(this).find('.code-title input.code').val();
-          } else {
-            code = $(this).find('.code-title').text().trim();
-          }
-          const text = $(this).find('.subquestion-text input.answer').val();
-          const newRowId = `defaultvalues[${curLanguage}][${code}][0]`;
-          const templateId = `defaultvalues\\[${curLanguage}\\]\\[\\{\\{title_placeholder\\}\\}\\]\\[0\\]`;
-          const newDefaultAnswerRow = template.clone();
-          newDefaultAnswerRow.find('#' + templateId).removeAttr('disabled').attr('id', newRowId).attr('name', newRowId).val(currentDefaults[newRowId] ?? '');
-          const label = newDefaultAnswerRow.find(`label[for="${templateId}"]`);
-          label.attr('for', newRowId);
-          label.html(label.html().replace("{{title_placeholder}}", code).replace("{{text_placeholder}}", text));
-          newDefaultAnswerRow.removeClass('defaultvalues-template').show().appendTo(defaultAnswerRowsContainer);
-        });
-      });
-    }
-  }
-
-  function bindExtraOptionsEvents() {
-    $('[data-toggle="tab"][href="#defaultanswers"]').off('show.bs.tab').on('show.bs.tab', function(e) { 
-      synchronizeDefaultAnswers();
-    });
-  }
 
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {
@@ -2225,6 +2138,4 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     
     $('#relevance').on('keyup', showConditionsWarning);
-
-    bindExtraOptionsEvents();
 });

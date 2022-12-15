@@ -692,27 +692,4 @@ class LS_Twig_Extension extends Twig_Extension
         Yii::app()->loadHelper('surveytranslator');
         return getLanguageRTL($sLanguageCode);
     }
-
-    /**
-     * Get the widget output for Yes/No question's default values
-     *
-     * @param string $language
-     * @param Question|array $question
-     * @param array $defaultValues see QuestionAdministrationController::getDefaultValues()
-     * @param string $elementId
-     * @param string $emElementId
-     * @return String
-     */
-    public static function getYesNoDefaultValueWidget($language, $question, $defaultValues, $elementId = null, $emElementId = null)
-    {
-        $widgetOptions = [
-            'language' => $language,
-            'questionrow' => $question,
-            'langopts' => $defaultValues,
-            'elementId' => $elementId,
-            'emElementId' => $emElementId,
-        ];
-        $widget = App()->getController()->createWidget('application.views.admin.survey.Question.yesNo_defaultvalue_widget', ['widgetOptions' => $widgetOptions]);
-        return $widget->run();
-    }
 }

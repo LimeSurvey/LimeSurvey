@@ -28,18 +28,6 @@
                         </a>
                     </li>
                 <?php endif; ?>
-                <?php if ($question->questionType->hasdefaultvalues > 0): ?>
-                    <li role="presentation" <?php echo (++$tabCount == 1 ? 'class="active"' : ''); ?>>
-                        <a
-                            href="#defaultanswers"
-                            aria-controls="defaultanswers"
-                            role="tab"
-                            data-toggle="tab"
-                        >
-                            <?= gT('Default Answers'); ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
             </ul>
             <?php $tabCount = 0; ?>
             <div class="tab-content">
@@ -79,28 +67,6 @@
                                 'allLanguages' => $survey->allLanguages,
                                 'language'   => $survey->language,
                                 'hasLabelSetPermission' => Permission::model()->hasGlobalPermission('labelsets','create'),
-                            ],
-                            true
-                        ); ?>
-                    </div>
-                <?php endif; ?>
-                <?php if ($question->questionType->hasdefaultvalues > 0): ?>
-                    <div role="tabpanel"
-                        class="tab-pane<?php echo (++$tabCount == 1 ? ' active' : ''); ?>"
-                        data-subquestions="<?= $question->questionType->subquestions ?>"
-                        data-answerscales="<?= $question->questionType->answerscales ?>"
-                        id="defaultanswers">
-                        <?= Yii::app()->twigRenderer->renderViewFromFile(
-                            '/application/views/questionAdministration/defaultValues.twig',
-                            [
-                                'subquestions' => $question->questionType->subquestions,
-                                'answerScales' => $question->questionType->answerscales,
-                                'answers' => $question->getScaledAnswerOptions(),
-                                'question' => $question,
-                                'allLanguages' => $survey->allLanguages,
-                                'language' => $survey->language,
-                                'defaultValues' => $defaultValues,
-                                'hasUpdatePermission' => Permission::model()->hasSurveyPermission($survey->sid, 'surveycontent', 'update'),
                             ],
                             true
                         ); ?>

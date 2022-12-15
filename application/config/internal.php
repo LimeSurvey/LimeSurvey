@@ -273,7 +273,6 @@ $internalConfig = array(
                 'getConfig'               => 'LS_Twig_Extension::getConfig',
                 'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',/* Not in 3.X */
                 'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',/* Not in 3.X */
-                'getYesNoDefaultValueWidget' => 'LS_Twig_Extension::getYesNoDefaultValueWidget',/* Not in 3.X */
                 'checkPermission'         => 'LS_Twig_Extension::checkPermission',/* Not in 3.X */
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
@@ -392,7 +391,6 @@ $internalConfig = array(
                     'getConfig',
                     'getExpressionManagerOutput',
                     'getTextDisplayWidget',
-                    'getYesNoDefaultValueWidget',
                     'getLanguageNameFromCode',
                     'getAllQuestionClasses',
                     'checkPermission',
