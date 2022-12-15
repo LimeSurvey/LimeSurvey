@@ -1373,12 +1373,15 @@ class database extends Survey_Common_Action
                                         $aInsertData['qid'] = null;
                                     } else {  // additional languages
                                         $aInsertData['qid'] = $aSubquestionIds[$sSubquestionIndex]; // get qid from array
+                                        switchMSSQLIdentityInsert('questions', true);
                                     }
 
                                     $aInsertData['parent_qid'] = $this->iQuestionID;
                                     if (Question::model()->insertRecords($aInsertData)){
                                         if ($sLanguageIndex == 0){ // main language
                                             $aSubquestionIds[$sSubquestionIndex] = getLastInsertID('{{questions}}'); // save qid into the array
+                                        } else {
+                                            switchMSSQLIdentityInsert('questions', false);
                                         }
                                     }
                                 }

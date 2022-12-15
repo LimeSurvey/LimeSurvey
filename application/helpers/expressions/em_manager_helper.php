@@ -3750,9 +3750,9 @@
                 if($this->sPreviewMode=='group' || $this->sPreviewMode=='question') $fielddata['grelevance']=1;
 
                 $questionNum = $fielddata['qid'];
-                $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
-                $SQrelevance = (isset($fielddata['SQrelevance'])) ? $fielddata['SQrelevance'] : 1;
-                $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
+                $relevance = (isset($fielddata['relevance'])) ? trim($fielddata['relevance']) : 1;
+                $SQrelevance = (isset($fielddata['SQrelevance'])) ? trim($fielddata['SQrelevance']) : 1;
+                $grelevance = (isset($fielddata['grelevance'])) ? trim($fielddata['grelevance']) : 1;
                 $hidden = (isset($qattr[$questionNum]['hidden'])) ? ($qattr[$questionNum]['hidden'] == '1') : false;
                 $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
                 $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : NULL; // a perl regular exrpession validation function

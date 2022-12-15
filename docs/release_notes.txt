@@ -34,6 +34,43 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.28.41 (build 221206) to 3.28.42 (build 221213) December 12, 2022
+-Fixed issue [security] #18514: No CSRF control when deleting token table (#2760) (Denis Chenu)
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Japanese by c_schmitz, d_inoue, nomoto
+#Updated translation: Galician by Calidonia
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 3.28.40 (build 221129) to 3.28.41 (build 221206) December 5, 2022
+-Fixed issue #17818: Copy a multiple choice question send a DB error (MSSQL) (#2593) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by arnaud21, DenisChenu, Xave
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+
+
+Changes from 3.28.39 (build 221122) to 3.28.40 (build 221129) November 28, 2022
+-Fixed issue #18461: Survey groups at survey list screen should be listed alphabetically (#2723) (Gabriel Jenik)
+-Fixed issue #16187: Can't create custom survey ID (need proper error message) (#2725) (Gabriel Jenik)
+-Fixed issue #14310: Google Analytics functionality doesn't work (#2643) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+
+
+Changes from 3.28.38 (build 221115) to 3.28.39 (build 221122) November 21, 2022
+-Fixed issue: ComfortUpdate should use SSL by default (Carsten Schmitz)
+-Fixed issue #18488: Conditions are not properly highlighted if they have additional spaces (#2736) (Denis Chenu)
+-Fixed issue #15195: Expiration date can be set before start date (#2727) (Gabriel Jenik)
+#Updated translation: Valencian by vbraque
+#Updated translation: Hungarian by kkd
+
+
 Changes from 3.28.37 (build 221108) to 3.28.38 (build 221115) November 14, 2022
 -Fixed issue: Survey gets into a state where it seems to be active but isn't - to fix this run integrity check (Gabriel Jenik)
 #Updated translation: Portuguese (Brazil) by educaticteced, effgarces, filhocf, josesiqueira, mauriciofurtado
