@@ -8,6 +8,8 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
 {
     public function __construct()
     {
+        $typeYnToBool = 'LimeSurvey\Api\Transformer\TypeFormat::ynToBool';
+
         $this->setDataMap([
             'qid' => ['type' => 'int'],
             'parent_qid' => ['type' => 'int'],
@@ -15,17 +17,17 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             'type' => true,
             'title' => true,
             'preg' => true,
-            'other' => ['type' => 'LimeSurvey\Api\Transformer\TypeFormat::ynToBool'],
-            'mandatory' => ['type' => 'LimeSurvey\Api\Transformer\TypeFormat::ynToBool'],
-            'encrypted' => ['type' => 'LimeSurvey\Api\Transformer\TypeFormat::ynToBool'],
+            'other' => ['type' => $typeYnToBool],
+            'mandatory' => ['type' => $typeYnToBool],
+            'encrypted' => ['type' => $typeYnToBool],
             'question_order' => ['type' => 'int'],
             'scale_id' => ['type' => 'int'],
-            'same_default' => ['type' => 'LimeSurvey\Api\Transformer\TypeFormat::ynToBool'],
+            'same_default' => ['type' => $typeYnToBool],
             'question_theme_name' => true,
             'modulename' => true,
             'gid' => ['type' => 'int'],
             'relevance' => true,
-            'same_script' => ['type' => 'LimeSurvey\Api\Transformer\TypeFormat::ynToBool'],
+            'same_script' => ['type' => $typeYnToBool],
         ]);
     }
 
