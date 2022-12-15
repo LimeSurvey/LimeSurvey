@@ -17,8 +17,8 @@ RestEndpoint : runCommand() Response
 
 class CommandInterface
 <<interface>> CommandInterface
-CommandInterface --* TransformerOutputInterface : composes
-CommandInterface --* TransformerInputInterface : composes
+
+CommandInterface --* TransformerInterface : composes
 CommandInterface : run(Request) Response
 
 
@@ -50,7 +50,3 @@ Transformer : transformAll(array) array
 
 class TransformerOutputActiveRecord
 Transformer --|> TransformerOutputActiveRecord
-
-
-
-
