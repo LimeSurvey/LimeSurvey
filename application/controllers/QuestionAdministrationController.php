@@ -1,7 +1,5 @@
 <?php
 
-use ls\tests\QuestionTest;
-
 /**
  * Class QuestionAdministrationController
  */
@@ -711,7 +709,7 @@ class QuestionAdministrationController extends LSBaseController
      * @todo Should be GET, not POST
      * @return void
      */
-    public function actionGetSubquestionRowQuickAdd()
+    public function actionGetSubquestionRowQuickAdd($surveyid, $gid)
     {
         $qid               = '{{quid_placeholder}}';
         $request           = Yii::app()->request;
